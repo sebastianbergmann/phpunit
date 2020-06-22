@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Util\Annotation;
 
+use const JSON_ERROR_NONE;
+use const PREG_OFFSET_CAPTURE;
 use function array_filter;
 use function array_key_exists;
 use function array_map;
@@ -25,26 +27,13 @@ use function implode;
 use function is_array;
 use function is_int;
 use function json_decode;
-use const JSON_ERROR_NONE;
 use function json_last_error;
 use function json_last_error_msg;
-use PharIo\Version\VersionConstraintParser;
-use PHPUnit\Framework\InvalidDataProviderException;
-use PHPUnit\Framework\SkippedTestError;
-use PHPUnit\Framework\Warning;
-use PHPUnit\Util\Exception;
-use PHPUnit\Util\InvalidDataSetException;
 use function preg_match;
 use function preg_match_all;
-use const PREG_OFFSET_CAPTURE;
 use function preg_replace;
 use function preg_split;
 use function realpath;
-use ReflectionClass;
-use ReflectionException;
-use ReflectionFunctionAbstract;
-use ReflectionMethod;
-use Reflector;
 use function rtrim;
 use function sprintf;
 use function str_replace;
@@ -53,8 +42,19 @@ use function strpos;
 use function strtolower;
 use function substr;
 use function substr_count;
-use Traversable;
 use function trim;
+use PharIo\Version\VersionConstraintParser;
+use PHPUnit\Framework\InvalidDataProviderException;
+use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\Warning;
+use PHPUnit\Util\Exception;
+use PHPUnit\Util\InvalidDataSetException;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionFunctionAbstract;
+use ReflectionMethod;
+use Reflector;
+use Traversable;
 
 /**
  * This is an abstraction around a PHPUnit-specific docBlock,

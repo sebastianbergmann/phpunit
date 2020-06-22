@@ -9,14 +9,14 @@
  */
 namespace PHPUnit\Runner;
 
-use function file_put_contents;
 use const PHP_EOL;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\PHP\AbstractPhpProcess;
+use function file_put_contents;
 use function strtr;
 use function sys_get_temp_dir;
 use function touch;
 use function unlink;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\PHP\AbstractPhpProcess;
 
 /**
  * @medium

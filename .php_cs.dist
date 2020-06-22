@@ -158,7 +158,13 @@ return PhpCsFixer\Config::create()
                 'method_private_static',
             ],
         ],
-        'ordered_imports' => true,
+        'ordered_imports' => [
+            'imports_order' => [
+                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_CONST,
+                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_FUNCTION,
+                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_CLASS,
+            ]
+        ],
         'ordered_interfaces' => [
             'direction' => 'ascend',
             'order' => 'alpha',

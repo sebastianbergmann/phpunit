@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function array_key_exists;
-use ArrayAccess;
 use function is_array;
+use ArrayAccess;
 
 /**
  * Constraint that asserts that the array it is evaluated for has a given key.

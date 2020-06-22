@@ -18,6 +18,10 @@ use function ini_get;
 use function is_bool;
 use function is_scalar;
 use function method_exists;
+use function print_r;
+use function round;
+use function str_replace;
+use function stripos;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -30,13 +34,9 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\Exception;
 use PHPUnit\Util\Filter;
-use function print_r;
 use ReflectionClass;
 use ReflectionException;
-use function round;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use function str_replace;
-use function stripos;
 use Throwable;
 
 /**

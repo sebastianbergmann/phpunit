@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use ReflectionClass;
 use function sprintf;
+use ReflectionClass;
 
 abstract class OperatorTestCase extends ConstraintTestCase
 {

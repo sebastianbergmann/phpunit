@@ -13,8 +13,8 @@ use function call_user_func_array;
 use function get_class;
 use function is_array;
 use function is_object;
-use PHPUnit\Framework\MockObject\Invocation;
 use function sprintf;
+use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

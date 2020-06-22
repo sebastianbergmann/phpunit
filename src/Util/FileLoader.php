@@ -9,14 +9,14 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
 use function array_diff;
 use function array_keys;
-use const DIRECTORY_SEPARATOR;
 use function fopen;
 use function get_defined_vars;
-use PHPUnit\Framework\Exception;
 use function sprintf;
 use function stream_resolve_include_path;
+use PHPUnit\Framework\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

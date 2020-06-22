@@ -9,17 +9,17 @@
  */
 namespace PHPUnit\TextUI;
 
+use const PHP_EOL;
 use function count;
 use function explode;
 use function max;
-use const PHP_EOL;
-use PHPUnit\Util\Color;
 use function preg_replace_callback;
-use SebastianBergmann\Environment\Console;
 use function str_pad;
 use function str_repeat;
 use function strlen;
 use function wordwrap;
+use PHPUnit\Util\Color;
+use SebastianBergmann\Environment\Console;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

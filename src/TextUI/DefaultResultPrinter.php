@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI;
 
+use const PHP_EOL;
 use function array_map;
 use function array_reverse;
 use function count;
@@ -17,7 +18,12 @@ use function implode;
 use function in_array;
 use function is_int;
 use function max;
-use const PHP_EOL;
+use function preg_split;
+use function sprintf;
+use function str_pad;
+use function str_repeat;
+use function strlen;
+use function vsprintf;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
@@ -30,16 +36,10 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
-use function preg_split;
 use SebastianBergmann\Environment\Console;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
-use function sprintf;
-use function str_pad;
-use function str_repeat;
-use function strlen;
 use Throwable;
-use function vsprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

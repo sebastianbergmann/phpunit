@@ -10,11 +10,11 @@
 namespace PHPUnit\Util;
 
 use function chr;
-use DOMDocument;
 use function ord;
+use function sprintf;
+use DOMDocument;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
-use function sprintf;
 
 /**
  * @small

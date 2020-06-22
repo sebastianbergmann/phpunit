@@ -10,9 +10,13 @@
 namespace PHPUnit\Util;
 
 use function array_merge;
+use function get_class;
+use function preg_match;
+use function range;
+use function realpath;
+use function strpos;
 use CoverageNamespacedFunctionTest;
 use DuplicateKeyDataProviderTest;
-use function get_class;
 use MultipleDataProviderTest;
 use NumericGroupAnnotationTest;
 use ParseTestMethodAnnotationsMock;
@@ -22,14 +26,10 @@ use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Util\Annotation\DocBlock;
-use function preg_match;
-use function range;
-use function realpath;
 use ReflectionClass;
 use ReflectionMethod;
 use RequirementsClassDocBlockTest;
 use RequirementsTest;
-use function strpos;
 use Test3194;
 use VariousIterableDataProviderTest;
 

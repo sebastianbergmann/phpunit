@@ -10,7 +10,6 @@
 namespace PHPUnit\Util;
 
 use function array_keys;
-use Closure;
 use function count;
 use function defined;
 use function get_defined_constants;
@@ -25,6 +24,7 @@ use function serialize;
 use function sprintf;
 use function strpos;
 use function var_export;
+use Closure;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

@@ -10,13 +10,13 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function array_map;
+use function sprintf;
 use BooleanConstraint;
 use CountConstraint;
 use NamedConstraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use ReflectionClass;
 use ReflectionMethod;
-use function sprintf;
 
 abstract class UnaryOperatorTestCase extends OperatorTestCase
 {

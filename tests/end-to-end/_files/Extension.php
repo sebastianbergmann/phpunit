@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Test;
 
+use const PHP_EOL;
 use function count;
 use function func_get_args;
-use const PHP_EOL;
 use PHPUnit\Runner\AfterIncompleteTestHook;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\AfterRiskyTestHook;

@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function sprintf;
+use function strtolower;
 use Exception;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
-use function sprintf;
-use function strtolower;
 use Throwable;
 
 /**

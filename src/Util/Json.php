@@ -9,15 +9,15 @@
  */
 namespace PHPUnit\Util;
 
+use const JSON_PRETTY_PRINT;
+use const JSON_UNESCAPED_SLASHES;
+use const JSON_UNESCAPED_UNICODE;
 use function count;
 use function is_array;
 use function is_object;
 use function json_decode;
 use function json_encode;
 use function json_last_error;
-use const JSON_PRETTY_PRINT;
-use const JSON_UNESCAPED_SLASHES;
-use const JSON_UNESCAPED_UNICODE;
 use function ksort;
 use PHPUnit\Framework\Exception;
 

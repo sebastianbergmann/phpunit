@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Framework;
 
+use function print_r;
 use BadFunctionCallException;
 use Exception;
-use function print_r;
 
 /**
  * @small

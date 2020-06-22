@@ -17,12 +17,12 @@ use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
 use function error_reporting;
+use function restore_error_handler;
+use function set_error_handler;
 use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning;
-use function restore_error_handler;
-use function set_error_handler;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

@@ -10,10 +10,10 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function json_encode;
+use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Util\Json;
-use function sprintf;
 
 /**
  * @small

@@ -9,37 +9,37 @@
  */
 namespace PHPUnit\Framework;
 
+use const DIRECTORY_SEPARATOR;
+use const INF;
+use const NAN;
 use function acos;
 use function array_merge;
+use function chmod;
+use function file_get_contents;
+use function fopen;
+use function json_encode;
+use function log;
+use function mkdir;
+use function octdec;
+use function rmdir;
+use function sys_get_temp_dir;
+use function tempnam;
+use function uniqid;
+use function unlink;
 use ArrayIterator;
 use ArrayObject;
 use Author;
 use Book;
-use function chmod;
 use ClassWithNonPublicAttributes;
 use ClassWithToString;
 use DateTime;
 use DateTimeZone;
-use const DIRECTORY_SEPARATOR;
-use function file_get_contents;
-use function fopen;
-use const INF;
-use function json_encode;
-use function log;
-use function mkdir;
-use const NAN;
-use function octdec;
 use PHPUnit\Util\Xml;
-use function rmdir;
 use SampleArrayAccess;
 use SampleClass;
 use SplObjectStorage;
 use stdClass;
 use Struct;
-use function sys_get_temp_dir;
-use function tempnam;
-use function uniqid;
-use function unlink;
 
 /**
  * @small

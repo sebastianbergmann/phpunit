@@ -9,24 +9,14 @@
  */
 namespace PHPUnit\Util\PHP;
 
-use __PHP_Incomplete_Class;
+use const DIRECTORY_SEPARATOR;
+use const PHP_SAPI;
 use function array_keys;
 use function array_merge;
 use function assert;
-use const DIRECTORY_SEPARATOR;
-use ErrorException;
 use function escapeshellarg;
 use function ini_get_all;
-use const PHP_SAPI;
-use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\SyntheticError;
-use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\Framework\TestResult;
 use function restore_error_handler;
-use SebastianBergmann\Environment\Runtime;
 use function set_error_handler;
 use function sprintf;
 use function str_replace;
@@ -35,6 +25,16 @@ use function strrpos;
 use function substr;
 use function trim;
 use function unserialize;
+use __PHP_Incomplete_Class;
+use ErrorException;
+use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\SyntheticError;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestFailure;
+use PHPUnit\Framework\TestResult;
+use SebastianBergmann\Environment\Runtime;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

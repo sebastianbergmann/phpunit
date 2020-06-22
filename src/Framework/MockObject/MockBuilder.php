@@ -11,10 +11,10 @@ namespace PHPUnit\Framework\MockObject;
 
 use function array_diff;
 use function array_merge;
+use function sprintf;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 use ReflectionException;
-use function sprintf;
 
 /**
  * @psalm-template MockedType

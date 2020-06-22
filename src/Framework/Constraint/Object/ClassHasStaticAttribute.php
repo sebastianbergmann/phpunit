@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function sprintf;
 use PHPUnit\Framework\Exception;
 use ReflectionClass;
 use ReflectionException;
-use function sprintf;
 
 /**
  * Constraint that asserts that the class it is evaluated for has a given

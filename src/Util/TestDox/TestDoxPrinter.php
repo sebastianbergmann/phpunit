@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use const PHP_EOL;
 use function array_map;
 use function get_class;
 use function implode;
-use const PHP_EOL;
+use function preg_split;
+use function trim;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -23,9 +25,7 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
-use function preg_split;
 use Throwable;
-use function trim;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

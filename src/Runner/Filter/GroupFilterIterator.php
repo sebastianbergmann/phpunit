@@ -12,10 +12,10 @@ namespace PHPUnit\Runner\Filter;
 use function array_map;
 use function array_merge;
 use function in_array;
+use function spl_object_hash;
 use PHPUnit\Framework\TestSuite;
 use RecursiveFilterIterator;
 use RecursiveIterator;
-use function spl_object_hash;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

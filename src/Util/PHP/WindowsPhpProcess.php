@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Util\PHP;
 
-use PHPUnit\Framework\Exception;
 use function tmpfile;
+use PHPUnit\Framework\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

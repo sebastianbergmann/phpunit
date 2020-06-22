@@ -9,8 +9,8 @@
  */
 namespace Issue3739;
 
-use PHPUnit\Framework\TestCase;
 use function unlink;
+use PHPUnit\Framework\TestCase;
 
 class Issue3739
 {

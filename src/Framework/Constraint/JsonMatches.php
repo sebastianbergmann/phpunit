@@ -10,10 +10,10 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function json_decode;
+use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Util\Json;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use function sprintf;
 
 /**
  * Asserts whether or not two JSON objects are equal.

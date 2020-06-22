@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use const PHP_VERSION;
 use function explode;
 use function in_array;
-use const PHP_VERSION;
+use function version_compare;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
 use SebastianBergmann\FileIterator\Facade;
-use function version_compare;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

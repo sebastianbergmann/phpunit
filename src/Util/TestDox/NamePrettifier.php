@@ -28,17 +28,9 @@ use function is_scalar;
 use function is_string;
 use function mb_strtolower;
 use function ord;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Color;
-use PHPUnit\Util\Exception as UtilException;
-use PHPUnit\Util\Test;
 use function preg_quote;
 use function preg_replace;
 use function range;
-use ReflectionException;
-use ReflectionMethod;
-use ReflectionObject;
-use SebastianBergmann\Exporter\Exporter;
 use function sprintf;
 use function str_replace;
 use function strlen;
@@ -47,6 +39,14 @@ use function strtolower;
 use function strtoupper;
 use function substr;
 use function trim;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Color;
+use PHPUnit\Util\Exception as UtilException;
+use PHPUnit\Util\Test;
+use ReflectionException;
+use ReflectionMethod;
+use ReflectionObject;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

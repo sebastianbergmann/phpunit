@@ -10,10 +10,10 @@
 namespace PHPUnit\Util\TestDox;
 
 use function array_filter;
-use DOMDocument;
-use DOMElement;
 use function get_class;
 use function implode;
+use DOMDocument;
+use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;

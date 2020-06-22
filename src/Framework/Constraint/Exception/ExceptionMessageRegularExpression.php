@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function sprintf;
 use Exception;
 use PHPUnit\Util\RegularExpression as RegularExpressionUtil;
-use function sprintf;
 
 final class ExceptionMessageRegularExpression extends Constraint
 {

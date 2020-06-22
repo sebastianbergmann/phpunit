@@ -9,13 +9,13 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function preg_replace;
+use function spl_object_hash;
 use DateTime;
 use DateTimeZone;
 use DOMDocument;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
-use function preg_replace;
-use function spl_object_hash;
 use SplObjectStorage;
 use stdClass;
 

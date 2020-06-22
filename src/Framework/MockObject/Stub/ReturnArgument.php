@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject\Stub;
 
-use PHPUnit\Framework\MockObject\Invocation;
 use function sprintf;
+use PHPUnit\Framework\MockObject\Invocation;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

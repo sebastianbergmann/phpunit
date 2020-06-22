@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use function preg_replace;
 use ArrayObject;
 use ClassWithNonPublicAttributes;
 use Countable;
@@ -16,7 +17,6 @@ use DummyException;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Util\Filter;
-use function preg_replace;
 use stdClass;
 use TestIterator;
 

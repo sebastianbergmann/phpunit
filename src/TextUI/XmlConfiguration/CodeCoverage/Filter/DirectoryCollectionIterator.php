@@ -10,9 +10,9 @@
 namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter;
 
 use function count;
+use function iterator_count;
 use Countable;
 use Iterator;
-use function iterator_count;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

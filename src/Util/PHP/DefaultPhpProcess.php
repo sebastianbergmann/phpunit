@@ -16,7 +16,6 @@ use function fread;
 use function fwrite;
 use function is_array;
 use function is_resource;
-use PHPUnit\Framework\Exception;
 use function proc_close;
 use function proc_open;
 use function proc_terminate;
@@ -27,6 +26,7 @@ use function stream_select;
 use function sys_get_temp_dir;
 use function tempnam;
 use function unlink;
+use PHPUnit\Framework\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

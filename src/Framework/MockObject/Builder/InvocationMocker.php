@@ -17,6 +17,8 @@ use function gettype;
 use function in_array;
 use function is_object;
 use function is_string;
+use function sprintf;
+use function strtolower;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
@@ -33,8 +35,6 @@ use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap;
 use PHPUnit\Framework\MockObject\Stub\Stub;
-use function sprintf;
-use function strtolower;
 use Throwable;
 
 /**

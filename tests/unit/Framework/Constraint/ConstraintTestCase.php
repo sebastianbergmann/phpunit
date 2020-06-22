@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function preg_replace;
+use function sprintf;
 use Countable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\TestCase;
-use function preg_replace;
 use ReflectionClass;
-use function sprintf;
 
 /**
  * @small

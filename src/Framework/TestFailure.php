@@ -10,10 +10,10 @@
 namespace PHPUnit\Framework;
 
 use function get_class;
-use PHPUnit\Framework\Error\Error;
 use function sprintf;
-use Throwable;
 use function trim;
+use PHPUnit\Framework\Error\Error;
+use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

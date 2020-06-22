@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use const PATH_SEPARATOR;
 use function constant;
 use function define;
 use function defined;
@@ -16,7 +17,6 @@ use function getenv;
 use function implode;
 use function ini_get;
 use function ini_set;
-use const PATH_SEPARATOR;
 use function putenv;
 
 /**

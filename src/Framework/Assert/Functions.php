@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
+use function func_get_args;
 use ArrayAccess;
 use Countable;
 use DOMDocument;
 use DOMElement;
-use function func_get_args;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;

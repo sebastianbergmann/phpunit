@@ -9,27 +9,27 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use const PHP_EOL;
 use function array_map;
 use function ceil;
 use function count;
 use function explode;
 use function get_class;
 use function implode;
-use const PHP_EOL;
+use function preg_match;
+use function sprintf;
+use function strlen;
+use function strpos;
+use function trim;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Color;
-use function preg_match;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
-use function sprintf;
-use function strlen;
-use function strpos;
 use Throwable;
-use function trim;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

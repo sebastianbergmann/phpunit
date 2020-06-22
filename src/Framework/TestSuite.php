@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use const PHP_EOL;
 use function array_diff;
 use function array_keys;
 use function array_merge;
@@ -26,23 +27,22 @@ use function is_bool;
 use function is_callable;
 use function is_object;
 use function is_string;
+use function method_exists;
+use function preg_match;
+use function preg_quote;
+use function sprintf;
+use function strpos;
+use function substr;
 use Iterator;
 use IteratorAggregate;
-use function method_exists;
-use const PHP_EOL;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Test as TestUtil;
-use function preg_match;
-use function preg_quote;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
-use function sprintf;
-use function strpos;
-use function substr;
 use Throwable;
 
 /**

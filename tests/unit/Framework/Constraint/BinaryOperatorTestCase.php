@@ -13,17 +13,17 @@ use function array_fill;
 use function array_map;
 use function array_slice;
 use function array_sum;
-use BooleanConstraint;
 use function count;
-use CountConstraint;
 use function decbin;
 use function implode;
+use function sprintf;
+use function str_split;
+use BooleanConstraint;
+use CountConstraint;
 use NamedConstraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use ReflectionClass;
 use ReflectionMethod;
-use function sprintf;
-use function str_split;
 
 abstract class BinaryOperatorTestCase extends OperatorTestCase
 {

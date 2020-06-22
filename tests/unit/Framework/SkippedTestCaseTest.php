@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework;
 
 use function array_shift;
-use PHPUnit\Runner\BaseTestRunner;
 use function sprintf;
+use PHPUnit\Runner\BaseTestRunner;
 
 final class SkippedTestCaseTest extends TestCase
 {

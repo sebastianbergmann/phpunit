@@ -11,15 +11,19 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use const BAR;
 use const DIRECTORY_SEPARATOR;
-use function file_put_contents;
 use const FOO;
+use const PATH_SEPARATOR;
+use const PHP_EOL;
+use const PHP_VERSION;
+use function file_put_contents;
 use function getenv;
 use function ini_get;
 use function ini_set;
 use function iterator_to_array;
-use const PATH_SEPARATOR;
-use const PHP_EOL;
-use const PHP_VERSION;
+use function putenv;
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\StandardTestSuiteLoader;
@@ -27,11 +31,7 @@ use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
-use function putenv;
 use stdClass;
-use function sys_get_temp_dir;
-use function uniqid;
-use function unlink;
 
 /**
  * @medium

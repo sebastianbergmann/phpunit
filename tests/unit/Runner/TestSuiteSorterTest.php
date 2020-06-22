@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Runner;
 
-use EmptyTestCaseTest;
 use function mt_srand;
+use EmptyTestCaseTest;
 use MultiDependencyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;

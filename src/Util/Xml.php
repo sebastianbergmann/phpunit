@@ -9,16 +9,11 @@
  */
 namespace PHPUnit\Util;
 
+use const ENT_QUOTES;
 use function assert;
 use function chdir;
 use function class_exists;
 use function dirname;
-use DOMCharacterData;
-use DOMDocument;
-use DOMElement;
-use DOMNode;
-use DOMText;
-use const ENT_QUOTES;
 use function error_reporting;
 use function file_get_contents;
 use function getcwd;
@@ -29,13 +24,18 @@ use function libxml_get_errors;
 use function libxml_use_internal_errors;
 use function mb_convert_encoding;
 use function ord;
-use PHPUnit\Framework\Exception;
 use function preg_replace;
-use ReflectionClass;
-use ReflectionException;
 use function settype;
 use function sprintf;
 use function strlen;
+use DOMCharacterData;
+use DOMDocument;
+use DOMElement;
+use DOMNode;
+use DOMText;
+use PHPUnit\Framework\Exception;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

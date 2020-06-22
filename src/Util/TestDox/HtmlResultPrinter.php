@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Util\TestDox;
 
-use PHPUnit\Framework\TestResult;
 use function sprintf;
+use PHPUnit\Framework\TestResult;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

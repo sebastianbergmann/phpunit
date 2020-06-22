@@ -10,13 +10,13 @@
 namespace PHPUnit\Runner\Filter;
 
 use function assert;
+use function sprintf;
 use FilterIterator;
 use Iterator;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Exception;
 use RecursiveFilterIterator;
 use ReflectionClass;
-use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

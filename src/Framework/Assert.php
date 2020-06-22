@@ -9,18 +9,14 @@
  */
 namespace PHPUnit\Framework;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
+use const PHP_EOL;
 use function array_shift;
 use function array_unshift;
-use ArrayAccess;
 use function assert;
 use function class_exists;
 use function count;
-use Countable;
 use function debug_backtrace;
-use const DEBUG_BACKTRACE_IGNORE_ARGS;
-use DOMAttr;
-use DOMDocument;
-use DOMElement;
 use function explode;
 use function file_get_contents;
 use function func_get_args;
@@ -32,7 +28,15 @@ use function is_int;
 use function is_iterable;
 use function is_object;
 use function is_string;
-use const PHP_EOL;
+use function preg_match;
+use function preg_split;
+use function sprintf;
+use function strpos;
+use ArrayAccess;
+use Countable;
+use DOMAttr;
+use DOMDocument;
+use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -78,10 +82,6 @@ use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml;
-use function preg_match;
-use function preg_split;
-use function sprintf;
-use function strpos;
 
 /**
  * A set of assertion methods.

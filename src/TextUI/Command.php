@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\TextUI;
 
+use const PATH_SEPARATOR;
+use const PHP_EOL;
+use const STDIN;
 use function array_keys;
 use function assert;
 use function class_exists;
@@ -23,12 +26,17 @@ use function ini_set;
 use function is_callable;
 use function is_dir;
 use function is_string;
-use const PATH_SEPARATOR;
+use function printf;
+use function realpath;
+use function sort;
+use function sprintf;
+use function stream_resolve_include_path;
+use function trim;
+use function version_compare;
 use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\Exception as ManifestException;
 use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
-use const PHP_EOL;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
@@ -48,18 +56,10 @@ use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
-use function printf;
-use function realpath;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
-use function sort;
-use function sprintf;
-use const STDIN;
-use function stream_resolve_include_path;
 use Throwable;
-use function trim;
-use function version_compare;
 
 /**
  * A TestRunner for the Command Line Interface (CLI)

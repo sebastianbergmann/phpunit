@@ -10,9 +10,9 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function is_string;
-use PHPUnit\Framework\Constraint\Constraint;
 use function sprintf;
 use function strtolower;
+use PHPUnit\Framework\Constraint\Constraint;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

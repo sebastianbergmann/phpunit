@@ -12,13 +12,13 @@ namespace PHPUnit\Framework;
 use function assert;
 use function count;
 use function get_class;
+use function sprintf;
+use function trim;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\InvalidDataSetException;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
-use function sprintf;
 use Throwable;
-use function trim;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

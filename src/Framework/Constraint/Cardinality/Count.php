@@ -10,15 +10,15 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function count;
+use function is_array;
+use function iterator_count;
+use function sprintf;
 use Countable;
 use EmptyIterator;
 use Generator;
-use function is_array;
 use Iterator;
-use function iterator_count;
 use IteratorAggregate;
 use PHPUnit\Framework\Exception;
-use function sprintf;
 use Traversable;
 
 class Count extends Constraint

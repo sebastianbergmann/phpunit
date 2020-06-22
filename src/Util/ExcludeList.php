@@ -9,14 +9,18 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
 use function class_exists;
+use function defined;
+use function dirname;
+use function is_dir;
+use function realpath;
+use function sprintf;
+use function strpos;
+use function sys_get_temp_dir;
 use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
-use function defined;
-use const DIRECTORY_SEPARATOR;
-use function dirname;
 use Doctrine\Instantiator\Instantiator;
-use function is_dir;
 use PharIo\Manifest\Manifest;
 use PharIo\Version\Version as PharIoVersion;
 use PHP_Token;
@@ -25,7 +29,6 @@ use phpDocumentor\Reflection\Project;
 use phpDocumentor\Reflection\Type;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
-use function realpath;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -45,9 +48,6 @@ use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Type\TypeName;
 use SebastianBergmann\Version;
-use function sprintf;
-use function strpos;
-use function sys_get_temp_dir;
 use TheSeer\Tokenizer\Tokenizer;
 use Webmozart\Assert\Assert;
 

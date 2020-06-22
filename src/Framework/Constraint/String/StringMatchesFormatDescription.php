@@ -15,9 +15,9 @@ use function implode;
 use function preg_match;
 use function preg_quote;
 use function preg_replace;
+use function strtr;
 use SebastianBergmann\Diff\Differ;
 use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
-use function strtr;
 
 final class StringMatchesFormatDescription extends RegularExpression
 {

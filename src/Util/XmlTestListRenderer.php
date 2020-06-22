@@ -11,11 +11,11 @@ namespace PHPUnit\Util;
 
 use function get_class;
 use function implode;
+use function str_replace;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
 use RecursiveIteratorIterator;
-use function str_replace;
 use XMLWriter;
 
 /**

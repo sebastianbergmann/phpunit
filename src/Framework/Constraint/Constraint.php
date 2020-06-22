@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function sprintf;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter;
-use function sprintf;
 
 /**
  * Abstract base class for constraints which can be applied to any value.

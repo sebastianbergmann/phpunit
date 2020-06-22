@@ -14,14 +14,14 @@ use function array_values;
 use function basename;
 use function class_exists;
 use function get_declared_classes;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\FileLoader;
-use ReflectionClass;
-use ReflectionException;
 use function sprintf;
 use function str_replace;
 use function strlen;
 use function substr;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\FileLoader;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

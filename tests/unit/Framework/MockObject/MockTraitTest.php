@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function file_get_contents;
-use PHPUnit\Framework\TestCase;
 use function trait_exists;
+use PHPUnit\Framework\TestCase;
 
 final class MockTraitTest extends TestCase
 {

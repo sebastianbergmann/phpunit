@@ -9,21 +9,28 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use const DIRECTORY_SEPARATOR;
+use const PHP_VERSION;
 use function assert;
 use function defined;
-use const DIRECTORY_SEPARATOR;
 use function dirname;
-use DOMDocument;
-use DOMElement;
-use DOMNodeList;
-use DOMXPath;
 use function explode;
 use function file_exists;
 use function is_numeric;
 use function libxml_clear_errors;
 use function libxml_get_errors;
 use function libxml_use_internal_errors;
-use const PHP_VERSION;
+use function preg_match;
+use function stream_resolve_include_path;
+use function strlen;
+use function strpos;
+use function strtolower;
+use function substr;
+use function trim;
+use DOMDocument;
+use DOMElement;
+use DOMNodeList;
+use DOMXPath;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
@@ -46,13 +53,6 @@ use PHPUnit\TextUI\XmlConfiguration\TestSuite as TestSuiteConfiguration;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\VersionComparisonOperator;
 use PHPUnit\Util\Xml;
-use function preg_match;
-use function stream_resolve_include_path;
-use function strlen;
-use function strpos;
-use function strtolower;
-use function substr;
-use function trim;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

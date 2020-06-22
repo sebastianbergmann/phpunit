@@ -10,12 +10,12 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function is_string;
-use PHPUnit\Framework\ExpectationFailedException;
-use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use function sprintf;
 use function strpos;
 use function trim;
+use PHPUnit\Framework\ExpectationFailedException;
+use SebastianBergmann\Comparator\ComparisonFailure;
+use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 
 final class IsEqualCanonicalizing extends Constraint
 {

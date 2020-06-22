@@ -11,8 +11,8 @@ namespace PHPUnit\Framework;
 
 use function array_keys;
 use function get_class;
-use PHPUnit\Util\Filter;
 use function spl_object_hash;
+use PHPUnit\Util\Filter;
 use Throwable;
 
 /**

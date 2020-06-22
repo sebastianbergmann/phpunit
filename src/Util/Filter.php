@@ -13,11 +13,11 @@ use function array_unshift;
 use function defined;
 use function in_array;
 use function is_file;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\SyntheticError;
 use function realpath;
 use function sprintf;
 use function strpos;
+use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\SyntheticError;
 use Throwable;
 
 /**

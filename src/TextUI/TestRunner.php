@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\TextUI;
 
+use const PHP_EOL;
+use const PHP_SAPI;
+use const PHP_VERSION;
 use function array_diff;
 use function assert;
 use function class_exists;
@@ -19,9 +22,10 @@ use function is_array;
 use function is_int;
 use function is_string;
 use function mt_srand;
-use const PHP_EOL;
-use const PHP_SAPI;
-use const PHP_VERSION;
+use function range;
+use function realpath;
+use function sprintf;
+use function time;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
@@ -55,8 +59,6 @@ use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
 use PHPUnit\Util\XdebugFilterScriptGenerator;
-use function range;
-use function realpath;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -73,8 +75,6 @@ use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Timer\Timer;
-use function sprintf;
-use function time;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

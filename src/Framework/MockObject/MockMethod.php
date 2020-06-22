@@ -14,6 +14,10 @@ use function implode;
 use function is_string;
 use function preg_match;
 use function preg_replace;
+use function sprintf;
+use function substr_count;
+use function trim;
+use function var_export;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
@@ -23,10 +27,6 @@ use SebastianBergmann\Type\ReflectionMapper;
 use SebastianBergmann\Type\Type;
 use SebastianBergmann\Type\UnknownType;
 use SebastianBergmann\Type\VoidType;
-use function sprintf;
-use function substr_count;
-use function trim;
-use function var_export;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

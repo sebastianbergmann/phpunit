@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Runner;
 
+use const DIRECTORY_SEPARATOR;
 use function assert;
 use function defined;
-use const DIRECTORY_SEPARATOR;
 use function dirname;
 use function file_get_contents;
 use function file_put_contents;
@@ -21,12 +21,12 @@ use function is_file;
 use function is_float;
 use function is_int;
 use function is_string;
-use PHPUnit\Util\ErrorHandler;
-use PHPUnit\Util\Filesystem;
-use Serializable;
 use function serialize;
 use function sprintf;
 use function unserialize;
+use PHPUnit\Util\ErrorHandler;
+use PHPUnit\Util\Filesystem;
+use Serializable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

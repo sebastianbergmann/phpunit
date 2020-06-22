@@ -12,10 +12,10 @@ namespace PHPUnit\Framework\Constraint;
 use function fclose;
 use function fopen;
 use function is_resource;
+use function preg_replace;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
-use function preg_replace;
 use stdClass;
 
 /**

@@ -10,11 +10,11 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function count;
-use Countable;
-use EmptyIterator;
 use function gettype;
 use function sprintf;
 use function strpos;
+use Countable;
+use EmptyIterator;
 
 /**
  * Constraint that checks whether a variable is empty().

@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
 use function array_keys;
 use function array_map;
 use function array_values;
 use function count;
-use const DIRECTORY_SEPARATOR;
 use function explode;
 use function implode;
 use function min;

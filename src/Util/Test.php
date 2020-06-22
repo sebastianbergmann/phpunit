@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Util;
 
+use const PHP_OS;
+use const PHP_VERSION;
 use function addcslashes;
 use function array_flip;
 use function array_key_exists;
@@ -28,8 +30,14 @@ use function is_array;
 use function is_callable;
 use function is_int;
 use function method_exists;
-use const PHP_OS;
-use const PHP_VERSION;
+use function phpversion;
+use function preg_match;
+use function preg_replace;
+use function sprintf;
+use function strncmp;
+use function strpos;
+use function trim;
+use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidCoversTargetException;
@@ -38,9 +46,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Annotation\Registry;
-use function phpversion;
-use function preg_match;
-use function preg_replace;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -48,11 +53,6 @@ use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
 use SebastianBergmann\Environment\OperatingSystem;
-use function sprintf;
-use function strncmp;
-use function strpos;
-use function trim;
-use function version_compare;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

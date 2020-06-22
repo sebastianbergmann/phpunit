@@ -9,13 +9,17 @@
  */
 namespace PHPUnit\Framework;
 
-use AssertionError;
+use const PHP_EOL;
 use function count;
-use Countable;
-use Error;
 use function function_exists;
 use function get_class;
-use const PHP_EOL;
+use function sprintf;
+use function xdebug_get_monitored_functions;
+use function xdebug_start_function_monitor;
+use function xdebug_stop_function_monitor;
+use AssertionError;
+use Countable;
+use Error;
 use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\ExcludeList;
@@ -30,11 +34,7 @@ use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
 use SebastianBergmann\Timer\Timer;
-use function sprintf;
 use Throwable;
-use function xdebug_get_monitored_functions;
-use function xdebug_start_function_monitor;
-use function xdebug_stop_function_monitor;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

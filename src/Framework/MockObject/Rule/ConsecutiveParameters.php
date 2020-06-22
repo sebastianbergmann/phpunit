@@ -12,12 +12,12 @@ namespace PHPUnit\Framework\MockObject\Rule;
 use function count;
 use function gettype;
 use function is_iterable;
+use function sprintf;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidParameterGroupException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
-use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

@@ -13,14 +13,14 @@ use function array_map;
 use function explode;
 use function implode;
 use function is_object;
-use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Util\Type;
-use SebastianBergmann\Exporter\Exporter;
 use function sprintf;
-use stdClass;
 use function strpos;
 use function strtolower;
 use function substr;
+use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Util\Type;
+use SebastianBergmann\Exporter\Exporter;
+use stdClass;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

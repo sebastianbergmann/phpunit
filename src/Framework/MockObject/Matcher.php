@@ -10,8 +10,9 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function assert;
-use Exception;
 use function implode;
+use function sprintf;
+use Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount;
 use PHPUnit\Framework\MockObject\Rule\AnyParameters;
@@ -21,7 +22,6 @@ use PHPUnit\Framework\MockObject\Rule\MethodName;
 use PHPUnit\Framework\MockObject\Rule\ParametersRule;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Framework\TestFailure;
-use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

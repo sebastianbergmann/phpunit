@@ -10,14 +10,14 @@
 namespace PHPUnit\Framework\MockObject\Rule;
 
 use function count;
-use Exception;
 use function get_class;
+use function sprintf;
+use Exception;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
-use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

@@ -9,14 +9,14 @@
  */
 namespace PHPUnit\Util;
 
-use function get_class;
 use const PHP_EOL;
+use function get_class;
+use function sprintf;
+use function str_replace;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
 use RecursiveIteratorIterator;
-use function sprintf;
-use function str_replace;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

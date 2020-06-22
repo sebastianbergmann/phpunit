@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function get_class;
-use PHPUnit\Util\Filter;
 use function sprintf;
+use PHPUnit\Util\Filter;
 use Throwable;
 
 final class Exception extends Constraint

@@ -10,16 +10,16 @@
 namespace PHPUnit\Runner\Filter;
 
 use function end;
-use Exception;
 use function implode;
+use function preg_match;
+use function sprintf;
+use function str_replace;
+use Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Util\RegularExpression;
-use function preg_match;
 use RecursiveFilterIterator;
 use RecursiveIterator;
-use function sprintf;
-use function str_replace;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Util\TestDox;
 
-use function implode;
 use const PHP_EOL;
+use function implode;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\DefaultResultPrinter;

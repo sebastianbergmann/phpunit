@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Runner;
 
+use const DEBUG_BACKTRACE_IGNORE_ARGS;
+use const DIRECTORY_SEPARATOR;
 use function array_merge;
 use function basename;
 use function debug_backtrace;
-use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use function defined;
-use const DIRECTORY_SEPARATOR;
 use function dirname;
 use function explode;
 use function extension_loaded;
@@ -26,6 +26,22 @@ use function is_file;
 use function is_readable;
 use function is_string;
 use function ltrim;
+use function phpversion;
+use function preg_match;
+use function preg_replace;
+use function preg_split;
+use function realpath;
+use function rtrim;
+use function sprintf;
+use function str_replace;
+use function strncasecmp;
+use function strpos;
+use function substr;
+use function trim;
+use function unlink;
+use function unserialize;
+use function var_export;
+use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -37,26 +53,10 @@ use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
-use function phpversion;
-use function preg_match;
-use function preg_replace;
-use function preg_split;
-use function realpath;
-use function rtrim;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
-use function sprintf;
-use function str_replace;
-use function strncasecmp;
-use function strpos;
-use function substr;
 use Throwable;
-use function trim;
-use function unlink;
-use function unserialize;
-use function var_export;
-use function version_compare;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

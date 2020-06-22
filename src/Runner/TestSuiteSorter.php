@@ -17,14 +17,14 @@ use function count;
 use function get_class;
 use function in_array;
 use function max;
+use function shuffle;
+use function strpos;
+use function usort;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Util\Test as TestUtil;
-use function shuffle;
-use function strpos;
-use function usort;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

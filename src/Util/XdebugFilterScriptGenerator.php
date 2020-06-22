@@ -9,14 +9,14 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
 use function addslashes;
 use function array_map;
-use const DIRECTORY_SEPARATOR;
 use function implode;
 use function is_string;
-use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage as FilterConfiguration;
 use function realpath;
 use function sprintf;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage as FilterConfiguration;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use PHPUnit\Framework\InvalidArgumentException;
 use function strlen;
 use function strpos;
+use PHPUnit\Framework\InvalidArgumentException;
 
 /**
  * Constraint that asserts that the string it is evaluated for begins with a

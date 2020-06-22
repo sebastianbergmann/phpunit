@@ -10,12 +10,12 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function class_exists;
+use function sprintf;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\Hook;
 use ReflectionClass;
 use ReflectionException;
-use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

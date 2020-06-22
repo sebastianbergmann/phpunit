@@ -11,13 +11,13 @@ namespace PHPUnit\Util;
 
 use function basename;
 use function dirname;
+use function sprintf;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection;
 use PHPUnit\TextUI\XmlConfiguration\File;
 use PHPUnit\TextUI\XmlConfiguration\FileCollection;
-use function sprintf;
 
 /**
  * @small

@@ -17,9 +17,9 @@ use function is_infinite;
 use function is_nan;
 use function is_object;
 use function is_string;
+use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
-use function sprintf;
 
 /**
  * Constraint that asserts that one value is identical to another.

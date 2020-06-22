@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
 use function array_pop;
 use BeforeAndAfterTest;
 use BeforeClassAndAfterClassTest;
@@ -19,7 +21,6 @@ use DataProviderSkippedTest;
 use DependencyFailureTest;
 use DependencyOnClassTest;
 use DependencySuccessTest;
-use const DIRECTORY_SEPARATOR;
 use DoubleTestCase;
 use ExceptionInTearDownAfterClassTest;
 use InheritedTestCase;
@@ -29,7 +30,6 @@ use NotPublicTestCase;
 use NotVoidTestCase;
 use OneTestCase;
 use OverrideTestCase;
-use const PHP_EOL;
 use PreConditionAndPostConditionTest;
 use RequirementsClassBeforeClassHookTest;
 use Success;

@@ -10,9 +10,9 @@
 namespace PHPUnit\Framework\MockObject\Stub;
 
 use function array_shift;
+use function sprintf;
 use PHPUnit\Framework\MockObject\Invocation;
 use SebastianBergmann\Exporter\Exporter;
-use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

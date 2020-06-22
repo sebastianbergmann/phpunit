@@ -11,13 +11,13 @@ namespace PHPUnit\Runner;
 
 use function is_dir;
 use function is_file;
+use function substr;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
-use function substr;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

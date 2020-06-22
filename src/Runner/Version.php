@@ -13,8 +13,8 @@ use function array_slice;
 use function dirname;
 use function explode;
 use function implode;
-use SebastianBergmann\Version as VersionId;
 use function strpos;
+use SebastianBergmann\Version as VersionId;
 
 final class Version
 {

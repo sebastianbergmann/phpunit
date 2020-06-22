@@ -13,6 +13,7 @@ use function array_merge;
 use function class_exists;
 use function explode;
 use function is_numeric;
+use function str_replace;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
@@ -20,7 +21,6 @@ use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Getopt;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
-use function str_replace;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

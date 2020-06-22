@@ -9,11 +9,12 @@
  */
 namespace PHPUnit\Util;
 
+use const ENT_COMPAT;
+use const ENT_SUBSTITUTE;
+use const PHP_SAPI;
 use function assert;
 use function count;
 use function dirname;
-use const ENT_COMPAT;
-use const ENT_SUBSTITUTE;
 use function explode;
 use function fclose;
 use function fopen;
@@ -22,7 +23,6 @@ use function fwrite;
 use function htmlspecialchars;
 use function is_resource;
 use function is_string;
-use const PHP_SAPI;
 use function sprintf;
 use function str_replace;
 use function strncmp;
