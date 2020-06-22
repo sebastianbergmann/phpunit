@@ -101,6 +101,10 @@ final class ExecutionOrderDependency
             return $left;
         }
 
+        if ($left === []) {
+            return [];
+        }
+
         $diff         = [];
         $rightTargets = array_map(function ($dependency) {
             return $dependency->getTarget();
