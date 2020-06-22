@@ -745,10 +745,6 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($exit) {
-            if (\count($result) === 0) {
-                exit(self::FAILURE_EXIT);
-            }
-
             if ($result->wasSuccessfulIgnoringWarnings()) {
                 if ($arguments['failOnRisky'] && !$result->allHarmless()) {
                     exit(self::FAILURE_EXIT);
