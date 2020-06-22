@@ -10,10 +10,13 @@
 namespace PHPUnit\Runner;
 
 use function mt_srand;
+use FailureTest;
 use MultiDependencyTest;
+use NotReorderableTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\EmptyTestCaseTest;
+use Success;
 use TestWithDifferentSizes;
 
 /**
@@ -637,5 +640,17 @@ final class TestSuiteSorterTest extends TestCase
         ];
 
         $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
+    }
+
+    public function testSorterQuietlyIgnoresNonReorderable(): void
+    {
+        $suite          = new TestSuite;
+        $testCollection = [new Success, new NotReorderableTest, new FailureTest];
+        $suite->setTests($testCollection);
+
+        $sorter = new TestSuiteSorter;
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DURATION, true, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $this->assertEquals($testCollection, $suite->tests());
     }
 }
