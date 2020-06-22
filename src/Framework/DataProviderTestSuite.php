@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use function explode;
-use function is_callable;
 use PHPUnit\Util\Test as TestUtil;
 
 /**

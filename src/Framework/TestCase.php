@@ -58,7 +58,6 @@ use function preg_replace;
 use function serialize;
 use function setlocale;
 use function sprintf;
-use function strlen;
 use function strpos;
 use function substr;
 use function trim;
@@ -1451,8 +1450,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $id = $this->name;
 
-        if (\strpos($id, '::') === false) {
-            $id = \get_class($this) . '::' . $id;
+        if (strpos($id, '::') === false) {
+            $id = get_class($this) . '::' . $id;
         }
 
         if ($this->usesDataProvider()) {
