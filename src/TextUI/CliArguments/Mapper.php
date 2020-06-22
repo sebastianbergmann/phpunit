@@ -209,6 +209,10 @@ final class Mapper
             $result['stopOnSkipped'] = $arguments->stopOnSkipped();
         }
 
+        if ($arguments->hasFailOnEmptyTestSuite()) {
+            $result['failOnEmptyTestSuite'] = $arguments->failOnEmptyTestSuite();
+        }
+
         if ($arguments->hasFailOnIncomplete()) {
             $result['failOnIncomplete'] = $arguments->failOnIncomplete();
         }
