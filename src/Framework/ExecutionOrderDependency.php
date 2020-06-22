@@ -20,7 +20,7 @@ use function trim;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestDependency
+final class ExecutionOrderDependency
 {
     /* var string */
     private $className = '';
@@ -56,9 +56,9 @@ final class TestDependency
     }
 
     /**
-     * @param array<TestDependency> $dependencies
+     * @param array<ExecutionOrderDependency> $dependencies
      *
-     * @return array<TestDependency>
+     * @return array<ExecutionOrderDependency>
      */
     public static function filterInvalid(array $dependencies): array
     {
@@ -68,10 +68,10 @@ final class TestDependency
     }
 
     /**
-     * @param array<TestDependency> $existing
-     * @param array<TestDependency  $additional
+     * @param array<ExecutionOrderDependency> $existing
+     * @param array<ExecutionOrderDependency  $additional
      *
-     * @return array<TestDependency>
+     * @return array<ExecutionOrderDependency>
      */
     public static function mergeUnique(array $existing, array $additional): array
     {
@@ -90,10 +90,10 @@ final class TestDependency
     }
 
     /**
-     * @param array<TestDependency> $left
-     * @param array<TestDependency  $right
+     * @param array<ExecutionOrderDependency> $left
+     * @param array<ExecutionOrderDependency  $right
      *
-     * @return array<TestDependency>
+     * @return array<ExecutionOrderDependency>
      */
     public static function diff(array $left, array $right): array
     {

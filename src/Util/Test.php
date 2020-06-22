@@ -37,10 +37,10 @@ use function strpos;
 use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
+use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestDependency;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Annotation\Registry;
@@ -369,7 +369,7 @@ final class Test
     /**
      * @psalm-param class-string $className
      *
-     * @return TestDependency[]
+     * @return ExecutionOrderDependency[]
      */
     public static function getDependencies(string $className, string $methodName): array
     {
@@ -391,7 +391,7 @@ final class Test
         $dependencies = [];
 
         foreach ($dependsAnnotations as $value) {
-            $dependencies[] = TestDependency::createFromDependsAnnotation($className, $value);
+            $dependencies[] = ExecutionOrderDependency::createFromDependsAnnotation($className, $value);
         }
 
         return array_unique($dependencies);
