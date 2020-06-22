@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \PHPUnit\Framework\ExecutionOrderDependency
  */
-class TestDependencyTest extends TestCase
+class ExecutionOrderDependencyTest extends TestCase
 {
     public static function createFromParametersProvider(): array
     {
@@ -174,5 +174,15 @@ class TestDependencyTest extends TestCase
                 [$depTwo, $depThreeClone]
             )
         );
+
+        $this->assertSame(
+            [$depOne, $depTwo, $depThree, $depFour],
+            ExecutionOrderDependency::diff(
+                [$depOne, $depTwo, $depThree, $depFour],
+                []
+            )
+        );
+
+        $this->assertSame([], ExecutionOrderDependency::diff([], []));
     }
 }
