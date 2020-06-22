@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework;
 
+use function array_shift;
 use PHPUnit\Runner\BaseTestRunner;
+use function sprintf;
 
 final class IncompleteTestCaseTest extends TestCase
 {
@@ -33,7 +35,7 @@ final class IncompleteTestCaseTest extends TestCase
             $methodName
         );
 
-        $name = \sprintf(
+        $name = sprintf(
             '%s::%s',
             $className,
             $methodName
@@ -74,9 +76,9 @@ final class IncompleteTestCaseTest extends TestCase
 
         $failures = $result->notImplemented();
 
-        $failure = \array_shift($failures);
+        $failure = array_shift($failures);
 
-        $name = \sprintf(
+        $name = sprintf(
             '%s::%s',
             $className,
             $methodName

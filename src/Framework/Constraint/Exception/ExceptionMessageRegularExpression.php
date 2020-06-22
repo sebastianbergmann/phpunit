@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use Exception;
 use PHPUnit\Util\RegularExpression as RegularExpressionUtil;
+use function sprintf;
 
 final class ExceptionMessageRegularExpression extends Constraint
 {
@@ -34,7 +36,7 @@ final class ExceptionMessageRegularExpression extends Constraint
      *
      * @param \PHPUnit\Framework\Exception $other
      *
-     * @throws \Exception
+     * @throws Exception
      * @throws \PHPUnit\Framework\Exception
      */
     protected function matches($other): bool
@@ -60,7 +62,7 @@ final class ExceptionMessageRegularExpression extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return \sprintf(
+        return sprintf(
             "exception message '%s' matches '%s'",
             $other->getMessage(),
             $this->expectedMessageRegExp

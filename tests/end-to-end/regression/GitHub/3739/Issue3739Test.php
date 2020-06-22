@@ -10,17 +10,18 @@
 namespace Issue3739;
 
 use PHPUnit\Framework\TestCase;
+use function unlink;
 
 class Issue3739
 {
     public function unlinkFileThatDoesNotExistWithErrorSuppression(): bool
     {
-        return @\unlink(__DIR__ . '/DOES_NOT_EXIST');
+        return @unlink(__DIR__ . '/DOES_NOT_EXIST');
     }
 
     public function unlinkFileThatDoesNotExistWithoutErrorSuppression(): bool
     {
-        return \unlink(__DIR__ . '/DOES_NOT_EXIST');
+        return unlink(__DIR__ . '/DOES_NOT_EXIST');
     }
 }
 

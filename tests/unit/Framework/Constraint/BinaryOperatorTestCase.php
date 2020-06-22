@@ -9,7 +9,21 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_fill;
+use function array_map;
+use function array_slice;
+use function array_sum;
+use BooleanConstraint;
+use function count;
+use CountConstraint;
+use function decbin;
+use function implode;
+use NamedConstraint;
 use PHPUnit\Framework\ExpectationFailedException;
+use ReflectionClass;
+use ReflectionMethod;
+use function sprintf;
+use function str_split;
 
 abstract class BinaryOperatorTestCase extends OperatorTestCase
 {
@@ -33,9 +47,9 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     {
         $className = $this->className();
 
-        $reflection = new \ReflectionClass($className);
+        $reflection = new ReflectionClass($className);
 
-        $this->assertTrue($reflection->isSubclassOf(Operator::class), \sprintf(
+        $this->assertTrue($reflection->isSubclassOf(Operator::class), sprintf(
             'Failed to assert that "%s" is subclass of "%s".',
             $className,
             Operator::class
@@ -64,8 +78,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             8,
         ];
 
-        $constraints = \array_map(function ($count) {
-            return \CountConstraint::fromCount($count);
+        $constraints = array_map(function ($count) {
+            return CountConstraint::fromCount($count);
         }, $counts);
 
         $className = $this->className();
@@ -74,7 +88,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         $constraint->setConstraints($constraints);
 
-        $expected = \array_sum($counts);
+        $expected = array_sum($counts);
 
         $this->assertSame($expected, $constraint->count());
     }
@@ -82,9 +96,9 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     final public function testOperatorArity(): void
     {
         $constraints = [
-            \CountConstraint::fromCount(3),
-            \CountConstraint::fromCount(5),
-            \CountConstraint::fromCount(8),
+            CountConstraint::fromCount(3),
+            CountConstraint::fromCount(5),
+            CountConstraint::fromCount(8),
         ];
 
         $className = $this->className();
@@ -93,7 +107,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         $constraint->setConstraints($constraints);
 
-        $expected = \count($constraints);
+        $expected = count($constraints);
 
         $this->assertSame($expected, $constraint->arity());
     }
@@ -104,7 +118,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $className = $this->className();
 
         for ($arity = 0; $arity <= 3; $arity++) {
-            $constraints = \array_fill(0, $arity, $operand);
+            $constraints = array_fill(0, $arity, $operand);
             $constraint  = $className::fromConstraints(...$constraints);
 
             $this->assertInstanceOf($className, $constraint);
@@ -130,7 +144,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     {
         $inputs = self::getBooleanTuples(0, 5);
 
-        return \array_map(function (array $input) {
+        return array_map(function (array $input) {
             return [$input, $this->evaluateExpectedResult($input)];
         }, $inputs);
     }
@@ -140,8 +154,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
      */
     final public function testEvaluateReturnsCorrectBooleanResult(array $inputs, bool $expected): void
     {
-        $constraints = \array_map(function (bool $input) {
-            return \BooleanConstraint::fromBool($input);
+        $constraints = array_map(function (bool $input) {
+            return BooleanConstraint::fromBool($input);
         }, $inputs);
 
         $className = $this->className();
@@ -157,8 +171,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
      */
     final public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(array $inputs, bool $expected): void
     {
-        $constraints = \array_map(function (bool $input) {
-            return \BooleanConstraint::fromBool($input);
+        $constraints = array_map(function (bool $input) {
+            return BooleanConstraint::fromBool($input);
         }, $inputs);
 
         $className = $this->className();
@@ -169,7 +183,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             $this->assertNull($constraint->evaluate(null));
         } else {
             $expectedString = self::operatorJoinStrings(
-                \array_map(
+                array_map(
                     function (Constraint $operand) {
                         return $operand->toString();
                     },
@@ -208,8 +222,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
      */
     public function testToStringWithNamedConstraints(string ...$names): void
     {
-        $constraints = \array_map(function (string $name) {
-            return \NamedConstraint::fromName($name);
+        $constraints = array_map(function (string $name) {
+            return NamedConstraint::fromName($name);
         }, $names);
 
         $className = $this->className();
@@ -404,7 +418,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
                 ->with()
                 ->willReturn('is the only');
 
-        $method = new \ReflectionMethod($className, 'failureDescription');
+        $method = new ReflectionMethod($className, 'failureDescription');
         $method->setAccessible(true);
 
         $this->assertSame("'whatever' is the only", $method->invoke($operator, 'whatever'));
@@ -512,7 +526,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
                        ->with()
                        ->willReturn('is fifth or later');
 
-        $method = new \ReflectionMethod($className, 'failureDescription');
+        $method = new ReflectionMethod($className, 'failureDescription');
         $method->setAccessible(true);
 
         $expectedToString = self::operatorJoinStrings([
@@ -539,9 +553,9 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         for ($size = $minSize; $size <= $maxSize; $size++) {
             for ($num = 0; $num < 2 ** $size; $num++) {
-                $str      = \decbin($num | 2 ** $size);                      // "1xyz" (extra "1" on the left)
-                $bits     = \array_map('intval', \str_split($str));          // ["1", "x", "y", "z"]
-                $tuple    = \array_slice($bits, 1);                          // ["x", "y", "z"]
+                $str      = decbin($num | 2 ** $size);                      // "1xyz" (extra "1" on the left)
+                $bits     = array_map('intval', str_split($str));          // ["1", "x", "y", "z"]
+                $tuple    = array_slice($bits, 1);                          // ["x", "y", "z"]
                 $tuples[] = $tuple;
             }
         }
@@ -557,13 +571,13 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     {
         $tuples = self::getBinaryTuples($minSize, $maxSize);
 
-        return \array_map(function ($tuple) {
-            return \array_map('boolval', $tuple);
+        return array_map(function ($tuple) {
+            return array_map('boolval', $tuple);
         }, $tuples);
     }
 
     protected static function operatorJoinStrings(array $strings): string
     {
-        return \implode(' ' . static::getOperatorName() . ' ', $strings);
+        return implode(' ' . static::getOperatorName() . ' ', $strings);
     }
 }

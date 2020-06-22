@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject\Rule;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
+use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -57,7 +58,7 @@ final class InvokedAtIndex extends InvocationOrder
     {
         if ($this->currentIndex < $this->sequenceIndex) {
             throw new ExpectationFailedException(
-                \sprintf(
+                sprintf(
                     'The expected invocation at index %s was never reached.',
                     $this->sequenceIndex
                 )

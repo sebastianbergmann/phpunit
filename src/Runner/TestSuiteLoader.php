@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Runner;
 
+use ReflectionClass;
+
 /**
  * An interface to define how a test suite should be loaded.
  *
@@ -16,7 +18,7 @@ namespace PHPUnit\Runner;
  */
 interface TestSuiteLoader
 {
-    public function load(string $suiteClassFile): \ReflectionClass;
+    public function load(string $suiteClassFile): ReflectionClass;
 
-    public function reload(\ReflectionClass $aClass): \ReflectionClass;
+    public function reload(ReflectionClass $aClass): ReflectionClass;
 }

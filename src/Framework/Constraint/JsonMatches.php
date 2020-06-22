@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function json_decode;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Util\Json;
 use SebastianBergmann\Comparator\ComparisonFailure;
+use function sprintf;
 
 /**
  * Asserts whether or not two JSON objects are equal.
@@ -33,7 +35,7 @@ final class JsonMatches extends Constraint
      */
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'matches JSON string "%s"',
             $this->value
         );
@@ -93,8 +95,8 @@ final class JsonMatches extends Constraint
             }
 
             $comparisonFailure = new ComparisonFailure(
-                \json_decode($this->value),
-                \json_decode($other),
+                json_decode($this->value),
+                json_decode($other),
                 Json::prettify($recodedValue),
                 Json::prettify($recodedOther),
                 false,

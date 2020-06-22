@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject\Stub;
 
 use PHPUnit\Framework\MockObject\Invocation;
 use SebastianBergmann\Exporter\Exporter;
+use function sprintf;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -36,7 +37,7 @@ final class ReturnReference implements Stub
     {
         $exporter = new Exporter;
 
-        return \sprintf(
+        return sprintf(
             'return user-specified reference %s',
             $exporter->export($this->reference)
         );

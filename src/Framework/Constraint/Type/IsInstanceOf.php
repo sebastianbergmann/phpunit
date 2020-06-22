@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use ReflectionClass;
+use ReflectionException;
+use function sprintf;
+
 /**
  * Constraint that asserts that the object it is evaluated for is an instance
  * of a given class.
@@ -32,7 +36,7 @@ final class IsInstanceOf extends Constraint
      */
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'is instance of %s "%s"',
             $this->getType(),
             $this->className
@@ -62,7 +66,7 @@ final class IsInstanceOf extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return \sprintf(
+        return sprintf(
             '%s is an instance of %s "%s"',
             $this->exporter()->shortenedExport($other),
             $this->getType(),
@@ -73,12 +77,12 @@ final class IsInstanceOf extends Constraint
     private function getType(): string
     {
         try {
-            $reflection = new \ReflectionClass($this->className);
+            $reflection = new ReflectionClass($this->className);
 
             if ($reflection->isInterface()) {
                 return 'interface';
             }
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
         }
 
         return 'class';

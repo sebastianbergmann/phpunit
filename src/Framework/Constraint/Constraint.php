@@ -9,15 +9,17 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter;
+use function sprintf;
 
 /**
  * Abstract base class for constraints which can be applied to any value.
  */
-abstract class Constraint implements \Countable, SelfDescribing
+abstract class Constraint implements Countable, SelfDescribing
 {
     /**
      * @var ?Exporter
@@ -101,7 +103,7 @@ abstract class Constraint implements \Countable, SelfDescribing
      */
     protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
     {
-        $failureDescription = \sprintf(
+        $failureDescription = sprintf(
             'Failed asserting that %s.',
             $this->failureDescription($other)
         );

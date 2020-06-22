@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use SplObjectStorage;
+use stdClass;
+
 /**
  * @small
  */
@@ -44,13 +47,13 @@ final class TraversableContainsEqualTest extends ConstraintTestCase
 
     public function testArrayContainsObject(): void
     {
-        $a      = new \stdClass;
+        $a      = new stdClass;
         $a->foo = 'bar';
 
-        $b      = new \stdClass;
+        $b      = new stdClass;
         $b->foo = 'bar';
 
-        $c      = new \stdClass;
+        $c      = new stdClass;
         $c->foo = 'baz';
 
         $constraint = new TraversableContainsEqual($a);
@@ -61,19 +64,19 @@ final class TraversableContainsEqualTest extends ConstraintTestCase
 
     public function test_SplObjectStorage_ContainsObject(): void
     {
-        $a      = new \stdClass;
+        $a      = new stdClass;
         $a->foo = 'bar';
 
-        $b      = new \stdClass;
+        $b      = new stdClass;
         $b->foo = 'bar';
 
-        $c      = new \stdClass;
+        $c      = new stdClass;
         $c->foo = 'baz';
 
-        $storageWithA = new \SplObjectStorage;
+        $storageWithA = new SplObjectStorage;
         $storageWithA->attach($a);
 
-        $storageWithoutA = new \SplObjectStorage;
+        $storageWithoutA = new SplObjectStorage;
         $storageWithoutA->attach($b);
 
         $constraint = new TraversableContainsEqual($a);

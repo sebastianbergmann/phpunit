@@ -9,8 +9,12 @@
  */
 namespace PHPUnit\Runner;
 
+use EmptyTestCaseTest;
+use function mt_srand;
+use MultiDependencyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use TestWithDifferentSizes;
 
 /**
  * @testdox Reordering test execution
@@ -27,17 +31,17 @@ final class TestSuiteSorterTest extends TestCase
     private const RESOLVE_DEPENDENCIES = true;
 
     private const MULTIDEPENDENCYTEST_EXECUTION_ORDER = [
-        \MultiDependencyTest::class . '::testOne',
-        \MultiDependencyTest::class . '::testTwo',
-        \MultiDependencyTest::class . '::testThree',
-        \MultiDependencyTest::class . '::testFour',
-        \MultiDependencyTest::class . '::testFive',
+        MultiDependencyTest::class . '::testOne',
+        MultiDependencyTest::class . '::testTwo',
+        MultiDependencyTest::class . '::testThree',
+        MultiDependencyTest::class . '::testFour',
+        MultiDependencyTest::class . '::testFive',
     ];
 
     public function testThrowsExceptionWhenUsingInvalidOrderOption(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(\MultiDependencyTest::class);
+        $suite->addTestSuite(MultiDependencyTest::class);
         $sorter = new TestSuiteSorter;
 
         $this->expectException(Exception::class);
@@ -48,7 +52,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testThrowsExceptionWhenUsingInvalidOrderDefectsOption(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(\MultiDependencyTest::class);
+        $suite->addTestSuite(MultiDependencyTest::class);
         $sorter = new TestSuiteSorter;
 
         $this->expectException(Exception::class);
@@ -78,7 +82,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testBasicExecutionOrderOptions(int $order, bool $resolveDependencies, array $expectedOrder): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(\MultiDependencyTest::class);
+        $suite->addTestSuite(MultiDependencyTest::class);
         $sorter = new TestSuiteSorter;
 
         $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFAULT);
@@ -90,18 +94,18 @@ final class TestSuiteSorterTest extends TestCase
     public function testCanSetRandomizationWithASeed(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(\MultiDependencyTest::class);
+        $suite->addTestSuite(MultiDependencyTest::class);
         $sorter = new TestSuiteSorter;
 
-        \mt_srand(54321);
+        mt_srand(54321);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, false, TestSuiteSorter::ORDER_DEFAULT);
 
         $expectedOrder = [
-            \MultiDependencyTest::class . '::testTwo',
-            \MultiDependencyTest::class . '::testFour',
-            \MultiDependencyTest::class . '::testFive',
-            \MultiDependencyTest::class . '::testThree',
-            \MultiDependencyTest::class . '::testOne',
+            MultiDependencyTest::class . '::testTwo',
+            MultiDependencyTest::class . '::testFour',
+            MultiDependencyTest::class . '::testFive',
+            MultiDependencyTest::class . '::testThree',
+            MultiDependencyTest::class . '::testOne',
         ];
 
         $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
@@ -110,18 +114,18 @@ final class TestSuiteSorterTest extends TestCase
     public function testCanSetRandomizationWithASeedAndResolveDependencies(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(\MultiDependencyTest::class);
+        $suite->addTestSuite(MultiDependencyTest::class);
         $sorter = new TestSuiteSorter;
 
-        \mt_srand(54321);
+        mt_srand(54321);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, true, TestSuiteSorter::ORDER_DEFAULT);
 
         $expectedOrder = [
-            \MultiDependencyTest::class . '::testTwo',
-            \MultiDependencyTest::class . '::testFive',
-            \MultiDependencyTest::class . '::testOne',
-            \MultiDependencyTest::class . '::testThree',
-            \MultiDependencyTest::class . '::testFour',
+            MultiDependencyTest::class . '::testTwo',
+            MultiDependencyTest::class . '::testFive',
+            MultiDependencyTest::class . '::testOne',
+            MultiDependencyTest::class . '::testThree',
+            MultiDependencyTest::class . '::testFour',
         ];
 
         $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
@@ -134,7 +138,7 @@ final class TestSuiteSorterTest extends TestCase
     {
         $suite = new TestSuite;
 
-        $suite->addTestSuite(\MultiDependencyTest::class);
+        $suite->addTestSuite(MultiDependencyTest::class);
 
         $sorter = new TestSuiteSorter;
 
@@ -154,21 +158,21 @@ final class TestSuiteSorterTest extends TestCase
             'dependency-ignore' => [
                 self::IGNORE_DEPENDENCIES,
                 [
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
             'dependency-resolve' => [
                 self::RESOLVE_DEPENDENCIES,
                 [
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
         ];
@@ -181,12 +185,12 @@ final class TestSuiteSorterTest extends TestCase
     {
         $suite = new TestSuite;
 
-        $suite->addTestSuite(\MultiDependencyTest::class);
+        $suite->addTestSuite(MultiDependencyTest::class);
 
         $cache = new DefaultTestResultCache;
 
         foreach ($testTimes as $testName => $time) {
-            $cache->setTime(\MultiDependencyTest::class . '::' . $testName, $time);
+            $cache->setTime(MultiDependencyTest::class . '::' . $testName, $time);
         }
 
         $sorter = new TestSuiteSorter($cache);
@@ -214,11 +218,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => 1,
                 ],
                 [
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
             'duration-same-dependency-resolve' => [
@@ -231,11 +235,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => 1,
                 ],
                 [
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
             'duration-different-dependency-ignore' => [
@@ -248,11 +252,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => 2,
                 ],
                 [
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testOne',
                 ],
             ],
             'duration-different-dependency-resolve' => [
@@ -265,11 +269,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => 2,
                 ],
                 [
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
                 ],
             ],
         ];
@@ -281,13 +285,13 @@ final class TestSuiteSorterTest extends TestCase
     public function testSuiteSorterDefectsOptions(int $order, bool $resolveDependencies, array $runState, array $expected): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(\MultiDependencyTest::class);
+        $suite->addTestSuite(MultiDependencyTest::class);
 
         $cache = new DefaultTestResultCache;
 
         foreach ($runState as $testName => $data) {
-            $cache->setState(\MultiDependencyTest::class . '::' . $testName, $data['state']);
-            $cache->setTime(\MultiDependencyTest::class . '::' . $testName, $data['time']);
+            $cache->setState(MultiDependencyTest::class . '::' . $testName, $data['state']);
+            $cache->setTime(MultiDependencyTest::class . '::' . $testName, $data['time']);
         }
 
         $sorter  = new TestSuiteSorter($cache);
@@ -313,11 +317,11 @@ final class TestSuiteSorterTest extends TestCase
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::IGNORE_DEPENDENCIES,
                 [
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
 
@@ -326,11 +330,11 @@ final class TestSuiteSorterTest extends TestCase
                 TestSuiteSorter::ORDER_DEFAULT,
                 self::RESOLVE_DEPENDENCIES,
                 [
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
 
@@ -339,11 +343,11 @@ final class TestSuiteSorterTest extends TestCase
                 TestSuiteSorter::ORDER_REVERSED,
                 self::IGNORE_DEPENDENCIES,
                 [
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testOne',
                 ],
             ],
 
@@ -352,11 +356,11 @@ final class TestSuiteSorterTest extends TestCase
                 TestSuiteSorter::ORDER_REVERSED,
                 self::RESOLVE_DEPENDENCIES,
                 [
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
                 ],
             ],
         ];
@@ -387,11 +391,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                 ],
                 [
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
 
@@ -403,11 +407,11 @@ final class TestSuiteSorterTest extends TestCase
                     // empty result cache
                 ],
                 [
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
 
@@ -423,11 +427,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => ['state' => BaseTestRunner::STATUS_SKIPPED, 'time' => 1],
                 ],
                 [
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
                 ],
             ],
 
@@ -443,11 +447,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => ['state' => BaseTestRunner::STATUS_SKIPPED, 'time' => 0],
                 ],
                 [
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
                 ],
             ],
 
@@ -463,11 +467,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                 ],
                 [
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
 
@@ -483,11 +487,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                 ],
                 [
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
                 ],
             ],
 
@@ -503,11 +507,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => ['state' => BaseTestRunner::STATUS_PASSED, 'time' => 1],
                 ],
                 [
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testFour',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testOne',
                 ],
             ],
 
@@ -524,11 +528,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => ['state' => BaseTestRunner::STATUS_SKIPPED, 'time' => 1],
                 ],
                 [
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
                 ],
             ],
 
@@ -546,11 +550,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testThree' => ['state' => BaseTestRunner::STATUS_SKIPPED, 'time' => 1],
                 ],
                 [
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
                 ],
             ],
 
@@ -568,11 +572,11 @@ final class TestSuiteSorterTest extends TestCase
                     'testFive'  => ['state' => BaseTestRunner::STATUS_FAILURE, 'time' => 1],
                 ],
                 [
-                    \MultiDependencyTest::class . '::testFive',
-                    \MultiDependencyTest::class . '::testOne',
-                    \MultiDependencyTest::class . '::testTwo',
-                    \MultiDependencyTest::class . '::testThree',
-                    \MultiDependencyTest::class . '::testFour',
+                    MultiDependencyTest::class . '::testFive',
+                    MultiDependencyTest::class . '::testOne',
+                    MultiDependencyTest::class . '::testTwo',
+                    MultiDependencyTest::class . '::testThree',
+                    MultiDependencyTest::class . '::testFour',
                 ],
             ],
         ];
@@ -584,13 +588,13 @@ final class TestSuiteSorterTest extends TestCase
     public function testCanHandleSuiteWithEmptyTestCase(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(\EmptyTestCaseTest::class);
+        $suite->addTestSuite(EmptyTestCaseTest::class);
 
         $sorter = new TestSuiteSorter;
 
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFAULT);
 
-        $this->assertSame(\EmptyTestCaseTest::class, $suite->tests()[0]->getName());
+        $this->assertSame(EmptyTestCaseTest::class, $suite->tests()[0]->getName());
         $this->assertSame('No tests found in class "EmptyTestCaseTest".', $suite->tests()[0]->tests()[0]->getMessage());
     }
 
@@ -616,20 +620,20 @@ final class TestSuiteSorterTest extends TestCase
     public function testOrderBySize(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(\TestWithDifferentSizes::class);
+        $suite->addTestSuite(TestWithDifferentSizes::class);
         $sorter = new TestSuiteSorter;
 
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE, true, TestSuiteSorter::ORDER_DEFAULT);
 
         $expectedOrder = [
-            \TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #0',
-            \TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #1',
-            \TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #0',
-            \TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #1',
-            \TestWithDifferentSizes::class . '::testWithSizeMedium',
-            \TestWithDifferentSizes::class . '::testWithSizeLarge',
-            \TestWithDifferentSizes::class . '::testWithSizeSmall',
-            \TestWithDifferentSizes::class . '::testWithSizeUnknown',
+            TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #0',
+            TestWithDifferentSizes::class . '::testDataProviderWithSizeSmall with data set #1',
+            TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #0',
+            TestWithDifferentSizes::class . '::testDataProviderWithSizeMedium with data set #1',
+            TestWithDifferentSizes::class . '::testWithSizeMedium',
+            TestWithDifferentSizes::class . '::testWithSizeLarge',
+            TestWithDifferentSizes::class . '::testWithSizeSmall',
+            TestWithDifferentSizes::class . '::testWithSizeUnknown',
         ];
 
         $this->assertSame($expectedOrder, $sorter->getExecutionOrder());

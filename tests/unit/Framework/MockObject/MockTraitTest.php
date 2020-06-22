@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function file_get_contents;
 use PHPUnit\Framework\TestCase;
+use function trait_exists;
 
 final class MockTraitTest extends TestCase
 {
@@ -19,10 +21,10 @@ final class MockTraitTest extends TestCase
 
         $file = __DIR__ . '/../../../_files/mock-object/MockTraitGenerated.tpl';
 
-        $mockTrait = new MockTrait(\file_get_contents($file), $mockName);
+        $mockTrait = new MockTrait(file_get_contents($file), $mockName);
         $mockTrait->generate();
 
-        $this->assertTrue(\trait_exists($mockName));
+        $this->assertTrue(trait_exists($mockName));
     }
 
     public function testGenerateReturnsNameOfGeneratedClass(): void

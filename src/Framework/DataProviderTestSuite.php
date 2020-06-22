@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use function explode;
+use function is_callable;
 use PHPUnit\Util\Test as TestUtil;
 
 /**
@@ -50,7 +52,7 @@ final class DataProviderTestSuite extends TestSuite
 
         $callableName = $this->getName();
 
-        if (\is_callable($callableName, true)) {
+        if (is_callable($callableName, true)) {
             $this->providedTests = [$callableName];
         } else {
             $this->providedTests = [];
@@ -76,7 +78,7 @@ final class DataProviderTestSuite extends TestSuite
      */
     public function getSize(): int
     {
-        [$className, $methodName] = \explode('::', $this->getName());
+        [$className, $methodName] = explode('::', $this->getName());
 
         return TestUtil::getSize($className, $methodName);
     }

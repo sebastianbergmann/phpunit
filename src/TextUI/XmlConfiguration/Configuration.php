@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function count;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
 
@@ -99,7 +100,7 @@ final class Configuration
 
     public function hasValidationErrors(): bool
     {
-        return \count($this->validationErrors) > 0;
+        return count($this->validationErrors) > 0;
     }
 
     public function validationErrors(): array

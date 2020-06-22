@@ -9,10 +9,15 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function count;
+use Countable;
+use Iterator;
+use function iterator_count;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestFileCollectionIterator implements \Countable, \Iterator
+final class TestFileCollectionIterator implements Countable, Iterator
 {
     /**
      * @var TestFile[]
@@ -31,7 +36,7 @@ final class TestFileCollectionIterator implements \Countable, \Iterator
 
     public function count(): int
     {
-        return \iterator_count($this);
+        return iterator_count($this);
     }
 
     public function rewind(): void
@@ -41,7 +46,7 @@ final class TestFileCollectionIterator implements \Countable, \Iterator
 
     public function valid(): bool
     {
-        return $this->position < \count($this->files);
+        return $this->position < count($this->files);
     }
 
     public function key(): int

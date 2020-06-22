@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function mb_stripos;
+use function mb_strtolower;
+use function sprintf;
+use function strpos;
+
 /**
  * Constraint that asserts that the string it is evaluated for contains
  * a given string.
@@ -42,12 +47,12 @@ final class StringContains extends Constraint
     public function toString(): string
     {
         if ($this->ignoreCase) {
-            $string = \mb_strtolower($this->string, 'UTF-8');
+            $string = mb_strtolower($this->string, 'UTF-8');
         } else {
             $string = $this->string;
         }
 
-        return \sprintf(
+        return sprintf(
             'contains "%s"',
             $string
         );
@@ -70,7 +75,7 @@ final class StringContains extends Constraint
              * We must use the multi byte safe version so we can accurately compare non latin upper characters with
              * their lowercase equivalents.
              */
-            return \mb_stripos($other, $this->string, 0, 'UTF-8') !== false;
+            return mb_stripos($other, $this->string, 0, 'UTF-8') !== false;
         }
 
         /*
@@ -81,6 +86,6 @@ final class StringContains extends Constraint
          * Additionally, we want this method to be binary safe so we can check if some binary data is in other binary
          * data.
          */
-        return \strpos($other, $this->string) !== false;
+        return strpos($other, $this->string) !== false;
     }
 }

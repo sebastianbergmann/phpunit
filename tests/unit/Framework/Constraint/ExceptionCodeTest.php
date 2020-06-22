@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
@@ -19,7 +20,7 @@ class ExceptionCodeTest extends TestCase
     {
         $exceptionCode = new ExceptionCode(123);
 
-        $other = new \Exception('bla', 456);
+        $other = new Exception('bla', 456);
 
         try {
             $exceptionCode->evaluate($other);

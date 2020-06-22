@@ -9,6 +9,16 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function constant;
+use function define;
+use function defined;
+use function getenv;
+use function implode;
+use function ini_get;
+use function ini_set;
+use const PATH_SEPARATOR;
+use function putenv;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -38,11 +48,11 @@ final class PhpHandler
                 $includePathsAsStrings[] = $includePath->path();
             }
 
-            \ini_set(
+            ini_set(
                 'include_path',
-                \implode(\PATH_SEPARATOR, $includePathsAsStrings) .
-                \PATH_SEPARATOR .
-                \ini_get('include_path')
+                implode(PATH_SEPARATOR, $includePathsAsStrings) .
+                PATH_SEPARATOR .
+                ini_get('include_path')
             );
         }
     }
@@ -52,19 +62,19 @@ final class PhpHandler
         foreach ($iniSettings as $iniSetting) {
             $value = $iniSetting->value();
 
-            if (\defined($value)) {
-                $value = (string) \constant($value);
+            if (defined($value)) {
+                $value = (string) constant($value);
             }
 
-            \ini_set($iniSetting->name(), $value);
+            ini_set($iniSetting->name(), $value);
         }
     }
 
     private function handleConstants(ConstantCollection $constants): void
     {
         foreach ($constants as $constant) {
-            if (!\defined($constant->name())) {
-                \define($constant->name(), $constant->value());
+            if (!defined($constant->name())) {
+                define($constant->name(), $constant->value());
             }
         }
     }
@@ -97,11 +107,11 @@ final class PhpHandler
             $value = $variable->value();
             $force = $variable->force();
 
-            if ($force || \getenv($name) === false) {
-                \putenv("{$name}={$value}");
+            if ($force || getenv($name) === false) {
+                putenv("{$name}={$value}");
             }
 
-            $value = \getenv($name);
+            $value = getenv($name);
 
             if ($force || !isset($_ENV[$name])) {
                 $_ENV[$name] = $value;

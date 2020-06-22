@@ -9,12 +9,15 @@
  */
 namespace PHPUnit\Util;
 
+use function basename;
+use function dirname;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection;
 use PHPUnit\TextUI\XmlConfiguration\File;
 use PHPUnit\TextUI\XmlConfiguration\FileCollection;
+use function sprintf;
 
 /**
  * @small
@@ -24,7 +27,7 @@ final class XDebugFilterScriptGeneratorTest extends TestCase
 {
     public function testReturnsExpectedScript(): void
     {
-        $expectedDirectory = \sprintf('%s/', __DIR__);
+        $expectedDirectory = sprintf('%s/', __DIR__);
         $expected          = <<<EOF
 <?php declare(strict_types=1);
 if (!\\function_exists('xdebug_set_filter')) {
@@ -45,7 +48,7 @@ if (!\\function_exists('xdebug_set_filter')) {
 
 EOF;
 
-        $directoryPathThatDoesNotExist = \sprintf('%s/path/that/does/not/exist', __DIR__);
+        $directoryPathThatDoesNotExist = sprintf('%s/path/that/does/not/exist', __DIR__);
         $this->assertDirectoryDoesNotExist($directoryPathThatDoesNotExist);
 
         $filterConfiguration = new CodeCoverage(
@@ -58,13 +61,13 @@ EOF;
                         'DEFAULT'
                     ),
                     new Directory(
-                        \sprintf('%s/', __DIR__),
+                        sprintf('%s/', __DIR__),
                         '',
                         '.php',
                         'DEFAULT'
                     ),
                     new Directory(
-                        \sprintf('%s/./%s', \dirname(__DIR__), \basename(__DIR__)),
+                        sprintf('%s/./%s', dirname(__DIR__), basename(__DIR__)),
                         '',
                         '.php',
                         'DEFAULT'

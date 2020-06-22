@@ -10,6 +10,9 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\Exception;
+use ReflectionClass;
+use ReflectionException;
+use function sprintf;
 
 /**
  * Constraint that asserts that the class it is evaluated for has a given
@@ -24,7 +27,7 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
      */
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'has static attribute "%s"',
             $this->attributeName()
         );
@@ -39,13 +42,13 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
     protected function matches($other): bool
     {
         try {
-            $class = new \ReflectionClass($other);
+            $class = new ReflectionClass($other);
 
             if ($class->hasProperty($this->attributeName())) {
                 return $class->getProperty($this->attributeName())->isStatic();
             }
             // @codeCoverageIgnoreStart
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),

@@ -10,6 +10,7 @@
 namespace PHPUnit\SelfTest\Basic;
 
 use PHPUnit\Framework\TestCase;
+use RuntimeException;
 
 /**
  * Class SetUpBeforeClassTest.
@@ -26,7 +27,7 @@ class SetUpTest extends TestCase
 {
     public function setUp(): void
     {
-        throw new \RuntimeException('throw exception in setUp');
+        throw new RuntimeException('throw exception in setUp');
     }
 
     public function testOneWithSetUpException(): void

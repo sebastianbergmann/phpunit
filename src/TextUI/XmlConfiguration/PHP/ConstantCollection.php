@@ -9,11 +9,15 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function count;
+use Countable;
+use IteratorAggregate;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class ConstantCollection implements \Countable, \IteratorAggregate
+final class ConstantCollection implements Countable, IteratorAggregate
 {
     /**
      * @var Constant[]
@@ -43,7 +47,7 @@ final class ConstantCollection implements \Countable, \IteratorAggregate
 
     public function count(): int
     {
-        return \count($this->constants);
+        return count($this->constants);
     }
 
     public function getIterator(): ConstantCollectionIterator

@@ -9,9 +9,13 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
+use function sprintf;
+use function strpos;
+use function trim;
 
 final class IsEqualCanonicalizing extends Constraint
 {
@@ -67,7 +71,7 @@ final class IsEqualCanonicalizing extends Constraint
             }
 
             throw new ExpectationFailedException(
-                \trim($description . "\n" . $f->getMessage()),
+                trim($description . "\n" . $f->getMessage()),
                 $f
             );
         }
@@ -82,18 +86,18 @@ final class IsEqualCanonicalizing extends Constraint
      */
     public function toString(): string
     {
-        if (\is_string($this->value)) {
-            if (\strpos($this->value, "\n") !== false) {
+        if (is_string($this->value)) {
+            if (strpos($this->value, "\n") !== false) {
                 return 'is equal to <text>';
             }
 
-            return \sprintf(
+            return sprintf(
                 "is equal to '%s'",
                 $this->value
             );
         }
 
-        return \sprintf(
+        return sprintf(
             'is equal to %s',
             $this->exporter()->export($this->value)
         );

@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function is_string;
 use PHPUnit\Framework\Constraint\Constraint;
+use function sprintf;
+use function strtolower;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -28,7 +31,7 @@ final class MethodNameConstraint extends Constraint
 
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'is "%s"',
             $this->methodName
         );
@@ -36,10 +39,10 @@ final class MethodNameConstraint extends Constraint
 
     protected function matches($other): bool
     {
-        if (!\is_string($other)) {
+        if (!is_string($other)) {
             return false;
         }
 
-        return \strtolower($this->methodName) === \strtolower($other);
+        return strtolower($this->methodName) === strtolower($other);
     }
 }

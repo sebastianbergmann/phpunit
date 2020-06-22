@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Util;
 
+use Throwable;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -41,7 +43,7 @@ final class Type
     {
         try {
             $clone = clone $object;
-        } catch (\Throwable $t) {
+        } catch (Throwable $t) {
             return false;
         }
 

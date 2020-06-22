@@ -9,7 +9,14 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_map;
+use BooleanConstraint;
+use CountConstraint;
+use NamedConstraint;
 use PHPUnit\Framework\ExpectationFailedException;
+use ReflectionClass;
+use ReflectionMethod;
+use function sprintf;
 
 abstract class UnaryOperatorTestCase extends OperatorTestCase
 {
@@ -38,9 +45,9 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
     {
         $className = $this->className();
 
-        $reflection = new \ReflectionClass($className);
+        $reflection = new ReflectionClass($className);
 
-        $this->assertTrue($reflection->isSubclassOf(Operator::class), \sprintf(
+        $this->assertTrue($reflection->isSubclassOf(Operator::class), sprintf(
             'Failed to assert that "%s" is subclass of "%s".',
             $className,
             Operator::class
@@ -65,7 +72,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
     {
         $className = $this->className();
 
-        $constraint = new $className(\CountConstraint::fromCount(3));
+        $constraint = new $className(CountConstraint::fromCount(3));
 
         $this->assertSame(3, $constraint->count());
     }
@@ -74,7 +81,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
     {
         $className = $this->className();
 
-        $constraint = new $className(\CountConstraint::fromCount(3));
+        $constraint = new $className(CountConstraint::fromCount(3));
 
         $this->assertSame(1, $constraint->arity());
     }
@@ -112,7 +119,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
 
     final public function providerUnaryTruthTable()
     {
-        return \array_map(function (bool $input): array {
+        return array_map(function (bool $input): array {
             return [$input, $this->evaluateExpectedResult($input)];
         }, [false, true]);
     }
@@ -122,7 +129,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
      */
     final public function testEvaluateReturnsCorrectBooleanResult(bool $input, bool $expected): void
     {
-        $operand = \BooleanConstraint::fromBool($input);
+        $operand = BooleanConstraint::fromBool($input);
 
         $className = $this->className();
 
@@ -137,7 +144,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
      */
     final public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(bool $input, bool $expected): void
     {
-        $operand = \BooleanConstraint::fromBool($input);
+        $operand = BooleanConstraint::fromBool($input);
 
         $className = $this->className();
 
@@ -161,7 +168,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
      */
     final public function testToStringWithNativeTransformations(string $input, string $expected): void
     {
-        $operand = \NamedConstraint::fromName($input);
+        $operand = NamedConstraint::fromName($input);
 
         $className = $this->className();
 
@@ -380,13 +387,13 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
      */
     public function testFailureDescriptionWithNativeTransformations(string $input, string $expected): void
     {
-        $operand = \NamedConstraint::fromName($input);
+        $operand = NamedConstraint::fromName($input);
 
         $className = $this->className();
 
         $constraint = new $className($operand);
 
-        $method = (new \ReflectionMethod($className, 'failureDescription'));
+        $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
 
         $this->assertSame("'whatever' " . $expected, $method->invokeArgs($constraint, ['whatever']));
@@ -418,7 +425,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
                 ->with()
                 ->willReturn($string);
 
-        $method = (new \ReflectionMethod($className, 'failureDescription'));
+        $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
 
         $expected = "'whatever' " . $string;
@@ -450,7 +457,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $operand->expects($this->never())
                 ->method('toString');
 
-        $method = (new \ReflectionMethod($className, 'failureDescription'));
+        $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
 
         $expected = "'whatever' " . $string;
@@ -490,7 +497,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $operand->expects($this->never())
                 ->method('toString');
 
-        $method = (new \ReflectionMethod($className, 'failureDescription'));
+        $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
 
         $expected = "'whatever' " . $string;
@@ -534,7 +541,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
                 ->with()
                 ->willReturn($string);
 
-        $method = (new \ReflectionMethod($className, 'failureDescription'));
+        $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
 
         $expected = "'whatever' " . $string;
@@ -576,7 +583,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $operand->expects($this->never())
                 ->method('toString');
 
-        $method = (new \ReflectionMethod($className, 'failureDescription'));
+        $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
 
         $expected = "'whatever' " . $string;
@@ -618,7 +625,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
                 ->with()
                 ->willReturn($string);
 
-        $method = (new \ReflectionMethod($className, 'failureDescription'));
+        $method = (new ReflectionMethod($className, 'failureDescription'));
         $method->setAccessible(true);
 
         $expected = $this->getOperatorName() . "( 'whatever' " . $string . ' )';

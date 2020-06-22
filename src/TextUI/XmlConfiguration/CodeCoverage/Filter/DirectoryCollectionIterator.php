@@ -9,10 +9,15 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter;
 
+use function count;
+use Countable;
+use Iterator;
+use function iterator_count;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DirectoryCollectionIterator implements \Countable, \Iterator
+final class DirectoryCollectionIterator implements Countable, Iterator
 {
     /**
      * @var Directory[]
@@ -31,7 +36,7 @@ final class DirectoryCollectionIterator implements \Countable, \Iterator
 
     public function count(): int
     {
-        return \iterator_count($this);
+        return iterator_count($this);
     }
 
     public function rewind(): void
@@ -41,7 +46,7 @@ final class DirectoryCollectionIterator implements \Countable, \Iterator
 
     public function valid(): bool
     {
-        return $this->position < \count($this->directories);
+        return $this->position < count($this->directories);
     }
 
     public function key(): int

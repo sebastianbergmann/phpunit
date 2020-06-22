@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use ClassWithNonPublicAttributes;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
+use stdClass;
 
 /**
  * @small
@@ -21,13 +23,13 @@ final class ObjectHasAttributeTest extends ConstraintTestCase
     {
         $constraint = new ObjectHasAttribute('privateAttribute');
 
-        $this->assertTrue($constraint->evaluate(new \ClassWithNonPublicAttributes, '', true));
-        $this->assertFalse($constraint->evaluate(new \stdClass, '', true));
+        $this->assertTrue($constraint->evaluate(new ClassWithNonPublicAttributes, '', true));
+        $this->assertFalse($constraint->evaluate(new stdClass, '', true));
         $this->assertEquals('has attribute "privateAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate(new \stdClass);
+            $constraint->evaluate(new stdClass);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
@@ -49,7 +51,7 @@ EOF
         $constraint = new ObjectHasAttribute('privateAttribute');
 
         try {
-            $constraint->evaluate(new \stdClass, 'custom message');
+            $constraint->evaluate(new stdClass, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF

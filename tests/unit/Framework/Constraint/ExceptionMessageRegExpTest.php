@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use Exception;
+use function ini_set;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -18,18 +20,18 @@ final class ExceptionMessageRegExpTest extends TestCase
 {
     public function testRegexMessage(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessageMatches('/^A polymorphic \w+ message/');
 
-        throw new \Exception('A polymorphic exception message');
+        throw new Exception('A polymorphic exception message');
     }
 
     public function testRegexMessageExtreme(): void
     {
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessageMatches('/^a poly[a-z]+ [a-zA-Z0-9_]+ me(s){2}age$/i');
 
-        throw new \Exception('A polymorphic exception message');
+        throw new Exception('A polymorphic exception message');
     }
 
     /**
@@ -38,12 +40,12 @@ final class ExceptionMessageRegExpTest extends TestCase
      */
     public function testMessageXdebugScreamCompatibility(): void
     {
-        \ini_set('xdebug.scream', '1');
+        ini_set('xdebug.scream', '1');
 
-        $this->expectException(\Exception::class);
+        $this->expectException(Exception::class);
         $this->expectExceptionMessageMatches('#Screaming preg_match#');
 
-        throw new \Exception('Screaming preg_match');
+        throw new Exception('Screaming preg_match');
     }
 
     public function testRegExMessageCanBeExportedAsString(): void

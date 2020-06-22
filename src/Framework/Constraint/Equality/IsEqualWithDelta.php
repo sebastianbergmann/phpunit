@@ -12,6 +12,8 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
+use function sprintf;
+use function trim;
 
 final class IsEqualWithDelta extends Constraint
 {
@@ -71,7 +73,7 @@ final class IsEqualWithDelta extends Constraint
             }
 
             throw new ExpectationFailedException(
-                \trim($description . "\n" . $f->getMessage()),
+                trim($description . "\n" . $f->getMessage()),
                 $f
             );
         }
@@ -86,7 +88,7 @@ final class IsEqualWithDelta extends Constraint
      */
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'is equal to %s with delta <%F>>',
             $this->exporter()->export($this->value),
             $this->delta

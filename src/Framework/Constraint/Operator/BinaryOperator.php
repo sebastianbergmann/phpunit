@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_map;
+use function array_values;
+use function count;
+
 /**
  * Abstract base class for binary operators.
  *
@@ -46,9 +50,9 @@ abstract class BinaryOperator extends Operator
      */
     public function setConstraints(array $constraints): void
     {
-        $this->constraints = \array_map(function ($constraint): Constraint {
+        $this->constraints = array_map(function ($constraint): Constraint {
             return $this->checkConstraint($constraint);
-        }, \array_values($constraints));
+        }, array_values($constraints));
     }
 
     /**
@@ -56,7 +60,7 @@ abstract class BinaryOperator extends Operator
      */
     final public function arity(): int
     {
-        return \count($this->constraints);
+        return count($this->constraints);
     }
 
     /**
@@ -89,7 +93,7 @@ abstract class BinaryOperator extends Operator
         $count = 0;
 
         foreach ($this->constraints as $constraint) {
-            $count += \count($constraint);
+            $count += count($constraint);
         }
 
         return $count;

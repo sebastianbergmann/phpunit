@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_array;
+use function sprintf;
+
 /**
  * Constraint that asserts that the Traversable it is applied to contains
  * a given value.
@@ -47,9 +50,9 @@ abstract class TraversableContains extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return \sprintf(
+        return sprintf(
             '%s %s',
-            \is_array($other) ? 'an array' : 'a traversable',
+            is_array($other) ? 'an array' : 'a traversable',
             $this->toString()
         );
     }

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\SelfTest\Basic;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,7 +24,7 @@ class TearDownAfterClassTest extends TestCase
 {
     public static function tearDownAfterClass(): void
     {
-        throw new \Exception('forcing an Exception in tearDownAfterClass()');
+        throw new Exception('forcing an Exception in tearDownAfterClass()');
     }
 
     public function testOne(): void

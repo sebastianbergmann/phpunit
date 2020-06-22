@@ -9,11 +9,15 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function count;
+use Countable;
+use IteratorAggregate;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class FileCollection implements \Countable, \IteratorAggregate
+final class FileCollection implements Countable, IteratorAggregate
 {
     /**
      * @var File[]
@@ -43,7 +47,7 @@ final class FileCollection implements \Countable, \IteratorAggregate
 
     public function count(): int
     {
-        return \count($this->files);
+        return count($this->files);
     }
 
     public function getIterator(): FileCollectionIterator

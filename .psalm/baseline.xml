@@ -12,19 +12,19 @@
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <TooManyArguments occurrences="13">
-      <code>Assert::anything(...\func_get_args())</code>
-      <code>Assert::isTrue(...\func_get_args())</code>
-      <code>Assert::isFalse(...\func_get_args())</code>
-      <code>Assert::isJson(...\func_get_args())</code>
-      <code>Assert::isNull(...\func_get_args())</code>
-      <code>Assert::isFinite(...\func_get_args())</code>
-      <code>Assert::isInfinite(...\func_get_args())</code>
-      <code>Assert::isNan(...\func_get_args())</code>
-      <code>Assert::isEmpty(...\func_get_args())</code>
-      <code>Assert::isWritable(...\func_get_args())</code>
-      <code>Assert::isReadable(...\func_get_args())</code>
-      <code>Assert::directoryExists(...\func_get_args())</code>
-      <code>Assert::fileExists(...\func_get_args())</code>
+      <code>Assert::anything(...func_get_args())</code>
+      <code>Assert::isTrue(...func_get_args())</code>
+      <code>Assert::isFalse(...func_get_args())</code>
+      <code>Assert::isJson(...func_get_args())</code>
+      <code>Assert::isNull(...func_get_args())</code>
+      <code>Assert::isFinite(...func_get_args())</code>
+      <code>Assert::isInfinite(...func_get_args())</code>
+      <code>Assert::isNan(...func_get_args())</code>
+      <code>Assert::isEmpty(...func_get_args())</code>
+      <code>Assert::isWritable(...func_get_args())</code>
+      <code>Assert::isReadable(...func_get_args())</code>
+      <code>Assert::directoryExists(...func_get_args())</code>
+      <code>Assert::fileExists(...func_get_args())</code>
     </TooManyArguments>
   </file>
   <file src="src/Framework/Constraint/Exception/ExceptionCode.php">
@@ -74,7 +74,7 @@
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
     <PossiblyFalseArgument occurrences="1">
-      <code>\strpos($args[$i], '$')</code>
+      <code>strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
@@ -102,10 +102,10 @@
       <code>allowsNull</code>
     </PossiblyNullReference>
     <TypeDoesNotContainType occurrences="1">
-      <code>$type instanceof \ReflectionUnionType</code>
+      <code>$type instanceof ReflectionUnionType</code>
     </TypeDoesNotContainType>
     <UndefinedClass occurrences="2">
-      <code>\ReflectionUnionType</code>
+      <code>ReflectionUnionType</code>
       <code>$type</code>
     </UndefinedClass>
   </file>
@@ -128,7 +128,7 @@
     </InvalidArgument>
     <InvalidCatch occurrences="1"/>
     <InvalidReturnStatement occurrences="2">
-      <code>\get_class($mock)</code>
+      <code>get_class($mock)</code>
       <code>$mockObject</code>
     </InvalidReturnStatement>
     <InvalidReturnType occurrences="2">
@@ -281,7 +281,7 @@
       <code>Exception</code>
     </MoreSpecificReturnType>
     <PossiblyFalseOperand occurrences="1">
-      <code>\strrpos($key, "\0")</code>
+      <code>strrpos($key, "\0")</code>
     </PossiblyFalseOperand>
     <PossiblyNullArgument occurrences="1">
       <code>$childResult-&gt;getCodeCoverage()</code>
@@ -338,10 +338,10 @@
       <code>$item</code>
     </ArgumentTypeCoercion>
     <LessSpecificReturnStatement occurrences="1">
-      <code>(new \DOMDocument)-&gt;importNode($element, true)</code>
+      <code>(new DOMDocument)-&gt;importNode($element, true)</code>
     </LessSpecificReturnStatement>
     <MoreSpecificReturnType occurrences="1">
-      <code>\DOMElement</code>
+      <code>DOMElement</code>
     </MoreSpecificReturnType>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">

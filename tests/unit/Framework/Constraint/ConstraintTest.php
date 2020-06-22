@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter;
+use stdClass;
 
 /**
  * @small
@@ -114,7 +115,7 @@ final class ConstraintTest extends ConstraintTestCase
 
         $this->assertFalse($constraint->evaluate('whatever', '', true));
         $this->assertFalse($constraint->evaluate(null, '', true));
-        $this->assertFalse($constraint->evaluate(new \stdClass, '', true));
+        $this->assertFalse($constraint->evaluate(new stdClass, '', true));
     }
 
     public function testEvaluateFailsWithExpectationFailedException(): void
@@ -160,7 +161,7 @@ final class ConstraintTest extends ConstraintTestCase
         $this->assertFalse($constraint->exposedMatches('whatever'));
         $this->assertFalse($constraint->exposedMatches(null));
         $this->assertFalse($constraint->exposedMatches(true));
-        $this->assertFalse($constraint->exposedMatches(new \StdClass));
+        $this->assertFalse($constraint->exposedMatches(new StdClass));
     }
 
     public function testFailThrowsExpectationFailureExceptionWithDefaultMessage(): void

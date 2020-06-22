@@ -9,6 +9,21 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function assert;
+use function defined;
+use const DIRECTORY_SEPARATOR;
+use function dirname;
+use DOMDocument;
+use DOMElement;
+use DOMNodeList;
+use DOMXPath;
+use function explode;
+use function file_exists;
+use function is_numeric;
+use function libxml_clear_errors;
+use function libxml_get_errors;
+use function libxml_use_internal_errors;
+use const PHP_VERSION;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
@@ -31,6 +46,13 @@ use PHPUnit\TextUI\XmlConfiguration\TestSuite as TestSuiteConfiguration;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\VersionComparisonOperator;
 use PHPUnit\Util\Xml;
+use function preg_match;
+use function stream_resolve_include_path;
+use function strlen;
+use function strpos;
+use function strtolower;
+use function substr;
+use function trim;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -40,7 +62,7 @@ final class Loader
     public function load(string $filename): Configuration
     {
         $document = Xml::loadFile($filename, false, true, true);
-        $xpath    = new \DOMXPath($document);
+        $xpath    = new DOMXPath($document);
 
         return new Configuration(
             $filename,
@@ -57,7 +79,7 @@ final class Loader
         );
     }
 
-    public function logging(string $filename, \DOMXPath $xpath): Logging
+    public function logging(string $filename, DOMXPath $xpath): Logging
     {
         if ($xpath->query('logging/log')->length !== 0) {
             return $this->legacyLogging($filename, $xpath);
@@ -157,7 +179,7 @@ final class Loader
         );
     }
 
-    public function legacyLogging(string $filename, \DOMXPath $xpath): Logging
+    public function legacyLogging(string $filename, DOMXPath $xpath): Logging
     {
         $junit       = null;
         $teamCity    = null;
@@ -167,7 +189,7 @@ final class Loader
         $text        = null;
 
         foreach ($xpath->query('logging/log') as $log) {
-            \assert($log instanceof \DOMElement);
+            assert($log instanceof DOMElement);
 
             $type   = (string) $log->getAttribute('type');
             $target = (string) $log->getAttribute('target');
@@ -236,19 +258,19 @@ final class Loader
     /**
      * @psalm-return array<int,array<int,string>>
      */
-    private function validate(\DOMDocument $document): array
+    private function validate(DOMDocument $document): array
     {
-        $original    = \libxml_use_internal_errors(true);
+        $original    = libxml_use_internal_errors(true);
         $xsdFilename = __DIR__ . '/../../../phpunit.xsd';
 
-        if (\defined('__PHPUNIT_PHAR_ROOT__')) {
+        if (defined('__PHPUNIT_PHAR_ROOT__')) {
             $xsdFilename =  __PHPUNIT_PHAR_ROOT__ . '/phpunit.xsd';
         }
 
         $document->schemaValidate($xsdFilename);
-        $tmp = \libxml_get_errors();
-        \libxml_clear_errors();
-        \libxml_use_internal_errors($original);
+        $tmp = libxml_get_errors();
+        libxml_clear_errors();
+        libxml_use_internal_errors($original);
 
         $errors = [];
 
@@ -257,18 +279,18 @@ final class Loader
                 $errors[$error->line] = [];
             }
 
-            $errors[$error->line][] = \trim($error->message);
+            $errors[$error->line][] = trim($error->message);
         }
 
         return $errors;
     }
 
-    private function extensions(string $filename, \DOMXPath $xpath): ExtensionCollection
+    private function extensions(string $filename, DOMXPath $xpath): ExtensionCollection
     {
         $extensions = [];
 
         foreach ($xpath->query('extensions/extension') as $extension) {
-            \assert($extension instanceof \DOMElement);
+            assert($extension instanceof DOMElement);
 
             $extensions[] = $this->getElementConfigurationParameters($filename, $extension);
         }
@@ -276,7 +298,7 @@ final class Loader
         return ExtensionCollection::fromArray($extensions);
     }
 
-    private function getElementConfigurationParameters(string $filename, \DOMElement $element): Extension
+    private function getElementConfigurationParameters(string $filename, DOMElement $element): Extension
     {
         /** @psalm-var class-string $class */
         $class     = (string) $element->getAttribute('class');
@@ -296,9 +318,9 @@ final class Loader
 
     private function toAbsolutePath(string $filename, string $path, bool $useIncludePath = false): string
     {
-        $path = \trim($path);
+        $path = trim($path);
 
-        if (\strpos($path, '/') === 0) {
+        if (strpos($path, '/') === 0) {
             return $path;
         }
 
@@ -310,19 +332,19 @@ final class Loader
         //  - C:\windows
         //  - C:/windows
         //  - c:/windows
-        if (\defined('PHP_WINDOWS_VERSION_BUILD') &&
-            ($path[0] === '\\' || (\strlen($path) >= 3 && \preg_match('#^[A-Z]\:[/\\\]#i', \substr($path, 0, 3))))) {
+        if (defined('PHP_WINDOWS_VERSION_BUILD') &&
+            ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))) {
             return $path;
         }
 
-        if (\strpos($path, '://') !== false) {
+        if (strpos($path, '://') !== false) {
             return $path;
         }
 
-        $file = \dirname($filename) . \DIRECTORY_SEPARATOR . $path;
+        $file = dirname($filename) . DIRECTORY_SEPARATOR . $path;
 
-        if ($useIncludePath && !\file_exists($file)) {
-            $includePathFile = \stream_resolve_include_path($path);
+        if ($useIncludePath && !file_exists($file)) {
+            $includePathFile = stream_resolve_include_path($path);
 
             if ($includePathFile) {
                 $file = $includePathFile;
@@ -332,7 +354,7 @@ final class Loader
         return $file;
     }
 
-    private function getConfigurationArguments(string $filename, \DOMNodeList $nodes): array
+    private function getConfigurationArguments(string $filename, DOMNodeList $nodes): array
     {
         $arguments = [];
 
@@ -341,7 +363,7 @@ final class Loader
         }
 
         foreach ($nodes as $node) {
-            if (!$node instanceof \DOMElement) {
+            if (!$node instanceof DOMElement) {
                 continue;
             }
 
@@ -350,7 +372,7 @@ final class Loader
             }
 
             foreach ($node->childNodes as $argument) {
-                if (!$argument instanceof \DOMElement) {
+                if (!$argument instanceof DOMElement) {
                     continue;
                 }
 
@@ -365,7 +387,7 @@ final class Loader
         return $arguments;
     }
 
-    private function codeCoverage(string $filename, \DOMXPath $xpath, \DOMDocument $document): CodeCoverage
+    private function codeCoverage(string $filename, DOMXPath $xpath, DOMDocument $document): CodeCoverage
     {
         if ($xpath->query('filter/whitelist')->length !== 0) {
             return $this->legacyCodeCoverage($filename, $xpath, $document);
@@ -530,7 +552,7 @@ final class Loader
     /**
      * @deprecated
      */
-    private function legacyCodeCoverage(string $filename, \DOMXPath $xpath, \DOMDocument $document): CodeCoverage
+    private function legacyCodeCoverage(string $filename, DOMXPath $xpath, DOMDocument $document): CodeCoverage
     {
         $cacheTokens = $this->getBooleanAttribute(
             $document->documentElement,
@@ -579,7 +601,7 @@ final class Loader
         $xml    = null;
 
         foreach ($xpath->query('logging/log') as $log) {
-            \assert($log instanceof \DOMElement);
+            assert($log instanceof DOMElement);
 
             $type   = (string) $log->getAttribute('type');
             $target = (string) $log->getAttribute('target');
@@ -672,23 +694,23 @@ final class Loader
      */
     private function getBoolean(string $value, $default)
     {
-        if (\strtolower($value) === 'false') {
+        if (strtolower($value) === 'false') {
             return false;
         }
 
-        if (\strtolower($value) === 'true') {
+        if (strtolower($value) === 'true') {
             return true;
         }
 
         return $default;
     }
 
-    private function readFilterDirectories(string $filename, \DOMXPath $xpath, string $query): FilterDirectoryCollection
+    private function readFilterDirectories(string $filename, DOMXPath $xpath, string $query): FilterDirectoryCollection
     {
         $directories = [];
 
         foreach ($xpath->query($query) as $directoryNode) {
-            \assert($directoryNode instanceof \DOMElement);
+            assert($directoryNode instanceof DOMElement);
 
             $directoryPath = (string) $directoryNode->textContent;
 
@@ -707,7 +729,7 @@ final class Loader
         return FilterDirectoryCollection::fromArray($directories);
     }
 
-    private function readFilterFiles(string $filename, \DOMXPath $xpath, string $query): FileCollection
+    private function readFilterFiles(string $filename, DOMXPath $xpath, string $query): FileCollection
     {
         $files = [];
 
@@ -722,17 +744,17 @@ final class Loader
         return FileCollection::fromArray($files);
     }
 
-    private function groups(\DOMXPath $xpath): Groups
+    private function groups(DOMXPath $xpath): Groups
     {
         return $this->parseGroupConfiguration($xpath, 'groups');
     }
 
-    private function testdoxGroups(\DOMXPath $xpath): Groups
+    private function testdoxGroups(DOMXPath $xpath): Groups
     {
         return $this->parseGroupConfiguration($xpath, 'testdoxGroups');
     }
 
-    private function parseGroupConfiguration(\DOMXPath $xpath, string $root): Groups
+    private function parseGroupConfiguration(DOMXPath $xpath, string $root): Groups
     {
         $include = [];
         $exclude = [];
@@ -751,12 +773,12 @@ final class Loader
         );
     }
 
-    private function listeners(string $filename, \DOMXPath $xpath): ExtensionCollection
+    private function listeners(string $filename, DOMXPath $xpath): ExtensionCollection
     {
         $listeners = [];
 
         foreach ($xpath->query('listeners/listener') as $listener) {
-            \assert($listener instanceof \DOMElement);
+            assert($listener instanceof DOMElement);
 
             $listeners[] = $this->getElementConfigurationParameters($filename, $listener);
         }
@@ -764,7 +786,7 @@ final class Loader
         return ExtensionCollection::fromArray($listeners);
     }
 
-    private function getBooleanAttribute(\DOMElement $element, string $attribute, bool $default): bool
+    private function getBooleanAttribute(DOMElement $element, string $attribute, bool $default): bool
     {
         if (!$element->hasAttribute($attribute)) {
             return $default;
@@ -776,7 +798,7 @@ final class Loader
         );
     }
 
-    private function getIntegerAttribute(\DOMElement $element, string $attribute, int $default): int
+    private function getIntegerAttribute(DOMElement $element, string $attribute, int $default): int
     {
         if (!$element->hasAttribute($attribute)) {
             return $default;
@@ -788,7 +810,7 @@ final class Loader
         );
     }
 
-    private function getStringAttribute(\DOMElement $element, string $attribute): ?string
+    private function getStringAttribute(DOMElement $element, string $attribute): ?string
     {
         if (!$element->hasAttribute($attribute)) {
             return null;
@@ -799,14 +821,14 @@ final class Loader
 
     private function getInteger(string $value, int $default): int
     {
-        if (\is_numeric($value)) {
+        if (is_numeric($value)) {
             return (int) $value;
         }
 
         return $default;
     }
 
-    private function php(string $filename, \DOMXPath $xpath): Php
+    private function php(string $filename, DOMXPath $xpath): Php
     {
         $includePaths = [];
 
@@ -821,7 +843,7 @@ final class Loader
         $iniSettings = [];
 
         foreach ($xpath->query('php/ini') as $ini) {
-            \assert($ini instanceof \DOMElement);
+            assert($ini instanceof DOMElement);
 
             $iniSettings[] = new IniSetting(
                 (string) $ini->getAttribute('name'),
@@ -832,7 +854,7 @@ final class Loader
         $constants = [];
 
         foreach ($xpath->query('php/const') as $const) {
-            \assert($const instanceof \DOMElement);
+            assert($const instanceof DOMElement);
 
             $value = (string) $const->getAttribute('value');
 
@@ -855,7 +877,7 @@ final class Loader
 
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($xpath->query('php/' . $array) as $var) {
-                \assert($var instanceof \DOMElement);
+                assert($var instanceof DOMElement);
 
                 $name     = (string) $var->getAttribute('name');
                 $value    = (string) $var->getAttribute('value');
@@ -893,14 +915,14 @@ final class Loader
         );
     }
 
-    private function phpunit(string $filename, \DOMDocument $document): PHPUnit
+    private function phpunit(string $filename, DOMDocument $document): PHPUnit
     {
         $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
         $defectsFirst        = false;
         $resolveDependencies = $this->getBooleanAttribute($document->documentElement, 'resolveDependencies', true);
 
         if ($document->documentElement->hasAttribute('executionOrder')) {
-            foreach (\explode(',', $document->documentElement->getAttribute('executionOrder')) as $order) {
+            foreach (explode(',', $document->documentElement->getAttribute('executionOrder')) as $order) {
                 switch ($order) {
                     case 'default':
                         $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
@@ -1043,7 +1065,7 @@ final class Loader
         );
     }
 
-    private function getColors(\DOMDocument $document): string
+    private function getColors(DOMDocument $document): string
     {
         $colors = DefaultResultPrinter::COLOR_DEFAULT;
 
@@ -1063,7 +1085,7 @@ final class Loader
     /**
      * @return int|string
      */
-    private function getColumns(\DOMDocument $document)
+    private function getColumns(DOMDocument $document)
     {
         $columns = 80;
 
@@ -1078,7 +1100,7 @@ final class Loader
         return $columns;
     }
 
-    private function testSuite(string $filename, \DOMXPath $xpath): TestSuiteCollection
+    private function testSuite(string $filename, DOMXPath $xpath): TestSuiteCollection
     {
         $testSuites = [];
 
@@ -1096,7 +1118,7 @@ final class Loader
             $directories = [];
 
             foreach ($element->getElementsByTagName('directory') as $directoryNode) {
-                \assert($directoryNode instanceof \DOMElement);
+                assert($directoryNode instanceof DOMElement);
 
                 $directory = (string) $directoryNode->textContent;
 
@@ -1116,7 +1138,7 @@ final class Loader
                     $suffix = (string) $directoryNode->getAttribute('suffix');
                 }
 
-                $phpVersion = \PHP_VERSION;
+                $phpVersion = PHP_VERSION;
 
                 if ($directoryNode->hasAttribute('phpVersion')) {
                     $phpVersion = (string) $directoryNode->getAttribute('phpVersion');
@@ -1140,7 +1162,7 @@ final class Loader
             $files = [];
 
             foreach ($element->getElementsByTagName('file') as $fileNode) {
-                \assert($fileNode instanceof \DOMElement);
+                assert($fileNode instanceof DOMElement);
 
                 $file = (string) $fileNode->textContent;
 
@@ -1148,7 +1170,7 @@ final class Loader
                     continue;
                 }
 
-                $phpVersion = \PHP_VERSION;
+                $phpVersion = PHP_VERSION;
 
                 if ($fileNode->hasAttribute('phpVersion')) {
                     $phpVersion = (string) $fileNode->getAttribute('phpVersion');
@@ -1179,11 +1201,11 @@ final class Loader
     }
 
     /**
-     * @return \DOMElement[]
+     * @return DOMElement[]
      */
-    private function getTestSuiteElements(\DOMXPath $xpath): array
+    private function getTestSuiteElements(DOMXPath $xpath): array
     {
-        /** @var \DOMElement[] $elements */
+        /** @var DOMElement[] $elements */
         $elements = [];
 
         $testSuiteNodes = $xpath->query('testsuites/testsuite');
@@ -1195,12 +1217,12 @@ final class Loader
         if ($testSuiteNodes->length === 1) {
             $element = $testSuiteNodes->item(0);
 
-            \assert($element instanceof \DOMElement);
+            assert($element instanceof DOMElement);
 
             $elements[] = $element;
         } else {
             foreach ($testSuiteNodes as $testSuiteNode) {
-                \assert($testSuiteNode instanceof \DOMElement);
+                assert($testSuiteNode instanceof DOMElement);
 
                 $elements[] = $testSuiteNode;
             }
@@ -1209,14 +1231,14 @@ final class Loader
         return $elements;
     }
 
-    private function element(\DOMXPath $xpath, string $element): ?\DOMElement
+    private function element(DOMXPath $xpath, string $element): ?DOMElement
     {
         $nodes = $xpath->query($element);
 
         if ($nodes->length === 1) {
             $node = $nodes->item(0);
 
-            \assert($node instanceof \DOMElement);
+            assert($node instanceof DOMElement);
 
             return $node;
         }
