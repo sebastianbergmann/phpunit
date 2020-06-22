@@ -1449,7 +1449,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     public function sortId(): string
     {
-        return \get_class($this) . '::' . $this->name;
+        $id = $this->name;
+
+        if (\strpos($id, '::') === false) {
+            $id = \get_class($this) . '::' . $id;
+        }
+
+        if ($this->usesDataProvider()) {
+            $id .= $this->getDataSetAsString(false);
+        }
+
+        return $id;
     }
 
     /**

@@ -21,6 +21,7 @@ use function shuffle;
 use function strpos;
 use function usort;
 use PHPUnit\Framework\DataProviderTestSuite;
+use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
@@ -102,32 +103,6 @@ final class TestSuiteSorter
      * @var array<string> A list of normalized names of tests affected by reordering
      */
     private $executionOrder = [];
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public static function getTestSorterUID(Test $test): string
-    {
-        if ($test instanceof PhptTestCase) {
-            return $test->getName();
-        }
-
-        if ($test instanceof TestCase) {
-            $testName = $test->getName(true);
-
-            if (strpos($testName, '::') === false) {
-                $testName = get_class($test) . '::' . $testName;
-            }
-
-            return $testName;
-        }
-
-        if ($test instanceof DataProviderTestSuite) {
-            return $test->getName();
-        }
-
-        return $test->getName() . '::class';
-    }
 
     public function __construct(?TestResultCache $cache = null)
     {
@@ -232,15 +207,13 @@ final class TestSuiteSorter
         $max = 0;
 
         foreach ($suite->tests() as $test) {
-            $testname = self::getTestSorterUID($test);
-
-            if (!isset($this->defectSortOrder[$testname])) {
-                $this->defectSortOrder[$testname] = self::DEFECT_SORT_WEIGHT[$this->cache->getState($testname)];
-                $max                              = max($max, $this->defectSortOrder[$testname]);
+            if (!isset($this->defectSortOrder[$test->sortId()])) {
+                $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->getState($test->sortId())];
+                $max                                    = max($max, $this->defectSortOrder[$test->sortId()]);
             }
         }
 
-        $this->defectSortOrder[self::getTestSorterUID($suite)] = $max;
+        $this->defectSortOrder[$suite->sortId()] = $max;
     }
 
     private function reverse(array $tests): array
@@ -311,8 +284,12 @@ final class TestSuiteSorter
      */
     private function cmpDefectPriorityAndTime(Test $a, Test $b): int
     {
-        $priorityA = $this->defectSortOrder[self::getTestSorterUID($a)] ?? 0;
-        $priorityB = $this->defectSortOrder[self::getTestSorterUID($b)] ?? 0;
+        if (!($a instanceof Reorderable && $b instanceof Reorderable)) {
+            return 0;
+        }
+
+        $priorityA = $this->defectSortOrder[$a->sortId()] ?? 0;
+        $priorityB = $this->defectSortOrder[$b->sortId()] ?? 0;
 
         if ($priorityB <=> $priorityA) {
             // Sort defect weight descending
@@ -334,7 +311,11 @@ final class TestSuiteSorter
      */
     private function cmpDuration(Test $a, Test $b): int
     {
-        return $this->cache->getTime(self::getTestSorterUID($a)) <=> $this->cache->getTime(self::getTestSorterUID($b));
+        if (!($a instanceof Reorderable && $b instanceof Reorderable)) {
+            return 0;
+        }
+
+        return $this->cache->getTime($a->sortId()) <=> $this->cache->getTime($b->sortId());
     }
 
     /**
@@ -395,8 +376,8 @@ final class TestSuiteSorter
 
         if ($suite instanceof TestSuite) {
             foreach ($suite->tests() as $test) {
-                if (!($test instanceof TestSuite)) {
-                    $tests[] = self::getTestSorterUID($test);
+                if (!($test instanceof TestSuite) && $test instanceof Reorderable) {
+                    $tests[] = $test->sortId();
                 } else {
                     $tests = array_merge($tests, $this->calculateTestExecutionOrder($test));
                 }

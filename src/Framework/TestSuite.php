@@ -818,10 +818,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
         }
 
-//        print "*** {$this->getName()} provides " . \implode(',', \array_map(function ($d) {
-//            return $d->getTarget();
-//        }, $this->providedTests ?? [])) . "\n";
-
         return $this->providedTests;
     }
 
@@ -845,10 +841,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
             $this->requiredTests = TestDependency::diff($this->requiredTests, $this->provides());
         }
-
-//        print "*** {$this->getName()} requires " . \implode(',', \array_map(function ($d) {
-//            return $d->getTarget();
-//        }, $this->providedTests ?? [])) . "\n";
 
         return $this->requiredTests;
     }
