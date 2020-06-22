@@ -14,11 +14,9 @@ use function array_merge;
 use function array_reverse;
 use function array_splice;
 use function count;
-use function get_class;
 use function in_array;
 use function max;
 use function shuffle;
-use function strpos;
 use function usort;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Reorderable;
@@ -207,6 +205,10 @@ final class TestSuiteSorter
         $max = 0;
 
         foreach ($suite->tests() as $test) {
+            if (!($test instanceof Reorderable)) {
+                continue;
+            }
+
             if (!isset($this->defectSortOrder[$test->sortId()])) {
                 $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->getState($test->sortId())];
                 $max                                    = max($max, $this->defectSortOrder[$test->sortId()]);

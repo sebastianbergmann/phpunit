@@ -14,7 +14,6 @@ use function array_diff;
 use function array_keys;
 use function array_merge;
 use function array_unique;
-use function array_values;
 use function basename;
 use function call_user_func;
 use function class_exists;

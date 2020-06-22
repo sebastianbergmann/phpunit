@@ -210,7 +210,11 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function formatTestName(Test $test): string
     {
-        return $test->getName();
+        if ($test instanceof TestSuite || $test instanceof TestCase) {
+            return $test->getName();
+        }
+
+        return '<unnamed>';
     }
 
     protected function formatClassName(Test $test): string

@@ -9,6 +9,14 @@
  */
 namespace PHPUnit\Framework;
 
+use function array_filter;
+use function array_map;
+use function array_search;
+use function count;
+use function explode;
+use function strpos;
+use function trim;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -29,9 +37,9 @@ final class TestDependency
     public static function createFromDependsAnnotation(string $className, string $annotation): self
     {
         // Split clone option and target
-        $parts = \explode(' ', \trim($annotation), 2);
+        $parts = explode(' ', trim($annotation), 2);
 
-        if (\count($parts) === 1) {
+        if (count($parts) === 1) {
             $cloneOption = '';
             $target      = $parts[0];
         } else {
@@ -40,7 +48,7 @@ final class TestDependency
         }
 
         // Prefix provided class for targets assumed to be in scope
-        if ($target !== '' && \strpos($target, '::') === false) {
+        if ($target !== '' && strpos($target, '::') === false) {
             $target = $className . '::' . $target;
         }
 
@@ -54,7 +62,7 @@ final class TestDependency
      */
     public static function filterInvalid(array $dependencies): array
     {
-        return \array_filter($dependencies, function (self $d) {
+        return array_filter($dependencies, function (self $d) {
             return $d->isValid();
         });
     }
@@ -67,12 +75,12 @@ final class TestDependency
      */
     public static function mergeUnique(array $existing, array $additional): array
     {
-        $existingTargets = \array_map(function ($dependency) {
+        $existingTargets = array_map(function ($dependency) {
             return $dependency->getTarget();
         }, $existing);
 
         foreach ($additional as $dependency) {
-            if (\array_search($dependency->getTarget(), $existingTargets, true) === false) {
+            if (array_search($dependency->getTarget(), $existingTargets, true) === false) {
                 $existingTargets[]  = $dependency->getTarget();
                 $existing[]         = $dependency;
             }
@@ -94,12 +102,12 @@ final class TestDependency
         }
 
         $diff         = [];
-        $rightTargets = \array_map(function ($dependency) {
+        $rightTargets = array_map(function ($dependency) {
             return $dependency->getTarget();
         }, $right);
 
         foreach ($left as $dependency) {
-            if (\array_search($dependency->getTarget(), $rightTargets, true) === false) {
+            if (array_search($dependency->getTarget(), $rightTargets, true) === false) {
                 $diff[] = $dependency;
             }
         }
@@ -116,8 +124,8 @@ final class TestDependency
         if ($methodName !== null && $methodName !== '') {
             $this->className  = $classOrCallableName;
             $this->methodName = $methodName;
-        } elseif (\strpos($classOrCallableName, '::') !== false) {
-            [$this->className, $this->methodName] = \explode('::', $classOrCallableName);
+        } elseif (strpos($classOrCallableName, '::') !== false) {
+            [$this->className, $this->methodName] = explode('::', $classOrCallableName);
         } else {
             $this->className  = $classOrCallableName;
             $this->methodName = 'class';
