@@ -347,6 +347,22 @@ EOF
     }
 
     /**
+     * @testdox PHPT tests return their filename as test name
+     */
+    public function testPHPTReturnsFilenameAsTestName(): void
+    {
+        $this->assertSame($this->filename, $this->testCase->getName());
+    }
+
+    /**
+     * @testdox PHPT tests return their filename as unique sortId
+     */
+    public function testPHPTReturnsFilenameAsSortId(): void
+    {
+        $this->assertSame($this->filename, $this->testCase->sortId());
+    }
+
+    /**
      * @testdox PHPT tests do not affect dependency resolution
      */
     public function testPHPTDoesNotAffectDependencyResolution(): void

@@ -273,9 +273,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return !empty($this->output);
     }
 
-    /**
-     * @return string<callable-string>
-     */
     public function sortId(): string
     {
         return $this->filename;
