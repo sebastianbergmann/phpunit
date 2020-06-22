@@ -21,6 +21,7 @@ use function ini_get;
 use function ini_set;
 use function trigger_error;
 use DependencyFailureTest;
+use DependencyInputTest;
 use DependencyOnClassTest;
 use DependencySuccessTest;
 use Failure;
@@ -1293,6 +1294,20 @@ class TestCaseTest extends TestCase
         $this->expectErrorMessageMatches('/foo/');
 
         trigger_error('foo', E_USER_ERROR);
+    }
+
+    public function testSetDependencyInput(): void
+    {
+        $test = new DependencyInputTest('testDependencyInputAsParameter');
+        $test->setDependencyInput(['value from TestCaseTest']);
+
+        $result = $test->run();
+
+        $this->assertEquals(BaseTestRunner::STATUS_PASSED, $test->getStatus());
+        $this->assertEquals(0, $result->errorCount());
+        $this->assertEquals(0, $result->failureCount());
+        $this->assertEquals(0, $result->skippedCount());
+        $this->assertCount(1, $result);
     }
 
     /**
