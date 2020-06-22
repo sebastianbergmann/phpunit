@@ -93,11 +93,30 @@ class TestCaseTest extends TestCase
         );
     }
 
+    /**
+     * @testdox TestCase::toSring()
+     */
     public function testCaseToString(): void
     {
         $this->assertEquals(
             'PHPUnit\Framework\TestCaseTest::testCaseToString',
             $this->toString()
+        );
+    }
+
+    /**
+     * @testdox TestCase has sensible defaults for execution reordering
+     */
+    public function testCaseDefaultExecutionOrderDependencies(): void
+    {
+        $this->assertEquals(
+            [new ExecutionOrderDependency(get_class($this), 'testCaseDefaultExecutionOrderDependencies')],
+            $this->provides()
+        );
+
+        $this->assertEquals(
+            [],
+            $this->requires()
         );
     }
 
