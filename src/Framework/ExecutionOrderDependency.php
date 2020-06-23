@@ -75,7 +75,7 @@ final class ExecutionOrderDependency
      */
     public static function mergeUnique(array $existing, array $additional): array
     {
-        $existingTargets = array_map(function ($dependency) {
+        $existingTargets = array_map(static function ($dependency) {
             return $dependency->getTarget();
         }, $existing);
 
