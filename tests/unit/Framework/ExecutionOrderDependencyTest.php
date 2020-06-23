@@ -42,7 +42,7 @@ class ExecutionOrderDependencyTest extends TestCase
         ];
     }
 
-    public function testCreateDependencyOnClassWithFromClassNameOnly(): void
+    public function testCreateDependencyOnClassFromClassNameOnly(): void
     {
         $dependency = new ExecutionOrderDependency('ClassDependency');
 

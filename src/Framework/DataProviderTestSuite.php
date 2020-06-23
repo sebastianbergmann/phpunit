@@ -18,12 +18,12 @@ use PHPUnit\Util\Test as TestUtil;
 final class DataProviderTestSuite extends TestSuite
 {
     /**
-     * @var array<ExecutionOrderDependency>
+     * @var list<ExecutionOrderDependency>
      */
     private $dependencies = [];
 
     /**
-     * @param array<ExecutionOrderDependency> $dependencies
+     * @param list<ExecutionOrderDependency> $dependencies
      */
     public function setDependencies(array $dependencies): void
     {
@@ -40,7 +40,7 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @return array<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -52,7 +52,7 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @return array<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {

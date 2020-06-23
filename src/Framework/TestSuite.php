@@ -107,12 +107,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     protected $foundClasses = [];
 
     /**
-     * @var null|array<ExecutionOrderDependency>
+     * @var null|list<ExecutionOrderDependency>
      */
     protected $providedTests;
 
     /**
-     * @var null|array<ExecutionOrderDependency>
+     * @var null|list<ExecutionOrderDependency>
      */
     protected $requiredTests;
 
@@ -796,7 +796,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return array<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -821,7 +821,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return array<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {
