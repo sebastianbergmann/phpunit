@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Util\Annotation;
 
-use NumericGroupAnnotationTest;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 use PHPUnit\Util\Exception;
 use ThisClassDoesNotExist;
 

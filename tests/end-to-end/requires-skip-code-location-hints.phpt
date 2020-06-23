@@ -20,100 +20,100 @@ Time: %s, Memory: %s
 
 There were 2 warnings:
 
-1) RequirementsTest::testVersionConstraintInvalidPhpConstraint
+1) PHPUnit\TestFixture\RequirementsTest::testVersionConstraintInvalidPhpConstraint
 Version constraint ~^12345 is not supported.
 %a
-2) RequirementsTest::testVersionConstraintInvalidPhpUnitConstraint
+2) PHPUnit\TestFixture\RequirementsTest::testVersionConstraintInvalidPhpUnitConstraint
 Version constraint ~^12345 is not supported.
 %a
 --
 
 There were 17 risky tests:
 
-1) RequirementsTest::testOne
+1) PHPUnit\TestFixture\RequirementsTest::testOne
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:14
+%stests%e_files%eRequirementsTest.php:%d
 
-2) RequirementsTest::testTwo
+2) PHPUnit\TestFixture\RequirementsTest::testTwo
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:21
+%stests%e_files%eRequirementsTest.php:%d
 
-3) RequirementsTest::testThree
+3) PHPUnit\TestFixture\RequirementsTest::testThree
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:28
+%stests%e_files%eRequirementsTest.php:%d
 
-4) RequirementsTest::testFour
+4) PHPUnit\TestFixture\RequirementsTest::testFour
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:36
+%stests%e_files%eRequirementsTest.php:%d
 
-5) RequirementsTest::testFive
+5) PHPUnit\TestFixture\RequirementsTest::testFive
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:43
+%stests%e_files%eRequirementsTest.php:%d
 
-6) RequirementsTest::testSix
+6) PHPUnit\TestFixture\RequirementsTest::testSix
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:50
+%stests%e_files%eRequirementsTest.php:%d
 
-7) RequirementsTest::testSeven
+7) PHPUnit\TestFixture\RequirementsTest::testSeven
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:57
+%stests%e_files%eRequirementsTest.php:%d
 
-8) RequirementsTest::testEight
+8) PHPUnit\TestFixture\RequirementsTest::testEight
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:64
+%stests%e_files%eRequirementsTest.php:%d
 
-9) RequirementsTest::testExistingFunction
+9) PHPUnit\TestFixture\RequirementsTest::testExistingFunction
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:117
+%stests%e_files%eRequirementsTest.php:%d
 
-10) RequirementsTest::testExistingMethod
+10) PHPUnit\TestFixture\RequirementsTest::testExistingMethod
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:124
+%stests%e_files%eRequirementsTest.php:%d
 
-11) RequirementsTest::testExistingExtension
+11) PHPUnit\TestFixture\RequirementsTest::testExistingExtension
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:131
+%stests%e_files%eRequirementsTest.php:%d
 
-12) RequirementsTest::testExistingOs
+12) PHPUnit\TestFixture\RequirementsTest::testExistingOs
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:138
+%stests%e_files%eRequirementsTest.php:%d
 
-13) RequirementsTest::testSpace
+13) PHPUnit\TestFixture\RequirementsTest::testSpace
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:174
+%stests%e_files%eRequirementsTest.php:%d
 
-14) RequirementsTest::testPHPVersionOperatorBangEquals
+14) PHPUnit\TestFixture\RequirementsTest::testPHPVersionOperatorBangEquals
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:237
+%stests%e_files%eRequirementsTest.php:%d
 
-15) RequirementsTest::testPHPVersionOperatorNotEquals
+15) PHPUnit\TestFixture\RequirementsTest::testPHPVersionOperatorNotEquals
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:245
+%stests%e_files%eRequirementsTest.php:%d
 
-16) RequirementsTest::testPHPUnitVersionOperatorBangEquals
+16) PHPUnit\TestFixture\RequirementsTest::testPHPUnitVersionOperatorBangEquals
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:309
+%stests%e_files%eRequirementsTest.php:%d
 
-17) RequirementsTest::testPHPUnitVersionOperatorNotEquals
+17) PHPUnit\TestFixture\RequirementsTest::testPHPUnitVersionOperatorNotEquals
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:317
+%stests%e_files%eRequirementsTest.php:%d
 
 WARNINGS!
 Tests: 62, Assertions: 0, Warnings: 2, Skipped: 43, Risky: 17.
