@@ -205,7 +205,7 @@ final class TestSuiteSorter
         $max = 0;
 
         foreach ($suite->tests() as $test) {
-            if (!($test instanceof Reorderable)) {
+            if (!$test instanceof Reorderable) {
                 continue;
             }
 
@@ -378,7 +378,7 @@ final class TestSuiteSorter
 
         if ($suite instanceof TestSuite) {
             foreach ($suite->tests() as $test) {
-                if (!($test instanceof TestSuite) && $test instanceof Reorderable) {
+                if (!$test instanceof TestSuite && $test instanceof Reorderable) {
                     $tests[] = $test->sortId();
                 } else {
                     $tests = array_merge($tests, $this->calculateTestExecutionOrder($test));

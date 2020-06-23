@@ -54,6 +54,7 @@ class ExecutionOrderDependencyTest extends TestCase
     public function testDependsAnnotationRequireATargetToBeValid(): void
     {
         $dependency = ExecutionOrderDependency::createFromDependsAnnotation('SomeClass', '');
+
         $this->assertFalse($dependency->isValid());
         $this->assertSame('', $dependency->getTarget());
     }
@@ -110,12 +111,14 @@ class ExecutionOrderDependencyTest extends TestCase
     public function testCreateDependencyFromAnnotation(): void
     {
         $dependency = ExecutionOrderDependency::createFromDependsAnnotation('ClassOne', 'ClassOne::methodOne');
+
         $this->assertSame('ClassOne::methodOne', $dependency->getTarget());
     }
 
     public function testCreateDependencyFromAnnotationWithCloneOption(): void
     {
         $dependency = ExecutionOrderDependency::createFromDependsAnnotation('ClassOne', 'clone methodOne');
+
         $this->assertSame('ClassOne::methodOne', $dependency->getTarget());
         $this->assertTrue($dependency->useDeepClone());
     }
