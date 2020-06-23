@@ -34,7 +34,7 @@ final class GlobalState
      */
     public static function getIncludedFilesAsString(): string
     {
-        return static::processIncludedFilesAsString(\get_included_files());
+        return self::processIncludedFilesAsString(\get_included_files());
     }
 
     /**
