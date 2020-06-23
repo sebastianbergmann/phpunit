@@ -64,9 +64,11 @@ final class TestClassTest extends TestCase
         return [
             [
                 'testOne',
-                ['__OFFSET' => [
-                    '__FILE' => $this->getRequirementsTestClassFile(),
-                ]],
+                [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                    ],
+                ],
             ],
 
             [
@@ -633,6 +635,7 @@ final class TestClassTest extends TestCase
     public function testGetRequirementsWithInvalidVersionConstraintsThrowsException($test): void
     {
         $this->expectException(Warning::class);
+
         Test::getRequirements(RequirementsTest::class, $test);
     }
 
@@ -1461,29 +1464,34 @@ final class TestClassTest extends TestCase
     public function canSkipCoverageProvider(): array
     {
         return [
-            ['CoverageClassTest', false],
-            ['CoverageClassWithoutAnnotationsTest', false],
-            ['CoverageCoversOverridesCoversNothingTest', false],
-            ['CoverageClassNothingTest', true],
-            ['CoverageMethodNothingTest', true],
+            [CoverageClassTest::class, false],
+            [CoverageClassWithoutAnnotationsTest::class, false],
+            [CoverageCoversOverridesCoversNothingTest::class, false],
+            [CoverageClassNothingTest::class, true],
+            [CoverageMethodNothingTest::class, true],
         ];
     }
 
     public function testTrimDependencyOptions(): void
     {
-        $this->assertSame([
-            'methodNameA',
-            'methodNameB',
-            'ClassName1::methodName1',
-            'ClassName2::methodName2',
-            'ClassName3::methodName3',
-        ], Test::trimDependencyOptions([
-            'methodNameA',
-            '!clone methodNameB',
-            'ClassName1::methodName1',
-            'shallowClone ClassName2::methodName2',
-            '!shallowClone ClassName3::methodName3',
-        ]));
+        $this->assertSame(
+            [
+                'methodNameA',
+                'methodNameB',
+                'ClassName1::methodName1',
+                'ClassName2::methodName2',
+                'ClassName3::methodName3',
+            ],
+            Test::trimDependencyOptions(
+                [
+                    'methodNameA',
+                    '!clone methodNameB',
+                    'ClassName1::methodName1',
+                    'shallowClone ClassName2::methodName2',
+                    '!shallowClone ClassName3::methodName3',
+                ]
+            )
+        );
     }
 
     /**
