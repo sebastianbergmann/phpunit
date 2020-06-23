@@ -80,10 +80,12 @@ final class ExecutionOrderDependency
         }, $existing);
 
         foreach ($additional as $dependency) {
-            if (array_search($dependency->getTarget(), $existingTargets, true) === false) {
-                $existingTargets[]  = $dependency->getTarget();
-                $existing[]         = $dependency;
+            if (array_search($dependency->getTarget(), $existingTargets, true) !== false) {
+                continue;
             }
+
+            $existingTargets[] = $dependency->getTarget();
+            $existing[]        = $dependency;
         }
 
         return $existing;
