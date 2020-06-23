@@ -58,7 +58,7 @@ final class FileLoader
 
         include_once $filename;
 
-        $newVariables     = \get_defined_vars();
+        $newVariables = \get_defined_vars();
 
         foreach (\array_diff(\array_keys($newVariables), $oldVariableNames) as $variableName) {
             if ($variableName !== 'oldVariableNames') {

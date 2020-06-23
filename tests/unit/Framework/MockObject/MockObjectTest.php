@@ -1016,9 +1016,9 @@ final class MockObjectTest extends TestCase
     public function traversableProvider(): array
     {
         return [
-            'Traversable'                   => ['Traversable'],
-            '\Traversable'                  => ['\Traversable'],
-            'TraversableMockTestInterface'  => ['TraversableMockTestInterface'],
+            'Traversable'                  => ['Traversable'],
+            '\Traversable'                 => ['\Traversable'],
+            'TraversableMockTestInterface' => ['TraversableMockTestInterface'],
         ];
     }
 

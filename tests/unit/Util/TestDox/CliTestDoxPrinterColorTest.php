@@ -26,12 +26,12 @@ final class CliTestDoxPrinterColorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->printer        = new TestableCliTestDoxPrinter(null, true, \PHPUnit\TextUI\ResultPrinter::COLOR_ALWAYS);
+        $this->printer = new TestableCliTestDoxPrinter(null, true, \PHPUnit\TextUI\ResultPrinter::COLOR_ALWAYS);
     }
 
     protected function tearDown(): void
     {
-        $this->printer        = null;
+        $this->printer = null;
     }
 
     public function testColorizesDiffInFailureMessage(): void

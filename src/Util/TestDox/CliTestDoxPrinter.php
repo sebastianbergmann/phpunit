@@ -54,26 +54,26 @@ class CliTestDoxPrinter extends TestDoxPrinter
     ];
 
     private const STATUS_STYLES = [
-        BaseTestRunner::STATUS_PASSED     => [
+        BaseTestRunner::STATUS_PASSED => [
             'symbol' => '✔',
             'color'  => 'fg-green',
         ],
-        BaseTestRunner::STATUS_ERROR      => [
+        BaseTestRunner::STATUS_ERROR => [
             'symbol'  => '✘',
             'color'   => 'fg-yellow',
             'message' => 'bg-yellow,fg-black',
         ],
-        BaseTestRunner::STATUS_FAILURE    => [
+        BaseTestRunner::STATUS_FAILURE => [
             'symbol'  => '✘',
             'color'   => 'fg-red',
             'message' => 'bg-red,fg-white',
         ],
-        BaseTestRunner::STATUS_SKIPPED    => [
+        BaseTestRunner::STATUS_SKIPPED => [
             'symbol'  => '↩',
             'color'   => 'fg-cyan',
             'message' => 'fg-cyan',
         ],
-        BaseTestRunner::STATUS_RISKY      => [
+        BaseTestRunner::STATUS_RISKY => [
             'symbol'  => '☢',
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
@@ -83,12 +83,12 @@ class CliTestDoxPrinter extends TestDoxPrinter
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
         ],
-        BaseTestRunner::STATUS_WARNING    => [
+        BaseTestRunner::STATUS_WARNING => [
             'symbol'  => '⚠',
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
         ],
-        BaseTestRunner::STATUS_UNKNOWN    => [
+        BaseTestRunner::STATUS_UNKNOWN => [
             'symbol'  => '?',
             'color'   => 'fg-blue',
             'message' => 'fg-white,bg-blue',
@@ -303,7 +303,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     protected function drawSpinner(): void
     {
         if ($this->colors) {
-            $id =  $this->spinState % \count(self::SPINNER_ICONS);
+            $id = $this->spinState % \count(self::SPINNER_ICONS);
             $this->write(self::SPINNER_ICONS[$id]);
         }
     }
@@ -311,7 +311,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     protected function undrawSpinner(): void
     {
         if ($this->colors) {
-            $id =  $this->spinState % \count(self::SPINNER_ICONS);
+            $id = $this->spinState % \count(self::SPINNER_ICONS);
             $this->write("\e[1K\e[" . \strlen(self::SPINNER_ICONS[$id]) . 'D');
         }
     }

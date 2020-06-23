@@ -62,16 +62,16 @@ class Issue1335Test extends TestCase
 
     public function testGlobalObject(): void
     {
-        $this->assertEquals((object) ['foo'=> 'bar'], $GLOBALS['globalObject']);
+        $this->assertEquals((object) ['foo' => 'bar'], $GLOBALS['globalObject']);
     }
 
     public function testGlobalObjectWithBackSlashString(): void
     {
-        $this->assertEquals((object) ['foo'=> 'back\\slash'], $GLOBALS['globalObjectWithBackSlashString']);
+        $this->assertEquals((object) ['foo' => 'back\\slash'], $GLOBALS['globalObjectWithBackSlashString']);
     }
 
     public function testGlobalObjectWithDoubleBackSlashString(): void
     {
-        $this->assertEquals((object) ['foo'=> 'back\\\\slash'], $GLOBALS['globalObjectWithDoubleBackSlashString']);
+        $this->assertEquals((object) ['foo' => 'back\\\\slash'], $GLOBALS['globalObjectWithDoubleBackSlashString']);
     }
 }

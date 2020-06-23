@@ -11,15 +11,15 @@ use PHPUnit\Framework\TestCase;
 
 class ExceptionInTearDownTest extends TestCase
 {
-    public $setUp                = false;
+    public $setUp = false;
 
-    public $assertPreConditions  = false;
+    public $assertPreConditions = false;
 
     public $assertPostConditions = false;
 
-    public $tearDown             = false;
+    public $tearDown = false;
 
-    public $testSomething        = false;
+    public $testSomething = false;
 
     protected function setUp(): void
     {

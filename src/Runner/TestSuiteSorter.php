@@ -220,8 +220,8 @@ final class TestSuiteSorter
             $testname = self::getTestSorterUID($test);
 
             if (!isset($this->defectSortOrder[$testname])) {
-                $this->defectSortOrder[$testname]        = self::DEFECT_SORT_WEIGHT[$this->cache->getState($testname)];
-                $max                                     = \max($max, $this->defectSortOrder[$testname]);
+                $this->defectSortOrder[$testname] = self::DEFECT_SORT_WEIGHT[$this->cache->getState($testname)];
+                $max                              = \max($max, $this->defectSortOrder[$testname]);
             }
         }
 
