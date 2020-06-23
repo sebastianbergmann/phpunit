@@ -12,6 +12,7 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractTrait;
 use PHPUnit\TestFixture\AnInterfaceWithReturnType;
+use PHPUnit\TestFixture\ClassWithVariadicArgumentMethod;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
 
 /**

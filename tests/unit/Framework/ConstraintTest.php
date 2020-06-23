@@ -11,11 +11,11 @@ namespace PHPUnit\Framework;
 
 use function preg_replace;
 use ArrayObject;
-use ClassWithNonPublicAttributes;
 use Countable;
 use DummyException;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\SameSize;
+use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use PHPUnit\Util\Filter;
 use stdClass;
 use TestIterator;
@@ -858,7 +858,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
+Failed asserting that class "PHPUnit\TestFixture\ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
 
 EOF
                 ,
@@ -883,7 +883,7 @@ EOF
             $this->assertEquals(
                 <<<EOF
 custom message
-Failed asserting that class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
+Failed asserting that class "PHPUnit\TestFixture\ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
 
 EOF
                 ,
@@ -912,7 +912,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that class "ClassWithNonPublicAttributes" does not have static attribute "privateStaticAttribute".
+Failed asserting that class "PHPUnit\TestFixture\ClassWithNonPublicAttributes" does not have static attribute "privateStaticAttribute".
 
 EOF
                 ,
@@ -937,7 +937,7 @@ EOF
             $this->assertEquals(
                 <<<EOF
 custom message
-Failed asserting that class "ClassWithNonPublicAttributes" does not have static attribute "privateStaticAttribute".
+Failed asserting that class "PHPUnit\TestFixture\ClassWithNonPublicAttributes" does not have static attribute "privateStaticAttribute".
 
 EOF
                 ,
@@ -966,7 +966,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that object of class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
+Failed asserting that object of class "PHPUnit\TestFixture\ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
 
 EOF
                 ,
@@ -991,7 +991,7 @@ EOF
             $this->assertEquals(
                 <<<EOF
 custom message
-Failed asserting that object of class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
+Failed asserting that object of class "PHPUnit\TestFixture\ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
 
 EOF
                 ,

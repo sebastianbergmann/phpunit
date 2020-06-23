@@ -7,16 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use function get_object_vars;
+use function unserialize;
+use Serializable;
+
 class ClassThatImplementsSerializable implements Serializable
 {
     public function serialize()
     {
-        return \get_object_vars($this);
+        return get_object_vars($this);
     }
 
     public function unserialize($serialized): void
     {
-        foreach (\unserialize($serialized) as $key => $value) {
+        foreach (unserialize($serialized) as $key => $value) {
             $this->{$key} = $value;
         }
     }

@@ -18,10 +18,10 @@ use function decbin;
 use function implode;
 use function sprintf;
 use function str_split;
-use BooleanConstraint;
-use CountConstraint;
 use NamedConstraint;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\TestFixture\BooleanConstraint;
+use PHPUnit\TestFixture\CountConstraint;
 use ReflectionClass;
 use ReflectionMethod;
 

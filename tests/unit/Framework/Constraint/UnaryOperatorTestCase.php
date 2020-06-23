@@ -11,10 +11,10 @@ namespace PHPUnit\Framework\Constraint;
 
 use function array_map;
 use function sprintf;
-use BooleanConstraint;
-use CountConstraint;
 use NamedConstraint;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\TestFixture\BooleanConstraint;
+use PHPUnit\TestFixture\CountConstraint;
 use ReflectionClass;
 use ReflectionMethod;
 

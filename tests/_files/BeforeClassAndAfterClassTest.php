@@ -7,13 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 use PHPUnit\Framework\TestCase;
 
 class BeforeClassAndAfterClassTest extends TestCase
 {
     public static $beforeClassWasRun = 0;
 
-    public static $afterClassWasRun  = 0;
+    public static $afterClassWasRun = 0;
 
     public static function resetProperties(): void
     {
