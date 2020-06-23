@@ -109,7 +109,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($tmpFilename);
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
 
-        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $configurationValues = $configurationInstance->getPHPUnitConfiguration();
         $this->assertEquals($expected, $configurationValues[$optionName]);
 
         @\unlink($tmpFilename);
@@ -118,26 +118,26 @@ final class ConfigurationTest extends TestCase
     public function configurationRootOptionsProvider(): array
     {
         return [
-            'executionOrder default'                         => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
-            'executionOrder random'                          => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
-            'executionOrder reverse'                         => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
-            'executionOrder size'                            => ['executionOrder', 'size', TestSuiteSorter::ORDER_SIZE],
-            'cacheResult=false'                              => ['cacheResult', 'false', false],
-            'cacheResult=true'                               => ['cacheResult', 'true', true],
-            'cacheResultFile absolute path'                  => ['cacheResultFile', '/path/to/result/cache', '/path/to/result/cache'],
-            'columns'                                        => ['columns', 'max', 'max'],
-            'stopOnFailure'                                  => ['stopOnFailure', 'true', true],
-            'stopOnWarning'                                  => ['stopOnWarning', 'true', true],
-            'stopOnIncomplete'                               => ['stopOnIncomplete', 'true', true],
-            'stopOnRisky'                                    => ['stopOnRisky', 'true', true],
-            'stopOnSkipped'                                  => ['stopOnSkipped', 'true', true],
-            'failOnWarning'                                  => ['failOnWarning', 'true', true],
-            'failOnRisky'                                    => ['failOnRisky', 'true', true],
-            'disableCodeCoverageIgnore'                      => ['disableCodeCoverageIgnore', 'true', true],
-            'processIsolation'                               => ['processIsolation', 'true', true],
-            'testSuiteLoaderFile absolute path'              => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
-            'reverseDefectList'                              => ['reverseDefectList', 'true', true],
-            'registerMockObjectsFromTestArgumentsRecursively'=> ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
+            'executionOrder default'                          => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
+            'executionOrder random'                           => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
+            'executionOrder reverse'                          => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
+            'executionOrder size'                             => ['executionOrder', 'size', TestSuiteSorter::ORDER_SIZE],
+            'cacheResult=false'                               => ['cacheResult', 'false', false],
+            'cacheResult=true'                                => ['cacheResult', 'true', true],
+            'cacheResultFile absolute path'                   => ['cacheResultFile', '/path/to/result/cache', '/path/to/result/cache'],
+            'columns'                                         => ['columns', 'max', 'max'],
+            'stopOnFailure'                                   => ['stopOnFailure', 'true', true],
+            'stopOnWarning'                                   => ['stopOnWarning', 'true', true],
+            'stopOnIncomplete'                                => ['stopOnIncomplete', 'true', true],
+            'stopOnRisky'                                     => ['stopOnRisky', 'true', true],
+            'stopOnSkipped'                                   => ['stopOnSkipped', 'true', true],
+            'failOnWarning'                                   => ['failOnWarning', 'true', true],
+            'failOnRisky'                                     => ['failOnRisky', 'true', true],
+            'disableCodeCoverageIgnore'                       => ['disableCodeCoverageIgnore', 'true', true],
+            'processIsolation'                                => ['processIsolation', 'true', true],
+            'testSuiteLoaderFile absolute path'               => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
+            'reverseDefectList'                               => ['reverseDefectList', 'true', true],
+            'registerMockObjectsFromTestArgumentsRecursively' => ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
         ];
     }
 
@@ -150,7 +150,7 @@ final class ConfigurationTest extends TestCase
         $configurationInstance = Configuration::getInstance($tmpFilename);
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
 
-        $configurationValues   = $configurationInstance->getPHPUnitConfiguration();
+        $configurationValues = $configurationInstance->getPHPUnitConfiguration();
         $this->assertSame(TestSuiteSorter::ORDER_DEFECTS_FIRST, $configurationValues['executionOrderDefects']);
         $this->assertSame(true, $configurationValues['resolveDependencies']);
 
@@ -353,16 +353,16 @@ final class ConfigurationTest extends TestCase
                     TEST_FILES_PATH . '.',
                     '/path/to/lib',
                 ],
-                'ini'    => ['foo' => ['value' => 'bar'], 'highlight.keyword' => ['value' => '#123456'], 'highlight.string' => ['value' => 'TEST_FILES_PATH']],
-                'const'  => ['FOO' => ['value' => false], 'BAR' => ['value' => true]],
-                'var'    => ['foo' => ['value' => false]],
-                'env'    => ['foo' => ['value' => true], 'bar' => ['value' => 'true', 'verbatim' => true], 'foo_force' => ['value' => 'forced', 'force' => true]],
-                'post'   => ['foo' => ['value' => 'bar']],
-                'get'    => ['foo' => ['value' => 'bar']],
-                'cookie' => ['foo' => ['value' => 'bar']],
-                'server' => ['foo' => ['value' => 'bar']],
-                'files'  => ['foo' => ['value' => 'bar']],
-                'request'=> ['foo' => ['value' => 'bar']],
+                'ini'     => ['foo' => ['value' => 'bar'], 'highlight.keyword' => ['value' => '#123456'], 'highlight.string' => ['value' => 'TEST_FILES_PATH']],
+                'const'   => ['FOO' => ['value' => false], 'BAR' => ['value' => true]],
+                'var'     => ['foo' => ['value' => false]],
+                'env'     => ['foo' => ['value' => true], 'bar' => ['value' => 'true', 'verbatim' => true], 'foo_force' => ['value' => 'forced', 'force' => true]],
+                'post'    => ['foo' => ['value' => 'bar']],
+                'get'     => ['foo' => ['value' => 'bar']],
+                'cookie'  => ['foo' => ['value' => 'bar']],
+                'server'  => ['foo' => ['value' => 'bar']],
+                'files'   => ['foo' => ['value' => 'bar']],
+                'request' => ['foo' => ['value' => 'bar']],
             ],
             $this->configuration->getPHPConfiguration()
         );

@@ -2436,9 +2436,9 @@ XML;
             [\NAN, \NAN],
             // arrays
             [[], [0 => 1]],
-            [[0     => 1], []],
-            [[0     => null], []],
-            [[0     => 1, 1 => 2], [0     => 1, 1 => 3]],
+            [[0 => 1], []],
+            [[0 => null], []],
+            [[0 => 1, 1 => 2], [0 => 1, 1 => 3]],
             [['a', 'b' => [1, 2]], ['a', 'b' => [2, 1]]],
             // objects
             [new \SampleClass(4, 8, 15), new \SampleClass(16, 23, 42)],
@@ -2519,7 +2519,7 @@ XML;
             // different types
             [new \SampleClass(4, 8, 15), false],
             [false, new \SampleClass(4, 8, 15)],
-            [[0        => 1, 1 => 2], false],
+            [[0 => 1, 1 => 2], false],
             [false, [0 => 1, 1 => 2]],
             [[], new \stdClass],
             [new \stdClass, []],
