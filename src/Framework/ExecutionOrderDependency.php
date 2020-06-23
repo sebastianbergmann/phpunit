@@ -108,14 +108,16 @@ final class ExecutionOrderDependency
         }
 
         $diff         = [];
-        $rightTargets = array_map(function ($dependency) {
+        $rightTargets = array_map(static function ($dependency) {
             return $dependency->getTarget();
         }, $right);
 
         foreach ($left as $dependency) {
-            if (array_search($dependency->getTarget(), $rightTargets, true) === false) {
-                $diff[] = $dependency;
+            if (!array_search($dependency->getTarget(), $rightTargets, true) !== false) {
+                continue;
             }
+
+            $diff[] = $dependency;
         }
 
         return $diff;

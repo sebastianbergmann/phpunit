@@ -834,8 +834,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     continue;
                     // @codeCoverageIgnoreEnd
                 }
-                $this->requiredTests = ExecutionOrderDependency::filterInvalid($this->requiredTests);
-                $this->requiredTests = ExecutionOrderDependency::mergeUnique($this->requiredTests, $test->requires());
+                $this->requiredTests = ExecutionOrderDependency::mergeUnique(
+                    ExecutionOrderDependency::filterInvalid($this->requiredTests),
+                    $test->requires()
+                );
             }
 
             $this->requiredTests = ExecutionOrderDependency::diff($this->requiredTests, $this->provides());
