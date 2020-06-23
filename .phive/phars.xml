@@ -6,5 +6,5 @@
   <phar name="phploc" version="^4.0" installed="4.0.1" location="./tools/phploc" copy="true"/>
   <phar name="psalm" version="^3.6" installed="3.12.1" location="./tools/psalm" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.13.2" installed="0.13.2" location="./tools/php-scoper" copy="true"/>
-  <phar name="roave/backwardcompatibilitycheck" version="^4.4.0" installed="4.4.0" location="./tools/roave-backward-compatibility-check" copy="true"/>
+  <phar name="roave/backwardcompatibilitycheck" version="^5.0.0" installed="5.0.0" location="./tools/roave-backward-compatibility-check" copy="true"/>
 </phive>
