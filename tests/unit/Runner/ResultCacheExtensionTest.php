@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Runner;
 
-use EmptyTestCaseTest;
 use Failure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestCaseTest;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\TestFixture\EmptyTestCaseTest;
 use Success;
 use TestError;
 use TestIncomplete;

@@ -17,6 +17,7 @@ use PHPUnit\TestFixture\ClassWithAllPossibleReturnTypes;
 use PHPUnit\TestFixture\ClassWithSelfTypeHint;
 use PHPUnit\TestFixture\ClassWithStaticMethod;
 use PHPUnit\TestFixture\ClassWithUnionReturnTypes;
+use PHPUnit\TestFixture\ExampleTrait;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
 
 /**

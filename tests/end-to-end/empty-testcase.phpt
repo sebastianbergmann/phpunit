@@ -17,7 +17,7 @@ Time: %s, Memory: %s
 There was 1 warning:
 
 1) Warning
-No tests found in class "EmptyTestCaseTest".
+No tests found in class "PHPUnit\TestFixture\EmptyTestCaseTest".
 
 WARNINGS!
 Tests: 1, Assertions: 0, Warnings: 1.

@@ -12,10 +12,10 @@ namespace PHPUnit\Framework;
 use function preg_replace;
 use ArrayObject;
 use Countable;
-use DummyException;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
+use PHPUnit\TestFixture\DummyException;
 use PHPUnit\Util\Filter;
 use stdClass;
 use TestIterator;
@@ -1365,7 +1365,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that exception of type "DummyException" matches expected exception "FoobarException". Message was: "Test" at
+Failed asserting that exception of type "PHPUnit\TestFixture\DummyException" matches expected exception "FoobarException". Message was: "Test" at
 $stackTrace.
 
 EOF

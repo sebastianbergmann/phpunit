@@ -11,7 +11,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Dummy Bar
+Dummy Bar (PHPUnit\TestFixture\DummyBar)
  ✔ Bar equals bar
 
 Time: %s, Memory: %s

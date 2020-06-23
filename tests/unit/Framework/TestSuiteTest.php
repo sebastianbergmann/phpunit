@@ -13,13 +13,9 @@ use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_pop;
 use DataProviderDependencyTest;
-use DataProviderIncompleteTest;
-use DataProviderSkippedTest;
 use DependencyFailureTest;
 use DependencyOnClassTest;
 use DependencySuccessTest;
-use DoubleTestCase;
-use ExceptionInTearDownAfterClassTest;
 use InheritedTestCase;
 use MultiDependencyTest;
 use NoTestCases;
@@ -30,6 +26,10 @@ use OverrideTestCase;
 use PHPUnit\TestFixture\BeforeAndAfterTest;
 use PHPUnit\TestFixture\BeforeClassAndAfterClassTest;
 use PHPUnit\TestFixture\BeforeClassWithOnlyDataProviderTest;
+use PHPUnit\TestFixture\DataProviderIncompleteTest;
+use PHPUnit\TestFixture\DataProviderSkippedTest;
+use PHPUnit\TestFixture\DoubleTestCase;
+use PHPUnit\TestFixture\ExceptionInTearDownAfterClassTest;
 use PreConditionAndPostConditionTest;
 use RequirementsClassBeforeClassHookTest;
 use Success;
@@ -272,7 +272,7 @@ final class TestSuiteTest extends TestCase
         $failure = $this->result->failures()[0];
 
         $this->assertSame(
-            'Exception in ExceptionInTearDownAfterClassTest::tearDownAfterClass' . PHP_EOL .
+            'Exception in PHPUnit\TestFixture\ExceptionInTearDownAfterClassTest::tearDownAfterClass' . PHP_EOL .
             'throw Exception in tearDownAfterClass()',
             $failure->thrownException()->getMessage()
         );
