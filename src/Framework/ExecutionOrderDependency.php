@@ -113,7 +113,7 @@ final class ExecutionOrderDependency
         }, $right);
 
         foreach ($left as $dependency) {
-            if (!array_search($dependency->getTarget(), $rightTargets, true) !== false) {
+            if (array_search($dependency->getTarget(), $rightTargets, true) !== false) {
                 continue;
             }
 
