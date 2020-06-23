@@ -171,6 +171,22 @@ class ExecutionOrderDependencyTest extends TestCase
         $depFour       = new ExecutionOrderDependency('classFour::methodFour');
 
         $this->assertSame(
+            [],
+            ExecutionOrderDependency::diff(
+                [$depOne, $depTwo],
+                [$depOne, $depTwo, $depThree, $depFour]
+            )
+        );
+
+        $this->assertSame(
+            [$depOne, $depTwo],
+            ExecutionOrderDependency::diff(
+                [$depOne, $depTwo],
+                [$depThree, $depFour]
+            )
+        );
+
+        $this->assertSame(
             [$depOne, $depFour],
             ExecutionOrderDependency::diff(
                 [$depOne, $depTwo, $depThree, $depFour],
