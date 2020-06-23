@@ -7,15 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\AssertionExample;
+namespace PHPUnit\TestFixture;
 
-class AssertionExampleTest extends TestCase
+use RuntimeException;
+
+class BankAccountException extends RuntimeException
 {
-    public function testOne(): void
-    {
-        $e = new AssertionExample;
-
-        $e->doSomething();
-    }
 }

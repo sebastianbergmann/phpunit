@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\SelfTest\Basic;
 
-use AnInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
+use PHPUnit\TestFixture\AnInterface;
 use RuntimeException;
 
 /**

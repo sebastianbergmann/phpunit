@@ -10,7 +10,10 @@
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\AbstractTrait;
+use PHPUnit\TestFixture\AnInterface;
 use PHPUnit\TestFixture\ClassWithUnionReturnTypes;
+use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
 
 /**
  * @small

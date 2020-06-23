@@ -7,13 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 use PHPUnit\Framework\TestCase;
 
 class DependencyOnClassTest extends TestCase
 {
     /**
-     * Guard support for using annotations to depend on a whole successful TestSuite
+     * Guard support for using annotations to depend on a whole successful TestSuite.
      *
      * @depends DependencySuccessTest::class
      *
@@ -25,7 +24,7 @@ class DependencyOnClassTest extends TestCase
     }
 
     /**
-     * Guard support for using annotations to depend on a whole failing TestSuite
+     * Guard support for using annotations to depend on a whole failing TestSuite.
      *
      * @depends DependencyFailureTest::class
      *

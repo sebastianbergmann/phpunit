@@ -35,7 +35,7 @@ final class BooleanConstraint extends Constraint
         if ($this->matches) {
             return 'true';
         }
-        
+
         return 'false';
     }
 }
