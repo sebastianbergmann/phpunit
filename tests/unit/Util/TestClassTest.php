@@ -683,8 +683,7 @@ final class TestClassTest extends TestCase
 
     public function testGetRequirementsMergesClassAndMethodDocBlocks(): void
     {
-        $reflector = new ReflectionClass(RequirementsClassDocBlockTest::class);
-        $file      = $reflector->getFileName();
+        $file = (new ReflectionClass(RequirementsClassDocBlockTest::class))->getFileName();
 
         $expectedAnnotations = [
             '__OFFSET' => [
