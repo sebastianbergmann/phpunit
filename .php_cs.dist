@@ -28,8 +28,8 @@ return PhpCsFixer\Config::create()
         'array_syntax' => ['syntax' => 'short'],
         'binary_operator_spaces' => [
             'operators' => [
-                '=' => 'align',
-                '=>' => 'align',
+                '=' => 'align_single_space_minimal',
+                '=>' => 'align_single_space_minimal',
             ],
         ],
         'blank_line_after_namespace' => true,
