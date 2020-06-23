@@ -58,13 +58,13 @@ final class ExecutionOrderDependency
     /**
      * @param list<ExecutionOrderDependency> $dependencies
      *
-     * @return ExecutionOrderDependency[]
+     * @return list<ExecutionOrderDependency>
      */
     public static function filterInvalid(array $dependencies): array
     {
-        return array_filter($dependencies, function (self $d) {
+        return array_values(array_filter($dependencies, function (self $d) {
             return $d->isValid();
-        });
+        }));
     }
 
     /**
