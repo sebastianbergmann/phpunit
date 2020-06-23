@@ -162,12 +162,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected $preserveGlobalState = true;
 
     /**
-     * @var array<ExecutionOrderDependency>
+     * @var list<ExecutionOrderDependency>
      */
     protected $providedTests = [];
 
     /**
-     * @var array<ExecutionOrderDependency>
+     * @var list<ExecutionOrderDependency>
      */
     protected $requiredTests = [];
 
@@ -217,7 +217,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private $name = '';
 
     /**
-     * @var array<ExecutionOrderDependency>
+     * @var list<ExecutionOrderDependency>
      */
     private $dependencies = [];
 
@@ -1231,7 +1231,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param array<ExecutionOrderDependency> $dependencies
+     * @param list<ExecutionOrderDependency> $dependencies
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
@@ -1464,7 +1464,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * Returns the normalized test name as class::method.
      *
-     * @return array<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -1478,7 +1478,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * no need for the [!][shallow]clone prefix that is filtered out
      * during normalization.
      *
-     * @return array<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {

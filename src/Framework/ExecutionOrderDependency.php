@@ -22,16 +22,16 @@ use function trim;
  */
 final class ExecutionOrderDependency
 {
-    /* var string */
+    /* @var string */
     private $className = '';
 
-    /* var string */
+    /* @var string */
     private $methodName = '';
 
-    /* var boolean */
+    /* @var bool */
     private $useShallowClone = false;
 
-    /* var boolean */
+    /* @var bool */
     private $useDeepClone = false;
 
     public static function createFromDependsAnnotation(string $className, string $annotation): self
@@ -56,9 +56,9 @@ final class ExecutionOrderDependency
     }
 
     /**
-     * @param array<ExecutionOrderDependency> $dependencies
+     * @param list<ExecutionOrderDependency> $dependencies
      *
-     * @return array<ExecutionOrderDependency>
+     * @return ExecutionOrderDependency[]
      */
     public static function filterInvalid(array $dependencies): array
     {
@@ -68,10 +68,10 @@ final class ExecutionOrderDependency
     }
 
     /**
-     * @param array<ExecutionOrderDependency> $existing
-     * @param array<ExecutionOrderDependency  $additional
+     * @param list<ExecutionOrderDependency> $existing
+     * @param list<ExecutionOrderDependency> $additional
      *
-     * @return array<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public static function mergeUnique(array $existing, array $additional): array
     {
@@ -90,10 +90,10 @@ final class ExecutionOrderDependency
     }
 
     /**
-     * @param array<ExecutionOrderDependency> $left
-     * @param array<ExecutionOrderDependency  $right
+     * @param list<ExecutionOrderDependency> $left
+     * @param list<ExecutionOrderDependency> $right
      *
-     * @return array<ExecutionOrderDependency>
+     * @return list<ExecutionOrderDependency>
      */
     public static function diff(array $left, array $right): array
     {
@@ -125,14 +125,11 @@ final class ExecutionOrderDependency
             return $this;
         }
 
-        if ($methodName !== null && $methodName !== '') {
-            $this->className  = $classOrCallableName;
-            $this->methodName = $methodName;
-        } elseif (strpos($classOrCallableName, '::') !== false) {
+        if (strpos($classOrCallableName, '::') !== false) {
             [$this->className, $this->methodName] = explode('::', $classOrCallableName);
         } else {
             $this->className  = $classOrCallableName;
-            $this->methodName = 'class';
+            $this->methodName = !empty($methodName) ? $methodName : 'class';
         }
 
         if ($option === 'clone') {
