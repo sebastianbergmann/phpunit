@@ -67,6 +67,13 @@ final class TestSuiteMapper
                 $testSuiteEmpty = false;
             }
 
+            // If we only have one test suit - avoid adding an extra wrapper of an empty test suite around it
+            // As this creates an invalid jUnit file
+            if (1 === $configuration->count()) {
+                $result         = $testSuite;
+                $testSuiteEmpty = true;
+            }
+
             if (!$testSuiteEmpty) {
                 $result->addTest($testSuite);
             }
