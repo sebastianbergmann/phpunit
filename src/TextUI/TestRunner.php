@@ -334,7 +334,9 @@ final class TestRunner extends BaseTestRunner
 
         $result->addListener($this->printer);
 
-        $codeCoverageReports = 0;
+        $coverageFilterFromConfigurationFile = false;
+        $coverageFilterFromOption            = false;
+        $codeCoverageReports                 = 0;
 
         if (!isset($arguments['noLogging'])) {
             if (isset($arguments['testdoxHTMLFile'])) {
@@ -410,9 +412,6 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile'])) {
-            $coverageFilterFromConfigurationFile = false;
-            $coverageFilterFromOption            = false;
-
             if (isset($arguments['coverageFilter'])) {
                 if (!is_array($arguments['coverageFilter'])) {
                     $coverageFilterDirectories = [$arguments['coverageFilter']];
@@ -464,7 +463,7 @@ final class TestRunner extends BaseTestRunner
 
         if ($codeCoverageReports > 0) {
             try {
-                if ($codeCoverageConfiguration->pathCoverage()) {
+                if (isset($codeCoverageConfiguration) && $codeCoverageConfiguration->pathCoverage()) {
                     $codeCoverageDriver = Driver::forLineAndPathCoverage($this->codeCoverageFilter);
                 } else {
                     $codeCoverageDriver = Driver::forLineCoverage($this->codeCoverageFilter);
