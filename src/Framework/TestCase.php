@@ -1232,7 +1232,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function setDependencies(array $dependencies): void
     {
-        $this->dependencies  = $dependencies;
+        $this->dependencies = $dependencies;
     }
 
     /**

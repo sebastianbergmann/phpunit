@@ -137,9 +137,9 @@ final class ExecutionOrderDependency
         }
 
         if ($option === 'clone') {
-            $this->useDeepClone  = true;
+            $this->useDeepClone = true;
         } elseif ($option === 'shallowClone') {
-            $this->useShallowClone  = true;
+            $this->useShallowClone = true;
         }
 
         return $this;
