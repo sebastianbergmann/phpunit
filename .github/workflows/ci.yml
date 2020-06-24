@@ -103,6 +103,7 @@ jobs:
       PHP_INI_VALUES: assert.exception=1, zend.assertions=1
 
     strategy:
+      fail-fast: false
       matrix:
         os:
           - ubuntu-latest
