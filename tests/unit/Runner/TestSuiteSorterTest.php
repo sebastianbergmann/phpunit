@@ -14,7 +14,7 @@ use MultiDependencyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\EmptyTestCaseTest;
-use TestWithDifferentSizes;
+use PHPUnit\TestFixture\TestWithDifferentSizes;
 
 /**
  * @testdox Reordering test execution

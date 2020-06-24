@@ -13,6 +13,7 @@ use const PHP_EOL;
 use function implode;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\Color;
 

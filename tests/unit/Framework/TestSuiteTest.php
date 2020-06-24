@@ -32,9 +32,9 @@ use PHPUnit\TestFixture\OneTestCase;
 use PHPUnit\TestFixture\OverrideTestCase;
 use PHPUnit\TestFixture\PreConditionAndPostConditionTest;
 use PHPUnit\TestFixture\RequirementsClassBeforeClassHookTest;
-use Success;
-use TestCaseWithExceptionInHook;
-use TestWithTest;
+use PHPUnit\TestFixture\Success;
+use PHPUnit\TestFixture\TestCaseWithExceptionInHook;
+use PHPUnit\TestFixture\TestWithTest;
 
 /**
  * @small

@@ -11,7 +11,7 @@ namespace PHPUnit\Framework;
 
 use function count;
 use PHPUnit\TestFixture\DoubleTestCase;
-use Success;
+use PHPUnit\TestFixture\Success;
 
 /**
  * @small

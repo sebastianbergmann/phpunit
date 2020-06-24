@@ -36,10 +36,10 @@ use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use PHPUnit\TestFixture\ClassWithToString;
 use PHPUnit\TestFixture\SampleArrayAccess;
 use PHPUnit\TestFixture\SampleClass;
+use PHPUnit\TestFixture\Struct;
 use PHPUnit\Util\Xml;
 use SplObjectStorage;
 use stdClass;
-use Struct;
 
 /**
  * @small

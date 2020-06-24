@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use ArrayObject;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
-use TestIterator;
+use PHPUnit\TestFixture\TestIterator;
 
 /**
  * @small

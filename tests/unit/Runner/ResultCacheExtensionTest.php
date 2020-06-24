@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\EmptyTestCaseTest;
 use PHPUnit\TestFixture\Failure;
-use Success;
-use TestError;
-use TestIncomplete;
-use TestRisky;
-use TestSkipped;
-use TestWarning;
+use PHPUnit\TestFixture\Success;
+use PHPUnit\TestFixture\TestError;
+use PHPUnit\TestFixture\TestIncomplete;
+use PHPUnit\TestFixture\TestRisky;
+use PHPUnit\TestFixture\TestSkipped;
+use PHPUnit\TestFixture\TestWarning;
 
 /**
  * @group test-reorder

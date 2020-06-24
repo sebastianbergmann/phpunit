@@ -20,7 +20,7 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) StopOnErrorTestSuite::testWithError
+1) PHPUnit\TestFixture\StopOnErrorTestSuite::testWithError
 Error: StopOnErrorTestSuite_error
 
 %s%etests%e_files%eStopOnErrorTestSuite.php:%d

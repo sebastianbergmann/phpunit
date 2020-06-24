@@ -16,9 +16,9 @@ use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use PHPUnit\TestFixture\DummyException;
+use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\Util\Filter;
 use stdClass;
-use TestIterator;
 
 /**
  * @small

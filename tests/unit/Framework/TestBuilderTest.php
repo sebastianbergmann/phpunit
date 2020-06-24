@@ -13,8 +13,8 @@ use function assert;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\TestFixture\EmptyDataProviderTest;
 use PHPUnit\TestFixture\ModifiedConstructorTestCase;
+use PHPUnit\TestFixture\TestWithAnnotations;
 use ReflectionClass;
-use TestWithAnnotations;
 
 /**
  * @covers \PHPUnit\Framework\TestBuilder

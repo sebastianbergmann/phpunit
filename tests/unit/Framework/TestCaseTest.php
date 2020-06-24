@@ -43,21 +43,21 @@ use PHPUnit\TestFixture\NoArgTestCaseTest;
 use PHPUnit\TestFixture\OutputTestCase;
 use PHPUnit\TestFixture\RequirementsTest;
 use PHPUnit\TestFixture\Singleton;
+use PHPUnit\TestFixture\Success;
+use PHPUnit\TestFixture\TestAutoreferenced;
+use PHPUnit\TestFixture\TestError;
+use PHPUnit\TestFixture\TestIncomplete;
+use PHPUnit\TestFixture\TestSkipped;
+use PHPUnit\TestFixture\TestWithDifferentNames;
+use PHPUnit\TestFixture\TestWithDifferentOutput;
+use PHPUnit\TestFixture\TestWithDifferentSizes;
+use PHPUnit\TestFixture\TestWithDifferentStatuses;
+use PHPUnit\TestFixture\ThrowExceptionTestCase;
+use PHPUnit\TestFixture\ThrowNoExceptionTestCase;
+use PHPUnit\TestFixture\WasRun;
 use PHPUnit\Util\Test as TestUtil;
 use RuntimeException;
-use Success;
-use TestAutoreferenced;
-use TestError;
-use TestIncomplete;
-use TestSkipped;
-use TestWithDifferentNames;
-use TestWithDifferentOutput;
-use TestWithDifferentSizes;
-use TestWithDifferentStatuses;
-use ThrowExceptionTestCase;
-use ThrowNoExceptionTestCase;
 use TypeError;
-use WasRun;
 
 class TestCaseTest extends TestCase
 {

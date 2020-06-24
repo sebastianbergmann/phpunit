@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TestFixture;
 
-use WrapperIteratorAggregate;
-
 abstract class AbstractVariousIterableDataProviderTest
 {
     abstract public function asArrayProvider();

@@ -7,6 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 final class TestWithDifferentStatuses extends TestCase
@@ -18,7 +21,7 @@ final class TestWithDifferentStatuses extends TestCase
 
     public function testThatErrors(): void
     {
-        throw new \Exception();
+        throw new Exception();
     }
 
     public function testThatPasses(): void

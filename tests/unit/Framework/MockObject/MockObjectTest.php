@@ -24,6 +24,9 @@ use PHPUnit\TestFixture\MethodCallbackByReference;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
 use PHPUnit\TestFixture\PartialMockTestClass;
 use PHPUnit\TestFixture\SomeClass;
+use PHPUnit\TestFixture\StringableClass;
+use PHPUnit\TestFixture\TraitWithConstructor;
+use PHPUnit\TestFixture\TraversableMockTestInterface;
 
 /**
  * @small
@@ -1011,9 +1014,9 @@ final class MockObjectTest extends TestCase
     public function traversableProvider(): array
     {
         return [
-            'Traversable'                  => ['Traversable'],
-            '\Traversable'                 => ['\Traversable'],
-            'TraversableMockTestInterface' => ['TraversableMockTestInterface'],
+            Traversable::class                  => [Traversable::class],
+            '\Traversable'                      => [Traversable::class],
+            TraversableMockTestInterface::class => [TraversableMockTestInterface::class],
         ];
     }
 
@@ -1075,7 +1078,7 @@ final class MockObjectTest extends TestCase
             $this->fail('Exception expected');
         } catch (RuntimeException $e) {
             $this->assertSame(
-                'Return value inference disabled and no expectation set up for StringableClass::__toString()',
+                'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\StringableClass::__toString()',
                 $e->getMessage()
             );
         }

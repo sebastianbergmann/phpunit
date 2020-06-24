@@ -11,8 +11,8 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\TestFixture\Failure;
 use PHPUnit\TestFixture\MyTestListener;
-use Success;
-use TestError;
+use PHPUnit\TestFixture\Success;
+use PHPUnit\TestFixture\TestError;
 
 /**
  * @small
