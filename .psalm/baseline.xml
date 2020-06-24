@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.11.5@3c60609c218d4d4b3b257728b8089094e5c6c6c2">
+<files psalm-version="3.12.1@9b860214d58c48b5cbe99bdb17914d0eb723c9cd">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -302,11 +302,6 @@
       <code>setResult</code>
       <code>addToAssertionCount</code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Util/RegularExpression.php">
-    <PossiblyNullArgument occurrences="1">
-      <code>$matches</code>
-    </PossiblyNullArgument>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <PossiblyInvalidArrayOffset occurrences="6">

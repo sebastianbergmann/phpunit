@@ -26,9 +26,6 @@ use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 
-/**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
- */
 final class InvocationMocker implements InvocationStubber, MethodNameMatch
 {
     /**
