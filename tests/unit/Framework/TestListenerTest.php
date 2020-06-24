@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
-use Failure;
-use MyTestListener;
+use PHPUnit\TestFixture\Failure;
+use PHPUnit\TestFixture\MyTestListener;
 use Success;
 use TestError;
 

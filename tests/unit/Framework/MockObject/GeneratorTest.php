@@ -13,7 +13,10 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractTrait;
 use PHPUnit\TestFixture\AnInterfaceWithReturnType;
 use PHPUnit\TestFixture\ClassWithVariadicArgumentMethod;
+use PHPUnit\TestFixture\ExceptionWithThrowable;
+use PHPUnit\TestFixture\InterfaceWithSemiReservedMethodName;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
+use PHPUnit\TestFixture\SingletonClass;
 
 /**
  * @covers \PHPUnit\Framework\MockObject\Generator

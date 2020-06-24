@@ -24,7 +24,7 @@ Time: %s, Memory: %s
 
 There was 1 incomplete test:
 
-1) IncompleteTest::testIncomplete
+1) PHPUnit\TestFixture\IncompleteTest::testIncomplete
 Test incomplete
 
 %s

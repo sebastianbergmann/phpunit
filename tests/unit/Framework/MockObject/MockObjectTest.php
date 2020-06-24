@@ -18,7 +18,12 @@ use PHPUnit\TestFixture\ClassWithSelfTypeHint;
 use PHPUnit\TestFixture\ClassWithStaticMethod;
 use PHPUnit\TestFixture\ClassWithUnionReturnTypes;
 use PHPUnit\TestFixture\ExampleTrait;
+use PHPUnit\TestFixture\InterfaceWithStaticMethod;
+use PHPUnit\TestFixture\MethodCallback;
+use PHPUnit\TestFixture\MethodCallbackByReference;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
+use PHPUnit\TestFixture\PartialMockTestClass;
+use PHPUnit\TestFixture\SomeClass;
 
 /**
  * @small
@@ -274,7 +279,7 @@ final class MockObjectTest extends TestCase
 
         $mock->expects($this->once())
              ->method('doSomething')
-             ->willReturnCallback('FunctionCallbackWrapper::functionCallback');
+             ->willReturnCallback('PHPUnit\TestFixture\FunctionCallbackWrapper::functionCallback');
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
 
@@ -284,7 +289,7 @@ final class MockObjectTest extends TestCase
 
         $mock->expects($this->once())
              ->method('doSomething')
-             ->willReturnCallback('FunctionCallbackWrapper::functionCallback');
+             ->willReturnCallback('PHPUnit\TestFixture\FunctionCallbackWrapper::functionCallback');
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
@@ -339,7 +344,7 @@ final class MockObjectTest extends TestCase
 
         $mock->expects($this->once())
              ->method('doSomething')
-             ->will($this->returnCallback(['MethodCallback', 'staticCallback']));
+             ->will($this->returnCallback([MethodCallback::class, 'staticCallback']));
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
@@ -703,7 +708,7 @@ final class MockObjectTest extends TestCase
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
                 "Expectation failed for method name is \"right\" when invoked 1 time(s)\n" .
-                'Parameter 0 for invocation SomeClass::right(Array (...)) does not match expected value.' . "\n" .
+                'Parameter 0 for invocation PHPUnit\TestFixture\SomeClass::right(Array (...)) does not match expected value.' . "\n" .
                 'Failed asserting that two arrays are equal.',
                 $e->getMessage()
             );
@@ -717,7 +722,7 @@ final class MockObjectTest extends TestCase
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
                 "Expectation failed for method name is \"right\" when invoked 1 time(s).\n" .
-                'Parameter 0 for invocation SomeClass::right(Array (...)) does not match expected value.' . "\n" .
+                'Parameter 0 for invocation PHPUnit\TestFixture\SomeClass::right(Array (...)) does not match expected value.' . "\n" .
                 'Failed asserting that two arrays are equal.' . "\n" .
                 '--- Expected' . "\n" .
                 '+++ Actual' . "\n" .
@@ -749,7 +754,7 @@ final class MockObjectTest extends TestCase
             $this->fail('Expected exception');
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
-                'SomeClass::right() was not expected to be called.',
+                'PHPUnit\TestFixture\SomeClass::right() was not expected to be called.',
                 $e->getMessage()
             );
         }
@@ -772,7 +777,7 @@ final class MockObjectTest extends TestCase
             $this->fail('Expected exception');
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
-                'SomeClass::right() was not expected to be called.',
+                'PHPUnit\TestFixture\SomeClass::right() was not expected to be called.',
                 $e->getMessage()
             );
         }
@@ -796,7 +801,7 @@ final class MockObjectTest extends TestCase
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
                 "Expectation failed for method name is \"right\" when invoked 1 time(s)\n" .
-                'Parameter count for invocation SomeClass::right() is too low.' . "\n" .
+                'Parameter count for invocation PHPUnit\TestFixture\SomeClass::right() is too low.' . "\n" .
                 'To allow 0 or more parameters with any value, omit ->with() or use ->withAnyParameters() instead.',
                 $e->getMessage()
             );
@@ -810,7 +815,7 @@ final class MockObjectTest extends TestCase
      */
     public function testMockArgumentsPassedByReference(): void
     {
-        $foo = $this->getMockBuilder('MethodCallbackByReference')
+        $foo = $this->getMockBuilder(MethodCallbackByReference::class)
                     ->setMethods(['bar'])
                     ->disableOriginalConstructor()
                     ->disableArgumentCloning()
@@ -831,7 +836,7 @@ final class MockObjectTest extends TestCase
      */
     public function testMockArgumentsPassedByReference2(): void
     {
-        $foo = $this->getMockBuilder('MethodCallbackByReference')
+        $foo = $this->getMockBuilder(MethodCallbackByReference::class)
                     ->disableOriginalConstructor()
                     ->disableArgumentCloning()
                     ->getMock();
@@ -855,7 +860,7 @@ final class MockObjectTest extends TestCase
      */
     public function testMockArgumentsPassedByReference3(): void
     {
-        $foo = $this->getMockBuilder('MethodCallbackByReference')
+        $foo = $this->getMockBuilder(MethodCallbackByReference::class)
                     ->setMethods(['bar'])
                     ->disableOriginalConstructor()
                     ->disableArgumentCloning()
@@ -876,7 +881,7 @@ final class MockObjectTest extends TestCase
      */
     public function testMockArgumentsPassedByReference4(): void
     {
-        $foo = $this->getMockBuilder('MethodCallbackByReference')
+        $foo = $this->getMockBuilder(MethodCallbackByReference::class)
                     ->setMethods(['bar'])
                     ->disableOriginalConstructor()
                     ->disableArgumentCloning()
@@ -1050,7 +1055,7 @@ final class MockObjectTest extends TestCase
 
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
-            'Return value inference disabled and no expectation set up for SomeClass::doSomethingElse()'
+            'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\SomeClass::doSomethingElse()'
         );
 
         $mock->doSomethingElse(1);

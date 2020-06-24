@@ -48,12 +48,12 @@ final class TestWithDifferentStatuses extends TestCase
 
     public function testWithCreatePartialMockWarning(): void
     {
-        $this->createPartialMock(\Mockable::class, ['mockableMethod', 'fakeMethod1', 'fakeMethod2']);
+        $this->createPartialMock(\PHPUnit\TestFixture\Mockable::class, ['mockableMethod', 'fakeMethod1', 'fakeMethod2']);
     }
 
     public function testWithCreatePartialMockPassesNoWarning(): void
     {
-        $mock = $this->createPartialMock(\Mockable::class, ['mockableMethod']);
+        $mock = $this->createPartialMock(\PHPUnit\TestFixture\Mockable::class, ['mockableMethod']);
         $this->assertNull($mock->mockableMethod());
     }
 }

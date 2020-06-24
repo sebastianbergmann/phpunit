@@ -21,7 +21,7 @@ Time: %s, Memory: %s
 There was 1 warning:
 
 1) Warning
-No tests found in class "NoTestCases".
+No tests found in class "PHPUnit\TestFixture\NoTestCases".
 
 WARNINGS!
 Tests: 1, Assertions: 0, Warnings: 1.

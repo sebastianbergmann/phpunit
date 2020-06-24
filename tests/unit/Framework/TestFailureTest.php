@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
-use NotSelfDescribingTest;
 use PHPUnit\Framework\Error\Error;
+use PHPUnit\TestFixture\NotSelfDescribingTest;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
@@ -42,7 +42,7 @@ final class TestFailureTest extends TestCase
         $exception = new Exception('message');
         $failure   = new TestFailure($test, $exception);
 
-        $this->assertEquals('NotSelfDescribingTest: message', $failure->toString());
+        $this->assertEquals('PHPUnit\TestFixture\NotSelfDescribingTest: message', $failure->toString());
     }
 
     public function testgetExceptionAsString(): void

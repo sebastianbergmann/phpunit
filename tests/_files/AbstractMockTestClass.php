@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-use MockTestInterface;
+use PHPUnit\TestFixture\MockTestInterface;
 
 abstract class AbstractMockTestClass implements MockTestInterface
 {

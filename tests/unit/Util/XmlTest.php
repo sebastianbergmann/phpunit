@@ -107,7 +107,7 @@ final class XmlTest extends TestCase
      */
     public function testXmlToVariableCanHandleMultipleOfTheSameArgumentType(): void
     {
-        $xml = '<object class="SampleClass"><arguments><string>a</string><string>b</string><string>c</string></arguments></object>';
+        $xml = '<object class="PHPUnit\TestFixture\SampleClass"><arguments><string>a</string><string>b</string><string>c</string></arguments></object>';
         $dom = new DOMDocument;
         $dom->loadXML($xml);
 

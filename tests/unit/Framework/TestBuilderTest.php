@@ -10,9 +10,9 @@
 namespace PHPUnit\Framework;
 
 use function assert;
-use ModifiedConstructorTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\TestFixture\EmptyDataProviderTest;
+use PHPUnit\TestFixture\ModifiedConstructorTestCase;
 use ReflectionClass;
 use TestWithAnnotations;
 
