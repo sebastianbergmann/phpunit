@@ -12,11 +12,12 @@ use PHPUnit\Framework\TestCase;
 class CoverageProtectedTest extends TestCase
 {
     /**
-     * @covers CoveredClass::<protected>
+     * @covers \PHPUnit\TestFixture\CoveredClass::<protected>
      */
     public function testSomething(): void
     {
         $o = new CoveredClass;
+
         $o->publicMethod();
     }
 }

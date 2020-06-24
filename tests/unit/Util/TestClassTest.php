@@ -14,8 +14,6 @@ use function get_class;
 use function preg_match;
 use function range;
 use function realpath;
-use function strpos;
-use CoverageClassExtendedTest;
 use CoverageClassNothingTest;
 use CoverageClassTest;
 use CoverageClassWithoutAnnotationsTest;
@@ -54,6 +52,7 @@ use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
+use PHPUnit\TestFixture\CoverageClassExtendedTest;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
 use PHPUnit\TestFixture\NotExistingCoveredElementTest;
@@ -1232,26 +1231,50 @@ final class TestClassTest extends TestCase
      */
     public function testGetLinesToBeCovered($test, $lines): void
     {
-        if (strpos($test, 'Namespace') === 0) {
-            $expected = [
-                TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines,
-            ];
-        } elseif ($test === 'CoverageMethodNothingCoversMethod') {
-            $expected = false;
-        } elseif ($test === 'CoverageCoversOverridesCoversNothingTest') {
-            $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
-        } elseif ($test === 'CoverageNoneTest') {
-            $expected = [];
-        } elseif ($test === 'CoverageClassNothingTest') {
-            $expected = false;
-        } elseif ($test === 'CoverageMethodNothingTest') {
-            $expected = false;
-        } elseif ($test === 'CoverageFunctionTest') {
-            $expected = [
-                TEST_FILES_PATH . 'CoveredFunction.php' => $lines,
-            ];
-        } else {
-            $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
+        switch ($test) {
+            case CoverageMethodNothingCoversMethod::class:
+            case CoverageClassNothingTest::class:
+            case CoverageMethodNothingTest::class:
+                $expected = false;
+
+                break;
+
+            case CoverageCoversOverridesCoversNothingTest::class:
+                $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
+
+                break;
+
+            case CoverageNoneTest::class:
+                $expected = [];
+
+                break;
+
+            case CoverageFunctionTest::class:
+                $expected = [
+                    TEST_FILES_PATH . 'CoveredFunction.php' => $lines,
+                ];
+
+                break;
+
+            case NamespaceCoverageClassExtendedTest::class:
+            case NamespaceCoverageClassTest::class:
+            case NamespaceCoverageMethodTest::class:
+            case NamespaceCoverageNotPrivateTest::class:
+            case NamespaceCoverageNotProtectedTest::class:
+            case NamespaceCoverageNotPublicTest::class:
+            case NamespaceCoveragePrivateTest::class:
+            case NamespaceCoverageProtectedTest::class:
+            case NamespaceCoveragePublicTest::class:
+            case NamespaceCoverageCoversClassTest::class:
+            case NamespaceCoverageCoversClassPublicTest::class:
+                $expected = [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines,
+                ];
+
+                break;
+
+            default:
+                $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
         }
 
         $this->assertEqualsCanonicalizing(
@@ -1339,7 +1362,7 @@ final class TestClassTest extends TestCase
     public function testMethodParenthesesAreAllowed(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => range(29, 33)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
             Test::getLinesToBeCovered(
                 CoverageMethodParenthesesTest::class,
                 'testSomething'
@@ -1350,7 +1373,7 @@ final class TestClassTest extends TestCase
     public function testMethodParenthesesAreAllowedWithWhitespace(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => range(29, 33)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
             Test::getLinesToBeCovered(
                 CoverageMethodParenthesesWhitespaceTest::class,
                 'testSomething'
@@ -1380,43 +1403,43 @@ final class TestClassTest extends TestCase
             ],
             [
                 CoverageClassExtendedTest::class,
-                array_merge(range(27, 44), range(10, 25)),
+                array_merge(range(29, 46), range(12, 27)),
             ],
             [
                 CoverageClassTest::class,
-                range(27, 44),
+                range(29, 46),
             ],
             [
                 CoverageMethodTest::class,
-                range(29, 33),
+                range(31, 35),
             ],
             [
                 CoverageMethodOneLineAnnotationTest::class,
-                range(29, 33),
+                range(31, 35),
             ],
             [
                 CoverageNotPrivateTest::class,
-                array_merge(range(29, 33), range(35, 39)),
+                array_merge(range(31, 35), range(37, 41)),
             ],
             [
                 CoverageNotProtectedTest::class,
-                array_merge(range(29, 33), range(41, 43)),
+                array_merge(range(31, 35), range(43, 45)),
             ],
             [
                 CoverageNotPublicTest::class,
-                array_merge(range(35, 39), range(41, 43)),
+                array_merge(range(37, 41), range(43, 45)),
             ],
             [
                 CoveragePrivateTest::class,
-                range(41, 43),
+                range(43, 45),
             ],
             [
                 CoverageProtectedTest::class,
-                range(35, 39),
+                range(37, 41),
             ],
             [
                 CoveragePublicTest::class,
-                range(29, 33),
+                range(31, 35),
             ],
             [
                 CoverageFunctionTest::class,
@@ -1476,7 +1499,7 @@ final class TestClassTest extends TestCase
             ],
             [
                 CoverageCoversOverridesCoversNothingTest::class,
-                range(29, 33),
+                range(31, 35),
             ],
             [
                 CoverageMethodNothingCoversMethod::class,

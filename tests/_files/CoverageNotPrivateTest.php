@@ -12,11 +12,12 @@ use PHPUnit\Framework\TestCase;
 class CoverageNotPrivateTest extends TestCase
 {
     /**
-     * @covers CoveredClass::<!private>
+     * @covers \PHPUnit\TestFixture\CoveredClass::<!private>
      */
     public function testSomething(): void
     {
         $o = new CoveredClass;
+
         $o->publicMethod();
     }
 }

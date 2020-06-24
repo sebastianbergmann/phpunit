@@ -10,7 +10,7 @@
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \Foo\CoveredClass
+ * @coversDefaultClass \PHPUnit\TestFixture\CoveredClass
  */
 class NamespaceCoverageCoversClassPublicTest extends TestCase
 {
@@ -19,7 +19,7 @@ class NamespaceCoverageCoversClassPublicTest extends TestCase
      */
     public function testSomething(): void
     {
-        $o = new Foo\CoveredClass;
+        $o = new PHPUnit\TestFixture\CoveredClass;
         $o->publicMethod();
     }
 }

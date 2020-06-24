@@ -12,11 +12,11 @@ use PHPUnit\Framework\TestCase;
 class NamespaceCoverageProtectedTest extends TestCase
 {
     /**
-     * @covers Foo\CoveredClass::<protected>
+     * @covers PHPUnit\TestFixture\CoveredClass::<protected>
      */
     public function testSomething(): void
     {
-        $o = new Foo\CoveredClass;
+        $o = new PHPUnit\TestFixture\CoveredClass;
         $o->publicMethod();
     }
 }

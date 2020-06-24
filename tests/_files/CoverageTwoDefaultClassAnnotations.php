@@ -14,11 +14,12 @@
 class CoverageTwoDefaultClassAnnotations
 {
     /**
-     * @covers Foo\CoveredClass::<public>
+     * @covers \PHPUnit\TestFixture\CoveredClass::<public>
      */
     public function testSomething(): void
     {
-        $o = new Foo\CoveredClass;
+        $o = new PHPUnit\TestFixture\CoveredClass;
+
         $o->publicMethod();
     }
 }

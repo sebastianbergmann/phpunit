@@ -12,11 +12,12 @@ use PHPUnit\Framework\TestCase;
 class CoverageMethodParenthesesWhitespaceTest extends TestCase
 {
     /**
-     * @covers CoveredClass::publicMethod ( )
+     * @covers \PHPUnit\TestFixture\CoveredClass::publicMethod ( )
      */
     public function testSomething(): void
     {
         $o = new CoveredClass;
+
         $o->publicMethod();
     }
 }

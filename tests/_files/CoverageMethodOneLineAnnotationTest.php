@@ -11,10 +11,11 @@ use PHPUnit\Framework\TestCase;
 
 class CoverageMethodOneLineAnnotationTest extends TestCase
 {
-    /** @covers CoveredClass::publicMethod */
+    /** @covers \PHPUnit\TestFixture\CoveredClass::publicMethod */
     public function testSomething(): void
     {
         $o = new CoveredClass;
+
         $o->publicMethod();
     }
 }
