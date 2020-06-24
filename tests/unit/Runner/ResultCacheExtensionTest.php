@@ -51,7 +51,7 @@ final class ResultCacheExtensionTest extends TestCase
         $listener = new TestListenerAdapter;
         $listener->add($this->extension);
 
-        $this->result   = new TestResult;
+        $this->result = new TestResult;
         $this->result->addListener($listener);
     }
 

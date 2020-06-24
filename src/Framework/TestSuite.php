@@ -274,7 +274,7 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
         // @codeCoverageIgnoreEnd
 
         if (!$class->isAbstract()) {
-            $this->tests[]  = $test;
+            $this->tests[] = $test;
             $this->clearCaches();
 
             if ($test instanceof self && empty($groups)) {

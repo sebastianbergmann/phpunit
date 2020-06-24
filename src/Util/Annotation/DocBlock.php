@@ -203,7 +203,7 @@ final class DocBlock
         ];
 
         // Split docblock into lines and rewind offset to start of docblock
-        $lines  = preg_split('/\r\n|\r|\n/', $this->docComment);
+        $lines = preg_split('/\r\n|\r|\n/', $this->docComment);
         $offset -= count($lines);
 
         foreach ($lines as $line) {
@@ -213,7 +213,7 @@ final class DocBlock
             }
 
             if (preg_match(self::REGEX_REQUIRES_VERSION, $line, $matches)) {
-                $requires[$matches['name']]        = [
+                $requires[$matches['name']] = [
                     'version'  => $matches['version'],
                     'operator' => $matches['operator'],
                 ];
@@ -230,7 +230,7 @@ final class DocBlock
                 try {
                     $versionConstraintParser = new VersionConstraintParser;
 
-                    $requires[$matches['name'] . '_constraint']        = [
+                    $requires[$matches['name'] . '_constraint'] = [
                         'constraint' => $versionConstraintParser->parse(trim($matches['constraint'])),
                     ];
                     $recordedOffsets[$matches['name'] . '_constraint'] = $offset;

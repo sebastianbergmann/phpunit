@@ -99,7 +99,7 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testGetChildrenForEmptyTestSuiteThrowsException(): void
     {
-        $subject   = new TestSuiteIterator(new TestSuite);
+        $subject = new TestSuiteIterator(new TestSuite);
 
         $this->expectException(NoChildTestSuiteException::class);
 
@@ -121,7 +121,7 @@ final class TestSuiteIteratorTest extends TestCase
         $test       = new EmptyTestCaseTest;
         $childSuite->addTest($test);
 
-        $testSuite  = new TestSuite;
+        $testSuite = new TestSuite;
         $testSuite->addTest($childSuite);
 
         $subject = new TestSuiteIterator($testSuite);

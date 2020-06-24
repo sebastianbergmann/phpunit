@@ -26,7 +26,7 @@ final class TestSuiteSorterTest extends TestCase
     /**
      * Constants to improve clarity of @dataprovider.
      */
-    private const IGNORE_DEPENDENCIES  = false;
+    private const IGNORE_DEPENDENCIES = false;
 
     private const RESOLVE_DEPENDENCIES = true;
 
@@ -294,7 +294,7 @@ final class TestSuiteSorterTest extends TestCase
             $cache->setTime(MultiDependencyTest::class . '::' . $testName, $data['time']);
         }
 
-        $sorter  = new TestSuiteSorter($cache);
+        $sorter = new TestSuiteSorter($cache);
         $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFECTS_FIRST);
 
         $this->assertSame($expected, $sorter->getExecutionOrder());

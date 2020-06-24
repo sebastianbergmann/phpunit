@@ -188,7 +188,7 @@ final class Test
      */
     public static function getMissingRequirements(string $className, string $methodName): array
     {
-        $required = static::getRequirements($className, $methodName);
+        $required = self::getRequirements($className, $methodName);
         $missing  = [];
         $hint     = null;
 

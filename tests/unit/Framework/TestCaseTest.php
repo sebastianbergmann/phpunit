@@ -165,7 +165,7 @@ class TestCaseTest extends TestCase
 
     public function testExceptionInSetUp(): void
     {
-        $test   = new ExceptionInSetUpTest('testSomething');
+        $test = new ExceptionInSetUpTest('testSomething');
         $test->run();
 
         $this->assertTrue($test->setUp);
@@ -177,7 +177,7 @@ class TestCaseTest extends TestCase
 
     public function testExceptionInAssertPreConditions(): void
     {
-        $test   = new ExceptionInAssertPreConditionsTest('testSomething');
+        $test = new ExceptionInAssertPreConditionsTest('testSomething');
         $test->run();
 
         $this->assertTrue($test->setUp);
@@ -189,7 +189,7 @@ class TestCaseTest extends TestCase
 
     public function testExceptionInTest(): void
     {
-        $test   = new ExceptionInTest('testSomething');
+        $test = new ExceptionInTest('testSomething');
         $test->run();
 
         $this->assertTrue($test->setUp);
@@ -201,7 +201,7 @@ class TestCaseTest extends TestCase
 
     public function testExceptionInAssertPostConditions(): void
     {
-        $test   = new ExceptionInAssertPostConditionsTest('testSomething');
+        $test = new ExceptionInAssertPostConditionsTest('testSomething');
         $test->run();
 
         $this->assertTrue($test->setUp);
@@ -213,7 +213,7 @@ class TestCaseTest extends TestCase
 
     public function testExceptionInTearDown(): void
     {
-        $test   = new ExceptionInTearDownTest('testSomething');
+        $test = new ExceptionInTearDownTest('testSomething');
         $test->run();
 
         $this->assertTrue($test->setUp);
@@ -227,7 +227,7 @@ class TestCaseTest extends TestCase
 
     public function testExceptionInTestIsDetectedInTeardown(): void
     {
-        $test   = new ExceptionInTestDetectedInTeardown('testSomething');
+        $test = new ExceptionInTestDetectedInTeardown('testSomething');
         $test->run();
 
         $this->assertTrue($test->exceptionDetected);
@@ -621,8 +621,8 @@ class TestCaseTest extends TestCase
         $GLOBALS['singleton'] = Singleton::getInstance();
         $GLOBALS['i']         = 'set by testStaticAttributesBackupPre';
 
-        $GLOBALS['j']         = 'reset by backup';
-        self::$testStatic     = 123;
+        $GLOBALS['j']     = 'reset by backup';
+        self::$testStatic = 123;
     }
 
     /**
@@ -652,7 +652,7 @@ class TestCaseTest extends TestCase
 
     public function testIsInIsolationReturnsTrue(): void
     {
-        $test   = new IsolationTest('testIsInIsolationReturnsTrue');
+        $test = new IsolationTest('testIsInIsolationReturnsTrue');
         $test->setRunTestInSeparateProcess(true);
         $result = $test->run();
 
@@ -758,7 +758,7 @@ class TestCaseTest extends TestCase
 
     public function testSkipsIfRequiresNonExistingExtension(): void
     {
-        $test   = new RequirementsTest('testTen');
+        $test = new RequirementsTest('testTen');
         $test->run();
 
         $this->assertEquals(
@@ -769,7 +769,7 @@ class TestCaseTest extends TestCase
 
     public function testSkipsIfRequiresExtensionWithAMinimumVersion(): void
     {
-        $test   = new RequirementsTest('testSpecificExtensionVersion');
+        $test = new RequirementsTest('testSpecificExtensionVersion');
         $test->run();
 
         $this->assertEquals(
@@ -780,7 +780,7 @@ class TestCaseTest extends TestCase
 
     public function testSkipsProvidesMessagesForAllSkippingReasons(): void
     {
-        $test   = new RequirementsTest('testAllPossibleRequirements');
+        $test = new RequirementsTest('testAllPossibleRequirements');
         $test->run();
 
         $this->assertEquals(
@@ -827,7 +827,7 @@ class TestCaseTest extends TestCase
 
     public function testRequiringASetting(): void
     {
-        $test   = new RequirementsTest('testSettingDisplayErrorsOn');
+        $test = new RequirementsTest('testSettingDisplayErrorsOn');
 
         // Get this so we can return it to whatever it was before the test.
         $displayErrorsVal = ini_get('display_errors');

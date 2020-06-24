@@ -54,7 +54,7 @@ final class LogicalExpressionsTest extends TestCase
         $this->assertTrue($constraint->evaluate(13, '', true));
         $this->assertFalse($constraint->evaluate(7, '', true));
 
-        $string =  'not( is of type "int" and is greater than 5 and is less than 10 )';
+        $string = 'not( is of type "int" and is greater than 5 and is less than 10 )';
         $this->assertSame($string, $constraint->toString());
 
         $message = 'Failed asserting that ' .
@@ -102,7 +102,7 @@ final class LogicalExpressionsTest extends TestCase
         $this->assertFalse($constraint->evaluate(2, '', true));
         $this->assertFalse($constraint->evaluate(null, '', true));
 
-        $string =  'not( is null or is of type "int" or is of type "array" )';
+        $string = 'not( is null or is of type "int" or is of type "array" )';
         $this->assertSame($string, $constraint->toString());
 
         $message = 'Failed asserting that ' .
@@ -148,7 +148,7 @@ final class LogicalExpressionsTest extends TestCase
         $this->assertFalse($constraint->evaluate('', '', true));
         $this->assertFalse($constraint->evaluate(1, '', true));
 
-        $string =  'not( is of type "int" xor is equal to false )';
+        $string = 'not( is of type "int" xor is equal to false )';
         $this->assertSame($string, $constraint->toString());
 
         $message = 'Failed asserting that ' .
