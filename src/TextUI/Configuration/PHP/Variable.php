@@ -32,9 +32,9 @@ final class Variable
 
     public function __construct(string $name, $value, bool $force)
     {
-        $this->name     = $name;
-        $this->value    = $value;
-        $this->force    = $force;
+        $this->name  = $name;
+        $this->value = $value;
+        $this->force = $force;
     }
 
     public function name(): string

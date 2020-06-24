@@ -20,7 +20,7 @@ final class Help
     private const LEFT_MARGIN = '  ';
 
     private const HELP_TEXT = [
-        'Usage'                 => [
+        'Usage' => [
             ['text' => 'phpunit [options] UnitTest.php'],
             ['text' => 'phpunit [options] <directory>'],
         ],
@@ -59,7 +59,7 @@ final class Help
         ],
 
         'Test Execution Options' => [
-            ['arg'    => '--dont-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
+            ['arg' => '--dont-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
             ['arg'    => '--strict-coverage', 'desc' => 'Be strict about @covers annotation usage'],
             ['arg'    => '--strict-global-state', 'desc' => 'Be strict about changes to global state'],
             ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],

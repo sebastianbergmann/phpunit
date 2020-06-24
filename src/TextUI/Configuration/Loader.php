@@ -198,7 +198,7 @@ final class Loader
         $xsdFilename = __DIR__ . '/../../../phpunit.xsd';
 
         if (\defined('__PHPUNIT_PHAR_ROOT__')) {
-            $xsdFilename =  __PHPUNIT_PHAR_ROOT__ . '/phpunit.xsd';
+            $xsdFilename = __PHPUNIT_PHAR_ROOT__ . '/phpunit.xsd';
         }
 
         $document->schemaValidate($xsdFilename);

@@ -19,7 +19,7 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
     public static function determineJsonErrorDataprovider(): array
     {
         return [
-            'JSON_ERROR_NONE'  => [
+            'JSON_ERROR_NONE' => [
                 null, 'json_error_none', '',
             ],
             'JSON_ERROR_DEPTH' => [

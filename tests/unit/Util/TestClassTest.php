@@ -70,7 +70,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 26,
                     ],
-                    'PHP'        => ['version' => '2.0', 'operator' => ''],
+                    'PHP' => ['version' => '2.0', 'operator' => ''],
                 ],
             ],
 
@@ -82,8 +82,8 @@ final class TestClassTest extends TestCase
                         'PHPUnit' => 33,
                         'PHP'     => 34,
                     ],
-                    'PHPUnit'    => ['version' => '2.0', 'operator' => ''],
-                    'PHP'        => ['version' => '1.0', 'operator' => ''],
+                    'PHPUnit' => ['version' => '2.0', 'operator' => ''],
+                    'PHP'     => ['version' => '1.0', 'operator' => ''],
                 ],
             ],
 
@@ -94,7 +94,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 41,
                     ],
-                    'PHP'        => ['version' => '5.4.0RC6', 'operator' => ''],
+                    'PHP' => ['version' => '5.4.0RC6', 'operator' => ''],
                 ],
             ],
 
@@ -105,7 +105,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 48,
                     ],
-                    'PHP'        => ['version' => '5.4.0-alpha1', 'operator' => ''],
+                    'PHP' => ['version' => '5.4.0-alpha1', 'operator' => ''],
                 ],
             ],
 
@@ -116,7 +116,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 55,
                     ],
-                    'PHP'        => ['version' => '5.4.0beta2', 'operator' => ''],
+                    'PHP' => ['version' => '5.4.0beta2', 'operator' => ''],
                 ],
             ],
 
@@ -127,7 +127,7 @@ final class TestClassTest extends TestCase
                         '__FILE' => $this->getRequirementsTestClassFile(),
                         'PHP'    => 62,
                     ],
-                    'PHP'        => ['version' => '5.4-dev', 'operator' => ''],
+                    'PHP' => ['version' => '5.4-dev', 'operator' => ''],
                 ],
             ],
 
@@ -138,7 +138,7 @@ final class TestClassTest extends TestCase
                         '__FILE'            => $this->getRequirementsTestClassFile(),
                         'function_testFunc' => 69,
                     ],
-                    'functions'  => ['testFunc'],
+                    'functions' => ['testFunc'],
                 ],
             ],
 
@@ -161,8 +161,8 @@ final class TestClassTest extends TestCase
                         'OS'       => 92,
                         'OSFAMILY' => 93,
                     ],
-                    'OS'         => 'SunOS',
-                    'OSFAMILY'   => 'Solaris',
+                    'OS'       => 'SunOS',
+                    'OSFAMILY' => 'Solaris',
                 ],
             ],
 
@@ -201,7 +201,7 @@ final class TestClassTest extends TestCase
                         'testFuncOne',
                         'testFunc2',
                     ],
-                    'setting'   => [
+                    'setting' => [
                         'not_a_setting' => 'Off',
                     ],
                     'extensions' => [
