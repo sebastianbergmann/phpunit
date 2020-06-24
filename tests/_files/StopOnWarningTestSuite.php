@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture;
 
-use CoverageClassTest;
 use PHPUnit\Framework\TestSuite;
 
 class StopOnWarningTestSuite
