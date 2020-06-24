@@ -176,11 +176,6 @@
       <code>$suiteClassName</code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/Runner/TestSuiteSorter.php">
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>getName</code>
-    </UndefinedInterfaceMethod>
-  </file>
   <file src="src/TextUI/Command.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$printerClass</code>
@@ -206,12 +201,10 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
+    <InvalidCatch occurrences="1"/>
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$codeCoverageConfiguration</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
     <InvalidCatch occurrences="1"/>
