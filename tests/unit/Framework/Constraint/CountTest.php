@@ -134,6 +134,11 @@ final class CountTest extends ConstraintTestCase
         $this->assertEquals(null, $generator->current());
     }
 
+    /**
+     * Since PHP8, Traversable cannot be implemented directly.
+     *
+     * @requires PHP < 8.0
+     */
     public function testCountTraversable(): void
     {
         $countConstraint = new Count(5);
