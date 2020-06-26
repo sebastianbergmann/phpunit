@@ -277,7 +277,7 @@ class Command
     protected function handleArguments(array $argv): void
     {
         try {
-            $this->options = Getopt::getopt(
+            $this->options = Getopt::parse(
                 $argv,
                 'd:c:hv',
                 \array_keys($this->longOptions)
