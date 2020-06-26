@@ -110,7 +110,7 @@ final class ArgumentsBuilder
     public function fromParameters(array $parameters, array $additionalLongOptions): Arguments
     {
         try {
-            $options = Getopt::getopt(
+            $options = Getopt::parse(
                 $parameters,
                 self::SHORT_OPTIONS,
                 \array_merge(self::LONG_OPTIONS, $additionalLongOptions)
