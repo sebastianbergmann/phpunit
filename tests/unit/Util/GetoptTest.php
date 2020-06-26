@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestCase;
 final class GetoptTest extends TestCase
 {
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseLongOption
      */
     public function testItIncludeTheLongOptionsAfterTheArgument(): void
@@ -29,7 +29,7 @@ final class GetoptTest extends TestCase
             'myArgument',
             '--colors',
         ];
-        $actual = Getopt::getopt($args, '', ['colors==']);
+        $actual = Getopt::parse($args, '', ['colors==']);
 
         $expected = [
             [
@@ -47,7 +47,7 @@ final class GetoptTest extends TestCase
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseShortOption
      */
     public function testItIncludeTheShortOptionsAfterTheArgument(): void
@@ -57,7 +57,7 @@ final class GetoptTest extends TestCase
             'myArgument',
             '-v',
         ];
-        $actual = Getopt::getopt($args, 'v');
+        $actual = Getopt::parse($args, 'v');
 
         $expected = [
             [
@@ -75,7 +75,7 @@ final class GetoptTest extends TestCase
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      */
     public function testShortOptionUnrecognizedException(): void
     {
@@ -88,11 +88,11 @@ final class GetoptTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('unrecognized option -- v');
 
-        Getopt::getopt($args, '');
+        Getopt::parse($args, '');
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseShortOption
      */
     public function testShortOptionRequiresAnArgumentException(): void
@@ -106,11 +106,11 @@ final class GetoptTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('option requires an argument -- f');
 
-        Getopt::getopt($args, 'f:');
+        Getopt::parse($args, 'f:');
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseShortOption
      */
     public function testShortOptionHandleAnOptionalValue(): void
@@ -120,7 +120,7 @@ final class GetoptTest extends TestCase
             'myArgument',
             '-f',
         ];
-        $actual   = Getopt::getopt($args, 'f::');
+        $actual   = Getopt::parse($args, 'f::');
         $expected = [
             [
                 [
@@ -136,7 +136,7 @@ final class GetoptTest extends TestCase
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseLongOption
      */
     public function testLongOptionIsAmbiguousException(): void
@@ -149,11 +149,11 @@ final class GetoptTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('option --col is ambiguous');
 
-        Getopt::getopt($args, '', ['columns', 'colors']);
+        Getopt::parse($args, '', ['columns', 'colors']);
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseLongOption
      */
     public function testLongOptionUnrecognizedException(): void
@@ -168,11 +168,11 @@ final class GetoptTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('unrecognized option --foo');
 
-        Getopt::getopt($args, '', ['colors']);
+        Getopt::parse($args, '', ['colors']);
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseLongOption
      */
     public function testLongOptionRequiresAnArgumentException(): void
@@ -185,11 +185,11 @@ final class GetoptTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('option --foo requires an argument');
 
-        Getopt::getopt($args, '', ['foo=']);
+        Getopt::parse($args, '', ['foo=']);
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseLongOption
      */
     public function testLongOptionDoesNotAllowAnArgumentException(): void
@@ -202,11 +202,11 @@ final class GetoptTest extends TestCase
         $this->expectException(Exception::class);
         $this->expectExceptionMessage("option --foo doesn't allow an argument");
 
-        Getopt::getopt($args, '', ['foo']);
+        Getopt::parse($args, '', ['foo']);
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseLongOption
      */
     public function testItHandlesLongParametesWithValues(): void
@@ -228,12 +228,12 @@ final class GetoptTest extends TestCase
                 'parameter-n',
             ],
         ];
-        $actual = Getopt::getopt($args, '', ['exec', 'conf=', 'optn==']);
+        $actual = Getopt::parse($args, '', ['exec', 'conf=', 'optn==']);
         $this->assertEquals($expected, $actual);
     }
 
     /**
-     * @covers \PHPUnit\Util\Getopt::getopt
+     * @covers \PHPUnit\Util\Getopt::parse
      * @covers \PHPUnit\Util\Getopt::parseShortOption
      */
     public function testItHandlesShortParametesWithValues(): void
@@ -255,7 +255,7 @@ final class GetoptTest extends TestCase
                 'parameter-n',
             ],
         ];
-        $actual = Getopt::getopt($args, 'xc:o::');
+        $actual = Getopt::parse($args, 'xc:o::');
         $this->assertEquals($expected, $actual);
     }
 }

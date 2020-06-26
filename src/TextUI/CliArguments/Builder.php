@@ -117,7 +117,7 @@ final class Builder
     public function fromParameters(array $parameters, array $additionalLongOptions): Configuration
     {
         try {
-            $options = Getopt::getopt(
+            $options = Getopt::parse(
                 $parameters,
                 self::SHORT_OPTIONS,
                 array_merge(self::LONG_OPTIONS, $additionalLongOptions)
