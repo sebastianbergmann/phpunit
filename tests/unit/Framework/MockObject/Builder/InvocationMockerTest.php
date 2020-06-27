@@ -241,10 +241,10 @@ final class InvocationMockerTest extends TestCase
             ->getMock();
 
         $mock->method('foo')
-             ->willReturn(new ReturnStub('foo'));
+             ->will(new ReturnStub('foo'));
 
         $mock->method('bar')
-             ->willReturn(new ReturnSelf());
+             ->will(new ReturnSelf());
 
         $this->assertSame('foo', $mock->foo());
         $this->assertSame($mock, $mock->bar());

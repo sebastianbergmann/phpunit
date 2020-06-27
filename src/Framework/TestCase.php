@@ -62,6 +62,7 @@ use function strpos;
 use function substr;
 use function trim;
 use function var_export;
+use Closure;
 use DeepCopy\DeepCopy;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
@@ -1683,6 +1684,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     * @psalm-param mixed[]|Stub[]|Callable[] $configuration
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
@@ -1690,7 +1692,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $o = $this->createMock($originalClassName);
 
         foreach ($configuration as $method => $return) {
-            $o->method($method)->willReturn($return);
+            if ($return instanceof Stub) {
+                $stab = $return;
+            } elseif ($return instanceof Closure) {
+                $stab = new ReturnCallbackStub($return);
+            } else {
+                $stab = new ReturnStub($return);
+            }
+            $o->method($method)->will($stab);
         }
 
         return $o;

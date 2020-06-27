@@ -86,7 +86,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         if (count($nextValues) === 0) {
             $this->ensureTypeOfReturnValues([$value]);
 
-            $stub = $value instanceof Stub ? $value : new ReturnStub($value);
+            $stub = new ReturnStub($value);
         } else {
             $values = array_merge([$value], $nextValues);
 

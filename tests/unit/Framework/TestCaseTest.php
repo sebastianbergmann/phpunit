@@ -58,6 +58,7 @@ use PHPUnit\TestFixture\ThrowNoExceptionTestCase;
 use PHPUnit\TestFixture\WasRun;
 use PHPUnit\Util\Test as TestUtil;
 use RuntimeException;
+use stdClass;
 use TypeError;
 
 class TestCaseTest extends TestCase
@@ -999,6 +1000,31 @@ class TestCaseTest extends TestCase
 
         $this->assertFalse($mock->mockableMethod());
         $this->assertNull($mock->anotherMockableMethod());
+    }
+
+    public function testConfiguredMockStubs(): void
+    {
+        $mock = $this->createConfiguredMock(
+            stdClass::class,
+            [
+                'method1' => 'result1',
+                'method2' => self::returnSelf(),
+                'method3' => static function (int $argument): int {
+                    return $argument + 1;
+                },
+                'method4' => '\strpos',
+                'method5' => self::returnValueMap([
+                    ['a', 'b'],
+                    ['c', 'd'],
+                ]),
+            ]
+        );
+
+        self::assertEquals('result1', $mock->method1());
+        self::assertEquals($mock, $mock->method2());
+        self::assertEquals(4, $mock->method3(3));
+        self::assertEquals('\strpos', $mock->method4());
+        self::assertEquals('d', $mock->method5('c'));
     }
 
     public function testProvidingOfAutoreferencedArray(): void
