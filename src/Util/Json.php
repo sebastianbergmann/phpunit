@@ -34,12 +34,13 @@ final class Json
         return \json_encode($decodedJson, \JSON_PRETTY_PRINT | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
     }
 
-    /*
+    /**
      * To allow comparison of JSON strings, first process them into a consistent
      * format so that they can be compared as strings.
+     *
      * @return array ($error, $canonicalized_json)  The $error parameter is used
-     * to indicate an error decoding the json.  This is used to avoid ambiguity
-     * with JSON strings consisting entirely of 'null' or 'false'.
+     *               to indicate an error decoding the json. This is used to avoid ambiguity
+     *               with JSON strings consisting entirely of 'null' or 'false'.
      */
     public static function canonicalize(string $json): array
     {
@@ -56,8 +57,9 @@ final class Json
         return [false, $reencodedJson];
     }
 
-    /*
+    /**
      * JSON object keys are unordered while PHP array keys are ordered.
+     *
      * Sort all array keys to ensure both the expected and actual values have
      * their keys in the same order.
      */
