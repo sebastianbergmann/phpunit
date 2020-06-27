@@ -148,9 +148,9 @@ final class InvocationHandler
                 $this->deferredError = $exception;
 
                 return '';
-            } else {
-                throw $exception;
             }
+
+            throw $exception;
         }
     }
 

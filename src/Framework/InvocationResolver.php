@@ -22,9 +22,9 @@ class InvocationResolver // TODO: rename?
     }
 
     /**
-     * @param Invocation $invocation
-     * @return mixed
      * @throws RuntimeException
+     *
+     * @return mixed
      */
     public function invocationDefaultResult(Invocation $invocation)
     {

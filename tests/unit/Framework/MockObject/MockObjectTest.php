@@ -228,7 +228,21 @@ final class MockObjectTest extends TestCase
         $this->assertEquals('something', $mock->doSomething());
     }
 
-    public function testStubbedReturnValueMap(): void
+    /**
+     * @return array[]
+     */
+    public function returnValueGenerationProvider(): array
+    {
+        return [
+            [true],
+            [false],
+        ];
+    }
+
+    /**
+     * @dataProvider returnValueGenerationProvider
+     */
+    public function testReturnValueMap(bool $returnValueGeneration): void
     {
         $map = [
             ['a', 'b', 'c', 'd'],
@@ -245,32 +259,30 @@ final class MockObjectTest extends TestCase
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
         $this->assertNull($mock->doSomething('foo', 'bar'));
 
-        $mock = $this->getMockBuilder(AnInterface::class)
-                     ->getMock();
+        if ($returnValueGeneration) {
+            $mock = $this->getMockBuilder(AnInterface::class) // TODO: call enableAutoReturnValueGeneration?
+                         ->getMock();
+        } else {
+            $mock = $this->getMockBuilder(AnInterface::class)
+                         ->disableAutoReturnValueGeneration()
+                         ->getMock();
+        }
 
         $mock->method('doSomething')
              ->willReturnMap($map);
 
         $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
-        $this->assertNull($mock->doSomething('foo', 'bar'));
-    }
 
-    public function testStubbedNotReturnValueMap(): void
-    {
-        $mock = $this->getMockBuilder(AnInterface::class)
-                     ->disableAutoReturnValueGeneration()
-                     ->getMock();
-
-        $mock->method('doSomething')
-             ->willReturnMap([['a', 'b']]);
-
-        $this->expectException(InvocationNotExpectedException::class);
-        $this->expectExceptionMessage(
-            'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\AnInterface::doSomething()'
-        );
-
-        $mock->doSomething('c');
+        if ($returnValueGeneration) {
+            $this->assertNull($mock->doSomething('foo', 'bar'));
+        } else {
+            $this->expectException(InvocationNotExpectedException::class);
+            $this->expectExceptionMessage(
+                'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\AnInterface::doSomething()'
+            );
+            $mock->doSomething('foo', 'bar');
+        }
     }
 
     public function testStubbedReturnArgument(): void
