@@ -52,7 +52,7 @@ final class ReturnValueMap implements Stub
             }
         }
 
-        return $this->invocationResolver->invocationDefaultResult($invocation);
+        return $this->invocationResolver->defaultResult($invocation);
     }
 
     public function toString(): string

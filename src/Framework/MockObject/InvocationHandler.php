@@ -36,14 +36,14 @@ final class InvocationHandler
     private $configurableMethods;
 
     /**
-     * @var Throwable
-     */
-    private $deferredError;
-
-    /**
      * @var InvocationResolver
      */
     private $invocationResolver;
+
+    /**
+     * @var Throwable
+     */
+    private $deferredError;
 
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {
@@ -142,7 +142,7 @@ final class InvocationHandler
         }
 
         try {
-            return $this->invocationResolver->invocationDefaultResult($invocation);
+            return $this->invocationResolver->defaultResult($invocation);
         } catch (InvocationNotExpectedException $exception) {
             if (strtolower($invocation->getMethodName()) === '__tostring') {
                 $this->deferredError = $exception;

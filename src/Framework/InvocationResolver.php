@@ -26,7 +26,7 @@ class InvocationResolver // TODO: rename?
      *
      * @return mixed
      */
-    public function invocationDefaultResult(Invocation $invocation)
+    public function defaultResult(Invocation $invocation)
     {
         if (!$this->returnValueGeneration) {
             throw new InvocationNotExpectedException($invocation);

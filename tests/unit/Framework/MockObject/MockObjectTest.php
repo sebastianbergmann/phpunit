@@ -242,7 +242,7 @@ final class MockObjectTest extends TestCase
     /**
      * @dataProvider returnValueGenerationProvider
      */
-    public function testReturnValueMap(bool $returnValueGeneration): void
+    public function testStubbedReturnValueMap(bool $returnValueGeneration): void
     {
         $map = [
             ['a', 'b', 'c', 'd'],
