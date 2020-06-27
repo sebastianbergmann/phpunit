@@ -331,23 +331,6 @@ final class DocBlock
         return 1 === \preg_match('/@postCondition\b/', $this->docComment);
     }
 
-    /**
-     * Parse annotation content to use constant/class constant values
-     *
-     * Constants are specified using a starting '@'. For example: @ClassName::CONST_NAME
-     *
-     * If the constant is not found the string is used as is to ensure maximum BC.
-     */
-    private function parseAnnotationContent(string $message): string
-    {
-        if (\defined($message) &&
-            (\strpos($message, '::') !== false && \substr_count($message, '::') + 1 === 2)) {
-            return \constant($message);
-        }
-
-        return $message;
-    }
-
     private function getDataFromDataProviderAnnotation(string $docComment): ?array
     {
         $methodName = null;
