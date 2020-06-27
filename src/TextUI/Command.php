@@ -38,7 +38,6 @@ use PharIo\Manifest\Exception as ManifestException;
 use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
