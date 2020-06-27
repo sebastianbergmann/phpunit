@@ -10,7 +10,6 @@
 namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
