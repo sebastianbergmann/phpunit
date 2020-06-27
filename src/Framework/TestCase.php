@@ -81,7 +81,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCount
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount as InvokedAtMostCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedCount as InvokedCountMatcher;
-use PHPUnit\Framework\MockObject\Stub;
+use PHPUnit\Framework\MockObject\Stub as MockObjectStub;
 use PHPUnit\Framework\MockObject\Stub\ConsecutiveCalls as ConsecutiveCallsStub;
 use PHPUnit\Framework\MockObject\Stub\Exception as ExceptionStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnArgument as ReturnArgumentStub;
@@ -89,6 +89,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnCallback as ReturnCallbackStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf as ReturnSelfStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
+use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Exception as UtilException;
@@ -445,7 +446,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public static function returnSelf(): ReturnSelfStub
     {
-        return new ReturnSelfStub;
+        return new ReturnSelfStub();
     }
 
     public static function throwException(Throwable $exception): ExceptionStub
@@ -1655,9 +1656,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param    class-string<RealInstanceType> $originalClassName
-     * @psalm-return   Stub&RealInstanceType
+     * @psalm-return   MockObjectStub&RealInstanceType
      */
-    protected function createStub(string $originalClassName): Stub
+    protected function createStub(string $originalClassName): MockObjectStub
     {
         return $this->createMock($originalClassName);
     }
@@ -1684,7 +1685,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
-     * @psalm-param mixed[]|Stub[]|Callable[] $configuration
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
