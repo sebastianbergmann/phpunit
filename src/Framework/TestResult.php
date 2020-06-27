@@ -615,7 +615,7 @@ final class TestResult implements Countable
     /**
      * Returns the names of the TestSuites that have passed.
      *
-     * This enables @depends-annotations for TestClasName::class
+     * This enables @depends-annotations for TestClassName::class
      */
     public function passedClasses(): array
     {
