@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject\Stub;
 
 use PHPUnit\Framework\MockObject\Invocation;
+use PHPUnit\Framework\MockObject\InvocationResolver;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -21,9 +22,15 @@ final class ReturnValueMap implements Stub
      */
     private $valueMap;
 
-    public function __construct(array $valueMap)
+    /**
+     * @var InvocationResolver
+     */
+    private $invocationResolver;
+
+    public function __construct(array $valueMap, InvocationResolver $invocationResolver)
     {
-        $this->valueMap = $valueMap;
+        $this->valueMap           = $valueMap;
+        $this->invocationResolver = $invocationResolver;
     }
 
     public function invoke(Invocation $invocation)
@@ -41,6 +48,8 @@ final class ReturnValueMap implements Stub
                 return $return;
             }
         }
+
+        return $this->invocationResolver->defaultResult($invocation);
     }
 
     public function toString(): string
