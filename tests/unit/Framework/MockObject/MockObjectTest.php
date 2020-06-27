@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\MockObject\InvocationNotExpectedException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractTrait;
@@ -253,6 +254,23 @@ final class MockObjectTest extends TestCase
         $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
         $this->assertNull($mock->doSomething('foo', 'bar'));
+    }
+
+    public function testStubbedNotReturnValueMap(): void
+    {
+        $mock = $this->getMockBuilder(AnInterface::class)
+                     ->disableAutoReturnValueGeneration()
+                     ->getMock();
+
+        $mock->method('doSomething')
+             ->willReturnMap([['a', 'b']]);
+
+        $this->expectException(InvocationNotExpectedException::class);
+        $this->expectExceptionMessage(
+            'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\AnInterface::doSomething()'
+        );
+
+        $mock->doSomething('c');
     }
 
     public function testStubbedReturnArgument(): void
@@ -1056,7 +1074,7 @@ final class MockObjectTest extends TestCase
             ->disableAutoReturnValueGeneration()
             ->getMock();
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(InvocationNotExpectedException::class);
         $this->expectExceptionMessage(
             'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\SomeClass::doSomethingElse()'
         );
@@ -1076,7 +1094,7 @@ final class MockObjectTest extends TestCase
         try {
             $mock->__phpunit_verify();
             $this->fail('Exception expected');
-        } catch (RuntimeException $e) {
+        } catch (InvocationNotExpectedException $e) {
             $this->assertSame(
                 'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\StringableClass::__toString()',
                 $e->getMessage()

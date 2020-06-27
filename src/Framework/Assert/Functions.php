@@ -55,6 +55,7 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
+use PHPUnit\Framework\MockObject\InvocationResolver;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtIndex as InvokedAtIndexMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
@@ -2276,7 +2277,7 @@ function returnValue($value): ReturnStub
 
 function returnValueMap(array $valueMap): ReturnValueMapStub
 {
-    return new ReturnValueMapStub($valueMap);
+    return new ReturnValueMapStub($valueMap, new InvocationResolver(true));
 }
 
 function returnArgument(int $argumentIndex): ReturnArgumentStub

@@ -108,7 +108,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
 
     public function willReturnMap(array $valueMap): self
     {
-        $stub = new ReturnValueMap($valueMap);
+        $stub = new ReturnValueMap($valueMap, $this->invocationHandler->getInvocationResolver());
 
         return $this->will($stub);
     }

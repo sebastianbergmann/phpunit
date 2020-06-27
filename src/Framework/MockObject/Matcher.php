@@ -210,6 +210,8 @@ final class Matcher
             );
         }
 
+        // TODO: maybe better to implement `Stub::matches(Invocation)` and run here?
+
         return true;
     }
 

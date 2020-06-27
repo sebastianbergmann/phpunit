@@ -72,6 +72,7 @@ use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Notice;
 use PHPUnit\Framework\Error\Warning as WarningError;
 use PHPUnit\Framework\MockObject\Generator as MockGenerator;
+use PHPUnit\Framework\MockObject\InvocationResolver;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
@@ -424,7 +425,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     public static function returnValueMap(array $valueMap): ReturnValueMapStub
     {
-        return new ReturnValueMapStub($valueMap);
+        return new ReturnValueMapStub($valueMap, new InvocationResolver(true));
     }
 
     public static function returnArgument(int $argumentIndex): ReturnArgumentStub

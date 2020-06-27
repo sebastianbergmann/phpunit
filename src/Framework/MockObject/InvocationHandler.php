@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function sprintf;
 use function strtolower;
 use Exception;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
@@ -37,19 +36,19 @@ final class InvocationHandler
     private $configurableMethods;
 
     /**
-     * @var bool
-     */
-    private $returnValueGeneration;
-
-    /**
      * @var Throwable
      */
     private $deferredError;
 
+    /**
+     * @var InvocationResolver
+     */
+    private $invocationResolver;
+
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {
-        $this->configurableMethods   = $configurableMethods;
-        $this->returnValueGeneration = $returnValueGeneration;
+        $this->configurableMethods = $configurableMethods;
+        $this->invocationResolver  = new InvocationResolver($returnValueGeneration);
     }
 
     public function hasMatchers(): bool
@@ -110,7 +109,7 @@ final class InvocationHandler
     }
 
     /**
-     * @throws RuntimeException
+     * @throws InvocationNotExpectedException
      * @throws Exception
      */
     public function invoke(Invocation $invocation)
@@ -142,25 +141,17 @@ final class InvocationHandler
             return $returnValue;
         }
 
-        if (!$this->returnValueGeneration) {
-            $exception = new RuntimeException(
-                sprintf(
-                    'Return value inference disabled and no expectation set up for %s::%s()',
-                    $invocation->getClassName(),
-                    $invocation->getMethodName()
-                )
-            );
-
+        try {
+            return $this->invocationResolver->invocationDefaultResult($invocation);
+        } catch (InvocationNotExpectedException $exception) {
             if (strtolower($invocation->getMethodName()) === '__tostring') {
                 $this->deferredError = $exception;
 
                 return '';
+            } else {
+                throw $exception;
             }
-
-            throw $exception;
         }
-
-        return $invocation->generateReturnValue();
     }
 
     public function matches(Invocation $invocation): bool
@@ -186,6 +177,11 @@ final class InvocationHandler
         if ($this->deferredError) {
             throw $this->deferredError;
         }
+    }
+
+    public function getInvocationResolver(): InvocationResolver
+    {
+        return $this->invocationResolver;
     }
 
     private function addMatcher(Matcher $matcher): void
