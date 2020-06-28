@@ -773,7 +773,7 @@ class Command
                     }
 
                     if (isset($handler) && \is_callable([$this, $handler])) {
-                        $this->$handler($option[1]);
+                        $this->{$handler}($option[1]);
                     }
             }
         }

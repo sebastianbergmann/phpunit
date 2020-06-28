@@ -693,9 +693,9 @@ final class Test
                     }
 
                     foreach ($methods as $method) {
-                        if ($inverse && !$method->$visibility()) {
+                        if ($inverse && !$method->{$visibility}()) {
                             $codeToCoverList[] = $method;
-                        } elseif (!$inverse && $method->$visibility()) {
+                        } elseif (!$inverse && $method->{$visibility}()) {
                             $codeToCoverList[] = $method;
                         }
                     }
