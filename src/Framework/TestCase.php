@@ -1094,25 +1094,25 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if ($this->inIsolation) {
                 foreach ($hookMethods['beforeClass'] as $method) {
-                    $this->$method();
+                    $this->{$method}();
                 }
             }
 
             $this->setDoesNotPerformAssertionsFromAnnotation();
 
             foreach ($hookMethods['before'] as $method) {
-                $this->$method();
+                $this->{$method}();
             }
 
             foreach ($hookMethods['preCondition'] as $method) {
-                $this->$method();
+                $this->{$method}();
             }
 
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
 
             foreach ($hookMethods['postCondition'] as $method) {
-                $this->$method();
+                $this->{$method}();
             }
 
             if (!empty($this->warnings)) {
@@ -1154,12 +1154,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         try {
             if ($hasMetRequirements) {
                 foreach ($hookMethods['after'] as $method) {
-                    $this->$method();
+                    $this->{$method}();
                 }
 
                 if ($this->inIsolation) {
                     foreach ($hookMethods['afterClass'] as $method) {
-                        $this->$method();
+                        $this->{$method}();
                     }
                 }
             }
