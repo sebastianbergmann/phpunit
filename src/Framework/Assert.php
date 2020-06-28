@@ -3436,7 +3436,7 @@ abstract class Assert
                 $attribute = $reflector->getProperty($attributeName);
 
                 if (!$attribute || $attribute->isPublic()) {
-                    return $object->$attributeName;
+                    return $object->{$attributeName};
                 }
 
                 $attribute->setAccessible(true);
