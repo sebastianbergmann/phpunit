@@ -141,17 +141,17 @@ jobs:
 
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
 
       - name: Install highest dependencies with composer
         if: matrix.dependencies == 'highest'
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Run sanity check
         run: bash ./build/scripts/sanity-check
 
       - name: Run tests with phpunit
-        run: ./phpunit --coverage-clover=coverage.xml
+        run: php ./phpunit --coverage-clover=coverage.xml
 
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v1
