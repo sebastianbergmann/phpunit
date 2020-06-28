@@ -289,7 +289,7 @@ class Command
                 }
 
                 if (isset($handler) && \is_callable([$this, $handler])) {
-                    $this->$handler($value);
+                    $this->{$handler}($value);
 
                     unset($handler);
                 }

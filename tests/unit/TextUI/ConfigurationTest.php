@@ -89,7 +89,7 @@ final class ConfigurationTest extends TestCase
 
         $this->assertFalse($configuration->hasValidationErrors());
 
-        $this->assertEquals($expected, $configuration->phpunit()->$optionName());
+        $this->assertEquals($expected, $configuration->phpunit()->{$optionName}());
 
         @\unlink($tmpFilename);
     }
