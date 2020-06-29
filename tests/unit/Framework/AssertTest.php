@@ -646,6 +646,10 @@ XML;
 
     public function testAssertFileIsNotReadable(): void
     {
+        if (\PHP_OS_FAMILY === 'Windows') {
+            self::markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
         $tempFile = \tempnam(
             \sys_get_temp_dir(),
             'unreadable'
