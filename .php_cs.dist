@@ -82,6 +82,9 @@ return PhpCsFixer\Config::create()
             'import_functions' => true,
         ],
         'header_comment' => ['header' => $header, 'separate' => 'none'],
+        'increment_style' => [
+            'style' => PhpCsFixer\Fixer\Operator\IncrementStyleFixer::STYLE_POST,
+        ],
         'indentation_type' => true,
         'is_null' => true,
         'line_ending' => true,
