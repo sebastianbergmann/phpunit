@@ -346,6 +346,7 @@ class Command
                 $configuration = Registry::getInstance()->get($this->arguments['configuration']);
             } catch (\Throwable $e) {
                 print $e->getMessage() . \PHP_EOL;
+
                 exit(TestRunner::FAILURE_EXIT);
             }
 
@@ -409,6 +410,7 @@ class Command
 
         if (!isset($this->arguments['test'])) {
             $this->showHelp();
+
             exit(TestRunner::EXCEPTION_EXIT);
         }
     }
