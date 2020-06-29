@@ -73,6 +73,7 @@ final class ReturnValueMap implements Stub
     private function getExpectedArguments(): array
     {
         $expectedArguments = [];
+
         foreach ($this->valueMap as $map) {
             \array_pop($map);
             $expectedArguments[] = $map;
