@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+use function addslashes;
 use function basename;
 use function dirname;
 use function sprintf;
@@ -28,7 +29,7 @@ final class XDebugFilterScriptGeneratorTest extends TestCase
 {
     public function testReturnsExpectedScript(): void
     {
-        $expectedDirectory = __DIR__ . DIRECTORY_SEPARATOR;
+        $expectedDirectory = addslashes(__DIR__ . DIRECTORY_SEPARATOR);
         $expected          = <<<EOF
 <?php declare(strict_types=1);
 if (!\\function_exists('xdebug_set_filter')) {

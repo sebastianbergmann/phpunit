@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use const DIRECTORY_SEPARATOR;
 use const INF;
 use const NAN;
+use const PHP_OS_FAMILY;
 use function acos;
 use function array_merge;
 use function chmod;
@@ -614,6 +615,10 @@ XML;
 
     public function testAssertFileIsNotReadable(): void
     {
+        if (PHP_OS_FAMILY === 'Windows') {
+            self::markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
         $tempFile = tempnam(
             sys_get_temp_dir(),
             'unreadable'
