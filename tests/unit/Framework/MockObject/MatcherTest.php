@@ -124,7 +124,14 @@ class MatcherTest extends TestCase
     {
         return [
             [
-                new Invocation('Foo', 'nonExistingMethod', [], 'void', new class{}),
+                new Invocation(
+                    'Foo',
+                    'nonExistingMethod',
+                    [],
+                    'void',
+                    new class {
+                    }
+                ),
                 \ReflectionException::class,
             ],
             [
@@ -133,8 +140,10 @@ class MatcherTest extends TestCase
                     'emptyMethod',
                     [],
                     'void',
-                    new class{
-                        public function emptyMethod(): void {}
+                    new class {
+                        public function emptyMethod(): void
+                        {
+                        }
                     }
                 ),
                 null,
@@ -185,7 +194,10 @@ class MatcherTest extends TestCase
                 new Invocation(
                     'Foo',
                     'methodAcceptingAnInterface',
-                    [new class{}],
+                    [
+                        new class {
+                        },
+                    ],
                     'void',
                     new class {
                         public function methodAcceptingAnInterface(AnInterface $value): void
@@ -204,7 +216,7 @@ class MatcherTest extends TestCase
                             public function doSomething(): void
                             {
                             }
-                        }
+                        },
                     ],
                     'void',
                     new class {
@@ -296,8 +308,7 @@ class MatcherTest extends TestCase
 
     /**
      * @dataProvider argumentsStrictTypesProvider
-     * @param Invocation $invocation
-     * @param string|null $expectedException
+     *
      * @throws \Exception
      */
     public function testStrictTypesCheck(

@@ -291,8 +291,6 @@ final class Matcher
     }
 
     /**
-     * @param Invocation $invocation
-     * @return bool
      * @throws \ReflectionException
      */
     private static function checkParameterTypes(Invocation $invocation): bool
@@ -308,13 +306,16 @@ final class Matcher
         foreach ($reflectionParameters as $index => $reflectionParameter) {
             if (\array_key_exists($index, $invocation->getParameters())) {
                 $invokedParameter = $invocation->getParameters()[$index];
+
                 if ($reflectionType = $reflectionParameter->getType()) {
                     if ($reflectionType instanceof \ReflectionNamedType) {
                         if ($reflectionType->isBuiltin()) {
                             $reflectionTypeName = $reflectionType->getName();
+
                             if (\array_key_exists($reflectionTypeName, self::TYPES_MAP)) {
                                 $reflectionTypeName = self::TYPES_MAP[$reflectionTypeName];
                             }
+
                             if ($reflectionTypeName !== \gettype($invokedParameter)) {
                                 return false;
                             }
