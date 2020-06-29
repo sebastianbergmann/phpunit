@@ -231,7 +231,6 @@ final class MockObjectTest extends TestCase
 
         $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
-        $this->assertNull($mock->doSomething('foo', 'bar'));
 
         $mock = $this->getMockBuilder(AnInterface::class)
                      ->getMock();
@@ -242,7 +241,25 @@ final class MockObjectTest extends TestCase
 
         $this->assertEquals('d', $mock->doSomething('a', 'b', 'c'));
         $this->assertEquals('h', $mock->doSomething('e', 'f', 'g'));
-        $this->assertNull($mock->doSomething('foo', 'bar'));
+    }
+
+    public function testReturnValueMapNotMatchedThrowsException(): void
+    {
+        $mock = $this->createConfiguredMock(
+            AnInterface::class,
+            [
+                'doSomething' => self::returnValueMap(
+                    [
+                        ['a', 'b', 'c', 'd'],
+                        ['e', 'f', 'g', 'h'],
+                    ]
+                ),
+            ]
+        );
+
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('method arguments did not match to any of mocked');
+        $mock->doSomething('foo', 'bar');
     }
 
     public function testStubbedReturnArgument(): void

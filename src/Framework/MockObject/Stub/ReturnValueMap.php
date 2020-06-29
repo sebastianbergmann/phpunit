@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework\MockObject\Stub;
 
+use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Invocation;
+use SebastianBergmann\Comparator\ComparisonFailure;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -17,13 +20,13 @@ use PHPUnit\Framework\MockObject\Invocation;
 final class ReturnValueMap implements Stub
 {
     /**
-     * @var array
+     * @var array[]
      */
     private $valueMap;
 
     public function __construct(array $valueMap)
     {
-        $this->valueMap = $valueMap;
+        $this->valueMap = \array_filter($valueMap, '\is_array');
     }
 
     public function invoke(Invocation $invocation)
@@ -31,7 +34,7 @@ final class ReturnValueMap implements Stub
         $parameterCount = \count($invocation->getParameters());
 
         foreach ($this->valueMap as $map) {
-            if (!\is_array($map) || $parameterCount !== (\count($map) - 1)) {
+            if ($parameterCount !== (\count($map) - 1)) {
                 continue;
             }
 
@@ -41,10 +44,40 @@ final class ReturnValueMap implements Stub
                 return $return;
             }
         }
+
+        throw $this->getExpectationFailedException($invocation->getParameters());
     }
 
     public function toString(): string
     {
         return 'return value from a map';
+    }
+
+    private function getExpectationFailedException(
+        array $actualArguments
+    ): ExpectationFailedException {
+        $exporter          = new Exporter();
+        $expectedArguments = $this->getExpectedArguments();
+
+        return new ExpectationFailedException(
+            'method arguments did not match to any of mocked',
+            new ComparisonFailure(
+                $expectedArguments,
+                $actualArguments,
+                $exporter->shortenedExport($expectedArguments),
+                $exporter->shortenedExport($actualArguments)
+            )
+        );
+    }
+
+    private function getExpectedArguments(): array
+    {
+        $expectedArguments = [];
+        foreach ($this->valueMap as $map) {
+            \array_pop($map);
+            $expectedArguments[] = $map;
+        }
+
+        return $expectedArguments;
     }
 }
