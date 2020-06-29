@@ -248,7 +248,7 @@ final class Invocation implements SelfDescribing
                     $this->checkParameterType(
                         $reflectionParameter->getType(),
                         $variadicParameter,
-                        $index + $variadicIndex
+                        (int)$index + (int)$variadicIndex
                     );
                 }
 
@@ -281,7 +281,7 @@ final class Invocation implements SelfDescribing
         ) {
             throw new RuntimeException(
                 sprintf(
-                    'Too many values passed to method %s::%s',
+                    'Too many arguments passed to method %s::%s',
                     $this->getClassName(),
                     $this->getMethodName()
                 )

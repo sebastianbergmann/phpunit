@@ -124,10 +124,8 @@ final class InvocationHandler
      */
     public function invoke(Invocation $invocation)
     {
-        if ($this->strictTypesCheck && !$invocation->checkParameterTypes()) {
-            throw new RuntimeException(
-                "Invoked parameters' types or count did not match to declared in method"
-            );
+        if ($this->strictTypesCheck) {
+            $invocation->checkParameterTypes();
         }
 
         $exception      = null;

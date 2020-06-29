@@ -283,7 +283,7 @@ final class MockBuilderTest extends TestCase
         self::assertNull($mock->mockableMethod());
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
-            "Invoked parameters' types or count did not match to declared in method"
+            'Too many arguments passed to method PHPUnit\TestFixture\Mockable::mockableMethod'
         );
         $mock->mockableMethod('unexpected_argument');
     }

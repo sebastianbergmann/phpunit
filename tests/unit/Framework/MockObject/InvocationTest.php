@@ -161,7 +161,7 @@ class InvocationTest extends TestCase
                     {
                     }
                 },
-                'Too many values passed to method Foo::emptyMethod',
+                'Too many arguments passed to method Foo::emptyMethod',
             ],
             [
                 'methodWithInt',
@@ -208,7 +208,7 @@ class InvocationTest extends TestCase
                     ): void {
                     }
                 },
-                'Too many values passed to method Foo::methodWithBoolInt',
+                'Too many arguments passed to method Foo::methodWithBoolInt',
             ],
             [
                 'methodWithNullableString',
