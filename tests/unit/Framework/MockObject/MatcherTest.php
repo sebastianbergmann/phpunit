@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use AnInterface;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
@@ -30,7 +31,7 @@ class MatcherTest extends TestCase
             ->method('apply')
             ->with($invocation);
 
-        $matcher = new Matcher($invocationMatcher);
+        $matcher = new Matcher($invocationMatcher, false);
         $matcher->setMethodNameRule(new MethodName('bar'));
         $matcher->setParametersRule($parameterRule);
 
@@ -46,7 +47,7 @@ class MatcherTest extends TestCase
         $parameterRule->method('apply')
             ->willThrowException(new ExpectationFailedException('rule is always violated.'));
 
-        $matcher = new Matcher($invocationMatcher);
+        $matcher = new Matcher($invocationMatcher, false);
         $matcher->setMethodNameRule(new MethodName('bar'));
         $matcher->setParametersRule($parameterRule);
 
@@ -61,7 +62,7 @@ class MatcherTest extends TestCase
         $invocationMatcher->method('matches')
             ->willReturn(true);
         $invocation = new Invocation('Foo', 'bar', [], 'void', new \stdClass);
-        $matcher    = new Matcher($invocationMatcher);
+        $matcher    = new Matcher($invocationMatcher, false);
         $matcher->setMethodNameRule(new MethodName('bar'));
 
         $parameterRule = $this->createStub(ParametersRule::class);
@@ -85,7 +86,7 @@ class MatcherTest extends TestCase
         $parameterRule->method('apply')
             ->willThrowException(new ExpectationFailedException('rule is always violated.'));
 
-        $matcher = new Matcher($invocationMatcher);
+        $matcher = new Matcher($invocationMatcher, false);
         $matcher->setMethodNameRule(new MethodName('bar'));
         $matcher->setParametersRule($parameterRule);
         $matcher->setStub($stub);
@@ -108,11 +109,215 @@ class MatcherTest extends TestCase
 
         $parameterRule = $this->createStub(ParametersRule::class);
 
-        $matcher = new Matcher($invocationMatcher);
+        $matcher = new Matcher($invocationMatcher, false);
         $matcher->setMethodNameRule(new MethodName('bar'));
         $matcher->setParametersRule($parameterRule);
         $matcher->setStub($stub);
 
+        $matcher->invoked($invocation);
+    }
+
+    /**
+     * @return array[]
+     */
+    public function argumentsStrictTypesProvider(): array
+    {
+        return [
+            [
+                new Invocation('Foo', 'nonExistingMethod', [], 'void', new class{}),
+                \ReflectionException::class,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'emptyMethod',
+                    [],
+                    'void',
+                    new class{
+                        public function emptyMethod(): void {}
+                    }
+                ),
+                null,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'emptyMethod',
+                    ['value'],
+                    'void',
+                    new class {
+                        public function emptyMethod(): void
+                        {
+                        }
+                    }
+                ),
+                RuntimeException::class,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'methodAcceptingInt',
+                    ['123'],
+                    'void',
+                    new class {
+                        public function methodAcceptingInt(int $value): void
+                        {
+                        }
+                    }
+                ),
+                RuntimeException::class,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'methodAcceptingInt',
+                    [123],
+                    'void',
+                    new class {
+                        public function methodAcceptingInt(int $value): void
+                        {
+                        }
+                    }
+                ),
+                null,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'methodAcceptingAnInterface',
+                    [new class{}],
+                    'void',
+                    new class {
+                        public function methodAcceptingAnInterface(AnInterface $value): void
+                        {
+                        }
+                    }
+                ),
+                RuntimeException::class,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'methodAcceptingAnInterface',
+                    [
+                        new class implements AnInterface {
+                            public function doSomething(): void
+                            {
+                            }
+                        }
+                    ],
+                    'void',
+                    new class {
+                        public function methodAcceptingAnInterface(AnInterface $value): void
+                        {
+                        }
+                    }
+                ),
+                null,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'methodWithDefaultValue',
+                    [],
+                    'void',
+                    new class {
+                        public function methodWithDefaultValue(bool $value = true): void
+                        {
+                        }
+                    }
+                ),
+                null,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'nonTypedMethod',
+                    ['anything'],
+                    'void',
+                    new class {
+                        public function nonTypedMethod($value): void
+                        {
+                        }
+                    }
+                ),
+                null,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'methodAcceptingBoolInt',
+                    [true, 123],
+                    'void',
+                    new class {
+                        public function methodAcceptingBoolInt(
+                            bool $argument1,
+                            int $argument2
+                        ): void {
+                        }
+                    }
+                ),
+                null,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'methodAcceptingBoolInt',
+                    [123, true],
+                    'void',
+                    new class {
+                        public function methodAcceptingBoolInt(
+                            bool $argument1,
+                            int $argument2
+                        ): void {
+                        }
+                    }
+                ),
+                RuntimeException::class,
+            ],
+            [
+                new Invocation(
+                    'Foo',
+                    'methodAcceptingBoolInt',
+                    [true, 123, 'string'],
+                    'void',
+                    new class {
+                        public function methodAcceptingBoolInt(
+                            bool $argument1,
+                            int $argument2
+                        ): void {
+                        }
+                    }
+                ),
+                RuntimeException::class,
+            ],
+        ];
+    }
+
+    /**
+     * @dataProvider argumentsStrictTypesProvider
+     * @param Invocation $invocation
+     * @param string|null $expectedException
+     * @throws \Exception
+     */
+    public function testStrictTypesCheck(
+        Invocation $invocation,
+        ?string $expectedException
+    ): void {
+        $invocationMatcher = $this->createStub(InvocationOrder::class);
+
+        $matcher = new Matcher($invocationMatcher, false);
+        $matcher->setMethodNameRule(new MethodName('bar'));
+        $matcher->invoked($invocation);
+
+        if ($expectedException) {
+            $this->expectException($expectedException);
+        } else {
+            $this->addToAssertionCount(1);
+        }
+
+        $matcher = new Matcher($invocationMatcher, true);
+        $matcher->setMethodNameRule(new MethodName('bar'));
         $matcher->invoked($invocation);
     }
 }

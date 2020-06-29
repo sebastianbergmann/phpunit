@@ -24,10 +24,21 @@ use PHPUnit\Framework\TestFailure;
  */
 final class Matcher
 {
+    private const TYPES_MAP = [
+        'int'   => 'integer',
+        'bool'  => 'boolean',
+        'float' => 'double',
+    ];
+
     /**
      * @var InvocationOrder
      */
     private $invocationRule;
+
+    /**
+     * @var bool
+     */
+    private $strictTypesCheck;
 
     /**
      * @var mixed
@@ -54,9 +65,10 @@ final class Matcher
      */
     private $stub;
 
-    public function __construct(InvocationOrder $rule)
+    public function __construct(InvocationOrder $rule, bool $strictTypesCheck)
     {
-        $this->invocationRule = $rule;
+        $this->invocationRule   = $rule;
+        $this->strictTypesCheck = $strictTypesCheck;
     }
 
     public function hasMatchers(): bool
@@ -128,6 +140,12 @@ final class Matcher
             if ($matcher->invocationRule->hasBeenInvoked()) {
                 $this->afterMatchBuilderIsInvoked = true;
             }
+        }
+
+        if ($this->strictTypesCheck && !self::checkParameterTypes($invocation)) {
+            throw new RuntimeException(
+                "Invoked parameters' types or count did not match to declared in method"
+            );
         }
 
         $this->invocationRule->invoked($invocation);
@@ -224,7 +242,7 @@ final class Matcher
             $this->invocationRule->verify();
 
             if ($this->parametersRule === null) {
-                $this->parametersRule = new AnyParameters;
+                $this->parametersRule = new AnyParameters();
             }
 
             $invocationIsAny   = $this->invocationRule instanceof AnyInvokedCount;
@@ -270,5 +288,50 @@ final class Matcher
         }
 
         return \implode(' ', $list);
+    }
+
+    /**
+     * @param Invocation $invocation
+     * @return bool
+     * @throws \ReflectionException
+     */
+    private static function checkParameterTypes(Invocation $invocation): bool
+    {
+        $reflectionObject     = new \ReflectionObject($invocation->getObject());
+        $reflectionMethod     = $reflectionObject->getMethod($invocation->getMethodName());
+        $reflectionParameters = $reflectionMethod->getParameters();
+
+        if (\count($invocation->getParameters()) > \count($reflectionParameters)) {
+            return false;
+        }
+
+        foreach ($reflectionParameters as $index => $reflectionParameter) {
+            if (\array_key_exists($index, $invocation->getParameters())) {
+                $invokedParameter = $invocation->getParameters()[$index];
+                if ($reflectionType = $reflectionParameter->getType()) {
+                    if ($reflectionType instanceof \ReflectionNamedType) {
+                        if ($reflectionType->isBuiltin()) {
+                            $reflectionTypeName = $reflectionType->getName();
+                            if (\array_key_exists($reflectionTypeName, self::TYPES_MAP)) {
+                                $reflectionTypeName = self::TYPES_MAP[$reflectionTypeName];
+                            }
+                            if ($reflectionTypeName !== \gettype($invokedParameter)) {
+                                return false;
+                            }
+                        } elseif (
+                            !\is_subclass_of($invokedParameter, $reflectionType->getName(), false)
+                        ) {
+                            return false;
+                        }
+                    } else {
+                        throw new RuntimeException('Can not define type of parameter');
+                    }
+                }
+            } elseif (!$reflectionParameter->isDefaultValueAvailable()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }

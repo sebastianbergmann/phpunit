@@ -52,8 +52,21 @@ final class Generator
      *
      * @throws RuntimeException
      */
-    public function getMock($type, $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject
-    {
+    public function getMock(
+        $type,
+        $methods = [],
+        array $arguments = [],
+        string $mockClassName = '',
+        bool $callOriginalConstructor = true,
+        bool $callOriginalClone = true,
+        bool $callAutoload = true,
+        bool $cloneArguments = true,
+        bool $callOriginalMethods = false,
+        object $proxyTarget = null,
+        bool $allowMockingUnknownTypes = true,
+        bool $returnValueGeneration = true,
+        bool $strictTypesCheck = false
+    ): MockObject {
         if (!\is_array($type) && !\is_string($type)) {
             throw InvalidArgumentException::create(1, 'array or string');
         }
@@ -176,7 +189,8 @@ final class Generator
             $arguments,
             $callOriginalMethods,
             $proxyTarget,
-            $returnValueGeneration
+            $returnValueGeneration,
+            $strictTypesCheck
         );
     }
 
@@ -569,8 +583,17 @@ final class Generator
         return $methods;
     }
 
-    private function getObject(MockType $mockClass, $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true)
-    {
+    private function getObject(
+        MockType $mockClass,
+        $type = '',
+        bool $callOriginalConstructor = false,
+        bool $callAutoload = false,
+        array $arguments = [],
+        bool $callOriginalMethods = false,
+        object $proxyTarget = null,
+        bool $returnValueGeneration = true,
+        bool $strictTypesCheck = false
+    ) {
         $className = $mockClass->generate();
 
         if ($callOriginalConstructor) {
@@ -625,6 +648,7 @@ final class Generator
 
         if ($object instanceof MockObject) {
             $object->__phpunit_setReturnValueGeneration($returnValueGeneration);
+            $object->__phpunit_setStrictTypesCheck($strictTypesCheck);
         }
 
         return $object;

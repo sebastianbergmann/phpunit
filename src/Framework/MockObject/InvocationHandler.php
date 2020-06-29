@@ -40,14 +40,23 @@ final class InvocationHandler
     private $returnValueGeneration;
 
     /**
+     * @var bool
+     */
+    private $strictTypesCheck;
+
+    /**
      * @var \Throwable
      */
     private $deferredError;
 
-    public function __construct(array $configurableMethods, bool $returnValueGeneration)
-    {
+    public function __construct(
+        array $configurableMethods,
+        bool $returnValueGeneration,
+        bool $strictTypesCheck
+    ) {
         $this->configurableMethods   = $configurableMethods;
         $this->returnValueGeneration = $returnValueGeneration;
+        $this->strictTypesCheck      = $strictTypesCheck;
     }
 
     public function hasMatchers(): bool
@@ -97,7 +106,7 @@ final class InvocationHandler
 
     public function expects(InvocationOrder $rule): InvocationMocker
     {
-        $matcher = new Matcher($rule);
+        $matcher = new Matcher($rule, $this->strictTypesCheck);
         $this->addMatcher($matcher);
 
         return new InvocationMocker(

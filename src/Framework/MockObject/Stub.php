@@ -21,4 +21,6 @@ interface Stub
     public function __phpunit_hasMatchers(): bool;
 
     public function __phpunit_setReturnValueGeneration(bool $returnValueGeneration): void;
+
+    public function __phpunit_setStrictTypesCheck(bool $strictTypesCheck): void;
 }

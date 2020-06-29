@@ -87,6 +87,11 @@ final class MockBuilder
     private $returnValueGeneration = true;
 
     /**
+     * @var bool
+     */
+    private $strictTypesCheck = false;
+
+    /**
      * @var Generator
      */
     private $generator;
@@ -124,7 +129,8 @@ final class MockBuilder
             $this->callOriginalMethods,
             $this->proxyTarget,
             $this->allowMockingUnknownTypes,
-            $this->returnValueGeneration
+            $this->returnValueGeneration,
+            $this->strictTypesCheck
         );
 
         $this->testCase->registerMockObject($object);
@@ -500,6 +506,20 @@ final class MockBuilder
     public function disableAutoReturnValueGeneration(): self
     {
         $this->returnValueGeneration = false;
+
+        return $this;
+    }
+
+    public function enableStrictTypesCheck(): self
+    {
+        $this->strictTypesCheck = true;
+
+        return $this;
+    }
+
+    public function disableStrictTypesCheck(): self
+    {
+        $this->strictTypesCheck = false;
 
         return $this;
     }

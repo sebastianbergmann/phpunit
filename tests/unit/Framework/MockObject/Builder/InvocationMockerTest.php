@@ -86,10 +86,10 @@ final class InvocationMockerTest extends TestCase
 
     public function testWillFailWhenTryingToPerformExpectationUnconfigurableMethod(): void
     {
-        $matcherCollection = new InvocationHandler([], false);
+        $matcherCollection = new InvocationHandler([], false, false);
         $invocationMocker  = new InvocationMocker(
             $matcherCollection,
-            new Matcher($this->any())
+            new Matcher($this->any(), false)
         );
 
         $this->expectException(RuntimeException::class);
