@@ -385,6 +385,7 @@ class Command
                 case 'h':
                 case '--help':
                     $this->showHelp();
+
                     exit(TestRunner::SUCCESS_EXIT);
 
                     break;
@@ -667,6 +668,7 @@ class Command
 
                 case '--version':
                     $this->printVersionString();
+
                     exit(TestRunner::SUCCESS_EXIT);
 
                     break;
@@ -872,6 +874,7 @@ class Command
                 );
             } catch (Throwable $t) {
                 print $t->getMessage() . \PHP_EOL;
+
                 exit(TestRunner::FAILURE_EXIT);
             }
 
@@ -943,6 +946,7 @@ class Command
 
         if (!isset($this->arguments['test'])) {
             $this->showHelp();
+
             exit(TestRunner::EXCEPTION_EXIT);
         }
     }
