@@ -225,14 +225,15 @@ final class Invocation implements SelfDescribing
 
     /**
      * @throws ReflectionException
+     * @throws RuntimeException
      */
-    public function checkParameterTypes(): bool
+    public function checkParameterTypes(): void
     {
         $reflectionObject     = new ReflectionObject($this->getObject());
         $reflectionMethod     = $reflectionObject->getMethod($this->getMethodName());
         $reflectionParameters = $reflectionMethod->getParameters();
 
-        $variadicParameters = false;
+        $variadicParametersChecked = false;
 
         foreach ($reflectionParameters as $index => $reflectionParameter) {
             if ($reflectionParameter->isVariadic()) {
@@ -240,37 +241,52 @@ final class Invocation implements SelfDescribing
                     throw new ReflectionException('Only the last parameter can be variadic');
                 }
 
-                /** @var array $variadicParameters */
-                $variadicParameters = array_slice($this->getParameters(), $index);
+                /** @var array $variadicParametersChecked */
+                $variadicParametersChecked = array_slice($this->getParameters(), $index);
 
-                foreach ($variadicParameters as $variadicParameter) {
-                    if (!self::checkParameterType(
+                foreach ($variadicParametersChecked as $variadicIndex => $variadicParameter) {
+                    $this->checkParameterType(
                         $reflectionParameter->getType(),
-                        $variadicParameter
-                    )) {
-                        return false;
-                    }
+                        $variadicParameter,
+                        $index + $variadicIndex
+                    );
                 }
 
-                $variadicParameters = true;
+                $variadicParametersChecked = true;
 
                 break;
             }
 
             if (array_key_exists($index, $this->getParameters())) {
-                if (!self::checkParameterType(
+                $this->checkParameterType(
                     $reflectionParameter->getType(),
-                    $this->getParameters()[$index]
-                )) {
-                    return false;
-                }
+                    $this->getParameters()[$index],
+                    $index
+                );
             } elseif (!$reflectionParameter->isDefaultValueAvailable()) {
-                return false;
+                throw new RuntimeException(
+                    sprintf(
+                        'Nothing passed as parameter %d of method %s::%s, and no default value available',
+                        $index,
+                        $this->getClassName(),
+                        $this->getMethodName()
+                    )
+                );
             }
         }
 
-        return $variadicParameters
-            || (count($this->getParameters()) <= count($reflectionParameters));
+        if (
+            !$variadicParametersChecked &&
+            (count($this->getParameters()) > count($reflectionParameters))
+        ) {
+            throw new RuntimeException(
+                sprintf(
+                    'Too many values passed to method %s::%s',
+                    $this->getClassName(),
+                    $this->getMethodName()
+                )
+            );
+        }
     }
 
     private function cloneObject(object $original): object
@@ -283,19 +299,23 @@ final class Invocation implements SelfDescribing
     }
 
     /**
+     * @throws RuntimeException
+     *
      * @param ReflectionType $reflectionType
      * @param mixed          $invokedParameter
+     * @param int            $index
      */
-    private static function checkParameterType(
+    private function checkParameterType(
         ?ReflectionType $reflectionType,
-        $invokedParameter
-    ): bool {
+        $invokedParameter,
+        int $index
+    ): void {
         if (!$reflectionType) {
-            return true;
+            return;
         }
 
         if ($invokedParameter === null && $reflectionType->allowsNull()) {
-            return true;
+            return;
         }
 
         if ($reflectionType instanceof ReflectionNamedType) {
@@ -306,13 +326,44 @@ final class Invocation implements SelfDescribing
                     $reflectionTypeName = self::TYPES_MAP[$reflectionTypeName];
                 }
 
-                return $reflectionTypeName === gettype($invokedParameter);
+                $invokedType = gettype($invokedParameter);
+
+                if ($reflectionTypeName !== $invokedType) {
+                    throw $this->getStrictTypeException($index, $reflectionTypeName, $invokedType);
+                }
+            } else {
+                $invokedClass = get_class($invokedParameter);
+
+                if (
+                    ($invokedClass !== $reflectionType->getName()) &&
+                    !is_subclass_of($invokedParameter, $reflectionType->getName(), false)
+                ) {
+                    throw $this->getStrictTypeException(
+                        $index,
+                        $reflectionType->getName(),
+                        $invokedClass
+                    );
+                }
             }
-
-            return (get_class($invokedParameter) === $reflectionType->getName())
-                || is_subclass_of($invokedParameter, $reflectionType->getName(), false);
+        } else {
+            throw new RuntimeException('Can not define parameter type');
         }
+    }
 
-        throw new RuntimeException('Can not define parameter type');
+    private function getStrictTypeException(
+        int $argumentIndex,
+        string $declaredType,
+        string $actualType
+    ): RuntimeException {
+        return new RuntimeException(
+            sprintf(
+                'Argument %d passed to method %s::%s must be of type %s; %s given',
+                $argumentIndex,
+                $this->getClassName(),
+                $this->getMethodName(),
+                $declaredType,
+                $actualType
+            )
+        );
     }
 }

@@ -161,6 +161,7 @@ class InvocationTest extends TestCase
                     {
                     }
                 },
+                'Too many values passed to method Foo::emptyMethod',
             ],
             [
                 'methodWithInt',
@@ -170,6 +171,7 @@ class InvocationTest extends TestCase
                     {
                     }
                 },
+                'Argument 0 passed to method Foo::methodWithInt must be of type integer; string given',
             ],
             [
                 'methodWithAnInterface',
@@ -182,6 +184,7 @@ class InvocationTest extends TestCase
                     {
                     }
                 },
+                'Argument 0 passed to method Foo::methodWithAnInterface must be of type PHPUnit\\\\TestFixture\\\\AnInterface; class@anonymous[^ ]+ given',
             ],
             [
                 'methodWithBoolInt',
@@ -193,6 +196,7 @@ class InvocationTest extends TestCase
                     ): void {
                     }
                 },
+                'Argument 0 passed to method Foo::methodWithBoolInt must be of type boolean; integer given',
             ],
             [
                 'methodWithBoolInt',
@@ -204,6 +208,7 @@ class InvocationTest extends TestCase
                     ): void {
                     }
                 },
+                'Too many values passed to method Foo::methodWithBoolInt',
             ],
             [
                 'methodWithNullableString',
@@ -213,6 +218,7 @@ class InvocationTest extends TestCase
                     {
                     }
                 },
+                'Argument 0 passed to method Foo::methodWithNullableString must be of type string; integer given',
             ],
             [
                 'methodWithVariadicString',
@@ -222,6 +228,7 @@ class InvocationTest extends TestCase
                     {
                     }
                 },
+                'Argument 1 passed to method Foo::methodWithVariadicString must be of type string; boolean given',
             ],
         ];
     }
@@ -251,7 +258,8 @@ class InvocationTest extends TestCase
         object $object
     ): void {
         $invocation = new Invocation('Foo', $methodName, $arguments, 'void', $object);
-        self::assertTrue($invocation->checkParameterTypes());
+        $invocation->checkParameterTypes();
+        $this->addToAssertionCount(1);
     }
 
     /**
@@ -262,9 +270,12 @@ class InvocationTest extends TestCase
     public function testIncorrectStrictTypes(
         string $methodName,
         array $arguments,
-        object $object
+        object $object,
+        string $expectedErrorMessageRegExp
     ): void {
         $invocation = new Invocation('Foo', $methodName, $arguments, 'void', $object);
-        self::assertFalse($invocation->checkParameterTypes());
+        $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessageMatches('~^' . $expectedErrorMessageRegExp . '$~');
+        $invocation->checkParameterTypes();
     }
 }
