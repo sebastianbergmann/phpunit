@@ -299,11 +299,10 @@ final class Invocation implements SelfDescribing
     }
 
     /**
-     * @throws RuntimeException
-     *
      * @param ReflectionType $reflectionType
      * @param mixed          $invokedParameter
-     * @param int            $index
+     *
+     * @throws RuntimeException
      */
     private function checkParameterType(
         ?ReflectionType $reflectionType,
