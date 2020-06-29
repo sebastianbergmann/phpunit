@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AnInterface;
+use PHPUnit\TestFixture\Mockable;
 use ReflectionException;
 
 /**
@@ -34,16 +35,16 @@ class InvocationTest extends TestCase
                 },
             ],
             [
-                'methodAcceptingInt',
+                'methodWithInt',
                 [123],
                 new class {
-                    public function methodAcceptingInt(int $value): void
+                    public function methodWithInt(int $argument1): void
                     {
                     }
                 },
             ],
             [
-                'methodAcceptingAnInterface',
+                'methodWithAnInterface',
                 [
                     new class implements AnInterface {
                         public function doSomething(): void
@@ -52,7 +53,16 @@ class InvocationTest extends TestCase
                     },
                 ],
                 new class {
-                    public function methodAcceptingAnInterface(AnInterface $value): void
+                    public function methodWithAnInterface(AnInterface $argument1): void
+                    {
+                    }
+                },
+            ],
+            [
+                'methodWithMockable',
+                [new Mockable()],
+                new class {
+                    public function methodWithMockable(Mockable $argument1): void
                     {
                     }
                 },
@@ -61,28 +71,66 @@ class InvocationTest extends TestCase
                 'methodWithDefaultValue',
                 [],
                 new class {
-                    public function methodWithDefaultValue(bool $value = true): void
+                    public function methodWithDefaultValue(bool $argument1 = true): void
                     {
                     }
                 },
             ],
             [
                 'nonTypedMethod',
-                ['anything'],
+                ['anything', null],
                 new class {
-                    public function nonTypedMethod($value): void
+                    public function nonTypedMethod($argument1, $argument2): void
                     {
                     }
                 },
             ],
             [
-                'methodAcceptingBoolIntFloat',
+                'methodWithBoolIntFloat',
                 [true, 123, 45.67],
                 new class {
-                    public function methodAcceptingBoolIntFloat(
+                    public function methodWithBoolIntFloat(
                         bool $argument1,
                         int $argument2,
                         float $argument3
+                    ): void {
+                    }
+                },
+            ],
+            [
+                'methodWithNullableString',
+                [null],
+                new class {
+                    public function methodWithNullableString(?string $argument1): void
+                    {
+                    }
+                },
+            ],
+            [
+                'methodWithVariadicString',
+                ['a', 'b', 'c'],
+                new class {
+                    public function methodWithVariadicString(string ...$argument1): void
+                    {
+                    }
+                },
+            ],
+            [
+                'methodWithVariadicString',
+                [],
+                new class {
+                    public function methodWithVariadicString(string ...$argument1): void
+                    {
+                    }
+                },
+            ],
+            [
+                'methodWithIntVariadicNullableString',
+                [3, 'a', null, 'b'],
+                new class {
+                    public function methodWithIntVariadicNullableString(
+                        int $argument1,
+                        ?string ...$argument2
                     ): void {
                     }
                 },
@@ -106,31 +154,31 @@ class InvocationTest extends TestCase
                 },
             ],
             [
-                'methodAcceptingInt',
+                'methodWithInt',
                 ['123'],
                 new class {
-                    public function methodAcceptingInt(int $value): void
+                    public function methodWithInt(int $value): void
                     {
                     }
                 },
             ],
             [
-                'methodAcceptingAnInterface',
+                'methodWithAnInterface',
                 [
                     new class {
                     },
                 ],
                 new class {
-                    public function methodAcceptingAnInterface(AnInterface $value): void
+                    public function methodWithAnInterface(AnInterface $value): void
                     {
                     }
                 },
             ],
             [
-                'methodAcceptingBoolInt',
+                'methodWithBoolInt',
                 [123, true],
                 new class {
-                    public function methodAcceptingBoolInt(
+                    public function methodWithBoolInt(
                         bool $argument1,
                         int $argument2
                     ): void {
@@ -138,13 +186,31 @@ class InvocationTest extends TestCase
                 },
             ],
             [
-                'methodAcceptingBoolInt',
+                'methodWithBoolInt',
                 [true, 123, 'string'],
                 new class {
-                    public function methodAcceptingBoolInt(
+                    public function methodWithBoolInt(
                         bool $argument1,
                         int $argument2
                     ): void {
+                    }
+                },
+            ],
+            [
+                'methodWithNullableString',
+                [0],
+                new class {
+                    public function methodWithNullableString(?string $argument1): void
+                    {
+                    }
+                },
+            ],
+            [
+                'methodWithVariadicString',
+                ['a', false, 'b'],
+                new class {
+                    public function methodWithVariadicString(string...$argument1): void
+                    {
                     }
                 },
             ],

@@ -11,8 +11,11 @@ namespace PHPUnit\Framework\MockObject;
 
 use function array_key_exists;
 use function array_map;
+use function array_slice;
+use function array_values;
 use function count;
 use function explode;
+use function get_class;
 use function gettype;
 use function implode;
 use function is_object;
@@ -26,6 +29,7 @@ use PHPUnit\Util\Type;
 use ReflectionException;
 use ReflectionNamedType;
 use ReflectionObject;
+use ReflectionType;
 use SebastianBergmann\Exporter\Exporter;
 use stdClass;
 
@@ -75,11 +79,18 @@ final class Invocation implements SelfDescribing
      */
     private $object;
 
-    public function __construct(string $className, string $methodName, array $parameters, string $returnType, object $object, bool $cloneObjects = false, bool $proxiedCall = false)
-    {
+    public function __construct(
+        string $className,
+        string $methodName,
+        array $parameters,
+        string $returnType,
+        object $object,
+        bool $cloneObjects = false,
+        bool $proxiedCall = false
+    ) {
         $this->className   = $className;
         $this->methodName  = $methodName;
-        $this->parameters  = $parameters;
+        $this->parameters  = array_values($parameters);
         $this->object      = $object;
         $this->proxiedCall = $proxiedCall;
 
@@ -221,43 +232,78 @@ final class Invocation implements SelfDescribing
         $reflectionMethod     = $reflectionObject->getMethod($this->getMethodName());
         $reflectionParameters = $reflectionMethod->getParameters();
 
-        if (count($this->getParameters()) > count($reflectionParameters)) {
-            return false;
-        }
+        $variadicParameters = false;
 
         foreach ($reflectionParameters as $index => $reflectionParameter) {
-            if (array_key_exists($index, $this->getParameters())) {
-                $invokedParameter = $this->getParameters()[$index];
+            if ($reflectionParameter->isVariadic()) {
+                if ($index !== count($reflectionParameters) - 1) {
+                    throw new ReflectionException('Only the last parameter can be variadic');
+                }
 
-                if ($reflectionType = $reflectionParameter->getType()) {
-                    if ($reflectionType instanceof ReflectionNamedType) {
-                        if ($reflectionType->isBuiltin()) {
-                            $reflectionTypeName = $reflectionType->getName();
-
-                            if (array_key_exists($reflectionTypeName, self::TYPES_MAP)) {
-                                $reflectionTypeName = self::TYPES_MAP[$reflectionTypeName];
-                            }
-
-                            if ($reflectionTypeName !== gettype($invokedParameter)) {
-                                return false;
-                            }
-                        } elseif (!is_subclass_of(
-                            $invokedParameter,
-                            $reflectionType->getName(),
-                            false
-                        )) {
-                            return false;
-                        }
-                    } else {
-                        throw new RuntimeException('Can not define type of parameter');
+                /** @var array $variadicParameters */
+                $variadicParameters = array_slice($this->getParameters(), $index);
+                foreach ($variadicParameters as $variadicParameter) {
+                    if (!self::checkParameterType(
+                        $reflectionParameter->getType(),
+                        $variadicParameter
+                    )) {
+                        return false;
                     }
+                }
+
+                $variadicParameters = true;
+
+                break;
+            }
+
+            if (array_key_exists($index, $this->getParameters())) {
+                if (!self::checkParameterType(
+                    $reflectionParameter->getType(),
+                    $this->getParameters()[$index]
+                )) {
+                    return false;
                 }
             } elseif (!$reflectionParameter->isDefaultValueAvailable()) {
                 return false;
             }
         }
 
-        return true;
+        return $variadicParameters || (count($this->getParameters()) <= count($reflectionParameters));
+    }
+
+    /**
+     * @param ReflectionType $reflectionType
+     * @param mixed $invokedParameter
+     * @return bool
+     */
+    private static function checkParameterType(
+        ?ReflectionType $reflectionType,
+        $invokedParameter
+    ): bool {
+        if (!$reflectionType) {
+            return true;
+        }
+
+        if ($invokedParameter === null && $reflectionType->allowsNull()) {
+            return true;
+        }
+
+        if ($reflectionType instanceof ReflectionNamedType) {
+            if ($reflectionType->isBuiltin()) {
+                $reflectionTypeName = $reflectionType->getName();
+
+                if (array_key_exists($reflectionTypeName, self::TYPES_MAP)) {
+                    $reflectionTypeName = self::TYPES_MAP[$reflectionTypeName];
+                }
+
+                return $reflectionTypeName === gettype($invokedParameter);
+            } else {
+                return get_class($invokedParameter) === $reflectionType->getName()
+                    || is_subclass_of($invokedParameter, $reflectionType->getName(), false);
+            }
+        } else {
+            throw new RuntimeException('Can not define type of parameter');
+        }
     }
 
     private function cloneObject(object $original): object
