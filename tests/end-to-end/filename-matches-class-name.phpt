@@ -14,7 +14,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 
 Warning:       Test case class not matching filename is deprecated
-               in %s/OneClassPerFile/wrongClassName/WrongClassNameTest.php
+               in %sWrongClassNameTest.php
                Class name was 'WrongClassNameBar', expected 'WrongClassNameTest'
 
 .                                                                   1 / 1 (100%)
