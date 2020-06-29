@@ -7,6 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+
 namespace PHPUnit\Framework\MockObject;
 
 use function array_key_exists;
@@ -132,9 +133,9 @@ final class Invocation implements SelfDescribing
     }
 
     /**
+     * @return mixed Mocked return value
      * @throws RuntimeException
      *
-     * @return mixed Mocked return value
      */
     public function generateReturnValue()
     {
@@ -242,6 +243,7 @@ final class Invocation implements SelfDescribing
 
                 /** @var array $variadicParameters */
                 $variadicParameters = array_slice($this->getParameters(), $index);
+
                 foreach ($variadicParameters as $variadicParameter) {
                     if (!self::checkParameterType(
                         $reflectionParameter->getType(),
@@ -268,13 +270,22 @@ final class Invocation implements SelfDescribing
             }
         }
 
-        return $variadicParameters || (count($this->getParameters()) <= count($reflectionParameters));
+        return $variadicParameters
+            || (count($this->getParameters()) <= count($reflectionParameters));
+    }
+
+    private function cloneObject(object $original): object
+    {
+        if (Type::isCloneable($original)) {
+            return clone $original;
+        }
+
+        return $original;
     }
 
     /**
      * @param ReflectionType $reflectionType
      * @param mixed $invokedParameter
-     * @return bool
      */
     private static function checkParameterType(
         ?ReflectionType $reflectionType,
@@ -297,21 +308,12 @@ final class Invocation implements SelfDescribing
                 }
 
                 return $reflectionTypeName === gettype($invokedParameter);
-            } else {
-                return get_class($invokedParameter) === $reflectionType->getName()
-                    || is_subclass_of($invokedParameter, $reflectionType->getName(), false);
             }
-        } else {
-            throw new RuntimeException('Can not define type of parameter');
-        }
-    }
 
-    private function cloneObject(object $original): object
-    {
-        if (Type::isCloneable($original)) {
-            return clone $original;
+            return (get_class($invokedParameter) === $reflectionType->getName())
+                || is_subclass_of($invokedParameter, $reflectionType->getName(), false);
         }
 
-        return $original;
+        throw new RuntimeException('Can not define parameter type');
     }
 }
