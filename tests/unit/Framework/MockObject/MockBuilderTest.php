@@ -274,19 +274,22 @@ final class MockBuilderTest extends TestCase
     public function testStrictTypesCheck(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-            ->getMock();
+                     ->getMock();
         $mock
             ->expects(self::once())
             ->method('mockableMethod');
         self::assertNull($mock->mockableMethod());
 
         $mock = $this->getMockBuilder(Mockable::class)
-            ->enableStrictTypesCheck()
-            ->getMock();
+                     ->enableStrictTypesCheck()
+                     ->getMock();
         $mock
             ->expects(self::never())
             ->method('mockableMethod');
         $this->expectException(RuntimeException::class);
+        $this->expectExceptionMessage(
+            "Invoked parameters' types or count did not match to declared in method"
+        );
         $mock->mockableMethod('unexpected_argument');
     }
 }
