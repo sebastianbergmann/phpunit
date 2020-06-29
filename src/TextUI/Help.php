@@ -184,7 +184,7 @@ final class Help
     private function writePlaintext(): void
     {
         foreach (self::HELP_TEXT as $section => $options) {
-            print "$section:" . \PHP_EOL;
+            print "${section}:" . \PHP_EOL;
 
             if ($section !== 'Usage') {
                 print \PHP_EOL;
@@ -212,7 +212,7 @@ final class Help
     private function writeWithColor(): void
     {
         foreach (self::HELP_TEXT as $section => $options) {
-            print Color::colorize('fg-yellow', "$section:") . \PHP_EOL;
+            print Color::colorize('fg-yellow', "${section}:") . \PHP_EOL;
 
             foreach ($options as $option) {
                 if (isset($option['spacer'])) {
