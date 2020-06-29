@@ -248,7 +248,7 @@ final class Invocation implements SelfDescribing
                     $this->checkParameterType(
                         $reflectionParameter->getType(),
                         $variadicParameter,
-                        (int)$index + (int)$variadicIndex
+                        (int) $index + (int) $variadicIndex
                     );
                 }
 
