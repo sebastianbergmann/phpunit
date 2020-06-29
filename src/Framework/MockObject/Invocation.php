@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\Framework\MockObject;
 
 use function array_key_exists;
@@ -133,9 +132,9 @@ final class Invocation implements SelfDescribing
     }
 
     /**
-     * @return mixed Mocked return value
      * @throws RuntimeException
      *
+     * @return mixed Mocked return value
      */
     public function generateReturnValue()
     {
@@ -202,7 +201,7 @@ final class Invocation implements SelfDescribing
 
     public function toString(): string
     {
-        $exporter = new Exporter;
+        $exporter = new Exporter();
 
         return sprintf(
             '%s::%s(%s)%s',
@@ -285,7 +284,7 @@ final class Invocation implements SelfDescribing
 
     /**
      * @param ReflectionType $reflectionType
-     * @param mixed $invokedParameter
+     * @param mixed          $invokedParameter
      */
     private static function checkParameterType(
         ?ReflectionType $reflectionType,
