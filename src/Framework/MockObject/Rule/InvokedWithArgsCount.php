@@ -138,7 +138,7 @@ class InvokedWithArgsCount extends InvocationOrder
                     if ($this->argValues[$index] === $parameters[$index] ||
                             $this->argValues[$index] instanceof IsAnything ||
                             ($this->argValues[$index] instanceof Constraint &&
-                            $this->argValues[$index]->match($parameters[$index]))
+                            $this->argValues[$index]->evaluate($parameters[$index]))
                         ) {
                         $matchingParams++;
                     }
