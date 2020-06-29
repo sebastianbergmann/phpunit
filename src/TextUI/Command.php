@@ -1329,7 +1329,7 @@ class Command
                     break;
 
                 default:
-                    $this->exitWithErrorMessage("unrecognized --order-by option: $order");
+                    $this->exitWithErrorMessage("unrecognized --order-by option: ${order}");
             }
         }
     }
