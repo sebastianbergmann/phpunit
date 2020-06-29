@@ -545,7 +545,7 @@ final class DocBlock
         if (\preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)) {
             $numMatches = \count($matches[0]);
 
-            for ($i = 0; $i < $numMatches; ++$i) {
+            for ($i = 0; $i < $numMatches; $i++) {
                 $annotations[$matches['name'][$i]][] = (string) $matches['value'][$i];
             }
         }

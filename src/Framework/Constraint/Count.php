@@ -98,7 +98,7 @@ class Count extends Constraint
     protected function getCountOfGenerator(Generator $generator): int
     {
         for ($count = 0; $generator->valid(); $generator->next()) {
-            ++$count;
+            $count++;
         }
 
         return $count;
