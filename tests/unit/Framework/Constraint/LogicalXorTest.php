@@ -34,7 +34,7 @@ final class LogicalXorTest extends TestCase
                 ->with($this->identicalTo($other))
                 ->willReturn($count % 2 === 1);
 
-            ++$count;
+            $count++;
 
             return $constraint;
         }, \array_fill(0, $count, null));
