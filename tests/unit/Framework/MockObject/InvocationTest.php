@@ -99,6 +99,15 @@ class InvocationTest extends TestCase
             ],
             [
                 'methodWithNullableString',
+                ['a'],
+                new class {
+                    public function methodWithNullableString(?string $argument1): void
+                    {
+                    }
+                },
+            ],
+            [
+                'methodWithNullableString',
                 [null],
                 new class {
                     public function methodWithNullableString(?string $argument1): void
@@ -209,7 +218,7 @@ class InvocationTest extends TestCase
                 'methodWithVariadicString',
                 ['a', false, 'b'],
                 new class {
-                    public function methodWithVariadicString(string...$argument1): void
+                    public function methodWithVariadicString(string ...$argument1): void
                     {
                     }
                 },
