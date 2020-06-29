@@ -33,6 +33,11 @@ trait Api
     private $__phpunit_returnValueGeneration = true;
 
     /**
+     * @var bool
+     */
+    private $__phpunit_strictTypesCheck = false;
+
+    /**
      * @var InvocationHandler
      */
     private $__phpunit_invocationMocker;
@@ -62,12 +67,19 @@ trait Api
     }
 
     /** @noinspection MagicMethodsValidityInspection */
+    public function __phpunit_setStrictTypesCheck(bool $strictTypesCheck): void
+    {
+        $this->__phpunit_strictTypesCheck = $strictTypesCheck;
+    }
+
+    /** @noinspection MagicMethodsValidityInspection */
     public function __phpunit_getInvocationHandler(): InvocationHandler
     {
         if ($this->__phpunit_invocationMocker === null) {
             $this->__phpunit_invocationMocker = new InvocationHandler(
                 static::$__phpunit_configurableMethods,
-                $this->__phpunit_returnValueGeneration
+                $this->__phpunit_returnValueGeneration,
+                $this->__phpunit_strictTypesCheck
             );
         }
 

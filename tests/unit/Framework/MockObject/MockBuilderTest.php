@@ -270,4 +270,23 @@ final class MockBuilderTest extends TestCase
 
         $this->assertInstanceOf(MockBuilder::class, $spec);
     }
+
+    public function testStrictTypesCheck(): void
+    {
+        $mock = $this->getMockBuilder(Mockable::class)
+            ->getMock();
+        $mock
+            ->expects(self::once())
+            ->method('mockableMethod');
+        self::assertNull($mock->mockableMethod());
+
+        $mock = $this->getMockBuilder(Mockable::class)
+            ->enableStrictTypesCheck()
+            ->getMock();
+        $mock
+            ->expects(self::never())
+            ->method('mockableMethod');
+        $this->expectException(RuntimeException::class);
+        $mock->mockableMethod('unexpected_argument');
+    }
 }
