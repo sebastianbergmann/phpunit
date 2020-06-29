@@ -275,17 +275,12 @@ final class MockBuilderTest extends TestCase
     {
         $mock = $this->getMockBuilder(Mockable::class)
                      ->getMock();
-        $mock
-            ->expects(self::once())
-            ->method('mockableMethod');
-        self::assertNull($mock->mockableMethod());
+        self::assertNull($mock->mockableMethod('unexpected_argument'));
 
         $mock = $this->getMockBuilder(Mockable::class)
                      ->enableStrictTypesCheck()
                      ->getMock();
-        $mock
-            ->expects(self::never())
-            ->method('mockableMethod');
+        self::assertNull($mock->mockableMethod());
         $this->expectException(RuntimeException::class);
         $this->expectExceptionMessage(
             "Invoked parameters' types or count did not match to declared in method"

@@ -86,7 +86,7 @@ final class InvocationMockerTest extends TestCase
         $matcherCollection = new InvocationHandler([], false, false);
         $invocationMocker  = new InvocationMocker(
             $matcherCollection,
-            new Matcher($this->any(), false)
+            new Matcher($this->any())
         );
 
         $this->expectException(RuntimeException::class);

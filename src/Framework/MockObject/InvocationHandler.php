@@ -108,7 +108,7 @@ final class InvocationHandler
 
     public function expects(InvocationOrder $rule): InvocationMocker
     {
-        $matcher = new Matcher($rule, $this->strictTypesCheck);
+        $matcher = new Matcher($rule);
         $this->addMatcher($matcher);
 
         return new InvocationMocker(
@@ -124,6 +124,12 @@ final class InvocationHandler
      */
     public function invoke(Invocation $invocation)
     {
+        if ($this->strictTypesCheck && !$invocation->checkParameterTypes()) {
+            throw new RuntimeException(
+                "Invoked parameters' types or count did not match to declared in method"
+            );
+        }
+
         $exception      = null;
         $hasReturnValue = false;
         $returnValue    = null;

@@ -9,16 +9,23 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function array_key_exists;
 use function array_map;
+use function count;
 use function explode;
+use function gettype;
 use function implode;
 use function is_object;
+use function is_subclass_of;
 use function sprintf;
 use function strpos;
 use function strtolower;
 use function substr;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Type;
+use ReflectionException;
+use ReflectionNamedType;
+use ReflectionObject;
 use SebastianBergmann\Exporter\Exporter;
 use stdClass;
 
@@ -27,6 +34,12 @@ use stdClass;
  */
 final class Invocation implements SelfDescribing
 {
+    private const TYPES_MAP = [
+        'int'   => 'integer',
+        'bool'  => 'boolean',
+        'float' => 'double',
+    ];
+
     /**
      * @var string
      */
@@ -197,6 +210,54 @@ final class Invocation implements SelfDescribing
     public function getObject(): object
     {
         return $this->object;
+    }
+
+    /**
+     * @throws ReflectionException
+     */
+    public function checkParameterTypes(): bool
+    {
+        $reflectionObject     = new ReflectionObject($this->getObject());
+        $reflectionMethod     = $reflectionObject->getMethod($this->getMethodName());
+        $reflectionParameters = $reflectionMethod->getParameters();
+
+        if (count($this->getParameters()) > count($reflectionParameters)) {
+            return false;
+        }
+
+        foreach ($reflectionParameters as $index => $reflectionParameter) {
+            if (array_key_exists($index, $this->getParameters())) {
+                $invokedParameter = $this->getParameters()[$index];
+
+                if ($reflectionType = $reflectionParameter->getType()) {
+                    if ($reflectionType instanceof ReflectionNamedType) {
+                        if ($reflectionType->isBuiltin()) {
+                            $reflectionTypeName = $reflectionType->getName();
+
+                            if (array_key_exists($reflectionTypeName, self::TYPES_MAP)) {
+                                $reflectionTypeName = self::TYPES_MAP[$reflectionTypeName];
+                            }
+
+                            if ($reflectionTypeName !== gettype($invokedParameter)) {
+                                return false;
+                            }
+                        } elseif (!is_subclass_of(
+                            $invokedParameter,
+                            $reflectionType->getName(),
+                            false
+                        )) {
+                            return false;
+                        }
+                    } else {
+                        throw new RuntimeException('Can not define type of parameter');
+                    }
+                }
+            } elseif (!$reflectionParameter->isDefaultValueAvailable()) {
+                return false;
+            }
+        }
+
+        return true;
     }
 
     private function cloneObject(object $original): object

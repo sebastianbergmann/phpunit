@@ -9,12 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function array_key_exists;
 use function assert;
-use function count;
-use function gettype;
 use function implode;
-use function is_subclass_of;
 use function sprintf;
 use Exception;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -26,30 +22,16 @@ use PHPUnit\Framework\MockObject\Rule\MethodName;
 use PHPUnit\Framework\MockObject\Rule\ParametersRule;
 use PHPUnit\Framework\MockObject\Stub\Stub;
 use PHPUnit\Framework\TestFailure;
-use ReflectionException;
-use ReflectionNamedType;
-use ReflectionObject;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Matcher
 {
-    private const TYPES_MAP = [
-        'int'   => 'integer',
-        'bool'  => 'boolean',
-        'float' => 'double',
-    ];
-
     /**
      * @var InvocationOrder
      */
     private $invocationRule;
-
-    /**
-     * @var bool
-     */
-    private $strictTypesCheck;
 
     /**
      * @var mixed
@@ -76,10 +58,9 @@ final class Matcher
      */
     private $stub;
 
-    public function __construct(InvocationOrder $rule, bool $strictTypesCheck)
+    public function __construct(InvocationOrder $rule)
     {
-        $this->invocationRule   = $rule;
-        $this->strictTypesCheck = $strictTypesCheck;
+        $this->invocationRule = $rule;
     }
 
     public function hasMatchers(): bool
@@ -151,12 +132,6 @@ final class Matcher
             if ($matcher->invocationRule->hasBeenInvoked()) {
                 $this->afterMatchBuilderIsInvoked = true;
             }
-        }
-
-        if ($this->strictTypesCheck && !self::checkParameterTypes($invocation)) {
-            throw new RuntimeException(
-                "Invoked parameters' types or count did not match to declared in method"
-            );
         }
 
         $this->invocationRule->invoked($invocation);
@@ -299,53 +274,5 @@ final class Matcher
         }
 
         return implode(' ', $list);
-    }
-
-    /**
-     * @throws ReflectionException
-     */
-    private static function checkParameterTypes(Invocation $invocation): bool
-    {
-        $reflectionObject     = new ReflectionObject($invocation->getObject());
-        $reflectionMethod     = $reflectionObject->getMethod($invocation->getMethodName());
-        $reflectionParameters = $reflectionMethod->getParameters();
-
-        if (count($invocation->getParameters()) > count($reflectionParameters)) {
-            return false;
-        }
-
-        foreach ($reflectionParameters as $index => $reflectionParameter) {
-            if (array_key_exists($index, $invocation->getParameters())) {
-                $invokedParameter = $invocation->getParameters()[$index];
-
-                if ($reflectionType = $reflectionParameter->getType()) {
-                    if ($reflectionType instanceof ReflectionNamedType) {
-                        if ($reflectionType->isBuiltin()) {
-                            $reflectionTypeName = $reflectionType->getName();
-
-                            if (array_key_exists($reflectionTypeName, self::TYPES_MAP)) {
-                                $reflectionTypeName = self::TYPES_MAP[$reflectionTypeName];
-                            }
-
-                            if ($reflectionTypeName !== gettype($invokedParameter)) {
-                                return false;
-                            }
-                        } elseif (!is_subclass_of(
-                            $invokedParameter,
-                            $reflectionType->getName(),
-                            false
-                        )) {
-                            return false;
-                        }
-                    } else {
-                        throw new RuntimeException('Can not define type of parameter');
-                    }
-                }
-            } elseif (!$reflectionParameter->isDefaultValueAvailable()) {
-                return false;
-            }
-        }
-
-        return true;
     }
 }
