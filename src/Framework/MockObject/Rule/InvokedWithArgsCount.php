@@ -66,9 +66,9 @@ class InvokedWithArgsCount extends InvocationOrder
     {
         parent::invoked($invocation);
 
-        $count = $this->incrementInvocationWithArgsCount($invocation);
+        $this->incrementInvocationWithArgsCount($invocation);
 
-        if ($count > $this->expectedCount) {
+        if ($this->currentCount > $this->expectedCount) {
             $message = $invocation->toString() . ' ';
 
             switch ($this->expectedCount) {
@@ -101,15 +101,13 @@ class InvokedWithArgsCount extends InvocationOrder
      */
     public function verify(): void
     {
-        $count = $this->currentCount;
-
-        if ($count !== $this->expectedCount) {
+        if ($this->currentCount !== $this->expectedCount) {
             throw new ExpectationFailedException(
                 sprintf(
                     'Method was expected to be called %d times with ' . $this->argValuesToString() .
                     ', actually called %d times.',
                     $this->expectedCount,
-                    $count
+                    $this->currentCount
                 )
             );
         }
@@ -120,15 +118,13 @@ class InvokedWithArgsCount extends InvocationOrder
         return true;
     }
 
-    private function incrementInvocationWithArgsCount(BaseInvocation $invocation)
+    private function incrementInvocationWithArgsCount(BaseInvocation $invocation): void
     {
         if (count($this->argValues) > 0) {
             $parameters = $invocation->getParameters();
             // Figure out if it matches the arguments
             if ($parameters === $this->argValues) {
                 $this->currentCount++;
-
-                return true;
             }
             // Figure out if we have some constraints to check
             if (count($parameters) === count($this->argValues)) {
@@ -146,20 +142,14 @@ class InvokedWithArgsCount extends InvocationOrder
 
                 if ($matchingParams === count($this->argValues)) {
                     $this->currentCount++;
-
-                    return true;
                 }
             }
         } elseif (count($invocation->getParameters()) === 0) {
             $this->currentCount++;
-
-            return true;
         }
-
-        return false;
     }
 
-    private function argValuesToString()
+    private function argValuesToString(): string
     {
         $argValuesString = '[';
 
