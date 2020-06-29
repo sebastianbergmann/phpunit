@@ -38,7 +38,7 @@ final class FunctionsTest extends TestCase
         Assert::assertContains(
             $methodName,
             self::$globalAssertionFunctions,
-            "Mapping for Assert::$methodName is missing in Functions.php"
+            "Mapping for Assert::${methodName} is missing in Functions.php"
         );
     }
 

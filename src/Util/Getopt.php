@@ -109,7 +109,7 @@ final class Getopt
 
             if ($arg[$i] === ':' || ($spec = strstr($short_options, $opt)) === false) {
                 throw new Exception(
-                    "unrecognized option -- $opt"
+                    "unrecognized option -- ${opt}"
                 );
             }
 
@@ -124,7 +124,7 @@ final class Getopt
                     /* @noinspection ComparisonOperandsOrderInspection */
                     if (false === $opt_arg = current($args)) {
                         throw new Exception(
-                            "option requires an argument -- $opt"
+                            "option requires an argument -- ${opt}"
                         );
                     }
 
@@ -163,7 +163,7 @@ final class Getopt
 
             if ($opt_rest !== '' && $i + 1 < $count && $opt[0] !== '=' && strpos($long_options[$i + 1], $opt) === 0) {
                 throw new Exception(
-                    "option --$opt is ambiguous"
+                    "option --${opt} is ambiguous"
                 );
             }
 
@@ -173,7 +173,7 @@ final class Getopt
                     /* @noinspection ComparisonOperandsOrderInspection */
                     if (false === $opt_arg = current($args)) {
                         throw new Exception(
-                            "option --$opt requires an argument"
+                            "option --${opt} requires an argument"
                         );
                     }
 
@@ -181,7 +181,7 @@ final class Getopt
                 }
             } elseif ($opt_arg) {
                 throw new Exception(
-                    "option --$opt doesn't allow an argument"
+                    "option --${opt} doesn't allow an argument"
                 );
             }
 
@@ -191,6 +191,6 @@ final class Getopt
             return;
         }
 
-        throw new Exception("unrecognized option --$opt");
+        throw new Exception("unrecognized option --${opt}");
     }
 }

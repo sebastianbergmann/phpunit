@@ -672,7 +672,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 }
             }
         } catch (Throwable $t) {
-            $message = "Exception in {$this->name}::$afterClassMethod" . PHP_EOL . $t->getMessage();
+            $message = "Exception in {$this->name}::${afterClassMethod}" . PHP_EOL . $t->getMessage();
             $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());
 
             $placeholderTest = clone $test;

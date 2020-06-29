@@ -72,6 +72,7 @@ return PhpCsFixer\Config::create()
         'elseif' => true,
         'encoding' => true,
         'explicit_indirect_variable' => true,
+        'explicit_string_variable' => true,
         'full_opening_tag' => true,
         'function_declaration' => true,
         'global_namespace_import' => [

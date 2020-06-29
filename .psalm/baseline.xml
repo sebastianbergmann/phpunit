@@ -160,7 +160,7 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
     <PossiblyUndefinedVariable occurrences="1">
-      <code>$afterClassMethod</code>
+      <code>${afterClassMethod}</code>
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Runner/PhptTestCase.php">

@@ -483,7 +483,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         foreach ($unsupportedSections as $section) {
             if (isset($sections[$section])) {
                 throw new Exception(
-                    "PHPUnit does not support PHPT $section sections"
+                    "PHPUnit does not support PHPT ${section} sections"
                 );
             }
         }
