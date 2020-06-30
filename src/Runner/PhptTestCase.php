@@ -19,6 +19,7 @@ use function dirname;
 use function explode;
 use function extension_loaded;
 use function file;
+use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
 use function is_array;
@@ -635,17 +636,19 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     private function cleanupForCoverage(): RawCodeCoverageData
     {
-        $files  = $this->getCoverageFiles();
-        $buffer = @file_get_contents($files['coverage']);
+        $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
+        $files    = $this->getCoverageFiles();
 
-        if ($buffer === false) {
-            $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
-        } else {
-            $coverage = @unserialize($buffer);
-        }
+        if (file_exists($files['coverage'])) {
+            $buffer = @file_get_contents($files['coverage']);
 
-        if ($coverage === false) {
-            $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
+            if ($buffer !== false) {
+                $coverage = @unserialize($buffer);
+
+                if ($coverage === false) {
+                    $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
+                }
+            }
         }
 
         foreach ($files as $file) {
