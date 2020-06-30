@@ -596,17 +596,19 @@ final class PhptTestCase implements SelfDescribing, Test
 
     private function cleanupForCoverage(): array
     {
-        $files  = $this->getCoverageFiles();
-        $buffer = @\file_get_contents($files['coverage']);
+        $coverage = [];
+        $files    = $this->getCoverageFiles();
 
-        if ($buffer === false) {
-            $coverage = [];
-        } else {
-            $coverage = @\unserialize($buffer);
-        }
+        if (\file_exists($files['coverage'])) {
+            $buffer = @\file_get_contents($files['coverage']);
 
-        if ($coverage === false) {
-            $coverage = [];
+            if ($buffer !== false) {
+                $coverage = @\unserialize($buffer);
+
+                if ($coverage === false) {
+                    $coverage = [];
+                }
+            }
         }
 
         foreach ($files as $file) {
