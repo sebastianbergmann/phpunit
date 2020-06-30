@@ -74,7 +74,6 @@ final class Builder
         'no-coverage',
         'no-logging',
         'no-interaction',
-        'with-interaction',
         'no-extensions',
         'order-by=',
         'printer=',
@@ -597,11 +596,6 @@ final class Builder
 
                 case '--no-interaction':
                     $noInteraction = true;
-
-                    break;
-
-                case '--with-interaction':
-                    $noInteraction = false;
 
                     break;
 
