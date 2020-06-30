@@ -163,7 +163,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     protected function registerTestResult(Test $test, ?Throwable $t, int $status, float $time, bool $verbose): void
     {
         if ($status !== BaseTestRunner::STATUS_PASSED) {
-            $this->nonSuccessfulTestResults[] = $this->testIndex;
+            $this->nonSuccessfulTestResults[] = $this->resultCount;
         }
 
         parent::registerTestResult($test, $t, $status, $time, $verbose);
