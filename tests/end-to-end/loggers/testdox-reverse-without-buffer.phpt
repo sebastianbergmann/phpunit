@@ -22,7 +22,7 @@ Dataprovider Execution Order
    │
    │ Failed asserting that 2 is identical to 3.
    │
-   │ /Users/ewout/proj/phpunit/tests/_files/DataproviderExecutionOrderTest.php:37
+   │ %sDataproviderExecutionOrderTest.php:37
    │
 
  ✔ Add more numbers with a dataprovider with data set "2+1=3"
@@ -32,7 +32,7 @@ Dataprovider Execution Order
    │
    │ Failed asserting that 2 is identical to 3.
    │
-   │ /Users/ewout/proj/phpunit/tests/_files/DataproviderExecutionOrderTest.php:24
+   │ %sDataproviderExecutionOrderTest.php:24
    │
 
  ✔ Add numbers with a dataprovider with data set "2+1=3"
@@ -48,14 +48,14 @@ Dataprovider Execution Order
    │
    │ Failed asserting that 2 is identical to 3.
    │
-   │ /Users/ewout/proj/phpunit/tests/_files/DataproviderExecutionOrderTest.php:37
+   │ %sDataproviderExecutionOrderTest.php:37
    │
 
  ✘ Add numbers with a dataprovider with data set "1+1=3"
    │
    │ Failed asserting that 2 is identical to 3.
    │
-   │ /Users/ewout/proj/phpunit/tests/_files/DataproviderExecutionOrderTest.php:24
+   │ %sDataproviderExecutionOrderTest.php:24
    │
 
 FAILURES!
