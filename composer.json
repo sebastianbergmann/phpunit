@@ -41,7 +41,7 @@
         "phpunit/php-timer": "^5.0.1",
         "sebastian/code-unit": "^1.0.5",
         "sebastian/comparator": "^4.0.3",
-        "sebastian/diff": "^4.0.1",
+        "sebastian/diff": "^4.0.2",
         "sebastian/environment": "^5.1.2",
         "sebastian/exporter": "^4.0.2",
         "sebastian/global-state": "^5.0",
