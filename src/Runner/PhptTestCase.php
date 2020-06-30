@@ -635,11 +635,17 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     private function cleanupForCoverage(): RawCodeCoverageData
     {
-        $files    = $this->getCoverageFiles();
-        $coverage = @unserialize(file_get_contents($files['coverage']));
+        $files  = $this->getCoverageFiles();
+        $buffer = file_get_contents($files['coverage']);
+
+        if ($buffer === false) {
+            $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
+        } else {
+            $coverage = @unserialize($buffer);
+        }
 
         if ($coverage === false) {
-            return RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
+            $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
         }
 
         foreach ($files as $file) {
