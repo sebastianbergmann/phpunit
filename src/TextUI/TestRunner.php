@@ -320,6 +320,7 @@ final class TestRunner extends BaseTestRunner
 
             $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
             $this->printer->setShowProgressAnimation(!$arguments['noInteraction']);
+            $this->printer->setEnableOutputBuffer($arguments['enableOutputBuffer']);
         }
 
         $this->printer->write(
@@ -987,6 +988,7 @@ final class TestRunner extends BaseTestRunner
             $arguments['noInteraction']                                   = $arguments['noInteraction'] ?? $phpunitConfiguration->noInteraction();
             $arguments['executionOrder']                                  = $arguments['executionOrder'] ?? $phpunitConfiguration->executionOrder();
             $arguments['resolveDependencies']                             = $arguments['resolveDependencies'] ?? $phpunitConfiguration->resolveDependencies();
+            $arguments['enableOutputBuffer']                              = $arguments['enableOutputBuffer'] ?? $phpunitConfiguration->enableOutputBuffer();
 
             if (!isset($arguments['bootstrap']) && $phpunitConfiguration->hasBootstrap()) {
                 $arguments['bootstrap'] = $phpunitConfiguration->bootstrap();
@@ -1103,6 +1105,7 @@ final class TestRunner extends BaseTestRunner
         $arguments['disallowTestOutput']                              = $arguments['disallowTestOutput'] ?? false;
         $arguments['disallowTodoAnnotatedTests']                      = $arguments['disallowTodoAnnotatedTests'] ?? false;
         $arguments['defaultTimeLimit']                                = $arguments['defaultTimeLimit'] ?? 0;
+        $arguments['enableOutputBuffer']                              = $arguments['enableOutputBuffer'] ?? true;
         $arguments['enforceTimeLimit']                                = $arguments['enforceTimeLimit'] ?? false;
         $arguments['excludeGroups']                                   = $arguments['excludeGroups'] ?? [];
         $arguments['executionOrder']                                  = $arguments['executionOrder'] ?? TestSuiteSorter::ORDER_DEFAULT;

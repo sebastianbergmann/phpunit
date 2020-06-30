@@ -46,10 +46,12 @@ final class Builder
         'coverage-text==',
         'coverage-xml=',
         'debug',
+        'disable-buffer',
         'disallow-test-output',
         'disallow-resource-usage',
         'disallow-todo-tests',
         'default-time-limit=',
+        'enable-buffer',
         'enforce-time-limit',
         'exclude-group=',
         'extensions=',
@@ -72,6 +74,7 @@ final class Builder
         'no-coverage',
         'no-logging',
         'no-interaction',
+        'with-interaction',
         'no-extensions',
         'order-by=',
         'printer=',
@@ -180,6 +183,7 @@ final class Builder
         $listTests                                  = null;
         $listTestsXml                               = null;
         $loader                                     = null;
+        $enableOutputBuffer                         = null;
         $noCoverage                                 = null;
         $noExtensions                               = null;
         $noInteraction                              = null;
@@ -596,6 +600,21 @@ final class Builder
 
                     break;
 
+                case '--with-interaction':
+                    $noInteraction = false;
+
+                    break;
+
+                case '--enable-buffer':
+                    $enableOutputBuffer = true;
+
+                    break;
+
+                case '--disable-buffer':
+                    $enableOutputBuffer = false;
+
+                    break;
+
                 case '--globals-backup':
                     $backupGlobals = true;
 
@@ -765,6 +784,7 @@ final class Builder
             $disableCodeCoverageIgnore,
             $disallowTestOutput,
             $disallowTodoAnnotatedTests,
+            $enableOutputBuffer,
             $enforceTimeLimit,
             $excludeGroups,
             $executionOrder,
