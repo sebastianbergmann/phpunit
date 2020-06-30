@@ -68,6 +68,18 @@ class InvocationTest extends TestCase
                 },
             ],
             [
+                'methodWithMockable',
+                [
+                    new class extends Mockable {
+                    },
+                ],
+                new class {
+                    public function methodWithMockable(Mockable $argument1): void
+                    {
+                    }
+                },
+            ],
+            [
                 'methodWithDefaultValue',
                 [],
                 new class {
