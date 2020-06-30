@@ -128,6 +128,11 @@ class TestDoxPrinter extends DefaultResultPrinter
         $this->enableOutputBuffer     = !empty($order);
     }
 
+    public function setEnableOutputBuffer(bool $enabled = true): void
+    {
+        $this->enableOutputBuffer = $enabled;
+    }
+
     public function setShowProgressAnimation(bool $showProgress): void
     {
         $this->showProgress = $showProgress;

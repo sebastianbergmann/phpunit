@@ -269,6 +269,10 @@ final class Mapper
             $result['noInteraction'] = $arguments->noInteraction();
         }
 
+        if ($arguments->hasEnableOutputBuffer()) {
+            $result['enableOutputBuffer'] = $arguments->enableOutputBuffer();
+        }
+
         if ($arguments->hasBackupGlobals()) {
             $result['backupGlobals'] = $arguments->backupGlobals();
         }
