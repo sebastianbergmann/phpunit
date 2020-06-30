@@ -84,6 +84,11 @@ class TestDoxPrinter extends DefaultResultPrinter
     protected $showProgress = true;
 
     /**
+     * @var array
+     */
+    protected $prevResult;
+
+    /**
      * @var int
      */
     private $unnamedIndex = 0;
@@ -101,11 +106,6 @@ class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @var array
      */
-    private $prevResult;
-
-    /**
-     * @var array
-     */
     private $completedTestSuites;
 
     /**
@@ -119,6 +119,7 @@ class TestDoxPrinter extends DefaultResultPrinter
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
         $this->prettifier = new NamePrettifier($this->colors);
+        $this->prevResult = $this->getEmptyTestResult();
     }
 
     public function setOriginalExecutionOrder(array $order): void
@@ -289,16 +290,12 @@ class TestDoxPrinter extends DefaultResultPrinter
             return;
         }
 
-        if ($this->resultFlushCount === 0) {
-            $this->prevResult = $this->getEmptyTestResult();
-        }
-
         // Force flush: dump any remaining results straight to the output stream
         if ($forceFlush) {
             $this->hideSpinner();
 
             for (;$this->resultFlushCount < $this->resultCount; $this->resultFlushCount++) {
-                $this->writeTestResult($this->prevResult, $this->testResults[$this->resultFlushCount++]);
+                $this->writeSingleTestResult($this->testResults[$this->resultFlushCount]);
             }
 
             return;
@@ -306,7 +303,7 @@ class TestDoxPrinter extends DefaultResultPrinter
 
         // Unbuffered: directly write test results in the order they are registered
         if (!$this->enableOutputBuffer) {
-            $this->writeTestResult($this->prevResult, $this->testResults[$this->resultFlushCount]);
+            $this->writeSingleTestResult($this->testResults[$this->resultFlushCount]);
             $this->resultFlushCount++;
 
             return;
@@ -330,9 +327,8 @@ class TestDoxPrinter extends DefaultResultPrinter
             }
 
             $this->hideSpinner();
-            $this->writeTestResult($this->prevResult, $result);
+            $this->writeSingleTestResult($result);
             $this->resultFlushCount++;
-            $this->prevResult = $result;
         } while (!empty($result) && $this->resultFlushCount < $this->resultCount);
     }
 
@@ -373,8 +369,9 @@ class TestDoxPrinter extends DefaultResultPrinter
         // remove the spinner from the current line
     }
 
-    protected function writeTestResult(array $prevResult, array $result): void
+    protected function writeSingleTestResult(array $result): void
     {
+        $this->prevResult = $result;
     }
 
     protected function getEmptyTestResult(): array
