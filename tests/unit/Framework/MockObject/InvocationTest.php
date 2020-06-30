@@ -128,6 +128,15 @@ class InvocationTest extends TestCase
                 },
             ],
             [
+                'methodWithReferenceString',
+                [$a = 'a'],
+                new class {
+                    public function methodWithReferenceString(string &$argument1): void
+                    {
+                    }
+                },
+            ],
+            [
                 'methodWithVariadicString',
                 ['a', 'b', 'c'],
                 new class {
@@ -179,7 +188,7 @@ class InvocationTest extends TestCase
                 'methodWithInt',
                 ['123'],
                 new class {
-                    public function methodWithInt(int $value): void
+                    public function methodWithInt(int $argument1): void
                     {
                     }
                 },
@@ -192,7 +201,7 @@ class InvocationTest extends TestCase
                     },
                 ],
                 new class {
-                    public function methodWithAnInterface(AnInterface $value): void
+                    public function methodWithAnInterface(AnInterface $argument1): void
                     {
                     }
                 },
