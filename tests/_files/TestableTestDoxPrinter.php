@@ -9,18 +9,24 @@
  */
 namespace PHPUnit\TestFixture;
 
-use PHPUnit\Util\TestDox\CliTestDoxPrinter;
+use PHPUnit\Util\TestDox\TestDoxPrinter;
 
-class TestableCliTestDoxPrinter extends CliTestDoxPrinter
+class TestableTestDoxPrinter extends TestDoxPrinter
 {
-    private $buffer = '';
+    /**
+     * @var array<string>
+     */
+    private $buffer = [];
 
     public function write(string $text): void
     {
-        $this->buffer .= $text;
+        $this->buffer[] = $text;
     }
 
-    public function getBuffer(): string
+    /**
+     * @return array<string>
+     */
+    public function getBuffer(): array
     {
         return $this->buffer;
     }
