@@ -311,7 +311,11 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         $this->lastTestFailed = false;
 
         if ($test instanceof TestCase && !$test->hasExpectationOnOutput()) {
-            $this->write($test->getActualOutput());
+            $output = $test->getActualOutput();
+
+            if ($output !== '') {
+                $this->write($output);
+            }
         }
     }
 
