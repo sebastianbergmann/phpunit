@@ -210,7 +210,7 @@ class TestDoxPrinter extends DefaultResultPrinter
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_SKIPPED, $time, false);
     }
 
-    public function writeProgress(string $progress): void
+    public function writeProgress(string $progress = ''): void
     {
         $this->flushOutputBuffer();
     }
@@ -376,6 +376,12 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function writeSingleTestResult(array $result): void
     {
+        $this->write(sprintf(
+            '%s::%s' . PHP_EOL,
+            $result['className'],
+            $result['testMethod'],
+        ));
+
         $this->prevResult = $result;
     }
 

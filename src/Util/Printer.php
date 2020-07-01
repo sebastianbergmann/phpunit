@@ -92,6 +92,10 @@ class Printer
 
     public function write(string $buffer): void
     {
+        if ($buffer === '') {
+            return;
+        }
+
         if ($this->stream) {
             assert(is_resource($this->stream));
 
