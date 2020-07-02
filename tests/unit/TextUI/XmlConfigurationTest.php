@@ -134,6 +134,7 @@ final class XmlConfigurationTest extends TestCase
             'testSuiteLoaderFile absolute path'               => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
             'reverseDefectList'                               => ['reverseDefectList', 'true', true],
             'registerMockObjectsFromTestArgumentsRecursively' => ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
+            'TestDox output buffer'                           => ['enableOutputBuffer', 'false', false],
         ];
     }
 
@@ -658,6 +659,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertFalse($phpunit->defectsFirst());
         $this->assertTrue($phpunit->resolveDependencies());
         $this->assertTrue($phpunit->noInteraction());
+        $this->assertFalse($phpunit->enableOutputBuffer());
     }
 
     public function test_TestDox_configuration_is_parsed_correctly(): void
