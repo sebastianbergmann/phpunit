@@ -256,6 +256,7 @@
         <xs:attribute name="executionOrder" type="executionOrderType" default="default"/>
         <xs:attribute name="resolveDependencies" type="xs:boolean" default="true"/>
         <xs:attribute name="noInteraction" type="xs:boolean" default="false"/>
+        <xs:attribute name="enableOutputBuffer" type="xs:boolean" default="true"/>
     </xs:attributeGroup>
     <xs:group name="configGroup">
         <xs:all>
