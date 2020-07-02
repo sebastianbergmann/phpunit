@@ -54,13 +54,64 @@ final class TestDoxPrinterTest extends TestCase
         $this->printer = null;
     }
 
+    /**
+     * @testdox Nameless internal wrapper TestSuite
+     */
+    public function testNamelessRootTestSuiteDoesNotGenerateWarnings(): void
+    {
+        // Simulate PHPUnit's internal nameless wrapper TestSuite
+        $namelessSuite = new TestSuite;
+
+        // Start the wrapper TestSuite
+        $this->printer->startTestSuite($namelessSuite);
+        $this->printer->writeProgress();
+        $this->assertEquals([
+            'PHPUNIT_UNNAMED_SUITE::class',
+        ], $this->printer->getTestSuiteStack());
+        $this->assertEquals([], $this->printer->getBuffer());
+
+        // Start an actual TestSuite with tests inside
+        $this->printer->startTestSuite($this->suite);
+        $this->printer->writeProgress();
+
+        $this->assertEquals([
+            'PHPUNIT_UNNAMED_SUITE::class',
+            'MultiDependencyTest::class',
+        ], $this->printer->getTestSuiteStack());
+        $this->assertEquals([], $this->printer->getBuffer());
+
+        // Simulate a test
+        $this->runTestAndFlush($this->suite->tests()[0]);
+        $this->assertEquals([
+            "MultiDependencyTest::testOne\n",
+        ], $this->printer->getBuffer());
+
+        // End TestSuite with tests
+        $this->printer->endTestSuite($this->suite);
+        $this->printer->writeProgress();
+
+        $this->assertEquals([
+            'PHPUNIT_UNNAMED_SUITE::class',
+        ], $this->printer->getTestSuiteStack());
+        $this->assertEquals([
+            "MultiDependencyTest::testOne\n",
+        ], $this->printer->getBuffer());
+
+        // End internal wrapper TestSuite
+        $this->printer->endTestSuite($namelessSuite);
+        $this->printer->writeProgress();
+
+        $this->assertEquals([], $this->printer->getTestSuiteStack());
+        $this->assertEquals([
+            "MultiDependencyTest::testOne\n",
+        ], $this->printer->getBuffer());
+    }
+
     public function testEnabledOutputBufferDoesResequenceTestResults(): void
     {
         // Simulate running a non-default order with buffer on
         $this->printer->setEnableOutputBuffer(true);
-        $lines = array_map(static function (string $t) {
-            return "${t}\n";
-        }, $this->originalOrder);
+        $lines = $this->getOutputLinesForTestOrder();
 
         // 1. testTwo, no output
         $this->runTestAndFlush($this->suite->tests()[1]);
@@ -102,5 +153,21 @@ final class TestDoxPrinterTest extends TestCase
         $this->printer->startTest($test);
         $this->printer->endTest($test, 0.1);
         $this->printer->writeProgress();
+    }
+
+    /**
+     * @param null|array<string> $testNames
+     *
+     * @return array<string>
+     */
+    private function getOutputLinesForTestOrder(?array $testNames = null): array
+    {
+        if ($testNames === null) {
+            $testNames = $this->originalOrder;
+        }
+
+        return array_map(static function (string $t) {
+            return "${t}\n";
+        }, $testNames);
     }
 }
