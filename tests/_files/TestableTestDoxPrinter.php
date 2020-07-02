@@ -30,4 +30,20 @@ class TestableTestDoxPrinter extends TestDoxPrinter
     {
         return $this->buffer;
     }
+
+    /**
+     * @return array<string>
+     */
+    public function getTestSuiteStack(): array
+    {
+        return $this->testSuiteStack;
+    }
+
+    /**
+     * return array<string>.
+     */
+    public function getCompletedTestSuites(): array
+    {
+        return $this->completedTestSuites;
+    }
 }
