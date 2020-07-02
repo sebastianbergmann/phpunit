@@ -9,9 +9,12 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use Exception;
 use MultiDependencyTest;
+use NotReorderableTest;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\TestableTestDoxPrinter;
 
@@ -51,7 +54,9 @@ final class TestDoxPrinterTest extends TestCase
 
     protected function tearDown(): void
     {
-        $this->printer = null;
+        $this->printer       = null;
+        $this->suite         = null;
+        $this->originalOrder = null;
     }
 
     /**
@@ -131,7 +136,7 @@ final class TestDoxPrinterTest extends TestCase
             $this->printer->getBuffer()
         );
 
-        // 4. testFive, no new output
+        // 4. testFour, no new output
         $this->runTestAndFlush($this->suite->tests()[3]);
         $this->assertEquals(
             array_slice($lines, 0, 2),
@@ -146,6 +151,121 @@ final class TestDoxPrinterTest extends TestCase
         // Force flushing adds no further output
         $this->printer->flush();
         $this->assertEquals($lines, $this->printer->getBuffer());
+    }
+
+    public function testDisabledOutputBufferPrintsTestResultsOutOfOrder(): void
+    {
+        // Simulate running a non-default order with buffer on
+        $this->printer->setEnableOutputBuffer(false);
+        $lines = $this->getOutputLinesForTestOrder();
+
+        // 1. testTwo
+        $this->runTestAndFlush($this->suite->tests()[1]);
+        $this->assertEquals([
+            $lines[1],
+        ], $this->printer->getBuffer());
+
+        // 2. testOne
+        $this->runTestAndFlush($this->suite->tests()[0]);
+        $this->assertEquals([
+            $lines[1],
+            $lines[0],
+        ], $this->printer->getBuffer());
+
+        // 3. testFive
+        $this->runTestAndFlush($this->suite->tests()[4]);
+        $this->assertEquals([
+            $lines[1],
+            $lines[0],
+            $lines[4],
+        ], $this->printer->getBuffer());
+
+        // 4. testFour
+        $this->runTestAndFlush($this->suite->tests()[3]);
+        $this->assertEquals([
+            $lines[1],
+            $lines[0],
+            $lines[4],
+            $lines[3],
+        ], $this->printer->getBuffer());
+
+        // 5. testThree
+        $this->runTestAndFlush($this->suite->tests()[2]);
+        $this->assertEquals([
+            $lines[1],
+            $lines[0],
+            $lines[4],
+            $lines[3],
+            $lines[2],
+        ], $this->printer->getBuffer());
+
+        // Force flushing adds no further output
+        $this->printer->flush();
+        $this->assertEquals([
+            $lines[1],
+            $lines[0],
+            $lines[4],
+            $lines[3],
+            $lines[2],
+        ], $this->printer->getBuffer());
+    }
+
+    public function testFormatTestWithException(): void
+    {
+        $testOne = $this->suite->tests()[0];
+        $testTwo = $this->suite->tests()[1];
+
+        $this->printer->startTest($testOne);
+        $this->printer->addError($testOne, new Exception('elephant in the room'), 0.1);
+        $this->printer->endTest($testOne, 0.1);
+
+        $this->printer->startTest($testTwo);
+        $this->printer->addError($testTwo, new Exception(), 0.1);
+        $this->printer->endTest($testTwo, 0.1);
+
+        $this->printer->flush();
+
+        $this->assertMatchesRegularExpression(
+            "/{$testOne->sortId()}\s*^\s+│ Exception: elephant in the room\s+^/m",
+            $this->printer->getBuffer()[0]
+        );
+
+        $this->assertMatchesRegularExpression(
+            "/{$testTwo->sortId()}\s*^\s+│ Exception:\s+^/m",
+            $this->printer->getBuffer()[1]
+        );
+    }
+
+    /**
+     * @testdox printResult() has no default output
+     */
+    public function testPrintResultHasNoDefaultOutput(): void
+    {
+        $result = new TestResult;
+        $this->suite->run($result);
+        $this->printer->printResult($result);
+
+        $this->assertEquals([], $this->printer->getBuffer());
+    }
+
+    /**
+     * @testdox Printer ignores non-TestCase
+     */
+    public function testHandlesNonTestcaseTests(): void
+    {
+        $test = new NotReorderableTest;
+
+        $this->printer->startTest($test);
+        $this->printer->endTest($test, 0.1);
+
+        $this->printer->startTest($this->suite->tests()[0]);
+        $this->printer->endTest($this->suite->tests()[0], 0.1);
+
+        $this->printer->flush();
+
+        $this->assertEquals([
+            $this->suite->tests()[0]->sortId() . "\n",
+        ], $this->printer->getBuffer());
     }
 
     private function runTestAndFlush(Test $test): void

@@ -382,9 +382,10 @@ class TestDoxPrinter extends DefaultResultPrinter
     protected function writeSingleTestResult(array $result): void
     {
         $this->write(sprintf(
-            '%s::%s' . PHP_EOL,
+            '%s::%s%s' . PHP_EOL,
             $result['className'],
             $result['testMethod'],
+            $result['message'] !== '' ? "\n" . $result['message'] : ''
         ));
 
         $this->prevResult = $result;
