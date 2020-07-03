@@ -851,7 +851,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $name = $this->getName();
 
         return $name !== ''
-            ? "${name}::class"
+            ? "{$name}::class"
             : 'PHPUNIT_UNNAMED_SUITE::class';
     }
 
