@@ -89,6 +89,7 @@ return PhpCsFixer\Config::create()
         'lowercase_keywords' => true,
         'lowercase_static_reference' => true,
         'magic_constant_casing' => true,
+        'magic_method_casing' => true,
         'method_argument_space' => ['ensure_fully_multiline' => true],
         'modernize_types_casting' => true,
         'multiline_comment_opening_closing' => true,
