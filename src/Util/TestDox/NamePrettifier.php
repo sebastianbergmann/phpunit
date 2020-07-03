@@ -165,7 +165,7 @@ final class NamePrettifier
 
         $string = (string) \preg_replace('#\d+$#', '', $name, -1, $count);
 
-        if (\in_array($string, $this->strings)) {
+        if (\in_array($string, $this->strings, true)) {
             $name = $string;
         } elseif ($count === 0) {
             $this->strings[] = $string;

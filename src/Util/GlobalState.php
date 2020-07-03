@@ -54,7 +54,7 @@ final class GlobalState
             $file = $files[$i];
 
             if (!empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) &&
-                \in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'])) {
+                \in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'], true)) {
                 continue;
             }
 
