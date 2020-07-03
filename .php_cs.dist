@@ -86,7 +86,6 @@ return PhpCsFixer\Config::create()
         'line_ending' => true,
         'list_syntax' => ['syntax' => 'short'],
         'logical_operators' => true,
-        'lowercase_constants' => true,
         'lowercase_keywords' => true,
         'lowercase_static_reference' => true,
         'magic_constant_casing' => true,
