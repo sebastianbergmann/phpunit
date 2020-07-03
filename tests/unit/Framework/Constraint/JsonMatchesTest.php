@@ -111,7 +111,7 @@ final class JsonMatchesTest extends ConstraintTestCase
             $this->fail(sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that '{"Mascott"::}' matches JSON string "{"Mascott"::}".
 
 EOF
@@ -130,7 +130,7 @@ EOF
             $this->fail(sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that '{"Mascott":"Tux"}' matches JSON string "{"Mascott"::}".
 
 EOF
@@ -148,7 +148,7 @@ EOF
             $constraint->evaluate('{"obj": {}, "val": 2}', '', false);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that '{"obj": {}, "val": 2}' matches JSON string "{"obj": {}, "val": 1}".
 --- Expected
 +++ Actual
@@ -174,7 +174,7 @@ EOF
             $constraint->evaluate('{"obj": {"y": 2, "x": 1}, "val": 2}', '', false);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that '{"obj": {"y": 2, "x": 1}, "val": 2}' matches JSON string "{"obj": {"x": 1, "y": 2}, "val": 1}".
 --- Expected
 +++ Actual

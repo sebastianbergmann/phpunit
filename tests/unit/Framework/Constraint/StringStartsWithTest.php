@@ -74,7 +74,7 @@ final class StringStartsWithTest extends ConstraintTestCase
             $constraint->evaluate('error');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 'error' starts with "prefix".
 
 EOF
@@ -96,7 +96,7 @@ EOF
             $constraint->evaluate('error', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 'error' starts with "prefix".
 

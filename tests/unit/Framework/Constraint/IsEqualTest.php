@@ -37,7 +37,7 @@ final class IsEqualTest extends ConstraintTestCase
             $constraint->evaluate(0);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 0 matches expected 1.
 
 EOF
@@ -120,17 +120,17 @@ EOF
         $dom2->loadXML('<root><foo/></root>');
 
         return [
-            [1, 0, <<<EOF
+            [1, 0, <<<'EOF'
 Failed asserting that 0 matches expected 1.
 
 EOF
             ],
-            [1.1, 0, <<<EOF
+            [1.1, 0, <<<'EOF'
 Failed asserting that 0 matches expected 1.1.
 
 EOF
             ],
-            ['a', 'b', <<<EOF
+            ['a', 'b', <<<'EOF'
 Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
@@ -140,38 +140,38 @@ Failed asserting that two strings are equal.
 
 EOF
             ],
-            ["a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk", "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk", <<<EOF
+            ["a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk", "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk", <<<'EOF'
 Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
 @@ @@
- 'a\\n
--b\\n
-+p\\n
- c\\n
- d\\n
- e\\n
+ 'a\n
+-b\n
++p\n
+ c\n
+ d\n
+ e\n
 @@ @@
- g\\n
- h\\n
- i\\n
--j\\n
-+w\\n
+ g\n
+ h\n
+ i\n
+-j\n
++w\n
  k'
 
 EOF
             ],
-            [1, [0], <<<EOF
+            [1, [0], <<<'EOF'
 Array (...) does not match expected type "integer".
 
 EOF
             ],
-            [[0], 1, <<<EOF
+            [[0], 1, <<<'EOF'
 1 does not match expected type "array".
 
 EOF
             ],
-            [[0], [1], <<<EOF
+            [[0], [1], <<<'EOF'
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
@@ -183,7 +183,7 @@ Failed asserting that two arrays are equal.
 
 EOF
             ],
-            [[true], ['true'], <<<EOF
+            [[true], ['true'], <<<'EOF'
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
@@ -195,7 +195,7 @@ Failed asserting that two arrays are equal.
 
 EOF
             ],
-            [[0, [1], [2], 3], [0, [4], [2], 3], <<<EOF
+            [[0, [1], [2], 3], [0, [4], [2], 3], <<<'EOF'
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
@@ -212,17 +212,17 @@ Failed asserting that two arrays are equal.
 
 EOF
             ],
-            [$a, [0], <<<EOF
+            [$a, [0], <<<'EOF'
 Array (...) does not match expected type "object".
 
 EOF
             ],
-            [[0], $a, <<<EOF
+            [[0], $a, <<<'EOF'
 stdClass Object (...) does not match expected type "array".
 
 EOF
             ],
-            [$a, $b, <<<EOF
+            [$a, $b, <<<'EOF'
 Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
@@ -233,7 +233,7 @@ Failed asserting that two objects are equal.
 
 EOF
             ],
-            [$c, $d, <<<EOF
+            [$c, $d, <<<'EOF'
 Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
@@ -253,18 +253,18 @@ Failed asserting that two objects are equal.
 @@ @@
      )
      'related' => stdClass Object (
-         'foo' => 'a\\n
--        b\\n
-+        p\\n
-         c\\n
-         d\\n
-         e\\n
+         'foo' => 'a\n
+-        b\n
++        p\n
+         c\n
+         d\n
+         e\n
 @@ @@
-         g\\n
-         h\\n
-         i\\n
--        j\\n
-+        w\\n
+         g\n
+         h\n
+         i\n
+-        j\n
++        w\n
          k'
      )
      'self' => stdClass Object (...)
@@ -273,7 +273,7 @@ Failed asserting that two objects are equal.
 
 EOF
             ],
-            [$dom1, $dom2, <<<EOF
+            [$dom1, $dom2, <<<'EOF'
 Failed asserting that two DOM documents are equal.
 --- Expected
 +++ Actual
@@ -289,7 +289,7 @@ EOF
             [
                 new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
                 new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/Chicago')),
-                <<<EOF
+                <<<'EOF'
 Failed asserting that two DateTime objects are equal.
 --- Expected
 +++ Actual

@@ -34,7 +34,7 @@ final class IsIdenticalTest extends ConstraintTestCase
             $constraint->evaluate($b);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that two variables reference the same object.
 
 EOF
@@ -59,7 +59,7 @@ EOF
             $constraint->evaluate($b, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two variables reference the same object.
 
@@ -82,7 +82,7 @@ EOF
             $constraint->evaluate('b', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two strings are identical.
 --- Expected
@@ -113,7 +113,7 @@ EOF
             $constraint->evaluate($actual, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two arrays are identical.
 --- Expected
@@ -167,7 +167,7 @@ EOF
             $constraint->evaluate($actual, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two arrays are identical.
 --- Expected

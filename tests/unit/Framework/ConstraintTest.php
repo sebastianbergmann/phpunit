@@ -39,7 +39,7 @@ final class ConstraintTest extends TestCase
             $constraint->evaluate([0 => 1]);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that an array does not have the key 0.
 
 EOF
@@ -63,7 +63,7 @@ EOF
             $constraint->evaluate([0], 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that an array does not have the key 0.
 
@@ -149,7 +149,7 @@ EOF
             $constraint->evaluate(2);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 2 is not greater than 1.
 
 EOF
@@ -173,7 +173,7 @@ EOF
             $constraint->evaluate(2, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 2 is not greater than 1.
 
@@ -201,7 +201,7 @@ EOF
             $constraint->evaluate(0);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 0 is equal to 1 or is greater than 1.
 
 EOF
@@ -223,7 +223,7 @@ EOF
             $constraint->evaluate(0, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 0 is equal to 1 or is greater than 1.
 
@@ -252,7 +252,7 @@ EOF
             $constraint->evaluate(1);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
 EOF
@@ -276,7 +276,7 @@ EOF
             $constraint->evaluate(1, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
@@ -315,7 +315,7 @@ EOF
             $constraint->evaluate(null);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that null is not anything.
 
 EOF
@@ -344,7 +344,7 @@ EOF
             $constraint->evaluate(1);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 1 is not equal to 1.
 
 EOF
@@ -368,7 +368,7 @@ EOF
             $constraint->evaluate(1, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 1 is not equal to 1.
 
@@ -401,7 +401,7 @@ EOF
             $constraint->evaluate($a);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that two variables don't reference the same object.
 
 EOF
@@ -427,7 +427,7 @@ EOF
             $constraint->evaluate($a, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two variables don't reference the same object.
 
@@ -452,7 +452,7 @@ EOF
             $constraint->evaluate('a', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two strings are not identical.
 
@@ -485,7 +485,7 @@ EOF
             $constraint->evaluate(new stdClass);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that stdClass Object () is an instance of class "Exception".
 
 EOF
@@ -507,7 +507,7 @@ EOF
             $constraint->evaluate(new stdClass, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that stdClass Object () is an instance of class "Exception".
 
@@ -537,7 +537,7 @@ EOF
             $constraint->evaluate(new stdClass);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that stdClass Object () is not an instance of class "stdClass".
 
 EOF
@@ -561,7 +561,7 @@ EOF
             $constraint->evaluate(new stdClass, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that stdClass Object () is not an instance of class "stdClass".
 
@@ -591,7 +591,7 @@ EOF
             $constraint->evaluate('');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that '' is not of type "string".
 
 EOF
@@ -615,7 +615,7 @@ EOF
             $constraint->evaluate('', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that '' is not of type "string".
 
@@ -645,7 +645,7 @@ EOF
             $constraint->evaluate(null);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that null is not null.
 
 EOF
@@ -669,7 +669,7 @@ EOF
             $constraint->evaluate(null, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that null is not null.
 
@@ -699,7 +699,7 @@ EOF
             $constraint->evaluate(0);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 0 is not less than 1.
 
 EOF
@@ -723,7 +723,7 @@ EOF
             $constraint->evaluate(0, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 0 is not less than 1.
 
@@ -751,7 +751,7 @@ EOF
             $constraint->evaluate(2);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 2 is equal to 1 or is less than 1.
 
 EOF
@@ -773,7 +773,7 @@ EOF
             $constraint->evaluate(2, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 2 is equal to 1 or is less than 1.
 
@@ -803,7 +803,7 @@ EOF
             $constraint->evaluate(1);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
 EOF
@@ -827,7 +827,7 @@ EOF
             $constraint->evaluate(1, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
@@ -1022,7 +1022,7 @@ EOF
             $constraint->evaluate('barfoobar');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
@@ -1049,7 +1049,7 @@ EOF
             $constraint->evaluate('barfoobar', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
@@ -1079,7 +1079,7 @@ EOF
             $constraint->evaluate('prefixfoo');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
@@ -1103,7 +1103,7 @@ EOF
             $constraint->evaluate('prefixfoo', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 'prefixfoo' starts not with "prefix".
 
@@ -1133,7 +1133,7 @@ EOF
             $constraint->evaluate('barfoobar');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 'barfoobar' does not contain "foo".
 
 EOF
@@ -1191,7 +1191,7 @@ EOF
             $constraint->evaluate('barfoobar', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 'barfoobar' does not contain "foo".
 
@@ -1221,7 +1221,7 @@ EOF
             $constraint->evaluate('foosuffix');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
@@ -1245,7 +1245,7 @@ EOF
             $constraint->evaluate('foosuffix', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 'foosuffix' ends not with "suffix".
 
@@ -1292,7 +1292,7 @@ EOF
             $constraint->evaluate([1, 2]);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that actual size 2 matches expected size 5.
 
 EOF
@@ -1316,7 +1316,7 @@ EOF
             $constraint->evaluate([1, 2]);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
@@ -1340,7 +1340,7 @@ EOF
             $constraint->evaluate([3, 4]);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
