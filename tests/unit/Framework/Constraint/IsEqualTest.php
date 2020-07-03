@@ -55,7 +55,7 @@ EOF
             $constraint->evaluate($actual, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                "custom message\n${message}",
+                "custom message\n{$message}",
                 $this->trimnl(TestFailure::exceptionToString($e))
             );
 
@@ -297,17 +297,17 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
--SplObjectStorage Object &${storage1hash} (
--    '${ahash}' => Array &0 (
--        'obj' => stdClass Object &${ahash} (
+-SplObjectStorage Object &{$storage1hash} (
+-    '{$ahash}' => Array &0 (
+-        'obj' => stdClass Object &{$ahash} (
 -            'foo' => 'bar'
 -        )
 -        'inf' => null
 -    )
--    '${bhash}' => Array &1 (
-+SplObjectStorage Object &${storage2hash} (
-+    '${bhash}' => Array &0 (
-         'obj' => stdClass Object &${bhash} ()
+-    '{$bhash}' => Array &1 (
++SplObjectStorage Object &{$storage2hash} (
++    '{$bhash}' => Array &0 (
+         'obj' => stdClass Object &{$bhash} ()
          'inf' => null
      )
  )

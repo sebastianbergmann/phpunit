@@ -117,7 +117,7 @@ final class LogicalOrTest extends ConstraintTestCase
             $toString = $this->stringify($constraints);
 
             $expectedDescription = <<<EOF
-Failed asserting that '${other}' ${toString}.
+Failed asserting that '{$other}' {$toString}.
 
 EOF;
 
@@ -152,8 +152,8 @@ EOF;
             $toString = $this->stringify($constraints);
 
             $expectedDescription = <<<EOF
-${customDescription}
-Failed asserting that '${other}' ${toString}.
+{$customDescription}
+Failed asserting that '{$other}' {$toString}.
 
 EOF;
 
