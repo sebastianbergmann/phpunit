@@ -254,12 +254,12 @@ final class CliTestDoxPrinterTest extends TestCase
         $expectedBuffer .= "\e[1K\e[27D \e[36m◐\e[0m running tests";
         $this->assertEquals($expectedBuffer, $printer->getBuffer());
 
-        // One: test are now in order, hide spinner and flush results
+        // One: test can now be put in order; hide spinner and flush results
         $printer->startTest($suite->tests()[0]);
         $printer->endTest($suite->tests()[0], 0.1);
-        $expectedBuffer .= "\e[1K\e[27D";
 
         // Check ANSI codes for deleting the spinner
+        $expectedBuffer .= "\e[1K\e[27D";
         $this->assertStringStartsWith($expectedBuffer, $printer->getBuffer());
 
         // Strip out the ANSI codes and check if the result is flushed
@@ -273,7 +273,7 @@ final class CliTestDoxPrinterTest extends TestCase
         $printer->startTest($this);
         $printer->endTest($this, 2.0);
 
-        $this->assertStringContainsString("\x1b[35m 2000 \e[2mms\e[0m", $printer->getBuffer());
+        $this->assertStringContainsString("\e[35m 2000 \e[2mms\e[0m", $printer->getBuffer());
     }
 
     private function stripAnsiColorCodes(string $input): string

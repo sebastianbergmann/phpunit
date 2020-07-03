@@ -153,7 +153,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
             );
         }
 
-        if (!is_int($numberOfColumns) && $numberOfColumns !== 'max') {
+        if (!(is_int($numberOfColumns) && $numberOfColumns > 0) && $numberOfColumns !== 'max') {
             throw InvalidArgumentException::create(5, 'integer or "max"');
         }
 
