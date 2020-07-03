@@ -286,7 +286,7 @@ final class TestDoxPrinterTest extends TestCase
             $testNames = $this->originalOrder;
         }
 
-        return array_map(static function (string $t) {
+        return array_map(static function (string $t): string {
             return "{$t}\n";
         }, $testNames);
     }
