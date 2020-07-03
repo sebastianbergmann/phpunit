@@ -31,7 +31,7 @@ final class MyTestListener implements TestListener
 
     private $startCount = 0;
 
-    public function addError(Test $test, \Throwable $t, float $time): void
+    public function addError(Test $test, Throwable $t, float $time): void
     {
         $this->errorCount++;
     }
@@ -46,17 +46,17 @@ final class MyTestListener implements TestListener
         $this->failureCount++;
     }
 
-    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
+    public function addIncompleteTest(Test $test, Throwable $t, float $time): void
     {
         $this->notImplementedCount++;
     }
 
-    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
+    public function addRiskyTest(Test $test, Throwable $t, float $time): void
     {
         $this->riskyCount++;
     }
 
-    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
+    public function addSkippedTest(Test $test, Throwable $t, float $time): void
     {
         $this->skippedCount++;
     }

@@ -73,6 +73,7 @@ return PhpCsFixer\Config::create()
         'explicit_indirect_variable' => true,
         'explicit_string_variable' => true,
         'full_opening_tag' => true,
+        'fully_qualified_strict_types' => true,
         'function_declaration' => true,
         'header_comment' => ['header' => $header, 'separate' => 'none'],
         'increment_style' => [
