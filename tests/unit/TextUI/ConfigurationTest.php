@@ -189,15 +189,20 @@ class ConfigurationTest extends TestCase
      */
     public function testCallingGetterOnUndefinedPropertyThrowsException(string $propertyName): void
     {
-        $config = $this->callConfigurationConstructor();
+        $config = $this->createEmptyConfiguration();
 
-        $this->assertTrue(method_exists($config, $propertyName), "Unknown property {$propertyName}");
+        // Supporting ::hasPropertyName() should exist and report true
+        $hasPropertyName = "has{$propertyName}";
+        $this->assertTrue(method_exists($config, $hasPropertyName), "unimplemented has{$propertyName}");
+        $this->assertFalse($config->{$hasPropertyName}(), "{$propertyName} expected to be uninitialized");
 
+        // Check the getter exists and throws an exception
+        $this->assertTrue(method_exists($config, $propertyName), "unimplemented {$propertyName}");
         $this->expectException("PHPUnit\TextUI\CliArguments\Exception");
         $this->assertTrue($config->{$propertyName}());
     }
 
-    private function callConfigurationConstructor(): Configuration
+    private function createEmptyConfiguration(): Configuration
     {
         return new Configuration(
             null,
