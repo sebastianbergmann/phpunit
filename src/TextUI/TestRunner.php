@@ -470,34 +470,30 @@ final class TestRunner extends BaseTestRunner
             if (isset($arguments['configuration'])) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-                if (!empty($filterConfiguration['whitelist'])) {
-                    $whitelistFromConfigurationFile = true;
+                $whitelistFromConfigurationFile = true;
+
+                foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
+                    $this->codeCoverageFilter->addDirectoryToWhitelist(
+                        $dir['path'],
+                        $dir['suffix'],
+                        $dir['prefix']
+                    );
                 }
 
-                if (!empty($filterConfiguration['whitelist'])) {
-                    foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
-                        $this->codeCoverageFilter->addDirectoryToWhitelist(
-                            $dir['path'],
-                            $dir['suffix'],
-                            $dir['prefix']
-                        );
-                    }
+                foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
+                    $this->codeCoverageFilter->addFileToWhitelist($file);
+                }
 
-                    foreach ($filterConfiguration['whitelist']['include']['file'] as $file) {
-                        $this->codeCoverageFilter->addFileToWhitelist($file);
-                    }
+                foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
+                    $this->codeCoverageFilter->removeDirectoryFromWhitelist(
+                        $dir['path'],
+                        $dir['suffix'],
+                        $dir['prefix']
+                    );
+                }
 
-                    foreach ($filterConfiguration['whitelist']['exclude']['directory'] as $dir) {
-                        $this->codeCoverageFilter->removeDirectoryFromWhitelist(
-                            $dir['path'],
-                            $dir['suffix'],
-                            $dir['prefix']
-                        );
-                    }
-
-                    foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
-                        $this->codeCoverageFilter->removeFileFromWhitelist($file);
-                    }
+                foreach ($filterConfiguration['whitelist']['exclude']['file'] as $file) {
+                    $this->codeCoverageFilter->removeFileFromWhitelist($file);
                 }
             }
         }
