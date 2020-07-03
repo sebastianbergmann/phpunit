@@ -287,7 +287,7 @@ final class TestDoxPrinterTest extends TestCase
         }
 
         return array_map(static function (string $t) {
-            return "${t}\n";
+            return "{$t}\n";
         }, $testNames);
     }
 }
