@@ -10,14 +10,18 @@
 namespace PHPUnit\Util\TestDox;
 
 use Exception;
+use MultiDependencyTest;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
+use PHPUnit\TextUI\DefaultResultPrinter;
 
 /**
  * @group testdox
  * @small
+ * @covers \PHPUnit\Util\TestDox\CliTestDoxPrinter
  */
 final class CliTestDoxPrinterTest extends TestCase
 {
@@ -210,5 +214,70 @@ final class CliTestDoxPrinterTest extends TestCase
 
         $this->assertStringContainsString('│', $this->verbosePrinter->getBuffer());
         $this->assertStringContainsString('S_K_I_P_P_E_D', $this->verbosePrinter->getBuffer());
+    }
+
+    public function testColorizedTestdoxShowsSpinnerWhileBuffering(): void
+    {
+        // Prepare the usual test suite having [testOne..testFive]
+        $suite         = new TestSuite(MultiDependencyTest::class);
+        $originalOrder = array_map(static function (TestCase $test) {
+            return $test->sortId();
+        }, $suite->tests());
+
+        // Get a colorized Testdox printer with the buffer primed
+        $printer = new TestableCliTestDoxPrinter(null, true, DefaultResultPrinter::COLOR_ALWAYS);
+        $printer->setOriginalExecutionOrder($originalOrder);
+        $printer->setEnableOutputBuffer(true);
+
+        // Pretend to run the tests in reverse
+        // Five
+        $printer->startTest($suite->tests()[4]);
+        $printer->endTest($suite->tests()[4], 0.1);
+        $expectedBuffer = " \e[36m◓\e[0m running tests";
+        $this->assertEquals($expectedBuffer, $printer->getBuffer());
+
+        // Four
+        $printer->startTest($suite->tests()[3]);
+        $printer->endTest($suite->tests()[3], 0.1);
+        $expectedBuffer .= "\e[1K\e[27D \e[36m◑\e[0m running tests";
+        $this->assertEquals($expectedBuffer, $printer->getBuffer());
+
+        // Three
+        $printer->startTest($suite->tests()[2]);
+        $printer->endTest($suite->tests()[2], 0.1);
+        $expectedBuffer .= "\e[1K\e[27D \e[36m◒\e[0m running tests";
+        $this->assertEquals($expectedBuffer, $printer->getBuffer());
+
+        // Two
+        $printer->startTest($suite->tests()[1]);
+        $printer->endTest($suite->tests()[1], 0.1);
+        $expectedBuffer .= "\e[1K\e[27D \e[36m◐\e[0m running tests";
+        $this->assertEquals($expectedBuffer, $printer->getBuffer());
+
+        // One: test are now in order, hide spinner and flush results
+        $printer->startTest($suite->tests()[0]);
+        $printer->endTest($suite->tests()[0], 0.1);
+        $expectedBuffer .= "\e[1K\e[27D";
+
+        // Check ANSI codes for deleting the spinner
+        $this->assertStringStartsWith($expectedBuffer, $printer->getBuffer());
+
+        // Strip out the ANSI codes and check if the result is flushed
+        $buffer = $this->stripAnsiColorCodes($printer->getBuffer());
+        $this->assertEquals(" ◓ running tests ◑ running tests ◒ running tests ◐ running testsMulti Dependency\n ✔ One  100 ms\n ✔ Two  100 ms\n ✔ Three  100 ms\n ✔ Four  100 ms\n ✔ Five  100 ms\n", $buffer);
+    }
+
+    public function testSlowTestAreHighlightedInMagenta(): void
+    {
+        $printer = new TestableCliTestDoxPrinter(null, true, DefaultResultPrinter::COLOR_ALWAYS);
+        $printer->startTest($this);
+        $printer->endTest($this, 2.0);
+
+        $this->assertStringContainsString("\x1b[35m 2000 \e[2mms\e[0m", $printer->getBuffer());
+    }
+
+    private function stripAnsiColorCodes(string $input): string
+    {
+        return preg_replace('/(\e\[\d+[A-z])/', '', $input);
     }
 }
