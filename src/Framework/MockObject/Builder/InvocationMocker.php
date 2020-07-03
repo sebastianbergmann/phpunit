@@ -98,7 +98,6 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         return $this->will($stub);
     }
 
-    /** {@inheritDoc} */
     public function willReturnReference(&$reference): self
     {
         $stub = new ReturnReference($reference);
@@ -120,7 +119,6 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         return $this->will($stub);
     }
 
-    /** {@inheritDoc} */
     public function willReturnCallback($callback): self
     {
         $stub = new ReturnCallback($callback);

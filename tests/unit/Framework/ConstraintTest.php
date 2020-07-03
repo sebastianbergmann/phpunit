@@ -95,7 +95,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<EOF
-Failed asserting that file "${file}" does not exist.
+Failed asserting that file "{$file}" does not exist.
 
 EOF
                 ,
@@ -122,7 +122,7 @@ EOF
             $this->assertEquals(
                 <<<EOF
 custom message
-Failed asserting that file "${file}" does not exist.
+Failed asserting that file "{$file}" does not exist.
 
 EOF
                 ,
@@ -1366,7 +1366,7 @@ EOF
             $this->assertEquals(
                 <<<EOF
 Failed asserting that exception of type "PHPUnit\TestFixture\DummyException" matches expected exception "FoobarException". Message was: "Test" at
-${stackTrace}.
+{$stackTrace}.
 
 EOF
                 ,

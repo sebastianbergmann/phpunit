@@ -132,7 +132,7 @@ final class Color
             return $buffer;
         }
 
-        return "\e[2m${buffer}\e[22m";
+        return "\e[2m{$buffer}\e[22m";
     }
 
     public static function visualizeWhitespace(string $buffer, bool $visualizeEOL = false): string

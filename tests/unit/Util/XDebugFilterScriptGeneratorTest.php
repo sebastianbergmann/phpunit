@@ -40,9 +40,9 @@ if (!\\function_exists('xdebug_set_filter')) {
     \\XDEBUG_FILTER_CODE_COVERAGE,
     \\XDEBUG_PATH_WHITELIST,
     [
-        '${expectedDirectory}',
-        '${expectedDirectory}',
-        '${expectedDirectory}',
+        '{$expectedDirectory}',
+        '{$expectedDirectory}',
+        '{$expectedDirectory}',
         'src/foo.php',
         'src/bar.php'
     ]
