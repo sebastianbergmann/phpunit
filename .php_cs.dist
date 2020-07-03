@@ -118,6 +118,7 @@ return PhpCsFixer\Config::create()
         'no_short_echo_tag' => true,
         'no_singleline_whitespace_before_semicolons' => true,
         'no_spaces_after_function_name' => true,
+        'no_spaces_around_offset' => true,
         'no_spaces_inside_parenthesis' => true,
         'no_superfluous_elseif' => true,
         'no_superfluous_phpdoc_tags' => [
