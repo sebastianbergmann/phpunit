@@ -69,7 +69,7 @@ final class TraversableContainsTest extends ConstraintTestCase
             $constraint->evaluate(['bar']);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that an array contains 'foo'.
 
 EOF
@@ -111,7 +111,7 @@ EOF
             $constraint->evaluate(['bar'], 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that an array contains 'foo'.
 
@@ -161,7 +161,7 @@ EOF
             $constraint->evaluate(new \SplObjectStorage);
         } catch (ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that a traversable contains stdClass Object &%x ().
 
 EOF
@@ -184,7 +184,7 @@ EOF
             $constraint->evaluate(new \SplObjectStorage, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that a traversable contains stdClass Object &%x ().
 

@@ -49,7 +49,7 @@ final class SameSizeTest extends ConstraintTestCase
             $constraint->evaluate([1, 2]);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that actual size 2 matches expected size 5.
 
 EOF

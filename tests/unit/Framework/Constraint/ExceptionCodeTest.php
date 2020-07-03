@@ -25,7 +25,7 @@ class ExceptionCodeTest extends TestCase
             $exceptionCode->evaluate($other);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 456 is equal to expected exception code 123.
 
 EOF

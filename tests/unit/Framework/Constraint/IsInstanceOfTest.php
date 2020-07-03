@@ -32,7 +32,7 @@ final class IsInstanceOfTest extends ConstraintTestCase
             $constraint->evaluate('stdClass');
         } catch (ExpectationFailedException $e) {
             self::assertSame(
-                <<<EOT
+                <<<'EOT'
 Failed asserting that 'stdClass' is an instance of class "stdClass".
 
 EOT

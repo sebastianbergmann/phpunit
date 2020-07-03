@@ -264,7 +264,7 @@ final class StringMatchesFormatDescriptionTest extends ConstraintTestCase
             $constraint->evaluate("*\nbar\n*");
             $this->fail('Expected ExpectationFailedException, but it was not thrown.');
         } catch (ExpectationFailedException $e) {
-            $expected = <<<EOD
+            $expected = <<<'EOD'
 Failed asserting that string matches format description.
 --- Expected
 +++ Actual

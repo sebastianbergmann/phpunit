@@ -32,7 +32,7 @@ final class IsEmptyTest extends ConstraintTestCase
             $constraint->evaluate(['foo']);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that an array is empty.
 
 EOF

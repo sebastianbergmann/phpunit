@@ -411,14 +411,14 @@ final class AssertTest extends TestCase
      */
     public function testAssertXmlStringEqualsXmlString3(): void
     {
-        $expected = <<<XML
+        $expected = <<<'XML'
 <?xml version="1.0"?>
 <root>
     <node />
 </root>
 XML;
 
-        $actual = <<<XML
+        $actual = <<<'XML'
 <?xml version="1.0"?>
 <root>
 <node />

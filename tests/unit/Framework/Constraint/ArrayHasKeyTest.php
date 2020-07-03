@@ -29,7 +29,7 @@ final class ArrayHasKeyTest extends ConstraintTestCase
             $constraint->evaluate([]);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that an array has the key 0.
 
 EOF
@@ -73,7 +73,7 @@ EOF
             $constraint->evaluate(0, '');
         } catch (ExpectationFailedException  $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that an array has the key 0.
 
 EOF
