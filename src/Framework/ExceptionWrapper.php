@@ -73,7 +73,7 @@ final class ExceptionWrapper extends Exception
         $this->className = $className;
     }
 
-    public function setOriginalException(\Throwable $t): void
+    public function setOriginalException(Throwable $t): void
     {
         $this->originalException($t);
 
