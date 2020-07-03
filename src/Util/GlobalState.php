@@ -71,7 +71,7 @@ final class GlobalState
             $file = $files[$i];
 
             if (!empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) &&
-                in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'])) {
+                in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) {
                 continue;
             }
 

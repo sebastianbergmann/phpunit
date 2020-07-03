@@ -2043,7 +2043,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($dependency->targetIsClass()) {
                 $dependencyClassName = $dependency->getTargetClassName();
 
-                if (array_search($dependencyClassName, $this->result->passedClasses()) === false) {
+                if (array_search($dependencyClassName, $this->result->passedClasses(), true) === false) {
                     $this->markSkippedForMissingDependency($dependency);
 
                     return false;
