@@ -78,7 +78,7 @@
                 <boolean>true</boolean>
             </arguments>
         </listener>
-        <listener class="IncludePathListener" file="ConfigurationTest.php"/>
+        <listener class="IncludePathListener" file="IncludePathConfigurationTest.php"/>
         <listener class="CompactArgumentsListener" file="/CompactArgumentsListener.php">
             <arguments>
                 <integer>42</integer>
@@ -104,7 +104,7 @@
                 <directory>MyRelativePath</directory>
             </arguments>
         </extension>
-        <extension class="IncludePathExtension" file="ConfigurationTest.php"/>
+        <extension class="IncludePathExtension" file="IncludePathConfigurationTest.php"/>
         <extension class="CompactArgumentsExtension" file="/CompactArgumentsExtension.php">
             <arguments>
                 <integer>42</integer>

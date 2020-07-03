@@ -333,7 +333,7 @@ final class XmlConfigurationTest extends TestCase
                 case 2:
                     $this->assertSame('IncludePathListener', $listener->className());
                     $this->assertTrue($listener->hasSourceFile());
-                    $this->assertSame(TEST_FILES_PATH . 'ConfigurationTest.php', $listener->sourceFile());
+                    $this->assertSame(TEST_FILES_PATH . 'IncludePathConfigurationTest.php', $listener->sourceFile());
                     $this->assertFalse($listener->hasArguments());
                     $this->assertSame([], $listener->arguments());
 
@@ -392,7 +392,7 @@ final class XmlConfigurationTest extends TestCase
                 case 2:
                     $this->assertSame('IncludePathExtension', $extension->className());
                     $this->assertTrue($extension->hasSourceFile());
-                    $this->assertSame(TEST_FILES_PATH . 'ConfigurationTest.php', $extension->sourceFile());
+                    $this->assertSame(TEST_FILES_PATH . 'IncludePathConfigurationTest.php', $extension->sourceFile());
                     $this->assertFalse($extension->hasArguments());
                     $this->assertSame([], $extension->arguments());
 
