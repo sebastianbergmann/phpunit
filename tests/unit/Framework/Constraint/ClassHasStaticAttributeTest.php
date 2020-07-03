@@ -30,7 +30,7 @@ final class ClassHasStaticAttributeTest extends ConstraintTestCase
             $constraint->evaluate(\stdClass::class);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that class "stdClass" has static attribute "privateStaticAttribute".
 
 EOF
@@ -52,7 +52,7 @@ EOF
             $constraint->evaluate(\stdClass::class, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that class "stdClass" has static attribute "foo".
 

@@ -54,7 +54,7 @@ final class IsJsonTest extends ConstraintTestCase
             $isJson->evaluate('');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that an empty string is valid JSON.
 
 EOF
