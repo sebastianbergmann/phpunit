@@ -2825,7 +2825,7 @@ abstract class Assert
                 \sprintf(
                     '%s%sNumber of attributes on node "%s" does not match',
                     $message,
-                    !empty($message) ? "\n" : '',
+                    '' !== $message ? "\n" : '',
                     $expectedElement->tagName
                 )
             );
@@ -2841,7 +2841,7 @@ abstract class Assert
                         \sprintf(
                             '%s%sCould not find attribute "%s" on node "%s"',
                             $message,
-                            !empty($message) ? "\n" : '',
+                            '' !== $message ? "\n" : '',
                             $expectedAttribute->name,
                             $expectedElement->tagName
                         )
@@ -2859,7 +2859,7 @@ abstract class Assert
             \sprintf(
                 '%s%sNumber of child nodes of "%s" differs',
                 $message,
-                !empty($message) ? "\n" : '',
+                '' !== $message ? "\n" : '',
                 $expectedElement->tagName
             )
         );

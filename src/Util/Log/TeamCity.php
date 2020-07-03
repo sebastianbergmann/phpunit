@@ -102,13 +102,13 @@ final class TeamCity extends ResultPrinter
             if ($comparisonFailure instanceof ComparisonFailure) {
                 $expectedString = $comparisonFailure->getExpectedAsString();
 
-                if ($expectedString === null || empty($expectedString)) {
+                if ($expectedString === null || '' === $expectedString) {
                     $expectedString = self::getPrimitiveValueAsString($comparisonFailure->getExpected());
                 }
 
                 $actualString = $comparisonFailure->getActualAsString();
 
-                if ($actualString === null || empty($actualString)) {
+                if ($actualString === null || '' === $actualString) {
                     $actualString = self::getPrimitiveValueAsString($comparisonFailure->getActual());
                 }
 
@@ -190,7 +190,7 @@ final class TeamCity extends ResultPrinter
 
         $suiteName = $suite->getName();
 
-        if (empty($suiteName)) {
+        if ('' === $suiteName) {
             return;
         }
 
@@ -219,7 +219,7 @@ final class TeamCity extends ResultPrinter
     {
         $suiteName = $suite->getName();
 
-        if (empty($suiteName)) {
+        if ('' === $suiteName) {
             return;
         }
 

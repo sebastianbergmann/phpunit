@@ -470,11 +470,11 @@ final class TestRunner extends BaseTestRunner
             if (isset($arguments['configuration'])) {
                 $filterConfiguration = $arguments['configuration']->getFilterConfiguration();
 
-                if (!empty($filterConfiguration['whitelist'])) {
+                if ([] !== $filterConfiguration['whitelist']) {
                     $whitelistFromConfigurationFile = true;
                 }
 
-                if (!empty($filterConfiguration['whitelist'])) {
+                if ([] !== $filterConfiguration['whitelist']) {
                     foreach ($filterConfiguration['whitelist']['include']['directory'] as $dir) {
                         $this->codeCoverageFilter->addDirectoryToWhitelist(
                             $dir['path'],

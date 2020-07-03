@@ -85,7 +85,7 @@ class TestDoxPrinter extends ResultPrinter
     public function setOriginalExecutionOrder(array $order): void
     {
         $this->originalExecutionOrder = $order;
-        $this->enableOutputBuffer     = !empty($order);
+        $this->enableOutputBuffer     = [] !== $order;
     }
 
     public function setShowProgressAnimation(bool $showProgress): void

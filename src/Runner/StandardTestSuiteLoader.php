@@ -27,11 +27,13 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         $suiteClassName = \str_replace('.php', '', $suiteClassName);
         $filename       = null;
 
-        if (empty($suiteClassFile)) {
+        if ('' === $suiteClassFile) {
             $suiteClassFile = Filesystem::classNameToFilename(
                 $suiteClassName
             );
         }
+
+        $loadedClasses = [];
 
         if (!\class_exists($suiteClassName, false)) {
             $loadedClasses = \get_declared_classes();
@@ -43,7 +45,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             );
         }
 
-        if (!empty($loadedClasses) && !\class_exists($suiteClassName, false)) {
+        if ([] !== $loadedClasses && !\class_exists($suiteClassName, false)) {
             $offset = 0 - \strlen($suiteClassName);
 
             foreach ($loadedClasses as $loadedClass) {
@@ -68,7 +70,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             }
         }
 
-        if (!empty($loadedClasses) && !\class_exists($suiteClassName, false)) {
+        if ([] !== $loadedClasses && !\class_exists($suiteClassName, false)) {
             $testCaseClass = TestCase::class;
 
             foreach ($loadedClasses as $loadedClass) {

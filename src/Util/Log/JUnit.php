@@ -358,7 +358,7 @@ final class JUnit extends Printer implements TestListener
             $testOutput = $test->hasOutput() ? $test->getActualOutput() : '';
         }
 
-        if (!empty($testOutput)) {
+        if ('' !== $testOutput) {
             $systemOut = $this->document->createElement(
                 'system-out',
                 Xml::prepareString($testOutput)

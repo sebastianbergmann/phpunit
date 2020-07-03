@@ -1036,7 +1036,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             $this->verifyMockObjects();
             $this->assertPostConditions();
 
-            if (!empty($this->warnings)) {
+            if ([] !== $this->warnings) {
                 throw new Warning(
                     \implode(
                         "\n",
@@ -1327,7 +1327,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     public function usesDataProvider(): bool
     {
-        return !empty($this->data);
+        return \is_array($this->data) && [] !== $this->data;
     }
 
     /**
@@ -1353,20 +1353,22 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     public function getDataSetAsString(bool $includeData = true): string
     {
+        if (!$this->usesDataProvider()) {
+            return '';
+        }
+
         $buffer = '';
 
-        if (!empty($this->data)) {
-            if (\is_int($this->dataName)) {
-                $buffer .= \sprintf(' with data set #%d', $this->dataName);
-            } else {
-                $buffer .= \sprintf(' with data set "%s"', $this->dataName);
-            }
+        if (\is_int($this->dataName)) {
+            $buffer .= \sprintf(' with data set #%d', $this->dataName);
+        } else {
+            $buffer .= \sprintf(' with data set "%s"', $this->dataName);
+        }
 
-            $exporter = new Exporter;
+        $exporter = new Exporter;
 
-            if ($includeData) {
-                $buffer .= \sprintf(' (%s)', $exporter->shortenedRecursiveExport($this->data));
-            }
+        if ($includeData) {
+            $buffer .= \sprintf(' (%s)', $exporter->shortenedRecursiveExport($this->data));
         }
 
         return $buffer;
@@ -1662,7 +1664,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                     ->disableOriginalClone()
                     ->disableArgumentCloning()
                     ->disallowMockingUnknownTypes()
-                    ->setMethods(empty($methods) ? null : $methods)
+                    ->setMethods([] === $methods ? null : $methods)
                     ->getMock();
     }
 
@@ -1959,7 +1961,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
             $this->name
         );
 
-        if (!empty($missingRequirements)) {
+        if ([] !== $missingRequirements) {
             $this->markTestSkipped(\implode(\PHP_EOL, $missingRequirements));
         }
     }
@@ -1998,7 +2000,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
     private function handleDependencies(): bool
     {
-        if (!empty($this->dependencies) && !$this->inIsolation) {
+        if ([] !== $this->dependencies && !$this->inIsolation) {
             $className  = \get_class($this);
             $passed     = $this->result->passed();
             $passedKeys = \array_keys($passed);
@@ -2017,7 +2019,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
                 $deepClone    = false;
                 $shallowClone = false;
 
-                if (empty($dependency)) {
+                if ('' === $dependency) {
                     $this->markSkippedForNotSpecifyingDependency();
 
                     return false;

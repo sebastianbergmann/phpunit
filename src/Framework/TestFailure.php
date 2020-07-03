@@ -48,7 +48,7 @@ final class TestFailure
                 $buffer .= $e->getDiff();
             }
 
-            if (!empty($buffer)) {
+            if ('' !== $buffer) {
                 $buffer = \trim($buffer) . "\n";
             }
 

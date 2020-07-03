@@ -371,7 +371,7 @@ final class Configuration
     {
         $configuration = $this->getPHPConfiguration();
 
-        if (!empty($configuration['include_path'])) {
+        if ([] !== $configuration['include_path']) {
             \ini_set(
                 'include_path',
                 \implode(\PATH_SEPARATOR, $configuration['include_path']) .
@@ -981,13 +981,13 @@ final class Configuration
         foreach ($testSuiteNode->getElementsByTagName('directory') as $directoryNode) {
             \assert($directoryNode instanceof DOMElement);
 
-            if (!empty($testSuiteFilter) && !\in_array($directoryNode->parentNode->getAttribute('name'), $testSuiteFilter, true)) {
+            if ([] !== $testSuiteFilter && !\in_array($directoryNode->parentNode->getAttribute('name'), $testSuiteFilter, true)) {
                 continue;
             }
 
             $directory = (string) $directoryNode->textContent;
 
-            if (empty($directory)) {
+            if ('' === $directory) {
                 continue;
             }
 
@@ -1008,13 +1008,13 @@ final class Configuration
         foreach ($testSuiteNode->getElementsByTagName('file') as $fileNode) {
             \assert($fileNode instanceof DOMElement);
 
-            if (!empty($testSuiteFilter) && !\in_array($fileNode->parentNode->getAttribute('name'), $testSuiteFilter, true)) {
+            if ([] !== $testSuiteFilter && !\in_array($fileNode->parentNode->getAttribute('name'), $testSuiteFilter, true)) {
                 continue;
             }
 
             $file = (string) $fileNode->textContent;
 
-            if (empty($file)) {
+            if ('' === $file) {
                 continue;
             }
 

@@ -415,13 +415,13 @@ final class DocBlock
             $leaf                            = \explode('::', \array_pop($dataProviderMethodNameNamespace));
             $dataProviderMethodName          = \array_pop($leaf);
 
-            if (empty($dataProviderMethodNameNamespace)) {
+            if ([] === $dataProviderMethodNameNamespace) {
                 $dataProviderMethodNameNamespace = '';
             } else {
                 $dataProviderMethodNameNamespace = \implode('\\', $dataProviderMethodNameNamespace) . '\\';
             }
 
-            if (empty($leaf)) {
+            if ([] === $leaf) {
                 $dataProviderClassName = $className;
             } else {
                 /** @psalm-var class-string $dataProviderClassName */

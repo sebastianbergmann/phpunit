@@ -111,7 +111,7 @@ abstract class Constraint implements Countable, SelfDescribing
             $failureDescription .= "\n" . $additionalFailureDescription;
         }
 
-        if (!empty($description)) {
+        if ('' !== $description) {
             $failureDescription = $description . "\n" . $failureDescription;
         }
 

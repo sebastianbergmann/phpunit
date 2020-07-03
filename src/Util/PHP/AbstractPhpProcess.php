@@ -248,7 +248,7 @@ abstract class AbstractPhpProcess
     {
         $time = 0;
 
-        if (!empty($stderr)) {
+        if ('' !== $stderr) {
             $result->addError(
                 $test,
                 new Exception(\trim($stderr)),
@@ -317,37 +317,37 @@ abstract class AbstractPhpProcess
                 $warnings       = $childResult->warnings();
                 $failures       = $childResult->failures();
 
-                if (!empty($notImplemented)) {
+                if ([] !== $notImplemented) {
                     $result->addError(
                         $test,
                         $this->getException($notImplemented[0]),
                         $time
                     );
-                } elseif (!empty($risky)) {
+                } elseif ([] !== $risky) {
                     $result->addError(
                         $test,
                         $this->getException($risky[0]),
                         $time
                     );
-                } elseif (!empty($skipped)) {
+                } elseif ([] !== $skipped) {
                     $result->addError(
                         $test,
                         $this->getException($skipped[0]),
                         $time
                     );
-                } elseif (!empty($errors)) {
+                } elseif ([] !== $errors) {
                     $result->addError(
                         $test,
                         $this->getException($errors[0]),
                         $time
                     );
-                } elseif (!empty($warnings)) {
+                } elseif ([] !== $warnings) {
                     $result->addWarning(
                         $test,
                         $this->getException($warnings[0]),
                         $time
                     );
-                } elseif (!empty($failures)) {
+                } elseif ([] !== $failures) {
                     $result->addFailure(
                         $test,
                         $this->getException($failures[0]),

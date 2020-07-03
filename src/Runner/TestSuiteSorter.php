@@ -183,7 +183,7 @@ final class TestSuiteSorter
 
     private function sort(TestSuite $suite, int $order, bool $resolveDependencies, int $orderDefects): void
     {
-        if (empty($suite->tests())) {
+        if ([] === $suite->tests()) {
             return;
         }
 
@@ -378,13 +378,13 @@ final class TestSuiteSorter
                 $tests
             );
 
-            if (!$tests[$i]->hasDependencies() || empty(\array_intersect($this->getNormalizedDependencyNames($tests[$i]), $todoNames))) {
+            if (!$tests[$i]->hasDependencies() || [] === \array_intersect($this->getNormalizedDependencyNames($tests[$i]), $todoNames)) {
                 $newTestOrder = \array_merge($newTestOrder, \array_splice($tests, $i, 1));
                 $i            = 0;
             } else {
                 $i++;
             }
-        } while (!empty($tests) && ($i < \count($tests)));
+        } while ([] !== $tests && $i < \count($tests));
 
         return \array_merge($newTestOrder, $tests);
     }

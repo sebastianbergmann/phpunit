@@ -65,11 +65,11 @@ final class NamePrettifier
             $className = \substr($className, \strlen('Test'));
         }
 
-        if (empty($className)) {
+        if ('' === $className) {
             $className = 'UnnamedTests';
         }
 
-        if (!empty($parts)) {
+        if ([] !== $parts) {
             $parts[]            = $className;
             $fullyQualifiedName = \implode('\\', $parts);
         } else {

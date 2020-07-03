@@ -49,7 +49,7 @@ final class XmlTestListRenderer
                 $writer->writeAttribute('name', $test->getName(false));
                 $writer->writeAttribute('groups', \implode(',', $test->getGroups()));
 
-                if (!empty($test->getDataSetAsString(false))) {
+                if ('' !== $test->getDataSetAsString(false)) {
                     $writer->writeAttribute(
                         'dataSet',
                         \str_replace(

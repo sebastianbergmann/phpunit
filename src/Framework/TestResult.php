@@ -1160,12 +1160,12 @@ final class TestResult implements Countable
      */
     public function wasSuccessful(): bool
     {
-        return $this->wasSuccessfulIgnoringWarnings() && empty($this->warnings);
+        return $this->wasSuccessfulIgnoringWarnings() && [] === $this->warnings;
     }
 
     public function wasSuccessfulIgnoringWarnings(): bool
     {
-        return empty($this->errors) && empty($this->failures);
+        return [] == $this->errors && [] === $this->failures;
     }
 
     public function wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete(): bool

@@ -215,7 +215,7 @@ final class Generator
                 }
             }
 
-            if (empty($methods)) {
+            if ([] === $methods) {
                 $methods = null;
             }
 
@@ -398,7 +398,7 @@ final class Generator
             $nameEnd      = $nameStart + \strlen($lastFunction[0]) - 1;
             $name         = \str_replace('(', '', $lastFunction[0]);
 
-            if (empty($methods) || \in_array($name, $methods, true)) {
+            if ([] === $methods || \in_array($name, $methods, true)) {
                 $args = \explode(
                     ',',
                     \str_replace(')', '', \substr($method, $nameEnd + 1))
@@ -723,7 +723,7 @@ final class Generator
         if (!$isClass && !$isInterface) {
             $prologue = 'class ' . $mockClassName['originalClassName'] . "\n{\n}\n\n";
 
-            if (!empty($mockClassName['namespaceName'])) {
+            if ('' !== $mockClassName['namespaceName']) {
                 $prologue = 'namespace ' . $mockClassName['namespaceName'] .
                             " {\n\n" . $prologue . "}\n\n" .
                             "namespace {\n\n";
@@ -988,7 +988,7 @@ final class Generator
             if (!\in_array($mockClassName['originalClassName'], $additionalInterfaces, true)) {
                 $buffer .= ', ';
 
-                if (!empty($mockClassName['namespaceName'])) {
+                if ('' !== $mockClassName['namespaceName']) {
                     $buffer .= $mockClassName['namespaceName'] . '\\';
                 }
 
@@ -998,7 +998,7 @@ final class Generator
             $buffer .= \sprintf(
                 '%s extends %s%s implements %s',
                 $mockClassName['className'],
-                !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
+                '' !== $mockClassName['namespaceName'] ? $mockClassName['namespaceName'] . '\\' : '',
                 $mockClassName['originalClassName'],
                 $interfaces
             );

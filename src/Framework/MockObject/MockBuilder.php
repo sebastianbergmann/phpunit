@@ -213,7 +213,7 @@ final class MockBuilder
      */
     public function onlyMethods(array $methods): self
     {
-        if (empty($methods)) {
+        if ([] === $methods) {
             $this->emptyMethodsArray = true;
 
             return $this;
@@ -259,7 +259,7 @@ final class MockBuilder
      */
     public function addMethods(array $methods): self
     {
-        if (empty($methods)) {
+        if ([] === $methods) {
             $this->emptyMethodsArray = true;
 
             return $this;

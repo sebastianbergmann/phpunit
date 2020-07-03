@@ -195,7 +195,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             $this->addTestMethod($theClass, $method);
         }
 
-        if (empty($this->tests)) {
+        if ([] === $this->tests) {
             $this->addTest(
                 new WarningTestCase(
                     \sprintf(
@@ -240,11 +240,11 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
             $this->tests[]  = $test;
             $this->numTests = -1;
 
-            if ($test instanceof self && empty($groups)) {
+            if ($test instanceof self && [] === $groups) {
                 $groups = $test->getGroups();
             }
 
-            if (empty($groups)) {
+            if ([] === $groups) {
                 $groups = ['default'];
             }
 
@@ -358,7 +358,7 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
         // AFTER a child class that inherited from it. To account for that case,
         // accumulate all discovered classes, so the parent class may be found in
         // a later invocation.
-        if (!empty($newClasses)) {
+        if ([] !== $newClasses) {
             // On the assumption that test classes are defined first in files,
             // process discovered classes in approximate LIFO order, so as to
             // avoid unnecessary reflection.

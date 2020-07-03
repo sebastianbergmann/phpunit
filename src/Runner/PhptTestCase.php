@@ -255,7 +255,7 @@ final class PhptTestCase implements SelfDescribing, Test
 
     public function hasOutput(): bool
     {
-        return !empty($this->output);
+        return '' !== $this->output;
     }
 
     /**
@@ -301,7 +301,7 @@ final class PhptTestCase implements SelfDescribing, Test
         foreach (\explode("\n", \trim($content)) as $e) {
             $e = \explode('=', \trim($e), 2);
 
-            if (!empty($e[0]) && isset($e[1])) {
+            if ('' !== $e[0] && isset($e[1])) {
                 $env[$e[0]] = $e[1];
             }
         }
@@ -426,7 +426,7 @@ final class PhptTestCase implements SelfDescribing, Test
                 continue;
             }
 
-            if (empty($section)) {
+            if ('' === $section) {
                 throw new Exception('Invalid PHPT file: empty section header');
             }
 
@@ -669,7 +669,7 @@ final class PhptTestCase implements SelfDescribing, Test
                 }
             }
 
-            if (!empty($line)) {
+            if ('' !== $line) {
                 $previousLine = $line;
             }
         }
@@ -690,7 +690,7 @@ final class PhptTestCase implements SelfDescribing, Test
     {
         $needle = \trim($needle);
 
-        if (empty($needle)) {
+        if ('' === $needle) {
             return [[
                 'file' => \realpath($this->filename),
                 'line' => 1,

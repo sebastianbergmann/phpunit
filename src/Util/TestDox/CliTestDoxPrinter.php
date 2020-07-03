@@ -219,7 +219,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
         $diff = \implode(\PHP_EOL, $diff);
 
-        if (!empty($message)) {
+        if ([] !== $message) {
             $message = $this->colorizeTextBox($style, \implode(\PHP_EOL, $message));
         }
 
@@ -331,7 +331,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     private function printNonSuccessfulTestsSummary(int $numberOfExecutedTests): void
     {
-        if (empty($this->nonSuccessfulTestResults)) {
+        if ([] === $this->nonSuccessfulTestResults) {
             return;
         }
 
