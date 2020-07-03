@@ -77,6 +77,7 @@ return PhpCsFixer\Config::create()
         'fully_qualified_strict_types' => true,
         'function_declaration' => true,
         'header_comment' => ['header' => $header, 'separate' => 'none'],
+        'heredoc_to_nowdoc' => true,
         'increment_style' => [
             'style' => PhpCsFixer\Fixer\Operator\IncrementStyleFixer::STYLE_POST,
         ],
