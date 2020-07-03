@@ -19,7 +19,7 @@ class ExceptionStackTest extends TestCase
         } catch (ExpectationFailedException $e) {
             $message = $e->getMessage() . $e->getComparisonFailure()->getDiff();
 
-            throw new PHPUnit\Framework\Exception("Child exception\n${message}", 101, $e);
+            throw new PHPUnit\Framework\Exception("Child exception\n{$message}", 101, $e);
         }
     }
 
