@@ -82,7 +82,7 @@ final class ConfigurationTest extends TestCase
     public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, $expected): void
     {
         $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . \uniqid('', true) . '.xml';
-        $xml         = "<phpunit ${optionName}='${optionValue}'></phpunit>" . \PHP_EOL;
+        $xml         = "<phpunit {$optionName}='{$optionValue}'></phpunit>" . \PHP_EOL;
         \file_put_contents($tmpFilename, $xml);
 
         $configuration = Registry::getInstance()->get($tmpFilename);
@@ -482,7 +482,7 @@ final class ConfigurationTest extends TestCase
         if ($backupFoo === false) {
             \putenv('foo');     // delete variable from environment
         } else {
-            \putenv("foo=${backupFoo}");
+            \putenv("foo={$backupFoo}");
         }
     }
 
