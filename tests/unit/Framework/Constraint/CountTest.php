@@ -169,7 +169,7 @@ final class CountTest extends ConstraintTestCase
             $this->assertNull($countConstraint->evaluate(1));
         } catch (ExpectationFailedException  $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that actual size 0 matches expected size 1.
 
 EOF

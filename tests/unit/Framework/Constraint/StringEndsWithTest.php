@@ -67,7 +67,7 @@ final class StringEndsWithTest extends ConstraintTestCase
             $constraint->evaluate('error');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 'error' ends with "suffix".
 
 EOF
@@ -89,7 +89,7 @@ EOF
             $constraint->evaluate('error', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that 'error' ends with "suffix".
 
