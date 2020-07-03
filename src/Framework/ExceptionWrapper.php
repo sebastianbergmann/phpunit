@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Util\Filter;
+use Throwable;
 
 /**
  * Wraps Exceptions thrown by code under test.
@@ -34,7 +35,7 @@ final class ExceptionWrapper extends Exception
      */
     protected $previous;
 
-    public function __construct(\Throwable $t)
+    public function __construct(Throwable $t)
     {
         // PDOException::getCode() is a string.
         // @see https://php.net/manual/en/class.pdoexception.php#95812
@@ -91,7 +92,7 @@ final class ExceptionWrapper extends Exception
         }
     }
 
-    public function getOriginalException(): ?\Throwable
+    public function getOriginalException(): ?Throwable
     {
         return $this->originalException();
     }
@@ -101,7 +102,7 @@ final class ExceptionWrapper extends Exception
      * which can be quite big, from being garbage-collected, thus blocking memory until shutdown.
      * Approach works both for var_dump() and var_export() and print_r()
      */
-    private function originalException(\Throwable $exceptionToStore = null): ?\Throwable
+    private function originalException(Throwable $exceptionToStore = null): ?Throwable
     {
         static $originalExceptions;
 
