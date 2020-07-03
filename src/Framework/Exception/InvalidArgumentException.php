@@ -24,7 +24,7 @@ final class InvalidArgumentException extends Exception
                 $argument,
                 $stack[1]['class'],
                 $stack[1]['function'],
-                \in_array(\lcfirst($type)[0], ['a', 'e', 'i', 'o', 'u']) ? 'an' : 'a',
+                \in_array(\lcfirst($type)[0], ['a', 'e', 'i', 'o', 'u'], true) ? 'an' : 'a',
                 $type
             )
         );

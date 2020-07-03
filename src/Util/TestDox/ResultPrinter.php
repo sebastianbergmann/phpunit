@@ -316,7 +316,7 @@ abstract class ResultPrinter extends Printer implements TestListener
 
         if (!empty($this->groups)) {
             foreach ($test->getGroups() as $group) {
-                if (\in_array($group, $this->groups)) {
+                if (\in_array($group, $this->groups, true)) {
                     return true;
                 }
             }
@@ -326,7 +326,7 @@ abstract class ResultPrinter extends Printer implements TestListener
 
         if (!empty($this->excludeGroups)) {
             foreach ($test->getGroups() as $group) {
-                if (\in_array($group, $this->excludeGroups)) {
+                if (\in_array($group, $this->excludeGroups, true)) {
                     return false;
                 }
             }
