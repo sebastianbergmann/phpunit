@@ -80,6 +80,7 @@ final class ReturnValueMap implements Stub
         // just first map, if exists
         if ($map = $this->valueMap[0] ?? null) {
             \array_pop($map);
+
             return $map;
         }
 
