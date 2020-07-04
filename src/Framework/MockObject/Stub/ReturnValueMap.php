@@ -26,7 +26,7 @@ final class ReturnValueMap implements Stub
 
     public function __construct(array $valueMap)
     {
-        $this->valueMap = \array_filter($valueMap, '\is_array');
+        $this->valueMap = \array_values(\array_filter($valueMap, '\is_array'));
     }
 
     public function invoke(Invocation $invocation)
@@ -45,7 +45,7 @@ final class ReturnValueMap implements Stub
             }
         }
 
-        throw $this->getExpectationFailedException($invocation->getParameters());
+        throw $this->getExpectationFailedException($invocation);
     }
 
     public function toString(): string
@@ -54,31 +54,35 @@ final class ReturnValueMap implements Stub
     }
 
     private function getExpectationFailedException(
-        array $actualArguments
+        Invocation $invocation
     ): ExpectationFailedException {
         $exporter          = new Exporter();
         $expectedArguments = $this->getExpectedArguments();
+        $actualArguments   = $invocation->getParameters();
 
         return new ExpectationFailedException(
-            'method arguments did not match to any of mocked',
+            \sprintf(
+                'Arguments passed to %s::%s were not expected by ReturnValueMap',
+                $invocation->getClassName(),
+                $invocation->getMethodName()
+            ),
             new ComparisonFailure(
                 $expectedArguments,
                 $actualArguments,
-                $exporter->shortenedExport($expectedArguments),
-                $exporter->shortenedExport($actualArguments)
+                $exporter->export($expectedArguments),
+                $exporter->export($actualArguments)
             )
         );
     }
 
     private function getExpectedArguments(): array
     {
-        $expectedArguments = [];
-
-        foreach ($this->valueMap as $map) {
+        // just first map, if exists
+        if ($map = $this->valueMap[0] ?? null) {
             \array_pop($map);
-            $expectedArguments[] = $map;
+            return $map;
         }
 
-        return $expectedArguments;
+        return [];
     }
 }

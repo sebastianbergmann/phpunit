@@ -258,7 +258,9 @@ final class MockObjectTest extends TestCase
         );
 
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('method arguments did not match to any of mocked');
+        $this->expectExceptionMessage(
+            'Arguments passed to AnInterface::doSomething were not expected by ReturnValueMap'
+        );
         $mock->doSomething('foo', 'bar');
     }
 
