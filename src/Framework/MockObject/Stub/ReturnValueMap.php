@@ -75,7 +75,7 @@ final class ReturnValueMap implements Stub
         );
     }
 
-    private function getExpectedArguments(): array
+    private function getExpectedArguments(): ?array
     {
         // just first map, if exists
         if ($map = $this->valueMap[0] ?? null) {
@@ -84,6 +84,6 @@ final class ReturnValueMap implements Stub
             return $map;
         }
 
-        return [];
+        return null;
     }
 }
