@@ -7,6 +7,7 @@ $arguments = [
     '--testdox',
     '--colors=always',
     '--verbose',
+    '--no-interaction',
     realpath(__DIR__ . '/../../unit/Util/ColorTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
