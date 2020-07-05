@@ -270,6 +270,16 @@ final class MockMethod
             $default         = '';
             $reference       = '';
             $typeDeclaration = '';
+            $type            = null;
+            $typeName        = null;
+
+            if ($parameter->hasType()) {
+                $type = $parameter->getType();
+
+                if ($type instanceof ReflectionNamedType) {
+                    $typeName = $type->getName();
+                }
+            }
 
             if ($parameter->isVariadic()) {
                 $name = '...' . $name;
@@ -279,23 +289,15 @@ final class MockMethod
                 $default = ' = null';
             }
 
-            if ($parameter->hasType() && $parameter->allowsNull()) {
-                $nullable = '?';
-            }
+            if ($type !== null) {
+                if ($typeName !== 'mixed' && $parameter->allowsNull()) {
+                    $nullable = '?';
+                }
 
-            if ($parameter->hasType()) {
-                $type = $parameter->getType();
-
-                if ($type instanceof ReflectionNamedType) {
-                    if ($type->getName() === 'mixed') {
-                        $nullable = '';
-                    }
-
-                    if ($type->getName() !== 'self') {
-                        $typeDeclaration = $type->getName() . ' ';
-                    } else {
-                        $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
-                    }
+                if ($typeName === 'self') {
+                    $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
+                } elseif ($typeName !== null) {
+                    $typeDeclaration = $typeName . ' ';
                 } elseif ($type instanceof ReflectionUnionType) {
                     $typeDeclaration = self::unionTypeAsString(
                         $type,
