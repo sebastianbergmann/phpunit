@@ -130,8 +130,8 @@ final class MockMethod
             $method->getName(),
             $cloneArguments,
             $modifier,
-            self::getMethodParameters($method),
-            self::getMethodParameters($method, true),
+            self::getMethodParametersForDeclaration($method),
+            self::getMethodParametersForCall($method),
             (new ReflectionMapper)->fromMethodReturnType($method),
             $reference,
             $callOriginalMethod,
@@ -251,7 +251,7 @@ final class MockMethod
      *
      * @throws RuntimeException
      */
-    private static function getMethodParameters(ReflectionMethod $method, bool $forCall = false): string
+    private static function getMethodParametersForDeclaration(ReflectionMethod $method): string
     {
         $parameters = [];
 
@@ -266,10 +266,6 @@ final class MockMethod
             }
 
             if ($parameter->isVariadic()) {
-                if ($forCall) {
-                    continue;
-                }
-
                 $name = '...' . $name;
             }
 
@@ -278,61 +274,59 @@ final class MockMethod
             $reference       = '';
             $typeDeclaration = '';
 
-            if (!$forCall) {
-                if ($parameter->hasType() && $parameter->allowsNull()) {
-                    $nullable = '?';
-                }
+            if ($parameter->hasType() && $parameter->allowsNull()) {
+                $nullable = '?';
+            }
 
-                if ($parameter->hasType()) {
-                    $type = $parameter->getType();
+            if ($parameter->hasType()) {
+                $type = $parameter->getType();
 
-                    if ($type instanceof ReflectionNamedType) {
-                        if ($type->getName() === 'mixed') {
+                if ($type instanceof ReflectionNamedType) {
+                    if ($type->getName() === 'mixed') {
+                        $nullable = '';
+                    }
+
+                    if ($type->getName() !== 'self') {
+                        $typeDeclaration = $type->getName() . ' ';
+                    } else {
+                        $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
+                    }
+                } elseif ($type instanceof ReflectionUnionType) {
+                    $types = [];
+
+                    foreach ($type->getTypes() as $_type) {
+                        if ($_type === 'mixed') {
                             $nullable = '';
                         }
 
-                        if ($type->getName() !== 'self') {
-                            $typeDeclaration = $type->getName() . ' ';
+                        if ($_type === 'self') {
+                            $types[] = $method->getDeclaringClass()->getName();
                         } else {
-                            $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
+                            $types[] = $_type;
                         }
-                    } elseif ($type instanceof ReflectionUnionType) {
-                        $types = [];
-
-                        foreach ($type->getTypes() as $_type) {
-                            if ($_type === 'mixed') {
-                                $nullable = '';
-                            }
-
-                            if ($_type === 'self') {
-                                $types[] = $method->getDeclaringClass()->getName();
-                            } else {
-                                $types[] = $_type;
-                            }
-                        }
-
-                        $typeDeclaration = implode('|', $types) . ' ';
                     }
+
+                    $typeDeclaration = implode('|', $types) . ' ';
                 }
+            }
 
-                if (!$parameter->isVariadic()) {
-                    if ($parameter->isDefaultValueAvailable()) {
-                        try {
-                            $value = var_export($parameter->getDefaultValue(), true);
-                            // @codeCoverageIgnoreStart
-                        } catch (ReflectionException $e) {
-                            throw new RuntimeException(
-                                $e->getMessage(),
-                                (int) $e->getCode(),
-                                $e
-                            );
-                        }
-                        // @codeCoverageIgnoreEnd
-
-                        $default = ' = ' . $value;
-                    } elseif ($parameter->isOptional()) {
-                        $default = ' = null';
+            if (!$parameter->isVariadic()) {
+                if ($parameter->isDefaultValueAvailable()) {
+                    try {
+                        $value = var_export($parameter->getDefaultValue(), true);
+                        // @codeCoverageIgnoreStart
+                    } catch (ReflectionException $e) {
+                        throw new RuntimeException(
+                            $e->getMessage(),
+                            (int) $e->getCode(),
+                            $e
+                        );
                     }
+                    // @codeCoverageIgnoreEnd
+
+                    $default = ' = ' . $value;
+                } elseif ($parameter->isOptional()) {
+                    $default = ' = null';
                 }
             }
 
@@ -341,6 +335,39 @@ final class MockMethod
             }
 
             $parameters[] = $nullable . $typeDeclaration . $reference . $name . $default;
+        }
+
+        return implode(', ', $parameters);
+    }
+
+    /**
+     * Returns the parameters of a function or method.
+     *
+     * @throws RuntimeException
+     */
+    private static function getMethodParametersForCall(ReflectionMethod $method): string
+    {
+        $parameters = [];
+
+        foreach ($method->getParameters() as $i => $parameter) {
+            $name = '$' . $parameter->getName();
+
+            /* Note: PHP extensions may use empty names for reference arguments
+             * or "..." for methods taking a variable number of arguments.
+             */
+            if ($name === '$' || $name === '$...') {
+                $name = '$arg' . $i;
+            }
+
+            if ($parameter->isVariadic()) {
+                continue;
+            }
+
+            if ($parameter->isPassedByReference()) {
+                $parameters[] = '&' . $name;
+            } else {
+                $parameters[] = $name;
+            }
         }
 
         return implode(', ', $parameters);
