@@ -300,10 +300,6 @@ final class MockMethod
                     $types = [];
 
                     foreach ($type->getTypes() as $_type) {
-                        if ($_type === 'mixed') {
-                            $nullable = '';
-                        }
-
                         if ($_type === 'self') {
                             $types[] = $method->getDeclaringClass()->getName();
                         } else {
