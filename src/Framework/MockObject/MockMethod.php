@@ -266,14 +266,18 @@ final class MockMethod
                 $name = '$arg' . $i;
             }
 
-            if ($parameter->isVariadic()) {
-                $name = '...' . $name;
-            }
-
             $nullable        = '';
             $default         = '';
             $reference       = '';
             $typeDeclaration = '';
+
+            if ($parameter->isVariadic()) {
+                $name = '...' . $name;
+            } elseif ($parameter->isDefaultValueAvailable()) {
+                $default = ' = ' . self::exportDefaultValue($parameter);
+            } elseif ($parameter->isOptional()) {
+                $default = ' = null';
+            }
 
             if ($parameter->hasType() && $parameter->allowsNull()) {
                 $nullable = '?';
@@ -308,14 +312,6 @@ final class MockMethod
                     }
 
                     $typeDeclaration = implode('|', $types) . ' ';
-                }
-            }
-
-            if (!$parameter->isVariadic()) {
-                if ($parameter->isDefaultValueAvailable()) {
-                    $default = ' = ' . self::exportDefaultValue($parameter);
-                } elseif ($parameter->isOptional()) {
-                    $default = ' = null';
                 }
             }
 
