@@ -1124,6 +1124,17 @@ final class MockObjectTest extends TestCase
         $this->assertNull($stub->returnsBoolOrIntOrNull());
     }
 
+    /**
+     * @requires PHP > 8.0
+     */
+    public function testMixedReturnTypeIsDoubledCorrectly(): void
+    {
+        /** @var ClassWithUnionReturnTypes|MockObject $stub */
+        $stub = $this->createMock(ClassWithUnionReturnTypes::class);
+
+        $this->assertNull($stub->returnsMixed());
+    }
+
     public function testTraitCanBeDoubled(): void
     {
         $object = $this->getObjectForTrait(ExampleTrait::class);

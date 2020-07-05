@@ -287,6 +287,10 @@ final class MockMethod
                     $type = $parameter->getType();
 
                     if ($type instanceof ReflectionNamedType) {
+                        if ($type->getName() === 'mixed') {
+                            $nullable = '';
+                        }
+
                         if ($type->getName() !== 'self') {
                             $typeDeclaration = $type->getName() . ' ';
                         } else {
@@ -296,6 +300,10 @@ final class MockMethod
                         $types = [];
 
                         foreach ($type->getTypes() as $_type) {
+                            if ($_type === 'mixed') {
+                                $nullable = '';
+                            }
+
                             if ($_type === 'self') {
                                 $types[] = $method->getDeclaringClass()->getName();
                             } else {

@@ -19,4 +19,8 @@ class ClassWithUnionReturnTypes
     public function returnsBoolOrIntOrNull(): bool|int|null
     {
     }
+
+    public function returnsMixed(): mixed
+    {
+    }
 }
