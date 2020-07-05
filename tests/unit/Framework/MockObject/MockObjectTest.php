@@ -1110,7 +1110,7 @@ final class MockObjectTest extends TestCase
         /** @var ClassWithUnionReturnTypes|MockObject $stub */
         $stub = $this->createMock(ClassWithUnionReturnTypes::class);
 
-        $this->assertFalse($stub->boolOrInt());
+        $this->assertFalse($stub->returnsBoolOrInt());
     }
 
     /**
@@ -1121,7 +1121,7 @@ final class MockObjectTest extends TestCase
         /** @var ClassWithUnionReturnTypes|MockObject $stub */
         $stub = $this->createMock(ClassWithUnionReturnTypes::class);
 
-        $this->assertNull($stub->boolOrIntOrNull());
+        $this->assertNull($stub->returnsBoolOrIntOrNull());
     }
 
     public function testTraitCanBeDoubled(): void
