@@ -21,6 +21,7 @@ use function var_export;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionParameter;
 use ReflectionUnionType;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Type\ReflectionMapper;
@@ -312,19 +313,7 @@ final class MockMethod
 
             if (!$parameter->isVariadic()) {
                 if ($parameter->isDefaultValueAvailable()) {
-                    try {
-                        $value = var_export($parameter->getDefaultValue(), true);
-                        // @codeCoverageIgnoreStart
-                    } catch (ReflectionException $e) {
-                        throw new RuntimeException(
-                            $e->getMessage(),
-                            (int) $e->getCode(),
-                            $e
-                        );
-                    }
-                    // @codeCoverageIgnoreEnd
-
-                    $default = ' = ' . $value;
+                    $default = ' = ' . self::exportDefaultValue($parameter);
                 } elseif ($parameter->isOptional()) {
                     $default = ' = null';
                 }
@@ -371,5 +360,23 @@ final class MockMethod
         }
 
         return implode(', ', $parameters);
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    private static function exportDefaultValue(ReflectionParameter $parameter): string
+    {
+        try {
+            return (string) var_export($parameter->getDefaultValue(), true);
+            // @codeCoverageIgnoreStart
+        } catch (ReflectionException $e) {
+            throw new RuntimeException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+        // @codeCoverageIgnoreEnd
     }
 }
