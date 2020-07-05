@@ -297,17 +297,10 @@ final class MockMethod
                         $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
                     }
                 } elseif ($type instanceof ReflectionUnionType) {
-                    $types = [];
-
-                    foreach ($type->getTypes() as $_type) {
-                        if ($_type === 'self') {
-                            $types[] = $method->getDeclaringClass()->getName();
-                        } else {
-                            $types[] = $_type;
-                        }
-                    }
-
-                    $typeDeclaration = implode('|', $types) . ' ';
+                    $typeDeclaration = self::unionTypeAsString(
+                        $type,
+                        $method->getDeclaringClass()->getName()
+                    );
                 }
             }
 
@@ -370,5 +363,20 @@ final class MockMethod
             );
         }
         // @codeCoverageIgnoreEnd
+    }
+
+    private static function unionTypeAsString(ReflectionUnionType $union, string $self): string
+    {
+        $types = [];
+
+        foreach ($union->getTypes() as $type) {
+            if ($type === 'self') {
+                $types[] = $self;
+            } else {
+                $types[] = $type;
+            }
+        }
+
+        return implode('|', $types) . ' ';
     }
 }
