@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function get_resource_type;
+use function gettype;
 use function is_array;
 use function is_bool;
 use function is_callable;
@@ -18,11 +18,9 @@ use function is_int;
 use function is_iterable;
 use function is_numeric;
 use function is_object;
-use function is_resource;
 use function is_scalar;
 use function is_string;
 use function sprintf;
-use TypeError;
 
 /**
  * Constraint that asserts that the value it is evaluated for is of a
@@ -75,6 +73,11 @@ final class IsType extends Constraint
     /**
      * @var string
      */
+    public const TYPE_CLOSED_RESOURCE = 'resource (closed)';
+
+    /**
+     * @var string
+     */
     public const TYPE_STRING = 'string';
 
     /**
@@ -96,22 +99,23 @@ final class IsType extends Constraint
      * @var array<string,bool>
      */
     private const KNOWN_TYPES = [
-        'array'    => true,
-        'boolean'  => true,
-        'bool'     => true,
-        'double'   => true,
-        'float'    => true,
-        'integer'  => true,
-        'int'      => true,
-        'null'     => true,
-        'numeric'  => true,
-        'object'   => true,
-        'real'     => true,
-        'resource' => true,
-        'string'   => true,
-        'scalar'   => true,
-        'callable' => true,
-        'iterable' => true,
+        'array'             => true,
+        'boolean'           => true,
+        'bool'              => true,
+        'double'            => true,
+        'float'             => true,
+        'integer'           => true,
+        'int'               => true,
+        'null'              => true,
+        'numeric'           => true,
+        'object'            => true,
+        'real'              => true,
+        'resource'          => true,
+        'resource (closed)' => true,
+        'string'            => true,
+        'scalar'            => true,
+        'callable'          => true,
+        'iterable'          => true,
     ];
 
     /**
@@ -186,20 +190,12 @@ final class IsType extends Constraint
                 return is_object($other);
 
             case 'resource':
-                if (is_resource($other)) {
-                    return true;
-                }
+                $type = gettype($other);
 
-                try {
-                    $resource = @get_resource_type($other);
+                return $type === 'resource' || $type === 'resource (closed)';
 
-                    if (is_string($resource)) {
-                        return true;
-                    }
-                } catch (TypeError $e) {
-                }
-
-                return false;
+            case 'resource (closed)':
+                return gettype($other) === 'resource (closed)';
 
             case 'scalar':
                 return is_scalar($other);
