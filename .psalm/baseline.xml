@@ -106,11 +106,6 @@
       <code>ReflectionUnionType</code>
     </UndefinedClass>
   </file>
-  <file src="src/Framework/MockObject/Rule/ConsecutiveParameters.php">
-    <TypeDoesNotContainNull occurrences="1">
-      <code>$invocation === null</code>
-    </TypeDoesNotContainNull>
-  </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>null</code>
