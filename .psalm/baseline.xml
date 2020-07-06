@@ -156,9 +156,6 @@
       <code>$className</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$afterClassMethod</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Runner/PhptTestCase.php">
     <PossiblyInvalidArgument occurrences="1">

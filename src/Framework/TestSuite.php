@@ -596,6 +596,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $result->startTestSuite($this);
 
+        $test = null;
+
         try {
             foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
                 if ($this->testCase &&
@@ -663,24 +665,24 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $test->run($result);
         }
 
-        try {
-            foreach ($hookMethods['afterClass'] as $afterClassMethod) {
-                if ($this->testCase &&
-                    class_exists($this->name, false) &&
-                    method_exists($this->name, $afterClassMethod)) {
+        foreach ($hookMethods['afterClass'] as $afterClassMethod) {
+            if ($this->testCase &&
+                class_exists($this->name, false) &&
+                method_exists($this->name, $afterClassMethod)) {
+                try {
                     call_user_func([$this->name, $afterClassMethod]);
+                } catch (Throwable $t) {
+                    $message = "Exception in {$this->name}::{$afterClassMethod}" . PHP_EOL . $t->getMessage();
+                    $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());
+
+                    $placeholderTest = clone $test;
+                    $placeholderTest->setName($afterClassMethod);
+
+                    $result->startTest($placeholderTest);
+                    $result->addFailure($placeholderTest, $error, 0);
+                    $result->endTest($placeholderTest, 0);
                 }
             }
-        } catch (Throwable $t) {
-            $message = "Exception in {$this->name}::{$afterClassMethod}" . PHP_EOL . $t->getMessage();
-            $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());
-
-            $placeholderTest = clone $test;
-            $placeholderTest->setName($afterClassMethod);
-
-            $result->startTest($placeholderTest);
-            $result->addFailure($placeholderTest, $error, 0);
-            $result->endTest($placeholderTest, 0);
         }
 
         $result->endTestSuite($this);
