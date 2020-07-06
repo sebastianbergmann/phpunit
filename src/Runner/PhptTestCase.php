@@ -747,6 +747,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             ];
         }
 
+        $sectionOffset = null;
+
         foreach ($search as $section) {
             if (!isset($sections[$section])) {
                 continue;
