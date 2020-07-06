@@ -103,12 +103,6 @@ final class ConsecutiveParameters implements ParametersRule
             return;
         }
 
-        if ($invocation === null) {
-            throw new ExpectationFailedException(
-                'Mocked method does not exist.'
-            );
-        }
-
         $parameters = $this->parameterGroups[$callIndex];
 
         if (count($invocation->getParameters()) < count($parameters)) {
