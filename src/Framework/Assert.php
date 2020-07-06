@@ -1512,6 +1512,23 @@ abstract class Assert
     }
 
     /**
+     * Asserts that a variable is of type resource and is closed.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @psalm-assert resource $actual
+     */
+    public static function assertIsClosedResource($actual, string $message = ''): void
+    {
+        static::assertThat(
+            $actual,
+            new IsType(IsType::TYPE_CLOSED_RESOURCE),
+            $message
+        );
+    }
+
+    /**
      * Asserts that a variable is of type string.
      *
      * @throws ExpectationFailedException
@@ -1694,6 +1711,23 @@ abstract class Assert
         static::assertThat(
             $actual,
             new LogicalNot(new IsType(IsType::TYPE_RESOURCE)),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that a variable is not of type resource.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @psalm-assert !resource $actual
+     */
+    public static function assertIsNotClosedResource($actual, string $message = ''): void
+    {
+        static::assertThat(
+            $actual,
+            new LogicalNot(new IsType(IsType::TYPE_CLOSED_RESOURCE)),
             $message
         );
     }
