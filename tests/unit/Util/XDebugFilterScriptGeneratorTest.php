@@ -29,7 +29,7 @@ final class XDebugFilterScriptGeneratorTest extends TestCase
 {
     public function testReturnsExpectedScript(): void
     {
-        $expectedDirectory = addslashes(__DIR__ . DIRECTORY_SEPARATOR);
+        $expectedDirectory = sprintf(addslashes('%s' . DIRECTORY_SEPARATOR), __DIR__);
         $expected          = <<<EOF
 <?php declare(strict_types=1);
 if (!\\function_exists('xdebug_set_filter')) {
