@@ -12,7 +12,6 @@ namespace PHPUnit\Framework;
 use const LC_ALL;
 use const LC_COLLATE;
 use const LC_CTYPE;
-use const LC_MESSAGES;
 use const LC_MONETARY;
 use const LC_NUMERIC;
 use const LC_TIME;
@@ -1623,10 +1622,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         [$category, $locale] = $args;
-
-        if (defined('LC_MESSAGES')) {
-            $categories[] = LC_MESSAGES;
-        }
 
         if (!in_array($category, self::LOCALE_CATEGORIES, true)) {
             throw new Exception;

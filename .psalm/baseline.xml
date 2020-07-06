@@ -137,9 +137,6 @@
       <code>$beStrictAboutChangesToGlobalState</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$categories</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Framework/TestFailure.php">
     <PossiblyNullReference occurrences="1">
