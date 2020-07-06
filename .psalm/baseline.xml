@@ -164,9 +164,6 @@
     <PossiblyInvalidArgument occurrences="1">
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$sectionOffset</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Runner/StandardTestSuiteLoader.php">
     <ArgumentTypeCoercion occurrences="1">
