@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.12.1@9b860214d58c48b5cbe99bdb17914d0eb723c9cd">
+<files psalm-version="3.12.2@7c7ebd068f8acaba211d4a2c707c4ba90874fa26">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -280,10 +280,6 @@
     <InvalidCast occurrences="1">
       <code>$value</code>
     </InvalidCast>
-    <PossiblyInvalidArgument occurrences="2">
-      <code>$name</code>
-      <code>$name</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="src/Util/TestDox/TestDoxPrinter.php">
     <UndefinedInterfaceMethod occurrences="1">
