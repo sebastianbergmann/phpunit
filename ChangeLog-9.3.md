@@ -9,11 +9,13 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 * [#3936](https://github.com/sebastianbergmann/phpunit/pull/3936): Support using `@depends` to depend on classes
 * [#4260](https://github.com/sebastianbergmann/phpunit/issues/4260): `pathCoverage` attribute on the `phpunit/coverage` element of the XML configuration file for enabling path coverage for code coverage drivers that support it
 * [#4314](https://github.com/sebastianbergmann/phpunit/issues/4314): Add option to exit with exit code `1` when no tests are executed
+* [#4365](https://github.com/sebastianbergmann/phpunit/pull/4365): `assertIsClosedResource()` and `assertIsNotClosedResource()`
 
 ### Changed
 
 * [#4226](https://github.com/sebastianbergmann/phpunit/issues/4226): Deprecate `--dump-xdebug-filter` and `--prepend`
 * [#4264](https://github.com/sebastianbergmann/phpunit/pull/4264): Refactor logical operator constraints
+* [#4365](https://github.com/sebastianbergmann/phpunit/pull/4365): `assertIsResource()` and `assertIsNotResource()` now handle closed resources
 * `PHPUnit\Framework\TestCase::$backupGlobalsBlacklist` is now deprecated, please use `PHPUnit\Framework\TestCase::$backupGlobalsExcludeList` instead
 * `PHPUnit\Framework\TestCase::$backupStaticAttributesBlacklist` is now deprecated, please use `PHPUnit\Framework\TestCase::$backupStaticAttributesExcludeList` instead
 * `PHPUnit\Util\Blacklist` is now deprecated, please use `PHPUnit\Util\ExcludeList` instead
