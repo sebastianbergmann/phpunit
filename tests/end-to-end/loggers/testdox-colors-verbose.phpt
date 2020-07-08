@@ -7,7 +7,8 @@ $arguments = [
     realpath(__DIR__ . '/../../basic/configuration.basic.xml'),
     '--testdox',
     '--colors=always',
-    '--verbose'
+    '--verbose',
+    '--no-interaction'
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
 
