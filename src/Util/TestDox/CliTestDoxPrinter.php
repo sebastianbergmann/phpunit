@@ -183,6 +183,10 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function writeSingleTestResult(array $result): void
     {
+        if ($this->noPreviousOutput()) {
+            $this->prevResult = $this->getEmptyTestResult();
+        }
+
         // spacer line for new suite headers and after verbose messages
         if ($this->prevResult['testName'] !== '' &&
             (!empty($this->prevResult['message']) || $this->prevResult['className'] !== $result['className'])) {
@@ -212,7 +216,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
         $this->write($line);
 
         // additional information when verbose
-        $this->write($result['message']);
+        if ($result['message'] !== '') {
+            $this->write($result['message']);
+        }
 
         $this->prevResult = $result;
     }

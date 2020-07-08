@@ -19,6 +19,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\TestableTestDoxPrinter;
 
 /**
+ * @testdox TestDox printer
  * @group testdox
  * @small
  * @covers \PHPUnit\Util\TestDox\TestDoxPrinter
