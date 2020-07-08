@@ -659,9 +659,7 @@ class Command
 
         print 'Available test suite(s):' . PHP_EOL;
 
-        $configuration = (new Loader)->load($this->arguments['configuration']);
-
-        foreach ($configuration->testSuite() as $testSuite) {
+        foreach ((new Loader)->load($this->arguments['configuration'])->testSuite() as $testSuite) {
             printf(
                 ' - %s' . PHP_EOL,
                 $testSuite->name()
