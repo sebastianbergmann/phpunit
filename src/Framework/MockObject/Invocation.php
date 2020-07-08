@@ -168,6 +168,9 @@ final class Invocation implements SelfDescribing
 
                 return $generator();
 
+            case 'mixed':
+                return null;
+
             default:
                 $generator = new Generator;
 

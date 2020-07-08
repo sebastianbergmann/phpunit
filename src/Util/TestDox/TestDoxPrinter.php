@@ -118,6 +118,7 @@ class TestDoxPrinter extends DefaultResultPrinter
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
         $this->prettifier = new NamePrettifier($this->colors);
+        $this->prevResult = $this->getEmptyTestResult();
     }
 
     public function setOriginalExecutionOrder(array $order): void

@@ -21,6 +21,7 @@ use function var_export;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionParameter;
 use ReflectionUnionType;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Type\ReflectionMapper;
@@ -94,11 +95,6 @@ final class MockMethod
     private $deprecation;
 
     /**
-     * @var bool
-     */
-    private $allowsReturnNull;
-
-    /**
      * @throws RuntimeException
      */
     public static function fromReflection(ReflectionMethod $method, bool $callOriginalMethod, bool $cloneArguments): self
@@ -135,14 +131,13 @@ final class MockMethod
             $method->getName(),
             $cloneArguments,
             $modifier,
-            self::getMethodParameters($method),
-            self::getMethodParameters($method, true),
+            self::getMethodParametersForDeclaration($method),
+            self::getMethodParametersForCall($method),
             (new ReflectionMapper)->fromMethodReturnType($method),
             $reference,
             $callOriginalMethod,
             $method->isStatic(),
-            $deprecation,
-            $method->hasReturnType() && $method->getReturnType()->allowsNull()
+            $deprecation
         );
     }
 
@@ -159,12 +154,11 @@ final class MockMethod
             '',
             false,
             false,
-            null,
-            false
+            null
         );
     }
 
-    public function __construct(string $className, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, Type $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation, bool $allowsReturnNull)
+    public function __construct(string $className, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, Type $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation)
     {
         $this->className               = $className;
         $this->methodName              = $methodName;
@@ -177,7 +171,6 @@ final class MockMethod
         $this->callOriginalMethod      = $callOriginalMethod;
         $this->static                  = $static;
         $this->deprecation             = $deprecation;
-        $this->allowsReturnNull        = $allowsReturnNull;
     }
 
     public function getName(): string
@@ -210,9 +203,11 @@ final class MockMethod
             $deprecation         = "The {$this->className}::{$this->methodName} method is deprecated ({$this->deprecation}).";
             $deprecationTemplate = $this->getTemplate('deprecation.tpl');
 
-            $deprecationTemplate->setVar([
-                'deprecation' => var_export($deprecation, true),
-            ]);
+            $deprecationTemplate->setVar(
+                [
+                    'deprecation' => var_export($deprecation, true),
+                ]
+            );
 
             $deprecation = $deprecationTemplate->render();
         }
@@ -259,7 +254,76 @@ final class MockMethod
      *
      * @throws RuntimeException
      */
-    private static function getMethodParameters(ReflectionMethod $method, bool $forCall = false): string
+    private static function getMethodParametersForDeclaration(ReflectionMethod $method): string
+    {
+        $parameters = [];
+
+        foreach ($method->getParameters() as $i => $parameter) {
+            $name = '$' . $parameter->getName();
+
+            /* Note: PHP extensions may use empty names for reference arguments
+             * or "..." for methods taking a variable number of arguments.
+             */
+            if ($name === '$' || $name === '$...') {
+                $name = '$arg' . $i;
+            }
+
+            $nullable        = '';
+            $default         = '';
+            $reference       = '';
+            $typeDeclaration = '';
+            $type            = null;
+            $typeName        = null;
+
+            if ($parameter->hasType()) {
+                $type = $parameter->getType();
+
+                if ($type instanceof ReflectionNamedType) {
+                    $typeName = $type->getName();
+                }
+            }
+
+            if ($parameter->isVariadic()) {
+                $name = '...' . $name;
+            } elseif ($parameter->isDefaultValueAvailable()) {
+                $default = ' = ' . self::exportDefaultValue($parameter);
+            } elseif ($parameter->isOptional()) {
+                $default = ' = null';
+            }
+
+            if ($type !== null) {
+                if ($typeName !== 'mixed' && $parameter->allowsNull()) {
+                    $nullable = '?';
+                }
+
+                if ($typeName === 'self') {
+                    $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
+                } elseif ($typeName !== null) {
+                    $typeDeclaration = $typeName . ' ';
+                } elseif ($type instanceof ReflectionUnionType) {
+                    $typeDeclaration = self::unionTypeAsString(
+                        $type,
+                        $method->getDeclaringClass()->getName()
+                    );
+                }
+            }
+
+            if ($parameter->isPassedByReference()) {
+                $reference = '&';
+            }
+
+            $parameters[] = $nullable . $typeDeclaration . $reference . $name . $default;
+        }
+
+        return implode(', ', $parameters);
+    }
+
+    /**
+     * Returns the parameters of a function or method.
+     *
+     * @throws RuntimeException
+     */
+    private static function getMethodParametersForCall(ReflectionMethod $method): string
     {
         $parameters = [];
 
@@ -274,75 +338,49 @@ final class MockMethod
             }
 
             if ($parameter->isVariadic()) {
-                if ($forCall) {
-                    continue;
-                }
-
-                $name = '...' . $name;
-            }
-
-            $nullable        = '';
-            $default         = '';
-            $reference       = '';
-            $typeDeclaration = '';
-
-            if (!$forCall) {
-                if ($parameter->hasType() && $parameter->allowsNull()) {
-                    $nullable = '?';
-                }
-
-                if ($parameter->hasType()) {
-                    $type = $parameter->getType();
-
-                    if ($type instanceof ReflectionNamedType) {
-                        if ($type->getName() !== 'self') {
-                            $typeDeclaration = $type->getName() . ' ';
-                        } else {
-                            $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
-                        }
-                    } elseif ($type instanceof ReflectionUnionType) {
-                        $types = [];
-
-                        foreach ($type->getTypes() as $_type) {
-                            if ($_type === 'self') {
-                                $types[] = $method->getDeclaringClass()->getName();
-                            } else {
-                                $types[] = $_type;
-                            }
-                        }
-
-                        $typeDeclaration = implode('|', $types) . ' ';
-                    }
-                }
-
-                if (!$parameter->isVariadic()) {
-                    if ($parameter->isDefaultValueAvailable()) {
-                        try {
-                            $value = var_export($parameter->getDefaultValue(), true);
-                            // @codeCoverageIgnoreStart
-                        } catch (ReflectionException $e) {
-                            throw new RuntimeException(
-                                $e->getMessage(),
-                                (int) $e->getCode(),
-                                $e
-                            );
-                        }
-                        // @codeCoverageIgnoreEnd
-
-                        $default = ' = ' . $value;
-                    } elseif ($parameter->isOptional()) {
-                        $default = ' = null';
-                    }
-                }
+                continue;
             }
 
             if ($parameter->isPassedByReference()) {
-                $reference = '&';
+                $parameters[] = '&' . $name;
+            } else {
+                $parameters[] = $name;
             }
-
-            $parameters[] = $nullable . $typeDeclaration . $reference . $name . $default;
         }
 
         return implode(', ', $parameters);
+    }
+
+    /**
+     * @throws RuntimeException
+     */
+    private static function exportDefaultValue(ReflectionParameter $parameter): string
+    {
+        try {
+            return (string) var_export($parameter->getDefaultValue(), true);
+            // @codeCoverageIgnoreStart
+        } catch (ReflectionException $e) {
+            throw new RuntimeException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    private static function unionTypeAsString(ReflectionUnionType $union, string $self): string
+    {
+        $types = [];
+
+        foreach ($union->getTypes() as $type) {
+            if ($type === 'self') {
+                $types[] = $self;
+            } else {
+                $types[] = $type;
+            }
+        }
+
+        return implode('|', $types) . ' ';
     }
 }

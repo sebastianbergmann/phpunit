@@ -12,11 +12,15 @@ namespace PHPUnit\TestFixture;
 
 class ClassWithUnionReturnTypes
 {
-    public function boolOrInt(): bool|int
+    public function returnsBoolOrInt(): bool|int
     {
     }
 
-    public function boolOrIntOrNull(): bool|int|null
+    public function returnsBoolOrIntOrNull(): bool|int|null
+    {
+    }
+
+    public function returnsMixed(): mixed
     {
     }
 }

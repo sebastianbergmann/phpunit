@@ -98,15 +98,12 @@
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
-    <PossiblyNullReference occurrences="1">
-      <code>allowsNull</code>
-    </PossiblyNullReference>
     <TypeDoesNotContainType occurrences="1">
       <code>$type instanceof ReflectionUnionType</code>
     </TypeDoesNotContainType>
     <UndefinedClass occurrences="2">
       <code>ReflectionUnionType</code>
-      <code>$type</code>
+      <code>ReflectionUnionType</code>
     </UndefinedClass>
   </file>
   <file src="src/Framework/MockObject/Rule/ConsecutiveParameters.php">
@@ -180,7 +177,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$printerClass</code>
     </ArgumentTypeCoercion>
-    <InvalidCatch occurrences="1"/>
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
@@ -205,9 +201,6 @@
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
-  </file>
-  <file src="src/Util/Annotation/DocBlock.php">
-    <InvalidCatch occurrences="1"/>
   </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument occurrences="1"/>
