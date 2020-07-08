@@ -40,8 +40,7 @@ final class FileLoader
 
         if (!$includePathFilename ||
             $includePathFilename === $localFile ||
-            !self::isReadable($includePathFilename)
-        ) {
+            !self::isReadable($includePathFilename)) {
             throw new Exception(
                 sprintf('Cannot open file "%s".' . "\n", $filename)
             );
