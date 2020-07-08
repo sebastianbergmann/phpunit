@@ -62,7 +62,7 @@ The configuration of code coverage and logging in `phpunit.xml` has been changed
 </phpunit>
 ```
 
-A long time ago, PHPUnit supported both an exclude-list ("blacklist") and an include-list ("whitelist") for filter files for code coverage. Back then, the exclude-list was pre-filled with PHPUnit's own sourcecode files as well as the sourcecode files of its dependencies. When the (back then) optional include-list was configured, the exclude-list was ignored and only the files on the include-list were considered for code coverage. This was confusing and the exclude-list was removed long ago, but the `<filter><whitelist>` structure was not simplified at the time although it was no longer necessary.
+A long time ago, PHPUnit supported both an exclude-list ("blacklist"), and an include-list ("whitelist") for filter files for code coverage. Back then, the exclude-list was pre-filled with PHPUnit's own sourcecode files as well as the sourcecode files of its dependencies. When the (back then) optional include-list was configured, the exclude-list was ignored and only the files on the include-list were considered for code coverage. This was confusing, and the exclude-list was removed long ago, but the `<filter><whitelist>` structure was not simplified at the time although it was no longer necessary.
 
 For lack of better terminology, an XML element such as `<log type="coverage-html" target="/path/to/directory"/>` is an implicit API that is not type-safe. It is neither obvious that `coverage-html` is a valid value for `type` nor is it obvious that the value of `target` needs to be a directory.
 
