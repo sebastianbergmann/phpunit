@@ -111,6 +111,24 @@ Here is what the same configuration looks like in PHPUnit 9.3:
 </phpunit>
 ```
 
+In the example shown above, the section
+
+```xml
+<include>
+    <directory suffix=".php">src</directory>
+</include>
+
+<exclude>
+    <directory suffix=".php">src/generated</directory>
+    <file>src/autoload.php</file>
+</exclude>
+```
+
+configures the following:
+
+* Include all files with `.php` suffix in the `src` directory and its sub-directories in the code coverage report
+* But exclude all files with `.php` suffix in the `src/generated` directory and its sub-directories as well as the `src/autoload.php` file from the code coverage report
+
 We believe this new way of configuring code coverage and logging in `phpunit.xml` to be more clear for the users. We already know that the code that parses `phpunit.xml` is now more robust than it was before. We also know that adding support for the configuration of more advanced code coverage options such as path coverage would have made the confusion even worse.
 
 A `phpunit.xml` configuration file that was valid (according to `phpunit.xsd`) for PHPUnit 9.2 will continue to work with PHPUnit 9.3. However, PHPUnit 9.3 will complain about validation errors when it loads the `phpunit.xml` configuration file.
