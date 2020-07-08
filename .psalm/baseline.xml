@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.12.1@9b860214d58c48b5cbe99bdb17914d0eb723c9cd">
+<files psalm-version="3.12.2@7c7ebd068f8acaba211d4a2c707c4ba90874fa26">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -106,11 +106,6 @@
       <code>ReflectionUnionType</code>
     </UndefinedClass>
   </file>
-  <file src="src/Framework/MockObject/Rule/ConsecutiveParameters.php">
-    <TypeDoesNotContainNull occurrences="1">
-      <code>$invocation === null</code>
-    </TypeDoesNotContainNull>
-  </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>null</code>
@@ -137,9 +132,6 @@
       <code>$beStrictAboutChangesToGlobalState</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$categories</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Framework/TestFailure.php">
     <PossiblyNullReference occurrences="1">
@@ -156,17 +148,11 @@
       <code>$className</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$afterClassMethod</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Runner/PhptTestCase.php">
     <PossiblyInvalidArgument occurrences="1">
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
-    <PossiblyUndefinedVariable occurrences="1">
-      <code>$sectionOffset</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Runner/StandardTestSuiteLoader.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -294,10 +280,6 @@
     <InvalidCast occurrences="1">
       <code>$value</code>
     </InvalidCast>
-    <PossiblyInvalidArgument occurrences="2">
-      <code>$name</code>
-      <code>$name</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="src/Util/TestDox/TestDoxPrinter.php">
     <UndefinedInterfaceMethod occurrences="1">

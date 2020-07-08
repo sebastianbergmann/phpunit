@@ -16,6 +16,7 @@ use const PHP_OS_FAMILY;
 use function acos;
 use function array_merge;
 use function chmod;
+use function fclose;
 use function file_get_contents;
 use function fopen;
 use function json_encode;
@@ -1980,6 +1981,23 @@ XML;
         $this->fail();
     }
 
+    public function testClosedResourceTypeCanBeAsserted(): void
+    {
+        $resource = fopen(__FILE__, 'r');
+        fclose($resource);
+
+        $this->assertIsClosedResource($resource);
+        $this->assertIsResource($resource);
+
+        try {
+            $this->assertIsClosedResource(null);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
     public function testStringTypeCanBeAsserted(): void
     {
         $this->assertIsString('');
@@ -2117,6 +2135,28 @@ XML;
 
         try {
             $this->assertIsNotResource(fopen(__FILE__, 'r'));
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testNotClosedResourceTypeCanBeAsserted(): void
+    {
+        $this->assertIsNotClosedResource(null);
+
+        $resource = fopen(__FILE__, 'r');
+        fclose($resource);
+
+        try {
+            $this->assertIsNotClosedResource($resource);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        try {
+            $this->assertIsNotResource($resource);
         } catch (AssertionFailedError $e) {
             return;
         }

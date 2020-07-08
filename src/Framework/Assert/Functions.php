@@ -1296,6 +1296,21 @@ function assertIsResource($actual, string $message = ''): void
 }
 
 /**
+ * Asserts that a variable is of type resource (closed).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @psalm-assert resource $actual
+ *
+ * @see Assert::assertIsClosedResource
+ */
+function assertIsClosedResource($actual, string $message = ''): void
+{
+    Assert::assertIsClosedResource(...func_get_args());
+}
+
+/**
  * Asserts that a variable is of type string.
  *
  * @throws ExpectationFailedException
@@ -1458,6 +1473,21 @@ function assertIsNotObject($actual, string $message = ''): void
 function assertIsNotResource($actual, string $message = ''): void
 {
     Assert::assertIsNotResource(...func_get_args());
+}
+
+/**
+ * Asserts that a variable is not of type resource (closed).
+ *
+ * @throws ExpectationFailedException
+ * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+ *
+ * @psalm-assert !resource $actual
+ *
+ * @see Assert::assertIsNotClosedResource
+ */
+function assertIsNotClosedResource($actual, string $message = ''): void
+{
+    Assert::assertIsNotClosedResource(...func_get_args());
 }
 
 /**
