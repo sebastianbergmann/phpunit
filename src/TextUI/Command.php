@@ -37,7 +37,6 @@ use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\Exception as ManifestException;
 use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -87,11 +86,19 @@ class Command
     private $warnings = [];
 
     /**
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     public static function main(bool $exit = true): int
     {
-        return (new static)->run($_SERVER['argv'], $exit);
+        try {
+            return (new static)->run($_SERVER['argv'], $exit);
+        } catch (Throwable $t) {
+            throw new Exception(
+                $t->getMessage(),
+                (int) $t->getCode(),
+                $t
+            );
+        }
     }
 
     /**
@@ -522,8 +529,8 @@ class Command
     {
         try {
             FileLoader::checkAndLoad($filename);
-        } catch (Exception $e) {
-            $this->exitWithErrorMessage($e->getMessage());
+        } catch (Throwable $t) {
+            $this->exitWithErrorMessage($t->getMessage());
         }
     }
 
