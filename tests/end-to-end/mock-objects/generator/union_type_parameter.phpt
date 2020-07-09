@@ -9,7 +9,7 @@ if (PHP_MAJOR_VERSION < 8) {
 <?php declare(strict_types=1);
 class Foo
 {
-    public function bar(bool|int $baz, self|stdClass $other)
+    public function bar(bool|int $baz, self|stdClass $other = null)
     {
     }
 }
@@ -36,7 +36,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
-    public function bar(int|bool $baz, Foo|stdClass $other)
+    public function bar(int|bool $baz, Foo|stdClass $other = null)
     {
         $__phpunit_arguments = [$baz, $other];
         $__phpunit_count     = func_num_args();
