@@ -374,7 +374,7 @@ final class MockMethod
         $types = [];
 
         foreach ($union->getTypes() as $type) {
-            if ($type === 'self') {
+            if ((string) $type === 'self') {
                 $types[] = $self;
             } else {
                 $types[] = $type;
