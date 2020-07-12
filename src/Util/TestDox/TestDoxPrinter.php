@@ -258,10 +258,10 @@ class TestDoxPrinter extends DefaultResultPrinter
     {
         parent::endTestSuite($suite);
 
-        $this->currentSuiteName                      = '';
-        $this->currentSuiteIsDataProvider            = false;
-        $finishedSuiteId                             = array_pop($this->testSuiteStack);
-        $this->completedTestSuites[$finishedSuiteId] = true;
+        $this->currentSuiteName           = '';
+        $this->currentSuiteIsDataProvider = false;
+        $finishedSuiteId                  = array_pop($this->testSuiteStack);
+        $this->completedTestSuites[]      = $finishedSuiteId;
 
         $this->flushOutputBuffer();
     }
@@ -382,7 +382,7 @@ class TestDoxPrinter extends DefaultResultPrinter
         // Look for any out-of-order test results of completed TestSuites
         // For now this is only triggered by tearDownAfterClass errors
         for ($i = count($this->unflushedResults) - 1; $i >= 0; $i--) {
-            if (array_search($this->unflushedResults[$i]['suite'], $this->completedTestSuites, true)) {
+            if (array_search($this->unflushedResults[$i]['suite'], $this->completedTestSuites, true) !== false) {
                 [$nextResult] = array_splice($this->unflushedResults, $i, 1);
 
                 return $nextResult;
@@ -394,11 +394,7 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function lastFlushedIndex(): int
     {
-        if (isset($this->prevResult['index'])) {
-            return $this->prevResult['index'];
-        }
-
-        return -1;
+        return $this->prevResult['index'];
     }
 
     protected function noPreviousOutput(): bool

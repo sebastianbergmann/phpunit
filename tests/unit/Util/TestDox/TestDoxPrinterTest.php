@@ -269,6 +269,28 @@ final class TestDoxPrinterTest extends TestCase
         ], $this->printer->getBuffer());
     }
 
+    public function testDoesFlushAllResultsFromTestsuiteWhenTestsuiteEnds(): void
+    {
+        // Simulate running a non-default order with buffer on
+        $this->printer->setEnableOutputBuffer(true);
+
+        $this->printer->startTestSuite($this->suite);
+
+        $this->printer->startTest($this->suite->tests()[1]);
+        $this->printer->endTest($this->suite->tests()[1], 0.1);
+
+        $this->printer->endTestSuite($this->suite);
+
+        $this->assertEquals(
+            [$this->suite->sortId()],
+            $this->printer->getCompletedTestSuites()
+        );
+        $this->assertEquals(
+            [$this->suite->tests()[1]->sortId() . "\n"],
+            $this->printer->getBuffer()
+        );
+    }
+
     private function runTestAndFlush(Test $test): void
     {
         $this->printer->startTest($test);
