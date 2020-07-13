@@ -79,8 +79,7 @@ Here is what the same configuration looks like in PHPUnit 9.3:
     <coverage includeUncoveredFiles="true"
               processUncoveredFiles="true"
               ignoreDeprecatedCodeUnits="true"
-              disableCodeCoverageIgnore="true"
-              cacheTokens="true">
+              disableCodeCoverageIgnore="true">
         <include>
             <directory suffix=".php">src</directory>
         </include>
@@ -139,7 +138,6 @@ Here is a detailed list of changes for the configuration of code coverage and lo
 * Using `<filter><whitelist><exclude>...</exclude></whitelist></filter` to exclude a directory from code coverage reports is now deprecated, please use `<coverage><exclude>...</exclude></coverage>` instead
 * Using `<filter><whitelist addUncoveredFilesFromWhitelist="false">...</whitelist></filter>` to control whether or not uncovered files should be added to code coverage reports is now deprecated, please use `<coverage includeUncoveredFiles="false">...</coverage>` instead 
 * Using `<filter><whitelist processUncoveredFilesFromWhitelist="true">...</whitelist></filter>` to control whether or not uncovered files should be processed for code coverage reporting is now deprecated, please use `<coverage processUncoveredFiles="true">...</coverage>` instead 
-* Using `<phpunit cacheTokens="true">...</phpunit>` to configure the token cache (which can reduce the time needed to process multiple code coverage reports) is now deprecated, please use `<phpunit><coverage cacheTokens="true">...</coverage></phpunit>` instead
 * Using `<phpunit disableCodeCoverageIgnore="true">...</phpunit>` to configure whether `@coverCoverageIgnore` annotations should be ignored is now deprecated, please use `<phpunit><coverage disableCodeCoverageIgnore="true">...</coverage></phpunit>` instead
 * Using `<phpunit ignoreDeprecatedCodeUnitsFromCodeCoverage="true">...</phpunit>` to configure whether code units annotated with `@deprecated` should be ignored is now deprecated, please use `<phpunit><coverage ignoreDeprecatedCodeUnits="true">...</coverage></phpunit>` instead
 * Using `<logging><log type="coverage-clover" target="clover.xml"/></logging>` to configure the Clover XML code coverage report is now deprecated, please use `<coverage><report><clover outputFile="clover.xml"/></report></coverage>` instead
@@ -154,5 +152,9 @@ Here is a detailed list of changes for the configuration of code coverage and lo
 * Using `<logging><log type="testdox-text" target="testdox.txt"/></logging>` to configure the TestDox Text logger is now deprecated, please use `<logging><testdoxText outputFile="testdox.txt"/></logging>` instead
 * Using `<logging><log type="testdox-xml" target="testdox.xml"/></logging>` to configure the TestDox XML logger is now deprecated, please use `<logging><testdoxXml outputFile="testdox.xml"/></logging>` instead
 * Using `<logging><log type="plain" target="logfile.txt"/></logging>` to configure the plain text logger is now deprecated, please use `<logging><text outputFile="logfile.txt"/></logging>` instead
+
+### Removed
+
+* The `cacheTokens` attribute is no longer supported in XML configuration files
 
 [9.3.0]: https://github.com/sebastianbergmann/phpunit/compare/9.2...master

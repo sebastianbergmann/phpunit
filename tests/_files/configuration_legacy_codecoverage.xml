@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8" ?>
-<phpunit cacheTokens="true"
-         disableCodeCoverageIgnore="true"
+<phpunit disableCodeCoverageIgnore="true"
          ignoreDeprecatedCodeUnitsFromCodeCoverage="true">
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true"

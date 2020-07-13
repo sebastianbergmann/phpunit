@@ -34,7 +34,6 @@
         <xs:attribute name="processUncoveredFiles" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreDeprecatedCodeUnits" type="xs:boolean" default="false"/>
         <xs:attribute name="disableCodeCoverageIgnore" type="xs:boolean" default="false"/>
-        <xs:attribute name="cacheTokens" type="xs:boolean" default="false"/>
     </xs:complexType>
     <xs:complexType name="loggingType">
         <xs:group ref="loggingGroup"/>

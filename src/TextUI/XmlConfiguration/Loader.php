@@ -396,7 +396,6 @@ final class Loader
         $pathCoverage              = false;
         $includeUncoveredFiles     = true;
         $processUncoveredFiles     = false;
-        $cacheTokens               = false;
         $ignoreDeprecatedCodeUnits = false;
         $disableCodeCoverageIgnore = false;
 
@@ -418,12 +417,6 @@ final class Loader
             $processUncoveredFiles = $this->getBooleanAttribute(
                 $element,
                 'processUncoveredFiles',
-                false
-            );
-
-            $cacheTokens = $this->getBooleanAttribute(
-                $element,
-                'cacheTokens',
                 false
             );
 
@@ -537,7 +530,6 @@ final class Loader
             $pathCoverage,
             $includeUncoveredFiles,
             $processUncoveredFiles,
-            $cacheTokens,
             $ignoreDeprecatedCodeUnits,
             $disableCodeCoverageIgnore,
             $clover,
@@ -554,12 +546,6 @@ final class Loader
      */
     private function legacyCodeCoverage(string $filename, DOMXPath $xpath, DOMDocument $document): CodeCoverage
     {
-        $cacheTokens = $this->getBooleanAttribute(
-            $document->documentElement,
-            'cacheTokens',
-            false
-        );
-
         $ignoreDeprecatedCodeUnits = $this->getBooleanAttribute(
             $document->documentElement,
             'ignoreDeprecatedCodeUnitsFromCodeCoverage',
@@ -670,7 +656,6 @@ final class Loader
             false,
             $includeUncoveredFiles,
             $processUncoveredFiles,
-            $cacheTokens,
             $ignoreDeprecatedCodeUnits,
             $disableCodeCoverageIgnore,
             $clover,

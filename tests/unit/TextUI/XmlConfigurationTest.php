@@ -162,7 +162,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertTrue($codeCoverage->processUncoveredFiles());
         $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
-        $this->assertTrue($codeCoverage->cacheTokens());
 
         /** @var Directory $directory */
         $directory = iterator_to_array($codeCoverage->directories(), false)[0];
@@ -221,7 +220,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertTrue($codeCoverage->processUncoveredFiles());
         $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
-        $this->assertTrue($codeCoverage->cacheTokens());
 
         /** @var Directory $directory */
         $directory = iterator_to_array($codeCoverage->directories(), false)[0];

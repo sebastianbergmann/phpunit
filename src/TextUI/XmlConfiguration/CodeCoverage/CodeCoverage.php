@@ -64,11 +64,6 @@ final class CodeCoverage
     /**
      * @var bool
      */
-    private $cacheTokens;
-
-    /**
-     * @var bool
-     */
     private $ignoreDeprecatedCodeUnits;
 
     /**
@@ -106,7 +101,7 @@ final class CodeCoverage
      */
     private $xml;
 
-    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $cacheTokens, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
         $this->directories               = $directories;
         $this->files                     = $files;
@@ -115,7 +110,6 @@ final class CodeCoverage
         $this->pathCoverage              = $pathCoverage;
         $this->includeUncoveredFiles     = $includeUncoveredFiles;
         $this->processUncoveredFiles     = $processUncoveredFiles;
-        $this->cacheTokens               = $cacheTokens;
         $this->ignoreDeprecatedCodeUnits = $ignoreDeprecatedCodeUnits;
         $this->disableCodeCoverageIgnore = $disableCodeCoverageIgnore;
         $this->clover                    = $clover;
@@ -159,11 +153,6 @@ final class CodeCoverage
     public function includeUncoveredFiles(): bool
     {
         return $this->includeUncoveredFiles;
-    }
-
-    public function cacheTokens(): bool
-    {
-        return $this->cacheTokens;
     }
 
     public function ignoreDeprecatedCodeUnits(): bool

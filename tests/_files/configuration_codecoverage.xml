@@ -4,8 +4,7 @@
               includeUncoveredFiles="true"
               processUncoveredFiles="true"
               ignoreDeprecatedCodeUnits="true"
-              disableCodeCoverageIgnore="true"
-              cacheTokens="true">
+              disableCodeCoverageIgnore="true">
         <include>
             <directory suffix=".php">/path/to/files</directory>
             <file>/path/to/file</file>

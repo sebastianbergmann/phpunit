@@ -636,14 +636,6 @@ final class TestRunner extends BaseTestRunner
 
         if (isset($codeCoverage)) {
             $result->setCodeCoverage($codeCoverage);
-
-            if ($codeCoverageReports > 1 && isset($arguments['cacheTokens'])) {
-                if ($arguments['cacheTokens']) {
-                    $codeCoverage->enableTokenCaching();
-                } else {
-                    $codeCoverage->disableTokenCaching();
-                }
-            }
         }
 
         $result->beStrictAboutTestsThatDoNotTestAnything($arguments['reportUselessTests']);
@@ -949,7 +941,6 @@ final class TestRunner extends BaseTestRunner
             $arguments['backupStaticAttributes']                          = $arguments['backupStaticAttributes'] ?? $phpunitConfiguration->backupStaticAttributes();
             $arguments['beStrictAboutChangesToGlobalState']               = $arguments['beStrictAboutChangesToGlobalState'] ?? $phpunitConfiguration->beStrictAboutChangesToGlobalState();
             $arguments['cacheResult']                                     = $arguments['cacheResult'] ?? $phpunitConfiguration->cacheResult();
-            $arguments['cacheTokens']                                     = $arguments['cacheTokens'] ?? $codeCoverageConfiguration->cacheTokens();
             $arguments['colors']                                          = $arguments['colors'] ?? $phpunitConfiguration->colors();
             $arguments['convertDeprecationsToExceptions']                 = $arguments['convertDeprecationsToExceptions'] ?? $phpunitConfiguration->convertDeprecationsToExceptions();
             $arguments['convertErrorsToExceptions']                       = $arguments['convertErrorsToExceptions'] ?? $phpunitConfiguration->convertErrorsToExceptions();
@@ -1092,7 +1083,6 @@ final class TestRunner extends BaseTestRunner
         $arguments['beStrictAboutChangesToGlobalState']               = $arguments['beStrictAboutChangesToGlobalState'] ?? null;
         $arguments['beStrictAboutResourceUsageDuringSmallTests']      = $arguments['beStrictAboutResourceUsageDuringSmallTests'] ?? false;
         $arguments['cacheResult']                                     = $arguments['cacheResult'] ?? true;
-        $arguments['cacheTokens']                                     = $arguments['cacheTokens'] ?? false;
         $arguments['colors']                                          = $arguments['colors'] ?? DefaultResultPrinter::COLOR_DEFAULT;
         $arguments['columns']                                         = $arguments['columns'] ?? 80;
         $arguments['convertDeprecationsToExceptions']                 = $arguments['convertDeprecationsToExceptions'] ?? true;
