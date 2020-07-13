@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.2 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.2.6] - 2020-07-13
+
+### Fixed
+
+* [#4376](https://github.com/sebastianbergmann/phpunit/issues/4376): Risky test that triggers an error is displayed incorrectly
+
 ## [9.2.5] - 2020-06-22
 
 ### Fixed
@@ -50,6 +56,7 @@ All notable changes of the PHPUnit 9.2 release series are documented in this fil
 * [#4258](https://github.com/sebastianbergmann/phpunit/pull/4258): Prevent unpredictable result by raising an exception when multiple matchers can be applied to a test double invocation
 * The test runner no longer relies on `$_SERVER['REQUEST_TIME_FLOAT']` for printing the elapsed time
 
+[9.2.6]: https://github.com/sebastianbergmann/phpunit/compare/9.2.5...9.2.6
 [9.2.5]: https://github.com/sebastianbergmann/phpunit/compare/9.2.4...9.2.5
 [9.2.4]: https://github.com/sebastianbergmann/phpunit/compare/9.2.3...9.2.4
 [9.2.3]: https://github.com/sebastianbergmann/phpunit/compare/9.2.2...9.2.3
