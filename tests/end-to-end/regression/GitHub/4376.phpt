@@ -17,7 +17,7 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) Test::testOne
-Error: Class 'C' not found
+Error: Class %sC%s not found
 
 %sTest.php:%d
 
