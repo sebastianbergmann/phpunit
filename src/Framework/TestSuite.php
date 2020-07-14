@@ -850,7 +850,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     public function sortId(): string
     {
-        return $this->getName() . '::class';
+        $name = $this->getName();
+
+        return $name !== ''
+            ? "{$name}::class"
+            : 'PHPUNIT_UNNAMED_SUITE::class';
     }
 
     /**

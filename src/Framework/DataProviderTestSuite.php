@@ -22,6 +22,11 @@ final class DataProviderTestSuite extends TestSuite
      */
     private $dependencies = [];
 
+    public function sortId(): string
+    {
+        return $this->getName();
+    }
+
     /**
      * @param list<ExecutionOrderDependency> $dependencies
      */

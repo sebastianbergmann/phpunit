@@ -269,6 +269,10 @@ final class Mapper
             $result['noInteraction'] = $arguments->noInteraction();
         }
 
+        if ($arguments->hasEnableOutputBuffer()) {
+            $result['enableOutputBuffer'] = $arguments->enableOutputBuffer();
+        }
+
         if ($arguments->hasBackupGlobals()) {
             $result['backupGlobals'] = $arguments->backupGlobals();
         }
@@ -325,7 +329,7 @@ final class Mapper
             $result['coverageFilter'] = $arguments->coverageFilter();
         }
 
-        if ($arguments->hasRandomOrderSeer()) {
+        if ($arguments->hasRandomOrderSeed()) {
             $result['randomOrderSeed'] = $arguments->randomOrderSeed();
         }
 

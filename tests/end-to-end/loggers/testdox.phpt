@@ -3,11 +3,11 @@ phpunit --testdox -c tests/basic/configuration.basic.xml
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
-    '-c',
-    realpath(__DIR__ . '/../../basic/configuration.basic.xml'),
+    '--no-configuration',
     '--testdox',
     '--colors=never',
     '--no-interaction',
+    '--enable-buffer',
     realpath(__DIR__ . '/../../unit/Util/ColorTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);

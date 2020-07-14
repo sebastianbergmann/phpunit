@@ -163,7 +163,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     protected function registerTestResult(Test $test, ?Throwable $t, int $status, float $time, bool $verbose): void
     {
         if ($status !== BaseTestRunner::STATUS_PASSED) {
-            $this->nonSuccessfulTestResults[] = $this->testIndex;
+            $this->nonSuccessfulTestResults[] = $this->resultCount;
         }
 
         parent::registerTestResult($test, $t, $status, $time, $verbose);
@@ -181,22 +181,26 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return parent::formatTestName($test);
     }
 
-    protected function writeTestResult(array $prevResult, array $result): void
+    protected function writeSingleTestResult(array $result): void
     {
+        if ($this->noPreviousOutput()) {
+            $this->prevResult = $this->getEmptyTestResult();
+        }
+
         // spacer line for new suite headers and after verbose messages
-        if ($prevResult['testName'] !== '' &&
-            (!empty($prevResult['message']) || $prevResult['className'] !== $result['className'])) {
+        if ($this->prevResult['testName'] !== '' &&
+            (!empty($this->prevResult['message']) || $this->prevResult['className'] !== $result['className'])) {
             $this->write(PHP_EOL);
         }
 
         // suite header
-        if ($prevResult['className'] !== $result['className']) {
+        if ($this->prevResult['className'] !== $result['className']) {
             $this->write($this->colorizeTextBox('underlined', $result['className']) . PHP_EOL);
         }
 
         // test result line
         if ($this->colors && $result['className'] === PhptTestCase::class) {
-            $testName = Color::colorizePath($result['testName'], $prevResult['testName'], true);
+            $testName = Color::colorizePath($result['testName'], $this->prevResult['testName'], true);
         } else {
             $testName = $result['testMethod'];
         }
@@ -212,7 +216,11 @@ class CliTestDoxPrinter extends TestDoxPrinter
         $this->write($line);
 
         // additional information when verbose
-        $this->write($result['message']);
+        if ($result['message'] !== '') {
+            $this->write($result['message']);
+        }
+
+        $this->prevResult = $result;
     }
 
     protected function formatThrowable(Throwable $t, ?int $status = null): string
@@ -369,12 +377,11 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
         $this->write("Summary of non-successful tests:\n\n");
 
-        $prevResult = $this->getEmptyTestResult();
+        $this->prevResult = $this->getEmptyTestResult();
 
         foreach ($this->nonSuccessfulTestResults as $testIndex) {
             $result = $this->testResults[$testIndex];
-            $this->writeTestResult($prevResult, $result);
-            $prevResult = $result;
+            $this->writeSingleTestResult($result);
         }
     }
 }

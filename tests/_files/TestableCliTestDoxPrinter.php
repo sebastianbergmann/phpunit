@@ -13,7 +13,7 @@ use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 
 class TestableCliTestDoxPrinter extends CliTestDoxPrinter
 {
-    private $buffer;
+    private $buffer = '';
 
     public function write(string $text): void
     {

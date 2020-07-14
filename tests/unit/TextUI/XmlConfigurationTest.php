@@ -134,6 +134,7 @@ final class XmlConfigurationTest extends TestCase
             'testSuiteLoaderFile absolute path'               => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
             'reverseDefectList'                               => ['reverseDefectList', 'true', true],
             'registerMockObjectsFromTestArgumentsRecursively' => ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
+            'TestDox output buffer'                           => ['enableOutputBuffer', 'false', false],
         ];
     }
 
@@ -330,7 +331,7 @@ final class XmlConfigurationTest extends TestCase
                 case 2:
                     $this->assertSame('IncludePathListener', $listener->className());
                     $this->assertTrue($listener->hasSourceFile());
-                    $this->assertSame(TEST_FILES_PATH . 'ConfigurationTest.php', $listener->sourceFile());
+                    $this->assertSame(TEST_FILES_PATH . 'IncludePathConfigurationTest.php', $listener->sourceFile());
                     $this->assertFalse($listener->hasArguments());
                     $this->assertSame([], $listener->arguments());
 
@@ -389,7 +390,7 @@ final class XmlConfigurationTest extends TestCase
                 case 2:
                     $this->assertSame('IncludePathExtension', $extension->className());
                     $this->assertTrue($extension->hasSourceFile());
-                    $this->assertSame(TEST_FILES_PATH . 'ConfigurationTest.php', $extension->sourceFile());
+                    $this->assertSame(TEST_FILES_PATH . 'IncludePathConfigurationTest.php', $extension->sourceFile());
                     $this->assertFalse($extension->hasArguments());
                     $this->assertSame([], $extension->arguments());
 
@@ -656,6 +657,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertFalse($phpunit->defectsFirst());
         $this->assertTrue($phpunit->resolveDependencies());
         $this->assertTrue($phpunit->noInteraction());
+        $this->assertFalse($phpunit->enableOutputBuffer());
     }
 
     public function test_TestDox_configuration_is_parsed_correctly(): void

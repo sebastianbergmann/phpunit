@@ -153,7 +153,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
             );
         }
 
-        if (!is_int($numberOfColumns) && $numberOfColumns !== 'max') {
+        if (!(is_int($numberOfColumns) && $numberOfColumns > 0) && $numberOfColumns !== 'max') {
             throw InvalidArgumentException::create(5, 'integer or "max"');
         }
 
@@ -311,7 +311,11 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         $this->lastTestFailed = false;
 
         if ($test instanceof TestCase && !$test->hasExpectationOnOutput()) {
-            $this->write($test->getActualOutput());
+            $output = $test->getActualOutput();
+
+            if ($output !== '') {
+                $this->write($output);
+            }
         }
     }
 

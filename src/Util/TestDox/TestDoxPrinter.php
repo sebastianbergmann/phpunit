@@ -16,7 +16,7 @@ use function implode;
 use function preg_split;
 use function trim;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Reorderable;
+use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
@@ -33,6 +33,11 @@ use Throwable;
 class TestDoxPrinter extends DefaultResultPrinter
 {
     /**
+     * @var bool
+     */
+    protected $currentSuiteIsDataProvider = false;
+
+    /**
      * @var NamePrettifier
      */
     protected $prettifier;
@@ -40,22 +45,17 @@ class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @var int The number of test results received from the TestRunner
      */
-    protected $testIndex = 0;
+    protected $resultCount = 0;
 
     /**
      * @var int The number of test results already sent to the output
      */
-    protected $testFlushIndex = 0;
+    protected $resultFlushCount = 0;
 
     /**
      * @var array<int, array> Buffer for test results
      */
     protected $testResults = [];
-
-    /**
-     * @var array<string, int> Lookup table for testname to testResults[index]
-     */
-    protected $testNameResultIndex = [];
 
     /**
      * @var bool
@@ -78,6 +78,36 @@ class TestDoxPrinter extends DefaultResultPrinter
     protected $showProgress = true;
 
     /**
+     * @var array
+     */
+    protected $prevResult;
+
+    /**
+     * @var string
+     */
+    protected $currentSuiteName = '';
+
+    /**
+     * @var array<string>
+     */
+    protected $testSuiteStack = [];
+
+    /**
+     * @var array
+     */
+    protected $completedTestSuites = [];
+
+    /**
+     * @var array
+     */
+    private $unflushedResults = [];
+
+    /**
+     * @var null|array
+     */
+    private $currentTestResult;
+
+    /**
      * @param null|resource|string $out
      * @param int|string           $numberOfColumns
      *
@@ -88,12 +118,18 @@ class TestDoxPrinter extends DefaultResultPrinter
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
         $this->prettifier = new NamePrettifier($this->colors);
+        $this->prevResult = $this->getEmptyTestResult();
     }
 
     public function setOriginalExecutionOrder(array $order): void
     {
         $this->originalExecutionOrder = $order;
         $this->enableOutputBuffer     = !empty($order);
+    }
+
+    public function setEnableOutputBuffer(bool $enabled = true): void
+    {
+        $this->enableOutputBuffer = $enabled;
     }
 
     public function setShowProgressAnimation(bool $showProgress): void
@@ -110,17 +146,17 @@ class TestDoxPrinter extends DefaultResultPrinter
      */
     public function endTest(Test $test, float $time): void
     {
-        if (!$test instanceof TestCase && !$test instanceof PhptTestCase && !$test instanceof TestSuite) {
+        if ($this->currentTestResult === null) {
             return;
         }
 
-        if ($this->testHasPassed()) {
+        if ($this->currentTestNotMarkedDefective()) {
             $this->registerTestResult($test, null, BaseTestRunner::STATUS_PASSED, $time, false);
         }
 
-        if ($test instanceof TestCase || $test instanceof PhptTestCase) {
-            $this->testIndex++;
-        }
+        $this->unflushedResults[] = $this->currentTestResult;
+        $this->currentTestResult  = null;
+        $this->resultCount++;
 
         parent::endTest($test, $time);
     }
@@ -173,7 +209,7 @@ class TestDoxPrinter extends DefaultResultPrinter
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_SKIPPED, $time, false);
     }
 
-    public function writeProgress(string $progress): void
+    public function writeProgress(string $progress = ''): void
     {
         $this->flushOutputBuffer();
     }
@@ -183,29 +219,74 @@ class TestDoxPrinter extends DefaultResultPrinter
         $this->flushOutputBuffer(true);
     }
 
+    public function startTest(Test $test): void
+    {
+        parent::startTest($test);
+
+        if (!$test instanceof TestCase && !$test instanceof PhptTestCase) {
+            return;
+        }
+
+        $result = [
+            'className'    => $this->formatClassName($test),
+            'testName'     => $test->sortId(),
+            'testMethod'   => $this->formatTestName($test),
+            'message'      => '',
+            'status'       => BaseTestRunner::STATUS_UNKNOWN,
+            'suite'        => $this->currentSuiteName,
+            'dataProvider' => $this->currentSuiteIsDataProvider,
+            'index'        => -1,
+        ];
+
+        if ($this->enableOutputBuffer) {
+            $result['index'] = $this->getOriginalIndexForTest($result['testName']);
+        }
+
+        $this->currentTestResult = $result;
+    }
+
+    public function startTestSuite(TestSuite $suite): void
+    {
+        parent::startTestSuite($suite);
+
+        $this->currentSuiteName           = $suite->sortId();
+        $this->currentSuiteIsDataProvider = $suite instanceof DataProviderTestSuite;
+        $this->testSuiteStack[]           = $this->currentSuiteName;
+    }
+
+    public function endTestSuite(TestSuite $suite): void
+    {
+        parent::endTestSuite($suite);
+
+        $this->currentSuiteName           = '';
+        $this->currentSuiteIsDataProvider = false;
+        $finishedSuiteId                  = array_pop($this->testSuiteStack);
+        $this->completedTestSuites[]      = $finishedSuiteId;
+
+        $this->flushOutputBuffer();
+    }
+
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function registerTestResult(Test $test, ?Throwable $t, int $status, float $time, bool $verbose): void
     {
-        $testName = $test instanceof Reorderable ? $test->sortId() : $test->getName();
-
-        $result = [
-            'className'  => $this->formatClassName($test),
-            'testName'   => $testName,
-            'testMethod' => $this->formatTestName($test),
-            'message'    => '',
-            'status'     => $status,
-            'time'       => $time,
-            'verbose'    => $verbose,
-        ];
+        $this->currentTestResult['status']  = $status;
+        $this->currentTestResult['time']    = $time;
+        $this->currentTestResult['verbose'] = $verbose;
 
         if ($t !== null) {
-            $result['message'] = $this->formatTestResultMessage($t, $result);
+            $this->currentTestResult['message'] = $this->formatTestResultMessage($t, $this->currentTestResult);
         }
 
-        $this->testResults[$this->testIndex]  = $result;
-        $this->testNameResultIndex[$testName] = $this->testIndex;
+        $this->testResults[$this->resultCount] = $this->currentTestResult;
+    }
+
+    protected function getOriginalIndexForTest(string $testName): ?int
+    {
+        $index = array_search($testName, $this->originalExecutionOrder, true);
+
+        return $index !== false ? $index : null;
     }
 
     protected function formatTestName(Test $test): string
@@ -218,13 +299,12 @@ class TestDoxPrinter extends DefaultResultPrinter
         return get_class($test);
     }
 
-    protected function testHasPassed(): bool
+    protected function currentTestNotMarkedDefective(): bool
     {
-        if (!isset($this->testResults[$this->testIndex]['status'])) {
-            return true;
-        }
-
-        if ($this->testResults[$this->testIndex]['status'] === BaseTestRunner::STATUS_PASSED) {
+        if ($this->currentTestResult !== null && (
+            $this->currentTestResult['status'] === BaseTestRunner::STATUS_PASSED ||
+            $this->currentTestResult['status'] === BaseTestRunner::STATUS_UNKNOWN
+        )) {
             return true;
         }
 
@@ -233,50 +313,98 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function flushOutputBuffer(bool $forceFlush = false): void
     {
-        if ($this->testFlushIndex === $this->testIndex) {
+        // Nothing to do
+        if ($this->unflushedResults === []) {
             return;
         }
 
-        if ($this->testFlushIndex > 0) {
-            if ($this->enableOutputBuffer) {
-                $prevResult = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex - 1]);
-            } else {
-                $prevResult = $this->testResults[$this->testFlushIndex - 1];
+        // When the first result comes in, switch off the buffer when it isn't needed
+        if ($this->noPreviousOutput() && $this->originalExecutionOrder === []) {
+            $this->setEnableOutputBuffer(false);
+        }
+
+        // Unbuffered or force flush: dump any remaining results straight to the output stream
+        if ($forceFlush || !$this->enableOutputBuffer) {
+            $this->forceFlush();
+
+            return;
+        }
+
+        $this->flushOutputBufferInOrder();
+    }
+
+    protected function forceFlush(): void
+    {
+        $this->hideSpinner();
+
+        foreach ($this->unflushedResults as $result) {
+            $this->writeSingleTestResult($result);
+        }
+
+        $this->unflushedResults = [];
+    }
+
+    protected function flushOutputBufferInOrder(?string $suiteName = null, ?string $dataProviderName = null): void
+    {
+        $flushed = false;
+
+        do {
+            $nextResult = $this->popNextFlushableResultFromBuffer();
+
+            if (!$nextResult) {
+                break;
             }
-        } else {
-            $prevResult = $this->getEmptyTestResult();
+
+            $this->hideSpinner();
+            $this->writeSingleTestResult($nextResult);
+            $flushed = true;
+        } while ($nextResult && $this->unflushedResults !== []);
+
+        if (!$flushed) {
+            $this->showSpinner();
+        }
+    }
+
+    protected function popNextFlushableResultFromBuffer(): ?array
+    {
+        $prevIndex = $this->lastFlushedIndex();
+
+        // Look for the result for the next test in the original order
+        // Start with the most recently added result
+        for ($i = count($this->unflushedResults) - 1; $i >= 0; $i--) {
+            if ($this->unflushedResults[$i]['index'] === $prevIndex + 1) {
+                [$nextResult] = array_splice($this->unflushedResults, $i, 1);
+
+                return $nextResult;
+            }
         }
 
-        if (!$this->enableOutputBuffer) {
-            $this->writeTestResult($prevResult, $this->testResults[$this->testFlushIndex++]);
-        } else {
-            do {
-                $flushed = false;
+        // Look for any out-of-order test results of completed TestSuites
+        // For now this is only triggered by tearDownAfterClass errors
+        for ($i = count($this->unflushedResults) - 1; $i >= 0; $i--) {
+            if (array_search($this->unflushedResults[$i]['suite'], $this->completedTestSuites, true) !== false) {
+                [$nextResult] = array_splice($this->unflushedResults, $i, 1);
 
-                if (!$forceFlush && isset($this->originalExecutionOrder[$this->testFlushIndex])) {
-                    $result = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
-                } else {
-                    // This test(name) cannot found in original execution order,
-                    // flush result to output stream right away
-                    $result = $this->testResults[$this->testFlushIndex];
-                }
-
-                if (!empty($result)) {
-                    $this->hideSpinner();
-                    $this->writeTestResult($prevResult, $result);
-                    $this->testFlushIndex++;
-                    $prevResult = $result;
-                    $flushed    = true;
-                } else {
-                    $this->showSpinner();
-                }
-            } while ($flushed && $this->testFlushIndex < $this->testIndex);
+                return $nextResult;
+            }
         }
+
+        return null;
+    }
+
+    protected function lastFlushedIndex(): int
+    {
+        return $this->prevResult['index'];
+    }
+
+    protected function noPreviousOutput(): bool
+    {
+        return !isset($this->prevResult);
     }
 
     protected function showSpinner(): void
     {
-        if (!$this->showProgress) {
+        if (!$this->showProgress || !$this->enableOutputBuffer) {
             return;
         }
 
@@ -290,7 +418,7 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function hideSpinner(): void
     {
-        if (!$this->showProgress) {
+        if (!$this->showProgress || !$this->enableOutputBuffer) {
             return;
         }
 
@@ -311,8 +439,16 @@ class TestDoxPrinter extends DefaultResultPrinter
         // remove the spinner from the current line
     }
 
-    protected function writeTestResult(array $prevResult, array $result): void
+    protected function writeSingleTestResult(array $result): void
     {
+        $this->write(sprintf(
+            '%s::%s%s' . PHP_EOL,
+            $result['className'],
+            $result['testMethod'],
+            $result['message'] !== '' ? "\n" . $result['message'] : ''
+        ));
+
+        $this->prevResult = $result;
     }
 
     protected function getEmptyTestResult(): array
@@ -321,18 +457,10 @@ class TestDoxPrinter extends DefaultResultPrinter
             'className' => '',
             'testName'  => '',
             'message'   => '',
-            'failed'    => '',
+            'status'    => '',
             'verbose'   => '',
+            'index'     => -1,
         ];
-    }
-
-    protected function getTestResultByName(?string $testName): array
-    {
-        if (isset($this->testNameResultIndex[$testName])) {
-            return $this->testResults[$this->testNameResultIndex[$testName]];
-        }
-
-        return [];
     }
 
     protected function formatThrowable(Throwable $t, ?int $status = null): string
