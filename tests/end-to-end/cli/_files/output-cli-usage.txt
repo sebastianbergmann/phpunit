@@ -13,6 +13,7 @@ Code Coverage Options:
   --coverage-text=<file>      Generate code coverage report in text format [default: standard output]
   --coverage-xml <dir>        Generate code coverage report in PHPUnit XML format
   --coverage-filter <dir>     Include <dir> in code coverage analysis
+  --path-coverage             Perform path coverage analysis
   --disable-coverage-ignore   Disable annotations for ignoring code coverage
   --no-coverage               Ignore code coverage configuration
 

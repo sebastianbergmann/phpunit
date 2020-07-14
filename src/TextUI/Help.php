@@ -41,6 +41,7 @@ final class Help
             ['arg' => '--coverage-text=<file>', 'desc' => 'Generate code coverage report in text format [default: standard output]'],
             ['arg' => '--coverage-xml <dir>', 'desc' => 'Generate code coverage report in PHPUnit XML format'],
             ['arg' => '--coverage-filter <dir>', 'desc' => 'Include <dir> in code coverage analysis'],
+            ['arg' => '--path-coverage', 'desc' => 'Perform path coverage analysis'],
             ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable annotations for ignoring code coverage'],
             ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage configuration'],
         ],

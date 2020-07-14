@@ -15,6 +15,7 @@
   [32m--coverage-xml [36m<dir>[0m       [0m Generate code coverage report in PHPUnit
                               XML format
   [32m--coverage-filter [36m<dir>[0m    [0m Include <dir> in code coverage analysis
+  [32m--path-coverage            [0m Perform path coverage analysis
   [32m--disable-coverage-ignore  [0m Disable annotations for ignoring code
                               coverage
   [32m--no-coverage              [0m Ignore code coverage configuration

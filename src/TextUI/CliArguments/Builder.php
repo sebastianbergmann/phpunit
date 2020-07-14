@@ -45,6 +45,7 @@ final class Builder
         'coverage-php=',
         'coverage-text==',
         'coverage-xml=',
+        'path-coverage',
         'debug',
         'disallow-test-output',
         'disallow-resource-usage',
@@ -152,6 +153,7 @@ final class Builder
         $coverageTextShowUncoveredFiles             = null;
         $coverageTextShowOnlySummary                = null;
         $coverageXml                                = null;
+        $pathCoverage                               = null;
         $debug                                      = null;
         $defaultTimeLimit                           = null;
         $disableCodeCoverageIgnore                  = null;
@@ -294,6 +296,11 @@ final class Builder
 
                 case '--coverage-xml':
                     $coverageXml = $option[1];
+
+                    break;
+
+                case '--path-coverage':
+                    $pathCoverage = true;
 
                     break;
 
@@ -760,6 +767,7 @@ final class Builder
             $coverageTextShowUncoveredFiles,
             $coverageTextShowOnlySummary,
             $coverageXml,
+            $pathCoverage,
             $debug,
             $defaultTimeLimit,
             $disableCodeCoverageIgnore,

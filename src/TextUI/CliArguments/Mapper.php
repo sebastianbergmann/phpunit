@@ -85,6 +85,10 @@ final class Mapper
             $result['coverageXml'] = $arguments->coverageXml();
         }
 
+        if ($arguments->hasPathCoverage()) {
+            $result['pathCoverage'] = $arguments->pathCoverage();
+        }
+
         if ($arguments->hasDebug()) {
             $result['debug'] = $arguments->debug();
         }

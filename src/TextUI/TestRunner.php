@@ -463,7 +463,7 @@ final class TestRunner extends BaseTestRunner
 
         if ($codeCoverageReports > 0) {
             try {
-                if (isset($codeCoverageConfiguration) && $codeCoverageConfiguration->pathCoverage()) {
+                if (isset($codeCoverageConfiguration) && ($codeCoverageConfiguration->pathCoverage() || $arguments['pathCoverage'])) {
                     $codeCoverageDriver = Driver::forLineAndPathCoverage($this->codeCoverageFilter);
                 } else {
                     $codeCoverageDriver = Driver::forLineCoverage($this->codeCoverageFilter);
