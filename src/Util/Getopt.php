@@ -71,7 +71,7 @@ final class Getopt
             }
 
             if ($arg[0] !== '-' || (strlen($arg) > 1 && $arg[1] === '-' && !$long_options)) {
-                $non_opts[] = $args[$i];
+                $non_opts[] = $arg;
 
                 continue;
             }
