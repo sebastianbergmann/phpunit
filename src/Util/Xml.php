@@ -276,6 +276,32 @@ final class Xml
         return $variable;
     }
 
+    /**
+     * @psalm-return array<int,array<int,string>>
+     */
+    public static function validate(DOMDocument $document, string $xsdFilename): array
+    {
+        $originalErrorHandling = libxml_use_internal_errors(true);
+
+        $document->schemaValidate($xsdFilename);
+
+        $tmp = libxml_get_errors();
+        libxml_clear_errors();
+        libxml_use_internal_errors($originalErrorHandling);
+
+        $errors = [];
+
+        foreach ($tmp as $error) {
+            if (!isset($errors[$error->line])) {
+                $errors[$error->line] = [];
+            }
+
+            $errors[$error->line][] = trim($error->message);
+        }
+
+        return $errors;
+    }
+
     private static function convertToUtf8(string $string): string
     {
         if (!self::isUtf8($string)) {

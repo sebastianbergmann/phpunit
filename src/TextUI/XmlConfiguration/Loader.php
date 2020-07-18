@@ -17,9 +17,6 @@ use function dirname;
 use function explode;
 use function file_exists;
 use function is_numeric;
-use function libxml_clear_errors;
-use function libxml_get_errors;
-use function libxml_use_internal_errors;
 use function preg_match;
 use function stream_resolve_include_path;
 use function strlen;
@@ -61,12 +58,18 @@ final class Loader
 {
     public function load(string $filename): Configuration
     {
+        $xsdFilename = __DIR__ . '/../../../phpunit.xsd';
+
+        if (defined('__PHPUNIT_PHAR_ROOT__')) {
+            $xsdFilename = __PHPUNIT_PHAR_ROOT__ . '/phpunit.xsd';
+        }
+
         $document = Xml::loadFile($filename, false, true, true);
         $xpath    = new DOMXPath($document);
 
         return new Configuration(
             $filename,
-            $this->validate($document),
+            Xml::validate($document, $xsdFilename),
             $this->extensions($filename, $xpath),
             $this->codeCoverage($filename, $xpath, $document),
             $this->groups($xpath),
@@ -253,36 +256,6 @@ final class Loader
             $testDoxText,
             $testDoxXml
         );
-    }
-
-    /**
-     * @psalm-return array<int,array<int,string>>
-     */
-    private function validate(DOMDocument $document): array
-    {
-        $original    = libxml_use_internal_errors(true);
-        $xsdFilename = __DIR__ . '/../../../phpunit.xsd';
-
-        if (defined('__PHPUNIT_PHAR_ROOT__')) {
-            $xsdFilename = __PHPUNIT_PHAR_ROOT__ . '/phpunit.xsd';
-        }
-
-        $document->schemaValidate($xsdFilename);
-        $tmp = libxml_get_errors();
-        libxml_clear_errors();
-        libxml_use_internal_errors($original);
-
-        $errors = [];
-
-        foreach ($tmp as $error) {
-            if (!isset($errors[$error->line])) {
-                $errors[$error->line] = [];
-            }
-
-            $errors[$error->line][] = trim($error->message);
-        }
-
-        return $errors;
     }
 
     private function extensions(string $filename, DOMXPath $xpath): ExtensionCollection
