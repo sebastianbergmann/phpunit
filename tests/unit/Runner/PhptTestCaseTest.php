@@ -150,44 +150,6 @@ EOF
         $this->testCase->run();
     }
 
-    public function testRenderSkipifSection(): void
-    {
-        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
-        $phptContent .= '--SKIPIF--' . PHP_EOL;
-        $phptContent .= "<?php echo 'skip: ' . __FILE__; ?>" . PHP_EOL;
-
-        $this->setPhpContent($phptContent);
-
-        $renderedCode = "<?php echo 'skip: ' . '" . $this->filename . "'; ?>" . PHP_EOL;
-
-        $this->phpProcess
-             ->expects($this->at(0))
-             ->method('runJob')
-             ->with($renderedCode)
-             ->willReturn(['stdout' => '', 'stderr' => '']);
-
-        $this->testCase->run();
-    }
-
-    public function testShouldRunSkipifSectionWhenExists(): void
-    {
-        $skipifSection = '<?php /** Nothing **/ ?>' . PHP_EOL;
-
-        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
-        $phptContent .= '--SKIPIF--' . PHP_EOL;
-        $phptContent .= $skipifSection;
-
-        $this->setPhpContent($phptContent);
-
-        $this->phpProcess
-             ->expects($this->at(0))
-             ->method('runJob')
-             ->with($skipifSection)
-             ->willReturn(['stdout' => '', 'stderr' => '']);
-
-        $this->testCase->run();
-    }
-
     public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord(): void
     {
         $skipifSection = '<?php echo "skip: Reason"; ?>' . PHP_EOL;
@@ -203,24 +165,6 @@ EOF
              ->method('runJob')
              ->with($skipifSection)
              ->willReturn(['stdout' => 'skip: Reason', 'stderr' => '']);
-
-        $this->testCase->run();
-    }
-
-    public function testShouldRunCleanSectionWhenDefined(): void
-    {
-        $cleanSection = '<?php unlink("/tmp/something"); ?>' . PHP_EOL;
-
-        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
-        $phptContent .= '--CLEAN--' . PHP_EOL;
-        $phptContent .= $cleanSection;
-
-        $this->setPhpContent($phptContent);
-
-        $this->phpProcess
-             ->expects($this->at(1))
-             ->method('runJob')
-             ->with($cleanSection);
 
         $this->testCase->run();
     }
