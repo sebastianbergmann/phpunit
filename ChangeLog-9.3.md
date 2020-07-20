@@ -156,6 +156,7 @@ Here is a detailed list of changes for the configuration of code coverage and lo
 
 ### Removed
 
+* [#4297](https://github.com/sebastianbergmann/phpunit/issues/4297): Deprecate `at()` matcher
 * The `cacheTokens` attribute is no longer supported in XML configuration files
 
 [9.3.0]: https://github.com/sebastianbergmann/phpunit/compare/9.2...master
