@@ -30,10 +30,10 @@
         "ext-xml": "*",
         "ext-xmlwriter": "*",
         "doctrine/instantiator": "^1.3.1",
-        "myclabs/deep-copy": "^1.9.5",
+        "myclabs/deep-copy": "^1.10.1",
         "phar-io/manifest": "^2.0.1",
         "phar-io/version": "^3.0.2",
-        "phpspec/prophecy": "^1.10.3",
+        "phpspec/prophecy": "^1.11.1",
         "phpunit/php-code-coverage": "^9.0",
         "phpunit/php-file-iterator": "^3.0.3",
         "phpunit/php-invoker": "^3.0.2",
@@ -52,7 +52,7 @@
     },
     "require-dev": {
         "ext-PDO": "*",
-        "phpspec/prophecy-phpunit": "^2.0"
+        "phpspec/prophecy-phpunit": "^2.0.1"
     },
     "config": {
         "platform": {
