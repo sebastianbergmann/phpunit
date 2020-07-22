@@ -23,7 +23,6 @@ use DeepCopy\DeepCopy;
 use Doctrine\Instantiator\Instantiator;
 use PharIo\Manifest\Manifest;
 use PharIo\Version\Version as PharIoVersion;
-use PHP_Token;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Project;
 use phpDocumentor\Reflection\Type;
@@ -101,9 +100,6 @@ final class ExcludeList
 
         // phpunit/php-timer
         Timer::class => 1,
-
-        // phpunit/php-token-stream
-        PHP_Token::class => 1,
 
         // sebastian/code-unit
         CodeUnit::class => 1,

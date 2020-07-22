@@ -157,13 +157,6 @@
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/phpunit/php-token-stream/LICENSE" tofile="${basedir}/build/tmp/phar/php-token-stream/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/php-token-stream">
-            <fileset dir="${basedir}/vendor/phpunit/php-token-stream/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
         <copy file="${basedir}/vendor/sebastian/code-unit/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-code-unit/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-code-unit">
             <fileset dir="${basedir}/vendor/sebastian/code-unit/src">
@@ -181,6 +174,13 @@
         <copy file="${basedir}/vendor/sebastian/comparator/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-comparator/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-comparator">
             <fileset dir="${basedir}/vendor/sebastian/comparator/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/sebastian/complexity/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-complexity/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-complexity">
+            <fileset dir="${basedir}/vendor/sebastian/complexity/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
@@ -209,6 +209,13 @@
         <copy file="${basedir}/vendor/sebastian/global-state/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-global-state/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-global-state">
             <fileset dir="${basedir}/vendor/sebastian/global-state/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/sebastian/lines-of-code/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-lines-of-code/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-lines-of-code">
+            <fileset dir="${basedir}/vendor/sebastian/lines-of-code/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
@@ -265,6 +272,13 @@
         <copy file="${basedir}/vendor/myclabs/deep-copy/LICENSE" tofile="${basedir}/build/tmp/phar/myclabs-deep-copy/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/myclabs-deep-copy">
             <fileset dir="${basedir}/vendor/myclabs/deep-copy/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/nikic/php-parser/LICENSE" tofile="${basedir}/build/tmp/phar/nikic-php-parser/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/nikic-php-parser">
+            <fileset dir="${basedir}/vendor/nikic/php-parser/lib">
                 <include name="**/*.php" />
             </fileset>
         </copy>
