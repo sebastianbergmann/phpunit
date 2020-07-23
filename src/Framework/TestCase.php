@@ -26,7 +26,6 @@ use function array_pop;
 use function array_search;
 use function array_unique;
 use function array_values;
-use function assert;
 use function basename;
 use function call_user_func;
 use function chdir;
@@ -1996,8 +1995,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 foreach ($this->prophet->getProphecies() as $objectProphecy) {
                     foreach ($objectProphecy->getMethodProphecies() as $methodProphecies) {
                         foreach ($methodProphecies as $methodProphecy) {
-                            assert($methodProphecy instanceof MethodProphecy);
-
+                            /* @var MethodProphecy $methodProphecy */
                             $this->numAssertions += count($methodProphecy->getCheckedPredictions());
                         }
                     }
