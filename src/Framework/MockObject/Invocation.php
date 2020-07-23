@@ -162,7 +162,7 @@ final class Invocation implements SelfDescribing
             case 'traversable':
             case 'generator':
             case 'iterable':
-                $generator = static function () {
+                $generator = static function (): \Generator {
                     yield;
                 };
 

@@ -886,9 +886,6 @@
     </UnusedParam>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
-    <MissingClosureReturnType occurrences="1">
-      <code>static function () {</code>
-    </MissingClosureReturnType>
     <PossiblyUnusedMethod occurrences="1">
       <code>__construct</code>
     </PossiblyUnusedMethod>
