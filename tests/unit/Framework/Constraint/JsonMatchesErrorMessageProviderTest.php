@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use const JSON_ERROR_CTRL_CHAR;
 use const JSON_ERROR_DEPTH;
+use const JSON_ERROR_NONE;
 use const JSON_ERROR_STATE_MISMATCH;
 use const JSON_ERROR_SYNTAX;
 use const JSON_ERROR_UTF8;
@@ -25,7 +26,7 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
     {
         return [
             'JSON_ERROR_NONE' => [
-                null, 'json_error_none', '',
+                null, JSON_ERROR_NONE, '',
             ],
             'JSON_ERROR_DEPTH' => [
                 'Maximum stack depth exceeded', JSON_ERROR_DEPTH, '',
