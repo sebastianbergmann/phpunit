@@ -29,7 +29,6 @@ final class MoveAttributesFromRootToCoverage implements Migration
 
         $root = $document->documentElement;
 
-        /** @var ?DOMElement $coverage */
         $coverage = $document->getElementsByTagName('coverage')->item(0);
 
         if (!$coverage instanceof DOMElement) {
