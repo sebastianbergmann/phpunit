@@ -1,20 +1,31 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use DOMDocument;
 use DOMElement;
 use DOMXPath;
 
-abstract class LogToReportMigration implements Migration {
-
-    public function migrate(DOMDocument $document): void {
+abstract class LogToReportMigration implements Migration
+{
+    public function migrate(DOMDocument $document): void
+    {
         /** @var ?DOMElement $coverage */
         $coverage = $document->getElementsByTagName('coverage')->item(0);
+
         if (!$coverage instanceof DOMElement) {
             throw new MigrationException('Unexpected state - No coverage element');
         }
 
         $logNode = $this->findLogNode($document);
+
         if ($logNode === null) {
             return;
         }
@@ -22,6 +33,7 @@ abstract class LogToReportMigration implements Migration {
         $reportChild = $this->toReportFormat($logNode);
 
         $report = $coverage->getElementsByTagName('report')->item(0);
+
         if ($report === null) {
             $report = $coverage->appendChild($document->createElement('report'));
         }
@@ -30,20 +42,9 @@ abstract class LogToReportMigration implements Migration {
         $logNode->parentNode->removeChild($logNode);
     }
 
-    private function findLogNode($document): ?DOMElement {
-        $logNode = (new DOMXPath($document))->query(
-            sprintf('//logging/log[@type="%s"]', $this->forType())
-        )->item(0);
-
-        if (!$logNode instanceof DOMElement) {
-            return null;
-        }
-
-        return $logNode;
-    }
-
-    protected function migrateAttributes(DOMElement $src, DOMElement $dest, array $attributes): void {
-        foreach($attributes as $attr) {
+    protected function migrateAttributes(DOMElement $src, DOMElement $dest, array $attributes): void
+    {
+        foreach ($attributes as $attr) {
             if (!$src->hasAttribute($attr)) {
                 continue;
             }
@@ -54,6 +55,19 @@ abstract class LogToReportMigration implements Migration {
     }
 
     abstract protected function forType(): string;
+
     abstract protected function toReportFormat(DOMElement $logNode): DOMElement;
 
+    private function findLogNode($document): ?DOMElement
+    {
+        $logNode = (new DOMXPath($document))->query(
+            sprintf('//logging/log[@type="%s"]', $this->forType())
+        )->item(0);
+
+        if (!$logNode instanceof DOMElement) {
+            return null;
+        }
+
+        return $logNode;
+    }
 }

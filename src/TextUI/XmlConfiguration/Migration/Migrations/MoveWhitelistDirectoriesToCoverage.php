@@ -1,19 +1,30 @@
-<?php declare(strict_types = 1);
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use DOMDocument;
 use DOMElement;
 
-class MoveWhitelistDirectoriesToCoverage implements Migration {
-
-    public function migrate(DOMDocument $document): void {
+class MoveWhitelistDirectoriesToCoverage implements Migration
+{
+    public function migrate(DOMDocument $document): void
+    {
         $whitelist = $document->getElementsByTagName('whitelist')->item(0);
+
         if ($whitelist === null) {
             return;
         }
 
         /** @var ?DOMElement $coverage */
         $coverage = $document->getElementsByTagName('coverage')->item(0);
+
         if (!$coverage instanceof DOMElement) {
             throw new MigrationException('Unexpected state - No coverage element');
         }
@@ -21,14 +32,12 @@ class MoveWhitelistDirectoriesToCoverage implements Migration {
         $include = $document->createElement('include');
         $coverage->appendChild($include);
 
-        foreach($whitelist->childNodes as $child) {
+        foreach ($whitelist->childNodes as $child) {
             if (!$child instanceof DOMElement || $child->nodeName !== 'directory') {
                 continue;
             }
 
             $include->appendChild($child);
         }
-
     }
-
 }
