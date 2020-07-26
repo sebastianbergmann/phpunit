@@ -17,6 +17,9 @@ use DOMElement;
  */
 final class RemoveEmptyFilter implements Migration
 {
+    /**
+     * @throws MigrationException
+     */
     public function migrate(DOMDocument $document): void
     {
         $whitelist = $document->getElementsByTagName('whitelist')->item(0);
@@ -34,6 +37,9 @@ final class RemoveEmptyFilter implements Migration
         }
     }
 
+    /**
+     * @throws MigrationException
+     */
     private function ensureEmpty(DOMElement $element): void
     {
         if ($element->attributes->length > 0) {

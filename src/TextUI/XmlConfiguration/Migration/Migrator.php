@@ -17,6 +17,12 @@ use PHPUnit\Util\Xml;
  */
 final class Migrator
 {
+    /**
+     * @throws MigrationBuilderException
+     * @throws MigrationException
+     * @throws Exception
+     * @throws \PHPUnit\Framework\Exception
+     */
     public function migrate(string $filename): string
     {
         $oldXsdFilename = __DIR__ . '/phpunit-9.2.xsd';

@@ -34,6 +34,9 @@ final class MigrationBuilder
         ],
     ];
 
+    /**
+     * @throws MigrationBuilderException
+     */
     public function build(string $fromVersion): array
     {
         if (version_compare($fromVersion, '9.2', '<')) {
