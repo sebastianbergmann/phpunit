@@ -15,6 +15,7 @@ final class MigrationBuilder
 {
     private const availableMigrations = [
         '9.2' => [
+            RemoveCacheTokensAttribute::class,
             IntroduceCoverageElement::class,
             MoveAttributesFromRootToCoverage::class,
             MoveAttributesFromFilterWhitelistToCoverage::class,
