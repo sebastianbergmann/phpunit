@@ -63,7 +63,7 @@ abstract class LogToReportMigration implements Migration
 
     abstract protected function toReportFormat(DOMElement $logNode): DOMElement;
 
-    private function findLogNode($document): ?DOMElement
+    private function findLogNode(DOMDocument $document): ?DOMElement
     {
         $logNode = (new DOMXPath($document))->query(
             sprintf('//logging/log[@type="%s"]', $this->forType())
