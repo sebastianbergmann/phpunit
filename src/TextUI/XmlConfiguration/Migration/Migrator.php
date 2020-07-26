@@ -17,7 +17,7 @@ use PHPUnit\Util\Xml;
  */
 final class Migrator
 {
-    public function migrateFrom92To93(string $filename): string
+    public function migrate(string $filename): string
     {
         $oldXsdFilename = __DIR__ . '/phpunit-9.2.xsd';
 
@@ -25,14 +25,14 @@ final class Migrator
             $oldXsdFilename = __PHPUNIT_PHAR_ROOT__ . '/src/TextUI/XmlConfiguration/Migration/phpunit-9.2.xsd';
         }
 
-        $oldDocument = Xml::loadFile(
+        $configurationDocument = Xml::loadFile(
             $filename,
             false,
             true,
             true
         );
 
-        $validationErrors = Xml::validate($oldDocument, $oldXsdFilename);
+        $validationErrors = Xml::validate($configurationDocument, $oldXsdFilename);
 
         if (!empty($validationErrors)) {
             $message = \sprintf(
@@ -51,6 +51,13 @@ final class Migrator
             throw new Exception($message);
         }
 
-        return '';
+        foreach((new MigrationBuilder)->build('9.2') as $migration) {
+            $migration->migrate($configurationDocument);
+        }
+
+        $configurationDocument->formatOutput = true;
+        $configurationDocument->preserveWhiteSpace = false;
+
+        return $configurationDocument->saveXML();
     }
 }
