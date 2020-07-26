@@ -4,6 +4,7 @@
          cacheTokens="true"
          disableCodeCoverageIgnore="true"
          ignoreDeprecatedCodeUnitsFromCodeCoverage="true">
+    <!-- ... -->
 
     <filter>
         <whitelist addUncoveredFilesFromWhitelist="true"
