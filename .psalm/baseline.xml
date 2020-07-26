@@ -1933,6 +1933,57 @@
       <code>target</code>
     </PossiblyUnusedMethod>
   </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageCloverToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageCrap4jToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageHtmlToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoveragePhpToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageTextToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageXmlToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/LogToReportMigration.php">
+    <PossiblyNullReference occurrences="1">
+      <code>removeChild</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/Migration.php">
+    <PossiblyUnusedMethod occurrences="1">
+      <code>migrate</code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/RemoveEmptyFilter.php">
+    <PossiblyNullReference occurrences="2">
+      <code>removeChild</code>
+      <code>removeChild</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrator.php">
+    <UnusedClass occurrences="1">
+      <code>Migrator</code>
+    </UnusedClass>
+  </file>
   <file src="src/TextUI/XmlConfiguration/PHP/Constant.php">
     <MissingParamType occurrences="1">
       <code>$value</code>
