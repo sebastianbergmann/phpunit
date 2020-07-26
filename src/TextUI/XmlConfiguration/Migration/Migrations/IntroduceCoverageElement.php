@@ -17,24 +17,13 @@ use DOMElement;
  */
 final class IntroduceCoverageElement implements Migration
 {
-    /**
-     * @var DOMDocument
-     */
-    private $document;
-
-    /**
-     * @var DOMElement
-     */
-    private $coverage;
-
     public function migrate(DOMDocument $document): void
     {
-        $this->document = $document;
-        $this->coverage = $document->createElement('coverage');
+        $coverage = $document->createElement('coverage');
 
-        $this->document->documentElement->insertBefore(
-            $this->coverage,
-            $this->document->documentElement->firstChild
+        $document->documentElement->insertBefore(
+            $coverage,
+            $document->documentElement->firstChild
         );
     }
 }
