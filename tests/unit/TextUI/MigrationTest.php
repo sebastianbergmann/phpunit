@@ -18,7 +18,6 @@ final class MigrationTest extends TestCase
      */
     public function testMigratesPhpUnit92ConfigurationToPhpUnit93(): void
     {
-
         $this->assertStringEqualsFile(
             __DIR__ . '/../../_files/XmlConfigurationMigration/output-9.3.xml',
             (new Migrator)->migrate(

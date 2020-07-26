@@ -51,11 +51,11 @@ final class Migrator
             throw new Exception($message);
         }
 
-        foreach((new MigrationBuilder)->build('9.2') as $migration) {
+        foreach ((new MigrationBuilder)->build('9.2') as $migration) {
             $migration->migrate($configurationDocument);
         }
 
-        $configurationDocument->formatOutput = true;
+        $configurationDocument->formatOutput       = true;
         $configurationDocument->preserveWhiteSpace = false;
 
         return $configurationDocument->saveXML();
