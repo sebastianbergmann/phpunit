@@ -21,7 +21,9 @@
         <log type="coverage-html" target="html-coverage" lowUpperBound="50" highLowerBound="90"/>
         <log type="coverage-clover" target="clover.xml"/>
         <log type="coverage-crap4j" threshold="50" target="crap4j.xml"/>
+        <log type="coverage-php" target="coverage.php"/>
         <log type="coverage-text" showUncoveredFiles="false" showOnlySummary="true" target="coverage.txt"/>
+        <log type="coverage-xml" target="xml-coverage"/>
         <log type="junit" target="junit.xml"/>
         <log type="teamcity" target="teamcity.txt"/>
         <log type="testdox-html" target="testdox.html"/>
