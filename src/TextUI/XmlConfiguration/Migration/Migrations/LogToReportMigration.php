@@ -18,6 +18,9 @@ use DOMXPath;
  */
 abstract class LogToReportMigration implements Migration
 {
+    /**
+     * @throws MigrationException
+     */
     public function migrate(DOMDocument $document): void
     {
         /** @var ?DOMElement $coverage */

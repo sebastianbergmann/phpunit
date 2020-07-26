@@ -17,6 +17,9 @@ use DOMElement;
  */
 final class MoveAttributesFromRootToCoverage implements Migration
 {
+    /**
+     * @throws MigrationException
+     */
     public function migrate(DOMDocument $document): void
     {
         $map = [
