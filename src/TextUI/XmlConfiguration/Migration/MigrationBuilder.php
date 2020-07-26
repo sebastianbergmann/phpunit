@@ -11,8 +11,11 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function version_compare;
 
-final class MigrationBuilder {
-
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class MigrationBuilder
+{
     private const availableMigrations = [
         '9.2' => [
             IntroduceCoverageElement::class,
@@ -27,8 +30,8 @@ final class MigrationBuilder {
             CoveragePhpToReport::class,
             CoverageTextToReport::class,
             CoverageXmlToReport::class,
-            ConvertLogTypes::class
-        ]
+            ConvertLogTypes::class,
+        ],
     ];
 
     public function build(string $fromVersion): array
@@ -39,12 +42,12 @@ final class MigrationBuilder {
 
         $stack = [];
 
-        foreach(self::availableMigrations as $version => $migrations) {
+        foreach (self::availableMigrations as $version => $migrations) {
             if (version_compare($version, $fromVersion, '<')) {
                 continue;
             }
 
-            foreach($migrations as $migration) {
+            foreach ($migrations as $migration) {
                 $stack[] = new $migration;
             }
         }
