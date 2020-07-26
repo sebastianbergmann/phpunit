@@ -28,7 +28,6 @@ final class MoveAttributesFromFilterWhitelistToCoverage implements Migration
             return;
         }
 
-        /** @var ?DOMElement $coverage */
         $coverage = $document->getElementsByTagName('coverage')->item(0);
 
         if (!$coverage instanceof DOMElement) {
