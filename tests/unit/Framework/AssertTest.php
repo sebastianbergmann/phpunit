@@ -39,6 +39,7 @@ use PHPUnit\TestFixture\ClassWithToString;
 use PHPUnit\TestFixture\SampleArrayAccess;
 use PHPUnit\TestFixture\SampleClass;
 use PHPUnit\TestFixture\Struct;
+use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Xml;
 use SplObjectStorage;
 use stdClass;
@@ -433,7 +434,7 @@ final class AssertTest extends TestCase
      */
     public function testAssertXmlStringEqualsXmlString2(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(UtilException::class);
 
         $this->assertXmlStringEqualsXmlString('<a></b>', '<c></d>');
     }

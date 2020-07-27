@@ -33,7 +33,6 @@ use DOMDocument;
 use DOMElement;
 use DOMNode;
 use DOMText;
-use PHPUnit\Framework\Exception;
 use ReflectionClass;
 use ReflectionException;
 

@@ -13,7 +13,6 @@ use function chr;
 use function ord;
 use function sprintf;
 use DOMDocument;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
 /**

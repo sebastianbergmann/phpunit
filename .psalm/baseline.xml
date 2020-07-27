@@ -112,7 +112,7 @@
       <code>$value</code>
       <code>$prefix</code>
     </MissingParamType>
-    <MissingThrowsDocblock occurrences="32">
+    <MissingThrowsDocblock occurrences="34">
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>new IsType(IsType::TYPE_ARRAY)</code>
@@ -139,6 +139,8 @@
       <code>new IsType(IsType::TYPE_SCALAR)</code>
       <code>new IsType(IsType::TYPE_CALLABLE)</code>
       <code>new IsType(IsType::TYPE_ITERABLE)</code>
+      <code>Xml::loadFile($expectedFile)</code>
+      <code>Xml::loadFile($actualFile)</code>
       <code>new TraversableContainsOnly($type)</code>
       <code>new TraversableContainsOnly($className, false)</code>
       <code>new IsType($type)</code>
