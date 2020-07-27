@@ -25,11 +25,7 @@ final class Migrator
      */
     public function migrate(string $filename): string
     {
-        $oldXsdFilename = __DIR__ . '/phpunit-9.2.xsd';
-
-        if (defined('__PHPUNIT_PHAR_ROOT__')) {
-            $oldXsdFilename = __PHPUNIT_PHAR_ROOT__ . '/src/TextUI/XmlConfiguration/Migration/phpunit-9.2.xsd';
-        }
+        $oldXsdFilename = (new SchemaFinder)->find('9.2');
 
         $configurationDocument = Xml::loadFile(
             $filename,
