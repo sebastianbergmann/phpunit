@@ -1753,12 +1753,13 @@
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>$this-&gt;printer !== null</code>
     </RedundantConditionGivenDocblockType>
-    <UnusedMethod occurrences="5">
+    <UnusedMethod occurrences="6">
       <code>processSuiteFilters</code>
       <code>writeMessage</code>
       <code>codeCoverageGenerationStart</code>
       <code>codeCoverageGenerationSucceeded</code>
       <code>codeCoverageGenerationFailed</code>
+      <code>doesTheXmlConfigurationValidateAgainstDeprecatedSchemaSupportedForMigration</code>
     </UnusedMethod>
     <UnusedParam occurrences="3">
       <code>$suite</code>

@@ -50,7 +50,9 @@ use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\XmlConfiguration\Configuration;
 use PHPUnit\TextUI\XmlConfiguration\ExtensionHandler;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
+use PHPUnit\TextUI\XmlConfiguration\MigrationException;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
+use PHPUnit\TextUI\XmlConfiguration\SchemaFinder;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
@@ -60,6 +62,7 @@ use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
 use PHPUnit\Util\XdebugFilterScriptGenerator;
+use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -599,13 +602,18 @@ final class TestRunner extends BaseTestRunner
             assert($arguments['configuration'] instanceof Configuration);
 
             if ($arguments['configuration']->hasValidationErrors()) {
-                $this->write(
-                    "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
-                );
+                if ($this->doesTheXmlConfigurationValidateAgainstDeprecatedSchemaSupportedForMigration($arguments['configuration']->filename())) {
+                    $this->writeMessage('Warning', 'Your XML configuration validates against a deprecated schema.');
+                    $this->writeMessage('Suggestion', 'Migrate your XML configuration using "--migrate-configuration"!');
+                } else {
+                    $this->write(
+                        "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
+                    );
 
-                $this->write($arguments['configuration']->validationErrors());
+                    $this->write($arguments['configuration']->validationErrors());
 
-                $this->write("\n  Test results may not be as expected.\n\n");
+                    $this->write("\n  Test results may not be as expected.\n\n");
+                }
             }
         }
 
@@ -1221,5 +1229,25 @@ final class TestRunner extends BaseTestRunner
                 $e->getMessage()
             )
         );
+    }
+
+    private function doesTheXmlConfigurationValidateAgainstDeprecatedSchemaSupportedForMigration(string $filename): bool
+    {
+        try {
+            $oldXsdFilename = (new SchemaFinder)->find('9.2');
+
+            $configurationDocument = Xml::loadFile(
+                $filename,
+                false,
+                true,
+                true
+            );
+
+            return !Xml::validate($configurationDocument, $oldXsdFilename)->hasValidationErrors();
+        } catch (\PHPUnit\Util\Exception $e) {
+            return false;
+        } catch (MigrationException $e) {
+            return false;
+        }
     }
 }
