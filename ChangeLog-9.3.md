@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 
 * [#3936](https://github.com/sebastianbergmann/phpunit/pull/3936): Support using `@depends` to depend on classes
 * [#4260](https://github.com/sebastianbergmann/phpunit/issues/4260): `pathCoverage` attribute on the `phpunit/coverage` element of the XML configuration file for enabling path coverage for code coverage drivers that support it
+* [#4288](https://github.com/sebastianbergmann/phpunit/issues/4288): Add option for migrating `phpunit.xml` from a supported but outdated XML schema version
 * [#4314](https://github.com/sebastianbergmann/phpunit/issues/4314): Add option to exit with exit code `1` when no tests are executed
 * [#4365](https://github.com/sebastianbergmann/phpunit/pull/4365): `assertIsClosedResource()` and `assertIsNotClosedResource()`
 * `--path-coverage` CLI option for enabling path coverage for code coverage drivers that support it
