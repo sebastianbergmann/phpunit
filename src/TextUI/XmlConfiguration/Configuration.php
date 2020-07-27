@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function count;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
+use PHPUnit\Util\XmlValidationResult;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -25,10 +25,9 @@ final class Configuration
     private $filename;
 
     /**
-     * @var array
-     * @psalm-var array<int,array<int,string>>
+     * @var XmlValidationResult
      */
-    private $validationErrors = [];
+    private $validationResult;
 
     /**
      * @var ExtensionCollection
@@ -75,13 +74,10 @@ final class Configuration
      */
     private $testSuite;
 
-    /**
-     * @psalm-param array<int,array<int,string>> $validationErrors
-     */
-    public function __construct(string $filename, array $validationErrors, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, ExtensionCollection $listeners, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(string $filename, XmlValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, ExtensionCollection $listeners, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
         $this->filename         = $filename;
-        $this->validationErrors = $validationErrors;
+        $this->validationResult = $validationResult;
         $this->extensions       = $extensions;
         $this->codeCoverage     = $codeCoverage;
         $this->groups           = $groups;
@@ -100,12 +96,12 @@ final class Configuration
 
     public function hasValidationErrors(): bool
     {
-        return count($this->validationErrors) > 0;
+        return $this->validationResult->hasValidationErrors();
     }
 
-    public function validationErrors(): array
+    public function validationErrors(): string
     {
-        return $this->validationErrors;
+        return $this->validationResult->asString();
     }
 
     public function extensions(): ExtensionCollection

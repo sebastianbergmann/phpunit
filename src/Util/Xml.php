@@ -275,30 +275,17 @@ final class Xml
         return $variable;
     }
 
-    /**
-     * @psalm-return array<int,array<int,string>>
-     */
-    public static function validate(DOMDocument $document, string $xsdFilename): array
+    public static function validate(DOMDocument $document, string $xsdFilename): XmlValidationResult
     {
         $originalErrorHandling = libxml_use_internal_errors(true);
 
         $document->schemaValidate($xsdFilename);
 
-        $tmp = libxml_get_errors();
+        $errors = libxml_get_errors();
         libxml_clear_errors();
         libxml_use_internal_errors($originalErrorHandling);
 
-        $errors = [];
-
-        foreach ($tmp as $error) {
-            if (!isset($errors[$error->line])) {
-                $errors[$error->line] = [];
-            }
-
-            $errors[$error->line][] = trim($error->message);
-        }
-
-        return $errors;
+        return XmlValidationResult::fromArray($errors);
     }
 
     private static function convertToUtf8(string $string): string

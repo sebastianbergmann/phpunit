@@ -603,13 +603,7 @@ final class TestRunner extends BaseTestRunner
                     "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
                 );
 
-                foreach ($arguments['configuration']->validationErrors() as $line => $errors) {
-                    $this->write(sprintf("\n  Line %d:\n", $line));
-
-                    foreach ($errors as $msg) {
-                        $this->write(sprintf("  - %s\n", $msg));
-                    }
-                }
+                $this->write($arguments['configuration']->validationErrors());
 
                 $this->write("\n  Test results may not be as expected.\n\n");
             }

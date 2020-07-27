@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use const PHP_EOL;
+use function sprintf;
 use PHPUnit\Util\Xml;
 
 /**
@@ -34,23 +34,16 @@ final class Migrator
             true
         );
 
-        $validationErrors = Xml::validate($configurationDocument, $oldXsdFilename);
+        $validationResult = Xml::validate($configurationDocument, $oldXsdFilename);
 
-        if (!empty($validationErrors)) {
-            $message = \sprintf(
-                '"%s" is not a valid PHPUnit 9.2 XML configuration file:',
-                $filename
+        if ($validationResult->hasValidationErrors()) {
+            throw new Exception(
+                sprintf(
+                    '"%s" is not a valid PHPUnit 9.2 XML configuration file:%s',
+                    $filename,
+                    $validationResult->asString()
+                )
             );
-
-            foreach ($validationErrors as $line => $validationErrorsOnLine) {
-                $message .= \sprintf(PHP_EOL . '  Line %d:' . PHP_EOL, $line);
-
-                foreach ($validationErrorsOnLine as $validationError) {
-                    $message .= sprintf('  - %s' . PHP_EOL, $validationError);
-                }
-            }
-
-            throw new Exception($message);
         }
 
         foreach ((new MigrationBuilder)->build('9.2') as $migration) {
