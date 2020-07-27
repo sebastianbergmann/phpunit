@@ -32,6 +32,7 @@ final class MigrationBuilder
             CoverageTextToReport::class,
             CoverageXmlToReport::class,
             ConvertLogTypes::class,
+            UpdateSchemaLocationTo93::class,
         ],
     ];
 
