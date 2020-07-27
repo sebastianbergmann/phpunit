@@ -120,9 +120,11 @@
   [32m--include-path [36m<path(s)>[0m   [0m Prepend PHP's include_path with given
                               path(s)
   [32m-d [36m<key[=value]>[0m           [0m Sets a php.ini value
+  [32m--cache-result-file=[36m<file>[0m [0m Specify result cache path and filename
   [32m--generate-configuration   [0m Generate configuration file with
                               suggested settings
-  [32m--cache-result-file=[36m<file>[0m [0m Specify result cache path and filename
+  [32m--migrate-configuration    [0m Migrate configuration file to current
+                              format
 
 [33mMiscellaneous Options:[0m
   [32m-h|--help                  [0m Prints this usage information

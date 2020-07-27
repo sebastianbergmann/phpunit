@@ -1526,7 +1526,8 @@
     <MissingReturnType occurrences="1">
       <code>columns</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="84">
+    <MissingThrowsDocblock occurrences="85">
+      <code>throw new Exception;</code>
       <code>throw new Exception;</code>
       <code>throw new Exception;</code>
       <code>throw new Exception;</code>

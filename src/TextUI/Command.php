@@ -15,6 +15,7 @@ use const STDIN;
 use function array_keys;
 use function assert;
 use function class_exists;
+use function copy;
 use function extension_loaded;
 use function fgets;
 use function file_exists;
@@ -47,6 +48,7 @@ use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\CliArguments\Mapper;
 use PHPUnit\TextUI\XmlConfiguration\Generator;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
+use PHPUnit\TextUI\XmlConfiguration\Migrator;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
 use PHPUnit\Util\FileLoader;
@@ -223,6 +225,10 @@ class Command
 
         if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
             $this->generateConfiguration();
+        }
+
+        if ($arguments->hasMigrateConfiguration() && $arguments->migrateConfiguration()) {
+            $this->migrateConfiguration();
         }
 
         if ($arguments->hasAtLeastVersion()) {
@@ -756,6 +762,40 @@ class Command
         );
 
         print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . PHP_EOL;
+
+        exit(TestRunner::SUCCESS_EXIT);
+    }
+
+    private function migrateConfiguration(): void
+    {
+        $this->printVersionString();
+
+        if (file_exists('phpunit.xml')) {
+            $filename = realpath('phpunit.xml');
+        } elseif (file_exists('phpunit.xml.dist')) {
+            $filename = realpath('phpunit.xml.dist');
+        } else {
+            print 'No configuration file found in ' . getcwd() . PHP_EOL;
+
+            exit(TestRunner::EXCEPTION_EXIT);
+        }
+
+        copy($filename, $filename . '.bak');
+
+        print 'Created backup:         ' . $filename . '.bak' . PHP_EOL;
+
+        try {
+            file_put_contents(
+                $filename,
+                (new Migrator)->migrate($filename)
+            );
+
+            print 'Migrated configuration: ' . $filename . PHP_EOL;
+        } catch (Throwable $t) {
+            print 'Migration failed' . PHP_EOL;
+
+            exit(TestRunner::EXCEPTION_EXIT);
+        }
 
         exit(TestRunner::SUCCESS_EXIT);
     }

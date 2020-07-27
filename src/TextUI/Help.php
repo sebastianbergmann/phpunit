@@ -127,8 +127,9 @@ final class Help
             ['arg' => '--no-extensions', 'desc' => 'Do not load PHPUnit extensions'],
             ['arg' => '--include-path <path(s)>', 'desc' => 'Prepend PHP\'s include_path with given path(s)'],
             ['arg' => '-d <key[=value]>', 'desc' => 'Sets a php.ini value'],
-            ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
             ['arg' => '--cache-result-file=<file>', 'desc' => 'Specify result cache path and filename'],
+            ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
+            ['arg' => '--migrate-configuration', 'desc' => 'Migrate configuration file to current format'],
         ],
 
         'Miscellaneous Options' => [

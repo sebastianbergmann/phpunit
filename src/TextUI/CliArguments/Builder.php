@@ -69,6 +69,7 @@ final class Builder
         'loader=',
         'log-junit=',
         'log-teamcity=',
+        'migrate-configuration',
         'no-configuration',
         'no-coverage',
         'no-logging',
@@ -172,6 +173,7 @@ final class Builder
         $failOnWarning                              = null;
         $filter                                     = null;
         $generateConfiguration                      = null;
+        $migrateConfiguration                       = null;
         $groups                                     = null;
         $help                                       = null;
         $includePath                                = null;
@@ -340,6 +342,11 @@ final class Builder
 
                 case '--generate-configuration':
                     $generateConfiguration = true;
+
+                    break;
+
+                case '--migrate-configuration':
+                    $migrateConfiguration = true;
 
                     break;
 
@@ -786,6 +793,7 @@ final class Builder
             $failOnWarning,
             $filter,
             $generateConfiguration,
+            $migrateConfiguration,
             $groups,
             $help,
             $includePath,
