@@ -155,6 +155,8 @@ Here is a detailed list of changes for the configuration of code coverage and lo
 * Using `<logging><log type="testdox-xml" target="testdox.xml"/></logging>` to configure the TestDox XML logger is now deprecated, please use `<logging><testdoxXml outputFile="testdox.xml"/></logging>` instead
 * Using `<logging><log type="plain" target="logfile.txt"/></logging>` to configure the plain text logger is now deprecated, please use `<logging><text outputFile="logfile.txt"/></logging>` instead
 
+If you have an XML configuration file that validates against [PHPUnit 9.2's XML schema](https://schema.phpunit.de/9.2/phpunit.xsd), then you can use the new `--migrate-configuration` CLI option to automatically migrate your XML configuration file to the new format.
+
 ### Removed
 
 * [#4297](https://github.com/sebastianbergmann/phpunit/issues/4297): Deprecate `at()` matcher
