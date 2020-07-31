@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.12.2@7c7ebd068f8acaba211d4a2c707c4ba90874fa26">
+<files psalm-version="3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -1296,9 +1296,6 @@
     </UnusedMethod>
   </file>
   <file src="src/Framework/TestFailure.php">
-    <PossiblyNullReference occurrences="1">
-      <code>getDiff</code>
-    </PossiblyNullReference>
     <PossiblyUnusedMethod occurrences="5">
       <code>toString</code>
       <code>getExceptionAsString</code>
@@ -1316,10 +1313,11 @@
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/TestResult.php">
-    <DeprecatedClass occurrences="3">
+    <DeprecatedClass occurrences="4">
       <code>TestListener[]</code>
       <code>TestListener</code>
       <code>TestListener</code>
+      <code>private $listeners = [];</code>
     </DeprecatedClass>
     <DeprecatedMethod occurrences="3">
       <code>addWarning</code>
@@ -1983,11 +1981,6 @@
       <code>removeChild</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrator.php">
-    <UnusedClass occurrences="1">
-      <code>Migrator</code>
-    </UnusedClass>
-  </file>
   <file src="src/TextUI/XmlConfiguration/PHP/Constant.php">
     <MissingParamType occurrences="1">
       <code>$value</code>
@@ -2406,9 +2399,6 @@
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>is_string($value)</code>
     </RedundantConditionGivenDocblockType>
-    <UnusedVariable occurrences="1">
-      <code>$i</code>
-    </UnusedVariable>
   </file>
   <file src="src/Util/TestDox/ResultPrinter.php">
     <DeprecatedInterface occurrences="1">
