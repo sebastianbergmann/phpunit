@@ -110,7 +110,7 @@ class Command
     {
         $this->handleArguments($argv);
 
-        $runner = new TestRunner($this->arguments['loader']);
+        $runner = $this->createRunner();
 
         if ($this->arguments['test'] instanceof TestSuite) {
             $suite = $this->arguments['test'];
@@ -158,6 +158,14 @@ class Command
         }
 
         return $return;
+    }
+
+    /**
+     * Create a TestRunner, override in subclasses.
+     */
+    protected function createRunner(): TestRunner
+    {
+        return new TestRunner($this->arguments['loader']);
     }
 
     /**
