@@ -22,16 +22,24 @@ use function trim;
  */
 final class ExecutionOrderDependency
 {
-    /* @var string */
+    /**
+     * @var string
+     */
     private $className = '';
 
-    /* @var string */
+    /**
+     * @var string
+     */
     private $methodName = '';
 
-    /* @var bool */
+    /**
+     * @var bool
+     */
     private $useShallowClone = false;
 
-    /* @var bool */
+    /**
+     * @var bool
+     */
     private $useDeepClone = false;
 
     public static function createFromDependsAnnotation(string $className, string $annotation): self
@@ -56,9 +64,9 @@ final class ExecutionOrderDependency
     }
 
     /**
-     * @param list<ExecutionOrderDependency> $dependencies
+     * @psalm-param list<ExecutionOrderDependency> $dependencies
      *
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public static function filterInvalid(array $dependencies): array
     {
@@ -68,10 +76,10 @@ final class ExecutionOrderDependency
     }
 
     /**
-     * @param list<ExecutionOrderDependency> $existing
-     * @param list<ExecutionOrderDependency> $additional
+     * @psalm-param list<ExecutionOrderDependency> $existing
+     * @psalm-param list<ExecutionOrderDependency> $additional
      *
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public static function mergeUnique(array $existing, array $additional): array
     {
@@ -92,10 +100,10 @@ final class ExecutionOrderDependency
     }
 
     /**
-     * @param list<ExecutionOrderDependency> $left
-     * @param list<ExecutionOrderDependency> $right
+     * @psalm-param list<ExecutionOrderDependency> $left
+     * @psalm-param list<ExecutionOrderDependency> $right
      *
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public static function diff(array $left, array $right): array
     {
