@@ -67,8 +67,10 @@ final class GlobalState
             $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
         }
 
-        for ($i = count($files) - 1; $i > 0; $i--) {
-            $file = $files[$i];
+        // Do not process bootstrap script
+        unset($files[0]);
+
+        foreach (\array_reverse($files) as $file) {
 
             if (!empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) &&
                 in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) {
