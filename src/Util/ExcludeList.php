@@ -50,6 +50,7 @@ use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Type\TypeName;
 use SebastianBergmann\Version;
+use Symfony\Polyfill\Ctype\Ctype;
 use TheSeer\Tokenizer\Tokenizer;
 use Webmozart\Assert\Assert;
 
@@ -148,6 +149,9 @@ final class ExcludeList
 
         // sebastian/version
         Version::class => 1,
+
+        // symfony/polyfill-ctype
+        Ctype::class => 1,
 
         // theseer/tokenizer
         Tokenizer::class => 1,
