@@ -60,7 +60,7 @@ final class XmlTest extends TestCase
         return $data;
     }
 
-    public function testLoadEmptyString(): void
+    public function testCannotLoadXmlFromEmptyString(): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Could not load XML from empty string');
