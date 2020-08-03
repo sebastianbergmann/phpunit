@@ -10,7 +10,7 @@
 namespace PHPUnit\Util;
 
 use function array_keys;
-use function count;
+use function array_reverse;
 use function defined;
 use function get_defined_constants;
 use function get_included_files;
@@ -70,8 +70,7 @@ final class GlobalState
         // Do not process bootstrap script
         unset($files[0]);
 
-        foreach (\array_reverse($files) as $file) {
-
+        foreach (array_reverse($files) as $file) {
             if (!empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) &&
                 in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) {
                 continue;
