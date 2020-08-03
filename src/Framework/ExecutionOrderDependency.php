@@ -70,9 +70,14 @@ final class ExecutionOrderDependency
      */
     public static function filterInvalid(array $dependencies): array
     {
-        return array_values(array_filter($dependencies, function (self $d) {
-            return $d->isValid();
-        }));
+        return array_values(
+            array_filter(
+                $dependencies,
+                static function (self $d) {
+                    return $d->isValid();
+                }
+            )
+        );
     }
 
     /**
@@ -83,9 +88,12 @@ final class ExecutionOrderDependency
      */
     public static function mergeUnique(array $existing, array $additional): array
     {
-        $existingTargets = array_map(static function ($dependency) {
-            return $dependency->getTarget();
-        }, $existing);
+        $existingTargets = array_map(
+            static function ($dependency) {
+                return $dependency->getTarget();
+            },
+            $existing
+        );
 
         foreach ($additional as $dependency) {
             if (in_array($dependency->getTarget(), $existingTargets, true)) {
@@ -116,9 +124,12 @@ final class ExecutionOrderDependency
         }
 
         $diff         = [];
-        $rightTargets = array_map(static function ($dependency) {
-            return $dependency->getTarget();
-        }, $right);
+        $rightTargets = array_map(
+            static function ($dependency) {
+                return $dependency->getTarget();
+            },
+            $right
+        );
 
         foreach ($left as $dependency) {
             if (in_array($dependency->getTarget(), $rightTargets, true)) {
