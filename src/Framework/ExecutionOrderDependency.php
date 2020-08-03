@@ -145,7 +145,7 @@ final class ExecutionOrderDependency
     public function __construct(string $classOrCallableName, ?string $methodName = null, ?string $option = null)
     {
         if ($classOrCallableName === '') {
-            return $this;
+            return;
         }
 
         if (strpos($classOrCallableName, '::') !== false) {
@@ -160,8 +160,6 @@ final class ExecutionOrderDependency
         } elseif ($option === 'shallowClone') {
             $this->useShallowClone = true;
         }
-
-        return $this;
     }
 
     public function __toString(): string
