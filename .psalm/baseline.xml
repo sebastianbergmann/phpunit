@@ -5,7 +5,10 @@
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
     </ArgumentTypeCoercion>
-    <DeprecatedMethod occurrences="1"/>
+    <DeprecatedMethod occurrences="3">
+      <code>Xml::import($expectedElement)</code>
+      <code>Xml::import($actualElement)</code>
+    </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="20">
       <code>is_string($key)</code>
       <code>is_int($key) || is_string($key)</code>
@@ -145,9 +148,15 @@
       <code>new TraversableContainsOnly($className, false)</code>
       <code>new IsType($type)</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="2">
+    <PossiblyInvalidArgument occurrences="8">
       <code>$expected</code>
       <code>$expected</code>
+      <code>$actualXml</code>
+      <code>$actualXml</code>
+      <code>$expectedXml</code>
+      <code>$actualXml</code>
+      <code>$expectedXml</code>
+      <code>$actualXml</code>
     </PossiblyInvalidArgument>
     <PossiblyUnusedMethod occurrences="1">
       <code>getCount</code>
@@ -2470,9 +2479,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$item</code>
     </ArgumentTypeCoercion>
-    <DocblockTypeContradiction occurrences="1">
-      <code>is_string($actual)</code>
-    </DocblockTypeContradiction>
     <InvalidStringClass occurrences="1">
       <code>new $className</code>
     </InvalidStringClass>
