@@ -26,6 +26,7 @@ use PharIo\Version\Version as PharIoVersion;
 use phpDocumentor\Reflection\DocBlock;
 use phpDocumentor\Reflection\Project;
 use phpDocumentor\Reflection\Type;
+use PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
 use ReflectionClass;
@@ -34,12 +35,14 @@ use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeUnit\CodeUnit;
 use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 use SebastianBergmann\Comparator\Comparator;
+use SebastianBergmann\Complexity\Calculator;
 use SebastianBergmann\Diff\Diff;
 use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Exporter\Exporter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\LinesOfCode\Counter;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
 use SebastianBergmann\RecursionContext\Context;
 use SebastianBergmann\ResourceOperations\ResourceOperations;
@@ -64,6 +67,9 @@ final class ExcludeList
 
         // myclabs/deepcopy
         DeepCopy::class => 1,
+
+        // nikic/php-parser
+        Parser::class => 1,
 
         // phar-io/manifest
         Manifest::class => 1,
@@ -110,6 +116,9 @@ final class ExcludeList
         // sebastian/comparator
         Comparator::class => 1,
 
+        // sebastian/complexity
+        Calculator::class => 1,
+
         // sebastian/diff
         Diff::class => 1,
 
@@ -121,6 +130,9 @@ final class ExcludeList
 
         // sebastian/global-state
         Snapshot::class => 1,
+
+        // sebastian/lines-of-code
+        Counter::class => 1,
 
         // sebastian/object-enumerator
         Enumerator::class => 1,
