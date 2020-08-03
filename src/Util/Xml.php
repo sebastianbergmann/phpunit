@@ -41,6 +41,9 @@ use ReflectionException;
  */
 final class Xml
 {
+    /**
+     * @deprecated Only used by assertEqualXMLStructure()
+     */
     public static function import(DOMElement $element): DOMElement
     {
         return (new DOMDocument)->importNode($element, true);
