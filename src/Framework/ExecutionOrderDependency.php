@@ -11,9 +11,9 @@ namespace PHPUnit\Framework;
 
 use function array_filter;
 use function array_map;
-use function array_search;
 use function count;
 use function explode;
+use function in_array;
 use function strpos;
 use function trim;
 
@@ -80,7 +80,7 @@ final class ExecutionOrderDependency
         }, $existing);
 
         foreach ($additional as $dependency) {
-            if (array_search($dependency->getTarget(), $existingTargets, true) !== false) {
+            if (in_array($dependency->getTarget(), $existingTargets, true)) {
                 continue;
             }
 
@@ -113,7 +113,7 @@ final class ExecutionOrderDependency
         }, $right);
 
         foreach ($left as $dependency) {
-            if (array_search($dependency->getTarget(), $rightTargets, true) !== false) {
+            if (in_array($dependency->getTarget(), $rightTargets, true)) {
                 continue;
             }
 
