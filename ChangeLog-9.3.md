@@ -161,6 +161,7 @@ If you have an XML configuration file that validates against [PHPUnit 9.2's XML 
 ### Removed
 
 * [#4297](https://github.com/sebastianbergmann/phpunit/issues/4297): Deprecate `at()` matcher
+* [#4396](https://github.com/sebastianbergmann/phpunit/issues/4396): Deprecate confusing parameter options for XML assertions
 * The `cacheTokens` attribute is no longer supported in XML configuration files
 
 [9.3.0]: https://github.com/sebastianbergmann/phpunit/compare/9.2...master

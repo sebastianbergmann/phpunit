@@ -2138,6 +2138,10 @@ abstract class Assert
      */
     public static function assertXmlStringEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
     {
+        if (!is_string($actualXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         $expected = Xml::loadFile($expectedFile);
         $actual   = Xml::load($actualXml);
 
@@ -2155,6 +2159,10 @@ abstract class Assert
      */
     public static function assertXmlStringNotEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
     {
+        if (!is_string($actualXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         $expected = Xml::loadFile($expectedFile);
         $actual   = Xml::load($actualXml);
 
@@ -2173,6 +2181,14 @@ abstract class Assert
      */
     public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
     {
+        if (!is_string($expectedXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $expectedXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
+        if (!is_string($actualXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         $expected = Xml::load($expectedXml);
         $actual   = Xml::load($actualXml);
 
@@ -2191,6 +2207,14 @@ abstract class Assert
      */
     public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
     {
+        if (!is_string($expectedXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $expectedXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
+        if (!is_string($actualXml)) {
+            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+        }
+
         $expected = Xml::load($expectedXml);
         $actual   = Xml::load($actualXml);
 
