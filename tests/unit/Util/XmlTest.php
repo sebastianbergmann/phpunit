@@ -68,22 +68,6 @@ final class XmlTest extends TestCase
         Xml::load('');
     }
 
-    public function testLoadArray(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Could not load XML from array');
-
-        Xml::load([1, 2, 3]);
-    }
-
-    public function testLoadBoolean(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Could not load XML from boolean');
-
-        Xml::load(false);
-    }
-
     /**
      * @testdox Nested xmlToVariable()
      */

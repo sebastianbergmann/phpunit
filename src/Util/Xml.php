@@ -17,9 +17,7 @@ use function dirname;
 use function error_reporting;
 use function file_get_contents;
 use function getcwd;
-use function gettype;
 use function htmlspecialchars;
-use function is_string;
 use function libxml_get_errors;
 use function libxml_use_internal_errors;
 use function mb_convert_encoding;
@@ -50,33 +48,10 @@ final class Xml
     }
 
     /**
-     * Load an $actual document into a DOMDocument.  This is called
-     * from the selector assertions.
-     *
-     * If $actual is already a DOMDocument, it is returned with
-     * no changes.  Otherwise, $actual is loaded into a new DOMDocument
-     * as either HTML or XML, depending on the value of $isHtml. If $isHtml is
-     * false and $xinclude is true, xinclude is performed on the loaded
-     * DOMDocument.
-     *
-     * Note: prior to PHPUnit 3.3.0, this method loaded a file and
-     * not a string as it currently does.  To load a file into a
-     * DOMDocument, use loadFile() instead.
-     *
-     * @param DOMDocument|string $actual
-     *
      * @throws Exception
      */
-    public static function load($actual, bool $isHtml = false, string $filename = '', bool $xinclude = false, bool $strict = false): DOMDocument
+    public static function load(string $actual, bool $isHtml = false, string $filename = '', bool $xinclude = false, bool $strict = false): DOMDocument
     {
-        if ($actual instanceof DOMDocument) {
-            return $actual;
-        }
-
-        if (!is_string($actual)) {
-            throw new Exception('Could not load XML from ' . gettype($actual));
-        }
-
         if ($actual === '') {
             throw new Exception('Could not load XML from empty string');
         }
@@ -142,8 +117,6 @@ final class Xml
     }
 
     /**
-     * Loads an XML (or HTML) file into a DOMDocument object.
-     *
      * @throws Exception
      */
     public static function loadFile(string $filename, bool $isHtml = false, bool $xinclude = false, bool $strict = false): DOMDocument
