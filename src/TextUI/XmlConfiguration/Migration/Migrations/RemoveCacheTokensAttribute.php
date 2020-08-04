@@ -11,7 +11,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use DOMDocument;
 
-class RemoveCacheTokensAttribute implements Migration
+final class RemoveCacheTokensAttribute implements Migration
 {
     public function migrate(DOMDocument $document): void
     {
