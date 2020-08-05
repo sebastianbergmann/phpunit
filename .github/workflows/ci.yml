@@ -76,23 +76,6 @@ jobs:
       - name: Run roave/backward-compatibility-check
         run: ./tools/roave-backward-compatibility-check --from=9.2.4
 
-  lint-xml-configuration:
-    name: Lint XML Configuration
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Build Docker image
-        uses: ./.docker/lint-xml-configuration
-
-      - name: Lint XML configuration files
-        uses: ./.docker/lint-xml-configuration
-        with:
-          args: bash ./build/scripts/lint-xml-configuration
-
   tests:
     name: Tests
 

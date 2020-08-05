@@ -15,6 +15,7 @@ use function ord;
 use function sprintf;
 use DOMDocument;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\Version;
 
 /**
  * @small
@@ -129,7 +130,7 @@ final class XmlTest extends TestCase
                 true,
                 true
             ),
-            __DIR__ . '/../../../phpunit.xsd'
+            (new SchemaFinder)->find(Version::series())
         );
 
         $this->assertFalse($result->hasValidationErrors());
@@ -145,7 +146,7 @@ final class XmlTest extends TestCase
                 true,
                 true
             ),
-            __DIR__ . '/../../../phpunit.xsd'
+            (new SchemaFinder)->find(Version::series())
         );
 
         $this->assertTrue($result->hasValidationErrors());
