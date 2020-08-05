@@ -7,10 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util;
+namespace PHPUnit\Util\Xml;
 
 use function is_file;
 use function sprintf;
+use PHPUnit\Util\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -25,7 +26,7 @@ final class SchemaFinder
         if (defined('__PHPUNIT_PHAR_ROOT__')) {
             $filename = __PHPUNIT_PHAR_ROOT__ . '/schema/' . $version . '.xsd';
         } else {
-            $filename = __DIR__ . '/../../schema/' . $version . '.xsd';
+            $filename = __DIR__ . '/../../../schema/' . $version . '.xsd';
         }
 
         if (!is_file($filename)) {

@@ -12,7 +12,6 @@ namespace PHPUnit\Util\Xml;
 use const PHP_EOL;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
-use PHPUnit\Util\SchemaFinder;
 use PHPUnit\Util\Xml;
 
 /**
