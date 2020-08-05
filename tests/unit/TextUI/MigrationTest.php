@@ -10,7 +10,7 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 final class MigrationTest extends TestCase
 {
@@ -20,8 +20,8 @@ final class MigrationTest extends TestCase
     public function testMigratesPhpUnit92ConfigurationToPhpUnit93(): void
     {
         $this->assertEquals(
-            Xml::loadFile(__DIR__ . '/../../_files/XmlConfigurationMigration/output-9.3.xml'),
-            Xml::load(
+            (new XmlLoader)->loadFile(__DIR__ . '/../../_files/XmlConfigurationMigration/output-9.3.xml'),
+            (new XmlLoader)->load(
                 (new Migrator)->migrate(
                     __DIR__ . '/../../_files/XmlConfigurationMigration/input-9.2.xml'
                 )

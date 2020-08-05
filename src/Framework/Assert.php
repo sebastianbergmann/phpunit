@@ -82,6 +82,7 @@ use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 /**
  * A set of assertion methods.
@@ -2106,8 +2107,8 @@ abstract class Assert
      */
     public static function assertXmlFileEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        $expected = Xml::loadFile($expectedFile);
-        $actual   = Xml::loadFile($actualFile);
+        $expected = (new XmlLoader)->loadFile($expectedFile);
+        $actual   = (new XmlLoader)->loadFile($actualFile);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2121,8 +2122,8 @@ abstract class Assert
      */
     public static function assertXmlFileNotEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
-        $expected = Xml::loadFile($expectedFile);
-        $actual   = Xml::loadFile($actualFile);
+        $expected = (new XmlLoader)->loadFile($expectedFile);
+        $actual   = (new XmlLoader)->loadFile($actualFile);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2142,8 +2143,8 @@ abstract class Assert
             self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
         }
 
-        $expected = Xml::loadFile($expectedFile);
-        $actual   = Xml::load($actualXml);
+        $expected = (new XmlLoader)->loadFile($expectedFile);
+        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2163,8 +2164,8 @@ abstract class Assert
             self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
         }
 
-        $expected = Xml::loadFile($expectedFile);
-        $actual   = Xml::load($actualXml);
+        $expected = (new XmlLoader)->loadFile($expectedFile);
+        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2189,8 +2190,8 @@ abstract class Assert
             self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
         }
 
-        $expected = Xml::load($expectedXml);
-        $actual   = Xml::load($actualXml);
+        $expected = (new XmlLoader)->load($expectedXml);
+        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2215,8 +2216,8 @@ abstract class Assert
             self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
         }
 
-        $expected = Xml::load($expectedXml);
-        $actual   = Xml::load($actualXml);
+        $expected = (new XmlLoader)->load($expectedXml);
+        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertNotEquals($expected, $actual, $message);
     }

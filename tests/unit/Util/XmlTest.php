@@ -59,14 +59,6 @@ final class XmlTest extends TestCase
         return $data;
     }
 
-    public function testCannotLoadXmlFromEmptyString(): void
-    {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Could not load XML from empty string');
-
-        Xml::load('');
-    }
-
     /**
      * @testdox Nested xmlToVariable()
      */

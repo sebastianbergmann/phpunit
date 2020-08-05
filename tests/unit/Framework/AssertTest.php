@@ -40,7 +40,7 @@ use PHPUnit\TestFixture\SampleArrayAccess;
 use PHPUnit\TestFixture\SampleClass;
 use PHPUnit\TestFixture\Struct;
 use PHPUnit\Util\Exception as UtilException;
-use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
 use SplObjectStorage;
 use stdClass;
 
@@ -2492,24 +2492,24 @@ XML;
             [$storage1, $storage2],
             // DOMDocument
             [
-                Xml::load('<root></root>'),
-                Xml::load('<bar/>'),
+                (new XmlLoader)->load('<root></root>'),
+                (new XmlLoader)->load('<bar/>'),
             ],
             [
-                Xml::load('<foo attr1="bar"/>'),
-                Xml::load('<foo attr1="foobar"/>'),
+                (new XmlLoader)->load('<foo attr1="bar"/>'),
+                (new XmlLoader)->load('<foo attr1="foobar"/>'),
             ],
             [
-                Xml::load('<foo> bar </foo>'),
-                Xml::load('<foo />'),
+                (new XmlLoader)->load('<foo> bar </foo>'),
+                (new XmlLoader)->load('<foo />'),
             ],
             [
-                Xml::load('<foo xmlns="urn:myns:bar"/>'),
-                Xml::load('<foo xmlns="urn:notmyns:bar"/>'),
+                (new XmlLoader)->load('<foo xmlns="urn:myns:bar"/>'),
+                (new XmlLoader)->load('<foo xmlns="urn:notmyns:bar"/>'),
             ],
             [
-                Xml::load('<foo> bar </foo>'),
-                Xml::load('<foo> bir </foo>'),
+                (new XmlLoader)->load('<foo> bar </foo>'),
+                (new XmlLoader)->load('<foo> bir </foo>'),
             ],
             [
                 new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
@@ -2601,20 +2601,20 @@ XML;
             [$storage1, $storage2],
             // DOMDocument
             [
-                Xml::load('<root></root>'),
-                Xml::load('<root/>'),
+                (new XmlLoader)->load('<root></root>'),
+                (new XmlLoader)->load('<root/>'),
             ],
             [
-                Xml::load('<root attr="bar"></root>'),
-                Xml::load('<root attr="bar"/>'),
+                (new XmlLoader)->load('<root attr="bar"></root>'),
+                (new XmlLoader)->load('<root attr="bar"/>'),
             ],
             [
-                Xml::load('<root><foo attr="bar"></foo></root>'),
-                Xml::load('<root><foo attr="bar"/></root>'),
+                (new XmlLoader)->load('<root><foo attr="bar"></foo></root>'),
+                (new XmlLoader)->load('<root><foo attr="bar"/></root>'),
             ],
             [
-                Xml::load("<root>\n  <child/>\n</root>"),
-                Xml::load('<root><child/></root>'),
+                (new XmlLoader)->load("<root>\n  <child/>\n</root>"),
+                (new XmlLoader)->load('<root><child/></root>'),
             ],
             [
                 new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),

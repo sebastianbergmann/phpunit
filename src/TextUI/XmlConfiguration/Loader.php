@@ -52,6 +52,7 @@ use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\VersionComparisonOperator;
 use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
 use PHPUnit\Util\Xml\Validator;
 
@@ -65,7 +66,7 @@ final class Loader
      */
     public function load(string $filename): Configuration
     {
-        $document = Xml::loadFile($filename, false, true, true);
+        $document = (new XmlLoader)->loadFile($filename, false, true, true);
         $xpath    = new DOMXPath($document);
 
         try {

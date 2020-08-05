@@ -12,7 +12,6 @@ namespace PHPUnit\Util\Xml;
 use const PHP_EOL;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
-use PHPUnit\Util\Xml;
 
 /**
  * @small
@@ -25,7 +24,7 @@ final class ValidatorTest extends TestCase
     public function testValidatesValidXmlFile(): void
     {
         $result = (new Validator())->validate(
-            Xml::loadFile(
+            (new Loader)->loadFile(
                 __DIR__ . '/../../../../phpunit.xml',
                 false,
                 true,
@@ -41,7 +40,7 @@ final class ValidatorTest extends TestCase
     public function testDoesNotValidateInvalidXmlFile(): void
     {
         $result = (new Validator())->validate(
-            Xml::loadFile(
+            (new Loader)->loadFile(
                 __DIR__ . '/../../../end-to-end/migration/migration-possibility-is-detected/phpunit.xml',
                 false,
                 true,

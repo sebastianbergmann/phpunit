@@ -60,7 +60,7 @@ use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
 use PHPUnit\Util\XdebugFilterScriptGenerator;
-use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
 use PHPUnit\Util\Xml\Validator;
 use ReflectionClass;
@@ -1238,7 +1238,7 @@ final class TestRunner extends BaseTestRunner
         try {
             $oldXsdFilename = (new SchemaFinder)->find('9.2');
 
-            $configurationDocument = Xml::loadFile(
+            $configurationDocument = (new XmlLoader)->loadFile(
                 $filename,
                 false,
                 true,

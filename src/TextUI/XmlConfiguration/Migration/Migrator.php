@@ -11,7 +11,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function sprintf;
 use PHPUnit\Util\Exception as UtilException;
-use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
 use PHPUnit\Util\Xml\Validator;
 
@@ -30,7 +30,7 @@ final class Migrator
     {
         $oldXsdFilename = (new SchemaFinder)->find('9.2');
 
-        $configurationDocument = Xml::loadFile(
+        $configurationDocument = (new XmlLoader)->loadFile(
             $filename,
             false,
             true,
