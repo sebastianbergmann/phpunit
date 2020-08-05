@@ -30,7 +30,6 @@ use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
-use PHPUnit\Util\Xml\Exception as XmlException;
 use stdClass;
 
 /**
@@ -40,7 +39,7 @@ final class XmlConfigurationTest extends TestCase
 {
     public function testExceptionIsThrownForNotExistingConfigurationFile(): void
     {
-        $this->expectException(XmlException::class);
+        $this->expectException(Exception::class);
 
         /* @noinspection UnusedFunctionResultInspection */
         $this->configuration('not_existing_file.xml');
