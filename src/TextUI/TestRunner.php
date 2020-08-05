@@ -1246,7 +1246,7 @@ final class TestRunner extends BaseTestRunner
             );
 
             return !(new Validator)->validate($configurationDocument, $oldXsdFilename)->hasValidationErrors();
-        } catch (\PHPUnit\Util\Exception $e) {
+        } catch (\PHPUnit\Util\Xml\Exception $e) {
             return false;
         }
     }

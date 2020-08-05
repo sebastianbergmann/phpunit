@@ -48,10 +48,10 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Xml as TestDoxXml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Text;
 use PHPUnit\TextUI\XmlConfiguration\TestSuite as TestSuiteConfiguration;
-use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\VersionComparisonOperator;
 use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
 use PHPUnit\Util\Xml\Validator;
@@ -66,12 +66,21 @@ final class Loader
      */
     public function load(string $filename): Configuration
     {
-        $document = (new XmlLoader)->loadFile($filename, false, true, true);
-        $xpath    = new DOMXPath($document);
+        try {
+            $document = (new XmlLoader)->loadFile($filename, false, true, true);
+        } catch (XmlException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+
+        $xpath = new DOMXPath($document);
 
         try {
             $xsdFilename = (new SchemaFinder)->find(Version::series());
-        } catch (UtilException $e) {
+        } catch (XmlException $e) {
             throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),

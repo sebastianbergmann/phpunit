@@ -10,7 +10,7 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function sprintf;
-use PHPUnit\Util\Exception as UtilException;
+use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
 use PHPUnit\Util\Xml\Validator;
@@ -24,7 +24,7 @@ final class Migrator
      * @throws MigrationBuilderException
      * @throws MigrationException
      * @throws Exception
-     * @throws UtilException
+     * @throws XmlException
      */
     public function migrate(string $filename): string
     {

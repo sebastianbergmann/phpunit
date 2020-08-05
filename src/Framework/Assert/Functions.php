@@ -1830,7 +1830,7 @@ function assertXmlFileNotEqualsXmlFile(string $expectedFile, string $actualFile,
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws \PHPUnit\Util\Exception
+ * @throws \PHPUnit\Util\Xml\Exception
  *
  * @see Assert::assertXmlStringEqualsXmlFile
  */
@@ -1846,7 +1846,7 @@ function assertXmlStringEqualsXmlFile(string $expectedFile, $actualXml, string $
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws \PHPUnit\Util\Exception
+ * @throws \PHPUnit\Util\Xml\Exception
  *
  * @see Assert::assertXmlStringNotEqualsXmlFile
  */
@@ -1863,7 +1863,7 @@ function assertXmlStringNotEqualsXmlFile(string $expectedFile, $actualXml, strin
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws \PHPUnit\Util\Exception
+ * @throws \PHPUnit\Util\Xml\Exception
  *
  * @see Assert::assertXmlStringEqualsXmlString
  */
@@ -1880,7 +1880,7 @@ function assertXmlStringEqualsXmlString($expectedXml, $actualXml, string $messag
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
- * @throws \PHPUnit\Util\Exception
+ * @throws \PHPUnit\Util\Xml\Exception
  *
  * @see Assert::assertXmlStringNotEqualsXmlString
  */
