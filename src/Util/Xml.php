@@ -251,19 +251,6 @@ final class Xml
         return $variable;
     }
 
-    public static function validate(DOMDocument $document, string $xsdFilename): XmlValidationResult
-    {
-        $originalErrorHandling = libxml_use_internal_errors(true);
-
-        $document->schemaValidate($xsdFilename);
-
-        $errors = libxml_get_errors();
-        libxml_clear_errors();
-        libxml_use_internal_errors($originalErrorHandling);
-
-        return XmlValidationResult::fromArray($errors);
-    }
-
     private static function convertToUtf8(string $string): string
     {
         if (!self::isUtf8($string)) {

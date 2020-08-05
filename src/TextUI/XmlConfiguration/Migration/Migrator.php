@@ -13,6 +13,7 @@ use function sprintf;
 use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\SchemaFinder;
 use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Validator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -36,7 +37,7 @@ final class Migrator
             true
         );
 
-        $validationResult = Xml::validate($configurationDocument, $oldXsdFilename);
+        $validationResult = (new Validator)->validate($configurationDocument, $oldXsdFilename);
 
         if ($validationResult->hasValidationErrors()) {
             throw new Exception(

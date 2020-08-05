@@ -9,19 +9,17 @@
  */
 namespace PHPUnit\Util;
 
-use const PHP_EOL;
 use function chr;
 use function ord;
 use function sprintf;
 use DOMDocument;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\Version;
 
 /**
  * @small
  *
  * @covers \PHPUnit\Util\Xml
- * @covers \PHPUnit\Util\XmlValidationResult
+ * @covers \PHPUnit\Util\Xml\ValidationResult
  */
 final class XmlTest extends TestCase
 {
@@ -119,37 +117,5 @@ final class XmlTest extends TestCase
 
         $this->assertEquals('one', $actual->getMessage());
         $this->assertEquals('two', $actual->getPrevious()->getMessage());
-    }
-
-    public function testValidatesValidXmlFile(): void
-    {
-        $result = Xml::validate(
-            Xml::loadFile(
-                __DIR__ . '/../../../phpunit.xml',
-                false,
-                true,
-                true
-            ),
-            (new SchemaFinder)->find(Version::series())
-        );
-
-        $this->assertFalse($result->hasValidationErrors());
-        $this->assertSame('', $result->asString());
-    }
-
-    public function testDoesNotValidateInvalidXmlFile(): void
-    {
-        $result = Xml::validate(
-            Xml::loadFile(
-                __DIR__ . '/../../end-to-end/migration/migration-possibility-is-detected/phpunit.xml',
-                false,
-                true,
-                true
-            ),
-            (new SchemaFinder)->find(Version::series())
-        );
-
-        $this->assertTrue($result->hasValidationErrors());
-        $this->assertSame(PHP_EOL . '  Line 17:' . PHP_EOL . '  - Element \'filter\': This element is not expected.' . PHP_EOL, $result->asString());
     }
 }

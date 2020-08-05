@@ -53,6 +53,7 @@ use PHPUnit\Util\SchemaFinder;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\VersionComparisonOperator;
 use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Validator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -79,7 +80,7 @@ final class Loader
 
         return new Configuration(
             $filename,
-            Xml::validate($document, $xsdFilename),
+            (new Validator)->validate($document, $xsdFilename),
             $this->extensions($filename, $xpath),
             $this->codeCoverage($filename, $xpath, $document),
             $this->groups($xpath),

@@ -62,6 +62,7 @@ use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
 use PHPUnit\Util\XdebugFilterScriptGenerator;
 use PHPUnit\Util\Xml;
+use PHPUnit\Util\Xml\Validator;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -1244,7 +1245,7 @@ final class TestRunner extends BaseTestRunner
                 true
             );
 
-            return !Xml::validate($configurationDocument, $oldXsdFilename)->hasValidationErrors();
+            return !(new Validator)->validate($configurationDocument, $oldXsdFilename)->hasValidationErrors();
         } catch (\PHPUnit\Util\Exception $e) {
             return false;
         }

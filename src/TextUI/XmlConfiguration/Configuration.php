@@ -11,7 +11,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
-use PHPUnit\Util\XmlValidationResult;
+use PHPUnit\Util\Xml\ValidationResult;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -25,7 +25,7 @@ final class Configuration
     private $filename;
 
     /**
-     * @var XmlValidationResult
+     * @var ValidationResult
      */
     private $validationResult;
 
@@ -74,7 +74,7 @@ final class Configuration
      */
     private $testSuite;
 
-    public function __construct(string $filename, XmlValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, ExtensionCollection $listeners, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(string $filename, ValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, ExtensionCollection $listeners, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
         $this->filename         = $filename;
         $this->validationResult = $validationResult;
