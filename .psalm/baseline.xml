@@ -162,7 +162,18 @@
       <code>$expectedXml</code>
       <code>$actualXml</code>
     </PossiblyInvalidArgument>
-    <PossiblyUnusedMethod occurrences="1">
+    <PossiblyUnusedMethod occurrences="12">
+      <code>assertArrayHasKey</code>
+      <code>assertArrayNotHasKey</code>
+      <code>assertCount</code>
+      <code>assertNotCount</code>
+      <code>assertSameSize</code>
+      <code>assertNotSameSize</code>
+      <code>assertXmlStringEqualsXmlFile</code>
+      <code>assertXmlStringNotEqualsXmlFile</code>
+      <code>assertXmlStringEqualsXmlString</code>
+      <code>assertXmlStringNotEqualsXmlString</code>
+      <code>assertEqualXMLStructure</code>
       <code>getCount</code>
     </PossiblyUnusedMethod>
     <RedundantCondition occurrences="1">
@@ -174,7 +185,7 @@
       <code>InvokedAtIndexMatcher</code>
       <code>new InvokedAtIndexMatcher($index)</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="11">
+    <DeprecatedMethod occurrences="10">
       <code>Assert::assertNotIsReadable(...func_get_args())</code>
       <code>Assert::assertNotIsWritable(...func_get_args())</code>
       <code>Assert::assertDirectoryNotExists(...func_get_args())</code>
@@ -185,7 +196,6 @@
       <code>Assert::assertFileNotIsWritable(...func_get_args())</code>
       <code>Assert::assertRegExp(...func_get_args())</code>
       <code>Assert::assertNotRegExp(...func_get_args())</code>
-      <code>Assert::assertEqualXMLStructure(...func_get_args())</code>
     </DeprecatedMethod>
     <MissingParamType occurrences="85">
       <code>$needle</code>
@@ -292,13 +302,27 @@
       <code>Assert::directoryExists(...func_get_args())</code>
       <code>Assert::fileExists(...func_get_args())</code>
     </TooManyArguments>
-    <UnusedParam occurrences="302">
-      <code>$key</code>
-      <code>$array</code>
-      <code>$message</code>
-      <code>$key</code>
-      <code>$array</code>
-      <code>$message</code>
+    <UndefinedClass occurrences="2">
+      <code>DOMElement</code>
+      <code>DOMElement</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="14">
+      <code>array|ArrayAccess</code>
+      <code>array|ArrayAccess</code>
+      <code>Countable|iterable</code>
+      <code>Countable|iterable</code>
+      <code>Countable|iterable</code>
+      <code>Countable|iterable</code>
+      <code>Countable|iterable</code>
+      <code>Countable|iterable</code>
+      <code>DOMDocument|string</code>
+      <code>DOMDocument|string</code>
+      <code>DOMDocument|string</code>
+      <code>DOMDocument|string</code>
+      <code>DOMDocument|string</code>
+      <code>DOMDocument|string</code>
+    </UndefinedDocblockClass>
+    <UnusedParam occurrences="268">
       <code>$haystack</code>
       <code>$message</code>
       <code>$haystack</code>
@@ -317,12 +341,6 @@
       <code>$type</code>
       <code>$haystack</code>
       <code>$isNativeType</code>
-      <code>$message</code>
-      <code>$expectedCount</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$expectedCount</code>
-      <code>$haystack</code>
       <code>$message</code>
       <code>$message</code>
       <code>$message</code>
@@ -494,12 +512,6 @@
       <code>$pattern</code>
       <code>$string</code>
       <code>$message</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$message</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$message</code>
       <code>$format</code>
       <code>$string</code>
       <code>$message</code>
@@ -541,22 +553,6 @@
       <code>$message</code>
       <code>$expectedFile</code>
       <code>$actualFile</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualXml</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualXml</code>
-      <code>$message</code>
-      <code>$expectedXml</code>
-      <code>$actualXml</code>
-      <code>$message</code>
-      <code>$expectedXml</code>
-      <code>$actualXml</code>
-      <code>$message</code>
-      <code>$expectedElement</code>
-      <code>$actualElement</code>
-      <code>$checkAttributes</code>
       <code>$message</code>
       <code>$constraint</code>
       <code>$message</code>
