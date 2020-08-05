@@ -5,9 +5,11 @@
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
     </ArgumentTypeCoercion>
-    <DeprecatedMethod occurrences="3">
+    <DeprecatedMethod occurrences="5">
       <code>Xml::import($expectedElement)</code>
       <code>Xml::import($actualElement)</code>
+      <code>Xml::removeCharacterDataNodes($expectedElement)</code>
+      <code>Xml::removeCharacterDataNodes($actualElement)</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="20">
       <code>is_string($key)</code>
@@ -115,7 +117,7 @@
       <code>$value</code>
       <code>$prefix</code>
     </MissingParamType>
-    <MissingThrowsDocblock occurrences="34">
+    <MissingThrowsDocblock occurrences="36">
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>new IsType(IsType::TYPE_ARRAY)</code>
@@ -142,8 +144,10 @@
       <code>new IsType(IsType::TYPE_SCALAR)</code>
       <code>new IsType(IsType::TYPE_CALLABLE)</code>
       <code>new IsType(IsType::TYPE_ITERABLE)</code>
-      <code>Xml::loadFile($expectedFile)</code>
-      <code>Xml::loadFile($actualFile)</code>
+      <code>loadFile</code>
+      <code>loadFile</code>
+      <code>loadFile</code>
+      <code>loadFile</code>
       <code>new TraversableContainsOnly($type)</code>
       <code>new TraversableContainsOnly($className, false)</code>
       <code>new IsType($type)</code>
@@ -773,14 +777,6 @@
       <code>setClassName</code>
       <code>getOriginalException</code>
     </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/ExecutionOrderDependency.php">
-    <MissingPropertyType occurrences="4">
-      <code>$className</code>
-      <code>$methodName</code>
-      <code>$useShallowClone</code>
-      <code>$useDeepClone</code>
-    </MissingPropertyType>
   </file>
   <file src="src/Framework/IncompleteTestCase.php">
     <PossiblyUnusedMethod occurrences="1">
@@ -1645,8 +1641,8 @@
     </LessSpecificReturnStatement>
     <MissingThrowsDocblock occurrences="12">
       <code>run</code>
-      <code>getTest</code>
       <code>handleListSuites</code>
+      <code>getTest</code>
       <code>handleListTests</code>
       <code>handleListTestsXml</code>
       <code>bootstrap</code>
@@ -1882,9 +1878,6 @@
     <DeprecatedMethod occurrences="1">
       <code>legacyCodeCoverage</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="1">
-      <code>Xml::loadFile($filename, false, true, true)</code>
-    </MissingThrowsDocblock>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
