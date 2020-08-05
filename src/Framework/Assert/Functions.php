@@ -1296,7 +1296,7 @@ function assertIsResource($actual, string $message = ''): void
 }
 
 /**
- * Asserts that a variable is of type resource (closed).
+ * Asserts that a variable is of type resource and is closed.
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1476,7 +1476,7 @@ function assertIsNotResource($actual, string $message = ''): void
 }
 
 /**
- * Asserts that a variable is not of type resource (closed).
+ * Asserts that a variable is not of type resource.
  *
  * @throws ExpectationFailedException
  * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
