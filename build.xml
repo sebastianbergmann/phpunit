@@ -115,12 +115,28 @@
     <target name="phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
         <antcall target="-phar-build">
             <param name="type" value="release"/>
+            <param name="scope" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="unscoped-phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
+        <antcall target="-phar-build">
+            <param name="type" value="release"/>
+            <param name="scope" value="false"/>
         </antcall>
     </target>
 
     <target name="phar-nightly" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (nightly)">
         <antcall target="-phar-build">
             <param name="type" value="nightly"/>
+            <param name="scope" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="unscoped-phar-nightly" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (nightly)">
+        <antcall target="-phar-build">
+            <param name="type" value="nightly"/>
+            <param name="scope" value="false"/>
         </antcall>
     </target>
 
@@ -349,26 +365,14 @@
             <arg value="${type}"/>
         </exec>
 
-        <exec executable="${basedir}/tools/php-scoper" taskname="php-scoper">
-            <arg value="add-prefix" />
-            <arg value="--no-ansi" />
-            <arg value="--force" />
-            <arg value="--config" />
-            <arg path="${basedir}/build/config/php-scoper.php" />
-            <arg value="--no-interaction" />
-            <arg value="--stop-on-failure" />
-            <arg value="--output-dir" />
-            <arg path="${basedir}/build/tmp/phar-scoped" />
-            <arg value="--prefix" />
-            <arg value="PHPUnit" />
-            <arg path="${basedir}/build/tmp/phar" />
-        </exec>
+        <antcall target="-phar-scope" if:true="${scope}"/>
+        <copy todir="${basedir}/build/tmp/phar-scoped" unless:true="${scope}">
+            <fileset dir="${basedir}/build/tmp/phar">
+                <include name="**/*" />
+            </fileset>
+        </copy>
 
         <copy file="${basedir}/.phpstorm.meta.php" tofile="${basedir}/build/tmp/phar-scoped/.phpstorm.meta.php"/>
-
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/PhptTestCase.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseClass.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseMethod.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
 
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
@@ -404,6 +408,27 @@
         <chmod file="${basedir}/build/artifacts/phpunit-${_version}.phar" perm="ugo+rx"/>
 
         <delete dir="${basedir}/build/tmp"/>
+    </target>
+
+    <target name="-phar-scope">
+        <exec executable="${basedir}/tools/php-scoper" taskname="php-scoper">
+            <arg value="add-prefix" />
+            <arg value="--no-ansi" />
+            <arg value="--force" />
+            <arg value="--config" />
+            <arg path="${basedir}/build/config/php-scoper.php" />
+            <arg value="--no-interaction" />
+            <arg value="--stop-on-failure" />
+            <arg value="--output-dir" />
+            <arg path="${basedir}/build/tmp/phar-scoped" />
+            <arg value="--prefix" />
+            <arg value="PHPUnit" />
+            <arg path="${basedir}/build/tmp/phar" />
+        </exec>
+
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/PhptTestCase.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseClass.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseMethod.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
     </target>
 
     <target name="-phar-determine-version">
