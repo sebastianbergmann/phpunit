@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function sprintf;
 use PHPUnit\Util\Exception as UtilException;
+use PHPUnit\Util\SchemaFinder;
 use PHPUnit\Util\Xml;
 
 /**

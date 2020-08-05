@@ -29,6 +29,7 @@ use DOMElement;
 use DOMNodeList;
 use DOMXPath;
 use PHPUnit\Runner\TestSuiteSorter;
+use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory as FilterDirectory;
@@ -47,6 +48,8 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Text as TestDoxText;
 use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Xml as TestDoxXml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Text;
 use PHPUnit\TextUI\XmlConfiguration\TestSuite as TestSuiteConfiguration;
+use PHPUnit\Util\Exception as UtilException;
+use PHPUnit\Util\SchemaFinder;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\VersionComparisonOperator;
 use PHPUnit\Util\Xml;
@@ -56,16 +59,23 @@ use PHPUnit\Util\Xml;
  */
 final class Loader
 {
+    /**
+     * @throws Exception
+     */
     public function load(string $filename): Configuration
     {
-        $xsdFilename = __DIR__ . '/../../../phpunit.xsd';
-
-        if (defined('__PHPUNIT_PHAR_ROOT__')) {
-            $xsdFilename = __PHPUNIT_PHAR_ROOT__ . '/phpunit.xsd';
-        }
-
         $document = Xml::loadFile($filename, false, true, true);
         $xpath    = new DOMXPath($document);
+
+        try {
+            $xsdFilename = (new SchemaFinder)->find(Version::series());
+        } catch (UtilException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
 
         return new Configuration(
             $filename,

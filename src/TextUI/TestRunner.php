@@ -50,13 +50,12 @@ use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\XmlConfiguration\Configuration;
 use PHPUnit\TextUI\XmlConfiguration\ExtensionHandler;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
-use PHPUnit\TextUI\XmlConfiguration\MigrationException;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use PHPUnit\TextUI\XmlConfiguration\SchemaFinder;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
+use PHPUnit\Util\SchemaFinder;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
@@ -139,6 +138,7 @@ final class TestRunner extends BaseTestRunner
 
     /**
      * @throws \PHPUnit\Runner\Exception
+     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      * @throws Exception
      */
     public function run(TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
@@ -883,6 +883,7 @@ final class TestRunner extends BaseTestRunner
 
     /**
      * @throws Exception
+     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      */
     private function handleConfiguration(array &$arguments): void
     {
@@ -1245,8 +1246,6 @@ final class TestRunner extends BaseTestRunner
 
             return !Xml::validate($configurationDocument, $oldXsdFilename)->hasValidationErrors();
         } catch (\PHPUnit\Util\Exception $e) {
-            return false;
-        } catch (MigrationException $e) {
             return false;
         }
     }
