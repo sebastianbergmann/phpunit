@@ -75,6 +75,7 @@ foreach ($usedClasses as $usedClass) {
 }
 
 $buffer .= "\n";
+$buffer .= "if (!\defined('__PHPUNIT_GLOBAL_ASSERT_WRAPPERS__')) {\n";
 
 foreach ($class->getMethods() as $method) {
     if (\strpos($method->getName(), 'assert') !== 0) {
@@ -86,6 +87,7 @@ foreach ($class->getMethods() as $method) {
         ["*\n * @see Assert::" . $method->getName() . "\n */", ' *'],
         $method->getDocComment()
     );
+
     $signature = \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1]));
     $body      = "{\n    Assert::" . $method->getName() . "(...\\func_get_args());\n}";
     $buffer .= "$docComment\n$signature\n$body\n\n";
@@ -212,5 +214,7 @@ function onConsecutiveCalls(): ConsecutiveCallsStub
     return new ConsecutiveCallsStub($args);
 }
 ';
+
+$buffer .= "\ndefine('__PHPUNIT_GLOBAL_ASSERT_WRAPPERS__', true);\n}";
 
 \file_put_contents(__DIR__ . '/../../src/Framework/Assert/Functions.php', $buffer);
