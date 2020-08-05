@@ -18,7 +18,6 @@ use function libxml_get_errors;
 use function libxml_use_internal_errors;
 use function sprintf;
 use DOMDocument;
-use PHPUnit\Util\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

@@ -10,7 +10,6 @@
 namespace PHPUnit\Util\Xml;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Exception;
 
 /**
  * @small
