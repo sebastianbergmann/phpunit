@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function explode;
 use PHPUnit\Util\Test as TestUtil;
 
 /**
@@ -68,7 +67,7 @@ final class DataProviderTestSuite extends TestSuite
      */
     public function getSize(): int
     {
-        [$className, $methodName] = explode('::', $this->getName());
+        [$className, $methodName] = \explode('::', $this->getName());
 
         return TestUtil::getSize($className, $methodName);
     }

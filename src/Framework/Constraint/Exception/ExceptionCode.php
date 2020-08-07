@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function sprintf;
 use Throwable;
 
 final class ExceptionCode extends Constraint
@@ -55,7 +54,7 @@ final class ExceptionCode extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return sprintf(
+        return \sprintf(
             '%s is equal to expected exception code %s',
             $this->exporter()->export($other->getCode()),
             $this->exporter()->export($this->expectedCode)

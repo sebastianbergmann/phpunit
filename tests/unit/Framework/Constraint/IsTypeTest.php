@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function fclose;
-use function fopen;
-use function is_resource;
-use function preg_replace;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
@@ -82,18 +78,18 @@ EOF
 
         $this->assertTrue($constraint->evaluate($resource, '', true));
 
-        if (is_resource($resource)) {
-            @fclose($resource);
+        if (\is_resource($resource)) {
+            @\fclose($resource);
         }
     }
 
     public function resources()
     {
-        $fh = fopen(__FILE__, 'r');
-        fclose($fh);
+        $fh = \fopen(__FILE__, 'r');
+        \fclose($fh);
 
         return [
-            'open resource'   => [fopen(__FILE__, 'r')],
+            'open resource'   => [\fopen(__FILE__, 'r')],
             'closed resource' => [$fh],
         ];
     }
@@ -140,6 +136,6 @@ EOF
      */
     private function trimnl($string)
     {
-        return preg_replace('/[ ]*\n/', "\n", $string);
+        return \preg_replace('/[ ]*\n/', "\n", $string);
     }
 }

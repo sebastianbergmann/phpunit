@@ -11,20 +11,6 @@ namespace PHPUnit\Util\PHP;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_SAPI;
-use function array_keys;
-use function array_merge;
-use function assert;
-use function escapeshellarg;
-use function ini_get_all;
-use function restore_error_handler;
-use function set_error_handler;
-use function sprintf;
-use function str_replace;
-use function strpos;
-use function strrpos;
-use function substr;
-use function trim;
-use function unserialize;
 use __PHP_Incomplete_Class;
 use ErrorException;
 use PHPUnit\Framework\AssertionFailedError;
@@ -196,17 +182,17 @@ abstract class AbstractPhpProcess
         $command = $this->runtime->getBinary();
 
         if ($this->runtime->hasPCOV()) {
-            $settings = array_merge(
+            $settings = \array_merge(
                 $settings,
                 $this->runtime->getCurrentSettings(
-                    array_keys(ini_get_all('pcov'))
+                    \array_keys(\ini_get_all('pcov'))
                 )
             );
         } elseif ($this->runtime->hasXdebug()) {
-            $settings = array_merge(
+            $settings = \array_merge(
                 $settings,
                 $this->runtime->getCurrentSettings(
-                    array_keys(ini_get_all('xdebug'))
+                    \array_keys(\ini_get_all('xdebug'))
                 )
             );
         }
@@ -222,7 +208,7 @@ abstract class AbstractPhpProcess
         }
 
         if ($file) {
-            $command .= ' ' . escapeshellarg($file);
+            $command .= ' ' . \escapeshellarg($file);
         }
 
         if ($this->args) {
@@ -249,7 +235,7 @@ abstract class AbstractPhpProcess
         $buffer = '';
 
         foreach ($settings as $setting) {
-            $buffer .= ' -d ' . escapeshellarg($setting);
+            $buffer .= ' -d ' . \escapeshellarg($setting);
         }
 
         return $buffer;
@@ -267,11 +253,11 @@ abstract class AbstractPhpProcess
         if (!empty($stderr)) {
             $result->addError(
                 $test,
-                new Exception(trim($stderr)),
+                new Exception(\trim($stderr)),
                 $time
             );
         } else {
-            set_error_handler(
+            \set_error_handler(
                 /**
                  * @throws ErrorException
                  */
@@ -281,12 +267,12 @@ abstract class AbstractPhpProcess
             );
 
             try {
-                if (strpos($stdout, "#!/usr/bin/env php\n") === 0) {
-                    $stdout = substr($stdout, 19);
+                if (\strpos($stdout, "#!/usr/bin/env php\n") === 0) {
+                    $stdout = \substr($stdout, 19);
                 }
 
-                $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
-                restore_error_handler();
+                $childResult = \unserialize(\str_replace("#!/usr/bin/env php\n", '', $stdout));
+                \restore_error_handler();
 
                 if ($childResult === false) {
                     $result->addFailure(
@@ -296,12 +282,12 @@ abstract class AbstractPhpProcess
                     );
                 }
             } catch (ErrorException $e) {
-                restore_error_handler();
+                \restore_error_handler();
                 $childResult = false;
 
                 $result->addError(
                     $test,
-                    new Exception(trim($stdout), 0, $e),
+                    new Exception(\trim($stdout), 0, $e),
                     $time
                 );
             }
@@ -317,7 +303,7 @@ abstract class AbstractPhpProcess
                 $test->addToAssertionCount($childResult['numAssertions']);
 
                 $childResult = $childResult['result'];
-                assert($childResult instanceof  TestResult);
+                \assert($childResult instanceof  TestResult);
 
                 if ($result->getCollectCodeCoverageInformation()) {
                     $result->getCodeCoverage()->merge(
@@ -393,12 +379,12 @@ abstract class AbstractPhpProcess
             $exceptionArray = [];
 
             foreach ((array) $exception as $key => $value) {
-                $key                  = substr($key, strrpos($key, "\0") + 1);
+                $key                  = \substr($key, \strrpos($key, "\0") + 1);
                 $exceptionArray[$key] = $value;
             }
 
             $exception = new SyntheticError(
-                sprintf(
+                \sprintf(
                     '%s: %s',
                     $exceptionArray['_PHP_Incomplete_Class_Name'],
                     $exceptionArray['message']

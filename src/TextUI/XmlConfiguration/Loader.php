@@ -11,19 +11,6 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_VERSION;
-use function assert;
-use function defined;
-use function dirname;
-use function explode;
-use function file_exists;
-use function is_numeric;
-use function preg_match;
-use function stream_resolve_include_path;
-use function strlen;
-use function strpos;
-use function strtolower;
-use function substr;
-use function trim;
 use DOMDocument;
 use DOMElement;
 use DOMNodeList;
@@ -213,7 +200,7 @@ final class Loader
         $text        = null;
 
         foreach ($xpath->query('logging/log') as $log) {
-            assert($log instanceof DOMElement);
+            \assert($log instanceof DOMElement);
 
             $type   = (string) $log->getAttribute('type');
             $target = (string) $log->getAttribute('target');
@@ -284,7 +271,7 @@ final class Loader
         $extensions = [];
 
         foreach ($xpath->query('extensions/extension') as $extension) {
-            assert($extension instanceof DOMElement);
+            \assert($extension instanceof DOMElement);
 
             $extensions[] = $this->getElementConfigurationParameters($filename, $extension);
         }
@@ -312,9 +299,9 @@ final class Loader
 
     private function toAbsolutePath(string $filename, string $path, bool $useIncludePath = false): string
     {
-        $path = trim($path);
+        $path = \trim($path);
 
-        if (strpos($path, '/') === 0) {
+        if (\strpos($path, '/') === 0) {
             return $path;
         }
 
@@ -326,19 +313,19 @@ final class Loader
         //  - C:\windows
         //  - C:/windows
         //  - c:/windows
-        if (defined('PHP_WINDOWS_VERSION_BUILD') &&
-            ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))) {
+        if (\defined('PHP_WINDOWS_VERSION_BUILD') &&
+            ($path[0] === '\\' || (\strlen($path) >= 3 && \preg_match('#^[A-Z]\:[/\\\]#i', \substr($path, 0, 3))))) {
             return $path;
         }
 
-        if (strpos($path, '://') !== false) {
+        if (\strpos($path, '://') !== false) {
             return $path;
         }
 
-        $file = dirname($filename) . DIRECTORY_SEPARATOR . $path;
+        $file = \dirname($filename) . DIRECTORY_SEPARATOR . $path;
 
-        if ($useIncludePath && !file_exists($file)) {
-            $includePathFile = stream_resolve_include_path($path);
+        if ($useIncludePath && !\file_exists($file)) {
+            $includePathFile = \stream_resolve_include_path($path);
 
             if ($includePathFile) {
                 $file = $includePathFile;
@@ -581,7 +568,7 @@ final class Loader
         $xml    = null;
 
         foreach ($xpath->query('logging/log') as $log) {
-            assert($log instanceof DOMElement);
+            \assert($log instanceof DOMElement);
 
             $type   = (string) $log->getAttribute('type');
             $target = (string) $log->getAttribute('target');
@@ -673,11 +660,11 @@ final class Loader
      */
     private function getBoolean(string $value, $default)
     {
-        if (strtolower($value) === 'false') {
+        if (\strtolower($value) === 'false') {
             return false;
         }
 
-        if (strtolower($value) === 'true') {
+        if (\strtolower($value) === 'true') {
             return true;
         }
 
@@ -689,7 +676,7 @@ final class Loader
         $directories = [];
 
         foreach ($xpath->query($query) as $directoryNode) {
-            assert($directoryNode instanceof DOMElement);
+            \assert($directoryNode instanceof DOMElement);
 
             $directoryPath = (string) $directoryNode->textContent;
 
@@ -757,7 +744,7 @@ final class Loader
         $listeners = [];
 
         foreach ($xpath->query('listeners/listener') as $listener) {
-            assert($listener instanceof DOMElement);
+            \assert($listener instanceof DOMElement);
 
             $listeners[] = $this->getElementConfigurationParameters($filename, $listener);
         }
@@ -800,7 +787,7 @@ final class Loader
 
     private function getInteger(string $value, int $default): int
     {
-        if (is_numeric($value)) {
+        if (\is_numeric($value)) {
             return (int) $value;
         }
 
@@ -822,7 +809,7 @@ final class Loader
         $iniSettings = [];
 
         foreach ($xpath->query('php/ini') as $ini) {
-            assert($ini instanceof DOMElement);
+            \assert($ini instanceof DOMElement);
 
             $iniSettings[] = new IniSetting(
                 (string) $ini->getAttribute('name'),
@@ -833,7 +820,7 @@ final class Loader
         $constants = [];
 
         foreach ($xpath->query('php/const') as $const) {
-            assert($const instanceof DOMElement);
+            \assert($const instanceof DOMElement);
 
             $value = (string) $const->getAttribute('value');
 
@@ -856,7 +843,7 @@ final class Loader
 
         foreach (['var', 'env', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
             foreach ($xpath->query('php/' . $array) as $var) {
-                assert($var instanceof DOMElement);
+                \assert($var instanceof DOMElement);
 
                 $name     = (string) $var->getAttribute('name');
                 $value    = (string) $var->getAttribute('value');
@@ -901,7 +888,7 @@ final class Loader
         $resolveDependencies = $this->getBooleanAttribute($document->documentElement, 'resolveDependencies', true);
 
         if ($document->documentElement->hasAttribute('executionOrder')) {
-            foreach (explode(',', $document->documentElement->getAttribute('executionOrder')) as $order) {
+            foreach (\explode(',', $document->documentElement->getAttribute('executionOrder')) as $order) {
                 switch ($order) {
                     case 'default':
                         $executionOrder      = TestSuiteSorter::ORDER_DEFAULT;
@@ -1098,7 +1085,7 @@ final class Loader
             $directories = [];
 
             foreach ($element->getElementsByTagName('directory') as $directoryNode) {
-                assert($directoryNode instanceof DOMElement);
+                \assert($directoryNode instanceof DOMElement);
 
                 $directory = (string) $directoryNode->textContent;
 
@@ -1142,7 +1129,7 @@ final class Loader
             $files = [];
 
             foreach ($element->getElementsByTagName('file') as $fileNode) {
-                assert($fileNode instanceof DOMElement);
+                \assert($fileNode instanceof DOMElement);
 
                 $file = (string) $fileNode->textContent;
 
@@ -1197,12 +1184,12 @@ final class Loader
         if ($testSuiteNodes->length === 1) {
             $element = $testSuiteNodes->item(0);
 
-            assert($element instanceof DOMElement);
+            \assert($element instanceof DOMElement);
 
             $elements[] = $element;
         } else {
             foreach ($testSuiteNodes as $testSuiteNode) {
-                assert($testSuiteNode instanceof DOMElement);
+                \assert($testSuiteNode instanceof DOMElement);
 
                 $elements[] = $testSuiteNode;
             }
@@ -1218,7 +1205,7 @@ final class Loader
         if ($nodes->length === 1) {
             $node = $nodes->item(0);
 
-            assert($node instanceof DOMElement);
+            \assert($node instanceof DOMElement);
 
             return $node;
         }

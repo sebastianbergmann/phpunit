@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function sprintf;
-use function strtolower;
 use Exception;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
@@ -144,14 +142,14 @@ final class InvocationHandler
 
         if (!$this->returnValueGeneration) {
             $exception = new RuntimeException(
-                sprintf(
+                \sprintf(
                     'Return value inference disabled and no expectation set up for %s::%s()',
                     $invocation->getClassName(),
                     $invocation->getMethodName()
                 )
             );
 
-            if (strtolower($invocation->getMethodName()) === '__tostring') {
+            if (\strtolower($invocation->getMethodName()) === '__tostring') {
                 $this->deferredError = $exception;
 
                 return '';

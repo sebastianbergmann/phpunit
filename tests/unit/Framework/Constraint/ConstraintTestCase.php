@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function preg_replace;
-use function sprintf;
 use Countable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\TestCase;
@@ -27,7 +25,7 @@ abstract class ConstraintTestCase extends TestCase
 
         $reflection = new ReflectionClass($className);
 
-        $this->assertTrue($reflection->implementsInterface(Countable::class), sprintf(
+        $this->assertTrue($reflection->implementsInterface(Countable::class), \sprintf(
             'Failed to assert that "%s" implements "%s".',
             $className,
             Countable::class
@@ -40,7 +38,7 @@ abstract class ConstraintTestCase extends TestCase
 
         $reflection = new ReflectionClass($className);
 
-        $this->assertTrue($reflection->implementsInterface(SelfDescribing::class), sprintf(
+        $this->assertTrue($reflection->implementsInterface(SelfDescribing::class), \sprintf(
             'Failed to assert that "%s" implements "%s".',
             $className,
             SelfDescribing::class
@@ -52,7 +50,7 @@ abstract class ConstraintTestCase extends TestCase
      */
     final protected function className(): string
     {
-        return preg_replace(
+        return \preg_replace(
             '/Test$/',
             '',
             static::class

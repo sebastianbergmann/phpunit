@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Util\TestDox;
 
-use function array_filter;
-use function get_class;
-use function implode;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
@@ -156,7 +153,7 @@ final class XmlResultPrinter extends Printer implements TestListener
             return;
         }
 
-        $groups = array_filter(
+        $groups = \array_filter(
             $test->getGroups(),
             static function ($group) {
                 return !($group === 'small' || $group === 'medium' || $group === 'large');
@@ -165,14 +162,14 @@ final class XmlResultPrinter extends Printer implements TestListener
 
         $testNode = $this->document->createElement('test');
 
-        $testNode->setAttribute('className', get_class($test));
+        $testNode->setAttribute('className', \get_class($test));
         $testNode->setAttribute('methodName', $test->getName());
-        $testNode->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(get_class($test)));
+        $testNode->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(\get_class($test)));
         $testNode->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestCase($test));
         $testNode->setAttribute('status', (string) $test->getStatus());
         $testNode->setAttribute('time', (string) $time);
         $testNode->setAttribute('size', (string) $test->getSize());
-        $testNode->setAttribute('groups', implode(',', $groups));
+        $testNode->setAttribute('groups', \implode(',', $groups));
 
         foreach ($groups as $group) {
             $groupNode = $this->document->createElement('group');
@@ -208,7 +205,7 @@ final class XmlResultPrinter extends Printer implements TestListener
             $testNode->appendChild($testDoubleNode);
         }
 
-        $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(get_class($test), $test->getName(false));
+        $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(\get_class($test), $test->getName(false));
 
         if (isset($inlineAnnotations['given'], $inlineAnnotations['when'], $inlineAnnotations['then'])) {
             $testNode->setAttribute('given', $inlineAnnotations['given']['value']);

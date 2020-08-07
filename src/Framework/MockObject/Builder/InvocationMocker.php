@@ -9,16 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject\Builder;
 
-use function array_map;
-use function array_merge;
-use function count;
-use function get_class;
-use function gettype;
-use function in_array;
-use function is_object;
-use function is_string;
-use function sprintf;
-use function strtolower;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
@@ -83,12 +73,12 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
 
     public function willReturn($value, ...$nextValues): self
     {
-        if (count($nextValues) === 0) {
+        if (\count($nextValues) === 0) {
             $this->ensureTypeOfReturnValues([$value]);
 
             $stub = $value instanceof Stub ? $value : new ReturnStub($value);
         } else {
-            $values = array_merge([$value], $nextValues);
+            $values = \array_merge([$value], $nextValues);
 
             $this->ensureTypeOfReturnValues($values);
 
@@ -216,16 +206,16 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
             );
         }
 
-        $configurableMethodNames = array_map(
+        $configurableMethodNames = \array_map(
             static function (ConfigurableMethod $configurable) {
-                return strtolower($configurable->getName());
+                return \strtolower($configurable->getName());
             },
             $this->configurableMethods
         );
 
-        if (is_string($constraint) && !in_array(strtolower($constraint), $configurableMethodNames, true)) {
+        if (\is_string($constraint) && !\in_array(\strtolower($constraint), $configurableMethodNames, true)) {
             throw new RuntimeException(
-                sprintf(
+                \sprintf(
                     'Trying to configure method "%s" which cannot be configured because it does not exist, has not been specified, is final, or is static',
                     $constraint
                 )
@@ -286,10 +276,10 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         foreach ($values as $value) {
             if (!$configuredMethod->mayReturn($value)) {
                 throw new IncompatibleReturnValueException(
-                    sprintf(
+                    \sprintf(
                         'Method %s may not return value of type %s, its return declaration is "%s"',
                         $configuredMethod->getName(),
-                        is_object($value) ? get_class($value) : gettype($value),
+                        \is_object($value) ? \get_class($value) : \gettype($value),
                         $configuredMethod->getReturnTypeDeclaration()
                     )
                 );

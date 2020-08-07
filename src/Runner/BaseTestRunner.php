@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Runner;
 
-use function is_dir;
-use function is_file;
-use function substr;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
@@ -87,7 +84,7 @@ abstract class BaseTestRunner
      */
     public function getTest(string $suiteClassFile, $suffixes = ''): ?TestSuite
     {
-        if (is_dir($suiteClassFile)) {
+        if (\is_dir($suiteClassFile)) {
             /** @var string[] $files */
             $files = (new FileIteratorFacade)->getFilesAsArray(
                 $suiteClassFile,
@@ -100,7 +97,7 @@ abstract class BaseTestRunner
             return $suite;
         }
 
-        if (is_file($suiteClassFile) && substr($suiteClassFile, -5, 5) === '.phpt') {
+        if (\is_file($suiteClassFile) && \substr($suiteClassFile, -5, 5) === '.phpt') {
             $suite = new TestSuite;
             $suite->addTestFile($suiteClassFile);
 

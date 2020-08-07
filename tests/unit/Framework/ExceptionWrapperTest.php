@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function print_r;
 use BadFunctionCallException;
 use Exception;
 
@@ -51,7 +50,7 @@ final class ExceptionWrapperTest extends TestCase
         // Replace the only mention of "BadFunctionCallException" in wrapper
         $wrapper->setClassName('MyException');
 
-        $data = print_r($wrapper, true);
+        $data = \print_r($wrapper, true);
 
         $this->assertStringNotContainsString(
             'BadFunctionCallException',

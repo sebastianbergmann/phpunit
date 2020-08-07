@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function version_compare;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -41,14 +39,14 @@ final class MigrationBuilder
      */
     public function build(string $fromVersion): array
     {
-        if (version_compare($fromVersion, '9.2', '<')) {
+        if (\version_compare($fromVersion, '9.2', '<')) {
             throw new MigrationBuilderException('Versions before 9.2 are not supported.');
         }
 
         $stack = [];
 
         foreach (self::availableMigrations as $version => $migrations) {
-            if (version_compare($version, $fromVersion, '<')) {
+            if (\version_compare($version, $fromVersion, '<')) {
                 continue;
             }
 

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function sprintf;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\SelfDescribing;
@@ -103,7 +102,7 @@ abstract class Constraint implements Countable, SelfDescribing
      */
     protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
     {
-        $failureDescription = sprintf(
+        $failureDescription = \sprintf(
             'Failed asserting that %s.',
             $this->failureDescription($other)
         );

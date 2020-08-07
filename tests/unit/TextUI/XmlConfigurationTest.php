@@ -15,15 +15,7 @@ use const FOO;
 use const PATH_SEPARATOR;
 use const PHP_EOL;
 use const PHP_VERSION;
-use function file_put_contents;
-use function getenv;
-use function ini_get;
-use function ini_set;
-use function iterator_to_array;
 use function putenv;
-use function sys_get_temp_dir;
-use function uniqid;
-use function unlink;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -97,9 +89,9 @@ final class XmlConfigurationTest extends TestCase
      */
     public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, $expected): void
     {
-        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . uniqid('', true) . '.xml';
+        $tmpFilename = \sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . \uniqid('', true) . '.xml';
         $xml         = "<phpunit {$optionName}='{$optionValue}'></phpunit>" . PHP_EOL;
-        file_put_contents($tmpFilename, $xml);
+        \file_put_contents($tmpFilename, $xml);
 
         $configuration = (new Loader)->load($tmpFilename);
 
@@ -107,7 +99,7 @@ final class XmlConfigurationTest extends TestCase
 
         $this->assertEquals($expected, $configuration->phpunit()->{$optionName}());
 
-        @unlink($tmpFilename);
+        @\unlink($tmpFilename);
     }
 
     public function configurationRootOptionsProvider(): array
@@ -138,9 +130,9 @@ final class XmlConfigurationTest extends TestCase
 
     public function testShouldParseXmlConfigurationExecutionOrderCombined(): void
     {
-        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid('', true) . '.xml';
+        $tmpFilename = \sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . \uniqid('', true) . '.xml';
         $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . PHP_EOL;
-        file_put_contents($tmpFilename, $xml);
+        \file_put_contents($tmpFilename, $xml);
 
         $configuration = (new Loader)->load($tmpFilename);
 
@@ -149,7 +141,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertTrue($configuration->phpunit()->defectsFirst());
         $this->assertTrue($configuration->phpunit()->resolveDependencies());
 
-        @unlink($tmpFilename);
+        @\unlink($tmpFilename);
     }
 
     public function testCodeCoverageConfigurationIsReadCorrectly(): void
@@ -163,29 +155,29 @@ final class XmlConfigurationTest extends TestCase
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
 
         /** @var Directory $directory */
-        $directory = iterator_to_array($codeCoverage->directories(), false)[0];
+        $directory = \iterator_to_array($codeCoverage->directories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
         $this->assertSame('DEFAULT', $directory->group());
 
         /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[0];
+        $file = \iterator_to_array($codeCoverage->files(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
 
         /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[1];
+        $file = \iterator_to_array($codeCoverage->files(), false)[1];
         $this->assertSame('/path/to/file', $file->path());
 
         /** @var Directory $directory */
-        $directory = iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
+        $directory = \iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
         $this->assertSame('DEFAULT', $directory->group());
 
         /** @var File $file */
-        $file = iterator_to_array($codeCoverage->excludeFiles(), false)[0];
+        $file = \iterator_to_array($codeCoverage->excludeFiles(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
 
         $this->assertTrue($codeCoverage->hasClover());
@@ -221,29 +213,29 @@ final class XmlConfigurationTest extends TestCase
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
 
         /** @var Directory $directory */
-        $directory = iterator_to_array($codeCoverage->directories(), false)[0];
+        $directory = \iterator_to_array($codeCoverage->directories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
         $this->assertSame('DEFAULT', $directory->group());
 
         /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[0];
+        $file = \iterator_to_array($codeCoverage->files(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
 
         /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[1];
+        $file = \iterator_to_array($codeCoverage->files(), false)[1];
         $this->assertSame('/path/to/file', $file->path());
 
         /** @var Directory $directory */
-        $directory = iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
+        $directory = \iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
         $this->assertSame('DEFAULT', $directory->group());
 
         /** @var File $file */
-        $file = iterator_to_array($codeCoverage->excludeFiles(), false)[0];
+        $file = \iterator_to_array($codeCoverage->excludeFiles(), false)[0];
         $this->assertSame('/path/to/file', $file->path());
 
         $this->assertTrue($codeCoverage->hasClover());
@@ -294,9 +286,9 @@ final class XmlConfigurationTest extends TestCase
     public function testListenerConfigurationIsReadCorrectly(): void
     {
         $dir         = __DIR__;
-        $includePath = ini_get('include_path');
+        $includePath = \ini_get('include_path');
 
-        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
+        \ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
 
         $i = 1;
 
@@ -348,15 +340,15 @@ final class XmlConfigurationTest extends TestCase
             $i++;
         }
 
-        ini_set('include_path', $includePath);
+        \ini_set('include_path', $includePath);
     }
 
     public function testExtensionConfigurationIsReadCorrectly(): void
     {
         $dir         = __DIR__;
-        $includePath = ini_get('include_path');
+        $includePath = \ini_get('include_path');
 
-        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
+        \ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
 
         $i = 1;
 
@@ -407,7 +399,7 @@ final class XmlConfigurationTest extends TestCase
             $i++;
         }
 
-        ini_set('include_path', $includePath);
+        \ini_set('include_path', $includePath);
     }
 
     public function testLoggingConfigurationIsReadCorrectly(): void
@@ -516,18 +508,18 @@ final class XmlConfigurationTest extends TestCase
      */
     public function testPHPConfigurationIsHandledCorrectly(): void
     {
-        $savedIniHighlightKeyword = ini_get('highlight.keyword');
+        $savedIniHighlightKeyword = \ini_get('highlight.keyword');
 
         (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $path = TEST_FILES_PATH . '.' . PATH_SEPARATOR . '/path/to/lib';
-        $this->assertStringStartsWith($path, ini_get('include_path'));
-        $this->assertEquals('#123456', ini_get('highlight.keyword'));
+        $this->assertStringStartsWith($path, \ini_get('include_path'));
+        $this->assertEquals('#123456', \ini_get('highlight.keyword'));
         $this->assertFalse(FOO);
         $this->assertTrue(BAR);
         $this->assertFalse($GLOBALS['foo']);
         $this->assertTrue((bool) $_ENV['foo']);
-        $this->assertEquals(1, getenv('foo'));
+        $this->assertEquals(1, \getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -535,7 +527,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertEquals('bar', $_FILES['foo']);
         $this->assertEquals('bar', $_REQUEST['foo']);
 
-        ini_set('highlight.keyword', $savedIniHighlightKeyword);
+        \ini_set('highlight.keyword', $savedIniHighlightKeyword);
     }
 
     /**
@@ -551,7 +543,7 @@ final class XmlConfigurationTest extends TestCase
         (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $this->assertFalse($_ENV['foo']);
-        $this->assertEquals('forced', getenv('foo_force'));
+        $this->assertEquals('forced', \getenv('foo_force'));
     }
 
     /**
@@ -567,7 +559,7 @@ final class XmlConfigurationTest extends TestCase
         (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
-        $this->assertEquals('forced', getenv('foo_force'));
+        $this->assertEquals('forced', \getenv('foo_force'));
     }
 
     /**
@@ -578,19 +570,19 @@ final class XmlConfigurationTest extends TestCase
      */
     public function testHandlePHPConfigurationDoesNotOverwriteVariablesFromPutEnv(): void
     {
-        $backupFoo = getenv('foo');
+        $backupFoo = \getenv('foo');
 
-        putenv('foo=putenv');
+        \putenv('foo=putenv');
 
         (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $this->assertEquals('putenv', $_ENV['foo']);
-        $this->assertEquals('putenv', getenv('foo'));
+        $this->assertEquals('putenv', \getenv('foo'));
 
         if ($backupFoo === false) {
-            putenv('foo');     // delete variable from environment
+            \putenv('foo');     // delete variable from environment
         } else {
-            putenv("foo={$backupFoo}");
+            \putenv("foo={$backupFoo}");
         }
     }
 
@@ -602,12 +594,12 @@ final class XmlConfigurationTest extends TestCase
      */
     public function testHandlePHPConfigurationDoesOverwriteVariablesFromPutEnvWhenForced(): void
     {
-        putenv('foo_force=putenv');
+        \putenv('foo_force=putenv');
 
         (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
-        $this->assertEquals('forced', getenv('foo_force'));
+        $this->assertEquals('forced', \getenv('foo_force'));
     }
 
     /**

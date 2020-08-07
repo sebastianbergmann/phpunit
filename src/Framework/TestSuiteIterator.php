@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function assert;
-use function count;
 use RecursiveIterator;
 
 /**
@@ -40,7 +38,7 @@ final class TestSuiteIterator implements RecursiveIterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->tests);
+        return $this->position < \count($this->tests);
     }
 
     public function key(): int
@@ -71,7 +69,7 @@ final class TestSuiteIterator implements RecursiveIterator
 
         $current = $this->current();
 
-        assert($current instanceof TestSuite);
+        \assert($current instanceof TestSuite);
 
         return new self($current);
     }

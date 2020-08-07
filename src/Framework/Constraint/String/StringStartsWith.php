@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function strlen;
-use function strpos;
 use PHPUnit\Framework\InvalidArgumentException;
 
 /**
@@ -26,7 +24,7 @@ final class StringStartsWith extends Constraint
 
     public function __construct(string $prefix)
     {
-        if (strlen($prefix) === 0) {
+        if (\strlen($prefix) === 0) {
             throw InvalidArgumentException::create(1, 'non-empty string');
         }
 
@@ -49,6 +47,6 @@ final class StringStartsWith extends Constraint
      */
     protected function matches($other): bool
     {
-        return strpos((string) $other, $this->prefix) === 0;
+        return \strpos((string) $other, $this->prefix) === 0;
     }
 }

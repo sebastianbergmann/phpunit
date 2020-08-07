@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function count;
 use Countable;
 use IteratorAggregate;
 
@@ -47,7 +46,7 @@ final class TestSuiteCollection implements Countable, IteratorAggregate
 
     public function count(): int
     {
-        return count($this->testSuites);
+        return \count($this->testSuites);
     }
 
     public function getIterator(): TestSuiteCollectionIterator

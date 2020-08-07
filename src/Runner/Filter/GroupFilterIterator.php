@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Runner\Filter;
 
-use function array_map;
-use function array_merge;
-use function in_array;
-use function spl_object_hash;
 use PHPUnit\Framework\TestSuite;
 use RecursiveFilterIterator;
 use RecursiveIterator;
@@ -32,13 +28,13 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
         parent::__construct($iterator);
 
         foreach ($suite->getGroupDetails() as $group => $tests) {
-            if (in_array((string) $group, $groups, true)) {
-                $testHashes = array_map(
+            if (\in_array((string) $group, $groups, true)) {
+                $testHashes = \array_map(
                     'spl_object_hash',
                     $tests
                 );
 
-                $this->groupTests = array_merge($this->groupTests, $testHashes);
+                $this->groupTests = \array_merge($this->groupTests, $testHashes);
             }
         }
     }
@@ -51,7 +47,7 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        return $this->doAccept(spl_object_hash($test));
+        return $this->doAccept(\spl_object_hash($test));
     }
 
     abstract protected function doAccept(string $hash);

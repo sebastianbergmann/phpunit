@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function sprintf;
 use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
@@ -41,7 +40,7 @@ final class Migrator
 
         if ($validationResult->hasValidationErrors()) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     '"%s" is not a valid PHPUnit 9.2 XML configuration file:%s',
                     $filename,
                     $validationResult->asString()

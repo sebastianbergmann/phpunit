@@ -10,7 +10,6 @@
 namespace PHPUnit\Util\TestDox;
 
 use const PHP_EOL;
-use function implode;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
@@ -40,7 +39,7 @@ final class CliTestDoxPrinterColorTest extends TestCase
 
     public function testColorizesDiffInFailureMessage(): void
     {
-        $raw     = implode(PHP_EOL, ['some message', '--- Expected', '+++ Actual', '@@ @@']);
+        $raw     = \implode(PHP_EOL, ['some message', '--- Expected', '+++ Actual', '@@ @@']);
         $failure = new AssertionFailedError($raw);
 
         $this->printer->startTest($this);

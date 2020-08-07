@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util\Annotation;
 
-use function array_key_exists;
 use PHPUnit\Util\Exception;
 use ReflectionClass;
 use ReflectionException;
@@ -47,7 +46,7 @@ final class Registry
      */
     public function forClassName(string $class): DocBlock
     {
-        if (array_key_exists($class, $this->classDocBlocks)) {
+        if (\array_key_exists($class, $this->classDocBlocks)) {
             return $this->classDocBlocks[$class];
         }
 

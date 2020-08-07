@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function preg_replace;
-use function spl_object_hash;
 use DateTime;
 use DateTimeZone;
 use DOMDocument;
@@ -84,8 +82,8 @@ EOF
         $a      = new stdClass;
         $a->foo = 'bar';
         $b      = new stdClass;
-        $ahash  = spl_object_hash($a);
-        $bhash  = spl_object_hash($b);
+        $ahash  = \spl_object_hash($a);
+        $bhash  = \spl_object_hash($b);
 
         $c               = new stdClass;
         $c->foo          = 'bar';
@@ -109,8 +107,8 @@ EOF
         $storage1->attach($b);
         $storage2 = new SplObjectStorage;
         $storage2->attach($b);
-        $storage1hash = spl_object_hash($storage1);
-        $storage2hash = spl_object_hash($storage2);
+        $storage1hash = \spl_object_hash($storage1);
+        $storage2hash = \spl_object_hash($storage2);
 
         $dom1                     = new DOMDocument;
         $dom1->preserveWhiteSpace = false;
@@ -333,6 +331,6 @@ EOF
      */
     private function trimnl($string)
     {
-        return preg_replace('/[ ]*\n/', "\n", $string);
+        return \preg_replace('/[ ]*\n/', "\n", $string);
     }
 }

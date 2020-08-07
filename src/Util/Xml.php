@@ -10,14 +10,6 @@
 namespace PHPUnit\Util;
 
 use const ENT_QUOTES;
-use function assert;
-use function class_exists;
-use function htmlspecialchars;
-use function mb_convert_encoding;
-use function ord;
-use function preg_replace;
-use function settype;
-use function strlen;
 use DOMCharacterData;
 use DOMDocument;
 use DOMElement;
@@ -63,10 +55,10 @@ final class Xml
      */
     public static function prepareString(string $string): string
     {
-        return preg_replace(
+        return \preg_replace(
             '/[\\x00-\\x08\\x0b\\x0c\\x0e-\\x1f\\x7f]/',
             '',
-            htmlspecialchars(
+            \htmlspecialchars(
                 self::convertToUtf8($string),
                 ENT_QUOTES
             )
@@ -119,7 +111,7 @@ final class Xml
                     }
 
                     try {
-                        assert(class_exists($className));
+                        \assert(\class_exists($className));
 
                         $variable = (new ReflectionClass($className))->newInstanceArgs($constructorArgs);
                         // @codeCoverageIgnoreStart
@@ -147,7 +139,7 @@ final class Xml
             case 'string':
                 $variable = $element->textContent;
 
-                settype($variable, $element->tagName);
+                \settype($variable, $element->tagName);
 
                 break;
         }
@@ -158,7 +150,7 @@ final class Xml
     private static function convertToUtf8(string $string): string
     {
         if (!self::isUtf8($string)) {
-            $string = mb_convert_encoding($string, 'UTF-8');
+            $string = \mb_convert_encoding($string, 'UTF-8');
         }
 
         return $string;
@@ -166,23 +158,23 @@ final class Xml
 
     private static function isUtf8(string $string): bool
     {
-        $length = strlen($string);
+        $length = \strlen($string);
 
         for ($i = 0; $i < $length; $i++) {
-            if (ord($string[$i]) < 0x80) {
+            if (\ord($string[$i]) < 0x80) {
                 $n = 0;
-            } elseif ((ord($string[$i]) & 0xE0) === 0xC0) {
+            } elseif ((\ord($string[$i]) & 0xE0) === 0xC0) {
                 $n = 1;
-            } elseif ((ord($string[$i]) & 0xF0) === 0xE0) {
+            } elseif ((\ord($string[$i]) & 0xF0) === 0xE0) {
                 $n = 2;
-            } elseif ((ord($string[$i]) & 0xF0) === 0xF0) {
+            } elseif ((\ord($string[$i]) & 0xF0) === 0xF0) {
                 $n = 3;
             } else {
                 return false;
             }
 
             for ($j = 0; $j < $n; $j++) {
-                if ((++$i === $length) || ((ord($string[$i]) & 0xC0) !== 0x80)) {
+                if ((++$i === $length) || ((\ord($string[$i]) & 0xC0) !== 0x80)) {
                     return false;
                 }
             }

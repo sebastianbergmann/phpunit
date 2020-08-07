@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function call_user_func;
-use function class_exists;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -41,10 +38,10 @@ final class MockClass implements MockType
 
     public function generate(): string
     {
-        if (!class_exists($this->mockName, false)) {
+        if (!\class_exists($this->mockName, false)) {
             eval($this->classCode);
 
-            call_user_func(
+            \call_user_func(
                 [
                     $this->mockName,
                     '__phpunit_initConfigurableMethods',

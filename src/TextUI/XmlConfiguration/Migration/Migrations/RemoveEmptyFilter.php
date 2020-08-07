@@ -43,11 +43,11 @@ final class RemoveEmptyFilter implements Migration
     private function ensureEmpty(DOMElement $element): void
     {
         if ($element->attributes->length > 0) {
-            throw new MigrationException(sprintf('%s element has unexpected attributes', $element->nodeName));
+            throw new MigrationException(\sprintf('%s element has unexpected attributes', $element->nodeName));
         }
 
         if ($element->getElementsByTagName('*')->length > 0) {
-            throw new MigrationException(sprintf('%s element has unexpected children', $element->nodeName));
+            throw new MigrationException(\sprintf('%s element has unexpected children', $element->nodeName));
         }
     }
 }

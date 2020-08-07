@@ -9,19 +9,6 @@
  */
 namespace PHPUnit\Util\Log;
 
-use function class_exists;
-use function count;
-use function explode;
-use function get_class;
-use function getmypid;
-use function ini_get;
-use function is_bool;
-use function is_scalar;
-use function method_exists;
-use function print_r;
-use function round;
-use function str_replace;
-use function stripos;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -186,8 +173,8 @@ final class TeamCity extends DefaultResultPrinter
      */
     public function startTestSuite(TestSuite $suite): void
     {
-        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
-            $this->flowId = getmypid();
+        if (\stripos(\ini_get('disable_functions'), 'getmypid') === false) {
+            $this->flowId = \getmypid();
         } else {
             $this->flowId = false;
         }
@@ -197,7 +184,7 @@ final class TeamCity extends DefaultResultPrinter
 
             $this->printEvent(
                 'testCount',
-                ['count' => count($suite)]
+                ['count' => \count($suite)]
             );
         }
 
@@ -209,13 +196,13 @@ final class TeamCity extends DefaultResultPrinter
 
         $parameters = ['name' => $suiteName];
 
-        if (class_exists($suiteName, false)) {
+        if (\class_exists($suiteName, false)) {
             $fileName                   = self::getFileName($suiteName);
             $parameters['locationHint'] = "php_qn://{$fileName}::\\{$suiteName}";
         } else {
-            $split = explode('::', $suiteName);
+            $split = \explode('::', $suiteName);
 
-            if (count($split) === 2 && class_exists($split[0]) && method_exists($split[0], $split[1])) {
+            if (\count($split) === 2 && \class_exists($split[0]) && \method_exists($split[0], $split[1])) {
                 $fileName                   = self::getFileName($split[0]);
                 $parameters['locationHint'] = "php_qn://{$fileName}::\\{$suiteName}";
                 $parameters['name']         = $split[1];
@@ -238,10 +225,10 @@ final class TeamCity extends DefaultResultPrinter
 
         $parameters = ['name' => $suiteName];
 
-        if (!class_exists($suiteName, false)) {
-            $split = explode('::', $suiteName);
+        if (!\class_exists($suiteName, false)) {
+            $split = \explode('::', $suiteName);
 
-            if (count($split) === 2 && class_exists($split[0]) && method_exists($split[0], $split[1])) {
+            if (\count($split) === 2 && \class_exists($split[0]) && \method_exists($split[0], $split[1])) {
                 $parameters['name'] = $split[1];
             }
         }
@@ -259,7 +246,7 @@ final class TeamCity extends DefaultResultPrinter
         $params                = ['name' => $testName];
 
         if ($test instanceof TestCase) {
-            $className              = get_class($test);
+            $className              = \get_class($test);
             $fileName               = self::getFileName($className);
             $params['locationHint'] = "php_qn://{$fileName}::\\{$className}::{$testName}";
         }
@@ -334,7 +321,7 @@ final class TeamCity extends DefaultResultPrinter
                 $previous->getPreviousWrapped() : $previous->getPrevious();
         }
 
-        return ' ' . str_replace("\n", "\n ", $stackTrace);
+        return ' ' . \str_replace("\n", "\n ", $stackTrace);
     }
 
     private static function getPrimitiveValueAsString($value): ?string
@@ -343,12 +330,12 @@ final class TeamCity extends DefaultResultPrinter
             return 'null';
         }
 
-        if (is_bool($value)) {
+        if (\is_bool($value)) {
             return $value ? 'true' : 'false';
         }
 
-        if (is_scalar($value)) {
-            return print_r($value, true);
+        if (\is_scalar($value)) {
+            return \print_r($value, true);
         }
 
         return null;
@@ -356,7 +343,7 @@ final class TeamCity extends DefaultResultPrinter
 
     private static function escapeValue(string $text): string
     {
-        return str_replace(
+        return \str_replace(
             ['|', "'", "\n", "\r", ']', '['],
             ['||', "|'", '|n', '|r', '|]', '|['],
             $text
@@ -386,6 +373,6 @@ final class TeamCity extends DefaultResultPrinter
      */
     private static function toMilliseconds(float $time): int
     {
-        return (int) round($time * 1000);
+        return (int) \round($time * 1000);
     }
 }

@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function json_decode;
-use function json_last_error;
-use function sprintf;
-
 /**
  * Constraint that asserts that a string is valid JSON.
  */
@@ -38,9 +34,9 @@ final class IsJson extends Constraint
             return false;
         }
 
-        json_decode($other);
+        \json_decode($other);
 
-        if (json_last_error()) {
+        if (\json_last_error()) {
             return false;
         }
 
@@ -63,12 +59,12 @@ final class IsJson extends Constraint
             return 'an empty string is valid JSON';
         }
 
-        json_decode($other);
+        \json_decode($other);
         $error = (string) JsonMatchesErrorMessageProvider::determineJsonError(
-            (string) json_last_error()
+            (string) \json_last_error()
         );
 
-        return sprintf(
+        return \sprintf(
             '%s is valid JSON (%s)',
             $this->exporter()->shortenedExport($other),
             $error
