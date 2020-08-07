@@ -26,10 +26,8 @@ final class SchemaDetector
             true
         );
 
-        $finder = new SchemaFinder;
-
-        foreach ($finder->available() as $candidate) {
-            $schema = $finder->find($candidate);
+        foreach (['9.2', '8.5'] as $candidate) {
+            $schema = (new SchemaFinder)->find($candidate);
 
             if (!(new Validator)->validate($document, $schema)->hasValidationErrors()) {
                 return new SuccessfulSchemaDetectionResult($candidate);
