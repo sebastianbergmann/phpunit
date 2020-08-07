@@ -17,24 +17,6 @@ namespace PHPUnit\Util\Xml;
 final class SchemaFinder
 {
     /**
-     * @return string[]
-     */
-    public function available(): array
-    {
-        return \array_reverse(
-            \array_map(
-                static function (string $xsd) {
-                    return \str_replace('.xsd', '', $xsd);
-                },
-                \array_slice(
-                    \scandir($this->path(), SCANDIR_SORT_ASCENDING),
-                    2
-                )
-            )
-        );
-    }
-
-    /**
      * @throws Exception
      */
     public function find(string $version): string
