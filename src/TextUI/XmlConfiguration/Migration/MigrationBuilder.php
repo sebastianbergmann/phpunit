@@ -14,7 +14,11 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class MigrationBuilder
 {
-    private const availableMigrations = [
+    private const AVAILABLE_MIGRATIONS = [
+        '8.5' => [
+            RemoveLogTypes::class,
+        ],
+
         '9.2' => [
             RemoveCacheTokensAttribute::class,
             IntroduceCoverageElement::class,
@@ -39,13 +43,18 @@ final class MigrationBuilder
      */
     public function build(string $fromVersion): array
     {
-        if (\version_compare($fromVersion, '9.2', '<')) {
-            throw new MigrationBuilderException('Versions before 9.2 are not supported.');
+        if (!\array_key_exists($fromVersion, self::AVAILABLE_MIGRATIONS)) {
+            throw new MigrationBuilderException(
+                \sprintf(
+                    'Migration from schema version %s is not supported',
+                    $fromVersion
+                )
+            );
         }
 
         $stack = [];
 
-        foreach (self::availableMigrations as $version => $migrations) {
+        foreach (self::AVAILABLE_MIGRATIONS as $version => $migrations) {
             if (\version_compare($version, $fromVersion, '<')) {
                 continue;
             }

@@ -15,9 +15,9 @@ use PHPUnit\Util\Xml\Loader as XmlLoader;
 final class MigrationTest extends TestCase
 {
     /**
-     * @testdox Migrates PHPUnit 9.2 configuration to PHPUnit 9.3
+     * @testdox Can migrate PHPUnit 9.2 configuration
      */
-    public function testMigratesPhpUnit92ConfigurationToPhpUnit93(): void
+    public function testCanMigratePhpUnit92Configuration(): void
     {
         $this->assertEquals(
             (new XmlLoader)->loadFile(__DIR__ . '/../../_files/XmlConfigurationMigration/output-9.3.xml'),

@@ -1,9 +1,9 @@
 --TEST--
-Possibility to migrate XML configuration file from PHPUnit 9.2 format to PHPUnit 9.3 format is detected
+Possibility to migrate XML configuration file from PHPUnit 8.5 format is detected
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--configuration';
-$_SERVER['argv'][2] = __DIR__ . '/migration-possibility-is-detected/phpunit.xml';
+$_SERVER['argv'][2] = __DIR__ . '/possibility-to-migrate-from-85-is-detected/phpunit.xml';
 
 require __DIR__ . '/../../bootstrap.php';
 

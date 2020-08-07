@@ -45,9 +45,7 @@ use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
 use PHPUnit\Util\XdebugFilterScriptGenerator;
-use PHPUnit\Util\Xml\Loader as XmlLoader;
-use PHPUnit\Util\Xml\SchemaFinder;
-use PHPUnit\Util\Xml\Validator;
+use PHPUnit\Util\Xml\SchemaDetector;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -588,7 +586,7 @@ final class TestRunner extends BaseTestRunner
             \assert($arguments['configuration'] instanceof Configuration);
 
             if ($arguments['configuration']->hasValidationErrors()) {
-                if ($this->doesTheXmlConfigurationValidateAgainstDeprecatedSchemaSupportedForMigration($arguments['configuration']->filename())) {
+                if ((new SchemaDetector)->detect($arguments['configuration']->filename())->detected()) {
                     $this->writeMessage('Warning', 'Your XML configuration validates against a deprecated schema.');
                     $this->writeMessage('Suggestion', 'Migrate your XML configuration using "--migrate-configuration"!');
                 } else {
@@ -1216,23 +1214,5 @@ final class TestRunner extends BaseTestRunner
                 $e->getMessage()
             )
         );
-    }
-
-    private function doesTheXmlConfigurationValidateAgainstDeprecatedSchemaSupportedForMigration(string $filename): bool
-    {
-        try {
-            $oldXsdFilename = (new SchemaFinder)->find('9.2');
-
-            $configurationDocument = (new XmlLoader)->loadFile(
-                $filename,
-                false,
-                true,
-                true
-            );
-
-            return !(new Validator)->validate($configurationDocument, $oldXsdFilename)->hasValidationErrors();
-        } catch (\PHPUnit\Util\Xml\Exception $e) {
-            return false;
-        }
     }
 }
