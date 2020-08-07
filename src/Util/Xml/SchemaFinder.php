@@ -17,15 +17,29 @@ namespace PHPUnit\Util\Xml;
 final class SchemaFinder
 {
     /**
+     * @return string[]
+     */
+    public function available(): array
+    {
+        return \array_reverse(
+            \array_map(
+                static function (string $xsd) {
+                    return \str_replace('.xsd', '', $xsd);
+                },
+                \array_slice(
+                    \scandir($this->path(), SCANDIR_SORT_ASCENDING),
+                    2
+                )
+            )
+        );
+    }
+
+    /**
      * @throws Exception
      */
     public function find(string $version): string
     {
-        if (\defined('__PHPUNIT_PHAR_ROOT__')) {
-            $filename = __PHPUNIT_PHAR_ROOT__ . '/schema/' . $version . '.xsd';
-        } else {
-            $filename = __DIR__ . '/../../../schema/' . $version . '.xsd';
-        }
+        $filename = $this->path() . $version . '.xsd';
 
         if (!\is_file($filename)) {
             throw new Exception(
@@ -37,5 +51,14 @@ final class SchemaFinder
         }
 
         return $filename;
+    }
+
+    private function path(): string
+    {
+        if (\defined('__PHPUNIT_PHAR_ROOT__')) {
+            return __PHPUNIT_PHAR_ROOT__ . '/schema/';
+        }
+
+        return __DIR__ . '/../../../schema/';
     }
 }
