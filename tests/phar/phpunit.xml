@@ -8,4 +8,11 @@
             <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
+
+    <coverage processUncoveredFiles="true"
+              ignoreDeprecatedCodeUnits="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
 </phpunit>
