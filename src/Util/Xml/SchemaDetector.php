@@ -11,8 +11,6 @@ namespace PHPUnit\Util\Xml;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
- *
- * @psalm-immutable
  */
 final class SchemaDetector
 {
