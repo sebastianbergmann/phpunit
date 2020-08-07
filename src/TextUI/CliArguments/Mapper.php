@@ -266,7 +266,7 @@ final class Mapper
         }
 
         if ($arguments->hasNoLogging()) {
-            $result['notLogging'] = $arguments->noLogging();
+            $result['noLogging'] = $arguments->noLogging();
         }
 
         if ($arguments->hasNoInteraction()) {

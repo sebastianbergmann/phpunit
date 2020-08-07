@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.3 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.3.2] - 2020-MM-DD
+
+### Fixed
+
+* [#4402](https://github.com/sebastianbergmann/phpunit/issues/4402): `--no-logging` has no effect
+
 ## [9.3.1] - 2020-08-07
 
 ### Fixed
@@ -170,5 +176,6 @@ If you have an XML configuration file that validates against [PHPUnit 9.2's XML 
 * [#4396](https://github.com/sebastianbergmann/phpunit/issues/4396): Deprecate confusing parameter options for XML assertions
 * The `cacheTokens` attribute is no longer supported in XML configuration files
 
+[9.3.2]: https://github.com/sebastianbergmann/phpunit/compare/9.3.1...9.3
 [9.3.1]: https://github.com/sebastianbergmann/phpunit/compare/9.3.0...9.3.1
 [9.3.0]: https://github.com/sebastianbergmann/phpunit/compare/9.2...9.3.0
