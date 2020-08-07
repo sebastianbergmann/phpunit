@@ -11,11 +11,12 @@ namespace PHPUnit\Util\Xml;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
- *
- * @psalm-immutable
  */
 final class SchemaDetector
 {
+    /**
+     * @throws Exception
+     */
     public function detect(string $filename): SchemaDetectionResult
     {
         $document = (new Loader)->loadFile(

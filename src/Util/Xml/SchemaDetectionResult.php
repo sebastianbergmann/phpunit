@@ -21,6 +21,9 @@ abstract class SchemaDetectionResult
         return false;
     }
 
+    /**
+     * @throws Exception
+     */
     public function version(): string
     {
         throw new Exception('No supported schema was detected');
