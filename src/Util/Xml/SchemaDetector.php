@@ -16,6 +16,9 @@ namespace PHPUnit\Util\Xml;
  */
 final class SchemaDetector
 {
+    /**
+     * @throws Exception
+     */
     public function detect(string $filename): SchemaDetectionResult
     {
         $document = (new Loader)->loadFile(
