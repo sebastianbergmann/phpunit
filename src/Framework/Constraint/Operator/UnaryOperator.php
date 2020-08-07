@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function count;
-
 abstract class UnaryOperator extends Operator
 {
     /**
@@ -65,7 +63,7 @@ abstract class UnaryOperator extends Operator
      */
     public function count(): int
     {
-        return count($this->constraint);
+        return \count($this->constraint);
     }
 
     /**

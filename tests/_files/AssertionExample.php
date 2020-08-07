@@ -9,12 +9,10 @@
  */
 namespace PHPUnit\TestFixture;
 
-use function assert;
-
 class AssertionExample
 {
     public function doSomething(): void
     {
-        assert(false);
+        \assert(false);
     }
 }

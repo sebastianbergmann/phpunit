@@ -9,15 +9,6 @@
  */
 namespace PHPUnit\Runner;
 
-use function array_diff;
-use function array_merge;
-use function array_reverse;
-use function array_splice;
-use function count;
-use function in_array;
-use function max;
-use function shuffle;
-use function usort;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
@@ -121,7 +112,7 @@ final class TestSuiteSorter
             self::ORDER_SIZE,
         ];
 
-        if (!in_array($order, $allowedOrders, true)) {
+        if (!\in_array($order, $allowedOrders, true)) {
             throw new Exception(
                 '$order must be one of TestSuiteSorter::ORDER_[DEFAULT|REVERSED|RANDOMIZED|DURATION|SIZE]'
             );
@@ -132,7 +123,7 @@ final class TestSuiteSorter
             self::ORDER_DEFECTS_FIRST,
         ];
 
-        if (!in_array($orderDefects, $allowedOrderDefects, true)) {
+        if (!\in_array($orderDefects, $allowedOrderDefects, true)) {
             throw new Exception(
                 '$orderDefects must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST'
             );
@@ -211,7 +202,7 @@ final class TestSuiteSorter
 
             if (!isset($this->defectSortOrder[$test->sortId()])) {
                 $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->getState($test->sortId())];
-                $max                                    = max($max, $this->defectSortOrder[$test->sortId()]);
+                $max                                    = \max($max, $this->defectSortOrder[$test->sortId()]);
             }
         }
 
@@ -220,19 +211,19 @@ final class TestSuiteSorter
 
     private function reverse(array $tests): array
     {
-        return array_reverse($tests);
+        return \array_reverse($tests);
     }
 
     private function randomize(array $tests): array
     {
-        shuffle($tests);
+        \shuffle($tests);
 
         return $tests;
     }
 
     private function sortDefectsFirst(array $tests): array
     {
-        usort(
+        \usort(
             $tests,
             /**
              * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -247,7 +238,7 @@ final class TestSuiteSorter
 
     private function sortByDuration(array $tests): array
     {
-        usort(
+        \usort(
             $tests,
             /**
              * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -262,7 +253,7 @@ final class TestSuiteSorter
 
     private function sortBySize(array $tests): array
     {
-        usort(
+        \usort(
             $tests,
             /**
              * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -357,16 +348,16 @@ final class TestSuiteSorter
         $provided     = [];
 
         do {
-            if ([] === array_diff($tests[$i]->requires(), $provided)) {
-                $provided     = array_merge($provided, $tests[$i]->provides());
-                $newTestOrder = array_merge($newTestOrder, array_splice($tests, $i, 1));
+            if ([] === \array_diff($tests[$i]->requires(), $provided)) {
+                $provided     = \array_merge($provided, $tests[$i]->provides());
+                $newTestOrder = \array_merge($newTestOrder, \array_splice($tests, $i, 1));
                 $i            = 0;
             } else {
                 $i++;
             }
-        } while (!empty($tests) && ($i < count($tests)));
+        } while (!empty($tests) && ($i < \count($tests)));
 
-        return array_merge($newTestOrder, $tests);
+        return \array_merge($newTestOrder, $tests);
     }
 
     /**
@@ -381,7 +372,7 @@ final class TestSuiteSorter
                 if (!$test instanceof TestSuite && $test instanceof Reorderable) {
                     $tests[] = $test->sortId();
                 } else {
-                    $tests = array_merge($tests, $this->calculateTestExecutionOrder($test));
+                    $tests = \array_merge($tests, $this->calculateTestExecutionOrder($test));
                 }
             }
         }

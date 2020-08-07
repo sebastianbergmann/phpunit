@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
-use function count;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 use PHPUnit\Framework\MockObject\Verifiable;
 use PHPUnit\Framework\SelfDescribing;
@@ -26,12 +25,12 @@ abstract class InvocationOrder implements SelfDescribing, Verifiable
 
     public function getInvocationCount(): int
     {
-        return count($this->invocations);
+        return \count($this->invocations);
     }
 
     public function hasBeenInvoked(): bool
     {
-        return count($this->invocations) > 0;
+        return \count($this->invocations) > 0;
     }
 
     final public function invoked(BaseInvocation $invocation)

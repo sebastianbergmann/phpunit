@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
-use function array_pop;
 use DataProviderDependencyTest;
 use DependencyFailureTest;
 use DependencyOnClassTest;
@@ -216,7 +215,7 @@ final class TestSuiteTest extends TestCase
         $suite->run($this->result);
 
         $skipped           = $this->result->skipped();
-        $lastSkippedResult = array_pop($skipped);
+        $lastSkippedResult = \array_pop($skipped);
         $message           = $lastSkippedResult->thrownException()->getMessage();
 
         $this->assertStringContainsString('Test for DataProviderDependencyTest::testDependency skipped by data provider', $message);

@@ -13,21 +13,6 @@ use const DIRECTORY_SEPARATOR;
 use const INF;
 use const NAN;
 use const PHP_OS_FAMILY;
-use function acos;
-use function array_merge;
-use function chmod;
-use function fclose;
-use function file_get_contents;
-use function fopen;
-use function json_encode;
-use function log;
-use function mkdir;
-use function octdec;
-use function rmdir;
-use function sys_get_temp_dir;
-use function tempnam;
-use function uniqid;
-use function unlink;
 use ArrayIterator;
 use ArrayObject;
 use DateTime;
@@ -239,7 +224,7 @@ final class AssertTest extends TestCase
     public function equalProvider(): array
     {
         // same |= equal
-        return array_merge($this->equalValues(), $this->sameValues());
+        return \array_merge($this->equalValues(), $this->sameValues());
     }
 
     public function notEqualProvider()
@@ -256,7 +241,7 @@ final class AssertTest extends TestCase
     {
         // not equal |= not same
         // equal, ¬same |= not same
-        return array_merge($this->notEqualValues(), $this->equalValues());
+        return \array_merge($this->notEqualValues(), $this->equalValues());
     }
 
     /**
@@ -394,14 +379,14 @@ final class AssertTest extends TestCase
     {
         $this->assertXmlStringEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            \file_get_contents(TEST_FILES_PATH . 'foo.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlStringEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
     }
 
@@ -409,14 +394,14 @@ final class AssertTest extends TestCase
     {
         $this->assertXmlStringNotEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlStringNotEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            \file_get_contents(TEST_FILES_PATH . 'foo.xml')
         );
     }
 
@@ -553,19 +538,19 @@ XML;
             self::markTestSkipped('Cannot test this behaviour on Windows');
         }
 
-        $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('unreadable_dir_', true);
-        mkdir($dirName, octdec('0'));
+        $dirName = \sys_get_temp_dir() . DIRECTORY_SEPARATOR . \uniqid('unreadable_dir_', true);
+        \mkdir($dirName, \octdec('0'));
 
         $this->assertDirectoryIsNotReadable($dirName);
 
-        chmod($dirName, octdec('444'));
+        \chmod($dirName, \octdec('444'));
 
         try {
             $this->assertDirectoryIsNotReadable($dirName);
         } catch (AssertionFailedError $e) {
         }
 
-        rmdir($dirName);
+        \rmdir($dirName);
     }
 
     public function testAssertDirectoryIsWritable(): void
@@ -583,19 +568,19 @@ XML;
             self::markTestSkipped('Cannot test this behaviour on Windows');
         }
 
-        $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('unwritable_dir_', true);
-        mkdir($dirName, octdec('444'));
+        $dirName = \sys_get_temp_dir() . DIRECTORY_SEPARATOR . \uniqid('unwritable_dir_', true);
+        \mkdir($dirName, \octdec('444'));
 
         $this->assertDirectoryIsNotWritable($dirName);
 
-        chmod($dirName, octdec('755'));
+        \chmod($dirName, \octdec('755'));
 
         try {
             $this->assertDirectoryIsNotWritable($dirName);
         } catch (AssertionFailedError $e) {
         }
 
-        rmdir($dirName);
+        \rmdir($dirName);
     }
 
     public function testAssertFileExists(): void
@@ -631,40 +616,40 @@ XML;
             self::markTestSkipped('Cannot test this behaviour on Windows');
         }
 
-        $tempFile = tempnam(
-            sys_get_temp_dir(),
+        $tempFile = \tempnam(
+            \sys_get_temp_dir(),
             'unreadable'
         );
 
-        chmod($tempFile, octdec('0'));
+        \chmod($tempFile, \octdec('0'));
 
         $this->assertFileIsNotReadable($tempFile);
 
-        chmod($tempFile, octdec('755'));
+        \chmod($tempFile, \octdec('755'));
 
         try {
             $this->assertFileIsNotReadable($tempFile);
         } catch (AssertionFailedError $e) {
         }
 
-        unlink($tempFile);
+        \unlink($tempFile);
     }
 
     public function testAssertFileIsNotWritable(): void
     {
-        $tempFile = tempnam(sys_get_temp_dir(), 'unwriteable');
+        $tempFile = \tempnam(\sys_get_temp_dir(), 'unwriteable');
 
-        chmod($tempFile, octdec('0'));
+        \chmod($tempFile, \octdec('0'));
 
         $this->assertFileIsNotWritable($tempFile);
 
-        chmod($tempFile, octdec('755'));
+        \chmod($tempFile, \octdec('755'));
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertFileIsNotWritable($tempFile);
 
-        unlink($tempFile);
+        \unlink($tempFile);
     }
 
     public function testAssertFileIsWritable(): void
@@ -1382,14 +1367,14 @@ XML;
     {
         $this->assertStringEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            \file_get_contents(TEST_FILES_PATH . 'foo.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
     }
 
@@ -1397,14 +1382,14 @@ XML;
     {
         $this->assertStringEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
+            \file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
     }
 
@@ -1412,14 +1397,14 @@ XML;
     {
         $this->assertStringNotEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringNotEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            \file_get_contents(TEST_FILES_PATH . 'foo.xml')
         );
     }
 
@@ -1427,14 +1412,14 @@ XML;
     {
         $this->assertStringNotEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringNotEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
+            \file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
         );
     }
 
@@ -1740,7 +1725,7 @@ XML;
     public function testAssertJsonStringEqualsJsonFile(): void
     {
         $file    = TEST_FILES_PATH . 'JsonData/simpleObject.json';
-        $actual  = json_encode(['Mascott' => 'Tux']);
+        $actual  = \json_encode(['Mascott' => 'Tux']);
         $message = '';
 
         $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
@@ -1749,7 +1734,7 @@ XML;
     public function testAssertJsonStringEqualsJsonFileExpectingExpectationFailedException(): void
     {
         $file    = TEST_FILES_PATH . 'JsonData/simpleObject.json';
-        $actual  = json_encode(['Mascott' => 'Beastie']);
+        $actual  = \json_encode(['Mascott' => 'Beastie']);
         $message = '';
 
         try {
@@ -1769,7 +1754,7 @@ XML;
     public function testAssertJsonStringNotEqualsJsonFile(): void
     {
         $file    = TEST_FILES_PATH . 'JsonData/simpleObject.json';
-        $actual  = json_encode(['Mascott' => 'Beastie']);
+        $actual  = \json_encode(['Mascott' => 'Beastie']);
         $message = '';
 
         $this->assertJsonStringNotEqualsJsonFile($file, $actual, $message);
@@ -1971,7 +1956,7 @@ XML;
 
     public function testResourceTypeCanBeAsserted(): void
     {
-        $this->assertIsResource(fopen(__FILE__, 'r'));
+        $this->assertIsResource(\fopen(__FILE__, 'r'));
 
         try {
             $this->assertIsResource(null);
@@ -1984,8 +1969,8 @@ XML;
 
     public function testClosedResourceTypeCanBeAsserted(): void
     {
-        $resource = fopen(__FILE__, 'r');
-        fclose($resource);
+        $resource = \fopen(__FILE__, 'r');
+        \fclose($resource);
 
         $this->assertIsClosedResource($resource);
         $this->assertIsResource($resource);
@@ -2135,7 +2120,7 @@ XML;
         $this->assertIsNotResource(null);
 
         try {
-            $this->assertIsNotResource(fopen(__FILE__, 'r'));
+            $this->assertIsNotResource(\fopen(__FILE__, 'r'));
         } catch (AssertionFailedError $e) {
             return;
         }
@@ -2147,8 +2132,8 @@ XML;
     {
         $this->assertIsNotClosedResource(null);
 
-        $resource = fopen(__FILE__, 'r');
-        fclose($resource);
+        $resource = \fopen(__FILE__, 'r');
+        \fclose($resource);
 
         try {
             $this->assertIsNotClosedResource($resource);
@@ -2407,7 +2392,7 @@ XML;
     {
         $object   = new SampleClass(4, 8, 15);
         $file     = TEST_FILES_PATH . 'foo.xml';
-        $resource = fopen($file, 'r');
+        $resource = \fopen($file, 'r');
 
         return [
             // null
@@ -2419,7 +2404,7 @@ XML;
             // floats
             [2.3, 2.3],
             [1 / 3, 1 - 2 / 3],
-            [log(0), log(0)],
+            [\log(0), \log(0)],
             // arrays
             [[], []],
             [[0 => 1], [0 => 1]],
@@ -2487,7 +2472,7 @@ XML;
             [$book1, $book2],
             [$book3, $book4], // same content, different class
             // resources
-            [fopen($file, 'r'), fopen($file, 'r')],
+            [\fopen($file, 'r'), \fopen($file, 'r')],
             // SplObjectStorage
             [$storage1, $storage2],
             // DOMDocument
@@ -2568,8 +2553,8 @@ XML;
             // We want these values to differ
             [0, 'Foobar'],
             ['Foobar', 0],
-            [3, acos(8)],
-            [acos(8), 3],
+            [3, \acos(8)],
+            [\acos(8), 3],
         ];
     }
 

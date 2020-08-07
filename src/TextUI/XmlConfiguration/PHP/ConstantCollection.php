@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function count;
 use Countable;
 use IteratorAggregate;
 
@@ -47,7 +46,7 @@ final class ConstantCollection implements Countable, IteratorAggregate
 
     public function count(): int
     {
-        return count($this->constants);
+        return \count($this->constants);
     }
 
     public function getIterator(): ConstantCollectionIterator

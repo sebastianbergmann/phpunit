@@ -10,14 +10,6 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
-use function class_exists;
-use function defined;
-use function dirname;
-use function is_dir;
-use function realpath;
-use function sprintf;
-use function strpos;
-use function sys_get_temp_dir;
 use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
 use Doctrine\Instantiator\Instantiator;
@@ -167,16 +159,16 @@ final class ExcludeList
 
     public static function addDirectory(string $directory): void
     {
-        if (!is_dir($directory)) {
+        if (!\is_dir($directory)) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     '"%s" is not a directory',
                     $directory
                 )
             );
         }
 
-        self::$directories[] = realpath($directory);
+        self::$directories[] = \realpath($directory);
     }
 
     /**
@@ -196,14 +188,14 @@ final class ExcludeList
      */
     public function isExcluded(string $file): bool
     {
-        if (defined('PHPUNIT_TESTSUITE')) {
+        if (\defined('PHPUNIT_TESTSUITE')) {
             return false;
         }
 
         $this->initialize();
 
         foreach (self::$directories as $directory) {
-            if (strpos($file, $directory) === 0) {
+            if (\strpos($file, $directory) === 0) {
                 return true;
             }
         }
@@ -220,7 +212,7 @@ final class ExcludeList
             self::$directories = [];
 
             foreach (self::EXCLUDED_CLASS_NAMES as $className => $parent) {
-                if (!class_exists($className)) {
+                if (!\class_exists($className)) {
                     continue;
                 }
 
@@ -237,7 +229,7 @@ final class ExcludeList
                 // @codeCoverageIgnoreEnd
 
                 for ($i = 0; $i < $parent; $i++) {
-                    $directory = dirname($directory);
+                    $directory = \dirname($directory);
                 }
 
                 self::$directories[] = $directory;
@@ -247,7 +239,7 @@ final class ExcludeList
             if (DIRECTORY_SEPARATOR === '\\') {
                 // tempnam() prefix is limited to first 3 chars.
                 // @see https://php.net/manual/en/function.tempnam.php
-                self::$directories[] = sys_get_temp_dir() . '\\PHP';
+                self::$directories[] = \sys_get_temp_dir() . '\\PHP';
             }
         }
     }

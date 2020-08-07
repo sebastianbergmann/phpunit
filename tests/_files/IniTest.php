@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\TestFixture;
 
-use function ini_get;
 use PHPUnit\Framework\TestCase;
 
 class IniTest extends TestCase
 {
     public function testIni(): void
     {
-        $this->assertEquals('application/x-test', ini_get('default_mimetype'));
+        $this->assertEquals('application/x-test', \ini_get('default_mimetype'));
     }
 }

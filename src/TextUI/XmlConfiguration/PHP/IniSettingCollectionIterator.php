@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function count;
-use function iterator_count;
 use Countable;
 use Iterator;
 
@@ -36,7 +34,7 @@ final class IniSettingCollectionIterator implements Countable, Iterator
 
     public function count(): int
     {
-        return iterator_count($this);
+        return \iterator_count($this);
     }
 
     public function rewind(): void
@@ -46,7 +44,7 @@ final class IniSettingCollectionIterator implements Countable, Iterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->iniSettings);
+        return $this->position < \count($this->iniSettings);
     }
 
     public function key(): int

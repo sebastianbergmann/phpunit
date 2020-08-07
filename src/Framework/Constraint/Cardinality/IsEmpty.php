@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function count;
-use function gettype;
-use function sprintf;
-use function strpos;
 use Countable;
 use EmptyIterator;
 
@@ -42,7 +38,7 @@ final class IsEmpty extends Constraint
         }
 
         if ($other instanceof Countable) {
-            return count($other) === 0;
+            return \count($other) === 0;
         }
 
         return empty($other);
@@ -58,11 +54,11 @@ final class IsEmpty extends Constraint
      */
     protected function failureDescription($other): string
     {
-        $type = gettype($other);
+        $type = \gettype($other);
 
-        return sprintf(
+        return \sprintf(
             '%s %s %s',
-            strpos($type, 'a') === 0 || strpos($type, 'o') === 0 ? 'an' : 'a',
+            \strpos($type, 'a') === 0 || \strpos($type, 'o') === 0 ? 'an' : 'a',
             $type,
             $this->toString()
         );

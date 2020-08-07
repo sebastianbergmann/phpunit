@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function array_key_exists;
-use function is_array;
 use ArrayAccess;
 
 /**
@@ -54,8 +52,8 @@ final class ArrayHasKey extends Constraint
      */
     protected function matches($other): bool
     {
-        if (is_array($other)) {
-            return array_key_exists($this->key, $other);
+        if (\is_array($other)) {
+            return \array_key_exists($this->key, $other);
         }
 
         if ($other instanceof ArrayAccess) {

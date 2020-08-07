@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function is_writable;
-use function sprintf;
-
 /**
  * Constraint that checks if the file/dir(name) that it is evaluated for is writable.
  *
@@ -35,7 +32,7 @@ final class IsWritable extends Constraint
      */
     protected function matches($other): bool
     {
-        return is_writable($other);
+        return \is_writable($other);
     }
 
     /**
@@ -48,7 +45,7 @@ final class IsWritable extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return sprintf(
+        return \sprintf(
             '"%s" is writable',
             $other
         );

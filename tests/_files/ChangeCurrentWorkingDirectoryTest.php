@@ -9,14 +9,13 @@
  */
 namespace PHPUnit\TestFixture;
 
-use function chdir;
 use PHPUnit\Framework\TestCase;
 
 class ChangeCurrentWorkingDirectoryTest extends TestCase
 {
     public function testSomethingThatChangesTheCwd(): void
     {
-        chdir('../');
+        \chdir('../');
 
         $this->assertTrue(true);
     }

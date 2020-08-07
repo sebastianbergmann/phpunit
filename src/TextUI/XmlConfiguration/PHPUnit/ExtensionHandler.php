@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
-use function class_exists;
-use function sprintf;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\Hook;
@@ -28,7 +26,7 @@ final class ExtensionHandler
 
         if (!$object instanceof Hook) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     'Class "%s" does not implement a PHPUnit\Runner\Hook interface',
                     $extension->className()
                 )
@@ -44,7 +42,7 @@ final class ExtensionHandler
 
         if (!$object instanceof TestListener) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     'Class "%s" does not implement the PHPUnit\Framework\TestListener interface',
                     $extension->className()
                 )
@@ -80,7 +78,7 @@ final class ExtensionHandler
      */
     private function ensureClassExists(Extension $extension): void
     {
-        if (class_exists($extension->className(), false)) {
+        if (\class_exists($extension->className(), false)) {
             return;
         }
 
@@ -89,9 +87,9 @@ final class ExtensionHandler
             require_once $extension->sourceFile();
         }
 
-        if (!class_exists($extension->className())) {
+        if (!\class_exists($extension->className())) {
             throw new Exception(
-                sprintf(
+                \sprintf(
                     'Class "%s" does not exist',
                     $extension->className()
                 )

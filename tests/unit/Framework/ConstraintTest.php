@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function preg_replace;
 use ArrayObject;
 use Countable;
 use PHPUnit\Framework\Constraint\Count;
@@ -1388,6 +1387,6 @@ EOF
      */
     private function trimnl($string)
     {
-        return preg_replace('/[ ]*\n/', "\n", $string);
+        return \preg_replace('/[ ]*\n/', "\n", $string);
     }
 }

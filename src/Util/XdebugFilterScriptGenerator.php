@@ -10,12 +10,6 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
-use function addslashes;
-use function array_map;
-use function implode;
-use function is_string;
-use function realpath;
-use function sprintf;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage as FilterConfiguration;
 
 /**
@@ -27,9 +21,9 @@ final class XdebugFilterScriptGenerator
 {
     public function generate(FilterConfiguration $filter): string
     {
-        $files = array_map(
+        $files = \array_map(
             static function ($item) {
-                return sprintf(
+                return \sprintf(
                     "        '%s'",
                     $item
                 );
@@ -37,7 +31,7 @@ final class XdebugFilterScriptGenerator
             $this->getItems($filter)
         );
 
-        $files = implode(",\n", $files);
+        $files = \implode(",\n", $files);
 
         return <<<EOF
 <?php declare(strict_types=1);
@@ -61,11 +55,11 @@ EOF;
         $files = [];
 
         foreach ($filter->directories() as $directory) {
-            $path = realpath($directory->path());
+            $path = \realpath($directory->path());
 
-            if (is_string($path)) {
-                $files[] = sprintf(
-                    addslashes('%s' . DIRECTORY_SEPARATOR),
+            if (\is_string($path)) {
+                $files[] = \sprintf(
+                    \addslashes('%s' . DIRECTORY_SEPARATOR),
                     $path
                 );
             }

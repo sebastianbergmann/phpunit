@@ -33,7 +33,7 @@ final class ValidationResult
                 $validationErrors[$error->line] = [];
             }
 
-            $validationErrors[$error->line][] = trim($error->message);
+            $validationErrors[$error->line][] = \trim($error->message);
         }
 
         return new self($validationErrors);
@@ -57,7 +57,7 @@ final class ValidationResult
             $buffer .= \sprintf(PHP_EOL . '  Line %d:' . PHP_EOL, $line);
 
             foreach ($validationErrorsOnLine as $validationError) {
-                $buffer .= sprintf('  - %s' . PHP_EOL, $validationError);
+                $buffer .= \sprintf('  - %s' . PHP_EOL, $validationError);
             }
         }
 

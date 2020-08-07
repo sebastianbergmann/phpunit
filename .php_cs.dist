@@ -80,7 +80,7 @@ return PhpCsFixer\Config::create()
         'global_namespace_import' => [
             'import_classes' => true,
             'import_constants' => true,
-            'import_functions' => true,
+            'import_functions' => false,
         ],
         'header_comment' => ['header' => $header, 'separate' => 'none'],
         'heredoc_to_nowdoc' => true,
@@ -102,7 +102,7 @@ return PhpCsFixer\Config::create()
         'multiline_whitespace_before_semicolons' => true,
         'native_constant_invocation' => false,
         'native_function_casing' => false,
-        'native_function_invocation' => false,
+        'native_function_invocation' => true,
         'native_function_type_declaration_casing' => true,
         'new_with_braces' => false,
         'no_alias_functions' => true,
