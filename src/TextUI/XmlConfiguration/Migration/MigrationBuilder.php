@@ -15,6 +15,10 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 final class MigrationBuilder
 {
     private const AVAILABLE_MIGRATIONS = [
+        '8.5' => [
+            RemoveLogTypes::class,
+        ],
+
         '9.2' => [
             RemoveCacheTokensAttribute::class,
             IntroduceCoverageElement::class,
