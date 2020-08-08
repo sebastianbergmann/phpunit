@@ -126,6 +126,7 @@
         <mkdir dir="${basedir}/build/tmp/phar"/>
         <mkdir dir="${basedir}/build/tmp/phar-scoped"/>
 
+        <copy file="${basedir}/phpunit.xsd" tofile="${basedir}/build/tmp/phar/phpunit.xsd"/>
         <copy todir="${basedir}/build/tmp/phar/schema">
             <fileset dir="${basedir}/schema">
                 <include name="**/*" />
