@@ -14,6 +14,12 @@ use const E_USER_ERROR;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const PHP_EOL;
+use function array_map;
+use function get_class;
+use function getcwd;
+use function ini_get;
+use function ini_set;
+use function trigger_error;
 use DependencyFailureTest;
 use DependencyInputTest;
 use DependencyOnClassTest;
@@ -107,7 +113,7 @@ class TestCaseTest extends TestCase
         $this->assertInstanceOf(Reorderable::class, $this);
 
         $this->assertEquals(
-            [new ExecutionOrderDependency(\get_class($this), 'testCaseDefaultExecutionOrderDependencies')],
+            [new ExecutionOrderDependency(get_class($this), 'testCaseDefaultExecutionOrderDependencies')],
             $this->provides()
         );
 
@@ -519,7 +525,7 @@ class TestCaseTest extends TestCase
 
         $test->expectExceptionObject($exception);
 
-        $this->assertSame(\get_class($exception), $test->getExpectedException());
+        $this->assertSame(get_class($exception), $test->getExpectedException());
         $this->assertSame($exception->getCode(), $test->getExpectedExceptionCode());
         $this->assertSame($exception->getMessage(), $test->getExpectedExceptionMessage());
     }
@@ -846,27 +852,27 @@ class TestCaseTest extends TestCase
         $test = new RequirementsTest('testSettingDisplayErrorsOn');
 
         // Get this so we can return it to whatever it was before the test.
-        $displayErrorsVal = \ini_get('display_errors');
+        $displayErrorsVal = ini_get('display_errors');
 
-        \ini_set('display_errors', 'On');
+        ini_set('display_errors', 'On');
         $result = $test->run();
         $this->assertEquals(0, $result->skippedCount());
 
-        \ini_set('display_errors', 'Off');
+        ini_set('display_errors', 'Off');
         $result = $test->run();
         $this->assertEquals(1, $result->skippedCount());
 
-        \ini_set('display_errors', $displayErrorsVal);
+        ini_set('display_errors', $displayErrorsVal);
     }
 
     public function testCurrentWorkingDirectoryIsRestored(): void
     {
-        $expectedCwd = \getcwd();
+        $expectedCwd = getcwd();
 
         $test = new ChangeCurrentWorkingDirectoryTest('testSomethingThatChangesTheCwd');
         $test->run();
 
-        $this->assertSame($expectedCwd, \getcwd());
+        $this->assertSame($expectedCwd, getcwd());
     }
 
     /**
@@ -1096,7 +1102,7 @@ class TestCaseTest extends TestCase
         $this->assertArrayHasKey(DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass', $result->passed());
 
         // Confirm the test depending on the failing TestSuite::class has been warn-skipped
-        $skipped = \array_map(function (TestFailure $t) {
+        $skipped = array_map(function (TestFailure $t) {
             return $t->getTestName();
         }, $result->skipped());
         $this->assertContains(DependencyOnClassTest::class . '::testThatDependsOnAFailingClass', $skipped);
@@ -1260,7 +1266,7 @@ class TestCaseTest extends TestCase
         $this->expectDeprecationMessage('foo');
         $this->expectDeprecationMessageMatches('/foo/');
 
-        \trigger_error('foo', E_USER_DEPRECATED);
+        trigger_error('foo', E_USER_DEPRECATED);
     }
 
     public function testNoticeCanBeExpected(): void
@@ -1269,7 +1275,7 @@ class TestCaseTest extends TestCase
         $this->expectNoticeMessage('foo');
         $this->expectNoticeMessageMatches('/foo/');
 
-        \trigger_error('foo', E_USER_NOTICE);
+        trigger_error('foo', E_USER_NOTICE);
     }
 
     public function testWarningCanBeExpected(): void
@@ -1278,7 +1284,7 @@ class TestCaseTest extends TestCase
         $this->expectWarningMessage('foo');
         $this->expectWarningMessageMatches('/foo/');
 
-        \trigger_error('foo', E_USER_WARNING);
+        trigger_error('foo', E_USER_WARNING);
     }
 
     public function testErrorCanBeExpected(): void
@@ -1287,7 +1293,7 @@ class TestCaseTest extends TestCase
         $this->expectErrorMessage('foo');
         $this->expectErrorMessageMatches('/foo/');
 
-        \trigger_error('foo', E_USER_ERROR);
+        trigger_error('foo', E_USER_ERROR);
     }
 
     public function testSetDependencyInput(): void

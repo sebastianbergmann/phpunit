@@ -9,6 +9,15 @@
  */
 namespace PHPUnit\Runner;
 
+use function array_diff;
+use function array_values;
+use function basename;
+use function class_exists;
+use function get_declared_classes;
+use function sprintf;
+use function str_replace;
+use function strlen;
+use function substr;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\FileLoader;
 use ReflectionClass;
@@ -26,15 +35,15 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
      */
     public function load(string $suiteClassFile): ReflectionClass
     {
-        $suiteClassName = \basename($suiteClassFile, '.php');
-        $loadedClasses  = \get_declared_classes();
+        $suiteClassName = basename($suiteClassFile, '.php');
+        $loadedClasses  = get_declared_classes();
 
-        if (!\class_exists($suiteClassName, false)) {
+        if (!class_exists($suiteClassName, false)) {
             /* @noinspection UnusedFunctionResultInspection */
             FileLoader::checkAndLoad($suiteClassFile);
 
-            $loadedClasses = \array_values(
-                \array_diff(\get_declared_classes(), $loadedClasses)
+            $loadedClasses = array_values(
+                array_diff(get_declared_classes(), $loadedClasses)
             );
 
             if (empty($loadedClasses)) {
@@ -42,12 +51,12 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             }
         }
 
-        if (!\class_exists($suiteClassName, false)) {
-            $offset = 0 - \strlen($suiteClassName);
+        if (!class_exists($suiteClassName, false)) {
+            $offset = 0 - strlen($suiteClassName);
 
             foreach ($loadedClasses as $loadedClass) {
-                if (\substr($loadedClass, $offset) === $suiteClassName &&
-                    \basename(\str_replace('\\', '/', $loadedClass)) === $suiteClassName) {
+                if (substr($loadedClass, $offset) === $suiteClassName &&
+                    basename(str_replace('\\', '/', $loadedClass)) === $suiteClassName) {
                     $suiteClassName = $loadedClass;
 
                     break;
@@ -55,7 +64,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             }
         }
 
-        if (!\class_exists($suiteClassName, false)) {
+        if (!class_exists($suiteClassName, false)) {
             throw $this->exceptionFor($suiteClassName, $suiteClassFile);
         }
 
@@ -104,7 +113,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
     private function exceptionFor(string $className, string $filename): Exception
     {
         return new Exception(
-            \sprintf(
+            sprintf(
                 "Class '%s' could not be found in '%s'.",
                 $className,
                 $filename

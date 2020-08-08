@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function get_class;
+use function sprintf;
 use PHPUnit\Util\Filter;
 use Throwable;
 
@@ -29,7 +31,7 @@ final class Exception extends Constraint
      */
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'exception of type "%s"',
             $this->className
         );
@@ -64,15 +66,15 @@ final class Exception extends Constraint
                     . "\n" . Filter::getFilteredStacktrace($other);
             }
 
-            return \sprintf(
+            return sprintf(
                 'exception of type "%s" matches expected exception "%s"%s',
-                \get_class($other),
+                get_class($other),
                 $this->className,
                 $message
             );
         }
 
-        return \sprintf(
+        return sprintf(
             'exception of type "%s" is thrown',
             $this->className
         );

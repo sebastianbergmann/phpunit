@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function count;
 use Countable;
 use IteratorAggregate;
 
@@ -46,7 +47,7 @@ final class VariableCollection implements Countable, IteratorAggregate
 
     public function count(): int
     {
-        return \count($this->variables);
+        return count($this->variables);
     }
 
     public function getIterator(): VariableCollectionIterator

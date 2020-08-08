@@ -10,6 +10,11 @@
 namespace PHPUnit\Runner;
 
 use const PHP_EOL;
+use function file_put_contents;
+use function strtr;
+use function sys_get_temp_dir;
+use function touch;
+use function unlink;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 
@@ -80,9 +85,9 @@ EOF;
 
     protected function setUp(): void
     {
-        $this->dirname  = \sys_get_temp_dir();
+        $this->dirname  = sys_get_temp_dir();
         $this->filename = $this->dirname . '/phpunit.phpt';
-        \touch($this->filename);
+        touch($this->filename);
 
         $this->phpProcess = $this->getMockForAbstractClass(AbstractPhpProcess::class, [], '', false);
         $this->testCase   = new PhptTestCase($this->filename, $this->phpProcess);
@@ -90,7 +95,7 @@ EOF;
 
     protected function tearDown(): void
     {
-        @\unlink($this->filename);
+        @unlink($this->filename);
 
         $this->phpProcess = null;
         $this->testCase   = null;
@@ -317,7 +322,7 @@ EOF
      */
     private function setPhpContent($content): void
     {
-        \file_put_contents($this->filename, $content);
+        file_put_contents($this->filename, $content);
     }
 
     /**
@@ -329,7 +334,7 @@ EOF
      */
     private function ensureCorrectEndOfLine($content)
     {
-        return \strtr(
+        return strtr(
             $content,
             [
                 "\r\n" => PHP_EOL,

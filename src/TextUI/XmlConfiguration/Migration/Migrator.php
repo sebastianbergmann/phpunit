@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function sprintf;
 use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaDetector;
@@ -30,7 +31,7 @@ final class Migrator
 
         if (!$origin->detected()) {
             throw new Exception(
-                \sprintf(
+                sprintf(
                     '"%s" is not a valid PHPUnit XML configuration file that can be migrated',
                     $filename,
                 )

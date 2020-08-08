@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter;
 
+use function count;
 use Countable;
 use IteratorAggregate;
 
@@ -46,7 +47,7 @@ final class DirectoryCollection implements Countable, IteratorAggregate
 
     public function count(): int
     {
-        return \count($this->directories);
+        return count($this->directories);
     }
 
     public function getIterator(): DirectoryCollectionIterator

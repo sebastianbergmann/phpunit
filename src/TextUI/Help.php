@@ -10,6 +10,14 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
+use function count;
+use function explode;
+use function max;
+use function preg_replace_callback;
+use function str_pad;
+use function str_repeat;
+use function strlen;
+use function wordwrap;
 use PHPUnit\Util\Color;
 use SebastianBergmann\Environment\Console;
 
@@ -163,7 +171,7 @@ final class Help
         foreach (self::HELP_TEXT as $options) {
             foreach ($options as $option) {
                 if (isset($option['arg'])) {
-                    $this->maxArgLength = \max($this->maxArgLength, isset($option['arg']) ? \strlen($option['arg']) : 0);
+                    $this->maxArgLength = max($this->maxArgLength, isset($option['arg']) ? strlen($option['arg']) : 0);
                 }
             }
         }
@@ -202,7 +210,7 @@ final class Help
                 }
 
                 if (isset($option['arg'])) {
-                    $arg = \str_pad($option['arg'], $this->maxArgLength);
+                    $arg = str_pad($option['arg'], $this->maxArgLength);
                     print self::LEFT_MARGIN . $arg . ' ' . $option['desc'] . PHP_EOL;
                 }
             }
@@ -226,20 +234,20 @@ final class Help
                 }
 
                 if (isset($option['arg'])) {
-                    $arg = Color::colorize('fg-green', \str_pad($option['arg'], $this->maxArgLength));
-                    $arg = \preg_replace_callback(
+                    $arg = Color::colorize('fg-green', str_pad($option['arg'], $this->maxArgLength));
+                    $arg = preg_replace_callback(
                         '/(<[^>]+>)/',
                         static function ($matches) {
                             return Color::colorize('fg-cyan', $matches[0]);
                         },
                         $arg
                     );
-                    $desc = \explode(PHP_EOL, \wordwrap($option['desc'], $this->maxDescLength, PHP_EOL));
+                    $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->maxDescLength, PHP_EOL));
 
                     print self::LEFT_MARGIN . $arg . ' ' . $desc[0] . PHP_EOL;
 
-                    for ($i = 1; $i < \count($desc); $i++) {
-                        print \str_repeat(' ', $this->maxArgLength + 3) . $desc[$i] . PHP_EOL;
+                    for ($i = 1; $i < count($desc); $i++) {
+                        print str_repeat(' ', $this->maxArgLength + 3) . $desc[$i] . PHP_EOL;
                     }
                 }
             }

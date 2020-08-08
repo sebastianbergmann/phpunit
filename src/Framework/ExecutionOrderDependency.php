@@ -9,6 +9,15 @@
  */
 namespace PHPUnit\Framework;
 
+use function array_filter;
+use function array_map;
+use function array_values;
+use function count;
+use function explode;
+use function in_array;
+use function strpos;
+use function trim;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -37,9 +46,9 @@ final class ExecutionOrderDependency
     public static function createFromDependsAnnotation(string $className, string $annotation): self
     {
         // Split clone option and target
-        $parts = \explode(' ', \trim($annotation), 2);
+        $parts = explode(' ', trim($annotation), 2);
 
-        if (\count($parts) === 1) {
+        if (count($parts) === 1) {
             $cloneOption = '';
             $target      = $parts[0];
         } else {
@@ -48,7 +57,7 @@ final class ExecutionOrderDependency
         }
 
         // Prefix provided class for targets assumed to be in scope
-        if ($target !== '' && \strpos($target, '::') === false) {
+        if ($target !== '' && strpos($target, '::') === false) {
             $target = $className . '::' . $target;
         }
 
@@ -62,8 +71,8 @@ final class ExecutionOrderDependency
      */
     public static function filterInvalid(array $dependencies): array
     {
-        return \array_values(
-            \array_filter(
+        return array_values(
+            array_filter(
                 $dependencies,
                 static function (self $d) {
                     return $d->isValid();
@@ -80,7 +89,7 @@ final class ExecutionOrderDependency
      */
     public static function mergeUnique(array $existing, array $additional): array
     {
-        $existingTargets = \array_map(
+        $existingTargets = array_map(
             static function ($dependency) {
                 return $dependency->getTarget();
             },
@@ -88,7 +97,7 @@ final class ExecutionOrderDependency
         );
 
         foreach ($additional as $dependency) {
-            if (\in_array($dependency->getTarget(), $existingTargets, true)) {
+            if (in_array($dependency->getTarget(), $existingTargets, true)) {
                 continue;
             }
 
@@ -116,7 +125,7 @@ final class ExecutionOrderDependency
         }
 
         $diff         = [];
-        $rightTargets = \array_map(
+        $rightTargets = array_map(
             static function ($dependency) {
                 return $dependency->getTarget();
             },
@@ -124,7 +133,7 @@ final class ExecutionOrderDependency
         );
 
         foreach ($left as $dependency) {
-            if (\in_array($dependency->getTarget(), $rightTargets, true)) {
+            if (in_array($dependency->getTarget(), $rightTargets, true)) {
                 continue;
             }
 
@@ -140,8 +149,8 @@ final class ExecutionOrderDependency
             return;
         }
 
-        if (\strpos($classOrCallableName, '::') !== false) {
-            [$this->className, $this->methodName] = \explode('::', $classOrCallableName);
+        if (strpos($classOrCallableName, '::') !== false) {
+            [$this->className, $this->methodName] = explode('::', $classOrCallableName);
         } else {
             $this->className  = $classOrCallableName;
             $this->methodName = !empty($methodName) ? $methodName : 'class';

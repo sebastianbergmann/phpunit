@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\Util;
 
+use function array_merge;
+use function get_class;
+use function preg_match;
+use function range;
+use function realpath;
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -894,23 +899,23 @@ final class TestClassTest extends TestCase
      */
     public function testGetProvidedDataRegEx(): void
     {
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('method', $matches[1]);
 
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('class::method', $matches[1]);
 
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\class::method', $matches[1]);
 
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\namespace\class::method', $matches[1]);
 
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('メソッド', $matches[1]);
     }
@@ -1183,11 +1188,11 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             [
-                new ExecutionOrderDependency(\get_class($this), 'Foo'),
-                new ExecutionOrderDependency(\get_class($this), 'ほげ'),
+                new ExecutionOrderDependency(get_class($this), 'Foo'),
+                new ExecutionOrderDependency(get_class($this), 'ほげ'),
                 new ExecutionOrderDependency('AnotherClass::Foo'),
             ],
-            Test::getDependencies(\get_class($this), 'methodForTestParseAnnotation')
+            Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
         );
     }
 
@@ -1205,8 +1210,8 @@ final class TestClassTest extends TestCase
     public function testParseAnnotationThatIsOnlyOneLine(): void
     {
         $this->assertEquals(
-            [new ExecutionOrderDependency(\get_class($this), 'Bar')],
-            Test::getDependencies(\get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+            [new ExecutionOrderDependency(get_class($this), 'Bar')],
+            Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
         );
     }
 
@@ -1334,7 +1339,7 @@ final class TestClassTest extends TestCase
     public function testFunctionParenthesesAreAllowed(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(10, 12)],
+            [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
             Test::getLinesToBeCovered(
                 CoverageFunctionParenthesesTest::class,
                 'testSomething'
@@ -1345,7 +1350,7 @@ final class TestClassTest extends TestCase
     public function testFunctionParenthesesAreAllowedWithWhitespace(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(10, 12)],
+            [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
             Test::getLinesToBeCovered(
                 CoverageFunctionParenthesesWhitespaceTest::class,
                 'testSomething'
@@ -1356,7 +1361,7 @@ final class TestClassTest extends TestCase
     public function testMethodParenthesesAreAllowed(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => \range(31, 35)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
             Test::getLinesToBeCovered(
                 CoverageMethodParenthesesTest::class,
                 'testSomething'
@@ -1367,7 +1372,7 @@ final class TestClassTest extends TestCase
     public function testMethodParenthesesAreAllowedWithWhitespace(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => \range(31, 35)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
             Test::getLinesToBeCovered(
                 CoverageMethodParenthesesWhitespaceTest::class,
                 'testSomething'
@@ -1379,7 +1384,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             [
-                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => \range(12, 15),
+                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(12, 15),
             ],
             Test::getLinesToBeCovered(
                 CoverageNamespacedFunctionTest::class,
@@ -1397,91 +1402,91 @@ final class TestClassTest extends TestCase
             ],
             [
                 CoverageClassExtendedTest::class,
-                \array_merge(\range(29, 46), \range(12, 27)),
+                array_merge(range(29, 46), range(12, 27)),
             ],
             [
                 CoverageClassTest::class,
-                \range(29, 46),
+                range(29, 46),
             ],
             [
                 CoverageMethodTest::class,
-                \range(31, 35),
+                range(31, 35),
             ],
             [
                 CoverageMethodOneLineAnnotationTest::class,
-                \range(31, 35),
+                range(31, 35),
             ],
             [
                 CoverageNotPrivateTest::class,
-                \array_merge(\range(31, 35), \range(37, 41)),
+                array_merge(range(31, 35), range(37, 41)),
             ],
             [
                 CoverageNotProtectedTest::class,
-                \array_merge(\range(31, 35), \range(43, 45)),
+                array_merge(range(31, 35), range(43, 45)),
             ],
             [
                 CoverageNotPublicTest::class,
-                \array_merge(\range(37, 41), \range(43, 45)),
+                array_merge(range(37, 41), range(43, 45)),
             ],
             [
                 CoveragePrivateTest::class,
-                \range(43, 45),
+                range(43, 45),
             ],
             [
                 CoverageProtectedTest::class,
-                \range(37, 41),
+                range(37, 41),
             ],
             [
                 CoveragePublicTest::class,
-                \range(31, 35),
+                range(31, 35),
             ],
             [
                 CoverageFunctionTest::class,
-                \range(10, 12),
+                range(10, 12),
             ],
             [
                 NamespaceCoverageClassExtendedTest::class,
-                \array_merge(\range(29, 46), \range(12, 27)),
+                array_merge(range(29, 46), range(12, 27)),
             ],
             [
                 NamespaceCoverageClassTest::class,
-                \range(29, 46),
+                range(29, 46),
             ],
             [
                 NamespaceCoverageMethodTest::class,
-                \range(31, 35),
+                range(31, 35),
             ],
             [
                 NamespaceCoverageNotPrivateTest::class,
-                \array_merge(\range(31, 35), \range(37, 41)),
+                array_merge(range(31, 35), range(37, 41)),
             ],
             [
                 NamespaceCoverageNotProtectedTest::class,
-                \array_merge(\range(31, 35), \range(43, 45)),
+                array_merge(range(31, 35), range(43, 45)),
             ],
             [
                 NamespaceCoverageNotPublicTest::class,
-                \array_merge(\range(37, 41), \range(43, 45)),
+                array_merge(range(37, 41), range(43, 45)),
             ],
             [
                 NamespaceCoveragePrivateTest::class,
-                \range(43, 45),
+                range(43, 45),
             ],
             [
                 NamespaceCoverageProtectedTest::class,
-                \range(37, 41),
+                range(37, 41),
             ],
             [
                 NamespaceCoveragePublicTest::class,
-                \range(31, 35),
+                range(31, 35),
             ],
             [
                 NamespaceCoverageCoversClassTest::class,
-                \array_merge(\range(43, 45), \range(37, 41), \range(31, 35), \range(24, 26), \range(19, 22), \range(14, 17)),
+                array_merge(range(43, 45), range(37, 41), range(31, 35), range(24, 26), range(19, 22), range(14, 17)),
             ],
             [
                 NamespaceCoverageCoversClassPublicTest::class,
-                \range(31, 35),
+                range(31, 35),
             ],
             [
                 CoverageClassNothingTest::class,
@@ -1493,7 +1498,7 @@ final class TestClassTest extends TestCase
             ],
             [
                 CoverageCoversOverridesCoversNothingTest::class,
-                \range(31, 35),
+                range(31, 35),
             ],
             [
                 CoverageMethodNothingCoversMethod::class,
@@ -1516,7 +1521,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertSame(
             [
-                TEST_FILES_PATH . '3194.php' => \array_merge(\range(14, 20), \range(22, 30)),
+                TEST_FILES_PATH . '3194.php' => array_merge(range(14, 20), range(22, 30)),
             ],
             Test::getLinesToBeCovered(
                 Test3194::class,
@@ -1582,7 +1587,7 @@ final class TestClassTest extends TestCase
     {
         if (!$this->fileRequirementsTest) {
             $reflector                  = new ReflectionClass(RequirementsTest::class);
-            $this->fileRequirementsTest = \realpath($reflector->getFileName());
+            $this->fileRequirementsTest = realpath($reflector->getFileName());
         }
 
         return $this->fileRequirementsTest;

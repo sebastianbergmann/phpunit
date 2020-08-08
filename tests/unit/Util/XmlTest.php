@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Util;
 
+use function chr;
+use function ord;
+use function sprintf;
 use DOMDocument;
 use PHPUnit\Framework\TestCase;
 
@@ -38,9 +41,9 @@ final class XmlTest extends TestCase
 
         $this->assertNull(
             $e,
-            \sprintf(
+            sprintf(
                 '\PHPUnit\Util\Xml::prepareString("\x%02x") should not crash DomDocument',
-                \ord($char)
+                ord($char)
             )
         );
     }
@@ -50,7 +53,7 @@ final class XmlTest extends TestCase
         $data = [];
 
         for ($i = 0; $i < 256; $i++) {
-            $data[] = [\chr($i)];
+            $data[] = [chr($i)];
         }
 
         return $data;

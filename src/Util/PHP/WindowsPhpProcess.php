@@ -10,6 +10,7 @@
 namespace PHPUnit\Util\PHP;
 
 use const PHP_MAJOR_VERSION;
+use function tmpfile;
 use PHPUnit\Framework\Exception;
 
 /**
@@ -33,7 +34,7 @@ final class WindowsPhpProcess extends DefaultPhpProcess
      */
     protected function getHandles(): array
     {
-        if (false === $stdout_handle = \tmpfile()) {
+        if (false === $stdout_handle = tmpfile()) {
             throw new Exception(
                 'A temporary file could not be created; verify that your TEMP environment variable is writable'
             );

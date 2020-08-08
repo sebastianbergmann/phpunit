@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function sprintf;
 use ReflectionClass;
 use ReflectionException;
 
@@ -35,7 +36,7 @@ final class IsInstanceOf extends Constraint
      */
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'is instance of %s "%s"',
             $this->getType(),
             $this->className
@@ -65,7 +66,7 @@ final class IsInstanceOf extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return \sprintf(
+        return sprintf(
             '%s is an instance of %s "%s"',
             $this->exporter()->shortenedExport($other),
             $this->getType(),

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use function assert;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\TestFixture\EmptyDataProviderTest;
 use PHPUnit\TestFixture\ModifiedConstructorTestCase;
@@ -26,8 +27,8 @@ final class TestBuilderTest extends TestCase
                           ->setConstructorArgs([$this])
                           ->getMock();
 
-        \assert($reflector instanceof MockObject);
-        \assert($reflector instanceof ReflectionClass);
+        assert($reflector instanceof MockObject);
+        assert($reflector instanceof ReflectionClass);
 
         $reflector->expects($this->once())
                   ->method('getConstructor')
@@ -53,8 +54,8 @@ final class TestBuilderTest extends TestCase
             ->setConstructorArgs([$this])
             ->getMock();
 
-        \assert($reflector instanceof MockObject);
-        \assert($reflector instanceof ReflectionClass);
+        assert($reflector instanceof MockObject);
+        assert($reflector instanceof ReflectionClass);
 
         $reflector->expects($this->once())
             ->method('isInstantiable')

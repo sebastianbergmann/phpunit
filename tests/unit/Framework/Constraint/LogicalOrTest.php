@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_reduce;
+use function array_shift;
+
 /**
  * @small
  */
@@ -26,9 +29,9 @@ final class LogicalOrTest extends BinaryOperatorTestCase
 
     public function evaluateExpectedResult(array $input): bool
     {
-        $initial = (bool) \array_shift($input);
+        $initial = (bool) array_shift($input);
 
-        return \array_reduce($input, static function ($carry, bool $item): bool {
+        return array_reduce($input, static function ($carry, bool $item): bool {
             return $carry || $item;
         }, $initial);
     }

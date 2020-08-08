@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 
 ## [9.3.3] - 2020-MM-DD
 
+### Changed
+
+* Reverted the workaround for [#4399](https://github.com/sebastianbergmann/phpunit/issues/4399) now that the root cause is fixed in PHP-Scoper
+
 ### Fixed
 
 * [#4404](https://github.com/sebastianbergmann/phpunit/issues/4404): Code Coverage does not work with PHAR and Xdebug

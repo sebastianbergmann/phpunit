@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function array_key_exists;
+use function sprintf;
+use function version_compare;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -43,9 +47,9 @@ final class MigrationBuilder
      */
     public function build(string $fromVersion): array
     {
-        if (!\array_key_exists($fromVersion, self::AVAILABLE_MIGRATIONS)) {
+        if (!array_key_exists($fromVersion, self::AVAILABLE_MIGRATIONS)) {
             throw new MigrationBuilderException(
-                \sprintf(
+                sprintf(
                     'Migration from schema version %s is not supported',
                     $fromVersion
                 )
@@ -55,7 +59,7 @@ final class MigrationBuilder
         $stack = [];
 
         foreach (self::AVAILABLE_MIGRATIONS as $version => $migrations) {
-            if (\version_compare($version, $fromVersion, '<')) {
+            if (version_compare($version, $fromVersion, '<')) {
                 continue;
             }
 

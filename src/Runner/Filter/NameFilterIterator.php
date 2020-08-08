@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\Runner\Filter;
 
+use function end;
+use function implode;
+use function preg_match;
+use function sprintf;
+use function str_replace;
 use Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\WarningTestCase;
@@ -62,15 +67,15 @@ final class NameFilterIterator extends RecursiveFilterIterator
         if ($test instanceof WarningTestCase) {
             $name = $test->getMessage();
         } elseif ($tmp[0] !== '') {
-            $name = \implode('::', $tmp);
+            $name = implode('::', $tmp);
         } else {
             $name = $tmp[1];
         }
 
-        $accepted = @\preg_match($this->filter, $name, $matches);
+        $accepted = @preg_match($this->filter, $name, $matches);
 
         if ($accepted && isset($this->filterMax)) {
-            $set      = \end($matches);
+            $set      = end($matches);
             $accepted = $set >= $this->filterMin && $set <= $this->filterMax;
         }
 
@@ -86,9 +91,9 @@ final class NameFilterIterator extends RecursiveFilterIterator
             // Handles:
             //  * testAssertEqualsSucceeds#4
             //  * testAssertEqualsSucceeds#4-8
-            if (\preg_match('/^(.*?)#(\d+)(?:-(\d+))?$/', $filter, $matches)) {
+            if (preg_match('/^(.*?)#(\d+)(?:-(\d+))?$/', $filter, $matches)) {
                 if (isset($matches[3]) && $matches[2] < $matches[3]) {
-                    $filter = \sprintf(
+                    $filter = sprintf(
                         '%s.*with data set #(\d+)$',
                         $matches[1]
                     );
@@ -96,7 +101,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
                     $this->filterMin = (int) $matches[2];
                     $this->filterMax = (int) $matches[3];
                 } else {
-                    $filter = \sprintf(
+                    $filter = sprintf(
                         '%s.*with data set #%s$',
                         $matches[1],
                         $matches[2]
@@ -105,8 +110,8 @@ final class NameFilterIterator extends RecursiveFilterIterator
             } // Handles:
             //  * testDetermineJsonError@JSON_ERROR_NONE
             //  * testDetermineJsonError@JSON.*
-            elseif (\preg_match('/^(.*?)@(.+)$/', $filter, $matches)) {
-                $filter = \sprintf(
+            elseif (preg_match('/^(.*?)@(.+)$/', $filter, $matches)) {
+                $filter = sprintf(
                     '%s.*with data set "%s"$',
                     $matches[1],
                     $matches[2]
@@ -115,7 +120,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
 
             // Escape delimiters in regular expression. Do NOT use preg_quote,
             // to keep magic characters.
-            $filter = \sprintf('/%s/i', \str_replace(
+            $filter = sprintf('/%s/i', str_replace(
                 '/',
                 '\\/',
                 $filter

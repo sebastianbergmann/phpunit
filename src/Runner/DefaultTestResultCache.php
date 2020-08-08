@@ -10,6 +10,20 @@
 namespace PHPUnit\Runner;
 
 use const DIRECTORY_SEPARATOR;
+use function assert;
+use function defined;
+use function dirname;
+use function file_get_contents;
+use function file_put_contents;
+use function in_array;
+use function is_dir;
+use function is_file;
+use function is_float;
+use function is_int;
+use function is_string;
+use function serialize;
+use function sprintf;
+use function unserialize;
 use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\Filesystem;
 use Serializable;
@@ -71,7 +85,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
 
     public function __construct(?string $filepath = null)
     {
-        if ($filepath !== null && \is_dir($filepath)) {
+        if ($filepath !== null && is_dir($filepath)) {
             // cache path provided, use default cache filename in that location
             $filepath .= DIRECTORY_SEPARATOR . self::DEFAULT_RESULT_CACHE_FILENAME;
         }
@@ -92,22 +106,22 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
      */
     public function saveToFile(): void
     {
-        if (\defined('PHPUNIT_TESTSUITE_RESULTCACHE')) {
+        if (defined('PHPUNIT_TESTSUITE_RESULTCACHE')) {
             return;
         }
 
-        if (!Filesystem::createDirectory(\dirname($this->cacheFilename))) {
+        if (!Filesystem::createDirectory(dirname($this->cacheFilename))) {
             throw new Exception(
-                \sprintf(
+                sprintf(
                     'Cannot create directory "%s" for result cache file',
                     $this->cacheFilename
                 )
             );
         }
 
-        \file_put_contents(
+        file_put_contents(
             $this->cacheFilename,
-            \serialize($this)
+            serialize($this)
         );
     }
 
@@ -137,11 +151,11 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
     {
         $this->clear();
 
-        if (!\is_file($this->cacheFilename)) {
+        if (!is_file($this->cacheFilename)) {
             return;
         }
 
-        $cacheData = @\file_get_contents($this->cacheFilename);
+        $cacheData = @file_get_contents($this->cacheFilename);
 
         // @codeCoverageIgnoreStart
         if ($cacheData === false) {
@@ -151,7 +165,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
 
         $cache = ErrorHandler::invokeIgnoringWarnings(
             static function () use ($cacheData) {
-                return @\unserialize($cacheData, ['allowed_classes' => [self::class]]);
+                return @unserialize($cacheData, ['allowed_classes' => [self::class]]);
             }
         );
 
@@ -184,7 +198,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
 
     public function serialize(): string
     {
-        return \serialize([
+        return serialize([
             'defects' => $this->defects,
             'times'   => $this->times,
         ]);
@@ -195,22 +209,22 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
      */
     public function unserialize($serialized): void
     {
-        $data = \unserialize($serialized);
+        $data = unserialize($serialized);
 
         if (isset($data['times'])) {
             foreach ($data['times'] as $testName => $testTime) {
-                \assert(\is_string($testName));
-                \assert(\is_float($testTime));
+                assert(is_string($testName));
+                assert(is_float($testTime));
                 $this->times[$testName] = $testTime;
             }
         }
 
         if (isset($data['defects'])) {
             foreach ($data['defects'] as $testName => $testResult) {
-                \assert(\is_string($testName));
-                \assert(\is_int($testResult));
+                assert(is_string($testName));
+                assert(is_int($testResult));
 
-                if (\in_array($testResult, self::ALLOWED_CACHE_TEST_STATUSES, true)) {
+                if (in_array($testResult, self::ALLOWED_CACHE_TEST_STATUSES, true)) {
                     $this->defects[$testName] = $testResult;
                 }
             }

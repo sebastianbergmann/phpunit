@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\TextUI\CliArguments;
 
+use function array_merge;
+use function class_exists;
+use function explode;
+use function is_numeric;
+use function str_replace;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
@@ -117,7 +122,7 @@ final class Builder
             $options = Getopt::parse(
                 $parameters,
                 self::SHORT_OPTIONS,
-                \array_merge(self::LONG_OPTIONS, $additionalLongOptions)
+                array_merge(self::LONG_OPTIONS, $additionalLongOptions)
             );
         } catch (UtilException $e) {
             throw new Exception(
@@ -246,7 +251,7 @@ final class Builder
                     break;
 
                 case '--columns':
-                    if (\is_numeric($option[1])) {
+                    if (is_numeric($option[1])) {
                         $columns = (int) $option[1];
                     } elseif ($option[1] === 'max') {
                         $columns = 'max';
@@ -302,7 +307,7 @@ final class Builder
                     break;
 
                 case 'd':
-                    $tmp = \explode('=', $option[1]);
+                    $tmp = explode('=', $option[1]);
 
                     if (isset($tmp[0])) {
                         if (isset($tmp[1])) {
@@ -346,17 +351,17 @@ final class Builder
                     break;
 
                 case '--group':
-                    $groups = \explode(',', $option[1]);
+                    $groups = explode(',', $option[1]);
 
                     break;
 
                 case '--exclude-group':
-                    $excludeGroups = \explode(',', $option[1]);
+                    $excludeGroups = explode(',', $option[1]);
 
                     break;
 
                 case '--test-suffix':
-                    $testSuffixes = \explode(',', $option[1]);
+                    $testSuffixes = explode(',', $option[1]);
 
                     break;
 
@@ -406,7 +411,7 @@ final class Builder
                     break;
 
                 case '--order-by':
-                    foreach (\explode(',', $option[1]) as $order) {
+                    foreach (explode(',', $option[1]) as $order) {
                         switch ($order) {
                             case 'default':
                                 $executionOrder        = TestSuiteSorter::ORDER_DEFAULT;
@@ -543,12 +548,12 @@ final class Builder
                     break;
 
                 case '--testdox-group':
-                    $testdoxGroups = \explode(',', $option[1]);
+                    $testdoxGroups = explode(',', $option[1]);
 
                     break;
 
                 case '--testdox-exclude-group':
-                    $testdoxExcludeGroups = \explode(',', $option[1]);
+                    $testdoxExcludeGroups = explode(',', $option[1]);
 
                     break;
 
@@ -573,8 +578,8 @@ final class Builder
                     break;
 
                 case '--extensions':
-                    foreach (\explode(',', $option[1]) as $extensionClass) {
-                        if (!\class_exists($extensionClass)) {
+                    foreach (explode(',', $option[1]) as $extensionClass) {
+                        if (!class_exists($extensionClass)) {
                             $unavailableExtensions[] = $extensionClass;
 
                             continue;
@@ -727,7 +732,7 @@ final class Builder
                     break;
 
                 default:
-                    $unrecognizedOptions[\str_replace('--', '', $option[0])] = $option[1];
+                    $unrecognizedOptions[str_replace('--', '', $option[0])] = $option[1];
             }
         }
 
