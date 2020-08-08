@@ -1,6 +1,6 @@
 <phpunit
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xsi:noNamespaceSchemaLocation="../../../../schema/9.3.xsd"
+    xsi:noNamespaceSchemaLocation="../../../../phpunit.xsd"
     executionOrder="duration"
 >
     <testsuites>
