@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_map;
+use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestFixture\BooleanConstraint;
 use PHPUnit\TestFixture\CountConstraint;
@@ -45,7 +47,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
 
         $reflection = new ReflectionClass($className);
 
-        $this->assertTrue($reflection->isSubclassOf(Operator::class), \sprintf(
+        $this->assertTrue($reflection->isSubclassOf(Operator::class), sprintf(
             'Failed to assert that "%s" is subclass of "%s".',
             $className,
             Operator::class
@@ -117,7 +119,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
 
     final public function providerUnaryTruthTable()
     {
-        return \array_map(function (bool $input): array {
+        return array_map(function (bool $input): array {
             return [$input, $this->evaluateExpectedResult($input)];
         }, [false, true]);
     }

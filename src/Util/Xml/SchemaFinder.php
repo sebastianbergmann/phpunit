@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use function defined;
+use function is_file;
+use function sprintf;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
@@ -23,9 +27,9 @@ final class SchemaFinder
     {
         $filename = $this->path() . $version . '.xsd';
 
-        if (!\is_file($filename)) {
+        if (!is_file($filename)) {
             throw new Exception(
-                \sprintf(
+                sprintf(
                     'Schema for PHPUnit %s is not available',
                     $version
                 )
@@ -37,7 +41,7 @@ final class SchemaFinder
 
     private function path(): string
     {
-        if (\defined('__PHPUNIT_PHAR_ROOT__')) {
+        if (defined('__PHPUNIT_PHAR_ROOT__')) {
             return __PHPUNIT_PHAR_ROOT__ . '/schema/';
         }
 

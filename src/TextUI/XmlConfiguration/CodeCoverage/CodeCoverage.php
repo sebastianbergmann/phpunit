@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage;
 
+use function count;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Clover;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Crap4j;
@@ -121,7 +122,7 @@ final class CodeCoverage
 
     public function hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport(): bool
     {
-        return \count($this->directories) > 0 || \count($this->files) > 0;
+        return count($this->directories) > 0 || count($this->files) > 0;
     }
 
     public function directories(): DirectoryCollection

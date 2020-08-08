@@ -15,6 +15,7 @@ use const JSON_ERROR_NONE;
 use const JSON_ERROR_STATE_MISMATCH;
 use const JSON_ERROR_SYNTAX;
 use const JSON_ERROR_UTF8;
+use function strtolower;
 
 /**
  * Provides human readable messages for each JSON error.
@@ -50,7 +51,7 @@ final class JsonMatchesErrorMessageProvider
      */
     public static function translateTypeToPrefix(string $type): string
     {
-        switch (\strtolower($type)) {
+        switch (strtolower($type)) {
             case 'expected':
                 $prefix = 'Expected value JSON decode error - ';
 

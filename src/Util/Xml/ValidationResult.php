@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use function sprintf;
+use function trim;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
@@ -33,7 +36,7 @@ final class ValidationResult
                 $validationErrors[$error->line] = [];
             }
 
-            $validationErrors[$error->line][] = \trim($error->message);
+            $validationErrors[$error->line][] = trim($error->message);
         }
 
         return new self($validationErrors);
@@ -54,10 +57,10 @@ final class ValidationResult
         $buffer = '';
 
         foreach ($this->validationErrors as $line => $validationErrorsOnLine) {
-            $buffer .= \sprintf(PHP_EOL . '  Line %d:' . PHP_EOL, $line);
+            $buffer .= sprintf(PHP_EOL . '  Line %d:' . PHP_EOL, $line);
 
             foreach ($validationErrorsOnLine as $validationError) {
-                $buffer .= \sprintf('  - %s' . PHP_EOL, $validationError);
+                $buffer .= sprintf('  - %s' . PHP_EOL, $validationError);
             }
         }
 

@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function class_exists;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -32,7 +34,7 @@ final class MockTrait implements MockType
 
     public function generate(): string
     {
-        if (!\class_exists($this->mockName, false)) {
+        if (!class_exists($this->mockName, false)) {
             eval($this->classCode);
         }
 

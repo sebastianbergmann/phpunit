@@ -10,6 +10,14 @@
 namespace PHPUnit\Framework\MockObject;
 
 use const DIRECTORY_SEPARATOR;
+use function implode;
+use function is_string;
+use function preg_match;
+use function preg_replace;
+use function sprintf;
+use function substr_count;
+use function trim;
+use function var_export;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
@@ -111,9 +119,9 @@ final class MockMethod
 
         $docComment = $method->getDocComment();
 
-        if (\is_string($docComment) &&
-            \preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $docComment, $deprecation)) {
-            $deprecation = \trim(\preg_replace('#[ \t]*\r?\n[ \t]*+\*[ \t]*+#', ' ', $deprecation[1]));
+        if (is_string($docComment) &&
+            preg_match('#\*[ \t]*+@deprecated[ \t]*+(.*?)\r?+\n[ \t]*+\*(?:[ \t]*+@|/$)#s', $docComment, $deprecation)) {
+            $deprecation = trim(preg_replace('#[ \t]*\r?\n[ \t]*+\*[ \t]*+#', ' ', $deprecation[1]));
         } else {
             $deprecation = null;
         }
@@ -178,12 +186,12 @@ final class MockMethod
         if ($this->static) {
             $templateFile = 'mocked_static_method.tpl';
         } elseif ($this->returnType instanceof VoidType) {
-            $templateFile = \sprintf(
+            $templateFile = sprintf(
                 '%s_method_void.tpl',
                 $this->callOriginalMethod ? 'proxied' : 'mocked'
             );
         } else {
-            $templateFile = \sprintf(
+            $templateFile = sprintf(
                 '%s_method.tpl',
                 $this->callOriginalMethod ? 'proxied' : 'mocked'
             );
@@ -197,7 +205,7 @@ final class MockMethod
 
             $deprecationTemplate->setVar(
                 [
-                    'deprecation' => \var_export($deprecation, true),
+                    'deprecation' => var_export($deprecation, true),
                 ]
             );
 
@@ -212,7 +220,7 @@ final class MockMethod
                 'arguments_call'     => $this->argumentsForCall,
                 'return_declaration' => !empty($this->returnType->asString()) ? (': ' . $this->returnType->asString()) : '',
                 'return_type'        => $this->returnType->asString(),
-                'arguments_count'    => !empty($this->argumentsForCall) ? \substr_count($this->argumentsForCall, ',') + 1 : 0,
+                'arguments_count'    => !empty($this->argumentsForCall) ? substr_count($this->argumentsForCall, ',') + 1 : 0,
                 'class_name'         => $this->className,
                 'method_name'        => $this->methodName,
                 'modifier'           => $this->modifier,
@@ -307,7 +315,7 @@ final class MockMethod
             $parameters[] = $nullable . $typeDeclaration . $reference . $name . $default;
         }
 
-        return \implode(', ', $parameters);
+        return implode(', ', $parameters);
     }
 
     /**
@@ -340,7 +348,7 @@ final class MockMethod
             }
         }
 
-        return \implode(', ', $parameters);
+        return implode(', ', $parameters);
     }
 
     /**
@@ -349,7 +357,7 @@ final class MockMethod
     private static function exportDefaultValue(ReflectionParameter $parameter): string
     {
         try {
-            return (string) \var_export($parameter->getDefaultValue(), true);
+            return (string) var_export($parameter->getDefaultValue(), true);
             // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
             throw new RuntimeException(
@@ -373,6 +381,6 @@ final class MockMethod
             }
         }
 
-        return \implode('|', $types) . ' ';
+        return implode('|', $types) . ' ';
     }
 }

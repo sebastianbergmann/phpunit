@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function count;
+use function iterator_count;
 use Countable;
 use Iterator;
 
@@ -34,7 +36,7 @@ final class DirectoryCollectionIterator implements Countable, Iterator
 
     public function count(): int
     {
-        return \iterator_count($this);
+        return iterator_count($this);
     }
 
     public function rewind(): void
@@ -44,7 +46,7 @@ final class DirectoryCollectionIterator implements Countable, Iterator
 
     public function valid(): bool
     {
-        return $this->position < \count($this->directories);
+        return $this->position < count($this->directories);
     }
 
     public function key(): int

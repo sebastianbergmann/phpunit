@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use function mt_srand;
 use MultiDependencyTest;
 use NotReorderableTest;
 use PHPUnit\Framework\TestCase;
@@ -99,7 +100,7 @@ final class TestSuiteSorterTest extends TestCase
         $suite->addTestSuite(MultiDependencyTest::class);
         $sorter = new TestSuiteSorter;
 
-        \mt_srand(54321);
+        mt_srand(54321);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, false, TestSuiteSorter::ORDER_DEFAULT);
 
         $expectedOrder = [
@@ -119,7 +120,7 @@ final class TestSuiteSorterTest extends TestCase
         $suite->addTestSuite(MultiDependencyTest::class);
         $sorter = new TestSuiteSorter;
 
-        \mt_srand(54321);
+        mt_srand(54321);
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, true, TestSuiteSorter::ORDER_DEFAULT);
 
         $expectedOrder = [

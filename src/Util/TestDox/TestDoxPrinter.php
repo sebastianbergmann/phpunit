@@ -10,6 +10,12 @@
 namespace PHPUnit\Util\TestDox;
 
 use const PHP_EOL;
+use function array_map;
+use function get_class;
+use function implode;
+use function method_exists;
+use function preg_split;
+use function trim;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
@@ -205,12 +211,12 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function formatTestName(Test $test): string
     {
-        return \method_exists($test, 'getName') ? $test->getName() : '';
+        return method_exists($test, 'getName') ? $test->getName() : '';
     }
 
     protected function formatClassName(Test $test): string
     {
-        return \get_class($test);
+        return get_class($test);
     }
 
     protected function testHasPassed(): bool
@@ -332,7 +338,7 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function formatThrowable(Throwable $t, ?int $status = null): string
     {
-        $message = \trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
+        $message = trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
 
         if ($message) {
             $message .= PHP_EOL . PHP_EOL . $this->formatStacktrace($t);
@@ -365,15 +371,15 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function prefixLines(string $prefix, string $message): string
     {
-        $message = \trim($message);
+        $message = trim($message);
 
-        return \implode(
+        return implode(
             PHP_EOL,
-            \array_map(
+            array_map(
                 static function (string $text) use ($prefix) {
                     return '   ' . $prefix . ($text ? ' ' . $text : '');
                 },
-                \preg_split('/\r\n|\r|\n/', $message)
+                preg_split('/\r\n|\r|\n/', $message)
             )
         );
     }

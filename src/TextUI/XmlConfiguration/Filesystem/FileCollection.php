@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function count;
 use Countable;
 use IteratorAggregate;
 
@@ -46,7 +47,7 @@ final class FileCollection implements Countable, IteratorAggregate
 
     public function count(): int
     {
-        return \count($this->files);
+        return count($this->files);
     }
 
     public function getIterator(): FileCollectionIterator

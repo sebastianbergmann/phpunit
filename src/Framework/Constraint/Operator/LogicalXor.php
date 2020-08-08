@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_reduce;
+use function array_shift;
+
 final class LogicalXor extends BinaryOperator
 {
     /**
@@ -39,13 +42,13 @@ final class LogicalXor extends BinaryOperator
     {
         $constraints = $this->constraints();
 
-        $initial = \array_shift($constraints);
+        $initial = array_shift($constraints);
 
         if ($initial === null) {
             return false;
         }
 
-        return \array_reduce(
+        return array_reduce(
             $constraints,
             static function (bool $matches, Constraint $constraint) use ($other): bool {
                 return $matches xor $constraint->evaluate($other, '', true);

@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_dir;
+use function sprintf;
+
 /**
  * Constraint that checks if the directory(name) that it is evaluated for exists.
  *
@@ -32,7 +35,7 @@ final class DirectoryExists extends Constraint
      */
     protected function matches($other): bool
     {
-        return \is_dir($other);
+        return is_dir($other);
     }
 
     /**
@@ -45,7 +48,7 @@ final class DirectoryExists extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return \sprintf(
+        return sprintf(
             'directory "%s" exists',
             $other
         );

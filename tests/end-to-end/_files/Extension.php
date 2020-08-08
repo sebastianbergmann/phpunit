@@ -10,6 +10,8 @@
 namespace PHPUnit\Test;
 
 use const PHP_EOL;
+use function count;
+use function func_get_args;
 use PHPUnit\Runner\AfterIncompleteTestHook;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\AfterRiskyTestHook;
@@ -28,7 +30,7 @@ final class Extension implements AfterIncompleteTestHook, AfterLastTestHook, Aft
 
     public function __construct()
     {
-        $this->amountOfInjectedArguments = \count(\func_get_args());
+        $this->amountOfInjectedArguments = count(func_get_args());
     }
 
     public function tellAmountOfInjectedArguments(): void

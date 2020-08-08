@@ -11,6 +11,38 @@ namespace PHPUnit\Runner;
 
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const DIRECTORY_SEPARATOR;
+use function array_merge;
+use function basename;
+use function debug_backtrace;
+use function defined;
+use function dirname;
+use function explode;
+use function extension_loaded;
+use function file;
+use function file_exists;
+use function file_get_contents;
+use function file_put_contents;
+use function is_array;
+use function is_file;
+use function is_readable;
+use function is_string;
+use function ltrim;
+use function phpversion;
+use function preg_match;
+use function preg_replace;
+use function preg_split;
+use function realpath;
+use function rtrim;
+use function sprintf;
+use function str_replace;
+use function strncasecmp;
+use function strpos;
+use function substr;
+use function trim;
+use function unlink;
+use function unserialize;
+use function var_export;
+use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -56,9 +88,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      */
     public function __construct(string $filename, AbstractPhpProcess $phpUtil = null)
     {
-        if (!\is_file($filename)) {
+        if (!is_file($filename)) {
             throw new Exception(
-                \sprintf(
+                sprintf(
                     'File "%s" does not exist.',
                     $filename
                 )
@@ -129,7 +161,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         if (isset($sections['XFAIL'])) {
-            $xfail = \trim($sections['XFAIL']);
+            $xfail = trim($sections['XFAIL']);
         }
 
         if (isset($sections['STDIN'])) {
@@ -179,7 +211,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 }
 
                 $hint    = $this->getLocationHintFromDiff($diff, $sections);
-                $trace   = \array_merge($hint, \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
+                $trace   = array_merge($hint, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
                 $failure = new PHPTAssertionFailedError(
                     $e->getMessage(),
                     0,
@@ -270,18 +302,18 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      */
     private function parseIniSection($content, array $ini = []): array
     {
-        if (\is_string($content)) {
-            $content = \explode("\n", \trim($content));
+        if (is_string($content)) {
+            $content = explode("\n", trim($content));
         }
 
         foreach ($content as $setting) {
-            if (\strpos($setting, '=') === false) {
+            if (strpos($setting, '=') === false) {
                 continue;
             }
 
-            $setting = \explode('=', $setting, 2);
-            $name    = \trim($setting[0]);
-            $value   = \trim($setting[1]);
+            $setting = explode('=', $setting, 2);
+            $name    = trim($setting[0]);
+            $value   = trim($setting[1]);
 
             if ($name === 'extension' || $name === 'zend_extension') {
                 if (!isset($ini[$name])) {
@@ -303,8 +335,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     {
         $env = [];
 
-        foreach (\explode("\n", \trim($content)) as $e) {
-            $e = \explode('=', \trim($e), 2);
+        foreach (explode("\n", trim($content)) as $e) {
+            $e = explode('=', trim($e), 2);
 
             if (!empty($e[0]) && isset($e[1])) {
                 $env[$e[0]] = $e[1];
@@ -327,11 +359,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             'EXPECTREGEX' => 'assertMatchesRegularExpression',
         ];
 
-        $actual = \preg_replace('/\r\n/', "\n", \trim($output));
+        $actual = preg_replace('/\r\n/', "\n", trim($output));
 
         foreach ($assertions as $sectionName => $sectionAssertion) {
             if (isset($sections[$sectionName])) {
-                $sectionContent = \preg_replace('/\r\n/', "\n", \trim($sections[$sectionName]));
+                $sectionContent = preg_replace('/\r\n/', "\n", trim($sections[$sectionName]));
                 $expected       = $sectionName === 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
 
                 if ($expected === '') {
@@ -359,15 +391,15 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $skipif    = $this->render($sections['SKIPIF']);
         $jobResult = $this->phpUtil->runJob($skipif, $this->stringifyIni($settings));
 
-        if (!\strncasecmp('skip', \ltrim($jobResult['stdout']), 4)) {
+        if (!strncasecmp('skip', ltrim($jobResult['stdout']), 4)) {
             $message = '';
 
-            if (\preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $skipMatch)) {
-                $message = \substr($skipMatch[1], 2);
+            if (preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $skipMatch)) {
+                $message = substr($skipMatch[1], 2);
             }
 
             $hint  = $this->getLocationHint($message, $sections, 'SKIPIF');
-            $trace = \array_merge($hint, \debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
+            $trace = array_merge($hint, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
             $result->addFailure(
                 $this,
                 new SyntheticSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace),
@@ -420,10 +452,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $lineNr = 0;
 
-        foreach (\file($this->filename) as $line) {
+        foreach (file($this->filename) as $line) {
             $lineNr++;
 
-            if (\preg_match('/^--([_A-Z]+)--/', $line, $result)) {
+            if (preg_match('/^--([_A-Z]+)--/', $line, $result)) {
                 $section                        = $result[1];
                 $sections[$section]             = '';
                 $sections[$section . '_offset'] = $lineNr;
@@ -439,7 +471,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         if (isset($sections['FILEEOF'])) {
-            $sections['FILE'] = \rtrim($sections['FILEEOF'], "\r\n");
+            $sections['FILE'] = rtrim($sections['FILEEOF'], "\r\n");
             unset($sections['FILEEOF']);
         }
 
@@ -471,16 +503,16 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             'EXPECTF',
             'EXPECTREGEX',
         ];
-        $testDirectory = \dirname($this->filename) . DIRECTORY_SEPARATOR;
+        $testDirectory = dirname($this->filename) . DIRECTORY_SEPARATOR;
 
         foreach ($allowSections as $section) {
             if (isset($sections[$section . '_EXTERNAL'])) {
-                $externalFilename = \trim($sections[$section . '_EXTERNAL']);
+                $externalFilename = trim($sections[$section . '_EXTERNAL']);
 
-                if (!\is_file($testDirectory . $externalFilename) ||
-                    !\is_readable($testDirectory . $externalFilename)) {
+                if (!is_file($testDirectory . $externalFilename) ||
+                    !is_readable($testDirectory . $externalFilename)) {
                     throw new Exception(
-                        \sprintf(
+                        sprintf(
                             'Could not load --%s-- %s for PHPT file',
                             $section . '_EXTERNAL',
                             $testDirectory . $externalFilename
@@ -488,7 +520,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                     );
                 }
 
-                $sections[$section] = \file_get_contents($testDirectory . $externalFilename);
+                $sections[$section] = file_get_contents($testDirectory . $externalFilename);
             }
         }
     }
@@ -505,7 +537,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         ];
 
         foreach ($requiredSections as $section) {
-            if (\is_array($section)) {
+            if (is_array($section)) {
                 $foundSection = false;
 
                 foreach ($section as $anySection) {
@@ -533,13 +565,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     private function render(string $code): string
     {
-        return \str_replace(
+        return str_replace(
             [
                 '__DIR__',
                 '__FILE__',
             ],
             [
-                "'" . \dirname($this->filename) . "'",
+                "'" . dirname($this->filename) . "'",
                 "'" . $this->filename . "'",
             ],
             $code
@@ -548,8 +580,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     private function getCoverageFiles(): array
     {
-        $baseDir  = \dirname(\realpath($this->filename)) . DIRECTORY_SEPARATOR;
-        $basename = \basename($this->filename, 'phpt');
+        $baseDir  = dirname(realpath($this->filename)) . DIRECTORY_SEPARATOR;
+        $basename = basename($this->filename, 'phpt');
 
         return [
             'coverage' => $baseDir . $basename . 'coverage',
@@ -567,20 +599,20 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $composerAutoload = '\'\'';
 
-        if (\defined('PHPUNIT_COMPOSER_INSTALL') && !\defined('PHPUNIT_TESTSUITE')) {
-            $composerAutoload = \var_export(PHPUNIT_COMPOSER_INSTALL, true);
+        if (defined('PHPUNIT_COMPOSER_INSTALL') && !defined('PHPUNIT_TESTSUITE')) {
+            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
         }
 
         $phar = '\'\'';
 
-        if (\defined('__PHPUNIT_PHAR__')) {
-            $phar = \var_export(__PHPUNIT_PHAR__, true);
+        if (defined('__PHPUNIT_PHAR__')) {
+            $phar = var_export(__PHPUNIT_PHAR__, true);
         }
 
         $globals = '';
 
         if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-            $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . \var_export(
+            $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export(
                 $GLOBALS['__PHPUNIT_BOOTSTRAP'],
                 true
             ) . ";\n";
@@ -597,7 +629,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             ]
         );
 
-        \file_put_contents($files['job'], $job);
+        file_put_contents($files['job'], $job);
 
         $job = $template->render();
     }
@@ -607,11 +639,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
         $files    = $this->getCoverageFiles();
 
-        if (\file_exists($files['coverage'])) {
-            $buffer = @\file_get_contents($files['coverage']);
+        if (file_exists($files['coverage'])) {
+            $buffer = @file_get_contents($files['coverage']);
 
             if ($buffer !== false) {
-                $coverage = @\unserialize($buffer);
+                $coverage = @unserialize($buffer);
 
                 if ($coverage === false) {
                     $coverage = RawCodeCoverageData::fromXdebugWithoutPathCoverage([]);
@@ -620,7 +652,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         foreach ($files as $file) {
-            @\unlink($file);
+            @unlink($file);
         }
 
         return $coverage;
@@ -631,7 +663,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $settings = [];
 
         foreach ($ini as $key => $value) {
-            if (\is_array($value)) {
+            if (is_array($value)) {
                 foreach ($value as $val) {
                     $settings[] = $key . '=' . $val;
                 }
@@ -651,8 +683,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $previousLine = '';
         $block        = 'message';
 
-        foreach (\preg_split('/\r\n|\r|\n/', $message) as $line) {
-            $line = \trim($line);
+        foreach (preg_split('/\r\n|\r|\n/', $message) as $line) {
+            $line = trim($line);
 
             if ($block === 'message' && $line === '--- Expected') {
                 $block = 'expected';
@@ -663,13 +695,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
 
             if ($block === 'diff') {
-                if (\strpos($line, '+') === 0) {
+                if (strpos($line, '+') === 0) {
                     $needle = $this->getCleanDiffLine($previousLine);
 
                     break;
                 }
 
-                if (\strpos($line, '-') === 0) {
+                if (strpos($line, '-') === 0) {
                     $needle = $this->getCleanDiffLine($line);
 
                     break;
@@ -686,7 +718,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     private function getCleanDiffLine(string $line): string
     {
-        if (\preg_match('/^[\-+]([\'\"]?)(.*)\1$/', $line, $matches)) {
+        if (preg_match('/^[\-+]([\'\"]?)(.*)\1$/', $line, $matches)) {
             $line = $matches[2];
         }
 
@@ -695,11 +727,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     private function getLocationHint(string $needle, array $sections, ?string $sectionName = null): array
     {
-        $needle = \trim($needle);
+        $needle = trim($needle);
 
         if (empty($needle)) {
             return [[
-                'file' => \realpath($this->filename),
+                'file' => realpath($this->filename),
                 'line' => 1,
             ]];
         }
@@ -723,15 +755,15 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
 
             if (isset($sections[$section . '_EXTERNAL'])) {
-                $externalFile = \trim($sections[$section . '_EXTERNAL']);
+                $externalFile = trim($sections[$section . '_EXTERNAL']);
 
                 return [
                     [
-                        'file' => \realpath(\dirname($this->filename) . DIRECTORY_SEPARATOR . $externalFile),
+                        'file' => realpath(dirname($this->filename) . DIRECTORY_SEPARATOR . $externalFile),
                         'line' => 1,
                     ],
                     [
-                        'file' => \realpath($this->filename),
+                        'file' => realpath($this->filename),
                         'line' => ($sections[$section . '_EXTERNAL_offset'] ?? 0) + 1,
                     ],
                 ];
@@ -740,10 +772,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $sectionOffset = $sections[$section . '_offset'] ?? 0;
             $offset        = $sectionOffset + 1;
 
-            foreach (\preg_split('/\r\n|\r|\n/', $sections[$section]) as $line) {
-                if (\strpos($line, $needle) !== false) {
+            foreach (preg_split('/\r\n|\r|\n/', $sections[$section]) as $line) {
+                if (strpos($line, $needle) !== false) {
                     return [[
-                        'file' => \realpath($this->filename),
+                        'file' => realpath($this->filename),
                         'line' => $offset,
                     ]];
                 }
@@ -754,14 +786,14 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         if ($sectionName) {
             // String not found in specified section, show user the start of the named section
             return [[
-                'file' => \realpath($this->filename),
+                'file' => realpath($this->filename),
                 'line' => $sectionOffset,
             ]];
         }
 
         // No section specified, show user start of code
         return [[
-            'file' => \realpath($this->filename),
+            'file' => realpath($this->filename),
             'line' => 1,
         ]];
     }
@@ -791,7 +823,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             'report_zend_debug=0',
         ];
 
-        if (\extension_loaded('pcov')) {
+        if (extension_loaded('pcov')) {
             if ($collectCoverage) {
                 $settings[] = 'pcov.enabled=1';
             } else {
@@ -799,8 +831,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
         }
 
-        if (\extension_loaded('xdebug')) {
-            if (\version_compare(\phpversion('xdebug'), '3', '>=')) {
+        if (extension_loaded('xdebug')) {
+            if (version_compare(phpversion('xdebug'), '3', '>=')) {
                 if ($collectCoverage) {
                     $settings[] = 'xdebug.mode=coverage';
                 } else {

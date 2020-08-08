@@ -2,6 +2,17 @@
 
 All notable changes of the PHPUnit 9.3 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.3.3] - 2020-08-08
+
+### Changed
+
+* Reverted the workaround for [#4399](https://github.com/sebastianbergmann/phpunit/issues/4399) now that the root cause is fixed in PHP-Scoper
+
+### Fixed
+
+* [#4404](https://github.com/sebastianbergmann/phpunit/issues/4404): Code Coverage does not work with PHAR and Xdebug
+* [#4407](https://github.com/sebastianbergmann/phpunit/issues/4407): PHPUnit 9.3 breaks backward compatibility for `assertXmlStringEqualsXmlFile()`
+
 ## [9.3.2] - 2020-08-07
 
 ### Fixed
@@ -176,6 +187,7 @@ If you have an XML configuration file that validates against [PHPUnit 9.2's XML 
 * [#4396](https://github.com/sebastianbergmann/phpunit/issues/4396): Deprecate confusing parameter options for XML assertions
 * The `cacheTokens` attribute is no longer supported in XML configuration files
 
+[9.3.3]: https://github.com/sebastianbergmann/phpunit/compare/9.3.2...9.3.3
 [9.3.2]: https://github.com/sebastianbergmann/phpunit/compare/9.3.1...9.3.2
 [9.3.1]: https://github.com/sebastianbergmann/phpunit/compare/9.3.0...9.3.1
 [9.3.0]: https://github.com/sebastianbergmann/phpunit/compare/9.2...9.3.0

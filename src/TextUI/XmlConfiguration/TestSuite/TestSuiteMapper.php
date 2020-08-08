@@ -10,6 +10,9 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use const PHP_VERSION;
+use function explode;
+use function in_array;
+use function version_compare;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
 use SebastianBergmann\FileIterator\Facade;
 
@@ -20,11 +23,11 @@ final class TestSuiteMapper
 {
     public function map(TestSuiteCollection $configuration, string $filter): TestSuiteObject
     {
-        $filterAsArray = $filter ? \explode(',', $filter) : [];
+        $filterAsArray = $filter ? explode(',', $filter) : [];
         $result        = new TestSuiteObject;
 
         foreach ($configuration as $testSuiteConfiguration) {
-            if (!empty($filterAsArray) && !\in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
+            if (!empty($filterAsArray) && !in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
                 continue;
             }
 
@@ -32,7 +35,7 @@ final class TestSuiteMapper
             $testSuiteEmpty = true;
 
             foreach ($testSuiteConfiguration->directories() as $directory) {
-                if (!\version_compare(PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
+                if (!version_compare(PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
                     continue;
                 }
 
@@ -55,7 +58,7 @@ final class TestSuiteMapper
             }
 
             foreach ($testSuiteConfiguration->files() as $file) {
-                if (!\version_compare(PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator()->asString())) {
+                if (!version_compare(PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator()->asString())) {
                     continue;
                 }
 

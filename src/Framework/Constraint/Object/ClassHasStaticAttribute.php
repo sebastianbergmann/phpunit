@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function sprintf;
 use PHPUnit\Framework\Exception;
 use ReflectionClass;
 use ReflectionException;
@@ -26,7 +27,7 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
      */
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'has static attribute "%s"',
             $this->attributeName()
         );

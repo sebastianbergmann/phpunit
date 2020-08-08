@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function sprintf;
 use ReflectionClass;
 
 abstract class OperatorTestCase extends ConstraintTestCase
@@ -19,7 +20,7 @@ abstract class OperatorTestCase extends ConstraintTestCase
 
         $reflection = new ReflectionClass($className);
 
-        $this->assertTrue($reflection->isSubclassOf(Constraint::class), \sprintf(
+        $this->assertTrue($reflection->isSubclassOf(Constraint::class), sprintf(
             'Failed to assert that "%s" is subclass of "%s".',
             $className,
             Constraint::class

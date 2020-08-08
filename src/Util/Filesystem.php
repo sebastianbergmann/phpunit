@@ -10,6 +10,9 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+use function is_dir;
+use function mkdir;
+use function str_replace;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -24,7 +27,7 @@ final class Filesystem
      */
     public static function classNameToFilename(string $className): string
     {
-        return \str_replace(
+        return str_replace(
             ['_', '\\'],
             DIRECTORY_SEPARATOR,
             $className
@@ -33,6 +36,6 @@ final class Filesystem
 
     public static function createDirectory(string $directory): bool
     {
-        return !(!\is_dir($directory) && !@\mkdir($directory, 0777, true) && !\is_dir($directory));
+        return !(!is_dir($directory) && !@mkdir($directory, 0777, true) && !is_dir($directory));
     }
 }

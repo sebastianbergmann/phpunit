@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_finite;
+
 /**
  * Constraint that accepts finite.
  */
@@ -30,6 +32,6 @@ final class IsFinite extends Constraint
      */
     protected function matches($other): bool
     {
-        return \is_finite($other);
+        return is_finite($other);
     }
 }

@@ -9,6 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_map;
+use function count;
+use function preg_match;
+use function preg_quote;
+use function preg_replace;
+
 final class LogicalNot extends UnaryOperator
 {
     public static function negate(string $string): string
@@ -39,18 +45,18 @@ final class LogicalNot extends UnaryOperator
             'not ',
         ];
 
-        \preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
+        preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
 
-        $positives = \array_map(function (string $s) {
-            return '/\\b' . \preg_quote($s, '/') . '/';
+        $positives = array_map(function (string $s) {
+            return '/\\b' . preg_quote($s, '/') . '/';
         }, $positives);
 
-        if (\count($matches) > 0) {
+        if (count($matches) > 0) {
             $nonInput = $matches[2];
 
-            $negatedString = \preg_replace(
-                '/' . \preg_quote($nonInput, '/') . '/',
-                \preg_replace(
+            $negatedString = preg_replace(
+                '/' . preg_quote($nonInput, '/') . '/',
+                preg_replace(
                     $positives,
                     $negatives,
                     $nonInput
@@ -58,7 +64,7 @@ final class LogicalNot extends UnaryOperator
                 $string
             );
         } else {
-            $negatedString = \preg_replace(
+            $negatedString = preg_replace(
                 $positives,
                 $negatives,
                 $string
