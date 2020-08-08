@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 ### Fixed
 
 * [#4404](https://github.com/sebastianbergmann/phpunit/issues/4404): Code Coverage does not work with PHAR and Xdebug
+* [#4407](https://github.com/sebastianbergmann/phpunit/issues/4407): PHPUnit 9.3 breaks backward compatibility for `assertXmlStringEqualsXmlFile()`
 
 ## [9.3.2] - 2020-08-07
 

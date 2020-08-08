@@ -2141,10 +2141,13 @@ abstract class Assert
     {
         if (!is_string($actualXml)) {
             self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $actual = $actualXml;
+        } else {
+            $actual = (new XmlLoader)->load($actualXml);
         }
 
         $expected = (new XmlLoader)->loadFile($expectedFile);
-        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2162,10 +2165,13 @@ abstract class Assert
     {
         if (!is_string($actualXml)) {
             self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $actual = $actualXml;
+        } else {
+            $actual = (new XmlLoader)->load($actualXml);
         }
 
         $expected = (new XmlLoader)->loadFile($expectedFile);
-        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2184,14 +2190,19 @@ abstract class Assert
     {
         if (!is_string($expectedXml)) {
             self::createWarning('Passing an argument of type DOMDocument for the $expectedXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $expected = $expectedXml;
+        } else {
+            $expected = (new XmlLoader)->load($expectedXml);
         }
 
         if (!is_string($actualXml)) {
             self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
-        }
 
-        $expected = (new XmlLoader)->load($expectedXml);
-        $actual   = (new XmlLoader)->load($actualXml);
+            $actual = $actualXml;
+        } else {
+            $actual = (new XmlLoader)->load($actualXml);
+        }
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2210,14 +2221,19 @@ abstract class Assert
     {
         if (!is_string($expectedXml)) {
             self::createWarning('Passing an argument of type DOMDocument for the $expectedXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
+
+            $expected = $expectedXml;
+        } else {
+            $expected = (new XmlLoader)->load($expectedXml);
         }
 
         if (!is_string($actualXml)) {
             self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
-        }
 
-        $expected = (new XmlLoader)->load($expectedXml);
-        $actual   = (new XmlLoader)->load($actualXml);
+            $actual = $actualXml;
+        } else {
+            $actual = (new XmlLoader)->load($actualXml);
+        }
 
         static::assertNotEquals($expected, $actual, $message);
     }
