@@ -175,6 +175,7 @@ jobs:
       PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
 
     strategy:
+      fail-fast: false
       matrix:
         php-version:
           - "7.4"
