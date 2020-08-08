@@ -179,6 +179,10 @@ jobs:
         php-version:
           - "7.4"
 
+        coverage:
+          - pcov
+          - xdebug
+
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -187,7 +191,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: pcov
+          coverage: ${{ matrix.coverage }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
 
@@ -206,4 +210,4 @@ jobs:
         run: ant phar-nightly
 
       - name: Run PHAR-specific tests with scoped PHAR
-        run: ./build/artifacts/phpunit-nightly.phar --configuration tests/phar/phpunit.xml
+        run: ./build/artifacts/phpunit-nightly.phar --configuration tests/phar/phpunit.xml --coverage-text

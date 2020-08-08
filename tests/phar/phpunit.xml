@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="../../schema/9.3.xsd"
+         bootstrap="src/autoload.php"
          failOnRisky="true"
          failOnWarning="true">
     <testsuites>
@@ -8,4 +9,10 @@
             <directory suffix="Test.php">tests</directory>
         </testsuite>
     </testsuites>
+
+    <coverage>
+        <include>
+            <directory>src</directory>
+        </include>
+    </coverage>
 </phpunit>
