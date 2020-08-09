@@ -738,6 +738,10 @@ class Command
 
         $src = trim(fgets(STDIN));
 
+        print 'Cache directory (relative to path shown above; default: .phpunit.cache): ';
+
+        $cacheDirectory = trim(fgets(STDIN));
+
         if ($bootstrapScript === '') {
             $bootstrapScript = 'vendor/autoload.php';
         }
@@ -750,6 +754,10 @@ class Command
             $src = 'src';
         }
 
+        if ($cacheDirectory === '') {
+            $cacheDirectory = '.phpunit.cache';
+        }
+
         $generator = new Generator;
 
         file_put_contents(
@@ -758,11 +766,13 @@ class Command
                 Version::series(),
                 $bootstrapScript,
                 $testsDirectory,
-                $src
+                $src,
+                $cacheDirectory
             )
         );
 
-        print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . PHP_EOL;
+        print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . '.' . PHP_EOL;
+        print 'Make sure to exclude the ' . $cacheDirectory . ' directory from version control.' . PHP_EOL;
 
         exit(TestRunner::SUCCESS_EXIT);
     }

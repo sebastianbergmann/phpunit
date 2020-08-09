@@ -24,6 +24,7 @@ final class Generator
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/{phpunit_version}/phpunit.xsd"
          bootstrap="{bootstrap_script}"
+         cacheResultFile="{cache_directory}/test-results"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
@@ -38,7 +39,8 @@ final class Generator
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <coverage cacheDirectory="{cache_directory}/code-coverage"
+              processUncoveredFiles="true">
         <include>
             <directory suffix=".php">{src_directory}</directory>
         </include>
@@ -47,7 +49,7 @@ final class Generator
 
 EOT;
 
-    public function generateDefaultConfiguration(string $phpunitVersion, string $bootstrapScript, string $testsDirectory, string $srcDirectory): string
+    public function generateDefaultConfiguration(string $phpunitVersion, string $bootstrapScript, string $testsDirectory, string $srcDirectory, string $cacheDirectory): string
     {
         return str_replace(
             [
@@ -55,12 +57,14 @@ EOT;
                 '{bootstrap_script}',
                 '{tests_directory}',
                 '{src_directory}',
+                '{cache_directory}',
             ],
             [
                 $phpunitVersion,
                 $bootstrapScript,
                 $testsDirectory,
                 $srcDirectory,
+                $cacheDirectory,
             ],
             self::TEMPLATE
         );
