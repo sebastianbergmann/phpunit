@@ -4,6 +4,12 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 
 ## [9.3.4] - 2020-MM-DD
 
+### Added
+
+* Added `--coverage-cache <directory>` CLI option for enabling a cache for static analysis results; it will write its files to `<directory>`
+* Added `<coverage cacheDirectory="directory">` XML configuration attribute for enabling a cache for static analysis results; it will write its files to `directory`
+* Added `--warm-coverage-cache` CLI option for warming the cache for static analysis results; the cache must be configured for this to work
+
 ### Fixed
 
 * [#4405](https://github.com/sebastianbergmann/phpunit/issues/4405): Location for (current version of) XML Schema for XML configuration file has changed

@@ -14,6 +14,9 @@ namespace PHPUnit\TextUI\CliArguments;
  */
 final class Mapper
 {
+    /**
+     * @throws Exception
+     */
     public function mapToLegacyArray(Configuration $arguments): array
     {
         $result = [
@@ -51,6 +54,14 @@ final class Mapper
 
         if ($arguments->hasConfiguration()) {
             $result['configuration'] = $arguments->configuration();
+        }
+
+        if ($arguments->hasCoverageCacheDirectory()) {
+            $result['coverageCacheDirectory'] = $arguments->coverageCacheDirectory();
+        }
+
+        if ($arguments->hasWarmCoverageCache()) {
+            $result['warmCoverageCache'] = $arguments->warmCoverageCache();
         }
 
         if ($arguments->hasCoverageClover()) {

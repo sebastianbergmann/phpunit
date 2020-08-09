@@ -152,15 +152,9 @@
       <code>new TraversableContainsOnly($className, false)</code>
       <code>new IsType($type)</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="8">
+    <PossiblyInvalidArgument occurrences="2">
       <code>$expected</code>
       <code>$expected</code>
-      <code>$actualXml</code>
-      <code>$actualXml</code>
-      <code>$expectedXml</code>
-      <code>$actualXml</code>
-      <code>$expectedXml</code>
-      <code>$actualXml</code>
     </PossiblyInvalidArgument>
     <PossiblyUnusedMethod occurrences="12">
       <code>assertArrayHasKey</code>
@@ -1525,93 +1519,6 @@
     <MissingReturnType occurrences="1">
       <code>columns</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="85">
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-    </MissingThrowsDocblock>
     <PossiblyUnusedMethod occurrences="1">
       <code>coverageTextShowUncoveredFiles</code>
     </PossiblyUnusedMethod>
@@ -1635,12 +1542,19 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="12">
+    <MissingThrowsDocblock occurrences="19">
       <code>run</code>
       <code>handleListSuites</code>
       <code>getTest</code>
       <code>handleListTests</code>
       <code>handleListTestsXml</code>
+      <code>atLeastVersion</code>
+      <code>unrecognizedOrderBy</code>
+      <code>iniSettings</code>
+      <code>includePath</code>
+      <code>mapToLegacyArray</code>
+      <code>argument</code>
+      <code>argument</code>
       <code>bootstrap</code>
       <code>extensionsDirectory</code>
       <code>printerClass</code>
@@ -1767,8 +1681,8 @@
     </UnusedParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
-    <MissingThrowsDocblock occurrences="6"/>
-    <PossiblyUnusedMethod occurrences="9">
+    <PossiblyUnusedMethod occurrences="10">
+      <code>cacheDirectory</code>
       <code>pathCoverage</code>
       <code>ignoreDeprecatedCodeUnits</code>
       <code>disableCodeCoverageIgnore</code>

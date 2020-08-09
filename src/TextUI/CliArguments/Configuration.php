@@ -133,6 +133,16 @@ final class Configuration
     private $pathCoverage;
 
     /**
+     * @var ?string
+     */
+    private $coverageCacheDirectory;
+
+    /**
+     * @var ?bool
+     */
+    private $warmCoverageCache;
+
+    /**
      * @var ?bool
      */
     private $debug;
@@ -450,7 +460,7 @@ final class Configuration
     /**
      * @param null|int|string $columns
      */
-    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticAttributes, ?bool $beStrictAboutChangesToGlobalState, ?bool $beStrictAboutResourceUsageDuringSmallTests, ?string $bootstrap, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $disallowTodoAnnotatedTests, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?array $extensions, ?array $unavailableExtensions, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?string $loader, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter, ?string $xdebugFilterFile)
+    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticAttributes, ?bool $beStrictAboutChangesToGlobalState, ?bool $beStrictAboutResourceUsageDuringSmallTests, ?string $bootstrap, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $disallowTodoAnnotatedTests, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?array $extensions, ?array $unavailableExtensions, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?string $loader, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter, ?string $xdebugFilterFile)
     {
         $this->argument                                   = $argument;
         $this->atLeastVersion                             = $atLeastVersion;
@@ -475,6 +485,8 @@ final class Configuration
         $this->coverageTextShowOnlySummary                = $coverageTextShowOnlySummary;
         $this->coverageXml                                = $coverageXml;
         $this->pathCoverage                               = $pathCoverage;
+        $this->coverageCacheDirectory                     = $coverageCacheDirectory;
+        $this->warmCoverageCache                          = $warmCoverageCache;
         $this->debug                                      = $debug;
         $this->defaultTimeLimit                           = $defaultTimeLimit;
         $this->disableCodeCoverageIgnore                  = $disableCodeCoverageIgnore;
@@ -545,6 +557,9 @@ final class Configuration
         return $this->argument !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function argument(): string
     {
         if ($this->argument === null) {
@@ -559,6 +574,9 @@ final class Configuration
         return $this->atLeastVersion !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function atLeastVersion(): string
     {
         if ($this->atLeastVersion === null) {
@@ -573,6 +591,9 @@ final class Configuration
         return $this->backupGlobals !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function backupGlobals(): bool
     {
         if ($this->backupGlobals === null) {
@@ -587,6 +608,9 @@ final class Configuration
         return $this->backupStaticAttributes !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function backupStaticAttributes(): bool
     {
         if ($this->backupStaticAttributes === null) {
@@ -601,6 +625,9 @@ final class Configuration
         return $this->beStrictAboutChangesToGlobalState !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function beStrictAboutChangesToGlobalState(): bool
     {
         if ($this->beStrictAboutChangesToGlobalState === null) {
@@ -615,6 +642,9 @@ final class Configuration
         return $this->beStrictAboutResourceUsageDuringSmallTests !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function beStrictAboutResourceUsageDuringSmallTests(): bool
     {
         if ($this->beStrictAboutResourceUsageDuringSmallTests === null) {
@@ -629,6 +659,9 @@ final class Configuration
         return $this->bootstrap !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function bootstrap(): string
     {
         if ($this->bootstrap === null) {
@@ -643,6 +676,9 @@ final class Configuration
         return $this->cacheResult !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function cacheResult(): bool
     {
         if ($this->cacheResult === null) {
@@ -657,6 +693,9 @@ final class Configuration
         return $this->cacheResultFile !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function cacheResultFile(): string
     {
         if ($this->cacheResultFile === null) {
@@ -671,6 +710,9 @@ final class Configuration
         return $this->checkVersion !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function checkVersion(): bool
     {
         if ($this->checkVersion === null) {
@@ -685,6 +727,9 @@ final class Configuration
         return $this->colors !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function colors(): string
     {
         if ($this->colors === null) {
@@ -699,6 +744,9 @@ final class Configuration
         return $this->columns !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function columns()
     {
         if ($this->columns === null) {
@@ -713,6 +761,9 @@ final class Configuration
         return $this->configuration !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function configuration(): string
     {
         if ($this->configuration === null) {
@@ -727,6 +778,9 @@ final class Configuration
         return $this->coverageFilter !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function coverageFilter(): array
     {
         if ($this->coverageFilter === null) {
@@ -741,6 +795,9 @@ final class Configuration
         return $this->coverageClover !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function coverageClover(): string
     {
         if ($this->coverageClover === null) {
@@ -755,6 +812,9 @@ final class Configuration
         return $this->coverageCrap4J !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function coverageCrap4J(): string
     {
         if ($this->coverageCrap4J === null) {
@@ -769,6 +829,9 @@ final class Configuration
         return $this->coverageHtml !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function coverageHtml(): string
     {
         if ($this->coverageHtml === null) {
@@ -783,6 +846,9 @@ final class Configuration
         return $this->coveragePhp !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function coveragePhp(): string
     {
         if ($this->coveragePhp === null) {
@@ -797,6 +863,9 @@ final class Configuration
         return $this->coverageText !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function coverageText(): string
     {
         if ($this->coverageText === null) {
@@ -811,6 +880,9 @@ final class Configuration
         return $this->coverageTextShowUncoveredFiles !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function coverageTextShowUncoveredFiles(): bool
     {
         if ($this->coverageTextShowUncoveredFiles === null) {
@@ -825,6 +897,9 @@ final class Configuration
         return $this->coverageTextShowOnlySummary !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function coverageTextShowOnlySummary(): bool
     {
         if ($this->coverageTextShowOnlySummary === null) {
@@ -839,6 +914,9 @@ final class Configuration
         return $this->coverageXml !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function coverageXml(): string
     {
         if ($this->coverageXml === null) {
@@ -853,6 +931,9 @@ final class Configuration
         return $this->pathCoverage !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function pathCoverage(): bool
     {
         if ($this->pathCoverage === null) {
@@ -862,11 +943,48 @@ final class Configuration
         return $this->pathCoverage;
     }
 
+    public function hasCoverageCacheDirectory(): bool
+    {
+        return $this->coverageCacheDirectory !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function coverageCacheDirectory(): string
+    {
+        if ($this->coverageCacheDirectory === null) {
+            throw new Exception;
+        }
+
+        return $this->coverageCacheDirectory;
+    }
+
+    public function hasWarmCoverageCache(): bool
+    {
+        return $this->warmCoverageCache !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function warmCoverageCache(): bool
+    {
+        if ($this->warmCoverageCache === null) {
+            throw new Exception;
+        }
+
+        return $this->warmCoverageCache;
+    }
+
     public function hasDebug(): bool
     {
         return $this->debug !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function debug(): bool
     {
         if ($this->debug === null) {
@@ -881,6 +999,9 @@ final class Configuration
         return $this->defaultTimeLimit !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function defaultTimeLimit(): int
     {
         if ($this->defaultTimeLimit === null) {
@@ -895,6 +1016,9 @@ final class Configuration
         return $this->disableCodeCoverageIgnore !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function disableCodeCoverageIgnore(): bool
     {
         if ($this->disableCodeCoverageIgnore === null) {
@@ -909,6 +1033,9 @@ final class Configuration
         return $this->disallowTestOutput !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function disallowTestOutput(): bool
     {
         if ($this->disallowTestOutput === null) {
@@ -923,6 +1050,9 @@ final class Configuration
         return $this->disallowTodoAnnotatedTests !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function disallowTodoAnnotatedTests(): bool
     {
         if ($this->disallowTodoAnnotatedTests === null) {
@@ -937,6 +1067,9 @@ final class Configuration
         return $this->enforceTimeLimit !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function enforceTimeLimit(): bool
     {
         if ($this->enforceTimeLimit === null) {
@@ -951,6 +1084,9 @@ final class Configuration
         return $this->excludeGroups !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function excludeGroups(): array
     {
         if ($this->excludeGroups === null) {
@@ -965,6 +1101,9 @@ final class Configuration
         return $this->executionOrder !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function executionOrder(): int
     {
         if ($this->executionOrder === null) {
@@ -979,6 +1118,9 @@ final class Configuration
         return $this->executionOrderDefects !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function executionOrderDefects(): int
     {
         if ($this->executionOrderDefects === null) {
@@ -993,6 +1135,9 @@ final class Configuration
         return $this->failOnEmptyTestSuite !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function failOnEmptyTestSuite(): bool
     {
         if ($this->failOnEmptyTestSuite === null) {
@@ -1007,6 +1152,9 @@ final class Configuration
         return $this->failOnIncomplete !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function failOnIncomplete(): bool
     {
         if ($this->failOnIncomplete === null) {
@@ -1021,6 +1169,9 @@ final class Configuration
         return $this->failOnRisky !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function failOnRisky(): bool
     {
         if ($this->failOnRisky === null) {
@@ -1035,6 +1186,9 @@ final class Configuration
         return $this->failOnSkipped !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function failOnSkipped(): bool
     {
         if ($this->failOnSkipped === null) {
@@ -1049,6 +1203,9 @@ final class Configuration
         return $this->failOnWarning !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function failOnWarning(): bool
     {
         if ($this->failOnWarning === null) {
@@ -1063,6 +1220,9 @@ final class Configuration
         return $this->filter !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function filter(): string
     {
         if ($this->filter === null) {
@@ -1077,6 +1237,9 @@ final class Configuration
         return $this->generateConfiguration !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function generateConfiguration(): bool
     {
         if ($this->generateConfiguration === null) {
@@ -1091,6 +1254,9 @@ final class Configuration
         return $this->migrateConfiguration !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function migrateConfiguration(): bool
     {
         if ($this->migrateConfiguration === null) {
@@ -1105,6 +1271,9 @@ final class Configuration
         return $this->groups !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function groups(): array
     {
         if ($this->groups === null) {
@@ -1119,6 +1288,9 @@ final class Configuration
         return $this->help !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function help(): bool
     {
         if ($this->help === null) {
@@ -1133,6 +1305,9 @@ final class Configuration
         return $this->includePath !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function includePath(): string
     {
         if ($this->includePath === null) {
@@ -1147,6 +1322,9 @@ final class Configuration
         return $this->iniSettings !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function iniSettings(): array
     {
         if ($this->iniSettings === null) {
@@ -1161,6 +1339,9 @@ final class Configuration
         return $this->junitLogfile !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function junitLogfile(): string
     {
         if ($this->junitLogfile === null) {
@@ -1175,6 +1356,9 @@ final class Configuration
         return $this->listGroups !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function listGroups(): bool
     {
         if ($this->listGroups === null) {
@@ -1189,6 +1373,9 @@ final class Configuration
         return $this->listSuites !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function listSuites(): bool
     {
         if ($this->listSuites === null) {
@@ -1203,6 +1390,9 @@ final class Configuration
         return $this->listTests !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function listTests(): bool
     {
         if ($this->listTests === null) {
@@ -1217,6 +1407,9 @@ final class Configuration
         return $this->listTestsXml !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function listTestsXml(): string
     {
         if ($this->listTestsXml === null) {
@@ -1231,6 +1424,9 @@ final class Configuration
         return $this->loader !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function loader(): string
     {
         if ($this->loader === null) {
@@ -1245,6 +1441,9 @@ final class Configuration
         return $this->noCoverage !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function noCoverage(): bool
     {
         if ($this->noCoverage === null) {
@@ -1259,6 +1458,9 @@ final class Configuration
         return $this->noExtensions !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function noExtensions(): bool
     {
         if ($this->noExtensions === null) {
@@ -1273,6 +1475,9 @@ final class Configuration
         return $this->extensions !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function extensions(): array
     {
         if ($this->extensions === null) {
@@ -1287,6 +1492,9 @@ final class Configuration
         return $this->unavailableExtensions !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function unavailableExtensions(): array
     {
         if ($this->unavailableExtensions === null) {
@@ -1301,6 +1509,9 @@ final class Configuration
         return $this->noInteraction !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function noInteraction(): bool
     {
         if ($this->noInteraction === null) {
@@ -1315,6 +1526,9 @@ final class Configuration
         return $this->noLogging !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function noLogging(): bool
     {
         if ($this->noLogging === null) {
@@ -1329,6 +1543,9 @@ final class Configuration
         return $this->printer !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function printer(): string
     {
         if ($this->printer === null) {
@@ -1343,6 +1560,9 @@ final class Configuration
         return $this->processIsolation !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function processIsolation(): bool
     {
         if ($this->processIsolation === null) {
@@ -1357,6 +1577,9 @@ final class Configuration
         return $this->randomOrderSeed !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function randomOrderSeed(): int
     {
         if ($this->randomOrderSeed === null) {
@@ -1371,6 +1594,9 @@ final class Configuration
         return $this->repeat !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function repeat(): int
     {
         if ($this->repeat === null) {
@@ -1385,6 +1611,9 @@ final class Configuration
         return $this->reportUselessTests !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function reportUselessTests(): bool
     {
         if ($this->reportUselessTests === null) {
@@ -1399,6 +1628,9 @@ final class Configuration
         return $this->resolveDependencies !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function resolveDependencies(): bool
     {
         if ($this->resolveDependencies === null) {
@@ -1413,6 +1645,9 @@ final class Configuration
         return $this->reverseList !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function reverseList(): bool
     {
         if ($this->reverseList === null) {
@@ -1427,6 +1662,9 @@ final class Configuration
         return $this->stderr !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function stderr(): bool
     {
         if ($this->stderr === null) {
@@ -1441,6 +1679,9 @@ final class Configuration
         return $this->strictCoverage !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function strictCoverage(): bool
     {
         if ($this->strictCoverage === null) {
@@ -1455,6 +1696,9 @@ final class Configuration
         return $this->stopOnDefect !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function stopOnDefect(): bool
     {
         if ($this->stopOnDefect === null) {
@@ -1469,6 +1713,9 @@ final class Configuration
         return $this->stopOnError !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function stopOnError(): bool
     {
         if ($this->stopOnError === null) {
@@ -1483,6 +1730,9 @@ final class Configuration
         return $this->stopOnFailure !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function stopOnFailure(): bool
     {
         if ($this->stopOnFailure === null) {
@@ -1497,6 +1747,9 @@ final class Configuration
         return $this->stopOnIncomplete !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function stopOnIncomplete(): bool
     {
         if ($this->stopOnIncomplete === null) {
@@ -1511,6 +1764,9 @@ final class Configuration
         return $this->stopOnRisky !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function stopOnRisky(): bool
     {
         if ($this->stopOnRisky === null) {
@@ -1525,6 +1781,9 @@ final class Configuration
         return $this->stopOnSkipped !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function stopOnSkipped(): bool
     {
         if ($this->stopOnSkipped === null) {
@@ -1539,6 +1798,9 @@ final class Configuration
         return $this->stopOnWarning !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function stopOnWarning(): bool
     {
         if ($this->stopOnWarning === null) {
@@ -1553,6 +1815,9 @@ final class Configuration
         return $this->teamcityLogfile !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function teamcityLogfile(): string
     {
         if ($this->teamcityLogfile === null) {
@@ -1567,6 +1832,9 @@ final class Configuration
         return $this->testdoxExcludeGroups !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testdoxExcludeGroups(): array
     {
         if ($this->testdoxExcludeGroups === null) {
@@ -1581,6 +1849,9 @@ final class Configuration
         return $this->testdoxGroups !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testdoxGroups(): array
     {
         if ($this->testdoxGroups === null) {
@@ -1595,6 +1866,9 @@ final class Configuration
         return $this->testdoxHtmlFile !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testdoxHtmlFile(): string
     {
         if ($this->testdoxHtmlFile === null) {
@@ -1609,6 +1883,9 @@ final class Configuration
         return $this->testdoxTextFile !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testdoxTextFile(): string
     {
         if ($this->testdoxTextFile === null) {
@@ -1623,6 +1900,9 @@ final class Configuration
         return $this->testdoxXmlFile !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testdoxXmlFile(): string
     {
         if ($this->testdoxXmlFile === null) {
@@ -1637,6 +1917,9 @@ final class Configuration
         return $this->testSuffixes !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testSuffixes(): array
     {
         if ($this->testSuffixes === null) {
@@ -1651,6 +1934,9 @@ final class Configuration
         return $this->testSuite !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testSuite(): string
     {
         if ($this->testSuite === null) {
@@ -1670,6 +1956,9 @@ final class Configuration
         return $this->unrecognizedOrderBy !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function unrecognizedOrderBy(): string
     {
         if ($this->unrecognizedOrderBy === null) {
@@ -1684,6 +1973,9 @@ final class Configuration
         return $this->useDefaultConfiguration !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function useDefaultConfiguration(): bool
     {
         if ($this->useDefaultConfiguration === null) {
@@ -1698,6 +1990,9 @@ final class Configuration
         return $this->verbose !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function verbose(): bool
     {
         if ($this->verbose === null) {
@@ -1712,6 +2007,9 @@ final class Configuration
         return $this->version !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function version(): bool
     {
         if ($this->version === null) {
@@ -1726,6 +2024,9 @@ final class Configuration
         return $this->xdebugFilterFile !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function xdebugFilterFile(): string
     {
         if ($this->xdebugFilterFile === null) {

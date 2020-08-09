@@ -17,6 +17,7 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Html;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Xml;
+use PHPUnit\TextUI\XmlConfiguration\Directory;
 use PHPUnit\TextUI\XmlConfiguration\Exception;
 use PHPUnit\TextUI\XmlConfiguration\FileCollection;
 
@@ -26,6 +27,11 @@ use PHPUnit\TextUI\XmlConfiguration\FileCollection;
  */
 final class CodeCoverage
 {
+    /**
+     * @var ?Directory
+     */
+    private $cacheDirectory;
+
     /**
      * @var DirectoryCollection
      */
@@ -101,8 +107,9 @@ final class CodeCoverage
      */
     private $xml;
 
-    public function __construct(DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
+        $this->cacheDirectory            = $cacheDirectory;
         $this->directories               = $directories;
         $this->files                     = $files;
         $this->excludeDirectories        = $excludeDirectories;
@@ -118,6 +125,28 @@ final class CodeCoverage
         $this->php                       = $php;
         $this->text                      = $text;
         $this->xml                       = $xml;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->cacheDirectory
+     */
+    public function hasCacheDirectory(): bool
+    {
+        return $this->cacheDirectory !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function cacheDirectory(): Directory
+    {
+        if (!$this->hasCacheDirectory()) {
+            throw new Exception(
+                'No cache directory has been configured'
+            );
+        }
+
+        return $this->cacheDirectory;
     }
 
     public function hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport(): bool
@@ -178,6 +207,9 @@ final class CodeCoverage
         return $this->clover !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function clover(): Clover
     {
         if (!$this->hasClover()) {
@@ -197,6 +229,9 @@ final class CodeCoverage
         return $this->crap4j !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function crap4j(): Crap4j
     {
         if (!$this->hasCrap4j()) {
@@ -216,6 +251,9 @@ final class CodeCoverage
         return $this->html !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function html(): Html
     {
         if (!$this->hasHtml()) {
@@ -235,6 +273,9 @@ final class CodeCoverage
         return $this->php !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function php(): Php
     {
         if (!$this->hasPhp()) {
@@ -254,6 +295,9 @@ final class CodeCoverage
         return $this->text !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function text(): Text
     {
         if (!$this->hasText()) {
@@ -273,6 +317,9 @@ final class CodeCoverage
         return $this->xml !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function xml(): Xml
     {
         if (!$this->hasXml()) {
