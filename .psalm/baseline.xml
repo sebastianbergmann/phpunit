@@ -152,15 +152,9 @@
       <code>new TraversableContainsOnly($className, false)</code>
       <code>new IsType($type)</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="8">
+    <PossiblyInvalidArgument occurrences="2">
       <code>$expected</code>
       <code>$expected</code>
-      <code>$actualXml</code>
-      <code>$actualXml</code>
-      <code>$expectedXml</code>
-      <code>$actualXml</code>
-      <code>$expectedXml</code>
-      <code>$actualXml</code>
     </PossiblyInvalidArgument>
     <PossiblyUnusedMethod occurrences="12">
       <code>assertArrayHasKey</code>
