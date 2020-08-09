@@ -178,6 +178,9 @@ final class CodeCoverage
         return $this->clover !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function clover(): Clover
     {
         if (!$this->hasClover()) {
@@ -197,6 +200,9 @@ final class CodeCoverage
         return $this->crap4j !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function crap4j(): Crap4j
     {
         if (!$this->hasCrap4j()) {
@@ -216,6 +222,9 @@ final class CodeCoverage
         return $this->html !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function html(): Html
     {
         if (!$this->hasHtml()) {
@@ -235,6 +244,9 @@ final class CodeCoverage
         return $this->php !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function php(): Php
     {
         if (!$this->hasPhp()) {
@@ -254,6 +266,9 @@ final class CodeCoverage
         return $this->text !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function text(): Text
     {
         if (!$this->hasText()) {
@@ -273,6 +288,9 @@ final class CodeCoverage
         return $this->xml !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function xml(): Xml
     {
         if (!$this->hasXml()) {

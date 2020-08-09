@@ -1525,93 +1525,6 @@
     <MissingReturnType occurrences="1">
       <code>columns</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="85">
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-      <code>throw new Exception;</code>
-    </MissingThrowsDocblock>
     <PossiblyUnusedMethod occurrences="1">
       <code>coverageTextShowUncoveredFiles</code>
     </PossiblyUnusedMethod>
@@ -1767,7 +1680,6 @@
     </UnusedParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
-    <MissingThrowsDocblock occurrences="6"/>
     <PossiblyUnusedMethod occurrences="9">
       <code>pathCoverage</code>
       <code>ignoreDeprecatedCodeUnits</code>

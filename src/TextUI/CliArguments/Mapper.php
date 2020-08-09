@@ -14,6 +14,9 @@ namespace PHPUnit\TextUI\CliArguments;
  */
 final class Mapper
 {
+    /**
+     * @throws Exception
+     */
     public function mapToLegacyArray(Configuration $arguments): array
     {
         $result = [

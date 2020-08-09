@@ -334,6 +334,9 @@ final class PHPUnit
         return $this->cacheResult;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->cacheResultFile
+     */
     public function hasCacheResultFile(): bool
     {
         return $this->cacheResultFile !== null;
@@ -406,6 +409,9 @@ final class PHPUnit
         return $this->forceCoversAnnotation;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->bootstrap
+     */
     public function hasBootstrap(): bool
     {
         return $this->bootstrap !== null;
@@ -488,6 +494,9 @@ final class PHPUnit
         return $this->stopOnSkipped;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->extensionsDirectory
+     */
     public function hasExtensionsDirectory(): bool
     {
         return $this->extensionsDirectory !== null;
@@ -506,6 +515,8 @@ final class PHPUnit
     }
 
     /**
+     * @psalm-assert-if-true !null $this->testSuiteLoaderClass
+     *
      * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
      */
     public function hasTestSuiteLoaderClass(): bool
@@ -528,6 +539,8 @@ final class PHPUnit
     }
 
     /**
+     * @psalm-assert-if-true !null $this->testSuiteLoaderFile
+     *
      * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
      */
     public function hasTestSuiteLoaderFile(): bool
@@ -549,6 +562,9 @@ final class PHPUnit
         return (string) $this->testSuiteLoaderFile;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->printerClass
+     */
     public function hasPrinterClass(): bool
     {
         return $this->printerClass !== null;
@@ -566,6 +582,9 @@ final class PHPUnit
         return (string) $this->printerClass;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->printerFile
+     */
     public function hasPrinterFile(): bool
     {
         return $this->printerFile !== null;
@@ -638,6 +657,9 @@ final class PHPUnit
         return $this->timeoutForLargeTests;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->defaultTestSuite
+     */
     public function hasDefaultTestSuite(): bool
     {
         return $this->defaultTestSuite !== null;
