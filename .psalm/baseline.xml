@@ -1542,12 +1542,19 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="12">
+    <MissingThrowsDocblock occurrences="19">
       <code>run</code>
       <code>handleListSuites</code>
       <code>getTest</code>
       <code>handleListTests</code>
       <code>handleListTestsXml</code>
+      <code>atLeastVersion</code>
+      <code>unrecognizedOrderBy</code>
+      <code>iniSettings</code>
+      <code>includePath</code>
+      <code>mapToLegacyArray</code>
+      <code>argument</code>
+      <code>argument</code>
       <code>bootstrap</code>
       <code>extensionsDirectory</code>
       <code>printerClass</code>
@@ -1674,7 +1681,8 @@
     </UnusedParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
-    <PossiblyUnusedMethod occurrences="9">
+    <PossiblyUnusedMethod occurrences="10">
+      <code>cacheDirectory</code>
       <code>pathCoverage</code>
       <code>ignoreDeprecatedCodeUnits</code>
       <code>disableCodeCoverageIgnore</code>
