@@ -47,6 +47,7 @@ use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration;
 use PHPUnit\TextUI\XmlConfiguration\ExtensionHandler;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
@@ -63,7 +64,6 @@ use PHPUnit\Util\XdebugFilterScriptGenerator;
 use PHPUnit\Util\Xml\SchemaDetector;
 use ReflectionClass;
 use ReflectionException;
-use SebastianBergmann\CodeCoverage\CacheNotConfiguredException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -414,7 +414,7 @@ final class TestRunner extends BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile']) || isset($arguments['warmCoverageCache'])) {
+        if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile'])) {
             if (isset($arguments['coverageFilter'])) {
                 if (!is_array($arguments['coverageFilter'])) {
                     $coverageFilterDirectories = [$arguments['coverageFilter']];
@@ -437,34 +437,15 @@ final class TestRunner extends BaseTestRunner
                 if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
                     $coverageFilterFromConfigurationFile = true;
 
-                    foreach ($codeCoverageConfiguration->directories() as $directory) {
-                        $this->codeCoverageFilter->includeDirectory(
-                            $directory->path(),
-                            $directory->suffix(),
-                            $directory->prefix()
-                        );
-                    }
-
-                    foreach ($codeCoverageConfiguration->files() as $file) {
-                        $this->codeCoverageFilter->includeFile($file->path());
-                    }
-
-                    foreach ($codeCoverageConfiguration->excludeDirectories() as $directory) {
-                        $this->codeCoverageFilter->excludeDirectory(
-                            $directory->path(),
-                            $directory->suffix(),
-                            $directory->prefix()
-                        );
-                    }
-
-                    foreach ($codeCoverageConfiguration->excludeFiles() as $file) {
-                        $this->codeCoverageFilter->excludeFile($file->path());
-                    }
+                    (new FilterMapper)->map(
+                        $this->codeCoverageFilter,
+                        $codeCoverageConfiguration
+                    );
                 }
             }
         }
 
-        if ($codeCoverageReports > 0 || isset($arguments['warmCoverageCache'])) {
+        if ($codeCoverageReports > 0) {
             try {
                 if (isset($codeCoverageConfiguration) &&
                     ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))) {
@@ -623,20 +604,6 @@ final class TestRunner extends BaseTestRunner
                     $this->write("\n  Test results may not be as expected.\n\n");
                 }
             }
-        }
-
-        if (isset($arguments['warmCoverageCache'], $codeCoverage)) {
-            try {
-                $codeCoverage->warmCache();
-            } catch (CacheNotConfiguredException $e) {
-                $this->write(PHP_EOL . 'Cache for static analysis has not been configured' . PHP_EOL);
-
-                exit(self::EXCEPTION_EXIT);
-            }
-
-            $this->write(PHP_EOL . 'Cache for static analysis has been warmed' . PHP_EOL);
-
-            exit(self::SUCCESS_EXIT);
         }
 
         if (isset($arguments['xdebugFilterFile'], $codeCoverageConfiguration)) {
