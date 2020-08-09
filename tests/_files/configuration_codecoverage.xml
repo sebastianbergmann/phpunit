@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <phpunit>
-    <coverage pathCoverage="true"
+    <coverage cacheDirectory="/tmp/cache"
+              pathCoverage="true"
               includeUncoveredFiles="true"
               processUncoveredFiles="true"
               ignoreDeprecatedCodeUnits="true"

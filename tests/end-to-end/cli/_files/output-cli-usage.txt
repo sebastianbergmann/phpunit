@@ -12,6 +12,8 @@ Code Coverage Options:
   --coverage-php <file>       Export PHP_CodeCoverage object to file
   --coverage-text <file>      Generate code coverage report in text format [default: standard output]
   --coverage-xml <dir>        Generate code coverage report in PHPUnit XML format
+  --coverage-cache <dir>      Cache static analysis results
+  --warm-coverage-cache       Warm static analysis cache
   --coverage-filter <dir>     Include <dir> in code coverage analysis
   --path-coverage             Perform path coverage analysis
   --disable-coverage-ignore   Disable annotations for ignoring code coverage

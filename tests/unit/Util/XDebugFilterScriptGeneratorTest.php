@@ -54,6 +54,7 @@ EOF;
         $this->assertDirectoryDoesNotExist($directoryPathThatDoesNotExist);
 
         $filterConfiguration = new CodeCoverage(
+            null,
             DirectoryCollection::fromArray(
                 [
                     new Directory(

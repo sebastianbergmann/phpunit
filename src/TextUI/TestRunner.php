@@ -63,6 +63,7 @@ use PHPUnit\Util\XdebugFilterScriptGenerator;
 use PHPUnit\Util\Xml\SchemaDetector;
 use ReflectionClass;
 use ReflectionException;
+use SebastianBergmann\CodeCoverage\CacheNotConfiguredException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -413,7 +414,7 @@ final class TestRunner extends BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile'])) {
+        if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile']) || isset($arguments['warmCoverageCache'])) {
             if (isset($arguments['coverageFilter'])) {
                 if (!is_array($arguments['coverageFilter'])) {
                     $coverageFilterDirectories = [$arguments['coverageFilter']];
@@ -463,7 +464,7 @@ final class TestRunner extends BaseTestRunner
             }
         }
 
-        if ($codeCoverageReports > 0) {
+        if ($codeCoverageReports > 0 || isset($arguments['warmCoverageCache'])) {
             try {
                 if (isset($codeCoverageConfiguration) &&
                     ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))) {
@@ -476,6 +477,14 @@ final class TestRunner extends BaseTestRunner
                     $codeCoverageDriver,
                     $this->codeCoverageFilter
                 );
+
+                if (isset($codeCoverageConfiguration) && $codeCoverageConfiguration->hasCacheDirectory()) {
+                    $codeCoverage->cacheStaticAnalysis($codeCoverageConfiguration->cacheDirectory()->path());
+                }
+
+                if (isset($arguments['coverageCacheDirectory'])) {
+                    $codeCoverage->cacheStaticAnalysis($arguments['coverageCacheDirectory']);
+                }
 
                 $codeCoverage->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
 
@@ -614,6 +623,20 @@ final class TestRunner extends BaseTestRunner
                     $this->write("\n  Test results may not be as expected.\n\n");
                 }
             }
+        }
+
+        if (isset($arguments['warmCoverageCache'], $codeCoverage)) {
+            try {
+                $codeCoverage->warmCache();
+            } catch (CacheNotConfiguredException $e) {
+                $this->write(PHP_EOL . 'Cache for static analysis has not been configured' . PHP_EOL);
+
+                exit(self::EXCEPTION_EXIT);
+            }
+
+            $this->write(PHP_EOL . 'Cache for static analysis has been warmed' . PHP_EOL);
+
+            exit(self::SUCCESS_EXIT);
         }
 
         if (isset($arguments['xdebugFilterFile'], $codeCoverageConfiguration)) {

@@ -156,6 +156,8 @@ final class XmlConfigurationTest extends TestCase
     {
         $codeCoverage = $this->configuration('configuration_codecoverage.xml')->codeCoverage();
 
+        $this->assertSame('/tmp/cache', $codeCoverage->cacheDirectory()->path());
+
         $this->assertTrue($codeCoverage->pathCoverage());
         $this->assertTrue($codeCoverage->includeUncoveredFiles());
         $this->assertTrue($codeCoverage->processUncoveredFiles());

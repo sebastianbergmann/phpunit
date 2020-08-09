@@ -387,6 +387,7 @@ final class Loader
             return $this->legacyCodeCoverage($filename, $xpath, $document);
         }
 
+        $cacheDirectory            = null;
         $pathCoverage              = false;
         $includeUncoveredFiles     = true;
         $processUncoveredFiles     = false;
@@ -396,6 +397,14 @@ final class Loader
         $element = $this->element($xpath, 'coverage');
 
         if ($element) {
+            $cacheDirectory = $this->getStringAttribute($element, 'cacheDirectory');
+
+            if ($cacheDirectory !== null) {
+                $cacheDirectory = new Directory(
+                    $this->toAbsolutePath($filename, $cacheDirectory)
+                );
+            }
+
             $pathCoverage = $this->getBooleanAttribute(
                 $element,
                 'pathCoverage',
@@ -517,6 +526,7 @@ final class Loader
         }
 
         return new CodeCoverage(
+            $cacheDirectory,
             $this->readFilterDirectories($filename, $xpath, 'coverage/include/directory'),
             $this->readFilterFiles($filename, $xpath, 'coverage/include/file'),
             $this->readFilterDirectories($filename, $xpath, 'coverage/exclude/directory'),
@@ -643,6 +653,7 @@ final class Loader
         }
 
         return new CodeCoverage(
+            null,
             $this->readFilterDirectories($filename, $xpath, 'filter/whitelist/directory'),
             $this->readFilterFiles($filename, $xpath, 'filter/whitelist/file'),
             $this->readFilterDirectories($filename, $xpath, 'filter/whitelist/exclude/directory'),

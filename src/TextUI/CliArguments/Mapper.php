@@ -56,6 +56,14 @@ final class Mapper
             $result['configuration'] = $arguments->configuration();
         }
 
+        if ($arguments->hasCoverageCacheDirectory()) {
+            $result['coverageCacheDirectory'] = $arguments->coverageCacheDirectory();
+        }
+
+        if ($arguments->hasWarmCoverageCache()) {
+            $result['warmCoverageCache'] = $arguments->warmCoverageCache();
+        }
+
         if ($arguments->hasCoverageClover()) {
             $result['coverageClover'] = $arguments->coverageClover();
         }
