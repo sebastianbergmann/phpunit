@@ -1542,7 +1542,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="19">
+    <MissingThrowsDocblock occurrences="21">
       <code>run</code>
       <code>handleListSuites</code>
       <code>getTest</code>
@@ -1560,6 +1560,8 @@
       <code>printerClass</code>
       <code>testSuiteLoaderClass</code>
       <code>defaultTestSuite</code>
+      <code>cacheDirectory</code>
+      <code>stop</code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType occurrences="1">
       <code>null|Printer|string</code>
@@ -1681,11 +1683,8 @@
     </UnusedParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
-    <PossiblyUnusedMethod occurrences="10">
-      <code>cacheDirectory</code>
+    <PossiblyUnusedMethod occurrences="7">
       <code>pathCoverage</code>
-      <code>ignoreDeprecatedCodeUnits</code>
-      <code>disableCodeCoverageIgnore</code>
       <code>clover</code>
       <code>crap4j</code>
       <code>html</code>
@@ -1703,6 +1702,14 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/CodeCoverage/FilterMapper.php">
+    <UnusedMethodCall occurrences="4">
+      <code>$configuration-&gt;directories()</code>
+      <code>$configuration-&gt;files()</code>
+      <code>$configuration-&gt;excludeDirectories()</code>
+      <code>$configuration-&gt;excludeFiles()</code>
+    </UnusedMethodCall>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Report/Clover.php">
     <PossiblyUnusedMethod occurrences="1">

@@ -46,6 +46,7 @@ use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\CliArguments\Mapper;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Generator;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\Migrator;
@@ -58,7 +59,10 @@ use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use ReflectionException;
+use SebastianBergmann\CodeCoverage\Filter;
+use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
@@ -390,6 +394,10 @@ class Command
 
         if (isset($this->arguments['printer']) && is_string($this->arguments['printer'])) {
             $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
+        }
+
+        if (isset($configuration, $this->arguments['warmCoverageCache'])) {
+            $this->handleWarmCoverageCache($configuration);
         }
 
         if (!isset($this->arguments['test'])) {
@@ -820,5 +828,59 @@ class Command
                 unset($handler);
             }
         }
+    }
+
+    private function handleWarmCoverageCache(XmlConfiguration\Configuration $configuration): void
+    {
+        $this->printVersionString();
+
+        if (isset($this->arguments['coverageCacheDirectory'])) {
+            $cacheDirectory = $this->arguments['coverageCacheDirectory'];
+        } elseif ($configuration->codeCoverage()->hasCacheDirectory()) {
+            $cacheDirectory = $configuration->codeCoverage()->cacheDirectory();
+        } else {
+            print 'Cache for static analysis has not been configured' . PHP_EOL;
+
+            exit(TestRunner::EXCEPTION_EXIT);
+        }
+
+        $filter = new Filter;
+
+        if ($configuration->codeCoverage()->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
+            (new FilterMapper)->map(
+                $filter,
+                $configuration->codeCoverage()
+            );
+        } elseif (isset($this->arguments['coverageFilter'])) {
+            if (!is_array($this->arguments['coverageFilter'])) {
+                $coverageFilterDirectories = [$this->arguments['coverageFilter']];
+            } else {
+                $coverageFilterDirectories = $this->arguments['coverageFilter'];
+            }
+
+            foreach ($coverageFilterDirectories as $coverageFilterDirectory) {
+                $filter->includeDirectory($coverageFilterDirectory);
+            }
+        } else {
+            print 'Filter for code coverage has not been configured' . PHP_EOL;
+
+            exit(TestRunner::EXCEPTION_EXIT);
+        }
+
+        $timer = new Timer;
+        $timer->start();
+
+        print 'Warming cache for static analysis ... ';
+
+        (new CacheWarmer)->warmCache(
+            $cacheDirectory,
+            !$configuration->codeCoverage()->disableCodeCoverageIgnore(),
+            $configuration->codeCoverage()->ignoreDeprecatedCodeUnits(),
+            $filter
+        );
+
+        print 'done [' . $timer->stop()->asString() . ']' . PHP_EOL;
+
+        exit(TestRunner::SUCCESS_EXIT);
     }
 }
