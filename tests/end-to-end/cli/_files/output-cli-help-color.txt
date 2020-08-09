@@ -10,7 +10,7 @@
   [32m--coverage-html [36m<dir>[0m      [0m Generate code coverage report in HTML
                               format
   [32m--coverage-php [36m<file>[0m      [0m Export PHP_CodeCoverage object to file
-  [32m--coverage-text=[36m<file>[0m     [0m Generate code coverage report in text
+  [32m--coverage-text [36m<file>[0m     [0m Generate code coverage report in text
                               format [default: standard output]
   [32m--coverage-xml [36m<dir>[0m       [0m Generate code coverage report in PHPUnit
                               XML format
@@ -56,7 +56,7 @@
   [32m--disallow-resource-usage  [0m Be strict about resource usage during
                               small tests
   [32m--enforce-time-limit       [0m Enforce time limit based on test size
-  [32m--default-time-limit=[36m<sec>[0m [0m Timeout in seconds for tests without
+  [32m--default-time-limit [36m<sec>[0m [0m Timeout in seconds for tests without
                               @small, @medium or @large
   [32m--disallow-todo-tests      [0m Disallow @todo-annotated tests
 
@@ -65,7 +65,7 @@
   [32m--static-backup            [0m Backup and restore static attributes for
                               each test
 
-  [32m--colors=[36m<flag>[0m            [0m Use colors in output ("never", "auto" or
+  [32m--colors [36m<flag>[0m            [0m Use colors in output ("never", "auto" or
                               "always")
   [32m--columns [36m<n>[0m              [0m Number of columns to use for progress
                               output
@@ -98,9 +98,9 @@
   [32m--no-interaction           [0m Disable TestDox progress animation
   [32m--printer [36m<printer>[0m        [0m TestListener implementation to use
 
-  [32m--order-by=[36m<order>[0m         [0m Run tests in order:
+  [32m--order-by [36m<order>[0m         [0m Run tests in order:
                               default|defects|duration|no-depends|random|reverse|size
-  [32m--random-order-seed=[36m<N>[0m    [0m Use a specific random seed <N> for random
+  [32m--random-order-seed [36m<N>[0m    [0m Use a specific random seed <N> for random
                               order
   [32m--cache-result             [0m Write test results to cache file
   [32m--do-not-cache-result      [0m Do not write test results to cache file
@@ -120,7 +120,7 @@
   [32m--include-path [36m<path(s)>[0m   [0m Prepend PHP's include_path with given
                               path(s)
   [32m-d [36m<key[=value]>[0m           [0m Sets a php.ini value
-  [32m--cache-result-file=[36m<file>[0m [0m Specify result cache path and filename
+  [32m--cache-result-file [36m<file>[0m [0m Specify result cache path and filename
   [32m--generate-configuration   [0m Generate configuration file with
                               suggested settings
   [32m--migrate-configuration    [0m Migrate configuration file to current
