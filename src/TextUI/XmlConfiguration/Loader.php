@@ -1002,7 +1002,7 @@ final class Loader
         }
 
         return new PHPUnit(
-            $this->getBooleanAttribute($document->documentElement, 'cacheResult', false),
+            $this->getBooleanAttribute($document->documentElement, 'cacheResult', true),
             $cacheResultFile,
             $this->getColumns($document),
             $this->getColors($document),

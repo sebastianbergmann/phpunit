@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 ### Fixed
 
 * [#4405](https://github.com/sebastianbergmann/phpunit/issues/4405): Location for (current version of) XML Schema for XML configuration file has changed
+* Default value for `<phpunit cacheResult="true|false">` XML configuration attribute was `false` instead of `true`
 
 ## [9.3.3] - 2020-08-08
 
