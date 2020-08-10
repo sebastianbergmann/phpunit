@@ -39,12 +39,16 @@ function __phpunit_run_isolated_test()
     if ({collectCodeCoverageInformation}) {
         $filter = unserialize('{codeCoverageFilter}');
 
-        $result->setCodeCoverage(
-            new CodeCoverage(
-                Driver::{driverMethod}($filter),
-                $filter
-            )
+        $codeCoverage = new CodeCoverage(
+            Driver::{driverMethod}($filter),
+            $filter
         );
+
+        if ({cachesStaticAnalysis}) {
+            $codeCoverage->cacheStaticAnalysis(unserialize('{codeCoverageCacheDirectory}'));
+        }
+
+        $result->setCodeCoverage($codeCoverage);
     }
 
     $result->beStrictAboutTestsThatDoNotTestAnything({isStrictAboutTestsThatDoNotTestAnything});

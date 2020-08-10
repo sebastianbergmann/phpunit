@@ -1,5 +1,10 @@
 --TEST--
 Can parse --INI-- and --ENV-- sections
+--SKIPIF--
+<?php declare(strict_types=1);
+if (extension_loaded('xdebug')) {
+    print 'skip: Extension xdebug must not be loaded.';
+}
 --INI--
 date.default_latitude=1.337
 dummy.key
