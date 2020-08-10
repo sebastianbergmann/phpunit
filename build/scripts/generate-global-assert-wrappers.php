@@ -20,6 +20,7 @@ $buffer = '<?php declare(strict_types=1);
  */
 namespace PHPUnit\Framework;
 
+use ArrayAccess;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
