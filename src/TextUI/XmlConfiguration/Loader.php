@@ -414,7 +414,7 @@ final class Loader
             $includeUncoveredFiles = $this->getBooleanAttribute(
                 $element,
                 'includeUncoveredFiles',
-                false
+                true
             );
 
             $processUncoveredFiles = $this->getBooleanAttribute(
