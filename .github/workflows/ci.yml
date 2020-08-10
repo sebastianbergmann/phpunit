@@ -157,6 +157,15 @@ jobs:
       - name: Run sanity check
         run: bash ./build/scripts/sanity-check
 
+      - name: Cache phpunit cache directory
+        uses: actions/cache@v2
+        with:
+          path: .phpunit.cache/
+          key: php${{ matrix.php-version }}-phpunit-cache-${{ github.ref }}-${{ github.sha }}
+          restore-keys: |
+            php${{ matrix.php-version }}-phpunit-cache-${{ github.ref }}-
+            php${{ matrix.php-version }}-phpunit-cache-
+
       - name: Run tests with phpunit
         run: php ./phpunit --coverage-clover=coverage.xml
 
