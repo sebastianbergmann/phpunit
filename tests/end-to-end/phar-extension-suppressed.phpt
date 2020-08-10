@@ -1,5 +1,10 @@
 --TEST--
 phpunit --configuration tests/_files/phpunit-example-extension --no-extensions
+--SKIPIF--
+<?php declare(strict_types=1);
+if (extension_loaded('xdebug')) {
+    print 'skip: Extension xdebug must not be loaded.';
+}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--configuration';
