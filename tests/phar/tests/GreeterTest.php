@@ -20,4 +20,13 @@ final class GreeterTest extends TestCase
     {
         $this->assertSame('Hello world!', (new Greeter)->greet());
     }
+
+    /**
+     * @runInSeparateProcess
+     * @ticket https://github.com/sebastianbergmann/phpunit/issues/4412
+     */
+    public function testGreetsInIsolation(): void
+    {
+        $this->assertSame('Hello world!', (new Greeter)->greet());
+    }
 }
