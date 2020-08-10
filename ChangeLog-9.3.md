@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.3 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.3.5] - 2020-08-10
+
+### Fixed
+
+* [#4412](https://github.com/sebastianbergmann/phpunit/issues/4412): Code Coverage does not work for isolated test when PHAR is used
+
 ## [9.3.4] - 2020-08-10
 
 ### Added
@@ -200,6 +206,7 @@ If you have an XML configuration file that validates against [PHPUnit 9.2's XML 
 * [#4396](https://github.com/sebastianbergmann/phpunit/issues/4396): Deprecate confusing parameter options for XML assertions
 * The `cacheTokens` attribute is no longer supported in XML configuration files
 
+[9.3.5]: https://github.com/sebastianbergmann/phpunit/compare/9.3.4...9.3.5
 [9.3.4]: https://github.com/sebastianbergmann/phpunit/compare/9.3.3...9.3.4
 [9.3.3]: https://github.com/sebastianbergmann/phpunit/compare/9.3.2...9.3.3
 [9.3.2]: https://github.com/sebastianbergmann/phpunit/compare/9.3.1...9.3.2
