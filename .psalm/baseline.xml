@@ -1166,7 +1166,8 @@
       <code>getResult</code>
       <code>runTest</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="18">
+    <MissingThrowsDocblock occurrences="19">
+      <code>cacheDirectory</code>
       <code>getMock</code>
       <code>getMock</code>
       <code>getMock</code>
@@ -1459,7 +1460,8 @@
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock occurrences="3">
+      <code>cacheDirectory</code>
       <code>stop</code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument occurrences="1">
