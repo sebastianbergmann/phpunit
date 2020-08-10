@@ -173,14 +173,20 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         if ($result->getCollectCodeCoverageInformation()) {
-            $pathCoverage = false;
+            $codeCoverageCacheDirectory = null;
+            $pathCoverage               = false;
+
             $codeCoverage = $result->getCodeCoverage();
 
             if ($codeCoverage) {
+                if ($codeCoverage->cachesStaticAnalysis()) {
+                    $codeCoverageCacheDirectory = $codeCoverage->cacheDirectory();
+                }
+
                 $pathCoverage = $codeCoverage->collectsBranchAndPathCoverage();
             }
 
-            $this->renderForCoverage($code, $pathCoverage);
+            $this->renderForCoverage($code, $pathCoverage, $codeCoverageCacheDirectory);
         }
 
         $timer = new Timer;
@@ -589,7 +595,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         ];
     }
 
-    private function renderForCoverage(string &$job, bool $pathCoverage): void
+    private function renderForCoverage(string &$job, bool $pathCoverage, ?string $codeCoverageCacheDirectory): void
     {
         $files = $this->getCoverageFiles();
 
@@ -618,14 +624,21 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             ) . ";\n";
         }
 
+        if ($codeCoverageCacheDirectory === null) {
+            $codeCoverageCacheDirectory = 'null';
+        } else {
+            $codeCoverageCacheDirectory = "'" . $codeCoverageCacheDirectory . "'";
+        }
+
         $template->setVar(
             [
-                'composerAutoload' => $composerAutoload,
-                'phar'             => $phar,
-                'globals'          => $globals,
-                'job'              => $files['job'],
-                'coverageFile'     => $files['coverage'],
-                'driverMethod'     => $pathCoverage ? 'forLineAndPathCoverage' : 'forLineCoverage',
+                'composerAutoload'           => $composerAutoload,
+                'phar'                       => $phar,
+                'globals'                    => $globals,
+                'job'                        => $files['job'],
+                'coverageFile'               => $files['coverage'],
+                'driverMethod'               => $pathCoverage ? 'forLineAndPathCoverage' : 'forLineCoverage',
+                'codeCoverageCacheDirectory' => $codeCoverageCacheDirectory,
             ]
         );
 

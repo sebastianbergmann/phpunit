@@ -29,9 +29,13 @@ if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
     $filter = new Filter;
 
     $coverage = new CodeCoverage(
-        Driver::forLineCoverage($filter),
+        Driver::{driverMethod}($filter),
         $filter
     );
+
+    if ({codeCoverageCacheDirectory}) {
+        $coverage->cacheStaticAnalysis({codeCoverageCacheDirectory});
+    }
 
     $coverage->start(__FILE__);
 }
