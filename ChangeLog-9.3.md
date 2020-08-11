@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 ### Fixed
 
 * [#4419](https://github.com/sebastianbergmann/phpunit/issues/4419): `--migrate-configuration` cannot migrate XML configuration files with multiple `<exclude>` elements
+* [#4422](https://github.com/sebastianbergmann/phpunit/issues/4422): Error when `libxml_disable_entity_loader()` is used in a data provider
 
 ## [9.3.6] - 2020-08-11
 
