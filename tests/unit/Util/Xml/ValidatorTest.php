@@ -52,4 +52,23 @@ final class ValidatorTest extends TestCase
         $this->assertTrue($result->hasValidationErrors());
         $this->assertSame(PHP_EOL . '  Line 17:' . PHP_EOL . '  - Element \'filter\': This element is not expected.' . PHP_EOL, $result->asString());
     }
+
+    public function testDoesNotThrowExceptionWithDisabledEntityLoader(): void
+    {
+        libxml_disable_entity_loader(true);
+
+        $result = (new Validator())->validate(
+            (new Loader)->loadFile(
+                __DIR__ . '/../../../end-to-end/migration/possibility-to-migrate-from-92-is-detected/phpunit.xml',
+                false,
+                true,
+                true
+            ),
+            (new SchemaFinder)->find(Version::series())
+        );
+
+        $this->assertTrue($result->hasValidationErrors());
+        $this->assertSame(PHP_EOL . '  Line 17:' . PHP_EOL . '  - Element \'filter\': This element is not expected.' . PHP_EOL, $result->asString());
+        $this->assertTrue(libxml_disable_entity_loader(true), 'libxml_disable_entity_loader must be set back to it\'s original value');
+    }
 }

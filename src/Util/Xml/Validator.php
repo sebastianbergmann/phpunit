@@ -22,12 +22,16 @@ final class Validator
     public function validate(DOMDocument $document, string $xsdFilename): ValidationResult
     {
         $originalErrorHandling = libxml_use_internal_errors(true);
+        $originalEntityLoader = libxml_disable_entity_loader(false);
 
-        $document->schemaValidate($xsdFilename);
-
-        $errors = libxml_get_errors();
-        libxml_clear_errors();
-        libxml_use_internal_errors($originalErrorHandling);
+        try {
+            $document->schemaValidate($xsdFilename);
+        } finally {
+            $errors = libxml_get_errors();
+            libxml_clear_errors();
+            libxml_use_internal_errors($originalErrorHandling);
+            libxml_disable_entity_loader($originalEntityLoader);
+        }
 
         return ValidationResult::fromArray($errors);
     }
