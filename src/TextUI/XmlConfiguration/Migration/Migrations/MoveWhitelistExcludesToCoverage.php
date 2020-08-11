@@ -30,6 +30,7 @@ final class MoveWhitelistExcludesToCoverage implements Migration
         }
 
         $excludeNodes = SnapshotNodeList::fromNodeList($whitelist->getElementsByTagName('exclude'));
+
         if ($excludeNodes->count() === 0) {
             return;
         }
@@ -50,7 +51,6 @@ final class MoveWhitelistExcludesToCoverage implements Migration
 
         foreach ($excludeNodes as $excludeNode) {
             assert($excludeNode instanceof DOMElement);
-
 
             foreach (SnapshotNodeList::fromNodeList($excludeNode->childNodes) as $child) {
                 if (!$child instanceof DOMElement || !in_array($child->nodeName, ['directory', 'file'], true)) {
