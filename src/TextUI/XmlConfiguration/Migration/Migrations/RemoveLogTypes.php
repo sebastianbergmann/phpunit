@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use DOMDocument;
 use DOMElement;
+use TextUI\XmlConfiguration\Migration\SnapshotNodeList;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -25,7 +26,7 @@ final class RemoveLogTypes implements Migration
             return;
         }
 
-        foreach ($logging->getElementsByTagName('log') as $logNode) {
+        foreach (SnapshotNodeList::fromNodeList($logging->getElementsByTagName('log')) as $logNode) {
             switch ($logNode->getAttribute('type')) {
                 case 'json':
                 case 'tap':
