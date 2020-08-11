@@ -331,16 +331,16 @@ class Command
 
         if (isset($this->arguments['configuration'])) {
             try {
-                $configuration = (new Loader)->load($this->arguments['configuration']);
+                $this->arguments['configurationObject'] = (new Loader)->load($this->arguments['configuration']);
             } catch (Throwable $e) {
                 print $e->getMessage() . PHP_EOL;
 
                 exit(TestRunner::FAILURE_EXIT);
             }
 
-            $phpunitConfiguration = $configuration->phpunit();
+            $phpunitConfiguration = $this->arguments['configurationObject']->phpunit();
 
-            (new PhpHandler)->handle($configuration->php());
+            (new PhpHandler)->handle($this->arguments['configurationObject']->php());
 
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
@@ -384,7 +384,7 @@ class Command
 
             if (!isset($this->arguments['test'])) {
                 $this->arguments['test'] = (new TestSuiteMapper)->map(
-                    $configuration->testSuite(),
+                    $this->arguments['configurationObject']->testSuite(),
                     $this->arguments['testsuite'] ?? ''
                 );
             }
@@ -396,8 +396,8 @@ class Command
             $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
         }
 
-        if (isset($configuration, $this->arguments['warmCoverageCache'])) {
-            $this->handleWarmCoverageCache($configuration);
+        if (isset($this->arguments['configurationObject'], $this->arguments['warmCoverageCache'])) {
+            $this->handleWarmCoverageCache($this->arguments['configurationObject']);
         }
 
         if (!isset($this->arguments['test'])) {
