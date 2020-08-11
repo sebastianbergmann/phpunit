@@ -1664,9 +1664,8 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$printer</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="2">
+    <RedundantCondition occurrences="1">
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
-      <code>assert($arguments['configuration'] instanceof Configuration)</code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>$this-&gt;printer !== null</code>

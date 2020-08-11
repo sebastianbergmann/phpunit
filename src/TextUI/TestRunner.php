@@ -490,8 +490,6 @@ final class TestRunner extends BaseTestRunner
                 }
 
                 if (isset($arguments['configurationObject'])) {
-                    assert($arguments['configurationObject'] instanceof Configuration);
-
                     $codeCoverageConfiguration = $arguments['configurationObject']->codeCoverage();
 
                     if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
