@@ -13,6 +13,8 @@
         <exclude>
             <directory suffix=".php">src/generated</directory>
             <file>src/autoload.php</file>
+            <directory suffix=".php">src/other</directory>
+            <file>src/some.php</file>
         </exclude>
 
         <report>
