@@ -163,3 +163,52 @@ jobs:
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  test-generated-code:
+    name: Test generated code
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version:
+          - 7.2
+
+        dependencies:
+          - highest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: pcov
+          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
+          ini-values: assert.exception=1, zend.assertions=1
+
+      - name: Determine composer cache directory
+        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(./tools/composer config cache-dir)"
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.COMPOSER_CACHE_DIR }}
+          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
+
+      - name: Install lowest dependencies with composer
+        if: matrix.dependencies == 'lowest'
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+
+      - name: Install highest dependencies with composer
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+
+      - name: Generate global assert wrappers
+        run: php build/scripts/generate-global-assert-wrappers.php
+
+      - name: Assert that git tree is clean
+        run: git diff || echo "Run 'php build/scripts/generate-global-assert-wrappers.php' to regenerate global assert wrappers!"
