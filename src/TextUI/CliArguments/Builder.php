@@ -17,10 +17,10 @@ use function str_replace;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
-use PHPUnit\Util\Exception as UtilException;
-use PHPUnit\Util\Getopt;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
+use SebastianBergmann\CliParser\Exception as CliParserException;
+use SebastianBergmann\CliParser\Parser as CliParser;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -121,12 +121,12 @@ final class Builder
     public function fromParameters(array $parameters, array $additionalLongOptions): Configuration
     {
         try {
-            $options = Getopt::parse(
+            $options = (new CliParser)->parse(
                 $parameters,
                 self::SHORT_OPTIONS,
                 array_merge(self::LONG_OPTIONS, $additionalLongOptions)
             );
-        } catch (UtilException $e) {
+        } catch (CliParserException $e) {
             throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),
