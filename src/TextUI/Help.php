@@ -56,6 +56,7 @@ final class Help
             ['arg' => '--testdox-text <file>', 'desc' => 'Write agile documentation in Text format to file'],
             ['arg' => '--testdox-xml <file>', 'desc' => 'Write agile documentation in XML format to file'],
             ['arg' => '--reverse-list', 'desc' => 'Print defects in reverse order'],
+            ['arg' => '--no-logging', 'desc' => 'Ignore logging configuration'],
         ],
 
         'Test Selection Options' => [
@@ -125,7 +126,6 @@ final class Help
             ['arg' => '--bootstrap <file>', 'desc' => 'A PHP script that is included before the tests run'],
             ['arg' => '-c|--configuration <file>', 'desc' => 'Read configuration from XML file'],
             ['arg' => '--no-configuration', 'desc' => 'Ignore default configuration file (phpunit.xml)'],
-            ['arg' => '--no-logging', 'desc' => 'Ignore logging configuration'],
             ['arg' => '--extensions <extensions>', 'desc' => 'A comma separated list of PHPUnit extensions to load'],
             ['arg' => '--no-extensions', 'desc' => 'Do not load PHPUnit extensions'],
             ['arg' => '--include-path <path(s)>', 'desc' => 'Prepend PHP\'s include_path with given path(s)'],
