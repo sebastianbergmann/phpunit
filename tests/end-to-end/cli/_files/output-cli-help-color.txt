@@ -34,6 +34,7 @@
   [32m--testdox-xml [36m<file>[0m       [0m Write agile documentation in XML format
                               to file
   [32m--reverse-list             [0m Print defects in reverse order
+  [32m--no-logging               [0m Ignore logging configuration
 
 [33mTest Selection Options:[0m
   [32m--filter [36m<pattern>[0m         [0m Filter which tests to run
@@ -114,7 +115,6 @@
   [32m-c|--configuration [36m<file>[0m  [0m Read configuration from XML file
   [32m--no-configuration         [0m Ignore default configuration file
                               (phpunit.xml)
-  [32m--no-logging               [0m Ignore logging configuration
   [32m--no-extensions            [0m Do not load PHPUnit extensions
   [32m--include-path [36m<path(s)>[0m   [0m Prepend PHP's include_path with given
                               path(s)
