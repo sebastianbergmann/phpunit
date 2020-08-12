@@ -156,9 +156,7 @@
       <code>$expected</code>
       <code>$expected</code>
     </PossiblyInvalidArgument>
-    <PossiblyUnusedMethod occurrences="12">
-      <code>assertArrayHasKey</code>
-      <code>assertArrayNotHasKey</code>
+    <PossiblyUnusedMethod occurrences="10">
       <code>assertCount</code>
       <code>assertNotCount</code>
       <code>assertSameSize</code>
@@ -300,9 +298,7 @@
       <code>DOMElement</code>
       <code>DOMElement</code>
     </UndefinedClass>
-    <UndefinedDocblockClass occurrences="14">
-      <code>array|ArrayAccess</code>
-      <code>array|ArrayAccess</code>
+    <UndefinedDocblockClass occurrences="12">
       <code>Countable|iterable</code>
       <code>Countable|iterable</code>
       <code>Countable|iterable</code>
@@ -316,7 +312,13 @@
       <code>DOMDocument|string</code>
       <code>DOMDocument|string</code>
     </UndefinedDocblockClass>
-    <UnusedParam occurrences="268">
+    <UnusedParam occurrences="274">
+      <code>$key</code>
+      <code>$array</code>
+      <code>$message</code>
+      <code>$key</code>
+      <code>$array</code>
+      <code>$message</code>
       <code>$haystack</code>
       <code>$message</code>
       <code>$haystack</code>
@@ -1585,9 +1587,6 @@
       <code>require $printerFile</code>
       <code>require $file</code>
     </UnresolvableInclude>
-    <UnusedMethodCall occurrences="1">
-      <code>(new Loader)-&gt;load($this-&gt;arguments['configuration'])-&gt;testSuite()</code>
-    </UnusedMethodCall>
     <UnusedVariable occurrences="1">
       <code>$handler</code>
     </UnusedVariable>
