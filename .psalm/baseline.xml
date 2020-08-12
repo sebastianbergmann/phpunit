@@ -2104,16 +2104,6 @@
       <code>$filename</code>
     </UnusedParam>
   </file>
-  <file src="src/Util/Getopt.php">
-    <InvalidOperand occurrences="3">
-      <code>$i</code>
-      <code>$i</code>
-      <code>$i</code>
-    </InvalidOperand>
-    <PossiblyNullArgument occurrences="1">
-      <code>$long_options</code>
-    </PossiblyNullArgument>
-  </file>
   <file src="src/Util/GlobalState.php">
     <MissingParamType occurrences="1">
       <code>$variable</code>

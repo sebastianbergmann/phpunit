@@ -169,6 +169,13 @@
             </fileset>
         </copy>
 
+        <copy file="${basedir}/vendor/sebastian/cli-parser/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-cli-parser/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-cli-parser">
+            <fileset dir="${basedir}/vendor/sebastian/cli-parser/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
         <copy file="${basedir}/vendor/sebastian/code-unit/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-code-unit/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-code-unit">
             <fileset dir="${basedir}/vendor/sebastian/code-unit/src">

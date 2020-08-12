@@ -31,6 +31,7 @@ use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
 use ReflectionClass;
 use ReflectionException;
+use SebastianBergmann\CliParser\Parser as CliParser;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeUnit\CodeUnit;
 use SebastianBergmann\CodeUnitReverseLookup\Wizard;
@@ -107,6 +108,9 @@ final class ExcludeList
 
         // phpunit/php-timer
         Timer::class => 1,
+
+        // sebastian/cli-parser
+        CliParser::class => 1,
 
         // sebastian/code-unit
         CodeUnit::class => 1,
