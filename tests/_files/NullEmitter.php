@@ -27,7 +27,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function comparatorRegistered(): void
+    public function comparatorRegistered(string $className): void
     {
     }
 

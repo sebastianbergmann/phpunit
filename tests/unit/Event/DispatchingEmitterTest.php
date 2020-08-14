@@ -156,6 +156,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testComparatorRegisteredDispatchesComparatorRegisteredEvent(): void
     {
+        $className = self::class;
+
         $subscriber = new class extends RecordingSubscriber implements Comparator\RegisteredSubscriber {
             public function notify(Comparator\Registered $event): void
             {
@@ -176,10 +178,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->comparatorRegistered();
+        $emitter->comparatorRegistered($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Comparator\Registered::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Comparator\Registered::class, $event);
+
+        $this->assertSame($className, $event->className());
     }
 
     public function testExtensionLoadedDispatchesExtensionLoadedEvent(): void

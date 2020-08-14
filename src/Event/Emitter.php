@@ -24,7 +24,10 @@ interface Emitter
 
     public function bootstrapFinished(string $filename): void;
 
-    public function comparatorRegistered(): void;
+    /**
+     * @param class-string $className
+     */
+    public function comparatorRegistered(string $className): void;
 
     public function extensionLoaded(string $name, string $version): void;
 

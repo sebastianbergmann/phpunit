@@ -62,9 +62,12 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function comparatorRegistered(): void
+    public function comparatorRegistered(string $className): void
     {
-        $this->dispatcher->dispatch(new Comparator\Registered($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Comparator\Registered(
+            $this->telemetryInfo(),
+            $className
+        ));
     }
 
     public function extensionLoaded(string $name, string $version): void
