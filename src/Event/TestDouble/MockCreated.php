@@ -16,13 +16,30 @@ final class MockCreated implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
+    /**
+     * @var class-string
+     */
+    private string $className;
+
+    /**
+     * @param class-string $className
+     */
+    public function __construct(Telemetry\Info $telemetryInfo, string $className)
     {
         $this->telemetryInfo = $telemetryInfo;
+        $this->className     = $className;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    /**
+     * @return class-string
+     */
+    public function className(): string
+    {
+        return $this->className;
     }
 }

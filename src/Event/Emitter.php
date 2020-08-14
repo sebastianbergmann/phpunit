@@ -74,7 +74,10 @@ interface Emitter
 
     public function testCaseTearDownAfterClassFinished(): void;
 
-    public function testDoubleMockCreated(): void;
+    /**
+     * @param class-string $className
+     */
+    public function testDoubleMockCreated(string $className): void;
 
     public function testDoubleMockForTraitCreated(): void;
 
