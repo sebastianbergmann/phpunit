@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.13.1@afd8874a9e4562eac42a02de90e42e430c3a1db1">
+<files psalm-version="3.14.1@9822043ca46d6682b76097bfa97d7c450eef9e90">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -681,6 +681,9 @@
     <PossiblyUnusedMethod occurrences="1">
       <code>fromConstraints</code>
     </PossiblyUnusedMethod>
+    <UnsafeInstantiation occurrences="1">
+      <code>new static</code>
+    </UnsafeInstantiation>
   </file>
   <file src="src/Framework/Constraint/Operator/LogicalNot.php">
     <MissingThrowsDocblock occurrences="1">
@@ -1587,6 +1590,9 @@
       <code>require $printerFile</code>
       <code>require $file</code>
     </UnresolvableInclude>
+    <UnsafeInstantiation occurrences="1">
+      <code>new static</code>
+    </UnsafeInstantiation>
     <UnusedVariable occurrences="1">
       <code>$handler</code>
     </UnusedVariable>
