@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.12.1@9b860214d58c48b5cbe99bdb17914d0eb723c9cd">
+<files psalm-version="3.14.1@9822043ca46d6682b76097bfa97d7c450eef9e90">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -160,17 +160,9 @@
       <code>$beStrictAboutChangesToGlobalState</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyNullReference occurrences="1">
-      <code>filter</code>
-    </PossiblyNullReference>
     <PossiblyUndefinedVariable occurrences="1">
       <code>$categories</code>
     </PossiblyUndefinedVariable>
-  </file>
-  <file src="src/Framework/TestFailure.php">
-    <PossiblyNullReference occurrences="1">
-      <code>getDiff</code>
-    </PossiblyNullReference>
   </file>
   <file src="src/Framework/TestResult.php">
     <PossiblyUndefinedVariable occurrences="1">
@@ -228,6 +220,9 @@
       <code>$suite</code>
       <code>$suite</code>
     </PossiblyNullArgument>
+    <UnsafeInstantiation occurrences="1">
+      <code>new static</code>
+    </UnsafeInstantiation>
   </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset occurrences="2">
@@ -242,14 +237,10 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$whitelistFromConfigurationFile</code>
     </PossiblyUndefinedVariable>
+    <UnsafeInstantiation occurrences="1"/>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
     <InvalidCatch occurrences="1"/>
-  </file>
-  <file src="src/Util/Blacklist.php">
-    <UndefinedClass occurrences="1">
-      <code>Invoker</code>
-    </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -258,11 +249,6 @@
       <code>$testSuiteNodes-&gt;item(0)</code>
       <code>$testSuiteNode</code>
     </ArgumentTypeCoercion>
-    <PossiblyInvalidArrayOffset occurrences="3">
-      <code>$result[$array][$name]['verbatim']</code>
-      <code>$result[$array][$name]['force']</code>
-      <code>$result[$array][$name]['value']</code>
-    </PossiblyInvalidArrayOffset>
     <PossiblyNullReference occurrences="2">
       <code>getAttribute</code>
       <code>getAttribute</code>
@@ -385,10 +371,6 @@
     <InvalidCast occurrences="1">
       <code>$value</code>
     </InvalidCast>
-    <PossiblyInvalidArgument occurrences="2">
-      <code>$name</code>
-      <code>$name</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="src/Util/TestDox/TestDoxPrinter.php">
     <UndefinedInterfaceMethod occurrences="1">
