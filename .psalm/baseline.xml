@@ -242,6 +242,11 @@
   <file src="src/Util/Annotation/DocBlock.php">
     <InvalidCatch occurrences="1"/>
   </file>
+  <file src="src/Util/Blacklist.php">
+    <UndefinedClass occurrences="1">
+      <code>Invoker</code>
+    </UndefinedClass>
+  </file>
   <file src="src/Util/Configuration.php">
     <ArgumentTypeCoercion occurrences="4">
       <code>$extension</code>
