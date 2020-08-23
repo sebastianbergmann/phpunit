@@ -11,14 +11,9 @@ declare(strict_types=1);
  */
 namespace PHPUnit\Framework\Constraint;
 
-use SebastianBergmann\Comparator\Comparator;
-use SebastianBergmann\Comparator\ComparisonFailure;
-use SebastianBergmann\Comparator\Factory as ComparatorFactory;
-
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\ExpectationFailedException;
-
 use function file_put_contents;
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @small
@@ -38,7 +33,7 @@ final class StringEqualsFileCanonicalizingTest extends TestCase
         }
     }
 
-    public function testFailsIfValuesDiffer()
+    public function testPassesIfValuesEquals(): void
     {
         $expected = 'Expected file contents';
 
@@ -47,5 +42,22 @@ final class StringEqualsFileCanonicalizingTest extends TestCase
         file_put_contents($filename, $expected);
 
         $this->assertStringEqualsFileCanonicalizing($filename, $expected);
+    }
+
+    public function testFailsIfValuesDiffer(): void
+    {
+        $expected = 'Expected file contents';
+
+        $filename = tempnam(sys_get_temp_dir(), 'phpunit');
+
+        file_put_contents($filename, 'Unexpected data');
+
+        try {
+            $this->assertStringEqualsFileCanonicalizing($filename, $expected);
+        } catch (ExpectationFailedException $exception) {
+            $expectedMessage = 'Failed asserting that two strings are equal.';
+
+            $this->assertEquals($expectedMessage, $exception->getMessage());
+        }
     }
 }
