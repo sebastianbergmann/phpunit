@@ -58,7 +58,7 @@ foreach ($class->getMethods() as $method) {
     $usedClasses[] = $returnType->getName();
 
     $constraintMethods .= \sprintf(
-        "%s\n{\n    return Assert::%s(...\\func_get_args());\n}\n\n",
+        "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n%s\n{\n    return Assert::%s(...\\func_get_args());\n}\n}\n\n",
         \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1])),
         $method->getName()
     );

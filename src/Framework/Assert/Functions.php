@@ -2284,219 +2284,305 @@ if (!function_exists('PHPUnit\Framework\assertJsonFileNotEqualsJsonFile')) {
     }
 }
 
-function logicalAnd(): LogicalAnd
-{
-    return Assert::logicalAnd(...func_get_args());
+if (!function_exists('PHPUnit\Framework\logicalAnd')) {
+    function logicalAnd(): LogicalAnd
+    {
+        return Assert::logicalAnd(...func_get_args());
+    }
 }
 
-function logicalOr(): LogicalOr
-{
-    return Assert::logicalOr(...func_get_args());
+if (!function_exists('PHPUnit\Framework\logicalOr')) {
+    function logicalOr(): LogicalOr
+    {
+        return Assert::logicalOr(...func_get_args());
+    }
 }
 
-function logicalNot(Constraint $constraint): LogicalNot
-{
-    return Assert::logicalNot(...func_get_args());
+if (!function_exists('PHPUnit\Framework\logicalNot')) {
+    function logicalNot(Constraint $constraint): LogicalNot
+    {
+        return Assert::logicalNot(...func_get_args());
+    }
 }
 
-function logicalXor(): LogicalXor
-{
-    return Assert::logicalXor(...func_get_args());
+if (!function_exists('PHPUnit\Framework\logicalXor')) {
+    function logicalXor(): LogicalXor
+    {
+        return Assert::logicalXor(...func_get_args());
+    }
 }
 
-function anything(): IsAnything
-{
-    return Assert::anything(...func_get_args());
+if (!function_exists('PHPUnit\Framework\anything')) {
+    function anything(): IsAnything
+    {
+        return Assert::anything(...func_get_args());
+    }
 }
 
-function isTrue(): IsTrue
-{
-    return Assert::isTrue(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isTrue')) {
+    function isTrue(): IsTrue
+    {
+        return Assert::isTrue(...func_get_args());
+    }
 }
 
-function callback(callable $callback): Callback
-{
-    return Assert::callback(...func_get_args());
+if (!function_exists('PHPUnit\Framework\callback')) {
+    function callback(callable $callback): Callback
+    {
+        return Assert::callback(...func_get_args());
+    }
 }
 
-function isFalse(): IsFalse
-{
-    return Assert::isFalse(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isFalse')) {
+    function isFalse(): IsFalse
+    {
+        return Assert::isFalse(...func_get_args());
+    }
 }
 
-function isJson(): IsJson
-{
-    return Assert::isJson(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isJson')) {
+    function isJson(): IsJson
+    {
+        return Assert::isJson(...func_get_args());
+    }
 }
 
-function isNull(): IsNull
-{
-    return Assert::isNull(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isNull')) {
+    function isNull(): IsNull
+    {
+        return Assert::isNull(...func_get_args());
+    }
 }
 
-function isFinite(): IsFinite
-{
-    return Assert::isFinite(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isFinite')) {
+    function isFinite(): IsFinite
+    {
+        return Assert::isFinite(...func_get_args());
+    }
 }
 
-function isInfinite(): IsInfinite
-{
-    return Assert::isInfinite(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isInfinite')) {
+    function isInfinite(): IsInfinite
+    {
+        return Assert::isInfinite(...func_get_args());
+    }
 }
 
-function isNan(): IsNan
-{
-    return Assert::isNan(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isNan')) {
+    function isNan(): IsNan
+    {
+        return Assert::isNan(...func_get_args());
+    }
 }
 
-function containsEqual($value): TraversableContainsEqual
-{
-    return Assert::containsEqual(...func_get_args());
+if (!function_exists('PHPUnit\Framework\containsEqual')) {
+    function containsEqual($value): TraversableContainsEqual
+    {
+        return Assert::containsEqual(...func_get_args());
+    }
 }
 
-function containsIdentical($value): TraversableContainsIdentical
-{
-    return Assert::containsIdentical(...func_get_args());
+if (!function_exists('PHPUnit\Framework\containsIdentical')) {
+    function containsIdentical($value): TraversableContainsIdentical
+    {
+        return Assert::containsIdentical(...func_get_args());
+    }
 }
 
-function containsOnly(string $type): TraversableContainsOnly
-{
-    return Assert::containsOnly(...func_get_args());
+if (!function_exists('PHPUnit\Framework\containsOnly')) {
+    function containsOnly(string $type): TraversableContainsOnly
+    {
+        return Assert::containsOnly(...func_get_args());
+    }
 }
 
-function containsOnlyInstancesOf(string $className): TraversableContainsOnly
-{
-    return Assert::containsOnlyInstancesOf(...func_get_args());
+if (!function_exists('PHPUnit\Framework\containsOnlyInstancesOf')) {
+    function containsOnlyInstancesOf(string $className): TraversableContainsOnly
+    {
+        return Assert::containsOnlyInstancesOf(...func_get_args());
+    }
 }
 
-function arrayHasKey($key): ArrayHasKey
-{
-    return Assert::arrayHasKey(...func_get_args());
+if (!function_exists('PHPUnit\Framework\arrayHasKey')) {
+    function arrayHasKey($key): ArrayHasKey
+    {
+        return Assert::arrayHasKey(...func_get_args());
+    }
 }
 
-function equalTo($value): IsEqual
-{
-    return Assert::equalTo(...func_get_args());
+if (!function_exists('PHPUnit\Framework\equalTo')) {
+    function equalTo($value): IsEqual
+    {
+        return Assert::equalTo(...func_get_args());
+    }
 }
 
-function equalToCanonicalizing($value): IsEqualCanonicalizing
-{
-    return Assert::equalToCanonicalizing(...func_get_args());
+if (!function_exists('PHPUnit\Framework\equalToCanonicalizing')) {
+    function equalToCanonicalizing($value): IsEqualCanonicalizing
+    {
+        return Assert::equalToCanonicalizing(...func_get_args());
+    }
 }
 
-function equalToIgnoringCase($value): IsEqualIgnoringCase
-{
-    return Assert::equalToIgnoringCase(...func_get_args());
+if (!function_exists('PHPUnit\Framework\equalToIgnoringCase')) {
+    function equalToIgnoringCase($value): IsEqualIgnoringCase
+    {
+        return Assert::equalToIgnoringCase(...func_get_args());
+    }
 }
 
-function equalToWithDelta($value, float $delta): IsEqualWithDelta
-{
-    return Assert::equalToWithDelta(...func_get_args());
+if (!function_exists('PHPUnit\Framework\equalToWithDelta')) {
+    function equalToWithDelta($value, float $delta): IsEqualWithDelta
+    {
+        return Assert::equalToWithDelta(...func_get_args());
+    }
 }
 
-function isEmpty(): IsEmpty
-{
-    return Assert::isEmpty(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isEmpty')) {
+    function isEmpty(): IsEmpty
+    {
+        return Assert::isEmpty(...func_get_args());
+    }
 }
 
-function isWritable(): IsWritable
-{
-    return Assert::isWritable(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isWritable')) {
+    function isWritable(): IsWritable
+    {
+        return Assert::isWritable(...func_get_args());
+    }
 }
 
-function isReadable(): IsReadable
-{
-    return Assert::isReadable(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isReadable')) {
+    function isReadable(): IsReadable
+    {
+        return Assert::isReadable(...func_get_args());
+    }
 }
 
-function directoryExists(): DirectoryExists
-{
-    return Assert::directoryExists(...func_get_args());
+if (!function_exists('PHPUnit\Framework\directoryExists')) {
+    function directoryExists(): DirectoryExists
+    {
+        return Assert::directoryExists(...func_get_args());
+    }
 }
 
-function fileExists(): FileExists
-{
-    return Assert::fileExists(...func_get_args());
+if (!function_exists('PHPUnit\Framework\fileExists')) {
+    function fileExists(): FileExists
+    {
+        return Assert::fileExists(...func_get_args());
+    }
 }
 
-function greaterThan($value): GreaterThan
-{
-    return Assert::greaterThan(...func_get_args());
+if (!function_exists('PHPUnit\Framework\greaterThan')) {
+    function greaterThan($value): GreaterThan
+    {
+        return Assert::greaterThan(...func_get_args());
+    }
 }
 
-function greaterThanOrEqual($value): LogicalOr
-{
-    return Assert::greaterThanOrEqual(...func_get_args());
+if (!function_exists('PHPUnit\Framework\greaterThanOrEqual')) {
+    function greaterThanOrEqual($value): LogicalOr
+    {
+        return Assert::greaterThanOrEqual(...func_get_args());
+    }
 }
 
-function classHasAttribute(string $attributeName): ClassHasAttribute
-{
-    return Assert::classHasAttribute(...func_get_args());
+if (!function_exists('PHPUnit\Framework\classHasAttribute')) {
+    function classHasAttribute(string $attributeName): ClassHasAttribute
+    {
+        return Assert::classHasAttribute(...func_get_args());
+    }
 }
 
-function classHasStaticAttribute(string $attributeName): ClassHasStaticAttribute
-{
-    return Assert::classHasStaticAttribute(...func_get_args());
+if (!function_exists('PHPUnit\Framework\classHasStaticAttribute')) {
+    function classHasStaticAttribute(string $attributeName): ClassHasStaticAttribute
+    {
+        return Assert::classHasStaticAttribute(...func_get_args());
+    }
 }
 
-function objectHasAttribute($attributeName): ObjectHasAttribute
-{
-    return Assert::objectHasAttribute(...func_get_args());
+if (!function_exists('PHPUnit\Framework\objectHasAttribute')) {
+    function objectHasAttribute($attributeName): ObjectHasAttribute
+    {
+        return Assert::objectHasAttribute(...func_get_args());
+    }
 }
 
-function identicalTo($value): IsIdentical
-{
-    return Assert::identicalTo(...func_get_args());
+if (!function_exists('PHPUnit\Framework\identicalTo')) {
+    function identicalTo($value): IsIdentical
+    {
+        return Assert::identicalTo(...func_get_args());
+    }
 }
 
-function isInstanceOf(string $className): IsInstanceOf
-{
-    return Assert::isInstanceOf(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isInstanceOf')) {
+    function isInstanceOf(string $className): IsInstanceOf
+    {
+        return Assert::isInstanceOf(...func_get_args());
+    }
 }
 
-function isType(string $type): IsType
-{
-    return Assert::isType(...func_get_args());
+if (!function_exists('PHPUnit\Framework\isType')) {
+    function isType(string $type): IsType
+    {
+        return Assert::isType(...func_get_args());
+    }
 }
 
-function lessThan($value): LessThan
-{
-    return Assert::lessThan(...func_get_args());
+if (!function_exists('PHPUnit\Framework\lessThan')) {
+    function lessThan($value): LessThan
+    {
+        return Assert::lessThan(...func_get_args());
+    }
 }
 
-function lessThanOrEqual($value): LogicalOr
-{
-    return Assert::lessThanOrEqual(...func_get_args());
+if (!function_exists('PHPUnit\Framework\lessThanOrEqual')) {
+    function lessThanOrEqual($value): LogicalOr
+    {
+        return Assert::lessThanOrEqual(...func_get_args());
+    }
 }
 
-function matchesRegularExpression(string $pattern): RegularExpression
-{
-    return Assert::matchesRegularExpression(...func_get_args());
+if (!function_exists('PHPUnit\Framework\matchesRegularExpression')) {
+    function matchesRegularExpression(string $pattern): RegularExpression
+    {
+        return Assert::matchesRegularExpression(...func_get_args());
+    }
 }
 
-function matches(string $string): StringMatchesFormatDescription
-{
-    return Assert::matches(...func_get_args());
+if (!function_exists('PHPUnit\Framework\matches')) {
+    function matches(string $string): StringMatchesFormatDescription
+    {
+        return Assert::matches(...func_get_args());
+    }
 }
 
-function stringStartsWith($prefix): StringStartsWith
-{
-    return Assert::stringStartsWith(...func_get_args());
+if (!function_exists('PHPUnit\Framework\stringStartsWith')) {
+    function stringStartsWith($prefix): StringStartsWith
+    {
+        return Assert::stringStartsWith(...func_get_args());
+    }
 }
 
-function stringContains(string $string, bool $case = true): StringContains
-{
-    return Assert::stringContains(...func_get_args());
+if (!function_exists('PHPUnit\Framework\stringContains')) {
+    function stringContains(string $string, bool $case = true): StringContains
+    {
+        return Assert::stringContains(...func_get_args());
+    }
 }
 
-function stringEndsWith(string $suffix): StringEndsWith
-{
-    return Assert::stringEndsWith(...func_get_args());
+if (!function_exists('PHPUnit\Framework\stringEndsWith')) {
+    function stringEndsWith(string $suffix): StringEndsWith
+    {
+        return Assert::stringEndsWith(...func_get_args());
+    }
 }
 
-function countOf(int $count): Count
-{
-    return Assert::countOf(...func_get_args());
+if (!function_exists('PHPUnit\Framework\countOf')) {
+    function countOf(int $count): Count
+    {
+        return Assert::countOf(...func_get_args());
+    }
 }
 
 if (!function_exists('PHPUnit\Framework\any')) {
