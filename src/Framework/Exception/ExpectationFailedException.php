@@ -24,7 +24,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
 final class ExpectationFailedException extends AssertionFailedError
 {
     /**
-     * @var ComparisonFailure
+     * @var null|ComparisonFailure
      */
     protected $comparisonFailure;
 

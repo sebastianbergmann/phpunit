@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.14.1@9822043ca46d6682b76097bfa97d7c450eef9e90">
+<files psalm-version="3.14.2@3538fe1955d47f6ee926c0769d71af6db08aa488">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
@@ -746,11 +746,6 @@
       <code>Filter::getFilteredStacktrace($this)</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Framework/Exception/ExpectationFailedException.php">
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
-      <code>$comparisonFailure</code>
-    </PossiblyNullPropertyAssignmentValue>
-  </file>
   <file src="src/Framework/Exception/MissingCoversAnnotationException.php">
     <UnusedClass occurrences="1">
       <code>MissingCoversAnnotationException</code>
@@ -1030,18 +1025,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>evaluate</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/MockObject/Rule/Parameters.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>$this-&gt;invocation === null</code>
-    </DocblockTypeContradiction>
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
-      <code>null</code>
-    </PossiblyNullPropertyAssignmentValue>
-    <PropertyNotSetInConstructor occurrences="2">
-      <code>$invocation</code>
-      <code>$parameterVerificationResult</code>
-    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Framework/MockObject/Stub.php">
     <PossiblyUnusedMethod occurrences="1">

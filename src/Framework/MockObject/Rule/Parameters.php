@@ -30,12 +30,12 @@ final class Parameters implements ParametersRule
     private $parameters = [];
 
     /**
-     * @var BaseInvocation
+     * @var null|BaseInvocation
      */
     private $invocation;
 
     /**
-     * @var bool|ExpectationFailedException
+     * @var null|bool|ExpectationFailedException
      */
     private $parameterVerificationResult;
 
