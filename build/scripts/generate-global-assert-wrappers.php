@@ -58,7 +58,7 @@ foreach ($class->getMethods() as $method) {
     $usedClasses[] = $returnType->getName();
 
     $constraintMethods .= \sprintf(
-        "%s\n{\n    return Assert::%s(...\\func_get_args());\n}\n\n",
+        "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n%s\n{\n    return Assert::%s(...\\func_get_args());\n}\n}\n\n",
         \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1])),
         $method->getName()
     );
@@ -75,7 +75,6 @@ foreach ($usedClasses as $usedClass) {
 }
 
 $buffer .= "\n";
-$buffer .= "if (!\defined('__PHPUNIT_GLOBAL_ASSERT_WRAPPERS__')) {\n";
 
 foreach ($class->getMethods() as $method) {
     if (\strpos($method->getName(), 'assert') !== 0) {
@@ -90,131 +89,162 @@ foreach ($class->getMethods() as $method) {
 
     $signature = \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1]));
     $body      = "{\n    Assert::" . $method->getName() . "(...\\func_get_args());\n}";
-    $buffer .= "$docComment\n$signature\n$body\n\n";
+
+    $buffer .= "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n";
+    $buffer .= "$docComment\n$signature\n$body\n";
+    $buffer .= "}\n\n";
 }
 
 $buffer .= $constraintMethods;
 
-$buffer .= '/**
- * Returns a matcher that matches when the method is executed
- * zero or more times.
- */
-function any(): AnyInvokedCountMatcher
-{
-    return new AnyInvokedCountMatcher;
+$buffer .= <<<'EOT'
+
+if (!function_exists('PHPUnit\Framework\any')) {
+    /**
+     * Returns a matcher that matches when the method is executed
+     * zero or more times.
+     */
+    function any(): AnyInvokedCountMatcher
+    {
+        return new AnyInvokedCountMatcher;
+    }
 }
 
-/**
- * Returns a matcher that matches when the method is never executed.
- */
-function never(): InvokedCountMatcher
-{
-    return new InvokedCountMatcher(0);
+if (!function_exists('PHPUnit\Framework\never')) {
+    /**
+     * Returns a matcher that matches when the method is never executed.
+     */
+    function never(): InvokedCountMatcher
+    {
+        return new InvokedCountMatcher(0);
+    }
 }
 
-/**
- * Returns a matcher that matches when the method is executed
- * at least N times.
- */
-function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
-{
-    return new InvokedAtLeastCountMatcher(
-        $requiredInvocations
-    );
+if (!function_exists('PHPUnit\Framework\atLeast')) {
+    /**
+     * Returns a matcher that matches when the method is executed
+     * at least N times.
+     */
+    function atLeast(int $requiredInvocations): InvokedAtLeastCountMatcher
+    {
+        return new InvokedAtLeastCountMatcher(
+            $requiredInvocations
+        );
+    }
 }
 
-/**
- * Returns a matcher that matches when the method is executed at least once.
- */
-function atLeastOnce(): InvokedAtLeastOnceMatcher
-{
-    return new InvokedAtLeastOnceMatcher;
+if (!function_exists('PHPUnit\Framework\atLeastOnce')) {
+    /**
+     * Returns a matcher that matches when the method is executed at least once.
+     */
+    function atLeastOnce(): InvokedAtLeastOnceMatcher
+    {
+        return new InvokedAtLeastOnceMatcher;
+    }
 }
 
-/**
- * Returns a matcher that matches when the method is executed exactly once.
- */
-function once(): InvokedCountMatcher
-{
-    return new InvokedCountMatcher(1);
+if (!function_exists('PHPUnit\Framework\once')) {
+    /**
+     * Returns a matcher that matches when the method is executed exactly once.
+     */
+    function once(): InvokedCountMatcher
+    {
+        return new InvokedCountMatcher(1);
+    }
 }
 
-/**
- * Returns a matcher that matches when the method is executed
- * exactly $count times.
- */
-function exactly(int $count): InvokedCountMatcher
-{
-    return new InvokedCountMatcher($count);
+if (!function_exists('PHPUnit\Framework\exactly')) {
+    /**
+     * Returns a matcher that matches when the method is executed
+     * exactly $count times.
+     */
+    function exactly(int $count): InvokedCountMatcher
+    {
+        return new InvokedCountMatcher($count);
+    }
 }
 
-/**
- * Returns a matcher that matches when the method is executed
- * at most N times.
- */
-function atMost(int $allowedInvocations): InvokedAtMostCountMatcher
-{
-    return new InvokedAtMostCountMatcher($allowedInvocations);
+if (!function_exists('PHPUnit\Framework\atMost')) {
+    /**
+     * Returns a matcher that matches when the method is executed
+     * at most N times.
+     */
+    function atMost(int $allowedInvocations): InvokedAtMostCountMatcher
+    {
+        return new InvokedAtMostCountMatcher($allowedInvocations);
+    }
 }
 
-/**
- * Returns a matcher that matches when the method is executed
- * at the given index.
- */
-function at(int $index): InvokedAtIndexMatcher
-{
-    return new InvokedAtIndexMatcher($index);
+if (!function_exists('PHPUnit\Framework\at')) {
+    /**
+     * Returns a matcher that matches when the method is executed
+     * at the given index.
+     */
+    function at(int $index): InvokedAtIndexMatcher
+    {
+        return new InvokedAtIndexMatcher($index);
+    }
 }
 
-function returnValue($value): ReturnStub
-{
-    return new ReturnStub($value);
+if (!function_exists('PHPUnit\Framework\returnValue')) {
+    function returnValue($value): ReturnStub
+    {
+        return new ReturnStub($value);
+    }
 }
 
-function returnValueMap(array $valueMap): ReturnValueMapStub
-{
-    return new ReturnValueMapStub($valueMap);
+if (!function_exists('PHPUnit\Framework\returnValueMap')) {
+    function returnValueMap(array $valueMap): ReturnValueMapStub
+    {
+        return new ReturnValueMapStub($valueMap);
+    }
 }
 
-function returnArgument(int $argumentIndex): ReturnArgumentStub
-{
-    return new ReturnArgumentStub($argumentIndex);
+if (!function_exists('PHPUnit\Framework\returnArgument')) {
+    function returnArgument(int $argumentIndex): ReturnArgumentStub
+    {
+        return new ReturnArgumentStub($argumentIndex);
+    }
 }
 
-function returnCallback($callback): ReturnCallbackStub
-{
-    return new ReturnCallbackStub($callback);
+if (!function_exists('PHPUnit\Framework\returnCallback')) {
+    function returnCallback($callback): ReturnCallbackStub
+    {
+        return new ReturnCallbackStub($callback);
+    }
 }
 
-/**
- * Returns the current object.
- *
- * This method is useful when mocking a fluent interface.
- */
-function returnSelf(): ReturnSelfStub
-{
-    return new ReturnSelfStub;
+if (!function_exists('PHPUnit\Framework\returnSelf')) {
+    /**
+     * Returns the current object.
+     *
+     * This method is useful when mocking a fluent interface.
+     */
+    function returnSelf(): ReturnSelfStub
+    {
+        return new ReturnSelfStub;
+    }
 }
 
-/**
- * @param Throwable $exception
- */
-function throwException(Throwable $exception): ExceptionStub
-{
-    return new ExceptionStub($exception);
+if (!function_exists('PHPUnit\Framework\throwException')) {
+    function throwException(\Throwable $exception): ExceptionStub
+    {
+        return new ExceptionStub($exception);
+    }
 }
 
-/**
- * @param mixed $value , ...
- */
-function onConsecutiveCalls(): ConsecutiveCallsStub
-{
-    $args = \func_get_args();
+if (!function_exists('PHPUnit\Framework\onConsecutiveCalls')) {
+    /**
+     * @param mixed $value , ...
+     */
+    function onConsecutiveCalls(): ConsecutiveCallsStub
+    {
+        $args = \func_get_args();
 
-    return new ConsecutiveCallsStub($args);
+        return new ConsecutiveCallsStub($args);
+    }
 }
-';
 
-$buffer .= "\ndefine('__PHPUNIT_GLOBAL_ASSERT_WRAPPERS__', true);\n}";
+EOT;
 
 \file_put_contents(__DIR__ . '/../../src/Framework/Assert/Functions.php', $buffer);
