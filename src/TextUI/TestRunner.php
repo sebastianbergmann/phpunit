@@ -514,14 +514,10 @@ final class TestRunner extends BaseTestRunner
                         $warnings[] = 'Incorrect filter configuration, code coverage will not be processed';
                     }
 
-                    $codeCoverageReports = 0;
-
                     unset($codeCoverage);
                 }
             } catch (CodeCoverageException $e) {
                 $warnings[] = $e->getMessage();
-
-                $codeCoverageReports = 0;
             }
         }
 
