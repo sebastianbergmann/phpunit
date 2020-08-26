@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 
 ### Fixed
 
+* [#3937](https://github.com/sebastianbergmann/phpunit/issues/3937): Risky tests are inconsistently reported in JUnit XML
 * [#4435](https://github.com/sebastianbergmann/phpunit/issues/4435): Global assert wrappers break preloading
 
 ## [9.3.7] - 2020-08-11
