@@ -15,6 +15,7 @@ use function get_class;
 use function method_exists;
 use function sprintf;
 use function str_replace;
+use function trim;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
@@ -390,8 +391,10 @@ final class JUnit extends Printer implements TestListener
             $buffer = '';
         }
 
-        $buffer .= TestFailure::exceptionToString($t) . PHP_EOL .
-                   Filter::getFilteredStacktrace($t);
+        $buffer .= trim(
+            TestFailure::exceptionToString($t) . PHP_EOL .
+            Filter::getFilteredStacktrace($t)
+        );
 
         $fault = $this->document->createElement(
             $type,
