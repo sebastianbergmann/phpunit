@@ -168,22 +168,11 @@ final class JUnit extends Printer implements TestListener
      */
     public function addRiskyTest(Test $test, Throwable $t, float $time): void
     {
-        if (!$this->reportRiskyTests || $this->currentTestCase === null) {
+        if (!$this->reportRiskyTests) {
             return;
         }
 
-        $error = $this->document->createElement(
-            'error',
-            Xml::prepareString(
-                "Risky Test\n" .
-                Filter::getFilteredStacktrace($t)
-            )
-        );
-
-        $error->setAttribute('type', get_class($t));
-
-        $this->currentTestCase->appendChild($error);
-
+        $this->doAddFault($test, $t, 'error');
         $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
