@@ -91,7 +91,7 @@ final class Json
 
         ksort($json);
 
-        foreach ($json as $key => &$value) {
+        foreach ($json as &$value) {
             self::recursiveSort($value);
         }
     }
