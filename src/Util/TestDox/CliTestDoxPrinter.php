@@ -323,9 +323,8 @@ class CliTestDoxPrinter extends TestDoxPrinter
             }
             $out .= $this->prefixLines($prefix['trace'], $trace . PHP_EOL) . PHP_EOL;
         }
-        $out .= $this->prefixLines($prefix['last'], PHP_EOL) . PHP_EOL;
 
-        return $out;
+        return $out . $this->prefixLines($prefix['last'], PHP_EOL) . PHP_EOL;
     }
 
     protected function drawSpinner(): void
