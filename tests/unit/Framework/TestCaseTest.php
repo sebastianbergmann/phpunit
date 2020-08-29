@@ -500,7 +500,7 @@ class TestCaseTest extends TestCase
     public function testExpectExceptionObjectWithEqualException(): void
     {
         $exception = new RuntimeException(
-            'Cannot compute at this time',
+            'Cannot compute at this time.',
             9000
         );
 
@@ -514,10 +514,10 @@ class TestCaseTest extends TestCase
         $this->assertTrue($result->wasSuccessful());
     }
 
-    public function testExpectExceptionObjectAllowsAccessingExpectedExceptionDetails(): void
+    public function testExpectExceptionObjectAllowsAccessingExpectedException(): void
     {
         $exception = new RuntimeException(
-            'Cannot compute at this time',
+            'Cannot compute at this time.',
             9000
         );
 
@@ -525,9 +525,7 @@ class TestCaseTest extends TestCase
 
         $test->expectExceptionObject($exception);
 
-        $this->assertSame(get_class($exception), $test->getExpectedException());
-        $this->assertSame($exception->getCode(), $test->getExpectedExceptionCode());
-        $this->assertSame($exception->getMessage(), $test->getExpectedExceptionMessage());
+        $this->assertSame($exception, $test->getExpectedExceptionObject());
     }
 
     public function testNoException(): void

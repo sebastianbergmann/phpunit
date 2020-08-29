@@ -67,6 +67,7 @@ use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
 use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
+use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\Error\Deprecated;
 use PHPUnit\Framework\Error\Error;
 use PHPUnit\Framework\Error\Notice;
@@ -205,6 +206,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var null|int|string
      */
     private $expectedExceptionCode;
+
+    /**
+     * @var null|\Exception
+     */
+    private $expectedExceptionObject;
 
     /**
      * @var string
@@ -620,14 +626,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * Sets up an expectation for an exception to be raised by the code under test.
-     * Information for expected exception class, expected exception message, and
-     * expected exception code are retrieved from a given Exception object.
      */
     public function expectExceptionObject(\Exception $exception): void
     {
-        $this->expectException(get_class($exception));
-        $this->expectExceptionMessage($exception->getMessage());
-        $this->expectExceptionCode($exception->getCode());
+        $this->expectedExceptionObject = $exception;
     }
 
     public function expectNotToPerformAssertions(): void
@@ -1088,6 +1090,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function getExpectedExceptionMessageRegExp(): ?string
     {
         return $this->expectedExceptionMessageRegExp;
+    }
+
+    public function getExpectedExceptionObject(): ?\Exception
+    {
+        return $this->expectedExceptionObject;
     }
 
     /**
@@ -1568,6 +1575,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $exception,
                     new ExceptionCode(
                         $this->expectedExceptionCode
+                    )
+                );
+            }
+
+            if ($this->expectedExceptionObject !== null) {
+                $this->assertThat(
+                    $exception,
+                    new IsEqual(
+                        $this->expectedExceptionObject
                     )
                 );
             }
@@ -2490,11 +2506,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function checkExceptionExpectations(Throwable $throwable): bool
     {
-        $result = false;
-
-        if ($this->expectedException !== null || $this->expectedExceptionCode !== null || $this->expectedExceptionMessage !== null || $this->expectedExceptionMessageRegExp !== null) {
-            $result = true;
-        }
+        $result = $this->expectedException !== null
+            || $this->expectedExceptionCode !== null
+            || $this->expectedExceptionMessage !== null
+            || $this->expectedExceptionMessageRegExp !== null
+            || $this->expectedExceptionObject !== null;
 
         if ($throwable instanceof Exception) {
             $result = false;
