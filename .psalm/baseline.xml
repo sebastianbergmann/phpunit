@@ -1195,7 +1195,7 @@
       <code>$beStrictAboutChangesToGlobalState</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyUnusedMethod occurrences="71">
+    <PossiblyUnusedMethod occurrences="74">
       <code>any</code>
       <code>never</code>
       <code>atLeast</code>
