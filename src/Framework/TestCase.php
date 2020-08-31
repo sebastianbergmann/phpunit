@@ -152,7 +152,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected $backupStaticAttributesBlacklist = [];
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $runTestInSeparateProcess;
 
