@@ -167,7 +167,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected $providedTests = [];
 
     /**
-     * @var bool
+     * @var ?bool
      */
     private $runClassInSeparateProcess;
 
