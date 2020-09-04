@@ -4,16 +4,18 @@
          verbose="false"
          colors="false"
          cacheResult="false">
+    <!--
     <coverage>
         <report>
             <clover outputFile="php://stdout"/>
             <crap4j outputFile="php://stdout" threshold="50"/>
-            <!-- <html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="90"/> -->
+            <html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="90"/>
             <php outputFile="php://stdout"/>
             <text outputFile="php://stdout" showUncoveredFiles="false" showOnlySummary="false"/>
-            <!-- <xml outputDirectory="xml-coverage"/> -->
+            <xml outputDirectory="xml-coverage"/>
         </report>
     </coverage>
+    -->
 
     <logging>
         <junit outputFile="php://stdout"/>
