@@ -301,7 +301,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Adds the tests from the given class to the suite.
      *
-     * @param object|string $testClass
+     * @psalm-param object|class-string $testClass
      *
      * @throws Exception
      */
