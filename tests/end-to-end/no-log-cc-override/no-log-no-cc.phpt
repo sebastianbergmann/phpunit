@@ -1,5 +1,5 @@
 --TEST--
-phpunit -c _files/phpunit.xml --no-logging --log-junit php://stdout --no-coverage --coverage-filter _files/NoLogNoCc.php --coverage-text _files/NoLogNoCcTest.php
+phpunit -c _files/phpunit.xml --no-logging --log-junit php://stdout _files/NoLogNoCcTest.php
 --FILE--
 <?php declare(strict_types=1);
 $arguments = [
@@ -8,10 +8,10 @@ $arguments = [
     '--no-logging',
     '--log-junit',
     'php://stdout',
-    '--no-coverage',
-    '--coverage-filter',
-    \realpath(__DIR__ . '/_files/NoLogNoCc.php'),
-    '--coverage-text',
+//    '--no-coverage',
+//    '--coverage-filter',
+//    \realpath(__DIR__ . '/_files/NoLogNoCc.php'),
+//    '--coverage-text',
     \realpath(__DIR__ . '/_files/NoLogNoCcTest.php'),
 ];
 \array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
@@ -32,15 +32,3 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Time: %s, Memory: %s
 
 OK (1 test, 1 assertion)
-
-
-Code Coverage Report:
-  %s
-
- Summary:
-  Classes: 100.00% (1/1)
-  Methods: 100.00% (1/1)
-  Lines:   100.00% (1/1)
-
-NoLogNoCc
-  Methods: 100.00% ( 1/ 1)   Lines: 100.00% (  1/  1)
