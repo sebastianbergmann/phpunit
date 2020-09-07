@@ -102,13 +102,13 @@ final class DocBlock
      */
     private $parsedRequirements;
 
-    /** @var int */
+    /** @var null|int */
     private $startLine;
 
-    /** @var int */
+    /** @var null|int */
     private $endLine;
 
-    /** @var string */
+    /** @var null|string */
     private $fileName;
 
     /** @var string */
@@ -129,9 +129,9 @@ final class DocBlock
             (string) $class->getDocComment(),
             false,
             self::extractAnnotationsFromReflector($class),
-            $class->getStartLine(),
-            $class->getEndLine(),
-            $class->getFileName(),
+            false === $class->getStartLine() ? null : $class->getStartLine(),
+            false === $class->getEndLine() ? null : $class->getEndLine(),
+            false === $class->getFileName() ? null : $class->getFileName(),
             $className,
             $className
         );
@@ -146,9 +146,9 @@ final class DocBlock
             (string) $method->getDocComment(),
             true,
             self::extractAnnotationsFromReflector($method),
-            $method->getStartLine(),
-            $method->getEndLine(),
-            $method->getFileName(),
+            false === $method->getStartLine() ? null : $method->getStartLine(),
+            false === $method->getEndLine() ? null : $method->getEndLine(),
+            false === $method->getFileName() ? null : $method->getFileName(),
             $method->getName(),
             $classNameInHierarchy
         );
@@ -161,7 +161,7 @@ final class DocBlock
      *
      * @psalm-param class-string $className
      */
-    private function __construct(string $docComment, bool $isMethod, array $symbolAnnotations, int $startLine, int $endLine, string $fileName, string $name, string $className)
+    private function __construct(string $docComment, bool $isMethod, array $symbolAnnotations, ?int $startLine, ?int $endLine, ?string $fileName, string $name, string $className)
     {
         $this->docComment        = $docComment;
         $this->isMethod          = $isMethod;
@@ -191,13 +191,15 @@ final class DocBlock
             return $this->parsedRequirements;
         }
 
-        $offset            = $this->startLine;
+        $offset            = $this->startLine ?? 0;
         $requires          = [];
         $recordedSettings  = [];
         $extensionVersions = [];
-        $recordedOffsets   = [
-            '__FILE' => realpath($this->fileName),
-        ];
+        $recordedOffsets   = [];
+
+        if (null !== $this->fileName) {
+            $recordedOffsets['__FILE'] = realpath($this->fileName);
+        }
 
         // Split docblock into lines and rewind offset to start of docblock
         $lines = preg_split('/\r\n|\r|\n/', $this->docComment);
@@ -310,8 +312,12 @@ final class DocBlock
      */
     public function getInlineAnnotations(): array
     {
+        if (null === $this->fileName) {
+            return [];
+        }
+
         $code        = file($this->fileName);
-        $lineNumber  = $this->startLine;
+        $lineNumber  = $this->startLine ?? 0;
         $startLine   = $this->startLine - 1;
         $endLine     = $this->endLine - 1;
         $codeLines   = array_slice($code, $startLine, $endLine - $startLine + 1);

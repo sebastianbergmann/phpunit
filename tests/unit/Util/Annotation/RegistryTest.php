@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\Annotation;
 
+use DateTime;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 use PHPUnit\Util\Exception;
@@ -68,6 +69,24 @@ final class RegistryTest extends TestCase
             ),
             'Registry memoizes retrieved DocBlock instances'
         );
+    }
+
+    public function testRegistryLookupForInternalClass(): void
+    {
+        $annotation = Registry::getInstance()->forClassName(DateTime::class);
+
+        self::assertSame([], $annotation->symbolAnnotations());
+        self::assertSame([], $annotation->getInlineAnnotations());
+        self::assertSame(['__OFFSET' => []], $annotation->requirements());
+    }
+
+    public function testRegistryLookupForInternalMethod(): void
+    {
+        $annotation = Registry::getInstance()->forMethod(DateTime::class, 'createFromFormat');
+
+        self::assertSame([], $annotation->symbolAnnotations());
+        self::assertSame([], $annotation->getInlineAnnotations());
+        self::assertSame(['__OFFSET' => []], $annotation->requirements());
     }
 
     public function testClassLookupForAClassThatDoesNotExistFails(): void
