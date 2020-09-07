@@ -29,6 +29,15 @@ abstract class InvocationOrder implements SelfDescribing, Verifiable
         return count($this->invocations);
     }
 
+    /**
+     * @return BaseInvocation[]
+     * @psalm-suppress PossiblyUnusedMethod
+     */
+    public function getInvocations(): array
+    {
+        return $this->invocations;
+    }
+
     public function hasBeenInvoked(): bool
     {
         return count($this->invocations) > 0;
