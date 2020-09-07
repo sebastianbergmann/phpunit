@@ -27,6 +27,7 @@
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
+        "ext-simplexml": "*",
         "ext-xml": "*",
         "ext-xmlwriter": "*",
         "doctrine/instantiator": "^1.3.1",

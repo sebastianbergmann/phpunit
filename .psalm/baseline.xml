@@ -759,6 +759,16 @@
       <code>$this-&gt;filter</code>
     </PossiblyNullArgument>
   </file>
+  <file src="src/Runner/Filter/XmlTestsIterator.php">
+    <MissingThrowsDocblock occurrences="1">
+      <code>getName</code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="src/Runner/Hook/TestListenerAdapter.php">
+    <DeprecatedInterface occurrences="1">
+      <code>TestListenerAdapter</code>
+    </DeprecatedInterface>
+  </file>
   <file src="src/Runner/PhptTestCase.php">
     <InternalClass occurrences="2">
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
@@ -889,7 +899,8 @@
       <code>$e</code>
     </InvalidArgument>
     <InvalidStringClass occurrences="1"/>
-    <MissingThrowsDocblock occurrences="11">
+    <MissingThrowsDocblock occurrences="12">
+      <code>addFilter</code>
       <code>addFilter</code>
       <code>addFilter</code>
       <code>addFilter</code>

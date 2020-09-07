@@ -116,6 +116,7 @@ final class Builder
         'testsuite=',
         'verbose',
         'version',
+        'tests-xml=',
     ];
 
     private const SHORT_OPTIONS = 'd:c:hv';
@@ -225,6 +226,7 @@ final class Builder
         $useDefaultConfiguration                    = null;
         $verbose                                    = null;
         $version                                    = null;
+        $testsXml                                   = null;
 
         if (isset($options[1][0])) {
             $argument = $options[1][0];
@@ -752,6 +754,11 @@ final class Builder
 
                     break;
 
+                case '--tests-xml':
+                    $testsXml = $option[1];
+
+                    break;
+
                 default:
                     $unrecognizedOptions[str_replace('--', '', $option[0])] = $option[1];
             }
@@ -862,7 +869,8 @@ final class Builder
             $useDefaultConfiguration,
             $verbose,
             $version,
-            $coverageFilter
+            $coverageFilter,
+            $testsXml
         );
     }
 }

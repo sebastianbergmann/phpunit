@@ -351,6 +351,10 @@ final class Mapper
             $result['randomOrderSeed'] = $arguments->randomOrderSeed();
         }
 
+        if ($arguments->hasTestsXml()) {
+            $result['testsXml'] = $arguments->testsXml();
+        }
+
         return $result;
     }
 }
