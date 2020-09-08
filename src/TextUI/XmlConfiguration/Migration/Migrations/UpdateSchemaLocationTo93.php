@@ -11,6 +11,9 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use DOMDocument;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class UpdateSchemaLocationTo93 implements Migration
 {
     public function migrate(DOMDocument $document): void
