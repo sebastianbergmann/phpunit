@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Runner;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 interface AfterTestWarningHook extends TestHook
 {
     public function executeAfterTestWarning(string $test, string $message, float $time): void;

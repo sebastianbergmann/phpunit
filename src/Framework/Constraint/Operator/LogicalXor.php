@@ -12,6 +12,9 @@ namespace PHPUnit\Framework\Constraint;
 use function array_reduce;
 use function array_shift;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class LogicalXor extends BinaryOperator
 {
     /**

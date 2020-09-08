@@ -15,10 +15,7 @@ use ReflectionClass;
 use ReflectionException;
 
 /**
- * Constraint that asserts that the class it is evaluated for has a given
- * static attribute.
- *
- * The attribute name is passed in the constructor.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class ClassHasStaticAttribute extends ClassHasAttribute
 {

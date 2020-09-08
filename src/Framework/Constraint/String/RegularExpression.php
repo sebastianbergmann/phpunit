@@ -13,13 +13,7 @@ use function preg_match;
 use function sprintf;
 
 /**
- * Constraint that asserts that the string it is evaluated for matches
- * a regular expression.
- *
- * Checks a given value using the Perl Compatible Regular Expression extension
- * in PHP. The pattern is matched by executing preg_match().
- *
- * The pattern string passed in the constructor.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 class RegularExpression extends Constraint
 {

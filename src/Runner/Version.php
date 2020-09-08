@@ -16,6 +16,9 @@ use function implode;
 use function strpos;
 use SebastianBergmann\Version as VersionId;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class Version
 {
     /**

@@ -14,8 +14,7 @@ use function strpos;
 use PHPUnit\Framework\InvalidArgumentException;
 
 /**
- * Constraint that asserts that the string it is evaluated for begins with a
- * given prefix.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class StringStartsWith extends Constraint
 {

@@ -21,6 +21,9 @@ use IteratorAggregate;
 use PHPUnit\Framework\Exception;
 use Traversable;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 class Count extends Constraint
 {
     /**

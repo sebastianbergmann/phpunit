@@ -14,12 +14,7 @@ use function is_array;
 use ArrayAccess;
 
 /**
- * Constraint that asserts that the array it is evaluated for has a given key.
- *
- * Uses array_key_exists() to check if the key is found in the input array, if
- * not found the evaluation fails.
- *
- * The array key is passed in the constructor.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class ArrayHasKey extends Constraint
 {

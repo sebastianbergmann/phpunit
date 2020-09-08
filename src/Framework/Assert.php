@@ -85,7 +85,7 @@ use PHPUnit\Util\Xml;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 /**
- * A set of assertion methods.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 abstract class Assert
 {

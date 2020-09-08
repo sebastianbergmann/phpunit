@@ -15,13 +15,7 @@ use function sprintf;
 use function strpos;
 
 /**
- * Constraint that asserts that the string it is evaluated for contains
- * a given string.
- *
- * Uses mb_strpos() to find the position of the string in the input, if not
- * found the evaluation fails.
- *
- * The sub-string is passed in the constructor.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class StringContains extends Constraint
 {

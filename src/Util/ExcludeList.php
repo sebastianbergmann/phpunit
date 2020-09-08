@@ -55,6 +55,9 @@ use Symfony\Polyfill\Ctype\Ctype;
 use TheSeer\Tokenizer\Tokenizer;
 use Webmozart\Assert\Assert;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class ExcludeList
 {
     /**

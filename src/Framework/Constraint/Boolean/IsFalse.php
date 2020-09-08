@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 /**
- * Constraint that accepts false.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class IsFalse extends Constraint
 {

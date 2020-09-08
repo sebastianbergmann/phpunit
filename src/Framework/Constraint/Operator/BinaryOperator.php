@@ -14,20 +14,7 @@ use function array_values;
 use function count;
 
 /**
- * Abstract base class for binary operators.
- *
- * Binary operator, as formally defined, accepts two operands. A BinaryOperator
- * object, however, accepts arbitrary number of arguments for backward
- * compatibility. The object can actually be thought to be an expression
- * with zero or more repetitions of a given binary operator. The expected
- * behavior for typical implementation of a BinaryOperator is the following:
- *
- * - when created with no arguments, it shall evaluate to false unconditionally,
- * - when created with one argument, it is a degenerate operator, which just
- *   returns the result of its single operand constraint,
- * - with two arguments, it shall follow its classical definition,
- * - with more than two arguments, it shall resemble repeated application of
- *   the same operator, for example $1 or $2 or $3.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 abstract class BinaryOperator extends Operator
 {

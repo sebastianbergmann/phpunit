@@ -17,7 +17,7 @@ use Countable;
 use EmptyIterator;
 
 /**
- * Constraint that checks whether a variable is empty().
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class IsEmpty extends Constraint
 {

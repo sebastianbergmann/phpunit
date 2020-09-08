@@ -66,8 +66,7 @@ use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
- * A TestRunner for the Command Line Interface (CLI)
- * PHP SAPI Module.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 class Command
 {

@@ -13,8 +13,7 @@ use function strlen;
 use function substr;
 
 /**
- * Constraint that asserts that the string it is evaluated for ends with a given
- * suffix.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class StringEndsWith extends Constraint
 {

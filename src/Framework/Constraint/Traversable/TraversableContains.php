@@ -13,8 +13,7 @@ use function is_array;
 use function sprintf;
 
 /**
- * Constraint that asserts that the Traversable it is applied to contains
- * a given value.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 abstract class TraversableContains extends Constraint
 {

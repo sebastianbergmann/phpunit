@@ -13,8 +13,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 use Traversable;
 
 /**
- * Constraint that asserts that the Traversable it is applied to contains
- * only values of a given type.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class TraversableContainsOnly extends Constraint
 {

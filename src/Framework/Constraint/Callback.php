@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use function call_user_func;
 
 /**
- * Constraint that evaluates against a specified closure.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class Callback extends Constraint
 {

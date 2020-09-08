@@ -12,10 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use ReflectionObject;
 
 /**
- * Constraint that asserts that the object it is evaluated for has a given
- * attribute.
- *
- * The attribute name is passed in the constructor.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class ObjectHasAttribute extends ClassHasAttribute
 {

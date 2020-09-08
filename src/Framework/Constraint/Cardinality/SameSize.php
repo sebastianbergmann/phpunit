@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class SameSize extends Count
 {
     public function __construct(iterable $expected)
