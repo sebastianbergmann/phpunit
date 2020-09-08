@@ -9,14 +9,16 @@
  */
 namespace PHPUnit\Runner\Filter;
 
+use DOMElement;
+use DOMXPath;
 use Exception;
-use LibXMLError;
+use Generator;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
 use RecursiveFilterIterator;
 use RecursiveIterator;
-use SimpleXMLElement;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -74,69 +76,66 @@ final class XmlTestsIterator extends RecursiveFilterIterator
      */
     private function setFilter(string $xmlFile): void
     {
-        $xml = $this->parseXmlFromFile($xmlFile);
+        $xml   = (new XmlLoader())->loadFile($xmlFile);
+        $xpath = new DOMXPath($xml);
 
-        // Regular PHPUnit tests
-        foreach ($xml->testCaseClass as $class) {
-            $className = $class['name']->__toString();
-
+        foreach ($this->extractTestCases($xpath) as [$className, $methodName, $dataSet]) {
             if (!isset($this->filter[$className])) {
                 $this->filter[$className] = [];
             }
 
-            foreach ($class->children() as $method) {
-                $methodName = $method['name']->__toString();
+            if (!$dataSet) {
+                $this->filter[$className][$methodName] = true;
 
-                $dataSet = $method['dataSet'];
+                continue;
+            }
 
-                if (null === $dataSet) {
-                    $this->filter[$className][$methodName] = true;
+            $name                            = "{$methodName} with data set {$dataSet}";
+            $this->filter[$className][$name] = true;
+        }
 
+        foreach ($this->extractPhptFile($xpath) as $path) {
+            $this->filter[PhptTestCase::class][$path] = true;
+        }
+    }
+
+    private function extractTestCases(DOMXPath $xpath): Generator
+    {
+        /** @var DOMElement $class */
+        foreach ($xpath->evaluate('/tests/testCaseClass') as $class) {
+            $className = $class->getAttribute('name');
+
+            if (!$className) {
+                continue;
+            }
+
+            /** @var DOMElement $method */
+            foreach ($xpath->evaluate('testCaseMethod', $class) as $method) {
+                $methodName = $method->getAttribute('name');
+
+                if (!$methodName) {
                     continue;
                 }
 
-                $dataSet                         = $dataSet->__toString();
-                $name                            = "{$methodName} with data set {$dataSet}";
-                $this->filter[$className][$name] = true;
+                $dataSet = $method->getAttribute('dataSet');
+
+                yield [$className, $methodName, $dataSet];
             }
-        }
-
-        // Handle PHP tests
-        $this->filter[PhptTestCase::class] = [];
-
-        foreach ($xml->phptFile as $phptFile) {
-            $this->filter[PhptTestCase::class][$phptFile['path']->__toString()] = true;
         }
     }
 
     /**
-     * @throws Exception
+     * @return Generator<string>
      */
-    private function parseXmlFromFile(string $xmlFile): SimpleXMLElement
+    private function extractPhptFile(DOMXPath $xpath): Generator
     {
-        $oldValue = libxml_use_internal_errors(true);
-        $xml      = simplexml_load_file($xmlFile);
-        libxml_use_internal_errors($oldValue);
+        /* @var DOMElement $phptFile */
+        foreach ($xpath->evaluate('/tests/phptFile') as $phptFile) {
+            $path = $phptFile->getAttribute('path');
 
-        if (false === $xml) {
-            $xmlError = libxml_get_last_error();
-
-            throw $this->xmlErrorToException($xmlError);
+            if ($path) {
+                yield $path;
+            }
         }
-
-        return $xml;
-    }
-
-    private function xmlErrorToException(LibXMLError $xmlError): Exception
-    {
-        return new Exception(
-            sprintf(
-                'Error parsing XML tests: %s in %s:%d:%d',
-                trim($xmlError->message),
-                $xmlError->file,
-                $xmlError->line,
-                $xmlError->column
-            )
-        );
     }
 }
