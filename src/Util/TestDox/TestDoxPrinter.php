@@ -9,7 +9,15 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use const PHP_EOL;
+use function array_map;
+use function get_class;
+use function implode;
+use function method_exists;
+use function preg_split;
+use function trim;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
@@ -17,8 +25,8 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
+use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -121,7 +129,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function addError(Test $test, \Throwable $t, float $time): void
+    public function addError(Test $test, Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_ERROR, $time, true);
     }
@@ -145,7 +153,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
+    public function addIncompleteTest(Test $test, Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_INCOMPLETE, $time, false);
     }
@@ -153,7 +161,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
+    public function addRiskyTest(Test $test, Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_RISKY, $time, false);
     }
@@ -161,7 +169,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
+    public function addSkippedTest(Test $test, Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, BaseTestRunner::STATUS_SKIPPED, $time, false);
     }
@@ -179,9 +187,9 @@ class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    protected function registerTestResult(Test $test, ?\Throwable $t, int $status, float $time, bool $verbose): void
+    protected function registerTestResult(Test $test, ?Throwable $t, int $status, float $time, bool $verbose): void
     {
-        $testName = TestSuiteSorter::getTestSorterUID($test);
+        $testName = $test instanceof Reorderable ? $test->sortId() : $test->getName();
 
         $result = [
             'className'  => $this->formatClassName($test),
@@ -203,12 +211,12 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function formatTestName(Test $test): string
     {
-        return $test->getName();
+        return method_exists($test, 'getName') ? $test->getName() : '';
     }
 
     protected function formatClassName(Test $test): string
     {
-        return \get_class($test);
+        return get_class($test);
     }
 
     protected function testHasPassed(): bool
@@ -247,7 +255,7 @@ class TestDoxPrinter extends DefaultResultPrinter
                 $flushed = false;
 
                 if (!$forceFlush && isset($this->originalExecutionOrder[$this->testFlushIndex])) {
-                    $result  = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
+                    $result = $this->getTestResultByName($this->originalExecutionOrder[$this->testFlushIndex]);
                 } else {
                     // This test(name) cannot found in original execution order,
                     // flush result to output stream right away
@@ -328,12 +336,12 @@ class TestDoxPrinter extends DefaultResultPrinter
         return [];
     }
 
-    protected function formatThrowable(\Throwable $t, ?int $status = null): string
+    protected function formatThrowable(Throwable $t, ?int $status = null): string
     {
-        $message = \trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
+        $message = trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
 
         if ($message) {
-            $message .= \PHP_EOL . \PHP_EOL . $this->formatStacktrace($t);
+            $message .= PHP_EOL . PHP_EOL . $this->formatStacktrace($t);
         } else {
             $message = $this->formatStacktrace($t);
         }
@@ -341,12 +349,12 @@ class TestDoxPrinter extends DefaultResultPrinter
         return $message;
     }
 
-    protected function formatStacktrace(\Throwable $t): string
+    protected function formatStacktrace(Throwable $t): string
     {
         return \PHPUnit\Util\Filter::getFilteredStacktrace($t);
     }
 
-    protected function formatTestResultMessage(\Throwable $t, array $result, string $prefix = '│'): string
+    protected function formatTestResultMessage(Throwable $t, array $result, string $prefix = '│'): string
     {
         $message = $this->formatThrowable($t, $result['status']);
 
@@ -363,15 +371,15 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function prefixLines(string $prefix, string $message): string
     {
-        $message = \trim($message);
+        $message = trim($message);
 
-        return \implode(
-            \PHP_EOL,
-            \array_map(
+        return implode(
+            PHP_EOL,
+            array_map(
                 static function (string $text) use ($prefix) {
                     return '   ' . $prefix . ($text ? ' ' . $text : '');
                 },
-                \preg_split('/\r\n|\r|\n/', $message)
+                preg_split('/\r\n|\r|\n/', $message)
             )
         );
     }

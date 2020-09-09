@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use ArrayObject;
+use EmptyIterator;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
@@ -23,8 +25,8 @@ final class IsEmptyTest extends ConstraintTestCase
 
         $this->assertFalse($constraint->evaluate(['foo'], '', true));
         $this->assertTrue($constraint->evaluate([], '', true));
-        $this->assertFalse($constraint->evaluate(new \ArrayObject(['foo']), '', true));
-        $this->assertTrue($constraint->evaluate(new \ArrayObject([]), '', true));
+        $this->assertFalse($constraint->evaluate(new ArrayObject(['foo']), '', true));
+        $this->assertTrue($constraint->evaluate(new ArrayObject([]), '', true));
         $this->assertEquals('is empty', $constraint->toString());
         $this->assertCount(1, $constraint);
 
@@ -32,7 +34,7 @@ final class IsEmptyTest extends ConstraintTestCase
             $constraint->evaluate(['foo']);
         } catch (ExpectationFailedException $e) {
             $this->assertStringContainsString(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that an array is empty
 EOF
                 ,
@@ -73,6 +75,6 @@ EOF
     {
         $constraint = new IsEmpty;
 
-        $this->assertTrue($constraint->evaluate(new \EmptyIterator, '', true));
+        $this->assertTrue($constraint->evaluate(new EmptyIterator, '', true));
     }
 }

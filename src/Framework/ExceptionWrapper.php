@@ -9,7 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
+use function array_keys;
+use function get_class;
+use function spl_object_hash;
 use PHPUnit\Util\Filter;
+use Throwable;
 
 /**
  * Wraps Exceptions thrown by code under test.
@@ -34,7 +38,7 @@ final class ExceptionWrapper extends Exception
      */
     protected $previous;
 
-    public function __construct(\Throwable $t)
+    public function __construct(Throwable $t)
     {
         // PDOException::getCode() is a string.
         // @see https://php.net/manual/en/class.pdoexception.php#95812
@@ -72,17 +76,17 @@ final class ExceptionWrapper extends Exception
         $this->className = $className;
     }
 
-    public function setOriginalException(\Throwable $t): void
+    public function setOriginalException(Throwable $t): void
     {
         $this->originalException($t);
 
-        $this->className = \get_class($t);
+        $this->className = get_class($t);
         $this->file      = $t->getFile();
         $this->line      = $t->getLine();
 
         $this->serializableTrace = $t->getTrace();
 
-        foreach (\array_keys($this->serializableTrace) as $key) {
+        foreach (array_keys($this->serializableTrace) as $key) {
             unset($this->serializableTrace[$key]['args']);
         }
 
@@ -91,7 +95,7 @@ final class ExceptionWrapper extends Exception
         }
     }
 
-    public function getOriginalException(): ?\Throwable
+    public function getOriginalException(): ?Throwable
     {
         return $this->originalException();
     }
@@ -99,13 +103,14 @@ final class ExceptionWrapper extends Exception
     /**
      * Method to contain static originalException to exclude it from stacktrace to prevent the stacktrace contents,
      * which can be quite big, from being garbage-collected, thus blocking memory until shutdown.
-     * Approach works both for var_dump() and var_export() and print_r()
+     *
+     * Approach works both for var_dump() and var_export() and print_r().
      */
-    private function originalException(\Throwable $exceptionToStore = null): ?\Throwable
+    private function originalException(Throwable $exceptionToStore = null): ?Throwable
     {
         static $originalExceptions;
 
-        $instanceId = \spl_object_hash($this);
+        $instanceId = spl_object_hash($this);
 
         if ($exceptionToStore) {
             $originalExceptions[$instanceId] = $exceptionToStore;

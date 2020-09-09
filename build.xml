@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="phpunit" default="setup" xmlns:if="ant:if" xmlns:unless="ant:unless">
     <target name="setup" depends="clean,install-dependencies"/>
-    <target name="validate" depends="php-syntax-check,validate-composer-json,validate-phpunit-xsd"/>
+    <target name="validate" depends="php-syntax-check,validate-composer-json"/>
 
     <target name="clean" unless="clean.done" description="Cleanup build artifacts">
         <delete dir="${basedir}/build/artifacts"/>
@@ -71,15 +71,6 @@
         <property name="php-syntax-check.done" value="true"/>
     </target>
 
-    <target name="validate-phpunit-xsd" unless="validate-phpunit-xsd.done" description="Validate phpunit.xsd">
-        <exec executable="xmllint" failonerror="true" taskname="xmllint">
-            <arg value="--noout"/>
-            <arg path="${basedir}/phpunit.xsd"/>
-        </exec>
-
-        <property name="validate-phpunit-xsd.done" value="true"/>
-    </target>
-
     <target name="test" depends="validate,install-dependencies" description="Run tests">
         <exec executable="${basedir}/phpunit" taskname="phpunit"/>
     </target>
@@ -105,12 +96,28 @@
     <target name="phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
         <antcall target="-phar-build">
             <param name="type" value="release"/>
+            <param name="scope" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="unscoped-phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
+        <antcall target="-phar-build">
+            <param name="type" value="release"/>
+            <param name="scope" value="false"/>
         </antcall>
     </target>
 
     <target name="phar-nightly" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (nightly)">
         <antcall target="-phar-build">
             <param name="type" value="nightly"/>
+            <param name="scope" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="unscoped-phar-nightly" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (nightly)">
+        <antcall target="-phar-build">
+            <param name="type" value="nightly"/>
+            <param name="scope" value="false"/>
         </antcall>
     </target>
 
@@ -120,6 +127,11 @@
         <mkdir dir="${basedir}/build/tmp/phar-scoped"/>
 
         <copy file="${basedir}/phpunit.xsd" tofile="${basedir}/build/tmp/phar/phpunit.xsd"/>
+        <copy todir="${basedir}/build/tmp/phar/schema">
+            <fileset dir="${basedir}/schema">
+                <include name="**/*" />
+            </fileset>
+        </copy>
 
         <exec executable="${basedir}/build/scripts/phar-manifest.php" output="${basedir}/build/tmp/phar/manifest.txt" failonerror="true"/>
 
@@ -157,9 +169,9 @@
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/phpunit/php-token-stream/LICENSE" tofile="${basedir}/build/tmp/phar/php-token-stream/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/php-token-stream">
-            <fileset dir="${basedir}/vendor/phpunit/php-token-stream/src">
+        <copy file="${basedir}/vendor/sebastian/cli-parser/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-cli-parser/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-cli-parser">
+            <fileset dir="${basedir}/vendor/sebastian/cli-parser/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
@@ -181,6 +193,13 @@
         <copy file="${basedir}/vendor/sebastian/comparator/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-comparator/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-comparator">
             <fileset dir="${basedir}/vendor/sebastian/comparator/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/sebastian/complexity/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-complexity/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-complexity">
+            <fileset dir="${basedir}/vendor/sebastian/complexity/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
@@ -209,6 +228,13 @@
         <copy file="${basedir}/vendor/sebastian/global-state/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-global-state/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/sebastian-global-state">
             <fileset dir="${basedir}/vendor/sebastian/global-state/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/sebastian/lines-of-code/LICENSE" tofile="${basedir}/build/tmp/phar/sebastian-lines-of-code/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/sebastian-lines-of-code">
+            <fileset dir="${basedir}/vendor/sebastian/lines-of-code/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>
@@ -265,6 +291,13 @@
         <copy file="${basedir}/vendor/myclabs/deep-copy/LICENSE" tofile="${basedir}/build/tmp/phar/myclabs-deep-copy/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/myclabs-deep-copy">
             <fileset dir="${basedir}/vendor/myclabs/deep-copy/src">
+                <include name="**/*.php" />
+            </fileset>
+        </copy>
+
+        <copy file="${basedir}/vendor/nikic/php-parser/LICENSE" tofile="${basedir}/build/tmp/phar/nikic-php-parser/LICENSE"/>
+        <copy todir="${basedir}/build/tmp/phar/nikic-php-parser">
+            <fileset dir="${basedir}/vendor/nikic/php-parser/lib">
                 <include name="**/*.php" />
             </fileset>
         </copy>
@@ -346,26 +379,14 @@
             <arg value="${type}"/>
         </exec>
 
-        <exec executable="${basedir}/tools/php-scoper" taskname="php-scoper">
-            <arg value="add-prefix" />
-            <arg value="--no-ansi" />
-            <arg value="--force" />
-            <arg value="--config" />
-            <arg path="${basedir}/build/config/php-scoper.php" />
-            <arg value="--no-interaction" />
-            <arg value="--stop-on-failure" />
-            <arg value="--output-dir" />
-            <arg path="${basedir}/build/tmp/phar-scoped" />
-            <arg value="--prefix" />
-            <arg value="PHPUnit" />
-            <arg path="${basedir}/build/tmp/phar" />
-        </exec>
+        <antcall target="-phar-scope" if:true="${scope}"/>
+        <copy todir="${basedir}/build/tmp/phar-scoped" unless:true="${scope}">
+            <fileset dir="${basedir}/build/tmp/phar">
+                <include name="**/*" />
+            </fileset>
+        </copy>
 
         <copy file="${basedir}/.phpstorm.meta.php" tofile="${basedir}/build/tmp/phar-scoped/.phpstorm.meta.php"/>
-
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/PhptTestCase.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseClass.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
-        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseMethod.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
 
         <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
             <arg value="--all" />
@@ -403,6 +424,30 @@
         <delete dir="${basedir}/build/tmp"/>
     </target>
 
+    <target name="-phar-scope">
+        <exec executable="${basedir}/tools/php-scoper" taskname="php-scoper">
+            <arg value="add-prefix" />
+            <arg value="--no-ansi" />
+            <arg value="--force" />
+            <arg value="--config" />
+            <arg path="${basedir}/build/config/php-scoper.php" />
+            <arg value="--no-interaction" />
+            <arg value="--stop-on-failure" />
+            <arg value="--output-dir" />
+            <arg path="${basedir}/build/tmp/phar-scoped" />
+            <arg value="--prefix" />
+            <arg value="PHPUnit" />
+            <arg path="${basedir}/build/tmp/phar" />
+        </exec>
+
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/PhptTestCase.tpl"   token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/PhptTestCase.tpl"   token="SebastianBergmann\CodeCoverage\Driver\Driver" value="PHPUnit\SebastianBergmann\CodeCoverage\Driver\Driver"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseClass.tpl"  token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseClass.tpl"  token="SebastianBergmann\CodeCoverage\Driver\Driver" value="PHPUnit\SebastianBergmann\CodeCoverage\Driver\Driver"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseMethod.tpl" token="SebastianBergmann\CodeCoverage\CodeCoverage" value="PHPUnit\SebastianBergmann\CodeCoverage\CodeCoverage"/>
+        <replace file="${basedir}/build/tmp/phar-scoped/phpunit/Util/PHP/Template/TestCaseMethod.tpl" token="SebastianBergmann\CodeCoverage\Driver\Driver" value="PHPUnit\SebastianBergmann\CodeCoverage\Driver\Driver"/>
+    </target>
+
     <target name="-phar-determine-version">
         <exec executable="${basedir}/build/scripts/version.php" outputproperty="version" failonerror="true" />
     </target>
@@ -415,11 +460,11 @@
         <exec executable="phive">
             <arg value="--no-progress"/>
             <arg value="update"/>
+            <arg value="--force-accept-unsigned"/>
         </exec>
 
         <exec executable="${basedir}/tools/composer">
             <arg value="self-update"/>
-            <arg value="--1"/>
         </exec>
     </target>
 

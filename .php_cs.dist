@@ -11,13 +11,14 @@ EOF;
 $finder = PhpCsFixer\Finder::create()
     ->files()
     ->in(__DIR__ . '/src')
-    ->in(__DIR__ . '/tests/_files')
     ->in(__DIR__ . '/tests/basic')
     ->in(__DIR__ . '/tests/end-to-end')
     ->in(__DIR__ . '/tests/fail')
     ->in(__DIR__ . '/tests/unit')
+    ->in(__DIR__ . '/tests/_files')
     ->notName('*.phpt')
-    ->notName('ClassWithAllPossibleReturnTypes.php');
+    ->notName('ClassWithAllPossibleReturnTypes.php')
+    ->notName('ClassWithUnionReturnTypes.php');
 
 return PhpCsFixer\Config::create()
     ->setFinder($finder)
@@ -28,8 +29,8 @@ return PhpCsFixer\Config::create()
         'array_syntax' => ['syntax' => 'short'],
         'binary_operator_spaces' => [
             'operators' => [
-                '=' => 'align',
-                '=>' => 'align',
+                '=' => 'align_single_space_minimal',
+                '=>' => 'align_single_space_minimal',
             ],
         ],
         'blank_line_after_namespace' => true,
@@ -38,9 +39,13 @@ return PhpCsFixer\Config::create()
                 'break',
                 'continue',
                 'declare',
+                'default',
+                'die',
                 'do',
+                'exit',
                 'for',
                 'foreach',
+                'goto',
                 'if',
                 'include',
                 'include_once',
@@ -61,31 +66,44 @@ return PhpCsFixer\Config::create()
         'combine_consecutive_unsets' => true,
         'compact_nullable_typehint' => true,
         'concat_space' => ['spacing' => 'one'],
+        'constant_case' => true,
         'declare_equal_normalize' => ['space' => 'none'],
         'declare_strict_types' => true,
         'dir_constant' => true,
         'elseif' => true,
         'encoding' => true,
+        'explicit_indirect_variable' => true,
+        'explicit_string_variable' => true,
         'full_opening_tag' => true,
+        'fully_qualified_strict_types' => true,
         'function_declaration' => true,
+        'global_namespace_import' => [
+            'import_classes' => true,
+            'import_constants' => true,
+            'import_functions' => true,
+        ],
         'header_comment' => ['header' => $header, 'separate' => 'none'],
+        'heredoc_to_nowdoc' => true,
+        'increment_style' => [
+            'style' => PhpCsFixer\Fixer\Operator\IncrementStyleFixer::STYLE_POST,
+        ],
         'indentation_type' => true,
         'is_null' => true,
         'line_ending' => true,
         'list_syntax' => ['syntax' => 'short'],
         'logical_operators' => true,
-        'lowercase_cast' => true,
-        'lowercase_constants' => true,
         'lowercase_keywords' => true,
         'lowercase_static_reference' => true,
         'magic_constant_casing' => true,
+        'magic_method_casing' => true,
         'method_argument_space' => ['ensure_fully_multiline' => true],
         'modernize_types_casting' => true,
         'multiline_comment_opening_closing' => true,
         'multiline_whitespace_before_semicolons' => true,
-        'native_constant_invocation' => true,
-        'native_function_casing' => true,
-        'native_function_invocation' => true,
+        'native_constant_invocation' => false,
+        'native_function_casing' => false,
+        'native_function_invocation' => false,
+        'native_function_type_declaration_casing' => true,
         'new_with_braces' => false,
         'no_alias_functions' => true,
         'no_alternative_syntax' => true,
@@ -108,6 +126,7 @@ return PhpCsFixer\Config::create()
         'no_short_echo_tag' => true,
         'no_singleline_whitespace_before_semicolons' => true,
         'no_spaces_after_function_name' => true,
+        'no_spaces_around_offset' => true,
         'no_spaces_inside_parenthesis' => true,
         'no_superfluous_elseif' => true,
         'no_superfluous_phpdoc_tags' => [
@@ -154,7 +173,13 @@ return PhpCsFixer\Config::create()
                 'method_private_static',
             ],
         ],
-        'ordered_imports' => true,
+        'ordered_imports' => [
+            'imports_order' => [
+                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_CONST,
+                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_FUNCTION,
+                PhpCsFixer\Fixer\Import\OrderedImportsFixer::IMPORT_TYPE_CLASS,
+            ]
+        ],
         'ordered_interfaces' => [
             'direction' => 'ascend',
             'order' => 'alpha',
@@ -171,6 +196,7 @@ return PhpCsFixer\Config::create()
         'phpdoc_scalar' => true,
         'phpdoc_separation' => true,
         'phpdoc_single_line_var_spacing' => true,
+        'phpdoc_summary' => true,
         'phpdoc_to_comment' => true,
         'phpdoc_trim' => true,
         'phpdoc_trim_consecutive_blank_line_separation' => true,
@@ -182,15 +208,18 @@ return PhpCsFixer\Config::create()
         'return_assignment' => true,
         'return_type_declaration' => ['space_before' => 'none'],
         'self_accessor' => true,
+        'self_static_accessor' => true,
         'semicolon_after_instruction' => true,
         'set_type_to_cast' => true,
         'short_scalar_cast' => true,
+        'simple_to_complex_string_variable' => true,
         'simplified_null_return' => false,
         'single_blank_line_at_eof' => true,
         'single_import_per_statement' => true,
         'single_line_after_imports' => true,
         'single_quote' => true,
         'standardize_not_equals' => true,
+        'strict_param' => true,
         'ternary_to_null_coalescing' => true,
         'trailing_comma_in_multiline_array' => true,
         'trim_array_spaces' => true,

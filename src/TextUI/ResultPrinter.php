@@ -12,6 +12,9 @@ namespace PHPUnit\TextUI;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestResult;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 interface ResultPrinter extends TestListener
 {
     public function printResult(TestResult $result): void;

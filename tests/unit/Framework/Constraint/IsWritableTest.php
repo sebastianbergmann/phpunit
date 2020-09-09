@@ -29,7 +29,7 @@ final class IsWritableTest extends ConstraintTestCase
             $constraint->evaluate('foo');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that "foo" is writable.
 
 EOF

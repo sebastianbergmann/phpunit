@@ -2,6 +2,31 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [8.5.8] - 2020-06-22
+
+### Fixed
+
+* [#4312](https://github.com/sebastianbergmann/phpunit/issues/4312): Fix for [#4299](https://github.com/sebastianbergmann/phpunit/issues/4299) breaks backward compatibility
+
+## [8.5.7] - 2020-06-21
+
+### Fixed
+
+* [#4299](https://github.com/sebastianbergmann/phpunit/issues/4299): "No tests executed" does not always result in exit code `1`
+* [#4306](https://github.com/sebastianbergmann/phpunit/issues/4306): Exceptions during code coverage driver initialization are not handled correctly
+
+## [8.5.6] - 2020-06-15
+
+### Fixed
+
+* [#4211](https://github.com/sebastianbergmann/phpunit/issues/4211): `phpdbg_*()` functions are scoped to `PHPUnit\phpdbg_*()`
+
+## [8.5.5] - 2020-05-22
+
+### Fixed
+
+* [#4033](https://github.com/sebastianbergmann/phpunit/issues/4033): Unexpected behaviour when `$GLOBALS` is deleted
+
 ## [8.5.4] - 2020-04-23
 
 ### Changed
@@ -52,6 +77,10 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
+[8.5.8]: https://github.com/sebastianbergmann/phpunit/compare/8.5.7...8.5.8
+[8.5.7]: https://github.com/sebastianbergmann/phpunit/compare/8.5.6...8.5.7
+[8.5.6]: https://github.com/sebastianbergmann/phpunit/compare/8.5.5...8.5.6
+[8.5.5]: https://github.com/sebastianbergmann/phpunit/compare/8.5.4...8.5.5
 [8.5.4]: https://github.com/sebastianbergmann/phpunit/compare/8.5.3...8.5.4
 [8.5.3]: https://github.com/sebastianbergmann/phpunit/compare/8.5.2...8.5.3
 [8.5.2]: https://github.com/sebastianbergmann/phpunit/compare/8.5.1...8.5.2

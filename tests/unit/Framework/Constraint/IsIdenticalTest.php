@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
+use stdClass;
 
 /**
  * @small
@@ -19,8 +20,8 @@ final class IsIdenticalTest extends ConstraintTestCase
 {
     public function testConstraintIsIdentical(): void
     {
-        $a = new \stdClass;
-        $b = new \stdClass;
+        $a = new stdClass;
+        $b = new stdClass;
 
         $constraint = new IsIdentical($a);
 
@@ -33,7 +34,7 @@ final class IsIdenticalTest extends ConstraintTestCase
             $constraint->evaluate($b);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that two variables reference the same object.
 
 EOF
@@ -49,8 +50,8 @@ EOF
 
     public function testConstraintIsIdentical2(): void
     {
-        $a = new \stdClass;
-        $b = new \stdClass;
+        $a = new stdClass;
+        $b = new stdClass;
 
         $constraint = new IsIdentical($a);
 
@@ -58,7 +59,7 @@ EOF
             $constraint->evaluate($b, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two variables reference the same object.
 
@@ -81,7 +82,7 @@ EOF
             $constraint->evaluate('b', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two strings are identical.
 --- Expected
@@ -112,7 +113,7 @@ EOF
             $constraint->evaluate($actual, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two arrays are identical.
 --- Expected
@@ -166,7 +167,7 @@ EOF
             $constraint->evaluate($actual, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that two arrays are identical.
 --- Expected

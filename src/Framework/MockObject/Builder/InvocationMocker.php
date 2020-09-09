@@ -9,6 +9,16 @@
  */
 namespace PHPUnit\Framework\MockObject\Builder;
 
+use function array_map;
+use function array_merge;
+use function count;
+use function get_class;
+use function gettype;
+use function in_array;
+use function is_object;
+use function is_string;
+use function sprintf;
+use function strtolower;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\MockObject\ConfigurableMethod;
 use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
@@ -25,9 +35,10 @@ use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap;
 use PHPUnit\Framework\MockObject\Stub\Stub;
+use Throwable;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class InvocationMocker implements InvocationStubber, MethodNameMatch
 {
@@ -75,12 +86,12 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
 
     public function willReturn($value, ...$nextValues): self
     {
-        if (\count($nextValues) === 0) {
+        if (count($nextValues) === 0) {
             $this->ensureTypeOfReturnValues([$value]);
 
             $stub = $value instanceof Stub ? $value : new ReturnStub($value);
         } else {
-            $values = \array_merge([$value], $nextValues);
+            $values = array_merge([$value], $nextValues);
 
             $this->ensureTypeOfReturnValues($values);
 
@@ -90,7 +101,6 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         return $this->will($stub);
     }
 
-    /** {@inheritDoc} */
     public function willReturnReference(&$reference): self
     {
         $stub = new ReturnReference($reference);
@@ -112,7 +122,6 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         return $this->will($stub);
     }
 
-    /** {@inheritDoc} */
     public function willReturnCallback($callback): self
     {
         $stub = new ReturnCallback($callback);
@@ -134,7 +143,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         return $this->will($stub);
     }
 
-    public function willThrowException(\Throwable $exception): self
+    public function willThrowException(Throwable $exception): self
     {
         $stub = new Exception($exception);
 
@@ -210,16 +219,16 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
             );
         }
 
-        $configurableMethodNames = \array_map(
+        $configurableMethodNames = array_map(
             static function (ConfigurableMethod $configurable) {
-                return \strtolower($configurable->getName());
+                return strtolower($configurable->getName());
             },
             $this->configurableMethods
         );
 
-        if (\is_string($constraint) && !\in_array(\strtolower($constraint), $configurableMethodNames, true)) {
+        if (is_string($constraint) && !in_array(strtolower($constraint), $configurableMethodNames, true)) {
             throw new RuntimeException(
-                \sprintf(
+                sprintf(
                     'Trying to configure method "%s" which cannot be configured because it does not exist, has not been specified, is final, or is static',
                     $constraint
                 )
@@ -280,10 +289,10 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         foreach ($values as $value) {
             if (!$configuredMethod->mayReturn($value)) {
                 throw new IncompatibleReturnValueException(
-                    \sprintf(
+                    sprintf(
                         'Method %s may not return value of type %s, its return declaration is "%s"',
                         $configuredMethod->getName(),
-                        \is_object($value) ? \get_class($value) : \gettype($value),
+                        is_object($value) ? get_class($value) : gettype($value),
                         $configuredMethod->getReturnTypeDeclaration()
                     )
                 );

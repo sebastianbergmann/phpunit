@@ -15,18 +15,17 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ..F.                                                                4 / 4 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
-    <testsuite name="DataProviderTest::testAdd" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
-      <testcase name="testAdd with data set #0" class="DataProviderTest" classname="DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
-      <testcase name="testAdd with data set #1" class="DataProviderTest" classname="DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
-      <testcase name="testAdd with data set #2" class="DataProviderTest" classname="DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f">
-        <failure type="PHPUnit\Framework\ExpectationFailedException">DataProviderTest::testAdd with data set #2 (1, 1, 3)
+  <testsuite name="PHPUnit\TestFixture\DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
+    <testsuite name="PHPUnit\TestFixture\DataProviderTest::testAdd" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
+      <testcase name="testAdd with data set #0" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
+      <testcase name="testAdd with data set #1" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
+      <testcase name="testAdd with data set #2" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f">
+        <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2 (1, 1, 3)
 Failed asserting that 2 matches expected 3.
 
-%s:%i
-</failure>
+%s:%i</failure>
       </testcase>
-      <testcase name="testAdd with data set #3" class="DataProviderTest" classname="DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
+      <testcase name="testAdd with data set #3" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
     </testsuite>
   </testsuite>
 </testsuites>
@@ -36,7 +35,7 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) DataProviderTest::testAdd with data set #2 (1, 1, 3)
+1) PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2 (1, 1, 3)
 Failed asserting that 2 matches expected 3.
 
 %s:%i

@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 /**
  * @coversDefaultClass \NamespaceOne
  * @coversDefaultClass \AnotherDefault\Name\Space\Does\Not\Work
@@ -14,11 +16,12 @@
 class CoverageTwoDefaultClassAnnotations
 {
     /**
-     * @covers Foo\CoveredClass::<public>
+     * @covers \PHPUnit\TestFixture\CoveredClass::<public>
      */
     public function testSomething(): void
     {
-        $o = new Foo\CoveredClass;
+        $o = new CoveredClass;
+
         $o->publicMethod();
     }
 }

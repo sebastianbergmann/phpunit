@@ -10,6 +10,13 @@
 use PHPUnit\Framework\MockObject\Generator;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\AbstractTrait;
+use PHPUnit\TestFixture\AnInterfaceWithReturnType;
+use PHPUnit\TestFixture\ClassWithVariadicArgumentMethod;
+use PHPUnit\TestFixture\ExceptionWithThrowable;
+use PHPUnit\TestFixture\InterfaceWithSemiReservedMethodName;
+use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
+use PHPUnit\TestFixture\SingletonClass;
 
 /**
  * @covers \PHPUnit\Framework\MockObject\Generator
@@ -133,8 +140,7 @@ final class GeneratorTest extends TestCase
     {
         $mock = $this->generator->getMockForAbstractClass(AbstractMockTestClass::class);
 
-        $mock->expects($this->any())
-             ->method('doSomething')
+        $mock->method('doSomething')
              ->willReturn('testing');
 
         $this->assertEquals('testing', $mock->doSomething());
@@ -198,7 +204,7 @@ final class GeneratorTest extends TestCase
     {
         $mock = $this->generator->getMock(SingletonClass::class, ['doSomething'], [], '', false);
 
-        $this->assertInstanceOf('SingletonClass', $mock);
+        $this->assertInstanceOf(SingletonClass::class, $mock);
     }
 
     public function testExceptionIsRaisedForMutuallyExclusiveOptions(): void

@@ -9,14 +9,16 @@
  */
 namespace PHPUnit\Runner;
 
+use ReflectionClass;
+
 /**
- * An interface to define how a test suite should be loaded.
- *
  * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface TestSuiteLoader
 {
-    public function load(string $suiteClassFile): \ReflectionClass;
+    public function load(string $suiteClassFile): ReflectionClass;
 
-    public function reload(\ReflectionClass $aClass): \ReflectionClass;
+    public function reload(ReflectionClass $aClass): ReflectionClass;
 }

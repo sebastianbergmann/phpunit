@@ -22,8 +22,8 @@ class Issue1337Test extends TestCase
     public function dataProvider()
     {
         return [
-            'c:\\'=> [true],
-            0.9   => [true],
+            'c:\\' => [true],
+            0.9    => [true],
         ];
     }
 }

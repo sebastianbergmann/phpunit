@@ -10,17 +10,17 @@
   [32m--coverage-html [36m<dir>[0m      [0m Generate code coverage report in HTML
                               format
   [32m--coverage-php [36m<file>[0m      [0m Export PHP_CodeCoverage object to file
-  [32m--coverage-text=[36m<file>[0m     [0m Generate code coverage report in text
+  [32m--coverage-text [36m<file>[0m     [0m Generate code coverage report in text
                               format [default: standard output]
   [32m--coverage-xml [36m<dir>[0m       [0m Generate code coverage report in PHPUnit
                               XML format
-  [32m--whitelist [36m<dir>[0m          [0m Whitelist <dir> for code coverage
-                              analysis
+  [32m--coverage-cache [36m<dir>[0m     [0m Cache static analysis results
+  [32m--warm-coverage-cache      [0m Warm static analysis cache
+  [32m--coverage-filter [36m<dir>[0m    [0m Include <dir> in code coverage analysis
+  [32m--path-coverage            [0m Perform path coverage analysis
   [32m--disable-coverage-ignore  [0m Disable annotations for ignoring code
                               coverage
   [32m--no-coverage              [0m Ignore code coverage configuration
-  [32m--dump-xdebug-filter [36m<file>[0m[0m Generate script to set Xdebug code
-                              coverage filter
 
 [33mLogging Options:[0m
   [32m--log-junit [36m<file>[0m         [0m Log test execution in JUnit XML format to
@@ -34,6 +34,7 @@
   [32m--testdox-xml [36m<file>[0m       [0m Write agile documentation in XML format
                               to file
   [32m--reverse-list             [0m Print defects in reverse order
+  [32m--no-logging               [0m Ignore logging configuration
 
 [33mTest Selection Options:[0m
   [32m--filter [36m<pattern>[0m         [0m Filter which tests to run
@@ -58,7 +59,7 @@
   [32m--disallow-resource-usage  [0m Be strict about resource usage during
                               small tests
   [32m--enforce-time-limit       [0m Enforce time limit based on test size
-  [32m--default-time-limit=[36m<sec>[0m [0m Timeout in seconds for tests without
+  [32m--default-time-limit [36m<sec>[0m [0m Timeout in seconds for tests without
                               @small, @medium or @large
   [32m--disallow-todo-tests      [0m Disallow @todo-annotated tests
 
@@ -67,7 +68,7 @@
   [32m--static-backup            [0m Backup and restore static attributes for
                               each test
 
-  [32m--colors=[36m<flag>[0m            [0m Use colors in output ("never", "auto" or
+  [32m--colors [36m<flag>[0m            [0m Use colors in output ("never", "auto" or
                               "always")
   [32m--columns [36m<n>[0m              [0m Number of columns to use for progress
                               output
@@ -100,9 +101,9 @@
   [32m--no-interaction           [0m Disable TestDox progress animation
   [32m--printer [36m<printer>[0m        [0m TestListener implementation to use
 
-  [32m--order-by=[36m<order>[0m         [0m Run tests in order:
+  [32m--order-by [36m<order>[0m         [0m Run tests in order:
                               default|defects|duration|no-depends|random|reverse|size
-  [32m--random-order-seed=[36m<N>[0m    [0m Use a specific random seed <N> for random
+  [32m--random-order-seed [36m<N>[0m    [0m Use a specific random seed <N> for random
                               order
   [32m--cache-result             [0m Write test results to cache file
   [32m--do-not-cache-result      [0m Do not write test results to cache file
@@ -115,16 +116,17 @@
   [32m-c|--configuration [36m<file>[0m  [0m Read configuration from XML file
   [32m--no-configuration         [0m Ignore default configuration file
                               (phpunit.xml)
-  [32m--no-logging               [0m Ignore logging configuration
   [32m--extensions [36m<extensions>[0m  [0m A comma separated list of PHPUnit
                               extensions to load
   [32m--no-extensions            [0m Do not load PHPUnit extensions
   [32m--include-path [36m<path(s)>[0m   [0m Prepend PHP's include_path with given
                               path(s)
   [32m-d [36m<key[=value]>[0m           [0m Sets a php.ini value
+  [32m--cache-result-file [36m<file>[0m [0m Specify result cache path and filename
   [32m--generate-configuration   [0m Generate configuration file with
                               suggested settings
-  [32m--cache-result-file=[36m<file>[0m [0m Specify result cache path and filename
+  [32m--migrate-configuration    [0m Migrate configuration file to current
+                              format
 
 [33mMiscellaneous Options:[0m
   [32m-h|--help                  [0m Prints this usage information

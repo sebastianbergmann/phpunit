@@ -54,7 +54,7 @@ final class DirectoryExistsTest extends ConstraintTestCase
         } catch (ExpectationFailedException $e) {
             $this->assertSame(
                 <<<PHP
-Failed asserting that directory "$directory" exists.
+Failed asserting that directory "{$directory}" exists.
 
 PHP
                 ,

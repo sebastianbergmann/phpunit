@@ -9,7 +9,10 @@
  */
 namespace PHPUnit\Framework;
 
-use MyTestListener;
+use PHPUnit\TestFixture\Failure;
+use PHPUnit\TestFixture\MyTestListener;
+use PHPUnit\TestFixture\Success;
+use PHPUnit\TestFixture\TestError;
 
 /**
  * @small
@@ -36,7 +39,7 @@ final class TestListenerTest extends TestCase
 
     public function testError(): void
     {
-        $test = new \TestError;
+        $test = new TestError;
         $test->run($this->result);
 
         $this->assertEquals(1, $this->listener->errorCount());
@@ -45,7 +48,7 @@ final class TestListenerTest extends TestCase
 
     public function testFailure(): void
     {
-        $test = new \Failure;
+        $test = new Failure;
         $test->run($this->result);
 
         $this->assertEquals(1, $this->listener->failureCount());
@@ -54,7 +57,7 @@ final class TestListenerTest extends TestCase
 
     public function testStartStop(): void
     {
-        $test = new \Success;
+        $test = new Success;
         $test->run($this->result);
 
         $this->assertEquals(1, $this->listener->startCount());

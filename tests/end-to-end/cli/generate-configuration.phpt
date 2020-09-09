@@ -4,6 +4,7 @@ phpunit --generate-configuration
 
 
 
+
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][1] = '--no-configuration';
@@ -17,5 +18,6 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Generating phpunit.xml in %s
 
-Bootstrap script (relative to path shown above; default: vendor/autoload.php): Tests directory (relative to path shown above; default: tests): Source directory (relative to path shown above; default: src): 
-Generated phpunit.xml in %s
+Bootstrap script (relative to path shown above; default: vendor/autoload.php): Tests directory (relative to path shown above; default: tests): Source directory (relative to path shown above; default: src): Cache directory (relative to path shown above; default: .phpunit.cache): 
+Generated phpunit.xml in %s.
+Make sure to exclude the .phpunit.cache directory from version control.

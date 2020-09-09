@@ -14,13 +14,13 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 
 Warning:       Test case class not matching filename is deprecated
-               in %s/OneClassPerFile/failing/TwoClassesInvalidTest.php
+               in %sTwoClassesInvalidTest.php
                Class name was 'TwoClassesInvalid', expected 'TwoClassesInvalidTest'
 Warning:       Test case class not matching filename is deprecated
-               in %s/OneClassPerFile/failing/TwoClassesInvalidTest.php
+               in %sTwoClassesInvalidTest.php
                Class name was 'TwoClassesInvalid2', expected 'TwoClassesInvalidTest'
 Warning:       Multiple test case classes per file is deprecated
-               in %s/TwoClassesInvalidTest.php
+               in %sTwoClassesInvalidTest.php
 
 ..                                                                  2 / 2 (100%)
 

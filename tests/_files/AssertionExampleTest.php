@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\AssertionExample;
 
 class AssertionExampleTest extends TestCase
 {

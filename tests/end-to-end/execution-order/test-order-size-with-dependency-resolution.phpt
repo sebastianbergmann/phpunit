@@ -18,24 +18,28 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-Test 'TestWithDifferentSizes::testWithSizeSmall' started
-Test 'TestWithDifferentSizes::testWithSizeSmall' ended
-Test 'TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #0 (false)' started
-Test 'TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #0 (false)' ended
-Test 'TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #1 (true)' started
-Test 'TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #1 (true)' ended
-Test 'TestWithDifferentSizes::testDataProviderWithSizeMedium with data set #0 (false)' started
-Test 'TestWithDifferentSizes::testDataProviderWithSizeMedium with data set #0 (false)' ended
-Test 'TestWithDifferentSizes::testDataProviderWithSizeMedium with data set #1 (true)' started
-Test 'TestWithDifferentSizes::testDataProviderWithSizeMedium with data set #1 (true)' ended
-Test 'TestWithDifferentSizes::testWithSizeMedium' started
-Test 'TestWithDifferentSizes::testWithSizeMedium' ended
-Test 'TestWithDifferentSizes::testWithSizeLarge' started
-Test 'TestWithDifferentSizes::testWithSizeLarge' ended
-Test 'TestWithDifferentSizes::testWithSizeUnknown' started
-Test 'TestWithDifferentSizes::testWithSizeUnknown' ended
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #0 (false)' started
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #0 (false)' ended
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #1 (true)' started
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testDataProviderWithSizeSmall with data set #1 (true)' ended
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testDataProviderWithSizeMedium with data set #0 (false)' started
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testDataProviderWithSizeMedium with data set #0 (false)' ended
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testDataProviderWithSizeMedium with data set #1 (true)' started
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testDataProviderWithSizeMedium with data set #1 (true)' ended
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testWithSizeMedium' started
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testWithSizeMedium' ended
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testWithSizeLarge' started
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testWithSizeLarge' ended
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testWithSizeUnknown' started
+Test 'PHPUnit\TestFixture\TestWithDifferentSizes::testWithSizeUnknown' ended
 
 
 Time: %s, Memory: %s
 
-OK (8 tests, 8 assertions)
+There was 1 skipped test:
+
+1) PHPUnit\TestFixture\TestWithDifferentSizes::testWithSizeSmall
+This test depends on a test that is larger than itself.
+
+OK, but incomplete, skipped, or risky tests!
+Tests: 7, Assertions: 7, Skipped: 1.

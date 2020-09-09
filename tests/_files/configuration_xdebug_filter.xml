@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit>
+    <coverage>
+        <include>
+            <file>AbstractTest.php</file>
+        </include>
+        <exclude>
+            <file>Foo.php</file>
+        </exclude>
+    </coverage>
+</phpunit>

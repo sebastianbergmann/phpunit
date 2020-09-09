@@ -9,8 +9,16 @@
  */
 namespace PHPUnit\Util;
 
+use function array_unshift;
+use function defined;
+use function in_array;
+use function is_file;
+use function realpath;
+use function sprintf;
+use function strpos;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
+use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -20,7 +28,7 @@ final class Filter
     /**
      * @throws Exception
      */
-    public static function getFilteredStacktrace(\Throwable $t): string
+    public static function getFilteredStacktrace(Throwable $t): string
     {
         $filteredStacktrace = '';
 
@@ -43,18 +51,18 @@ final class Filter
         }
 
         if (!self::frameExists($eTrace, $eFile, $eLine)) {
-            \array_unshift(
+            array_unshift(
                 $eTrace,
                 ['file' => $eFile, 'line' => $eLine]
             );
         }
 
-        $prefix    = \defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
-        $blacklist = new Blacklist;
+        $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
+        $excludeList = new ExcludeList;
 
         foreach ($eTrace as $frame) {
-            if (self::shouldPrintFrame($frame, $prefix, $blacklist)) {
-                $filteredStacktrace .= \sprintf(
+            if (self::shouldPrintFrame($frame, $prefix, $excludeList)) {
+                $filteredStacktrace .= sprintf(
                     "%s:%s\n",
                     $frame['file'],
                     $frame['line'] ?? '?'
@@ -68,27 +76,33 @@ final class Filter
     /**
      * @param false|string $prefix
      */
-    private static function shouldPrintFrame(array $frame, $prefix, Blacklist $blacklist): bool
+    private static function shouldPrintFrame(array $frame, $prefix, ExcludeList $excludeList): bool
     {
         if (!isset($frame['file'])) {
             return false;
         }
 
         $file              = $frame['file'];
-        $fileIsNotPrefixed = $prefix === false || \strpos($file, $prefix) !== 0;
-        $script            = \realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
+        $fileIsNotPrefixed = $prefix === false || strpos($file, $prefix) !== 0;
 
-        return \is_file($file) &&
-               self::fileIsBlacklisted($file, $blacklist) &&
+        // @see https://github.com/sebastianbergmann/phpunit/issues/4033
+        if (isset($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
+            $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
+        } else {
+            $script = '';
+        }
+
+        return is_file($file) &&
+               self::fileIsExcluded($file, $excludeList) &&
                $fileIsNotPrefixed &&
                $file !== $script;
     }
 
-    private static function fileIsBlacklisted(string $file, Blacklist $blacklist): bool
+    private static function fileIsExcluded(string $file, ExcludeList $excludeList): bool
     {
-        return (empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) ||
-                !\in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'], true)) &&
-               !$blacklist->isBlacklisted($file);
+        return (empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) ||
+                !in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) &&
+                !$excludeList->isExcluded($file);
     }
 
     private static function frameExists(array $trace, string $file, int $line): bool

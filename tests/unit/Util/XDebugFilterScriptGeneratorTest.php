@@ -9,12 +9,17 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
+use function addslashes;
+use function basename;
+use function dirname;
+use function sprintf;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TextUI\Configuration\Filter as FilterConfiguration;
-use PHPUnit\TextUI\Configuration\FilterDirectory;
-use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
-use PHPUnit\TextUI\Configuration\FilterFile;
-use PHPUnit\TextUI\Configuration\FilterFileCollection;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection;
+use PHPUnit\TextUI\XmlConfiguration\File;
+use PHPUnit\TextUI\XmlConfiguration\FileCollection;
 
 /**
  * @small
@@ -24,7 +29,7 @@ final class XDebugFilterScriptGeneratorTest extends TestCase
 {
     public function testReturnsExpectedScript(): void
     {
-        $expectedDirectory = \sprintf('%s/', __DIR__);
+        $expectedDirectory = sprintf(addslashes('%s' . DIRECTORY_SEPARATOR), __DIR__);
         $expected          = <<<EOF
 <?php declare(strict_types=1);
 if (!\\function_exists('xdebug_set_filter')) {
@@ -35,9 +40,9 @@ if (!\\function_exists('xdebug_set_filter')) {
     \\XDEBUG_FILTER_CODE_COVERAGE,
     \\XDEBUG_PATH_WHITELIST,
     [
-        '$expectedDirectory',
-        '$expectedDirectory',
-        '$expectedDirectory',
+        '{$expectedDirectory}',
+        '{$expectedDirectory}',
+        '{$expectedDirectory}',
         'src/foo.php',
         'src/bar.php'
     ]
@@ -45,31 +50,32 @@ if (!\\function_exists('xdebug_set_filter')) {
 
 EOF;
 
-        $directoryPathThatDoesNotExist = \sprintf('%s/path/that/does/not/exist', __DIR__);
+        $directoryPathThatDoesNotExist = sprintf('%s/path/that/does/not/exist', __DIR__);
         $this->assertDirectoryDoesNotExist($directoryPathThatDoesNotExist);
 
-        $filterConfiguration = new FilterConfiguration(
-            FilterDirectoryCollection::fromArray(
+        $filterConfiguration = new CodeCoverage(
+            null,
+            DirectoryCollection::fromArray(
                 [
-                    new FilterDirectory(
+                    new Directory(
                         __DIR__,
                         '',
                         '.php',
                         'DEFAULT'
                     ),
-                    new FilterDirectory(
-                        \sprintf('%s/', __DIR__),
+                    new Directory(
+                        sprintf('%s/', __DIR__),
                         '',
                         '.php',
                         'DEFAULT'
                     ),
-                    new FilterDirectory(
-                        \sprintf('%s/./%s', \dirname(__DIR__), \basename(__DIR__)),
+                    new Directory(
+                        sprintf('%s/./%s', dirname(__DIR__), basename(__DIR__)),
                         '',
                         '.php',
                         'DEFAULT'
                     ),
-                    new FilterDirectory(
+                    new Directory(
                         $directoryPathThatDoesNotExist,
                         '',
                         '.php',
@@ -77,16 +83,25 @@ EOF;
                     ),
                 ]
             ),
-            FilterFileCollection::fromArray(
+            FileCollection::fromArray(
                 [
-                    new FilterFile('src/foo.php'),
-                    new FilterFile('src/bar.php'),
+                    new File('src/foo.php'),
+                    new File('src/bar.php'),
                 ]
             ),
-            FilterDirectoryCollection::fromArray([]),
-            FilterFileCollection::fromArray([]),
+            DirectoryCollection::fromArray([]),
+            FileCollection::fromArray([]),
+            false,
             true,
-            true
+            true,
+            false,
+            false,
+            null,
+            null,
+            null,
+            null,
+            null,
+            null
         );
 
         $writer = new XdebugFilterScriptGenerator;

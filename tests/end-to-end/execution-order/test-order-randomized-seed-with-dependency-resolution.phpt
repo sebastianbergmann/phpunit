@@ -16,7 +16,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Random seed:   54321
+Random Seed:   54321
 
 Test 'MultiDependencyTest::testTwo' started
 Test 'MultiDependencyTest::testTwo' ended

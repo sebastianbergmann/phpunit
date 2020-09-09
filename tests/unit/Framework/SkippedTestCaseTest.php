@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use function array_shift;
+use function sprintf;
 use PHPUnit\Runner\BaseTestRunner;
 
 final class SkippedTestCaseTest extends TestCase
@@ -33,7 +35,7 @@ final class SkippedTestCaseTest extends TestCase
             $methodName
         );
 
-        $name = \sprintf(
+        $name = sprintf(
             '%s::%s',
             $className,
             $methodName
@@ -74,9 +76,9 @@ final class SkippedTestCaseTest extends TestCase
 
         $failures = $result->skipped();
 
-        $failure = \array_shift($failures);
+        $failure = array_shift($failures);
 
-        $name = \sprintf(
+        $name = sprintf(
             '%s::%s',
             $className,
             $methodName

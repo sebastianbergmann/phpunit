@@ -9,6 +9,15 @@
  */
 namespace PHPUnit\TextUI;
 
+use const PHP_EOL;
+use function count;
+use function explode;
+use function max;
+use function preg_replace_callback;
+use function str_pad;
+use function str_repeat;
+use function strlen;
+use function wordwrap;
 use PHPUnit\Util\Color;
 use SebastianBergmann\Environment\Console;
 
@@ -20,21 +29,24 @@ final class Help
     private const LEFT_MARGIN = '  ';
 
     private const HELP_TEXT = [
-        'Usage'                 => [
+        'Usage' => [
             ['text' => 'phpunit [options] UnitTest.php'],
             ['text' => 'phpunit [options] <directory>'],
         ],
+
         'Code Coverage Options' => [
             ['arg' => '--coverage-clover <file>', 'desc' => 'Generate code coverage report in Clover XML format'],
-            ['arg'  => '--coverage-crap4j <file>', 'desc' => 'Generate code coverage report in Crap4J XML format'],
-            ['arg'  => '--coverage-html <dir>', 'desc' => 'Generate code coverage report in HTML format'],
-            ['arg'  => '--coverage-php <file>', 'desc' => 'Export PHP_CodeCoverage object to file'],
-            ['arg'  => '--coverage-text=<file>', 'desc' => 'Generate code coverage report in text format [default: standard output]'],
-            ['arg'  => '--coverage-xml <dir>', 'desc' => 'Generate code coverage report in PHPUnit XML format'],
-            ['arg'  => '--whitelist <dir>', 'desc' => 'Whitelist <dir> for code coverage analysis'],
-            ['arg'  => '--disable-coverage-ignore', 'desc' => 'Disable annotations for ignoring code coverage'],
-            ['arg'  => '--no-coverage', 'desc' => 'Ignore code coverage configuration'],
-            ['arg'  => '--dump-xdebug-filter <file>', 'desc' => 'Generate script to set Xdebug code coverage filter'],
+            ['arg' => '--coverage-crap4j <file>', 'desc' => 'Generate code coverage report in Crap4J XML format'],
+            ['arg' => '--coverage-html <dir>', 'desc' => 'Generate code coverage report in HTML format'],
+            ['arg' => '--coverage-php <file>', 'desc' => 'Export PHP_CodeCoverage object to file'],
+            ['arg' => '--coverage-text <file>', 'desc' => 'Generate code coverage report in text format [default: standard output]'],
+            ['arg' => '--coverage-xml <dir>', 'desc' => 'Generate code coverage report in PHPUnit XML format'],
+            ['arg' => '--coverage-cache <dir>', 'desc' => 'Cache static analysis results'],
+            ['arg' => '--warm-coverage-cache', 'desc' => 'Warm static analysis cache'],
+            ['arg' => '--coverage-filter <dir>', 'desc' => 'Include <dir> in code coverage analysis'],
+            ['arg' => '--path-coverage', 'desc' => 'Perform path coverage analysis'],
+            ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable annotations for ignoring code coverage'],
+            ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage configuration'],
         ],
 
         'Logging Options' => [
@@ -44,18 +56,19 @@ final class Help
             ['arg' => '--testdox-text <file>', 'desc' => 'Write agile documentation in Text format to file'],
             ['arg' => '--testdox-xml <file>', 'desc' => 'Write agile documentation in XML format to file'],
             ['arg' => '--reverse-list', 'desc' => 'Print defects in reverse order'],
+            ['arg' => '--no-logging', 'desc' => 'Ignore logging configuration'],
         ],
 
         'Test Selection Options' => [
             ['arg' => '--filter <pattern>', 'desc' => 'Filter which tests to run'],
-            ['arg'  => '--testsuite <name>', 'desc' => 'Filter which testsuite to run'],
-            ['arg'  => '--group <name>', 'desc' => 'Only runs tests from the specified group(s)'],
-            ['arg'  => '--exclude-group <name>', 'desc' => 'Exclude tests from the specified group(s)'],
-            ['arg'  => '--list-groups', 'desc' => 'List available test groups'],
-            ['arg'  => '--list-suites', 'desc' => 'List available test suites'],
-            ['arg'  => '--list-tests', 'desc' => 'List available tests'],
-            ['arg'  => '--list-tests-xml <file>', 'desc' => 'List available tests in XML format'],
-            ['arg'  => '--test-suffix <suffixes>', 'desc' => 'Only search for test in files with specified suffix(es). Default: Test.php,.phpt'],
+            ['arg' => '--testsuite <name>', 'desc' => 'Filter which testsuite to run'],
+            ['arg' => '--group <name>', 'desc' => 'Only runs tests from the specified group(s)'],
+            ['arg' => '--exclude-group <name>', 'desc' => 'Exclude tests from the specified group(s)'],
+            ['arg' => '--list-groups', 'desc' => 'List available test groups'],
+            ['arg' => '--list-suites', 'desc' => 'List available test suites'],
+            ['arg' => '--list-tests', 'desc' => 'List available tests'],
+            ['arg' => '--list-tests-xml <file>', 'desc' => 'List available tests in XML format'],
+            ['arg' => '--test-suffix <suffixes>', 'desc' => 'Only search for test in files with specified suffix(es). Default: Test.php,.phpt'],
         ],
 
         'Test Execution Options' => [
@@ -65,7 +78,7 @@ final class Help
             ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
             ['arg'    => '--disallow-resource-usage', 'desc' => 'Be strict about resource usage during small tests'],
             ['arg'    => '--enforce-time-limit', 'desc' => 'Enforce time limit based on test size'],
-            ['arg'    => '--default-time-limit=<sec>', 'desc' => 'Timeout in seconds for tests without @small, @medium or @large'],
+            ['arg'    => '--default-time-limit <sec>', 'desc' => 'Timeout in seconds for tests without @small, @medium or @large'],
             ['arg'    => '--disallow-todo-tests', 'desc' => 'Disallow @todo-annotated tests'],
             ['spacer' => ''],
 
@@ -74,7 +87,7 @@ final class Help
             ['arg'    => '--static-backup', 'desc' => 'Backup and restore static attributes for each test'],
             ['spacer' => ''],
 
-            ['arg'    => '--colors=<flag>', 'desc' => 'Use colors in output ("never", "auto" or "always")'],
+            ['arg'    => '--colors <flag>', 'desc' => 'Use colors in output ("never", "auto" or "always")'],
             ['arg'    => '--columns <n>', 'desc' => 'Number of columns to use for progress output'],
             ['arg'    => '--columns max', 'desc' => 'Use maximum number of columns for progress output'],
             ['arg'    => '--stderr', 'desc' => 'Write to STDERR instead of STDOUT'],
@@ -102,10 +115,10 @@ final class Help
             ['arg'    => '--printer <printer>', 'desc' => 'TestListener implementation to use'],
             ['spacer' => ''],
 
-            ['arg'  => '--order-by=<order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
-            ['arg'  => '--random-order-seed=<N>', 'desc' => 'Use a specific random seed <N> for random order'],
-            ['arg'  => '--cache-result', 'desc' => 'Write test results to cache file'],
-            ['arg'  => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
+            ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
+            ['arg' => '--random-order-seed <N>', 'desc' => 'Use a specific random seed <N> for random order'],
+            ['arg' => '--cache-result', 'desc' => 'Write test results to cache file'],
+            ['arg' => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
         ],
 
         'Configuration Options' => [
@@ -113,13 +126,13 @@ final class Help
             ['arg' => '--bootstrap <file>', 'desc' => 'A PHP script that is included before the tests run'],
             ['arg' => '-c|--configuration <file>', 'desc' => 'Read configuration from XML file'],
             ['arg' => '--no-configuration', 'desc' => 'Ignore default configuration file (phpunit.xml)'],
-            ['arg' => '--no-logging', 'desc' => 'Ignore logging configuration'],
             ['arg' => '--extensions <extensions>', 'desc' => 'A comma separated list of PHPUnit extensions to load'],
             ['arg' => '--no-extensions', 'desc' => 'Do not load PHPUnit extensions'],
             ['arg' => '--include-path <path(s)>', 'desc' => 'Prepend PHP\'s include_path with given path(s)'],
             ['arg' => '-d <key[=value]>', 'desc' => 'Sets a php.ini value'],
+            ['arg' => '--cache-result-file <file>', 'desc' => 'Specify result cache path and filename'],
             ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
-            ['arg' => '--cache-result-file=<file>', 'desc' => 'Specify result cache path and filename'],
+            ['arg' => '--migrate-configuration', 'desc' => 'Migrate configuration file to current format'],
         ],
 
         'Miscellaneous Options' => [
@@ -161,7 +174,7 @@ final class Help
         foreach (self::HELP_TEXT as $options) {
             foreach ($options as $option) {
                 if (isset($option['arg'])) {
-                    $this->maxArgLength = \max($this->maxArgLength, isset($option['arg']) ? \strlen($option['arg']) : 0);
+                    $this->maxArgLength = max($this->maxArgLength, isset($option['arg']) ? strlen($option['arg']) : 0);
                 }
             }
         }
@@ -170,7 +183,7 @@ final class Help
     }
 
     /**
-     * Write the help file to the CLI, adapting width and colors to the console
+     * Write the help file to the CLI, adapting width and colors to the console.
      */
     public function writeToConsole(): void
     {
@@ -184,65 +197,65 @@ final class Help
     private function writePlaintext(): void
     {
         foreach (self::HELP_TEXT as $section => $options) {
-            print "$section:" . \PHP_EOL;
+            print "{$section}:" . PHP_EOL;
 
             if ($section !== 'Usage') {
-                print \PHP_EOL;
+                print PHP_EOL;
             }
 
             foreach ($options as $option) {
                 if (isset($option['spacer'])) {
-                    print \PHP_EOL;
+                    print PHP_EOL;
                 }
 
                 if (isset($option['text'])) {
-                    print self::LEFT_MARGIN . $option['text'] . \PHP_EOL;
+                    print self::LEFT_MARGIN . $option['text'] . PHP_EOL;
                 }
 
                 if (isset($option['arg'])) {
-                    $arg = \str_pad($option['arg'], $this->maxArgLength);
-                    print self::LEFT_MARGIN . $arg . ' ' . $option['desc'] . \PHP_EOL;
+                    $arg = str_pad($option['arg'], $this->maxArgLength);
+                    print self::LEFT_MARGIN . $arg . ' ' . $option['desc'] . PHP_EOL;
                 }
             }
 
-            print \PHP_EOL;
+            print PHP_EOL;
         }
     }
 
     private function writeWithColor(): void
     {
         foreach (self::HELP_TEXT as $section => $options) {
-            print Color::colorize('fg-yellow', "$section:") . \PHP_EOL;
+            print Color::colorize('fg-yellow', "{$section}:") . PHP_EOL;
 
             foreach ($options as $option) {
                 if (isset($option['spacer'])) {
-                    print \PHP_EOL;
+                    print PHP_EOL;
                 }
 
                 if (isset($option['text'])) {
-                    print self::LEFT_MARGIN . $option['text'] . \PHP_EOL;
+                    print self::LEFT_MARGIN . $option['text'] . PHP_EOL;
                 }
 
                 if (isset($option['arg'])) {
-                    $arg = Color::colorize('fg-green', \str_pad($option['arg'], $this->maxArgLength));
-                    $arg = \preg_replace_callback(
+                    $arg = Color::colorize('fg-green', str_pad($option['arg'], $this->maxArgLength));
+                    $arg = preg_replace_callback(
                         '/(<[^>]+>)/',
                         static function ($matches) {
                             return Color::colorize('fg-cyan', $matches[0]);
                         },
                         $arg
                     );
-                    $desc = \explode(\PHP_EOL, \wordwrap($option['desc'], $this->maxDescLength, \PHP_EOL));
+                    $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->maxDescLength, PHP_EOL));
 
-                    print self::LEFT_MARGIN . $arg . ' ' . $desc[0] . \PHP_EOL;
+                    print self::LEFT_MARGIN . $arg . ' ' . $desc[0] . PHP_EOL;
 
-                    for ($i = 1; $i < \count($desc); $i++) {
-                        print \str_repeat(' ', $this->maxArgLength + 3) . $desc[$i] . \PHP_EOL;
+                    for ($i = 1; $i < count($desc); $i++) {
+                        print str_repeat(' ', $this->maxArgLength + 3) . $desc[$i] . PHP_EOL;
                     }
                 }
             }
 
-            print \PHP_EOL;
+            print PHP_EOL;
         }
     }
 }

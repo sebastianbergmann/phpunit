@@ -9,8 +9,15 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function preg_replace;
+use function spl_object_hash;
+use DateTime;
+use DateTimeZone;
+use DOMDocument;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
+use SplObjectStorage;
+use stdClass;
 
 /**
  * @small
@@ -30,7 +37,7 @@ final class IsEqualTest extends ConstraintTestCase
             $constraint->evaluate(0);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that 0 matches expected 1.
 
 EOF
@@ -55,7 +62,7 @@ EOF
             $constraint->evaluate($actual, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                "custom message\n$message",
+                "custom message\n{$message}",
                 $this->trimnl(TestFailure::exceptionToString($e))
             );
 
@@ -74,56 +81,56 @@ EOF
 
     public function isEqualProvider(): array
     {
-        $a      = new \stdClass;
+        $a      = new stdClass;
         $a->foo = 'bar';
-        $b      = new \stdClass;
-        $ahash  = \spl_object_hash($a);
-        $bhash  = \spl_object_hash($b);
+        $b      = new stdClass;
+        $ahash  = spl_object_hash($a);
+        $bhash  = spl_object_hash($b);
 
-        $c               = new \stdClass;
+        $c               = new stdClass;
         $c->foo          = 'bar';
         $c->int          = 1;
         $c->array        = [0, [1], [2], 3];
-        $c->related      = new \stdClass;
+        $c->related      = new stdClass;
         $c->related->foo = "a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk";
         $c->self         = $c;
         $c->c            = $c;
-        $d               = new \stdClass;
+        $d               = new stdClass;
         $d->foo          = 'bar';
         $d->int          = 2;
         $d->array        = [0, [4], [2], 3];
-        $d->related      = new \stdClass;
+        $d->related      = new stdClass;
         $d->related->foo = "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk";
         $d->self         = $d;
         $d->c            = $c;
 
-        $storage1 = new \SplObjectStorage;
+        $storage1 = new SplObjectStorage;
         $storage1->attach($a);
         $storage1->attach($b);
-        $storage2 = new \SplObjectStorage;
+        $storage2 = new SplObjectStorage;
         $storage2->attach($b);
-        $storage1hash = \spl_object_hash($storage1);
-        $storage2hash = \spl_object_hash($storage2);
+        $storage1hash = spl_object_hash($storage1);
+        $storage2hash = spl_object_hash($storage2);
 
-        $dom1                     = new \DOMDocument;
+        $dom1                     = new DOMDocument;
         $dom1->preserveWhiteSpace = false;
         $dom1->loadXML('<root></root>');
-        $dom2                     = new \DOMDocument;
+        $dom2                     = new DOMDocument;
         $dom2->preserveWhiteSpace = false;
         $dom2->loadXML('<root><foo/></root>');
 
         return [
-            [1, 0, <<<EOF
+            [1, 0, <<<'EOF'
 Failed asserting that 0 matches expected 1.
 
 EOF
             ],
-            [1.1, 0, <<<EOF
+            [1.1, 0, <<<'EOF'
 Failed asserting that 0 matches expected 1.1.
 
 EOF
             ],
-            ['a', 'b', <<<EOF
+            ['a', 'b', <<<'EOF'
 Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
@@ -133,38 +140,38 @@ Failed asserting that two strings are equal.
 
 EOF
             ],
-            ["a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk", "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk", <<<EOF
+            ["a\nb\nc\nd\ne\nf\ng\nh\ni\nj\nk", "a\np\nc\nd\ne\nf\ng\nh\ni\nw\nk", <<<'EOF'
 Failed asserting that two strings are equal.
 --- Expected
 +++ Actual
 @@ @@
- 'a\\n
--b\\n
-+p\\n
- c\\n
- d\\n
- e\\n
+ 'a\n
+-b\n
++p\n
+ c\n
+ d\n
+ e\n
 @@ @@
- g\\n
- h\\n
- i\\n
--j\\n
-+w\\n
+ g\n
+ h\n
+ i\n
+-j\n
++w\n
  k'
 
 EOF
             ],
-            [1, [0], <<<EOF
+            [1, [0], <<<'EOF'
 Array (...) does not match expected type "integer".
 
 EOF
             ],
-            [[0], 1, <<<EOF
+            [[0], 1, <<<'EOF'
 1 does not match expected type "array".
 
 EOF
             ],
-            [[0], [1], <<<EOF
+            [[0], [1], <<<'EOF'
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
@@ -176,7 +183,7 @@ Failed asserting that two arrays are equal.
 
 EOF
             ],
-            [[true], ['true'], <<<EOF
+            [[true], ['true'], <<<'EOF'
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
@@ -188,7 +195,7 @@ Failed asserting that two arrays are equal.
 
 EOF
             ],
-            [[0, [1], [2], 3], [0, [4], [2], 3], <<<EOF
+            [[0, [1], [2], 3], [0, [4], [2], 3], <<<'EOF'
 Failed asserting that two arrays are equal.
 --- Expected
 +++ Actual
@@ -205,17 +212,17 @@ Failed asserting that two arrays are equal.
 
 EOF
             ],
-            [$a, [0], <<<EOF
+            [$a, [0], <<<'EOF'
 Array (...) does not match expected type "object".
 
 EOF
             ],
-            [[0], $a, <<<EOF
+            [[0], $a, <<<'EOF'
 stdClass Object (...) does not match expected type "array".
 
 EOF
             ],
-            [$a, $b, <<<EOF
+            [$a, $b, <<<'EOF'
 Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
@@ -226,7 +233,7 @@ Failed asserting that two objects are equal.
 
 EOF
             ],
-            [$c, $d, <<<EOF
+            [$c, $d, <<<'EOF'
 Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
@@ -246,18 +253,18 @@ Failed asserting that two objects are equal.
 @@ @@
      )
      'related' => stdClass Object (
-         'foo' => 'a\\n
--        b\\n
-+        p\\n
-         c\\n
-         d\\n
-         e\\n
+         'foo' => 'a\n
+-        b\n
++        p\n
+         c\n
+         d\n
+         e\n
 @@ @@
-         g\\n
-         h\\n
-         i\\n
--        j\\n
-+        w\\n
+         g\n
+         h\n
+         i\n
+-        j\n
++        w\n
          k'
      )
      'self' => stdClass Object (...)
@@ -266,7 +273,7 @@ Failed asserting that two objects are equal.
 
 EOF
             ],
-            [$dom1, $dom2, <<<EOF
+            [$dom1, $dom2, <<<'EOF'
 Failed asserting that two DOM documents are equal.
 --- Expected
 +++ Actual
@@ -280,9 +287,9 @@ Failed asserting that two DOM documents are equal.
 EOF
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/Chicago')),
-                <<<EOF
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/Chicago')),
+                <<<'EOF'
 Failed asserting that two DateTime objects are equal.
 --- Expected
 +++ Actual
@@ -297,17 +304,17 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
--SplObjectStorage Object &$storage1hash (
--    '$ahash' => Array &0 (
--        'obj' => stdClass Object &$ahash (
+-SplObjectStorage Object &{$storage1hash} (
+-    '{$ahash}' => Array &0 (
+-        'obj' => stdClass Object &{$ahash} (
 -            'foo' => 'bar'
 -        )
 -        'inf' => null
 -    )
--    '$bhash' => Array &1 (
-+SplObjectStorage Object &$storage2hash (
-+    '$bhash' => Array &0 (
-         'obj' => stdClass Object &$bhash ()
+-    '{$bhash}' => Array &1 (
++SplObjectStorage Object &{$storage2hash} (
++    '{$bhash}' => Array &0 (
+         'obj' => stdClass Object &{$bhash} ()
          'inf' => null
      )
  )
@@ -318,7 +325,7 @@ EOF
     }
 
     /**
-     * Removes spaces in front of newlines
+     * Removes spaces in front of newlines.
      *
      * @param string $string
      *
@@ -326,6 +333,6 @@ EOF
      */
     private function trimnl($string)
     {
-        return \preg_replace('/[ ]*\n/', "\n", $string);
+        return preg_replace('/[ ]*\n/', "\n", $string);
     }
 }

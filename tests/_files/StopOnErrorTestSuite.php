@@ -7,7 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class StopOnErrorTestSuite extends \PHPUnit\Framework\TestCase
+namespace PHPUnit\TestFixture;
+
+use Error;
+use PHPUnit\Framework\TestCase;
+
+class StopOnErrorTestSuite extends TestCase
 {
     public function testIncomplete(): void
     {

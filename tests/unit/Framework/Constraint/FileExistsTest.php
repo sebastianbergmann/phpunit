@@ -29,7 +29,7 @@ final class FileExistsTest extends ConstraintTestCase
             $constraint->evaluate('foo');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that file "foo" exists.
 
 EOF
@@ -51,7 +51,7 @@ EOF
             $constraint->evaluate('foo', 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 custom message
 Failed asserting that file "foo" exists.
 

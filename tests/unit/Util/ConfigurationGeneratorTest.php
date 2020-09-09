@@ -10,11 +10,11 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TextUI\Configuration\Generator;
+use PHPUnit\TextUI\XmlConfiguration\Generator;
 
 /**
  * @small
- * @covers \PHPUnit\TextUI\Configuration\Generator
+ * @covers \PHPUnit\TextUI\XmlConfiguration\Generator
  */
 final class ConfigurationGeneratorTest extends TestCase
 {
@@ -27,11 +27,14 @@ final class ConfigurationGeneratorTest extends TestCase
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/X.Y.Z/phpunit.xsd"
          bootstrap="vendor/autoload.php"
+         cacheResultFile=".phpunit.cache/test-results"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
+         failOnRisky="true"
+         failOnWarning="true"
          verbose="true">
     <testsuites>
         <testsuite name="default">
@@ -39,18 +42,20 @@ final class ConfigurationGeneratorTest extends TestCase
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+    <coverage cacheDirectory=".phpunit.cache/code-coverage"
+              processUncoveredFiles="true">
+        <include>
             <directory suffix=".php">src</directory>
-        </whitelist>
-    </filter>
+        </include>
+    </coverage>
 </phpunit>
 ',
             $generator->generateDefaultConfiguration(
                 'X.Y.Z',
                 'vendor/autoload.php',
                 'tests',
-                'src'
+                'src',
+                '.phpunit.cache'
             )
         );
     }

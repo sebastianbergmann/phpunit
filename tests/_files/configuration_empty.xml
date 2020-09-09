@@ -19,24 +19,18 @@
     </exclude>
   </groups>
 
-  <filter>
-    <whitelist>
+  <coverage>
+    <include>
       <directory></directory>
       <file></file>
-      <exclude>
-        <directory></directory>
-        <file></file>
-      </exclude>
-    </whitelist>
-  </filter>
+    </include>
+    <exclude>
+      <directory></directory>
+      <file></file>
+    </exclude>
+  </coverage>
 
   <logging>
-    <log type="coverage-html" target=""/>
-    <log type="coverage-clover" target=""/>
-    <log type="plain" target=""/>
-    <log type="junit" target=""/>
-    <log type="testdox-html" target=""/>
-    <log type="testdox-text" target=""/>
   </logging>
 
   <php>

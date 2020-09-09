@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use function explode;
 use PHPUnit\Util\Test as TestUtil;
 
 /**
@@ -17,12 +18,12 @@ use PHPUnit\Util\Test as TestUtil;
 final class DataProviderTestSuite extends TestSuite
 {
     /**
-     * @var string[]
+     * @var list<ExecutionOrderDependency>
      */
     private $dependencies = [];
 
     /**
-     * @param string[] $dependencies
+     * @param list<ExecutionOrderDependency> $dependencies
      */
     public function setDependencies(array $dependencies): void
     {
@@ -30,31 +31,44 @@ final class DataProviderTestSuite extends TestSuite
 
         foreach ($this->tests as $test) {
             if (!$test instanceof TestCase) {
+                // @codeCoverageIgnoreStart
                 continue;
+                // @codeCoverageIgnoreStart
             }
-
             $test->setDependencies($dependencies);
         }
     }
 
-    public function getDependencies(): array
+    /**
+     * @return list<ExecutionOrderDependency>
+     */
+    public function provides(): array
     {
-        return $this->dependencies;
-    }
+        if ($this->providedTests === null) {
+            $this->providedTests = [new ExecutionOrderDependency($this->getName())];
+        }
 
-    public function hasDependencies(): bool
-    {
-        return \count($this->dependencies) > 0;
+        return $this->providedTests;
     }
 
     /**
-     * Returns the size of the each test created using the data provider(s)
+     * @return list<ExecutionOrderDependency>
+     */
+    public function requires(): array
+    {
+        // A DataProviderTestSuite does not have to traverse its child tests
+        // as these are inherited and cannot reference dataProvider rows directly
+        return $this->dependencies;
+    }
+
+    /**
+     * Returns the size of the each test created using the data provider(s).
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function getSize(): int
     {
-        [$className, $methodName] = \explode('::', $this->getName());
+        [$className, $methodName] = explode('::', $this->getName());
 
         return TestUtil::getSize($className, $methodName);
     }

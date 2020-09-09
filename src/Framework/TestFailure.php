@@ -9,7 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
+use function get_class;
+use function sprintf;
+use function trim;
 use PHPUnit\Framework\Error\Error;
+use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -22,7 +26,7 @@ final class TestFailure
     private $failedTest;
 
     /**
-     * @var \Throwable
+     * @var Throwable
      */
     private $thrownException;
 
@@ -34,7 +38,7 @@ final class TestFailure
     /**
      * Returns a description for an exception.
      */
-    public static function exceptionToString(\Throwable $e): string
+    public static function exceptionToString(Throwable $e): string
     {
         if ($e instanceof SelfDescribing) {
             $buffer = $e->toString();
@@ -48,7 +52,7 @@ final class TestFailure
             }
 
             if (!empty($buffer)) {
-                $buffer = \trim($buffer) . "\n";
+                $buffer = trim($buffer) . "\n";
             }
 
             return $buffer;
@@ -62,18 +66,18 @@ final class TestFailure
             return $e->getClassName() . ': ' . $e->getMessage() . "\n";
         }
 
-        return \get_class($e) . ': ' . $e->getMessage() . "\n";
+        return get_class($e) . ': ' . $e->getMessage() . "\n";
     }
 
     /**
      * Constructs a TestFailure with the given test and exception.
      */
-    public function __construct(Test $failedTest, \Throwable $t)
+    public function __construct(Test $failedTest, Throwable $t)
     {
         if ($failedTest instanceof SelfDescribing) {
             $this->testName = $failedTest->toString();
         } else {
-            $this->testName = \get_class($failedTest);
+            $this->testName = get_class($failedTest);
         }
 
         if (!$failedTest instanceof TestCase || !$failedTest->isInIsolation()) {
@@ -88,7 +92,7 @@ final class TestFailure
      */
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             '%s: %s',
             $this->testName,
             $this->thrownException->getMessage()
@@ -127,7 +131,7 @@ final class TestFailure
     /**
      * Gets the thrown exception.
      */
-    public function thrownException(): \Throwable
+    public function thrownException(): Throwable
     {
         return $this->thrownException;
     }

@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function json_encode;
+use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Util\Json;
@@ -21,10 +23,10 @@ final class JsonMatchesTest extends ConstraintTestCase
     public static function evaluateDataprovider(): array
     {
         return [
-            'valid JSON'                              => [true, \json_encode(['Mascott'                           => 'Tux']), \json_encode(['Mascott'                           => 'Tux'])],
-            'error syntax'                            => [false, '{"Mascott"::}', \json_encode(['Mascott'         => 'Tux'])],
-            'error UTF-8'                             => [false, \json_encode('\xB1\x31'), \json_encode(['Mascott' => 'Tux'])],
-            'invalid JSON in class instantiation'     => [false, \json_encode(['Mascott'                          => 'Tux']), '{"Mascott"::}'],
+            'valid JSON'                              => [true, json_encode(['Mascott' => 'Tux']), json_encode(['Mascott' => 'Tux'])],
+            'error syntax'                            => [false, '{"Mascott"::}', json_encode(['Mascott' => 'Tux'])],
+            'error UTF-8'                             => [false, json_encode('\xB1\x31'), json_encode(['Mascott' => 'Tux'])],
+            'invalid JSON in class instantiation'     => [false, json_encode(['Mascott' => 'Tux']), '{"Mascott"::}'],
             'string type not equals number'           => [false, '{"age": "5"}', '{"age": 5}'],
             'string type not equals boolean'          => [false, '{"age": "true"}', '{"age": true}'],
             'string type not equals null'             => [false, '{"age": "null"}', '{"age": null}'],
@@ -42,7 +44,7 @@ final class JsonMatchesTest extends ConstraintTestCase
     public static function evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider(): array
     {
         return [
-            'error UTF-8'                             => [\json_encode('\xB1\x31'), \json_encode(['Mascott' => 'Tux'])],
+            'error UTF-8'                             => [json_encode('\xB1\x31'), json_encode(['Mascott' => 'Tux'])],
             'string type not equals number'           => ['{"age": "5"}', '{"age": 5}'],
             'string type not equals boolean'          => ['{"age": "true"}', '{"age": true}'],
             'string type not equals null'             => ['{"age": "null"}', '{"age": null}'],
@@ -78,7 +80,7 @@ final class JsonMatchesTest extends ConstraintTestCase
 
         try {
             $constraint->evaluate($jsonOther, '', false);
-            $this->fail(\sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
+            $this->fail(sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
         } catch (ExpectationFailedException $expectedException) {
             $comparisonFailure = $expectedException->getComparisonFailure();
             $this->assertNotNull($comparisonFailure);
@@ -94,7 +96,7 @@ final class JsonMatchesTest extends ConstraintTestCase
 
     public function testToString(): void
     {
-        $jsonValue  = \json_encode(['Mascott' => 'Tux']);
+        $jsonValue  = json_encode(['Mascott' => 'Tux']);
         $constraint = new JsonMatches($jsonValue);
 
         $this->assertEquals('matches JSON string "' . $jsonValue . '"', $constraint->toString());
@@ -106,10 +108,10 @@ final class JsonMatchesTest extends ConstraintTestCase
 
         try {
             $constraint->evaluate('{"Mascott"::}', '', false);
-            $this->fail(\sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
+            $this->fail(sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that '{"Mascott"::}' matches JSON string "{"Mascott"::}".
 
 EOF
@@ -125,10 +127,10 @@ EOF
 
         try {
             $constraint->evaluate('{"Mascott":"Tux"}', '', false);
-            $this->fail(\sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
+            $this->fail(sprintf('Expected %s to be thrown.', ExpectationFailedException::class));
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that '{"Mascott":"Tux"}' matches JSON string "{"Mascott"::}".
 
 EOF
@@ -146,7 +148,7 @@ EOF
             $constraint->evaluate('{"obj": {}, "val": 2}', '', false);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that '{"obj": {}, "val": 2}' matches JSON string "{"obj": {}, "val": 1}".
 --- Expected
 +++ Actual
@@ -172,7 +174,7 @@ EOF
             $constraint->evaluate('{"obj": {"y": 2, "x": 1}, "val": 2}', '', false);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
+                <<<'EOF'
 Failed asserting that '{"obj": {"y": 2, "x": 1}, "val": 2}' matches JSON string "{"obj": {"x": 1, "y": 2}, "val": 1}".
 --- Expected
 +++ Actual

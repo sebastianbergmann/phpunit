@@ -16,7 +16,7 @@ Time: %s, Memory: %s
 
 There were 2 errors:
 
-1) ExceptionStackTest::testPrintingChildException
+1) PHPUnit\TestFixture\ExceptionStackTest::testPrintingChildException
 PHPUnit\Framework\Exception: Child exception
 message
 Failed asserting that two arrays are equal.
@@ -44,7 +44,7 @@ Failed asserting that two arrays are equal.
 
 %s:%i
 
-2) ExceptionStackTest::testNestedExceptions
+2) PHPUnit\TestFixture\ExceptionStackTest::testNestedExceptions
 Exception: One
 
 %s:%i

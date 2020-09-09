@@ -7,16 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use CoveredClass;
 use PHPUnit\Framework\TestCase;
 
 class CoveragePrivateTest extends TestCase
 {
     /**
-     * @covers CoveredClass::<private>
+     * @covers \PHPUnit\TestFixture\CoveredClass::<private>
      */
     public function testSomething(): void
     {
         $o = new CoveredClass;
+
         $o->publicMethod();
     }
 }

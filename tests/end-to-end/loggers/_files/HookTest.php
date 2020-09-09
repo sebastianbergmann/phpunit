@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Test;
 
+use Exception;
 use PHPUnit\Framework\RiskyTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
@@ -27,7 +28,7 @@ final class HookTest extends TestCase
 
     public function testError(): void
     {
-        throw new \Exception('message');
+        throw new Exception('message');
     }
 
     public function testIncomplete(): void

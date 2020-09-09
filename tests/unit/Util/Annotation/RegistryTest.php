@@ -10,7 +10,9 @@
 namespace PHPUnit\Util\Annotation;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 use PHPUnit\Util\Exception;
+use ThisClassDoesNotExist;
 
 /**
  * @small
@@ -44,7 +46,7 @@ final class RegistryTest extends TestCase
     public function testRegistryLookupWithExistingMethodAnnotation(): void
     {
         $annotation = Registry::getInstance()->forMethod(
-            \NumericGroupAnnotationTest::class,
+            NumericGroupAnnotationTest::class,
             'testTicketAnnotationSupportsNumericValue'
         );
 
@@ -52,6 +54,7 @@ final class RegistryTest extends TestCase
             [
                 'testdox' => ['Empty test for @ticket numeric annotation values'],
                 'ticket'  => ['3502'],
+                'author'  => ['C. Lippy'],
                 'see'     => ['https://github.com/sebastianbergmann/phpunit/issues/3502'],
             ],
             $annotation->symbolAnnotations()
@@ -60,7 +63,7 @@ final class RegistryTest extends TestCase
         self::assertSame(
             $annotation,
             Registry::getInstance()->forMethod(
-                \NumericGroupAnnotationTest::class,
+                NumericGroupAnnotationTest::class,
                 'testTicketAnnotationSupportsNumericValue'
             ),
             'Registry memoizes retrieved DocBlock instances'
@@ -73,7 +76,7 @@ final class RegistryTest extends TestCase
 
         $this->expectException(Exception::class);
 
-        $registry->forClassName(\ThisClassDoesNotExist::class);
+        $registry->forClassName(ThisClassDoesNotExist::class);
     }
 
     public function testMethodLookupForAMethodThatDoesNotExistFails(): void

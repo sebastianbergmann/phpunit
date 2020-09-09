@@ -19,6 +19,6 @@ class MyCommand extends Command
 
     public function myHandler($value): void
     {
-        print __METHOD__ . " $value\n";
+        print __METHOD__ . " {$value}\n";
     }
 }

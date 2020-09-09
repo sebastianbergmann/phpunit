@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\Mockable;
 
 /**
  * @small
@@ -62,7 +63,7 @@ final class MockBuilderTest extends TestCase
     public function testOnlyMethodsWithNonExistentMethodNames(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Trying to set mock method "mockableMethodWithCrazyName" with onlyMethods, but it does not exist in class "Mockable". Use addMethods() for methods that don\'t exist in the class.');
+        $this->expectExceptionMessage('Trying to set mock method "mockableMethodWithCrazyName" with onlyMethods, but it does not exist in class "PHPUnit\TestFixture\Mockable". Use addMethods() for methods that don\'t exist in the class.');
 
         $this->getMockBuilder(Mockable::class)
              ->onlyMethods(['mockableMethodWithCrazyName'])
@@ -91,7 +92,7 @@ final class MockBuilderTest extends TestCase
     public function testAddMethodsWithNonExistentMethodNames(): void
     {
         $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage('Trying to set mock method "mockableMethod" with addMethods(), but it exists in class "Mockable". Use onlyMethods() for methods that exist in the class.');
+        $this->expectExceptionMessage('Trying to set mock method "mockableMethod" with addMethods(), but it exists in class "PHPUnit\TestFixture\Mockable". Use onlyMethods() for methods that exist in the class.');
 
         $this->getMockBuilder(Mockable::class)
              ->addMethods(['mockableMethod'])

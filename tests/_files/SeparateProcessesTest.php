@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,6 +19,7 @@ class SeparateProcessesTest extends TestCase
     public function testFoo(): void
     {
         $this->assertTrue(true);
+
         exit(0);
     }
 
@@ -24,6 +27,7 @@ class SeparateProcessesTest extends TestCase
     {
         $this->assertTrue(true);
         $this->assertTrue(true);
+
         exit(1);
     }
 }

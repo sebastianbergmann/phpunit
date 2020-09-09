@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
+use Throwable;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-interface SkippedTest extends \Throwable
+interface SkippedTest extends Throwable
 {
 }

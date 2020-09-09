@@ -9,12 +9,64 @@
  */
 namespace PHPUnit\Util;
 
+use function array_merge;
+use function get_class;
+use function preg_match;
+use function range;
+use function realpath;
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
+use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
+use PHPUnit\TestFixture\CoverageClassExtendedTest;
+use PHPUnit\TestFixture\CoverageClassNothingTest;
+use PHPUnit\TestFixture\CoverageClassTest;
+use PHPUnit\TestFixture\CoverageClassWithoutAnnotationsTest;
+use PHPUnit\TestFixture\CoverageCoversOverridesCoversNothingTest;
+use PHPUnit\TestFixture\CoverageFunctionParenthesesTest;
+use PHPUnit\TestFixture\CoverageFunctionParenthesesWhitespaceTest;
+use PHPUnit\TestFixture\CoverageFunctionTest;
+use PHPUnit\TestFixture\CoverageMethodNothingCoversMethod;
+use PHPUnit\TestFixture\CoverageMethodNothingTest;
+use PHPUnit\TestFixture\CoverageMethodOneLineAnnotationTest;
+use PHPUnit\TestFixture\CoverageMethodParenthesesTest;
+use PHPUnit\TestFixture\CoverageMethodParenthesesWhitespaceTest;
+use PHPUnit\TestFixture\CoverageMethodTest;
+use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
+use PHPUnit\TestFixture\CoverageNoneTest;
+use PHPUnit\TestFixture\CoverageNotPrivateTest;
+use PHPUnit\TestFixture\CoverageNotProtectedTest;
+use PHPUnit\TestFixture\CoverageNotPublicTest;
+use PHPUnit\TestFixture\CoveragePrivateTest;
+use PHPUnit\TestFixture\CoverageProtectedTest;
+use PHPUnit\TestFixture\CoveragePublicTest;
+use PHPUnit\TestFixture\CoverageTwoDefaultClassAnnotations;
+use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
+use PHPUnit\TestFixture\MultipleDataProviderTest;
+use PHPUnit\TestFixture\NamespaceCoverageClassExtendedTest;
+use PHPUnit\TestFixture\NamespaceCoverageClassTest;
+use PHPUnit\TestFixture\NamespaceCoverageCoversClassPublicTest;
+use PHPUnit\TestFixture\NamespaceCoverageCoversClassTest;
+use PHPUnit\TestFixture\NamespaceCoverageMethodTest;
+use PHPUnit\TestFixture\NamespaceCoverageNotPrivateTest;
+use PHPUnit\TestFixture\NamespaceCoverageNotProtectedTest;
+use PHPUnit\TestFixture\NamespaceCoverageNotPublicTest;
+use PHPUnit\TestFixture\NamespaceCoveragePrivateTest;
+use PHPUnit\TestFixture\NamespaceCoverageProtectedTest;
+use PHPUnit\TestFixture\NamespaceCoveragePublicTest;
+use PHPUnit\TestFixture\NotExistingCoveredElementTest;
+use PHPUnit\TestFixture\NumericGroupAnnotationTest;
+use PHPUnit\TestFixture\ParseTestMethodAnnotationsMock;
+use PHPUnit\TestFixture\RequirementsClassDocBlockTest;
+use PHPUnit\TestFixture\RequirementsTest;
+use PHPUnit\TestFixture\Test3194;
+use PHPUnit\TestFixture\VariousDocblockDefinedDataProvider;
+use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 use PHPUnit\Util\Annotation\DocBlock;
+use ReflectionClass;
+use ReflectionMethod;
 
 /**
  * @small
@@ -38,7 +90,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            Test::getRequirements(\RequirementsTest::class, $test)
+            Test::getRequirements(RequirementsTest::class, $test)
         );
     }
 
@@ -47,9 +99,11 @@ final class TestClassTest extends TestCase
         return [
             [
                 'testOne',
-                ['__OFFSET' => [
-                    '__FILE' => $this->getRequirementsTestClassFile(),
-                ]],
+                [
+                    '__OFFSET' => [
+                        '__FILE' => $this->getRequirementsTestClassFile(),
+                    ],
+                ],
             ],
 
             [
@@ -57,7 +111,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 19,
+                        'PHPUnit' => 21,
                     ],
                     'PHPUnit' => ['version' => '1.0', 'operator' => ''],
                 ],
@@ -68,9 +122,9 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 26,
+                        'PHP'    => 28,
                     ],
-                    'PHP'        => ['version' => '2.0', 'operator' => ''],
+                    'PHP' => ['version' => '2.0', 'operator' => ''],
                 ],
             ],
 
@@ -79,11 +133,11 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 33,
-                        'PHP'     => 34,
+                        'PHPUnit' => 35,
+                        'PHP'     => 36,
                     ],
-                    'PHPUnit'    => ['version' => '2.0', 'operator' => ''],
-                    'PHP'        => ['version' => '1.0', 'operator' => ''],
+                    'PHPUnit' => ['version' => '2.0', 'operator' => ''],
+                    'PHP'     => ['version' => '1.0', 'operator' => ''],
                 ],
             ],
 
@@ -92,9 +146,9 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 41,
+                        'PHP'    => 43,
                     ],
-                    'PHP'        => ['version' => '5.4.0RC6', 'operator' => ''],
+                    'PHP' => ['version' => '5.4.0RC6', 'operator' => ''],
                 ],
             ],
 
@@ -103,9 +157,9 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 48,
+                        'PHP'    => 50,
                     ],
-                    'PHP'        => ['version' => '5.4.0-alpha1', 'operator' => ''],
+                    'PHP' => ['version' => '5.4.0-alpha1', 'operator' => ''],
                 ],
             ],
 
@@ -114,9 +168,9 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 55,
+                        'PHP'    => 57,
                     ],
-                    'PHP'        => ['version' => '5.4.0beta2', 'operator' => ''],
+                    'PHP' => ['version' => '5.4.0beta2', 'operator' => ''],
                 ],
             ],
 
@@ -125,9 +179,9 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 62,
+                        'PHP'    => 64,
                     ],
-                    'PHP'        => ['version' => '5.4-dev', 'operator' => ''],
+                    'PHP' => ['version' => '5.4-dev', 'operator' => ''],
                 ],
             ],
 
@@ -136,9 +190,9 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'            => $this->getRequirementsTestClassFile(),
-                        'function_testFunc' => 69,
+                        'function_testFunc' => 71,
                     ],
-                    'functions'  => ['testFunc'],
+                    'functions' => ['testFunc'],
                 ],
             ],
 
@@ -147,7 +201,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'            => $this->getRequirementsTestClassFile(),
-                        'extension_testExt' => 85,
+                        'extension_testExt' => 87,
                     ],
                     'extensions' => ['testExt'],
                 ],
@@ -158,11 +212,11 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'   => $this->getRequirementsTestClassFile(),
-                        'OS'       => 92,
-                        'OSFAMILY' => 93,
+                        'OS'       => 94,
+                        'OSFAMILY' => 95,
                     ],
-                    'OS'         => 'SunOS',
-                    'OSFAMILY'   => 'Solaris',
+                    'OS'       => 'SunOS',
+                    'OSFAMILY' => 'Solaris',
                 ],
             ],
 
@@ -171,8 +225,8 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'        => $this->getRequirementsTestClassFile(),
-                        'extension_spl' => 171,
-                        'OS'            => 172,
+                        'extension_spl' => 173,
+                        'OS'            => 174,
                     ],
                     'extensions' => ['spl'],
                     'OS'         => '.*',
@@ -184,15 +238,15 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'                  => $this->getRequirementsTestClassFile(),
-                        'PHP'                     => 100,
-                        'PHPUnit'                 => 101,
-                        'OS'                      => 102,
-                        'function_testFuncOne'    => 103,
-                        'function_testFunc2'      => 104,
-                        'extension_testExtOne'    => 105,
-                        'extension_testExt2'      => 106,
-                        'extension_testExtThree'  => 107,
-                        '__SETTING_not_a_setting' => 108,
+                        'PHP'                     => 102,
+                        'PHPUnit'                 => 103,
+                        'OS'                      => 104,
+                        'function_testFuncOne'    => 105,
+                        'function_testFunc2'      => 106,
+                        'extension_testExtOne'    => 107,
+                        'extension_testExt2'      => 108,
+                        'extension_testExtThree'  => 109,
+                        '__SETTING_not_a_setting' => 110,
                     ],
                     'PHP'       => ['version' => '99-dev', 'operator' => ''],
                     'PHPUnit'   => ['version' => '99-dev', 'operator' => ''],
@@ -201,7 +255,7 @@ final class TestClassTest extends TestCase
                         'testFuncOne',
                         'testFunc2',
                     ],
-                    'setting'   => [
+                    'setting' => [
                         'not_a_setting' => 'Off',
                     ],
                     'extensions' => [
@@ -219,7 +273,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'            => $this->getRequirementsTestClassFile(),
-                        'extension_testExt' => 179,
+                        'extension_testExt' => 181,
                     ],
                     'extension_versions' => ['testExt' => ['version' => '1.8.0', 'operator' => '']],
                     'extensions'         => ['testExt'],
@@ -229,7 +283,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 187,
+                        'PHP'    => 189,
                     ],
                     'PHP' => ['version' => '5.4', 'operator' => '<'],
                 ],
@@ -238,7 +292,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 195,
+                        'PHP'    => 197,
                     ],
                     'PHP' => ['version' => '5.4', 'operator' => '<='],
                 ],
@@ -247,7 +301,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 203,
+                        'PHP'    => 205,
                     ],
                     'PHP' => ['version' => '99', 'operator' => '>'],
                 ],
@@ -256,7 +310,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 211,
+                        'PHP'    => 213,
                     ],
                     'PHP' => ['version' => '99', 'operator' => '>='],
                 ],
@@ -265,7 +319,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 219,
+                        'PHP'    => 221,
                     ],
                     'PHP' => ['version' => '5.4', 'operator' => '='],
                 ],
@@ -274,7 +328,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 227,
+                        'PHP'    => 229,
                     ],
                     'PHP' => ['version' => '5.4', 'operator' => '=='],
                 ],
@@ -283,7 +337,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 235,
+                        'PHP'    => 237,
                     ],
                     'PHP' => ['version' => '99', 'operator' => '!='],
                 ],
@@ -292,7 +346,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 243,
+                        'PHP'    => 245,
                     ],
                     'PHP' => ['version' => '99', 'operator' => '<>'],
                 ],
@@ -301,7 +355,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE' => $this->getRequirementsTestClassFile(),
-                        'PHP'    => 251,
+                        'PHP'    => 253,
                     ],
                     'PHP' => ['version' => '99', 'operator' => '>='],
                 ],
@@ -310,7 +364,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 259,
+                        'PHPUnit' => 261,
                     ],
                     'PHPUnit' => ['version' => '1.0', 'operator' => '<'],
                 ],
@@ -319,7 +373,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 267,
+                        'PHPUnit' => 269,
                     ],
                     'PHPUnit' => ['version' => '1.0', 'operator' => '<='],
                 ],
@@ -328,7 +382,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 275,
+                        'PHPUnit' => 277,
                     ],
                     'PHPUnit' => ['version' => '99', 'operator' => '>'],
                 ],
@@ -337,7 +391,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 283,
+                        'PHPUnit' => 285,
                     ],
                     'PHPUnit' => ['version' => '99', 'operator' => '>='],
                 ],
@@ -346,7 +400,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 291,
+                        'PHPUnit' => 293,
                     ],
                     'PHPUnit' => ['version' => '1.0', 'operator' => '='],
                 ],
@@ -355,7 +409,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 299,
+                        'PHPUnit' => 301,
                     ],
                     'PHPUnit' => ['version' => '1.0', 'operator' => '=='],
                 ],
@@ -364,7 +418,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 307,
+                        'PHPUnit' => 309,
                     ],
                     'PHPUnit' => ['version' => '99', 'operator' => '!='],
                 ],
@@ -373,7 +427,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 315,
+                        'PHPUnit' => 317,
                     ],
                     'PHPUnit' => ['version' => '99', 'operator' => '<>'],
                 ],
@@ -382,7 +436,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'  => $this->getRequirementsTestClassFile(),
-                        'PHPUnit' => 323,
+                        'PHPUnit' => 325,
                     ],
                     'PHPUnit' => ['version' => '99', 'operator' => '>='],
                 ],
@@ -391,7 +445,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
-                        'extension_testExtOne' => 337,
+                        'extension_testExtOne' => 339,
                     ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '<=']],
@@ -401,7 +455,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
-                        'extension_testExtOne' => 344,
+                        'extension_testExtOne' => 346,
                     ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>']],
@@ -411,7 +465,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
-                        'extension_testExtOne' => 351,
+                        'extension_testExtOne' => 353,
                     ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']],
@@ -421,7 +475,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
-                        'extension_testExtOne' => 358,
+                        'extension_testExtOne' => 360,
                     ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '=']],
@@ -431,7 +485,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
-                        'extension_testExtOne' => 365,
+                        'extension_testExtOne' => 367,
                     ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '1.0', 'operator' => '==']],
@@ -441,7 +495,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
-                        'extension_testExtOne' => 372,
+                        'extension_testExtOne' => 374,
                     ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '!=']],
@@ -451,7 +505,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'               => $this->getRequirementsTestClassFile(),
-                        'extension_testExtOne' => 379,
+                        'extension_testExtOne' => 381,
                     ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '<>']],
@@ -461,7 +515,7 @@ final class TestClassTest extends TestCase
                 [
                     '__OFFSET' => [
                         '__FILE'               => $this->fileRequirementsTest,
-                        'extension_testExtOne' => 386,
+                        'extension_testExtOne' => 388,
                     ],
                     'extensions'         => ['testExtOne'],
                     'extension_versions' => ['testExtOne' => ['version' => '99', 'operator' => '>=']],
@@ -481,7 +535,7 @@ final class TestClassTest extends TestCase
      */
     public function testGetRequirementsWithVersionConstraints($test, array $result): void
     {
-        $requirements = Test::getRequirements(\RequirementsTest::class, $test);
+        $requirements = Test::getRequirements(RequirementsTest::class, $test);
 
         foreach ($result as $type => $expected_requirement) {
             $this->assertArrayHasKey(
@@ -616,7 +670,8 @@ final class TestClassTest extends TestCase
     public function testGetRequirementsWithInvalidVersionConstraintsThrowsException($test): void
     {
         $this->expectException(Warning::class);
-        Test::getRequirements(\RequirementsTest::class, $test);
+
+        Test::getRequirements(RequirementsTest::class, $test);
     }
 
     public function requirementsWithInvalidVersionConstraintsThrowsExceptionProvider(): array
@@ -629,19 +684,18 @@ final class TestClassTest extends TestCase
 
     public function testGetRequirementsMergesClassAndMethodDocBlocks(): void
     {
-        $reflector = new \ReflectionClass(\RequirementsClassDocBlockTest::class);
-        $file      = $reflector->getFileName();
+        $file = (new ReflectionClass(RequirementsClassDocBlockTest::class))->getFileName();
 
         $expectedAnnotations = [
             '__OFFSET' => [
                 '__FILE'                  => $file,
-                'PHP'                     => 20,
-                'PHPUnit'                 => 21,
-                'OS'                      => 22,
-                'function_testFuncClass'  => 14,
-                'extension_testExtClass'  => 15,
-                'function_testFuncMethod' => 23,
-                'extension_testExtMethod' => 24,
+                'PHP'                     => 22,
+                'PHPUnit'                 => 23,
+                'OS'                      => 24,
+                'function_testFuncClass'  => 16,
+                'extension_testExtClass'  => 17,
+                'function_testFuncMethod' => 25,
+                'extension_testExtMethod' => 26,
             ],
             'PHP'       => ['version' => '5.4', 'operator' => ''],
             'PHPUnit'   => ['version' => '3.7', 'operator' => ''],
@@ -658,7 +712,7 @@ final class TestClassTest extends TestCase
 
         $this->assertEquals(
             $expectedAnnotations,
-            Test::getRequirements(\RequirementsClassDocBlockTest::class, 'testMethod')
+            Test::getRequirements(RequirementsClassDocBlockTest::class, 'testMethod')
         );
     }
 
@@ -674,7 +728,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            Test::getMissingRequirements(\RequirementsTest::class, $test)
+            Test::getMissingRequirements(RequirementsTest::class, $test)
         );
     }
 
@@ -683,32 +737,32 @@ final class TestClassTest extends TestCase
         return [
             ['testOne',            []],
             ['testNine',           [
-                '__OFFSET_LINE=69',
+                '__OFFSET_LINE=71',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Function testFunc is required.',
             ]],
             ['testTen',            [
-                '__OFFSET_LINE=85',
+                '__OFFSET_LINE=87',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Extension testExt is required.',
             ]],
             ['testAlwaysSkip',     [
-                '__OFFSET_LINE=143',
+                '__OFFSET_LINE=145',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHPUnit >= 1111111 is required.',
             ]],
             ['testAlwaysSkip2',    [
-                '__OFFSET_LINE=150',
+                '__OFFSET_LINE=152',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP >= 9999999 is required.',
             ]],
             ['testAlwaysSkip3',    [
-                '__OFFSET_LINE=157',
+                '__OFFSET_LINE=159',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Operating system matching /DOESNOTEXIST/i is required.',
             ]],
             ['testAllPossibleRequirements', [
-                '__OFFSET_LINE=100',
+                '__OFFSET_LINE=102',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP >= 99-dev is required.',
                 'PHPUnit >= 99-dev is required.',
@@ -721,118 +775,118 @@ final class TestClassTest extends TestCase
                 'Extension testExtThree >= 2.0 is required.',
             ]],
             ['testPHPVersionOperatorLessThan', [
-                '__OFFSET_LINE=187',
+                '__OFFSET_LINE=189',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP < 5.4 is required.',
             ]],
             ['testPHPVersionOperatorLessThanEquals', [
-                '__OFFSET_LINE=195',
+                '__OFFSET_LINE=197',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP <= 5.4 is required.',
             ]],
             ['testPHPVersionOperatorGreaterThan', [
-                '__OFFSET_LINE=203',
+                '__OFFSET_LINE=205',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP > 99 is required.',
             ]],
             ['testPHPVersionOperatorGreaterThanEquals', [
-                '__OFFSET_LINE=211',
+                '__OFFSET_LINE=213',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP >= 99 is required.',
             ]],
             ['testPHPVersionOperatorNoSpace', [
-                '__OFFSET_LINE=251',
+                '__OFFSET_LINE=253',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP >= 99 is required.',
             ]],
             ['testPHPVersionOperatorEquals', [
-                '__OFFSET_LINE=219',
+                '__OFFSET_LINE=221',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP = 5.4 is required.',
             ]],
             ['testPHPVersionOperatorDoubleEquals', [
-                '__OFFSET_LINE=227',
+                '__OFFSET_LINE=229',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP == 5.4 is required.',
             ]],
             ['testPHPUnitVersionOperatorLessThan', [
-                '__OFFSET_LINE=259',
+                '__OFFSET_LINE=261',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHPUnit < 1.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorLessThanEquals', [
-                '__OFFSET_LINE=267',
+                '__OFFSET_LINE=269',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHPUnit <= 1.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorGreaterThan', [
-                '__OFFSET_LINE=275',
+                '__OFFSET_LINE=277',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHPUnit > 99 is required.',
             ]],
             ['testPHPUnitVersionOperatorGreaterThanEquals', [
-                '__OFFSET_LINE=283',
+                '__OFFSET_LINE=285',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHPUnit >= 99 is required.',
             ]],
             ['testPHPUnitVersionOperatorEquals', [
-                '__OFFSET_LINE=291',
+                '__OFFSET_LINE=293',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHPUnit = 1.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorDoubleEquals', [
-                '__OFFSET_LINE=299',
+                '__OFFSET_LINE=301',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHPUnit == 1.0 is required.',
             ]],
             ['testPHPUnitVersionOperatorNoSpace', [
-                '__OFFSET_LINE=323',
+                '__OFFSET_LINE=325',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHPUnit >= 99 is required.',
             ]],
             ['testExtensionVersionOperatorLessThan', [
-                '__OFFSET_LINE=330',
+                '__OFFSET_LINE=332',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Extension testExtOne < 1.0 is required.',
             ]],
             ['testExtensionVersionOperatorLessThanEquals', [
-                '__OFFSET_LINE=337',
+                '__OFFSET_LINE=339',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Extension testExtOne <= 1.0 is required.',
             ]],
             ['testExtensionVersionOperatorGreaterThan', [
-                '__OFFSET_LINE=344',
+                '__OFFSET_LINE=346',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Extension testExtOne > 99 is required.',
             ]],
             ['testExtensionVersionOperatorGreaterThanEquals', [
-                '__OFFSET_LINE=351',
+                '__OFFSET_LINE=353',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Extension testExtOne >= 99 is required.',
             ]],
             ['testExtensionVersionOperatorEquals', [
-                '__OFFSET_LINE=358',
+                '__OFFSET_LINE=360',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Extension testExtOne = 1.0 is required.',
             ]],
             ['testExtensionVersionOperatorDoubleEquals', [
-                '__OFFSET_LINE=365',
+                '__OFFSET_LINE=367',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Extension testExtOne == 1.0 is required.',
             ]],
             ['testExtensionVersionOperatorNoSpace', [
-                '__OFFSET_LINE=386',
+                '__OFFSET_LINE=388',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'Extension testExtOne >= 99 is required.',
             ]],
             ['testVersionConstraintTildeMajor', [
-                '__OFFSET_LINE=393',
+                '__OFFSET_LINE=395',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP version does not match the required constraint ~1.0.',
                 'PHPUnit version does not match the required constraint ~2.0.',
             ]],
             ['testVersionConstraintCaretMajor', [
-                '__OFFSET_LINE=401',
+                '__OFFSET_LINE=403',
                 '__OFFSET_FILE=' . $this->getRequirementsTestClassFile(),
                 'PHP version does not match the required constraint ^1.0.',
                 'PHPUnit version does not match the required constraint ^2.0.',
@@ -845,23 +899,23 @@ final class TestClassTest extends TestCase
      */
     public function testGetProvidedDataRegEx(): void
     {
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('method', $matches[1]);
 
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('class::method', $matches[1]);
 
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\class::method', $matches[1]);
 
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('namespace\namespace\class::method', $matches[1]);
 
-        $result = \preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
+        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
         $this->assertEquals(1, $result);
         $this->assertEquals('メソッド', $matches[1]);
     }
@@ -871,7 +925,7 @@ final class TestClassTest extends TestCase
      */
     public function testMultipleDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(\MultipleDataProviderTest::class, 'testOne');
+        $dataSets = Test::getProvidedData(MultipleDataProviderTest::class, 'testOne');
 
         $this->assertCount(9, $dataSets);
 
@@ -892,7 +946,7 @@ final class TestClassTest extends TestCase
 
     public function testMultipleYieldIteratorDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(\MultipleDataProviderTest::class, 'testTwo');
+        $dataSets = Test::getProvidedData(MultipleDataProviderTest::class, 'testTwo');
 
         $this->assertCount(9, $dataSets);
 
@@ -913,7 +967,7 @@ final class TestClassTest extends TestCase
 
     public function testWithVariousIterableDataProvidersFromParent(): void
     {
-        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testFromParent');
+        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testFromParent');
 
         $this->assertEquals([
             ['J'],
@@ -931,7 +985,7 @@ final class TestClassTest extends TestCase
 
     public function testWithVariousIterableDataProvidersInParent(): void
     {
-        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testInParent');
+        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testInParent');
 
         $this->assertEquals([
             ['J'],
@@ -949,7 +1003,7 @@ final class TestClassTest extends TestCase
 
     public function testWithVariousIterableAbstractDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testAbstract');
+        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testAbstract');
 
         $this->assertEquals([
             ['S'],
@@ -967,7 +1021,7 @@ final class TestClassTest extends TestCase
 
     public function testWithVariousIterableStaticDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testStatic');
+        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testStatic');
 
         $this->assertEquals([
             ['A'],
@@ -984,7 +1038,7 @@ final class TestClassTest extends TestCase
 
     public function testWithVariousIterableNonStaticDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(\VariousIterableDataProviderTest::class, 'testNonStatic');
+        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testNonStatic');
 
         $this->assertEquals([
             ['S'],
@@ -1004,85 +1058,109 @@ final class TestClassTest extends TestCase
         $this->expectException(InvalidDataProviderException::class);
         $this->expectExceptionMessage('The key "foo" has already been defined in the data provider "dataProvider".');
 
-        Test::getProvidedData(\DuplicateKeyDataProviderTest::class, 'test');
+        Test::getProvidedData(DuplicateKeyDataProviderTest::class, 'test');
     }
 
     public function testTestWithEmptyAnnotation(): void
     {
-        $result = DocBlock::ofMethod(new \ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
-            'anotherAnnotation'
-        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
+        $result = DocBlock::ofMethod(
+            new ReflectionMethod(
+                VariousDocblockDefinedDataProvider::class,
+                'anotherAnnotation'
+            ),
+            VariousDocblockDefinedDataProvider::class
+        )->getProvidedData();
 
         $this->assertNull($result);
     }
 
     public function testTestWithSimpleCase(): void
     {
-        $result = DocBlock::ofMethod(new \ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
-            'testWith1'
-        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
+        $result = DocBlock::ofMethod(
+            new ReflectionMethod(
+                VariousDocblockDefinedDataProvider::class,
+                'testWith1'
+            ),
+            VariousDocblockDefinedDataProvider::class
+        )->getProvidedData();
 
         $this->assertEquals([[1]], $result);
     }
 
     public function testTestWithMultiLineMultiParameterCase(): void
     {
-        $result = DocBlock::ofMethod(new \ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
-            'testWith1234'
-        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
+        $result = DocBlock::ofMethod(
+            new ReflectionMethod(
+                VariousDocblockDefinedDataProvider::class,
+                'testWith1234'
+            ),
+            VariousDocblockDefinedDataProvider::class
+        )->getProvidedData();
 
         $this->assertEquals([[1, 2], [3, 4]], $result);
     }
 
     public function testTestWithVariousTypes(): void
     {
-        $result = DocBlock::ofMethod(new \ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
-            'testWithABTrueNull'
-        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
+        $result = DocBlock::ofMethod(
+            new ReflectionMethod(
+                VariousDocblockDefinedDataProvider::class,
+                'testWithABTrueNull'
+            ),
+            VariousDocblockDefinedDataProvider::class
+        )->getProvidedData();
 
         $this->assertEquals([['ab'], [true], [null]], $result);
     }
 
     public function testTestWithAnnotationAfter(): void
     {
-        $result = DocBlock::ofMethod(new \ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
-            'testWith12AndAnotherAnnotation'
-        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
+        $result = DocBlock::ofMethod(
+            new ReflectionMethod(
+                VariousDocblockDefinedDataProvider::class,
+                'testWith12AndAnotherAnnotation'
+            ),
+            VariousDocblockDefinedDataProvider::class
+        )->getProvidedData();
 
         $this->assertEquals([[1], [2]], $result);
     }
 
     public function testTestWithSimpleTextAfter(): void
     {
-        $result = DocBlock::ofMethod(new \ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
-            'testWith12AndBlahBlah'
-        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
+        $result = DocBlock::ofMethod(
+            new ReflectionMethod(
+                VariousDocblockDefinedDataProvider::class,
+                'testWith12AndBlahBlah'
+            ),
+            VariousDocblockDefinedDataProvider::class
+        )->getProvidedData();
 
         $this->assertEquals([[1], [2]], $result);
     }
 
     public function testTestWithCharacterEscape(): void
     {
-        $result = DocBlock::ofMethod(new \ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
-            'testWithEscapedString'
-        ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
+        $result = DocBlock::ofMethod(
+            new ReflectionMethod(
+                VariousDocblockDefinedDataProvider::class,
+                'testWithEscapedString'
+            ),
+            VariousDocblockDefinedDataProvider::class
+        )->getProvidedData();
 
         $this->assertEquals([['"', '"']], $result);
     }
 
     public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed(): void
     {
-        $docBlock = DocBlock::ofMethod(new \ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
-            'testWithMalformedValue'
-        ), VariousDocblockDefinedDataProvider::class);
+        $docBlock = DocBlock::ofMethod(
+            new ReflectionMethod(
+                VariousDocblockDefinedDataProvider::class,
+                'testWithMalformedValue'
+            ),
+            VariousDocblockDefinedDataProvider::class
+        );
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessageMatches('/^The data set for the @testWith annotation cannot be parsed:/');
@@ -1092,10 +1170,13 @@ final class TestClassTest extends TestCase
 
     public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed(): void
     {
-        $docBlock = DocBlock::ofMethod(new \ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
-            'testWithWellFormedAndMalformedValue'
-        ), VariousDocblockDefinedDataProvider::class);
+        $docBlock = DocBlock::ofMethod(
+            new ReflectionMethod(
+                VariousDocblockDefinedDataProvider::class,
+                'testWithWellFormedAndMalformedValue'
+            ),
+            VariousDocblockDefinedDataProvider::class
+        );
 
         $this->expectException(Exception::class);
         $this->expectExceptionMessageMatches('/^The data set for the @testWith annotation cannot be parsed:/');
@@ -1103,20 +1184,22 @@ final class TestClassTest extends TestCase
         $docBlock->getProvidedData();
     }
 
-    /**
-     * @todo Not sure what this test tests (name is misleading at least)
-     */
-    public function testParseAnnotation(): void
+    public function testParseDependsAnnotation(): void
     {
         $this->assertEquals(
-            ['Foo', 'ほげ'],
-            Test::getDependencies(\get_class($this), 'methodForTestParseAnnotation')
+            [
+                new ExecutionOrderDependency(get_class($this), 'Foo'),
+                new ExecutionOrderDependency(get_class($this), 'ほげ'),
+                new ExecutionOrderDependency('AnotherClass::Foo'),
+            ],
+            Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
         );
     }
 
     /**
      * @depends Foo
      * @depends ほげ
+     * @depends AnotherClass::Foo
      *
      * @todo Remove fixture from test class
      */
@@ -1127,8 +1210,8 @@ final class TestClassTest extends TestCase
     public function testParseAnnotationThatIsOnlyOneLine(): void
     {
         $this->assertEquals(
-            ['Bar'],
-            Test::getDependencies(\get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+            [new ExecutionOrderDependency(get_class($this), 'Bar')],
+            Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
         );
     }
 
@@ -1147,26 +1230,50 @@ final class TestClassTest extends TestCase
      */
     public function testGetLinesToBeCovered($test, $lines): void
     {
-        if (\strpos($test, 'Namespace') === 0) {
-            $expected = [
-                TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines,
-            ];
-        } elseif ($test === 'CoverageMethodNothingCoversMethod') {
-            $expected = false;
-        } elseif ($test === 'CoverageCoversOverridesCoversNothingTest') {
-            $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
-        } elseif ($test === 'CoverageNoneTest') {
-            $expected = [];
-        } elseif ($test === 'CoverageClassNothingTest') {
-            $expected = false;
-        } elseif ($test === 'CoverageMethodNothingTest') {
-            $expected = false;
-        } elseif ($test === 'CoverageFunctionTest') {
-            $expected = [
-                TEST_FILES_PATH . 'CoveredFunction.php' => $lines,
-            ];
-        } else {
-            $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
+        switch ($test) {
+            case CoverageMethodNothingCoversMethod::class:
+            case CoverageClassNothingTest::class:
+            case CoverageMethodNothingTest::class:
+                $expected = false;
+
+                break;
+
+            case CoverageCoversOverridesCoversNothingTest::class:
+                $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
+
+                break;
+
+            case CoverageNoneTest::class:
+                $expected = [];
+
+                break;
+
+            case CoverageFunctionTest::class:
+                $expected = [
+                    TEST_FILES_PATH . 'CoveredFunction.php' => $lines,
+                ];
+
+                break;
+
+            case NamespaceCoverageClassExtendedTest::class:
+            case NamespaceCoverageClassTest::class:
+            case NamespaceCoverageMethodTest::class:
+            case NamespaceCoverageNotPrivateTest::class:
+            case NamespaceCoverageNotProtectedTest::class:
+            case NamespaceCoverageNotPublicTest::class:
+            case NamespaceCoveragePrivateTest::class:
+            case NamespaceCoverageProtectedTest::class:
+            case NamespaceCoveragePublicTest::class:
+            case NamespaceCoverageCoversClassTest::class:
+            case NamespaceCoverageCoversClassPublicTest::class:
+                $expected = [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines,
+                ];
+
+                break;
+
+            default:
+                $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
         }
 
         $this->assertEqualsCanonicalizing(
@@ -1183,7 +1290,7 @@ final class TestClassTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         Test::getLinesToBeCovered(
-            'NotExistingCoveredElementTest',
+            NotExistingCoveredElementTest::class,
             'testOne'
         );
     }
@@ -1193,7 +1300,7 @@ final class TestClassTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         Test::getLinesToBeCovered(
-            'NotExistingCoveredElementTest',
+            NotExistingCoveredElementTest::class,
             'testTwo'
         );
     }
@@ -1203,7 +1310,7 @@ final class TestClassTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         Test::getLinesToBeCovered(
-            'NotExistingCoveredElementTest',
+            NotExistingCoveredElementTest::class,
             'testThree'
         );
     }
@@ -1213,7 +1320,7 @@ final class TestClassTest extends TestCase
         $this->assertSame(
             [],
             Test::getLinesToBeCovered(
-                'NotExistingCoveredElementTest',
+                NotExistingCoveredElementTest::class,
                 'methodDoesNotExist'
             )
         );
@@ -1224,7 +1331,7 @@ final class TestClassTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         Test::getLinesToBeCovered(
-            'CoverageTwoDefaultClassAnnotations',
+            CoverageTwoDefaultClassAnnotations::class,
             'testSomething'
         );
     }
@@ -1232,9 +1339,9 @@ final class TestClassTest extends TestCase
     public function testFunctionParenthesesAreAllowed(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(10, 12)],
+            [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
             Test::getLinesToBeCovered(
-                'CoverageFunctionParenthesesTest',
+                CoverageFunctionParenthesesTest::class,
                 'testSomething'
             )
         );
@@ -1243,9 +1350,9 @@ final class TestClassTest extends TestCase
     public function testFunctionParenthesesAreAllowedWithWhitespace(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => \range(10, 12)],
+            [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
             Test::getLinesToBeCovered(
-                'CoverageFunctionParenthesesWhitespaceTest',
+                CoverageFunctionParenthesesWhitespaceTest::class,
                 'testSomething'
             )
         );
@@ -1254,9 +1361,9 @@ final class TestClassTest extends TestCase
     public function testMethodParenthesesAreAllowed(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => \range(29, 33)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
             Test::getLinesToBeCovered(
-                'CoverageMethodParenthesesTest',
+                CoverageMethodParenthesesTest::class,
                 'testSomething'
             )
         );
@@ -1265,9 +1372,9 @@ final class TestClassTest extends TestCase
     public function testMethodParenthesesAreAllowedWithWhitespace(): void
     {
         $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => \range(29, 33)],
+            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
             Test::getLinesToBeCovered(
-                'CoverageMethodParenthesesWhitespaceTest',
+                CoverageMethodParenthesesWhitespaceTest::class,
                 'testSomething'
             )
         );
@@ -1277,10 +1384,10 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             [
-                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => \range(12, 15),
+                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(12, 15),
             ],
             Test::getLinesToBeCovered(
-                \CoverageNamespacedFunctionTest::class,
+                CoverageNamespacedFunctionTest::class,
                 'testFunc'
             )
         );
@@ -1290,111 +1397,111 @@ final class TestClassTest extends TestCase
     {
         return [
             [
-                'CoverageNoneTest',
+                CoverageNoneTest::class,
                 [],
             ],
             [
-                'CoverageClassExtendedTest',
-                \array_merge(\range(27, 44), \range(10, 25)),
+                CoverageClassExtendedTest::class,
+                array_merge(range(29, 46), range(12, 27)),
             ],
             [
-                'CoverageClassTest',
-                \range(27, 44),
+                CoverageClassTest::class,
+                range(29, 46),
             ],
             [
-                'CoverageMethodTest',
-                \range(29, 33),
+                CoverageMethodTest::class,
+                range(31, 35),
             ],
             [
-                'CoverageMethodOneLineAnnotationTest',
-                \range(29, 33),
+                CoverageMethodOneLineAnnotationTest::class,
+                range(31, 35),
             ],
             [
-                'CoverageNotPrivateTest',
-                \array_merge(\range(29, 33), \range(35, 39)),
+                CoverageNotPrivateTest::class,
+                array_merge(range(31, 35), range(37, 41)),
             ],
             [
-                'CoverageNotProtectedTest',
-                \array_merge(\range(29, 33), \range(41, 43)),
+                CoverageNotProtectedTest::class,
+                array_merge(range(31, 35), range(43, 45)),
             ],
             [
-                'CoverageNotPublicTest',
-                \array_merge(\range(35, 39), \range(41, 43)),
+                CoverageNotPublicTest::class,
+                array_merge(range(37, 41), range(43, 45)),
             ],
             [
-                'CoveragePrivateTest',
-                \range(41, 43),
+                CoveragePrivateTest::class,
+                range(43, 45),
             ],
             [
-                'CoverageProtectedTest',
-                \range(35, 39),
+                CoverageProtectedTest::class,
+                range(37, 41),
             ],
             [
-                'CoveragePublicTest',
-                \range(29, 33),
+                CoveragePublicTest::class,
+                range(31, 35),
             ],
             [
-                'CoverageFunctionTest',
-                \range(10, 12),
+                CoverageFunctionTest::class,
+                range(10, 12),
             ],
             [
-                'NamespaceCoverageClassExtendedTest',
-                \array_merge(\range(29, 46), \range(12, 27)),
+                NamespaceCoverageClassExtendedTest::class,
+                array_merge(range(29, 46), range(12, 27)),
             ],
             [
-                'NamespaceCoverageClassTest',
-                \range(29, 46),
+                NamespaceCoverageClassTest::class,
+                range(29, 46),
             ],
             [
-                'NamespaceCoverageMethodTest',
-                \range(31, 35),
+                NamespaceCoverageMethodTest::class,
+                range(31, 35),
             ],
             [
-                'NamespaceCoverageNotPrivateTest',
-                \array_merge(\range(31, 35), \range(37, 41)),
+                NamespaceCoverageNotPrivateTest::class,
+                array_merge(range(31, 35), range(37, 41)),
             ],
             [
-                'NamespaceCoverageNotProtectedTest',
-                \array_merge(\range(31, 35), \range(43, 45)),
+                NamespaceCoverageNotProtectedTest::class,
+                array_merge(range(31, 35), range(43, 45)),
             ],
             [
-                'NamespaceCoverageNotPublicTest',
-                \array_merge(\range(37, 41), \range(43, 45)),
+                NamespaceCoverageNotPublicTest::class,
+                array_merge(range(37, 41), range(43, 45)),
             ],
             [
-                'NamespaceCoveragePrivateTest',
-                \range(43, 45),
+                NamespaceCoveragePrivateTest::class,
+                range(43, 45),
             ],
             [
-                'NamespaceCoverageProtectedTest',
-                \range(37, 41),
+                NamespaceCoverageProtectedTest::class,
+                range(37, 41),
             ],
             [
-                'NamespaceCoveragePublicTest',
-                \range(31, 35),
+                NamespaceCoveragePublicTest::class,
+                range(31, 35),
             ],
             [
-                'NamespaceCoverageCoversClassTest',
-                \array_merge(\range(43, 45), \range(37, 41), \range(31, 35), \range(24, 26), \range(19, 22), \range(14, 17)),
+                NamespaceCoverageCoversClassTest::class,
+                array_merge(range(43, 45), range(37, 41), range(31, 35), range(24, 26), range(19, 22), range(14, 17)),
             ],
             [
-                'NamespaceCoverageCoversClassPublicTest',
-                \range(31, 35),
+                NamespaceCoverageCoversClassPublicTest::class,
+                range(31, 35),
             ],
             [
-                'CoverageClassNothingTest',
+                CoverageClassNothingTest::class,
                 false,
             ],
             [
-                'CoverageMethodNothingTest',
+                CoverageMethodNothingTest::class,
                 false,
             ],
             [
-                'CoverageCoversOverridesCoversNothingTest',
-                \range(29, 33),
+                CoverageCoversOverridesCoversNothingTest::class,
+                range(31, 35),
             ],
             [
-                'CoverageMethodNothingCoversMethod',
+                CoverageMethodNothingCoversMethod::class,
                 false,
             ],
         ];
@@ -1402,7 +1509,7 @@ final class TestClassTest extends TestCase
 
     public function testParseTestMethodAnnotationsIncorporatesTraits(): void
     {
-        $result = Test::parseTestMethodAnnotations(\ParseTestMethodAnnotationsMock::class);
+        $result = Test::parseTestMethodAnnotations(ParseTestMethodAnnotationsMock::class);
 
         $this->assertArrayHasKey('class', $result);
         $this->assertArrayHasKey('method', $result);
@@ -1414,10 +1521,10 @@ final class TestClassTest extends TestCase
     {
         $this->assertSame(
             [
-                TEST_FILES_PATH . '3194.php' => \array_merge(\range(12, 18), \range(20, 28)),
+                TEST_FILES_PATH . '3194.php' => array_merge(range(14, 20), range(22, 30)),
             ],
             Test::getLinesToBeCovered(
-                \Test3194::class,
+                Test3194::class,
                 'testOne'
             )
         );
@@ -1428,8 +1535,6 @@ final class TestClassTest extends TestCase
      */
     public function testCanSkipCoverage($testCase, $expectedCanSkip): void
     {
-        require_once TEST_FILES_PATH . $testCase . '.php';
-
         $test             = new $testCase('testSomething');
         $coverageRequired = Test::requiresCodeCoverageDataCollection($test);
         $canSkipCoverage  = !$coverageRequired;
@@ -1440,19 +1545,49 @@ final class TestClassTest extends TestCase
     public function canSkipCoverageProvider(): array
     {
         return [
-            ['CoverageClassTest', false],
-            ['CoverageClassWithoutAnnotationsTest', false],
-            ['CoverageCoversOverridesCoversNothingTest', false],
-            ['CoverageClassNothingTest', true],
-            ['CoverageMethodNothingTest', true],
+            [CoverageClassTest::class, false],
+            [CoverageClassWithoutAnnotationsTest::class, false],
+            [CoverageCoversOverridesCoversNothingTest::class, false],
+            [CoverageClassNothingTest::class, true],
+            [CoverageMethodNothingTest::class, true],
+        ];
+    }
+
+    /**
+     * @testdox Parse @author/@ticket for $class::$method
+     * @dataProvider getGroupsProvider
+     */
+    public function testGetGroupsFromAuthorAndTicketAnnotations(string $class, string $method, array $groups): void
+    {
+        self::assertSame($groups, Test::getGroups($class, $method));
+    }
+
+    public function getGroupsProvider(): array
+    {
+        return [
+            [
+                NumericGroupAnnotationTest::class,
+                '',
+                ['Companion Cube', 't123456'],
+            ],
+            [
+                NumericGroupAnnotationTest::class,
+                'testTicketAnnotationSupportsNumericValue',
+                ['C. Lippy', 't123456', '3502'],
+            ],
+            [
+                NumericGroupAnnotationTest::class,
+                'testGroupAnnotationSupportsNumericValue',
+                ['Companion Cube', '3502', 't123456'],
+            ],
         ];
     }
 
     private function getRequirementsTestClassFile(): string
     {
         if (!$this->fileRequirementsTest) {
-            $reflector                  = new \ReflectionClass(\RequirementsTest::class);
-            $this->fileRequirementsTest = \realpath($reflector->getFileName());
+            $reflector                  = new ReflectionClass(RequirementsTest::class);
+            $this->fileRequirementsTest = realpath($reflector->getFileName());
         }
 
         return $this->fileRequirementsTest;

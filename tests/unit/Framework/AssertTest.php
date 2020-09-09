@@ -9,7 +9,40 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Util\Xml;
+use const DIRECTORY_SEPARATOR;
+use const INF;
+use const NAN;
+use const PHP_OS_FAMILY;
+use function acos;
+use function array_merge;
+use function chmod;
+use function fclose;
+use function file_get_contents;
+use function fopen;
+use function json_encode;
+use function log;
+use function mkdir;
+use function octdec;
+use function rmdir;
+use function sys_get_temp_dir;
+use function tempnam;
+use function uniqid;
+use function unlink;
+use ArrayIterator;
+use ArrayObject;
+use DateTime;
+use DateTimeZone;
+use PHPUnit\TestFixture\Author;
+use PHPUnit\TestFixture\Book;
+use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
+use PHPUnit\TestFixture\ClassWithToString;
+use PHPUnit\TestFixture\SampleArrayAccess;
+use PHPUnit\TestFixture\SampleClass;
+use PHPUnit\TestFixture\Struct;
+use PHPUnit\Util\Xml\Exception as XmlException;
+use PHPUnit\Util\Xml\Loader as XmlLoader;
+use SplObjectStorage;
+use stdClass;
 
 /**
  * @small
@@ -37,16 +70,16 @@ final class AssertTest extends TestCase
 
     public function testAssertContainsOnlyInstancesOf(): void
     {
-        $test = [new \Book, new \Book];
+        $test = [new Book, new Book];
 
-        $this->assertContainsOnlyInstancesOf(\Book::class, $test);
-        $this->assertContainsOnlyInstancesOf(\stdClass::class, [new \stdClass]);
+        $this->assertContainsOnlyInstancesOf(Book::class, $test);
+        $this->assertContainsOnlyInstancesOf(stdClass::class, [new stdClass]);
 
-        $test2 = [new \Author('Test')];
+        $test2 = [new Author('Test')];
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertContainsOnlyInstancesOf(\Book::class, $test2);
+        $this->assertContainsOnlyInstancesOf(Book::class, $test2);
     }
 
     public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument(): void
@@ -115,7 +148,7 @@ final class AssertTest extends TestCase
 
     public function testAssertArrayHasKeyAcceptsArrayObjectValue(): void
     {
-        $array        = new \ArrayObject;
+        $array        = new ArrayObject;
         $array['foo'] = 'bar';
 
         $this->assertArrayHasKey('foo', $array);
@@ -123,7 +156,7 @@ final class AssertTest extends TestCase
 
     public function testAssertArrayHasKeyProperlyFailsWithArrayObjectValue(): void
     {
-        $array        = new \ArrayObject;
+        $array        = new ArrayObject;
         $array['bar'] = 'bar';
 
         $this->expectException(AssertionFailedError::class);
@@ -133,7 +166,7 @@ final class AssertTest extends TestCase
 
     public function testAssertArrayHasKeyAcceptsArrayAccessValue(): void
     {
-        $array        = new \SampleArrayAccess;
+        $array        = new SampleArrayAccess;
         $array['foo'] = 'bar';
 
         $this->assertArrayHasKey('foo', $array);
@@ -141,7 +174,7 @@ final class AssertTest extends TestCase
 
     public function testAssertArrayHasKeyProperlyFailsWithArrayAccessValue(): void
     {
-        $array        = new \SampleArrayAccess;
+        $array        = new SampleArrayAccess;
         $array['bar'] = 'bar';
 
         $this->expectException(AssertionFailedError::class);
@@ -151,7 +184,7 @@ final class AssertTest extends TestCase
 
     public function testAssertArrayNotHasKeyAcceptsArrayAccessValue(): void
     {
-        $array        = new \ArrayObject;
+        $array        = new ArrayObject;
         $array['foo'] = 'bar';
 
         $this->assertArrayNotHasKey('bar', $array);
@@ -159,7 +192,7 @@ final class AssertTest extends TestCase
 
     public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue(): void
     {
-        $array        = new \ArrayObject;
+        $array        = new ArrayObject;
         $array['bar'] = 'bar';
 
         $this->expectException(AssertionFailedError::class);
@@ -187,7 +220,7 @@ final class AssertTest extends TestCase
 
     public function testAssertArrayContainsOnlyStdClass(): void
     {
-        $this->assertContainsOnly('StdClass', [new \stdClass]);
+        $this->assertContainsOnly('StdClass', [new stdClass]);
 
         $this->expectException(AssertionFailedError::class);
 
@@ -200,13 +233,13 @@ final class AssertTest extends TestCase
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotContainsOnly('StdClass', [new \stdClass]);
+        $this->assertNotContainsOnly('StdClass', [new stdClass]);
     }
 
     public function equalProvider(): array
     {
         // same |= equal
-        return \array_merge($this->equalValues(), $this->sameValues());
+        return array_merge($this->equalValues(), $this->sameValues());
     }
 
     public function notEqualProvider()
@@ -223,7 +256,7 @@ final class AssertTest extends TestCase
     {
         // not equal |= not same
         // equal, ¬same |= not same
-        return \array_merge($this->notEqualValues(), $this->equalValues());
+        return array_merge($this->notEqualValues(), $this->equalValues());
     }
 
     /**
@@ -361,14 +394,14 @@ final class AssertTest extends TestCase
     {
         $this->assertXmlStringEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            file_get_contents(TEST_FILES_PATH . 'foo.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlStringEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
     }
 
@@ -376,14 +409,14 @@ final class AssertTest extends TestCase
     {
         $this->assertXmlStringNotEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertXmlStringNotEqualsXmlFile(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            file_get_contents(TEST_FILES_PATH . 'foo.xml')
         );
     }
 
@@ -401,7 +434,7 @@ final class AssertTest extends TestCase
      */
     public function testAssertXmlStringEqualsXmlString2(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(XmlException::class);
 
         $this->assertXmlStringEqualsXmlString('<a></b>', '<c></d>');
     }
@@ -411,14 +444,14 @@ final class AssertTest extends TestCase
      */
     public function testAssertXmlStringEqualsXmlString3(): void
     {
-        $expected = <<<XML
+        $expected = <<<'XML'
 <?xml version="1.0"?>
 <root>
     <node />
 </root>
 XML;
 
-        $actual = <<<XML
+        $actual = <<<'XML'
 <?xml version="1.0"?>
 <root>
 <node />
@@ -457,12 +490,12 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertIsReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
     public function testAssertIsNotReadable(): void
     {
-        $this->assertIsNotReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertIsNotReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
 
         $this->expectException(AssertionFailedError::class);
 
@@ -475,12 +508,12 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertIsWritable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
     public function testAssertNotIsWritable(): void
     {
-        $this->assertIsNotWritable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertIsNotWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
 
         $this->expectException(AssertionFailedError::class);
 
@@ -493,12 +526,12 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertDirectoryExists(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertDirectoryExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
     public function testAssertDirectoryNotExists(): void
     {
-        $this->assertDirectoryDoesNotExist(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertDirectoryDoesNotExist(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
 
         $this->expectException(AssertionFailedError::class);
 
@@ -511,23 +544,28 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertDirectoryIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertDirectoryIsReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
     public function testAssertDirectoryIsNotReadable(): void
     {
-        $dirName = TEST_FILES_PATH . \uniqid('unreadable_dir_', true);
-        \mkdir($dirName, \octdec('0'));
+        if (PHP_OS_FAMILY === 'Windows') {
+            self::markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
+        $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('unreadable_dir_', true);
+        mkdir($dirName, octdec('0'));
+
         $this->assertDirectoryIsNotReadable($dirName);
 
-        \chmod($dirName, \octdec('444'));
+        chmod($dirName, octdec('444'));
 
         try {
             $this->assertDirectoryIsNotReadable($dirName);
         } catch (AssertionFailedError $e) {
         }
 
-        \rmdir($dirName);
+        rmdir($dirName);
     }
 
     public function testAssertDirectoryIsWritable(): void
@@ -536,23 +574,28 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertDirectoryIsWritable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertDirectoryIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
     public function testAssertDirectoryIsNotWritable(): void
     {
-        $dirName = TEST_FILES_PATH . \uniqid('unwritable_dir_', true);
-        \mkdir($dirName, \octdec('444'));
+        if (PHP_OS_FAMILY === 'Windows') {
+            self::markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
+        $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('unwritable_dir_', true);
+        mkdir($dirName, octdec('444'));
+
         $this->assertDirectoryIsNotWritable($dirName);
 
-        \chmod($dirName, \octdec('755'));
+        chmod($dirName, octdec('755'));
 
         try {
             $this->assertDirectoryIsNotWritable($dirName);
         } catch (AssertionFailedError $e) {
         }
 
-        \rmdir($dirName);
+        rmdir($dirName);
     }
 
     public function testAssertFileExists(): void
@@ -561,12 +604,12 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertFileExists(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertFileExists(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
     public function testAssertFileNotExists(): void
     {
-        $this->assertFileDoesNotExist(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertFileDoesNotExist(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
 
         $this->expectException(AssertionFailedError::class);
 
@@ -579,28 +622,49 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertFileIsReadable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertFileIsReadable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
     public function testAssertFileIsNotReadable(): void
     {
-        $tempFile = \tempnam(
-            \sys_get_temp_dir(),
+        if (PHP_OS_FAMILY === 'Windows') {
+            self::markTestSkipped('Cannot test this behaviour on Windows');
+        }
+
+        $tempFile = tempnam(
+            sys_get_temp_dir(),
             'unreadable'
         );
 
-        \chmod($tempFile, \octdec('0'));
+        chmod($tempFile, octdec('0'));
 
         $this->assertFileIsNotReadable($tempFile);
 
-        \chmod($tempFile, \octdec('755'));
+        chmod($tempFile, octdec('755'));
 
         try {
             $this->assertFileIsNotReadable($tempFile);
         } catch (AssertionFailedError $e) {
         }
 
-        \unlink($tempFile);
+        unlink($tempFile);
+    }
+
+    public function testAssertFileIsNotWritable(): void
+    {
+        $tempFile = tempnam(sys_get_temp_dir(), 'unwriteable');
+
+        chmod($tempFile, octdec('0'));
+
+        $this->assertFileIsNotWritable($tempFile);
+
+        chmod($tempFile, octdec('755'));
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileIsNotWritable($tempFile);
+
+        unlink($tempFile);
     }
 
     public function testAssertFileIsWritable(): void
@@ -609,12 +673,12 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertFileIsWritable(__DIR__ . \DIRECTORY_SEPARATOR . 'NotExisting');
+        $this->assertFileIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
     public function testAssertObjectHasAttribute(): void
     {
-        $o = new \Author('Terry Pratchett');
+        $o = new Author('Terry Pratchett');
 
         $this->assertObjectHasAttribute('name', $o);
 
@@ -625,7 +689,7 @@ XML;
 
     public function testAssertObjectHasAttributeNumericAttribute(): void
     {
-        $object           = new \stdClass;
+        $object           = new stdClass;
         $object->{'2020'} = 'Tokyo';
 
         $this->assertObjectHasAttribute('2020', $object);
@@ -637,7 +701,7 @@ XML;
 
     public function testAssertObjectHasAttributeMultiByteAttribute(): void
     {
-        $object         = new \stdClass;
+        $object         = new stdClass;
         $object->{'東京'} = 2020;
 
         $this->assertObjectHasAttribute('東京', $object);
@@ -649,7 +713,7 @@ XML;
 
     public function testAssertObjectNotHasAttribute(): void
     {
-        $o = new \Author('Terry Pratchett');
+        $o = new Author('Terry Pratchett');
 
         $this->assertObjectNotHasAttribute('foo', $o);
 
@@ -660,7 +724,7 @@ XML;
 
     public function testAssertObjectNotHasAttributeNumericAttribute(): void
     {
-        $object           = new \stdClass;
+        $object           = new stdClass;
         $object->{'2020'} = 'Tokyo';
 
         $this->assertObjectNotHasAttribute('2018', $object);
@@ -672,7 +736,7 @@ XML;
 
     public function testAssertObjectNotHasAttributeMultiByteAttribute(): void
     {
-        $object         = new \stdClass;
+        $object         = new stdClass;
         $object->{'東京'} = 2020;
 
         $this->assertObjectNotHasAttribute('長野', $object);
@@ -688,12 +752,12 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertFinite(\INF);
+        $this->assertFinite(INF);
     }
 
     public function testAssertInfinite(): void
     {
-        $this->assertInfinite(\INF);
+        $this->assertInfinite(INF);
 
         $this->expectException(AssertionFailedError::class);
 
@@ -702,7 +766,7 @@ XML;
 
     public function testAssertNan(): void
     {
-        $this->assertNan(\NAN);
+        $this->assertNan(NAN);
 
         $this->expectException(AssertionFailedError::class);
 
@@ -715,12 +779,12 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNull(new \stdClass);
+        $this->assertNull(new stdClass);
     }
 
     public function testAssertNotNull(): void
     {
-        $this->assertNotNull(new \stdClass);
+        $this->assertNotNull(new stdClass);
 
         $this->expectException(AssertionFailedError::class);
 
@@ -787,13 +851,13 @@ XML;
 
     public function testAssertSame(): void
     {
-        $o = new \stdClass;
+        $o = new stdClass;
 
         $this->assertSame($o, $o);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertSame(new \stdClass, new \stdClass);
+        $this->assertSame(new stdClass, new stdClass);
     }
 
     public function testAssertSame2(): void
@@ -809,21 +873,21 @@ XML;
     public function testAssertNotSame(): void
     {
         $this->assertNotSame(
-            new \stdClass,
+            new stdClass,
             null
         );
 
         $this->assertNotSame(
             null,
-            new \stdClass
+            new stdClass
         );
 
         $this->assertNotSame(
-            new \stdClass,
-            new \stdClass
+            new stdClass,
+            new stdClass
         );
 
-        $o = new \stdClass;
+        $o = new stdClass;
 
         $this->expectException(AssertionFailedError::class);
 
@@ -891,7 +955,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertClassHasAttribute('1', \ClassWithNonPublicAttributes::class);
+        $this->assertClassHasAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertClassHasAttributeThrowsExceptionIfClassDoesNotExist(): void
@@ -905,7 +969,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertClassNotHasAttribute('1', \ClassWithNonPublicAttributes::class);
+        $this->assertClassNotHasAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertClassNotHasAttributeThrowsExceptionIfClassDoesNotExist(): void
@@ -919,7 +983,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertClassHasStaticAttribute('1', \ClassWithNonPublicAttributes::class);
+        $this->assertClassHasStaticAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertClassHasStaticAttributeThrowsExceptionIfClassDoesNotExist(): void
@@ -933,7 +997,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertClassNotHasStaticAttribute('1', \ClassWithNonPublicAttributes::class);
+        $this->assertClassNotHasStaticAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertClassNotHasStaticAttributeThrowsExceptionIfClassDoesNotExist(): void
@@ -954,7 +1018,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertObjectHasAttribute('1', \ClassWithNonPublicAttributes::class);
+        $this->assertObjectHasAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testAssertObjectNotHasAttributeThrowsException2(): void
@@ -968,48 +1032,48 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertObjectNotHasAttribute('1', \ClassWithNonPublicAttributes::class);
+        $this->assertObjectNotHasAttribute('1', ClassWithNonPublicAttributes::class);
     }
 
     public function testClassHasPublicAttribute(): void
     {
-        $this->assertClassHasAttribute('publicAttribute', \ClassWithNonPublicAttributes::class);
+        $this->assertClassHasAttribute('publicAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertClassHasAttribute('attribute', \ClassWithNonPublicAttributes::class);
+        $this->assertClassHasAttribute('attribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testClassNotHasPublicAttribute(): void
     {
-        $this->assertClassNotHasAttribute('attribute', \ClassWithNonPublicAttributes::class);
+        $this->assertClassNotHasAttribute('attribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertClassNotHasAttribute('publicAttribute', \ClassWithNonPublicAttributes::class);
+        $this->assertClassNotHasAttribute('publicAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testClassHasPublicStaticAttribute(): void
     {
-        $this->assertClassHasStaticAttribute('publicStaticAttribute', \ClassWithNonPublicAttributes::class);
+        $this->assertClassHasStaticAttribute('publicStaticAttribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertClassHasStaticAttribute('attribute', \ClassWithNonPublicAttributes::class);
+        $this->assertClassHasStaticAttribute('attribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testClassNotHasPublicStaticAttribute(): void
     {
-        $this->assertClassNotHasStaticAttribute('attribute', \ClassWithNonPublicAttributes::class);
+        $this->assertClassNotHasStaticAttribute('attribute', ClassWithNonPublicAttributes::class);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertClassNotHasStaticAttribute('publicStaticAttribute', \ClassWithNonPublicAttributes::class);
+        $this->assertClassNotHasStaticAttribute('publicStaticAttribute', ClassWithNonPublicAttributes::class);
     }
 
     public function testObjectHasPublicAttribute(): void
     {
-        $obj = new \ClassWithNonPublicAttributes;
+        $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectHasAttribute('publicAttribute', $obj);
 
@@ -1020,7 +1084,7 @@ XML;
 
     public function testObjectNotHasPublicAttribute(): void
     {
-        $obj = new \ClassWithNonPublicAttributes;
+        $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectNotHasAttribute('attribute', $obj);
 
@@ -1031,7 +1095,7 @@ XML;
 
     public function testObjectHasOnTheFlyAttribute(): void
     {
-        $obj      = new \stdClass;
+        $obj      = new stdClass;
         $obj->foo = 'bar';
 
         $this->assertObjectHasAttribute('foo', $obj);
@@ -1043,7 +1107,7 @@ XML;
 
     public function testObjectNotHasOnTheFlyAttribute(): void
     {
-        $obj      = new \stdClass;
+        $obj      = new stdClass;
         $obj->foo = 'bar';
 
         $this->assertObjectNotHasAttribute('bar', $obj);
@@ -1055,7 +1119,7 @@ XML;
 
     public function testObjectHasProtectedAttribute(): void
     {
-        $obj = new \ClassWithNonPublicAttributes;
+        $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectHasAttribute('protectedAttribute', $obj);
 
@@ -1066,7 +1130,7 @@ XML;
 
     public function testObjectNotHasProtectedAttribute(): void
     {
-        $obj = new \ClassWithNonPublicAttributes;
+        $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectNotHasAttribute('attribute', $obj);
 
@@ -1077,7 +1141,7 @@ XML;
 
     public function testObjectHasPrivateAttribute(): void
     {
-        $obj = new \ClassWithNonPublicAttributes;
+        $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectHasAttribute('privateAttribute', $obj);
 
@@ -1088,7 +1152,7 @@ XML;
 
     public function testObjectNotHasPrivateAttribute(): void
     {
-        $obj = new \ClassWithNonPublicAttributes;
+        $obj = new ClassWithNonPublicAttributes;
 
         $this->assertObjectNotHasAttribute('attribute', $obj);
 
@@ -1179,7 +1243,7 @@ XML;
 
     public function testAssertThatContainsOnlyInstancesOf(): void
     {
-        $this->assertThat([new \Book], $this->containsOnlyInstancesOf(\Book::class));
+        $this->assertThat([new Book], $this->containsOnlyInstancesOf(Book::class));
     }
 
     public function testAssertThatArrayHasKey(): void
@@ -1190,7 +1254,7 @@ XML;
     public function testAssertThatClassHasAttribute(): void
     {
         $this->assertThat(
-            new \ClassWithNonPublicAttributes,
+            new ClassWithNonPublicAttributes,
             $this->classHasAttribute('publicAttribute')
         );
     }
@@ -1198,7 +1262,7 @@ XML;
     public function testAssertThatClassHasStaticAttribute(): void
     {
         $this->assertThat(
-            new \ClassWithNonPublicAttributes,
+            new ClassWithNonPublicAttributes,
             $this->classHasStaticAttribute('publicStaticAttribute')
         );
     }
@@ -1206,7 +1270,7 @@ XML;
     public function testAssertThatObjectHasAttribute(): void
     {
         $this->assertThat(
-            new \ClassWithNonPublicAttributes,
+            new ClassWithNonPublicAttributes,
             $this->objectHasAttribute('publicAttribute')
         );
     }
@@ -1218,7 +1282,7 @@ XML;
 
     public function testAssertThatIdenticalTo(): void
     {
-        $value      = new \stdClass;
+        $value      = new stdClass;
         $constraint = $this->identicalTo($value);
 
         $this->assertThat($value, $constraint);
@@ -1226,7 +1290,7 @@ XML;
 
     public function testAssertThatIsInstanceOf(): void
     {
-        $this->assertThat(new \stdClass, $this->isInstanceOf('StdClass'));
+        $this->assertThat(new stdClass, $this->isInstanceOf('StdClass'));
     }
 
     public function testAssertThatIsType(): void
@@ -1318,14 +1382,14 @@ XML;
     {
         $this->assertStringEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            file_get_contents(TEST_FILES_PATH . 'foo.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
     }
 
@@ -1333,14 +1397,14 @@ XML;
     {
         $this->assertStringEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
+            file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
     }
 
@@ -1348,14 +1412,14 @@ XML;
     {
         $this->assertStringNotEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringNotEqualsFile(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'foo.xml')
+            file_get_contents(TEST_FILES_PATH . 'foo.xml')
         );
     }
 
@@ -1363,14 +1427,14 @@ XML;
     {
         $this->assertStringNotEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'bar.xml')
+            file_get_contents(TEST_FILES_PATH . 'bar.xml')
         );
 
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringNotEqualsFileIgnoringCase(
             TEST_FILES_PATH . 'foo.xml',
-            \file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
+            file_get_contents(TEST_FILES_PATH . 'fooUppercase.xml')
         );
     }
 
@@ -1525,11 +1589,11 @@ XML;
 
     public function testAssertCountTraversable(): void
     {
-        $this->assertCount(2, new \ArrayIterator([1, 2]));
+        $this->assertCount(2, new ArrayIterator([1, 2]));
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertCount(2, new \ArrayIterator([1, 2, 3]));
+        $this->assertCount(2, new ArrayIterator([1, 2, 3]));
     }
 
     public function testAssertCountThrowsExceptionIfElementIsNotCountable(): void
@@ -1678,7 +1742,7 @@ XML;
     public function testAssertJsonStringEqualsJsonFile(): void
     {
         $file    = TEST_FILES_PATH . 'JsonData/simpleObject.json';
-        $actual  = \json_encode(['Mascott' => 'Tux']);
+        $actual  = json_encode(['Mascott' => 'Tux']);
         $message = '';
 
         $this->assertJsonStringEqualsJsonFile($file, $actual, $message);
@@ -1687,7 +1751,7 @@ XML;
     public function testAssertJsonStringEqualsJsonFileExpectingExpectationFailedException(): void
     {
         $file    = TEST_FILES_PATH . 'JsonData/simpleObject.json';
-        $actual  = \json_encode(['Mascott' => 'Beastie']);
+        $actual  = json_encode(['Mascott' => 'Beastie']);
         $message = '';
 
         try {
@@ -1707,7 +1771,7 @@ XML;
     public function testAssertJsonStringNotEqualsJsonFile(): void
     {
         $file    = TEST_FILES_PATH . 'JsonData/simpleObject.json';
-        $actual  = \json_encode(['Mascott' => 'Beastie']);
+        $actual  = json_encode(['Mascott' => 'Beastie']);
         $message = '';
 
         $this->assertJsonStringNotEqualsJsonFile($file, $actual, $message);
@@ -1734,32 +1798,32 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertInstanceOf('ClassThatDoesNotExist', new \stdClass);
+        $this->assertInstanceOf('ClassThatDoesNotExist', new stdClass);
     }
 
     public function testAssertInstanceOf(): void
     {
-        $this->assertInstanceOf(\stdClass::class, new \stdClass);
+        $this->assertInstanceOf(stdClass::class, new stdClass);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertInstanceOf(\Exception::class, new \stdClass);
+        $this->assertInstanceOf(\Exception::class, new stdClass);
     }
 
     public function testAssertNotInstanceOfThrowsExceptionIfTypeDoesNotExist(): void
     {
         $this->expectException(Exception::class);
 
-        $this->assertNotInstanceOf('ClassThatDoesNotExist', new \stdClass);
+        $this->assertNotInstanceOf('ClassThatDoesNotExist', new stdClass);
     }
 
     public function testAssertNotInstanceOf(): void
     {
-        $this->assertNotInstanceOf(\Exception::class, new \stdClass);
+        $this->assertNotInstanceOf(\Exception::class, new stdClass);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotInstanceOf(\stdClass::class, new \stdClass);
+        $this->assertNotInstanceOf(stdClass::class, new stdClass);
     }
 
     public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument(): void
@@ -1896,7 +1960,7 @@ XML;
 
     public function testObjectTypeCanBeAsserted(): void
     {
-        $this->assertIsObject(new \stdClass);
+        $this->assertIsObject(new stdClass);
 
         try {
             $this->assertIsObject(null);
@@ -1909,10 +1973,27 @@ XML;
 
     public function testResourceTypeCanBeAsserted(): void
     {
-        $this->assertIsResource(\fopen(__FILE__, 'r'));
+        $this->assertIsResource(fopen(__FILE__, 'r'));
 
         try {
             $this->assertIsResource(null);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testClosedResourceTypeCanBeAsserted(): void
+    {
+        $resource = fopen(__FILE__, 'r');
+        fclose($resource);
+
+        $this->assertIsClosedResource($resource);
+        $this->assertIsResource($resource);
+
+        try {
+            $this->assertIsClosedResource(null);
         } catch (AssertionFailedError $e) {
             return;
         }
@@ -1938,7 +2019,7 @@ XML;
         $this->assertIsScalar(true);
 
         try {
-            $this->assertIsScalar(new \stdClass);
+            $this->assertIsScalar(new stdClass);
         } catch (AssertionFailedError $e) {
             return;
         }
@@ -2043,7 +2124,7 @@ XML;
         $this->assertIsNotObject(null);
 
         try {
-            $this->assertIsNotObject(new \stdClass);
+            $this->assertIsNotObject(new stdClass);
         } catch (AssertionFailedError $e) {
             return;
         }
@@ -2056,7 +2137,29 @@ XML;
         $this->assertIsNotResource(null);
 
         try {
-            $this->assertIsNotResource(\fopen(__FILE__, 'r'));
+            $this->assertIsNotResource(fopen(__FILE__, 'r'));
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testNotClosedResourceTypeCanBeAsserted(): void
+    {
+        $this->assertIsNotClosedResource(null);
+
+        $resource = fopen(__FILE__, 'r');
+        fclose($resource);
+
+        try {
+            $this->assertIsNotClosedResource($resource);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        try {
+            $this->assertIsNotResource($resource);
         } catch (AssertionFailedError $e) {
             return;
         }
@@ -2066,7 +2169,7 @@ XML;
 
     public function testNotScalarTypeCanBeAsserted(): void
     {
-        $this->assertIsNotScalar(new \stdClass);
+        $this->assertIsNotScalar(new stdClass);
 
         try {
             $this->assertIsNotScalar(true);
@@ -2234,13 +2337,13 @@ XML;
 
     public function testIterableContainsSameObjectCanBeAsserted(): void
     {
-        $object   = new \stdClass;
+        $object   = new stdClass;
         $iterable = [$object];
 
         $this->assertContains($object, $iterable);
 
         try {
-            $this->assertContains(new \stdClass, $iterable);
+            $this->assertContains(new stdClass, $iterable);
         } catch (AssertionFailedError $e) {
             return;
         }
@@ -2250,10 +2353,10 @@ XML;
 
     public function testIterableNotContainsSameObjectCanBeAsserted(): void
     {
-        $object   = new \stdClass;
+        $object   = new stdClass;
         $iterable = [$object];
 
-        $this->assertNotContains(new \stdClass, $iterable);
+        $this->assertNotContains(new stdClass, $iterable);
 
         try {
             $this->assertNotContains($object, $iterable);
@@ -2266,10 +2369,10 @@ XML;
 
     public function testIterableContainsEqualObjectCanBeAsserted(): void
     {
-        $a      = new \stdClass;
+        $a      = new stdClass;
         $a->foo = 'bar';
 
-        $b      = new \stdClass;
+        $b      = new stdClass;
         $b->foo = 'baz';
 
         $this->assertContainsEquals($a, [$a]);
@@ -2285,10 +2388,10 @@ XML;
 
     public function testIterableNotContainsEqualObjectCanBeAsserted(): void
     {
-        $a      = new \stdClass;
+        $a      = new stdClass;
         $a->foo = 'bar';
 
-        $b      = new \stdClass;
+        $b      = new stdClass;
         $b->foo = 'baz';
 
         $this->assertNotContainsEquals($b, [$a]);
@@ -2304,9 +2407,9 @@ XML;
 
     protected function sameValues(): array
     {
-        $object   = new \SampleClass(4, 8, 15);
+        $object   = new SampleClass(4, 8, 15);
         $file     = TEST_FILES_PATH . 'foo.xml';
-        $resource = \fopen($file, 'r');
+        $resource = fopen($file, 'r');
 
         return [
             // null
@@ -2318,7 +2421,7 @@ XML;
             // floats
             [2.3, 2.3],
             [1 / 3, 1 - 2 / 3],
-            [\log(0), \log(0)],
+            [log(0), log(0)],
             // arrays
             [[], []],
             [[0 => 1], [0 => 1]],
@@ -2334,24 +2437,24 @@ XML;
     protected function notEqualValues(): array
     {
         // cyclic dependencies
-        $book1                  = new \Book;
-        $book1->author          = new \Author('Terry Pratchett');
+        $book1                  = new Book;
+        $book1->author          = new Author('Terry Pratchett');
         $book1->author->books[] = $book1;
-        $book2                  = new \Book;
-        $book2->author          = new \Author('Terry Pratch');
+        $book2                  = new Book;
+        $book2->author          = new Author('Terry Pratch');
         $book2->author->books[] = $book2;
 
-        $book3         = new \Book;
+        $book3         = new Book;
         $book3->author = 'Terry Pratchett';
-        $book4         = new \stdClass;
+        $book4         = new stdClass;
         $book4->author = 'Terry Pratchett';
 
-        $object1  = new \SampleClass(4, 8, 15);
-        $object2  = new \SampleClass(16, 23, 42);
-        $object3  = new \SampleClass(4, 8, 15);
-        $storage1 = new \SplObjectStorage;
+        $object1  = new SampleClass(4, 8, 15);
+        $object2  = new SampleClass(16, 23, 42);
+        $object3  = new SampleClass(4, 8, 15);
+        $storage1 = new SplObjectStorage;
         $storage1->attach($object1);
-        $storage2 = new \SplObjectStorage;
+        $storage2 = new SplObjectStorage;
         $storage2->attach($object3); // same content, different object
 
         $file = TEST_FILES_PATH . 'foo.xml';
@@ -2370,123 +2473,123 @@ XML;
             [2.3, 4.2, 0.5],
             [[2.3], [4.2], 0.5],
             [[[2.3]], [[4.2]], 0.5],
-            [new \Struct(2.3), new \Struct(4.2), 0.5],
-            [[new \Struct(2.3)], [new \Struct(4.2)], 0.5],
+            [new Struct(2.3), new Struct(4.2), 0.5],
+            [[new Struct(2.3)], [new Struct(4.2)], 0.5],
             // NAN
-            [\NAN, \NAN],
+            [NAN, NAN],
             // arrays
             [[], [0 => 1]],
-            [[0     => 1], []],
-            [[0     => null], []],
-            [[0     => 1, 1 => 2], [0     => 1, 1 => 3]],
+            [[0 => 1], []],
+            [[0 => null], []],
+            [[0 => 1, 1 => 2], [0 => 1, 1 => 3]],
             [['a', 'b' => [1, 2]], ['a', 'b' => [2, 1]]],
             // objects
-            [new \SampleClass(4, 8, 15), new \SampleClass(16, 23, 42)],
+            [new SampleClass(4, 8, 15), new SampleClass(16, 23, 42)],
             [$object1, $object2],
             [$book1, $book2],
             [$book3, $book4], // same content, different class
             // resources
-            [\fopen($file, 'r'), \fopen($file, 'r')],
+            [fopen($file, 'r'), fopen($file, 'r')],
             // SplObjectStorage
             [$storage1, $storage2],
             // DOMDocument
             [
-                Xml::load('<root></root>'),
-                Xml::load('<bar/>'),
+                (new XmlLoader)->load('<root></root>'),
+                (new XmlLoader)->load('<bar/>'),
             ],
             [
-                Xml::load('<foo attr1="bar"/>'),
-                Xml::load('<foo attr1="foobar"/>'),
+                (new XmlLoader)->load('<foo attr1="bar"/>'),
+                (new XmlLoader)->load('<foo attr1="foobar"/>'),
             ],
             [
-                Xml::load('<foo> bar </foo>'),
-                Xml::load('<foo />'),
+                (new XmlLoader)->load('<foo> bar </foo>'),
+                (new XmlLoader)->load('<foo />'),
             ],
             [
-                Xml::load('<foo xmlns="urn:myns:bar"/>'),
-                Xml::load('<foo xmlns="urn:notmyns:bar"/>'),
+                (new XmlLoader)->load('<foo xmlns="urn:myns:bar"/>'),
+                (new XmlLoader)->load('<foo xmlns="urn:notmyns:bar"/>'),
             ],
             [
-                Xml::load('<foo> bar </foo>'),
-                Xml::load('<foo> bir </foo>'),
+                (new XmlLoader)->load('<foo> bar </foo>'),
+                (new XmlLoader)->load('<foo> bir </foo>'),
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 03:13:35', new \DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 03:13:35', new DateTimeZone('America/New_York')),
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 03:13:35', new \DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 03:13:35', new DateTimeZone('America/New_York')),
                 3500,
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 05:13:35', new \DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 05:13:35', new DateTimeZone('America/New_York')),
                 3500,
             ],
             [
-                new \DateTime('2013-03-29', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
             ],
             [
-                new \DateTime('2013-03-29', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
                 43200,
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/Chicago')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/Chicago')),
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/Chicago')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/Chicago')),
                 3500,
             ],
             [
-                new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-30', new \DateTimeZone('America/Chicago')),
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-30', new DateTimeZone('America/Chicago')),
             ],
             [
-                new \DateTime('2013-03-29T05:13:35-0600'),
-                new \DateTime('2013-03-29T04:13:35-0600'),
+                new DateTime('2013-03-29T05:13:35-0600'),
+                new DateTime('2013-03-29T04:13:35-0600'),
             ],
             [
-                new \DateTime('2013-03-29T05:13:35-0600'),
-                new \DateTime('2013-03-29T05:13:35-0500'),
+                new DateTime('2013-03-29T05:13:35-0600'),
+                new DateTime('2013-03-29T05:13:35-0500'),
             ],
             // Exception
             //array(new Exception('Exception 1'), new Exception('Exception 2')),
             // different types
-            [new \SampleClass(4, 8, 15), false],
-            [false, new \SampleClass(4, 8, 15)],
-            [[0        => 1, 1 => 2], false],
+            [new SampleClass(4, 8, 15), false],
+            [false, new SampleClass(4, 8, 15)],
+            [[0 => 1, 1 => 2], false],
             [false, [0 => 1, 1 => 2]],
-            [[], new \stdClass],
-            [new \stdClass, []],
+            [[], new stdClass],
+            [new stdClass, []],
             // PHP: 0 == 'Foobar' => true!
             // We want these values to differ
             [0, 'Foobar'],
             ['Foobar', 0],
-            [3, \acos(8)],
-            [\acos(8), 3],
+            [3, acos(8)],
+            [acos(8), 3],
         ];
     }
 
     protected function equalValues(): array
     {
         // cyclic dependencies
-        $book1                  = new \Book;
-        $book1->author          = new \Author('Terry Pratchett');
+        $book1                  = new Book;
+        $book1->author          = new Author('Terry Pratchett');
         $book1->author->books[] = $book1;
-        $book2                  = new \Book;
-        $book2->author          = new \Author('Terry Pratchett');
+        $book2                  = new Book;
+        $book2->author          = new Author('Terry Pratchett');
         $book2->author->books[] = $book2;
 
-        $object1  = new \SampleClass(4, 8, 15);
-        $object2  = new \SampleClass(4, 8, 15);
-        $storage1 = new \SplObjectStorage;
+        $object1  = new SampleClass(4, 8, 15);
+        $object2  = new SampleClass(4, 8, 15);
+        $storage1 = new SplObjectStorage;
         $storage1->attach($object1);
-        $storage2 = new \SplObjectStorage;
+        $storage2 = new SplObjectStorage;
         $storage2->attach($object1);
 
         return [
@@ -2500,44 +2603,44 @@ XML;
             [$storage1, $storage2],
             // DOMDocument
             [
-                Xml::load('<root></root>'),
-                Xml::load('<root/>'),
+                (new XmlLoader)->load('<root></root>'),
+                (new XmlLoader)->load('<root/>'),
             ],
             [
-                Xml::load('<root attr="bar"></root>'),
-                Xml::load('<root attr="bar"/>'),
+                (new XmlLoader)->load('<root attr="bar"></root>'),
+                (new XmlLoader)->load('<root attr="bar"/>'),
             ],
             [
-                Xml::load('<root><foo attr="bar"></foo></root>'),
-                Xml::load('<root><foo attr="bar"/></root>'),
+                (new XmlLoader)->load('<root><foo attr="bar"></foo></root>'),
+                (new XmlLoader)->load('<root><foo attr="bar"/></root>'),
             ],
             [
-                Xml::load("<root>\n  <child/>\n</root>"),
-                Xml::load('<root><child/></root>'),
+                (new XmlLoader)->load("<root>\n  <child/>\n</root>"),
+                (new XmlLoader)->load('<root><child/></root>'),
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
             ],
             [
-                new \DateTime('2013-03-29', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29', new \DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29', new DateTimeZone('America/New_York')),
             ],
             [
-                new \DateTime('2013-03-29 04:13:35', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 03:13:35', new \DateTimeZone('America/Chicago')),
+                new DateTime('2013-03-29 04:13:35', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 03:13:35', new DateTimeZone('America/Chicago')),
             ],
             [
-                new \DateTime('2013-03-30', new \DateTimeZone('America/New_York')),
-                new \DateTime('2013-03-29 23:00:00', new \DateTimeZone('America/Chicago')),
+                new DateTime('2013-03-30', new DateTimeZone('America/New_York')),
+                new DateTime('2013-03-29 23:00:00', new DateTimeZone('America/Chicago')),
             ],
             [
-                new \DateTime('@1364616000'),
-                new \DateTime('2013-03-29 23:00:00', new \DateTimeZone('America/Chicago')),
+                new DateTime('@1364616000'),
+                new DateTime('2013-03-29 23:00:00', new DateTimeZone('America/Chicago')),
             ],
             [
-                new \DateTime('2013-03-29T05:13:35-0500'),
-                new \DateTime('2013-03-29T04:13:35-0600'),
+                new DateTime('2013-03-29T05:13:35-0500'),
+                new DateTime('2013-03-29T04:13:35-0600'),
             ],
             // Exception
             //array(new Exception('Exception 1'), new Exception('Exception 1')),
@@ -2548,8 +2651,8 @@ XML;
             ['2.3', 2.3],
             [(string) (1 / 3), 1 - 2 / 3],
             [1 / 3, (string) (1 - 2 / 3)],
-            ['string representation', new \ClassWithToString],
-            [new \ClassWithToString, 'string representation'],
+            ['string representation', new ClassWithToString],
+            [new ClassWithToString, 'string representation'],
         ];
     }
 }

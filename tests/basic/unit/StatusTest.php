@@ -11,6 +11,8 @@ namespace PHPUnit\SelfTest\Basic;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
+use PHPUnit\TestFixture\AnInterface;
+use RuntimeException;
 
 /**
  * @covers Foo
@@ -23,7 +25,7 @@ class StatusTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $this->createMock(\AnInterface::class);
+        $this->createMock(AnInterface::class);
 
         $this->assertTrue(true);
     }
@@ -35,7 +37,7 @@ class StatusTest extends TestCase
 
     public function testError(): void
     {
-        throw new \RuntimeException;
+        throw new RuntimeException;
     }
 
     public function testIncomplete(): void
@@ -69,7 +71,7 @@ class StatusTest extends TestCase
 
     public function testErrorWithMessage(): void
     {
-        throw new \RuntimeException('error with custom message');
+        throw new RuntimeException('error with custom message');
     }
 
     public function testIncompleteWithMessage(): void

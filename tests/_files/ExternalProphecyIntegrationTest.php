@@ -18,7 +18,7 @@ final class ExternalProphecyIntegrationTest extends TestCase
 
     public function testOne(): void
     {
-        $prophecy = $this->prophesize(\AnInterface::class);
+        $prophecy = $this->prophesize(\PHPUnit\TestFixture\AnInterface::class);
         $prophecy->doSomething()->willReturn('result')->shouldBeCalled();
 
         $revelation = $prophecy->reveal();

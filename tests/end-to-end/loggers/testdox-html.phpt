@@ -45,7 +45,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
     </head>
     <body>
 
-        <h2 id="BankAccountTest">Bank Account</h2>
+        <h2 id="PHPUnit\TestFixture\BankAccountTest">Bank Account (PHPUnit\TestFixture\BankAccount)</h2>
         <ul>
 ...                                                                 3 / 3 (100%)            <li style="color: #555753;">✓ Balance is initially zero</li>
             <li style="color: #555753;">✓ Balance cannot become negative</li>

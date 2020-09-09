@@ -19,40 +19,40 @@
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
-    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
-        "php": "^7.3",
+        "php": ">=7.3",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-libxml": "*",
         "ext-mbstring": "*",
         "ext-xml": "*",
         "ext-xmlwriter": "*",
-        "doctrine/instantiator": "^1.2.0",
-        "myclabs/deep-copy": "^1.9.1",
-        "phar-io/manifest": "^1.0.3",
-        "phar-io/version": "^2.0.1",
-        "phpspec/prophecy": "^1.8.1",
-        "phpunit/php-code-coverage": "^8.0.1",
-        "phpunit/php-file-iterator": "^3.0",
-        "phpunit/php-invoker": "^3.0",
-        "phpunit/php-text-template": "^2.0",
-        "phpunit/php-timer": "^4.0",
-        "sebastian/code-unit": "^1.0.2",
-        "sebastian/comparator": "^4.0",
-        "sebastian/diff": "^4.0",
-        "sebastian/environment": "^5.0.1",
-        "sebastian/exporter": "^4.0",
-        "sebastian/global-state": "^4.0",
-        "sebastian/object-enumerator": "^4.0",
-        "sebastian/resource-operations": "^3.0",
-        "sebastian/type": "^2.0",
-        "sebastian/version": "^3.0"
+        "doctrine/instantiator": "^1.3.1",
+        "myclabs/deep-copy": "^1.10.1",
+        "phar-io/manifest": "^2.0.1",
+        "phar-io/version": "^3.0.2",
+        "phpspec/prophecy": "^1.11.1",
+        "phpunit/php-code-coverage": "^9.1.5",
+        "phpunit/php-file-iterator": "^3.0.4",
+        "phpunit/php-invoker": "^3.1",
+        "phpunit/php-text-template": "^2.0.2",
+        "phpunit/php-timer": "^5.0.1",
+        "sebastian/cli-parser": "^1.0",
+        "sebastian/code-unit": "^1.0.5",
+        "sebastian/comparator": "^4.0.3",
+        "sebastian/diff": "^4.0.2",
+        "sebastian/environment": "^5.1.2",
+        "sebastian/exporter": "^4.0.2",
+        "sebastian/global-state": "^5.0",
+        "sebastian/object-enumerator": "^4.0.2",
+        "sebastian/resource-operations": "^3.0.2",
+        "sebastian/type": "^2.2.1",
+        "sebastian/version": "^3.0.1"
     },
     "require-dev": {
         "ext-PDO": "*",
-        "phpspec/prophecy-phpunit": "^2.0"
+        "phpspec/prophecy-phpunit": "^2.0.1"
     },
     "config": {
         "platform": {
@@ -88,7 +88,7 @@
     },
     "extra": {
         "branch-alias": {
-            "dev-master": "9.2-dev"
+            "dev-master": "9.4-dev"
         }
     }
 }

@@ -9,15 +9,19 @@
  */
 namespace PHPUnit\Framework;
 
+use function array_reduce;
+use function file_get_contents;
+use function preg_match_all;
+
 final class FunctionsTest extends TestCase
 {
     private static $globalAssertionFunctions = [];
 
     public static function setUpBeforeClass(): void
     {
-        \preg_match_all(
+        preg_match_all(
             '/function (assert[^ \(]+)/',
-            \file_get_contents(
+            file_get_contents(
                 __DIR__ . '/../../../../src/Framework/Assert/Functions.php'
             ),
             $matches
@@ -34,21 +38,21 @@ final class FunctionsTest extends TestCase
         Assert::assertContains(
             $methodName,
             self::$globalAssertionFunctions,
-            "Mapping for Assert::$methodName is missing in Functions.php"
+            "Mapping for Assert::{$methodName} is missing in Functions.php"
         );
     }
 
     public function provideStaticAssertionMethodNames(): array
     {
-        \preg_match_all(
+        preg_match_all(
             '/public static function (assert[^ \(]+)/',
-            \file_get_contents(
+            file_get_contents(
                 __DIR__ . '/../../../../src/Framework/Assert.php'
             ),
             $matches
         );
 
-        return \array_reduce(
+        return array_reduce(
             $matches[1],
             function (array $functionNames, string $functionName) {
                 $functionNames[$functionName] = [$functionName];

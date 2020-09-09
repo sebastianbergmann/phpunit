@@ -12,8 +12,18 @@ namespace PHPUnit\Framework\MockObject\Builder;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-interface ParametersMatch extends Match
+interface ParametersMatch extends Stub
 {
+    /**
+     * Defines the expectation which must occur before the current is valid.
+     *
+     * @param string $id the identification of the expectation that should
+     *                   occur before this one
+     *
+     * @return Stub
+     */
+    public function after($id);
+
     /**
      * Sets the parameters to match for, each parameter to this function will
      * be part of match. To perform specific matches or constraints create a

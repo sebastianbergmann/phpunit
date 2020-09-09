@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function class_exists;
+use function file_get_contents;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\MockClassWithConfigurableMethods;
 use SebastianBergmann\Type\Type;
@@ -21,10 +23,10 @@ final class MockClassTest extends TestCase
 
         $file = __DIR__ . '/../../../_files/mock-object/MockClassGenerated.tpl';
 
-        $mockClass = new MockClass(\file_get_contents($file), $mockName, []);
+        $mockClass = new MockClass(file_get_contents($file), $mockName, []);
         $mockClass->generate();
 
-        $this->assertTrue(\class_exists($mockName));
+        $this->assertTrue(class_exists($mockName));
     }
 
     public function testGenerateReturnsNameOfGeneratedClass(): void

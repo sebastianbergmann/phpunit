@@ -48,6 +48,6 @@ final class ConfigurableMethod
 
     public function getReturnTypeDeclaration(): string
     {
-        return $this->returnType->getReturnTypeDeclaration();
+        return $this->returnType->asString();
     }
 }

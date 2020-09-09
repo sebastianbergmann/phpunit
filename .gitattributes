@@ -1,14 +1,16 @@
 /.docker        export-ignore
-/.editorconfig  export-ignore
 /.github        export-ignore
+/.phive         export-ignore
 /.psalm         export-ignore
-/.php_cs.dist   export-ignore
 /build          export-ignore
-/build.xml      export-ignore
-/phive.xml      export-ignore
-/phpunit.xml    export-ignore
-/tests          export-ignore
 /tools          export-ignore
 /tools/*        binary
+/tests          export-ignore
+/.editorconfig  export-ignore
+/.gitattributes export-ignore
+/.gitignore     export-ignore
+/.php_cs.dist   export-ignore
+/build.xml      export-ignore
+/phpunit.xml    export-ignore
 
 *.php diff=php

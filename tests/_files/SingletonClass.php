@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 class SingletonClass
 {
     public static function getInstance(): void
@@ -17,11 +19,12 @@ class SingletonClass
     {
     }
 
-    private function __sleep(): array
+    public function __sleep(): array
     {
+        return [];
     }
 
-    private function __wakeup(): void
+    public function __wakeup(): void
     {
     }
 

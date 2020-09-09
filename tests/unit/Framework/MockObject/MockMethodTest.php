@@ -11,6 +11,8 @@ namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ClassWithoutParentButParentReturnType;
+use ReflectionClass;
+use RuntimeException;
 use SebastianBergmann\Type\UnknownType;
 
 /**
@@ -42,9 +44,9 @@ final class MockMethodTest extends TestCase
      */
     public function testFailWhenReturnTypeIsParentButThereIsNoParentClass(): void
     {
-        $class = new \ReflectionClass(ClassWithoutParentButParentReturnType::class);
+        $class = new ReflectionClass(ClassWithoutParentButParentReturnType::class);
 
-        $this->expectException(\RuntimeException::class);
+        $this->expectException(RuntimeException::class);
         MockMethod::fromReflection($class->getMethod('foo'), false, false);
     }
 }

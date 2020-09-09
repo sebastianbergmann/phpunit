@@ -1,0 +1,12 @@
+<phpunit verbose="true"
+    resolveDependencies="true">
+    <testsuites>
+        <testsuite name="dependsOnClassAndFailure">
+            <file>../../tests/_files/DependencyOnClassTest.php</file>
+            <file>../../tests/_files/DependencyFailureTest.php</file>
+        </testsuite>
+        <testsuite name="successfulSuite">
+            <file>../../tests/_files/DependencySuccessTest.php</file>
+        </testsuite>
+    </testsuites>
+</phpunit>

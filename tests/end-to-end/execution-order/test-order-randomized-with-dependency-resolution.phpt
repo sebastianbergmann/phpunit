@@ -17,7 +17,7 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
-Random seed:   %d
+Random Seed:   %d
 
 .....                                                               5 / 5 (100%)
 

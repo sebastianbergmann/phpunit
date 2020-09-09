@@ -16,7 +16,7 @@ Time: %s, Memory: %s
 
 There were 13 failures:
 
-1) FailureTest::testAssertArrayEqualsArray
+1) PHPUnit\TestFixture\FailureTest::testAssertArrayEqualsArray
 message
 Failed asserting that two arrays are equal.
 --- Expected
@@ -29,13 +29,13 @@ Failed asserting that two arrays are equal.
 
 %s:%i
 
-2) FailureTest::testAssertIntegerEqualsInteger
+2) PHPUnit\TestFixture\FailureTest::testAssertIntegerEqualsInteger
 message
 Failed asserting that 2 matches expected 1.
 
 %s:%i
 
-3) FailureTest::testAssertObjectEqualsObject
+3) PHPUnit\TestFixture\FailureTest::testAssertObjectEqualsObject
 message
 Failed asserting that two objects are equal.
 --- Expected
@@ -48,13 +48,13 @@ Failed asserting that two objects are equal.
 
 %s:%i
 
-4) FailureTest::testAssertNullEqualsString
+4) PHPUnit\TestFixture\FailureTest::testAssertNullEqualsString
 message
 Failed asserting that 'bar' matches expected null.
 
 %s:%i
 
-5) FailureTest::testAssertStringEqualsString
+5) PHPUnit\TestFixture\FailureTest::testAssertStringEqualsString
 message
 Failed asserting that two strings are equal.
 --- Expected
@@ -65,7 +65,7 @@ Failed asserting that two strings are equal.
 
 %s:%i
 
-6) FailureTest::testAssertTextEqualsText
+6) PHPUnit\TestFixture\FailureTest::testAssertTextEqualsText
 message
 Failed asserting that two strings are equal.
 --- Expected
@@ -78,7 +78,7 @@ Failed asserting that two strings are equal.
 
 %s:%i
 
-7) FailureTest::testAssertStringMatchesFormat
+7) PHPUnit\TestFixture\FailureTest::testAssertStringMatchesFormat
 message
 Failed asserting that string matches format description.
 --- Expected
@@ -89,13 +89,13 @@ Failed asserting that string matches format description.
 
 %s:%i
 
-8) FailureTest::testAssertNumericEqualsNumeric
+8) PHPUnit\TestFixture\FailureTest::testAssertNumericEqualsNumeric
 message
 Failed asserting that 2 matches expected 1.
 
 %s:%i
 
-9) FailureTest::testAssertTextSameText
+9) PHPUnit\TestFixture\FailureTest::testAssertTextSameText
 message
 Failed asserting that two strings are identical.
 --- Expected
@@ -106,25 +106,25 @@ Failed asserting that two strings are identical.
 
 %s:%i
 
-10) FailureTest::testAssertObjectSameObject
+10) PHPUnit\TestFixture\FailureTest::testAssertObjectSameObject
 message
 Failed asserting that two variables reference the same object.
 
 %s:%i
 
-11) FailureTest::testAssertObjectSameNull
+11) PHPUnit\TestFixture\FailureTest::testAssertObjectSameNull
 message
 Failed asserting that null is identical to an object of class "stdClass".
 
 %s:%i
 
-12) FailureTest::testAssertFloatSameFloat
+12) PHPUnit\TestFixture\FailureTest::testAssertFloatSameFloat
 message
 Failed asserting that 1.5 is identical to 1.0.
 
 %s:%i
 
-13) FailureTest::testAssertStringMatchesFormatFile
+13) PHPUnit\TestFixture\FailureTest::testAssertStringMatchesFormatFile
 Failed asserting that string matches format description.
 --- Expected
 +++ Actual
