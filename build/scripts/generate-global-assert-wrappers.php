@@ -86,7 +86,7 @@ foreach ($class->getMethods() as $method) {
 
     $docComment = \str_replace(
         ['*/', '     *'],
-        ["*\n * @see Assert::" . $method->getName() . "\n */", ' *'],
+        ["*\n * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit\n * @see Assert::" . $method->getName() . "\n */", ' *'],
         $method->getDocComment()
     );
 
