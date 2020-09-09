@@ -60,7 +60,7 @@ final class IsEmpty extends Constraint
     {
         $type = gettype($other);
 
-        return \sprintf(
+        return sprintf(
             "%s %s %s \n+++ Actual\n %s",
             strpos($type, 'a') === 0 || strpos($type, 'o') === 0 ? 'an' : 'a',
             $type,
