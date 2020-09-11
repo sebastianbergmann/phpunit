@@ -1685,7 +1685,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createStub(string $originalClassName): Stub
     {
-        return $this->createMock($originalClassName);
+        return $this->createMockObject($originalClassName);
     }
 
     /**
@@ -1697,12 +1697,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createMock(string $originalClassName): MockObject
     {
-        return $this->getMockBuilder($originalClassName)
-                    ->disableOriginalConstructor()
-                    ->disableOriginalClone()
-                    ->disableArgumentCloning()
-                    ->disallowMockingUnknownTypes()
-                    ->getMock();
+        return $this->createMockObject($originalClassName);
     }
 
     /**
@@ -1714,7 +1709,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
     {
-        $o = $this->createMock($originalClassName);
+        $o = $this->createMockObject($originalClassName);
 
         foreach ($configuration as $method => $return) {
             $o->method($method)->willReturn($return);
@@ -2561,5 +2556,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return TestUtil::isTestMethod($method);
+    }
+
+    /**
+     * @psalm-template RealInstanceType of object
+     * @psalm-param class-string<RealInstanceType> $originalClassName
+     * @psalm-return MockObject&RealInstanceType
+     */
+    private function createMockObject(string $originalClassName): MockObject
+    {
+        return $this->getMockBuilder($originalClassName)
+                    ->disableOriginalConstructor()
+                    ->disableOriginalClone()
+                    ->disableArgumentCloning()
+                    ->disallowMockingUnknownTypes()
+                    ->getMock();
     }
 }
