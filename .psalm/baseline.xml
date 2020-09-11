@@ -997,10 +997,14 @@
     <MissingThrowsDocblock occurrences="1">
       <code>new Template($filename)</code>
     </MissingThrowsDocblock>
+    <RedundantCondition occurrences="1">
+      <code>$type instanceof ReflectionUnionType</code>
+    </RedundantCondition>
     <TypeDoesNotContainType occurrences="1">
       <code>$type instanceof ReflectionUnionType</code>
     </TypeDoesNotContainType>
-    <UndefinedClass occurrences="2">
+    <UndefinedClass occurrences="3">
+      <code>ReflectionUnionType</code>
       <code>ReflectionUnionType</code>
       <code>ReflectionUnionType</code>
     </UndefinedClass>

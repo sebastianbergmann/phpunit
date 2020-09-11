@@ -292,7 +292,7 @@ final class MockMethod
             }
 
             if ($type !== null) {
-                if ($typeName !== 'mixed' && $parameter->allowsNull()) {
+                if ($typeName !== 'mixed' && $parameter->allowsNull() && !$type instanceof ReflectionUnionType) {
                     $nullable = '?';
                 }
 
