@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 9.3 release series are documented in this fil
 
 ### Fixed
 
+* [#4453](https://github.com/sebastianbergmann/phpunit/issues/4453): `--migrate-configuration` can only migrate `phpunit.xml` or `phpunit.xml.dist`
 * [#4454](https://github.com/sebastianbergmann/phpunit/issues/4454): "Migration failed" message shown when trying to migrate XML configuration file that does not need migration
 
 ## [9.3.9] - 2020-09-11

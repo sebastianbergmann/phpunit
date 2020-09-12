@@ -232,10 +232,6 @@ class Command
             $this->generateConfiguration();
         }
 
-        if ($arguments->hasMigrateConfiguration() && $arguments->migrateConfiguration()) {
-            $this->migrateConfiguration();
-        }
-
         if ($arguments->hasAtLeastVersion()) {
             if (version_compare(Version::id(), $arguments->atLeastVersion(), '>=')) {
                 exit(TestRunner::SUCCESS_EXIT);
@@ -322,6 +318,16 @@ class Command
             if ($candidate !== null) {
                 $this->arguments['configuration'] = $candidate;
             }
+        }
+
+        if ($arguments->hasMigrateConfiguration() && $arguments->migrateConfiguration()) {
+            if (!isset($this->arguments['configuration'])) {
+                print 'No configuration file found to migrate.' . PHP_EOL;
+
+                exit(TestRunner::EXCEPTION_EXIT);
+            }
+
+            $this->migrateConfiguration(realpath($this->arguments['configuration']));
         }
 
         if (isset($this->arguments['configuration'])) {
@@ -770,19 +776,9 @@ class Command
         exit(TestRunner::SUCCESS_EXIT);
     }
 
-    private function migrateConfiguration(): void
+    private function migrateConfiguration(string $filename): void
     {
         $this->printVersionString();
-
-        if (file_exists('phpunit.xml')) {
-            $filename = realpath('phpunit.xml');
-        } elseif (file_exists('phpunit.xml.dist')) {
-            $filename = realpath('phpunit.xml.dist');
-        } else {
-            print 'No configuration file found in ' . getcwd() . PHP_EOL;
-
-            exit(TestRunner::EXCEPTION_EXIT);
-        }
 
         if (!(new SchemaDetector)->detect($filename)->detected()) {
             print $filename . ' does not need to be migrated.' . PHP_EOL;
