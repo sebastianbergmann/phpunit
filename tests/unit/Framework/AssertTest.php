@@ -583,7 +583,7 @@ XML;
             self::markTestSkipped('Cannot test this behaviour on Windows');
         }
 
-        $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('unwritable_dir_', true);
+        $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('not_writable_dir_', true);
         mkdir($dirName, octdec('444'));
 
         $this->assertDirectoryIsNotWritable($dirName);
@@ -652,7 +652,7 @@ XML;
 
     public function testAssertFileIsNotWritable(): void
     {
-        $tempFile = tempnam(sys_get_temp_dir(), 'unwriteable');
+        $tempFile = tempnam(sys_get_temp_dir(), 'not_writable');
 
         chmod($tempFile, octdec('0'));
 
