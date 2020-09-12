@@ -87,6 +87,8 @@ final class TestResultCacheTest extends TestCase
         $cache->load();
 
         $this->assertTrue($this->isSerializedEmptyCache(\serialize($cache)));
+
+        \unlink($cacheFile);
     }
 
     public function isSerializedEmptyCache(string $data): bool
