@@ -15,3 +15,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Created backup:         %sphpunit.xml.bak
 Migrated configuration: %sphpunit.xml
+--CLEAN--
+<?php declare(strict_types=1);
+unlink(sys_get_temp_dir() . '/phpunit.xml');
+unlink(sys_get_temp_dir() . '/phpunit.xml.bak');

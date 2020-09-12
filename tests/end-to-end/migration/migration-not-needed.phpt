@@ -14,3 +14,7 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 %sphpunit.xml does not need to be migrated.
+--CLEAN--
+<?php declare(strict_types=1);
+unlink(sys_get_temp_dir() . '/phpunit.xml');
+unlink(sys_get_temp_dir() . '/phpunit.xml.bak');
