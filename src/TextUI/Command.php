@@ -56,6 +56,7 @@ use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\TextTestListRenderer;
+use PHPUnit\Util\Xml\SchemaDetector;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use ReflectionException;
@@ -794,6 +795,12 @@ class Command
             $filename = realpath('phpunit.xml.dist');
         } else {
             print 'No configuration file found in ' . getcwd() . PHP_EOL;
+
+            exit(TestRunner::EXCEPTION_EXIT);
+        }
+
+        if (!(new SchemaDetector)->detect($filename)->detected()) {
+            print $filename . ' does not need to be migrated.' . PHP_EOL;
 
             exit(TestRunner::EXCEPTION_EXIT);
         }

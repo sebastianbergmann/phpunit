@@ -1557,7 +1557,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="21">
+    <MissingThrowsDocblock occurrences="22">
       <code>run</code>
       <code>handleListSuites</code>
       <code>getTest</code>
@@ -1575,6 +1575,7 @@
       <code>printerClass</code>
       <code>testSuiteLoaderClass</code>
       <code>defaultTestSuite</code>
+      <code>detect</code>
       <code>cacheDirectory</code>
       <code>stop</code>
     </MissingThrowsDocblock>
