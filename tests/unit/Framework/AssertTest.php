@@ -660,9 +660,10 @@ XML;
 
         chmod($tempFile, octdec('755'));
 
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertFileIsNotWritable($tempFile);
+        try {
+            $this->assertFileIsNotWritable($tempFile);
+        } catch (AssertionFailedError $e) {
+        }
 
         unlink($tempFile);
     }
