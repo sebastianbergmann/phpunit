@@ -9,12 +9,13 @@ copy(__DIR__ . '/migration-from-92/phpunit-9.2.xml', 'phpunit.xml');
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main(false);
-
-print file_get_contents(sys_get_temp_dir() . '/phpunit.xml');
-print file_get_contents(sys_get_temp_dir() . '/phpunit.xml.bak');
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Created backup:         %sphpunit.xml.bak
 Migrated configuration: %sphpunit.xml
+--CLEAN--
+<?php declare(strict_types=1);
+unlink(sys_get_temp_dir() . '/phpunit.xml');
+unlink(sys_get_temp_dir() . '/phpunit.xml.bak');

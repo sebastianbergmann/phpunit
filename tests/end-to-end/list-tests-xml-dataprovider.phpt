@@ -2,7 +2,7 @@
 phpunit --list-tests-xml ../../_files/DataProviderTest.php
 --FILE--
 <?php declare(strict_types=1);
-$target = tempnam(sys_get_temp_dir(), __FILE__);
+$target = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);
 
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][2] = '--list-tests-xml';
@@ -13,8 +13,6 @@ require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main(false);
 
 print file_get_contents($target);
-
-unlink($target);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
@@ -28,3 +26,6 @@ Wrote list of tests that would have been run to %s
   <testCaseMethod name="testAdd" groups="default" dataSet="#3"/>
  </testCaseClass>
 </tests>
+--CLEAN--
+<?php declare(strict_types=1);
+unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__));

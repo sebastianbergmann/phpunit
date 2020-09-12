@@ -7,9 +7,10 @@ $_SERVER['argv'][2] = 'Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main(false);
-
-@unlink(__DIR__ . '/2448/.phpunit.result.cache');
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Cannot open file "Test.php".
+--CLEAN--
+<?php declare(strict_types=1);
+unlink(__DIR__ . '/2448/.phpunit.result.cache');
