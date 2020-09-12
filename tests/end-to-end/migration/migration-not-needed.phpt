@@ -9,10 +9,7 @@ copy(__DIR__ . '/migration-not-needed/phpunit.xml', 'phpunit.xml');
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main(false);
-
-print file_get_contents(sys_get_temp_dir() . '/phpunit.xml');
-var_dump(file_exists(sys_get_temp_dir() . '/phpunit.xml.bak'));
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

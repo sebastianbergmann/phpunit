@@ -9,10 +9,7 @@ copy(__DIR__ . '/migration-from-85/phpunit-8.5.xml', 'phpunit.xml');
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main(false);
-
-print file_get_contents(sys_get_temp_dir() . '/phpunit.xml');
-print file_get_contents(sys_get_temp_dir() . '/phpunit.xml.bak');
+PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
