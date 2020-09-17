@@ -1,80 +1,39 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.15@de6e7f324f44dde540ebe7ebd4eb481b97c86f30">
+<files psalm-version="3.16@d03e5ef057d6adc656c0ff7e166c50b73b4f48f3">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
-      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
+      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod occurrences="5">
-      <code>Xml::import($expectedElement)</code>
       <code>Xml::import($actualElement)</code>
-      <code>Xml::removeCharacterDataNodes($expectedElement)</code>
+      <code>Xml::import($expectedElement)</code>
       <code>Xml::removeCharacterDataNodes($actualElement)</code>
+      <code>Xml::removeCharacterDataNodes($expectedElement)</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="20">
-      <code>is_string($key)</code>
-      <code>is_int($key) || is_string($key)</code>
-      <code>is_array($array) || $array instanceof ArrayAccess</code>
-      <code>is_string($key)</code>
-      <code>is_int($key) || is_string($key)</code>
-      <code>is_array($array) || $array instanceof ArrayAccess</code>
-      <code>is_iterable($haystack)</code>
+      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
+      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
+      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
+      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
       <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
-      <code>is_iterable($haystack)</code>
       <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
+      <code>is_array($array) || $array instanceof ArrayAccess</code>
+      <code>is_array($array) || $array instanceof ArrayAccess</code>
+      <code>is_int($key) || is_string($key)</code>
+      <code>is_int($key) || is_string($key)</code>
+      <code>is_iterable($actual)</code>
+      <code>is_iterable($actual)</code>
+      <code>is_iterable($expected)</code>
+      <code>is_iterable($expected)</code>
+      <code>is_iterable($haystack)</code>
+      <code>is_iterable($haystack)</code>
       <code>is_object($object)</code>
       <code>is_object($object)</code>
-      <code>is_iterable($expected)</code>
-      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
-      <code>is_iterable($actual)</code>
-      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
-      <code>is_iterable($expected)</code>
-      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
-      <code>is_iterable($actual)</code>
-      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
+      <code>is_string($key)</code>
+      <code>is_string($key)</code>
     </DocblockTypeContradiction>
     <MissingParamType occurrences="82">
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$expected</code>
       <code>$actual</code>
       <code>$actual</code>
       <code>$actual</code>
@@ -102,55 +61,96 @@
       <code>$actual</code>
       <code>$actual</code>
       <code>$actual</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
       <code>$attributeName</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
+      <code>$condition</code>
+      <code>$condition</code>
+      <code>$condition</code>
+      <code>$condition</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$needle</code>
+      <code>$needle</code>
+      <code>$needle</code>
+      <code>$needle</code>
       <code>$prefix</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
     </MissingParamType>
     <MissingThrowsDocblock occurrences="36">
-      <code>static::assertThat($haystack, $constraint, $message)</code>
-      <code>static::assertThat($haystack, $constraint, $message)</code>
-      <code>new IsType(IsType::TYPE_ARRAY)</code>
-      <code>new IsType(IsType::TYPE_BOOL)</code>
-      <code>new IsType(IsType::TYPE_FLOAT)</code>
-      <code>new IsType(IsType::TYPE_INT)</code>
-      <code>new IsType(IsType::TYPE_NUMERIC)</code>
-      <code>new IsType(IsType::TYPE_OBJECT)</code>
-      <code>new IsType(IsType::TYPE_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_CLOSED_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_STRING)</code>
-      <code>new IsType(IsType::TYPE_SCALAR)</code>
-      <code>new IsType(IsType::TYPE_CALLABLE)</code>
-      <code>new IsType(IsType::TYPE_ITERABLE)</code>
-      <code>new IsType(IsType::TYPE_ARRAY)</code>
-      <code>new IsType(IsType::TYPE_BOOL)</code>
-      <code>new IsType(IsType::TYPE_FLOAT)</code>
-      <code>new IsType(IsType::TYPE_INT)</code>
-      <code>new IsType(IsType::TYPE_NUMERIC)</code>
-      <code>new IsType(IsType::TYPE_OBJECT)</code>
-      <code>new IsType(IsType::TYPE_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_CLOSED_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_STRING)</code>
-      <code>new IsType(IsType::TYPE_SCALAR)</code>
-      <code>new IsType(IsType::TYPE_CALLABLE)</code>
-      <code>new IsType(IsType::TYPE_ITERABLE)</code>
       <code>loadFile</code>
       <code>loadFile</code>
       <code>loadFile</code>
       <code>loadFile</code>
-      <code>new TraversableContainsOnly($type)</code>
-      <code>new TraversableContainsOnly($className, false)</code>
       <code>new IsType($type)</code>
+      <code>new IsType(IsType::TYPE_ARRAY)</code>
+      <code>new IsType(IsType::TYPE_ARRAY)</code>
+      <code>new IsType(IsType::TYPE_BOOL)</code>
+      <code>new IsType(IsType::TYPE_BOOL)</code>
+      <code>new IsType(IsType::TYPE_CALLABLE)</code>
+      <code>new IsType(IsType::TYPE_CALLABLE)</code>
+      <code>new IsType(IsType::TYPE_CLOSED_RESOURCE)</code>
+      <code>new IsType(IsType::TYPE_CLOSED_RESOURCE)</code>
+      <code>new IsType(IsType::TYPE_FLOAT)</code>
+      <code>new IsType(IsType::TYPE_FLOAT)</code>
+      <code>new IsType(IsType::TYPE_INT)</code>
+      <code>new IsType(IsType::TYPE_INT)</code>
+      <code>new IsType(IsType::TYPE_ITERABLE)</code>
+      <code>new IsType(IsType::TYPE_ITERABLE)</code>
+      <code>new IsType(IsType::TYPE_NUMERIC)</code>
+      <code>new IsType(IsType::TYPE_NUMERIC)</code>
+      <code>new IsType(IsType::TYPE_OBJECT)</code>
+      <code>new IsType(IsType::TYPE_OBJECT)</code>
+      <code>new IsType(IsType::TYPE_RESOURCE)</code>
+      <code>new IsType(IsType::TYPE_RESOURCE)</code>
+      <code>new IsType(IsType::TYPE_SCALAR)</code>
+      <code>new IsType(IsType::TYPE_SCALAR)</code>
+      <code>new IsType(IsType::TYPE_STRING)</code>
+      <code>new IsType(IsType::TYPE_STRING)</code>
+      <code>new TraversableContainsOnly($className, false)</code>
+      <code>new TraversableContainsOnly($type)</code>
+      <code>static::assertThat($haystack, $constraint, $message)</code>
+      <code>static::assertThat($haystack, $constraint, $message)</code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument occurrences="2">
       <code>$expected</code>
@@ -169,60 +169,19 @@
       <code>new InvokedAtIndexMatcher($index)</code>
     </DeprecatedClass>
     <DeprecatedMethod occurrences="11">
-      <code>Assert::assertNotIsReadable(...func_get_args())</code>
-      <code>Assert::assertNotIsWritable(...func_get_args())</code>
       <code>Assert::assertDirectoryNotExists(...func_get_args())</code>
       <code>Assert::assertDirectoryNotIsReadable(...func_get_args())</code>
       <code>Assert::assertDirectoryNotIsWritable(...func_get_args())</code>
+      <code>Assert::assertEqualXMLStructure(...func_get_args())</code>
       <code>Assert::assertFileNotExists(...func_get_args())</code>
       <code>Assert::assertFileNotIsReadable(...func_get_args())</code>
       <code>Assert::assertFileNotIsWritable(...func_get_args())</code>
-      <code>Assert::assertRegExp(...func_get_args())</code>
+      <code>Assert::assertNotIsReadable(...func_get_args())</code>
+      <code>Assert::assertNotIsWritable(...func_get_args())</code>
       <code>Assert::assertNotRegExp(...func_get_args())</code>
-      <code>Assert::assertEqualXMLStructure(...func_get_args())</code>
+      <code>Assert::assertRegExp(...func_get_args())</code>
     </DeprecatedMethod>
     <MissingParamType occurrences="85">
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$expected</code>
-      <code>$actual</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$expected</code>
       <code>$actual</code>
       <code>$actual</code>
       <code>$actual</code>
@@ -250,345 +209,386 @@
       <code>$actual</code>
       <code>$actual</code>
       <code>$actual</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$key</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
+      <code>$actual</code>
       <code>$attributeName</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
+      <code>$callback</code>
+      <code>$condition</code>
+      <code>$condition</code>
+      <code>$condition</code>
+      <code>$condition</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$key</code>
+      <code>$needle</code>
+      <code>$needle</code>
+      <code>$needle</code>
+      <code>$needle</code>
       <code>$prefix</code>
       <code>$value</code>
-      <code>$callback</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
+      <code>$value</code>
     </MissingParamType>
     <MissingThrowsDocblock occurrences="1">
       <code>Assert::logicalAnd(...func_get_args())</code>
     </MissingThrowsDocblock>
     <TooManyArguments occurrences="13">
       <code>Assert::anything(...func_get_args())</code>
-      <code>Assert::isTrue(...func_get_args())</code>
-      <code>Assert::isFalse(...func_get_args())</code>
-      <code>Assert::isJson(...func_get_args())</code>
-      <code>Assert::isNull(...func_get_args())</code>
-      <code>Assert::isFinite(...func_get_args())</code>
-      <code>Assert::isInfinite(...func_get_args())</code>
-      <code>Assert::isNan(...func_get_args())</code>
-      <code>Assert::isEmpty(...func_get_args())</code>
-      <code>Assert::isWritable(...func_get_args())</code>
-      <code>Assert::isReadable(...func_get_args())</code>
       <code>Assert::directoryExists(...func_get_args())</code>
       <code>Assert::fileExists(...func_get_args())</code>
+      <code>Assert::isEmpty(...func_get_args())</code>
+      <code>Assert::isFalse(...func_get_args())</code>
+      <code>Assert::isFinite(...func_get_args())</code>
+      <code>Assert::isInfinite(...func_get_args())</code>
+      <code>Assert::isJson(...func_get_args())</code>
+      <code>Assert::isNan(...func_get_args())</code>
+      <code>Assert::isNull(...func_get_args())</code>
+      <code>Assert::isReadable(...func_get_args())</code>
+      <code>Assert::isTrue(...func_get_args())</code>
+      <code>Assert::isWritable(...func_get_args())</code>
     </TooManyArguments>
     <UnusedParam occurrences="302">
-      <code>$key</code>
-      <code>$array</code>
-      <code>$message</code>
-      <code>$key</code>
-      <code>$array</code>
-      <code>$message</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$type</code>
-      <code>$haystack</code>
-      <code>$isNativeType</code>
-      <code>$message</code>
-      <code>$className</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$type</code>
-      <code>$haystack</code>
-      <code>$isNativeType</code>
-      <code>$message</code>
-      <code>$expectedCount</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$expectedCount</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$delta</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$delta</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$expected</code>
       <code>$actual</code>
-      <code>$message</code>
-      <code>$expected</code>
       <code>$actual</code>
-      <code>$message</code>
-      <code>$expected</code>
       <code>$actual</code>
-      <code>$message</code>
-      <code>$expected</code>
       <code>$actual</code>
-      <code>$message</code>
-      <code>$expected</code>
       <code>$actual</code>
-      <code>$message</code>
-      <code>$expected</code>
       <code>$actual</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualString</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualString</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualString</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualString</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualString</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualString</code>
-      <code>$message</code>
-      <code>$filename</code>
-      <code>$message</code>
-      <code>$filename</code>
-      <code>$message</code>
-      <code>$filename</code>
-      <code>$message</code>
-      <code>$filename</code>
-      <code>$message</code>
-      <code>$filename</code>
-      <code>$message</code>
-      <code>$filename</code>
-      <code>$message</code>
-      <code>$directory</code>
-      <code>$message</code>
-      <code>$directory</code>
-      <code>$message</code>
-      <code>$directory</code>
-      <code>$message</code>
-      <code>$directory</code>
-      <code>$message</code>
-      <code>$directory</code>
-      <code>$message</code>
-      <code>$directory</code>
-      <code>$message</code>
-      <code>$directory</code>
-      <code>$message</code>
-      <code>$directory</code>
-      <code>$message</code>
-      <code>$directory</code>
-      <code>$message</code>
-      <code>$filename</code>
-      <code>$message</code>
-      <code>$filename</code>
-      <code>$message</code>
-      <code>$filename</code>
-      <code>$message</code>
-      <code>$file</code>
-      <code>$message</code>
-      <code>$file</code>
-      <code>$message</code>
-      <code>$file</code>
-      <code>$message</code>
-      <code>$file</code>
-      <code>$message</code>
-      <code>$file</code>
-      <code>$message</code>
-      <code>$file</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$attributeName</code>
-      <code>$className</code>
-      <code>$message</code>
-      <code>$attributeName</code>
-      <code>$className</code>
-      <code>$message</code>
-      <code>$attributeName</code>
-      <code>$className</code>
-      <code>$message</code>
-      <code>$attributeName</code>
-      <code>$className</code>
-      <code>$message</code>
-      <code>$attributeName</code>
-      <code>$object</code>
-      <code>$message</code>
-      <code>$attributeName</code>
-      <code>$object</code>
-      <code>$message</code>
-      <code>$expected</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$expected</code>
-      <code>$message</code>
-      <code>$expected</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$message</code>
-      <code>$pattern</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$pattern</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$pattern</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$pattern</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$expected</code>
       <code>$actual</code>
-      <code>$message</code>
-      <code>$expected</code>
       <code>$actual</code>
-      <code>$message</code>
-      <code>$format</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$format</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$formatFile</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$formatFile</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$prefix</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$prefix</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$needle</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$needle</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$needle</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$needle</code>
-      <code>$haystack</code>
-      <code>$message</code>
-      <code>$suffix</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$suffix</code>
-      <code>$string</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualFile</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualFile</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualXml</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualXml</code>
-      <code>$message</code>
-      <code>$expectedXml</code>
-      <code>$actualXml</code>
-      <code>$message</code>
-      <code>$expectedXml</code>
-      <code>$actualXml</code>
-      <code>$message</code>
-      <code>$expectedElement</code>
       <code>$actualElement</code>
-      <code>$checkAttributes</code>
-      <code>$message</code>
-      <code>$constraint</code>
-      <code>$message</code>
-      <code>$actualJson</code>
-      <code>$message</code>
-      <code>$expectedJson</code>
-      <code>$actualJson</code>
-      <code>$message</code>
-      <code>$expectedJson</code>
-      <code>$actualJson</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualJson</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
-      <code>$actualJson</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
       <code>$actualFile</code>
-      <code>$message</code>
-      <code>$expectedFile</code>
       <code>$actualFile</code>
-      <code>$message</code>
-      <code>$constraint</code>
+      <code>$actualFile</code>
+      <code>$actualFile</code>
+      <code>$actualJson</code>
+      <code>$actualJson</code>
+      <code>$actualJson</code>
+      <code>$actualJson</code>
+      <code>$actualJson</code>
+      <code>$actualString</code>
+      <code>$actualString</code>
+      <code>$actualString</code>
+      <code>$actualString</code>
+      <code>$actualString</code>
+      <code>$actualString</code>
+      <code>$actualXml</code>
+      <code>$actualXml</code>
+      <code>$actualXml</code>
+      <code>$actualXml</code>
+      <code>$array</code>
+      <code>$array</code>
+      <code>$attributeName</code>
+      <code>$attributeName</code>
+      <code>$attributeName</code>
+      <code>$attributeName</code>
+      <code>$attributeName</code>
+      <code>$attributeName</code>
+      <code>$attributeName</code>
+      <code>$attributeName</code>
       <code>$callback</code>
-      <code>$type</code>
-      <code>$className</code>
-      <code>$delta</code>
-      <code>$attributeName</code>
-      <code>$attributeName</code>
-      <code>$className</code>
-      <code>$type</code>
-      <code>$pattern</code>
-      <code>$string</code>
-      <code>$string</code>
       <code>$case</code>
-      <code>$suffix</code>
+      <code>$checkAttributes</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$constraint</code>
+      <code>$constraint</code>
       <code>$count</code>
+      <code>$delta</code>
+      <code>$delta</code>
+      <code>$delta</code>
+      <code>$directory</code>
+      <code>$directory</code>
+      <code>$directory</code>
+      <code>$directory</code>
+      <code>$directory</code>
+      <code>$directory</code>
+      <code>$directory</code>
+      <code>$directory</code>
+      <code>$directory</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expected</code>
+      <code>$expectedCount</code>
+      <code>$expectedCount</code>
+      <code>$expectedElement</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedFile</code>
+      <code>$expectedJson</code>
+      <code>$expectedJson</code>
+      <code>$expectedXml</code>
+      <code>$expectedXml</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$file</code>
+      <code>$filename</code>
+      <code>$filename</code>
+      <code>$filename</code>
+      <code>$filename</code>
+      <code>$filename</code>
+      <code>$filename</code>
+      <code>$filename</code>
+      <code>$filename</code>
+      <code>$filename</code>
+      <code>$format</code>
+      <code>$format</code>
+      <code>$formatFile</code>
+      <code>$formatFile</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$haystack</code>
+      <code>$isNativeType</code>
+      <code>$isNativeType</code>
+      <code>$key</code>
+      <code>$key</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$message</code>
+      <code>$needle</code>
+      <code>$needle</code>
+      <code>$needle</code>
+      <code>$needle</code>
+      <code>$object</code>
+      <code>$object</code>
+      <code>$pattern</code>
+      <code>$pattern</code>
+      <code>$pattern</code>
+      <code>$pattern</code>
+      <code>$pattern</code>
+      <code>$prefix</code>
+      <code>$prefix</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$string</code>
+      <code>$suffix</code>
+      <code>$suffix</code>
+      <code>$suffix</code>
+      <code>$type</code>
+      <code>$type</code>
+      <code>$type</code>
+      <code>$type</code>
     </UnusedParam>
   </file>
   <file src="src/Framework/Constraint/Cardinality/Count.php">
@@ -615,26 +615,26 @@
   </file>
   <file src="src/Framework/Constraint/Equality/IsEqual.php">
     <MissingParamType occurrences="2">
-      <code>$value</code>
       <code>$other</code>
+      <code>$value</code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Equality/IsEqualCanonicalizing.php">
     <MissingParamType occurrences="2">
-      <code>$value</code>
       <code>$other</code>
+      <code>$value</code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Equality/IsEqualIgnoringCase.php">
     <MissingParamType occurrences="2">
-      <code>$value</code>
       <code>$other</code>
+      <code>$value</code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Equality/IsEqualWithDelta.php">
     <MissingParamType occurrences="2">
-      <code>$value</code>
       <code>$other</code>
+      <code>$value</code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Exception/Exception.php">
@@ -664,8 +664,8 @@
   </file>
   <file src="src/Framework/Constraint/IsIdentical.php">
     <MissingParamType occurrences="2">
-      <code>$value</code>
       <code>$other</code>
+      <code>$value</code>
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/JsonMatchesErrorMessageProvider.php">
@@ -730,7 +730,8 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <PropertyNotSetInConstructor occurrences="1">
+    <PropertyNotSetInConstructor occurrences="2">
+      <code>DataProviderTestSuite</code>
       <code>DataProviderTestSuite</code>
     </PropertyNotSetInConstructor>
   </file>
@@ -741,8 +742,8 @@
   </file>
   <file src="src/Framework/Exception/Exception.php">
     <MissingParamType occurrences="2">
-      <code>$message</code>
       <code>$code</code>
+      <code>$message</code>
     </MissingParamType>
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($this)</code>
@@ -771,8 +772,8 @@
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
     <PossiblyUnusedMethod occurrences="2">
-      <code>setClassName</code>
       <code>getOriginalException</code>
+      <code>setClassName</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/IncompleteTestCase.php">
@@ -793,15 +794,15 @@
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
     <MissingParamType occurrences="3">
-      <code>$value</code>
-      <code>$nextValues</code>
       <code>$arguments</code>
+      <code>$nextValues</code>
+      <code>$value</code>
     </MissingParamType>
     <MissingThrowsDocblock occurrences="4">
-      <code>registerMatcher</code>
-      <code>new Rule\Parameters($arguments)</code>
       <code>new Rule\ConsecutiveParameters($arguments)</code>
       <code>new Rule\MethodName($constraint)</code>
+      <code>new Rule\Parameters($arguments)</code>
+      <code>registerMatcher</code>
     </MissingThrowsDocblock>
     <PossiblyUnusedMethod occurrences="1">
       <code>withConsecutive</code>
@@ -809,16 +810,16 @@
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationStubber.php">
     <MissingParamType occurrences="2">
-      <code>$value</code>
       <code>$nextValues</code>
+      <code>$value</code>
     </MissingParamType>
     <PossiblyUnusedMethod occurrences="7">
-      <code>willReturnReference</code>
-      <code>willReturnMap</code>
       <code>willReturnArgument</code>
       <code>willReturnCallback</code>
-      <code>willReturnSelf</code>
+      <code>willReturnMap</code>
       <code>willReturnOnConsecutiveCalls</code>
+      <code>willReturnReference</code>
+      <code>willReturnSelf</code>
       <code>willThrowException</code>
     </PossiblyUnusedMethod>
   </file>
@@ -856,8 +857,8 @@
     <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
       <code>$className</code>
-      <code>$interfaceName</code>
       <code>$className</code>
+      <code>$interfaceName</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="1">
       <code>!is_array($methods) &amp;&amp; null !== $methods</code>
@@ -876,11 +877,11 @@
       <code>getObject</code>
     </MissingReturnType>
     <MissingThrowsDocblock occurrences="8">
-      <code>throw InvalidArgumentException::create(2, 'array');</code>
       <code>generateMock</code>
       <code>generateMock</code>
-      <code>throw new RuntimeException($exception-&gt;getMessage());</code>
       <code>new Template($filename)</code>
+      <code>throw InvalidArgumentException::create(2, 'array');</code>
+      <code>throw new RuntimeException($exception-&gt;getMessage());</code>
     </MissingThrowsDocblock>
     <PossiblyFalseArgument occurrences="1">
       <code>strpos($args[$i], '$')</code>
@@ -900,10 +901,10 @@
     </MissingReturnType>
     <PossiblyUnusedMethod occurrences="7">
       <code>__construct</code>
-      <code>hasMatchers</code>
-      <code>lookupMatcher</code>
       <code>expects</code>
+      <code>hasMatchers</code>
       <code>invoke</code>
+      <code>lookupMatcher</code>
       <code>matches</code>
       <code>verify</code>
     </PossiblyUnusedMethod>
@@ -933,13 +934,13 @@
       <code>$stub</code>
     </PropertyNotSetInConstructor>
     <RedundantConditionGivenDocblockType occurrences="8">
+      <code>$this-&gt;invocationRule !== null</code>
       <code>$this-&gt;methodNameRule !== null</code>
+      <code>$this-&gt;methodNameRule !== null</code>
+      <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;stub</code>
-      <code>$this-&gt;invocationRule !== null</code>
-      <code>$this-&gt;methodNameRule !== null</code>
-      <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;stub !== null</code>
     </RedundantConditionGivenDocblockType>
   </file>
@@ -969,22 +970,22 @@
       <code>$type</code>
     </PossiblyInvalidPropertyAssignmentValue>
     <PossiblyUnusedMethod occurrences="16">
+      <code>addMethods</code>
+      <code>allowMockingUnknownTypes</code>
+      <code>disableAutoReturnValueGeneration</code>
+      <code>disableAutoload</code>
+      <code>disableProxyingToOriginalMethods</code>
+      <code>enableArgumentCloning</code>
+      <code>enableAutoReturnValueGeneration</code>
+      <code>enableAutoload</code>
+      <code>enableOriginalClone</code>
+      <code>enableOriginalConstructor</code>
       <code>getMockForAbstractClass</code>
       <code>getMockForTrait</code>
       <code>onlyMethods</code>
-      <code>addMethods</code>
       <code>setMethodsExcept</code>
       <code>setMockClassName</code>
-      <code>enableOriginalConstructor</code>
-      <code>enableOriginalClone</code>
-      <code>disableAutoload</code>
-      <code>enableAutoload</code>
-      <code>enableArgumentCloning</code>
-      <code>disableProxyingToOriginalMethods</code>
       <code>setProxyTarget</code>
-      <code>allowMockingUnknownTypes</code>
-      <code>enableAutoReturnValueGeneration</code>
-      <code>disableAutoReturnValueGeneration</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/MockClass.php">
@@ -1129,9 +1130,9 @@
       <code>buildTestWithoutData</code>
     </MissingReturnType>
     <MissingThrowsDocblock occurrences="4">
+      <code>Filter::getFilteredStacktrace($t)</code>
+      <code>Filter::getFilteredStacktrace($t)</code>
       <code>throw new Exception('No valid test provided.');</code>
-      <code>Filter::getFilteredStacktrace($t)</code>
-      <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/TestCase.php">
@@ -1146,32 +1147,32 @@
       <code>setMethods</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="7">
-      <code>is_string($this-&gt;outputExpectedString) || is_string($this-&gt;outputExpectedRegex)</code>
       <code>$this-&gt;backupStaticAttributes === null</code>
-      <code>$this-&gt;runTestInSeparateProcess === null</code>
-      <code>$this-&gt;runClassInSeparateProcess === null</code>
       <code>$this-&gt;mockObjectGenerator === null</code>
-      <code>$this-&gt;snapshot instanceof Snapshot</code>
       <code>$this-&gt;prophet === null</code>
+      <code>$this-&gt;runClassInSeparateProcess === null</code>
+      <code>$this-&gt;runTestInSeparateProcess === null</code>
+      <code>$this-&gt;snapshot instanceof Snapshot</code>
+      <code>is_string($this-&gt;outputExpectedString) || is_string($this-&gt;outputExpectedRegex)</code>
     </DocblockTypeContradiction>
     <InvalidArgument occurrences="1">
       <code>$header</code>
     </InvalidArgument>
     <InvalidCatch occurrences="1"/>
     <InvalidReturnStatement occurrences="2">
-      <code>get_class($mock)</code>
       <code>$mockObject</code>
+      <code>get_class($mock)</code>
     </InvalidReturnStatement>
     <InvalidReturnType occurrences="2">
-      <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
       <code>MockObject&amp;RealInstanceType</code>
+      <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
     </InvalidReturnType>
     <MissingParamType occurrences="5">
-      <code>$value</code>
+      <code>$args</code>
+      <code>$args</code>
       <code>$callback</code>
-      <code>$args</code>
       <code>$result</code>
-      <code>$args</code>
+      <code>$value</code>
     </MissingParamType>
     <MissingReturnType occurrences="2">
       <code>getResult</code>
@@ -1179,109 +1180,109 @@
     </MissingReturnType>
     <MissingThrowsDocblock occurrences="19">
       <code>cacheDirectory</code>
+      <code>endTest</code>
+      <code>endTest</code>
+      <code>endTest</code>
+      <code>generateClassFromWsdl</code>
+      <code>getMock</code>
       <code>getMock</code>
       <code>getMock</code>
       <code>getMock</code>
       <code>getMock</code>
       <code>getMockForAbstractClass</code>
-      <code>generateClassFromWsdl</code>
-      <code>getMock</code>
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
-      <code>endTest</code>
-      <code>endTest</code>
-      <code>endTest</code>
       <code>new Differ($header)</code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue occurrences="3">
-      <code>null</code>
       <code>$beStrictAboutChangesToGlobalState</code>
+      <code>null</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
     <PossiblyUnusedMethod occurrences="71">
+      <code>addToAssertionCount</code>
       <code>any</code>
-      <code>never</code>
+      <code>assertPostConditions</code>
+      <code>assertPreConditions</code>
+      <code>at</code>
       <code>atLeast</code>
       <code>atLeastOnce</code>
-      <code>once</code>
-      <code>exactly</code>
       <code>atMost</code>
-      <code>at</code>
-      <code>returnValue</code>
-      <code>returnValueMap</code>
-      <code>returnArgument</code>
-      <code>returnCallback</code>
-      <code>returnSelf</code>
-      <code>throwException</code>
-      <code>onConsecutiveCalls</code>
-      <code>setUpBeforeClass</code>
-      <code>tearDownAfterClass</code>
-      <code>setUp</code>
-      <code>tearDown</code>
-      <code>getActualOutputForAssertion</code>
-      <code>expectOutputRegex</code>
-      <code>expectOutputString</code>
-      <code>expectExceptionObject</code>
-      <code>expectNotToPerformAssertions</code>
+      <code>createConfiguredMock</code>
+      <code>createPartialMock</code>
+      <code>createStub</code>
+      <code>createTestProxy</code>
+      <code>doesNotPerformAssertions</code>
+      <code>exactly</code>
       <code>expectDeprecation</code>
       <code>expectDeprecationMessage</code>
       <code>expectDeprecationMessageMatches</code>
-      <code>expectNotice</code>
-      <code>expectNoticeMessage</code>
-      <code>expectNoticeMessageMatches</code>
-      <code>expectWarning</code>
-      <code>expectWarningMessage</code>
-      <code>expectWarningMessageMatches</code>
       <code>expectError</code>
       <code>expectErrorMessage</code>
       <code>expectErrorMessageMatches</code>
-      <code>getStatusMessage</code>
-      <code>hasFailed</code>
-      <code>registerComparator</code>
-      <code>hasSize</code>
-      <code>isSmall</code>
-      <code>isMedium</code>
-      <code>isLarge</code>
-      <code>hasOutput</code>
-      <code>doesNotPerformAssertions</code>
+      <code>expectExceptionObject</code>
+      <code>expectNotToPerformAssertions</code>
+      <code>expectNotice</code>
+      <code>expectNoticeMessage</code>
+      <code>expectNoticeMessageMatches</code>
+      <code>expectOutputRegex</code>
+      <code>expectOutputString</code>
+      <code>expectWarning</code>
+      <code>expectWarningMessage</code>
+      <code>expectWarningMessageMatches</code>
+      <code>getActualOutputForAssertion</code>
       <code>getExpectedException</code>
       <code>getExpectedExceptionCode</code>
       <code>getExpectedExceptionMessage</code>
       <code>getExpectedExceptionMessageRegExp</code>
+      <code>getMockClass</code>
+      <code>getMockForAbstractClass</code>
+      <code>getMockForTrait</code>
+      <code>getMockFromWsdl</code>
+      <code>getObjectForTrait</code>
+      <code>getStatusMessage</code>
+      <code>getTestResultObject</code>
+      <code>hasFailed</code>
+      <code>hasOutput</code>
+      <code>hasSize</code>
+      <code>iniSet</code>
+      <code>isLarge</code>
+      <code>isMedium</code>
+      <code>isSmall</code>
+      <code>never</code>
+      <code>onConsecutiveCalls</code>
+      <code>onNotSuccessfulTest</code>
+      <code>once</code>
+      <code>prophesize</code>
+      <code>registerComparator</code>
+      <code>returnArgument</code>
+      <code>returnCallback</code>
+      <code>returnSelf</code>
+      <code>returnValue</code>
+      <code>returnValueMap</code>
       <code>runBare</code>
       <code>setDependencyInput</code>
       <code>setInIsolation</code>
-      <code>setResult</code>
-      <code>setOutputCallback</code>
-      <code>getTestResultObject</code>
-      <code>addToAssertionCount</code>
-      <code>iniSet</code>
       <code>setLocale</code>
-      <code>createStub</code>
-      <code>createConfiguredMock</code>
-      <code>createPartialMock</code>
-      <code>createTestProxy</code>
-      <code>getMockClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockFromWsdl</code>
-      <code>getMockForTrait</code>
-      <code>getObjectForTrait</code>
-      <code>prophesize</code>
-      <code>assertPreConditions</code>
-      <code>assertPostConditions</code>
-      <code>onNotSuccessfulTest</code>
+      <code>setOutputCallback</code>
+      <code>setResult</code>
+      <code>setUp</code>
+      <code>setUpBeforeClass</code>
+      <code>tearDown</code>
+      <code>tearDownAfterClass</code>
+      <code>throwException</code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="10">
       <code>$backupStaticAttributes</code>
-      <code>$runTestInSeparateProcess</code>
-      <code>$runClassInSeparateProcess</code>
       <code>$mockObjectGenerator</code>
-      <code>$result</code>
+      <code>$outputBufferingLevel</code>
       <code>$outputExpectedRegex</code>
       <code>$outputExpectedString</code>
-      <code>$outputBufferingLevel</code>
-      <code>$snapshot</code>
       <code>$prophet</code>
+      <code>$result</code>
+      <code>$runClassInSeparateProcess</code>
+      <code>$runTestInSeparateProcess</code>
+      <code>$snapshot</code>
     </PropertyNotSetInConstructor>
     <RawObjectIteration occurrences="1">
       <code>$methodProphecies</code>
@@ -1290,25 +1291,25 @@
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType occurrences="3">
-      <code>is_string($this-&gt;outputExpectedString)</code>
-      <code>is_string($this-&gt;outputExpectedRegex)</code>
       <code>$this-&gt;prophet !== null</code>
+      <code>is_string($this-&gt;outputExpectedRegex)</code>
+      <code>is_string($this-&gt;outputExpectedString)</code>
     </RedundantConditionGivenDocblockType>
     <UnusedMethod occurrences="5">
-      <code>stopOutputBuffering</code>
-      <code>restoreGlobalState</code>
-      <code>unregisterCustomComparators</code>
       <code>cleanupIniSettings</code>
       <code>cleanupLocaleSettings</code>
+      <code>restoreGlobalState</code>
+      <code>stopOutputBuffering</code>
+      <code>unregisterCustomComparators</code>
     </UnusedMethod>
   </file>
   <file src="src/Framework/TestFailure.php">
     <PossiblyUnusedMethod occurrences="5">
-      <code>toString</code>
-      <code>getExceptionAsString</code>
-      <code>failedTest</code>
       <code>exceptionMessage</code>
+      <code>failedTest</code>
+      <code>getExceptionAsString</code>
       <code>isFailure</code>
+      <code>toString</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/TestListener.php">
@@ -1321,15 +1322,15 @@
   </file>
   <file src="src/Framework/TestResult.php">
     <DeprecatedClass occurrences="4">
+      <code>TestListener</code>
+      <code>TestListener</code>
       <code>TestListener[]</code>
-      <code>TestListener</code>
-      <code>TestListener</code>
       <code>private $listeners = [];</code>
     </DeprecatedClass>
     <DeprecatedMethod occurrences="3">
       <code>addWarning</code>
-      <code>startTest</code>
       <code>endTest</code>
+      <code>startTest</code>
     </DeprecatedMethod>
     <DeprecatedProperty occurrences="1">
       <code>$this-&gt;listeners</code>
@@ -1337,32 +1338,33 @@
     <DocblockTypeContradiction occurrences="1">
       <code>$this-&gt;topTestSuite === null</code>
     </DocblockTypeContradiction>
-    <MissingConstructor occurrences="1">
+    <MissingConstructor occurrences="2">
+      <code>$codeCoverage</code>
       <code>$topTestSuite</code>
     </MissingConstructor>
     <PossiblyUndefinedVariable occurrences="1">
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
     <PossiblyUnusedMethod occurrences="19">
-      <code>removeListener</code>
+      <code>beStrictAboutOutputDuringTests</code>
+      <code>beStrictAboutResourceUsageDuringSmallTests</code>
+      <code>beStrictAboutTestsThatDoNotTestAnything</code>
+      <code>beStrictAboutTodoAnnotatedTests</code>
+      <code>enforceTimeLimit</code>
       <code>flushListeners</code>
-      <code>topTestSuite</code>
-      <code>setCodeCoverage</code>
+      <code>forceCoversAnnotation</code>
+      <code>forcesCoversAnnotation</code>
       <code>getConvertDeprecationsToExceptions</code>
       <code>getConvertErrorsToExceptions</code>
       <code>getConvertNoticesToExceptions</code>
       <code>getConvertWarningsToExceptions</code>
-      <code>beStrictAboutTestsThatDoNotTestAnything</code>
-      <code>beStrictAboutOutputDuringTests</code>
-      <code>beStrictAboutResourceUsageDuringSmallTests</code>
-      <code>enforceTimeLimit</code>
-      <code>beStrictAboutTodoAnnotatedTests</code>
-      <code>forceCoversAnnotation</code>
-      <code>forcesCoversAnnotation</code>
+      <code>removeListener</code>
+      <code>setCodeCoverage</code>
       <code>setDefaultTimeLimit</code>
-      <code>setTimeoutForSmallTests</code>
-      <code>setTimeoutForMediumTests</code>
       <code>setTimeoutForLargeTests</code>
+      <code>setTimeoutForMediumTests</code>
+      <code>setTimeoutForSmallTests</code>
+      <code>topTestSuite</code>
     </PossiblyUnusedMethod>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>$this-&gt;codeCoverage !== null</code>
@@ -1377,13 +1379,13 @@
     <DocblockTypeContradiction occurrences="5">
       <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
       <code>is_string($testClass)</code>
-      <code>null === $this-&gt;beStrictAboutChangesToGlobalState</code>
       <code>null === $this-&gt;backupGlobals</code>
       <code>null === $this-&gt;backupStaticAttributes</code>
+      <code>null === $this-&gt;beStrictAboutChangesToGlobalState</code>
     </DocblockTypeContradiction>
     <MissingThrowsDocblock occurrences="3">
-      <code>new PhptTestCase($filename)</code>
       <code>FileLoader::checkAndLoad($filename)</code>
+      <code>new PhptTestCase($filename)</code>
     </MissingThrowsDocblock>
     <PossiblyUnusedMethod occurrences="2">
       <code>setGroupDetails</code>
@@ -1396,14 +1398,14 @@
       <code>$iteratorFilter</code>
     </PropertyNotSetInConstructor>
     <RedundantConditionGivenDocblockType occurrences="8">
-      <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
-      <code>is_bool($beStrictAboutChangesToGlobalState)</code>
-      <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
-      <code>is_bool($backupGlobals)</code>
-      <code>null === $this-&gt;backupGlobals &amp;&amp; is_bool($backupGlobals)</code>
-      <code>is_bool($backupStaticAttributes)</code>
-      <code>null === $this-&gt;backupStaticAttributes &amp;&amp; is_bool($backupStaticAttributes)</code>
       <code>$this-&gt;iteratorFilter !== null</code>
+      <code>is_bool($backupGlobals)</code>
+      <code>is_bool($backupStaticAttributes)</code>
+      <code>is_bool($beStrictAboutChangesToGlobalState)</code>
+      <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
+      <code>null === $this-&gt;backupGlobals &amp;&amp; is_bool($backupGlobals)</code>
+      <code>null === $this-&gt;backupStaticAttributes &amp;&amp; is_bool($backupStaticAttributes)</code>
+      <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
     <UnusedVariable occurrences="1">
       <code>$numTests</code>
@@ -1440,8 +1442,8 @@
       <code>__construct</code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="2">
-      <code>$filterMin</code>
       <code>$filterMax</code>
+      <code>$filterMin</code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Runner/Hook/AfterLastTestHook.php">
@@ -1479,10 +1481,10 @@
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
     <PossiblyUnusedMethod occurrences="4">
-      <code>usesDataProvider</code>
-      <code>getNumAssertions</code>
       <code>getActualOutput</code>
+      <code>getNumAssertions</code>
       <code>hasOutput</code>
+      <code>usesDataProvider</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Runner/StandardTestSuiteLoader.php">
@@ -1509,20 +1511,20 @@
   <file src="src/Runner/TestSuiteSorter.php">
     <MissingClosureParamType occurrences="6">
       <code>$left</code>
-      <code>$right</code>
+      <code>$left</code>
       <code>$left</code>
       <code>$right</code>
-      <code>$left</code>
+      <code>$right</code>
       <code>$right</code>
     </MissingClosureParamType>
     <PossiblyUnusedMethod occurrences="1">
       <code>getExecutionOrder</code>
     </PossiblyUnusedMethod>
     <RedundantConditionGivenDocblockType occurrences="4">
-      <code>$this-&gt;cache !== null</code>
       <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
-      <code>$this-&gt;cache !== null</code>
       <code>$orderDefects === self::ORDER_DEFECTS_FIRST &amp;&amp; $this-&gt;cache !== null</code>
+      <code>$this-&gt;cache !== null</code>
+      <code>$this-&gt;cache !== null</code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/TextUI/CliArguments/Builder.php">
@@ -1546,36 +1548,36 @@
     </DeprecatedClass>
     <DeprecatedMethod occurrences="6">
       <code>handleLoader</code>
+      <code>handleLoader</code>
       <code>hasTestSuiteLoaderClass</code>
       <code>hasTestSuiteLoaderFile</code>
-      <code>testSuiteLoaderFile</code>
       <code>testSuiteLoaderClass</code>
-      <code>handleLoader</code>
+      <code>testSuiteLoaderFile</code>
     </DeprecatedMethod>
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
     <MissingThrowsDocblock occurrences="22">
-      <code>run</code>
-      <code>handleListSuites</code>
-      <code>getTest</code>
-      <code>handleListTests</code>
-      <code>handleListTestsXml</code>
+      <code>argument</code>
+      <code>argument</code>
       <code>atLeastVersion</code>
-      <code>unrecognizedOrderBy</code>
-      <code>iniSettings</code>
-      <code>includePath</code>
-      <code>mapToLegacyArray</code>
-      <code>argument</code>
-      <code>argument</code>
       <code>bootstrap</code>
-      <code>extensionsDirectory</code>
-      <code>printerClass</code>
-      <code>testSuiteLoaderClass</code>
+      <code>cacheDirectory</code>
       <code>defaultTestSuite</code>
       <code>detect</code>
-      <code>cacheDirectory</code>
+      <code>extensionsDirectory</code>
+      <code>getTest</code>
+      <code>handleListSuites</code>
+      <code>handleListTests</code>
+      <code>handleListTestsXml</code>
+      <code>includePath</code>
+      <code>iniSettings</code>
+      <code>mapToLegacyArray</code>
+      <code>printerClass</code>
+      <code>run</code>
       <code>stop</code>
+      <code>testSuiteLoaderClass</code>
+      <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType occurrences="1">
       <code>null|Printer|string</code>
@@ -1593,9 +1595,9 @@
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof Configuration)</code>
     </RedundantConditionGivenDocblockType>
     <UnresolvableInclude occurrences="3">
+      <code>require $file</code>
       <code>require $loaderFile</code>
       <code>require $printerFile</code>
-      <code>require $file</code>
     </UnresolvableInclude>
     <UnsafeInstantiation occurrences="1">
       <code>new static</code>
@@ -1649,8 +1651,8 @@
       <code>addListener</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="2">
-      <code>$this-&gt;printer === null</code>
       <code>$this-&gt;loader === null</code>
+      <code>$this-&gt;printer === null</code>
     </DocblockTypeContradiction>
     <InternalClass occurrences="2">
       <code>Driver::forLineAndPathCoverage($this-&gt;codeCoverageFilter)</code>
@@ -1663,10 +1665,10 @@
     <InvalidCatch occurrences="1"/>
     <InvalidStringClass occurrences="1"/>
     <MissingThrowsDocblock occurrences="6">
+      <code>addFilter</code>
+      <code>addFilter</code>
+      <code>addFilter</code>
       <code>reorderTestsInSuite</code>
-      <code>addFilter</code>
-      <code>addFilter</code>
-      <code>addFilter</code>
       <code>stop</code>
       <code>stop</code>
     </MissingThrowsDocblock>
@@ -1683,24 +1685,23 @@
       <code>$this-&gt;printer !== null</code>
     </RedundantConditionGivenDocblockType>
     <UnusedMethod occurrences="5">
-      <code>processSuiteFilters</code>
-      <code>writeMessage</code>
+      <code>codeCoverageGenerationFailed</code>
       <code>codeCoverageGenerationStart</code>
       <code>codeCoverageGenerationSucceeded</code>
-      <code>codeCoverageGenerationFailed</code>
+      <code>processSuiteFilters</code>
+      <code>writeMessage</code>
     </UnusedMethod>
-    <UnusedParam occurrences="3">
-      <code>$suite</code>
-      <code>$warnings</code>
+    <UnusedParam occurrences="2">
       <code>$exit</code>
+      <code>$warnings</code>
     </UnusedParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
     <PossiblyUnusedMethod occurrences="7">
-      <code>pathCoverage</code>
       <code>clover</code>
       <code>crap4j</code>
       <code>html</code>
+      <code>pathCoverage</code>
       <code>php</code>
       <code>text</code>
       <code>xml</code>
@@ -1719,9 +1720,9 @@
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/FilterMapper.php">
     <UnusedMethodCall occurrences="4">
       <code>$configuration-&gt;directories()</code>
-      <code>$configuration-&gt;files()</code>
       <code>$configuration-&gt;excludeDirectories()</code>
       <code>$configuration-&gt;excludeFiles()</code>
+      <code>$configuration-&gt;files()</code>
     </UnusedMethodCall>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Report/Clover.php">
@@ -1737,9 +1738,9 @@
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Report/Html.php">
     <PossiblyUnusedMethod occurrences="3">
-      <code>target</code>
-      <code>lowUpperBound</code>
       <code>highLowerBound</code>
+      <code>lowUpperBound</code>
+      <code>target</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Report/Php.php">
@@ -1749,9 +1750,9 @@
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Report/Text.php">
     <PossiblyUnusedMethod occurrences="3">
-      <code>target</code>
-      <code>showUncoveredFiles</code>
       <code>showOnlySummary</code>
+      <code>showUncoveredFiles</code>
+      <code>target</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Report/Xml.php">
@@ -1761,13 +1762,13 @@
   </file>
   <file src="src/TextUI/XmlConfiguration/Configuration.php">
     <PossiblyUnusedMethod occurrences="7">
-      <code>hasValidationErrors</code>
-      <code>validationErrors</code>
       <code>extensions</code>
       <code>groups</code>
-      <code>testdoxGroups</code>
+      <code>hasValidationErrors</code>
       <code>listeners</code>
       <code>logging</code>
+      <code>testdoxGroups</code>
+      <code>validationErrors</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/Filesystem/DirectoryCollectionIterator.php">
@@ -1797,10 +1798,10 @@
   </file>
   <file src="src/TextUI/XmlConfiguration/Group/Groups.php">
     <PossiblyUnusedMethod occurrences="4">
+      <code>exclude</code>
+      <code>hasExclude</code>
       <code>hasInclude</code>
       <code>include</code>
-      <code>hasExclude</code>
-      <code>exclude</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/Loader.php">
@@ -1820,25 +1821,25 @@
   <file src="src/TextUI/XmlConfiguration/Logging/Logging.php">
     <MissingThrowsDocblock occurrences="6">
       <code>throw new Exception('Logger "JUnit XML" is not configured');</code>
-      <code>throw new Exception('Logger "Text" is not configured');</code>
       <code>throw new Exception('Logger "Team City" is not configured');</code>
       <code>throw new Exception('Logger "TestDox HTML" is not configured');</code>
       <code>throw new Exception('Logger "TestDox Text" is not configured');</code>
       <code>throw new Exception('Logger "TestDox XML" is not configured');</code>
+      <code>throw new Exception('Logger "Text" is not configured');</code>
     </MissingThrowsDocblock>
     <PossiblyUnusedMethod occurrences="12">
       <code>hasJunit</code>
-      <code>junit</code>
-      <code>hasText</code>
-      <code>text</code>
       <code>hasTeamCity</code>
-      <code>teamCity</code>
       <code>hasTestDoxHtml</code>
-      <code>testDoxHtml</code>
       <code>hasTestDoxText</code>
-      <code>testDoxText</code>
       <code>hasTestDoxXml</code>
+      <code>hasText</code>
+      <code>junit</code>
+      <code>teamCity</code>
+      <code>testDoxHtml</code>
+      <code>testDoxText</code>
       <code>testDoxXml</code>
+      <code>text</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/Logging/TeamCity.php">
@@ -1932,9 +1933,9 @@
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/PhpHandler.php">
     <UnusedMethodCall occurrences="7">
+      <code>$constants</code>
       <code>$includePaths</code>
       <code>$iniSettings</code>
-      <code>$constants</code>
       <code>$variables</code>
       <code>$variables</code>
       <code>$variables</code>
@@ -1986,48 +1987,48 @@
       <code>columns</code>
     </MissingReturnType>
     <PossiblyUnusedMethod occurrences="42">
+      <code>backupGlobals</code>
+      <code>backupStaticAttributes</code>
+      <code>beStrictAboutChangesToGlobalState</code>
+      <code>beStrictAboutCoversAnnotation</code>
+      <code>beStrictAboutOutputDuringTests</code>
+      <code>beStrictAboutResourceUsageDuringSmallTests</code>
+      <code>beStrictAboutTestsThatDoNotTestAnything</code>
+      <code>beStrictAboutTodoAnnotatedTests</code>
       <code>cacheResult</code>
       <code>cacheResultFile</code>
       <code>colors</code>
-      <code>noInteraction</code>
-      <code>verbose</code>
-      <code>reverseDefectList</code>
+      <code>conflictBetweenPrinterClassAndTestdox</code>
       <code>convertDeprecationsToExceptions</code>
       <code>convertErrorsToExceptions</code>
       <code>convertNoticesToExceptions</code>
       <code>convertWarningsToExceptions</code>
-      <code>forceCoversAnnotation</code>
-      <code>processIsolation</code>
+      <code>defaultTimeLimit</code>
+      <code>defectsFirst</code>
+      <code>enforceTimeLimit</code>
+      <code>executionOrder</code>
       <code>failOnEmptyTestSuite</code>
       <code>failOnIncomplete</code>
       <code>failOnRisky</code>
       <code>failOnSkipped</code>
       <code>failOnWarning</code>
+      <code>forceCoversAnnotation</code>
+      <code>noInteraction</code>
+      <code>processIsolation</code>
+      <code>registerMockObjectsFromTestArgumentsRecursively</code>
+      <code>resolveDependencies</code>
+      <code>reverseDefectList</code>
       <code>stopOnDefect</code>
       <code>stopOnError</code>
       <code>stopOnFailure</code>
-      <code>stopOnWarning</code>
       <code>stopOnIncomplete</code>
       <code>stopOnRisky</code>
       <code>stopOnSkipped</code>
-      <code>beStrictAboutChangesToGlobalState</code>
-      <code>beStrictAboutOutputDuringTests</code>
-      <code>beStrictAboutResourceUsageDuringSmallTests</code>
-      <code>beStrictAboutTestsThatDoNotTestAnything</code>
-      <code>beStrictAboutTodoAnnotatedTests</code>
-      <code>beStrictAboutCoversAnnotation</code>
-      <code>enforceTimeLimit</code>
-      <code>defaultTimeLimit</code>
-      <code>timeoutForSmallTests</code>
-      <code>timeoutForMediumTests</code>
+      <code>stopOnWarning</code>
       <code>timeoutForLargeTests</code>
-      <code>executionOrder</code>
-      <code>resolveDependencies</code>
-      <code>defectsFirst</code>
-      <code>backupGlobals</code>
-      <code>backupStaticAttributes</code>
-      <code>registerMockObjectsFromTestArgumentsRecursively</code>
-      <code>conflictBetweenPrinterClassAndTestdox</code>
+      <code>timeoutForMediumTests</code>
+      <code>timeoutForSmallTests</code>
+      <code>verbose</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestDirectoryCollection.php">
@@ -2071,10 +2072,6 @@
     </UnusedMethodCall>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
-    <InvalidDocblock occurrences="2">
-      <code>private $parsedRequirements;</code>
-      <code>public function requirements(): array</code>
-    </InvalidDocblock>
     <MissingThrowsDocblock occurrences="1">
       <code>throw new SkippedTestError;</code>
     </MissingThrowsDocblock>
@@ -2145,8 +2142,8 @@
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
     <MissingThrowsDocblock occurrences="4">
-      <code>parent::__construct($out)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
+      <code>parent::__construct($out)</code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>null</code>
@@ -2171,8 +2168,8 @@
       <code>TeamCity</code>
     </DeprecatedInterface>
     <DocblockTypeContradiction occurrences="2">
-      <code>$expectedString === null</code>
       <code>$actualString === null</code>
+      <code>$expectedString === null</code>
     </DocblockTypeContradiction>
     <MissingParamType occurrences="1">
       <code>$value</code>
@@ -2180,17 +2177,18 @@
     <MissingThrowsDocblock occurrences="2">
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="3">
-      <code>$startedTestName</code>
+    <PropertyNotSetInConstructor occurrences="4">
       <code>$flowId</code>
+      <code>$startedTestName</code>
+      <code>TeamCity</code>
       <code>TeamCity</code>
     </PropertyNotSetInConstructor>
     <RedundantCondition occurrences="1">
       <code>$previous-&gt;getPrevious()</code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType occurrences="2">
-      <code>$expectedString === null || empty($expectedString)</code>
       <code>$actualString === null || empty($actualString)</code>
+      <code>$expectedString === null || empty($expectedString)</code>
     </RedundantConditionGivenDocblockType>
     <UndefinedInterfaceMethod occurrences="7">
       <code>getName</code>
@@ -2204,18 +2202,18 @@
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="2">
-      <code>$this-&gt;getException($warnings[0])</code>
       <code>$this-&gt;getException($failures[0])</code>
+      <code>$this-&gt;getException($warnings[0])</code>
     </ArgumentTypeCoercion>
     <InvalidArgument occurrences="1"/>
     <LessSpecificReturnStatement occurrences="1">
       <code>$exception</code>
     </LessSpecificReturnStatement>
     <MissingClosureParamType occurrences="4">
-      <code>$errno</code>
-      <code>$errstr</code>
       <code>$errfile</code>
       <code>$errline</code>
+      <code>$errno</code>
+      <code>$errstr</code>
     </MissingClosureParamType>
     <MoreSpecificReturnType occurrences="1">
       <code>Exception</code>
@@ -2230,15 +2228,15 @@
       <code>merge</code>
     </PossiblyNullReference>
     <PossiblyUnusedMethod occurrences="5">
-      <code>useStderrRedirection</code>
-      <code>getStdin</code>
       <code>getArgs</code>
       <code>getEnv</code>
+      <code>getStdin</code>
       <code>getTimeout</code>
+      <code>useStderrRedirection</code>
     </PossiblyUnusedMethod>
     <UndefinedInterfaceMethod occurrences="2">
-      <code>setResult</code>
       <code>addToAssertionCount</code>
+      <code>setResult</code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
@@ -2265,11 +2263,11 @@
       <code>sanitizeVersionNumber</code>
     </MissingReturnType>
     <MissingThrowsDocblock occurrences="5">
-      <code>requirements</code>
-      <code>requirements</code>
       <code>forClassName</code>
       <code>forMethod</code>
       <code>forMethod</code>
+      <code>requirements</code>
+      <code>requirements</code>
     </MissingThrowsDocblock>
     <PossiblyUnusedMethod occurrences="2">
       <code>getLinesToBeCovered</code>
@@ -2281,21 +2279,22 @@
       <code>CliTestDoxPrinter</code>
     </DeprecatedInterface>
     <MissingThrowsDocblock occurrences="2">
-      <code>stop</code>
       <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
+      <code>stop</code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArrayOffset occurrences="6">
-      <code>$prefix['start']</code>
-      <code>$prefix['message']</code>
-      <code>$prefix['diff']</code>
       <code>$prefix['default']</code>
-      <code>$prefix['trace']</code>
+      <code>$prefix['diff']</code>
       <code>$prefix['last']</code>
+      <code>$prefix['message']</code>
+      <code>$prefix['start']</code>
+      <code>$prefix['trace']</code>
     </PossiblyInvalidArrayOffset>
     <PossiblyUnusedMethod occurrences="1">
       <code>__construct</code>
     </PossiblyUnusedMethod>
-    <PropertyNotSetInConstructor occurrences="1">
+    <PropertyNotSetInConstructor occurrences="2">
+      <code>CliTestDoxPrinter</code>
       <code>CliTestDoxPrinter</code>
     </PropertyNotSetInConstructor>
   </file>
@@ -2340,7 +2339,8 @@
     <MissingThrowsDocblock occurrences="1">
       <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="1">
+    <PropertyNotSetInConstructor occurrences="2">
+      <code>TestDoxPrinter</code>
       <code>TestDoxPrinter</code>
     </PropertyNotSetInConstructor>
     <UndefinedInterfaceMethod occurrences="1">
