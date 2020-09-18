@@ -65,7 +65,7 @@ use PHPUnit\Util\Xml\SchemaDetector;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Driver\Driver;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
@@ -449,9 +449,9 @@ final class TestRunner extends BaseTestRunner
             try {
                 if (isset($codeCoverageConfiguration) &&
                     ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))) {
-                    $codeCoverageDriver = Driver::forLineAndPathCoverage($this->codeCoverageFilter);
+                    $codeCoverageDriver = (new Selector)->forLineAndPathCoverage($this->codeCoverageFilter);
                 } else {
-                    $codeCoverageDriver = Driver::forLineCoverage($this->codeCoverageFilter);
+                    $codeCoverageDriver = (new Selector)->forLineCoverage($this->codeCoverageFilter);
                 }
 
                 $codeCoverage = new CodeCoverage(

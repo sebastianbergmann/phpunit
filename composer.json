@@ -33,7 +33,7 @@
         "phar-io/manifest": "^2.0.1",
         "phar-io/version": "^3.0.2",
         "phpspec/prophecy": "^1.11.1",
-        "phpunit/php-code-coverage": "^9.1.5",
+        "phpunit/php-code-coverage": "^9.1.10",
         "phpunit/php-file-iterator": "^3.0.4",
         "phpunit/php-invoker": "^3.1",
         "phpunit/php-text-template": "^2.0.2",
