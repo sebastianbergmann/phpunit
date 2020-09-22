@@ -21,6 +21,7 @@
 
         <report>
             <clover outputFile="clover.xml"/>
+            <cobertura outputFile="cobertura.xml"/>
             <crap4j outputFile="crap4j.xml" threshold="30"/>
             <html outputDirectory="coverage" lowUpperBound="50" highLowerBound="90"/>
             <php outputFile="coverage.php"/>

@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage;
 use function count;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Clover;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Cobertura;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Crap4j;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Html;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
@@ -83,6 +84,11 @@ final class CodeCoverage
     private $clover;
 
     /**
+     * @var ?Cobertura
+     */
+    private $cobertura;
+
+    /**
      * @var ?Crap4j
      */
     private $crap4j;
@@ -107,7 +113,7 @@ final class CodeCoverage
      */
     private $xml;
 
-    public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
         $this->cacheDirectory            = $cacheDirectory;
         $this->directories               = $directories;
@@ -120,6 +126,7 @@ final class CodeCoverage
         $this->ignoreDeprecatedCodeUnits = $ignoreDeprecatedCodeUnits;
         $this->disableCodeCoverageIgnore = $disableCodeCoverageIgnore;
         $this->clover                    = $clover;
+        $this->cobertura                 = $cobertura;
         $this->crap4j                    = $crap4j;
         $this->html                      = $html;
         $this->php                       = $php;
@@ -219,6 +226,28 @@ final class CodeCoverage
         }
 
         return $this->clover;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->cobertura
+     */
+    public function hasCobertura(): bool
+    {
+        return $this->cobertura !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function cobertura(): Cobertura
+    {
+        if (!$this->hasCobertura()) {
+            throw new Exception(
+                'Code Coverage report "Cobertura XML" has not been configured'
+            );
+        }
+
+        return $this->cobertura;
     }
 
     /**

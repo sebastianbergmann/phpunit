@@ -18,6 +18,7 @@
 
     <logging>
         <log type="coverage-clover" target="clover.xml"/>
+        <log type="coverage-cobertura" target="cobertura.xml"/>
         <log type="coverage-crap4j" target="crap4j.xml" threshold="50"/>
         <log type="coverage-html" target="coverage" lowUpperBound="50" highLowerBound="90"/>
         <log type="coverage-php" target="coverage.php"/>

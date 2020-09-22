@@ -68,6 +68,10 @@ final class Mapper
             $result['coverageClover'] = $arguments->coverageClover();
         }
 
+        if ($arguments->hasCoverageCobertura()) {
+            $result['coverageCobertura'] = $arguments->coverageCobertura();
+        }
+
         if ($arguments->hasCoverageCrap4J()) {
             $result['coverageCrap4J'] = $arguments->coverageCrap4J();
         }
