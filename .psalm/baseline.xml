@@ -1699,7 +1699,7 @@
     </UnusedParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
-    <PossiblyUnusedMethod occurrences="7">
+    <PossiblyUnusedMethod occurrences="8">
       <code>clover</code>
       <code>cobertura</code>
       <code>crap4j</code>
