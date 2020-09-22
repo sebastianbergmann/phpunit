@@ -193,6 +193,9 @@ final class XmlConfigurationTest extends TestCase
         $this->assertTrue($codeCoverage->hasClover());
         $this->assertSame(TEST_FILES_PATH . 'clover.xml', $codeCoverage->clover()->target()->path());
 
+        $this->assertTrue($codeCoverage->hasCobertura());
+        $this->assertSame(TEST_FILES_PATH . 'cobertura.xml', $codeCoverage->cobertura()->target()->path());
+
         $this->assertTrue($codeCoverage->hasCrap4j());
         $this->assertSame(TEST_FILES_PATH . 'crap4j.xml', $codeCoverage->crap4j()->target()->path());
 
@@ -250,6 +253,9 @@ final class XmlConfigurationTest extends TestCase
 
         $this->assertTrue($codeCoverage->hasClover());
         $this->assertSame(TEST_FILES_PATH . 'clover.xml', $codeCoverage->clover()->target()->path());
+
+        $this->assertTrue($codeCoverage->hasCobertura());
+        $this->assertSame(TEST_FILES_PATH . 'cobertura.xml', $codeCoverage->cobertura()->target()->path());
 
         $this->assertTrue($codeCoverage->hasCrap4j());
         $this->assertSame(TEST_FILES_PATH . 'crap4j.xml', $codeCoverage->crap4j()->target()->path());

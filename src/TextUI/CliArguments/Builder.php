@@ -44,6 +44,7 @@ final class Builder
         'force-coverage-cache',
         'coverage-filter=',
         'coverage-clover=',
+        'coverage-cobertura=',
         'coverage-crap4j=',
         'coverage-html=',
         'coverage-php=',
@@ -156,6 +157,7 @@ final class Builder
         $forceCoverageCache                         = null;
         $coverageFilter                             = null;
         $coverageClover                             = null;
+        $coverageCobertura                          = null;
         $coverageCrap4J                             = null;
         $coverageHtml                               = null;
         $coveragePhp                                = null;
@@ -293,6 +295,11 @@ final class Builder
 
                 case '--coverage-clover':
                     $coverageClover = $option[1];
+
+                    break;
+
+                case '--coverage-cobertura':
+                    $coverageCobertura = $option[1];
 
                     break;
 
@@ -803,6 +810,7 @@ final class Builder
             $columns,
             $configuration,
             $coverageClover,
+            $coverageCobertura,
             $coverageCrap4J,
             $coverageHtml,
             $coveragePhp,

@@ -70,6 +70,7 @@ use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
+use SebastianBergmann\CodeCoverage\Report\Cobertura as CoberturaReport;
 use SebastianBergmann\CodeCoverage\Report\Crap4j as Crap4jReport;
 use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReport;
 use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
@@ -390,6 +391,10 @@ final class TestRunner extends BaseTestRunner
                 $codeCoverageReports++;
             }
 
+            if (isset($arguments['coverageCobertura'])) {
+                $codeCoverageReports++;
+            }
+
             if (isset($arguments['coverageCrap4J'])) {
                 $codeCoverageReports++;
             }
@@ -696,6 +701,21 @@ final class TestRunner extends BaseTestRunner
                 }
             }
 
+            if (isset($arguments['coverageCobertura'])) {
+                $this->codeCoverageGenerationStart('Cobertura XML');
+
+                try {
+                    $writer = new CoberturaReport;
+                    $writer->process($codeCoverage, $arguments['coverageCobertura']);
+
+                    $this->codeCoverageGenerationSucceeded();
+
+                    unset($writer);
+                } catch (CodeCoverageException $e) {
+                    $this->codeCoverageGenerationFailed($e);
+                }
+            }
+
             if (isset($arguments['coverageCrap4J'])) {
                 $this->codeCoverageGenerationStart('Crap4J XML');
 
@@ -890,6 +910,10 @@ final class TestRunner extends BaseTestRunner
 
             if (!isset($arguments['coverageClover']) && $codeCoverageConfiguration->hasClover()) {
                 $arguments['coverageClover'] = $codeCoverageConfiguration->clover()->target()->path();
+            }
+
+            if (!isset($arguments['coverageCobertura']) && $codeCoverageConfiguration->hasCobertura()) {
+                $arguments['coverageCobertura'] = $codeCoverageConfiguration->cobertura()->target()->path();
             }
 
             if (!isset($arguments['coverageCrap4J']) && $codeCoverageConfiguration->hasCrap4j()) {

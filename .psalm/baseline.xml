@@ -1701,6 +1701,7 @@
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
     <PossiblyUnusedMethod occurrences="7">
       <code>clover</code>
+      <code>cobertura</code>
       <code>crap4j</code>
       <code>html</code>
       <code>pathCoverage</code>
@@ -1728,6 +1729,11 @@
     </UnusedMethodCall>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Report/Clover.php">
+    <PossiblyUnusedMethod occurrences="1">
+      <code>target</code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/CodeCoverage/Report/Cobertura.php">
     <PossiblyUnusedMethod occurrences="1">
       <code>target</code>
     </PossiblyUnusedMethod>
@@ -1870,6 +1876,11 @@
     </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageCloverToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageCoberturaToReport.php">
     <PossiblyNullReference occurrences="1">
       <code>createElement</code>
     </PossiblyNullReference>
