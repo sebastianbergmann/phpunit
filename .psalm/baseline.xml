@@ -1656,14 +1656,6 @@
       <code>$this-&gt;loader === null</code>
       <code>$this-&gt;printer === null</code>
     </DocblockTypeContradiction>
-    <InternalClass occurrences="2">
-      <code>Driver::forLineAndPathCoverage($this-&gt;codeCoverageFilter)</code>
-      <code>Driver::forLineCoverage($this-&gt;codeCoverageFilter)</code>
-    </InternalClass>
-    <InternalMethod occurrences="2">
-      <code>Driver::forLineAndPathCoverage($this-&gt;codeCoverageFilter)</code>
-      <code>Driver::forLineCoverage($this-&gt;codeCoverageFilter)</code>
-    </InternalMethod>
     <InvalidCatch occurrences="1"/>
     <InvalidStringClass occurrences="1"/>
     <MissingThrowsDocblock occurrences="8">
