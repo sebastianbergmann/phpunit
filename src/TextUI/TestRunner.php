@@ -13,6 +13,7 @@ use const PHP_EOL;
 use const PHP_SAPI;
 use const PHP_VERSION;
 use function array_diff;
+use function array_map;
 use function assert;
 use function class_exists;
 use function count;
@@ -1118,7 +1119,9 @@ final class TestRunner extends BaseTestRunner
     {
         if (!$arguments['filter'] &&
             empty($arguments['groups']) &&
-            empty($arguments['excludeGroups'])) {
+            empty($arguments['excludeGroups']) &&
+            empty($arguments['testsCovering']) &&
+            empty($arguments['testsUsing'])) {
             return;
         }
 
@@ -1135,6 +1138,30 @@ final class TestRunner extends BaseTestRunner
             $filterFactory->addFilter(
                 new ReflectionClass(IncludeGroupFilterIterator::class),
                 $arguments['groups']
+            );
+        }
+
+        if (!empty($arguments['testsCovering'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass(IncludeGroupFilterIterator::class),
+                array_map(
+                    static function (string $name): string {
+                        return '__phpunit_covers_' . $name;
+                    },
+                    $arguments['testsCovering']
+                )
+            );
+        }
+
+        if (!empty($arguments['testsUsing'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass(IncludeGroupFilterIterator::class),
+                array_map(
+                    static function (string $name): string {
+                        return '__phpunit_uses_' . $name;
+                    },
+                    $arguments['testsUsing']
+                )
             );
         }
 

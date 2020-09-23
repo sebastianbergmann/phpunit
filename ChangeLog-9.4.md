@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 9.4 release series are documented in this fil
 
 ## [9.4.0] - 2020-10-02
 
+### Added
+
+* [#4464](https://github.com/sebastianbergmann/phpunit/issues/4464): Filter based on covered (`@covers`) / used (`@uses`) units of code
+
 ### Changed
 
 * The PHPUnit XML configuration generator (that is invoked using the `--generate-configuration` CLI option) now asks for a cache directory (default: `.phpunit.cache`)

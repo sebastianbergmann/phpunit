@@ -31,14 +31,16 @@ Logging Options:
 
 Test Selection Options:
 
-  --filter <pattern>          Filter which tests to run
+  --list-suites               List available test suites
   --testsuite <name>          Filter which testsuite to run
+  --list-groups               List available test groups
   --group <name>              Only runs tests from the specified group(s)
   --exclude-group <name>      Exclude tests from the specified group(s)
-  --list-groups               List available test groups
-  --list-suites               List available test suites
+  --covers <name>             Only runs tests annotated with "@covers <name>"
+  --uses <name>               Only runs tests annotated with "@uses <name>"
   --list-tests                List available tests
   --list-tests-xml <file>     List available tests in XML format
+  --filter <pattern>          Filter which tests to run
   --test-suffix <suffixes>    Only search for test in files with specified suffix(es). Default: Test.php,.phpt
 
 Test Execution Options:

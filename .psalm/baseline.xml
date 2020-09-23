@@ -1666,7 +1666,9 @@
     </InternalMethod>
     <InvalidCatch occurrences="1"/>
     <InvalidStringClass occurrences="1"/>
-    <MissingThrowsDocblock occurrences="6">
+    <MissingThrowsDocblock occurrences="8">
+      <code>addFilter</code>
+      <code>addFilter</code>
       <code>addFilter</code>
       <code>addFilter</code>
       <code>addFilter</code>

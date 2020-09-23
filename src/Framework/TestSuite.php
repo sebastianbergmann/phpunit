@@ -280,8 +280,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $groups = $test->getGroups();
             }
 
-            if (empty($groups)) {
-                $groups = ['default'];
+            if ($this->containsOnlyVirtualGroups($groups)) {
+                $groups[] = 'default';
             }
 
             foreach ($groups as $group) {
@@ -905,5 +905,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $this->numTests      = -1;
         $this->providedTests = null;
         $this->requiredTests = null;
+    }
+
+    private function containsOnlyVirtualGroups(array $groups): bool
+    {
+        foreach ($groups as $group) {
+            if (strpos($group, '__phpunit_') !== 0) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
