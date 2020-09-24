@@ -36,6 +36,7 @@ use PHPUnit\TestFixture\Author;
 use PHPUnit\TestFixture\Book;
 use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use PHPUnit\TestFixture\ClassWithToString;
+use PHPUnit\TestFixture\ObjectEquals\ValueObject;
 use PHPUnit\TestFixture\SampleArrayAccess;
 use PHPUnit\TestFixture\SampleClass;
 use PHPUnit\TestFixture\Struct;
@@ -2397,6 +2398,19 @@ XML;
 
         try {
             $this->assertNotContainsEquals($a, [$a]);
+        } catch (AssertionFailedError $e) {
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testTwoObjectsCanBeAssertedToBeEqualUsingComparisonMethod(): void
+    {
+        $this->assertObjectEquals(new ValueObject(1), new ValueObject(1));
+
+        try {
+            $this->assertObjectEquals(new ValueObject(1), new ValueObject(2));
         } catch (AssertionFailedError $e) {
             return;
         }

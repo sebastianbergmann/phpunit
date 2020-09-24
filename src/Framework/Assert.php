@@ -70,6 +70,7 @@ use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\LogicalXor;
+use PHPUnit\Framework\Constraint\ObjectEquals;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
@@ -2715,6 +2716,11 @@ abstract class Assert
         return new Count($count);
     }
 
+    public static function objectEquals(object $object, string $method = 'equals'): ObjectEquals
+    {
+        return new ObjectEquals($object, $method);
+    }
+
     /**
      * Fails a test with the given message.
      *
@@ -2775,6 +2781,18 @@ abstract class Assert
     public static function resetCount(): void
     {
         self::$count = 0;
+    }
+
+    /**
+     * @throws ExpectationFailedException
+     */
+    public function assertObjectEquals(object $expected, object $actual, string $method = 'equals', string $message = ''): void
+    {
+        static::assertThat(
+            $actual,
+            static::objectEquals($expected, $method),
+            $message
+        );
     }
 
     private static function detectLocationHint(string $message): ?array

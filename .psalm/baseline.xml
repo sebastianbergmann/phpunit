@@ -117,7 +117,7 @@
       <code>$value</code>
       <code>$value</code>
     </MissingParamType>
-    <MissingThrowsDocblock occurrences="36">
+    <MissingThrowsDocblock occurrences="37">
       <code>loadFile</code>
       <code>loadFile</code>
       <code>loadFile</code>
@@ -156,7 +156,8 @@
       <code>$expected</code>
       <code>$expected</code>
     </PossiblyInvalidArgument>
-    <PossiblyUnusedMethod occurrences="1">
+    <PossiblyUnusedMethod occurrences="2">
+      <code>assertObjectEquals</code>
       <code>getCount</code>
     </PossiblyUnusedMethod>
     <RedundantCondition occurrences="1">
@@ -678,6 +679,11 @@
   </file>
   <file src="src/Framework/Constraint/Object/ClassHasStaticAttribute.php">
     <MissingThrowsDocblock occurrences="1"/>
+  </file>
+  <file src="src/Framework/Constraint/Object/ObjectEquals.php">
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$failureReason</code>
+    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
     <PossiblyUnusedMethod occurrences="1">

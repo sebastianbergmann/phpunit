@@ -18,7 +18,9 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/_files')
     ->notName('*.phpt')
     ->notName('ClassWithAllPossibleReturnTypes.php')
-    ->notName('ClassWithUnionReturnTypes.php');
+    ->notName('ClassWithUnionReturnTypes.php')
+    ->notName('ValueObjectWithEqualsMethodWithUnionReturnType.php')
+    ->notName('ValueObjectWithEqualsMethodThatHasUnionParameterType.php');
 
 return PhpCsFixer\Config::create()
     ->setFinder($finder)
