@@ -10,7 +10,6 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
-use const PHP_EOL;
 use function addslashes;
 use function array_map;
 use function implode;
@@ -38,7 +37,7 @@ final class XdebugFilterScriptGenerator
             $this->getItems($filter)
         );
 
-        $files = implode(',' . PHP_EOL, $files);
+        $files = implode(",\n", $files);
 
         return <<<EOF
 <?php declare(strict_types=1);

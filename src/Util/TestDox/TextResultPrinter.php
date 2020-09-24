@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util\TestDox;
 
-use const PHP_EOL;
 use PHPUnit\Framework\TestResult;
 
 /**
@@ -26,7 +25,7 @@ final class TextResultPrinter extends ResultPrinter
      */
     protected function startClass(string $name): void
     {
-        $this->write($this->currentTestClassPrettified . PHP_EOL);
+        $this->write($this->currentTestClassPrettified . "\n");
     }
 
     /**
@@ -40,7 +39,7 @@ final class TextResultPrinter extends ResultPrinter
             $this->write(' [ ] ');
         }
 
-        $this->write($name . PHP_EOL);
+        $this->write($name . "\n");
     }
 
     /**
@@ -48,6 +47,6 @@ final class TextResultPrinter extends ResultPrinter
      */
     protected function endClass(string $name): void
     {
-        $this->write(PHP_EOL);
+        $this->write("\n");
     }
 }

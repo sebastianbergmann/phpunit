@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util\Log;
 
-use const PHP_EOL;
 use function class_exists;
 use function count;
 use function explode;
@@ -290,7 +289,7 @@ final class TeamCity extends DefaultResultPrinter
 
     private function printEvent(string $eventName, array $params = []): void
     {
-        $this->write(PHP_EOL . "##teamcity[{$eventName}");
+        $this->write("\n##teamcity[{$eventName}");
 
         if ($this->flowId) {
             $params['flowId'] = $this->flowId;
@@ -301,7 +300,7 @@ final class TeamCity extends DefaultResultPrinter
             $this->write(" {$key}='{$escapedValue}'");
         }
 
-        $this->write(']' . PHP_EOL);
+        $this->write("]\n");
     }
 
     private static function getMessage(Throwable $t): string
@@ -327,15 +326,15 @@ final class TeamCity extends DefaultResultPrinter
         $previous   = $t instanceof ExceptionWrapper ? $t->getPreviousWrapped() : $t->getPrevious();
 
         while ($previous) {
-            $stackTrace .= PHP_EOL . 'Caused by' . PHP_EOL .
-                TestFailure::exceptionToString($previous) . PHP_EOL .
+            $stackTrace .= "\nCaused by\n" .
+                TestFailure::exceptionToString($previous) . "\n" .
                 Filter::getFilteredStacktrace($previous);
 
             $previous = $previous instanceof ExceptionWrapper ?
                 $previous->getPreviousWrapped() : $previous->getPrevious();
         }
 
-        return ' ' . str_replace(PHP_EOL, PHP_EOL . ' ', $stackTrace);
+        return ' ' . str_replace("\n", "\n ", $stackTrace);
     }
 
     private static function getPrimitiveValueAsString($value): ?string
@@ -358,7 +357,7 @@ final class TeamCity extends DefaultResultPrinter
     private static function escapeValue(string $text): string
     {
         return str_replace(
-            ['|', "'", PHP_EOL, "\r", ']', '['],
+            ['|', "'", "\n", "\r", ']', '['],
             ['||', "|'", '|n', '|r', '|]', '|['],
             $text
         );

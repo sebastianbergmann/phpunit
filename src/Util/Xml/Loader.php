@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util\Xml;
 
-use const PHP_EOL;
 use function chdir;
 use function dirname;
 use function error_reporting;
@@ -85,7 +84,7 @@ final class Loader
         }
 
         foreach (libxml_get_errors() as $error) {
-            $message .= PHP_EOL . $error->message;
+            $message .= "\n" . $error->message;
         }
 
         libxml_use_internal_errors($internal);
@@ -101,7 +100,7 @@ final class Loader
                     sprintf(
                         'Could not load "%s".%s',
                         $filename,
-                        $message !== '' ? PHP_EOL . $message : ''
+                        $message !== '' ? "\n" . $message : ''
                     )
                 );
             }

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use const PHP_EOL;
 use function is_string;
 use function sprintf;
 use function strpos;
@@ -75,7 +74,7 @@ final class IsEqualCanonicalizing extends Constraint
             }
 
             throw new ExpectationFailedException(
-                trim($description . PHP_EOL . $f->getMessage()),
+                trim($description . "\n" . $f->getMessage()),
                 $f
             );
         }

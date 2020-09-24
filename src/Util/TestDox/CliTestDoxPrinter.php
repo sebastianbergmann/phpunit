@@ -145,7 +145,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function printHeader(TestResult $result): void
     {
-        $this->write(PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
+        $this->write("\n" . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . "\n\n");
     }
 
     protected function formatClassName(Test $test): string
@@ -270,7 +270,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
                 $lines[] = Color::colorizePath($matches[1], $prevPath) .
                     Color::dim(':') .
                     Color::colorize('fg-blue', $matches[2]) .
-                    PHP_EOL;
+                    "\n";
                 $prevPath = $matches[1];
             } else {
                 $lines[]  = $line;
@@ -367,7 +367,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
             return;
         }
 
-        $this->write('Summary of non-successful tests:' . PHP_EOL . PHP_EOL);
+        $this->write("Summary of non-successful tests:\n\n");
 
         $prevResult = $this->getEmptyTestResult();
 

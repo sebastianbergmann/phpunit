@@ -10,7 +10,6 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
-use const PHP_EOL;
 use function array_diff;
 use function array_keys;
 use function fopen;
@@ -43,7 +42,7 @@ final class FileLoader
             $includePathFilename === $localFile ||
             !self::isReadable($includePathFilename)) {
             throw new Exception(
-                sprintf('Cannot open file "%s".' . PHP_EOL, $filename)
+                sprintf('Cannot open file "%s".' . "\n", $filename)
             );
         }
 

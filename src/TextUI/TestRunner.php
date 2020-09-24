@@ -327,7 +327,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         $this->printer->write(
-            Version::getVersionString() . PHP_EOL
+            Version::getVersionString() . "\n"
         );
 
         self::$versionStringPrinted = true;
@@ -591,12 +591,12 @@ final class TestRunner extends BaseTestRunner
                     $this->writeMessage('Suggestion', 'Migrate your XML configuration using "--migrate-configuration"!');
                 } else {
                     $this->write(
-                        PHP_EOL . '  Warning - The configuration file did not pass validation!' . PHP_EOL . '  The following problems have been detected:' . PHP_EOL
+                        "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
                     );
 
                     $this->write($arguments['configurationObject']->validationErrors());
 
-                    $this->write(PHP_EOL . '  Test results may not be as expected.' . PHP_EOL . PHP_EOL);
+                    $this->write("\n  Test results may not be as expected.\n\n");
                 }
             }
         }
@@ -619,7 +619,7 @@ final class TestRunner extends BaseTestRunner
             exit(self::SUCCESS_EXIT);
         }
 
-        $this->printer->write(PHP_EOL);
+        $this->printer->write("\n");
 
         if (isset($codeCoverage)) {
             $result->setCodeCoverage($codeCoverage);
@@ -1178,12 +1178,12 @@ final class TestRunner extends BaseTestRunner
     private function writeMessage(string $type, string $message): void
     {
         if (!$this->messagePrinted) {
-            $this->write(PHP_EOL);
+            $this->write("\n");
         }
 
         $this->write(
             sprintf(
-                '%-15s%s' . PHP_EOL,
+                "%-15s%s\n",
                 $type . ':',
                 $message
             )
@@ -1212,7 +1212,7 @@ final class TestRunner extends BaseTestRunner
     {
         $this->printer->write(
             sprintf(
-                PHP_EOL . 'Generating code coverage report in %s format ... ',
+                "\nGenerating code coverage report in %s format ... ",
                 $format
             )
         );
@@ -1224,7 +1224,7 @@ final class TestRunner extends BaseTestRunner
     {
         $this->printer->write(
             sprintf(
-                'done [%s]' . PHP_EOL,
+                "done [%s]\n",
                 $this->timer->stop()->asString()
             )
         );
@@ -1234,11 +1234,9 @@ final class TestRunner extends BaseTestRunner
     {
         $this->printer->write(
             sprintf(
-                'failed [%s]%s%s%s',
+                "failed [%s]\n%s\n",
                 $this->timer->stop()->asString(),
-                PHP_EOL,
-                $e->getMessage(),
-                PHP_EOL
+                $e->getMessage()
             )
         );
     }
