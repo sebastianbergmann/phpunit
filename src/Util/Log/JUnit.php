@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\Log;
 
+use const PHP_EOL;
 use function class_exists;
 use function get_class;
 use function method_exists;
@@ -385,13 +386,13 @@ final class JUnit extends Printer implements TestListener
         }
 
         if ($test instanceof SelfDescribing) {
-            $buffer = $test->toString() . "\n";
+            $buffer = $test->toString() . PHP_EOL;
         } else {
             $buffer = '';
         }
 
         $buffer .= trim(
-            TestFailure::exceptionToString($t) . "\n" .
+            TestFailure::exceptionToString($t) . PHP_EOL .
             Filter::getFilteredStacktrace($t)
         );
 

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use const PHP_EOL;
 use function sprintf;
 use Countable;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -111,11 +112,11 @@ abstract class Constraint implements Countable, SelfDescribing
         $additionalFailureDescription = $this->additionalFailureDescription($other);
 
         if ($additionalFailureDescription) {
-            $failureDescription .= "\n" . $additionalFailureDescription;
+            $failureDescription .= PHP_EOL . $additionalFailureDescription;
         }
 
         if (!empty($description)) {
-            $failureDescription = $description . "\n" . $failureDescription;
+            $failureDescription = $description . PHP_EOL . $failureDescription;
         }
 
         throw new ExpectationFailedException(

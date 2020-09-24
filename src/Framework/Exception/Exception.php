@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use const PHP_EOL;
 use function array_keys;
 use function get_object_vars;
 use PHPUnit\Util\Filter;
@@ -60,7 +61,7 @@ class Exception extends RuntimeException implements \PHPUnit\Exception
         $string = TestFailure::exceptionToString($this);
 
         if ($trace = Filter::getFilteredStacktrace($this)) {
-            $string .= "\n" . $trace;
+            $string .= PHP_EOL . $trace;
         }
 
         return $string;

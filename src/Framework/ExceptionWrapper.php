@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use const PHP_EOL;
 use function array_keys;
 use function get_class;
 use function spl_object_hash;
@@ -51,11 +52,11 @@ final class ExceptionWrapper extends Exception
         $string = TestFailure::exceptionToString($this);
 
         if ($trace = Filter::getFilteredStacktrace($this)) {
-            $string .= "\n" . $trace;
+            $string .= PHP_EOL . $trace;
         }
 
         if ($this->previous) {
-            $string .= "\nCaused by\n" . $this->previous;
+            $string .= PHP_EOL . 'Caused by' . PHP_EOL . $this->previous;
         }
 
         return $string;

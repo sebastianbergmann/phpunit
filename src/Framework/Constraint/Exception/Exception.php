@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use const PHP_EOL;
 use function get_class;
 use function sprintf;
 use PHPUnit\Util\Filter;
@@ -66,7 +67,7 @@ final class Exception extends Constraint
 
             if ($other instanceof Throwable) {
                 $message = '. Message was: "' . $other->getMessage() . '" at'
-                    . "\n" . Filter::getFilteredStacktrace($other);
+                    . PHP_EOL . Filter::getFilteredStacktrace($other);
             }
 
             return sprintf(

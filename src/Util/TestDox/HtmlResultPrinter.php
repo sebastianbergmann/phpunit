@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Framework\TestResult;
 
@@ -112,7 +113,7 @@ EOT;
     {
         $this->write(
             sprintf(
-                "            <li style=\"color: %s;\">%s %s</li>\n",
+                '            <li style="color: %s;">%s %s</li>' . PHP_EOL,
                 $success ? '#555753' : '#ef2929',
                 $success ? '✓' : '❌',
                 $name

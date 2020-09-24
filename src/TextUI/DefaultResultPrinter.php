@@ -277,7 +277,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         if ($this->debug) {
             $this->write(
                 sprintf(
-                    "Test '%s' started\n",
+                    "Test '%s' started" . PHP_EOL,
                     \PHPUnit\Util\Test::describeAsString($test)
                 )
             );
@@ -292,7 +292,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         if ($this->debug) {
             $this->write(
                 sprintf(
-                    "Test '%s' ended\n",
+                    "Test '%s' ended" . PHP_EOL,
                     \PHPUnit\Util\Test::describeAsString($test)
                 )
             );
@@ -324,12 +324,12 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         }
 
         if ($this->defectListPrinted) {
-            $this->write("\n--\n\n");
+            $this->write(PHP_EOL . '--' . PHP_EOL . PHP_EOL);
         }
 
         $this->write(
             sprintf(
-                "There %s %d %s%s:\n",
+                'There %s %d %s%s:' . PHP_EOL,
                 ($count == 1) ? 'was' : 'were',
                 $count,
                 $type,
@@ -360,7 +360,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
     {
         $this->write(
             sprintf(
-                "\n%d) %s\n",
+                PHP_EOL . '%d) %s' . PHP_EOL,
                 $count,
                 $defect->getTestName()
             )
@@ -373,7 +373,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         $this->write((string) $e);
 
         while ($e = $e->getPrevious()) {
-            $this->write("\nCaused by\n" . $e);
+            $this->write(PHP_EOL . 'Caused by' . PHP_EOL . $e);
         }
     }
 
@@ -444,7 +444,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
         if ($result->wasSuccessful()) {
             if ($this->verbose || !$result->allHarmless()) {
-                $this->write("\n");
+                $this->write(PHP_EOL);
             }
 
             $this->writeWithColor(
@@ -452,7 +452,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
                 'OK, but incomplete, skipped, or risky tests!'
             );
         } else {
-            $this->write("\n");
+            $this->write(PHP_EOL);
 
             if ($result->errorCount()) {
                 $color = 'fg-white, bg-red';
@@ -523,7 +523,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
     protected function writeNewLine(): void
     {
         $this->column = 0;
-        $this->write("\n");
+        $this->write(PHP_EOL);
     }
 
     /**

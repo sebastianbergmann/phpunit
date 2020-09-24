@@ -2270,7 +2270,7 @@ abstract class Assert
                 sprintf(
                     '%s%sNumber of attributes on node "%s" does not match',
                     $message,
-                    !empty($message) ? "\n" : '',
+                    !empty($message) ? PHP_EOL : '',
                     $expectedElement->tagName
                 )
             );
@@ -2286,7 +2286,7 @@ abstract class Assert
                         sprintf(
                             '%s%sCould not find attribute "%s" on node "%s"',
                             $message,
-                            !empty($message) ? "\n" : '',
+                            !empty($message) ? PHP_EOL : '',
                             $expectedAttribute->name,
                             $expectedElement->tagName
                         )
@@ -2304,7 +2304,7 @@ abstract class Assert
             sprintf(
                 '%s%sNumber of child nodes of "%s" differs',
                 $message,
-                !empty($message) ? "\n" : '',
+                !empty($message) ? PHP_EOL : '',
                 $expectedElement->tagName
             )
         );

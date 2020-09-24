@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util;
 
+use const PHP_EOL;
 use function array_unshift;
 use function defined;
 use function in_array;
@@ -63,7 +64,7 @@ final class Filter
         foreach ($eTrace as $frame) {
             if (self::shouldPrintFrame($frame, $prefix, $excludeList)) {
                 $filteredStacktrace .= sprintf(
-                    "%s:%s\n",
+                    '%s:%s' . PHP_EOL,
                     $frame['file'],
                     $frame['line'] ?? '?'
                 );
