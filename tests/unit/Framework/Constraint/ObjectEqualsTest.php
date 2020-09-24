@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use const PHP_EOL;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\ObjectEquals\ValueObject;
@@ -129,6 +128,6 @@ final class ObjectEqualsTest extends TestCase
     private function expectFailure(string $message): void
     {
         $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Failed asserting that two objects are equal.' . PHP_EOL . $message);
+        $this->expectExceptionMessage('Failed asserting that two objects are equal.' . "\n" . $message);
     }
 }
