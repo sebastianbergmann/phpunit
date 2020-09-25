@@ -1,7 +1,7 @@
 <?php
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Driver\Driver;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 
@@ -40,7 +40,7 @@ function __phpunit_run_isolated_test()
         $filter = unserialize('{codeCoverageFilter}');
 
         $codeCoverage = new CodeCoverage(
-            Driver::{driverMethod}($filter),
+            (new Selector)->{driverMethod}($filter),
             $filter
         );
 

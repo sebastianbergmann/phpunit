@@ -1,6 +1,6 @@
 <?php
 use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Driver\Driver;
+use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Filter;
 
 $composerAutoload = {composerAutoload};
@@ -29,7 +29,7 @@ if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
     $filter = new Filter;
 
     $coverage = new CodeCoverage(
-        Driver::{driverMethod}($filter),
+        (new Selector)->{driverMethod}($filter),
         $filter
     );
 
