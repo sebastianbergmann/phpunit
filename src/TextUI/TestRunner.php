@@ -468,6 +468,10 @@ final class TestRunner extends BaseTestRunner
                     $codeCoverage->cacheStaticAnalysis($arguments['coverageCacheDirectory']);
                 }
 
+                if (isset($arguments['forceCoverageCache']) && $arguments['forceCoverageCache'] === true && $codeCoverage->cachesStaticAnalysis()) {
+                    $codeCoverage->doNotValidateStaticAnalysisCache();
+                }
+
                 $codeCoverage->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
 
                 if ($arguments['strictCoverage']) {

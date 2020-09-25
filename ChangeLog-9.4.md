@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 9.4 release series are documented in this fil
 
 * [#4464](https://github.com/sebastianbergmann/phpunit/issues/4464): Filter based on covered (`@covers`) / used (`@uses`) units of code
 * [#4467](https://github.com/sebastianbergmann/phpunit/issues/4467): Convenient custom comparison of objects
+* Added `--force-coverage-cache` CLI option for configuring the code coverage static analysis cache to not check whether cache files exist and are up-to-date (do not use this if you do not need it or cannot guarantee that the cache files exist and are up-to-date)
 
 ### Changed
 

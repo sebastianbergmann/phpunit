@@ -45,6 +45,10 @@ function __phpunit_run_isolated_test()
 
         if ({cachesStaticAnalysis}) {
             $codeCoverage->cacheStaticAnalysis(unserialize('{codeCoverageCacheDirectory}'));
+
+            if ({forcesStaticAnalysisCache}) {
+                $codeCoverage->doNotValidateStaticAnalysisCache();
+            }
         }
 
         $result->setCodeCoverage($codeCoverage);

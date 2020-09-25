@@ -43,6 +43,7 @@ final class Help
             ['arg' => '--coverage-xml <dir>', 'desc' => 'Generate code coverage report in PHPUnit XML format'],
             ['arg' => '--coverage-cache <dir>', 'desc' => 'Cache static analysis results'],
             ['arg' => '--warm-coverage-cache', 'desc' => 'Warm static analysis cache'],
+            ['arg' => '--force-coverage-cache', 'desc' => 'Do not validate static analysis cache'],
             ['arg' => '--coverage-filter <dir>', 'desc' => 'Include <dir> in code coverage analysis'],
             ['arg' => '--path-coverage', 'desc' => 'Perform path coverage analysis'],
             ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable annotations for ignoring code coverage'],

@@ -16,6 +16,7 @@
                               XML format
   [32m--coverage-cache [36m<dir>[0m     [0m Cache static analysis results
   [32m--warm-coverage-cache      [0m Warm static analysis cache
+  [32m--force-coverage-cache     [0m Do not validate static analysis cache
   [32m--coverage-filter [36m<dir>[0m    [0m Include <dir> in code coverage analysis
   [32m--path-coverage            [0m Perform path coverage analysis
   [32m--disable-coverage-ignore  [0m Disable annotations for ignoring code

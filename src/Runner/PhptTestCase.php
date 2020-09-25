@@ -174,6 +174,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         if ($result->getCollectCodeCoverageInformation()) {
             $codeCoverageCacheDirectory = null;
+            $forcesStaticAnalysisCache  = false;
             $pathCoverage               = false;
 
             $codeCoverage = $result->getCodeCoverage();
@@ -181,12 +182,16 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             if ($codeCoverage) {
                 if ($codeCoverage->cachesStaticAnalysis()) {
                     $codeCoverageCacheDirectory = $codeCoverage->cacheDirectory();
+
+                    if (!$codeCoverage->validatesStaticAnalysisCache()) {
+                        $forcesStaticAnalysisCache = true;
+                    }
                 }
 
                 $pathCoverage = $codeCoverage->collectsBranchAndPathCoverage();
             }
 
-            $this->renderForCoverage($code, $pathCoverage, $codeCoverageCacheDirectory);
+            $this->renderForCoverage($code, $pathCoverage, $codeCoverageCacheDirectory, $forcesStaticAnalysisCache);
         }
 
         $timer = new Timer;
@@ -595,7 +600,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         ];
     }
 
-    private function renderForCoverage(string &$job, bool $pathCoverage, ?string $codeCoverageCacheDirectory): void
+    private function renderForCoverage(string &$job, bool $pathCoverage, ?string $codeCoverageCacheDirectory, bool $forcesStaticAnalysisCache): void
     {
         $files = $this->getCoverageFiles();
 
@@ -639,6 +644,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 'coverageFile'               => $files['coverage'],
                 'driverMethod'               => $pathCoverage ? 'forLineAndPathCoverage' : 'forLineCoverage',
                 'codeCoverageCacheDirectory' => $codeCoverageCacheDirectory,
+                'forcesStaticAnalysisCache'  => $forcesStaticAnalysisCache ? 'true' : 'false',
             ]
         );
 

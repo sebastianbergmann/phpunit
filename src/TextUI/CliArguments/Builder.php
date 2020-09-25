@@ -41,6 +41,7 @@ final class Builder
         'configuration=',
         'coverage-cache=',
         'warm-coverage-cache',
+        'force-coverage-cache',
         'coverage-filter=',
         'coverage-clover=',
         'coverage-crap4j=',
@@ -152,6 +153,7 @@ final class Builder
         $configuration                              = null;
         $coverageCacheDirectory                     = null;
         $warmCoverageCache                          = null;
+        $forceCoverageCache                         = null;
         $coverageFilter                             = null;
         $coverageClover                             = null;
         $coverageCrap4J                             = null;
@@ -281,6 +283,11 @@ final class Builder
 
                 case '--warm-coverage-cache':
                     $warmCoverageCache = true;
+
+                    break;
+
+                case '--force-coverage-cache':
+                    $forceCoverageCache = true;
 
                     break;
 
@@ -806,6 +813,7 @@ final class Builder
             $pathCoverage,
             $coverageCacheDirectory,
             $warmCoverageCache,
+            $forceCoverageCache,
             $debug,
             $defaultTimeLimit,
             $disableCodeCoverageIgnore,
