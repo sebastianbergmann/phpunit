@@ -15,7 +15,7 @@ use function assert;
 use function defined;
 use function dirname;
 use function explode;
-use function file_exists;
+use function is_file;
 use function is_numeric;
 use function preg_match;
 use function stream_resolve_include_path;
@@ -337,7 +337,7 @@ final class Loader
 
         $file = dirname($filename) . DIRECTORY_SEPARATOR . $path;
 
-        if ($useIncludePath && !file_exists($file)) {
+        if ($useIncludePath && !is_file($file)) {
             $includePathFile = stream_resolve_include_path($path);
 
             if ($includePathFile) {

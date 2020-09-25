@@ -19,11 +19,11 @@ use function call_user_func;
 use function class_exists;
 use function count;
 use function dirname;
-use function file_exists;
 use function get_declared_classes;
 use function implode;
 use function is_bool;
 use function is_callable;
+use function is_file;
 use function is_object;
 use function is_string;
 use function method_exists;
@@ -382,7 +382,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function addTestFile(string $filename): void
     {
-        if (file_exists($filename) && substr($filename, -5) === '.phpt') {
+        if (is_file($filename) && substr($filename, -5) === '.phpt') {
             $this->addTest(new PhptTestCase($filename));
 
             $this->declaredClasses = get_declared_classes();

@@ -18,7 +18,6 @@ use function class_exists;
 use function copy;
 use function extension_loaded;
 use function fgets;
-use function file_exists;
 use function file_get_contents;
 use function file_put_contents;
 use function getcwd;
@@ -26,6 +25,7 @@ use function ini_get;
 use function ini_set;
 use function is_callable;
 use function is_dir;
+use function is_file;
 use function is_string;
 use function printf;
 use function realpath;
@@ -608,7 +608,7 @@ class Command
     private function handleExtensions(string $directory): void
     {
         foreach ((new FileIteratorFacade)->getFilesAsArray($directory, '.phar') as $file) {
-            if (!file_exists('phar://' . $file . '/manifest.xml')) {
+            if (!is_file('phar://' . $file . '/manifest.xml')) {
                 $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
 
                 continue;
@@ -903,7 +903,7 @@ class Command
         ];
 
         foreach ($candidates as $candidate) {
-            if (file_exists($candidate)) {
+            if (is_file($candidate)) {
                 return realpath($candidate);
             }
         }
