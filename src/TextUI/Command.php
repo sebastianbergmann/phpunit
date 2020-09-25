@@ -834,7 +834,7 @@ class Command
         if (isset($this->arguments['coverageCacheDirectory'])) {
             $cacheDirectory = $this->arguments['coverageCacheDirectory'];
         } elseif ($configuration->codeCoverage()->hasCacheDirectory()) {
-            $cacheDirectory = $configuration->codeCoverage()->cacheDirectory();
+            $cacheDirectory = $configuration->codeCoverage()->cacheDirectory()->path();
         } else {
             print 'Cache for static analysis has not been configured' . PHP_EOL;
 
@@ -870,7 +870,7 @@ class Command
         print 'Warming cache for static analysis ... ';
 
         (new CacheWarmer)->warmCache(
-            $cacheDirectory->path(),
+            $cacheDirectory,
             !$configuration->codeCoverage()->disableCodeCoverageIgnore(),
             $configuration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $filter
