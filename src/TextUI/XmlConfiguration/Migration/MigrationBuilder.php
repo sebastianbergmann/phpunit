@@ -32,7 +32,6 @@ final class MigrationBuilder
             MoveWhitelistExcludesToCoverage::class,
             RemoveEmptyFilter::class,
             CoverageCloverToReport::class,
-            CoverageCoberturaToReport::class,
             CoverageCrap4jToReport::class,
             CoverageHtmlToReport::class,
             CoveragePhpToReport::class,
