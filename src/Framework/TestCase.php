@@ -2306,6 +2306,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $excludeList->addClassNamePrefix('Symfony');
             $excludeList->addClassNamePrefix('Doctrine\Instantiator');
             $excludeList->addClassNamePrefix('Prophecy');
+            $excludeList->addStaticAttribute(ComparatorFactory::class, 'instance');
 
             foreach ($this->backupStaticAttributesExcludeList as $class => $attributes) {
                 foreach ($attributes as $attribute) {
