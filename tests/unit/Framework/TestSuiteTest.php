@@ -103,7 +103,7 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(NotPublicTestCase::class);
 
-        $this->assertCount(2, $suite);
+        $this->assertCount(1, $suite);
     }
 
     public function testNotVoidTestCase(): void

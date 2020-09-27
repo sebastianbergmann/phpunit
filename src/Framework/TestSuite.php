@@ -228,6 +228,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 continue;
             }
 
+            if (!TestUtil::isTestMethod($method)) {
+                continue;
+            }
+
             $this->addTestMethod($theClass, $method);
         }
 
@@ -866,25 +870,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
     {
-        if (!TestUtil::isTestMethod($method)) {
-            return;
-        }
-
         $methodName = $method->getName();
-
-        if (!$method->isPublic()) {
-            $this->addTest(
-                new WarningTestCase(
-                    sprintf(
-                        'Test method "%s" in test class "%s" is not public.',
-                        $methodName,
-                        $class->getName()
-                    )
-                )
-            );
-
-            return;
-        }
 
         $test = (new TestBuilder)->build($class, $methodName);
 

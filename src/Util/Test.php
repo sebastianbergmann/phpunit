@@ -560,6 +560,10 @@ final class Test
 
     public static function isTestMethod(ReflectionMethod $method): bool
     {
+        if (!$method->isPublic()) {
+            return false;
+        }
+
         if (strpos($method->getName(), 'test') === 0) {
             return true;
         }
