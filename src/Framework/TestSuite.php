@@ -69,6 +69,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     protected $runTestInSeparateProcess = false;
 
     /**
+     * @var bool
+     */
+    protected $runTestsUntilSuccess = false;
+
+    /**
      * The name of the test suite.
      *
      * @var string
@@ -662,7 +667,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 
+            $defectsBefore = $result->defectCount();
             $test->run($result);
+            $defectsAfter = $result->defectCount();
+
+            if ($this->runTestsUntilSuccess && ($defectsAfter === $defectsBefore)) {
+                break;
+            }
         }
 
         foreach ($hookMethods['afterClass'] as $afterClassMethod) {
@@ -693,6 +704,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void
     {
         $this->runTestInSeparateProcess = $runTestInSeparateProcess;
+    }
+
+    public function setRunTestsUntilSuccess(bool $runTestsUntilSuccess): void
+    {
+        $this->runTestsUntilSuccess = $runTestsUntilSuccess;
     }
 
     public function setName(string $name): void

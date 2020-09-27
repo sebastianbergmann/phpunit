@@ -78,6 +78,7 @@ Test Execution Options:
   --debug                     Display debugging information
 
   --repeat <times>            Runs the test(s) repeatedly
+  --until-success             Combines with `repeat <n>` option, test executes until success, but maximum <n> times
   --teamcity                  Report test execution progress in TeamCity format
   --testdox                   Report test execution progress in TestDox format
   --testdox-group             Only include tests from the specified group(s)

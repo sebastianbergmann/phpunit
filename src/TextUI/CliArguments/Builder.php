@@ -114,6 +114,7 @@ final class Builder
         'testdox-xml=',
         'test-suffix=',
         'testsuite=',
+        'until-success',
         'verbose',
         'version',
         'whitelist=',
@@ -225,6 +226,7 @@ final class Builder
         $testSuite                                  = null;
         $unrecognizedOptions                        = [];
         $unrecognizedOrderBy                        = null;
+        $untilSuccess                               = null;
         $useDefaultConfiguration                    = null;
         $verbose                                    = null;
         $version                                    = null;
@@ -505,6 +507,11 @@ final class Builder
 
                 case '--repeat':
                     $repeat = (int) $option[1];
+
+                    break;
+
+                case '--until-success':
+                    $untilSuccess = true;
 
                     break;
 
@@ -875,6 +882,7 @@ final class Builder
             $testSuite,
             $unrecognizedOptions,
             $unrecognizedOrderBy,
+            $untilSuccess,
             $useDefaultConfiguration,
             $verbose,
             $version,

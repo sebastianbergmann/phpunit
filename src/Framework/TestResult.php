@@ -1206,6 +1206,14 @@ final class TestResult implements Countable
     }
 
     /**
+     * Returns number of defects.
+     */
+    public function defectCount(): int
+    {
+        return $this->warningCount() + $this->errorCount() + $this->failureCount();
+    }
+
+    /**
      * Returns whether the entire test was successful or not.
      */
     public function wasSuccessful(): bool

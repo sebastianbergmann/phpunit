@@ -110,6 +110,7 @@ final class Help
             ['spacer' => ''],
 
             ['arg'    => '--repeat <times>', 'desc' => 'Runs the test(s) repeatedly'],
+            ['arg'    => '--until-success', 'desc' => 'Combines with `repeat <n>` option, test executes until success, but maximum <n> times'],
             ['arg'    => '--teamcity', 'desc' => 'Report test execution progress in TeamCity format'],
             ['arg'    => '--testdox', 'desc' => 'Report test execution progress in TestDox format'],
             ['arg'    => '--testdox-group', 'desc' => 'Only include tests from the specified group(s)'],

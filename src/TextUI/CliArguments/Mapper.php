@@ -204,6 +204,10 @@ final class Mapper
             $result['repeat'] = $arguments->repeat();
         }
 
+        if ($arguments->hasUntilSuccess()) {
+            $result['untilSuccess'] = $arguments->untilSuccess();
+        }
+
         if ($arguments->hasStderr()) {
             $result['stderr'] = $arguments->stderr();
         }

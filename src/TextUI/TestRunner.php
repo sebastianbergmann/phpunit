@@ -224,6 +224,10 @@ final class TestRunner extends BaseTestRunner
             $suite = $_suite;
 
             unset($_suite);
+
+            if ($arguments['untilSuccess']) {
+                $suite->setRunTestsUntilSuccess(true);
+            }
         }
 
         $result = $this->createTestResult();
@@ -1137,6 +1141,7 @@ final class TestRunner extends BaseTestRunner
         $arguments['timeoutForMediumTests']                           = $arguments['timeoutForMediumTests'] ?? 10;
         $arguments['timeoutForSmallTests']                            = $arguments['timeoutForSmallTests'] ?? 1;
         $arguments['verbose']                                         = $arguments['verbose'] ?? false;
+        $arguments['untilSuccess']                                    = $arguments['untilSuccess'] ?? false;
     }
 
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
