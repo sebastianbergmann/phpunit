@@ -35,10 +35,6 @@ if (class_exists('SebastianBergmann\CodeCoverage\CodeCoverage')) {
 
     if ({codeCoverageCacheDirectory}) {
         $coverage->cacheStaticAnalysis({codeCoverageCacheDirectory});
-
-        if ({forcesStaticAnalysisCache}) {
-            $coverage->doNotValidateStaticAnalysisCache();
-        }
     }
 
     $coverage->start(__FILE__);

@@ -64,10 +64,6 @@ final class Mapper
             $result['warmCoverageCache'] = $arguments->warmCoverageCache();
         }
 
-        if ($arguments->hasForceCoverageCache()) {
-            $result['forceCoverageCache'] = $arguments->forceCoverageCache();
-        }
-
         if ($arguments->hasCoverageClover()) {
             $result['coverageClover'] = $arguments->coverageClover();
         }

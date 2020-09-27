@@ -811,7 +811,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $codeCoverage               = $result->getCodeCoverage();
             $codeCoverageFilter         = null;
             $cachesStaticAnalysis       = 'false';
-            $forcesStaticAnalysisCache  = 'false';
             $codeCoverageCacheDirectory = null;
             $driverMethod               = 'forLineCoverage';
 
@@ -825,10 +824,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 if ($codeCoverage->cachesStaticAnalysis()) {
                     $cachesStaticAnalysis       = 'true';
                     $codeCoverageCacheDirectory = $codeCoverage->cacheDirectory();
-
-                    if (!$codeCoverage->validatesStaticAnalysisCache()) {
-                        $forcesStaticAnalysisCache = 'true';
-                    }
                 }
             }
 
@@ -856,7 +851,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 'className'                                  => $class->getName(),
                 'collectCodeCoverageInformation'             => $coverage,
                 'cachesStaticAnalysis'                       => $cachesStaticAnalysis,
-                'forcesStaticAnalysisCache'                  => $forcesStaticAnalysisCache,
                 'codeCoverageCacheDirectory'                 => $codeCoverageCacheDirectory,
                 'driverMethod'                               => $driverMethod,
                 'data'                                       => $data,
