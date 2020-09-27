@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.3 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.3.12] - 2020-MM-DD
+
+### Fixed
+
+* [#4470](https://github.com/sebastianbergmann/phpunit/pull/4470): Infinite recursion when `--static-backup --strict-global-state` is used
+
 ## [9.3.11] - 2020-09-24
 
 * No changes; `phpunit.phar` rebuilt with updated dependencies
@@ -243,6 +249,7 @@ If you have an XML configuration file that validates against [PHPUnit 9.2's XML 
 * [#4396](https://github.com/sebastianbergmann/phpunit/issues/4396): Deprecate confusing parameter options for XML assertions
 * The `cacheTokens` attribute is no longer supported in XML configuration files
 
+[9.3.12]: https://github.com/sebastianbergmann/phpunit/compare/9.3.11...9.3
 [9.3.11]: https://github.com/sebastianbergmann/phpunit/compare/9.3.10...9.3.11
 [9.3.10]: https://github.com/sebastianbergmann/phpunit/compare/9.3.9...9.3.10
 [9.3.9]: https://github.com/sebastianbergmann/phpunit/compare/9.3.8...9.3.9
