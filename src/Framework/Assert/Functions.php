@@ -21,8 +21,10 @@ use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
+use PHPUnit\Framework\Constraint\ExtendsClass;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
+use PHPUnit\Framework\Constraint\ImplementsInterface;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
@@ -55,6 +57,7 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
+use PHPUnit\Framework\Constraint\UsesTrait;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtIndex as InvokedAtIndexMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
@@ -1514,6 +1517,108 @@ if (!function_exists('PHPUnit\Framework\assertNotInstanceOf')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertImplementsInterface')) {
+    /**
+     * Asserts that subject implements specified interface.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertImplementsInterface
+     */
+    function assertImplementsInterface(string $interfaceName, $subject, string $message = ''): void
+    {
+        Assert::assertImplementsInterface(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertNotImplementsInterface')) {
+    /**
+     * Asserts that subject does not implement specified interface.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertNotImplementsInterface
+     */
+    function assertNotImplementsInterface(string $interfaceName, $subject, string $message = ''): void
+    {
+        Assert::assertNotImplementsInterface(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertExtendsClass')) {
+    /**
+     * Asserts that subject extends specified class.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertExtendsClass
+     */
+    function assertExtendsClass(string $className, $subject, string $message = ''): void
+    {
+        Assert::assertExtendsClass(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertNotExtendsClass')) {
+    /**
+     * Asserts that subject does not extend specified class.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertNotExtendsClass
+     */
+    function assertNotExtendsClass(string $className, $subject, string $message = ''): void
+    {
+        Assert::assertNotExtendsClass(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertUsesTrait')) {
+    /**
+     * Asserts that subject uses specified trait.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertUsesTrait
+     */
+    function assertUsesTrait(string $traitName, $subject, string $message = ''): void
+    {
+        Assert::assertUsesTrait(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertNotUsesTrait')) {
+    /**
+     * Asserts that subject does not use specified trait.
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertNotUsesTrait
+     */
+    function assertNotUsesTrait(string $traitName, $subject, string $message = ''): void
+    {
+        Assert::assertNotUsesTrait(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertIsArray')) {
     /**
      * Asserts that a variable is of type array.
@@ -2803,6 +2908,27 @@ if (!function_exists('PHPUnit\Framework\isInstanceOf')) {
     function isInstanceOf(string $className): IsInstanceOf
     {
         return Assert::isInstanceOf(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\implementsInterface')) {
+    function implementsInterface(string $interfaceName): ImplementsInterface
+    {
+        return ImplementsInterface::fromInterfaceString($interfaceName);
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\extendsClass')) {
+    function extendsClass(string $className): ImplementsInterface
+    {
+        return ExtendsClass::fromClassString($className);
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\usesTrait')) {
+    function usesTrait(string $traitName): UsesTrait
+    {
+        return UsesTrait::fromTraitString($traitName);
     }
 }
 

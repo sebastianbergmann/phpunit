@@ -44,8 +44,10 @@ use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
+use PHPUnit\Framework\Constraint\ExtendsClass;
 use PHPUnit\Framework\Constraint\FileExists;
 use PHPUnit\Framework\Constraint\GreaterThan;
+use PHPUnit\Framework\Constraint\ImplementsInterface;
 use PHPUnit\Framework\Constraint\IsAnything;
 use PHPUnit\Framework\Constraint\IsEmpty;
 use PHPUnit\Framework\Constraint\IsEqual;
@@ -81,6 +83,7 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
+use PHPUnit\Framework\Constraint\UsesTrait;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
@@ -1395,6 +1398,120 @@ abstract class Assert
     }
 
     /**
+     * Asserts that *$subject* implements *$interface*.
+     *
+     * @param string $interface name of the interface that is expected to be implemented
+     * @param mixed  $subject   an object or a class name that is being examined
+     * @param string $message   custom message
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public static function assertImplementsInterface(string $interface, $subject, string $message = ''): void
+    {
+        static::assertThat(
+            $subject,
+            static::implementsInterface($interface),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that *$subject* does not implement *$interface*.
+     *
+     * @param string $interface name of the interface that is expected to be implemented
+     * @param mixed  $subject   an object or a class name that is being examined
+     * @param string $message   custom message
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public static function assertNotImplementsInterface(string $interface, $subject, string $message = ''): void
+    {
+        static::assertThat(
+            $subject,
+            new LogicalNot(static::implementsInterface($interface)),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that *$subject* extends the class *$parent*.
+     *
+     * @param string $parent  name of the class that is supposed to be extended by *$subject*
+     * @param mixed  $subject an object or a class name that is being examined
+     * @param string $message custom message
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public static function assertExtendsClass(string $parent, $subject, string $message = ''): void
+    {
+        static::assertThat(
+            $subject,
+            static::extendsClass($parent),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that *$subject* does not extend the class *$parent*.
+     *
+     * @param string $parent  name of the class that is expected to be extended by *$subject*
+     * @param mixed  $subject an object or a class name that is being examined
+     * @param string $message custom message
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public static function assertNotExtendsClass(string $parent, $subject, string $message = ''): void
+    {
+        static::assertThat(
+            $subject,
+            new LogicalNot(static::extendsClass($parent)),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that *$subject* uses *$trait*.
+     *
+     * @param string $trait   name of the trait that is supposed to be included by *$subject*
+     * @param mixed  $subject an object or a class name that is being examined
+     * @param string $message custom message
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public static function assertUsesTrait(string $trait, $subject, string $message = ''): void
+    {
+        static::assertThat(
+            $subject,
+            static::usesTrait($trait),
+            $message
+        );
+    }
+
+    /**
+     * Asserts that *$subject* does not use *$trait*.
+     *
+     * @param string $trait   name of the trait that is expected to be used by *$subject*
+     * @param mixed  $subject an object or a class name that is being examined
+     * @param string $message custom message
+     *
+     * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     */
+    public static function assertNotUsesTrait(string $trait, $subject, string $message = ''): void
+    {
+        static::assertThat(
+            $subject,
+            new LogicalNot(static::usesTrait($trait)),
+            $message
+        );
+    }
+
+    /**
      * Asserts that a variable is of type array.
      *
      * @throws ExpectationFailedException
@@ -2119,7 +2236,7 @@ abstract class Assert
      *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws \PHPUnit\Util\Exception
+     * @throws \PHPUnit\Util\Xml\Exception
      */
     public static function assertXmlFileNotEqualsXmlFile(string $expectedFile, string $actualFile, string $message = ''): void
     {
@@ -2567,11 +2684,17 @@ abstract class Assert
         return new TraversableContainsIdentical($value);
     }
 
+    /**
+     * @throws Exception
+     */
     public static function containsOnly(string $type): TraversableContainsOnly
     {
         return new TraversableContainsOnly($type);
     }
 
+    /**
+     * @throws Exception
+     */
     public static function containsOnlyInstancesOf(string $className): TraversableContainsOnly
     {
         return new TraversableContainsOnly($className, false);
@@ -2668,6 +2791,33 @@ abstract class Assert
         return new IsInstanceOf($className);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
+    public static function implementsInterface(string $interface): ImplementsInterface
+    {
+        return ImplementsInterface::fromInterfaceString($interface);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public static function extendsClass(string $parent): ExtendsClass
+    {
+        return ExtendsClass::fromClassString($parent);
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    public static function usesTrait(string $trait): UsesTrait
+    {
+        return UsesTrait::fromTraitString($trait);
+    }
+
+    /**
+     * @throws Exception
+     */
     public static function isType(string $type): IsType
     {
         return new IsType($type);
@@ -2785,6 +2935,7 @@ abstract class Assert
 
     /**
      * @throws ExpectationFailedException
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function assertObjectEquals(object $expected, object $actual, string $method = 'equals', string $message = ''): void
     {

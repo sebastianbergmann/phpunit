@@ -32,10 +32,17 @@ use ArrayIterator;
 use ArrayObject;
 use DateTime;
 use DateTimeZone;
+use Error;
+use ErrorException;
+use Iterator;
 use PHPUnit\TestFixture\Author;
 use PHPUnit\TestFixture\Book;
 use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use PHPUnit\TestFixture\ClassWithToString;
+use PHPUnit\TestFixture\ExampleClassNotUsingTrait;
+use PHPUnit\TestFixture\ExampleClassUsingTrait;
+use PHPUnit\TestFixture\ExampleTrait;
+use PHPUnit\TestFixture\ExampleTraitUsingTrait;
 use PHPUnit\TestFixture\ObjectEquals\ValueObject;
 use PHPUnit\TestFixture\SampleArrayAccess;
 use PHPUnit\TestFixture\SampleClass;
@@ -44,6 +51,8 @@ use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use SplObjectStorage;
 use stdClass;
+use Throwable;
+use Traversable;
 
 /**
  * @small
@@ -55,6 +64,233 @@ final class AssertTest extends TestCase
         return [
             'error syntax in expected JSON' => ['{"Mascott"::}', '{"Mascott" : "Tux"}'],
             'error UTF-8 in actual JSON'    => ['{"Mascott" : "Tux"}', '{"Mascott" : :}'],
+        ];
+    }
+
+    //
+    // implementsInterface
+    //
+
+    public static function implementsInterfaceProvider(): array
+    {
+        $template = 'Failed asserting that %s does not implement interface %s.';
+
+        return [
+            [
+                'interface' => Throwable::class,
+                'subject'   => \Exception::class,
+                'message'   => sprintf($template, \Exception::class, Throwable::class),
+            ],
+            [
+                'interface' => Throwable::class,
+                'subject'   => new \Exception(),
+                'message'   => sprintf($template, 'object ' . \Exception::class, Throwable::class),
+            ],
+            [
+                'interface' => Traversable::class,
+                'subject'   => Iterator::class,
+                'message'   => sprintf($template, Iterator::class, Traversable::class),
+            ],
+        ];
+    }
+
+    public static function notImplementsInterfaceProvider(): array
+    {
+        $template = 'Failed asserting that %s implements interface %s.';
+
+        return [
+            [
+                'interface' => Traversable::class,
+                'subject'   => \Exception::class,
+                'message'   => sprintf($template, \Exception::class, Traversable::class),
+            ],
+            [
+                'interface' => Traversable::class,
+                'subject'   => new \Exception(),
+                'message'   => sprintf($template, 'object ' . \Exception::class, Traversable::class),
+            ],
+            [
+                'interface' => Traversable::class,
+                'subject'   => 'lorem ipsum',
+                'message'   => sprintf($template, "'lorem ipsum'", Traversable::class),
+            ],
+            [
+                'interface' => Traversable::class,
+                'subject'   => 123,
+                'message'   => sprintf($template, '123', Traversable::class),
+            ],
+        ];
+    }
+
+    public static function implementsInterfaceThrowsInvalidArgumentExceptionProvider(): array
+    {
+        $message = '/Argument #1 of \S+ must be an interface-string/';
+
+        return [
+            [
+                'argument' => 'non-interface string',
+                'messsage' => $message,
+            ],
+
+            [
+                'argument' => \Exception::class,
+                'messsage' => $message,
+            ],
+
+            [
+                'argument' => ExampleTrait::class,
+                'messsage' => $message,
+            ],
+        ];
+    }
+
+    //
+    // extendsClass
+    //
+
+    public static function extendsClassProvider(): array
+    {
+        $template = 'Failed asserting that %s does not extend class %s.';
+
+        return [
+            [
+                'class'   => \Exception::class,
+                'subject' => ErrorException::class,
+                'message' => sprintf($template, ErrorException::class, \Exception::class),
+            ],
+
+            [
+                'class'   => \Exception::class,
+                'subject' => new ErrorException(),
+                'message' => sprintf($template, 'object ' . ErrorException::class, \Exception::class),
+            ],
+        ];
+    }
+
+    public static function notExtendsClassProvider(): array
+    {
+        $template = 'Failed asserting that %s extends class %s.';
+
+        return [
+            [
+                'class'   => Error::class,
+                'subject' => ErrorException::class,
+                'message' => sprintf($template, ErrorException::class, Error::class),
+            ],
+            [
+                'class'   => Error::class,
+                'subject' => new ErrorException(),
+                'message' => sprintf($template, 'object ' . ErrorException::class, Error::class),
+            ],
+            [
+                'class'   => Error::class,
+                'subject' => 'lorem ipsum',
+                'message' => sprintf($template, "'lorem ipsum'", Error::class),
+            ],
+            [
+                'class'   => Error::class,
+                'subject' => 123,
+                'message' => sprintf($template, '123', Error::class),
+            ],
+        ];
+    }
+
+    public static function extendsClassThrowsInvalidArgumentExceptionProvider(): array
+    {
+        $message = '/Argument #1 of \S+ must be a class-string/';
+
+        return [
+            [
+                'argument' => 'non-class string',
+                'messsage' => $message,
+            ],
+
+            [
+                'argument' => Throwable::class,
+                'messsage' => $message,
+            ],
+
+            [
+                'argument' => ExampleTrait::class,
+                'messsage' => $message,
+            ],
+        ];
+    }
+
+    //
+    // usesTrait
+    //
+
+    public static function usesTraitProvider(): array
+    {
+        $template = 'Failed asserting that %s does not use trait %s.';
+
+        return [
+            [
+                'trait'   => ExampleTrait::class,
+                'subject' => ExampleClassUsingTrait::class,
+                'message' => sprintf($template, ExampleClassUsingTrait::class, ExampleTrait::class),
+            ],
+            [
+                'trait'   => ExampleTrait::class,
+                'subject' => new ExampleClassUsingTrait(),
+                'message' => sprintf($template, 'object ' . ExampleClassUsingTrait::class, ExampleTrait::class),
+            ],
+            [
+                'trait'   => ExampleTrait::class,
+                'subject' => ExampleTraitUsingTrait::class,
+                'message' => sprintf($template, ExampleTraitUsingTrait::class, ExampleTrait::class),
+            ],
+        ];
+    }
+
+    public static function notUsesTraitProvider(): array
+    {
+        $template = 'Failed asserting that %s uses trait %s.';
+
+        return [
+            [
+                'trait'   => ExampleTrait::class,
+                'subject' => ExampleClassNotUsingTrait::class,
+                'message' => sprintf($template, ExampleClassNotUsingTrait::class, ExampleTrait::class),
+            ],
+            [
+                'trait'   => ExampleTrait::class,
+                'subject' => new ExampleClassNotUsingTrait(),
+                'message' => sprintf($template, 'object ' . ExampleClassNotUsingTrait::class, ExampleTrait::class),
+            ],
+            [
+                'trait'   => ExampleTrait::class,
+                'subject' => 'lorem ipsum',
+                'message' => sprintf($template, "'lorem ipsum'", ExampleTrait::class),
+            ],
+            [
+                'trait'   => ExampleTrait::class,
+                'subject' => 123,
+                'message' => sprintf($template, '123', ExampleTrait::class),
+            ],
+        ];
+    }
+
+    public static function usesTraitThrowsInvalidArgumentExceptionProvider(): array
+    {
+        $message = '/Argument #1 of \S+ must be a trait-string/';
+
+        return [
+            [
+                'argument' => 'non-trait string',
+                'messsage' => $message,
+            ],
+
+            [
+                'argument' => \Exception::class,
+                'messsage' => $message,
+            ],
+
+            [
+                'argument' => Throwable::class,
+                'messsage' => $message,
+            ],
         ];
     }
 
@@ -1824,6 +2060,227 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotInstanceOf(stdClass::class, new stdClass);
+    }
+
+    /**
+     * @dataProvider implementsInterfaceProvider
+     *
+     * @param object|string $subject
+     */
+    public function testAssertImplementsInterfaceSucceeds(string $interface, $subject): void
+    {
+        self::assertImplementsInterface($interface, $subject);
+    }
+
+    /**
+     * @dataProvider notImplementsInterfaceProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertImplementsInterfaceFails(string $interface, $subject, string $message): void
+    {
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessage($message);
+
+        self::assertImplementsInterface($interface, $subject);
+    }
+
+    /**
+     * @dataProvider notImplementsInterfaceProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertNotImplementsInterfaceSucceeds(string $interface, $subject): void
+    {
+        self::assertNotImplementsInterface($interface, $subject);
+    }
+
+    /**
+     * @dataProvider implementsInterfaceProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertNotImplementsInterfaceFails(string $interface, $subject, string $message): void
+    {
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessage($message);
+
+        self::assertNotImplementsInterface($interface, $subject);
+    }
+
+    /**
+     * @dataProvider notImplementsInterfaceProvider
+     *
+     * @param mixed $subject
+     */
+    public function testImplementsInterfaceFails(string $interface, $subject): void
+    {
+        self::assertThat($subject, self::logicalNot(self::implementsInterface($interface)));
+    }
+
+    /**
+     * @dataProvider implementsInterfaceThrowsInvalidArgumentExceptionProvider
+     */
+    public function testImplementsInterfaceThrowsInvalidArgumentException(string $argument, string $message): void
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessageMatches($message);
+
+        self::implementsInterface($argument);
+    }
+
+    /**
+     * @dataProvider extendsClassProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertExtendsClassSucceeds(string $class, $subject): void
+    {
+        self::assertExtendsClass($class, $subject);
+    }
+
+    /**
+     * @dataProvider notExtendsClassProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertExtendsClassFails(string $class, $subject, string $message): void
+    {
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessage($message);
+
+        self::assertExtendsClass($class, $subject);
+    }
+
+    /**
+     * @dataProvider notExtendsClassProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertNotExtendsClassSucceeds(string $class, $subject): void
+    {
+        self::assertNotExtendsClass($class, $subject);
+    }
+
+    /**
+     * @dataProvider extendsClassProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertNotExtendsClassFails(string $class, $subject, string $message): void
+    {
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessage($message);
+
+        self::assertNotExtendsClass($class, $subject);
+    }
+
+    /**
+     * @dataProvider extendsClassProvider
+     *
+     * @param mixed $subject
+     */
+    public function testExtendsClass(string $class, $subject): void
+    {
+        self::assertThat($subject, self::extendsClass($class));
+    }
+
+    /**
+     * @dataProvider notExtendsClassProvider
+     *
+     * @param mixed $subject
+     */
+    public function testNotExtendsClass(string $class, $subject): void
+    {
+        self::assertThat($subject, self::logicalNot(self::extendsClass($class)));
+    }
+
+    /**
+     * @dataProvider extendsClassThrowsInvalidArgumentExceptionProvider
+     */
+    public function testExtendsClassThrowsInvalidArgumentException(string $argument, string $message): void
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessageMatches($message);
+
+        self::extendsClass($argument);
+    }
+
+    /**
+     * @dataProvider usesTraitProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertUsesTraitSucceeds(string $trait, $subject): void
+    {
+        self::assertUsesTrait($trait, $subject);
+    }
+
+    /**
+     * @dataProvider notUsesTraitProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertUsesTraitFails(string $trait, $subject, string $message): void
+    {
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessage($message);
+
+        self::assertUsesTrait($trait, $subject);
+    }
+
+    /**
+     * @dataProvider notUsesTraitProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertNotUsesTraitSucceeds(string $trait, $subject): void
+    {
+        self::assertNotUsesTrait($trait, $subject);
+    }
+
+    /**
+     * @dataProvider usesTraitProvider
+     *
+     * @param mixed $subject
+     */
+    public function testAssertNotUsesTraitFails(string $trait, $subject, string $message): void
+    {
+        self::expectException(ExpectationFailedException::class);
+        self::expectExceptionMessage($message);
+
+        self::assertNotUsesTrait($trait, $subject);
+    }
+
+    /**
+     * @dataProvider usesTraitProvider
+     *
+     * @param mixed $subject
+     */
+    public function testUsesTrait(string $trait, $subject): void
+    {
+        self::assertThat($subject, self::usesTrait($trait));
+    }
+
+    /**
+     * @dataProvider notUsesTraitProvider
+     *
+     * @param mixed $subject
+     */
+    public function testNotUsesTrait(string $trait, $subject): void
+    {
+        self::assertThat($subject, self::logicalNot(self::usesTrait($trait)));
+    }
+
+    /**
+     * @dataProvider usesTraitThrowsInvalidArgumentExceptionProvider
+     */
+    public function testUsesTraitThrowsInvalidArgumentException(string $argument, string $message): void
+    {
+        self::expectException(InvalidArgumentException::class);
+        self::expectExceptionMessageMatches($message);
+
+        self::usesTrait($argument);
     }
 
     public function testAssertStringMatchesFormatFileThrowsExceptionForInvalidArgument(): void
