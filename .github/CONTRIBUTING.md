@@ -35,7 +35,7 @@ In your bug report, please provide the following:
 
 Please do not report a bug for a [version of PHPUnit that is no longer supported](https://phpunit.de/supported-versions.html). Please do not report a bug if you are using a [version of PHP that is not supported by the version of PHPUnit](https://phpunit.de/supported-versions.html) you are using.
 
-Please post code as text ([using proper markup](https://guides.github.com/features/mastering-markdown/)). Do not post screenshots of code.
+Please post code and output as text ([using proper markup](https://guides.github.com/features/mastering-markdown/)). Do not post screenshots of code or output.
 
 Please include the output of `composer info | sort` if you installed PHPUnit using Composer.
 
