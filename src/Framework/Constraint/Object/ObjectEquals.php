@@ -11,6 +11,12 @@ namespace PHPUnit\Framework\Constraint;
 
 use function get_class;
 use function is_object;
+use PHPUnit\Framework\ActualValueIsNotAnObjectException;
+use PHPUnit\Framework\ComparisonMethodDoesNotAcceptParameterTypeException;
+use PHPUnit\Framework\ComparisonMethodDoesNotDeclareBoolReturnTypeException;
+use PHPUnit\Framework\ComparisonMethodDoesNotDeclareExactlyOneParameterException;
+use PHPUnit\Framework\ComparisonMethodDoesNotDeclareParameterTypeException;
+use PHPUnit\Framework\ComparisonMethodDoesNotExistException;
 use ReflectionNamedType;
 use ReflectionObject;
 
@@ -19,20 +25,6 @@ use ReflectionObject;
  */
 final class ObjectEquals extends Constraint
 {
-    private const ACTUAL_IS_NOT_AN_OBJECT = 1;
-
-    private const ACTUAL_DOES_NOT_HAVE_METHOD = 2;
-
-    private const METHOD_DOES_NOT_HAVE_BOOL_RETURN_TYPE = 3;
-
-    private const METHOD_DOES_NOT_ACCEPT_EXACTLY_ONE_ARGUMENT = 4;
-
-    private const PARAMETER_DOES_NOT_HAVE_DECLARED_TYPE = 5;
-
-    private const EXPECTED_NOT_COMPATIBLE_WITH_PARAMETER_TYPE = 6;
-
-    private const OBJECTS_ARE_NOT_EQUAL_ACCORDING_TO_METHOD = 7;
-
     /**
      * @var object
      */
@@ -42,11 +34,6 @@ final class ObjectEquals extends Constraint
      * @var string
      */
     private $method;
-
-    /**
-     * @var int
-     */
-    private $failureReason;
 
     public function __construct(object $object, string $method = 'equals')
     {
@@ -59,71 +46,85 @@ final class ObjectEquals extends Constraint
         return 'two objects are equal';
     }
 
+    /**
+     * @throws ActualValueIsNotAnObjectException
+     * @throws ComparisonMethodDoesNotExistException
+     * @throws ComparisonMethodDoesNotDeclareBoolReturnTypeException
+     * @throws ComparisonMethodDoesNotDeclareExactlyOneParameterException
+     * @throws ComparisonMethodDoesNotDeclareParameterTypeException
+     * @throws ComparisonMethodDoesNotAcceptParameterTypeException
+     */
     protected function matches($other): bool
     {
         if (!is_object($other)) {
-            $this->failureReason = self::ACTUAL_IS_NOT_AN_OBJECT;
-
-            return false;
+            throw new ActualValueIsNotAnObjectException;
         }
 
         $object = new ReflectionObject($other);
 
         if (!$object->hasMethod($this->method)) {
-            $this->failureReason = self::ACTUAL_DOES_NOT_HAVE_METHOD;
-
-            return false;
+            throw new ComparisonMethodDoesNotExistException(
+                get_class($other),
+                $this->method
+            );
         }
 
         /** @noinspection PhpUnhandledExceptionInspection */
         $method = $object->getMethod($this->method);
 
         if (!$method->hasReturnType()) {
-            $this->failureReason = self::METHOD_DOES_NOT_HAVE_BOOL_RETURN_TYPE;
-
-            return false;
+            throw new ComparisonMethodDoesNotDeclareBoolReturnTypeException(
+                get_class($other),
+                $this->method
+            );
         }
 
         $returnType = $method->getReturnType();
 
         if (!$returnType instanceof ReflectionNamedType) {
-            $this->failureReason = self::METHOD_DOES_NOT_HAVE_BOOL_RETURN_TYPE;
-
-            return false;
+            throw new ComparisonMethodDoesNotDeclareBoolReturnTypeException(
+                get_class($other),
+                $this->method
+            );
         }
 
         if ($returnType->allowsNull()) {
-            $this->failureReason = self::METHOD_DOES_NOT_HAVE_BOOL_RETURN_TYPE;
-
-            return false;
+            throw new ComparisonMethodDoesNotDeclareBoolReturnTypeException(
+                get_class($other),
+                $this->method
+            );
         }
 
         if ($returnType->getName() !== 'bool') {
-            $this->failureReason = self::METHOD_DOES_NOT_HAVE_BOOL_RETURN_TYPE;
-
-            return false;
+            throw new ComparisonMethodDoesNotDeclareBoolReturnTypeException(
+                get_class($other),
+                $this->method
+            );
         }
 
         if ($method->getNumberOfParameters() !== 1 || $method->getNumberOfRequiredParameters() !== 1) {
-            $this->failureReason = self::METHOD_DOES_NOT_ACCEPT_EXACTLY_ONE_ARGUMENT;
-
-            return false;
+            throw new ComparisonMethodDoesNotDeclareExactlyOneParameterException(
+                get_class($other),
+                $this->method
+            );
         }
 
         $parameter = $method->getParameters()[0];
 
         if (!$parameter->hasType()) {
-            $this->failureReason = self::PARAMETER_DOES_NOT_HAVE_DECLARED_TYPE;
-
-            return false;
+            throw new ComparisonMethodDoesNotDeclareParameterTypeException(
+                get_class($other),
+                $this->method
+            );
         }
 
         $type = $parameter->getType();
 
         if (!$type instanceof ReflectionNamedType) {
-            $this->failureReason = self::PARAMETER_DOES_NOT_HAVE_DECLARED_TYPE;
-
-            return false;
+            throw new ComparisonMethodDoesNotDeclareParameterTypeException(
+                get_class($other),
+                $this->method
+            );
         }
 
         $typeName = $type->getName();
@@ -133,73 +134,18 @@ final class ObjectEquals extends Constraint
         }
 
         if (!$this->expected instanceof $typeName) {
-            $this->failureReason = self::EXPECTED_NOT_COMPATIBLE_WITH_PARAMETER_TYPE;
-
-            return false;
+            throw new ComparisonMethodDoesNotAcceptParameterTypeException(
+                get_class($other),
+                $this->method,
+                get_class($this->expected)
+            );
         }
 
-        if ($other->{$this->method}($this->expected)) {
-            return true;
-        }
-
-        $this->failureReason = self::OBJECTS_ARE_NOT_EQUAL_ACCORDING_TO_METHOD;
-
-        return false;
+        return $other->{$this->method}($this->expected);
     }
 
     protected function failureDescription($other): string
     {
         return $this->toString();
-    }
-
-    protected function additionalFailureDescription($other): string
-    {
-        switch ($this->failureReason) {
-            case self::ACTUAL_IS_NOT_AN_OBJECT:
-                return 'Actual value is not an object.';
-
-            case self::ACTUAL_DOES_NOT_HAVE_METHOD:
-                return sprintf(
-                    '%s::%s() does not exist.',
-                    get_class($other),
-                    $this->method
-                );
-
-            case self::METHOD_DOES_NOT_HAVE_BOOL_RETURN_TYPE:
-                return sprintf(
-                    '%s::%s() does not declare a bool return type.',
-                    get_class($other),
-                    $this->method
-                );
-
-            case self::METHOD_DOES_NOT_ACCEPT_EXACTLY_ONE_ARGUMENT:
-                return sprintf(
-                    '%s::%s() does not accept exactly one argument.',
-                    get_class($other),
-                    $this->method
-                );
-
-            case self::PARAMETER_DOES_NOT_HAVE_DECLARED_TYPE:
-                return sprintf(
-                    'Parameter of %s::%s() does not have a declared type.',
-                    get_class($other),
-                    $this->method
-                );
-
-            case self::EXPECTED_NOT_COMPATIBLE_WITH_PARAMETER_TYPE:
-                return sprintf(
-                    '%s is not accepted an accepted argument type for %s::%s().',
-                    get_class($this->expected),
-                    get_class($other),
-                    $this->method
-                );
-
-            default:
-                return sprintf(
-                    'The objects are not equal according to %s::%s().',
-                    get_class($other),
-                    $this->method
-                );
-        }
     }
 }

@@ -9,6 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\ActualValueIsNotAnObjectException;
+use PHPUnit\Framework\ComparisonMethodDoesNotAcceptParameterTypeException;
+use PHPUnit\Framework\ComparisonMethodDoesNotDeclareBoolReturnTypeException;
+use PHPUnit\Framework\ComparisonMethodDoesNotDeclareExactlyOneParameterException;
+use PHPUnit\Framework\ComparisonMethodDoesNotDeclareParameterTypeException;
+use PHPUnit\Framework\ComparisonMethodDoesNotExistException;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\ObjectEquals\ValueObject;
@@ -37,21 +43,24 @@ final class ObjectEqualsTest extends TestCase
 
     public function testRejectsActualValueThatIsNotAnObject(): void
     {
-        $this->expectFailure('Actual value is not an object.');
+        $this->expectException(ActualValueIsNotAnObjectException::class);
+        $this->expectExceptionMessage('Actual value is not an object');
 
         (new ObjectEquals(new ValueObject(1)))->evaluate(null);
     }
 
     public function testRejectsActualObjectThatDoesNotHaveTheSpecifiedMethod(): void
     {
-        $this->expectFailure('PHPUnit\TestFixture\ObjectEquals\ValueObjectWithoutEqualsMethod::equals() does not exist.');
+        $this->expectException(ComparisonMethodDoesNotExistException::class);
+        $this->expectExceptionMessage('Comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithoutEqualsMethod::equals() does not exist.');
 
         (new ObjectEquals(new ValueObjectWithoutEqualsMethod(1)))->evaluate(new ValueObjectWithoutEqualsMethod(1));
     }
 
     public function testRejectsActualObjectWhenTheSpecifiedMethodExistsButIsNotDeclaredToReturnBool(): void
     {
-        $this->expectFailure('PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithoutReturnType::equals() does not declare a bool return type.');
+        $this->expectException(ComparisonMethodDoesNotDeclareBoolReturnTypeException::class);
+        $this->expectExceptionMessage('Comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithoutReturnType::equals() does not declare bool return type.');
 
         (new ObjectEquals(new ValueObjectWithEqualsMethodWithoutReturnType(1)))->evaluate(new ValueObjectWithEqualsMethodWithoutReturnType(1));
     }
@@ -61,42 +70,48 @@ final class ObjectEqualsTest extends TestCase
      */
     public function testRejectsActualObjectWhenTheSpecifiedMethodExistsButIsDeclaredToReturnUnion(): void
     {
-        $this->expectFailure('PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithUnionReturnType::equals() does not declare a bool return type.');
+        $this->expectException(ComparisonMethodDoesNotDeclareBoolReturnTypeException::class);
+        $this->expectExceptionMessage('Comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithUnionReturnType::equals() does not declare bool return type.');
 
         (new ObjectEquals(new ValueObjectWithEqualsMethodWithUnionReturnType(1)))->evaluate(new ValueObjectWithEqualsMethodWithUnionReturnType(1));
     }
 
     public function testRejectsActualObjectWhenTheSpecifiedMethodExistsButIsDeclaredVoid(): void
     {
-        $this->expectFailure('PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithVoidReturnType::equals() does not declare a bool return type.');
+        $this->expectException(ComparisonMethodDoesNotDeclareBoolReturnTypeException::class);
+        $this->expectExceptionMessage('Comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithVoidReturnType::equals() does not declare bool return type.');
 
         (new ObjectEquals(new ValueObjectWithEqualsMethodWithVoidReturnType(1)))->evaluate(new ValueObjectWithEqualsMethodWithVoidReturnType(1));
     }
 
     public function testRejectsActualObjectWhenTheSpecifiedMethodExistsButIsDeclaredNullable(): void
     {
-        $this->expectFailure('PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithNullableReturnType::equals() does not declare a bool return type.');
+        $this->expectException(ComparisonMethodDoesNotDeclareBoolReturnTypeException::class);
+        $this->expectExceptionMessage('Comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithNullableReturnType::equals() does not declare bool return type.');
 
         (new ObjectEquals(new ValueObjectWithEqualsMethodWithNullableReturnType(1)))->evaluate(new ValueObjectWithEqualsMethodWithNullableReturnType(1));
     }
 
     public function testRejectsActualObjectWhenTheSpecifiedMethodDoesNotAcceptArguments(): void
     {
-        $this->expectFailure('PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatDoesNotAcceptArguments::equals() does not accept exactly one argument.');
+        $this->expectException(ComparisonMethodDoesNotDeclareExactlyOneParameterException::class);
+        $this->expectExceptionMessage('Comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatDoesNotAcceptArguments::equals() does not declare exactly one parameter.');
 
         (new ObjectEquals(new ValueObjectWithEqualsMethodThatDoesNotAcceptArguments(1)))->evaluate(new ValueObjectWithEqualsMethodThatDoesNotAcceptArguments(1));
     }
 
     public function testRejectsActualObjectWhenTheSpecifiedMethodAcceptsTooManyArguments(): void
     {
-        $this->expectFailure('PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatAcceptsTooManyArguments::equals() does not accept exactly one argument.');
+        $this->expectException(ComparisonMethodDoesNotDeclareExactlyOneParameterException::class);
+        $this->expectExceptionMessage('Comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatAcceptsTooManyArguments::equals() does not declare exactly one parameter.');
 
         (new ObjectEquals(new ValueObjectWithEqualsMethodThatAcceptsTooManyArguments(1)))->evaluate(new ValueObjectWithEqualsMethodThatAcceptsTooManyArguments(1));
     }
 
     public function testRejectsActualObjectWhenTheSpecifiedMethodDoesNotDeclareParameterType(): void
     {
-        $this->expectFailure('Parameter of PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatDoesNotDeclareParameterType::equals() does not have a declared type.');
+        $this->expectException(ComparisonMethodDoesNotDeclareParameterTypeException::class);
+        $this->expectExceptionMessage('Parameter of comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatDoesNotDeclareParameterType::equals() does not have a declared type.');
 
         (new ObjectEquals(new ValueObjectWithEqualsMethodThatDoesNotDeclareParameterType(1)))->evaluate(new ValueObjectWithEqualsMethodThatDoesNotDeclareParameterType(1));
     }
@@ -106,28 +121,25 @@ final class ObjectEqualsTest extends TestCase
      */
     public function testRejectsActualObjectWhenTheSpecifiedMethodHasUnionParameterType(): void
     {
-        $this->expectFailure('Parameter of PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatHasUnionParameterType::equals() does not have a declared type.');
+        $this->expectException(ComparisonMethodDoesNotDeclareParameterTypeException::class);
+        $this->expectExceptionMessage('Parameter of comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatHasUnionParameterType::equals() does not have a declared type.');
 
         (new ObjectEquals(new ValueObjectWithEqualsMethodThatHasUnionParameterType(1)))->evaluate(new ValueObjectWithEqualsMethodThatHasUnionParameterType(1));
     }
 
     public function testRejectsActualObjectWhenTheSpecifiedMethodHasIncompatibleParameterType(): void
     {
-        $this->expectFailure('PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatHasIncompatibleParameterType is not accepted an accepted argument type for PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatHasIncompatibleParameterType::equals().');
+        $this->expectException(ComparisonMethodDoesNotAcceptParameterTypeException::class);
+        $this->expectExceptionMessage('PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatHasIncompatibleParameterType is not an accepted argument type for comparison method PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodThatHasIncompatibleParameterType::equals().');
 
         (new ObjectEquals(new ValueObjectWithEqualsMethodThatHasIncompatibleParameterType(1)))->evaluate(new ValueObjectWithEqualsMethodThatHasIncompatibleParameterType(1));
     }
 
     public function testRejectsActualObjectWhenMethodSaysTheyAreNotEqual(): void
     {
-        $this->expectFailure('The objects are not equal according to PHPUnit\TestFixture\ObjectEquals\ValueObject::equals().');
+        $this->expectException(ExpectationFailedException::class);
+        $this->expectExceptionMessage('Failed asserting that two objects are equal.');
 
         (new ObjectEquals(new ValueObject(1)))->evaluate(new ValueObject(2));
-    }
-
-    private function expectFailure(string $message): void
-    {
-        $this->expectException(ExpectationFailedException::class);
-        $this->expectExceptionMessage('Failed asserting that two objects are equal.' . "\n" . $message);
     }
 }
