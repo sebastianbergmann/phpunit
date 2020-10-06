@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractTrait;
 use PHPUnit\TestFixture\AnInterface;
@@ -16,6 +17,7 @@ use PHPUnit\TestFixture\ClassThatImplementsSerializable;
 use PHPUnit\TestFixture\ClassWithAllPossibleReturnTypes;
 use PHPUnit\TestFixture\ClassWithSelfTypeHint;
 use PHPUnit\TestFixture\ClassWithStaticMethod;
+use PHPUnit\TestFixture\ClassWithStaticReturnTypes;
 use PHPUnit\TestFixture\ClassWithUnionReturnTypes;
 use PHPUnit\TestFixture\ExampleTrait;
 use PHPUnit\TestFixture\InterfaceWithStaticMethod;
@@ -1133,6 +1135,39 @@ final class MockObjectTest extends TestCase
         $stub = $this->createMock(ClassWithUnionReturnTypes::class);
 
         $this->assertNull($stub->returnsMixed());
+    }
+
+    /**
+     * @requires PHP > 8.0
+     */
+    public function testStaticReturnTypeIsDoubledCorrectly(): void
+    {
+        /** @var ClassWithStaticReturnTypes|Stub $stub */
+        $stub = $this->createStub(ClassWithStaticReturnTypes::class);
+
+        $this->assertInstanceOf(ClassWithStaticReturnTypes::class, $stub->returnsStatic());
+    }
+
+    /**
+     * @requires PHP > 8.0
+     */
+    public function testUnionReturnTypeWithStaticIsDoubledCorrectly(): void
+    {
+        /** @var ClassWithStaticReturnTypes|Stub $stub */
+        $stub = $this->createStub(ClassWithStaticReturnTypes::class);
+
+        $this->assertInstanceOf(ClassWithStaticReturnTypes::class, $stub->returnsUnionWithStatic());
+    }
+
+    /**
+     * @requires PHP > 8.0
+     */
+    public function testNullableStaticReturnTypeIsDoubledCorrectly(): void
+    {
+        /** @var ClassWithStaticReturnTypes|Stub $stub */
+        $stub = $this->createStub(ClassWithStaticReturnTypes::class);
+
+        $this->assertNull($stub->returnsStaticOrNull());
     }
 
     public function testTraitCanBeDoubled(): void
