@@ -172,9 +172,7 @@ final class Invocation implements SelfDescribing
                 return null;
 
             default:
-                $generator = new Generator;
-
-                return $generator->getMock($this->returnType, [], [], '', false);
+                return (new Generator)->getMock($this->returnType, [], [], '', false);
         }
     }
 
