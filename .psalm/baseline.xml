@@ -1,31 +1,34 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.14.1@9822043ca46d6682b76097bfa97d7c450eef9e90">
+<files psalm-version="3.17.2@9e526d9cb569fe4631e6a737bbb7948d05596e3f">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
-      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
+      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
     </ArgumentTypeCoercion>
     <PossiblyInvalidArgument occurrences="3">
+      <code>$expected</code>
+      <code>$expected</code>
       <code>$subset</code>
-      <code>$expected</code>
-      <code>$expected</code>
     </PossiblyInvalidArgument>
+    <TypeDoesNotContainType occurrences="1">
+      <code>!$attribute</code>
+    </TypeDoesNotContainType>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <TooManyArguments occurrences="13">
       <code>Assert::anything(...\func_get_args())</code>
-      <code>Assert::isTrue(...\func_get_args())</code>
-      <code>Assert::isFalse(...\func_get_args())</code>
-      <code>Assert::isJson(...\func_get_args())</code>
-      <code>Assert::isNull(...\func_get_args())</code>
-      <code>Assert::isFinite(...\func_get_args())</code>
-      <code>Assert::isInfinite(...\func_get_args())</code>
-      <code>Assert::isNan(...\func_get_args())</code>
-      <code>Assert::isEmpty(...\func_get_args())</code>
-      <code>Assert::isWritable(...\func_get_args())</code>
-      <code>Assert::isReadable(...\func_get_args())</code>
       <code>Assert::directoryExists(...\func_get_args())</code>
       <code>Assert::fileExists(...\func_get_args())</code>
+      <code>Assert::isEmpty(...\func_get_args())</code>
+      <code>Assert::isFalse(...\func_get_args())</code>
+      <code>Assert::isFinite(...\func_get_args())</code>
+      <code>Assert::isInfinite(...\func_get_args())</code>
+      <code>Assert::isJson(...\func_get_args())</code>
+      <code>Assert::isNan(...\func_get_args())</code>
+      <code>Assert::isNull(...\func_get_args())</code>
+      <code>Assert::isReadable(...\func_get_args())</code>
+      <code>Assert::isTrue(...\func_get_args())</code>
+      <code>Assert::isWritable(...\func_get_args())</code>
     </TooManyArguments>
   </file>
   <file src="src/Framework/Constraint/Count.php">
@@ -92,8 +95,8 @@
     <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
       <code>$className</code>
-      <code>$interfaceName</code>
       <code>$className</code>
+      <code>$interfaceName</code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement occurrences="1"/>
     <InvalidReturnType occurrences="1">
@@ -148,16 +151,16 @@
     </InvalidArgument>
     <InvalidCatch occurrences="1"/>
     <InvalidReturnStatement occurrences="2">
-      <code>\get_class($mock)</code>
       <code>$mockObject</code>
+      <code>\get_class($mock)</code>
     </InvalidReturnStatement>
     <InvalidReturnType occurrences="2">
-      <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
       <code>MockObject&amp;RealInstanceType</code>
+      <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
     </InvalidReturnType>
     <PossiblyNullPropertyAssignmentValue occurrences="3">
-      <code>null</code>
       <code>$beStrictAboutChangesToGlobalState</code>
+      <code>null</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
     <PossiblyUndefinedVariable occurrences="1">
@@ -199,10 +202,10 @@
   </file>
   <file src="src/TextUI/Command.php">
     <ArgumentTypeCoercion occurrences="4">
-      <code>$suite</code>
-      <code>$suite</code>
-      <code>$suite</code>
       <code>$printerClass</code>
+      <code>$suite</code>
+      <code>$suite</code>
+      <code>$suite</code>
     </ArgumentTypeCoercion>
     <InvalidCatch occurrences="1"/>
     <LessSpecificReturnStatement occurrences="1">
@@ -242,30 +245,25 @@
   <file src="src/Util/Annotation/DocBlock.php">
     <InvalidCatch occurrences="1"/>
   </file>
-  <file src="src/Util/Blacklist.php">
-    <UndefinedClass occurrences="1">
-      <code>Invoker</code>
-    </UndefinedClass>
-  </file>
   <file src="src/Util/Configuration.php">
     <ArgumentTypeCoercion occurrences="4">
       <code>$extension</code>
       <code>$listener</code>
-      <code>$testSuiteNodes-&gt;item(0)</code>
       <code>$testSuiteNode</code>
+      <code>$testSuiteNodes-&gt;item(0)</code>
     </ArgumentTypeCoercion>
     <PossiblyNullReference occurrences="2">
       <code>getAttribute</code>
       <code>getAttribute</code>
     </PossiblyNullReference>
     <UndefinedMethod occurrences="7">
-      <code>hasAttribute</code>
+      <code>getAttribute</code>
+      <code>getAttribute</code>
+      <code>getAttribute</code>
+      <code>getAttribute</code>
       <code>getAttribute</code>
       <code>hasAttribute</code>
-      <code>getAttribute</code>
-      <code>getAttribute</code>
-      <code>getAttribute</code>
-      <code>getAttribute</code>
+      <code>hasAttribute</code>
     </UndefinedMethod>
   </file>
   <file src="src/Util/ErrorHandler.php">
@@ -277,6 +275,12 @@
       <code>$i</code>
       <code>$i</code>
     </InvalidOperand>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$i + 1</code>
+    </PossiblyInvalidArgument>
+    <PossiblyInvalidArrayOffset occurrences="1">
+      <code>$long_options[$i + 1]</code>
+    </PossiblyInvalidArrayOffset>
     <PossiblyNullArgument occurrences="1">
       <code>$long_options</code>
     </PossiblyNullArgument>
@@ -317,8 +321,8 @@
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="2">
-      <code>$this-&gt;getException($warnings[0])</code>
       <code>$this-&gt;getException($failures[0])</code>
+      <code>$this-&gt;getException($warnings[0])</code>
     </ArgumentTypeCoercion>
     <InvalidArgument occurrences="1"/>
     <LessSpecificReturnStatement occurrences="1">
@@ -337,8 +341,8 @@
       <code>merge</code>
     </PossiblyNullReference>
     <UndefinedInterfaceMethod occurrences="2">
-      <code>setResult</code>
       <code>addToAssertionCount</code>
+      <code>setResult</code>
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/Printer.php">
@@ -359,12 +363,12 @@
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <PossiblyInvalidArrayOffset occurrences="6">
-      <code>$prefix['start']</code>
-      <code>$prefix['message']</code>
-      <code>$prefix['diff']</code>
       <code>$prefix['default']</code>
-      <code>$prefix['trace']</code>
+      <code>$prefix['diff']</code>
       <code>$prefix['last']</code>
+      <code>$prefix['message']</code>
+      <code>$prefix['start']</code>
+      <code>$prefix['trace']</code>
     </PossiblyInvalidArrayOffset>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
