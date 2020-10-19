@@ -74,7 +74,7 @@ jobs:
           extensions: intl
 
       - name: Run roave/backward-compatibility-check
-        run: ./tools/roave-backward-compatibility-check --from=9.3.9
+        run: ./tools/roave-backward-compatibility-check --from=9.4.2
 
   tests:
     name: Tests
