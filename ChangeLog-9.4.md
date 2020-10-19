@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 9.4 release series are documented in this fil
 
 ## [9.4.2] - 2020-MM-DD
 
+### Added
+
+* Added missing `PHPUnit\Framework\assertObjectEquals()` and `PHPUnit\Framework\objectEquals()` wrapper functions
+
 ### Changed
 
 * `PHPUnit\Framework\Assert::assertObjectEquals()` is now `static`

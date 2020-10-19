@@ -46,6 +46,7 @@ use PHPUnit\Framework\Constraint\LogicalAnd;
 use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\LogicalXor;
+use PHPUnit\Framework\Constraint\ObjectEquals;
 use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -386,6 +387,20 @@ if (!function_exists('PHPUnit\Framework\assertNotEqualsWithDelta')) {
     function assertNotEqualsWithDelta($expected, $actual, float $delta, string $message = ''): void
     {
         Assert::assertNotEqualsWithDelta(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertObjectEquals')) {
+    /**
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertObjectEquals
+     */
+    function assertObjectEquals(object $expected, object $actual, string $method = 'equals', string $message = ''): void
+    {
+        Assert::assertObjectEquals(...func_get_args());
     }
 }
 
@@ -2866,6 +2881,13 @@ if (!function_exists('PHPUnit\Framework\countOf')) {
     function countOf(int $count): Count
     {
         return Assert::countOf(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\objectEquals')) {
+    function objectEquals(object $object, string $method = 'equals'): ObjectEquals
+    {
+        return Assert::objectEquals(...func_get_args());
     }
 }
 
