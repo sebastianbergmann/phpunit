@@ -158,8 +158,7 @@
       <code>$expected</code>
       <code>$expected</code>
     </PossiblyInvalidArgument>
-    <PossiblyUnusedMethod occurrences="2">
-      <code>assertObjectEquals</code>
+    <PossiblyUnusedMethod occurrences="1">
       <code>getCount</code>
     </PossiblyUnusedMethod>
     <RedundantCondition occurrences="1">

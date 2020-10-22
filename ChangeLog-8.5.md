@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ### Fixed
 
+* [#3965](https://github.com/sebastianbergmann/phpunit/issues/3965): Process Isolation throws exceptions when PHPDBG is used
 * [#4470](https://github.com/sebastianbergmann/phpunit/pull/4470): Infinite recursion when `--static-backup --strict-global-state` is used
 
 ## [8.5.8] - 2020-06-22
