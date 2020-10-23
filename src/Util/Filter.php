@@ -82,20 +82,24 @@ final class Filter
             return false;
         }
 
-        $file              = $frame['file'];
-        $fileIsNotPrefixed = $prefix === false || strpos($file, $prefix) !== 0;
-
         // @see https://github.com/sebastianbergmann/phpunit/issues/4033
+        $script = '';
+
         if (isset($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
             $script = realpath($GLOBALS['_SERVER']['SCRIPT_NAME']);
-        } else {
-            $script = '';
         }
 
-        return is_file($file) &&
+        $file = $frame['file'];
+
+        if ($file === $script) {
+            return false;
+        }
+
+        $fileIsNotPrefixed = $prefix === false || strpos($file, $prefix) !== 0;
+
+        return $fileIsNotPrefixed &&
                self::fileIsExcluded($file, $excludeList) &&
-               $fileIsNotPrefixed &&
-               $file !== $script;
+               is_file($file);
     }
 
     private static function fileIsExcluded(string $file, ExcludeList $excludeList): bool
