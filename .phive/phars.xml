@@ -4,7 +4,7 @@
   <phar name="php-cs-fixer" version="^2.16" installed="2.16.4" location="./tools/php-cs-fixer" copy="true"/>
   <phar name="phpdox" version="^0.12" installed="0.12.0" location="./tools/phpdox" copy="true"/>
   <phar name="phploc" version="^4.0" installed="4.0.1" location="./tools/phploc" copy="true"/>
-  <phar name="psalm" version="^3.6" installed="3.17.2" location="./tools/psalm" copy="true"/>
+  <phar name="psalm" version="^3.6" installed="3.18.2" location="./tools/psalm" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.13.2" installed="0.13.5" location="./tools/php-scoper" copy="true"/>
   <phar name="roave/backwardcompatibilitycheck" version="^5.0.0" installed="5.0.0" location="./tools/roave-backward-compatibility-check" copy="true"/>
 </phive>

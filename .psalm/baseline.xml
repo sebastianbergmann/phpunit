@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.17.2@9e526d9cb569fe4631e6a737bbb7948d05596e3f">
+<files psalm-version="3.18.2@19aa905f7c3c7350569999a93c40ae91ae4e1626">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -1290,9 +1290,9 @@
     <PossiblyUnusedMethod occurrences="1">
       <code>main</code>
     </PossiblyUnusedMethod>
-    <RedundantConditionGivenDocblockType occurrences="1">
+    <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof Configuration)</code>
-    </RedundantConditionGivenDocblockType>
+    </RedundantCondition>
     <UnresolvableInclude occurrences="3">
       <code>require $file</code>
       <code>require $loaderFile</code>
