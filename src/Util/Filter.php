@@ -15,7 +15,6 @@ use function in_array;
 use function is_file;
 use function realpath;
 use function sprintf;
-use function strpos;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
 use Throwable;
@@ -57,7 +56,7 @@ final class Filter
             );
         }
 
-        $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
+        $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : null;
         $excludeList = new ExcludeList;
 
         foreach ($eTrace as $frame) {
@@ -73,10 +72,7 @@ final class Filter
         return $filteredStacktrace;
     }
 
-    /**
-     * @param false|string $prefix
-     */
-    private static function shouldPrintFrame(array $frame, $prefix, ExcludeList $excludeList): bool
+    private static function shouldPrintFrame(array $frame, ?string $prefix, ExcludeList $excludeList): bool
     {
         if (!isset($frame['file'])) {
             return false;
@@ -95,9 +91,7 @@ final class Filter
             return false;
         }
 
-        $fileIsNotPrefixed = $prefix === false || strpos($file, $prefix) !== 0;
-
-        return $fileIsNotPrefixed &&
+        return $prefix === null &&
                self::fileIsExcluded($file, $excludeList) &&
                is_file($file);
     }
