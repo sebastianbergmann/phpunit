@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="../../../../phpunit.xsd"
+         verbose="false"
+         colors="false"
+         cacheResult="false">
+    <!--
+    <coverage>
+        <report>
+            <clover outputFile="php://stdout"/>
+            <crap4j outputFile="php://stdout" threshold="50"/>
+            <html outputDirectory="html-coverage" lowUpperBound="50" highLowerBound="90"/>
+            <php outputFile="php://stdout"/>
+            <text outputFile="php://stdout" showUncoveredFiles="false" showOnlySummary="false"/>
+            <xml outputDirectory="xml-coverage"/>
+        </report>
+    </coverage>
+    -->
+
+    <logging>
+        <junit outputFile="php://stdout"/>
+        <teamcity outputFile="php://stdout"/>
+        <testdoxHtml outputFile="php://stdout"/>
+        <testdoxText outputFile="php://stdout"/>
+        <testdoxXml outputFile="php://stdout"/>
+        <text outputFile="php://stdout"/>
+    </logging>
+</phpunit>
