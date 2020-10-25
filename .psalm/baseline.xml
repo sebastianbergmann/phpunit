@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.18.2@19aa905f7c3c7350569999a93c40ae91ae4e1626">
+<files psalm-version="4.0.1@b1e2e30026936ef8d5bf6a354d1c3959b6231f44">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -158,9 +158,6 @@
       <code>$expected</code>
       <code>$expected</code>
     </PossiblyInvalidArgument>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getCount</code>
-    </PossiblyUnusedMethod>
     <RedundantCondition occurrences="1">
       <code>assert($step['object'] instanceof TestCase)</code>
     </RedundantCondition>
@@ -451,16 +448,6 @@
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$comparisonFailure</code>
     </PossiblyNullPropertyAssignmentValue>
-  </file>
-  <file src="src/Framework/Exception/MissingCoversAnnotationException.php">
-    <UnusedClass occurrences="1">
-      <code>MissingCoversAnnotationException</code>
-    </UnusedClass>
-  </file>
-  <file src="src/Framework/Exception/UnintentionallyCoveredCodeError.php">
-    <UnusedClass occurrences="1">
-      <code>UnintentionallyCoveredCodeError</code>
-    </UnusedClass>
   </file>
   <file src="src/Framework/ExceptionWrapper.php">
     <MissingThrowsDocblock occurrences="1">
@@ -1020,6 +1007,9 @@
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/TestResult.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$test</code>
+    </ArgumentTypeCoercion>
     <DeprecatedClass occurrences="4">
       <code>TestListener</code>
       <code>TestListener</code>
@@ -1037,11 +1027,23 @@
     <DocblockTypeContradiction occurrences="1">
       <code>$this-&gt;topTestSuite === null</code>
     </DocblockTypeContradiction>
+    <InvalidArgument occurrences="1">
+      <code>[$test, 'runBare']</code>
+    </InvalidArgument>
+    <InvalidCatch occurrences="1"/>
     <MissingConstructor occurrences="2">
       <code>$codeCoverage</code>
       <code>$topTestSuite</code>
     </MissingConstructor>
-    <PossiblyUndefinedVariable occurrences="1">
+    <MissingThrowsDocblock occurrences="1">
+      <code>stop</code>
+    </MissingThrowsDocblock>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$linesToBeCovered</code>
+    </PossiblyInvalidArgument>
+    <PossiblyUndefinedVariable occurrences="3">
+      <code>$_timeout</code>
+      <code>$_timeout</code>
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
     <PossiblyUnusedMethod occurrences="19">
@@ -1069,6 +1071,16 @@
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
     </RedundantConditionGivenDocblockType>
+    <UndefinedInterfaceMethod occurrences="8">
+      <code>addToAssertionCount</code>
+      <code>addToAssertionCount</code>
+      <code>getAnnotations</code>
+      <code>getNumAssertions</code>
+      <code>getSize</code>
+      <code>getSize</code>
+      <code>getSize</code>
+      <code>runBare</code>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion occurrences="2">
@@ -1197,11 +1209,6 @@
       <code>FileLoader::checkAndLoad($suiteClassFile)</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Runner/TestResultCache.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>load</code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <PossiblyUnusedMethod occurrences="1">
       <code>reload</code>
@@ -1301,9 +1308,6 @@
     <UnsafeInstantiation occurrences="1">
       <code>new static</code>
     </UnsafeInstantiation>
-    <UnusedVariable occurrences="1">
-      <code>$handler</code>
-    </UnusedVariable>
   </file>
   <file src="src/TextUI/DefaultResultPrinter.php">
     <DeprecatedInterface occurrences="1">
@@ -1384,9 +1388,8 @@
       <code>processSuiteFilters</code>
       <code>writeMessage</code>
     </UnusedMethod>
-    <UnusedParam occurrences="2">
+    <UnusedParam occurrences="1">
       <code>$exit</code>
-      <code>$warnings</code>
     </UnusedParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
@@ -1798,6 +1801,9 @@
     <PossiblyUnusedMethod occurrences="1">
       <code>unregister</code>
     </PossiblyUnusedMethod>
+    <UnusedClosureParam occurrences="1">
+      <code>$errorString</code>
+    </UnusedClosureParam>
   </file>
   <file src="src/Util/ExcludeList.php">
     <DocblockTypeContradiction occurrences="1">
@@ -1809,9 +1815,6 @@
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>
-    <UnusedParam occurrences="1">
-      <code>$filename</code>
-    </UnusedParam>
   </file>
   <file src="src/Util/GlobalState.php">
     <MissingParamType occurrences="1">
@@ -1825,6 +1828,9 @@
     <MissingParamType occurrences="1">
       <code>$json</code>
     </MissingParamType>
+    <UnusedVariable occurrences="1">
+      <code>$key</code>
+    </UnusedVariable>
   </file>
   <file src="src/Util/Log/JUnit.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -1882,9 +1888,6 @@
       <code>TeamCity</code>
       <code>TeamCity</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="1">
-      <code>$previous-&gt;getPrevious()</code>
-    </RedundantCondition>
     <UndefinedInterfaceMethod occurrences="7">
       <code>getName</code>
       <code>getName</code>
@@ -1964,10 +1967,6 @@
       <code>requirements</code>
       <code>requirements</code>
     </MissingThrowsDocblock>
-    <PossiblyUnusedMethod occurrences="2">
-      <code>getLinesToBeCovered</code>
-      <code>getLinesToBeUsed</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <DeprecatedInterface occurrences="1">
