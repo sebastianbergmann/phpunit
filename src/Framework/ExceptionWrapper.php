@@ -43,6 +43,7 @@ final class ExceptionWrapper extends Exception
         // PDOException::getCode() is a string.
         // @see https://php.net/manual/en/class.pdoexception.php#95812
         parent::__construct($t->getMessage(), (int) $t->getCode());
+
         $this->setOriginalException($t);
     }
 
