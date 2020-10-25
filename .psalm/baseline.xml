@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="3.17.2@9e526d9cb569fe4631e6a737bbb7948d05596e3f">
+<files psalm-version="4.0.1@b1e2e30026936ef8d5bf6a354d1c3959b6231f44">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -1205,6 +1205,9 @@
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/TestResult.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$test</code>
+    </ArgumentTypeCoercion>
     <DeprecatedClass occurrences="4">
       <code>TestListener</code>
       <code>TestListener</code>
@@ -1226,7 +1229,8 @@
       <code>$codeCoverage</code>
       <code>$topTestSuite</code>
     </MissingConstructor>
-    <PossiblyUndefinedVariable occurrences="1">
+    <PossiblyUndefinedVariable occurrences="2">
+      <code>$_timeout</code>
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
     <PossiblyUnusedMethod occurrences="17">
@@ -1252,6 +1256,16 @@
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
     </RedundantConditionGivenDocblockType>
+    <UndefinedClass occurrences="2">
+      <code>Invoker</code>
+      <code>TimeoutException</code>
+    </UndefinedClass>
+    <UndefinedInterfaceMethod occurrences="4">
+      <code>getSize</code>
+      <code>getSize</code>
+      <code>getSize</code>
+      <code>runBare</code>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion occurrences="2">
@@ -1268,8 +1282,10 @@
     <MissingThrowsDocblock occurrences="2">
       <code>new PhptTestCase($filename)</code>
     </MissingThrowsDocblock>
-    <PossiblyUndefinedVariable occurrences="1">
+    <PossiblyUndefinedVariable occurrences="3">
       <code>$afterClassMethod</code>
+      <code>$afterClassMethod</code>
+      <code>$test</code>
     </PossiblyUndefinedVariable>
     <PossiblyUnusedMethod occurrences="2">
       <code>setGroupDetails</code>
@@ -1368,11 +1384,6 @@
       <code>getNumAssertions</code>
       <code>hasOutput</code>
       <code>usesDataProvider</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Runner/TestResultCache.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>load</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
@@ -1508,6 +1519,7 @@
       <code>$this-&gt;loader === null</code>
       <code>$this-&gt;printer === null</code>
     </DocblockTypeContradiction>
+    <InvalidCatch occurrences="1"/>
     <MissingThrowsDocblock occurrences="4">
       <code>addFilter</code>
       <code>addFilter</code>
@@ -1517,8 +1529,9 @@
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyUndefinedVariable occurrences="1">
+    <PossiblyUndefinedVariable occurrences="2">
       <code>$whitelistFromConfigurationFile</code>
+      <code>$whitelistFromOption</code>
     </PossiblyUndefinedVariable>
     <PossiblyUnusedMethod occurrences="1">
       <code>setPrinter</code>
@@ -1617,14 +1630,14 @@
     <PossiblyUnusedMethod occurrences="1">
       <code>unregister</code>
     </PossiblyUnusedMethod>
+    <UnusedClosureParam occurrences="1">
+      <code>$errorString</code>
+    </UnusedClosureParam>
   </file>
   <file src="src/Util/FileLoader.php">
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>
-    <UnusedParam occurrences="1">
-      <code>$filename</code>
-    </UnusedParam>
   </file>
   <file src="src/Util/Filter.php">
     <MissingParamType occurrences="3">
@@ -1661,6 +1674,9 @@
     <MissingParamType occurrences="1">
       <code>$json</code>
     </MissingParamType>
+    <UnusedVariable occurrences="1">
+      <code>$key</code>
+    </UnusedVariable>
   </file>
   <file src="src/Util/Log/JUnit.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -1731,9 +1747,6 @@
       <code>TeamCity</code>
       <code>TeamCity</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="1">
-      <code>$previous-&gt;getPrevious()</code>
-    </RedundantCondition>
     <UndefinedInterfaceMethod occurrences="7">
       <code>getName</code>
       <code>getName</code>
