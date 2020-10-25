@@ -5,7 +5,6 @@
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     cacheDirectory=".psalm/cache"
     totallyTyped="false"
-    reportMixedIssues="false"
     checkForThrowsDocblock="true"
     findUnusedVariablesAndParams="true"
     findUnusedCode="true"
