@@ -31,12 +31,12 @@ final class ExceptionWrapper extends Exception
     /**
      * @var string
      */
-    protected $className;
+    private $className;
 
     /**
      * @var null|ExceptionWrapper
      */
-    protected $previous;
+    private $previous;
 
     public function __construct(Throwable $t)
     {
