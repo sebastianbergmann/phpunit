@@ -736,11 +736,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $result = $this->createResult();
         }
 
-        if (!$this instanceof WarningTestCase) {
+        if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
             $this->setTestResultObject($result);
         }
 
-        if (!$this instanceof WarningTestCase &&
+        if (!$this instanceof ErrorTestCase &&
+            !$this instanceof WarningTestCase &&
             !$this instanceof SkippedTestCase &&
             !$this->handleDependencies()) {
             return $result;

@@ -676,6 +676,7 @@ final class TestResult implements Countable
         }
 
         $collectCodeCoverage = $this->codeCoverage !== null &&
+                               !$test instanceof ErrorTestCase &&
                                !$test instanceof WarningTestCase &&
                                $isAnyCoverageRequired;
 
@@ -684,9 +685,10 @@ final class TestResult implements Countable
         }
 
         $monitorFunctions = $this->beStrictAboutResourceUsageDuringSmallTests &&
-            !$test instanceof WarningTestCase &&
-            $test->getSize() === \PHPUnit\Util\Test::SMALL &&
-            function_exists('xdebug_start_function_monitor');
+                            !$test instanceof ErrorTestCase &&
+                            !$test instanceof WarningTestCase &&
+                            $test->getSize() === \PHPUnit\Util\Test::SMALL &&
+                            function_exists('xdebug_start_function_monitor');
 
         if ($monitorFunctions) {
             /* @noinspection ForgottenDebugOutputInspection */
@@ -699,7 +701,8 @@ final class TestResult implements Countable
         try {
             $invoker = new Invoker;
 
-            if (!$test instanceof WarningTestCase &&
+            if (!$test instanceof ErrorTestCase &&
+                !$test instanceof WarningTestCase &&
                 $this->enforceTimeLimit &&
                 ($this->defaultTimeLimit || $test->getSize() != \PHPUnit\Util\Test::UNKNOWN) &&
                 $invoker->canInvokeWithTimeout()) {

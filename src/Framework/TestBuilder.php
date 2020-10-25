@@ -99,7 +99,7 @@ final class TestBuilder
                     $this->throwableToString($t)
                 );
 
-                $data = new WarningTestCase($message);
+                $data = new ErrorTestCase($message);
             }
 
             // Test method with @dataProvider.
@@ -154,7 +154,7 @@ final class TestBuilder
 
         $groups = TestUtil::getGroups($className, $methodName);
 
-        if ($data instanceof WarningTestCase ||
+        if ($data instanceof ErrorTestCase ||
             $data instanceof SkippedTestCase ||
             $data instanceof IncompleteTestCase) {
             $dataProviderTestSuite->addTest($data, $groups);

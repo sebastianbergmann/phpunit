@@ -12,15 +12,15 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-W                                                                   1 / 1 (100%)
+E                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 warning:
+There was 1 error:
 
-1) Warning
+1) Error
 The data provider specified for Issue2137Test::testBrandService is invalid.
 Data set #0 is invalid.
 
-WARNINGS!
-Tests: 1, Assertions: 0, Warnings: 1.
+ERRORS!
+Tests: 1, Assertions: 0, Errors: 1.
