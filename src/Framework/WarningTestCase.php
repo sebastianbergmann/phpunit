@@ -45,6 +45,7 @@ final class WarningTestCase extends TestCase
     public function __construct($message = '')
     {
         $this->message = $message;
+
         parent::__construct('Warning');
     }
 
