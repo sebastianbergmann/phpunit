@@ -26,7 +26,9 @@ use function strlen;
 use function vsprintf;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Framework\MockObject\RuntimeException as MockObjectException;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
@@ -370,6 +372,13 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
     protected function printDefectTrace(TestFailure $defect): void
     {
         $e = $defect->thrownException();
+
+        if ($e instanceof ExceptionWrapper && $e->getClassName() === MockObjectException::class) {
+            $this->write($e->getMessage() . PHP_EOL);
+
+            return;
+        }
+
         $this->write((string) $e);
 
         while ($e = $e->getPrevious()) {

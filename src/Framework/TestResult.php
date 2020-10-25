@@ -17,7 +17,6 @@ use function sprintf;
 use AssertionError;
 use Countable;
 use Error;
-use PHPUnit\Framework\MockObject\Exception as MockObjectException;
 use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\Printer;
@@ -742,12 +741,6 @@ final class TestResult implements Countable
             );
 
             $risky = true;
-        } catch (MockObjectException $e) {
-            $e = new Warning(
-                $e->getMessage()
-            );
-
-            $warning = true;
         } catch (AssertionFailedError $e) {
             $failure = true;
 
