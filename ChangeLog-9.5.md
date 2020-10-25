@@ -4,4 +4,8 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 ## [9.5.0] - 2020-12-04
 
+### Changed
+
+* [#4490](https://github.com/sebastianbergmann/phpunit/issues/4490): Emit Error instead of Warning when test case class cannot be instantiated
+
 [9.5.0]: https://github.com/sebastianbergmann/phpunit/compare/9.4...master

@@ -30,7 +30,7 @@ final class TestBuilder
         $className = $theClass->getName();
 
         if (!$theClass->isInstantiable()) {
-            return new WarningTestCase(
+            return new ErrorTestCase(
                 sprintf('Cannot instantiate class "%s".', $className)
             );
         }

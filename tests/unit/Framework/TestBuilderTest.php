@@ -66,8 +66,10 @@ final class TestBuilderTest extends TestCase
             ->willReturn('foo');
 
         $test = (new TestBuilder)->build($reflector, 'TestForNonInstantiableTestClass');
-        $this->assertInstanceOf(WarningTestCase::class, $test);
-        /* @var WarningTestCase $test */
+
+        $this->assertInstanceOf(ErrorTestCase::class, $test);
+
+        /* @var ErrorTestCase $test */
         $this->assertSame('Cannot instantiate class "foo".', $test->getMessage());
     }
 
