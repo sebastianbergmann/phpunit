@@ -21,7 +21,7 @@ use Throwable;
  * Re-instantiates Exceptions thrown by user-space code to retain their original
  * class names, properties, and stack traces (but without arguments).
  *
- * Unlike PHPUnit\Framework_\Exception, the complete stack of previous Exceptions
+ * Unlike PHPUnit\Framework\Exception, the complete stack of previous Exceptions
  * is processed.
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
