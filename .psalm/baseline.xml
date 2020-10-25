@@ -465,9 +465,6 @@
     <PossiblyUnusedMethod occurrences="1">
       <code>getMessage</code>
     </PossiblyUnusedMethod>
-    <PossiblyUnusedProperty occurrences="1">
-      <code>$useErrorHandler</code>
-    </PossiblyUnusedProperty>
   </file>
   <file src="src/Framework/MockObject/Builder/Identity.php">
     <MissingReturnType occurrences="1">
@@ -799,9 +796,6 @@
     <PossiblyUnusedMethod occurrences="1">
       <code>getMessage</code>
     </PossiblyUnusedMethod>
-    <PossiblyUnusedProperty occurrences="1">
-      <code>$useErrorHandler</code>
-    </PossiblyUnusedProperty>
   </file>
   <file src="src/Framework/Test.php">
     <PossiblyUnusedMethod occurrences="1">
@@ -1126,11 +1120,6 @@
     <PossiblyUnusedMethod occurrences="1">
       <code>getChildren</code>
     </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/WarningTestCase.php">
-    <PossiblyUnusedProperty occurrences="1">
-      <code>$useErrorHandler</code>
-    </PossiblyUnusedProperty>
   </file>
   <file src="src/Runner/BaseTestRunner.php">
     <DeprecatedClass occurrences="2">
