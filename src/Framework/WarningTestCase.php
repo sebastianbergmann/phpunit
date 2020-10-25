@@ -34,10 +34,7 @@ final class WarningTestCase extends TestCase
      */
     private $message;
 
-    /**
-     * @param string $message
-     */
-    public function __construct($message = '')
+    public function __construct(string $message = '')
     {
         $this->message = $message;
 
