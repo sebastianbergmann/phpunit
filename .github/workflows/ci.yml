@@ -126,7 +126,7 @@ jobs:
 
       - name: Override PHP ini values for JIT compiler
         if: matrix.compiler == 'jit'
-        run: echo "::set-env name=PHP_INI_VALUES::assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit=1255, opcache.jit_buffer_size=32M"
+        run: echo "PHP_INI_VALUES::assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit=1255, opcache.jit_buffer_size=32M" >> $GITHUB_ENV
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -138,11 +138,11 @@ jobs:
 
       - name: Determine composer cache directory on Linux
         if: matrix.os == 'ubuntu-latest'
-        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(./tools/composer config cache-dir)"
+        run: echo "COMPOSER_CACHE_DIR=$(./tools/composer config cache-dir)" >> $GITHUB_ENV
 
       - name: Determine composer cache directory on Windows
         if: matrix.os == 'windows-latest'
-        run: ECHO "::set-env name=COMPOSER_CACHE_DIR::~\AppData\Local\Composer"
+        run: ECHO "COMPOSER_CACHE_DIR=~\AppData\Local\Composer" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v2
