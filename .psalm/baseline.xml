@@ -475,17 +475,6 @@
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
-    <MissingParamType occurrences="3">
-      <code>$arguments</code>
-      <code>$nextValues</code>
-      <code>$value</code>
-    </MissingParamType>
-    <MissingThrowsDocblock occurrences="4">
-      <code>new Rule\ConsecutiveParameters($arguments)</code>
-      <code>new Rule\MethodName($constraint)</code>
-      <code>new Rule\Parameters($arguments)</code>
-      <code>registerMatcher</code>
-    </MissingThrowsDocblock>
     <PossiblyUnusedMethod occurrences="1">
       <code>withConsecutive</code>
     </PossiblyUnusedMethod>
@@ -558,13 +547,6 @@
     <MissingReturnType occurrences="1">
       <code>getObject</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="8">
-      <code>generateMock</code>
-      <code>generateMock</code>
-      <code>new Template($filename)</code>
-      <code>throw InvalidArgumentException::create(2, 'array');</code>
-      <code>throw new RuntimeException($exception-&gt;getMessage());</code>
-    </MissingThrowsDocblock>
     <PossiblyFalseArgument occurrences="1">
       <code>strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
@@ -646,9 +628,6 @@
       <code>MockObject&amp;MockedType</code>
       <code>MockObject&amp;MockedType</code>
     </InvalidReturnType>
-    <MissingThrowsDocblock occurrences="1">
-      <code>getClassMethods</code>
-    </MissingThrowsDocblock>
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$type</code>
     </PossiblyInvalidPropertyAssignmentValue>
@@ -677,9 +656,6 @@
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>new Template($filename)</code>
-    </MissingThrowsDocblock>
     <RedundantCondition occurrences="1">
       <code>$type instanceof ReflectionUnionType</code>
     </RedundantCondition>
@@ -716,9 +692,6 @@
     <DocblockTypeContradiction occurrences="1">
       <code>$constraint instanceof Constraint</code>
     </DocblockTypeContradiction>
-    <MissingThrowsDocblock occurrences="1">
-      <code>evaluate</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <DocblockTypeContradiction occurrences="1">

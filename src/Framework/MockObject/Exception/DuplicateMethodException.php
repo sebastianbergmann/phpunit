@@ -14,19 +14,18 @@ use function sprintf;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class IncompatibleReturnValueException extends \PHPUnit\Framework\Exception implements Exception
+final class DuplicateMethodException extends \PHPUnit\Framework\Exception implements Exception
 {
     /**
-     * @param mixed $value
+     * @psalm-param list<string> $methods
      */
-    public function __construct(ConfigurableMethod $method, $value)
+    public function __construct(array $methods)
     {
         parent::__construct(
             sprintf(
-                'Method %s may not return value of type %s, its return declaration is "%s"',
-                $method->getName(),
-                is_object($value) ? get_class($value) : gettype($value),
-                $method->getReturnTypeDeclaration()
+                'Cannot stub or mock using a method list that contains duplicates: "%s" (duplicate: "%s")',
+                implode(', ', $methods),
+                implode(', ', array_unique(array_diff_assoc($methods, array_unique($methods))))
             )
         );
     }

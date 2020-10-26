@@ -13,6 +13,7 @@ use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
 use PHPUnit\Framework\MockObject\InvocationHandler;
 use PHPUnit\Framework\MockObject\Matcher;
+use PHPUnit\Framework\MockObject\MethodCannotBeConfiguredException;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\TestCase;
@@ -84,12 +85,14 @@ final class InvocationMockerTest extends TestCase
     public function testWillFailWhenTryingToPerformExpectationUnconfigurableMethod(): void
     {
         $matcherCollection = new InvocationHandler([], false);
-        $invocationMocker  = new InvocationMocker(
+
+        $invocationMocker = new InvocationMocker(
             $matcherCollection,
             new Matcher($this->any())
         );
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(MethodCannotBeConfiguredException::class);
+
         $invocationMocker->method('someMethod');
     }
 

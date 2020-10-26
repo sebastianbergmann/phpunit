@@ -14,19 +14,15 @@ use function sprintf;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class IncompatibleReturnValueException extends \PHPUnit\Framework\Exception implements Exception
+final class CannotUseOnlyMethodsException extends \PHPUnit\Framework\Exception implements Exception
 {
-    /**
-     * @param mixed $value
-     */
-    public function __construct(ConfigurableMethod $method, $value)
+    public function __construct(string $type, string $methodName)
     {
         parent::__construct(
             sprintf(
-                'Method %s may not return value of type %s, its return declaration is "%s"',
-                $method->getName(),
-                is_object($value) ? get_class($value) : gettype($value),
-                $method->getReturnTypeDeclaration()
+                'Trying to set mock method "%s" with onlyMethods, but it does not exist in class "%s". Use addMethods() for methods that do not exist in the class',
+                $methodName,
+                $type
             )
         );
     }

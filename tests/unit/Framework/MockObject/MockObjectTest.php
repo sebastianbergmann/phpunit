@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\MockObject;
+use PHPUnit\Framework\MockObject\ReturnValueNotConfiguredException;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractTrait;
@@ -1055,13 +1056,11 @@ final class MockObjectTest extends TestCase
     public function testDisableAutomaticReturnValueGeneration(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-            ->disableAutoReturnValueGeneration()
-            ->getMock();
+                     ->disableAutoReturnValueGeneration()
+                     ->getMock();
 
-        $this->expectException(RuntimeException::class);
-        $this->expectExceptionMessage(
-            'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\SomeClass::doSomethingElse()'
-        );
+        $this->expectException(ReturnValueNotConfiguredException::class);
+        $this->expectExceptionMessage('Return value inference disabled and no expectation set up for PHPUnit\TestFixture\SomeClass::doSomethingElse()');
 
         $mock->doSomethingElse(1);
     }

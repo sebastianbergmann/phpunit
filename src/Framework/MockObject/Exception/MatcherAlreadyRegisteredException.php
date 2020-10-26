@@ -14,19 +14,14 @@ use function sprintf;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class IncompatibleReturnValueException extends \PHPUnit\Framework\Exception implements Exception
+final class MatcherAlreadyRegisteredException extends \PHPUnit\Framework\Exception implements Exception
 {
-    /**
-     * @param mixed $value
-     */
-    public function __construct(ConfigurableMethod $method, $value)
+    public function __construct(string $id)
     {
         parent::__construct(
             sprintf(
-                'Method %s may not return value of type %s, its return declaration is "%s"',
-                $method->getName(),
-                is_object($value) ? get_class($value) : gettype($value),
-                $method->getReturnTypeDeclaration()
+                'Matcher with id <%s> is already registered',
+                $id
             )
         );
     }
