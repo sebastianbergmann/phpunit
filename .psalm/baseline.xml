@@ -797,11 +797,6 @@
       <code>getMessage</code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="src/Framework/Test.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>run</code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="src/Framework/TestBuilder.php">
     <MissingParamType occurrences="1">
       <code>$data</code>
@@ -1024,55 +1019,53 @@
     <InvalidArgument occurrences="1">
       <code>[$test, 'runBare']</code>
     </InvalidArgument>
-    <InvalidCatch occurrences="1"/>
     <MissingConstructor occurrences="2">
       <code>$codeCoverage</code>
       <code>$topTestSuite</code>
     </MissingConstructor>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="3">
       <code>stop</code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument occurrences="1">
       <code>$linesToBeCovered</code>
     </PossiblyInvalidArgument>
-    <PossiblyUndefinedVariable occurrences="3">
+    <PossiblyUndefinedVariable occurrences="6">
       <code>$_timeout</code>
       <code>$_timeout</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
-    <PossiblyUnusedMethod occurrences="19">
-      <code>beStrictAboutOutputDuringTests</code>
-      <code>beStrictAboutResourceUsageDuringSmallTests</code>
-      <code>beStrictAboutTestsThatDoNotTestAnything</code>
-      <code>beStrictAboutTodoAnnotatedTests</code>
-      <code>enforceTimeLimit</code>
-      <code>flushListeners</code>
-      <code>forceCoversAnnotation</code>
+    <PossiblyUnusedMethod occurrences="7">
       <code>forcesCoversAnnotation</code>
       <code>getConvertDeprecationsToExceptions</code>
       <code>getConvertErrorsToExceptions</code>
       <code>getConvertNoticesToExceptions</code>
       <code>getConvertWarningsToExceptions</code>
       <code>removeListener</code>
-      <code>setCodeCoverage</code>
-      <code>setDefaultTimeLimit</code>
-      <code>setTimeoutForLargeTests</code>
-      <code>setTimeoutForMediumTests</code>
-      <code>setTimeoutForSmallTests</code>
       <code>topTestSuite</code>
     </PossiblyUnusedMethod>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
     </RedundantConditionGivenDocblockType>
-    <UndefinedInterfaceMethod occurrences="8">
+    <UndefinedInterfaceMethod occurrences="16">
       <code>addToAssertionCount</code>
       <code>addToAssertionCount</code>
+      <code>doesNotPerformAssertions</code>
+      <code>doesNotPerformAssertions</code>
+      <code>getActualOutput</code>
       <code>getAnnotations</code>
+      <code>getName</code>
+      <code>getNumAssertions</code>
+      <code>getNumAssertions</code>
+      <code>getNumAssertions</code>
       <code>getNumAssertions</code>
       <code>getSize</code>
       <code>getSize</code>
       <code>getSize</code>
+      <code>hasOutput</code>
       <code>runBare</code>
     </UndefinedInterfaceMethod>
   </file>
@@ -1093,9 +1086,8 @@
       <code>FileLoader::checkAndLoad($filename)</code>
       <code>new PhptTestCase($filename)</code>
     </MissingThrowsDocblock>
-    <PossiblyUnusedMethod occurrences="2">
+    <PossiblyUnusedMethod occurrences="1">
       <code>setGroupDetails</code>
-      <code>warnings</code>
     </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="4">
       <code>$backupGlobals</code>
@@ -1145,16 +1137,6 @@
       <code>$filterMax</code>
       <code>$filterMin</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Runner/Hook/AfterLastTestHook.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>executeAfterLastTest</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Runner/Hook/BeforeFirstTestHook.php">
-    <UnusedClass occurrences="1">
-      <code>BeforeFirstTestHook</code>
-    </UnusedClass>
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
     <DeprecatedInterface occurrences="1">
@@ -1320,19 +1302,15 @@
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
-  <file src="src/TextUI/ResultPrinter.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>printResult</code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedClass occurrences="4">
+    <DeprecatedClass occurrences="5">
       <code>TestSuiteLoader</code>
       <code>TestSuiteLoader</code>
       <code>TestSuiteLoader</code>
       <code>new StandardTestSuiteLoader</code>
+      <code>new XdebugFilterScriptGenerator</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="8">
+    <DeprecatedMethod occurrences="9">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
@@ -1341,20 +1319,47 @@
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
+      <code>flushListeners</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="2">
       <code>$this-&gt;loader === null</code>
       <code>$this-&gt;printer === null</code>
     </DocblockTypeContradiction>
-    <InvalidCatch occurrences="1"/>
+    <InternalClass occurrences="7">
+      <code>new CloverReport</code>
+      <code>new CoberturaReport</code>
+      <code>new Crap4jReport($arguments['crap4jThreshold'])</code>
+      <code>new PhpReport</code>
+      <code>new XmlReport(Version::id())</code>
+    </InternalClass>
+    <InternalMethod occurrences="7">
+      <code>process</code>
+      <code>process</code>
+      <code>process</code>
+      <code>process</code>
+      <code>process</code>
+      <code>process</code>
+      <code>process</code>
+    </InternalMethod>
+    <InvalidArgument occurrences="6">
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+    </InvalidArgument>
     <InvalidStringClass occurrences="1"/>
-    <MissingThrowsDocblock occurrences="8">
+    <MissingThrowsDocblock occurrences="11">
       <code>addFilter</code>
       <code>addFilter</code>
       <code>addFilter</code>
       <code>addFilter</code>
       <code>addFilter</code>
+      <code>detect</code>
+      <code>new Printer($arguments['coverageText'])</code>
       <code>reorderTestsInSuite</code>
+      <code>run</code>
       <code>stop</code>
       <code>stop</code>
     </MissingThrowsDocblock>
@@ -1364,22 +1369,18 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$printer</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="1">
+    <RedundantCondition occurrences="3">
+      <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
+      <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>$this-&gt;printer !== null</code>
     </RedundantConditionGivenDocblockType>
-    <UnusedMethod occurrences="5">
-      <code>codeCoverageGenerationFailed</code>
-      <code>codeCoverageGenerationStart</code>
-      <code>codeCoverageGenerationSucceeded</code>
-      <code>processSuiteFilters</code>
-      <code>writeMessage</code>
-    </UnusedMethod>
-    <UnusedParam occurrences="1">
-      <code>$exit</code>
-    </UnusedParam>
+    <UnusedVariable occurrences="2">
+      <code>$step</code>
+      <code>$tooFewColumnsRequested</code>
+    </UnusedVariable>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
     <PossiblyUnusedMethod occurrences="8">
@@ -1452,14 +1453,12 @@
     </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/Configuration.php">
-    <PossiblyUnusedMethod occurrences="7">
+    <PossiblyUnusedMethod occurrences="5">
       <code>extensions</code>
       <code>groups</code>
-      <code>hasValidationErrors</code>
       <code>listeners</code>
       <code>logging</code>
       <code>testdoxGroups</code>
-      <code>validationErrors</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/Filesystem/DirectoryCollectionIterator.php">
@@ -2060,9 +2059,6 @@
     </UnusedMethodCall>
   </file>
   <file src="src/Util/XdebugFilterScriptGenerator.php">
-    <UnusedClass occurrences="1">
-      <code>XdebugFilterScriptGenerator</code>
-    </UnusedClass>
     <UnusedMethodCall occurrences="2">
       <code>$filter-&gt;directories()</code>
       <code>$filter-&gt;files()</code>
