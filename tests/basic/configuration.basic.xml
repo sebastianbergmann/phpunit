@@ -7,7 +7,6 @@
     <testsuites>
         <testsuite name="basic">
             <directory suffix="Test.php">unit</directory>
-            <directory suffix=".phpt">integration</directory>
         </testsuite>
     </testsuites>
 
