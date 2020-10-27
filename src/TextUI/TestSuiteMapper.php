@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI;
 use const PHP_VERSION;
 use function explode;
 use function in_array;
+use function is_dir;
 use function is_file;
 use function strpos;
 use function version_compare;
@@ -66,7 +67,7 @@ final class TestSuiteMapper
                         $testSuite->addTestFiles($files);
 
                         $testSuiteEmpty = false;
-                    } elseif (strpos($directory->path(), '*') === false) {
+                    } elseif (strpos($directory->path(), '*') === false && !is_dir($directory->path())) {
                         throw new TestDirectoryNotFoundException($directory->path());
                     }
                 }
