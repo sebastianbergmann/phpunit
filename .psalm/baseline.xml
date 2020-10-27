@@ -1207,7 +1207,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="22">
+    <MissingThrowsDocblock occurrences="21">
       <code>argument</code>
       <code>argument</code>
       <code>atLeastVersion</code>
@@ -1224,7 +1224,6 @@
       <code>iniSettings</code>
       <code>mapToLegacyArray</code>
       <code>printerClass</code>
-      <code>run</code>
       <code>stop</code>
       <code>testSuiteLoaderClass</code>
       <code>unrecognizedOrderBy</code>
@@ -1354,6 +1353,13 @@
       <code>$step</code>
       <code>$tooFewColumnsRequested</code>
     </UnusedVariable>
+  </file>
+  <file src="src/TextUI/TestSuiteMapper.php">
+    <UnusedMethodCall occurrences="3">
+      <code>$configuration</code>
+      <code>$testSuiteConfiguration-&gt;directories()</code>
+      <code>$testSuiteConfiguration-&gt;files()</code>
+    </UnusedMethodCall>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
     <PossiblyUnusedMethod occurrences="8">
@@ -1723,16 +1729,6 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/TestSuite/TestSuiteMapper.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>new TestSuiteObject</code>
-    </MissingThrowsDocblock>
-    <UnusedMethodCall occurrences="3">
-      <code>$configuration</code>
-      <code>$testSuiteConfiguration-&gt;directories()</code>
-      <code>$testSuiteConfiguration-&gt;files()</code>
-    </UnusedMethodCall>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
     <MissingThrowsDocblock occurrences="1">

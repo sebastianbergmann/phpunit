@@ -9,5 +9,6 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 * [#4490](https://github.com/sebastianbergmann/phpunit/issues/4490): Emit Error instead of Warning when test case class cannot be instantiated
 * [#4491](https://github.com/sebastianbergmann/phpunit/issues/4491): Emit Error instead of Warning when data provider does not work correctly
 * [#4492](https://github.com/sebastianbergmann/phpunit/issues/4492): Emit Error instead of Warning when test double configuration is invalid
+* [#4493](https://github.com/sebastianbergmann/phpunit/issues/4493): Emit error when (configured) test directory does not exist
 
 [9.5.0]: https://github.com/sebastianbergmann/phpunit/compare/9.4...master

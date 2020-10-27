@@ -12,6 +12,8 @@ namespace PHPUnit\TextUI;
 use const PHP_VERSION;
 use function explode;
 use function in_array;
+use function is_file;
+use function strpos;
 use function version_compare;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
@@ -25,6 +27,8 @@ final class TestSuiteMapper
 {
     /**
      * @throws RuntimeException
+     * @throws TestDirectoryNotFoundException
+     * @throws TestFileNotFoundException
      */
     public function map(TestSuiteCollection $configuration, string $filter): TestSuiteObject
     {
@@ -51,19 +55,27 @@ final class TestSuiteMapper
                         $exclude[] = $file->path();
                     }
 
-                    $testSuite->addTestFiles(
-                        (new Facade)->getFilesAsArray(
-                            $directory->path(),
-                            $directory->suffix(),
-                            $directory->prefix(),
-                            $exclude
-                        )
+                    $files = (new Facade)->getFilesAsArray(
+                        $directory->path(),
+                        $directory->suffix(),
+                        $directory->prefix(),
+                        $exclude
                     );
 
-                    $testSuiteEmpty = false;
+                    if (!empty($files)) {
+                        $testSuite->addTestFiles($files);
+
+                        $testSuiteEmpty = false;
+                    } elseif (strpos($directory->path(), '*') === false) {
+                        throw new TestDirectoryNotFoundException($directory->path());
+                    }
                 }
 
                 foreach ($testSuiteConfiguration->files() as $file) {
+                    if (!is_file($file->path())) {
+                        throw new TestFileNotFoundException($file->path());
+                    }
+
                     if (!version_compare(PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator()->asString())) {
                         continue;
                     }

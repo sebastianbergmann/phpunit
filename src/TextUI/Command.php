@@ -382,10 +382,18 @@ class Command
             }
 
             if (!isset($this->arguments['test'])) {
-                $this->arguments['test'] = (new TestSuiteMapper)->map(
-                    $this->arguments['configurationObject']->testSuite(),
-                    $this->arguments['testsuite'] ?? ''
-                );
+                try {
+                    $this->arguments['test'] = (new TestSuiteMapper)->map(
+                        $this->arguments['configurationObject']->testSuite(),
+                        $this->arguments['testsuite'] ?? ''
+                    );
+                } catch (Exception $e) {
+                    $this->printVersionString();
+
+                    print $e->getMessage() . PHP_EOL;
+
+                    exit(TestRunner::EXCEPTION_EXIT);
+                }
             }
         } elseif (isset($this->arguments['bootstrap'])) {
             $this->handleBootstrap($this->arguments['bootstrap']);
