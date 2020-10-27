@@ -13,6 +13,7 @@ use const PHP_VERSION;
 use function explode;
 use function in_array;
 use function version_compare;
+use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteCollection;
 use SebastianBergmann\FileIterator\Facade;
@@ -22,57 +23,68 @@ use SebastianBergmann\FileIterator\Facade;
  */
 final class TestSuiteMapper
 {
+    /**
+     * @throws RuntimeException
+     */
     public function map(TestSuiteCollection $configuration, string $filter): TestSuiteObject
     {
-        $filterAsArray = $filter ? explode(',', $filter) : [];
-        $result        = new TestSuiteObject;
+        try {
+            $filterAsArray = $filter ? explode(',', $filter) : [];
+            $result        = new TestSuiteObject;
 
-        foreach ($configuration as $testSuiteConfiguration) {
-            if (!empty($filterAsArray) && !in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
-                continue;
-            }
-
-            $testSuite      = new TestSuiteObject($testSuiteConfiguration->name());
-            $testSuiteEmpty = true;
-
-            foreach ($testSuiteConfiguration->directories() as $directory) {
-                if (!version_compare(PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
+            foreach ($configuration as $testSuiteConfiguration) {
+                if (!empty($filterAsArray) && !in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
                     continue;
                 }
 
-                $exclude = [];
+                $testSuite      = new TestSuiteObject($testSuiteConfiguration->name());
+                $testSuiteEmpty = true;
 
-                foreach ($testSuiteConfiguration->exclude()->asArray() as $file) {
-                    $exclude[] = $file->path();
+                foreach ($testSuiteConfiguration->directories() as $directory) {
+                    if (!version_compare(PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
+                        continue;
+                    }
+
+                    $exclude = [];
+
+                    foreach ($testSuiteConfiguration->exclude()->asArray() as $file) {
+                        $exclude[] = $file->path();
+                    }
+
+                    $testSuite->addTestFiles(
+                        (new Facade)->getFilesAsArray(
+                            $directory->path(),
+                            $directory->suffix(),
+                            $directory->prefix(),
+                            $exclude
+                        )
+                    );
+
+                    $testSuiteEmpty = false;
                 }
 
-                $testSuite->addTestFiles(
-                    (new Facade)->getFilesAsArray(
-                        $directory->path(),
-                        $directory->suffix(),
-                        $directory->prefix(),
-                        $exclude
-                    )
-                );
+                foreach ($testSuiteConfiguration->files() as $file) {
+                    if (!version_compare(PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator()->asString())) {
+                        continue;
+                    }
 
-                $testSuiteEmpty = false;
-            }
+                    $testSuite->addTestFile($file->path());
 
-            foreach ($testSuiteConfiguration->files() as $file) {
-                if (!version_compare(PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator()->asString())) {
-                    continue;
+                    $testSuiteEmpty = false;
                 }
 
-                $testSuite->addTestFile($file->path());
-
-                $testSuiteEmpty = false;
+                if (!$testSuiteEmpty) {
+                    $result->addTest($testSuite);
+                }
             }
 
-            if (!$testSuiteEmpty) {
-                $result->addTest($testSuite);
-            }
+            return $result;
+        } catch (FrameworkException $e) {
+            throw new RuntimeException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
         }
-
-        return $result;
     }
 }

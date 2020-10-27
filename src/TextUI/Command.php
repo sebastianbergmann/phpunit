@@ -59,7 +59,6 @@ use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\Xml\SchemaDetector;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
-use ReflectionException;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
@@ -99,7 +98,7 @@ class Command
         try {
             return (new static)->run($_SERVER['argv'], $exit);
         } catch (Throwable $t) {
-            throw new Exception(
+            throw new RuntimeException(
                 $t->getMessage(),
                 (int) $t->getCode(),
                 $t
@@ -145,8 +144,8 @@ class Command
 
         try {
             $result = $runner->run($suite, $this->arguments, $this->warnings, $exit);
-        } catch (Exception $e) {
-            print $e->getMessage() . PHP_EOL;
+        } catch (Throwable $t) {
+            print $t->getMessage() . PHP_EOL;
         }
 
         $return = TestRunner::FAILURE_EXIT;
@@ -434,8 +433,8 @@ class Command
             try {
                 $class = new ReflectionClass($loaderClass);
                 // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
-                throw new Exception(
+            } catch (\ReflectionException $e) {
+                throw new ReflectionException(
                     $e->getMessage(),
                     (int) $e->getCode(),
                     $e
@@ -499,8 +498,8 @@ class Command
         try {
             $class = new ReflectionClass($printerClass);
             // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
+        } catch (\ReflectionException $e) {
+            throw new ReflectionException(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
