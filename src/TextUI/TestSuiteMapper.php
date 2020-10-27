@@ -7,13 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\XmlConfiguration;
+namespace PHPUnit\TextUI;
 
 use const PHP_VERSION;
 use function explode;
 use function in_array;
 use function version_compare;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
+use PHPUnit\TextUI\XmlConfiguration\TestSuiteCollection;
 use SebastianBergmann\FileIterator\Facade;
 
 /**
