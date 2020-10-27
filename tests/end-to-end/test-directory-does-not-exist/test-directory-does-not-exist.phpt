@@ -11,4 +11,4 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Test directory "%s/test-directory-does-not-exist/tests" not found
+Test directory "%stest-directory-does-not-exist%stests" not found
