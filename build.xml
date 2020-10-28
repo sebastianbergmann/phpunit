@@ -445,10 +445,6 @@
             <arg value="update"/>
             <arg value="--force-accept-unsigned"/>
         </exec>
-
-        <exec executable="${basedir}/tools/composer">
-            <arg value="self-update"/>
-        </exec>
     </target>
 
     <target name="generate-global-assert-wrappers" description="Generate global function wrappers for static methods in Assert and TestCase that are commonly used">
