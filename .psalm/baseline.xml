@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.0.1@b1e2e30026936ef8d5bf6a354d1c3959b6231f44">
+<files psalm-version="4.1.0@8929bde5354595dc61947b7e27cfe59db45e3bb0">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -1325,22 +1325,6 @@
       <code>$this-&gt;loader === null</code>
       <code>$this-&gt;printer === null</code>
     </DocblockTypeContradiction>
-    <InternalClass occurrences="7">
-      <code>new CloverReport</code>
-      <code>new CoberturaReport</code>
-      <code>new Crap4jReport($arguments['crap4jThreshold'])</code>
-      <code>new PhpReport</code>
-      <code>new XmlReport(Version::id())</code>
-    </InternalClass>
-    <InternalMethod occurrences="7">
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-    </InternalMethod>
     <InvalidArgument occurrences="6">
       <code>$e</code>
       <code>$e</code>
@@ -1403,14 +1387,6 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/CodeCoverage/FilterMapper.php">
-    <UnusedMethodCall occurrences="4">
-      <code>$configuration-&gt;directories()</code>
-      <code>$configuration-&gt;excludeDirectories()</code>
-      <code>$configuration-&gt;excludeFiles()</code>
-      <code>$configuration-&gt;files()</code>
-    </UnusedMethodCall>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Report/Clover.php">
     <PossiblyUnusedMethod occurrences="1">
@@ -1621,17 +1597,6 @@
       <code>$position</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/TextUI/XmlConfiguration/PHP/PhpHandler.php">
-    <UnusedMethodCall occurrences="7">
-      <code>$constants</code>
-      <code>$includePaths</code>
-      <code>$iniSettings</code>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
-      <code>$variables</code>
-    </UnusedMethodCall>
-  </file>
   <file src="src/TextUI/XmlConfiguration/PHP/Variable.php">
     <MissingParamType occurrences="1">
       <code>$value</code>
@@ -1755,11 +1720,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>new TestSuiteObject</code>
     </MissingThrowsDocblock>
-    <UnusedMethodCall occurrences="3">
-      <code>$configuration</code>
-      <code>$testSuiteConfiguration-&gt;directories()</code>
-      <code>$testSuiteConfiguration-&gt;files()</code>
-    </UnusedMethodCall>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
     <MissingThrowsDocblock occurrences="1">
@@ -2056,12 +2016,6 @@
     </MissingThrowsDocblock>
     <UnusedMethodCall occurrences="1">
       <code>ensureOperatorIsValid</code>
-    </UnusedMethodCall>
-  </file>
-  <file src="src/Util/XdebugFilterScriptGenerator.php">
-    <UnusedMethodCall occurrences="2">
-      <code>$filter-&gt;directories()</code>
-      <code>$filter-&gt;files()</code>
     </UnusedMethodCall>
   </file>
   <file src="src/Util/Xml.php">
