@@ -286,6 +286,160 @@
       <code>Assert::isWritable(...func_get_args())</code>
     </TooManyArguments>
   </file>
+  <file src="src/Framework/Attributes/After.php">
+    <UnusedClass occurrences="1">
+      <code>After</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/AfterClass.php">
+    <UnusedClass occurrences="1">
+      <code>AfterClass</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/BackupGlobals.php">
+    <UnusedClass occurrences="1">
+      <code>BackupGlobals</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/BackupStaticProperties.php">
+    <UnusedClass occurrences="1">
+      <code>BackupStaticProperties</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/Before.php">
+    <UnusedClass occurrences="1">
+      <code>Before</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/BeforeClass.php">
+    <UnusedClass occurrences="1">
+      <code>BeforeClass</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/CodeCoverageIgnore.php">
+    <UnusedClass occurrences="1">
+      <code>CodeCoverageIgnore</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/CoversClass.php">
+    <UnusedClass occurrences="1">
+      <code>CoversClass</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/CoversFunction.php">
+    <UnusedClass occurrences="1">
+      <code>CoversFunction</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/CoversNothing.php">
+    <UnusedClass occurrences="1">
+      <code>CoversNothing</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/DoesNotPerformAssertions.php">
+    <UnusedClass occurrences="1">
+      <code>DoesNotPerformAssertions</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/Group.php">
+    <PossiblyUnusedMethod occurrences="2">
+      <code>__construct</code>
+      <code>name</code>
+    </PossiblyUnusedMethod>
+  </file>
+  <file src="src/Framework/Attributes/Large.php">
+    <UnusedClass occurrences="1">
+      <code>Large</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/Medium.php">
+    <UnusedClass occurrences="1">
+      <code>Medium</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/PreserveGlobalState.php">
+    <UnusedClass occurrences="1">
+      <code>PreserveGlobalState</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/RequiresFunction.php">
+    <UnusedClass occurrences="1">
+      <code>RequiresFunction</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/RequiresOperatingSystem.php">
+    <UnusedClass occurrences="1">
+      <code>RequiresOperatingSystem</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/RequiresOperatingSystemFamily.php">
+    <UnusedClass occurrences="1">
+      <code>RequiresOperatingSystemFamily</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/RequiresPhp.php">
+    <UnusedClass occurrences="1">
+      <code>RequiresPhp</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/RequiresPhpExtension.php">
+    <UnusedClass occurrences="1">
+      <code>RequiresPhpExtension</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/RequiresPhpunit.php">
+    <UnusedClass occurrences="1">
+      <code>RequiresPhpunit</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/RunInSeparateProcess.php">
+    <UnusedClass occurrences="1">
+      <code>RunInSeparateProcess</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/RunTestsInSeparateProcesses.php">
+    <UnusedClass occurrences="1">
+      <code>RunTestsInSeparateProcesses</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/Small.php">
+    <UnusedClass occurrences="1">
+      <code>Small</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/Test.php">
+    <UnusedClass occurrences="1">
+      <code>Test</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/TestDox.php">
+    <UnusedClass occurrences="1">
+      <code>TestDox</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/TestWith.php">
+    <MissingParamType occurrences="1">
+      <code>$data</code>
+    </MissingParamType>
+    <UnusedClass occurrences="1">
+      <code>TestWith</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/Ticket.php">
+    <UnusedClass occurrences="1">
+      <code>Ticket</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/UsesClass.php">
+    <UnusedClass occurrences="1">
+      <code>UsesClass</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/UsesFunction.php">
+    <UnusedClass occurrences="1">
+      <code>UsesFunction</code>
+    </UnusedClass>
+  </file>
   <file src="src/Framework/Constraint/Cardinality/Count.php">
     <MissingParamType occurrences="1">
       <code>$other</code>
@@ -1297,22 +1451,6 @@
       <code>$this-&gt;loader === null</code>
       <code>$this-&gt;printer === null</code>
     </DocblockTypeContradiction>
-    <InternalClass occurrences="7">
-      <code>new CloverReport</code>
-      <code>new CoberturaReport</code>
-      <code>new Crap4jReport($arguments['crap4jThreshold'])</code>
-      <code>new PhpReport</code>
-      <code>new XmlReport(Version::id())</code>
-    </InternalClass>
-    <InternalMethod occurrences="7">
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-      <code>process</code>
-    </InternalMethod>
     <InvalidArgument occurrences="6">
       <code>$e</code>
       <code>$e</code>
