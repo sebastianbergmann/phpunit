@@ -1183,7 +1183,7 @@
       <code>doesNotPerformAssertions</code>
       <code>doesNotPerformAssertions</code>
       <code>getActualOutput</code>
-      <code>getAnnotations</code>
+      <code>getName</code>
       <code>getName</code>
       <code>getNumAssertions</code>
       <code>getNumAssertions</code>
@@ -2029,10 +2029,11 @@
     <MissingReturnType occurrences="1">
       <code>sanitizeVersionNumber</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="5">
+    <MissingThrowsDocblock occurrences="6">
       <code>forClassName</code>
       <code>forMethod</code>
       <code>forMethod</code>
+      <code>getName</code>
       <code>requirements</code>
       <code>requirements</code>
     </MissingThrowsDocblock>

@@ -811,7 +811,10 @@ final class TestResult implements Countable
         }
 
         if ($this->forceCoversAnnotation && !$error && !$failure && !$warning && !$incomplete && !$skipped && !$risky) {
-            $annotations = $test->getAnnotations();
+            $annotations = TestUtil::parseTestMethodAnnotations(
+                get_class($test),
+                $test->getName(false)
+            );
 
             if (!isset($annotations['class']['covers']) &&
                 !isset($annotations['method']['covers']) &&
@@ -957,7 +960,10 @@ final class TestResult implements Countable
                 $time
             );
         } elseif ($this->beStrictAboutTodoAnnotatedTests && $test instanceof TestCase) {
-            $annotations = $test->getAnnotations();
+            $annotations = TestUtil::parseTestMethodAnnotations(
+                get_class($test),
+                $test->getName(false)
+            );
 
             if (isset($annotations['method']['todo'])) {
                 $this->addFailure(
