@@ -357,6 +357,16 @@
       <code>Medium</code>
     </UnusedClass>
   </file>
+  <file src="src/Framework/Attributes/PostCondition.php">
+    <UnusedClass occurrences="1">
+      <code>PostCondition</code>
+    </UnusedClass>
+  </file>
+  <file src="src/Framework/Attributes/PreCondition.php">
+    <UnusedClass occurrences="1">
+      <code>PreCondition</code>
+    </UnusedClass>
+  </file>
   <file src="src/Framework/Attributes/PreserveGlobalState.php">
     <UnusedClass occurrences="1">
       <code>PreserveGlobalState</code>
