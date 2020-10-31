@@ -232,7 +232,6 @@ final class DocBlock
                     ];
                     $recordedOffsets[$matches['name'] . '_constraint'] = $offset;
                 } catch (\PharIo\Version\Exception $e) {
-                    /* @TODO this catch is currently not valid, see https://github.com/phar-io/version/issues/16 */
                     throw new Warning($e->getMessage(), $e->getCode(), $e);
                 }
             }
