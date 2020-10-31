@@ -2422,6 +2422,23 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertDOMTreesEqualStructurally')) {
+    /**
+     * Asserts that two DOM trees are structurally identical.
+     *
+     * @throws AssertionFailedError
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertDOMTreesEqualStructurally
+     */
+    function assertDOMTreesEqualStructurally(DOMElement $expectedElement, DOMElement $actualElement, bool $keepComments = false, string $message = ''): void
+    {
+        Assert::assertDOMTreesEqualStructurally(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertEqualXMLStructure')) {
     /**
      * Asserts that a hierarchy of DOMElements matches.
