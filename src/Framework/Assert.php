@@ -2253,14 +2253,20 @@ abstract class Assert
 
     public static function assertDOMTreesEqualStructurally(DOMElement $expectedElement, DOMElement $actualElement, bool $keepComments = false, string $message = ''): void
     {
-        $ed                     = new DOMDocument();
+        $ed = new DOMDocument();
+        $ed->appendChild($ed->importNode($expectedElement, true));
+        $xmlStr = $ed->C14N(false, $keepComments);
+
         $ed->preserveWhiteSpace = false;
-        $ed->loadXML($expectedElement->C14N(false, $keepComments));
+        $ed->loadXML($xmlStr);
         $ed->formatOutput = true;
 
-        $ad                     = new DOMDocument();
+        $ad = new DOMDocument();
+        $ad->appendChild($ad->importNode($actualElement, true));
+        $xmlStr = $ad->C14N(false, $keepComments);
+
         $ad->preserveWhiteSpace = false;
-        $ad->loadXML($actualElement->C14N(false, $keepComments));
+        $ad->loadXML($xmlStr);
         $ad->formatOutput = true;
 
         self::assertEquals($ed->documentElement, $ad->documentElement, $message);
