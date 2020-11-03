@@ -1890,7 +1890,7 @@ abstract class Assert
      *
      * @psalm-template ExpectedType of object
      * @psalm-param class-string<ExpectedType> $expected
-     * @psalm-assert ExpectedType $actual
+     * @psalm-assert =ExpectedType $actual
      */
     public static function assertInstanceOf(string $expected, $actual, string $message = ''): void
     {
