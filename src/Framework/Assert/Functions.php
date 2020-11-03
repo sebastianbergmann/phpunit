@@ -1546,7 +1546,7 @@ if (!\function_exists('PHPUnit\Framework\assertInstanceOf')) {
      *
      * @psalm-template ExpectedType of object
      * @psalm-param class-string<ExpectedType> $expected
-     * @psalm-assert ExpectedType $actual
+     * @psalm-assert =ExpectedType $actual
      *
      * @see Assert::assertInstanceOf
      */
