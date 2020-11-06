@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.1.0@8929bde5354595dc61947b7e27cfe59db45e3bb0">
+<files psalm-version="4.1.1@16bfbd9224698bd738c665f33039fade2a1a3977">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -342,9 +342,8 @@
     </UnusedClass>
   </file>
   <file src="src/Framework/Attributes/Group.php">
-    <PossiblyUnusedMethod occurrences="2">
+    <PossiblyUnusedMethod occurrences="1">
       <code>__construct</code>
-      <code>name</code>
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/Attributes/Large.php">
@@ -634,9 +633,6 @@
     <MissingReturnType occurrences="1">
       <code>id</code>
     </MissingReturnType>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>id</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
     <PossiblyUnusedMethod occurrences="1">
@@ -648,30 +644,11 @@
       <code>$nextValues</code>
       <code>$value</code>
     </MissingParamType>
-    <PossiblyUnusedMethod occurrences="7">
-      <code>willReturnArgument</code>
-      <code>willReturnCallback</code>
-      <code>willReturnMap</code>
-      <code>willReturnOnConsecutiveCalls</code>
-      <code>willReturnReference</code>
-      <code>willReturnSelf</code>
-      <code>willThrowException</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/MockObject/Builder/MethodNameMatch.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>method</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/Builder/ParametersMatch.php">
     <MissingParamType occurrences="1">
       <code>$arguments</code>
     </MissingParamType>
-    <PossiblyUnusedMethod occurrences="3">
-      <code>after</code>
-      <code>with</code>
-      <code>withAnyParameters</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/ConfigurableMethod.php">
     <MissingParamType occurrences="1">
@@ -1124,14 +1101,6 @@
       <code>toString</code>
     </PossiblyUnusedMethod>
   </file>
-  <file src="src/Framework/TestListener.php">
-    <PossiblyUnusedMethod occurrences="4">
-      <code>addFailure</code>
-      <code>addIncompleteTest</code>
-      <code>addRiskyTest</code>
-      <code>addSkippedTest</code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="src/Framework/TestResult.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$test</code>
@@ -1150,15 +1119,11 @@
     <DeprecatedProperty occurrences="1">
       <code>$this-&gt;listeners</code>
     </DeprecatedProperty>
-    <DocblockTypeContradiction occurrences="1">
-      <code>$this-&gt;topTestSuite === null</code>
-    </DocblockTypeContradiction>
     <InvalidArgument occurrences="1">
       <code>[$test, 'runBare']</code>
     </InvalidArgument>
-    <MissingConstructor occurrences="2">
+    <MissingConstructor occurrences="1">
       <code>$codeCoverage</code>
-      <code>$topTestSuite</code>
     </MissingConstructor>
     <MissingThrowsDocblock occurrences="3">
       <code>stop</code>
@@ -1174,14 +1139,13 @@
       <code>$e</code>
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
-    <PossiblyUnusedMethod occurrences="7">
+    <PossiblyUnusedMethod occurrences="6">
       <code>forcesCoversAnnotation</code>
       <code>getConvertDeprecationsToExceptions</code>
       <code>getConvertErrorsToExceptions</code>
       <code>getConvertNoticesToExceptions</code>
       <code>getConvertWarningsToExceptions</code>
       <code>removeListener</code>
-      <code>topTestSuite</code>
     </PossiblyUnusedMethod>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>$this-&gt;codeCoverage !== null</code>
@@ -1245,11 +1209,6 @@
       <code>$numTests</code>
     </UnusedVariable>
   </file>
-  <file src="src/Framework/TestSuiteIterator.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getChildren</code>
-    </PossiblyUnusedMethod>
-  </file>
   <file src="src/Runner/BaseTestRunner.php">
     <DeprecatedClass occurrences="2">
       <code>TestSuiteLoader</code>
@@ -1307,20 +1266,12 @@
     </PossiblyUnusedMethod>
   </file>
   <file src="src/Runner/StandardTestSuiteLoader.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$suiteClassName</code>
-    </ArgumentTypeCoercion>
     <DeprecatedInterface occurrences="1">
       <code>StandardTestSuiteLoader</code>
     </DeprecatedInterface>
     <MissingThrowsDocblock occurrences="1">
       <code>FileLoader::checkAndLoad($suiteClassFile)</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Runner/TestSuiteLoader.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>reload</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
     <MissingClosureParamType occurrences="6">
@@ -1703,11 +1654,6 @@
     <PossiblyNullReference occurrences="1">
       <code>removeChild</code>
     </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/Migration.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>migrate</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/Migration/Migrations/RemoveEmptyFilter.php">
     <PossiblyNullReference occurrences="2">
