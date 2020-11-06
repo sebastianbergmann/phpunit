@@ -100,11 +100,6 @@ final class TestResult implements Countable
     private $time = 0;
 
     /**
-     * @var TestSuite
-     */
-    private $topTestSuite;
-
-    /**
      * Code Coverage information.
      *
      * @var CodeCoverage
@@ -401,10 +396,6 @@ final class TestResult implements Countable
     {
         $this->currentTestSuiteFailed = false;
 
-        if ($this->topTestSuite === null) {
-            $this->topTestSuite = $suite;
-        }
-
         foreach ($this->listeners as $listener) {
             $listener->startTestSuite($suite);
         }
@@ -616,14 +607,6 @@ final class TestResult implements Countable
     public function passedClasses(): array
     {
         return $this->passedTestClasses;
-    }
-
-    /**
-     * Returns the (top) test suite.
-     */
-    public function topTestSuite(): TestSuite
-    {
-        return $this->topTestSuite;
     }
 
     /**
