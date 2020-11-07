@@ -7,8 +7,8 @@
     cacheDirectory=".psalm/cache"
     totallyTyped="false"
     checkForThrowsDocblock="true"
-    findUnusedVariablesAndParams="true"
-    findUnusedCode="true"
+    findUnusedVariablesAndParams="false"
+    findUnusedCode="false"
     errorBaseline=".psalm/baseline.xml"
 >
     <projectFiles>
