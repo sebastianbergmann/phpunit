@@ -286,11 +286,6 @@
       <code>Assert::isWritable(...func_get_args())</code>
     </TooManyArguments>
   </file>
-  <file src="src/Framework/Attributes/TestWith.php">
-    <MissingParamType occurrences="1">
-      <code>$data</code>
-    </MissingParamType>
-  </file>
   <file src="src/Framework/Constraint/Cardinality/Count.php">
     <MissingParamType occurrences="1">
       <code>$other</code>

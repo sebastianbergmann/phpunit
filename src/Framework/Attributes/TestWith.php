@@ -15,17 +15,17 @@ use Attribute;
 class TestWith
 {
     /**
-     * @var array
+     * @var string
      */
-    private $data;
+    private $json;
 
-    public function __construct(...$data)
+    public function __construct(string $json)
     {
-        $this->data = $data;
+        $this->json = $json;
     }
 
-    public function data(): array
+    public function json(): string
     {
-        return $this->data;
+        return $this->json;
     }
 }
