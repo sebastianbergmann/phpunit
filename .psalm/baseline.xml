@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.1.0@8929bde5354595dc61947b7e27cfe59db45e3bb0">
+<files psalm-version="4.1.1@16bfbd9224698bd738c665f33039fade2a1a3977">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -200,9 +200,6 @@
       <code>$expected</code>
       <code>$subset</code>
     </PossiblyInvalidArgument>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getCount</code>
-    </PossiblyUnusedMethod>
     <RedundantCondition occurrences="1">
       <code>\assert($step['object'] instanceof TestCase)</code>
     </RedundantCondition>
@@ -457,9 +454,6 @@
     <MissingReturnType occurrences="1">
       <code>evaluate</code>
     </MissingReturnType>
-    <UnusedParam occurrences="1">
-      <code>$maxDepth</code>
-    </UnusedParam>
   </file>
   <file src="src/Framework/Constraint/IsIdentical.php">
     <MissingParamType occurrences="2">
@@ -479,10 +473,6 @@
     <PossiblyNullArgument occurrences="1">
       <code>$error</code>
     </PossiblyNullArgument>
-    <UnusedFunctionCall occurrences="2">
-      <code>\json_decode</code>
-      <code>\json_decode</code>
-    </UnusedFunctionCall>
   </file>
   <file src="src/Framework/Constraint/IsType.php">
     <InvalidReturnType occurrences="1">
@@ -491,11 +481,6 @@
     <RedundantCondition occurrences="1">
       <code>\is_string($resource)</code>
     </RedundantCondition>
-  </file>
-  <file src="src/Framework/Constraint/JsonMatchesErrorMessageProvider.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>translateTypeToPrefix</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/Constraint/LogicalAnd.php">
     <DocblockTypeContradiction occurrences="1">
@@ -507,9 +492,6 @@
     <MissingReturnType occurrences="1">
       <code>evaluate</code>
     </MissingReturnType>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>fromConstraints</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/Constraint/LogicalNot.php">
     <MissingParamType occurrences="1">
@@ -529,9 +511,6 @@
     <MissingReturnType occurrences="1">
       <code>evaluate</code>
     </MissingReturnType>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>fromConstraints</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/Constraint/LogicalXor.php">
     <DocblockTypeContradiction occurrences="1">
@@ -543,9 +522,6 @@
     <MissingReturnType occurrences="1">
       <code>evaluate</code>
     </MissingReturnType>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>fromConstraints</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/Constraint/SameSize.php">
     <PossiblyNullArgument occurrences="1">
@@ -600,11 +576,6 @@
       <code>DataProviderTestSuite</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/Framework/Exception/CoveredCodeNotExecutedException.php">
-    <UnusedClass occurrences="1">
-      <code>CoveredCodeNotExecutedException</code>
-    </UnusedClass>
-  </file>
   <file src="src/Framework/Exception/Exception.php">
     <MissingParamType occurrences="2">
       <code>$code</code>
@@ -619,16 +590,6 @@
       <code>$comparisonFailure</code>
     </PossiblyNullPropertyAssignmentValue>
   </file>
-  <file src="src/Framework/Exception/MissingCoversAnnotationException.php">
-    <UnusedClass occurrences="1">
-      <code>MissingCoversAnnotationException</code>
-    </UnusedClass>
-  </file>
-  <file src="src/Framework/Exception/UnintentionallyCoveredCodeError.php">
-    <UnusedClass occurrences="1">
-      <code>UnintentionallyCoveredCodeError</code>
-    </UnusedClass>
-  </file>
   <file src="src/Framework/ExceptionWrapper.php">
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($this)</code>
@@ -636,23 +597,11 @@
     <PossiblyNullArgument occurrences="1">
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
-    <PossiblyUnusedMethod occurrences="2">
-      <code>getOriginalException</code>
-      <code>setClassName</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/IncompleteTestCase.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getMessage</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/Builder/Identity.php">
     <MissingReturnType occurrences="1">
       <code>id</code>
     </MissingReturnType>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>id</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
     <MissingParamType occurrences="3">
@@ -666,58 +615,22 @@
       <code>new Rule\Parameters($arguments)</code>
       <code>registerMatcher</code>
     </MissingThrowsDocblock>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>withConsecutive</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationStubber.php">
     <MissingParamType occurrences="2">
       <code>$nextValues</code>
       <code>$value</code>
     </MissingParamType>
-    <PossiblyUnusedMethod occurrences="7">
-      <code>willReturnArgument</code>
-      <code>willReturnCallback</code>
-      <code>willReturnMap</code>
-      <code>willReturnOnConsecutiveCalls</code>
-      <code>willReturnReference</code>
-      <code>willReturnSelf</code>
-      <code>willThrowException</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/MockObject/Builder/Match.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>after</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/MockObject/Builder/MethodNameMatch.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>method</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/Builder/ParametersMatch.php">
     <MissingParamType occurrences="1">
       <code>$arguments</code>
     </MissingParamType>
-    <PossiblyUnusedMethod occurrences="2">
-      <code>with</code>
-      <code>withAnyParameters</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/ConfigurableMethod.php">
     <MissingParamType occurrences="1">
       <code>$value</code>
     </MissingParamType>
-  </file>
-  <file src="src/Framework/MockObject/Exception/BadMethodCallException.php">
-    <UnusedClass occurrences="1">
-      <code>BadMethodCallException</code>
-    </UnusedClass>
-  </file>
-  <file src="src/Framework/MockObject/Exception/ConfigurableMethodsAlreadyInitializedException.php">
-    <UnusedClass occurrences="1">
-      <code>ConfigurableMethodsAlreadyInitializedException</code>
-    </UnusedClass>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -756,31 +669,16 @@
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($args[$i], '$')</code>
     </PossiblyFalseArgument>
-    <UnusedParam occurrences="1">
-      <code>$callAutoload</code>
-    </UnusedParam>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <MissingClosureReturnType occurrences="1">
       <code>static function () {</code>
     </MissingClosureReturnType>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>__construct</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingThrowsDocblock occurrences="1">
       <code>throw $this-&gt;deferredError;</code>
     </MissingThrowsDocblock>
-    <PossiblyUnusedMethod occurrences="7">
-      <code>__construct</code>
-      <code>expects</code>
-      <code>hasMatchers</code>
-      <code>invoke</code>
-      <code>lookupMatcher</code>
-      <code>matches</code>
-      <code>verify</code>
-    </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$deferredError</code>
     </PropertyNotSetInConstructor>
@@ -798,9 +696,6 @@
     <MissingReturnType occurrences="1">
       <code>invoked</code>
     </MissingReturnType>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>toString</code>
-    </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="3">
       <code>$methodNameRule</code>
       <code>$parametersRule</code>
@@ -842,29 +737,6 @@
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$type</code>
     </PossiblyInvalidPropertyAssignmentValue>
-    <PossiblyUnusedMethod occurrences="16">
-      <code>addMethods</code>
-      <code>allowMockingUnknownTypes</code>
-      <code>disableAutoReturnValueGeneration</code>
-      <code>disableAutoload</code>
-      <code>disableProxyingToOriginalMethods</code>
-      <code>enableArgumentCloning</code>
-      <code>enableAutoReturnValueGeneration</code>
-      <code>enableAutoload</code>
-      <code>enableOriginalClone</code>
-      <code>enableOriginalConstructor</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForTrait</code>
-      <code>onlyMethods</code>
-      <code>setMethodsExcept</code>
-      <code>setMockClassName</code>
-      <code>setProxyTarget</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/MockObject/MockClass.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getClassCode</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
     <MissingThrowsDocblock occurrences="2">
@@ -873,23 +745,11 @@
     <PossiblyNullReference occurrences="1">
       <code>allowsNull</code>
     </PossiblyNullReference>
-    <UnusedProperty occurrences="1">
-      <code>$allowsReturnNull</code>
-    </UnusedProperty>
   </file>
   <file src="src/Framework/MockObject/MockObject.php">
     <MissingParamType occurrences="1">
       <code>$originalObject</code>
     </MissingParamType>
-    <PossiblyUnusedMethod occurrences="2">
-      <code>__phpunit_setOriginalObject</code>
-      <code>expects</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/MockObject/MockTrait.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getClassCode</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/Rule/ConsecutiveParameters.php">
     <TypeDoesNotContainNull occurrences="1">
@@ -921,11 +781,6 @@
       <code>$invocation</code>
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Framework/MockObject/Stub.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>__phpunit_getInvocationHandler</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/MockObject/Stub/ConsecutiveCalls.php">
     <MissingReturnType occurrences="1">
@@ -981,16 +836,6 @@
     <MissingReturnType occurrences="1">
       <code>invoke</code>
     </MissingReturnType>
-  </file>
-  <file src="src/Framework/SkippedTestCase.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getMessage</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/Test.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>run</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/TestBuilder.php">
     <MissingParamType occurrences="1">
@@ -1070,81 +915,6 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$categories</code>
     </PossiblyUndefinedVariable>
-    <PossiblyUnusedMethod occurrences="73">
-      <code>addToAssertionCount</code>
-      <code>any</code>
-      <code>at</code>
-      <code>atLeast</code>
-      <code>atLeastOnce</code>
-      <code>atMost</code>
-      <code>createConfiguredMock</code>
-      <code>createPartialMock</code>
-      <code>createStub</code>
-      <code>createTestProxy</code>
-      <code>dataDescription</code>
-      <code>doesNotPerformAssertions</code>
-      <code>exactly</code>
-      <code>expectDeprecation</code>
-      <code>expectDeprecationMessage</code>
-      <code>expectDeprecationMessageMatches</code>
-      <code>expectError</code>
-      <code>expectErrorMessage</code>
-      <code>expectErrorMessageMatches</code>
-      <code>expectExceptionMessageRegExp</code>
-      <code>expectExceptionObject</code>
-      <code>expectNotToPerformAssertions</code>
-      <code>expectNotice</code>
-      <code>expectNoticeMessage</code>
-      <code>expectNoticeMessageMatches</code>
-      <code>expectOutputRegex</code>
-      <code>expectOutputString</code>
-      <code>expectWarning</code>
-      <code>expectWarningMessage</code>
-      <code>expectWarningMessageMatches</code>
-      <code>getActualOutputForAssertion</code>
-      <code>getDependencyInput</code>
-      <code>getExpectedException</code>
-      <code>getExpectedExceptionCode</code>
-      <code>getExpectedExceptionMessage</code>
-      <code>getExpectedExceptionMessageRegExp</code>
-      <code>getMockClass</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForTrait</code>
-      <code>getMockFromWsdl</code>
-      <code>getObjectForTrait</code>
-      <code>getStatusMessage</code>
-      <code>getTestResultObject</code>
-      <code>hasFailed</code>
-      <code>hasOutput</code>
-      <code>hasSize</code>
-      <code>iniSet</code>
-      <code>isLarge</code>
-      <code>isMedium</code>
-      <code>isSmall</code>
-      <code>never</code>
-      <code>onConsecutiveCalls</code>
-      <code>onNotSuccessfulTest</code>
-      <code>once</code>
-      <code>prophesize</code>
-      <code>registerComparator</code>
-      <code>returnArgument</code>
-      <code>returnCallback</code>
-      <code>returnSelf</code>
-      <code>returnValue</code>
-      <code>returnValueMap</code>
-      <code>runBare</code>
-      <code>setDependencyInput</code>
-      <code>setInIsolation</code>
-      <code>setLocale</code>
-      <code>setOutputCallback</code>
-      <code>setResult</code>
-      <code>setUp</code>
-      <code>setUpBeforeClass</code>
-      <code>setUseErrorHandler</code>
-      <code>tearDown</code>
-      <code>tearDownAfterClass</code>
-      <code>throwException</code>
-    </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="10">
       <code>$backupStaticAttributes</code>
       <code>$mockObjectGenerator</code>
@@ -1170,33 +940,6 @@
       <code>\is_string($this-&gt;outputExpectedRegex)</code>
       <code>\is_string($this-&gt;outputExpectedString)</code>
     </RedundantConditionGivenDocblockType>
-    <UnusedMethod occurrences="5">
-      <code>cleanupIniSettings</code>
-      <code>cleanupLocaleSettings</code>
-      <code>restoreGlobalState</code>
-      <code>stopOutputBuffering</code>
-      <code>unregisterCustomComparators</code>
-    </UnusedMethod>
-    <UnusedVariable occurrences="1">
-      <code>$categories</code>
-    </UnusedVariable>
-  </file>
-  <file src="src/Framework/TestFailure.php">
-    <PossiblyUnusedMethod occurrences="5">
-      <code>exceptionMessage</code>
-      <code>failedTest</code>
-      <code>getExceptionAsString</code>
-      <code>isFailure</code>
-      <code>toString</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Framework/TestListener.php">
-    <PossiblyUnusedMethod occurrences="4">
-      <code>addFailure</code>
-      <code>addIncompleteTest</code>
-      <code>addRiskyTest</code>
-      <code>addSkippedTest</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Framework/TestResult.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -1227,25 +970,6 @@
       <code>$_timeout</code>
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
-    <PossiblyUnusedMethod occurrences="17">
-      <code>beStrictAboutOutputDuringTests</code>
-      <code>beStrictAboutResourceUsageDuringSmallTests</code>
-      <code>beStrictAboutTestsThatDoNotTestAnything</code>
-      <code>beStrictAboutTodoAnnotatedTests</code>
-      <code>enforceTimeLimit</code>
-      <code>flushListeners</code>
-      <code>getConvertDeprecationsToExceptions</code>
-      <code>getConvertErrorsToExceptions</code>
-      <code>getConvertNoticesToExceptions</code>
-      <code>getConvertWarningsToExceptions</code>
-      <code>removeListener</code>
-      <code>setCodeCoverage</code>
-      <code>setDefaultTimeLimit</code>
-      <code>setTimeoutForLargeTests</code>
-      <code>setTimeoutForMediumTests</code>
-      <code>setTimeoutForSmallTests</code>
-      <code>topTestSuite</code>
-    </PossiblyUnusedMethod>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
@@ -1281,10 +1005,6 @@
       <code>$afterClassMethod</code>
       <code>$test</code>
     </PossiblyUndefinedVariable>
-    <PossiblyUnusedMethod occurrences="2">
-      <code>setGroupDetails</code>
-      <code>testAt</code>
-    </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="4">
       <code>$backupGlobals</code>
       <code>$backupStaticAttributes</code>
@@ -1300,11 +1020,6 @@
       <code>null === $this-&gt;backupStaticAttributes &amp;&amp; \is_bool($backupStaticAttributes)</code>
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; \is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src/Framework/TestSuiteIterator.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getChildren</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Runner/DefaultTestResultCache.php">
     <MissingClosureReturnType occurrences="1">
@@ -1322,23 +1037,10 @@
     </MissingReturnType>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>__construct</code>
-    </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="2">
       <code>$filterMax</code>
       <code>$filterMin</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Runner/Hook/AfterLastTestHook.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>executeAfterLastTest</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Runner/Hook/BeforeFirstTestHook.php">
-    <UnusedClass occurrences="1">
-      <code>BeforeFirstTestHook</code>
-    </UnusedClass>
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
     <DeprecatedInterface occurrences="1">
@@ -1368,17 +1070,6 @@
     <PossiblyUndefinedVariable occurrences="1">
       <code>$sectionOffset</code>
     </PossiblyUndefinedVariable>
-    <PossiblyUnusedMethod occurrences="4">
-      <code>getActualOutput</code>
-      <code>getNumAssertions</code>
-      <code>hasOutput</code>
-      <code>usesDataProvider</code>
-    </PossiblyUnusedMethod>
-  </file>
-  <file src="src/Runner/TestSuiteLoader.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>reload</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
     <MissingClosureParamType occurrences="9">
@@ -1395,9 +1086,6 @@
     <PossiblyFalseArgument occurrences="1">
       <code>\strpos($test-&gt;getName(), '::')</code>
     </PossiblyFalseArgument>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getExecutionOrder</code>
-    </PossiblyUnusedMethod>
     <RedundantConditionGivenDocblockType occurrences="4">
       <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
       <code>$orderDefects === self::ORDER_DEFECTS_FIRST &amp;&amp; $this-&gt;cache !== null</code>
@@ -1407,11 +1095,6 @@
     <UndefinedInterfaceMethod occurrences="1">
       <code>getName</code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Runner/Version.php">
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getReleaseChannel</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/TextUI/Command.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -1447,9 +1130,6 @@
       <code>$suite</code>
       <code>$suite</code>
     </PossiblyNullArgument>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>main</code>
-    </PossiblyUnusedMethod>
     <RedundantCondition occurrences="1">
       <code>$testSuite !== null</code>
     </RedundantCondition>
@@ -1461,11 +1141,6 @@
     <UnsafeInstantiation occurrences="1">
       <code>new static</code>
     </UnsafeInstantiation>
-  </file>
-  <file src="src/TextUI/Exception.php">
-    <UnusedClass occurrences="1">
-      <code>Exception</code>
-    </UnusedClass>
   </file>
   <file src="src/TextUI/Help.php">
     <MissingClosureParamType occurrences="1">
@@ -1480,9 +1155,6 @@
     <DeprecatedInterface occurrences="1">
       <code>ResultPrinter</code>
     </DeprecatedInterface>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>printResult</code>
-    </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="4">
       <code>$maxColumn</code>
       <code>$numTestsWidth</code>
@@ -1522,9 +1194,6 @@
       <code>$whitelistFromConfigurationFile</code>
       <code>$whitelistFromOption</code>
     </PossiblyUndefinedVariable>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>setPrinter</code>
-    </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$printer</code>
     </PropertyNotSetInConstructor>
@@ -1539,15 +1208,6 @@
       <code>require_once $listener['file']</code>
     </UnresolvableInclude>
     <UnsafeInstantiation occurrences="1"/>
-    <UnusedMethod occurrences="4">
-      <code>codeCoverageGenerationFailed</code>
-      <code>codeCoverageGenerationStart</code>
-      <code>codeCoverageGenerationSucceeded</code>
-      <code>processSuiteFilters</code>
-    </UnusedMethod>
-    <UnusedParam occurrences="1">
-      <code>$exit</code>
-    </UnusedParam>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
     <InvalidCatch occurrences="1"/>
@@ -1559,9 +1219,6 @@
     <DocblockTypeContradiction occurrences="1">
       <code>self::$directories === null</code>
     </DocblockTypeContradiction>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>getBlacklistedDirectories</code>
-    </PossiblyUnusedMethod>
     <UndefinedClass occurrences="1">
       <code>Invoker</code>
     </UndefinedClass>
@@ -1583,16 +1240,6 @@
       <code>getAttribute</code>
       <code>getAttribute</code>
     </PossiblyNullReference>
-    <PossiblyUnusedMethod occurrences="8">
-      <code>getExtensionConfiguration</code>
-      <code>getFilterConfiguration</code>
-      <code>getGroupConfiguration</code>
-      <code>getListenerConfiguration</code>
-      <code>getLoggingConfiguration</code>
-      <code>getTestdoxGroupConfiguration</code>
-      <code>getValidationErrors</code>
-      <code>hasValidationErrors</code>
-    </PossiblyUnusedMethod>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>\assert($directoryNode instanceof DOMElement)</code>
       <code>\assert($fileNode instanceof DOMElement)</code>
@@ -1616,12 +1263,6 @@
     <MissingReturnType occurrences="1">
       <code>invokeIgnoringWarnings</code>
     </MissingReturnType>
-    <PossiblyUnusedMethod occurrences="1">
-      <code>unregister</code>
-    </PossiblyUnusedMethod>
-    <UnusedClosureParam occurrences="1">
-      <code>$errorString</code>
-    </UnusedClosureParam>
   </file>
   <file src="src/Util/FileLoader.php">
     <UnresolvableInclude occurrences="1">
@@ -1663,9 +1304,6 @@
     <MissingParamType occurrences="1">
       <code>$json</code>
     </MissingParamType>
-    <UnusedVariable occurrences="1">
-      <code>$key</code>
-    </UnusedVariable>
   </file>
   <file src="src/Util/Log/JUnit.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -1702,13 +1340,6 @@
       <code>getName</code>
       <code>getName</code>
     </UndefinedInterfaceMethod>
-    <UnusedParam occurrences="1">
-      <code>$time</code>
-    </UnusedParam>
-    <UnusedVariable occurrences="2">
-      <code>$usesDataprovider</code>
-      <code>$usesDataprovider</code>
-    </UnusedVariable>
   </file>
   <file src="src/Util/Log/TeamCity.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -1736,6 +1367,9 @@
       <code>TeamCity</code>
       <code>TeamCity</code>
     </PropertyNotSetInConstructor>
+    <RedundantCondition occurrences="1">
+      <code>$previous-&gt;getPrevious()</code>
+    </RedundantCondition>
     <UndefinedInterfaceMethod occurrences="7">
       <code>getName</code>
       <code>getName</code>
@@ -1745,6 +1379,20 @@
       <code>getName</code>
       <code>getName</code>
     </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Util/Metadata/Group.php">
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$enabled</code>
+    </InvalidPropertyAssignmentValue>
+    <InvalidReturnStatement occurrences="1">
+      <code>$this-&gt;groupName</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>bool</code>
+    </InvalidReturnType>
+  </file>
+  <file src="src/Util/Metadata/MetadataCollection.php">
+    <InvalidArgument occurrences="1"/>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="2">
@@ -1773,13 +1421,6 @@
     <PossiblyNullReference occurrences="1">
       <code>merge</code>
     </PossiblyNullReference>
-    <PossiblyUnusedMethod occurrences="5">
-      <code>getArgs</code>
-      <code>getEnv</code>
-      <code>getStdin</code>
-      <code>getTimeout</code>
-      <code>useStderrRedirection</code>
-    </PossiblyUnusedMethod>
     <UndefinedInterfaceMethod occurrences="2">
       <code>addToAssertionCount</code>
       <code>setResult</code>
@@ -1808,10 +1449,6 @@
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$out</code>
     </PossiblyInvalidPropertyAssignmentValue>
-    <PossiblyUnusedMethod occurrences="2">
-      <code>getAutoFlush</code>
-      <code>setAutoFlush</code>
-    </PossiblyUnusedMethod>
     <PropertyNotSetInConstructor occurrences="2">
       <code>$out</code>
       <code>$outTarget</code>
@@ -1837,10 +1474,6 @@
       <code>requirements</code>
       <code>requirements</code>
     </MissingThrowsDocblock>
-    <PossiblyUnusedMethod occurrences="2">
-      <code>getLinesToBeCovered</code>
-      <code>getLinesToBeUsed</code>
-    </PossiblyUnusedMethod>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <DeprecatedInterface occurrences="1">
@@ -1899,9 +1532,6 @@
     <MissingParamType occurrences="1">
       <code>$name</code>
     </MissingParamType>
-    <PossiblyUnusedProperty occurrences="1">
-      <code>$successful</code>
-    </PossiblyUnusedProperty>
     <PropertyNotSetInConstructor occurrences="3">
       <code>$testStatus</code>
       <code>ResultPrinter</code>
@@ -1960,14 +1590,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>ensureOperatorIsValid</code>
     </MissingThrowsDocblock>
-    <UnusedMethodCall occurrences="1">
-      <code>ensureOperatorIsValid</code>
-    </UnusedMethodCall>
-  </file>
-  <file src="src/Util/XdebugFilterScriptGenerator.php">
-    <UnusedClass occurrences="1">
-      <code>XdebugFilterScriptGenerator</code>
-    </UnusedClass>
   </file>
   <file src="src/Util/Xml.php">
     <ArgumentTypeCoercion occurrences="1">
