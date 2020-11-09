@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::IS_REPEATABLE)]
-final class DataProviderMethod
+final class DependsExternal
 {
     /**
      * @var string
