@@ -15,7 +15,7 @@ use Attribute;
 final class DataProviderExternal
 {
     /**
-     * @var string
+     * @psalm-var class-string
      */
     private $className;
 
@@ -24,12 +24,18 @@ final class DataProviderExternal
      */
     private $methodName;
 
+    /**
+     * @psalm-param class-string $className
+     */
     public function __construct(string $className, string $methodName)
     {
         $this->className  = $className;
         $this->methodName = $methodName;
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public function className(): string
     {
         return $this->className;

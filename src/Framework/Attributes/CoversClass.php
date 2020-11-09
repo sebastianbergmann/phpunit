@@ -15,15 +15,21 @@ use Attribute;
 final class CoversClass
 {
     /**
-     * @var string
+     * @psalm-var class-string
      */
     private $className;
 
+    /**
+     * @psalm-param class-string $className
+     */
     public function __construct(string $className)
     {
         $this->className = $className;
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public function className(): string
     {
         return $this->className;
