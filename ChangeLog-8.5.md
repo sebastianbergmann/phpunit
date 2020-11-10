@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [8.5.9] - 2020-MM-DD
+## [8.5.9] - 2020-11-10
 
 ### Fixed
 
