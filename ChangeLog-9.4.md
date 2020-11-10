@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 9.4 release series are documented in this fil
 
 * [#4446](https://github.com/sebastianbergmann/phpunit/pull/4446): The `--no-logging` and `--no-coverage` do not only affect XML configuration settings
 * [#4499](https://github.com/sebastianbergmann/phpunit/pull/4499): Restore support for case-insensitive namespaced class names when invoking the test runner with the test case file name
+* [#4514](https://github.com/sebastianbergmann/phpunit/issues/4514): `--fail-on-skipped` does not work
 
 ## [9.4.2] - 2020-10-19
 
