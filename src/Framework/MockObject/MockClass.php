@@ -23,7 +23,7 @@ final class MockClass implements MockType
     private $classCode;
 
     /**
-     * @var string
+     * @var class-string
      */
     private $mockName;
 
@@ -32,6 +32,9 @@ final class MockClass implements MockType
      */
     private $configurableMethods;
 
+    /**
+     * @psalm-param class-string $mockName
+     */
     public function __construct(string $classCode, string $mockName, array $configurableMethods)
     {
         $this->classCode           = $classCode;
@@ -39,6 +42,9 @@ final class MockClass implements MockType
         $this->configurableMethods = $configurableMethods;
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public function generate(): string
     {
         if (!class_exists($this->mockName, false)) {

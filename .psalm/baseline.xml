@@ -456,8 +456,7 @@
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
-    <ArgumentTypeCoercion occurrences="4">
-      <code>$className</code>
+    <ArgumentTypeCoercion occurrences="3">
       <code>$className</code>
       <code>$className</code>
       <code>$interfaceName</code>
@@ -469,9 +468,6 @@
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
-    <InvalidStringClass occurrences="1">
-      <code>new $className</code>
-    </InvalidStringClass>
     <MissingParamType occurrences="1">
       <code>$type</code>
     </MissingParamType>
@@ -1322,20 +1318,6 @@
       <code>getName</code>
       <code>getName</code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Util/Metadata/Group.php">
-    <InvalidPropertyAssignmentValue occurrences="1">
-      <code>$enabled</code>
-    </InvalidPropertyAssignmentValue>
-    <InvalidReturnStatement occurrences="1">
-      <code>$this-&gt;groupName</code>
-    </InvalidReturnStatement>
-    <InvalidReturnType occurrences="1">
-      <code>bool</code>
-    </InvalidReturnType>
-  </file>
-  <file src="src/Util/Metadata/MetadataCollection.php">
-    <InvalidArgument occurrences="1"/>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="2">
