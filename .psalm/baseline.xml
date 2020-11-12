@@ -469,8 +469,7 @@
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
-    <ArgumentTypeCoercion occurrences="4">
-      <code>$className</code>
+    <ArgumentTypeCoercion occurrences="3">
       <code>$className</code>
       <code>$className</code>
       <code>$interfaceName</code>
@@ -482,9 +481,6 @@
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
-    <InvalidStringClass occurrences="1">
-      <code>new $className</code>
-    </InvalidStringClass>
     <MissingParamType occurrences="1">
       <code>$type</code>
     </MissingParamType>
