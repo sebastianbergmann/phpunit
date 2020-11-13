@@ -276,8 +276,9 @@ final class TestResult implements Countable
     public function addError(Test $test, Throwable $t, float $time): void
     {
         if ($t instanceof RiskyTestError) {
-            $this->risky[] = new TestFailure($test, $t);
-            $notifyMethod  = 'addRiskyTest';
+            $this->recordRisky($test, $t);
+
+            $notifyMethod = 'addRiskyTest';
 
             if ($test instanceof TestCase) {
                 $test->markAsRisky();
@@ -287,22 +288,25 @@ final class TestResult implements Countable
                 $this->stop();
             }
         } elseif ($t instanceof IncompleteTest) {
-            $this->notImplemented[] = new TestFailure($test, $t);
-            $notifyMethod           = 'addIncompleteTest';
+            $this->recordNotImplemented($test, $t);
+
+            $notifyMethod = 'addIncompleteTest';
 
             if ($this->stopOnIncomplete) {
                 $this->stop();
             }
         } elseif ($t instanceof SkippedTest) {
-            $this->skipped[] = new TestFailure($test, $t);
-            $notifyMethod    = 'addSkippedTest';
+            $this->recordSkipped($test, $t);
+
+            $notifyMethod = 'addSkippedTest';
 
             if ($this->stopOnSkipped) {
                 $this->stop();
             }
         } else {
-            $this->errors[] = new TestFailure($test, $t);
-            $notifyMethod   = 'addError';
+            $this->recordError($test, $t);
+
+            $notifyMethod = 'addError';
 
             if ($this->stopOnError || $this->stopOnFailure) {
                 $this->stop();
@@ -332,7 +336,7 @@ final class TestResult implements Countable
             $this->stop();
         }
 
-        $this->warnings[] = new TestFailure($test, $e);
+        $this->recordWarning($test, $e);
 
         foreach ($this->listeners as $listener) {
             $listener->addWarning($test, $e, $time);
@@ -348,8 +352,9 @@ final class TestResult implements Countable
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         if ($e instanceof RiskyTestError || $e instanceof OutputError) {
-            $this->risky[] = new TestFailure($test, $e);
-            $notifyMethod  = 'addRiskyTest';
+            $this->recordRisky($test, $e);
+
+            $notifyMethod = 'addRiskyTest';
 
             if ($test instanceof TestCase) {
                 $test->markAsRisky();
@@ -359,15 +364,17 @@ final class TestResult implements Countable
                 $this->stop();
             }
         } elseif ($e instanceof IncompleteTest) {
-            $this->notImplemented[] = new TestFailure($test, $e);
-            $notifyMethod           = 'addIncompleteTest';
+            $this->recordNotImplemented($test, $e);
+
+            $notifyMethod = 'addIncompleteTest';
 
             if ($this->stopOnIncomplete) {
                 $this->stop();
             }
         } elseif ($e instanceof SkippedTest) {
-            $this->skipped[] = new TestFailure($test, $e);
-            $notifyMethod    = 'addSkippedTest';
+            $this->recordSkipped($test, $e);
+
+            $notifyMethod = 'addSkippedTest';
 
             if ($this->stopOnSkipped) {
                 $this->stop();
@@ -1253,5 +1260,30 @@ final class TestResult implements Countable
     public function setRegisterMockObjectsFromTestArgumentsRecursively(bool $flag): void
     {
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
+    }
+
+    private function recordError(Test $test, Throwable $t): void
+    {
+        $this->errors[] = new TestFailure($test, $t);
+    }
+
+    private function recordNotImplemented(Test $test, Throwable $t): void
+    {
+        $this->notImplemented[] = new TestFailure($test, $t);
+    }
+
+    private function recordRisky(Test $test, Throwable $t): void
+    {
+        $this->risky[] = new TestFailure($test, $t);
+    }
+
+    private function recordSkipped(Test $test, Throwable $t): void
+    {
+        $this->skipped[] = new TestFailure($test, $t);
+    }
+
+    private function recordWarning(Test $test, Throwable $t): void
+    {
+        $this->warnings[] = new TestFailure($test, $t);
     }
 }
