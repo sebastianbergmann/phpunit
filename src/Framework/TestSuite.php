@@ -748,6 +748,10 @@ class TestSuite implements \IteratorAggregate, SelfDescribing, Test
      */
     protected function addTestMethod(\ReflectionClass $class, \ReflectionMethod $method): void
     {
+        if (!TestUtil::isTestMethod($method)) {
+            return;
+        }
+
         $methodName = $method->getName();
 
         $test = (new TestBuilder)->build($class, $methodName);
