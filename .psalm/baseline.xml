@@ -840,6 +840,11 @@
       <code>static function () use ($cacheData) {</code>
     </MissingClosureReturnType>
   </file>
+  <file src="src/Runner/ExtensionHandler.php">
+    <UnresolvableInclude occurrences="1">
+      <code>require $file</code>
+    </UnresolvableInclude>
+  </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
     <MissingReturnType occurrences="1">
       <code>doAccept</code>
@@ -960,8 +965,7 @@
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof Configuration)</code>
     </RedundantCondition>
-    <UnresolvableInclude occurrences="3">
-      <code>require $file</code>
+    <UnresolvableInclude occurrences="2">
       <code>require $loaderFile</code>
       <code>require $printerFile</code>
     </UnresolvableInclude>

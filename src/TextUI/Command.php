@@ -35,11 +35,8 @@ use function stream_resolve_include_path;
 use function strpos;
 use function trim;
 use function version_compare;
-use PharIo\Manifest\ApplicationName;
-use PharIo\Manifest\Exception as ManifestException;
-use PharIo\Manifest\ManifestLoader;
-use PharIo\Version\Version as PharIoVersion;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\ExtensionHandler;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
@@ -61,7 +58,6 @@ use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
-use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
 
@@ -352,7 +348,12 @@ class Command
             }
 
             if (!isset($this->arguments['noExtensions']) && $phpunitConfiguration->hasExtensionsDirectory() && extension_loaded('phar')) {
-                $this->handleExtensions($phpunitConfiguration->extensionsDirectory());
+                $result = (new ExtensionHandler)->handle($phpunitConfiguration->extensionsDirectory());
+
+                $this->arguments['loadedExtensions']    = $result['loadedExtensions'];
+                $this->arguments['notLoadedExtensions'] = $result['notLoadedExtensions'];
+
+                unset($result);
             }
 
             if (!isset($this->arguments['columns'])) {
@@ -609,43 +610,6 @@ class Command
         print $message . PHP_EOL;
 
         exit(TestRunner::FAILURE_EXIT);
-    }
-
-    private function handleExtensions(string $directory): void
-    {
-        foreach ((new FileIteratorFacade)->getFilesAsArray($directory, '.phar') as $file) {
-            if (!is_file('phar://' . $file . '/manifest.xml')) {
-                $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
-
-                continue;
-            }
-
-            try {
-                $applicationName = new ApplicationName('phpunit/phpunit');
-                $version         = new PharIoVersion(Version::series());
-                $manifest        = ManifestLoader::fromFile('phar://' . $file . '/manifest.xml');
-
-                if (!$manifest->isExtensionFor($applicationName)) {
-                    $this->arguments['notLoadedExtensions'][] = $file . ' is not an extension for PHPUnit';
-
-                    continue;
-                }
-
-                if (!$manifest->isExtensionFor($applicationName, $version)) {
-                    $this->arguments['notLoadedExtensions'][] = $file . ' is not compatible with this version of PHPUnit';
-
-                    continue;
-                }
-            } catch (ManifestException $e) {
-                $this->arguments['notLoadedExtensions'][] = $file . ': ' . $e->getMessage();
-
-                continue;
-            }
-
-            require $file;
-
-            $this->arguments['loadedExtensions'][] = $manifest->getName()->asString() . ' ' . $manifest->getVersion()->getVersionString();
-        }
     }
 
     private function handleListGroups(TestSuite $suite, bool $exit): int
