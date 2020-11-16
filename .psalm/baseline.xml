@@ -1014,7 +1014,7 @@
       <code>new StandardTestSuiteLoader</code>
       <code>new XdebugFilterScriptGenerator</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="9">
+    <DeprecatedMethod occurrences="10">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
@@ -1023,6 +1023,7 @@
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
+      <code>createLegacyInstance</code>
       <code>flushListeners</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="2">

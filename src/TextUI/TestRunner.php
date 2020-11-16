@@ -1021,11 +1021,11 @@ final class TestRunner extends BaseTestRunner
             $extensionHandler = new ExtensionHandler;
 
             foreach ($arguments['configurationObject']->extensions() as $extension) {
-                $this->addExtension($extensionHandler->createHookInstance($extension));
+                $this->addExtension($extensionHandler->createInstance($extension));
             }
 
             foreach ($arguments['configurationObject']->listeners() as $listener) {
-                $arguments['listeners'][] = $extensionHandler->createTestListenerInstance($listener);
+                $arguments['listeners'][] = $extensionHandler->createLegacyInstance($listener);
             }
 
             unset($extensionHandler);
@@ -1082,7 +1082,7 @@ final class TestRunner extends BaseTestRunner
         $extensionHandler = new ExtensionHandler;
 
         foreach ($arguments['extensions'] as $extension) {
-            $this->addExtension($extensionHandler->createHookInstance($extension));
+            $this->addExtension($extensionHandler->createInstance($extension));
         }
 
         unset($extensionHandler);

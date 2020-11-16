@@ -23,9 +23,9 @@ use ReflectionException;
  */
 final class ExtensionHandler
 {
-    public function createHookInstance(Extension $extension): Hook
+    public function createInstance(Extension $extension): Hook
     {
-        $object = $this->createInstance($extension);
+        $object = $this->doCreateInstance($extension);
 
         if (!$object instanceof Hook) {
             throw new Exception(
@@ -39,9 +39,12 @@ final class ExtensionHandler
         return $object;
     }
 
-    public function createTestListenerInstance(Extension $extension): TestListener
+    /**
+     * @deprecated
+     */
+    public function createLegacyInstance(Extension $extension): TestListener
     {
-        $object = $this->createInstance($extension);
+        $object = $this->doCreateInstance($extension);
 
         if (!$object instanceof TestListener) {
             throw new Exception(
@@ -55,7 +58,7 @@ final class ExtensionHandler
         return $object;
     }
 
-    private function createInstance(Extension $extension): object
+    private function doCreateInstance(Extension $extension): object
     {
         $this->ensureClassExists($extension);
 
