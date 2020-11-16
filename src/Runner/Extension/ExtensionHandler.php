@@ -89,7 +89,10 @@ final class ExtensionHandler
         }
 
         if ($extension->hasSourceFile()) {
-            /** @noinspection PhpIncludeInspection */
+            /**
+             * @noinspection PhpIncludeInspection
+             * @psalm-suppress UnresolvableInclude
+             */
             require_once $extension->sourceFile();
         }
 

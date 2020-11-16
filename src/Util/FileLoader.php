@@ -58,6 +58,10 @@ final class FileLoader
     {
         $oldVariableNames = array_keys(get_defined_vars());
 
+        /**
+         * @noinspection PhpIncludeInspection
+         * @psalm-suppress UnresolvableInclude
+         */
         include_once $filename;
 
         $newVariables = get_defined_vars();

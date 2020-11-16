@@ -847,14 +847,6 @@
     <MissingThrowsDocblock occurrences="4">
       <code>ensureClassExists</code>
     </MissingThrowsDocblock>
-    <UnresolvableInclude occurrences="1">
-      <code>require_once $extension-&gt;sourceFile()</code>
-    </UnresolvableInclude>
-  </file>
-  <file src="src/Runner/Extension/PharLoader.php">
-    <UnresolvableInclude occurrences="1">
-      <code>require $file</code>
-    </UnresolvableInclude>
   </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
     <MissingReturnType occurrences="1">
@@ -976,10 +968,6 @@
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof Configuration)</code>
     </RedundantCondition>
-    <UnresolvableInclude occurrences="2">
-      <code>require $loaderFile</code>
-      <code>require $printerFile</code>
-    </UnresolvableInclude>
     <UnsafeInstantiation occurrences="1">
       <code>new static</code>
     </UnsafeInstantiation>
@@ -1240,11 +1228,6 @@
       <code>self::$directories === null</code>
     </DocblockTypeContradiction>
     <MissingThrowsDocblock occurrences="1"/>
-  </file>
-  <file src="src/Util/FileLoader.php">
-    <UnresolvableInclude occurrences="1">
-      <code>include_once $filename</code>
-    </UnresolvableInclude>
   </file>
   <file src="src/Util/GlobalState.php">
     <MissingParamType occurrences="1">

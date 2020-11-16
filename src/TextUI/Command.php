@@ -434,6 +434,10 @@ class Command
             $loaderFile = stream_resolve_include_path($loaderFile);
 
             if ($loaderFile) {
+                /**
+                 * @noinspection PhpIncludeInspection
+                 * @psalm-suppress UnresolvableInclude
+                 */
                 require $loaderFile;
             }
         }
@@ -491,6 +495,10 @@ class Command
             $printerFile = stream_resolve_include_path($printerFile);
 
             if ($printerFile) {
+                /**
+                 * @noinspection PhpIncludeInspection
+                 * @psalm-suppress UnresolvableInclude
+                 */
                 require $printerFile;
             }
         }
