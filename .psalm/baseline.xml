@@ -1314,6 +1314,9 @@
       <code>getName</code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="src/Util/Metadata/MetadataCollection.php">
+    <InvalidArgument occurrences="1"/>
+  </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
       <code>$this-&gt;getException($failures[0])</code>
