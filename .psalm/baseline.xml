@@ -840,7 +840,18 @@
       <code>static function () use ($cacheData) {</code>
     </MissingClosureReturnType>
   </file>
-  <file src="src/Runner/ExtensionHandler.php">
+  <file src="src/Runner/Extension/ExtensionHandler.php">
+    <DeprecatedClass occurrences="1">
+      <code>TestListener</code>
+    </DeprecatedClass>
+    <MissingThrowsDocblock occurrences="4">
+      <code>ensureClassExists</code>
+    </MissingThrowsDocblock>
+    <UnresolvableInclude occurrences="1">
+      <code>require_once $extension-&gt;sourceFile()</code>
+    </UnresolvableInclude>
+  </file>
+  <file src="src/Runner/Extension/PharLoader.php">
     <UnresolvableInclude occurrences="1">
       <code>require $file</code>
     </UnresolvableInclude>
@@ -1170,17 +1181,6 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/PHPUnit/ExtensionHandler.php">
-    <DeprecatedClass occurrences="1">
-      <code>TestListener</code>
-    </DeprecatedClass>
-    <MissingThrowsDocblock occurrences="4">
-      <code>ensureClassExists</code>
-    </MissingThrowsDocblock>
-    <UnresolvableInclude occurrences="1">
-      <code>require_once $extension-&gt;sourceFile()</code>
-    </UnresolvableInclude>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHPUnit/PHPUnit.php">
     <DeprecatedMethod occurrences="2">

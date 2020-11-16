@@ -7,13 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\XmlConfiguration;
+namespace PHPUnit\Runner\Extension;
 
 use function class_exists;
 use function sprintf;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\Hook;
+use PHPUnit\TextUI\XmlConfiguration\Extension;
 use ReflectionClass;
 use ReflectionException;
 

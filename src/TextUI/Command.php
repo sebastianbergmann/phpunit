@@ -36,7 +36,7 @@ use function strpos;
 use function trim;
 use function version_compare;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\ExtensionHandler;
+use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
@@ -348,7 +348,7 @@ class Command
             }
 
             if (!isset($this->arguments['noExtensions']) && $phpunitConfiguration->hasExtensionsDirectory() && extension_loaded('phar')) {
-                $result = (new ExtensionHandler)->handle($phpunitConfiguration->extensionsDirectory());
+                $result = (new PharLoader)->loadPharExtensionsInDirectory($phpunitConfiguration->extensionsDirectory());
 
                 $this->arguments['loadedExtensions']    = $result['loadedExtensions'];
                 $this->arguments['notLoadedExtensions'] = $result['notLoadedExtensions'];

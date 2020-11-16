@@ -7,23 +7,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Runner;
+namespace PHPUnit\Runner\Extension;
 
 use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\Exception as ManifestException;
 use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
+use PHPUnit\Runner\Version;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExtensionHandler
+final class PharLoader
 {
     /**
      * @psalm-return array{loadedExtensions: list<string>, notLoadedExtensions: list<string>}
      */
-    public function handle(string $directory): array
+    public function loadPharExtensionsInDirectory(string $directory): array
     {
         $loadedExtensions    = [];
         $notLoadedExtensions = [];
