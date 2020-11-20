@@ -11,8 +11,8 @@ namespace PHPUnit\Runner\Extension;
 
 use function class_exists;
 use function sprintf;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestListener;
+use PHPUnit\Runner\Exception;
 use PHPUnit\Runner\Hook;
 use PHPUnit\TextUI\TestRunner;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
@@ -24,6 +24,9 @@ use ReflectionException;
  */
 final class ExtensionHandler
 {
+    /**
+     * @throws Exception
+     */
     public function registerExtension(Extension $extensionConfiguration, TestRunner $runner): void
     {
         $extension = $this->createInstance($extensionConfiguration);
@@ -41,6 +44,8 @@ final class ExtensionHandler
     }
 
     /**
+     * @throws Exception
+     *
      * @deprecated
      */
     public function createTestListenerInstance(Extension $listenerConfiguration): TestListener
@@ -59,6 +64,9 @@ final class ExtensionHandler
         return $listener;
     }
 
+    /**
+     * @throws Exception
+     */
     private function createInstance(Extension $extensionConfiguration): object
     {
         $this->ensureClassExists($extensionConfiguration);

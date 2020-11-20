@@ -844,9 +844,6 @@
     <DeprecatedClass occurrences="1">
       <code>TestListener</code>
     </DeprecatedClass>
-    <MissingThrowsDocblock occurrences="4">
-      <code>ensureClassExists</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
     <MissingReturnType occurrences="1">
