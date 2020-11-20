@@ -1025,7 +1025,7 @@ final class TestRunner extends BaseTestRunner
             }
 
             foreach ($arguments['configurationObject']->listeners() as $listener) {
-                $arguments['listeners'][] = $extensionHandler->createLegacyInstance($listener);
+                $arguments['listeners'][] = $extensionHandler->createTestListenerInstance($listener);
             }
 
             unset($extensionHandler);

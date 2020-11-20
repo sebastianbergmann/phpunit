@@ -1011,7 +1011,7 @@
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
-      <code>createLegacyInstance</code>
+      <code>createTestListenerInstance</code>
       <code>flushListeners</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="2">

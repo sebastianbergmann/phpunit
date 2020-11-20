@@ -42,7 +42,7 @@ final class ExtensionHandler
     /**
      * @deprecated
      */
-    public function createLegacyInstance(Extension $extension): TestListener
+    public function createTestListenerInstance(Extension $extension): TestListener
     {
         $object = $this->doCreateInstance($extension);
 
