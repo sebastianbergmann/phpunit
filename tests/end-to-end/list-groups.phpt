@@ -12,6 +12,7 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Available test group(s):
+ - 1234
  - balanceCannotBecomeNegative
  - balanceIsInitiallyZero
  - specification
