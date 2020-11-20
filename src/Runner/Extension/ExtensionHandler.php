@@ -24,47 +24,47 @@ use ReflectionException;
  */
 final class ExtensionHandler
 {
-    public function registerExtension(Extension $extension, TestRunner $runner): void
+    public function registerExtension(Extension $extensionConfiguration, TestRunner $runner): void
     {
-        $object = $this->createInstance($extension);
+        $extension = $this->createInstance($extensionConfiguration);
 
-        if (!$object instanceof Hook) {
+        if (!$extension instanceof Hook) {
             throw new Exception(
                 sprintf(
                     'Class "%s" does not implement a PHPUnit\Runner\Hook interface',
-                    $extension->className()
+                    $extensionConfiguration->className()
                 )
             );
         }
 
-        $runner->addExtension($object);
+        $runner->addExtension($extension);
     }
 
     /**
      * @deprecated
      */
-    public function createTestListenerInstance(Extension $extension): TestListener
+    public function createTestListenerInstance(Extension $listenerConfiguration): TestListener
     {
-        $object = $this->createInstance($extension);
+        $listener = $this->createInstance($listenerConfiguration);
 
-        if (!$object instanceof TestListener) {
+        if (!$listener instanceof TestListener) {
             throw new Exception(
                 sprintf(
                     'Class "%s" does not implement the PHPUnit\Framework\TestListener interface',
-                    $extension->className()
+                    $listenerConfiguration->className()
                 )
             );
         }
 
-        return $object;
+        return $listener;
     }
 
-    private function createInstance(Extension $extension): object
+    private function createInstance(Extension $extensionConfiguration): object
     {
-        $this->ensureClassExists($extension);
+        $this->ensureClassExists($extensionConfiguration);
 
         try {
-            $reflector = new ReflectionClass($extension->className());
+            $reflector = new ReflectionClass($extensionConfiguration->className());
         } catch (ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
@@ -73,35 +73,35 @@ final class ExtensionHandler
             );
         }
 
-        if (!$extension->hasArguments()) {
+        if (!$extensionConfiguration->hasArguments()) {
             return $reflector->newInstance();
         }
 
-        return $reflector->newInstanceArgs($extension->arguments());
+        return $reflector->newInstanceArgs($extensionConfiguration->arguments());
     }
 
     /**
      * @throws Exception
      */
-    private function ensureClassExists(Extension $extension): void
+    private function ensureClassExists(Extension $extensionConfiguration): void
     {
-        if (class_exists($extension->className(), false)) {
+        if (class_exists($extensionConfiguration->className(), false)) {
             return;
         }
 
-        if ($extension->hasSourceFile()) {
+        if ($extensionConfiguration->hasSourceFile()) {
             /**
              * @noinspection PhpIncludeInspection
              * @psalm-suppress UnresolvableInclude
              */
-            require_once $extension->sourceFile();
+            require_once $extensionConfiguration->sourceFile();
         }
 
-        if (!class_exists($extension->className())) {
+        if (!class_exists($extensionConfiguration->className())) {
             throw new Exception(
                 sprintf(
                     'Class "%s" does not exist',
-                    $extension->className()
+                    $extensionConfiguration->className()
                 )
             );
         }
