@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use const PHP_EOL;
 use function array_diff;
 use function array_keys;
+use function array_map;
 use function array_merge;
 use function array_unique;
 use function basename;
@@ -78,7 +79,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * The test groups of the test suite.
      *
-     * @var array
+     * @psalm-var array<string,list<Test>>
      */
     protected $groups = [];
 
@@ -556,10 +557,17 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * Returns the test groups of the suite.
+     *
+     * @psalm-return list<string>
      */
     public function getGroups(): array
     {
-        return array_keys($this->groups);
+        return array_map(
+            static function ($key): string {
+                return (string) $key;
+            },
+            array_keys($this->groups)
+        );
     }
 
     public function getGroupDetails(): array

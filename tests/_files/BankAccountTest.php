@@ -24,6 +24,7 @@ class BankAccountTest extends TestCase
      * @covers BankAccount::getBalance
      * @group balanceIsInitiallyZero
      * @group specification
+     * @group 1234
      */
     public function testBalanceIsInitiallyZero(): void
     {
