@@ -1021,7 +1021,7 @@ final class TestRunner extends BaseTestRunner
             $extensionHandler = new ExtensionHandler;
 
             foreach ($arguments['configurationObject']->extensions() as $extension) {
-                $this->addExtension($extensionHandler->createInstance($extension));
+                $extensionHandler->registerExtension($extension, $this);
             }
 
             foreach ($arguments['configurationObject']->listeners() as $listener) {
@@ -1082,7 +1082,7 @@ final class TestRunner extends BaseTestRunner
         $extensionHandler = new ExtensionHandler;
 
         foreach ($arguments['extensions'] as $extension) {
-            $this->addExtension($extensionHandler->createInstance($extension));
+            $extensionHandler->registerExtension($extension, $this);
         }
 
         unset($extensionHandler);

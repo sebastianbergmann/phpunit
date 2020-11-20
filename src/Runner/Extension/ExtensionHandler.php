@@ -14,6 +14,7 @@ use function sprintf;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\Hook;
+use PHPUnit\TextUI\TestRunner;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
 use ReflectionClass;
 use ReflectionException;
@@ -23,9 +24,9 @@ use ReflectionException;
  */
 final class ExtensionHandler
 {
-    public function createInstance(Extension $extension): Hook
+    public function registerExtension(Extension $extension, TestRunner $runner): void
     {
-        $object = $this->doCreateInstance($extension);
+        $object = $this->createInstance($extension);
 
         if (!$object instanceof Hook) {
             throw new Exception(
@@ -36,7 +37,7 @@ final class ExtensionHandler
             );
         }
 
-        return $object;
+        $runner->addExtension($object);
     }
 
     /**
@@ -44,7 +45,7 @@ final class ExtensionHandler
      */
     public function createTestListenerInstance(Extension $extension): TestListener
     {
-        $object = $this->doCreateInstance($extension);
+        $object = $this->createInstance($extension);
 
         if (!$object instanceof TestListener) {
             throw new Exception(
@@ -58,7 +59,7 @@ final class ExtensionHandler
         return $object;
     }
 
-    private function doCreateInstance(Extension $extension): object
+    private function createInstance(Extension $extension): object
     {
         $this->ensureClassExists($extension);
 
