@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.1.1@16bfbd9224698bd738c665f33039fade2a1a3977">
+<files psalm-version="4.2.1@ea9cb72143b77e7520c52fa37290bd8d8bc88fd9">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -11,7 +11,7 @@
       <code>Xml::removeCharacterDataNodes($actualElement)</code>
       <code>Xml::removeCharacterDataNodes($expectedElement)</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="22">
+    <DocblockTypeContradiction occurrences="16">
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
@@ -24,12 +24,6 @@
       <code>is_array($array) || $array instanceof ArrayAccess</code>
       <code>is_int($key) || is_string($key)</code>
       <code>is_int($key) || is_string($key)</code>
-      <code>is_iterable($actual)</code>
-      <code>is_iterable($actual)</code>
-      <code>is_iterable($expected)</code>
-      <code>is_iterable($expected)</code>
-      <code>is_iterable($haystack)</code>
-      <code>is_iterable($haystack)</code>
       <code>is_object($object)</code>
       <code>is_object($object)</code>
       <code>is_string($key)</code>
