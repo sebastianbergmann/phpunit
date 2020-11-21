@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.1.1@16bfbd9224698bd738c665f33039fade2a1a3977">
+<files psalm-version="4.2.1@ea9cb72143b77e7520c52fa37290bd8d8bc88fd9">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -35,7 +35,7 @@
       <code>static::readAttribute($haystackClassOrObject, $haystackAttributeName)</code>
       <code>static::readAttribute($haystackClassOrObject, $haystackAttributeName)</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="27">
+    <DocblockTypeContradiction occurrences="21">
       <code>!$actual instanceof Countable &amp;&amp; !\is_iterable($actual)</code>
       <code>!$actual instanceof Countable &amp;&amp; !\is_iterable($actual)</code>
       <code>!$expected instanceof Countable &amp;&amp; !\is_iterable($expected)</code>
@@ -52,12 +52,6 @@
       <code>\is_array($subset) || $subset instanceof ArrayAccess</code>
       <code>\is_int($key) || \is_string($key)</code>
       <code>\is_int($key) || \is_string($key)</code>
-      <code>\is_iterable($actual)</code>
-      <code>\is_iterable($actual)</code>
-      <code>\is_iterable($expected)</code>
-      <code>\is_iterable($expected)</code>
-      <code>\is_iterable($haystack)</code>
-      <code>\is_iterable($haystack)</code>
       <code>\is_object($object)</code>
       <code>\is_object($object)</code>
       <code>\is_object($object)</code>
@@ -640,10 +634,9 @@
       <code>$className</code>
       <code>$interfaceName</code>
     </ArgumentTypeCoercion>
-    <DocblockTypeContradiction occurrences="3">
+    <DocblockTypeContradiction occurrences="2">
       <code>!\is_array($methods) &amp;&amp; null !== $methods</code>
       <code>!\is_array($type) &amp;&amp; !\is_string($type)</code>
-      <code>\is_string($type)</code>
     </DocblockTypeContradiction>
     <InvalidReturnStatement occurrences="1"/>
     <InvalidReturnType occurrences="1">
