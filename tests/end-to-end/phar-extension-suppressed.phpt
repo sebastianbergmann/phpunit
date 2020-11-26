@@ -9,4 +9,5 @@ $_SERVER['argv'][3] = '--no-extensions';
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-Fatal error: Trait 'PHPUnit\ExampleExtension\TestCaseTrait' not found in %s
+Fatal error: Trait %sPHPUnit\ExampleExtension\TestCaseTrait%s not found in %s
+

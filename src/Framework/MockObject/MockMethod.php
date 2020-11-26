@@ -121,8 +121,8 @@ final class MockMethod
             $method->getName(),
             $cloneArguments,
             $modifier,
-            self::getMethodParameters($method),
-            self::getMethodParameters($method, true),
+            self::getMethodParametersForDeclaration($method),
+            self::getMethodParametersForCall($method),
             self::deriveReturnType($method),
             $reference,
             $callOriginalMethod,
@@ -244,7 +244,71 @@ final class MockMethod
      *
      * @throws RuntimeException
      */
-    private static function getMethodParameters(\ReflectionMethod $method, bool $forCall = false): string
+    private static function getMethodParametersForDeclaration(\ReflectionMethod $method): string
+    {
+        $parameters = [];
+
+        foreach ($method->getParameters() as $i => $parameter) {
+            $name = '$' . $parameter->getName();
+
+            /* Note: PHP extensions may use empty names for reference arguments
+             * or "..." for methods taking a variable number of arguments.
+             */
+            if ($name === '$' || $name === '$...') {
+                $name = '$arg' . $i;
+            }
+
+            $nullable        = '';
+            $default         = '';
+            $reference       = '';
+            $typeDeclaration = '';
+            $type            = null;
+            $typeName        = null;
+
+            if ($parameter->hasType()) {
+                $type = $parameter->getType();
+
+                if ($type instanceof \ReflectionNamedType) {
+                    $typeName = $type->getName();
+                }
+            }
+
+            if ($parameter->isVariadic()) {
+                $name = '...' . $name;
+            } elseif ($parameter->isDefaultValueAvailable()) {
+                $default = ' = ' . \var_export($parameter->getDefaultValue(), true);
+            } elseif ($parameter->isOptional()) {
+                $default = ' = null';
+            }
+
+            if ($type !== null) {
+                if ($typeName !== 'mixed' && $parameter->allowsNull()) {
+                    $nullable = '?';
+                }
+
+                if ($typeName === 'self') {
+                    $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
+                } elseif ($typeName !== null) {
+                    $typeDeclaration = $typeName . ' ';
+                }
+            }
+
+            if ($parameter->isPassedByReference()) {
+                $reference = '&';
+            }
+
+            $parameters[] = $nullable . $typeDeclaration . $reference . $name . $default;
+        }
+
+        return \implode(', ', $parameters);
+    }
+
+    /**
+     * Returns the parameters of a function or method.
+     *
+     * @throws \ReflectionException
+     */
+    private static function getMethodParametersForCall(\ReflectionMethod $method): string
     {
         $parameters = [];
 
@@ -259,78 +323,14 @@ final class MockMethod
             }
 
             if ($parameter->isVariadic()) {
-                if ($forCall) {
-                    continue;
-                }
-
-                $name = '...' . $name;
-            }
-
-            $nullable        = '';
-            $default         = '';
-            $reference       = '';
-            $typeDeclaration = '';
-
-            if (!$forCall) {
-                if ($parameter->hasType() && $parameter->allowsNull()) {
-                    $nullable = '?';
-                }
-
-                if ($parameter->hasType()) {
-                    $type = $parameter->getType();
-
-                    if ($type instanceof \ReflectionNamedType && $type->getName() !== 'self') {
-                        $typeDeclaration = $type->getName() . ' ';
-                    } else {
-                        try {
-                            $class = $parameter->getClass();
-                            // @codeCoverageIgnoreStart
-                        } catch (\ReflectionException $e) {
-                            throw new RuntimeException(
-                                \sprintf(
-                                    'Cannot mock %s::%s() because a class or ' .
-                                    'interface used in the signature is not loaded',
-                                    $method->getDeclaringClass()->getName(),
-                                    $method->getName()
-                                ),
-                                0,
-                                $e
-                            );
-                        }
-                        // @codeCoverageIgnoreEnd
-
-                        if ($class !== null) {
-                            $typeDeclaration = $class->getName() . ' ';
-                        }
-                    }
-                }
-
-                if (!$parameter->isVariadic()) {
-                    if ($parameter->isDefaultValueAvailable()) {
-                        try {
-                            $value = \var_export($parameter->getDefaultValue(), true);
-                            // @codeCoverageIgnoreStart
-                        } catch (\ReflectionException $e) {
-                            throw new RuntimeException(
-                                $e->getMessage(),
-                                (int) $e->getCode(),
-                                $e
-                            );
-                        }
-                        // @codeCoverageIgnoreEnd
-
-                        $default = ' = ' . $value;
-                    } elseif ($parameter->isOptional()) {
-                        $default = ' = null';
-                    }
-                }
+                continue;
             }
 
             if ($parameter->isPassedByReference()) {
-                $reference = '&';
+                $parameters[] = '&' . $name;
+            } else {
+                $parameters[] = $name;
             }
-
-            $parameters[] = $nullable . $typeDeclaration . $reference . $name . $default;
         }
 
         return \implode(', ', $parameters);

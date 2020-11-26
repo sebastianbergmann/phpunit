@@ -17,11 +17,12 @@ class SingletonClass
     {
     }
 
-    private function __sleep(): array
+    public function __sleep(): array
     {
+        return [];
     }
 
-    private function __wakeup(): void
+    public function __wakeup(): void
     {
     }
 

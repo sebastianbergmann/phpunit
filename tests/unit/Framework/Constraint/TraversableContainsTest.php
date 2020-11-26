@@ -24,6 +24,9 @@ final class TraversableContainsTest extends ConstraintTestCase
         $this->assertTrue($constraint->evaluate(['foo'], '', true));
     }
 
+    /**
+     * @requires PHP < 8.0
+     */
     public function testConstraintTraversableCheckForObjectIdentityForDefaultCase(): void
     {
         $constraint = new TraversableContains('foo');

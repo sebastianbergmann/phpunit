@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\MockObject\Builder;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-interface Match extends Stub
+interface Match_ extends Stub
 {
     /**
      * Defines the expectation which must occur before the current is valid.

@@ -733,8 +733,9 @@
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock occurrences="3">
       <code>new \Text_Template($filename)</code>
+      <code>self::getMethodParametersForCall($method)</code>
     </MissingThrowsDocblock>
     <PossiblyNullReference occurrences="1">
       <code>allowsNull</code>
@@ -956,11 +957,19 @@
     <DocblockTypeContradiction occurrences="1">
       <code>$this-&gt;topTestSuite === null</code>
     </DocblockTypeContradiction>
+    <InvalidArgument occurrences="1">
+      <code>[$test, 'runBare']</code>
+    </InvalidArgument>
+    <InvalidCatch occurrences="1"/>
     <MissingConstructor occurrences="2">
       <code>$codeCoverage</code>
       <code>$topTestSuite</code>
     </MissingConstructor>
-    <PossiblyUndefinedVariable occurrences="2">
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$linesToBeCovered</code>
+    </PossiblyInvalidArgument>
+    <PossiblyUndefinedVariable occurrences="3">
+      <code>$_timeout</code>
       <code>$_timeout</code>
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
@@ -968,11 +977,10 @@
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
     </RedundantConditionGivenDocblockType>
-    <UndefinedClass occurrences="2">
-      <code>Invoker</code>
-      <code>TimeoutException</code>
-    </UndefinedClass>
-    <UndefinedInterfaceMethod occurrences="4">
+    <UndefinedInterfaceMethod occurrences="7">
+      <code>addToAssertionCount</code>
+      <code>addToAssertionCount</code>
+      <code>getNumAssertions</code>
       <code>getSize</code>
       <code>getSize</code>
       <code>getSize</code>
@@ -1213,9 +1221,6 @@
     <DocblockTypeContradiction occurrences="1">
       <code>self::$directories === null</code>
     </DocblockTypeContradiction>
-    <UndefinedClass occurrences="1">
-      <code>Invoker</code>
-    </UndefinedClass>
   </file>
   <file src="src/Util/Color.php">
     <MissingClosureParamType occurrences="2">
