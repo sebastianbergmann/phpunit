@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.4 release series are documented in this fil
 ### Fixed
 
 * [#4489](https://github.com/sebastianbergmann/phpunit/issues/4489): Numeric group names are not handled correctly
+* [#4529](https://github.com/sebastianbergmann/phpunit/issues/4529): Debug mode of Xdebug 2 is not disabled for PHPT tests
 
 ## [9.4.3] - 2020-11-10
 
