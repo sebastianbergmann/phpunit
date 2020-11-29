@@ -42,10 +42,8 @@ use PHPUnit\Runner\Filter\NameFilterIterator;
 use PHPUnit\Runner\Hook;
 use PHPUnit\Runner\NullTestResultCache;
 use PHPUnit\Runner\ResultCacheExtension;
-use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestHook;
 use PHPUnit\Runner\TestListenerAdapter;
-use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
@@ -100,11 +98,6 @@ final class TestRunner extends BaseTestRunner
     private $codeCoverageFilter;
 
     /**
-     * @var TestSuiteLoader
-     */
-    private $loader;
-
-    /**
      * @var ResultPrinter
      */
     private $printer;
@@ -124,14 +117,13 @@ final class TestRunner extends BaseTestRunner
      */
     private $timer;
 
-    public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
+    public function __construct(CodeCoverageFilter $filter = null)
     {
         if ($filter === null) {
             $filter = new CodeCoverageFilter;
         }
 
         $this->codeCoverageFilter = $filter;
-        $this->loader             = $loader;
         $this->timer              = new Timer;
     }
 
@@ -810,18 +802,6 @@ final class TestRunner extends BaseTestRunner
         }
 
         return $result;
-    }
-
-    /**
-     * Returns the loader to be used.
-     */
-    public function getLoader(): TestSuiteLoader
-    {
-        if ($this->loader === null) {
-            $this->loader = new StandardTestSuiteLoader;
-        }
-
-        return $this->loader;
     }
 
     public function addExtension(Hook $extension): void

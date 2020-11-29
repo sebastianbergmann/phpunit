@@ -37,8 +37,6 @@ use function trim;
 use function version_compare;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\PharLoader;
-use PHPUnit\Runner\StandardTestSuiteLoader;
-use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration;
@@ -109,7 +107,7 @@ class Command
     {
         $this->handleArguments($argv);
 
-        $runner = new TestRunner($this->arguments['loader']);
+        $runner = new TestRunner;
 
         if ($this->arguments['test'] instanceof TestSuite) {
             $suite = $this->arguments['test'];
@@ -286,10 +284,6 @@ class Command
             }
         }
 
-        if ($this->arguments['loader'] !== null) {
-            $this->arguments['loader'] = $this->handleLoader($this->arguments['loader']);
-        }
-
         if (isset($this->arguments['configuration'])) {
             if (is_dir($this->arguments['configuration'])) {
                 $candidate = $this->configurationFileInDirectory($this->arguments['configuration']);
@@ -361,15 +355,6 @@ class Command
                 );
             }
 
-            if ($phpunitConfiguration->hasTestSuiteLoaderClass()) {
-                $file = $phpunitConfiguration->hasTestSuiteLoaderFile() ? $phpunitConfiguration->testSuiteLoaderFile() : '';
-
-                $this->arguments['loader'] = $this->handleLoader(
-                    $phpunitConfiguration->testSuiteLoaderClass(),
-                    $file
-                );
-            }
-
             if (!isset($this->arguments['testsuite']) && $phpunitConfiguration->hasDefaultTestSuite()) {
                 $this->arguments['testsuite'] = $phpunitConfiguration->defaultTestSuite();
             }
@@ -405,69 +390,6 @@ class Command
 
             exit(TestRunner::EXCEPTION_EXIT);
         }
-    }
-
-    /**
-     * Handles the loading of the PHPUnit\Runner\TestSuiteLoader implementation.
-     *
-     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
-     */
-    protected function handleLoader(string $loaderClass, string $loaderFile = ''): ?TestSuiteLoader
-    {
-        $this->warnings[] = 'Using a custom test suite loader is deprecated';
-
-        if (!class_exists($loaderClass, false)) {
-            if ($loaderFile == '') {
-                $loaderFile = Filesystem::classNameToFilename(
-                    $loaderClass
-                );
-            }
-
-            $loaderFile = stream_resolve_include_path($loaderFile);
-
-            if ($loaderFile) {
-                /**
-                 * @noinspection PhpIncludeInspection
-                 * @psalm-suppress UnresolvableInclude
-                 */
-                require $loaderFile;
-            }
-        }
-
-        if (class_exists($loaderClass, false)) {
-            try {
-                $class = new ReflectionClass($loaderClass);
-                // @codeCoverageIgnoreStart
-            } catch (\ReflectionException $e) {
-                throw new ReflectionException(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-            // @codeCoverageIgnoreEnd
-
-            if ($class->implementsInterface(TestSuiteLoader::class) && $class->isInstantiable()) {
-                $object = $class->newInstance();
-
-                assert($object instanceof TestSuiteLoader);
-
-                return $object;
-            }
-        }
-
-        if ($loaderClass == StandardTestSuiteLoader::class) {
-            return null;
-        }
-
-        $this->exitWithErrorMessage(
-            sprintf(
-                'Could not use "%s" as loader.',
-                $loaderClass
-            )
-        );
-
-        return null;
     }
 
     /**

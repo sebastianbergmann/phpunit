@@ -71,7 +71,6 @@ final class Builder
         'list-suites',
         'list-tests',
         'list-tests-xml=',
-        'loader=',
         'log-junit=',
         'log-teamcity=',
         'migrate-configuration',
@@ -193,7 +192,6 @@ final class Builder
         $listSuites                                 = null;
         $listTests                                  = null;
         $listTestsXml                               = null;
-        $loader                                     = null;
         $noCoverage                                 = null;
         $noExtensions                               = null;
         $noInteraction                              = null;
@@ -426,11 +424,6 @@ final class Builder
 
                 case '--printer':
                     $printer = $option[1];
-
-                    break;
-
-                case '--loader':
-                    $loader = $option[1];
 
                     break;
 
@@ -836,7 +829,6 @@ final class Builder
             $listSuites,
             $listTests,
             $listTestsXml,
-            $loader,
             $noCoverage,
             $noExtensions,
             $noInteraction,

@@ -25,7 +25,6 @@ final class Mapper
             'listSuites'              => false,
             'listTests'               => false,
             'listTestsXml'            => false,
-            'loader'                  => null,
             'useDefaultConfiguration' => true,
             'loadedExtensions'        => [],
             'unavailableExtensions'   => [],
@@ -162,10 +161,6 @@ final class Mapper
 
         if ($arguments->hasPrinter()) {
             $result['printer'] = $arguments->printer();
-        }
-
-        if ($arguments->hasLoader()) {
-            $result['loader'] = $arguments->loader();
         }
 
         if ($arguments->hasJunitLogfile()) {

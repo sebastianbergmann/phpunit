@@ -25,7 +25,6 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
@@ -130,7 +129,6 @@ final class XmlConfigurationTest extends TestCase
             'failOnWarning'                                   => ['failOnWarning', 'true', true],
             'failOnRisky'                                     => ['failOnRisky', 'true', true],
             'processIsolation'                                => ['processIsolation', 'true', true],
-            'testSuiteLoaderFile absolute path'               => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
             'reverseDefectList'                               => ['reverseDefectList', 'true', true],
             'registerMockObjectsFromTestArgumentsRecursively' => ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
         ];
@@ -562,7 +560,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertFalse($phpunit->enforceTimeLimit());
         $this->assertSame('/tmp', $phpunit->extensionsDirectory());
         $this->assertSame(DefaultResultPrinter::class, $phpunit->printerClass());
-        $this->assertSame(StandardTestSuiteLoader::class, $phpunit->testSuiteLoaderClass());
         $this->assertSame('My Test Suite', $phpunit->defaultTestSuite());
         $this->assertFalse($phpunit->verbose());
         $this->assertSame(1, $phpunit->timeoutForSmallTests());
