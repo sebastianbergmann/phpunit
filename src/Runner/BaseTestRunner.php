@@ -69,14 +69,6 @@ abstract class BaseTestRunner
     public const SUITE_METHODNAME = 'suite';
 
     /**
-     * Returns the loader to be used.
-     */
-    public function getLoader(): TestSuiteLoader
-    {
-        return new StandardTestSuiteLoader;
-    }
-
-    /**
      * Returns the Test corresponding to the given suite.
      * This is a template method, subclasses override
      * the runFailed() and clearStatus() methods.
@@ -140,10 +132,12 @@ abstract class BaseTestRunner
 
     /**
      * Returns the loaded ReflectionClass for a suite name.
+     *
+     * @throws \PHPUnit\Runner\Exception
      */
     protected function loadSuiteClass(string $suiteClassFile): ReflectionClass
     {
-        return $this->getLoader()->load($suiteClassFile);
+        return (new StandardTestSuiteLoader)->load($suiteClassFile);
     }
 
     /**

@@ -1014,12 +1014,6 @@ final class Loader
             $extensionsDirectory = $this->toAbsolutePath($filename, $extensionsDirectory);
         }
 
-        $testSuiteLoaderFile = $this->getStringAttribute($document->documentElement, 'testSuiteLoaderFile');
-
-        if ($testSuiteLoaderFile !== null) {
-            $testSuiteLoaderFile = $this->toAbsolutePath($filename, $testSuiteLoaderFile);
-        }
-
         $printerFile = $this->getStringAttribute($document->documentElement, 'printerFile');
 
         if ($printerFile !== null) {
@@ -1055,8 +1049,6 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'stopOnRisky', false),
             $this->getBooleanAttribute($document->documentElement, 'stopOnSkipped', false),
             $extensionsDirectory,
-            $this->getStringAttribute($document->documentElement, 'testSuiteLoaderClass'),
-            $testSuiteLoaderFile,
             $printerClass,
             $printerFile,
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutChangesToGlobalState', false),

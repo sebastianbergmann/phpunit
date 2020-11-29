@@ -157,20 +157,6 @@ final class PHPUnit
 
     /**
      * @var ?string
-     *
-     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
-     */
-    private $testSuiteLoaderClass;
-
-    /**
-     * @var ?string
-     *
-     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
-     */
-    private $testSuiteLoaderFile;
-
-    /**
-     * @var ?string
      */
     private $printerClass;
 
@@ -274,7 +260,7 @@ final class PHPUnit
      */
     private $conflictBetweenPrinterClassAndTestdox;
 
-    public function __construct(bool $cacheResult, ?string $cacheResultFile, $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, ?string $testSuiteLoaderClass, ?string $testSuiteLoaderFile, ?string $printerClass, ?string $printerFile, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutResourceUsageDuringSmallTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutTodoAnnotatedTests, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticAttributes, bool $registerMockObjectsFromTestArgumentsRecursively, bool $conflictBetweenPrinterClassAndTestdox)
+    public function __construct(bool $cacheResult, ?string $cacheResultFile, $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, ?string $printerClass, ?string $printerFile, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutResourceUsageDuringSmallTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutTodoAnnotatedTests, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticAttributes, bool $registerMockObjectsFromTestArgumentsRecursively, bool $conflictBetweenPrinterClassAndTestdox)
     {
         $this->cacheResult                                     = $cacheResult;
         $this->cacheResultFile                                 = $cacheResultFile;
@@ -304,8 +290,6 @@ final class PHPUnit
         $this->stopOnRisky                                     = $stopOnRisky;
         $this->stopOnSkipped                                   = $stopOnSkipped;
         $this->extensionsDirectory                             = $extensionsDirectory;
-        $this->testSuiteLoaderClass                            = $testSuiteLoaderClass;
-        $this->testSuiteLoaderFile                             = $testSuiteLoaderFile;
         $this->printerClass                                    = $printerClass;
         $this->printerFile                                     = $printerFile;
         $this->beStrictAboutChangesToGlobalState               = $beStrictAboutChangesToGlobalState;
@@ -512,54 +496,6 @@ final class PHPUnit
         }
 
         return (string) $this->extensionsDirectory;
-    }
-
-    /**
-     * @psalm-assert-if-true !null $this->testSuiteLoaderClass
-     *
-     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
-     */
-    public function hasTestSuiteLoaderClass(): bool
-    {
-        return $this->testSuiteLoaderClass !== null;
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
-     */
-    public function testSuiteLoaderClass(): string
-    {
-        if (!$this->hasTestSuiteLoaderClass()) {
-            throw new Exception('TestSuiteLoader class is not configured');
-        }
-
-        return (string) $this->testSuiteLoaderClass;
-    }
-
-    /**
-     * @psalm-assert-if-true !null $this->testSuiteLoaderFile
-     *
-     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
-     */
-    public function hasTestSuiteLoaderFile(): bool
-    {
-        return $this->testSuiteLoaderFile !== null;
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
-     */
-    public function testSuiteLoaderFile(): string
-    {
-        if (!$this->hasTestSuiteLoaderFile()) {
-            throw new Exception('TestSuiteLoader sourcecode file is not configured');
-        }
-
-        return (string) $this->testSuiteLoaderFile;
     }
 
     /**
