@@ -2,7 +2,11 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [8.5.12] - 2020-MM-DD
+## [8.5.12] - 2020-11-30
+
+### Changed
+
+* Changed PHP version constraint in `composer.json` from `^7.2` to `>=7.2` to allow the installation of PHPUnit 8.5 on PHP 8. Please note that the code coverage functionality is not available for PHPUnit 8.5 on PHP 8.
 
 ### Fixed
 
@@ -106,7 +110,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
-[8.5.12]: https://github.com/sebastianbergmann/phpunit/compare/8.5.11...8.5
+[8.5.12]: https://github.com/sebastianbergmann/phpunit/compare/8.5.11...8.5.12
 [8.5.11]: https://github.com/sebastianbergmann/phpunit/compare/8.5.10...8.5.11
 [8.5.10]: https://github.com/sebastianbergmann/phpunit/compare/8.5.9...8.5.10
 [8.5.9]: https://github.com/sebastianbergmann/phpunit/compare/8.5.8...8.5.9
