@@ -451,7 +451,7 @@ final class TestRunner extends BaseTestRunner
             $codeCoverageReports = 0;
         }
 
-        if ($codeCoverageReports > 0 && !$this->runtime->canCollectCodeCoverage()) {
+        if ($codeCoverageReports > 0 && \PHP_MAJOR_VERSION < 8 && !$this->runtime->canCollectCodeCoverage()) {
             $this->writeMessage('Error', 'No code coverage driver is available');
 
             $codeCoverageReports = 0;
