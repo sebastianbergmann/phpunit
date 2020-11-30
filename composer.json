@@ -21,7 +21,7 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": "^7.2",
+        "php": ">=7.2",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-libxml": "*",

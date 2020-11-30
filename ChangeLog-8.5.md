@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ## [8.5.12] - 2020-MM-DD
 
+### Changed
+
+* Changed PHP version constraint in `composer.json` from `^7.2` to `>=7.2`
+
 ### Fixed
 
 * [#4529](https://github.com/sebastianbergmann/phpunit/issues/4529): Debug mode of Xdebug 2 is not disabled for PHPT tests
