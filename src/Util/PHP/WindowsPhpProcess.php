@@ -20,7 +20,7 @@ final class WindowsPhpProcess extends DefaultPhpProcess
 {
     public function getCommand(array $settings, string $file = null): string
     {
-        if (PHP_MAJOR_VERSION < 8) {
+        if (\PHP_MAJOR_VERSION < 8) {
             return '"' . parent::getCommand($settings, $file) . '"';
         }
 
