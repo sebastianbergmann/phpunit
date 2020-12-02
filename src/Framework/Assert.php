@@ -2251,6 +2251,27 @@ abstract class Assert
         static::assertNotEquals($expected, $actual, $message);
     }
 
+    public static function assertDOMTreesEqualStructurally(DOMElement $expectedElement, DOMElement $actualElement, bool $keepComments = false, string $message = ''): void
+    {
+        $ed = new DOMDocument();
+        $ed->appendChild($ed->importNode($expectedElement, true));
+        $xmlStr = $ed->C14N(false, $keepComments);
+
+        $ed->preserveWhiteSpace = false;
+        $ed->loadXML($xmlStr);
+        $ed->formatOutput = true;
+
+        $ad = new DOMDocument();
+        $ad->appendChild($ad->importNode($actualElement, true));
+        $xmlStr = $ad->C14N(false, $keepComments);
+
+        $ad->preserveWhiteSpace = false;
+        $ad->loadXML($xmlStr);
+        $ad->formatOutput = true;
+
+        self::assertEquals($ed->documentElement, $ad->documentElement, $message);
+    }
+
     /**
      * Asserts that a hierarchy of DOMElements matches.
      *
