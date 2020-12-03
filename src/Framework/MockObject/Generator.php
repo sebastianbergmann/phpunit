@@ -405,7 +405,13 @@ final class Generator
                 );
 
                 foreach (\range(0, \count($args) - 1) as $i) {
-                    $args[$i] = \substr($args[$i], \strpos($args[$i], '$'));
+                    $parameterStart = \strpos($args[$i], '$');
+
+                    if (!$parameterStart) {
+                        continue;
+                    }
+
+                    $args[$i] = \substr($args[$i], $parameterStart);
                 }
 
                 $methodTemplate->setVar(
