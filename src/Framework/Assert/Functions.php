@@ -996,27 +996,6 @@ if (!function_exists('PHPUnit\Framework\assertFileIsNotWritable')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertFileNotIsWritable')) {
-    /**
-     * Asserts that a file exists and is not writable.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4083
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertFileNotIsWritable
-     */
-    function assertFileNotIsWritable(string $file, string $message = ''): void
-    {
-        Assert::assertFileNotIsWritable(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\assertTrue')) {
     /**
      * Asserts that a condition is true.

@@ -22,5 +22,6 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4274](https://github.com/sebastianbergmann/phpunit/issues/4274): Remove `PHPUnit\Framework\TestCase::$backupStaticAttributesBlacklist`
 * [#4278](https://github.com/sebastianbergmann/phpunit/issues/4278): Remove `--whitelist` option
 * [#4298](https://github.com/sebastianbergmann/phpunit/issues/4298): Remove `at()` matcher
+* [#4536](https://github.com/sebastianbergmann/phpunit/issues/4536): Remove `assertFileNotIsWritable()`
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master
