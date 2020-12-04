@@ -1,16 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.2.1@ea9cb72143b77e7520c52fa37290bd8d8bc88fd9">
   <file src="src/Framework/Assert.php">
-    <ArgumentTypeCoercion occurrences="2">
-      <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
-      <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
-    </ArgumentTypeCoercion>
-    <DeprecatedMethod occurrences="5">
-      <code>Xml::import($actualElement)</code>
-      <code>Xml::import($expectedElement)</code>
-      <code>Xml::removeCharacterDataNodes($actualElement)</code>
-      <code>Xml::removeCharacterDataNodes($expectedElement)</code>
-    </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="16">
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
@@ -157,23 +147,6 @@
     </RedundantCondition>
   </file>
   <file src="src/Framework/Assert/Functions.php">
-    <DeprecatedClass occurrences="2">
-      <code>InvokedAtIndexMatcher</code>
-      <code>new InvokedAtIndexMatcher($index)</code>
-    </DeprecatedClass>
-    <DeprecatedMethod occurrences="11">
-      <code>Assert::assertDirectoryNotExists(...func_get_args())</code>
-      <code>Assert::assertDirectoryNotIsReadable(...func_get_args())</code>
-      <code>Assert::assertDirectoryNotIsWritable(...func_get_args())</code>
-      <code>Assert::assertEqualXMLStructure(...func_get_args())</code>
-      <code>Assert::assertFileNotExists(...func_get_args())</code>
-      <code>Assert::assertFileNotIsReadable(...func_get_args())</code>
-      <code>Assert::assertFileNotIsWritable(...func_get_args())</code>
-      <code>Assert::assertNotIsReadable(...func_get_args())</code>
-      <code>Assert::assertNotIsWritable(...func_get_args())</code>
-      <code>Assert::assertNotRegExp(...func_get_args())</code>
-      <code>Assert::assertRegExp(...func_get_args())</code>
-    </DeprecatedMethod>
     <MissingParamType occurrences="85">
       <code>$actual</code>
       <code>$actual</code>
@@ -468,9 +441,6 @@
     <MissingReturnType occurrences="1">
       <code>getObject</code>
     </MissingReturnType>
-    <PossiblyFalseArgument occurrences="1">
-      <code>strpos($args[$i], '$')</code>
-    </PossiblyFalseArgument>
   </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingReturnType occurrences="1">
@@ -646,17 +616,12 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$this-&gt;expectedException</code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="2">
-      <code>InvokedAtIndexMatcher</code>
-      <code>new InvokedAtIndexMatcher($index)</code>
-    </DeprecatedClass>
     <DeprecatedMethod occurrences="1">
       <code>setMethods</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="6">
+    <DocblockTypeContradiction occurrences="5">
       <code>$this-&gt;backupStaticAttributes === null</code>
       <code>$this-&gt;mockObjectGenerator === null</code>
-      <code>$this-&gt;prophet === null</code>
       <code>$this-&gt;runClassInSeparateProcess === null</code>
       <code>$this-&gt;runTestInSeparateProcess === null</code>
       <code>$this-&gt;snapshot instanceof Snapshot</code>
@@ -664,7 +629,6 @@
     <InvalidArgument occurrences="1">
       <code>$header</code>
     </InvalidArgument>
-    <InvalidCatch occurrences="1"/>
     <InvalidReturnStatement occurrences="2">
       <code>$mockObject</code>
       <code>get_class($mock)</code>
@@ -705,26 +669,23 @@
       <code>null</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PropertyNotSetInConstructor occurrences="10">
+    <PropertyNotSetInConstructor occurrences="9">
       <code>$backupStaticAttributes</code>
       <code>$mockObjectGenerator</code>
       <code>$outputBufferingLevel</code>
       <code>$outputExpectedRegex</code>
       <code>$outputExpectedString</code>
-      <code>$prophet</code>
       <code>$result</code>
       <code>$runClassInSeparateProcess</code>
       <code>$runTestInSeparateProcess</code>
       <code>$snapshot</code>
     </PropertyNotSetInConstructor>
-    <RawObjectIteration occurrences="1">
-      <code>$methodProphecies</code>
-    </RawObjectIteration>
     <RedundantCondition occurrences="1">
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
-    <RedundantConditionGivenDocblockType occurrences="3">
-      <code>$this-&gt;prophet !== null</code>
+    <RedundantConditionGivenDocblockType occurrences="4">
+      <code>$this-&gt;outputExpectedRegex !== null</code>
+      <code>$this-&gt;outputExpectedString !== null</code>
       <code>is_string($this-&gt;outputExpectedRegex)</code>
       <code>is_string($this-&gt;outputExpectedString)</code>
     </RedundantConditionGivenDocblockType>
@@ -1067,9 +1028,6 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/Loader.php">
-    <DeprecatedMethod occurrences="1">
-      <code>legacyCodeCoverage</code>
-    </DeprecatedMethod>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
