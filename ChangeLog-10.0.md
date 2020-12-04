@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ## [10.0.0] - 2021-02-05
 
+### Changed
+
+* [#3871](https://github.com/sebastianbergmann/phpunit/issues/3871): Declare return types for `InvocationStubber` methods
+
 ### Removed
 
 * [#3870](https://github.com/sebastianbergmann/phpunit/issues/3870): Drop support for PHP 7.3
