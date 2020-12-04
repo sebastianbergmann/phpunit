@@ -760,27 +760,6 @@ if (!function_exists('PHPUnit\Framework\assertIsNotReadable')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertNotIsReadable')) {
-    /**
-     * Asserts that a file/dir exists and is not readable.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4062
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertNotIsReadable
-     */
-    function assertNotIsReadable(string $filename, string $message = ''): void
-    {
-        Assert::assertNotIsReadable(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\assertIsWritable')) {
     /**
      * Asserts that a file/dir exists and is writable.

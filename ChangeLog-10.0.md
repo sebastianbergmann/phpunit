@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ### Removed
 
+* [#4063](https://github.com/sebastianbergmann/phpunit/issues/4063): Remove `assertNotIsReadable()`
 * [#4142](https://github.com/sebastianbergmann/phpunit/issues/4142): Remove Prophecy integration
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master
