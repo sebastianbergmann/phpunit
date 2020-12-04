@@ -930,27 +930,6 @@ if (!function_exists('PHPUnit\Framework\assertFileDoesNotExist')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertFileNotExists')) {
-    /**
-     * Asserts that a file does not exist.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4077
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertFileNotExists
-     */
-    function assertFileNotExists(string $filename, string $message = ''): void
-    {
-        Assert::assertFileNotExists(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\assertFileIsReadable')) {
     /**
      * Asserts that a file exists and is readable.
