@@ -11,4 +11,8 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 * [#4492](https://github.com/sebastianbergmann/phpunit/issues/4492): Emit Error instead of Warning when test double configuration is invalid
 * [#4493](https://github.com/sebastianbergmann/phpunit/issues/4493): Emit error when (configured) test directory does not exist
 
-[9.5.0]: https://github.com/sebastianbergmann/phpunit/compare/9.4...master
+### Fixed
+
+* [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
+
+[9.5.0]: https://github.com/sebastianbergmann/phpunit/compare/9.4.4...9.5.0
