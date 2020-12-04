@@ -828,27 +828,6 @@ if (!function_exists('PHPUnit\Framework\assertDirectoryDoesNotExist')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertDirectoryNotExists')) {
-    /**
-     * Asserts that a directory does not exist.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4068
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertDirectoryNotExists
-     */
-    function assertDirectoryNotExists(string $directory, string $message = ''): void
-    {
-        Assert::assertDirectoryNotExists(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\assertDirectoryIsReadable')) {
     /**
      * Asserts that a directory exists and is readable.
