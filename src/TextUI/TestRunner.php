@@ -18,7 +18,6 @@ use function assert;
 use function class_exists;
 use function count;
 use function dirname;
-use function file_put_contents;
 use function htmlspecialchars;
 use function is_array;
 use function is_int;
@@ -53,7 +52,6 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
@@ -61,7 +59,6 @@ use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use PHPUnit\Util\TestDox\HtmlResultPrinter;
 use PHPUnit\Util\TestDox\TextResultPrinter;
 use PHPUnit\Util\TestDox\XmlResultPrinter;
-use PHPUnit\Util\XdebugFilterScriptGenerator;
 use PHPUnit\Util\Xml\SchemaDetector;
 use ReflectionClass;
 use ReflectionException;
@@ -414,7 +411,7 @@ final class TestRunner extends BaseTestRunner
             $codeCoverageReports++;
         }
 
-        if ($codeCoverageReports > 0 || isset($arguments['xdebugFilterFile'])) {
+        if ($codeCoverageReports > 0) {
             if (isset($arguments['coverageFilter'])) {
                 if (!is_array($arguments['coverageFilter'])) {
                     $coverageFilterDirectories = [$arguments['coverageFilter']];
@@ -598,24 +595,6 @@ final class TestRunner extends BaseTestRunner
                     $this->write("\n  Test results may not be as expected.\n\n");
                 }
             }
-        }
-
-        if (isset($arguments['xdebugFilterFile'], $codeCoverageConfiguration)) {
-            $this->write(PHP_EOL . 'Please note that --dump-xdebug-filter and --prepend are deprecated and will be removed in PHPUnit 10.' . PHP_EOL);
-
-            $script = (new XdebugFilterScriptGenerator)->generate($codeCoverageConfiguration);
-
-            if ($arguments['xdebugFilterFile'] !== 'php://stdout' && $arguments['xdebugFilterFile'] !== 'php://stderr' && !Filesystem::createDirectory(dirname($arguments['xdebugFilterFile']))) {
-                $this->write(sprintf('Cannot write Xdebug filter script to %s ' . PHP_EOL, $arguments['xdebugFilterFile']));
-
-                exit(self::EXCEPTION_EXIT);
-            }
-
-            file_put_contents($arguments['xdebugFilterFile'], $script);
-
-            $this->write(sprintf('Wrote Xdebug filter script to %s ' . PHP_EOL . PHP_EOL, $arguments['xdebugFilterFile']));
-
-            exit(self::SUCCESS_EXIT);
         }
 
         $this->printer->write("\n");

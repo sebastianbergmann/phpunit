@@ -356,10 +356,6 @@ final class Mapper
             $result['randomOrderSeed'] = $arguments->randomOrderSeed();
         }
 
-        if ($arguments->hasXdebugFilterFile()) {
-            $result['xdebugFilterFile'] = $arguments->xdebugFilterFile();
-        }
-
         return $result;
     }
 }

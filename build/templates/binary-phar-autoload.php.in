@@ -21,11 +21,7 @@ if (__FILE__ === realpath($_SERVER['SCRIPT_NAME'])) {
     $execute = false;
 }
 
-$options = getopt('', array('prepend:', 'manifest'));
-
-if (isset($options['prepend'])) {
-    require $options['prepend'];
-}
+$options = getopt('', array('manifest'));
 
 if (isset($options['manifest'])) {
     $printManifest = true;

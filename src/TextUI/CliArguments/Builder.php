@@ -30,7 +30,6 @@ final class Builder
 {
     private const LONG_OPTIONS = [
         'atleast-version=',
-        'prepend=',
         'bootstrap=',
         'cache-result',
         'do-not-cache-result',
@@ -118,7 +117,6 @@ final class Builder
         'testsuite=',
         'verbose',
         'version',
-        'dump-xdebug-filter=',
     ];
 
     private const SHORT_OPTIONS = 'd:c:hv';
@@ -229,7 +227,6 @@ final class Builder
         $useDefaultConfiguration                    = null;
         $verbose                                    = null;
         $version                                    = null;
-        $xdebugFilterFile                           = null;
 
         if (isset($options[1][0])) {
             $argument = $options[1][0];
@@ -762,11 +759,6 @@ final class Builder
 
                     break;
 
-                case '--dump-xdebug-filter':
-                    $xdebugFilterFile = $option[1];
-
-                    break;
-
                 default:
                     $unrecognizedOptions[str_replace('--', '', $option[0])] = $option[1];
             }
@@ -878,8 +870,7 @@ final class Builder
             $useDefaultConfiguration,
             $verbose,
             $version,
-            $coverageFilter,
-            $xdebugFilterFile
+            $coverageFilter
         );
     }
 }

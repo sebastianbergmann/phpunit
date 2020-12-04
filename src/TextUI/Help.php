@@ -125,7 +125,6 @@ final class Help
         ],
 
         'Configuration Options' => [
-            ['arg' => '--prepend <file>', 'desc' => 'A PHP script that is included as early as possible'],
             ['arg' => '--bootstrap <file>', 'desc' => 'A PHP script that is included before the tests run'],
             ['arg' => '-c|--configuration <file>', 'desc' => 'Read configuration from XML file'],
             ['arg' => '--no-configuration', 'desc' => 'Ignore default configuration file (phpunit.xml)'],

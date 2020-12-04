@@ -947,12 +947,11 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedClass occurrences="5">
+    <DeprecatedClass occurrences="4">
       <code>TestSuiteLoader</code>
       <code>TestSuiteLoader</code>
       <code>TestSuiteLoader</code>
       <code>new StandardTestSuiteLoader</code>
-      <code>new XdebugFilterScriptGenerator</code>
     </DeprecatedClass>
     <DeprecatedMethod occurrences="10">
       <code>addListener</code>
@@ -998,9 +997,7 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$printer</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="3">
-      <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
-      <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
+    <RedundantCondition occurrences="1">
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType occurrences="1">

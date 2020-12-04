@@ -115,8 +115,6 @@
   [32m--do-not-cache-result      [0m Do not write test results to cache file
 
 [33mConfiguration Options:[0m
-  [32m--prepend [36m<file>[0m           [0m A PHP script that is included as early as
-                              possible
   [32m--bootstrap [36m<file>[0m         [0m A PHP script that is included before the
                               tests run
   [32m-c|--configuration [36m<file>[0m  [0m Read configuration from XML file
