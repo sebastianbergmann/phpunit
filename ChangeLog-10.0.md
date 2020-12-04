@@ -21,6 +21,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4273](https://github.com/sebastianbergmann/phpunit/issues/4273): Remove `PHPUnit\Framework\TestCase::$backupGlobalsBlacklist`
 * [#4274](https://github.com/sebastianbergmann/phpunit/issues/4274): Remove `PHPUnit\Framework\TestCase::$backupStaticAttributesBlacklist`
 * [#4278](https://github.com/sebastianbergmann/phpunit/issues/4278): Remove `--whitelist` option
+* [#4279](https://github.com/sebastianbergmann/phpunit/issues/4279): Remove support for old code coverage configuration
 * [#4286](https://github.com/sebastianbergmann/phpunit/issues/4286): Remove support for old logging configuration
 * [#4298](https://github.com/sebastianbergmann/phpunit/issues/4298): Remove `at()` matcher
 * [#4395](https://github.com/sebastianbergmann/phpunit/issues/4395): Remove `Remove Command::createRunner()`

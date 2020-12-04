@@ -216,67 +216,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->xml()->target()->path());
     }
 
-    public function testLegacyCodeCoverageConfigurationIsReadCorrectly(): void
-    {
-        $codeCoverage = $this->configuration('configuration_legacy_codecoverage.xml')->codeCoverage();
-
-        $this->assertTrue($codeCoverage->includeUncoveredFiles());
-        $this->assertTrue($codeCoverage->processUncoveredFiles());
-        $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
-        $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
-
-        /** @var Directory $directory */
-        $directory = iterator_to_array($codeCoverage->directories(), false)[0];
-        $this->assertSame('/path/to/files', $directory->path());
-        $this->assertSame('', $directory->prefix());
-        $this->assertSame('.php', $directory->suffix());
-        $this->assertSame('DEFAULT', $directory->group());
-
-        /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[0];
-        $this->assertSame('/path/to/file', $file->path());
-
-        /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[1];
-        $this->assertSame('/path/to/file', $file->path());
-
-        /** @var Directory $directory */
-        $directory = iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
-        $this->assertSame('/path/to/files', $directory->path());
-        $this->assertSame('', $directory->prefix());
-        $this->assertSame('.php', $directory->suffix());
-        $this->assertSame('DEFAULT', $directory->group());
-
-        /** @var File $file */
-        $file = iterator_to_array($codeCoverage->excludeFiles(), false)[0];
-        $this->assertSame('/path/to/file', $file->path());
-
-        $this->assertTrue($codeCoverage->hasClover());
-        $this->assertSame(TEST_FILES_PATH . 'clover.xml', $codeCoverage->clover()->target()->path());
-
-        $this->assertTrue($codeCoverage->hasCobertura());
-        $this->assertSame(TEST_FILES_PATH . 'cobertura.xml', $codeCoverage->cobertura()->target()->path());
-
-        $this->assertTrue($codeCoverage->hasCrap4j());
-        $this->assertSame(TEST_FILES_PATH . 'crap4j.xml', $codeCoverage->crap4j()->target()->path());
-
-        $this->assertTrue($codeCoverage->hasHtml());
-        $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->html()->target()->path());
-        $this->assertSame(50, $codeCoverage->html()->lowUpperBound());
-        $this->assertSame(90, $codeCoverage->html()->highLowerBound());
-
-        $this->assertTrue($codeCoverage->hasPhp());
-        $this->assertSame(TEST_FILES_PATH . 'coverage.php', $codeCoverage->php()->target()->path());
-
-        $this->assertTrue($codeCoverage->hasText());
-        $this->assertSame(TEST_FILES_PATH . 'coverage.txt', $codeCoverage->text()->target()->path());
-        $this->assertFalse($codeCoverage->text()->showUncoveredFiles());
-        $this->assertTrue($codeCoverage->text()->showOnlySummary());
-
-        $this->assertTrue($codeCoverage->hasXml());
-        $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->xml()->target()->path());
-    }
-
     public function testGroupConfigurationIsReadCorrectly(): void
     {
         $groups = $this->configuration('configuration.xml')->groups();
