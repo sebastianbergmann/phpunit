@@ -818,24 +818,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a directory exists and is not readable.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4071
-     */
-    public static function assertDirectoryNotIsReadable(string $directory, string $message = ''): void
-    {
-        self::createWarning('assertDirectoryNotIsReadable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertDirectoryIsNotReadable() instead.');
-
-        self::assertDirectoryExists($directory, $message);
-        self::assertIsNotReadable($directory, $message);
-    }
-
-    /**
      * Asserts that a directory exists and is writable.
      *
      * @throws ExpectationFailedException
