@@ -127,13 +127,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected $backupGlobalsExcludeList = [];
 
     /**
-     * @var string[]
-     *
-     * @deprecated Use $backupGlobalsExcludeList instead
-     */
-    protected $backupGlobalsBlacklist = [];
-
-    /**
      * @var bool
      */
     protected $backupStaticAttributes;
@@ -2220,14 +2213,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         foreach ($this->backupGlobalsExcludeList as $globalVariable) {
             $excludeList->addGlobalVariable($globalVariable);
-        }
-
-        if (!empty($this->backupGlobalsBlacklist)) {
-            $this->addWarning('PHPUnit\Framework\TestCase::$backupGlobalsBlacklist is deprecated and will be removed in PHPUnit 10. Please use PHPUnit\Framework\TestCase::$backupGlobalsExcludeList instead.');
-
-            foreach ($this->backupGlobalsBlacklist as $globalVariable) {
-                $excludeList->addGlobalVariable($globalVariable);
-            }
         }
 
         if (!defined('PHPUNIT_TESTSUITE')) {
