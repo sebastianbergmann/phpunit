@@ -22,7 +22,6 @@ use function array_filter;
 use function array_flip;
 use function array_keys;
 use function array_merge;
-use function array_pop;
 use function array_search;
 use function array_unique;
 use function array_values;
@@ -32,7 +31,6 @@ use function chdir;
 use function class_exists;
 use function clearstatcache;
 use function count;
-use function debug_backtrace;
 use function defined;
 use function explode;
 use function get_class;
@@ -75,7 +73,6 @@ use PHPUnit\Framework\MockObject\Generator as MockGenerator;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
-use PHPUnit\Framework\MockObject\Rule\InvokedAtIndex as InvokedAtIndexMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount as InvokedAtMostCountMatcher;
@@ -386,32 +383,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public static function atMost(int $allowedInvocations): InvokedAtMostCountMatcher
     {
         return new InvokedAtMostCountMatcher($allowedInvocations);
-    }
-
-    /**
-     * Returns a matcher that matches when the method is executed
-     * at the given index.
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4297
-     * @codeCoverageIgnore
-     */
-    public static function at(int $index): InvokedAtIndexMatcher
-    {
-        $stack = debug_backtrace();
-
-        while (!empty($stack)) {
-            $frame = array_pop($stack);
-
-            if (isset($frame['object']) && $frame['object'] instanceof self) {
-                $frame['object']->addWarning(
-                    'The at() matcher has been deprecated. It will be removed in PHPUnit 10. Please refactor your test to not rely on the order in which methods are invoked.'
-                );
-
-                break;
-            }
-        }
-
-        return new InvokedAtIndexMatcher($index);
     }
 
     public static function returnValue($value): ReturnStub

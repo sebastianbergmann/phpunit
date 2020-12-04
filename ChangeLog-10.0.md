@@ -21,5 +21,6 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4273](https://github.com/sebastianbergmann/phpunit/issues/4273): Remove `PHPUnit\Framework\TestCase::$backupGlobalsBlacklist`
 * [#4274](https://github.com/sebastianbergmann/phpunit/issues/4274): Remove `PHPUnit\Framework\TestCase::$backupStaticAttributesBlacklist`
 * [#4278](https://github.com/sebastianbergmann/phpunit/issues/4278): Remove `--whitelist` option
+* [#4298](https://github.com/sebastianbergmann/phpunit/issues/4298): Remove `at()` matcher
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master

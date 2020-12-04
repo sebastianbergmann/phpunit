@@ -56,7 +56,6 @@ use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
-use PHPUnit\Framework\MockObject\Rule\InvokedAtIndex as InvokedAtIndexMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount as InvokedAtMostCountMatcher;
@@ -2752,17 +2751,6 @@ if (!function_exists('PHPUnit\Framework\atMost')) {
     function atMost(int $allowedInvocations): InvokedAtMostCountMatcher
     {
         return new InvokedAtMostCountMatcher($allowedInvocations);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\at')) {
-    /**
-     * Returns a matcher that matches when the method is executed
-     * at the given index.
-     */
-    function at(int $index): InvokedAtIndexMatcher
-    {
-        return new InvokedAtIndexMatcher($index);
     }
 }
 
