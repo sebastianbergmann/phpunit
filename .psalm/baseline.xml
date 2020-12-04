@@ -785,8 +785,7 @@
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Runner/BaseTestRunner.php">
-    <DeprecatedClass occurrences="2">
-      <code>TestSuiteLoader</code>
+    <DeprecatedClass occurrences="1">
       <code>new StandardTestSuiteLoader</code>
     </DeprecatedClass>
   </file>
@@ -872,22 +871,10 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$printerClass</code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="2">
-      <code>?TestSuiteLoader</code>
-      <code>StandardTestSuiteLoader::class</code>
-    </DeprecatedClass>
-    <DeprecatedMethod occurrences="6">
-      <code>handleLoader</code>
-      <code>handleLoader</code>
-      <code>hasTestSuiteLoaderClass</code>
-      <code>hasTestSuiteLoaderFile</code>
-      <code>testSuiteLoaderClass</code>
-      <code>testSuiteLoaderFile</code>
-    </DeprecatedMethod>
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="21">
+    <MissingThrowsDocblock occurrences="19">
       <code>argument</code>
       <code>argument</code>
       <code>atLeastVersion</code>
@@ -905,7 +892,6 @@
       <code>mapToLegacyArray</code>
       <code>printerClass</code>
       <code>stop</code>
-      <code>testSuiteLoaderClass</code>
       <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType occurrences="1">
@@ -947,12 +933,6 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedClass occurrences="4">
-      <code>TestSuiteLoader</code>
-      <code>TestSuiteLoader</code>
-      <code>TestSuiteLoader</code>
-      <code>new StandardTestSuiteLoader</code>
-    </DeprecatedClass>
     <DeprecatedMethod occurrences="10">
       <code>addListener</code>
       <code>addListener</code>
@@ -965,8 +945,7 @@
       <code>createTestListenerInstance</code>
       <code>flushListeners</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="2">
-      <code>$this-&gt;loader === null</code>
+    <DocblockTypeContradiction occurrences="1">
       <code>$this-&gt;printer === null</code>
     </DocblockTypeContradiction>
     <InvalidArgument occurrences="6">
@@ -991,9 +970,6 @@
       <code>stop</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
-      <code>$loader</code>
-    </PossiblyNullPropertyAssignmentValue>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$printer</code>
     </PropertyNotSetInConstructor>
@@ -1118,14 +1094,6 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHPUnit/PHPUnit.php">
-    <DeprecatedMethod occurrences="2">
-      <code>hasTestSuiteLoaderClass</code>
-      <code>hasTestSuiteLoaderFile</code>
-    </DeprecatedMethod>
-    <DeprecatedProperty occurrences="2">
-      <code>$this-&gt;testSuiteLoaderClass</code>
-      <code>$this-&gt;testSuiteLoaderFile</code>
-    </DeprecatedProperty>
     <MissingParamType occurrences="1">
       <code>$columns</code>
     </MissingParamType>
