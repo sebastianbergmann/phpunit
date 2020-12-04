@@ -772,23 +772,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a file/dir exists and is not writable.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4065
-     */
-    public static function assertNotIsWritable(string $filename, string $message = ''): void
-    {
-        self::createWarning('assertNotIsWritable() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertIsNotWritable() instead.');
-
-        static::assertThat($filename, new LogicalNot(new IsWritable), $message);
-    }
-
-    /**
      * Asserts that a directory exists.
      *
      * @throws ExpectationFailedException
