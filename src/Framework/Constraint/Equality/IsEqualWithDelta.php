@@ -25,10 +25,7 @@ final class IsEqualWithDelta extends Constraint
      */
     private $value;
 
-    /**
-     * @var float
-     */
-    private $delta;
+    private float $delta;
 
     public function __construct($value, float $delta)
     {

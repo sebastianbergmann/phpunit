@@ -22,12 +22,9 @@ final class ConstantCollectionIterator implements Countable, Iterator
     /**
      * @var Constant[]
      */
-    private $constants;
+    private array $constants;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(ConstantCollection $constants)
     {

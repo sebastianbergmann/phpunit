@@ -21,80 +21,38 @@ use ReflectionClass;
  */
 final class MockBuilder
 {
-    /**
-     * @var TestCase
-     */
-    private $testCase;
+    private TestCase $testCase;
 
     /**
      * @var string
      */
     private $type;
 
-    /**
-     * @var null|string[]
-     */
-    private $methods = [];
+    private ?array $methods = [];
 
-    /**
-     * @var bool
-     */
-    private $emptyMethodsArray = false;
+    private bool $emptyMethodsArray = false;
 
-    /**
-     * @var string
-     */
-    private $mockClassName = '';
+    private string $mockClassName = '';
 
-    /**
-     * @var array
-     */
-    private $constructorArgs = [];
+    private array $constructorArgs = [];
 
-    /**
-     * @var bool
-     */
-    private $originalConstructor = true;
+    private bool $originalConstructor = true;
 
-    /**
-     * @var bool
-     */
-    private $originalClone = true;
+    private bool $originalClone = true;
 
-    /**
-     * @var bool
-     */
-    private $autoload = true;
+    private bool $autoload = true;
 
-    /**
-     * @var bool
-     */
-    private $cloneArguments = false;
+    private bool $cloneArguments = false;
 
-    /**
-     * @var bool
-     */
-    private $callOriginalMethods = false;
+    private bool $callOriginalMethods = false;
 
-    /**
-     * @var ?object
-     */
-    private $proxyTarget;
+    private ?object $proxyTarget = null;
 
-    /**
-     * @var bool
-     */
-    private $allowMockingUnknownTypes = true;
+    private bool $allowMockingUnknownTypes = true;
 
-    /**
-     * @var bool
-     */
-    private $returnValueGeneration = true;
+    private bool $returnValueGeneration = true;
 
-    /**
-     * @var Generator
-     */
-    private $generator;
+    private Generator $generator;
 
     /**
      * @param string|string[] $type

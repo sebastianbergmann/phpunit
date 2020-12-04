@@ -18,10 +18,7 @@ use PHPUnit\Util\RegularExpression as RegularExpressionUtil;
  */
 final class ExceptionMessageRegularExpression extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $expectedMessageRegExp;
+    private string $expectedMessageRegExp;
 
     public function __construct(string $expected)
     {

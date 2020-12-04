@@ -115,10 +115,7 @@ final class IsType extends Constraint
         'iterable'          => true,
     ];
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
     /**
      * @throws \PHPUnit\Framework\Exception

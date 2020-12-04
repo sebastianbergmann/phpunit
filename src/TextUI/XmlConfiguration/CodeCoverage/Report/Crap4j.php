@@ -17,15 +17,9 @@ use PHPUnit\TextUI\XmlConfiguration\File;
  */
 final class Crap4j
 {
-    /**
-     * @var File
-     */
-    private $target;
+    private File $target;
 
-    /**
-     * @var int
-     */
-    private $threshold;
+    private int $threshold;
 
     public function __construct(File $target, int $threshold)
     {

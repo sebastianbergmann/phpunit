@@ -19,10 +19,7 @@ use PHPUnit\Framework\Constraint\Constraint;
  */
 final class MethodNameConstraint extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $methodName;
+    private string $methodName;
 
     public function __construct(string $methodName)
     {

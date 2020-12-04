@@ -15,10 +15,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class Constant
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     /**
      * @var mixed

@@ -18,10 +18,7 @@ use ReflectionException;
  */
 final class IsInstanceOf extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $className;
+    private string $className;
 
     public function __construct(string $className)
     {

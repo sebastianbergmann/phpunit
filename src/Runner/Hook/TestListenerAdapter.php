@@ -25,12 +25,9 @@ final class TestListenerAdapter implements TestListener
     /**
      * @var TestHook[]
      */
-    private $hooks = [];
+    private array $hooks = [];
 
-    /**
-     * @var bool
-     */
-    private $lastTestWasNotSuccessful;
+    private ?bool $lastTestWasNotSuccessful = null;
 
     public function add(TestHook $hook): void
     {

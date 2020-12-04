@@ -21,10 +21,7 @@ use SebastianBergmann\Exporter\Exporter;
  */
 abstract class Constraint implements Countable, SelfDescribing
 {
-    /**
-     * @var ?Exporter
-     */
-    private $exporter;
+    private ?Exporter $exporter = null;
 
     /**
      * Evaluates the constraint for parameter $other.

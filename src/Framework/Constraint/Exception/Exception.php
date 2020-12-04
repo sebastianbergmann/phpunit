@@ -19,10 +19,7 @@ use Throwable;
  */
 final class Exception extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $className;
+    private string $className;
 
     public function __construct(string $className)
     {

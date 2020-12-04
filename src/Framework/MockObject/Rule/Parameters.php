@@ -27,12 +27,9 @@ final class Parameters implements ParametersRule
     /**
      * @var Constraint[]
      */
-    private $parameters = [];
+    private array $parameters = [];
 
-    /**
-     * @var BaseInvocation
-     */
-    private $invocation;
+    private ?BaseInvocation $invocation = null;
 
     /**
      * @var bool|ExpectationFailedException

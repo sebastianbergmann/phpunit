@@ -67,17 +67,14 @@ class Command
     /**
      * @var array<string,mixed>
      */
-    protected $arguments = [];
+    protected array $arguments = [];
 
     /**
      * @var array<string,mixed>
      */
-    protected $longOptions = [];
+    protected array $longOptions = [];
 
-    /**
-     * @var bool
-     */
-    private $versionStringPrinted = false;
+    private bool $versionStringPrinted = false;
 
     /**
      * @psalm-var list<string>

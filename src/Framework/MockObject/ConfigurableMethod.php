@@ -16,15 +16,9 @@ use SebastianBergmann\Type\Type;
  */
 final class ConfigurableMethod
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var Type
-     */
-    private $returnType;
+    private Type $returnType;
 
     public function __construct(string $name, Type $returnType)
     {

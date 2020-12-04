@@ -54,10 +54,8 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
 
     /**
      * Path and filename for result cache file.
-     *
-     * @var string
      */
-    private $cacheFilename;
+    private string $cacheFilename;
 
     /**
      * The list of defective tests.
@@ -69,7 +67,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
      *
      * @var array<string, int>
      */
-    private $defects = [];
+    private array $defects = [];
 
     /**
      * The list of execution duration of suites and tests (in seconds).
@@ -81,7 +79,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
      *
      * @var array<string, float>
      */
-    private $times = [];
+    private array $times = [];
 
     public function __construct(?string $filepath = null)
     {

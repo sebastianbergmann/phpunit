@@ -112,12 +112,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
     /**
      * @var int[]
      */
-    private $nonSuccessfulTestResults = [];
+    private array $nonSuccessfulTestResults = [];
 
-    /**
-     * @var Timer
-     */
-    private $timer;
+    private Timer $timer;
 
     /**
      * @param null|resource|string $out

@@ -21,7 +21,7 @@ final class MockMethodSet
     /**
      * @var MockMethod[]
      */
-    private $methods = [];
+    private array $methods = [];
 
     public function addMethods(MockMethod ...$methods): void
     {

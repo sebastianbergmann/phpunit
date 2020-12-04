@@ -15,15 +15,9 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class IniSetting
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var string
-     */
-    private $value;
+    private string $value;
 
     public function __construct(string $name, string $value)
     {

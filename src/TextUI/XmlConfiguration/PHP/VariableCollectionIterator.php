@@ -22,12 +22,9 @@ final class VariableCollectionIterator implements Countable, Iterator
     /**
      * @var Variable[]
      */
-    private $variables;
+    private array $variables;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(VariableCollection $variables)
     {

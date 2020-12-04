@@ -149,17 +149,17 @@ final class Help
     /**
      * @var int Number of columns required to write the longest option name to the console
      */
-    private $maxArgLength = 0;
+    private int $maxArgLength = 0;
 
     /**
      * @var int Number of columns left for the description field after padding and option
      */
-    private $maxDescLength;
+    private int $maxDescLength;
 
     /**
      * @var bool Use color highlights for sections, options and parameters
      */
-    private $hasColor = false;
+    private ?bool $hasColor = false;
 
     public function __construct(?int $width = null, ?bool $withColor = null)
     {

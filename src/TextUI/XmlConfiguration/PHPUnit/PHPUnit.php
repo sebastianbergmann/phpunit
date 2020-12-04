@@ -15,250 +15,106 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class PHPUnit
 {
-    /**
-     * @var bool
-     */
-    private $cacheResult;
+    private bool $cacheResult;
 
-    /**
-     * @var ?string
-     */
-    private $cacheResultFile;
+    private ?string $cacheResultFile = null;
 
     /**
      * @var int|string
      */
     private $columns;
 
-    /**
-     * @var string
-     */
-    private $colors;
+    private string $colors;
 
-    /**
-     * @var bool
-     */
-    private $stderr;
+    private bool $stderr;
 
-    /**
-     * @var bool
-     */
-    private $noInteraction;
+    private bool $noInteraction;
 
-    /**
-     * @var bool
-     */
-    private $verbose;
+    private bool $verbose;
 
-    /**
-     * @var bool
-     */
-    private $reverseDefectList;
+    private bool $reverseDefectList;
 
-    /**
-     * @var bool
-     */
-    private $convertDeprecationsToExceptions;
+    private bool $convertDeprecationsToExceptions;
 
-    /**
-     * @var bool
-     */
-    private $convertErrorsToExceptions;
+    private bool $convertErrorsToExceptions;
 
-    /**
-     * @var bool
-     */
-    private $convertNoticesToExceptions;
+    private bool $convertNoticesToExceptions;
 
-    /**
-     * @var bool
-     */
-    private $convertWarningsToExceptions;
+    private bool $convertWarningsToExceptions;
 
-    /**
-     * @var bool
-     */
-    private $forceCoversAnnotation;
+    private bool $forceCoversAnnotation;
 
-    /**
-     * @var ?string
-     */
-    private $bootstrap;
+    private ?string $bootstrap = null;
 
-    /**
-     * @var bool
-     */
-    private $processIsolation;
+    private bool $processIsolation;
 
-    /**
-     * @var bool
-     */
-    private $failOnEmptyTestSuite;
+    private bool $failOnEmptyTestSuite;
 
-    /**
-     * @var bool
-     */
-    private $failOnIncomplete;
+    private bool $failOnIncomplete;
 
-    /**
-     * @var bool
-     */
-    private $failOnRisky;
+    private bool $failOnRisky;
 
-    /**
-     * @var bool
-     */
-    private $failOnSkipped;
+    private bool $failOnSkipped;
 
-    /**
-     * @var bool
-     */
-    private $failOnWarning;
+    private bool $failOnWarning;
 
-    /**
-     * @var bool
-     */
-    private $stopOnDefect;
+    private bool $stopOnDefect;
 
-    /**
-     * @var bool
-     */
-    private $stopOnError;
+    private bool $stopOnError;
 
-    /**
-     * @var bool
-     */
-    private $stopOnFailure;
+    private bool $stopOnFailure;
 
-    /**
-     * @var bool
-     */
-    private $stopOnWarning;
+    private bool $stopOnWarning;
 
-    /**
-     * @var bool
-     */
-    private $stopOnIncomplete;
+    private bool $stopOnIncomplete;
 
-    /**
-     * @var bool
-     */
-    private $stopOnRisky;
+    private bool $stopOnRisky;
 
-    /**
-     * @var bool
-     */
-    private $stopOnSkipped;
+    private bool $stopOnSkipped;
 
-    /**
-     * @var ?string
-     */
-    private $extensionsDirectory;
+    private ?string $extensionsDirectory = null;
 
-    /**
-     * @var ?string
-     */
-    private $printerClass;
+    private ?string $printerClass = null;
 
-    /**
-     * @var ?string
-     */
-    private $printerFile;
+    private ?string $printerFile = null;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutChangesToGlobalState;
+    private bool $beStrictAboutChangesToGlobalState;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutOutputDuringTests;
+    private bool $beStrictAboutOutputDuringTests;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutResourceUsageDuringSmallTests;
+    private bool $beStrictAboutResourceUsageDuringSmallTests;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutTestsThatDoNotTestAnything;
+    private bool $beStrictAboutTestsThatDoNotTestAnything;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutTodoAnnotatedTests;
+    private bool $beStrictAboutTodoAnnotatedTests;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutCoversAnnotation;
+    private bool $beStrictAboutCoversAnnotation;
 
-    /**
-     * @var bool
-     */
-    private $enforceTimeLimit;
+    private bool $enforceTimeLimit;
 
-    /**
-     * @var int
-     */
-    private $defaultTimeLimit;
+    private int $defaultTimeLimit;
 
-    /**
-     * @var int
-     */
-    private $timeoutForSmallTests;
+    private int $timeoutForSmallTests;
 
-    /**
-     * @var int
-     */
-    private $timeoutForMediumTests;
+    private int $timeoutForMediumTests;
 
-    /**
-     * @var int
-     */
-    private $timeoutForLargeTests;
+    private int $timeoutForLargeTests;
 
-    /**
-     * @var ?string
-     */
-    private $defaultTestSuite;
+    private ?string $defaultTestSuite = null;
 
-    /**
-     * @var int
-     */
-    private $executionOrder;
+    private int $executionOrder;
 
-    /**
-     * @var bool
-     */
-    private $resolveDependencies;
+    private bool $resolveDependencies;
 
-    /**
-     * @var bool
-     */
-    private $defectsFirst;
+    private bool $defectsFirst;
 
-    /**
-     * @var bool
-     */
-    private $backupGlobals;
+    private bool $backupGlobals;
 
-    /**
-     * @var bool
-     */
-    private $backupStaticAttributes;
+    private bool $backupStaticAttributes;
 
-    /**
-     * @var bool
-     */
-    private $registerMockObjectsFromTestArgumentsRecursively;
+    private bool $registerMockObjectsFromTestArgumentsRecursively;
 
-    /**
-     * @var bool
-     */
-    private $conflictBetweenPrinterClassAndTestdox;
+    private bool $conflictBetweenPrinterClassAndTestdox;
 
     public function __construct(bool $cacheResult, ?string $cacheResultFile, $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, ?string $printerClass, ?string $printerFile, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutResourceUsageDuringSmallTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutTodoAnnotatedTests, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticAttributes, bool $registerMockObjectsFromTestArgumentsRecursively, bool $conflictBetweenPrinterClassAndTestdox)
     {

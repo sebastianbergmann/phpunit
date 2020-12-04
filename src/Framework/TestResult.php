@@ -37,62 +37,53 @@ use Throwable;
  */
 final class TestResult implements Countable
 {
-    /**
-     * @var array
-     */
-    private $passed = [];
+    private array $passed = [];
 
     /**
      * @var array<string>
      */
-    private $passedTestClasses = [];
+    private array $passedTestClasses = [];
 
-    /**
-     * @var bool
-     */
-    private $currentTestSuiteFailed = false;
+    private bool $currentTestSuiteFailed = false;
 
     /**
      * @var TestFailure[]
      */
-    private $errors = [];
+    private array $errors = [];
 
     /**
      * @var TestFailure[]
      */
-    private $failures = [];
+    private array $failures = [];
 
     /**
      * @var TestFailure[]
      */
-    private $warnings = [];
+    private array $warnings = [];
 
     /**
      * @var TestFailure[]
      */
-    private $notImplemented = [];
+    private array $notImplemented = [];
 
     /**
      * @var TestFailure[]
      */
-    private $risky = [];
+    private array $risky = [];
 
     /**
      * @var TestFailure[]
      */
-    private $skipped = [];
+    private array $skipped = [];
 
     /**
      * @deprecated Use the `TestHook` interfaces instead
      *
      * @var TestListener[]
      */
-    private $listeners = [];
+    private array $listeners = [];
 
-    /**
-     * @var int
-     */
-    private $runTests = 0;
+    private int $runTests = 0;
 
     /**
      * @var float
@@ -101,130 +92,56 @@ final class TestResult implements Countable
 
     /**
      * Code Coverage information.
-     *
-     * @var CodeCoverage
      */
-    private $codeCoverage;
+    private ?CodeCoverage $codeCoverage = null;
 
-    /**
-     * @var bool
-     */
-    private $convertDeprecationsToExceptions = true;
+    private bool $convertDeprecationsToExceptions = true;
 
-    /**
-     * @var bool
-     */
-    private $convertErrorsToExceptions = true;
+    private bool $convertErrorsToExceptions = true;
 
-    /**
-     * @var bool
-     */
-    private $convertNoticesToExceptions = true;
+    private bool $convertNoticesToExceptions = true;
 
-    /**
-     * @var bool
-     */
-    private $convertWarningsToExceptions = true;
+    private bool $convertWarningsToExceptions = true;
 
-    /**
-     * @var bool
-     */
-    private $stop = false;
+    private bool $stop = false;
 
-    /**
-     * @var bool
-     */
-    private $stopOnError = false;
+    private bool $stopOnError = false;
 
-    /**
-     * @var bool
-     */
-    private $stopOnFailure = false;
+    private bool $stopOnFailure = false;
 
-    /**
-     * @var bool
-     */
-    private $stopOnWarning = false;
+    private bool $stopOnWarning = false;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutTestsThatDoNotTestAnything = true;
+    private bool $beStrictAboutTestsThatDoNotTestAnything = true;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutOutputDuringTests = false;
+    private bool $beStrictAboutOutputDuringTests = false;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutTodoAnnotatedTests = false;
+    private bool $beStrictAboutTodoAnnotatedTests = false;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutResourceUsageDuringSmallTests = false;
+    private bool $beStrictAboutResourceUsageDuringSmallTests = false;
 
-    /**
-     * @var bool
-     */
-    private $enforceTimeLimit = false;
+    private bool $enforceTimeLimit = false;
 
-    /**
-     * @var bool
-     */
-    private $forceCoversAnnotation = false;
+    private bool $forceCoversAnnotation = false;
 
-    /**
-     * @var int
-     */
-    private $timeoutForSmallTests = 1;
+    private int $timeoutForSmallTests = 1;
 
-    /**
-     * @var int
-     */
-    private $timeoutForMediumTests = 10;
+    private int $timeoutForMediumTests = 10;
 
-    /**
-     * @var int
-     */
-    private $timeoutForLargeTests = 60;
+    private int $timeoutForLargeTests = 60;
 
-    /**
-     * @var bool
-     */
-    private $stopOnRisky = false;
+    private bool $stopOnRisky = false;
 
-    /**
-     * @var bool
-     */
-    private $stopOnIncomplete = false;
+    private bool $stopOnIncomplete = false;
 
-    /**
-     * @var bool
-     */
-    private $stopOnSkipped = false;
+    private bool $stopOnSkipped = false;
 
-    /**
-     * @var bool
-     */
-    private $lastTestFailed = false;
+    private bool $lastTestFailed = false;
 
-    /**
-     * @var int
-     */
-    private $defaultTimeLimit = 0;
+    private int $defaultTimeLimit = 0;
 
-    /**
-     * @var bool
-     */
-    private $stopOnDefect = false;
+    private bool $stopOnDefect = false;
 
-    /**
-     * @var bool
-     */
-    private $registerMockObjectsFromTestArgumentsRecursively = false;
+    private bool $registerMockObjectsFromTestArgumentsRecursively = false;
 
     /**
      * @deprecated Use the `TestHook` interfaces instead

@@ -21,15 +21,9 @@ final class Extension
      */
     private $className;
 
-    /**
-     * @var string
-     */
-    private $sourceFile;
+    private string $sourceFile;
 
-    /**
-     * @var array
-     */
-    private $arguments;
+    private array $arguments;
 
     /**
      * @psalm-param class-string $className

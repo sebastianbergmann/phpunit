@@ -38,10 +38,7 @@ class Printer
      */
     private $stream;
 
-    /**
-     * @var bool
-     */
-    private $isPhpStream;
+    private bool $isPhpStream;
 
     /**
      * @param null|resource|string $out

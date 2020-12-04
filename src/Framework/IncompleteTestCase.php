@@ -29,10 +29,7 @@ final class IncompleteTestCase extends TestCase
      */
     protected $runTestInSeparateProcess = false;
 
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
     public function __construct(string $className, string $methodName, string $message = '')
     {

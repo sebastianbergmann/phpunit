@@ -33,50 +33,38 @@ use Throwable;
  */
 class TestDoxPrinter extends DefaultResultPrinter
 {
-    /**
-     * @var NamePrettifier
-     */
-    protected $prettifier;
+    protected NamePrettifier $prettifier;
 
     /**
      * @var int The number of test results received from the TestRunner
      */
-    protected $testIndex = 0;
+    protected int $testIndex = 0;
 
     /**
      * @var int The number of test results already sent to the output
      */
-    protected $testFlushIndex = 0;
+    protected int $testFlushIndex = 0;
 
     /**
      * @var array<int, array> Buffer for test results
      */
-    protected $testResults = [];
+    protected array $testResults = [];
 
     /**
      * @var array<string, int> Lookup table for testname to testResults[index]
      */
-    protected $testNameResultIndex = [];
+    protected array $testNameResultIndex = [];
 
-    /**
-     * @var bool
-     */
-    protected $enableOutputBuffer = false;
+    protected bool $enableOutputBuffer = false;
 
     /**
      * @var array array<string>
      */
-    protected $originalExecutionOrder = [];
+    protected array $originalExecutionOrder = [];
 
-    /**
-     * @var int
-     */
-    protected $spinState = 0;
+    protected int $spinState = 0;
 
-    /**
-     * @var bool
-     */
-    protected $showProgress = true;
+    protected bool $showProgress = true;
 
     /**
      * @param null|resource|string $out

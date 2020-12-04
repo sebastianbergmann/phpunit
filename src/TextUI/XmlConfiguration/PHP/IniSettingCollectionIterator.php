@@ -22,12 +22,9 @@ final class IniSettingCollectionIterator implements Countable, Iterator
     /**
      * @var IniSetting[]
      */
-    private $iniSettings;
+    private array $iniSettings;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(IniSettingCollection $iniSettings)
     {

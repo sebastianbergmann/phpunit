@@ -22,12 +22,9 @@ final class TestSuiteCollectionIterator implements Countable, Iterator
     /**
      * @var TestSuite[]
      */
-    private $testSuites;
+    private array $testSuites;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(TestSuiteCollection $testSuites)
     {

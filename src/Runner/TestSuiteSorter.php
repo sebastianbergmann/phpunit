@@ -85,22 +85,19 @@ final class TestSuiteSorter
     /**
      * @var array<string, int> Associative array of (string => DEFECT_SORT_WEIGHT) elements
      */
-    private $defectSortOrder = [];
+    private array $defectSortOrder = [];
 
-    /**
-     * @var TestResultCache
-     */
-    private $cache;
+    private TestResultCache $cache;
 
     /**
      * @var array<string> A list of normalized names of tests before reordering
      */
-    private $originalExecutionOrder = [];
+    private array $originalExecutionOrder = [];
 
     /**
      * @var array<string> A list of normalized names of tests affected by reordering
      */
-    private $executionOrder = [];
+    private array $executionOrder = [];
 
     public function __construct(?TestResultCache $cache = null)
     {

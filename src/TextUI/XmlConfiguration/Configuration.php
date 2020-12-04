@@ -19,60 +19,27 @@ use PHPUnit\Util\Xml\ValidationResult;
  */
 final class Configuration
 {
-    /**
-     * @var string
-     */
-    private $filename;
+    private string $filename;
 
-    /**
-     * @var ValidationResult
-     */
-    private $validationResult;
+    private ValidationResult $validationResult;
 
-    /**
-     * @var ExtensionCollection
-     */
-    private $extensions;
+    private ExtensionCollection $extensions;
 
-    /**
-     * @var CodeCoverage
-     */
-    private $codeCoverage;
+    private CodeCoverage $codeCoverage;
 
-    /**
-     * @var Groups
-     */
-    private $groups;
+    private Groups $groups;
 
-    /**
-     * @var Groups
-     */
-    private $testdoxGroups;
+    private Groups $testdoxGroups;
 
-    /**
-     * @var ExtensionCollection
-     */
-    private $listeners;
+    private ExtensionCollection $listeners;
 
-    /**
-     * @var Logging
-     */
-    private $logging;
+    private Logging $logging;
 
-    /**
-     * @var Php
-     */
-    private $php;
+    private Php $php;
 
-    /**
-     * @var PHPUnit
-     */
-    private $phpunit;
+    private PHPUnit $phpunit;
 
-    /**
-     * @var TestSuiteCollection
-     */
-    private $testSuite;
+    private TestSuiteCollection $testSuite;
 
     public function __construct(string $filename, ValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, ExtensionCollection $listeners, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {

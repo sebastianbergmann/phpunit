@@ -87,35 +87,20 @@ final class TestRunner extends BaseTestRunner
 
     public const EXCEPTION_EXIT = 2;
 
-    /**
-     * @var bool
-     */
-    private static $versionStringPrinted = false;
+    private static bool $versionStringPrinted = false;
 
-    /**
-     * @var CodeCoverageFilter
-     */
-    private $codeCoverageFilter;
+    private ?CodeCoverageFilter $codeCoverageFilter = null;
 
-    /**
-     * @var ResultPrinter
-     */
-    private $printer;
+    private ?ResultPrinter $printer = null;
 
-    /**
-     * @var bool
-     */
-    private $messagePrinted = false;
+    private bool $messagePrinted = false;
 
     /**
      * @var Hook[]
      */
-    private $extensions = [];
+    private array $extensions = [];
 
-    /**
-     * @var Timer
-     */
-    private $timer;
+    private Timer $timer;
 
     public function __construct(CodeCoverageFilter $filter = null)
     {

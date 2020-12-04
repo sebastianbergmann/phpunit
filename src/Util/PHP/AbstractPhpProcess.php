@@ -41,35 +41,20 @@ use SebastianBergmann\Environment\Runtime;
  */
 abstract class AbstractPhpProcess
 {
-    /**
-     * @var Runtime
-     */
-    protected $runtime;
+    protected Runtime $runtime;
 
-    /**
-     * @var bool
-     */
-    protected $stderrRedirection = false;
+    protected bool $stderrRedirection = false;
 
-    /**
-     * @var string
-     */
-    protected $stdin = '';
+    protected string $stdin = '';
 
-    /**
-     * @var string
-     */
-    protected $args = '';
+    protected string $args = '';
 
     /**
      * @var array<string, string>
      */
-    protected $env = [];
+    protected array $env = [];
 
-    /**
-     * @var int
-     */
-    protected $timeout = 0;
+    protected int $timeout = 0;
 
     public static function factory(): self
     {

@@ -17,10 +17,7 @@ use function round;
  */
 final class ResultCacheExtension implements AfterIncompleteTestHook, AfterLastTestHook, AfterRiskyTestHook, AfterSkippedTestHook, AfterSuccessfulTestHook, AfterTestErrorHook, AfterTestFailureHook, AfterTestWarningHook
 {
-    /**
-     * @var TestResultCache
-     */
-    private $cache;
+    private TestResultCache $cache;
 
     public function __construct(TestResultCache $cache)
     {

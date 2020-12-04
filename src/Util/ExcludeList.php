@@ -146,7 +146,7 @@ final class ExcludeList
     /**
      * @var string[]
      */
-    private static $directories;
+    private static ?array $directories = null;
 
     public static function addDirectory(string $directory): void
     {

@@ -18,10 +18,7 @@ use PHPUnit\Framework\InvalidArgumentException;
  */
 final class StringStartsWith extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $prefix;
+    private string $prefix;
 
     public function __construct(string $prefix)
     {

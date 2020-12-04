@@ -37,62 +37,29 @@ final class MockMethod
     /**
      * @var Template[]
      */
-    private static $templates = [];
+    private static array $templates = [];
 
-    /**
-     * @var string
-     */
-    private $className;
+    private string $className;
 
-    /**
-     * @var string
-     */
-    private $methodName;
+    private string $methodName;
 
-    /**
-     * @var bool
-     */
-    private $cloneArguments;
+    private bool $cloneArguments;
 
-    /**
-     * @var string string
-     */
-    private $modifier;
+    private string $modifier;
 
-    /**
-     * @var string
-     */
-    private $argumentsForDeclaration;
+    private string $argumentsForDeclaration;
 
-    /**
-     * @var string
-     */
-    private $argumentsForCall;
+    private string $argumentsForCall;
 
-    /**
-     * @var Type
-     */
-    private $returnType;
+    private Type $returnType;
 
-    /**
-     * @var string
-     */
-    private $reference;
+    private string $reference;
 
-    /**
-     * @var bool
-     */
-    private $callOriginalMethod;
+    private bool $callOriginalMethod;
 
-    /**
-     * @var bool
-     */
-    private $static;
+    private bool $static;
 
-    /**
-     * @var ?string
-     */
-    private $deprecation;
+    private ?string $deprecation = null;
 
     /**
      * @throws ReflectionException

@@ -24,10 +24,7 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
  */
 final class StringMatchesFormatDescription extends RegularExpression
 {
-    /**
-     * @var string
-     */
-    private $string;
+    private string $string;
 
     public function __construct(string $string)
     {

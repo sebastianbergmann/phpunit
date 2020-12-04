@@ -16,10 +16,7 @@ use function class_exists;
  */
 final class MockTrait implements MockType
 {
-    /**
-     * @var string
-     */
-    private $classCode;
+    private string $classCode;
 
     /**
      * @var class-string

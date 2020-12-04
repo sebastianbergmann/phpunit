@@ -44,15 +44,9 @@ use Throwable;
  */
 final class TeamCity extends DefaultResultPrinter
 {
-    /**
-     * @var bool
-     */
-    private $isSummaryTestCountPrinted = false;
+    private bool $isSummaryTestCountPrinted = false;
 
-    /**
-     * @var string
-     */
-    private $startedTestName;
+    private string $startedTestName;
 
     /**
      * @var false|int

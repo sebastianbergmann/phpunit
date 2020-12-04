@@ -21,7 +21,7 @@ final class VersionComparisonOperator
     /**
      * @psalm-var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
      */
-    private $operator;
+    private string $operator;
 
     public function __construct(string $operator)
     {

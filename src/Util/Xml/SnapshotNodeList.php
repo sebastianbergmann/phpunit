@@ -23,7 +23,7 @@ final class SnapshotNodeList implements Countable, IteratorAggregate
     /**
      * @var DOMNode[]
      */
-    private $nodes = [];
+    private array $nodes = [];
 
     public static function fromNodeList(DOMNodeList $list): self
     {

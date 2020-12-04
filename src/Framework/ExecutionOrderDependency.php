@@ -23,25 +23,13 @@ use function trim;
  */
 final class ExecutionOrderDependency
 {
-    /**
-     * @var string
-     */
-    private $className = '';
+    private string $className = '';
 
-    /**
-     * @var string
-     */
-    private $methodName = '';
+    private string $methodName = '';
 
-    /**
-     * @var bool
-     */
-    private $useShallowClone = false;
+    private bool $useShallowClone = false;
 
-    /**
-     * @var bool
-     */
-    private $useDeepClone = false;
+    private bool $useDeepClone = false;
 
     public static function createFromDependsAnnotation(string $className, string $annotation): self
     {

@@ -24,15 +24,9 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
  */
 final class ConsecutiveParameters implements ParametersRule
 {
-    /**
-     * @var array
-     */
-    private $parameterGroups = [];
+    private array $parameterGroups = [];
 
-    /**
-     * @var array
-     */
-    private $invocations = [];
+    private array $invocations = [];
 
     /**
      * @throws \PHPUnit\Framework\Exception

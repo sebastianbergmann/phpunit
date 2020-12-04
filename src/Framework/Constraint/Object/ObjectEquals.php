@@ -25,15 +25,9 @@ use ReflectionObject;
  */
 final class ObjectEquals extends Constraint
 {
-    /**
-     * @var object
-     */
-    private $expected;
+    private object $expected;
 
-    /**
-     * @var string
-     */
-    private $method;
+    private string $method;
 
     public function __construct(object $object, string $method = 'equals')
     {

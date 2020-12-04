@@ -15,20 +15,14 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class Variable
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     /**
      * @var mixed
      */
     private $value;
 
-    /**
-     * @var bool
-     */
-    private $force;
+    private bool $force;
 
     public function __construct(string $name, $value, bool $force)
     {

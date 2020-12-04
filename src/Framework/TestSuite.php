@@ -52,22 +52,15 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
     /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
-     *
-     * @var bool
      */
-    protected $backupGlobals;
+    protected ?bool $backupGlobals = null;
 
     /**
      * Enable or disable the backup and restoration of static attributes.
-     *
-     * @var bool
      */
-    protected $backupStaticAttributes;
+    protected ?bool $backupStaticAttributes = null;
 
-    /**
-     * @var bool
-     */
-    protected $runTestInSeparateProcess = false;
+    protected bool $runTestInSeparateProcess = false;
 
     /**
      * The name of the test suite.
@@ -81,61 +74,44 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      *
      * @psalm-var array<string,list<Test>>
      */
-    protected $groups = [];
+    protected array $groups = [];
 
     /**
      * The tests in the test suite.
      *
      * @var Test[]
      */
-    protected $tests = [];
+    protected array $tests = [];
 
     /**
      * The number of tests in the test suite.
-     *
-     * @var int
      */
-    protected $numTests = -1;
+    protected int $numTests = -1;
 
-    /**
-     * @var bool
-     */
-    protected $testCase = false;
+    protected bool $testCase = false;
 
     /**
      * @var string[]
      */
-    protected $foundClasses = [];
+    protected array $foundClasses = [];
 
-    /**
-     * @var null|list<ExecutionOrderDependency>
-     */
-    protected $providedTests;
+    protected ?array $providedTests = null;
 
-    /**
-     * @var null|list<ExecutionOrderDependency>
-     */
-    protected $requiredTests;
+    protected ?array $requiredTests = null;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutChangesToGlobalState;
+    private ?bool $beStrictAboutChangesToGlobalState = null;
 
-    /**
-     * @var Factory
-     */
-    private $iteratorFilter;
+    private ?\PHPUnit\Runner\Filter\Factory $iteratorFilter = null;
 
     /**
      * @var string[]
      */
-    private $declaredClasses;
+    private array $declaredClasses;
 
     /**
      * @psalm-var array<int,string>
      */
-    private $warnings = [];
+    private array $warnings = [];
 
     /**
      * Constructs a new TestSuite.

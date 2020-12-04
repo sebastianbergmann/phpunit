@@ -25,7 +25,7 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
     /**
      * @var string[]
      */
-    protected $groupTests = [];
+    protected array $groupTests = [];
 
     public function __construct(RecursiveIterator $iterator, array $groups, TestSuite $suite)
     {

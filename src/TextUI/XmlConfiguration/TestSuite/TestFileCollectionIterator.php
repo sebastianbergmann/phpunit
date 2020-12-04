@@ -22,12 +22,9 @@ final class TestFileCollectionIterator implements Countable, Iterator
     /**
      * @var TestFile[]
      */
-    private $files;
+    private array $files;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(TestFileCollection $files)
     {

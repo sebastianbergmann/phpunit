@@ -16,10 +16,7 @@ use function count;
  */
 abstract class UnaryOperator extends Operator
 {
-    /**
-     * @var Constraint
-     */
-    private $constraint;
+    private Constraint $constraint;
 
     /**
      * @param Constraint|mixed $constraint

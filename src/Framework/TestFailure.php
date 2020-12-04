@@ -20,15 +20,9 @@ use Throwable;
  */
 final class TestFailure
 {
-    /**
-     * @var null|Test
-     */
-    private $failedTest;
+    private ?Test $failedTest = null;
 
-    /**
-     * @var Throwable
-     */
-    private $thrownException;
+    private Throwable $thrownException;
 
     /**
      * @var string

@@ -27,20 +27,11 @@ final class IsEqual extends Constraint
      */
     private $value;
 
-    /**
-     * @var float
-     */
-    private $delta;
+    private float $delta;
 
-    /**
-     * @var bool
-     */
-    private $canonicalize;
+    private bool $canonicalize;
 
-    /**
-     * @var bool
-     */
-    private $ignoreCase;
+    private bool $ignoreCase;
 
     public function __construct($value, float $delta = 0.0, bool $canonicalize = false, bool $ignoreCase = false)
     {

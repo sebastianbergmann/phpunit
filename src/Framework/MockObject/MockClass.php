@@ -17,10 +17,7 @@ use function class_exists;
  */
 final class MockClass implements MockType
 {
-    /**
-     * @var string
-     */
-    private $classCode;
+    private string $classCode;
 
     /**
      * @var class-string
@@ -30,7 +27,7 @@ final class MockClass implements MockType
     /**
      * @var ConfigurableMethod[]
      */
-    private $configurableMethods;
+    private array $configurableMethods;
 
     /**
      * @psalm-param class-string $mockName

@@ -29,40 +29,19 @@ use stdClass;
  */
 final class Invocation implements SelfDescribing
 {
-    /**
-     * @var string
-     */
-    private $className;
+    private string $className;
 
-    /**
-     * @var string
-     */
-    private $methodName;
+    private string $methodName;
 
-    /**
-     * @var array
-     */
-    private $parameters;
+    private array $parameters;
 
-    /**
-     * @var string
-     */
-    private $returnType;
+    private string $returnType;
 
-    /**
-     * @var bool
-     */
-    private $isReturnTypeNullable = false;
+    private bool $isReturnTypeNullable = false;
 
-    /**
-     * @var bool
-     */
-    private $proxiedCall;
+    private bool $proxiedCall;
 
-    /**
-     * @var object
-     */
-    private $object;
+    private object $object;
 
     public function __construct(string $className, string $methodName, array $parameters, string $returnType, object $object, bool $cloneObjects = false, bool $proxiedCall = false)
     {

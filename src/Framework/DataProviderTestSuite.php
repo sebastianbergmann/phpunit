@@ -20,7 +20,7 @@ final class DataProviderTestSuite extends TestSuite
     /**
      * @var list<ExecutionOrderDependency>
      */
-    private $dependencies = [];
+    private array $dependencies = [];
 
     /**
      * @param list<ExecutionOrderDependency> $dependencies

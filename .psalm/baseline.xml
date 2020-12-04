@@ -374,10 +374,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <PropertyNotSetInConstructor occurrences="2">
-      <code>DataProviderTestSuite</code>
-      <code>DataProviderTestSuite</code>
-    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Framework/Exception/Exception.php">
     <MissingParamType occurrences="2">
@@ -387,11 +383,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($this)</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Exception/ExpectationFailedException.php">
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
-      <code>$comparisonFailure</code>
-    </PossiblyNullPropertyAssignmentValue>
   </file>
   <file src="src/Framework/ExceptionWrapper.php">
     <MissingThrowsDocblock occurrences="1">
@@ -446,37 +437,30 @@
     <MissingReturnType occurrences="1">
       <code>invoke</code>
     </MissingReturnType>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$deferredError</code>
-    </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="1">
-      <code>$this-&gt;deferredError</code>
-    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/Matcher.php">
-    <DocblockTypeContradiction occurrences="4">
-      <code>$this-&gt;methodNameRule === null</code>
-      <code>$this-&gt;methodNameRule === null</code>
-      <code>$this-&gt;methodNameRule === null</code>
+    <DocblockTypeContradiction occurrences="1">
       <code>$this-&gt;parametersRule === null</code>
     </DocblockTypeContradiction>
+    <InvalidNullableReturnType occurrences="1">
+      <code>MethodName</code>
+    </InvalidNullableReturnType>
     <MissingReturnType occurrences="1">
       <code>invoked</code>
     </MissingReturnType>
-    <PropertyNotSetInConstructor occurrences="3">
-      <code>$methodNameRule</code>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;methodNameRule</code>
+    </NullableReturnStatement>
+    <PropertyNotSetInConstructor occurrences="1">
       <code>$parametersRule</code>
-      <code>$stub</code>
     </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="8">
+    <RedundantCondition occurrences="1">
       <code>$this-&gt;invocationRule !== null</code>
-      <code>$this-&gt;methodNameRule !== null</code>
-      <code>$this-&gt;methodNameRule !== null</code>
+    </RedundantCondition>
+    <RedundantConditionGivenDocblockType occurrences="3">
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
-      <code>$this-&gt;stub</code>
-      <code>$this-&gt;stub !== null</code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
@@ -533,14 +517,10 @@
     </DocblockTypeContradiction>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>$this-&gt;invocation === null</code>
-    </DocblockTypeContradiction>
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PropertyNotSetInConstructor occurrences="2">
-      <code>$invocation</code>
+    <PropertyNotSetInConstructor occurrences="1">
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
   </file>
@@ -619,12 +599,9 @@
     <DeprecatedMethod occurrences="1">
       <code>setMethods</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="5">
+    <DocblockTypeContradiction occurrences="2">
       <code>$this-&gt;backupStaticAttributes === null</code>
-      <code>$this-&gt;mockObjectGenerator === null</code>
-      <code>$this-&gt;runClassInSeparateProcess === null</code>
       <code>$this-&gt;runTestInSeparateProcess === null</code>
-      <code>$this-&gt;snapshot instanceof Snapshot</code>
     </DocblockTypeContradiction>
     <InvalidArgument occurrences="1">
       <code>$header</code>
@@ -664,31 +641,20 @@
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
     </MissingThrowsDocblock>
-    <PossiblyNullPropertyAssignmentValue occurrences="3">
-      <code>$beStrictAboutChangesToGlobalState</code>
-      <code>null</code>
-      <code>null</code>
-    </PossiblyNullPropertyAssignmentValue>
-    <PropertyNotSetInConstructor occurrences="9">
+    <PossiblyNullReference occurrences="4">
+      <code>passed</code>
+      <code>startTest</code>
+      <code>startTest</code>
+      <code>startTest</code>
+    </PossiblyNullReference>
+    <PropertyNotSetInConstructor occurrences="3">
       <code>$backupStaticAttributes</code>
-      <code>$mockObjectGenerator</code>
       <code>$outputBufferingLevel</code>
-      <code>$outputExpectedRegex</code>
-      <code>$outputExpectedString</code>
-      <code>$result</code>
-      <code>$runClassInSeparateProcess</code>
       <code>$runTestInSeparateProcess</code>
-      <code>$snapshot</code>
     </PropertyNotSetInConstructor>
     <RedundantCondition occurrences="1">
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
-    <RedundantConditionGivenDocblockType occurrences="4">
-      <code>$this-&gt;outputExpectedRegex !== null</code>
-      <code>$this-&gt;outputExpectedString !== null</code>
-      <code>is_string($this-&gt;outputExpectedRegex)</code>
-      <code>is_string($this-&gt;outputExpectedString)</code>
-    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/TestResult.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -697,8 +663,8 @@
     <DeprecatedClass occurrences="4">
       <code>TestListener</code>
       <code>TestListener</code>
-      <code>TestListener[]</code>
-      <code>private $listeners = [];</code>
+      <code>array</code>
+      <code>private array $listeners = [];</code>
     </DeprecatedClass>
     <DeprecatedMethod occurrences="3">
       <code>addWarning</code>
@@ -711,15 +677,16 @@
     <InvalidArgument occurrences="1">
       <code>[$test, 'runBare']</code>
     </InvalidArgument>
-    <MissingConstructor occurrences="1">
-      <code>$codeCoverage</code>
-    </MissingConstructor>
     <MissingThrowsDocblock occurrences="3">
       <code>stop</code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument occurrences="1">
       <code>$linesToBeCovered</code>
     </PossiblyInvalidArgument>
+    <PossiblyNullReference occurrences="2">
+      <code>start</code>
+      <code>stop</code>
+    </PossiblyNullReference>
     <PossiblyUndefinedVariable occurrences="6">
       <code>$_timeout</code>
       <code>$_timeout</code>
@@ -728,10 +695,6 @@
       <code>$e</code>
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
-    <RedundantConditionGivenDocblockType occurrences="2">
-      <code>$this-&gt;codeCoverage !== null</code>
-      <code>$this-&gt;codeCoverage !== null</code>
-    </RedundantConditionGivenDocblockType>
     <UndefinedInterfaceMethod occurrences="16">
       <code>addToAssertionCount</code>
       <code>addToAssertionCount</code>
@@ -756,26 +719,21 @@
       <code>$className</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <DocblockTypeContradiction occurrences="6">
+    <DocblockTypeContradiction occurrences="3">
       <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
       <code>is_string($testClass)</code>
       <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
-      <code>null === $this-&gt;backupGlobals</code>
-      <code>null === $this-&gt;backupStaticAttributes</code>
-      <code>null === $this-&gt;beStrictAboutChangesToGlobalState</code>
     </DocblockTypeContradiction>
     <MissingThrowsDocblock occurrences="3">
       <code>FileLoader::checkAndLoad($filename)</code>
       <code>new PhptTestCase($filename)</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="4">
-      <code>$backupGlobals</code>
-      <code>$backupStaticAttributes</code>
-      <code>$beStrictAboutChangesToGlobalState</code>
-      <code>$iteratorFilter</code>
-    </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="7">
-      <code>$this-&gt;iteratorFilter !== null</code>
+    <PossiblyNullArgument occurrences="3">
+      <code>$this-&gt;backupGlobals</code>
+      <code>$this-&gt;backupStaticAttributes</code>
+      <code>$this-&gt;beStrictAboutChangesToGlobalState</code>
+    </PossiblyNullArgument>
+    <RedundantConditionGivenDocblockType occurrences="6">
       <code>is_bool($backupGlobals)</code>
       <code>is_bool($backupStaticAttributes)</code>
       <code>is_bool($beStrictAboutChangesToGlobalState)</code>
@@ -800,18 +758,14 @@
     </MissingReturnType>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
-    <PropertyNotSetInConstructor occurrences="2">
-      <code>$filterMax</code>
-      <code>$filterMin</code>
-    </PropertyNotSetInConstructor>
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;filter</code>
+    </PossiblyNullArgument>
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
     <DeprecatedInterface occurrences="1">
       <code>TestListenerAdapter</code>
     </DeprecatedInterface>
-    <MissingConstructor occurrences="1">
-      <code>$lastTestWasNotSuccessful</code>
-    </MissingConstructor>
   </file>
   <file src="src/Runner/PhptTestCase.php">
     <InternalClass occurrences="2">
@@ -844,12 +798,12 @@
       <code>$right</code>
       <code>$right</code>
     </MissingClosureParamType>
-    <RedundantConditionGivenDocblockType occurrences="4">
+    <RedundantCondition occurrences="4">
       <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
       <code>$orderDefects === self::ORDER_DEFECTS_FIRST &amp;&amp; $this-&gt;cache !== null</code>
       <code>$this-&gt;cache !== null</code>
       <code>$this-&gt;cache !== null</code>
-    </RedundantConditionGivenDocblockType>
+    </RedundantCondition>
   </file>
   <file src="src/TextUI/CliArguments/Builder.php">
     <MissingThrowsDocblock occurrences="1"/>
@@ -910,10 +864,6 @@
       <code>parent::__construct($out)</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="2">
-      <code>$maxColumn</code>
-      <code>$numTestsWidth</code>
-    </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/Help.php">
     <MissingClosureParamType occurrences="1">
@@ -937,9 +887,6 @@
       <code>createTestListenerInstance</code>
       <code>flushListeners</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="1">
-      <code>$this-&gt;printer === null</code>
-    </DocblockTypeContradiction>
     <InvalidArgument occurrences="6">
       <code>$e</code>
       <code>$e</code>
@@ -962,35 +909,65 @@
       <code>stop</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$printer</code>
-    </PropertyNotSetInConstructor>
+    <PossiblyNullArgument occurrences="3">
+      <code>$this-&gt;codeCoverageFilter</code>
+      <code>$this-&gt;codeCoverageFilter</code>
+      <code>$this-&gt;codeCoverageFilter</code>
+    </PossiblyNullArgument>
+    <PossiblyNullReference occurrences="5">
+      <code>includeDirectory</code>
+      <code>write</code>
+      <code>write</code>
+      <code>write</code>
+      <code>write</code>
+    </PossiblyNullReference>
     <RedundantCondition occurrences="1">
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
     </RedundantCondition>
-    <RedundantConditionGivenDocblockType occurrences="1">
-      <code>$this-&gt;printer !== null</code>
-    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Filter/DirectoryCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;directories</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/Filesystem/DirectoryCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;directories</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/Filesystem/FileCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;files</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/Group/GroupCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;groups</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/Loader.php">
     <RedundantConditionGivenDocblockType occurrences="2">
@@ -1058,14 +1035,26 @@
     </MissingReturnType>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/ConstantCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;constants</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/IniSettingCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;iniSettings</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/Variable.php">
     <MissingParamType occurrences="1">
@@ -1076,14 +1065,26 @@
     </MissingReturnType>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/VariableCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;variables</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHPUnit/ExtensionCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;extensions</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHPUnit/PHPUnit.php">
     <MissingParamType occurrences="1">
@@ -1094,19 +1095,37 @@
     </MissingReturnType>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestDirectoryCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;directories</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestFileCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;files</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestSuiteCollectionIterator.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$position</code>
-    </PropertyNotSetInConstructor>
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;testSuites</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
     <MissingThrowsDocblock occurrences="1">
@@ -1130,10 +1149,16 @@
     </MissingReturnType>
   </file>
   <file src="src/Util/ExcludeList.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>self::$directories === null</code>
-    </DocblockTypeContradiction>
+    <InvalidNullableReturnType occurrences="1">
+      <code>string[]</code>
+    </InvalidNullableReturnType>
     <MissingThrowsDocblock occurrences="1"/>
+    <NullableReturnStatement occurrences="1">
+      <code>self::$directories</code>
+    </NullableReturnStatement>
+    <PossiblyNullIterator occurrences="1">
+      <code>self::$directories</code>
+    </PossiblyNullIterator>
   </file>
   <file src="src/Util/GlobalState.php">
     <MissingParamType occurrences="1">
@@ -1155,10 +1180,6 @@
     <DeprecatedInterface occurrences="1">
       <code>JUnit</code>
     </DeprecatedInterface>
-    <DocblockTypeContradiction occurrences="2">
-      <code>$this-&gt;currentTestCase === null</code>
-      <code>$this-&gt;currentTestCase === null</code>
-    </DocblockTypeContradiction>
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
@@ -1166,12 +1187,9 @@
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>parent::__construct($out)</code>
     </MissingThrowsDocblock>
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
-      <code>null</code>
-    </PossiblyNullPropertyAssignmentValue>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$currentTestCase</code>
-    </PropertyNotSetInConstructor>
+    <PossiblyNullReference occurrences="1">
+      <code>setAttribute</code>
+    </PossiblyNullReference>
     <UndefinedInterfaceMethod occurrences="2">
       <code>getName</code>
       <code>getName</code>
@@ -1194,11 +1212,9 @@
     <MissingThrowsDocblock occurrences="2">
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="4">
+    <PropertyNotSetInConstructor occurrences="2">
       <code>$flowId</code>
       <code>$startedTestName</code>
-      <code>TeamCity</code>
-      <code>TeamCity</code>
     </PropertyNotSetInConstructor>
     <RedundantCondition occurrences="1">
       <code>$previous-&gt;getPrevious()</code>
@@ -1293,10 +1309,6 @@
       <code>$prefix['start']</code>
       <code>$prefix['trace']</code>
     </PossiblyInvalidArrayOffset>
-    <PropertyNotSetInConstructor occurrences="2">
-      <code>CliTestDoxPrinter</code>
-      <code>CliTestDoxPrinter</code>
-    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
     <DeprecatedInterface occurrences="1">
@@ -1305,9 +1317,6 @@
     <PossiblyNullArgument occurrences="1">
       <code>$this-&gt;currentTestClassPrettified</code>
     </PossiblyNullArgument>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>HtmlResultPrinter</code>
-    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/TestDox/NamePrettifier.php">
     <InvalidCast occurrences="1">
@@ -1325,9 +1334,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>parent::__construct($out)</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$testStatus</code>
-    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/TestDox/TestDoxPrinter.php">
     <DeprecatedInterface occurrences="1">
@@ -1336,10 +1342,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="2">
-      <code>TestDoxPrinter</code>
-      <code>TestDoxPrinter</code>
-    </PropertyNotSetInConstructor>
     <UndefinedInterfaceMethod occurrences="1">
       <code>getName</code>
     </UndefinedInterfaceMethod>
@@ -1348,9 +1350,6 @@
     <DeprecatedInterface occurrences="1">
       <code>TextResultPrinter</code>
     </DeprecatedInterface>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>TextResultPrinter</code>
-    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/TestDox/XmlResultPrinter.php">
     <DeprecatedInterface occurrences="1">

@@ -76,15 +76,12 @@ final class Generator
         '__halt_compiler' => true,
     ];
 
-    /**
-     * @var array
-     */
-    private static $cache = [];
+    private static array $cache = [];
 
     /**
      * @var Template[]
      */
-    private static $templates = [];
+    private static array $templates = [];
 
     /**
      * Returns a mock object for the specified class.

@@ -86,10 +86,7 @@ use PHPUnit\Util\Xml\Loader as XmlLoader;
  */
 abstract class Assert
 {
-    /**
-     * @var int
-     */
-    private static $count = 0;
+    private static int $count = 0;
 
     /**
      * Asserts that an array has a specified key.

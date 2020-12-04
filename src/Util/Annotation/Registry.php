@@ -23,14 +23,13 @@ use ReflectionMethod;
  */
 final class Registry
 {
-    /** @var null|self */
-    private static $instance;
+    private static ?Registry $instance = null;
 
     /** @var array<string, DocBlock> indexed by class name */
-    private $classDocBlocks = [];
+    private array $classDocBlocks = [];
 
     /** @var array<string, array<string, DocBlock>> indexed by class name and method name */
-    private $methodDocBlocks = [];
+    private array $methodDocBlocks = [];
 
     public static function getInstance(): self
     {

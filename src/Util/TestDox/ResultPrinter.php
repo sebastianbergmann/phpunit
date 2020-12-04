@@ -28,75 +28,36 @@ use Throwable;
  */
 abstract class ResultPrinter extends Printer implements ResultPrinterInterface
 {
-    /**
-     * @var NamePrettifier
-     */
-    protected $prettifier;
+    protected NamePrettifier $prettifier;
 
     /**
      * @var string
      */
     protected $testClass = '';
 
-    /**
-     * @var int
-     */
-    protected $testStatus;
+    protected ?int $testStatus = null;
 
-    /**
-     * @var array
-     */
-    protected $tests = [];
+    protected array $tests = [];
 
-    /**
-     * @var int
-     */
-    protected $successful = 0;
+    protected int $successful = 0;
 
-    /**
-     * @var int
-     */
-    protected $warned = 0;
+    protected int $warned = 0;
 
-    /**
-     * @var int
-     */
-    protected $failed = 0;
+    protected int $failed = 0;
 
-    /**
-     * @var int
-     */
-    protected $risky = 0;
+    protected int $risky = 0;
 
-    /**
-     * @var int
-     */
-    protected $skipped = 0;
+    protected int $skipped = 0;
 
-    /**
-     * @var int
-     */
-    protected $incomplete = 0;
+    protected int $incomplete = 0;
 
-    /**
-     * @var null|string
-     */
-    protected $currentTestClassPrettified;
+    protected ?string $currentTestClassPrettified = null;
 
-    /**
-     * @var null|string
-     */
-    protected $currentTestMethodPrettified;
+    protected ?string $currentTestMethodPrettified = null;
 
-    /**
-     * @var array
-     */
-    private $groups;
+    private array $groups;
 
-    /**
-     * @var array
-     */
-    private $excludeGroups;
+    private array $excludeGroups;
 
     /**
      * @param resource $out

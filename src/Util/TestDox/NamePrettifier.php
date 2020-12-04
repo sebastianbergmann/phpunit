@@ -56,12 +56,9 @@ final class NamePrettifier
     /**
      * @var string[]
      */
-    private $strings = [];
+    private array $strings = [];
 
-    /**
-     * @var bool
-     */
-    private $useColor;
+    private bool $useColor;
 
     public function __construct(bool $useColor = false)
     {

@@ -28,90 +28,39 @@ use PHPUnit\TextUI\XmlConfiguration\FileCollection;
  */
 final class CodeCoverage
 {
-    /**
-     * @var ?Directory
-     */
-    private $cacheDirectory;
+    private ?\PHPUnit\TextUI\XmlConfiguration\Directory $cacheDirectory = null;
 
-    /**
-     * @var DirectoryCollection
-     */
-    private $directories;
+    private \PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection $directories;
 
-    /**
-     * @var FileCollection
-     */
-    private $files;
+    private \PHPUnit\TextUI\XmlConfiguration\FileCollection $files;
 
-    /**
-     * @var DirectoryCollection
-     */
-    private $excludeDirectories;
+    private \PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection $excludeDirectories;
 
-    /**
-     * @var FileCollection
-     */
-    private $excludeFiles;
+    private \PHPUnit\TextUI\XmlConfiguration\FileCollection $excludeFiles;
 
-    /**
-     * @var bool
-     */
-    private $pathCoverage;
+    private bool $pathCoverage;
 
-    /**
-     * @var bool
-     */
-    private $includeUncoveredFiles;
+    private bool $includeUncoveredFiles;
 
-    /**
-     * @var bool
-     */
-    private $processUncoveredFiles;
+    private bool $processUncoveredFiles;
 
-    /**
-     * @var bool
-     */
-    private $ignoreDeprecatedCodeUnits;
+    private bool $ignoreDeprecatedCodeUnits;
 
-    /**
-     * @var bool
-     */
-    private $disableCodeCoverageIgnore;
+    private bool $disableCodeCoverageIgnore;
 
-    /**
-     * @var ?Clover
-     */
-    private $clover;
+    private ?Clover $clover = null;
 
-    /**
-     * @var ?Cobertura
-     */
-    private $cobertura;
+    private ?Cobertura $cobertura = null;
 
-    /**
-     * @var ?Crap4j
-     */
-    private $crap4j;
+    private ?Crap4j $crap4j = null;
 
-    /**
-     * @var ?Html
-     */
-    private $html;
+    private ?Html $html = null;
 
-    /**
-     * @var ?Php
-     */
-    private $php;
+    private ?Php $php = null;
 
-    /**
-     * @var ?Text
-     */
-    private $text;
+    private ?Text $text = null;
 
-    /**
-     * @var ?Xml
-     */
-    private $xml;
+    private ?Xml $xml = null;
 
     public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {

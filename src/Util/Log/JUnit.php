@@ -38,70 +38,55 @@ use Throwable;
  */
 final class JUnit extends Printer implements TestListener
 {
-    /**
-     * @var DOMDocument
-     */
-    private $document;
+    private DOMDocument $document;
 
-    /**
-     * @var DOMElement
-     */
-    private $root;
+    private DOMElement $root;
 
-    /**
-     * @var bool
-     */
-    private $reportRiskyTests = false;
+    private bool $reportRiskyTests = false;
 
     /**
      * @var DOMElement[]
      */
-    private $testSuites = [];
+    private array $testSuites = [];
 
     /**
      * @var int[]
      */
-    private $testSuiteTests = [0];
+    private array $testSuiteTests = [0];
 
     /**
      * @var int[]
      */
-    private $testSuiteAssertions = [0];
+    private array $testSuiteAssertions = [0];
 
     /**
      * @var int[]
      */
-    private $testSuiteErrors = [0];
+    private array $testSuiteErrors = [0];
 
     /**
      * @var int[]
      */
-    private $testSuiteWarnings = [0];
+    private array $testSuiteWarnings = [0];
 
     /**
      * @var int[]
      */
-    private $testSuiteFailures = [0];
+    private array $testSuiteFailures = [0];
 
     /**
      * @var int[]
      */
-    private $testSuiteSkipped = [0];
+    private array $testSuiteSkipped = [0];
 
     /**
      * @var int[]
      */
-    private $testSuiteTimes = [0];
+    private array $testSuiteTimes = [0];
 
-    /**
-     * @var int
-     */
-    private $testSuiteLevel = 0;
+    private int $testSuiteLevel = 0;
 
-    /**
-     * @var DOMElement
-     */
-    private $currentTestCase;
+    private ?DOMElement $currentTestCase = null;
 
     /**
      * @param null|mixed $out

@@ -33,20 +33,11 @@ use Throwable;
  */
 final class XmlResultPrinter extends Printer implements TestListener
 {
-    /**
-     * @var DOMDocument
-     */
-    private $document;
+    private DOMDocument $document;
 
-    /**
-     * @var DOMElement
-     */
-    private $root;
+    private DOMElement $root;
 
-    /**
-     * @var NamePrettifier
-     */
-    private $prettifier;
+    private NamePrettifier $prettifier;
 
     /**
      * @var null|Throwable

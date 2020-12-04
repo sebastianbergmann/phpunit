@@ -15,25 +15,13 @@ namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter;
  */
 final class Directory
 {
-    /**
-     * @var string
-     */
-    private $path;
+    private string $path;
 
-    /**
-     * @var string
-     */
-    private $prefix;
+    private string $prefix;
 
-    /**
-     * @var string
-     */
-    private $suffix;
+    private string $suffix;
 
-    /**
-     * @var string
-     */
-    private $group;
+    private string $group;
 
     public function __construct(string $path, string $prefix, string $suffix, string $group)
     {

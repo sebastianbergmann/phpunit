@@ -21,7 +21,7 @@ abstract class BinaryOperator extends Operator
     /**
      * @var Constraint[]
      */
-    private $constraints = [];
+    private array $constraints = [];
 
     public static function fromConstraints(Constraint ...$constraints): self
     {

@@ -65,20 +65,11 @@ use Throwable;
  */
 final class PhptTestCase implements Reorderable, SelfDescribing, Test
 {
-    /**
-     * @var string
-     */
-    private $filename;
+    private string $filename;
 
-    /**
-     * @var AbstractPhpProcess
-     */
-    private $phpUtil;
+    private AbstractPhpProcess $phpUtil;
 
-    /**
-     * @var string
-     */
-    private $output = '';
+    private string $output = '';
 
     /**
      * Constructs a test case with the given filename.

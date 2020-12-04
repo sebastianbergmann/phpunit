@@ -17,10 +17,7 @@ use function substr;
  */
 final class StringEndsWith extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $suffix;
+    private string $suffix;
 
     public function __construct(string $suffix)
     {

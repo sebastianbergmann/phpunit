@@ -21,10 +21,7 @@ use ReflectionException;
  */
 class ClassHasAttribute extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $attributeName;
+    private string $attributeName;
 
     public function __construct(string $attributeName)
     {

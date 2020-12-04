@@ -27,20 +27,11 @@ use RecursiveIterator;
  */
 final class NameFilterIterator extends RecursiveFilterIterator
 {
-    /**
-     * @var string
-     */
-    private $filter;
+    private ?string $filter = null;
 
-    /**
-     * @var int
-     */
-    private $filterMin;
+    private ?int $filterMin = null;
 
-    /**
-     * @var int
-     */
-    private $filterMax;
+    private ?int $filterMax = null;
 
     /**
      * @throws Exception

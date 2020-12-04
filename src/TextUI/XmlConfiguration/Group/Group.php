@@ -15,10 +15,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class Group
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
     public function __construct(string $name)
     {

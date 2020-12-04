@@ -22,7 +22,7 @@ final class ValidationResult
     /**
      * @psalm-var array<int,list<string>>
      */
-    private $validationErrors = [];
+    private array $validationErrors = [];
 
     /**
      * @psalm-param array<int,\LibXMLError> $errors

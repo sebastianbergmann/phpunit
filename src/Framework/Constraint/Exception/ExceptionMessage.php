@@ -18,10 +18,7 @@ use Throwable;
  */
 final class ExceptionMessage extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $expectedMessage;
+    private string $expectedMessage;
 
     public function __construct(string $expected)
     {

@@ -49,7 +49,7 @@ final class Color
     /**
      * @var array<string,string>
      */
-    private static $ansiCodes = [
+    private static array $ansiCodes = [
         'reset'      => '0',
         'bold'       => '1',
         'dim'        => '2',

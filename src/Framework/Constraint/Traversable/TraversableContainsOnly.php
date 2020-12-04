@@ -22,10 +22,7 @@ final class TraversableContainsOnly extends Constraint
      */
     private $constraint;
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
     /**
      * @throws \PHPUnit\Framework\Exception

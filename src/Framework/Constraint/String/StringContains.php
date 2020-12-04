@@ -19,15 +19,9 @@ use function strpos;
  */
 final class StringContains extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $string;
+    private string $string;
 
-    /**
-     * @var bool
-     */
-    private $ignoreCase;
+    private bool $ignoreCase;
 
     public function __construct(string $string, bool $ignoreCase = false)
     {

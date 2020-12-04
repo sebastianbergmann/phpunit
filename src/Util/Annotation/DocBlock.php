@@ -79,14 +79,12 @@ final class DocBlock
 
     private const REGEX_TEST_WITH = '/@testWith\s+/';
 
-    /** @var string */
-    private $docComment;
+    private string $docComment;
 
-    /** @var bool */
-    private $isMethod;
+    private bool $isMethod;
 
     /** @var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index */
-    private $symbolAnnotations;
+    private array $symbolAnnotations;
 
     /**
      * @var null|array<string, mixed>
@@ -100,19 +98,15 @@ final class DocBlock
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >)
      */
-    private $parsedRequirements;
+    private ?array $parsedRequirements = null;
 
-    /** @var int */
-    private $startLine;
+    private int $startLine;
 
-    /** @var int */
-    private $endLine;
+    private int $endLine;
 
-    /** @var string */
-    private $fileName;
+    private string $fileName;
 
-    /** @var string */
-    private $name;
+    private string $name;
 
     /**
      * @var string

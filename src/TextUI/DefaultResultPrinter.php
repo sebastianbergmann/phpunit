@@ -64,75 +64,33 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
     private const AVAILABLE_COLORS = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
 
-    /**
-     * @var int
-     */
-    protected $column = 0;
+    protected int $column = 0;
 
-    /**
-     * @var int
-     */
-    protected $maxColumn;
+    protected ?int $maxColumn = null;
 
-    /**
-     * @var bool
-     */
-    protected $lastTestFailed = false;
+    protected bool $lastTestFailed = false;
 
-    /**
-     * @var int
-     */
-    protected $numAssertions = 0;
+    protected int $numAssertions = 0;
 
-    /**
-     * @var int
-     */
-    protected $numTests = -1;
+    protected int $numTests = -1;
 
-    /**
-     * @var int
-     */
-    protected $numTestsRun = 0;
+    protected int $numTestsRun = 0;
 
-    /**
-     * @var int
-     */
-    protected $numTestsWidth;
+    protected ?int $numTestsWidth = null;
 
-    /**
-     * @var bool
-     */
-    protected $colors = false;
+    protected bool $colors = false;
 
-    /**
-     * @var bool
-     */
-    protected $debug = false;
+    protected bool $debug = false;
 
-    /**
-     * @var bool
-     */
-    protected $verbose = false;
+    protected bool $verbose = false;
 
-    /**
-     * @var int
-     */
-    private $numberOfColumns;
+    private int $numberOfColumns;
 
-    /**
-     * @var bool
-     */
-    private $reverse;
+    private bool $reverse;
 
-    /**
-     * @var bool
-     */
-    private $defectListPrinted = false;
+    private bool $defectListPrinted = false;
 
-    /**
-     * @var Timer
-     */
-    private $timer;
+    private Timer $timer;
 
     /**
      * Constructor.

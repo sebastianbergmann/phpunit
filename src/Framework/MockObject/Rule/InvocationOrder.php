@@ -22,7 +22,7 @@ abstract class InvocationOrder implements SelfDescribing, Verifiable
     /**
      * @var BaseInvocation[]
      */
-    private $invocations = [];
+    private array $invocations = [];
 
     public function getInvocationCount(): int
     {

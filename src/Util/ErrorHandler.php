@@ -29,30 +29,15 @@ use PHPUnit\Framework\Error\Warning;
  */
 final class ErrorHandler
 {
-    /**
-     * @var bool
-     */
-    private $convertDeprecationsToExceptions;
+    private bool $convertDeprecationsToExceptions;
 
-    /**
-     * @var bool
-     */
-    private $convertErrorsToExceptions;
+    private bool $convertErrorsToExceptions;
 
-    /**
-     * @var bool
-     */
-    private $convertNoticesToExceptions;
+    private bool $convertNoticesToExceptions;
 
-    /**
-     * @var bool
-     */
-    private $convertWarningsToExceptions;
+    private bool $convertWarningsToExceptions;
 
-    /**
-     * @var bool
-     */
-    private $registered = false;
+    private bool $registered = false;
 
     public static function invokeIgnoringWarnings(callable $callable)
     {

@@ -23,27 +23,21 @@ final class InvocationHandler
     /**
      * @var Matcher[]
      */
-    private $matchers = [];
+    private array $matchers = [];
 
     /**
      * @var Matcher[]
      */
-    private $matcherMap = [];
+    private array $matcherMap = [];
 
     /**
      * @var ConfigurableMethod[]
      */
-    private $configurableMethods;
+    private array $configurableMethods;
 
-    /**
-     * @var bool
-     */
-    private $returnValueGeneration;
+    private bool $returnValueGeneration;
 
-    /**
-     * @var Throwable
-     */
-    private $deferredError;
+    private ?ReturnValueNotConfiguredException $deferredError = null;
 
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {

@@ -79,10 +79,7 @@ final class Test
      */
     public const LARGE = 2;
 
-    /**
-     * @var array
-     */
-    private static $hookMethods = [];
+    private static array $hookMethods = [];
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException

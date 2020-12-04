@@ -14,10 +14,7 @@ namespace PHPUnit\Framework;
  */
 final class PHPTAssertionFailedError extends SyntheticError
 {
-    /**
-     * @var string
-     */
-    private $diff;
+    private string $diff;
 
     public function __construct(string $message, int $code, string $file, int $line, array $trace, string $diff)
     {

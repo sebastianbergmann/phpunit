@@ -20,10 +20,7 @@ use PHPUnit\Framework\MockObject\MethodNameConstraint;
  */
 final class MethodName
 {
-    /**
-     * @var Constraint
-     */
-    private $constraint;
+    private Constraint $constraint;
 
     /**
      * @param Constraint|string $constraint

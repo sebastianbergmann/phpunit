@@ -148,180 +148,108 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected $providedTests = [];
 
-    /**
-     * @var bool
-     */
-    private $runClassInSeparateProcess;
+    private ?bool $runClassInSeparateProcess = null;
 
-    /**
-     * @var bool
-     */
-    private $inIsolation = false;
+    private bool $inIsolation = false;
 
-    /**
-     * @var array
-     */
-    private $data;
+    private array $data;
 
     /**
      * @var int|string
      */
     private $dataName;
 
-    /**
-     * @var null|string
-     */
-    private $expectedException;
+    private ?string $expectedException = null;
 
-    /**
-     * @var null|string
-     */
-    private $expectedExceptionMessage;
+    private ?string $expectedExceptionMessage = null;
 
-    /**
-     * @var null|string
-     */
-    private $expectedExceptionMessageRegExp;
+    private ?string $expectedExceptionMessageRegExp = null;
 
     /**
      * @var null|int|string
      */
     private $expectedExceptionCode;
 
-    /**
-     * @var string
-     */
-    private $name = '';
+    private string $name = '';
 
     /**
      * @var list<ExecutionOrderDependency>
      */
-    private $dependencies = [];
+    private array $dependencies = [];
 
-    /**
-     * @var array
-     */
-    private $dependencyInput = [];
+    private array $dependencyInput = [];
 
     /**
      * @var array<string,string>
      */
-    private $iniSettings = [];
+    private array $iniSettings = [];
 
-    /**
-     * @var array
-     */
-    private $locale = [];
+    private array $locale = [];
 
     /**
      * @var MockObject[]
      */
-    private $mockObjects = [];
+    private array $mockObjects = [];
 
-    /**
-     * @var MockGenerator
-     */
-    private $mockObjectGenerator;
+    private ?MockGenerator $mockObjectGenerator = null;
 
-    /**
-     * @var int
-     */
-    private $status = BaseTestRunner::STATUS_UNKNOWN;
+    private int $status = BaseTestRunner::STATUS_UNKNOWN;
 
-    /**
-     * @var string
-     */
-    private $statusMessage = '';
+    private string $statusMessage = '';
 
-    /**
-     * @var int
-     */
-    private $numAssertions = 0;
+    private int $numAssertions = 0;
 
-    /**
-     * @var TestResult
-     */
-    private $result;
+    private ?TestResult $result = null;
 
     /**
      * @var mixed
      */
     private $testResult;
 
-    /**
-     * @var string
-     */
-    private $output = '';
+    private string $output = '';
 
-    /**
-     * @var string
-     */
-    private $outputExpectedRegex;
+    private ?string $outputExpectedRegex = null;
 
-    /**
-     * @var string
-     */
-    private $outputExpectedString;
+    private ?string $outputExpectedString = null;
 
     /**
      * @var mixed
      */
     private $outputCallback = false;
 
-    /**
-     * @var bool
-     */
-    private $outputBufferingActive = false;
+    private bool $outputBufferingActive = false;
 
-    /**
-     * @var int
-     */
-    private $outputBufferingLevel;
+    private int $outputBufferingLevel;
 
-    /**
-     * @var bool
-     */
-    private $outputRetrievedForAssertion = false;
+    private bool $outputRetrievedForAssertion = false;
 
-    /**
-     * @var Snapshot
-     */
-    private $snapshot;
+    private ?Snapshot $snapshot = null;
 
-    /**
-     * @var bool
-     */
-    private $beStrictAboutChangesToGlobalState = false;
+    private ?bool $beStrictAboutChangesToGlobalState = false;
 
-    /**
-     * @var bool
-     */
-    private $registerMockObjectsFromTestArgumentsRecursively = false;
+    private bool $registerMockObjectsFromTestArgumentsRecursively = false;
 
     /**
      * @var string[]
      */
-    private $warnings = [];
+    private array $warnings = [];
 
     /**
      * @var string[]
      */
-    private $groups = [];
+    private array $groups = [];
 
-    /**
-     * @var bool
-     */
-    private $doesNotPerformAssertions = false;
+    private bool $doesNotPerformAssertions = false;
 
     /**
      * @var Comparator[]
      */
-    private $customComparators = [];
+    private array $customComparators = [];
 
     /**
      * @var string[]
      */
-    private $doubledTypes = [];
+    private array $doubledTypes = [];
 
     /**
      * Returns a matcher that matches when the method is executed

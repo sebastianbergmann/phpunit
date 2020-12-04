@@ -15,10 +15,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class File
 {
-    /**
-     * @var string
-     */
-    private $path;
+    private string $path;
 
     public function __construct(string $path)
     {
