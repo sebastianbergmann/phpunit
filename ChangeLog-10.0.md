@@ -10,6 +10,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4066](https://github.com/sebastianbergmann/phpunit/issues/4066): Remove `assertNotIsWritable()`
 * [#4069](https://github.com/sebastianbergmann/phpunit/issues/4069): Remove `assertDirectoryNotExists()`
 * [#4072](https://github.com/sebastianbergmann/phpunit/issues/4072): Remove `assertDirectoryNotIsReadable()`
+* [#4075](https://github.com/sebastianbergmann/phpunit/issues/4075): Remove `assertDirectoryNotIsWritable()`
 * [#4142](https://github.com/sebastianbergmann/phpunit/issues/4142): Remove Prophecy integration
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master
