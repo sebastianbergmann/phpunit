@@ -21,7 +21,7 @@
     },
     "prefer-stable": true,
     "require": {
-        "php": ">=7.3",
+        "php": ">=7.4",
         "ext-dom": "*",
         "ext-json": "*",
         "ext-libxml": "*",
@@ -54,7 +54,7 @@
     },
     "config": {
         "platform": {
-            "php": "7.3.0"
+            "php": "7.4.0"
         },
         "optimize-autoloader": true,
         "sort-packages": true
