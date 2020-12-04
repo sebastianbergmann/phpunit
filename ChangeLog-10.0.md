@@ -15,6 +15,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4081](https://github.com/sebastianbergmann/phpunit/issues/4081): Remove `assertFileNotIsReadable()`
 * [#4087](https://github.com/sebastianbergmann/phpunit/issues/4087): Remove `assertRegExp()`
 * [#4090](https://github.com/sebastianbergmann/phpunit/issues/4090): Remove `assertNotRegExp()`
+* [#4092](https://github.com/sebastianbergmann/phpunit/issues/4092): Remove `assertEqualXMLStructure()`
 * [#4142](https://github.com/sebastianbergmann/phpunit/issues/4142): Remove Prophecy integration
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master

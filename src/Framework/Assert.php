@@ -30,13 +30,10 @@ use function is_object;
 use function is_string;
 use function preg_match;
 use function preg_split;
-use function sprintf;
 use function strpos;
 use ArrayAccess;
 use Countable;
-use DOMAttr;
 use DOMDocument;
-use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -2087,86 +2084,6 @@ abstract class Assert
         }
 
         static::assertNotEquals($expected, $actual, $message);
-    }
-
-    /**
-     * Asserts that a hierarchy of DOMElements matches.
-     *
-     * @throws AssertionFailedError
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4091
-     */
-    public static function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
-    {
-        self::createWarning('assertEqualXMLStructure() is deprecated and will be removed in PHPUnit 10.');
-
-        $expectedElement = Xml::import($expectedElement);
-        $actualElement   = Xml::import($actualElement);
-
-        static::assertSame(
-            $expectedElement->tagName,
-            $actualElement->tagName,
-            $message
-        );
-
-        if ($checkAttributes) {
-            static::assertSame(
-                $expectedElement->attributes->length,
-                $actualElement->attributes->length,
-                sprintf(
-                    '%s%sNumber of attributes on node "%s" does not match',
-                    $message,
-                    !empty($message) ? "\n" : '',
-                    $expectedElement->tagName
-                )
-            );
-
-            for ($i = 0; $i < $expectedElement->attributes->length; $i++) {
-                $expectedAttribute = $expectedElement->attributes->item($i);
-                $actualAttribute   = $actualElement->attributes->getNamedItem($expectedAttribute->name);
-
-                assert($expectedAttribute instanceof DOMAttr);
-
-                if (!$actualAttribute) {
-                    static::fail(
-                        sprintf(
-                            '%s%sCould not find attribute "%s" on node "%s"',
-                            $message,
-                            !empty($message) ? "\n" : '',
-                            $expectedAttribute->name,
-                            $expectedElement->tagName
-                        )
-                    );
-                }
-            }
-        }
-
-        Xml::removeCharacterDataNodes($expectedElement);
-        Xml::removeCharacterDataNodes($actualElement);
-
-        static::assertSame(
-            $expectedElement->childNodes->length,
-            $actualElement->childNodes->length,
-            sprintf(
-                '%s%sNumber of child nodes of "%s" differs',
-                $message,
-                !empty($message) ? "\n" : '',
-                $expectedElement->tagName
-            )
-        );
-
-        for ($i = 0; $i < $expectedElement->childNodes->length; $i++) {
-            static::assertEqualXMLStructure(
-                $expectedElement->childNodes->item($i),
-                $actualElement->childNodes->item($i),
-                $checkAttributes,
-                $message
-            );
-        }
     }
 
     /**

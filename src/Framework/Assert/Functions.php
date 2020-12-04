@@ -13,7 +13,6 @@ use function func_get_args;
 use ArrayAccess;
 use Countable;
 use DOMDocument;
-use DOMElement;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -2230,28 +2229,6 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
     {
         Assert::assertXmlStringNotEqualsXmlString(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\assertEqualXMLStructure')) {
-    /**
-     * Asserts that a hierarchy of DOMElements matches.
-     *
-     * @throws AssertionFailedError
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4091
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertEqualXMLStructure
-     */
-    function assertEqualXMLStructure(DOMElement $expectedElement, DOMElement $actualElement, bool $checkAttributes = false, string $message = ''): void
-    {
-        Assert::assertEqualXMLStructure(...func_get_args());
     }
 }
 
