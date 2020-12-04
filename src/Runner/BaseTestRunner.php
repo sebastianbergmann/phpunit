@@ -137,7 +137,7 @@ abstract class BaseTestRunner
      */
     protected function loadSuiteClass(string $suiteClassFile): ReflectionClass
     {
-        return (new StandardTestSuiteLoader)->load($suiteClassFile);
+        return (new TestSuiteLoader)->load($suiteClassFile);
     }
 
     /**

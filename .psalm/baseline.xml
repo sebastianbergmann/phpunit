@@ -784,11 +784,6 @@
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
   </file>
-  <file src="src/Runner/BaseTestRunner.php">
-    <DeprecatedClass occurrences="1">
-      <code>new StandardTestSuiteLoader</code>
-    </DeprecatedClass>
-  </file>
   <file src="src/Runner/DefaultTestResultCache.php">
     <MissingClosureReturnType occurrences="1">
       <code>static function () use ($cacheData) {</code>
@@ -835,10 +830,7 @@
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
   </file>
-  <file src="src/Runner/StandardTestSuiteLoader.php">
-    <DeprecatedInterface occurrences="1">
-      <code>StandardTestSuiteLoader</code>
-    </DeprecatedInterface>
+  <file src="src/Runner/TestSuiteLoader.php">
     <MissingThrowsDocblock occurrences="1">
       <code>FileLoader::checkAndLoad($suiteClassFile)</code>
     </MissingThrowsDocblock>
