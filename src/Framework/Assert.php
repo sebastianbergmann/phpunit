@@ -33,7 +33,6 @@ use function preg_split;
 use function strpos;
 use ArrayAccess;
 use Countable;
-use DOMDocument;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -1961,23 +1960,14 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param DOMDocument|string $actualXml
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Util\Xml\Exception
      */
-    public static function assertXmlStringEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
+    public static function assertXmlStringEqualsXmlFile(string $expectedFile, string $actualXml, string $message = ''): void
     {
-        if (!is_string($actualXml)) {
-            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
-
-            $actual = $actualXml;
-        } else {
-            $actual = (new XmlLoader)->load($actualXml);
-        }
-
         $expected = (new XmlLoader)->loadFile($expectedFile);
+        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -1985,23 +1975,14 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param DOMDocument|string $actualXml
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Util\Xml\Exception
      */
-    public static function assertXmlStringNotEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
+    public static function assertXmlStringNotEqualsXmlFile(string $expectedFile, string $actualXml, string $message = ''): void
     {
-        if (!is_string($actualXml)) {
-            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
-
-            $actual = $actualXml;
-        } else {
-            $actual = (new XmlLoader)->load($actualXml);
-        }
-
         $expected = (new XmlLoader)->loadFile($expectedFile);
+        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertNotEquals($expected, $actual, $message);
     }
@@ -2009,30 +1990,14 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param DOMDocument|string $expectedXml
-     * @param DOMDocument|string $actualXml
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Util\Xml\Exception
      */
-    public static function assertXmlStringEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
+    public static function assertXmlStringEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
-        if (!is_string($expectedXml)) {
-            self::createWarning('Passing an argument of type DOMDocument for the $expectedXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
-
-            $expected = $expectedXml;
-        } else {
-            $expected = (new XmlLoader)->load($expectedXml);
-        }
-
-        if (!is_string($actualXml)) {
-            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
-
-            $actual = $actualXml;
-        } else {
-            $actual = (new XmlLoader)->load($actualXml);
-        }
+        $expected = (new XmlLoader)->load($expectedXml);
+        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertEquals($expected, $actual, $message);
     }
@@ -2040,30 +2005,14 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param DOMDocument|string $expectedXml
-     * @param DOMDocument|string $actualXml
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Util\Xml\Exception
      */
-    public static function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
+    public static function assertXmlStringNotEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
-        if (!is_string($expectedXml)) {
-            self::createWarning('Passing an argument of type DOMDocument for the $expectedXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
-
-            $expected = $expectedXml;
-        } else {
-            $expected = (new XmlLoader)->load($expectedXml);
-        }
-
-        if (!is_string($actualXml)) {
-            self::createWarning('Passing an argument of type DOMDocument for the $actualXml parameter is deprecated. Support for this will be removed in PHPUnit 10.');
-
-            $actual = $actualXml;
-        } else {
-            $actual = (new XmlLoader)->load($actualXml);
-        }
+        $expected = (new XmlLoader)->load($expectedXml);
+        $actual   = (new XmlLoader)->load($actualXml);
 
         static::assertNotEquals($expected, $actual, $message);
     }

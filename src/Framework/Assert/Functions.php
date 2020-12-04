@@ -12,7 +12,6 @@ namespace PHPUnit\Framework;
 use function func_get_args;
 use ArrayAccess;
 use Countable;
-use DOMDocument;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -2132,8 +2131,6 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFile')) {
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param DOMDocument|string $actualXml
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Util\Xml\Exception
@@ -2142,7 +2139,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFile')) {
      *
      * @see Assert::assertXmlStringEqualsXmlFile
      */
-    function assertXmlStringEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
+    function assertXmlStringEqualsXmlFile(string $expectedFile, string $actualXml, string $message = ''): void
     {
         Assert::assertXmlStringEqualsXmlFile(...func_get_args());
     }
@@ -2152,8 +2149,6 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFile')) {
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param DOMDocument|string $actualXml
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Util\Xml\Exception
@@ -2162,7 +2157,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFile')) {
      *
      * @see Assert::assertXmlStringNotEqualsXmlFile
      */
-    function assertXmlStringNotEqualsXmlFile(string $expectedFile, $actualXml, string $message = ''): void
+    function assertXmlStringNotEqualsXmlFile(string $expectedFile, string $actualXml, string $message = ''): void
     {
         Assert::assertXmlStringNotEqualsXmlFile(...func_get_args());
     }
@@ -2172,9 +2167,6 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
     /**
      * Asserts that two XML documents are equal.
      *
-     * @param DOMDocument|string $expectedXml
-     * @param DOMDocument|string $actualXml
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Util\Xml\Exception
@@ -2183,7 +2175,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
      *
      * @see Assert::assertXmlStringEqualsXmlString
      */
-    function assertXmlStringEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
+    function assertXmlStringEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
         Assert::assertXmlStringEqualsXmlString(...func_get_args());
     }
@@ -2193,9 +2185,6 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @param DOMDocument|string $expectedXml
-     * @param DOMDocument|string $actualXml
-     *
      * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Util\Xml\Exception
@@ -2204,7 +2193,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
      *
      * @see Assert::assertXmlStringNotEqualsXmlString
      */
-    function assertXmlStringNotEqualsXmlString($expectedXml, $actualXml, string $message = ''): void
+    function assertXmlStringNotEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
         Assert::assertXmlStringNotEqualsXmlString(...func_get_args());
     }

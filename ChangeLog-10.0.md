@@ -25,6 +25,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4286](https://github.com/sebastianbergmann/phpunit/issues/4286): Remove support for old logging configuration
 * [#4298](https://github.com/sebastianbergmann/phpunit/issues/4298): Remove `at()` matcher
 * [#4395](https://github.com/sebastianbergmann/phpunit/issues/4395): Remove `Remove Command::createRunner()`
+* [#4397](https://github.com/sebastianbergmann/phpunit/issues/4397): Remove confusing parameter options for XML assertions
 * [#4536](https://github.com/sebastianbergmann/phpunit/issues/4536): Remove `assertFileNotIsWritable()`
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master
