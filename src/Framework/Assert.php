@@ -1721,29 +1721,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a string does not match a given regular expression.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4089
-     */
-    public static function assertNotRegExp(string $pattern, string $string, string $message = ''): void
-    {
-        self::createWarning('assertNotRegExp() is deprecated and will be removed in PHPUnit 10. Refactor your code to use assertDoesNotMatchRegularExpression() instead.');
-
-        static::assertThat(
-            $string,
-            new LogicalNot(
-                new RegularExpression($pattern)
-            ),
-            $message
-        );
-    }
-
-    /**
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
      *

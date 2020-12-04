@@ -1872,27 +1872,6 @@ if (!function_exists('PHPUnit\Framework\assertDoesNotMatchRegularExpression')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertNotRegExp')) {
-    /**
-     * Asserts that a string does not match a given regular expression.
-     *
-     * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4089
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertNotRegExp
-     */
-    function assertNotRegExp(string $pattern, string $string, string $message = ''): void
-    {
-        Assert::assertNotRegExp(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\assertSameSize')) {
     /**
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
