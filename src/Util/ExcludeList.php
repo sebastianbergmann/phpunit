@@ -23,12 +23,8 @@ use DeepCopy\DeepCopy;
 use Doctrine\Instantiator\Instantiator;
 use PharIo\Manifest\Manifest;
 use PharIo\Version\Version as PharIoVersion;
-use phpDocumentor\Reflection\DocBlock;
-use phpDocumentor\Reflection\Project;
-use phpDocumentor\Reflection\Type;
 use PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
-use Prophecy\Prophet;
 use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\CliParser\Parser as CliParser;
@@ -51,9 +47,7 @@ use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Type\TypeName;
 use SebastianBergmann\Version;
-use Symfony\Polyfill\Ctype\Ctype;
 use TheSeer\Tokenizer\Tokenizer;
-use Webmozart\Assert\Assert;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -81,18 +75,6 @@ final class ExcludeList
 
         // phar-io/version
         PharIoVersion::class => 1,
-
-        // phpdocumentor/reflection-common
-        Project::class => 1,
-
-        // phpdocumentor/reflection-docblock
-        DocBlock::class => 1,
-
-        // phpdocumentor/type-resolver
-        Type::class => 1,
-
-        // phpspec/prophecy
-        Prophet::class => 1,
 
         // phpunit/phpunit
         TestCase::class => 2,
@@ -157,14 +139,8 @@ final class ExcludeList
         // sebastian/version
         Version::class => 1,
 
-        // symfony/polyfill-ctype
-        Ctype::class => 1,
-
         // theseer/tokenizer
         Tokenizer::class => 1,
-
-        // webmozart/assert
-        Assert::class => 1,
     ];
 
     /**
