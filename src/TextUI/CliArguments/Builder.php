@@ -118,7 +118,6 @@ final class Builder
         'testsuite=',
         'verbose',
         'version',
-        'whitelist=',
         'dump-xdebug-filter=',
     ];
 
@@ -730,7 +729,6 @@ final class Builder
                     break;
 
                 case '--coverage-filter':
-                case '--whitelist':
                     if ($coverageFilter === null) {
                         $coverageFilter = [];
                     }
