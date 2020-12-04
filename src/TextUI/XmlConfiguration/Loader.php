@@ -106,10 +106,6 @@ final class Loader
 
     public function logging(string $filename, DOMXPath $xpath): Logging
     {
-        if ($xpath->query('logging/log')->length !== 0) {
-            return $this->legacyLogging($filename, $xpath);
-        }
-
         $junit   = null;
         $element = $this->element($xpath, 'logging/junit');
 
@@ -192,82 +188,6 @@ final class Loader
                     )
                 )
             );
-        }
-
-        return new Logging(
-            $junit,
-            $text,
-            $teamCity,
-            $testDoxHtml,
-            $testDoxText,
-            $testDoxXml
-        );
-    }
-
-    public function legacyLogging(string $filename, DOMXPath $xpath): Logging
-    {
-        $junit       = null;
-        $teamCity    = null;
-        $testDoxHtml = null;
-        $testDoxText = null;
-        $testDoxXml  = null;
-        $text        = null;
-
-        foreach ($xpath->query('logging/log') as $log) {
-            assert($log instanceof DOMElement);
-
-            $type   = (string) $log->getAttribute('type');
-            $target = (string) $log->getAttribute('target');
-
-            if (!$target) {
-                continue;
-            }
-
-            $target = $this->toAbsolutePath($filename, $target);
-
-            switch ($type) {
-                case 'plain':
-                    $text = new Text(
-                        new File($target)
-                    );
-
-                    break;
-
-                case 'junit':
-                    $junit = new Junit(
-                        new File($target)
-                    );
-
-                    break;
-
-                case 'teamcity':
-                    $teamCity = new TeamCity(
-                        new File($target)
-                    );
-
-                    break;
-
-                case 'testdox-html':
-                    $testDoxHtml = new TestDoxHtml(
-                        new File($target)
-                    );
-
-                    break;
-
-                case 'testdox-text':
-                    $testDoxText = new TestDoxText(
-                        new File($target)
-                    );
-
-                    break;
-
-                case 'testdox-xml':
-                    $testDoxXml = new TestDoxXml(
-                        new File($target)
-                    );
-
-                    break;
-            }
         }
 
         return new Logging(

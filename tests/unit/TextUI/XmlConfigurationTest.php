@@ -441,29 +441,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(TEST_FILES_PATH . 'logfile.txt', $logging->text()->target()->path());
     }
 
-    public function testLegacyLoggingConfigurationIsReadCorrectly(): void
-    {
-        $logging = $this->configuration('configuration_legacy_logging.xml')->logging();
-
-        $this->assertTrue($logging->hasJunit());
-        $this->assertSame(TEST_FILES_PATH . 'junit.xml', $logging->junit()->target()->path());
-
-        $this->assertTrue($logging->hasTeamCity());
-        $this->assertSame(TEST_FILES_PATH . 'teamcity.txt', $logging->teamCity()->target()->path());
-
-        $this->assertTrue($logging->hasTestDoxHtml());
-        $this->assertSame(TEST_FILES_PATH . 'testdox.html', $logging->testDoxHtml()->target()->path());
-
-        $this->assertTrue($logging->hasTestDoxText());
-        $this->assertSame(TEST_FILES_PATH . 'testdox.txt', $logging->testDoxText()->target()->path());
-
-        $this->assertTrue($logging->hasTestDoxXml());
-        $this->assertSame(TEST_FILES_PATH . 'testdox.xml', $logging->testDoxXml()->target()->path());
-
-        $this->assertTrue($logging->hasText());
-        $this->assertSame(TEST_FILES_PATH . 'logfile.txt', $logging->text()->target()->path());
-    }
-
     /**
      * @testdox PHP configuration is read correctly
      */
