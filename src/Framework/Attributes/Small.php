@@ -14,8 +14,8 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS)]
 final class Small extends Group
 {
-    public function name(): string
+    public function __construct()
     {
-        return 'small';
+        parent::__construct('small');
     }
 }
