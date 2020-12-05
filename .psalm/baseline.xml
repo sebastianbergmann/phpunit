@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.2.1@ea9cb72143b77e7520c52fa37290bd8d8bc88fd9">
+<files psalm-version="4.3.1@2feba22a005a18bf31d4c7b9bdb9252c73897476">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -336,6 +336,9 @@
     <MoreSpecificImplementedParamType occurrences="1">
       <code>$other</code>
     </MoreSpecificImplementedParamType>
+    <RedundantCast occurrences="1">
+      <code>(string) $other-&gt;getMessage()</code>
+    </RedundantCast>
   </file>
   <file src="src/Framework/Constraint/Exception/ExceptionMessageRegularExpression.php">
     <MoreSpecificImplementedParamType occurrences="1">
@@ -468,9 +471,6 @@
     <MissingReturnType occurrences="1">
       <code>getObject</code>
     </MissingReturnType>
-    <PossiblyFalseArgument occurrences="1">
-      <code>strpos($args[$i], '$')</code>
-    </PossiblyFalseArgument>
   </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingReturnType occurrences="1">
@@ -534,6 +534,9 @@
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) var_export($parameter-&gt;getDefaultValue(), true)</code>
+    </RedundantCastGivenDocblockType>
     <RedundantCondition occurrences="1">
       <code>$type instanceof ReflectionUnionType</code>
     </RedundantCondition>
@@ -573,6 +576,12 @@
       <code>$invocation</code>
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(bool) $this-&gt;parameterVerificationResult</code>
+    </RedundantCastGivenDocblockType>
+    <RedundantPropertyInitializationCheck occurrences="1">
+      <code>isset($this-&gt;parameterVerificationResult)</code>
+    </RedundantPropertyInitializationCheck>
   </file>
   <file src="src/Framework/MockObject/Stub/ConsecutiveCalls.php">
     <MissingReturnType occurrences="1">
@@ -720,6 +729,9 @@
     <RawObjectIteration occurrences="1">
       <code>$methodProphecies</code>
     </RawObjectIteration>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(bool) $this-&gt;backupStaticAttributes</code>
+    </RedundantCastGivenDocblockType>
     <RedundantCondition occurrences="1">
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
@@ -813,6 +825,9 @@
       <code>$beStrictAboutChangesToGlobalState</code>
       <code>$iteratorFilter</code>
     </PropertyNotSetInConstructor>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) $key</code>
+    </RedundantCastGivenDocblockType>
     <RedundantConditionGivenDocblockType occurrences="7">
       <code>$this-&gt;iteratorFilter !== null</code>
       <code>is_bool($backupGlobals)</code>
@@ -849,6 +864,9 @@
       <code>$filterMax</code>
       <code>$filterMin</code>
     </PropertyNotSetInConstructor>
+    <RedundantPropertyInitializationCheck occurrences="1">
+      <code>$accepted &amp;&amp; isset($this-&gt;filterMax)</code>
+    </RedundantPropertyInitializationCheck>
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
     <DeprecatedInterface occurrences="1">
@@ -1070,6 +1088,45 @@
     <DeprecatedMethod occurrences="1">
       <code>legacyCodeCoverage</code>
     </DeprecatedMethod>
+    <RedundantCast occurrences="37">
+      <code>(string) $argument-&gt;textContent</code>
+      <code>(string) $const-&gt;getAttribute('name')</code>
+      <code>(string) $const-&gt;getAttribute('value')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('group')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('phpVersion')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('phpVersionOperator')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
+      <code>(string) $directoryNode-&gt;textContent</code>
+      <code>(string) $directoryNode-&gt;textContent</code>
+      <code>(string) $document-&gt;documentElement-&gt;getAttribute('columns')</code>
+      <code>(string) $element-&gt;getAttribute($attribute)</code>
+      <code>(string) $element-&gt;getAttribute($attribute)</code>
+      <code>(string) $element-&gt;getAttribute($attribute)</code>
+      <code>(string) $element-&gt;getAttribute('addUncoveredFilesFromWhitelist')</code>
+      <code>(string) $element-&gt;getAttribute('class')</code>
+      <code>(string) $element-&gt;getAttribute('file')</code>
+      <code>(string) $element-&gt;getAttribute('name')</code>
+      <code>(string) $element-&gt;getAttribute('processUncoveredFilesFromWhitelist')</code>
+      <code>(string) $excludeNode-&gt;textContent</code>
+      <code>(string) $file-&gt;textContent</code>
+      <code>(string) $fileNode-&gt;getAttribute('phpVersion')</code>
+      <code>(string) $fileNode-&gt;getAttribute('phpVersionOperator')</code>
+      <code>(string) $fileNode-&gt;textContent</code>
+      <code>(string) $group-&gt;textContent</code>
+      <code>(string) $group-&gt;textContent</code>
+      <code>(string) $includePath-&gt;textContent</code>
+      <code>(string) $ini-&gt;getAttribute('name')</code>
+      <code>(string) $ini-&gt;getAttribute('value')</code>
+      <code>(string) $log-&gt;getAttribute('target')</code>
+      <code>(string) $log-&gt;getAttribute('target')</code>
+      <code>(string) $log-&gt;getAttribute('type')</code>
+      <code>(string) $log-&gt;getAttribute('type')</code>
+      <code>(string) $var-&gt;getAttribute('name')</code>
+      <code>(string) $var-&gt;getAttribute('value')</code>
+    </RedundantCast>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
@@ -1177,6 +1234,16 @@
     <MissingReturnType occurrences="1">
       <code>columns</code>
     </MissingReturnType>
+    <RedundantCastGivenDocblockType occurrences="8">
+      <code>(string) $this-&gt;bootstrap</code>
+      <code>(string) $this-&gt;cacheResultFile</code>
+      <code>(string) $this-&gt;defaultTestSuite</code>
+      <code>(string) $this-&gt;extensionsDirectory</code>
+      <code>(string) $this-&gt;printerClass</code>
+      <code>(string) $this-&gt;printerFile</code>
+      <code>(string) $this-&gt;testSuiteLoaderClass</code>
+      <code>(string) $this-&gt;testSuiteLoaderFile</code>
+    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestDirectoryCollectionIterator.php">
     <PropertyNotSetInConstructor occurrences="1">
@@ -1197,6 +1264,9 @@
     <MissingThrowsDocblock occurrences="1">
       <code>throw new SkippedTestError;</code>
     </MissingThrowsDocblock>
+    <RedundantCast occurrences="1">
+      <code>(string) $matches['value'][$i]</code>
+    </RedundantCast>
   </file>
   <file src="src/Util/Color.php">
     <MissingClosureParamType occurrences="2">
@@ -1334,6 +1404,12 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$tempFile</code>
     </PropertyNotSetInConstructor>
+    <RedundantCondition occurrences="1">
+      <code>$_SERVER</code>
+    </RedundantCondition>
+    <TypeDoesNotContainNull occurrences="1">
+      <code>[]</code>
+    </TypeDoesNotContainNull>
   </file>
   <file src="src/Util/PHP/WindowsPhpProcess.php">
     <PropertyNotSetInConstructor occurrences="1">
@@ -1378,6 +1454,9 @@
       <code>$prefix['start']</code>
       <code>$prefix['trace']</code>
     </PossiblyInvalidArrayOffset>
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>self::STATUS_STYLES[$result['status']]['message']</code>
+    </PossiblyUndefinedArrayOffset>
     <PropertyNotSetInConstructor occurrences="2">
       <code>CliTestDoxPrinter</code>
       <code>CliTestDoxPrinter</code>
@@ -1472,6 +1551,9 @@
     <MoreSpecificReturnType occurrences="1">
       <code>DOMElement</code>
     </MoreSpecificReturnType>
+    <RedundantCast occurrences="1">
+      <code>(string) $entry-&gt;getAttribute('key')</code>
+    </RedundantCast>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">
