@@ -14,15 +14,9 @@ namespace PHPUnit\Util\Metadata;
  */
 final class CachingReader implements Reader
 {
-    /**
-     * @var Reader
-     */
-    private $reader;
+    private Reader $reader;
 
-    /**
-     * @var array
-     */
-    private $cache = [];
+    private array $cache = [];
 
     public function __construct(Reader $reader)
     {

@@ -14,10 +14,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class TestDox
 {
-    /**
-     * @var string
-     */
-    private $text;
+    private string $text;
 
     public function __construct(string $text)
     {

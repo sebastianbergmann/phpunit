@@ -14,10 +14,7 @@ use Attribute;
 #[Attribute(Attribute::IS_REPEATABLE)]
 final class DataProvider
 {
-    /**
-     * @var string
-     */
-    private $methodName;
+    private string $methodName;
 
     public function __construct(string $methodName)
     {

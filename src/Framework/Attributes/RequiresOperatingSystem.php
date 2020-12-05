@@ -14,10 +14,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class RequiresOperatingSystem
 {
-    /**
-     * @var string
-     */
-    private $regularExpression;
+    private string $regularExpression;
 
     public function __construct(string $regularExpression)
     {

@@ -17,12 +17,9 @@ final class DataProviderExternal
     /**
      * @psalm-var class-string
      */
-    private $className;
+    private string $className;
 
-    /**
-     * @var string
-     */
-    private $methodName;
+    private string $methodName;
 
     /**
      * @psalm-param class-string $className

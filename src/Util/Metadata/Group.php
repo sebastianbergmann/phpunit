@@ -15,10 +15,7 @@ namespace PHPUnit\Util\Metadata;
  */
 final class Group extends Metadata
 {
-    /**
-     * @var string
-     */
-    private $groupName;
+    private string $groupName;
 
     public function __construct(string $groupName)
     {

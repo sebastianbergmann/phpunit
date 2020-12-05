@@ -17,10 +17,7 @@ namespace PHPUnit\Util\Metadata;
  */
 final class Registry
 {
-    /**
-     * @var ?Reader
-     */
-    private static $instance;
+    private static ?Reader $instance = null;
 
     public static function reader(): Reader
     {

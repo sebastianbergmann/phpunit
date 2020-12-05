@@ -14,10 +14,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 final class CoversFunction
 {
-    /**
-     * @var string
-     */
-    private $functionName;
+    private string $functionName;
 
     public function __construct(string $functionName)
     {

@@ -14,15 +14,12 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class RequiresPhp
 {
-    /**
-     * @var string
-     */
-    private $version;
+    private string $version;
 
     /**
      * @psalm-var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
      */
-    private $operator;
+    private string $operator;
 
     /**
      * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator

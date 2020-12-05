@@ -14,10 +14,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class TestWith
 {
-    /**
-     * @var string
-     */
-    private $json;
+    private string $json;
 
     public function __construct(string $json)
     {

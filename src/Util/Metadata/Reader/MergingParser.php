@@ -17,7 +17,7 @@ final class MergingParser implements Reader
     /**
      * @var Reader[]
      */
-    private $readers;
+    private array $readers;
 
     public function __construct(Reader ...$readers)
     {

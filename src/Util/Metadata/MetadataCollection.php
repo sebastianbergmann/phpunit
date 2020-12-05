@@ -22,7 +22,7 @@ final class MetadataCollection implements Countable, IteratorAggregate
     /**
      * @var Metadata[]
      */
-    private $metadata;
+    private array $metadata;
 
     /**
      * @param Metadata[] $metadata

@@ -14,10 +14,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class BackupGlobals
 {
-    /**
-     * @var bool
-     */
-    private $enabled;
+    private bool $enabled;
 
     public function __construct(bool $enabled)
     {

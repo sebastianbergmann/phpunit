@@ -22,12 +22,9 @@ final class MetadataCollectionIterator implements Countable, Iterator
     /**
      * @var Metadata[]
      */
-    private $metadata;
+    private array $metadata;
 
-    /**
-     * @var int
-     */
-    private $position = 0;
+    private int $position = 0;
 
     public function __construct(MetadataCollection $metadata)
     {

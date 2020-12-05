@@ -14,10 +14,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 final class UsesClass
 {
-    /**
-     * @var string
-     */
-    private $className;
+    private string $className;
 
     public function __construct(string $className)
     {

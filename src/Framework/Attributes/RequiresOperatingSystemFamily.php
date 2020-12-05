@@ -14,10 +14,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 class RequiresOperatingSystemFamily
 {
-    /**
-     * @var string
-     */
-    private $operatingSystemFamily;
+    private string $operatingSystemFamily;
 
     public function __construct(string $operatingSystemFamily)
     {

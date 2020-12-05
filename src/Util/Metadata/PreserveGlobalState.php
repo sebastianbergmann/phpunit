@@ -15,10 +15,7 @@ namespace PHPUnit\Util\Metadata;
  */
 final class PreserveGlobalState extends Metadata
 {
-    /**
-     * @var bool
-     */
-    private $enabled;
+    private bool $enabled;
 
     public function __construct(bool $enabled)
     {

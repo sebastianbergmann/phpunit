@@ -14,20 +14,14 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 class RequiresPhpExtension
 {
-    /**
-     * @var string
-     */
-    private $extension;
+    private string $extension;
 
-    /**
-     * @var string
-     */
-    private $version;
+    private string $version;
 
     /**
      * @psalm-var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
      */
-    private $operator;
+    private string $operator;
 
     /**
      * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator

@@ -17,7 +17,7 @@ final class CoversClass
     /**
      * @psalm-var class-string
      */
-    private $className;
+    private string $className;
 
     /**
      * @psalm-param class-string $className
