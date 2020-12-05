@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.2.1@ea9cb72143b77e7520c52fa37290bd8d8bc88fd9">
+<files psalm-version="4.3.1@2feba22a005a18bf31d4c7b9bdb9252c73897476">
   <file src="src/Framework/Assert.php">
     <DocblockTypeContradiction occurrences="16">
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
@@ -309,6 +309,9 @@
     <MoreSpecificImplementedParamType occurrences="1">
       <code>$other</code>
     </MoreSpecificImplementedParamType>
+    <RedundantCast occurrences="1">
+      <code>(string) $other-&gt;getMessage()</code>
+    </RedundantCast>
   </file>
   <file src="src/Framework/Constraint/Exception/ExceptionMessageRegularExpression.php">
     <MoreSpecificImplementedParamType occurrences="1">
@@ -488,6 +491,9 @@
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) var_export($parameter-&gt;getDefaultValue(), true)</code>
+    </RedundantCastGivenDocblockType>
     <RedundantCondition occurrences="1">
       <code>$type instanceof ReflectionUnionType</code>
     </RedundantCondition>
@@ -523,6 +529,12 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(bool) $this-&gt;parameterVerificationResult</code>
+    </RedundantCastGivenDocblockType>
+    <RedundantPropertyInitializationCheck occurrences="1">
+      <code>isset($this-&gt;parameterVerificationResult)</code>
+    </RedundantPropertyInitializationCheck>
   </file>
   <file src="src/Framework/MockObject/Stub/ConsecutiveCalls.php">
     <MissingReturnType occurrences="1">
@@ -652,6 +664,9 @@
       <code>$outputBufferingLevel</code>
       <code>$runTestInSeparateProcess</code>
     </PropertyNotSetInConstructor>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(bool) $this-&gt;backupStaticAttributes</code>
+    </RedundantCastGivenDocblockType>
     <RedundantCondition occurrences="1">
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
@@ -683,10 +698,6 @@
     <PossiblyInvalidArgument occurrences="1">
       <code>$linesToBeCovered</code>
     </PossiblyInvalidArgument>
-    <PossiblyNullReference occurrences="2">
-      <code>start</code>
-      <code>stop</code>
-    </PossiblyNullReference>
     <PossiblyUndefinedVariable occurrences="6">
       <code>$_timeout</code>
       <code>$_timeout</code>
@@ -733,6 +744,9 @@
       <code>$this-&gt;backupStaticAttributes</code>
       <code>$this-&gt;beStrictAboutChangesToGlobalState</code>
     </PossiblyNullArgument>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) $key</code>
+    </RedundantCastGivenDocblockType>
     <RedundantConditionGivenDocblockType occurrences="6">
       <code>is_bool($backupGlobals)</code>
       <code>is_bool($backupStaticAttributes)</code>
@@ -970,6 +984,39 @@
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/Loader.php">
+    <RedundantCast occurrences="31">
+      <code>(string) $argument-&gt;textContent</code>
+      <code>(string) $const-&gt;getAttribute('name')</code>
+      <code>(string) $const-&gt;getAttribute('value')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('group')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('phpVersion')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('phpVersionOperator')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
+      <code>(string) $directoryNode-&gt;textContent</code>
+      <code>(string) $directoryNode-&gt;textContent</code>
+      <code>(string) $document-&gt;documentElement-&gt;getAttribute('columns')</code>
+      <code>(string) $element-&gt;getAttribute($attribute)</code>
+      <code>(string) $element-&gt;getAttribute($attribute)</code>
+      <code>(string) $element-&gt;getAttribute($attribute)</code>
+      <code>(string) $element-&gt;getAttribute('class')</code>
+      <code>(string) $element-&gt;getAttribute('file')</code>
+      <code>(string) $element-&gt;getAttribute('name')</code>
+      <code>(string) $excludeNode-&gt;textContent</code>
+      <code>(string) $file-&gt;textContent</code>
+      <code>(string) $fileNode-&gt;getAttribute('phpVersion')</code>
+      <code>(string) $fileNode-&gt;getAttribute('phpVersionOperator')</code>
+      <code>(string) $fileNode-&gt;textContent</code>
+      <code>(string) $group-&gt;textContent</code>
+      <code>(string) $group-&gt;textContent</code>
+      <code>(string) $includePath-&gt;textContent</code>
+      <code>(string) $ini-&gt;getAttribute('name')</code>
+      <code>(string) $ini-&gt;getAttribute('value')</code>
+      <code>(string) $var-&gt;getAttribute('name')</code>
+      <code>(string) $var-&gt;getAttribute('value')</code>
+    </RedundantCast>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
@@ -1093,6 +1140,14 @@
     <MissingReturnType occurrences="1">
       <code>columns</code>
     </MissingReturnType>
+    <RedundantCast occurrences="6">
+      <code>(string) $this-&gt;bootstrap</code>
+      <code>(string) $this-&gt;cacheResultFile</code>
+      <code>(string) $this-&gt;defaultTestSuite</code>
+      <code>(string) $this-&gt;extensionsDirectory</code>
+      <code>(string) $this-&gt;printerClass</code>
+      <code>(string) $this-&gt;printerFile</code>
+    </RedundantCast>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestDirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
@@ -1131,6 +1186,9 @@
     <MissingThrowsDocblock occurrences="1">
       <code>throw new SkippedTestError;</code>
     </MissingThrowsDocblock>
+    <RedundantCast occurrences="1">
+      <code>(string) $matches['value'][$i]</code>
+    </RedundantCast>
   </file>
   <file src="src/Util/Color.php">
     <MissingClosureParamType occurrences="2">
@@ -1265,6 +1323,12 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$tempFile</code>
     </PropertyNotSetInConstructor>
+    <RedundantCondition occurrences="1">
+      <code>$_SERVER</code>
+    </RedundantCondition>
+    <TypeDoesNotContainNull occurrences="1">
+      <code>[]</code>
+    </TypeDoesNotContainNull>
   </file>
   <file src="src/Util/PHP/WindowsPhpProcess.php">
     <PropertyNotSetInConstructor occurrences="1">
@@ -1309,6 +1373,9 @@
       <code>$prefix['start']</code>
       <code>$prefix['trace']</code>
     </PossiblyInvalidArrayOffset>
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>self::STATUS_STYLES[$result['status']]['message']</code>
+    </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
     <DeprecatedInterface occurrences="1">
@@ -1386,6 +1453,9 @@
     <MoreSpecificReturnType occurrences="1">
       <code>DOMElement</code>
     </MoreSpecificReturnType>
+    <RedundantCast occurrences="1">
+      <code>(string) $entry-&gt;getAttribute('key')</code>
+    </RedundantCast>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">
