@@ -18,10 +18,7 @@ use function ord;
 use function preg_replace;
 use function settype;
 use function strlen;
-use DOMCharacterData;
-use DOMDocument;
 use DOMElement;
-use DOMNode;
 use DOMText;
 use ReflectionClass;
 use ReflectionException;
@@ -31,28 +28,6 @@ use ReflectionException;
  */
 final class Xml
 {
-    /**
-     * @deprecated Only used by assertEqualXMLStructure()
-     */
-    public static function import(DOMElement $element): DOMElement
-    {
-        return (new DOMDocument)->importNode($element, true);
-    }
-
-    /**
-     * @deprecated Only used by assertEqualXMLStructure()
-     */
-    public static function removeCharacterDataNodes(DOMNode $node): void
-    {
-        if ($node->hasChildNodes()) {
-            for ($i = $node->childNodes->length - 1; $i >= 0; $i--) {
-                if (($child = $node->childNodes->item($i)) instanceof DOMCharacterData) {
-                    $node->removeChild($child);
-                }
-            }
-        }
-    }
-
     /**
      * Escapes a string for the use in XML documents.
      *

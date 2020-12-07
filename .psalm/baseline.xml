@@ -1443,16 +1443,10 @@
     <InvalidStringClass occurrences="1">
       <code>new $className</code>
     </InvalidStringClass>
-    <LessSpecificReturnStatement occurrences="1">
-      <code>(new DOMDocument)-&gt;importNode($element, true)</code>
-    </LessSpecificReturnStatement>
     <MissingReturnType occurrences="1">
       <code>xmlToVariable</code>
     </MissingReturnType>
     <MissingThrowsDocblock occurrences="1"/>
-    <MoreSpecificReturnType occurrences="1">
-      <code>DOMElement</code>
-    </MoreSpecificReturnType>
     <RedundantCast occurrences="1">
       <code>(string) $entry-&gt;getAttribute('key')</code>
     </RedundantCast>
