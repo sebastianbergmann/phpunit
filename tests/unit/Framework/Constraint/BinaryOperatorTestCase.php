@@ -254,7 +254,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -292,19 +292,19 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         $constraints = [
             $this->getMockBuilder(Constraint::class)
-                 ->setMethods($constraintMethods)
+                 ->onlyMethods($constraintMethods)
                  ->getMockForAbstractClass(),
             $this->getMockBuilder(Constraint::class)
-                 ->setMethods($constraintMethods)
+                 ->onlyMethods($constraintMethods)
                  ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->setMethods($operatorMethods)
+                 ->onlyMethods($operatorMethods)
                  ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->setMethods($operatorMethods)
+                 ->onlyMethods($operatorMethods)
                  ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->setMethods($operatorMethods)
+                 ->onlyMethods($operatorMethods)
                  ->getMockForAbstractClass(),
         ];
 
@@ -399,7 +399,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -440,19 +440,19 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
 
         $constraints = [
             $this->getMockBuilder(Constraint::class)
-                 ->setMethods($constraintMethods)
+                 ->onlyMethods($constraintMethods)
                  ->getMockForAbstractClass(),
             $this->getMockBuilder(Constraint::class)
-                 ->setMethods($constraintMethods)
+                 ->onlyMethods($constraintMethods)
                  ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->setMethods($operatorMethods)
+                 ->onlyMethods($operatorMethods)
                  ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->setMethods($operatorMethods)
+                 ->onlyMethods($operatorMethods)
                  ->getMockForAbstractClass(),
             $this->getMockBuilder(Operator::class)
-                 ->setMethods($operatorMethods)
+                 ->onlyMethods($operatorMethods)
                  ->getMockForAbstractClass(),
         ];
 

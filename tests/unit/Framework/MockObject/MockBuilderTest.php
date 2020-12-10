@@ -36,21 +36,11 @@ final class MockBuilderTest extends TestCase
     public function testMethodsToMockCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->setMethods(['mockableMethod'])
+                     ->onlyMethods(['mockableMethod'])
                      ->getMock();
 
         $this->assertNull($mock->mockableMethod());
         $this->assertTrue($mock->anotherMockableMethod());
-    }
-
-    public function testMethodExceptionsToMockCanBeSpecified(): void
-    {
-        $mock = $this->getMockBuilder(Mockable::class)
-                     ->setMethodsExcept(['mockableMethod'])
-                     ->getMock();
-
-        $this->assertTrue($mock->mockableMethod());
-        $this->assertNull($mock->anotherMockableMethod());
     }
 
     public function testSetMethodsAllowsNonExistentMethodNames(): void
@@ -118,16 +108,6 @@ final class MockBuilderTest extends TestCase
                      ->getMock();
 
         $this->assertTrue($mock->mockableMethod());
-    }
-
-    public function testEmptyMethodExceptionsToMockCanBeSpecified(): void
-    {
-        $mock = $this->getMockBuilder(Mockable::class)
-                     ->setMethodsExcept()
-                     ->getMock();
-
-        $this->assertNull($mock->mockableMethod());
-        $this->assertNull($mock->anotherMockableMethod());
     }
 
     public function testAbleToUseAddMethodsAfterOnlyMethods(): void
@@ -263,7 +243,7 @@ final class MockBuilderTest extends TestCase
     public function testProvidesAFluentInterface(): void
     {
         $spec = $this->getMockBuilder(Mockable::class)
-                     ->setMethods(['mockableMethod'])
+                     ->onlyMethods(['mockableMethod'])
                      ->setConstructorArgs([])
                      ->setMockClassName('DummyClassName')
                      ->disableOriginalConstructor()

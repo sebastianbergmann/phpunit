@@ -29,7 +29,7 @@ final class InvocationMockerTest extends TestCase
     public function testWillReturnWithOneValue(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
 
         $mock->method('foo')
@@ -41,7 +41,7 @@ final class InvocationMockerTest extends TestCase
     public function testWillReturnWithMultipleValues(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
 
         $mock->method('foo')
@@ -55,7 +55,7 @@ final class InvocationMockerTest extends TestCase
     public function testWillReturnOnConsecutiveCalls(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
 
         $mock->method('foo')
@@ -69,7 +69,7 @@ final class InvocationMockerTest extends TestCase
     public function testWillReturnByReference(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
 
         $mock->method('foo')
@@ -240,7 +240,7 @@ final class InvocationMockerTest extends TestCase
     public function testWillReturnAlreadyInstantiatedStubs(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo', 'bar'])
+            ->addMethods(['foo', 'bar'])
             ->getMock();
 
         $mock->method('foo')

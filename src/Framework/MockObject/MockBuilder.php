@@ -261,6 +261,8 @@ final class MockBuilder
     /**
      * Specifies the subset of methods to not mock. Default is to mock all of them.
      *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/pull/3687
+     *
      * @throws ReflectionException
      */
     public function setMethodsExcept(array $methods = []): self
