@@ -473,9 +473,6 @@
       <code>$this-&gt;type</code>
       <code>$this-&gt;type</code>
     </ArgumentTypeCoercion>
-    <DeprecatedMethod occurrences="1">
-      <code>setMethods</code>
-    </DeprecatedMethod>
     <InvalidReturnStatement occurrences="3">
       <code>$object</code>
       <code>$object</code>
@@ -608,9 +605,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$this-&gt;expectedException</code>
     </ArgumentTypeCoercion>
-    <DeprecatedMethod occurrences="1">
-      <code>setMethods</code>
-    </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="2">
       <code>$this-&gt;backupStaticAttributes === null</code>
       <code>$this-&gt;runTestInSeparateProcess === null</code>
@@ -652,6 +646,7 @@
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
+      <code>onlyMethods</code>
     </MissingThrowsDocblock>
     <PossiblyNullReference occurrences="4">
       <code>passed</code>

@@ -18,7 +18,6 @@ use const LC_TIME;
 use const PATHINFO_FILENAME;
 use const PHP_EOL;
 use const PHP_URL_PATH;
-use function array_filter;
 use function array_flip;
 use function array_keys;
 use function array_merge;
@@ -1587,41 +1586,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {
-        try {
-            $reflector = new ReflectionClass($originalClassName);
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
-
-        $mockedMethodsThatDontExist = array_filter(
-            $methods,
-            static function (string $method) use ($reflector) {
-                return !$reflector->hasMethod($method);
-            }
-        );
-
-        if ($mockedMethodsThatDontExist) {
-            $this->addWarning(
-                sprintf(
-                    'createPartialMock() called with method(s) %s that do not exist in %s. This will not be allowed in future versions of PHPUnit.',
-                    implode(', ', $mockedMethodsThatDontExist),
-                    $originalClassName
-                )
-            );
-        }
-
         return $this->getMockBuilder($originalClassName)
                     ->disableOriginalConstructor()
                     ->disableOriginalClone()
                     ->disableArgumentCloning()
                     ->disallowMockingUnknownTypes()
-                    ->setMethods(empty($methods) ? null : $methods)
+                    ->onlyMethods($methods)
                     ->getMock();
     }
 

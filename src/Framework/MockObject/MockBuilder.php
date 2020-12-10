@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function array_diff;
 use function array_merge;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
@@ -158,24 +157,6 @@ final class MockBuilder
     }
 
     /**
-     * Specifies the subset of methods to mock. Default is to mock none of them.
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/pull/3687
-     *
-     * @return $this
-     */
-    public function setMethods(?array $methods = null): self
-    {
-        if ($methods === null) {
-            $this->methods = $methods;
-        } else {
-            $this->methods = array_merge($this->methods ?? [], $methods);
-        }
-
-        return $this;
-    }
-
-    /**
      * Specifies the subset of methods to mock, requiring each to exist in the class.
      *
      * @param string[] $methods
@@ -256,23 +237,6 @@ final class MockBuilder
         $this->methods = array_merge($this->methods ?? [], $methods);
 
         return $this;
-    }
-
-    /**
-     * Specifies the subset of methods to not mock. Default is to mock all of them.
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/pull/3687
-     *
-     * @throws ReflectionException
-     */
-    public function setMethodsExcept(array $methods = []): self
-    {
-        return $this->setMethods(
-            array_diff(
-                $this->generator->getClassMethods($this->type),
-                $methods
-            )
-        );
     }
 
     /**

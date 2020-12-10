@@ -943,8 +943,8 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_WARNING, $test->getStatus());
-        $this->assertFalse($test->hasFailed());
+        $this->assertSame(BaseTestRunner::STATUS_ERROR, $test->getStatus());
+        $this->assertTrue($test->hasFailed());
     }
 
     public function testCreatePartialMockWithRealMethods(): void
