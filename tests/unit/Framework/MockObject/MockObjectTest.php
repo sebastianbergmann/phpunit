@@ -280,7 +280,7 @@ final class MockObjectTest extends TestCase
     public function testFunctionCallback(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['doSomething'])
+                     ->onlyMethods(['doSomething'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -290,7 +290,7 @@ final class MockObjectTest extends TestCase
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
 
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['doSomething'])
+                     ->onlyMethods(['doSomething'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -345,7 +345,7 @@ final class MockObjectTest extends TestCase
     public function testStaticMethodCallback(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['doSomething'])
+                     ->onlyMethods(['doSomething'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -358,7 +358,7 @@ final class MockObjectTest extends TestCase
     public function testPublicMethodCallback(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['doSomething'])
+                     ->onlyMethods(['doSomething'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -385,19 +385,19 @@ final class MockObjectTest extends TestCase
                       ->getMock();
 
         $mock2 = $this->getMockBuilder(PartialMockTestClass::class)
-                      ->setMethods(['doSomething'])
+                      ->onlyMethods(['doSomething'])
                       ->getMock();
 
         $mock3 = $this->getMockBuilder(PartialMockTestClass::class)
-                      ->setMethods(['doSomething'])
+                      ->onlyMethods(['doSomething'])
                       ->getMock();
 
         $mock4 = $this->getMockBuilder(PartialMockTestClass::class)
-                      ->setMethods(['doAnotherThing'])
+                      ->onlyMethods(['doAnotherThing'])
                       ->getMock();
 
         $mock5 = $this->getMockBuilder(PartialMockTestClass::class)
-                      ->setMethods(['doAnotherThing'])
+                      ->onlyMethods(['doAnotherThing'])
                       ->getMock();
 
         $this->assertNotEquals(\get_class($mock1), \get_class($mock2));
@@ -423,7 +423,7 @@ final class MockObjectTest extends TestCase
                       ->getMock();
 
         $mock4 = $this->getMockBuilder(PartialMockTestClass::class)
-                      ->setMethods(['doSomething'])
+                      ->onlyMethods(['doSomething'])
                       ->setMockClassName('AnotherMockClassNameForPartialMockTestClass')
                       ->getMock();
 
@@ -553,7 +553,7 @@ final class MockObjectTest extends TestCase
         $y = clone $x;
 
         $mock = $this->getMockBuilder(stdClass::class)
-                     ->setMethods(['foo'])
+                     ->addMethods(['foo'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -571,7 +571,7 @@ final class MockObjectTest extends TestCase
         $y = clone $x;
 
         $mock = $this->getMockBuilder(stdClass::class)
-                     ->setMethods(['foo'])
+                     ->addMethods(['foo'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -585,8 +585,8 @@ final class MockObjectTest extends TestCase
     {
         $expectedObject = new stdClass;
 
-        $mock = $this->getMockBuilder('SomeClass')
-                     ->setMethods(['doSomethingElse'])
+        $mock = $this->getMockBuilder(SomeClass::class)
+                     ->onlyMethods(['doSomethingElse'])
                      ->enableArgumentCloning()
                      ->getMock();
 
@@ -612,8 +612,8 @@ final class MockObjectTest extends TestCase
     {
         $expectedObject = new stdClass;
 
-        $mock = $this->getMockBuilder('SomeClass')
-                     ->setMethods(['doSomethingElse'])
+        $mock = $this->getMockBuilder(SomeClass::class)
+                     ->onlyMethods(['doSomethingElse'])
                      ->disableArgumentCloning()
                      ->getMock();
 
@@ -636,13 +636,13 @@ final class MockObjectTest extends TestCase
 
     public function testArgumentCloningOptionGeneratesUniqueMock(): void
     {
-        $mockWithCloning = $this->getMockBuilder('SomeClass')
-                                ->setMethods(['doSomethingElse'])
+        $mockWithCloning = $this->getMockBuilder(SomeClass::class)
+                                ->onlyMethods(['doSomethingElse'])
                                 ->enableArgumentCloning()
                                 ->getMock();
 
-        $mockWithoutCloning = $this->getMockBuilder('SomeClass')
-                                   ->setMethods(['doSomethingElse'])
+        $mockWithoutCloning = $this->getMockBuilder(SomeClass::class)
+                                   ->onlyMethods(['doSomethingElse'])
                                    ->disableArgumentCloning()
                                    ->getMock();
 
@@ -652,7 +652,7 @@ final class MockObjectTest extends TestCase
     public function testVerificationOfMethodNameFailsWithoutParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['right', 'wrong'])
+                     ->addMethods(['right', 'wrong'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -677,7 +677,7 @@ final class MockObjectTest extends TestCase
     public function testVerificationOfMethodNameFailsWithParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['right', 'wrong'])
+                     ->addMethods(['right', 'wrong'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -702,7 +702,7 @@ final class MockObjectTest extends TestCase
     public function testVerificationOfMethodNameFailsWithWrongParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['right', 'wrong'])
+                     ->addMethods(['right', 'wrong'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -748,7 +748,7 @@ final class MockObjectTest extends TestCase
     public function testVerificationOfNeverFailsWithEmptyParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['right', 'wrong'])
+                     ->addMethods(['right', 'wrong'])
                      ->getMock();
 
         $mock->expects($this->never())
@@ -771,7 +771,7 @@ final class MockObjectTest extends TestCase
     public function testVerificationOfNeverFailsWithAnyParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['right', 'wrong'])
+                     ->addMethods(['right', 'wrong'])
                      ->getMock();
 
         $mock->expects($this->never())
@@ -794,7 +794,7 @@ final class MockObjectTest extends TestCase
     public function testWithAnythingInsteadOfWithAnyParameters(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
-                     ->setMethods(['right', 'wrong'])
+                     ->addMethods(['right', 'wrong'])
                      ->getMock();
 
         $mock->expects($this->once())
@@ -822,7 +822,7 @@ final class MockObjectTest extends TestCase
     public function testMockArgumentsPassedByReference(): void
     {
         $foo = $this->getMockBuilder(MethodCallbackByReference::class)
-                    ->setMethods(['bar'])
+                    ->onlyMethods(['bar'])
                     ->disableOriginalConstructor()
                     ->disableArgumentCloning()
                     ->getMock();
@@ -867,7 +867,7 @@ final class MockObjectTest extends TestCase
     public function testMockArgumentsPassedByReference3(): void
     {
         $foo = $this->getMockBuilder(MethodCallbackByReference::class)
-                    ->setMethods(['bar'])
+                    ->onlyMethods(['bar'])
                     ->disableOriginalConstructor()
                     ->disableArgumentCloning()
                     ->getMock();
@@ -888,7 +888,7 @@ final class MockObjectTest extends TestCase
     public function testMockArgumentsPassedByReference4(): void
     {
         $foo = $this->getMockBuilder(MethodCallbackByReference::class)
-                    ->setMethods(['bar'])
+                    ->onlyMethods(['bar'])
                     ->disableOriginalConstructor()
                     ->disableArgumentCloning()
                     ->getMock();
@@ -1025,7 +1025,7 @@ final class MockObjectTest extends TestCase
 
     public function testParameterCallbackConstraintOnlyEvaluatedOnce(): void
     {
-        $mock                  = $this->getMockBuilder(Foo::class)->setMethods(['bar'])->getMock();
+        $mock                  = $this->getMockBuilder(Foo::class)->addMethods(['bar'])->getMock();
         $expectedNumberOfCalls = 1;
         $callCount             = 0;
 

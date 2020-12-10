@@ -19,7 +19,7 @@ final class ConsecutiveParametersTest extends TestCase
     public function testIntegration(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-                     ->setMethods(['foo'])
+                     ->addMethods(['foo'])
                      ->getMock();
 
         $mock->expects($this->any())
@@ -36,7 +36,7 @@ final class ConsecutiveParametersTest extends TestCase
     public function testIntegrationWithLessAssertionsThanMethodCalls(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-                     ->setMethods(['foo'])
+                     ->addMethods(['foo'])
                      ->getMock();
 
         $mock->expects($this->any())
@@ -52,7 +52,7 @@ final class ConsecutiveParametersTest extends TestCase
     public function testIntegrationExpectingException(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-                     ->setMethods(['foo'])
+                     ->addMethods(['foo'])
                      ->getMock();
 
         $mock->expects($this->any())
@@ -72,7 +72,7 @@ final class ConsecutiveParametersTest extends TestCase
     public function testIntegrationFailsWithNonIterableParameterGroup(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
 
         $this->expectException(InvalidParameterGroupException::class);

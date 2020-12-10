@@ -91,7 +91,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $className = $this->className();
 
         $nice = $this->getMockBuilder(Constraint::class)
-                     ->setMethods(['toStringInContext'])
+                     ->onlyMethods(['toStringInContext'])
                      ->getMockForAbstractClass();
 
         $constraint = new $className($nice);
@@ -185,7 +185,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Constraint::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -214,7 +214,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Constraint::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -243,7 +243,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -278,7 +278,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -317,7 +317,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -354,7 +354,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -407,7 +407,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Constraint::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -441,7 +441,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Constraint::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -475,7 +475,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -515,7 +515,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -559,7 +559,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
@@ -601,7 +601,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         ];
 
         $operand = $this->getMockBuilder(Operator::class)
-                        ->setMethods($methods)
+                        ->onlyMethods($methods)
                         ->getMockForAbstractClass();
 
         $className = $this->className();
