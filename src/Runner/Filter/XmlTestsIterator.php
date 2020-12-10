@@ -39,16 +39,49 @@ final class XmlTestsIterator extends RecursiveFilterIterator
      *
      * @var array<string,array<string,true>>
      */
-    private array $filter = [];
+    private array $filter;
+
+    /**
+     * @throws \PHPUnit\Util\Xml\Exception
+     *
+     * @return array<string,array<string,true>>
+     */
+    public static function createFilterFromXmlFile(string $xmlFile): array
+    {
+        $xml    = (new XmlLoader())->loadFile($xmlFile);
+        $xpath  = new DOMXPath($xml);
+        $filter = [];
+
+        foreach (self::extractTestCases($xpath) as [$className, $methodName, $dataSet]) {
+            if (!isset($filter[$className])) {
+                $filter[$className] = [];
+            }
+
+            if (!$dataSet) {
+                $filter[$className][$methodName] = true;
+
+                continue;
+            }
+
+            $name                      = "{$methodName} with data set {$dataSet}";
+            $filter[$className][$name] = true;
+        }
+
+        foreach (self::extractPhptFile($xpath) as $path) {
+            $filter[PhptTestCase::class][$path] = true;
+        }
+
+        return $filter;
+    }
 
     /**
      * @throws Exception
      */
-    public function __construct(RecursiveIterator $iterator, string $xmlFile)
+    public function __construct(RecursiveIterator $iterator, array $filter)
     {
         parent::__construct($iterator);
 
-        $this->setFilter($xmlFile);
+        $this->filter = $filter;
     }
 
     public function accept(): bool
@@ -71,35 +104,7 @@ final class XmlTestsIterator extends RecursiveFilterIterator
         return isset($this->filter[$testClass][$name]);
     }
 
-    /**
-     * @throws Exception
-     */
-    private function setFilter(string $xmlFile): void
-    {
-        $xml   = (new XmlLoader())->loadFile($xmlFile);
-        $xpath = new DOMXPath($xml);
-
-        foreach ($this->extractTestCases($xpath) as [$className, $methodName, $dataSet]) {
-            if (!isset($this->filter[$className])) {
-                $this->filter[$className] = [];
-            }
-
-            if (!$dataSet) {
-                $this->filter[$className][$methodName] = true;
-
-                continue;
-            }
-
-            $name                            = "{$methodName} with data set {$dataSet}";
-            $this->filter[$className][$name] = true;
-        }
-
-        foreach ($this->extractPhptFile($xpath) as $path) {
-            $this->filter[PhptTestCase::class][$path] = true;
-        }
-    }
-
-    private function extractTestCases(DOMXPath $xpath): Generator
+    private static function extractTestCases(DOMXPath $xpath): Generator
     {
         /** @var DOMElement $class */
         foreach ($xpath->evaluate('/tests/testCaseClass') as $class) {
@@ -127,7 +132,7 @@ final class XmlTestsIterator extends RecursiveFilterIterator
     /**
      * @return Generator<string>
      */
-    private function extractPhptFile(DOMXPath $xpath): Generator
+    private static function extractPhptFile(DOMXPath $xpath): Generator
     {
         /* @var DOMElement $phptFile */
         foreach ($xpath->evaluate('/tests/phptFile') as $phptFile) {

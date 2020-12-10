@@ -114,6 +114,7 @@ final class TestRunner
     /**
      * @throws \PHPUnit\Runner\Exception
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws \PHPUnit\Util\Xml\Exception
      * @throws Exception
      */
     public function run(TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
@@ -1047,6 +1048,9 @@ final class TestRunner
         $arguments['verbose']                                         = $arguments['verbose'] ?? false;
     }
 
+    /**
+     * @throws \PHPUnit\Util\Xml\Exception
+     */
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
         if (!$arguments['filter'] &&
@@ -1108,7 +1112,7 @@ final class TestRunner
         if (!empty($arguments['testsXml'])) {
             $filterFactory->addFilter(
                 new ReflectionClass(XmlTestsIterator::class),
-                $arguments['testsXml']
+                XmlTestsIterator::createFilterFromXmlFile($arguments['testsXml']),
             );
         }
 
