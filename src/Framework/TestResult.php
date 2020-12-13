@@ -17,7 +17,7 @@ use function sprintf;
 use AssertionError;
 use Countable;
 use Error;
-use PHPUnit\Util\ErrorHandler;
+use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Test as TestUtil;
@@ -571,7 +571,7 @@ final class TestResult implements Countable
         $this->startTest($test);
 
         if ($this->convertDeprecationsToExceptions || $this->convertErrorsToExceptions || $this->convertNoticesToExceptions || $this->convertWarningsToExceptions) {
-            $errorHandler = new ErrorHandler(
+            $errorHandler = new Handler(
                 $this->convertDeprecationsToExceptions,
                 $this->convertErrorsToExceptions,
                 $this->convertNoticesToExceptions,

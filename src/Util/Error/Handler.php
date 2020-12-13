@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util;
+namespace PHPUnit\Util\Error;
 
 use const E_DEPRECATED;
 use const E_NOTICE;
@@ -19,15 +19,11 @@ use const E_WARNING;
 use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
-use PHPUnit\Framework\Error\Deprecated;
-use PHPUnit\Framework\Error\Error;
-use PHPUnit\Framework\Error\Notice;
-use PHPUnit\Framework\Error\Warning;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ErrorHandler
+final class Handler
 {
     private bool $convertDeprecationsToExceptions;
 
@@ -101,7 +97,7 @@ final class ErrorHandler
                     return false;
                 }
 
-                throw new Deprecated($errorString, $errorNumber, $errorFile, $errorLine);
+                throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
 
             default:
                 if (!$this->convertErrorsToExceptions) {

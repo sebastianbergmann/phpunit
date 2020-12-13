@@ -64,10 +64,6 @@ use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\ExceptionMessage;
 use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
-use PHPUnit\Framework\Error\Deprecated;
-use PHPUnit\Framework\Error\Error;
-use PHPUnit\Framework\Error\Notice;
-use PHPUnit\Framework\Error\Warning as WarningError;
 use PHPUnit\Framework\MockObject\Generator as MockGenerator;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -86,6 +82,10 @@ use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Util\Error\Deprecation;
+use PHPUnit\Util\Error\Error;
+use PHPUnit\Util\Error\Notice;
+use PHPUnit\Util\Error\Warning as WarningError;
 use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -451,30 +451,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function expectException(string $exception): void
     {
-        // @codeCoverageIgnoreStart
-        switch ($exception) {
-            case Deprecated::class:
-                $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Deprecated is deprecated and will be removed in PHPUnit 10. Use expectDeprecation() instead.');
-
-            break;
-
-            case Error::class:
-                $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Error is deprecated and will be removed in PHPUnit 10. Use expectError() instead.');
-
-            break;
-
-            case Notice::class:
-                $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Notice is deprecated and will be removed in PHPUnit 10. Use expectNotice() instead.');
-
-            break;
-
-            case WarningError::class:
-                $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Warning is deprecated and will be removed in PHPUnit 10. Use expectWarning() instead.');
-
-            break;
-        }
-        // @codeCoverageIgnoreEnd
-
         $this->expectedException = $exception;
     }
 
@@ -515,7 +491,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     public function expectDeprecation(): void
     {
-        $this->expectedException = Deprecated::class;
+        $this->expectedException = Deprecation::class;
     }
 
     public function expectDeprecationMessage(string $message): void

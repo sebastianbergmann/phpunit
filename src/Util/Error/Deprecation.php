@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Framework\Error;
+namespace PHPUnit\Util\Error;
 
 /**
  * @internal
  */
-final class Deprecated extends Error
+final class Deprecation extends Error
 {
 }

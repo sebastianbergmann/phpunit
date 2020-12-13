@@ -1191,7 +1191,7 @@
       <code>$matches</code>
     </MissingClosureParamType>
   </file>
-  <file src="src/Util/ErrorHandler.php">
+  <file src="src/Util/Error/Handler.php">
     <InvalidArgument occurrences="1"/>
     <MissingClosureParamType occurrences="2">
       <code>$errorNumber</code>

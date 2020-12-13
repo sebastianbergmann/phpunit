@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Removed
 
 * [#3769](https://github.com/sebastianbergmann/phpunit/issues/3769): Remove `MockBuilder::setMethods()` and `MockBuilder::setMethodsExcept()`
+* [#3777](https://github.com/sebastianbergmann/phpunit/issues/3777): Remove `PHPUnit\Framework\Error\*` classes
 * [#3870](https://github.com/sebastianbergmann/phpunit/issues/3870): Drop support for PHP 7.3
 * [#4063](https://github.com/sebastianbergmann/phpunit/issues/4063): Remove `assertNotIsReadable()`
 * [#4066](https://github.com/sebastianbergmann/phpunit/issues/4066): Remove `assertNotIsWritable()`

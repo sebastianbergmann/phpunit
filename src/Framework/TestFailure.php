@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 use function get_class;
 use function sprintf;
 use function trim;
-use PHPUnit\Framework\Error\Error;
+use PHPUnit\Util\Error\Error;
 use Throwable;
 
 /**

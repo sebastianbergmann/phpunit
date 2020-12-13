@@ -24,7 +24,7 @@ use function is_string;
 use function serialize;
 use function sprintf;
 use function unserialize;
-use PHPUnit\Util\ErrorHandler;
+use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\Filesystem;
 use Serializable;
 
@@ -161,7 +161,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
         }
         // @codeCoverageIgnoreEnd
 
-        $cache = ErrorHandler::invokeIgnoringWarnings(
+        $cache = Handler::invokeIgnoringWarnings(
             static function () use ($cacheData) {
                 return @unserialize($cacheData, ['allowed_classes' => [self::class]]);
             }
