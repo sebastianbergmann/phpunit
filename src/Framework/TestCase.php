@@ -411,21 +411,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function toString(): string
     {
-        try {
-            $class = new ReflectionClass($this);
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
-
         $buffer = sprintf(
             '%s::%s',
-            $class->name,
+            (new ReflectionClass($this))->getName(),
             $this->getName(false)
         );
 
@@ -2449,32 +2437,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } elseif ($result->isStrictAboutTestsThatDoNotTestAnything() &&
             !$this->doesNotPerformAssertions() &&
             $this->getNumAssertions() === 0) {
-            try {
-                $reflected = new ReflectionClass($this);
-                // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
-                throw new Exception(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-            // @codeCoverageIgnoreEnd
-
-            $name = $this->getName(false);
+            $reflected = new ReflectionClass($this);
+            $name      = $this->getName(false);
 
             if ($name && $reflected->hasMethod($name)) {
-                try {
-                    $reflected = $reflected->getMethod($name);
-                    // @codeCoverageIgnoreStart
-                } catch (ReflectionException $e) {
-                    throw new Exception(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
-                // @codeCoverageIgnoreEnd
+                $reflected = $reflected->getMethod($name);
             }
 
             $result->addFailure(
@@ -2534,19 +2501,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function runInSeparateProcess(TestResult $result): void
     {
+        $class          = new ReflectionClass($this);
         $runEntireClass = $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
-
-        try {
-            $class = new ReflectionClass($this);
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
 
         if ($runEntireClass) {
             $template = new Template(
