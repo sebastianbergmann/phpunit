@@ -85,10 +85,7 @@ final class TestResult implements Countable
 
     private int $runTests = 0;
 
-    /**
-     * @var float
-     */
-    private $time = 0;
+    private float $time = 0;
 
     /**
      * Code Coverage information.
