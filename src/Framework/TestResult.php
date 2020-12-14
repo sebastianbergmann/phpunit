@@ -87,9 +87,6 @@ final class TestResult implements Countable
 
     private float $time = 0;
 
-    /**
-     * Code Coverage information.
-     */
     private ?CodeCoverage $codeCoverage = null;
 
     private bool $convertDeprecationsToExceptions = true;
@@ -144,8 +141,6 @@ final class TestResult implements Countable
      * @deprecated Use the `TestHook` interfaces instead
      *
      * @codeCoverageIgnore
-     *
-     * Registers a TestListener.
      */
     public function addListener(TestListener $listener): void
     {
@@ -156,8 +151,6 @@ final class TestResult implements Countable
      * @deprecated Use the `TestHook` interfaces instead
      *
      * @codeCoverageIgnore
-     *
-     * Unregisters a TestListener.
      */
     public function removeListener(TestListener $listener): void
     {
@@ -172,8 +165,6 @@ final class TestResult implements Countable
      * @deprecated Use the `TestHook` interfaces instead
      *
      * @codeCoverageIgnore
-     *
-     * Flushes all flushable TestListeners.
      */
     public function flushListeners(): void
     {
@@ -184,9 +175,6 @@ final class TestResult implements Countable
         }
     }
 
-    /**
-     * Adds an error to the list of errors.
-     */
     public function addError(Test $test, Throwable $t, float $time): void
     {
         if ($t instanceof RiskyTestError) {
@@ -240,10 +228,6 @@ final class TestResult implements Countable
         $this->time += $time;
     }
 
-    /**
-     * Adds a warning to the list of warnings.
-     * The passed in exception caused the warning.
-     */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
         if ($this->stopOnWarning || $this->stopOnDefect) {
@@ -259,10 +243,6 @@ final class TestResult implements Countable
         $this->time += $time;
     }
 
-    /**
-     * Adds a failure to the list of failures.
-     * The passed in exception caused the failure.
-     */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         if ($e instanceof RiskyTestError || $e instanceof OutputError) {
@@ -310,9 +290,6 @@ final class TestResult implements Countable
         $this->time += $time;
     }
 
-    /**
-     * Informs the result that a test suite will be started.
-     */
     public function startTestSuite(TestSuite $suite): void
     {
         $this->currentTestSuiteFailed = false;
@@ -322,9 +299,6 @@ final class TestResult implements Countable
         }
     }
 
-    /**
-     * Informs the result that a test suite was completed.
-     */
     public function endTestSuite(TestSuite $suite): void
     {
         if (!$this->currentTestSuiteFailed) {
@@ -336,9 +310,6 @@ final class TestResult implements Countable
         }
     }
 
-    /**
-     * Informs the result that a test will be started.
-     */
     public function startTest(Test $test): void
     {
         $this->lastTestFailed = false;
@@ -350,8 +321,6 @@ final class TestResult implements Countable
     }
 
     /**
-     * Informs the result that a test was completed.
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function endTest(Test $test, float $time): void
@@ -380,41 +349,27 @@ final class TestResult implements Countable
         }
     }
 
-    /**
-     * Returns true if no risky test occurred.
-     */
     public function allHarmless(): bool
     {
         return $this->riskyCount() === 0;
     }
 
-    /**
-     * Gets the number of risky tests.
-     */
     public function riskyCount(): int
     {
         return count($this->risky);
     }
 
-    /**
-     * Returns true if no incomplete test occurred.
-     */
     public function allCompletelyImplemented(): bool
     {
         return $this->notImplementedCount() === 0;
     }
 
-    /**
-     * Gets the number of incomplete tests.
-     */
     public function notImplementedCount(): int
     {
         return count($this->notImplemented);
     }
 
     /**
-     * Returns an array of TestFailure objects for the risky tests.
-     *
      * @return TestFailure[]
      */
     public function risky(): array
@@ -423,8 +378,6 @@ final class TestResult implements Countable
     }
 
     /**
-     * Returns an array of TestFailure objects for the incomplete tests.
-     *
      * @return TestFailure[]
      */
     public function notImplemented(): array
@@ -432,25 +385,17 @@ final class TestResult implements Countable
         return $this->notImplemented;
     }
 
-    /**
-     * Returns true if no test has been skipped.
-     */
     public function noneSkipped(): bool
     {
         return $this->skippedCount() === 0;
     }
 
-    /**
-     * Gets the number of skipped tests.
-     */
     public function skippedCount(): int
     {
         return count($this->skipped);
     }
 
     /**
-     * Returns an array of TestFailure objects for the skipped tests.
-     *
      * @return TestFailure[]
      */
     public function skipped(): array
@@ -458,17 +403,12 @@ final class TestResult implements Countable
         return $this->skipped;
     }
 
-    /**
-     * Gets the number of detected errors.
-     */
     public function errorCount(): int
     {
         return count($this->errors);
     }
 
     /**
-     * Returns an array of TestFailure objects for the errors.
-     *
      * @return TestFailure[]
      */
     public function errors(): array
@@ -476,17 +416,12 @@ final class TestResult implements Countable
         return $this->errors;
     }
 
-    /**
-     * Gets the number of detected failures.
-     */
     public function failureCount(): int
     {
         return count($this->failures);
     }
 
     /**
-     * Returns an array of TestFailure objects for the failures.
-     *
      * @return TestFailure[]
      */
     public function failures(): array
@@ -494,17 +429,12 @@ final class TestResult implements Countable
         return $this->failures;
     }
 
-    /**
-     * Gets the number of detected warnings.
-     */
     public function warningCount(): int
     {
         return count($this->warnings);
     }
 
     /**
-     * Returns an array of TestFailure objects for the warnings.
-     *
      * @return TestFailure[]
      */
     public function warnings(): array
@@ -512,35 +442,22 @@ final class TestResult implements Countable
         return $this->warnings;
     }
 
-    /**
-     * Returns the names of the tests that have passed.
-     */
     public function passed(): array
     {
         return $this->passed;
     }
 
-    /**
-     * Returns the names of the TestSuites that have passed.
-     *
-     * This enables @depends-annotations for TestClassName::class
-     */
     public function passedClasses(): array
     {
         return $this->passedTestClasses;
     }
 
-    /**
-     * Returns whether code coverage information should be collected.
-     */
     public function getCollectCodeCoverageInformation(): bool
     {
         return $this->codeCoverage !== null;
     }
 
     /**
-     * Runs a TestCase.
-     *
      * @throws CodeCoverageException
      * @throws UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
@@ -885,129 +802,81 @@ final class TestResult implements Countable
         $this->endTest($test, $time);
     }
 
-    /**
-     * Gets the number of run tests.
-     */
     public function count(): int
     {
         return $this->runTests;
     }
 
-    /**
-     * Checks whether the test run should stop.
-     */
     public function shouldStop(): bool
     {
         return $this->stop;
     }
 
-    /**
-     * Marks that the test run should stop.
-     */
     public function stop(): void
     {
         $this->stop = true;
     }
 
-    /**
-     * Returns the code coverage object.
-     */
     public function getCodeCoverage(): ?CodeCoverage
     {
         return $this->codeCoverage;
     }
 
-    /**
-     * Sets the code coverage object.
-     */
     public function setCodeCoverage(CodeCoverage $codeCoverage): void
     {
         $this->codeCoverage = $codeCoverage;
     }
 
-    /**
-     * Enables or disables the deprecation-to-exception conversion.
-     */
     public function convertDeprecationsToExceptions(bool $flag): void
     {
         $this->convertDeprecationsToExceptions = $flag;
     }
 
-    /**
-     * Returns the deprecation-to-exception conversion setting.
-     */
     public function getConvertDeprecationsToExceptions(): bool
     {
         return $this->convertDeprecationsToExceptions;
     }
 
-    /**
-     * Enables or disables the error-to-exception conversion.
-     */
     public function convertErrorsToExceptions(bool $flag): void
     {
         $this->convertErrorsToExceptions = $flag;
     }
 
-    /**
-     * Returns the error-to-exception conversion setting.
-     */
     public function getConvertErrorsToExceptions(): bool
     {
         return $this->convertErrorsToExceptions;
     }
 
-    /**
-     * Enables or disables the notice-to-exception conversion.
-     */
     public function convertNoticesToExceptions(bool $flag): void
     {
         $this->convertNoticesToExceptions = $flag;
     }
 
-    /**
-     * Returns the notice-to-exception conversion setting.
-     */
     public function getConvertNoticesToExceptions(): bool
     {
         return $this->convertNoticesToExceptions;
     }
 
-    /**
-     * Enables or disables the warning-to-exception conversion.
-     */
     public function convertWarningsToExceptions(bool $flag): void
     {
         $this->convertWarningsToExceptions = $flag;
     }
 
-    /**
-     * Returns the warning-to-exception conversion setting.
-     */
     public function getConvertWarningsToExceptions(): bool
     {
         return $this->convertWarningsToExceptions;
     }
 
-    /**
-     * Enables or disables the stopping when an error occurs.
-     */
     public function stopOnError(bool $flag): void
     {
         $this->stopOnError = $flag;
     }
 
-    /**
-     * Enables or disables the stopping when a failure occurs.
-     */
     public function stopOnFailure(bool $flag): void
     {
         $this->stopOnFailure = $flag;
     }
 
-    /**
-     * Enables or disables the stopping when a warning occurs.
-     */
     public function stopOnWarning(bool $flag): void
     {
         $this->stopOnWarning = $flag;
@@ -1073,49 +942,31 @@ final class TestResult implements Countable
         return $this->forceCoversAnnotation;
     }
 
-    /**
-     * Enables or disables the stopping for risky tests.
-     */
     public function stopOnRisky(bool $flag): void
     {
         $this->stopOnRisky = $flag;
     }
 
-    /**
-     * Enables or disables the stopping for incomplete tests.
-     */
     public function stopOnIncomplete(bool $flag): void
     {
         $this->stopOnIncomplete = $flag;
     }
 
-    /**
-     * Enables or disables the stopping for skipped tests.
-     */
     public function stopOnSkipped(bool $flag): void
     {
         $this->stopOnSkipped = $flag;
     }
 
-    /**
-     * Enables or disables the stopping for defects: error, failure, warning.
-     */
     public function stopOnDefect(bool $flag): void
     {
         $this->stopOnDefect = $flag;
     }
 
-    /**
-     * Returns the time spent running the tests.
-     */
     public function time(): float
     {
         return $this->time;
     }
 
-    /**
-     * Returns whether the entire test was successful or not.
-     */
     public function wasSuccessful(): bool
     {
         return $this->wasSuccessfulIgnoringWarnings() && empty($this->warnings);
@@ -1131,41 +982,26 @@ final class TestResult implements Countable
         return $this->wasSuccessful() && $this->allHarmless() && $this->allCompletelyImplemented() && $this->noneSkipped();
     }
 
-    /**
-     * Sets the default timeout for tests.
-     */
     public function setDefaultTimeLimit(int $timeout): void
     {
         $this->defaultTimeLimit = $timeout;
     }
 
-    /**
-     * Sets the timeout for small tests.
-     */
     public function setTimeoutForSmallTests(int $timeout): void
     {
         $this->timeoutForSmallTests = $timeout;
     }
 
-    /**
-     * Sets the timeout for medium tests.
-     */
     public function setTimeoutForMediumTests(int $timeout): void
     {
         $this->timeoutForMediumTests = $timeout;
     }
 
-    /**
-     * Sets the timeout for large tests.
-     */
     public function setTimeoutForLargeTests(int $timeout): void
     {
         $this->timeoutForLargeTests = $timeout;
     }
 
-    /**
-     * Returns the set timeout for large tests.
-     */
     public function getTimeoutForLargeTests(): int
     {
         return $this->timeoutForLargeTests;
