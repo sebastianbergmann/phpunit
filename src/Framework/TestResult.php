@@ -22,49 +22,52 @@ use Throwable;
  */
 final class TestResult implements Countable
 {
+    /**
+     * @psalm-var array<string,array{result: mixed, size: int}>
+     */
     private array $passed = [];
 
     /**
-     * @var array<string>
+     * @psalm-var list<string>
      */
     private array $passedTestClasses = [];
 
     private bool $currentTestSuiteFailed = false;
 
     /**
-     * @var TestFailure[]
+     * @psalm-var list<TestFailure>
      */
     private array $errors = [];
 
     /**
-     * @var TestFailure[]
+     * @psalm-var list<TestFailure>
      */
     private array $failures = [];
 
     /**
-     * @var TestFailure[]
+     * @psalm-var list<TestFailure>
      */
     private array $warnings = [];
 
     /**
-     * @var TestFailure[]
+     * @psalm-var list<TestFailure>
      */
     private array $notImplemented = [];
 
     /**
-     * @var TestFailure[]
+     * @psalm-var list<TestFailure>
      */
     private array $risky = [];
 
     /**
-     * @var TestFailure[]
+     * @psalm-var list<TestFailure>
      */
     private array $skipped = [];
 
     /**
      * @deprecated Use the `TestHook` interfaces instead
      *
-     * @var TestListener[]
+     * @psalm-var list<TestListener>
      */
     private array $listeners = [];
 
@@ -341,7 +344,7 @@ final class TestResult implements Countable
     }
 
     /**
-     * @return TestFailure[]
+     * @psalm-return list<TestFailure>
      */
     public function risky(): array
     {
@@ -349,7 +352,7 @@ final class TestResult implements Countable
     }
 
     /**
-     * @return TestFailure[]
+     * @psalm-return list<TestFailure>
      */
     public function notImplemented(): array
     {
@@ -367,7 +370,7 @@ final class TestResult implements Countable
     }
 
     /**
-     * @return TestFailure[]
+     * @psalm-return list<TestFailure>
      */
     public function skipped(): array
     {
@@ -380,7 +383,7 @@ final class TestResult implements Countable
     }
 
     /**
-     * @return TestFailure[]
+     * @psalm-return list<TestFailure>
      */
     public function errors(): array
     {
@@ -393,7 +396,7 @@ final class TestResult implements Countable
     }
 
     /**
-     * @return TestFailure[]
+     * @psalm-return list<TestFailure>
      */
     public function failures(): array
     {
@@ -406,13 +409,16 @@ final class TestResult implements Countable
     }
 
     /**
-     * @return TestFailure[]
+     * @psalm-return list<TestFailure>
      */
     public function warnings(): array
     {
         return $this->warnings;
     }
 
+    /**
+     * @psalm-return array<string,array{result: mixed, size: int}>
+     */
     public function passed(): array
     {
         return $this->passed;
