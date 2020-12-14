@@ -438,7 +438,7 @@ final class TestResult implements Countable
         return $this->passedTestClasses;
     }
 
-    public function getCollectCodeCoverageInformation(): bool
+    public function collectsCodeCoverageInformation(): bool
     {
         return $this->codeCoverage !== null;
     }
@@ -803,7 +803,7 @@ final class TestResult implements Countable
         $this->stop = true;
     }
 
-    public function getCodeCoverage(): ?CodeCoverage
+    public function codeCoverage(): ?CodeCoverage
     {
         return $this->codeCoverage;
     }
@@ -963,7 +963,7 @@ final class TestResult implements Countable
         $this->timeoutForLargeTests = $timeout;
     }
 
-    public function getTimeoutForLargeTests(): int
+    public function timeoutForLargeTests(): int
     {
         return $this->timeoutForLargeTests;
     }

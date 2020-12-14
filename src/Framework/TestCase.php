@@ -641,7 +641,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $iniSettings   = '';
             }
 
-            $coverage                                   = $result->getCollectCodeCoverageInformation() ? 'true' : 'false';
+            $coverage                                   = $result->collectsCodeCoverageInformation() ? 'true' : 'false';
             $isStrictAboutTestsThatDoNotTestAnything    = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
             $isStrictAboutOutputDuringTests             = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
             $enforcesTimeLimit                          = $result->enforcesTimeLimit() ? 'true' : 'false';
@@ -660,7 +660,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $phar = '\'\'';
             }
 
-            $codeCoverage               = $result->getCodeCoverage();
+            $codeCoverage               = $result->codeCoverage();
             $codeCoverageFilter         = null;
             $cachesStaticAnalysis       = 'false';
             $codeCoverageCacheDirectory = null;

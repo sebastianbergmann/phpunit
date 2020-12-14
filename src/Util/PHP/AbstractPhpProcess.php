@@ -304,9 +304,9 @@ abstract class AbstractPhpProcess
                 $childResult = $childResult['result'];
                 assert($childResult instanceof  TestResult);
 
-                if ($result->getCollectCodeCoverageInformation()) {
-                    $result->getCodeCoverage()->merge(
-                        $childResult->getCodeCoverage()
+                if ($result->collectsCodeCoverageInformation()) {
+                    $result->codeCoverage()->merge(
+                        $childResult->codeCoverage()
                     );
                 }
 

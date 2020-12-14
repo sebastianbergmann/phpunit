@@ -125,7 +125,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $code     = $this->render($sections['FILE']);
         $xfail    = false;
-        $settings = $this->parseIniSection($this->settings($result->getCollectCodeCoverageInformation()));
+        $settings = $this->parseIniSection($this->settings($result->collectsCodeCoverageInformation()));
 
         $result->startTest($this);
 
@@ -141,7 +141,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $this->phpUtil->setUseStderrRedirection(true);
 
         if ($result->enforcesTimeLimit()) {
-            $this->phpUtil->setTimeout($result->getTimeoutForLargeTests());
+            $this->phpUtil->setTimeout($result->timeoutForLargeTests());
         }
 
         $skip = $this->runSkip($sections, $result, $settings);
@@ -162,11 +162,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $this->phpUtil->setArgs($sections['ARGS']);
         }
 
-        if ($result->getCollectCodeCoverageInformation()) {
+        if ($result->collectsCodeCoverageInformation()) {
             $codeCoverageCacheDirectory = null;
             $pathCoverage               = false;
 
-            $codeCoverage = $result->getCodeCoverage();
+            $codeCoverage = $result->codeCoverage();
 
             if ($codeCoverage) {
                 if ($codeCoverage->cachesStaticAnalysis()) {
@@ -227,7 +227,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->addFailure($this, new IncompleteTestError('XFAIL section but test passes'), $time);
         }
 
-        $this->runClean($sections, $result->getCollectCodeCoverageInformation());
+        $this->runClean($sections, $result->collectsCodeCoverageInformation());
 
         $result->endTest($this, $time);
 

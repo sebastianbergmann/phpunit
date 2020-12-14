@@ -1303,7 +1303,7 @@
       <code>strrpos($key, "\0")</code>
     </PossiblyFalseOperand>
     <PossiblyNullArgument occurrences="1">
-      <code>$childResult-&gt;getCodeCoverage()</code>
+      <code>$childResult-&gt;codeCoverage()</code>
     </PossiblyNullArgument>
     <PossiblyNullReference occurrences="1">
       <code>merge</code>
