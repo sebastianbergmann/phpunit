@@ -264,7 +264,7 @@ final class TestRunner extends BaseTestRunner
         }
 
         if ($arguments['registerMockObjectsFromTestArgumentsRecursively']) {
-            $result->setRegisterMockObjectsFromTestArgumentsRecursively(true);
+            $result->registerMockObjectsFromTestArgumentsRecursively();
         }
 
         if ($this->printer === null) {

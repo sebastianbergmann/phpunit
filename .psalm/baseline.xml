@@ -631,7 +631,7 @@
       <code>getResult</code>
       <code>runTest</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="22">
+    <MissingThrowsDocblock occurrences="25">
       <code>GlobalState::getIncludedFilesAsString()</code>
       <code>cacheDirectory</code>
       <code>endTest</code>
@@ -650,13 +650,26 @@
       <code>new Differ($header)</code>
       <code>onlyMethods</code>
       <code>runTestJob</code>
+      <code>stop</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="4">
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$linesToBeCovered</code>
+    </PossiblyInvalidArgument>
+    <PossiblyNullReference occurrences="6">
       <code>passed</code>
+      <code>start</code>
       <code>startTest</code>
       <code>startTest</code>
       <code>startTest</code>
+      <code>stop</code>
     </PossiblyNullReference>
+    <PossiblyUndefinedVariable occurrences="5">
+      <code>$_timeout</code>
+      <code>$_timeout</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+    </PossiblyUndefinedVariable>
     <PropertyNotSetInConstructor occurrences="3">
       <code>$backupStaticAttributes</code>
       <code>$outputBufferingLevel</code>
@@ -668,11 +681,11 @@
     <RedundantCondition occurrences="1">
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
+    <UndefinedClass occurrences="1">
+      <code>ResourceOperations</code>
+    </UndefinedClass>
   </file>
   <file src="src/Framework/TestResult.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$test</code>
-    </ArgumentTypeCoercion>
     <DeprecatedClass occurrences="3">
       <code>TestListener</code>
       <code>array</code>
@@ -686,41 +699,6 @@
     <DeprecatedProperty occurrences="1">
       <code>$this-&gt;listeners</code>
     </DeprecatedProperty>
-    <InvalidArgument occurrences="1">
-      <code>[$test, 'runBare']</code>
-    </InvalidArgument>
-    <MissingThrowsDocblock occurrences="3">
-      <code>stop</code>
-    </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$linesToBeCovered</code>
-    </PossiblyInvalidArgument>
-    <PossiblyUndefinedVariable occurrences="6">
-      <code>$_timeout</code>
-      <code>$_timeout</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$isAnyCoverageRequired</code>
-    </PossiblyUndefinedVariable>
-    <UndefinedInterfaceMethod occurrences="16">
-      <code>addToAssertionCount</code>
-      <code>addToAssertionCount</code>
-      <code>doesNotPerformAssertions</code>
-      <code>doesNotPerformAssertions</code>
-      <code>getActualOutput</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getNumAssertions</code>
-      <code>getNumAssertions</code>
-      <code>getNumAssertions</code>
-      <code>getNumAssertions</code>
-      <code>getSize</code>
-      <code>getSize</code>
-      <code>getSize</code>
-      <code>hasOutput</code>
-      <code>runBare</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion occurrences="2">
