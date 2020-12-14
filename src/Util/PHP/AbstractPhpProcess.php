@@ -319,19 +319,19 @@ abstract class AbstractPhpProcess
                 $failures       = $childResult->failures();
 
                 if (!empty($notImplemented)) {
-                    $result->addError(
+                    $result->addFailure(
                         $test,
                         $this->getException($notImplemented[0]),
                         $time
                     );
                 } elseif (!empty($risky)) {
-                    $result->addError(
+                    $result->addFailure(
                         $test,
                         $this->getException($risky[0]),
                         $time
                     );
                 } elseif (!empty($skipped)) {
-                    $result->addError(
+                    $result->addFailure(
                         $test,
                         $this->getException($skipped[0]),
                         $time

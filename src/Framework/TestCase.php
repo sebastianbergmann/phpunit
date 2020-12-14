@@ -1731,7 +1731,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 if ($passed[$dependencyTarget]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
                     $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
                     $passed[$dependencyTarget]['size'] > $this->getSize()) {
-                    $this->result->addError(
+                    $this->result->addFailure(
                         $this,
                         new SkippedTestError(
                             'This test depends on a test that is larger than itself.'
@@ -1766,7 +1766,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->startTest($this);
 
-        $this->result->addError(
+        $this->result->addFailure(
             $this,
             new SkippedTestError(
                 sprintf('This method has an invalid @depends annotation.')
@@ -1783,7 +1783,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->startTest($this);
 
-        $this->result->addError(
+        $this->result->addFailure(
             $this,
             new SkippedTestError(
                 sprintf(

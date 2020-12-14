@@ -691,7 +691,8 @@
       <code>array</code>
       <code>private array $listeners = [];</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="3">
+    <DeprecatedMethod occurrences="4">
+      <code>addError</code>
       <code>addWarning</code>
       <code>endTest</code>
       <code>startTest</code>
@@ -1263,8 +1264,11 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="5">
       <code>$this-&gt;getException($failures[0])</code>
+      <code>$this-&gt;getException($notImplemented[0])</code>
+      <code>$this-&gt;getException($risky[0])</code>
+      <code>$this-&gt;getException($skipped[0])</code>
       <code>$this-&gt;getException($warnings[0])</code>
     </ArgumentTypeCoercion>
     <InvalidArgument occurrences="1"/>

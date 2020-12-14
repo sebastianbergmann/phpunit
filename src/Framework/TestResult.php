@@ -151,42 +151,10 @@ final class TestResult implements Countable
 
     public function addError(Test $test, Throwable $t, float $time): void
     {
-        if ($t instanceof RiskyTestError) {
-            $this->recordRisky($test, $t);
+        $this->recordError($test, $t);
 
-            $notifyMethod = 'addRiskyTest';
-
-            if ($test instanceof TestCase) {
-                $test->markAsRisky();
-            }
-
-            if ($this->stopOnRisky || $this->stopOnDefect) {
-                $this->stop();
-            }
-        } elseif ($t instanceof IncompleteTest) {
-            $this->recordNotImplemented($test, $t);
-
-            $notifyMethod = 'addIncompleteTest';
-
-            if ($this->stopOnIncomplete) {
-                $this->stop();
-            }
-        } elseif ($t instanceof SkippedTest) {
-            $this->recordSkipped($test, $t);
-
-            $notifyMethod = 'addSkippedTest';
-
-            if ($this->stopOnSkipped) {
-                $this->stop();
-            }
-        } else {
-            $this->recordError($test, $t);
-
-            $notifyMethod = 'addError';
-
-            if ($this->stopOnError || $this->stopOnFailure) {
-                $this->stop();
-            }
+        if ($this->stopOnError || $this->stopOnFailure) {
+            $this->stop();
         }
 
         // @see https://github.com/sebastianbergmann/phpunit/issues/1953
@@ -195,7 +163,7 @@ final class TestResult implements Countable
         }
 
         foreach ($this->listeners as $listener) {
-            $listener->{$notifyMethod}($test, $t, $time);
+            $listener->addError($test, $t, $time);
         }
 
         $this->lastTestFailed = true;
