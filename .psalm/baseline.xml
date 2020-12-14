@@ -670,8 +670,7 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$test</code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="4">
-      <code>TestListener</code>
+    <DeprecatedClass occurrences="3">
       <code>TestListener</code>
       <code>array</code>
       <code>private array $listeners = [];</code>

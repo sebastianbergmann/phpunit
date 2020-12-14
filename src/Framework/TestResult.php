@@ -152,20 +152,6 @@ final class TestResult implements Countable
      *
      * @codeCoverageIgnore
      */
-    public function removeListener(TestListener $listener): void
-    {
-        foreach ($this->listeners as $key => $_listener) {
-            if ($listener === $_listener) {
-                unset($this->listeners[$key]);
-            }
-        }
-    }
-
-    /**
-     * @deprecated Use the `TestHook` interfaces instead
-     *
-     * @codeCoverageIgnore
-     */
     public function flushListeners(): void
     {
         foreach ($this->listeners as $listener) {
@@ -832,19 +818,9 @@ final class TestResult implements Countable
         $this->convertDeprecationsToExceptions = $flag;
     }
 
-    public function getConvertDeprecationsToExceptions(): bool
-    {
-        return $this->convertDeprecationsToExceptions;
-    }
-
     public function convertErrorsToExceptions(bool $flag): void
     {
         $this->convertErrorsToExceptions = $flag;
-    }
-
-    public function getConvertErrorsToExceptions(): bool
-    {
-        return $this->convertErrorsToExceptions;
     }
 
     public function convertNoticesToExceptions(bool $flag): void
@@ -852,19 +828,9 @@ final class TestResult implements Countable
         $this->convertNoticesToExceptions = $flag;
     }
 
-    public function getConvertNoticesToExceptions(): bool
-    {
-        return $this->convertNoticesToExceptions;
-    }
-
     public function convertWarningsToExceptions(bool $flag): void
     {
         $this->convertWarningsToExceptions = $flag;
-    }
-
-    public function getConvertWarningsToExceptions(): bool
-    {
-        return $this->convertWarningsToExceptions;
     }
 
     public function stopOnError(bool $flag): void
@@ -935,11 +901,6 @@ final class TestResult implements Countable
     public function forceCoversAnnotation(): void
     {
         $this->forceCoversAnnotation = true;
-    }
-
-    public function forcesCoversAnnotation(): bool
-    {
-        return $this->forceCoversAnnotation;
     }
 
     public function stopOnRisky(bool $flag): void
