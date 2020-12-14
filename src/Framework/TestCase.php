@@ -584,7 +584,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function run(TestResult $result = null): TestResult
     {
         if ($result === null) {
-            $result = $this->createResult();
+            $result = new TestResult;
         }
 
         if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
@@ -1596,16 +1596,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $callOriginalConstructor,
             $arguments
         );
-    }
-
-    /**
-     * Creates a default TestResult object.
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    protected function createResult(): TestResult
-    {
-        return new TestResult;
     }
 
     /**
