@@ -20,7 +20,6 @@ use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
-use PHPUnit\TestFixture\CoverageClassExtendedTest;
 use PHPUnit\TestFixture\CoverageClassNothingTest;
 use PHPUnit\TestFixture\CoverageClassTest;
 use PHPUnit\TestFixture\CoverageClassWithoutAnnotationsTest;
@@ -36,27 +35,12 @@ use PHPUnit\TestFixture\CoverageMethodParenthesesWhitespaceTest;
 use PHPUnit\TestFixture\CoverageMethodTest;
 use PHPUnit\TestFixture\CoverageNamespacedFunctionTest;
 use PHPUnit\TestFixture\CoverageNoneTest;
-use PHPUnit\TestFixture\CoverageNotPrivateTest;
-use PHPUnit\TestFixture\CoverageNotProtectedTest;
-use PHPUnit\TestFixture\CoverageNotPublicTest;
-use PHPUnit\TestFixture\CoveragePrivateTest;
-use PHPUnit\TestFixture\CoverageProtectedTest;
-use PHPUnit\TestFixture\CoveragePublicTest;
-use PHPUnit\TestFixture\CoverageTwoDefaultClassAnnotations;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
-use PHPUnit\TestFixture\NamespaceCoverageClassExtendedTest;
 use PHPUnit\TestFixture\NamespaceCoverageClassTest;
 use PHPUnit\TestFixture\NamespaceCoverageCoversClassPublicTest;
 use PHPUnit\TestFixture\NamespaceCoverageCoversClassTest;
 use PHPUnit\TestFixture\NamespaceCoverageMethodTest;
-use PHPUnit\TestFixture\NamespaceCoverageNotPrivateTest;
-use PHPUnit\TestFixture\NamespaceCoverageNotProtectedTest;
-use PHPUnit\TestFixture\NamespaceCoverageNotPublicTest;
-use PHPUnit\TestFixture\NamespaceCoveragePrivateTest;
-use PHPUnit\TestFixture\NamespaceCoverageProtectedTest;
-use PHPUnit\TestFixture\NamespaceCoveragePublicTest;
-use PHPUnit\TestFixture\NotExistingCoveredElementTest;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 use PHPUnit\TestFixture\ParseTestMethodAnnotationsMock;
 use PHPUnit\TestFixture\RequirementsClassDocBlockTest;
@@ -1255,15 +1239,8 @@ final class TestClassTest extends TestCase
 
                 break;
 
-            case NamespaceCoverageClassExtendedTest::class:
             case NamespaceCoverageClassTest::class:
             case NamespaceCoverageMethodTest::class:
-            case NamespaceCoverageNotPrivateTest::class:
-            case NamespaceCoverageNotProtectedTest::class:
-            case NamespaceCoverageNotPublicTest::class:
-            case NamespaceCoveragePrivateTest::class:
-            case NamespaceCoverageProtectedTest::class:
-            case NamespaceCoveragePublicTest::class:
             case NamespaceCoverageCoversClassTest::class:
             case NamespaceCoverageCoversClassPublicTest::class:
                 $expected = [
@@ -1282,57 +1259,6 @@ final class TestClassTest extends TestCase
                 $test,
                 'testSomething'
             )
-        );
-    }
-
-    public function testGetLinesToBeCovered2(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-
-        Test::getLinesToBeCovered(
-            NotExistingCoveredElementTest::class,
-            'testOne'
-        );
-    }
-
-    public function testGetLinesToBeCovered3(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-
-        Test::getLinesToBeCovered(
-            NotExistingCoveredElementTest::class,
-            'testTwo'
-        );
-    }
-
-    public function testGetLinesToBeCovered4(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-
-        Test::getLinesToBeCovered(
-            NotExistingCoveredElementTest::class,
-            'testThree'
-        );
-    }
-
-    public function testGetLinesToBeCoveredSkipsNonExistentMethods(): void
-    {
-        $this->assertSame(
-            [],
-            Test::getLinesToBeCovered(
-                NotExistingCoveredElementTest::class,
-                'methodDoesNotExist'
-            )
-        );
-    }
-
-    public function testTwoCoversDefaultClassAnnotationsAreNotAllowed(): void
-    {
-        $this->expectException(CodeCoverageException::class);
-
-        Test::getLinesToBeCovered(
-            CoverageTwoDefaultClassAnnotations::class,
-            'testSomething'
         );
     }
 
@@ -1401,10 +1327,6 @@ final class TestClassTest extends TestCase
                 [],
             ],
             [
-                CoverageClassExtendedTest::class,
-                array_merge(range(29, 46), range(12, 27)),
-            ],
-            [
                 CoverageClassTest::class,
                 range(29, 46),
             ],
@@ -1417,36 +1339,8 @@ final class TestClassTest extends TestCase
                 range(31, 35),
             ],
             [
-                CoverageNotPrivateTest::class,
-                array_merge(range(31, 35), range(37, 41)),
-            ],
-            [
-                CoverageNotProtectedTest::class,
-                array_merge(range(31, 35), range(43, 45)),
-            ],
-            [
-                CoverageNotPublicTest::class,
-                array_merge(range(37, 41), range(43, 45)),
-            ],
-            [
-                CoveragePrivateTest::class,
-                range(43, 45),
-            ],
-            [
-                CoverageProtectedTest::class,
-                range(37, 41),
-            ],
-            [
-                CoveragePublicTest::class,
-                range(31, 35),
-            ],
-            [
                 CoverageFunctionTest::class,
                 range(10, 12),
-            ],
-            [
-                NamespaceCoverageClassExtendedTest::class,
-                array_merge(range(29, 46), range(12, 27)),
             ],
             [
                 NamespaceCoverageClassTest::class,
@@ -1454,30 +1348,6 @@ final class TestClassTest extends TestCase
             ],
             [
                 NamespaceCoverageMethodTest::class,
-                range(31, 35),
-            ],
-            [
-                NamespaceCoverageNotPrivateTest::class,
-                array_merge(range(31, 35), range(37, 41)),
-            ],
-            [
-                NamespaceCoverageNotProtectedTest::class,
-                array_merge(range(31, 35), range(43, 45)),
-            ],
-            [
-                NamespaceCoverageNotPublicTest::class,
-                array_merge(range(37, 41), range(43, 45)),
-            ],
-            [
-                NamespaceCoveragePrivateTest::class,
-                range(43, 45),
-            ],
-            [
-                NamespaceCoverageProtectedTest::class,
-                range(37, 41),
-            ],
-            [
-                NamespaceCoveragePublicTest::class,
                 range(31, 35),
             ],
             [
