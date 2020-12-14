@@ -33,7 +33,6 @@ use function count;
 use function defined;
 use function explode;
 use function get_class;
-use function get_include_path;
 use function getcwd;
 use function implode;
 use function in_array;
@@ -52,14 +51,11 @@ use function ob_start;
 use function parse_url;
 use function pathinfo;
 use function preg_replace;
-use function serialize;
 use function setlocale;
 use function sprintf;
 use function strpos;
 use function substr;
 use function trim;
-use function var_export;
-use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
@@ -85,19 +81,13 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Error\Deprecation;
 use PHPUnit\Util\Error\Error;
-use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\Error\Notice;
 use PHPUnit\Util\Error\Warning as WarningError;
 use PHPUnit\Util\Exception as UtilException;
-use PHPUnit\Util\ExcludeList;
-use PHPUnit\Util\GlobalState;
-use PHPUnit\Util\PHP\AbstractPhpProcess;
 use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
 use ReflectionClass;
 use ReflectionException;
-use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
-use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
@@ -105,11 +95,8 @@ use SebastianBergmann\Exporter\Exporter;
 use SebastianBergmann\GlobalState\ExcludeList as GlobalStateExcludeList;
 use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Snapshot;
-use SebastianBergmann\Invoker\Invoker;
-use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
 use SebastianBergmann\Template\Template;
-use SebastianBergmann\Timer\Timer;
 use SoapClient;
 use Throwable;
 
@@ -595,9 +582,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if (!$this->shouldRunInSeparateProcess()) {
-            $this->runInThisProcess($result);
+            (new TestRunner)->run($this, $result);
         } else {
-            $this->runInSeparateProcess($result);
+            (new TestRunner)->runInSeparateProcess(
+                $this,
+                $result,
+                $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess,
+                $this->preserveGlobalState
+            );
         }
 
         $this->result = null;
@@ -970,6 +962,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function setDependencyInput(array $dependencyInput): void
     {
         $this->dependencyInput = $dependencyInput;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function dependencyInput(): array
+    {
+        return $this->dependencyInput;
     }
 
     /**
@@ -2172,455 +2172,5 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     ->disableArgumentCloning()
                     ->disallowMockingUnknownTypes()
                     ->getMock();
-    }
-
-    /**
-     * @throws CodeCoverageException
-     * @throws UnintentionallyCoveredCodeException
-     * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    private function runInThisProcess(TestResult $result): void
-    {
-        Assert::resetCount();
-
-        if ($result->shouldMockObjectsFromTestArgumentsBeRegisteredRecursively()) {
-            $this->registerMockObjectsFromTestArgumentsRecursively();
-        }
-
-        $isAnyCoverageRequired = TestUtil::requiresCodeCoverageDataCollection($this);
-
-        $error      = false;
-        $failure    = false;
-        $warning    = false;
-        $incomplete = false;
-        $risky      = false;
-        $skipped    = false;
-
-        $result->startTest($this);
-
-        if ($result->shouldDeprecationsBeConvertedToExceptions() ||
-            $result->shouldErrorsBeConvertedToExceptions() ||
-            $result->shouldNoticeBeConvertedToExceptions() ||
-            $result->shouldWarningsBeConvertedToExceptions()) {
-            $errorHandler = new Handler(
-                $result->shouldDeprecationsBeConvertedToExceptions(),
-                $result->shouldErrorsBeConvertedToExceptions(),
-                $result->shouldNoticeBeConvertedToExceptions(),
-                $result->shouldWarningsBeConvertedToExceptions()
-            );
-
-            $errorHandler->register();
-        }
-
-        $collectCodeCoverage = $result->collectsCodeCoverageInformation() &&
-                               !$this instanceof ErrorTestCase &&
-                               !$this instanceof WarningTestCase &&
-                               $isAnyCoverageRequired;
-
-        if ($collectCodeCoverage) {
-            $result->codeCoverage()->start($this);
-        }
-
-        $monitorFunctions = $result->isStrictAboutResourceUsageDuringSmallTests() &&
-            !$this instanceof ErrorTestCase &&
-            !$this instanceof WarningTestCase &&
-            $this->getSize() === \PHPUnit\Util\Test::SMALL &&
-            function_exists('xdebug_start_function_monitor');
-
-        if ($monitorFunctions) {
-            /* @noinspection ForgottenDebugOutputInspection */
-            xdebug_start_function_monitor(ResourceOperations::getFunctions());
-        }
-
-        $timer = new Timer;
-        $timer->start();
-
-        try {
-            $invoker = new Invoker;
-
-            if (!$this instanceof ErrorTestCase &&
-                !$this instanceof WarningTestCase &&
-                $result->enforcesTimeLimit() &&
-                ($result->defaultTimeLimit() || $this->getSize() !== \PHPUnit\Util\Test::UNKNOWN) &&
-                $invoker->canInvokeWithTimeout()) {
-                switch ($this->getSize()) {
-                    case \PHPUnit\Util\Test::SMALL:
-                        $_timeout = $result->timeoutForSmallTests();
-
-                        break;
-
-                    case \PHPUnit\Util\Test::MEDIUM:
-                        $_timeout = $result->timeoutForMediumTests();
-
-                        break;
-
-                    case \PHPUnit\Util\Test::LARGE:
-                        $_timeout = $result->timeoutForLargeTests();
-
-                        break;
-
-                    case \PHPUnit\Util\Test::UNKNOWN:
-                        $_timeout = $result->defaultTimeLimit();
-
-                        break;
-                }
-
-                $invoker->invoke([$this, 'runBare'], [], $_timeout);
-            } else {
-                $this->runBare();
-            }
-        } catch (TimeoutException $e) {
-            $result->addFailure(
-                $this,
-                new RiskyTestError(
-                    $e->getMessage()
-                ),
-                $_timeout
-            );
-
-            $risky = true;
-        } catch (AssertionFailedError $e) {
-            $failure = true;
-
-            if ($e instanceof RiskyTestError) {
-                $risky = true;
-            } elseif ($e instanceof IncompleteTestError) {
-                $incomplete = true;
-            } elseif ($e instanceof SkippedTestError) {
-                $skipped = true;
-            }
-        } catch (AssertionError $e) {
-            $this->addToAssertionCount(1);
-
-            $failure = true;
-            $frame   = $e->getTrace()[0];
-
-            $e = new AssertionFailedError(
-                sprintf(
-                    '%s in %s:%s',
-                    $e->getMessage(),
-                    $frame['file'],
-                    $frame['line']
-                )
-            );
-        } catch (Warning $e) {
-            $warning = true;
-        } catch (Exception $e) {
-            $error = true;
-        } catch (Throwable $e) {
-            $e     = new ExceptionWrapper($e);
-            $error = true;
-        }
-
-        $time = $timer->stop()->asSeconds();
-
-        $this->addToAssertionCount(Assert::getCount());
-
-        if ($monitorFunctions) {
-            $excludeList = new ExcludeList;
-
-            /** @noinspection ForgottenDebugOutputInspection */
-            $functions = xdebug_get_monitored_functions();
-
-            /* @noinspection ForgottenDebugOutputInspection */
-            xdebug_stop_function_monitor();
-
-            foreach ($functions as $function) {
-                if (!$excludeList->isExcluded($function['filename'])) {
-                    $result->addFailure(
-                        $this,
-                        new RiskyTestError(
-                            sprintf(
-                                '%s() used in %s:%s',
-                                $function['function'],
-                                $function['filename'],
-                                $function['lineno']
-                            )
-                        ),
-                        $time
-                    );
-                }
-            }
-        }
-
-        if ($result->isStrictAboutTestsThatDoNotTestAnything() &&
-            $this->getNumAssertions() === 0) {
-            $risky = true;
-        }
-
-        if ($result->enforcesCoversAnnotation() && !$error && !$failure && !$warning && !$incomplete && !$skipped && !$risky) {
-            $annotations = TestUtil::parseTestMethodAnnotations(
-                get_class($this),
-                $this->getName(false)
-            );
-
-            if (!isset($annotations['class']['covers']) &&
-                !isset($annotations['method']['covers']) &&
-                !isset($annotations['class']['coversNothing']) &&
-                !isset($annotations['method']['coversNothing'])) {
-                $result->addFailure(
-                    $this,
-                    new MissingCoversAnnotationException(
-                        'This test does not have a @covers annotation but is expected to have one'
-                    ),
-                    $time
-                );
-
-                $risky = true;
-            }
-        }
-
-        if ($collectCodeCoverage) {
-            $append           = !$risky && !$incomplete && !$skipped;
-            $linesToBeCovered = [];
-            $linesToBeUsed    = [];
-
-            if ($append) {
-                try {
-                    $linesToBeCovered = \PHPUnit\Util\Test::getLinesToBeCovered(
-                        get_class($this),
-                        $this->getName(false)
-                    );
-
-                    $linesToBeUsed = \PHPUnit\Util\Test::getLinesToBeUsed(
-                        get_class($this),
-                        $this->getName(false)
-                    );
-                } catch (InvalidCoversTargetException $cce) {
-                    $result->addWarning(
-                        $this,
-                        new Warning(
-                            $cce->getMessage()
-                        ),
-                        $time
-                    );
-                }
-            }
-
-            try {
-                $result->codeCoverage()->stop(
-                    $append,
-                    $linesToBeCovered,
-                    $linesToBeUsed
-                );
-            } catch (UnintentionallyCoveredCodeException $cce) {
-                $unintentionallyCoveredCodeError = new UnintentionallyCoveredCodeError(
-                    'This test executed code that is not listed as code to be covered or used:' .
-                    PHP_EOL . $cce->getMessage()
-                );
-            } catch (OriginalCodeCoverageException $cce) {
-                $error = true;
-
-                $e = $e ?? $cce;
-            }
-        }
-
-        if (isset($errorHandler)) {
-            $errorHandler->unregister();
-
-            unset($errorHandler);
-        }
-
-        if ($error) {
-            $result->addError($this, $e, $time);
-        } elseif ($failure) {
-            $result->addFailure($this, $e, $time);
-        } elseif ($warning) {
-            $result->addWarning($this, $e, $time);
-        } elseif (isset($unintentionallyCoveredCodeError)) {
-            $result->addFailure(
-                $this,
-                $unintentionallyCoveredCodeError,
-                $time
-            );
-        } elseif ($result->isStrictAboutTestsThatDoNotTestAnything() &&
-            !$this->doesNotPerformAssertions() &&
-            $this->getNumAssertions() === 0) {
-            $reflected = new ReflectionClass($this);
-            $name      = $this->getName(false);
-
-            if ($name && $reflected->hasMethod($name)) {
-                $reflected = $reflected->getMethod($name);
-            }
-
-            $result->addFailure(
-                $this,
-                new RiskyTestError(
-                    sprintf(
-                        "This test did not perform any assertions\n\n%s:%d",
-                        $reflected->getFileName(),
-                        $reflected->getStartLine()
-                    )
-                ),
-                $time
-            );
-        } elseif ($result->isStrictAboutTestsThatDoNotTestAnything() &&
-            $this->doesNotPerformAssertions() &&
-            $this->getNumAssertions() > 0) {
-            $result->addFailure(
-                $this,
-                new RiskyTestError(
-                    sprintf(
-                        'This test is annotated with "@doesNotPerformAssertions" but performed %d assertions',
-                        $this->getNumAssertions()
-                    )
-                ),
-                $time
-            );
-        } elseif ($result->isStrictAboutOutputDuringTests() && $this->hasOutput()) {
-            $result->addFailure(
-                $this,
-                new OutputError(
-                    sprintf(
-                        'This test printed output: %s',
-                        $this->getActualOutput()
-                    )
-                ),
-                $time
-            );
-        } elseif ($result->isStrictAboutTodoAnnotatedTests()) {
-            $annotations = TestUtil::parseTestMethodAnnotations(
-                get_class($this),
-                $this->getName(false)
-            );
-
-            if (isset($annotations['method']['todo'])) {
-                $result->addFailure(
-                    $this,
-                    new RiskyTestError(
-                        'Test method is annotated with @todo'
-                    ),
-                    $time
-                );
-            }
-        }
-
-        $result->endTest($this, $time);
-    }
-
-    private function runInSeparateProcess(TestResult $result): void
-    {
-        $class          = new ReflectionClass($this);
-        $runEntireClass = $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
-
-        if ($runEntireClass) {
-            $template = new Template(
-                __DIR__ . '/../Util/PHP/Template/TestCaseClass.tpl'
-            );
-        } else {
-            $template = new Template(
-                __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl'
-            );
-        }
-
-        if ($this->preserveGlobalState) {
-            $constants     = GlobalState::getConstantsAsString();
-            $globals       = GlobalState::getGlobalsAsString();
-            $includedFiles = GlobalState::getIncludedFilesAsString();
-            $iniSettings   = GlobalState::getIniSettingsAsString();
-        } else {
-            $constants = '';
-
-            if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-                $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
-            } else {
-                $globals = '';
-            }
-
-            $includedFiles = '';
-            $iniSettings   = '';
-        }
-
-        $coverage                                   = $result->collectsCodeCoverageInformation() ? 'true' : 'false';
-        $isStrictAboutTestsThatDoNotTestAnything    = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
-        $isStrictAboutOutputDuringTests             = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
-        $enforcesTimeLimit                          = $result->enforcesTimeLimit() ? 'true' : 'false';
-        $isStrictAboutTodoAnnotatedTests            = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
-        $isStrictAboutResourceUsageDuringSmallTests = $result->isStrictAboutResourceUsageDuringSmallTests() ? 'true' : 'false';
-
-        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
-            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
-        } else {
-            $composerAutoload = '\'\'';
-        }
-
-        if (defined('__PHPUNIT_PHAR__')) {
-            $phar = var_export(__PHPUNIT_PHAR__, true);
-        } else {
-            $phar = '\'\'';
-        }
-
-        $codeCoverage               = $result->codeCoverage();
-        $codeCoverageFilter         = null;
-        $cachesStaticAnalysis       = 'false';
-        $codeCoverageCacheDirectory = null;
-        $driverMethod               = 'forLineCoverage';
-
-        if ($codeCoverage) {
-            $codeCoverageFilter = $codeCoverage->filter();
-
-            if ($codeCoverage->collectsBranchAndPathCoverage()) {
-                $driverMethod = 'forLineAndPathCoverage';
-            }
-
-            if ($codeCoverage->cachesStaticAnalysis()) {
-                $cachesStaticAnalysis       = 'true';
-                $codeCoverageCacheDirectory = $codeCoverage->cacheDirectory();
-            }
-        }
-
-        $data                       = var_export(serialize($this->data), true);
-        $dataName                   = var_export($this->dataName, true);
-        $dependencyInput            = var_export(serialize($this->dependencyInput), true);
-        $includePath                = var_export(get_include_path(), true);
-        $codeCoverageFilter         = var_export(serialize($codeCoverageFilter), true);
-        $codeCoverageCacheDirectory = var_export(serialize($codeCoverageCacheDirectory), true);
-        // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
-        // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
-        $data                       = "'." . $data . ".'";
-        $dataName                   = "'.(" . $dataName . ").'";
-        $dependencyInput            = "'." . $dependencyInput . ".'";
-        $includePath                = "'." . $includePath . ".'";
-        $codeCoverageFilter         = "'." . $codeCoverageFilter . ".'";
-        $codeCoverageCacheDirectory = "'." . $codeCoverageCacheDirectory . ".'";
-
-        $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
-
-        $var = [
-            'composerAutoload'                           => $composerAutoload,
-            'phar'                                       => $phar,
-            'filename'                                   => $class->getFileName(),
-            'className'                                  => $class->getName(),
-            'collectCodeCoverageInformation'             => $coverage,
-            'cachesStaticAnalysis'                       => $cachesStaticAnalysis,
-            'codeCoverageCacheDirectory'                 => $codeCoverageCacheDirectory,
-            'driverMethod'                               => $driverMethod,
-            'data'                                       => $data,
-            'dataName'                                   => $dataName,
-            'dependencyInput'                            => $dependencyInput,
-            'constants'                                  => $constants,
-            'globals'                                    => $globals,
-            'include_path'                               => $includePath,
-            'included_files'                             => $includedFiles,
-            'iniSettings'                                => $iniSettings,
-            'isStrictAboutTestsThatDoNotTestAnything'    => $isStrictAboutTestsThatDoNotTestAnything,
-            'isStrictAboutOutputDuringTests'             => $isStrictAboutOutputDuringTests,
-            'enforcesTimeLimit'                          => $enforcesTimeLimit,
-            'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
-            'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
-            'codeCoverageFilter'                         => $codeCoverageFilter,
-            'configurationFilePath'                      => $configurationFilePath,
-            'name'                                       => $this->getName(false),
-        ];
-
-        if (!$runEntireClass) {
-            $var['methodName'] = $this->name;
-        }
-
-        $template->setVar($var);
-
-        $php = AbstractPhpProcess::factory();
-        $php->runTestJob($template->render(), $this, $result);
     }
 }

@@ -631,9 +631,7 @@
       <code>getResult</code>
       <code>runTest</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="22">
-      <code>GlobalState::getIncludedFilesAsString()</code>
-      <code>cacheDirectory</code>
+    <MissingThrowsDocblock occurrences="15">
       <code>endTest</code>
       <code>endTest</code>
       <code>endTest</code>
@@ -645,31 +643,16 @@
       <code>getMock</code>
       <code>getMockForAbstractClass</code>
       <code>getMockForTrait</code>
-      <code>getName</code>
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
       <code>onlyMethods</code>
-      <code>runTestJob</code>
-      <code>stop</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$linesToBeCovered</code>
-    </PossiblyInvalidArgument>
-    <PossiblyNullReference occurrences="6">
+    <PossiblyNullReference occurrences="4">
       <code>passed</code>
-      <code>start</code>
       <code>startTest</code>
       <code>startTest</code>
       <code>startTest</code>
-      <code>stop</code>
     </PossiblyNullReference>
-    <PossiblyUndefinedVariable occurrences="5">
-      <code>$_timeout</code>
-      <code>$_timeout</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-    </PossiblyUndefinedVariable>
     <PropertyNotSetInConstructor occurrences="3">
       <code>$backupStaticAttributes</code>
       <code>$outputBufferingLevel</code>
@@ -681,9 +664,6 @@
     <RedundantCondition occurrences="1">
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
-    <UndefinedClass occurrences="1">
-      <code>ResourceOperations</code>
-    </UndefinedClass>
   </file>
   <file src="src/Framework/TestResult.php">
     <DeprecatedClass occurrences="3">
@@ -700,6 +680,30 @@
     <DeprecatedProperty occurrences="1">
       <code>$this-&gt;listeners</code>
     </DeprecatedProperty>
+  </file>
+  <file src="src/Framework/TestRunner.php">
+    <MissingThrowsDocblock occurrences="8">
+      <code>GlobalState::getIncludedFilesAsString()</code>
+      <code>cacheDirectory</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>runTestJob</code>
+      <code>stop</code>
+    </MissingThrowsDocblock>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$linesToBeCovered</code>
+    </PossiblyInvalidArgument>
+    <PossiblyNullReference occurrences="2">
+      <code>start</code>
+      <code>stop</code>
+    </PossiblyNullReference>
+    <PossiblyUndefinedVariable occurrences="5">
+      <code>$_timeout</code>
+      <code>$_timeout</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion occurrences="2">
