@@ -631,7 +631,8 @@
       <code>getResult</code>
       <code>runTest</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="19">
+    <MissingThrowsDocblock occurrences="22">
+      <code>GlobalState::getIncludedFilesAsString()</code>
       <code>cacheDirectory</code>
       <code>endTest</code>
       <code>endTest</code>
@@ -644,9 +645,11 @@
       <code>getMock</code>
       <code>getMockForAbstractClass</code>
       <code>getMockForTrait</code>
+      <code>getName</code>
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
       <code>onlyMethods</code>
+      <code>runTestJob</code>
     </MissingThrowsDocblock>
     <PossiblyNullReference occurrences="4">
       <code>passed</code>

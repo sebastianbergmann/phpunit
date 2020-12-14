@@ -598,139 +598,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return $result;
         }
 
-        if ($this->runInSeparateProcess()) {
-            $runEntireClass = $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
-
-            try {
-                $class = new ReflectionClass($this);
-                // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
-                throw new Exception(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-            // @codeCoverageIgnoreEnd
-
-            if ($runEntireClass) {
-                $template = new Template(
-                    __DIR__ . '/../Util/PHP/Template/TestCaseClass.tpl'
-                );
-            } else {
-                $template = new Template(
-                    __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl'
-                );
-            }
-
-            if ($this->preserveGlobalState) {
-                $constants     = GlobalState::getConstantsAsString();
-                $globals       = GlobalState::getGlobalsAsString();
-                $includedFiles = GlobalState::getIncludedFilesAsString();
-                $iniSettings   = GlobalState::getIniSettingsAsString();
-            } else {
-                $constants = '';
-
-                if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-                    $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
-                } else {
-                    $globals = '';
-                }
-
-                $includedFiles = '';
-                $iniSettings   = '';
-            }
-
-            $coverage                                   = $result->collectsCodeCoverageInformation() ? 'true' : 'false';
-            $isStrictAboutTestsThatDoNotTestAnything    = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
-            $isStrictAboutOutputDuringTests             = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
-            $enforcesTimeLimit                          = $result->enforcesTimeLimit() ? 'true' : 'false';
-            $isStrictAboutTodoAnnotatedTests            = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
-            $isStrictAboutResourceUsageDuringSmallTests = $result->isStrictAboutResourceUsageDuringSmallTests() ? 'true' : 'false';
-
-            if (defined('PHPUNIT_COMPOSER_INSTALL')) {
-                $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
-            } else {
-                $composerAutoload = '\'\'';
-            }
-
-            if (defined('__PHPUNIT_PHAR__')) {
-                $phar = var_export(__PHPUNIT_PHAR__, true);
-            } else {
-                $phar = '\'\'';
-            }
-
-            $codeCoverage               = $result->codeCoverage();
-            $codeCoverageFilter         = null;
-            $cachesStaticAnalysis       = 'false';
-            $codeCoverageCacheDirectory = null;
-            $driverMethod               = 'forLineCoverage';
-
-            if ($codeCoverage) {
-                $codeCoverageFilter = $codeCoverage->filter();
-
-                if ($codeCoverage->collectsBranchAndPathCoverage()) {
-                    $driverMethod = 'forLineAndPathCoverage';
-                }
-
-                if ($codeCoverage->cachesStaticAnalysis()) {
-                    $cachesStaticAnalysis       = 'true';
-                    $codeCoverageCacheDirectory = $codeCoverage->cacheDirectory();
-                }
-            }
-
-            $data                       = var_export(serialize($this->data), true);
-            $dataName                   = var_export($this->dataName, true);
-            $dependencyInput            = var_export(serialize($this->dependencyInput), true);
-            $includePath                = var_export(get_include_path(), true);
-            $codeCoverageFilter         = var_export(serialize($codeCoverageFilter), true);
-            $codeCoverageCacheDirectory = var_export(serialize($codeCoverageCacheDirectory), true);
-            // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
-            // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
-            $data                       = "'." . $data . ".'";
-            $dataName                   = "'.(" . $dataName . ").'";
-            $dependencyInput            = "'." . $dependencyInput . ".'";
-            $includePath                = "'." . $includePath . ".'";
-            $codeCoverageFilter         = "'." . $codeCoverageFilter . ".'";
-            $codeCoverageCacheDirectory = "'." . $codeCoverageCacheDirectory . ".'";
-
-            $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
-
-            $var = [
-                'composerAutoload'                           => $composerAutoload,
-                'phar'                                       => $phar,
-                'filename'                                   => $class->getFileName(),
-                'className'                                  => $class->getName(),
-                'collectCodeCoverageInformation'             => $coverage,
-                'cachesStaticAnalysis'                       => $cachesStaticAnalysis,
-                'codeCoverageCacheDirectory'                 => $codeCoverageCacheDirectory,
-                'driverMethod'                               => $driverMethod,
-                'data'                                       => $data,
-                'dataName'                                   => $dataName,
-                'dependencyInput'                            => $dependencyInput,
-                'constants'                                  => $constants,
-                'globals'                                    => $globals,
-                'include_path'                               => $includePath,
-                'included_files'                             => $includedFiles,
-                'iniSettings'                                => $iniSettings,
-                'isStrictAboutTestsThatDoNotTestAnything'    => $isStrictAboutTestsThatDoNotTestAnything,
-                'isStrictAboutOutputDuringTests'             => $isStrictAboutOutputDuringTests,
-                'enforcesTimeLimit'                          => $enforcesTimeLimit,
-                'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
-                'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
-                'codeCoverageFilter'                         => $codeCoverageFilter,
-                'configurationFilePath'                      => $configurationFilePath,
-                'name'                                       => $this->getName(false),
-            ];
-
-            if (!$runEntireClass) {
-                $var['methodName'] = $this->name;
-            }
-
-            $template->setVar($var);
-
-            $php = AbstractPhpProcess::factory();
-            $php->runTestJob($template->render(), $this, $result);
+        if ($this->shouldRunInSeparateProcess()) {
+            $this->runInSeparateProcess($result);
         } else {
             $result->run($this);
         }
@@ -2267,10 +2136,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $result;
     }
 
-    private function runInSeparateProcess(): bool
+    private function shouldRunInSeparateProcess(): bool
     {
         return ($this->runTestInSeparateProcess || $this->runClassInSeparateProcess) &&
-            !$this->inIsolation && !$this instanceof PhptTestCase;
+               !$this->inIsolation && !$this instanceof PhptTestCase;
     }
 
     private function isCallableTestMethod(string $dependency): bool
@@ -2317,5 +2186,141 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     ->disableArgumentCloning()
                     ->disallowMockingUnknownTypes()
                     ->getMock();
+    }
+
+    private function runInSeparateProcess(TestResult $result): void
+    {
+        $runEntireClass = $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess;
+
+        try {
+            $class = new ReflectionClass($this);
+            // @codeCoverageIgnoreStart
+        } catch (ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+        // @codeCoverageIgnoreEnd
+
+        if ($runEntireClass) {
+            $template = new Template(
+                __DIR__ . '/../Util/PHP/Template/TestCaseClass.tpl'
+            );
+        } else {
+            $template = new Template(
+                __DIR__ . '/../Util/PHP/Template/TestCaseMethod.tpl'
+            );
+        }
+
+        if ($this->preserveGlobalState) {
+            $constants     = GlobalState::getConstantsAsString();
+            $globals       = GlobalState::getGlobalsAsString();
+            $includedFiles = GlobalState::getIncludedFilesAsString();
+            $iniSettings   = GlobalState::getIniSettingsAsString();
+        } else {
+            $constants = '';
+
+            if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
+                $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
+            } else {
+                $globals = '';
+            }
+
+            $includedFiles = '';
+            $iniSettings   = '';
+        }
+
+        $coverage                                   = $result->collectsCodeCoverageInformation() ? 'true' : 'false';
+        $isStrictAboutTestsThatDoNotTestAnything    = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
+        $isStrictAboutOutputDuringTests             = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
+        $enforcesTimeLimit                          = $result->enforcesTimeLimit() ? 'true' : 'false';
+        $isStrictAboutTodoAnnotatedTests            = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
+        $isStrictAboutResourceUsageDuringSmallTests = $result->isStrictAboutResourceUsageDuringSmallTests() ? 'true' : 'false';
+
+        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
+            $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
+        } else {
+            $composerAutoload = '\'\'';
+        }
+
+        if (defined('__PHPUNIT_PHAR__')) {
+            $phar = var_export(__PHPUNIT_PHAR__, true);
+        } else {
+            $phar = '\'\'';
+        }
+
+        $codeCoverage               = $result->codeCoverage();
+        $codeCoverageFilter         = null;
+        $cachesStaticAnalysis       = 'false';
+        $codeCoverageCacheDirectory = null;
+        $driverMethod               = 'forLineCoverage';
+
+        if ($codeCoverage) {
+            $codeCoverageFilter = $codeCoverage->filter();
+
+            if ($codeCoverage->collectsBranchAndPathCoverage()) {
+                $driverMethod = 'forLineAndPathCoverage';
+            }
+
+            if ($codeCoverage->cachesStaticAnalysis()) {
+                $cachesStaticAnalysis       = 'true';
+                $codeCoverageCacheDirectory = $codeCoverage->cacheDirectory();
+            }
+        }
+
+        $data                       = var_export(serialize($this->data), true);
+        $dataName                   = var_export($this->dataName, true);
+        $dependencyInput            = var_export(serialize($this->dependencyInput), true);
+        $includePath                = var_export(get_include_path(), true);
+        $codeCoverageFilter         = var_export(serialize($codeCoverageFilter), true);
+        $codeCoverageCacheDirectory = var_export(serialize($codeCoverageCacheDirectory), true);
+        // must do these fixes because TestCaseMethod.tpl has unserialize('{data}') in it, and we can't break BC
+        // the lines above used to use addcslashes() rather than var_export(), which breaks null byte escape sequences
+        $data                       = "'." . $data . ".'";
+        $dataName                   = "'.(" . $dataName . ").'";
+        $dependencyInput            = "'." . $dependencyInput . ".'";
+        $includePath                = "'." . $includePath . ".'";
+        $codeCoverageFilter         = "'." . $codeCoverageFilter . ".'";
+        $codeCoverageCacheDirectory = "'." . $codeCoverageCacheDirectory . ".'";
+
+        $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
+
+        $var = [
+            'composerAutoload'                           => $composerAutoload,
+            'phar'                                       => $phar,
+            'filename'                                   => $class->getFileName(),
+            'className'                                  => $class->getName(),
+            'collectCodeCoverageInformation'             => $coverage,
+            'cachesStaticAnalysis'                       => $cachesStaticAnalysis,
+            'codeCoverageCacheDirectory'                 => $codeCoverageCacheDirectory,
+            'driverMethod'                               => $driverMethod,
+            'data'                                       => $data,
+            'dataName'                                   => $dataName,
+            'dependencyInput'                            => $dependencyInput,
+            'constants'                                  => $constants,
+            'globals'                                    => $globals,
+            'include_path'                               => $includePath,
+            'included_files'                             => $includedFiles,
+            'iniSettings'                                => $iniSettings,
+            'isStrictAboutTestsThatDoNotTestAnything'    => $isStrictAboutTestsThatDoNotTestAnything,
+            'isStrictAboutOutputDuringTests'             => $isStrictAboutOutputDuringTests,
+            'enforcesTimeLimit'                          => $enforcesTimeLimit,
+            'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
+            'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
+            'codeCoverageFilter'                         => $codeCoverageFilter,
+            'configurationFilePath'                      => $configurationFilePath,
+            'name'                                       => $this->getName(false),
+        ];
+
+        if (!$runEntireClass) {
+            $var['methodName'] = $this->name;
+        }
+
+        $template->setVar($var);
+
+        $php = AbstractPhpProcess::factory();
+        $php->runTestJob($template->render(), $this, $result);
     }
 }
