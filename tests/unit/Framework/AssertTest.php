@@ -1339,7 +1339,7 @@ XML;
     {
         $this->assertThat(
             null,
-            $this->callback(function ($other) {
+            $this->callback(static function ($other) {
                 return true;
             })
         );
@@ -2029,7 +2029,7 @@ XML;
 
     public function testCallableTypeCanBeAsserted(): void
     {
-        $this->assertIsCallable(function (): void {
+        $this->assertIsCallable(static function (): void {
         });
 
         try {
@@ -2198,7 +2198,7 @@ XML;
         $this->assertIsNotCallable(null);
 
         try {
-            $this->assertIsNotCallable(function (): void {
+            $this->assertIsNotCallable(static function (): void {
             });
         } catch (AssertionFailedError $e) {
             return;
