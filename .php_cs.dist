@@ -211,6 +211,9 @@ return PhpCsFixer\Config::create()
             'order' => 'alpha',
         ],
         'ordered_traits' => true,
+        'php_unit_test_case_static_method_calls' => [
+            'call_type' => 'this',
+        ],
         'phpdoc_add_missing_param_annotation' => false,
         'phpdoc_align' => true,
         'phpdoc_annotation_without_dot' => true,
