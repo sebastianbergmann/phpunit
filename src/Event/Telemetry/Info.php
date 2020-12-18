@@ -13,26 +13,26 @@ final class Info
 {
     private Snapshot $current;
 
-    private Duration $timeSinceStart;
+    private Duration $durationSinceStart;
 
     private MemoryUsage $memorySinceStart;
 
-    private Duration $timeSincePrevious;
+    private Duration $durationSincePrevious;
 
     private MemoryUsage $memorySincePrevious;
 
     public function __construct(
         Snapshot $current,
-        Duration $timeSinceStart,
+        Duration $durationSinceStart,
         MemoryUsage $memorySinceStart,
-        Duration $timeSincePrevious,
+        Duration $durationSincePrevious,
         MemoryUsage $memorySincePrevious
     ) {
-        $this->current             = $current;
-        $this->timeSinceStart      = $timeSinceStart;
-        $this->memorySinceStart    = $memorySinceStart;
-        $this->timeSincePrevious   = $timeSincePrevious;
-        $this->memorySincePrevious = $memorySincePrevious;
+        $this->current               = $current;
+        $this->durationSinceStart    = $durationSinceStart;
+        $this->memorySinceStart      = $memorySinceStart;
+        $this->durationSincePrevious = $durationSincePrevious;
+        $this->memorySincePrevious   = $memorySincePrevious;
     }
 
     public function time(): HRTime
@@ -50,9 +50,9 @@ final class Info
         return $this->current->peakMemoryUsage();
     }
 
-    public function timeSinceStart(): Duration
+    public function durationSinceStart(): Duration
     {
-        return $this->timeSinceStart;
+        return $this->durationSinceStart;
     }
 
     public function memoryUsageSinceStart(): MemoryUsage
@@ -60,9 +60,9 @@ final class Info
         return $this->memorySinceStart;
     }
 
-    public function timeSincePrevious(): Duration
+    public function durationSincePrevious(): Duration
     {
-        return $this->timeSincePrevious;
+        return $this->durationSincePrevious;
     }
 
     public function memoryUsageSincePrevious(): MemoryUsage
