@@ -34,4 +34,16 @@ final class MemoryUsageTest extends TestCase
             'int-greater-than-zero' => [1],
         ];
     }
+
+    public function testDiffReturnsMemoryUsage(): void
+    {
+        $one = MemoryUsage::fromBytes(2000);
+        $two = MemoryUsage::fromBytes(3000);
+
+        $diff = $one->diff($two);
+
+        $this->assertNotSame($one, $diff);
+        $this->assertNotSame($two, $diff);
+        $this->assertSame($one->bytes() - $two->bytes(), $diff->bytes());
+    }
 }

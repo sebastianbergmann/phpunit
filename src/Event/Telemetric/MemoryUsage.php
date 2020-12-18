@@ -29,4 +29,9 @@ final class MemoryUsage
     {
         return $this->bytes;
     }
+
+    public function diff(self $other): self
+    {
+        return self::fromBytes($this->bytes - $other->bytes);
+    }
 }
