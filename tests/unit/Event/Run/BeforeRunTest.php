@@ -19,8 +19,17 @@ final class BeforeRunTest extends TestCase
 {
     public function testTypeIsBeforeRun(): void
     {
-        $event = new BeforeRun();
+        $event = new BeforeRun(new Run());
 
         $this->assertTrue($event->type()->is(new GenericType('before-run')));
+    }
+
+    public function testConstructorSetsValues(): void
+    {
+        $run = new Run();
+
+        $event = new BeforeRun($run);
+
+        $this->assertSame($run, $event->run());
     }
 }

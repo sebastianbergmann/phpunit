@@ -14,8 +14,20 @@ use PHPUnit\Event\Type;
 
 final class AfterRun implements Event
 {
+    private Run $run;
+
+    public function __construct(Run $run)
+    {
+        $this->run = $run;
+    }
+
     public function type(): Type
     {
         return new AfterRunType();
+    }
+
+    public function run(): Run
+    {
+        return $this->run;
     }
 }
