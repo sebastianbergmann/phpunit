@@ -9,22 +9,17 @@
  */
 namespace PHPUnit\Event;
 
-use PHPUnit\Event\Application\Runtime;
-use PHPUnit\Event\Telemetry\Info;
-use PHPUnit\Event\Telemetry\Snapshot;
-use PHPUnit\Event\Telemetry\System;
-
 final class DispatchingEmitter implements Emitter
 {
     private Dispatcher $dispatcher;
 
-    private System $system;
+    private Telemetry\System $system;
 
-    private Snapshot $startSnapshot;
+    private Telemetry\Snapshot $startSnapshot;
 
-    private Snapshot $previousSnapshot;
+    private Telemetry\Snapshot $previousSnapshot;
 
-    public function __construct(Dispatcher $dispatcher, System $system)
+    public function __construct(Dispatcher $dispatcher, Telemetry\System $system)
     {
         $this->dispatcher = $dispatcher;
         $this->system     = $system;
@@ -42,7 +37,7 @@ final class DispatchingEmitter implements Emitter
     {
         $this->dispatcher->dispatch(new Application\Started(
             $this->telemetryInfo(),
-            new Runtime()
+            new Application\Runtime()
         ));
     }
 
@@ -230,11 +225,11 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new TestSuite\Sorted($this->telemetryInfo()));
     }
 
-    private function telemetryInfo(): Info
+    private function telemetryInfo(): Telemetry\Info
     {
         $current = $this->system->snapshot();
 
-        $info = new Info(
+        $info = new Telemetry\Info(
             $current,
             $current->time()->duration($this->startSnapshot->time()),
             $current->memoryUsage()->diff($this->startSnapshot->memoryUsage()),

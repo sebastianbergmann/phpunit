@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use PHPUnit\Event\Telemetry\System;
-use PHPUnit\Event\Telemetry\SystemMemoryMeter;
-use PHPUnit\Event\Telemetry\SystemStopWatch;
-
 final class Registry
 {
     private static ?TypeMap $typeMap = null;
@@ -26,9 +22,9 @@ final class Registry
         if (self::$emitter === null) {
             self::$emitter = new DispatchingEmitter(
                 self::dispatcher(),
-                new System(
-                    new SystemStopWatch(),
-                    new SystemMemoryMeter()
+                new Telemetry\System(
+                    new Telemetry\SystemStopWatch(),
+                    new Telemetry\SystemMemoryMeter()
                 )
             );
         }
