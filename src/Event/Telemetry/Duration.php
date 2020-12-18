@@ -9,8 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-use const STR_PAD_LEFT;
-use function str_pad;
+use function floor;
 use InvalidArgumentException;
 
 final class Duration
@@ -41,19 +40,31 @@ final class Duration
         return $this->nanoSeconds;
     }
 
-    public function asString(): string
+    public function asString(DurationFormatter $formatter = null): string
     {
-        // @TODO: Nice formatting
-        return sprintf(
-            '%d.%s',
-            $this->seconds(),
-            str_pad(
-                (string) $this->nanoSeconds(),
-                9,
-                '0',
-                STR_PAD_LEFT
-            )
-        );
+        if ($formatter !== null) {
+            return $formatter->format($this);
+        }
+
+        $formatted = '';
+        $seconds   = $this->seconds();
+
+        if ($seconds > 60 * 60) {
+            $hours     = floor($seconds / 60 / 60);
+            $formatted = \sprintf('%02d', $hours) . ':';
+            $seconds -= ($hours * 60 * 60);
+        }
+
+        if ($seconds > 60) {
+            $minutes = floor($seconds / 60);
+            $formatted .= \sprintf('%02d', $minutes) . ':';
+            $seconds -= ($minutes * 60);
+        }
+
+        $formatted .= \sprintf('%02d', $seconds) . '.';
+        $formatted .= \sprintf('%09d', $this->nanoSeconds());
+
+        return $formatted;
     }
 
     /**
