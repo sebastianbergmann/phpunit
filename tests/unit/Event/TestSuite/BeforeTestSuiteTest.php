@@ -18,14 +18,14 @@ final class BeforeTestSuiteTest extends TestCase
 {
     public function testTypeIsBeforeTestSuite(): void
     {
-        $event = new BeforeTestSuite(new TestSuite());
+        $event = new BeforeTestSuite(new TestSuite('foo'));
 
         $this->assertTrue($event->type()->is(new BeforeTestSuiteType()));
     }
 
     public function testConstructorSetsValues(): void
     {
-        $testSuite = new TestSuite();
+        $testSuite = new TestSuite('foo');
 
         $event = new BeforeTestSuite($testSuite);
 
