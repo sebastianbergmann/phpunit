@@ -1755,6 +1755,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if ($this->backupGlobals) {
             $restorer->restoreGlobalVariables($this->snapshot);
+
+            Event\Registry::emitter()->globalStateRestored();
         }
 
         if ($this->backupStaticProperties) {
