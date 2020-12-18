@@ -9,23 +9,33 @@
  */
 namespace PHPUnit\Event;
 
+use function array_key_exists;
+
 final class Dispatcher
 {
-    private Subscribers $subscribers;
-
-    public function __construct()
-    {
-        $this->subscribers = new Subscribers();
-    }
+    /**
+     * @var array<string, array<int, Subscriber>>
+     */
+    private array $subscribers = [];
 
     public function register(Subscriber ...$subscribers): void
     {
-        $this->subscribers->add(...$subscribers);
+        foreach ($subscribers as $subscriber) {
+            foreach ($subscriber->subscribesTo() as $type) {
+                $this->subscribers[$type->asString()][] = $subscriber;
+            }
+        }
     }
 
     public function dispatch(Event $event): void
     {
-        foreach ($this->subscribers->for($event->type()) as $subscriber) {
+        $type = $event->type();
+
+        if (!array_key_exists($type->asString(), $this->subscribers)) {
+            return;
+        }
+
+        foreach ($this->subscribers[$type->asString()] as $subscriber) {
             $subscriber->notify($event);
         }
     }

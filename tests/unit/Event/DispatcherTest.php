@@ -19,6 +19,24 @@ use SpyingSubscriber;
  */
 final class DispatcherTest extends TestCase
 {
+    public function testDispatchDoesNotDispatchEventToSubscribersNotSubscribedToEventType(): void
+    {
+        $subscriber = new SpyingSubscriber(new Types(
+            new NamedType('bar'),
+            new NamedType('baz')
+        ));
+
+        $event = new DummyEvent(new NamedType('foo'));
+
+        $dispatcher = new Dispatcher();
+
+        $dispatcher->register($subscriber);
+
+        $dispatcher->dispatch($event);
+
+        $this->assertNotContains($event, $subscriber->events());
+    }
+
     public function testDispatchDispatchesToRegisteredSubscribersForEventType(): void
     {
         $firstSubscriber = new SpyingSubscriber(new Types(
