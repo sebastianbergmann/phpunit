@@ -22,7 +22,7 @@ final class MemoryUsage
      */
     public static function fromBytes(int $bytes): self
     {
-        if (0 > $bytes) {
+        if ($bytes < 0) {
             throw Exception\InvalidMemoryUsage::bytes($bytes);
         }
 
