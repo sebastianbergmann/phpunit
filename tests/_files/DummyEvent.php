@@ -8,7 +8,11 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Event\Event;
+use PHPUnit\Event\Telemetry\Info;
 
 final class DummyEvent implements Event
 {
+    public function telemetryInfo(): Info
+    {
+    }
 }

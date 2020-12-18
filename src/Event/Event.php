@@ -11,4 +11,5 @@ namespace PHPUnit\Event;
 
 interface Event
 {
+    public function telemetryInfo(): Telemetry\Info;
 }
