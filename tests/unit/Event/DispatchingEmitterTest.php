@@ -75,6 +75,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testAssertionMadeDispatchesAssertionMadeEvent(): void
     {
+        $value      = 'Hmm';
+        $constraint = new Framework\Constraint\IsEqual('Ok');
+        $message    = 'Well, that did not go as planned!';
+        $hasFailed  = true;
+
         $subscriber = new class extends RecordingSubscriber implements Assertion\MadeSubscriber {
             public function notify(Assertion\Made $event): void
             {
@@ -95,10 +100,23 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->assertionMade();
+        $emitter->assertionMade(
+            $value,
+            $constraint,
+            $message,
+            $hasFailed
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Assertion\Made::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Assertion\Made::class, $event);
+
+        $this->assertSame($value, $event->value());
+        $this->assertSame($constraint, $event->constraint());
+        $this->assertSame($message, $event->message());
+        $this->assertSame($hasFailed, $event->hasFailed());
     }
 
     public function testBootstrapFinishedDispatchesBootstrapFinishedEvent(): void

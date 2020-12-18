@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Constraint;
+
 final class NullEmitter implements \PHPUnit\Event\Emitter
 {
     public function applicationConfigured(): void
@@ -17,7 +19,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function assertionMade(): void
+    public function assertionMade($value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
     {
     }
 

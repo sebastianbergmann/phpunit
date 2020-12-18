@@ -9,13 +9,18 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Framework\Constraint;
+
 interface Emitter
 {
     public function applicationConfigured(): void;
 
     public function applicationStarted(): void;
 
-    public function assertionMade(): void;
+    /**
+     * @param mixed $value
+     */
+    public function assertionMade($value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void;
 
     public function bootstrapFinished(): void;
 

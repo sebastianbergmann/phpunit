@@ -11,18 +11,65 @@ namespace PHPUnit\Event\Assertion;
 
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
+use PHPUnit\Framework\Constraint;
 
 final class Made implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
-    {
+    /**
+     * @var mixed
+     */
+    private $value;
+
+    private Constraint\Constraint $constraint;
+
+    private string $message;
+
+    private bool $hasFailed;
+
+    /**
+     * @param mixed $value
+     */
+    public function __construct(
+        Telemetry\Info $telemetryInfo,
+        $value,
+        Constraint\Constraint $constraint,
+        string $message,
+        bool $hasFailed
+    ) {
         $this->telemetryInfo = $telemetryInfo;
+        $this->value         = $value;
+        $this->constraint    = $constraint;
+        $this->message       = $message;
+        $this->hasFailed     = $hasFailed;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    /**
+     * @return mixed
+     */
+    public function value()
+    {
+        return $this->value;
+    }
+
+    public function constraint(): Constraint\Constraint
+    {
+        return $this->constraint;
+    }
+
+    public function message(): string
+    {
+        return $this->message;
+    }
+
+    public function hasFailed(): bool
+    {
+        return $this->hasFailed;
     }
 }

@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Framework\Constraint;
+
 final class DispatchingEmitter implements Emitter
 {
     private Dispatcher $dispatcher;
@@ -41,9 +43,15 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function assertionMade(): void
+    public function assertionMade($value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
     {
-        $this->dispatcher->dispatch(new Assertion\Made($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Assertion\Made(
+            $this->telemetryInfo(),
+            $value,
+            $constraint,
+            $message,
+            $hasFailed
+        ));
     }
 
     public function bootstrapFinished(): void

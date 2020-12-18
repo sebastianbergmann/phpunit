@@ -2000,10 +2000,19 @@ abstract class Assert
     {
         self::$count += count($constraint);
 
+        $hasFailed = false;
+
         try {
             $constraint->evaluate($value, $message);
+
+            $hasFailed = true;
         } finally {
-            Event\Registry::emitter()->assertionMade();
+            Event\Registry::emitter()->assertionMade(
+                $value,
+                $constraint,
+                $message,
+                $hasFailed
+            );
         }
     }
 

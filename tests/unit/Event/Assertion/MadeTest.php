@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Assertion;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Constraint;
 
 /**
  * @covers \PHPUnit\Event\Assertion\Made
@@ -19,9 +20,23 @@ final class MadeTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $value         = 'Hmm';
+        $constraint    = new Constraint\IsEqual('Ok');
+        $message       = 'Well, that did not go as planned!';
+        $hasFailed     = true;
 
-        $event = new Made($telemetryInfo);
+        $event = new Made(
+            $telemetryInfo,
+            $value,
+            $constraint,
+            $message,
+            $hasFailed
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($value, $event->value());
+        $this->assertSame($constraint, $event->constraint());
+        $this->assertSame($message, $event->message());
+        $this->assertSame($hasFailed, $event->hasFailed());
     }
 }
