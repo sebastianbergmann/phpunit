@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\Telemetric;
 
-use PHPUnit\Event\Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -17,13 +16,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class MemoryUsageTest extends TestCase
 {
-    public function testFromBytesRejectsInvalidBytes(): void
-    {
-        $this->expectException(Exception\InvalidMemoryUsage::class);
-
-        MemoryUsage::fromBytes(-1);
-    }
-
     /**
      * @dataProvider provideValidBytes
      */
@@ -37,6 +29,7 @@ final class MemoryUsageTest extends TestCase
     public function provideValidBytes(): array
     {
         return [
+            'int-less-than-zero'    => [-1],
             'int-zero'              => [0],
             'int-greater-than-zero' => [1],
         ];
