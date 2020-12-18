@@ -683,7 +683,7 @@
       <code>include_once $filename</code>
     </UnresolvableInclude>
     <UnsafeInstantiation occurrences="1">
-      <code>new static</code>
+      <code>new static((new Event\Facade())-&gt;emitter())</code>
     </UnsafeInstantiation>
   </file>
   <file src="src/TextUI/DefaultResultPrinter.php">

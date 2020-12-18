@@ -83,13 +83,15 @@ class Command
      */
     private array $warnings = [];
 
+    private Event\Emitter $eventEmitter;
+
     /**
      * @throws Exception
      */
     public static function main(bool $exit = true): int
     {
         try {
-            return (new static)->run((new Event\Facade())->emitter(), $_SERVER['argv'], $exit);
+            return (new static((new Event\Facade())->emitter()))->run($_SERVER['argv'], $exit);
         } catch (Throwable $t) {
             throw new RuntimeException(
                 $t->getMessage(),
@@ -99,12 +101,17 @@ class Command
         }
     }
 
+    public function __construct(Event\Emitter $eventEmitter)
+    {
+        $this->eventEmitter = $eventEmitter;
+    }
+
     /**
      * @throws Exception
      */
-    public function run(Event\Emitter $eventEmitter, array $argv, bool $exit = true): int
+    public function run(array $argv, bool $exit = true): int
     {
-        $eventEmitter->applicationStarted();
+        $this->eventEmitter->applicationStarted();
 
         $this->handleArguments($argv);
 
