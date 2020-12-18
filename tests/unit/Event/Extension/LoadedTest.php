@@ -19,9 +19,17 @@ final class LoadedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $name          = 'example-extension';
+        $version       = '1.2.3';
 
-        $event = new Loaded($telemetryInfo);
+        $event = new Loaded(
+            $telemetryInfo,
+            $name,
+            $version
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($name, $event->name());
+        $this->assertSame($version, $event->version());
     }
 }

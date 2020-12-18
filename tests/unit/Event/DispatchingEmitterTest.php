@@ -164,7 +164,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->extensionLoaded();
+        $emitter->extensionLoaded(
+            'example-extension',
+            '1.2.3'
+        );
     }
 
     public function testGlobalStateCapturedDispatchesGlobalStateCapturedEvent(): void

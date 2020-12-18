@@ -29,7 +29,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function extensionLoaded(): void
+    public function extensionLoaded(string $name, string $version): void
     {
     }
 

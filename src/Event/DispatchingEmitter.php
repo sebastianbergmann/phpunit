@@ -57,9 +57,13 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Comparator\Registered($this->telemetryInfo()));
     }
 
-    public function extensionLoaded(): void
+    public function extensionLoaded(string $name, string $version): void
     {
-        $this->dispatcher->dispatch(new Extension\Loaded($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Extension\Loaded(
+            $this->telemetryInfo(),
+            $name,
+            $version
+        ));
     }
 
     public function globalStateCaptured(): void

@@ -21,7 +21,7 @@ interface Emitter
 
     public function comparatorRegistered(): void;
 
-    public function extensionLoaded(): void;
+    public function extensionLoaded(string $name, string $version): void;
 
     public function globalStateCaptured(): void;
 

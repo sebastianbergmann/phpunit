@@ -16,13 +16,29 @@ final class Loaded implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
+    private string $name;
+
+    private string $version;
+
+    public function __construct(Telemetry\Info $telemetryInfo, string $name, string $version)
     {
         $this->telemetryInfo = $telemetryInfo;
+        $this->name          = $name;
+        $this->version       = $version;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
+    }
+
+    public function version(): string
+    {
+        return $this->version;
     }
 }
