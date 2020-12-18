@@ -12,7 +12,6 @@ namespace PHPUnit\Event;
 use function array_key_exists;
 use function get_class;
 use function sprintf;
-use RuntimeException;
 
 final class Dispatcher
 {
@@ -29,12 +28,12 @@ final class Dispatcher
     }
 
     /**
-     * @throws RuntimeException
+     * @throws UnknownSubscriberType
      */
     public function register(Subscriber $subscriber): void
     {
         if (!$this->typeMap->isKnownSubscriberType($subscriber)) {
-            throw new RuntimeException(sprintf(
+            throw new UnknownSubscriberType(sprintf(
                 'Subscriber "%s" does not implement any known interface - did you forget to register it?',
                 get_class($subscriber)
             ));
@@ -50,14 +49,14 @@ final class Dispatcher
     }
 
     /**
-     * @throws RuntimeException
+     * @throws UnknownEventType
      */
     public function dispatch(Event $event): void
     {
         $eventClassName = get_class($event);
 
         if (!$this->typeMap->isKnownEventType($event)) {
-            throw new RuntimeException(sprintf(
+            throw new UnknownEventType(sprintf(
                 'Unknown event type "%s"',
                 $eventClassName
             ));

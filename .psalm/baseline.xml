@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.x-dev@">
   <file src="src/Event/Dispatcher.php">
+    <MissingThrowsDocblock occurrences="1">
+      <code>map</code>
+    </MissingThrowsDocblock>
     <UndefinedInterfaceMethod occurrences="1">
       <code>notify</code>
     </UndefinedInterfaceMethod>
