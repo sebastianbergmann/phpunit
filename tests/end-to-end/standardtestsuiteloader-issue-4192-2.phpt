@@ -4,7 +4,7 @@ phpunit ../../_files/ConcreteTest.php
 <?php declare(strict_types=1);
 require_once __DIR__.'/../../vendor/autoload.php';
 $cmd = new \PHPUnit\TextUI\Command();
-$cmd->run([
+$cmd->run((new \PHPUnit\Event\Facade())->emitter(), [
     'phpunit',
     realpath(__DIR__.'/../_files/ConcreteTest.php')
 ], false);

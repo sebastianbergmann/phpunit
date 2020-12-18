@@ -36,6 +36,7 @@ use function str_starts_with;
 use function stream_resolve_include_path;
 use function trim;
 use function version_compare;
+use PHPUnit\Event;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -88,7 +89,7 @@ class Command
     public static function main(bool $exit = true): int
     {
         try {
-            return (new static)->run($_SERVER['argv'], $exit);
+            return (new static)->run((new Event\Facade())->emitter(), $_SERVER['argv'], $exit);
         } catch (Throwable $t) {
             throw new RuntimeException(
                 $t->getMessage(),
@@ -101,8 +102,10 @@ class Command
     /**
      * @throws Exception
      */
-    public function run(array $argv, bool $exit = true): int
+    public function run(Event\Emitter $eventEmitter, array $argv, bool $exit = true): int
     {
+        $eventEmitter->applicationStarted();
+
         $this->handleArguments($argv);
 
         $runner = new TestRunner;
