@@ -510,7 +510,18 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 
+            if ($test instanceof TestCase) {
+                $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
+            }
+
             $test->run($dispatcher, $result);
+
+            if ($test instanceof TestCase) {
+                $dispatcher->dispatch(new Event\Test\AfterTest(
+                    new Event\Test\Test(),
+                    new Event\Test\Result\NeedsClarification()
+                ));
+            }
         }
 
         if (class_exists($this->name, false)) {
