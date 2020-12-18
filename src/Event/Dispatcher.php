@@ -18,9 +18,9 @@ final class Dispatcher
         $this->subscribers = new Subscribers();
     }
 
-    public function register(Subscriber $subscriber): void
+    public function register(Subscriber ...$subscribers): void
     {
-        $this->subscribers->add($subscriber);
+        $this->subscribers->add(...$subscribers);
     }
 
     public function dispatch(Event $event): void
