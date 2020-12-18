@@ -16,6 +16,15 @@ use PHPUnit\Event\Test\Result;
  */
 final class SuccessTest extends AbstractResultTestCase
 {
+    public function testConstructorSetsValues(): void
+    {
+        $numberOfAssertions = 3;
+
+        $result = new Success($numberOfAssertions);
+
+        $this->assertSame($numberOfAssertions, $result->numberOfAssertions());
+    }
+
     protected function asString(): string
     {
         return 'success';
@@ -23,6 +32,6 @@ final class SuccessTest extends AbstractResultTestCase
 
     protected function result(): Result
     {
-        return new Success();
+        return new Success(3);
     }
 }

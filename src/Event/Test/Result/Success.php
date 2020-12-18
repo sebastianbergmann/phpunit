@@ -13,6 +13,13 @@ use PHPUnit\Event\Test\Result;
 
 final class Success implements Result
 {
+    private int $numberOfAssertions;
+
+    public function __construct(int $numberOfAssertions)
+    {
+        $this->numberOfAssertions = $numberOfAssertions;
+    }
+
     public function is(Result $other): bool
     {
         return $other->asString() === $this->asString();
@@ -21,5 +28,10 @@ final class Success implements Result
     public function asString(): string
     {
         return 'success';
+    }
+
+    public function numberOfAssertions(): int
+    {
+        return $this->numberOfAssertions;
     }
 }
