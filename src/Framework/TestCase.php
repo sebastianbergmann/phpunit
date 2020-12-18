@@ -1757,7 +1757,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->result->addFailure(
             $this,
             new SkippedTestError(
-                sprintf('This method has an invalid @depends annotation.')
+                'This method has an invalid @depends annotation.'
             ),
             0
         );
