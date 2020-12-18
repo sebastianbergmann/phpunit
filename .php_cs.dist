@@ -153,6 +153,10 @@ return PhpCsFixer\Config::create()
         'non_printable_character' => true,
         'normalize_index_brace' => true,
         'object_operator_without_whitespace' => true,
+        'operator_linebreak' => [
+            'only_booleans' => true,
+            'position' => 'end',
+        ],
         'ordered_class_elements' => [
             'order' => [
                 'use_trait',
