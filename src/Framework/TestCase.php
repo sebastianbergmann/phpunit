@@ -714,6 +714,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->{$method}();
             }
 
+            Event\Registry::emitter()->testSetUpFinished();
+
             foreach ($hookMethods['preCondition'] as $method) {
                 $this->{$method}();
             }
