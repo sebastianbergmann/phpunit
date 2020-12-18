@@ -9,10 +9,9 @@
  */
 namespace PHPUnit\Event;
 
-use function date_default_timezone_get;
-use DateTimeZone;
 use PHPUnit\Event\Telemetry\System;
 use PHPUnit\Event\Telemetry\SystemMemoryMeter;
+use PHPUnit\Event\Telemetry\SystemStopWatch;
 
 final class Registry
 {
@@ -28,7 +27,7 @@ final class Registry
             self::$emitter = new DispatchingEmitter(
                 self::dispatcher(),
                 new System(
-                    new SystemClock(new DateTimeZone(date_default_timezone_get())),
+                    new SystemStopWatch(),
                     new SystemMemoryMeter()
                 )
             );

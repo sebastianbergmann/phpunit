@@ -9,8 +9,9 @@
  */
 namespace PHPUnit\Event;
 
-use DateInterval;
-use DateTimeImmutable;
+use function hrtime;
+use PHPUnit\Event\Telemetry\Duration;
+use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Framework\TestCase;
 
 abstract class AbstractEventTestCase extends TestCase
@@ -19,13 +20,13 @@ abstract class AbstractEventTestCase extends TestCase
     {
         return new Telemetry\Info(
             new Telemetry\Snapshot(
-                new DateTimeImmutable('now'),
+                new HRTime(...hrtime(false)),
                 Telemetry\MemoryUsage::fromBytes(1000),
                 Telemetry\MemoryUsage::fromBytes(2000)
             ),
-            new DateInterval('P2D'),
+            new Duration(123, 456),
             Telemetry\MemoryUsage::fromBytes(2000),
-            new DateInterval('P1D'),
+            new Duration(234, 567),
             Telemetry\MemoryUsage::fromBytes(3000)
         );
     }

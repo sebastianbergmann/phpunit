@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-use DateTimeImmutable;
+use function hrtime;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,20 +19,20 @@ final class SystemTest extends TestCase
 {
     public function testSnapshotReturnsSnapshot(): void
     {
-        $time = new DateTimeImmutable('now');
+        $time = new HRTime(...hrtime(false));
 
         $clock = new class($time) implements StopWatch {
             /**
-             * @var DateTimeImmutable
+             * @var HRTime
              */
             private $time;
 
-            public function __construct(DateTimeImmutable $time)
+            public function __construct(HRTime $time)
             {
                 $this->time = $time;
             }
 
-            public function now(): DateTimeImmutable
+            public function current(): HRTime
             {
                 return $this->time;
             }

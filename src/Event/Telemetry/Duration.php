@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Telemetry;
 
 use function floor;
+use function sprintf;
 use InvalidArgumentException;
 
 final class Duration
@@ -51,18 +52,18 @@ final class Duration
 
         if ($seconds > 60 * 60) {
             $hours     = floor($seconds / 60 / 60);
-            $formatted = \sprintf('%02d', $hours) . ':';
+            $formatted = sprintf('%02d', $hours) . ':';
             $seconds -= ($hours * 60 * 60);
         }
 
         if ($seconds > 60) {
             $minutes = floor($seconds / 60);
-            $formatted .= \sprintf('%02d', $minutes) . ':';
+            $formatted .= sprintf('%02d', $minutes) . ':';
             $seconds -= ($minutes * 60);
         }
 
-        $formatted .= \sprintf('%02d', $seconds) . '.';
-        $formatted .= \sprintf('%09d', $this->nanoseconds());
+        $formatted .= sprintf('%02d', $seconds) . '.';
+        $formatted .= sprintf('%09d', $this->nanoseconds());
 
         return $formatted;
     }

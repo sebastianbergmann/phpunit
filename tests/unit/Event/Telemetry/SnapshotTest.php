@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-use DateTimeImmutable;
+use function hrtime;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,7 +19,7 @@ final class SnapshotTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $time            = new DateTimeImmutable();
+        $time            = new HRTime(...hrtime(false));
         $memoryUsage     = MemoryUsage::fromBytes(2000);
         $peakMemoryUsage = MemoryUsage::fromBytes(3000);
 

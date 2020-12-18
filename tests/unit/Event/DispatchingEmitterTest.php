@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use DateTimeZone;
 use PHPUnit\Framework;
 
 /**
@@ -1014,7 +1013,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     private static function createTelemetrySystem(): Telemetry\System
     {
         return new Telemetry\System(
-            new Telemetry\SystemStopWatch(new DateTimeZone('Europe/Berlin')),
+            new Telemetry\SystemStopWatch(),
             new Telemetry\SystemMemoryMeter()
         );
     }

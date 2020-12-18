@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
+use function sprintf;
 use InvalidArgumentException;
 
 final class HRTime
@@ -39,6 +40,9 @@ final class HRTime
         return $this->nanoseconds;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function duration(self $other): Duration
     {
         $seconds     = $this->seconds;
@@ -54,6 +58,10 @@ final class HRTime
         }
 
         $secondDuration = $seconds - $other->seconds();
+
+        if ($secondDuration < 0) {
+            throw new InvalidArgumentException('Other needs to be greater.');
+        }
 
         return new Duration($secondDuration, $nanoDuration);
     }
