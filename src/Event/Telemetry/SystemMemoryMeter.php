@@ -14,12 +14,12 @@ use function memory_get_usage;
 
 final class SystemMemoryMeter implements MemoryMeter
 {
-    public function usage(): MemoryUsage
+    public function memoryUsage(): MemoryUsage
     {
         return MemoryUsage::fromBytes(memory_get_usage(true));
     }
 
-    public function peak(): MemoryUsage
+    public function peakMemoryUsage(): MemoryUsage
     {
         return MemoryUsage::fromBytes(memory_get_peak_usage(true));
     }

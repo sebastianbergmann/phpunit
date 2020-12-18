@@ -17,21 +17,21 @@ use PHPUnit\Framework\TestCase;
  */
 final class SystemMemoryMeterTest extends TestCase
 {
-    public function testUsageReturnsMemoryUsage(): void
+    public function testMemoryUsageReturnsMemoryUsage(): void
     {
         $memoryMeter = new SystemMemoryMeter();
 
-        $usage = MemoryUsage::fromBytes(memory_get_usage(true));
+        $memoryYsage = MemoryUsage::fromBytes(memory_get_usage(true));
 
-        $this->assertEquals($usage, $memoryMeter->usage());
+        $this->assertEquals($memoryYsage, $memoryMeter->memoryUsage());
     }
 
-    public function testPeakReturnsMemoryPeakUsage(): void
+    public function testPeakMemoryUsageReturnsMemoryPeakUsage(): void
     {
         $memoryMeter = new SystemMemoryMeter();
 
-        $peak = MemoryUsage::fromBytes(memory_get_usage(true));
+        $peakMemoryUsage = MemoryUsage::fromBytes(memory_get_usage(true));
 
-        $this->assertEquals($peak, $memoryMeter->peak());
+        $this->assertEquals($peakMemoryUsage, $memoryMeter->peakMemoryUsage());
     }
 }

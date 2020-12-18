@@ -49,12 +49,12 @@ final class SysInfoTest extends TestCase
                 $this->peakMemoryUsage = $peakMemoryUsage;
             }
 
-            public function usage(): MemoryUsage
+            public function memoryUsage(): MemoryUsage
             {
                 return $this->memoryUsage;
             }
 
-            public function peak(): MemoryUsage
+            public function peakMemoryUsage(): MemoryUsage
             {
                 return $this->peakMemoryUsage;
             }

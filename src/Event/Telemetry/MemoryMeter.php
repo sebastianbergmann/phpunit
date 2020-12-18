@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Telemetry;
 
 interface MemoryMeter
 {
-    public function usage(): MemoryUsage;
+    public function memoryUsage(): MemoryUsage;
 
-    public function peak(): MemoryUsage;
+    public function peakMemoryUsage(): MemoryUsage;
 }
