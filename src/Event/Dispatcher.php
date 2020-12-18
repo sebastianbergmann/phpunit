@@ -9,52 +9,59 @@
  */
 namespace PHPUnit\Event;
 
-use function array_fill_keys;
 use function array_key_exists;
-use function class_implements;
 use function get_class;
+use function sprintf;
+use RuntimeException;
 
 final class Dispatcher
 {
-    /**
-     * @var array<class-string, class-string>
-     */
-    private static array $map = [
-        Execution\BeforeExecutionSubscriber::class => Execution\BeforeExecution::class,
-        Run\AfterRunSubscriber::class              => Run\AfterRun::class,
-        Run\BeforeRunSubscriber::class             => Run\BeforeRun::class,
-        Test\AfterLastTestSubscriber::class        => Test\AfterLastTest::class,
-        Test\AfterTestSubscriber::class            => Test\AfterTest::class,
-        Test\BeforeFirstTestSubscriber::class      => Test\BeforeFirstTest::class,
-        Test\BeforeTestSubscriber::class           => Test\BeforeTest::class,
-        TestSuite\AfterTestSuiteSubscriber::class  => TestSuite\AfterTestSuite::class,
-        TestSuite\BeforeTestSuiteSubscriber::class => TestSuite\BeforeTestSuite::class,
-    ];
+    private TypeMap $typeMap;
 
     /**
      * @var array<string, array<int, Subscriber>>
      */
-    private array $subscribers;
+    private array $subscribers = [];
 
-    public function __construct()
+    public function __construct(TypeMap $map)
     {
-        $this->subscribers = array_fill_keys(self::$map, []);
+        $this->typeMap = $map;
     }
 
+    /**
+     * @throws RuntimeException
+     */
     public function register(Subscriber $subscriber): void
     {
-        foreach (class_implements($subscriber) as $interface) {
-            if (!isset(self::$map[$interface])) {
-                continue;
-            }
-
-            $this->subscribers[self::$map[$interface]][] = $subscriber;
+        if (!$this->typeMap->isKnownSubscriberType($subscriber)) {
+            throw new RuntimeException(sprintf(
+                'Subscriber "%s" does not implement any known interface - did you forget to register it?',
+                get_class($subscriber)
+            ));
         }
+
+        $eventClassName = $this->typeMap->map($subscriber);
+
+        if (!array_key_exists($eventClassName, $this->subscribers)) {
+            $this->subscribers[$eventClassName] = [];
+        }
+
+        $this->subscribers[$eventClassName][] = $subscriber;
     }
 
+    /**
+     * @throws RuntimeException
+     */
     public function dispatch(Event $event): void
     {
         $eventClassName = get_class($event);
+
+        if (!$this->typeMap->isKnownEventType($event)) {
+            throw new RuntimeException(sprintf(
+                'Unknown event type "%s"',
+                $eventClassName
+            ));
+        }
 
         if (!array_key_exists($eventClassName, $this->subscribers)) {
             return;

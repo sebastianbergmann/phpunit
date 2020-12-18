@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use function get_class;
 use PHPUnit\Framework\TestCase;
 
 /**
