@@ -27,7 +27,7 @@ final class RegistryTest extends TestCase
     {
         $annotation = Registry::getInstance()->forClassName(self::class);
 
-        self::assertSame(
+        $this->assertSame(
             [
                 'small'  => [''],
                 'covers' => ['\PHPUnit\Util\Annotation\Registry'],
@@ -36,7 +36,7 @@ final class RegistryTest extends TestCase
             $annotation->symbolAnnotations()
         );
 
-        self::assertSame(
+        $this->assertSame(
             $annotation,
             Registry::getInstance()->forClassName(self::class),
             'Registry memoizes retrieved DocBlock instances'
@@ -50,7 +50,7 @@ final class RegistryTest extends TestCase
             'testTicketAnnotationSupportsNumericValue'
         );
 
-        self::assertSame(
+        $this->assertSame(
             [
                 'testdox' => ['Empty test for @ticket numeric annotation values'],
                 'ticket'  => ['3502'],
@@ -60,7 +60,7 @@ final class RegistryTest extends TestCase
             $annotation->symbolAnnotations()
         );
 
-        self::assertSame(
+        $this->assertSame(
             $annotation,
             Registry::getInstance()->forMethod(
                 NumericGroupAnnotationTest::class,
