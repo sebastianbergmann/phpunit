@@ -331,14 +331,14 @@ final class DocBlock
 
     public function isHookToBeExecutedBeforeClass(): bool
     {
-        return $this->isMethod
-            && false !== strpos($this->docComment, '@beforeClass');
+        return $this->isMethod &&
+            false !== strpos($this->docComment, '@beforeClass');
     }
 
     public function isHookToBeExecutedAfterClass(): bool
     {
-        return $this->isMethod
-            && false !== strpos($this->docComment, '@afterClass');
+        return $this->isMethod &&
+            false !== strpos($this->docComment, '@afterClass');
     }
 
     public function isToBeExecutedBeforeTest(): bool
