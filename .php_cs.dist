@@ -222,6 +222,7 @@ return PhpCsFixer\Config::create()
         'single_import_per_statement' => true,
         'single_line_after_imports' => true,
         'single_quote' => true,
+        'single_space_after_construct' => true,
         'standardize_not_equals' => true,
         'strict_param' => true,
         'ternary_to_null_coalescing' => true,
