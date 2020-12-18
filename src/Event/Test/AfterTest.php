@@ -16,9 +16,12 @@ final class AfterTest implements Event
 {
     private Test $test;
 
-    public function __construct(Test $test)
+    private Result $result;
+
+    public function __construct(Test $test, Result $result)
     {
-        $this->test = $test;
+        $this->test   = $test;
+        $this->result = $result;
     }
 
     public function type(): Type
@@ -29,5 +32,10 @@ final class AfterTest implements Event
     public function test(): Test
     {
         return $this->test;
+    }
+
+    public function result(): Result
+    {
+        return $this->result;
     }
 }

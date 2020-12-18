@@ -119,7 +119,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->addFailure($this, new SkippedTestError($e->getMessage()), 0);
             $result->endTest($this, 0);
 
-            $dispatcher->dispatch(new Event\Test\AfterTest(new Event\Test\Test()));
+            $dispatcher->dispatch(new Event\Test\AfterTest(
+                new Event\Test\Test(),
+                new Event\Test\Result\Failure()
+            ));
 
             return;
         }
@@ -231,7 +234,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $result->endTest($this, $time);
 
-        $dispatcher->dispatch(new Event\Test\AfterTest(new Event\Test\Test()));
+        $dispatcher->dispatch(new Event\Test\AfterTest(
+            new Event\Test\Test(),
+            new Event\Test\Result\Unknown()
+        ));
     }
 
     /**

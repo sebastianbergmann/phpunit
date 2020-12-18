@@ -18,7 +18,10 @@ final class AfterTestTest extends TestCase
 {
     public function testTypeIsAfterTest(): void
     {
-        $event = new AfterTest(new Test());
+        $event = new AfterTest(
+            new Test(),
+            $this->createMock(Result::class)
+        );
 
         $this->assertTrue($event->type()->is(new AfterTestType()));
     }
@@ -27,8 +30,14 @@ final class AfterTestTest extends TestCase
     {
         $test = new Test();
 
-        $event = new AfterTest($test);
+        $result = $this->createMock(Result::class);
+
+        $event = new AfterTest(
+            $test,
+            $result
+        );
 
         $this->assertSame($test, $event->test());
+        $this->assertSame($result, $event->result());
     }
 }
