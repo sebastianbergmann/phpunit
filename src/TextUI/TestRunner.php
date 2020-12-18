@@ -604,11 +604,11 @@ final class TestRunner
             $this->write(PHP_EOL);
         }
 
-        Event\Registry::emitter()->testRunStarted();
+        Event\Registry::emitter()->testSuiteRunStarted();
 
         $suite->run($result);
 
-        Event\Registry::emitter()->testRunFinished();
+        Event\Registry::emitter()->testSuiteRunFinished();
 
         foreach ($this->extensions as $extension) {
             if ($extension instanceof AfterLastTestHook) {
