@@ -15,8 +15,6 @@ class MyCommand extends Command
     {
         $this->longOptions['my-option=']      = 'myHandler';
         $this->longOptions['my-other-option'] = null;
-
-        parent::__construct(new NullEmitter());
     }
 
     public function myHandler($value): void

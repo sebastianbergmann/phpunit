@@ -15,33 +15,19 @@ use PHPUnit\Event\Telemetry\System;
 use PHPUnit\Event\Telemetry\SystemClock;
 use PHPUnit\Event\Telemetry\SystemMemoryMeter;
 
-final class Facade
+final class Registry
 {
-    private ?TypeMap $typeMap = null;
+    private static ?TypeMap $typeMap = null;
 
-    private ?Emitter $emitter = null;
+    private static ?Emitter $emitter = null;
 
-    private ?Dispatcher $dispatcher = null;
+    private static ?Dispatcher $dispatcher = null;
 
-    /**
-     * @param class-string $subscriberInterface
-     * @param class-string $eventClass
-     */
-    public function registerTypeMapping(string $subscriberInterface, string $eventClass): void
+    public static function emitter(): Emitter
     {
-        $this->typeMap()->addMapping($subscriberInterface, $eventClass);
-    }
-
-    public function registerSubscriber(Subscriber $subscriber): void
-    {
-        $this->dispatcher()->register($subscriber);
-    }
-
-    public function emitter(): Emitter
-    {
-        if ($this->emitter === null) {
-            $this->emitter = new DispatchingEmitter(
-                $this->dispatcher(),
+        if (self::$emitter === null) {
+            self::$emitter = new DispatchingEmitter(
+                self::dispatcher(),
                 new System(
                     new SystemClock(new DateTimeZone(date_default_timezone_get())),
                     new SystemMemoryMeter()
@@ -49,32 +35,29 @@ final class Facade
             );
         }
 
-        return $this->emitter;
+        return self::$emitter;
     }
 
-    private function dispatcher(): Dispatcher
+    private static function dispatcher(): Dispatcher
     {
-        if ($this->dispatcher === null) {
-            $this->dispatcher = new Dispatcher(
-                $this->typeMap()
-            );
-            $this->registerDefaultSubscribers();
+        if (self::$dispatcher === null) {
+            self::$dispatcher = new Dispatcher(self::typeMap());
         }
 
-        return $this->dispatcher;
+        return self::$dispatcher;
     }
 
-    private function typeMap(): TypeMap
+    private static function typeMap(): TypeMap
     {
-        if ($this->typeMap === null) {
-            $this->typeMap = new TypeMap();
-            $this->registerDefaultTypes();
+        if (self::$typeMap === null) {
+            self::$typeMap = new TypeMap();
+            self::registerDefaultTypes();
         }
 
-        return $this->typeMap;
+        return self::$typeMap;
     }
 
-    private function registerDefaultTypes(): void
+    private static function registerDefaultTypes(): void
     {
         $defaultEvents = [
             Application\Configured::class,
@@ -119,14 +102,10 @@ final class Facade
         ];
 
         foreach ($defaultEvents as $eventClass) {
-            $this->registerTypeMapping(
+            self::typeMap()->addMapping(
                 $eventClass . 'Subscriber',
                 $eventClass
             );
         }
-    }
-
-    private function registerDefaultSubscribers(): void
-    {
     }
 }

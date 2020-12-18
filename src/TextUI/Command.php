@@ -83,15 +83,13 @@ class Command
      */
     private array $warnings = [];
 
-    private Event\Emitter $eventEmitter;
-
     /**
      * @throws Exception
      */
     public static function main(bool $exit = true): int
     {
         try {
-            return (new static((new Event\Facade())->emitter()))->run($_SERVER['argv'], $exit);
+            return (new static)->run($_SERVER['argv'], $exit);
         } catch (Throwable $t) {
             throw new RuntimeException(
                 $t->getMessage(),
@@ -101,21 +99,16 @@ class Command
         }
     }
 
-    public function __construct(Event\Emitter $eventEmitter)
-    {
-        $this->eventEmitter = $eventEmitter;
-    }
-
     /**
      * @throws Exception
      */
     public function run(array $argv, bool $exit = true): int
     {
-        $this->eventEmitter->applicationStarted();
+        Event\Registry::emitter()->applicationStarted();
 
         $this->handleArguments($argv);
 
-        $runner = new TestRunner($this->eventEmitter);
+        $runner = new TestRunner();
 
         if ($this->arguments['test'] instanceof TestSuite) {
             $suite = $this->arguments['test'];
@@ -142,7 +135,7 @@ class Command
             return $this->handleListTestsXml($suite, $this->arguments['listTestsXml'], $exit);
         }
 
-        $this->eventEmitter->applicationConfigured();
+        Event\Registry::emitter()->applicationConfigured();
 
         unset($this->arguments['test'], $this->arguments['testFile']);
 
@@ -344,7 +337,7 @@ class Command
             }
 
             if (!isset($this->arguments['noExtensions']) && $phpunitConfiguration->hasExtensionsDirectory() && extension_loaded('phar')) {
-                $result = (new PharLoader($this->eventEmitter))->loadPharExtensionsInDirectory($phpunitConfiguration->extensionsDirectory());
+                $result = (new PharLoader())->loadPharExtensionsInDirectory($phpunitConfiguration->extensionsDirectory());
 
                 $this->arguments['loadedExtensions']    = $result['loadedExtensions'];
                 $this->arguments['notLoadedExtensions'] = $result['notLoadedExtensions'];
@@ -508,7 +501,7 @@ class Command
             );
         }
 
-        $this->eventEmitter->bootstrapFinished();
+        Event\Registry::emitter()->bootstrapFinished();
     }
 
     protected function handleVersionCheck(): void
