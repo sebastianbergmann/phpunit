@@ -27,11 +27,11 @@ use function str_ends_with;
 use function str_starts_with;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Event;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
-use PHPUnit\Event;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -419,6 +419,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         call_user_func([$this->name, $beforeClassMethod]);
                     }
                 }
+
+                Event\Registry::emitter()->testSuiteBeforeClassFinished();
             } catch (SkippedTestSuiteError $error) {
                 foreach ($this->tests() as $test) {
                     $result->startTest($test);
