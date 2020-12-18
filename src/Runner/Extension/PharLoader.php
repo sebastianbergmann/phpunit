@@ -13,6 +13,7 @@ use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\Exception as ManifestException;
 use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
+use PHPUnit\Event;
 use PHPUnit\Runner\Version;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
@@ -21,6 +22,13 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  */
 final class PharLoader
 {
+    private Event\Emitter $eventEmitter;
+
+    public function __construct(Event\Emitter $eventEmitter)
+    {
+        $this->eventEmitter = $eventEmitter;
+    }
+
     /**
      * @psalm-return array{loadedExtensions: list<string>, notLoadedExtensions: list<string>}
      */
@@ -65,6 +73,8 @@ final class PharLoader
             require $file;
 
             $loadedExtensions[] = $manifest->getName()->asString() . ' ' . $manifest->getVersion()->getVersionString();
+
+            $this->eventEmitter->extensionLoaded();
         }
 
         return [
