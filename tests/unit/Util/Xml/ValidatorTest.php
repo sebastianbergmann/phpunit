@@ -16,8 +16,8 @@ use PHPUnit\Runner\Version;
 /**
  * @small
  *
- * @covers \PHPUnit\Util\Xml\Validator
  * @covers \PHPUnit\Util\Xml\ValidationResult
+ * @covers \PHPUnit\Util\Xml\Validator
  */
 final class ValidatorTest extends TestCase
 {
