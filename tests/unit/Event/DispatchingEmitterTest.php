@@ -13,9 +13,9 @@ use DateTimeZone;
 use PHPUnit\Framework;
 
 /**
- * @covers \PHPUnit\Event\Emitter
+ * @covers \PHPUnit\Event\DispatchingEmitter
  */
-final class EmitterTest extends Framework\TestCase
+final class DispatchingEmitterTest extends Framework\TestCase
 {
     public function testApplicationConfiguredDispatchesApplicationConfiguredEvent(): void
     {
@@ -34,7 +34,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -59,7 +59,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -84,7 +84,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -109,7 +109,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -134,7 +134,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -159,7 +159,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -184,7 +184,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -209,7 +209,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -234,7 +234,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -259,7 +259,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -284,7 +284,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -309,7 +309,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -334,7 +334,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -359,7 +359,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -384,7 +384,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -409,7 +409,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -434,7 +434,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -459,7 +459,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -484,7 +484,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -509,7 +509,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -534,7 +534,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -559,7 +559,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -584,7 +584,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -609,7 +609,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -634,7 +634,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -659,7 +659,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -684,7 +684,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -709,7 +709,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -734,7 +734,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -759,7 +759,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -784,7 +784,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -809,7 +809,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -834,7 +834,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -859,7 +859,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -884,7 +884,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -909,7 +909,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -934,7 +934,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -959,7 +959,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );
@@ -984,7 +984,7 @@ final class EmitterTest extends Framework\TestCase
 
         $telemetrySystem = self::createTelemetrySystem();
 
-        $emitter = new Emitter(
+        $emitter = new DispatchingEmitter(
             $dispatcher,
             $telemetrySystem
         );

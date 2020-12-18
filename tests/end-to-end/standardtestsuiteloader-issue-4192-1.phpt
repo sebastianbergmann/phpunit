@@ -3,8 +3,8 @@ phpunit ../../_files/ConcreteTest.php
 --FILE--
 <?php declare(strict_types=1);
 require_once __DIR__.'/../../vendor/autoload.php';
-$cmd = new \PHPUnit\TextUI\Command();
-$cmd->run((new \PHPUnit\Event\Facade())->emitter(),[
+$cmd = new \PHPUnit\TextUI\Command((new \PHPUnit\Event\Facade())->emitter());
+$cmd->run([
     'phpunit',
     (new \ReflectionClass(\ConcreteTest::class))->getFileName()
 ], false);
