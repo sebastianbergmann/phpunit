@@ -23,7 +23,7 @@ final class SysInfo
 
     public function snapshot(): Snapshot
     {
-        return new SnapShot(
+        return new Snapshot(
             $this->clock->now(),
             $this->memoryMeter->usage(),
             $this->memoryMeter->peak()

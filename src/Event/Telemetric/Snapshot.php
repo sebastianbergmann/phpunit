@@ -9,6 +9,35 @@
  */
 namespace PHPUnit\Event\Telemetric;
 
+use DateTimeImmutable;
+
 final class Snapshot
 {
+    private DateTimeImmutable $time;
+
+    private MemoryUsage $memoryUsage;
+
+    private MemoryUsage $peakMemoryUsage;
+
+    public function __construct(DateTimeImmutable $time, MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage)
+    {
+        $this->time            = $time;
+        $this->memoryUsage     = $memoryUsage;
+        $this->peakMemoryUsage = $peakMemoryUsage;
+    }
+
+    public function time(): DateTimeImmutable
+    {
+        return $this->time;
+    }
+
+    public function memoryUsage(): MemoryUsage
+    {
+        return $this->memoryUsage;
+    }
+
+    public function peakMemoryUsage(): MemoryUsage
+    {
+        return $this->peakMemoryUsage;
+    }
 }
