@@ -11,6 +11,7 @@ namespace PHPUnit\Event;
 
 use function array_fill_keys;
 use function array_key_exists;
+use function class_implements;
 use function get_class;
 
 final class Dispatcher
@@ -42,12 +43,12 @@ final class Dispatcher
 
     public function register(Subscriber $subscriber): void
     {
-        foreach (self::$map as $subscriberInterfaceName => $eventClassName) {
-            if ($subscriber instanceof $subscriberInterfaceName) {
-                $this->subscribers[$eventClassName][] = $subscriber;
-
-                return;
+        foreach (class_implements($subscriber) as $interface) {
+            if (!isset(self::$map[$interface])) {
+                continue;
             }
+
+            $this->subscribers[self::$map[$interface]][] = $subscriber;
         }
     }
 
