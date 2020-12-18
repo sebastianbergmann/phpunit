@@ -19,8 +19,11 @@ final class BeforeTestTest extends TestCase
 {
     public function testTypeIsBeforeTest(): void
     {
-        $event = new BeforeTest();
+        $test = new Test();
+
+        $event = new BeforeTest($test);
 
         $this->assertTrue($event->type()->is(new NamedType('before-test')));
+        $this->assertSame($test, $event->test());
     }
 }

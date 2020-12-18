@@ -19,8 +19,11 @@ final class AfterTestSuiteTest extends TestCase
 {
     public function testTypeIsTestAfterTestSuite(): void
     {
-        $event = new AfterTestSuite();
+        $testSuite = new TestSuite();
+
+        $event = new AfterTestSuite($testSuite);
 
         $this->assertTrue($event->type()->is(new NamedType('after-test-suite')));
+        $this->assertSame($testSuite, $event->testSuite());
     }
 }

@@ -14,8 +14,20 @@ use PHPUnit\Event\Type;
 
 final class AfterTestSuite implements Event
 {
+    private TestSuite $testSuite;
+
+    public function __construct(TestSuite $testSuite)
+    {
+        $this->testSuite = $testSuite;
+    }
+
     public function type(): Type
     {
         return new AfterTestSuiteType();
+    }
+
+    public function testSuite(): TestSuite
+    {
+        return $this->testSuite;
     }
 }

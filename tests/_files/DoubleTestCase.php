@@ -30,7 +30,7 @@ class DoubleTestCase implements Test
 
     public function run(Event\Dispatcher $dispatcher, TestResult $result): void
     {
-        $dispatcher->dispatch(new Event\Test\BeforeTest());
+        $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
 
         $result->startTest($this);
 
@@ -39,6 +39,6 @@ class DoubleTestCase implements Test
 
         $result->endTest($this, 0);
 
-        $dispatcher->dispatch(new Event\Test\AfterTest());
+        $dispatcher->dispatch(new Event\Test\AfterTest(new Event\Test\Test()));
     }
 }

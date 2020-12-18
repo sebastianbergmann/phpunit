@@ -404,7 +404,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $className   = $this->name;
         $hookMethods = (new HookMethods)->hookMethods($className);
 
-        $dispatcher->dispatch(new Event\TestSuite\BeforeTestSuite());
+        $dispatcher->dispatch(new Event\TestSuite\BeforeTestSuite(new Event\TestSuite\TestSuite()));
 
         $result->startTestSuite($this);
 
@@ -423,16 +423,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 }
             } catch (SkippedTestSuiteError $error) {
                 foreach ($this->tests() as $test) {
-                    $dispatcher->dispatch(new Event\Test\BeforeTest());
+                    $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
 
                     $result->startTest($test);
                     $result->addFailure($test, $error, 0);
                     $result->endTest($test, 0);
 
-                    $dispatcher->dispatch(new Event\Test\AfterTest());
+                    $dispatcher->dispatch(new Event\Test\AfterTest(new Event\Test\Test()));
                 }
 
-                $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite());
+                $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite(new Event\TestSuite\TestSuite()));
 
                 $result->endTestSuite($this);
 
@@ -445,7 +445,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         break;
                     }
 
-                    $dispatcher->dispatch(new Event\Test\BeforeTest());
+                    $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
 
                     $result->startTest($test);
 
@@ -463,10 +463,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                     $result->endTest($test, 0);
 
-                    $dispatcher->dispatch(new Event\Test\AfterTest());
+                    $dispatcher->dispatch(new Event\Test\AfterTest(new Event\Test\Test()));
                 }
 
-                $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite());
+                $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite(new Event\TestSuite\TestSuite()));
 
                 $result->endTestSuite($this);
 
@@ -510,19 +510,19 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $placeholderTest = clone $test;
                         $placeholderTest->setName($afterClassMethod);
 
-                        $dispatcher->dispatch(new Event\Test\BeforeTest());
+                        $dispatcher->dispatch(new Event\Test\BeforeTest(new Event\Test\Test()));
 
                         $result->startTest($placeholderTest);
                         $result->addFailure($placeholderTest, $error, 0);
                         $result->endTest($placeholderTest, 0);
 
-                        $dispatcher->dispatch(new Event\Test\AfterTest());
+                        $dispatcher->dispatch(new Event\Test\AfterTest(new Event\Test\Test()));
                     }
                 }
             }
         }
 
-        $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite());
+        $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite(new Event\TestSuite\TestSuite()));
 
         $result->endTestSuite($this);
     }
