@@ -551,7 +551,7 @@ XML;
     public function testAssertDirectoryIsNotReadable(): void
     {
         if (PHP_OS_FAMILY === 'Windows') {
-            self::markTestSkipped('Cannot test this behaviour on Windows');
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
         }
 
         $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('unreadable_dir_', true);
@@ -581,7 +581,7 @@ XML;
     public function testAssertDirectoryIsNotWritable(): void
     {
         if (PHP_OS_FAMILY === 'Windows') {
-            self::markTestSkipped('Cannot test this behaviour on Windows');
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
         }
 
         $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('not_writable_dir_', true);
@@ -629,7 +629,7 @@ XML;
     public function testAssertFileIsNotReadable(): void
     {
         if (PHP_OS_FAMILY === 'Windows') {
-            self::markTestSkipped('Cannot test this behaviour on Windows');
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
         }
 
         $tempFile = tempnam(

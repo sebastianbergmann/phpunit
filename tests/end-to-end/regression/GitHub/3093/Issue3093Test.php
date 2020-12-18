@@ -16,7 +16,7 @@ class Issue3093Test extends \PHPUnit\Framework\TestCase
 
     public function testFirstWithoutDependencies(): void
     {
-        self::assertTrue(true);
+        $this->assertTrue(true);
     }
 
     /**
@@ -25,6 +25,6 @@ class Issue3093Test extends \PHPUnit\Framework\TestCase
      */
     public function testSecondThatDependsOnFirstAndDataprovider($value): void
     {
-        self::assertTrue(true);
+        $this->assertTrue(true);
     }
 }
