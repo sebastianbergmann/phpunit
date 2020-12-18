@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\Application\Runtime;
 use PHPUnit\Event\Telemetry\Info;
 use PHPUnit\Event\Telemetry\Snapshot;
 use PHPUnit\Event\Telemetry\System;
@@ -39,7 +40,10 @@ final class DispatchingEmitter implements Emitter
 
     public function applicationStarted(): void
     {
-        $this->dispatcher->dispatch(new Application\Started($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Application\Started(
+            $this->telemetryInfo(),
+            new Runtime()
+        ));
     }
 
     public function assertionMade(): void
