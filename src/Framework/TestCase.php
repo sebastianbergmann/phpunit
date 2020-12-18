@@ -1338,10 +1338,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
-        return $this->getMockBuilder($originalClassName)
-                    ->setConstructorArgs($constructorArguments)
-                    ->enableProxyingToOriginalMethods()
-                    ->getMock();
+        $testProxy = $this->getMockBuilder($originalClassName)
+            ->setConstructorArgs($constructorArguments)
+            ->enableProxyingToOriginalMethods()
+            ->getMock();
+
+        Event\Registry::emitter()->testDoubleTestProxyCreated();
+
+        return $testProxy;
     }
 
     /**
