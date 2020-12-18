@@ -404,7 +404,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $className   = $this->name;
         $hookMethods = (new HookMethods)->hookMethods($className);
 
-        $dispatcher->dispatch(new Event\TestSuite\BeforeTestSuite(new Event\TestSuite\TestSuite($this->name)));
+        $dispatcher->dispatch(new Event\TestSuite\BeforeTestSuite(new Event\TestSuite\TestSuite(
+            $this->name,
+            count($this)
+        )));
 
         $result->startTestSuite($this);
 
@@ -435,7 +438,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     ));
                 }
 
-                $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite(new Event\TestSuite\TestSuite($this->name)));
+                $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite(new Event\TestSuite\TestSuite(
+                    $this->name,
+                    count($this)
+                )));
 
                 $result->endTestSuite($this);
 
@@ -472,7 +478,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     ));
                 }
 
-                $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite(new Event\TestSuite\TestSuite($this->name)));
+                $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite(new Event\TestSuite\TestSuite(
+                    $this->name,
+                    count($this)
+                )));
 
                 $result->endTestSuite($this);
 
@@ -531,7 +540,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
         }
 
-        $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite(new Event\TestSuite\TestSuite($this->name)));
+        $dispatcher->dispatch(new Event\TestSuite\AfterTestSuite(new Event\TestSuite\TestSuite(
+            $this->name,
+            count($this)
+        )));
 
         $result->endTestSuite($this);
     }
