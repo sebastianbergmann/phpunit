@@ -9,13 +9,9 @@
  */
 namespace PHPUnit\Event\Telemetric;
 
-final class MemInfo
+interface MemoryMeter
 {
-    public function usage(): void
-    {
-    }
+    public function usage(): MemoryUsage;
 
-    public function peak(): void
-    {
-    }
+    public function peak(): MemoryUsage;
 }
