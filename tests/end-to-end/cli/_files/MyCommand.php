@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Event;
 use PHPUnit\TextUI\Command;
 
 class MyCommand extends Command
@@ -17,15 +16,7 @@ class MyCommand extends Command
         $this->longOptions['my-option=']      = 'myHandler';
         $this->longOptions['my-other-option'] = null;
 
-        $eventEmitter = (new \PHPUnit\Framework\MockObject\Generator())->getMock(
-            Event\Emitter::class,
-            [],
-            [],
-            '',
-            false
-        );
-
-        parent::__construct($eventEmitter);
+        parent::__construct(new NullEmitter());
     }
 
     public function myHandler($value): void
