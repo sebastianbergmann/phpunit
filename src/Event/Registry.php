@@ -88,7 +88,6 @@ final class Registry
             TestDouble\MockCreated::class,
             TestDouble\MockForTraitCreated::class,
             TestDouble\PartialMockCreated::class,
-            TestDouble\ProphecyCreated::class,
             TestDouble\TestProxyCreated::class,
             TestSuite\AfterClassFinished::class,
             TestSuite\BeforeClassFinished::class,

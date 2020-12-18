@@ -190,11 +190,6 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new TestDouble\PartialMockCreated($this->telemetryInfo()));
     }
 
-    public function testDoubleProphecyCreated(): void
-    {
-        $this->dispatcher->dispatch(new TestDouble\ProphecyCreated($this->telemetryInfo()));
-    }
-
     public function testDoubleTestProxyCreated(): void
     {
         $this->dispatcher->dispatch(new TestDouble\TestProxyCreated($this->telemetryInfo()));

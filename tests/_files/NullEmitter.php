@@ -129,10 +129,6 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testDoubleProphecyCreated(): void
-    {
-    }
-
     public function testDoubleTestProxyCreated(): void
     {
     }

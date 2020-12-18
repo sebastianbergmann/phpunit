@@ -71,8 +71,6 @@ interface Emitter
 
     public function testDoublePartialMockCreated(): void;
 
-    public function testDoubleProphecyCreated(): void;
-
     public function testDoubleTestProxyCreated(): void;
 
     public function testSuiteAfterClassFinished(): void;

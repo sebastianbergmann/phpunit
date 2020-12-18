@@ -769,31 +769,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $emitter->testDoublePartialMockCreated();
     }
 
-    public function testTestDoubleProphecyCreatedDispatchesTestDoubleProphecyCreatedEvent(): void
-    {
-        $subscriber = $this->createMock(TestDouble\ProphecyCreatedSubscriber::class);
-
-        $subscriber
-            ->expects($this->once())
-            ->method('notify')
-            ->with($this->isInstanceOf(TestDouble\ProphecyCreated::class));
-
-        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            TestDouble\ProphecyCreatedSubscriber::class,
-            TestDouble\ProphecyCreated::class,
-            $subscriber
-        );
-
-        $telemetrySystem = self::createTelemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->testDoubleProphecyCreated();
-    }
-
     public function testTestDoubleTestProxyCreatedDispatchesTestDoubleTestProxyCreatedEvent(): void
     {
         $subscriber = $this->createMock(TestDouble\TestProxyCreatedSubscriber::class);
