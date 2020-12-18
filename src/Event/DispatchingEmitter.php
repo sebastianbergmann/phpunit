@@ -54,9 +54,12 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function bootstrapFinished(): void
+    public function bootstrapFinished(string $filename): void
     {
-        $this->dispatcher->dispatch(new Bootstrap\Finished($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Bootstrap\Finished(
+            $this->telemetryInfo(),
+            $filename
+        ));
     }
 
     public function comparatorRegistered(): void

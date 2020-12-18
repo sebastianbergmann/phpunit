@@ -501,7 +501,7 @@ class Command
             );
         }
 
-        Event\Registry::emitter()->bootstrapFinished();
+        Event\Registry::emitter()->bootstrapFinished($filename);
     }
 
     protected function handleVersionCheck(): void

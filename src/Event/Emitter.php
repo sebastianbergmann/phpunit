@@ -22,7 +22,7 @@ interface Emitter
      */
     public function assertionMade($value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void;
 
-    public function bootstrapFinished(): void;
+    public function bootstrapFinished(string $filename): void;
 
     public function comparatorRegistered(): void;
 

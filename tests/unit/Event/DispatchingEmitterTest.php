@@ -121,6 +121,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testBootstrapFinishedDispatchesBootstrapFinishedEvent(): void
     {
+        $filename = __FILE__;
+
         $subscriber = new class extends RecordingSubscriber implements Bootstrap\FinishedSubscriber {
             public function notify(Bootstrap\Finished $event): void
             {
@@ -141,10 +143,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->bootstrapFinished();
+        $emitter->bootstrapFinished($filename);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Bootstrap\Finished::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Bootstrap\Finished::class, $event);
+
+        $this->assertSame($filename, $event->filename());
     }
 
     public function testComparatorRegisteredDispatchesComparatorRegisteredEvent(): void

@@ -16,13 +16,21 @@ final class Finished implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
+    private string $filename;
+
+    public function __construct(Telemetry\Info $telemetryInfo, string $filename)
     {
         $this->telemetryInfo = $telemetryInfo;
+        $this->filename      = $filename;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    public function filename(): string
+    {
+        return $this->filename;
     }
 }
