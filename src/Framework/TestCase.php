@@ -1612,7 +1612,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->status = TestStatus::skipped($message);
 
-        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-started')));
+        $dispatcher->dispatch(new Event\Test\BeforeTest());
 
         $this->result->startTest($this);
 
@@ -1624,7 +1624,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->endTest($this, 0);
 
-        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-ended')));
+        $dispatcher->dispatch(new Event\Test\AfterTest());
     }
 
     private function markSkippedForMissingDependency(Event\Dispatcher $dispatcher, ExecutionOrderDependency $dependency): void
@@ -1636,7 +1636,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->status = TestStatus::skipped($message);
 
-        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-started')));
+        $dispatcher->dispatch(new Event\Test\BeforeTest());
 
         $this->result->startTest($this);
 
@@ -1648,7 +1648,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->endTest($this, 0);
 
-        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-ended')));
+        $dispatcher->dispatch(new Event\Test\AfterTest());
     }
 
     private function markWarningForUncallableDependency(Event\Dispatcher $dispatcher, ExecutionOrderDependency $dependency): void
@@ -1660,7 +1660,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->status = TestStatus::warning($message);
 
-        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-started')));
+        $dispatcher->dispatch(new Event\Test\BeforeTest());
 
         $this->result->startTest($this);
 
@@ -1672,7 +1672,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->endTest($this, 0);
 
-        $dispatcher->dispatch(new Event\GenericEvent(new Event\NamedType('test-ended')));
+        $dispatcher->dispatch(new Event\Test\AfterTest());
     }
 
     /**
