@@ -11,6 +11,7 @@ namespace PHPUnit\Event;
 
 use function sprintf;
 use Exception;
+use NamedType;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -20,24 +21,7 @@ final class UnsupportedEventTest extends TestCase
 {
     public function testTypeReturnsUnsupportedEvent(): void
     {
-        $type = new class('foo') implements Type {
-            private string $name;
-
-            public function __construct(string $name)
-            {
-                $this->name = $name;
-            }
-
-            public function is(Type $other): bool
-            {
-                return $other->asString() === $this->asString();
-            }
-
-            public function asString(): string
-            {
-                return $this->name;
-            }
-        };
+        $type = new NamedType('foo');
 
         $exception = UnsupportedEvent::type($type);
 
