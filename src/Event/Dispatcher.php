@@ -18,6 +18,8 @@ final class Dispatcher
     private TypeMap $typeMap;
 
     /**
+     * @psalm-var array<string, list<Subscriber>>
+     *
      * @var array<string, array<int, Subscriber>>
      */
     private array $subscribers = [];
