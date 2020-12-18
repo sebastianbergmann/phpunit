@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
-use PHPUnit\Event\Event;
-use PHPUnit\Event\Type;
+use PHPUnit\Event\TemplateType;
 
-final class AfterTestSuite implements Event
+final class AfterTestSuiteType extends TemplateType
 {
-    public function type(): Type
+    public function asString(): string
     {
-        return new AfterTestSuiteType();
+        return 'after-test-suite';
     }
 }

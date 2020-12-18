@@ -10,13 +10,12 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Event;
-use PHPUnit\Event\NamedType;
 use PHPUnit\Event\Type;
 
 final class BeforeTest implements Event
 {
     public function type(): Type
     {
-        return new NamedType('before-test');
+        return new BeforeTestType();
     }
 }

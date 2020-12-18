@@ -7,15 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestSuite;
+namespace PHPUnit\Event\Test;
 
-use PHPUnit\Event\Event;
-use PHPUnit\Event\Type;
+use PHPUnit\Event\TemplateType;
 
-final class AfterTestSuite implements Event
+final class BeforeTestType extends TemplateType
 {
-    public function type(): Type
+    public function asString(): string
     {
-        return new AfterTestSuiteType();
+        return 'before-test';
     }
 }
