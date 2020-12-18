@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event;
+namespace PHPUnit\Event\Test;
 
-interface Type
+use PHPUnit\Event\Subscriber;
+
+interface BeforeFirstTestSubscriber extends Subscriber
 {
-    public function is(self $other): bool;
-
-    public function asString(): string;
+    public function notify(BeforeFirstTest $event): void;
 }

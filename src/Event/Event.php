@@ -11,5 +11,4 @@ namespace PHPUnit\Event;
 
 interface Event
 {
-    public function type(): Type;
 }

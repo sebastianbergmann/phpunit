@@ -16,16 +16,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class BeforeTestSuiteTest extends TestCase
 {
-    public function testTypeIsBeforeTestSuite(): void
-    {
-        $event = new BeforeTestSuite(new TestSuite(
-            'foo',
-            9001
-        ));
-
-        $this->assertTrue($event->type()->is(new BeforeTestSuiteType()));
-    }
-
     public function testConstructorSetsValues(): void
     {
         $testSuite = new TestSuite(

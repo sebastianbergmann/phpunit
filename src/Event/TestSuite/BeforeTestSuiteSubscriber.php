@@ -7,14 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Test;
+namespace PHPUnit\Event\TestSuite;
 
-use PHPUnit\Event\TemplateType;
+use PHPUnit\Event\Subscriber;
 
-final class BeforeFirstTestType extends TemplateType
+interface BeforeTestSuiteSubscriber extends Subscriber
 {
-    public function asString(): string
-    {
-        return 'before-first-test';
-    }
+    public function notify(BeforeTestSuite $event): void;
 }

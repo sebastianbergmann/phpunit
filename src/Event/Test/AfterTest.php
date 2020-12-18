@@ -10,7 +10,6 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Event;
-use PHPUnit\Event\Type;
 
 final class AfterTest implements Event
 {
@@ -22,11 +21,6 @@ final class AfterTest implements Event
     {
         $this->test   = $test;
         $this->result = $result;
-    }
-
-    public function type(): Type
-    {
-        return new AfterTestType();
     }
 
     public function test(): Test

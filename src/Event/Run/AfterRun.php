@@ -10,7 +10,6 @@
 namespace PHPUnit\Event\Run;
 
 use PHPUnit\Event\Event;
-use PHPUnit\Event\Type;
 
 final class AfterRun implements Event
 {
@@ -19,11 +18,6 @@ final class AfterRun implements Event
     public function __construct(Run $run)
     {
         $this->run = $run;
-    }
-
-    public function type(): Type
-    {
-        return new AfterRunType();
     }
 
     public function run(): Run

@@ -7,14 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Test;
+namespace PHPUnit\Event\Run;
 
-use PHPUnit\Event\TemplateType;
+use PHPUnit\Event\Subscriber;
 
-final class BeforeTestType extends TemplateType
+interface BeforeRunSubscriber extends Subscriber
 {
-    public function asString(): string
-    {
-        return 'before-test';
-    }
+    public function notify(BeforeRun $event): void;
 }

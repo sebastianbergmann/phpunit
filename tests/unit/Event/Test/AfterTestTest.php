@@ -16,16 +16,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class AfterTestTest extends TestCase
 {
-    public function testTypeIsAfterTest(): void
-    {
-        $event = new AfterTest(
-            new Test(),
-            $this->createMock(Result::class)
-        );
-
-        $this->assertTrue($event->type()->is(new AfterTestType()));
-    }
-
     public function testConstructorSetsValues(): void
     {
         $test = new Test();

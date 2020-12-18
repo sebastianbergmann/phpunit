@@ -11,10 +11,4 @@ namespace PHPUnit\Event;
 
 interface Subscriber
 {
-    public function typesSubscribedTo(): Types;
-
-    /**
-     * @throws UnexpectedEvent
-     */
-    public function notify(Event $event);
 }

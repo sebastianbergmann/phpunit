@@ -10,7 +10,6 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Event;
-use PHPUnit\Event\Type;
 
 final class BeforeTest implements Event
 {
@@ -19,11 +18,6 @@ final class BeforeTest implements Event
     public function __construct(Test $test)
     {
         $this->test = $test;
-    }
-
-    public function type(): Type
-    {
-        return new BeforeTestType();
     }
 
     public function test(): Test

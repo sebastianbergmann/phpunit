@@ -9,23 +9,31 @@
  */
 namespace PHPUnit\Event;
 
-use DummyEvent;
+use PHPUnit\Event\Run\BeforeRun;
 use PHPUnit\Framework\TestCase;
-use SpyingSubscriber;
 
 /**
  * @covers \PHPUnit\Event\Dispatcher
  */
 final class DispatcherTest extends TestCase
 {
-    public function testDispatchDoesNotDispatchEventToSubscribersNotSubscribedToEventType(): void
+    public function testDispatcherDoesNotDispatchEventToSubscriberImplementingUnknownSubscriberInterfaces(): void
     {
-        $subscriber = new SpyingSubscriber(new Types(
-            new GenericType('bar'),
-            new GenericType('baz')
-        ));
+        $event = new Run\BeforeRun(new Run\Run());
 
-        $event = new DummyEvent(new GenericType('foo'));
+        $subscriber         = new class implements Subscriber {
+            private $events = [];
+
+            public function notify(BeforeRun $event): void
+            {
+                $this->events[] = $event;
+            }
+
+            public function events(): array
+            {
+                return $this->events;
+            }
+        };
 
         $dispatcher = new Dispatcher();
 
@@ -33,35 +41,37 @@ final class DispatcherTest extends TestCase
 
         $dispatcher->dispatch($event);
 
-        $this->assertNotContains($event, $subscriber->events());
+        $this->assertSame([], $subscriber->events());
     }
 
-    public function testDispatchDispatchesToRegisteredSubscribersForEventType(): void
+    public function testDispatcherDispatchesEventToSubscriberImplementingKnownSubscriberInterfaces(): void
     {
-        $firstSubscriber = new SpyingSubscriber(new Types(
-            new GenericType('foo'),
-            new GenericType('bar')
-        ));
+        $event = new Run\BeforeRun(new Run\Run());
 
-        $secondSubscriber = new SpyingSubscriber(new Types(
-            new GenericType('bar'),
-            new GenericType('baz')
-        ));
+        $subscriber         = new class implements Run\BeforeRunSubscriber {
+            private $events = [];
 
-        $thirdSubscriber = new SpyingSubscriber(new Types(new GenericType('qux')));
+            public function notify(BeforeRun $event): void
+            {
+                $this->events[] = $event;
+            }
 
-        $event = new DummyEvent(new GenericType('bar'));
+            public function events(): array
+            {
+                return $this->events;
+            }
+        };
 
         $dispatcher = new Dispatcher();
 
-        $dispatcher->register($firstSubscriber);
-        $dispatcher->register($secondSubscriber);
-        $dispatcher->register($thirdSubscriber);
+        $dispatcher->register($subscriber);
 
         $dispatcher->dispatch($event);
 
-        $this->assertContains($event, $firstSubscriber->events());
-        $this->assertContains($event, $secondSubscriber->events());
-        $this->assertNotContains($event, $thirdSubscriber->events());
+        $expected = [
+            $event,
+        ];
+
+        $this->assertSame($expected, $subscriber->events());
     }
 }

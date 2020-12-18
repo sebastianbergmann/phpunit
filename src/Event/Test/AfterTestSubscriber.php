@@ -7,14 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestSuite;
+namespace PHPUnit\Event\Test;
 
-use PHPUnit\Event\TemplateType;
+use PHPUnit\Event\Subscriber;
 
-final class AfterTestSuiteType extends TemplateType
+interface AfterTestSubscriber extends Subscriber
 {
-    public function asString(): string
-    {
-        return 'after-test-suite';
-    }
+    public function notify(AfterTest $event): void;
 }

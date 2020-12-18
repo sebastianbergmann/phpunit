@@ -7,13 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event;
+namespace PHPUnit\Event\Test;
 
-abstract class TemplateSubType implements SubType
+use PHPUnit\Event\Subscriber;
+
+interface BeforeTestSubscriber extends Subscriber
 {
-    final public function is(Type $other): bool
-    {
-        return $this->asString() === $other->asString() ||
-            $this->super()->is($other);
-    }
+    public function notify(BeforeTest $event): void;
 }

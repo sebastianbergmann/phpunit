@@ -9,35 +9,56 @@
  */
 namespace PHPUnit\Event;
 
+use function array_fill_keys;
 use function array_key_exists;
+use function get_class;
 
 final class Dispatcher
 {
     /**
+     * @var array<class-string, class-string>
+     */
+    private static array $map = [
+        Run\AfterRunSubscriber::class              => Run\AfterRun::class,
+        Run\BeforeRunSubscriber::class             => Run\BeforeRun::class,
+        Test\AfterLastTestSubscriber::class        => Test\AfterLastTest::class,
+        Test\AfterTestSubscriber::class            => Test\AfterTest::class,
+        Test\BeforeFirstTestSubscriber::class      => Test\BeforeFirstTest::class,
+        Test\BeforeTestSubscriber::class           => Test\BeforeTest::class,
+        TestSuite\AfterTestSuiteSubscriber::class  => TestSuite\AfterTestSuite::class,
+        TestSuite\BeforeTestSuiteSubscriber::class => TestSuite\BeforeTestSuite::class,
+    ];
+
+    /**
      * @var array<string, array<int, Subscriber>>
      */
-    private array $subscribers = [];
+    private array $subscribers;
+
+    public function __construct()
+    {
+        $this->subscribers = array_fill_keys(self::$map, []);
+    }
 
     public function register(Subscriber $subscriber): void
     {
-        foreach ($subscriber->typesSubscribedTo() as $type) {
-            $this->subscribers[$type->asString()][] = $subscriber;
+        foreach (self::$map as $subscriberInterfaceName => $eventClassName) {
+            if ($subscriber instanceof $subscriberInterfaceName) {
+                $this->subscribers[$eventClassName][] = $subscriber;
 
-            if ($type instanceof SubType) {
-                $this->subscribers[$type->super()->asString()][] = $subscriber;
+                return;
             }
         }
     }
 
     public function dispatch(Event $event): void
     {
-        $type = $event->type();
+        $eventClassName = get_class($event);
 
-        if (!array_key_exists($type->asString(), $this->subscribers)) {
+        if (!array_key_exists($eventClassName, $this->subscribers)) {
             return;
         }
 
-        foreach ($this->subscribers[$type->asString()] as $subscriber) {
+        foreach ($this->subscribers[$eventClassName] as $subscriber) {
             $subscriber->notify($event);
         }
     }
