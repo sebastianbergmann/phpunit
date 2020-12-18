@@ -201,6 +201,13 @@ return PhpCsFixer\Config::create()
         'phpdoc_no_empty_return' => true,
         'phpdoc_no_package' => true,
         'phpdoc_order' => true,
+        'phpdoc_order_by_value' => [
+            'annotations' => [
+                'covers',
+                'dataProvider',
+                'uses',
+            ],
+        ],
         'phpdoc_return_self_reference' => true,
         'phpdoc_scalar' => true,
         'phpdoc_separation' => true,
