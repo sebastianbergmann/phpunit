@@ -28,6 +28,7 @@ use function range;
 use function realpath;
 use function sprintf;
 use function time;
+use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
@@ -86,6 +87,8 @@ final class TestRunner
 
     private static bool $versionStringPrinted = false;
 
+    private Event\Emitter $eventEmitter;
+
     private ?CodeCoverageFilter $codeCoverageFilter;
 
     private ?ResultPrinter $printer = null;
@@ -99,8 +102,10 @@ final class TestRunner
 
     private Timer $timer;
 
-    public function __construct(CodeCoverageFilter $filter = null)
+    public function __construct(Event\Emitter $eventEmitter, CodeCoverageFilter $filter = null)
     {
+        $this->eventEmitter = $eventEmitter;
+
         if ($filter === null) {
             $filter = new CodeCoverageFilter;
         }
@@ -175,6 +180,9 @@ final class TestRunner
             $sorter = new TestSuiteSorter($cache);
 
             $sorter->reorderTestsInSuite($suite, $arguments['executionOrder'], $arguments['resolveDependencies'], $arguments['executionOrderDefects']);
+
+            $this->eventEmitter->testSuiteSorted();
+
             $originalExecutionOrder = $sorter->getOriginalExecutionOrder();
 
             unset($sorter);
