@@ -13,6 +13,9 @@ use function array_key_exists;
 use function get_class;
 use function sprintf;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class Dispatcher
 {
     private TypeMap $typeMap;
