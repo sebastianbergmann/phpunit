@@ -1190,6 +1190,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $emitter->testDoubleMockObjectCreatedForAbstractClass($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
+
         $event = $subscriber->lastRecordedEvent();
 
         $this->assertInstanceOf(TestDouble\MockObjectCreatedForAbstractClass::class, $event);
