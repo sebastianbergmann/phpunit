@@ -97,6 +97,7 @@ final class Registry
             TestRunner\Started::class,
             TestSuite\AfterClassCalled::class,
             TestSuite\AfterClassFinished::class,
+            TestSuite\BeforeClassCalled::class,
             TestSuite\Finished::class,
             TestSuite\Loaded::class,
             TestSuite\Sorted::class,

@@ -167,6 +167,11 @@ interface Emitter
     /**
      * @psalm-param class-string $testClassName
      */
+    public function testSuiteBeforeClassCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
+
+    /**
+     * @psalm-param class-string $testClassName
+     */
     public function testSuiteAfterClassCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
 
     /**
