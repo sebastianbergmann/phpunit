@@ -62,7 +62,7 @@ interface Emitter
 
     public function testSetUpFinished(): void;
 
-    public function testTearDownFinished(): void;
+    public function testAfterTestMethodFinished(): void;
 
     public function testAfterLastTestMethodFinished(): void;
 

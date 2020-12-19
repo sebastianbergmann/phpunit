@@ -766,6 +766,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     foreach ($hookMethods['afterClass'] as $method) {
                         $this->{$method}();
                     }
+
+                    Event\Registry::emitter()->testAfterLastTestMethodFinished();
                 }
             }
         } catch (Throwable $_e) {

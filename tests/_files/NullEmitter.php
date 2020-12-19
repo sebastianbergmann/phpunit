@@ -96,7 +96,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testTearDownFinished(): void
+    public function testAfterTestMethodFinished(): void
     {
     }
 

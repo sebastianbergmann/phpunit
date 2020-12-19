@@ -672,18 +672,18 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\SetUpFinished::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestTearDownFinishedDispatchesTestTearDownFinishedEvent(): void
+    public function testTestAfterTestMethodFinishedDispatchesTestAfterTestMethodFinishedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\TearDownFinishedSubscriber {
-            public function notify(Test\TearDownFinished $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\AfterTestMethodFinishedSubscriber {
+            public function notify(Test\AfterTestMethodFinished $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\TearDownFinishedSubscriber::class,
-            Test\TearDownFinished::class,
+            Test\AfterTestMethodFinishedSubscriber::class,
+            Test\AfterTestMethodFinished::class,
             $subscriber
         );
 
@@ -694,10 +694,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testTearDownFinished();
+        $emitter->testAfterTestMethodFinished();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\TearDownFinished::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\AfterTestMethodFinished::class, $subscriber->lastRecordedEvent());
     }
 
     public function testTestAfterLastTestMethodFinishedDispatchesTestAfterLastTestMethodEvent(): void
