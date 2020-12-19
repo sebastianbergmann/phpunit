@@ -12,7 +12,7 @@ namespace PHPUnit\Event\TestDouble;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
-final class MockForTraitCreated implements Event
+final class MockObjectCreatedForTrait implements Event
 {
     private Telemetry\Info $telemetryInfo;
 

@@ -11,7 +11,7 @@ namespace PHPUnit\Event\TestDouble;
 
 use PHPUnit\Event\Subscriber;
 
-interface MockForTraitCreatedSubscriber extends Subscriber
+interface MockObjectCreatedForTraitSubscriber extends Subscriber
 {
-    public function notify(MockForTraitCreated $event): void;
+    public function notify(MockObjectCreatedForTrait $event): void;
 }

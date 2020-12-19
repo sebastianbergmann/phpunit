@@ -108,7 +108,7 @@ interface Emitter
     /**
      * @psalm-param trait-string $traitName
      */
-    public function testDoubleMockForTraitCreated(string $traitName): void;
+    public function testDoubleMockObjectCreatedForTrait(string $traitName): void;
 
     /**
      * @psalm-param class-string $className

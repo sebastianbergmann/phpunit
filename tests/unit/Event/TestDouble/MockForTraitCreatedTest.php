@@ -13,7 +13,7 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\TestFixture;
 
 /**
- * @covers \PHPUnit\Event\TestDouble\MockForTraitCreated
+ * @covers \PHPUnit\Event\TestDouble\MockObjectCreatedForTrait
  */
 final class MockForTraitCreatedTest extends AbstractEventTestCase
 {
@@ -22,7 +22,7 @@ final class MockForTraitCreatedTest extends AbstractEventTestCase
         $telemetryInfo = self::createTelemetryInfo();
         $traitName     = TestFixture\ExampleTrait::class;
 
-        $event = new MockForTraitCreated(
+        $event = new MockObjectCreatedForTrait(
             $telemetryInfo,
             $traitName
         );

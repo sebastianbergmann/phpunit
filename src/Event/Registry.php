@@ -88,7 +88,7 @@ final class Registry
             Test\SkippedIncomplete::class,
             Test\SkippedWithMessage::class,
             TestDouble\MockCreated::class,
-            TestDouble\MockForTraitCreated::class,
+            TestDouble\MockObjectCreatedForTrait::class,
             TestDouble\PartialMockCreated::class,
             TestDouble\TestProxyCreated::class,
             TestSuite\AfterClassFinished::class,

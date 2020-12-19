@@ -138,7 +138,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testDoubleMockForTraitCreated(string $traitName): void
+    public function testDoubleMockObjectCreatedForTrait(string $traitName): void
     {
     }
 
