@@ -138,9 +138,13 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\PassedButRisky($this->telemetryInfo()));
     }
 
-    public function testSkippedByDataProvider(): void
+    public function testSkippedByDataProvider(CodeUnit\ClassMethodUnit $testMethod, string $message): void
     {
-        $this->dispatcher->dispatch(new Test\SkippedByDataProvider($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\SkippedByDataProvider(
+            $this->telemetryInfo(),
+            $testMethod,
+            $message
+        ));
     }
 
     public function testSkippedIncomplete(): void

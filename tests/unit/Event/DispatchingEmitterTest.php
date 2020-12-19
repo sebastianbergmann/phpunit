@@ -507,6 +507,12 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSkippedByDataProviderDispatchesTestSkippedByDataProviderEvent(): void
     {
+        $testMethod = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
         $subscriber = new class extends RecordingSubscriber implements Test\SkippedByDataProviderSubscriber {
             public function notify(Test\SkippedByDataProvider $event): void
             {
@@ -527,10 +533,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSkippedByDataProvider();
+        $emitter->testSkippedByDataProvider(
+            $testMethod,
+            $message
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\SkippedByDataProvider::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\SkippedByDataProvider::class, $event);
+
+        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($message, $event->message());
     }
 
     public function testTestSkippedIncompleteDispatchesTestSkippedIncompleteEvent(): void

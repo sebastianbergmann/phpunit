@@ -368,7 +368,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="3">
+    <MissingThrowsDocblock occurrences="4">
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>

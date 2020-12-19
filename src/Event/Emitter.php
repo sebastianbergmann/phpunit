@@ -52,7 +52,7 @@ interface Emitter
 
     public function testPassedButRisky(): void;
 
-    public function testSkippedByDataProvider(): void;
+    public function testSkippedByDataProvider(CodeUnit\ClassMethodUnit $testMethod, string $message): void;
 
     public function testSkippedIncomplete(): void;
 

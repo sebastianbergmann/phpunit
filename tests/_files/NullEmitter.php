@@ -74,7 +74,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testSkippedByDataProvider(): void
+    public function testSkippedByDataProvider(CodeUnit\ClassMethodUnit $testMethod, string $message): void
     {
     }
 
