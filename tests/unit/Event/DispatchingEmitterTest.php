@@ -21,34 +21,6 @@ use stdClass;
  */
 final class DispatchingEmitterTest extends Framework\TestCase
 {
-    public function testApplicationConfiguredDispatchesApplicationConfiguredEvent(): void
-    {
-        $subscriber = new class extends RecordingSubscriber implements Application\ConfiguredSubscriber {
-            public function notify(Application\Configured $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Application\ConfiguredSubscriber::class,
-            Application\Configured::class,
-            $subscriber
-        );
-
-        $telemetrySystem = self::createTelemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->applicationConfigured();
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Application\Configured::class, $subscriber->lastRecordedEvent());
-    }
-
     public function testTestRunnerStartedDispatchesTestRunnerStartedEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements TestRunner\StartedSubscriber {

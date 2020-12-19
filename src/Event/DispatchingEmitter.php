@@ -34,11 +34,6 @@ final class DispatchingEmitter implements Emitter
         $this->previousSnapshot = $system->snapshot();
     }
 
-    public function applicationConfigured(): void
-    {
-        $this->dispatcher->dispatch(new Application\Configured($this->telemetryInfo()));
-    }
-
     public function testRunnerStarted(): void
     {
         $this->dispatcher->dispatch(new TestRunner\Started(

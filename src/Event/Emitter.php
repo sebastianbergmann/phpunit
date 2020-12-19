@@ -17,8 +17,6 @@ use SebastianBergmann\GlobalState\Snapshot;
 
 interface Emitter
 {
-    public function applicationConfigured(): void;
-
     public function testRunnerStarted(): void;
 
     /**

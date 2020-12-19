@@ -57,7 +57,6 @@ final class Registry
     private static function registerDefaultTypes(TypeMap $typeMap): void
     {
         $defaultEvents = [
-            Application\Configured::class,
             Assertion\Made::class,
             Bootstrap\Finished::class,
             Comparator\Registered::class,

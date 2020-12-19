@@ -17,10 +17,6 @@ use SebastianBergmann\GlobalState\Snapshot;
 
 final class NullEmitter implements Emitter
 {
-    public function applicationConfigured(): void
-    {
-    }
-
     public function testRunnerStarted(): void
     {
     }
