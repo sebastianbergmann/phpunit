@@ -71,7 +71,7 @@ interface Emitter
 
     public function testBeforeFirstTestMethodFinished(): void;
 
-    public function testCaseTearDownAfterClassFinished(): void;
+    public function testAfterLastTestMethodCalled(): void;
 
     /**
      * @param class-string $className

@@ -784,18 +784,18 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\BeforeFirstTestMethodFinished::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestCaseTearDownAfterClassFinishedDispatchesTestCaseTearDownAfterClassFinishedEvent(): void
+    public function testAfterLastTestMethodCalledDispatchesAfterLastTestMethodCalledEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestCase\TearDownAfterClassFinishedSubscriber {
-            public function notify(TestCase\TearDownAfterClassFinished $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodCalledSubscriber {
+            public function notify(Test\AfterLastTestMethodCalled $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            TestCase\TearDownAfterClassFinishedSubscriber::class,
-            TestCase\TearDownAfterClassFinished::class,
+            Test\AfterLastTestMethodCalledSubscriber::class,
+            Test\AfterLastTestMethodCalled::class,
             $subscriber
         );
 
@@ -806,10 +806,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testCaseTearDownAfterClassFinished();
+        $emitter->testAfterLastTestMethodCalled();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestCase\TearDownAfterClassFinished::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\AfterLastTestMethodCalled::class, $subscriber->lastRecordedEvent());
     }
 
     public function testTestDoubleMockCreatedDispatchesTestDoubleMockCreatedEvent(): void
