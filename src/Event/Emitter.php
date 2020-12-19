@@ -115,7 +115,10 @@ interface Emitter
      */
     public function testAfterTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
 
-    public function testAfterLastTestMethodCalled(): void;
+    /**
+     * @psalm-param class-string $testClassName
+     */
+    public function testAfterLastTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
 
     /**
      * @psalm-param class-string $className

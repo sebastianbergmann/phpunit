@@ -881,6 +881,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 if ($this->inIsolation) {
                     foreach ($hookMethods['afterClass'] as $method) {
                         $this->{$method}();
+
+                        $emitter->testAfterLastTestMethodCalled(
+                            static::class,
+                            new Event\Code\ClassMethod(
+                                static::class,
+                                $method
+                            )
+                        );
                     }
 
                     $emitter->testAfterLastTestMethodFinished();

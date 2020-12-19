@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -16,13 +17,41 @@ final class AfterLastTestMethodCalled implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
-    {
+    /**
+     * @psalm-var class-string
+     */
+    private string $testClassName;
+
+    private Code\ClassMethod $calledMethod;
+
+    /**
+     * @psalm-param class-string $testClassName
+     */
+    public function __construct(
+        Telemetry\Info $telemetryInfo,
+        string $testClassName,
+        Code\ClassMethod $calledMethod
+    ) {
         $this->telemetryInfo = $telemetryInfo;
+        $this->testClassName = $testClassName;
+        $this->calledMethod  = $calledMethod;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    /**
+     * @psalm-return class-string
+     */
+    public function testClassName(): string
+    {
+        return $this->testClassName;
+    }
+
+    public function calledMethod(): Code\ClassMethod
+    {
+        return $this->calledMethod;
     }
 }

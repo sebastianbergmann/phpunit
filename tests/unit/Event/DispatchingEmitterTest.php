@@ -1214,8 +1214,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($calledMethods, $event->calledMethods());
     }
 
-    public function testAfterLastTestMethodCalledDispatchesAfterLastTestMethodCalledEvent(): void
+    public function testTestAfterLastTestMethodCalledDispatchesTestAfterLastTestMethodCalledEvent(): void
     {
+        $testClassName = self::class;
+        $calledMethod  = new Code\ClassMethod(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+
         $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodCalledSubscriber {
             public function notify(Test\AfterLastTestMethodCalled $event): void
             {
@@ -1236,10 +1242,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testAfterLastTestMethodCalled();
+        $emitter->testAfterLastTestMethodCalled(
+            $testClassName,
+            $calledMethod
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\AfterLastTestMethodCalled::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\AfterLastTestMethodCalled::class, $event);
+
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($calledMethod, $event->calledMethod());
     }
 
     public function testTestDoubleMockObjectCreatedDispatchesTestDoubleMockObjectCreatedEvent(): void
