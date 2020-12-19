@@ -11,18 +11,27 @@ namespace PHPUnit\Event\GlobalState;
 
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
+use SebastianBergmann\GlobalState\Snapshot;
 
 final class Restored implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
+    private Snapshot $snapshot;
+
+    public function __construct(Telemetry\Info $telemetryInfo, Snapshot $snapshot)
     {
         $this->telemetryInfo = $telemetryInfo;
+        $this->snapshot      = $snapshot;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    public function snapshot(): Snapshot
+    {
+        return $this->snapshot;
     }
 }

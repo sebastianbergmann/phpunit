@@ -301,6 +301,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testGlobalStateRestoredDispatchesGlobalStateRestoredEvent(): void
     {
+        $snapshot = new Snapshot();
+
         $subscriber = new class extends RecordingSubscriber implements GlobalState\RestoredSubscriber {
             public function notify(GlobalState\Restored $event): void
             {
@@ -321,10 +323,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->globalStateRestored();
+        $emitter->globalStateRestored($snapshot);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(GlobalState\Restored::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(GlobalState\Restored::class, $event);
+
+        $this->assertSame($snapshot, $event->snapshot());
     }
 
     public function testTestRunConfiguredDispatchesTestRunConfiguredEvent(): void

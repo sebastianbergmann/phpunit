@@ -36,7 +36,7 @@ interface Emitter
 
     public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $message): void;
 
-    public function globalStateRestored(): void;
+    public function globalStateRestored(Snapshot $snapshot): void;
 
     public function testRunConfigured(): void;
 

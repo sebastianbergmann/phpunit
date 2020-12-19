@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\GlobalState;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use SebastianBergmann\GlobalState\Snapshot;
 
 /**
  * @covers \PHPUnit\Event\GlobalState\Restored
@@ -19,9 +20,14 @@ final class RestoredTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $snapshot      = new Snapshot();
 
-        $event = new Restored($telemetryInfo);
+        $event = new Restored(
+            $telemetryInfo,
+            $snapshot
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($snapshot, $event->snapshot());
     }
 }

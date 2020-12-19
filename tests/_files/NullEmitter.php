@@ -44,7 +44,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function globalStateRestored(): void
+    public function globalStateRestored(Snapshot $snapshot): void
     {
     }
 
