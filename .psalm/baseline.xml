@@ -666,17 +666,6 @@
     </RedundantCondition>
   </file>
   <file src="src/Framework/TestResult.php">
-    <DeprecatedClass occurrences="3">
-      <code>TestListener</code>
-      <code>array</code>
-      <code>private array $listeners = [];</code>
-    </DeprecatedClass>
-    <DeprecatedMethod occurrences="4">
-      <code>addError</code>
-      <code>addWarning</code>
-      <code>endTest</code>
-      <code>startTest</code>
-    </DeprecatedMethod>
     <DeprecatedProperty occurrences="1">
       <code>$this-&gt;listeners</code>
     </DeprecatedProperty>
@@ -741,11 +730,6 @@
       <code>static function () use ($cacheData) {</code>
     </MissingClosureReturnType>
   </file>
-  <file src="src/Runner/Extension/ExtensionHandler.php">
-    <DeprecatedClass occurrences="1">
-      <code>TestListener</code>
-    </DeprecatedClass>
-  </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
     <MissingReturnType occurrences="1">
       <code>doAccept</code>
@@ -755,11 +739,6 @@
     <PossiblyNullArgument occurrences="1">
       <code>$this-&gt;filter</code>
     </PossiblyNullArgument>
-  </file>
-  <file src="src/Runner/Hook/TestListenerAdapter.php">
-    <DeprecatedInterface occurrences="1">
-      <code>TestListenerAdapter</code>
-    </DeprecatedInterface>
   </file>
   <file src="src/Runner/PhptTestCase.php">
     <InternalClass occurrences="2">
@@ -851,9 +830,6 @@
     </UnsafeInstantiation>
   </file>
   <file src="src/TextUI/DefaultResultPrinter.php">
-    <DeprecatedInterface occurrences="1">
-      <code>DefaultResultPrinter</code>
-    </DeprecatedInterface>
     <MissingThrowsDocblock occurrences="2">
       <code>parent::__construct($out)</code>
       <code>stop</code>
@@ -1215,9 +1191,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$suite-&gt;getName()</code>
     </ArgumentTypeCoercion>
-    <DeprecatedInterface occurrences="1">
-      <code>JUnit</code>
-    </DeprecatedInterface>
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
@@ -1237,9 +1210,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$className</code>
     </ArgumentTypeCoercion>
-    <DeprecatedInterface occurrences="1">
-      <code>TeamCity</code>
-    </DeprecatedInterface>
     <DocblockTypeContradiction occurrences="2">
       <code>$actualString === null</code>
       <code>$expectedString === null</code>
@@ -1341,9 +1311,6 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
-    <DeprecatedInterface occurrences="1">
-      <code>CliTestDoxPrinter</code>
-    </DeprecatedInterface>
     <MissingThrowsDocblock occurrences="2">
       <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
       <code>stop</code>
@@ -1361,9 +1328,6 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
-    <DeprecatedInterface occurrences="1">
-      <code>HtmlResultPrinter</code>
-    </DeprecatedInterface>
     <PossiblyNullArgument occurrences="1">
       <code>$this-&gt;currentTestClassPrettified</code>
     </PossiblyNullArgument>
@@ -1378,17 +1342,11 @@
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Util/TestDox/ResultPrinter.php">
-    <DeprecatedInterface occurrences="1">
-      <code>ResultPrinter</code>
-    </DeprecatedInterface>
     <MissingThrowsDocblock occurrences="1">
       <code>parent::__construct($out)</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Util/TestDox/TestDoxPrinter.php">
-    <DeprecatedInterface occurrences="1">
-      <code>TestDoxPrinter</code>
-    </DeprecatedInterface>
     <MissingThrowsDocblock occurrences="1">
       <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
@@ -1396,15 +1354,7 @@
       <code>getName</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="src/Util/TestDox/TextResultPrinter.php">
-    <DeprecatedInterface occurrences="1">
-      <code>TextResultPrinter</code>
-    </DeprecatedInterface>
-  </file>
   <file src="src/Util/TestDox/XmlResultPrinter.php">
-    <DeprecatedInterface occurrences="1">
-      <code>XmlResultPrinter</code>
-    </DeprecatedInterface>
     <MissingThrowsDocblock occurrences="2">
       <code>parent::__construct($out)</code>
     </MissingThrowsDocblock>
