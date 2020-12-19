@@ -13,9 +13,9 @@ use PHPUnit\Event\AbstractEventTestCase;
 use SebastianBergmann\CodeCoverage;
 
 /**
- * @covers \PHPUnit\Event\TestSuite\RunFinished
+ * @covers \PHPUnit\Event\TestSuite\Finished
  */
-final class RunFinishedTest extends AbstractEventTestCase
+final class FinishedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValuesWhenCodeCoverageIsNull(): void
     {
@@ -34,7 +34,7 @@ final class RunFinishedTest extends AbstractEventTestCase
         );
         $codeCoverage = null;
 
-        $event = new RunFinished(
+        $event = new Finished(
             $telemetryInfo,
             $name,
             $result,
@@ -67,7 +67,7 @@ final class RunFinishedTest extends AbstractEventTestCase
             new CodeCoverage\Filter()
         );
 
-        $event = new RunFinished(
+        $event = new Finished(
             $telemetryInfo,
             $name,
             $result,

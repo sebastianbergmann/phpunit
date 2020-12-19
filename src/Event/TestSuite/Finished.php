@@ -13,7 +13,7 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 
-final class RunFinished implements Event
+final class Finished implements Event
 {
     private Telemetry\Info $telemetryInfo;
 

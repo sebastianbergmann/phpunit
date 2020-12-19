@@ -1629,7 +1629,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(TestSuite\Loaded::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestSuiteRunFinishedDispatchesTestSuiteRunFinishedEvent(): void
+    public function testTestSuiteFinishedDispatchesTestSuiteFinishedEvent(): void
     {
         $name         = 'foo';
         $result       = new Framework\TestResult();
@@ -1638,16 +1638,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
             new CodeCoverage\Filter()
         );
 
-        $subscriber = new class extends RecordingSubscriber implements TestSuite\RunFinishedSubscriber {
-            public function notify(TestSuite\RunFinished $event): void
+        $subscriber = new class extends RecordingSubscriber implements TestSuite\FinishedSubscriber {
+            public function notify(TestSuite\Finished $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            TestSuite\RunFinishedSubscriber::class,
-            TestSuite\RunFinished::class,
+            TestSuite\FinishedSubscriber::class,
+            TestSuite\Finished::class,
             $subscriber
         );
 
@@ -1658,7 +1658,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSuiteRunFinished(
+        $emitter->testSuiteFinished(
             $name,
             $result,
             $codeCoverage
@@ -1668,7 +1668,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestSuite\RunFinished::class, $event);
+        $this->assertInstanceOf(TestSuite\Finished::class, $event);
 
         $this->assertSame($name, $event->name());
 

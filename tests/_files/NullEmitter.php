@@ -183,15 +183,15 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSuiteRunFinished(string $testSuiteName, TestResult $result, ?CodeCoverage $codeCoverage): void
-    {
-    }
-
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
     }
 
     public function testSuiteStarted(string $name): void
+    {
+    }
+
+    public function testSuiteFinished(string $testSuiteName, TestResult $result, ?CodeCoverage $codeCoverage): void
     {
     }
 }

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\TestSuite\Info;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
@@ -388,17 +389,7 @@ final class DispatchingEmitter implements Emitter
     {
         $this->dispatcher->dispatch(new TestSuite\Loaded(
             $this->telemetryInfo(),
-            TestSuite\Info::fromTestSuite($testSuite)
-        ));
-    }
-
-    public function testSuiteRunFinished(string $testSuiteName, TestResult $result, ?CodeCoverage $codeCoverage): void
-    {
-        $this->dispatcher->dispatch(new TestSuite\RunFinished(
-            $this->telemetryInfo(),
-            $testSuiteName,
-            (new TestResultMapper())->map($result),
-            $codeCoverage
+            Info::fromTestSuite($testSuite)
         ));
     }
 
@@ -417,6 +408,16 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new TestSuite\Started(
             $this->telemetryInfo(),
             $name
+        ));
+    }
+
+    public function testSuiteFinished(string $testSuiteName, TestResult $result, ?CodeCoverage $codeCoverage): void
+    {
+        $this->dispatcher->dispatch(new TestSuite\Finished(
+            $this->telemetryInfo(),
+            $testSuiteName,
+            (new TestResultMapper())->map($result),
+            $codeCoverage
         ));
     }
 

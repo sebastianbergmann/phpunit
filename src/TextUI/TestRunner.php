@@ -612,7 +612,7 @@ final class TestRunner
 
         $suite->run($result);
 
-        Event\Registry::emitter()->testSuiteRunFinished(
+        Event\Registry::emitter()->testSuiteFinished(
             $suite->getName(),
             $result,
             CodeCoverage::isActive() ? CodeCoverage::instance() : null

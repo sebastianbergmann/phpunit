@@ -96,8 +96,8 @@ final class Registry
             TestDouble\TestStubCreated::class,
             TestRunner\Started::class,
             TestSuite\AfterClassFinished::class,
+            TestSuite\Finished::class,
             TestSuite\Loaded::class,
-            TestSuite\RunFinished::class,
             TestSuite\Sorted::class,
             TestSuite\Started::class,
         ];
