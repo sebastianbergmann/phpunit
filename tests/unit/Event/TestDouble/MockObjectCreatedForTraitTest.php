@@ -15,7 +15,7 @@ use PHPUnit\TestFixture;
 /**
  * @covers \PHPUnit\Event\TestDouble\MockObjectCreatedForTrait
  */
-final class MockForTraitCreatedTest extends AbstractEventTestCase
+final class MockObjectCreatedForTraitTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
