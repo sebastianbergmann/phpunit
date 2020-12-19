@@ -45,11 +45,10 @@ final class TextFileLogger implements Tracer
         $durationFormatter = new LogDurationFormatter();
 
         return sprintf(
-            '[%s / %s] [%d Bytes / %d Bytes]',
+            '[%s / %s] [%d Bytes]',
             $telemetryInfo->durationSinceStart()->asString($durationFormatter),
             $telemetryInfo->durationSincePrevious()->asString($durationFormatter),
-            $telemetryInfo->memoryUsage()->bytes(),
-            $telemetryInfo->peakMemoryUsage()->bytes()
+            $telemetryInfo->memoryUsage()->bytes()
         );
     }
 }
