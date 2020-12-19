@@ -11,6 +11,7 @@ namespace PHPUnit\Event;
 
 use PHPUnit\Framework;
 use RecordingSubscriber;
+use SebastianBergmann\GlobalState\Snapshot;
 
 /**
  * @covers \PHPUnit\Event\DispatchingEmitter
@@ -222,6 +223,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testGlobalStateCapturedDispatchesGlobalStateCapturedEvent(): void
     {
+        $snapshot = new Snapshot();
+
         $subscriber = new class extends RecordingSubscriber implements GlobalState\CapturedSubscriber {
             public function notify(GlobalState\Captured $event): void
             {
@@ -242,10 +245,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->globalStateCaptured();
+        $emitter->globalStateCaptured($snapshot);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(GlobalState\Captured::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(GlobalState\Captured::class, $event);
+
+        $this->assertSame($snapshot, $event->snapshot());
     }
 
     public function testGlobalStateModifiedDispatchesGlobalStateModifiedEvent(): void

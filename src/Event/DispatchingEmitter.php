@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Constraint;
+use SebastianBergmann\GlobalState\Snapshot;
 
 final class DispatchingEmitter implements Emitter
 {
@@ -79,9 +80,12 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function globalStateCaptured(): void
+    public function globalStateCaptured(Snapshot $snapshot): void
     {
-        $this->dispatcher->dispatch(new GlobalState\Captured($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new GlobalState\Captured(
+            $this->telemetryInfo(),
+            $snapshot
+        ));
     }
 
     public function globalStateModified(): void

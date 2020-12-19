@@ -1729,9 +1729,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return;
         }
 
-        $this->snapshot = $this->createGlobalStateSnapshot($this->backupGlobals === true);
+        $snapshot = $this->createGlobalStateSnapshot($this->backupGlobals === true);
 
-        Event\Registry::emitter()->globalStateCaptured();
+        Event\Registry::emitter()->globalStateCaptured($snapshot);
+
+        $this->snapshot = $snapshot;
     }
 
     /**

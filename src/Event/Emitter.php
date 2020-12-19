@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Constraint;
+use SebastianBergmann\GlobalState\Snapshot;
 
 interface Emitter
 {
@@ -31,7 +32,7 @@ interface Emitter
 
     public function extensionLoaded(string $name, string $version): void;
 
-    public function globalStateCaptured(): void;
+    public function globalStateCaptured(Snapshot $snapshot): void;
 
     public function globalStateModified(): void;
 

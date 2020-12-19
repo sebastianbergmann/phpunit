@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Constraint;
+use SebastianBergmann\GlobalState\Snapshot;
 
 final class NullEmitter implements \PHPUnit\Event\Emitter
 {
@@ -35,7 +36,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function globalStateCaptured(): void
+    public function globalStateCaptured(Snapshot $snapshot): void
     {
     }
 
