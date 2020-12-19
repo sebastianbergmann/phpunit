@@ -164,6 +164,11 @@ interface Emitter
      */
     public function testTestStubCreated(string $className): void;
 
+    /**
+     * @psalm-param class-string $className
+     */
+    public function testSuiteAfterClassCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
+
     public function testSuiteAfterClassFinished(): void;
 
     public function testSuiteLoaded(TestSuite $testSuite): void;

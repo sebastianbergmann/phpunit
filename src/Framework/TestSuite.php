@@ -489,6 +489,14 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 if (method_exists($this->name, $afterClassMethod)) {
                     try {
                         call_user_func([$this->name, $afterClassMethod]);
+
+                        Event\Registry::emitter()->testSuiteAfterClassCalled(
+                            $this->name,
+                            new Event\Code\ClassMethod(
+                                $this->name,
+                                $afterClassMethod
+                            )
+                        );
                     } catch (Throwable $t) {
                         $message = "Exception in {$this->name}::{$afterClassMethod}" . PHP_EOL . $t->getMessage();
                         $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());

@@ -95,6 +95,7 @@ final class Registry
             TestDouble\TestProxyCreated::class,
             TestDouble\TestStubCreated::class,
             TestRunner\Started::class,
+            TestSuite\AfterClassCalled::class,
             TestSuite\AfterClassFinished::class,
             TestSuite\Finished::class,
             TestSuite\Loaded::class,
