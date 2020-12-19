@@ -18,10 +18,21 @@ final class SortedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo         = self::createTelemetryInfo();
+        $executionOrder        = 9001;
+        $executionOrderDefects = 5;
+        $resolveDependencies   = true;
 
-        $event = new Sorted($telemetryInfo);
+        $event = new Sorted(
+            $telemetryInfo,
+            $executionOrder,
+            $executionOrderDefects,
+            $resolveDependencies
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($executionOrder, $event->executionOrder());
+        $this->assertSame($executionOrderDefects, $event->executionOrderDefects());
+        $this->assertSame($resolveDependencies, $event->resolveDependencies());
     }
 }

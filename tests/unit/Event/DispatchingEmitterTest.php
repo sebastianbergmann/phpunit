@@ -1329,6 +1329,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSuiteSortedDispatchesTestSuiteSortedEvent(): void
     {
+        $executionOrder        = 9001;
+        $executionOrderDefects = 5;
+        $resolveDependencies   = true;
+
         $subscriber = new class extends RecordingSubscriber implements TestSuite\SortedSubscriber {
             public function notify(TestSuite\Sorted $event): void
             {
@@ -1349,10 +1353,21 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSuiteSorted();
+        $emitter->testSuiteSorted(
+            $executionOrder,
+            $executionOrderDefects,
+            $resolveDependencies
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestSuite\Sorted::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestSuite\Sorted::class, $event);
+
+        $this->assertSame($executionOrder, $event->executionOrder());
+        $this->assertSame($executionOrderDefects, $event->executionOrderDefects());
+        $this->assertSame($resolveDependencies, $event->resolveDependencies());
     }
 
     private static function createDispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): Dispatcher

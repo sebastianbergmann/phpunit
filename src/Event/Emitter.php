@@ -133,5 +133,5 @@ interface Emitter
 
     public function testSuiteRunStarted(): void;
 
-    public function testSuiteSorted(): void;
+    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void;
 }

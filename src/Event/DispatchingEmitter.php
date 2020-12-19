@@ -305,9 +305,14 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new TestSuite\RunStarted($this->telemetryInfo()));
     }
 
-    public function testSuiteSorted(): void
+    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
-        $this->dispatcher->dispatch(new TestSuite\Sorted($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new TestSuite\Sorted(
+            $this->telemetryInfo(),
+            $executionOrder,
+            $executionOrderDefects,
+            $resolveDependencies
+        ));
     }
 
     private function telemetryInfo(): Telemetry\Info

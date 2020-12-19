@@ -16,13 +16,41 @@ final class Sorted implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
-    {
-        $this->telemetryInfo = $telemetryInfo;
+    private int $executionOrder;
+
+    private int $executionOrderDefects;
+
+    private bool $resolveDependencies;
+
+    public function __construct(
+        Telemetry\Info $telemetryInfo,
+        int $executionOrder,
+        int $executionOrderDefects,
+        bool $resolveDependencies
+    ) {
+        $this->telemetryInfo         = $telemetryInfo;
+        $this->executionOrder        = $executionOrder;
+        $this->executionOrderDefects = $executionOrderDefects;
+        $this->resolveDependencies   = $resolveDependencies;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    public function executionOrder(): int
+    {
+        return $this->executionOrder;
+    }
+
+    public function executionOrderDefects(): int
+    {
+        return $this->executionOrderDefects;
+    }
+
+    public function resolveDependencies(): bool
+    {
+        return $this->resolveDependencies;
     }
 }
