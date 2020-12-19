@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\TestSuite;
 use SebastianBergmann\GlobalState\Snapshot;
 
 interface Emitter
@@ -100,7 +101,7 @@ interface Emitter
 
     public function testSuiteBeforeClassFinished(): void;
 
-    public function testSuiteLoaded(): void;
+    public function testSuiteLoaded(TestSuite $testSuite): void;
 
     public function testSuiteRunFinished(): void;
 

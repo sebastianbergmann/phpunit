@@ -20,7 +20,21 @@ final class LoadedTest extends AbstractEventTestCase
     {
         $telemetryInfo = self::createTelemetryInfo();
 
-        $event = new Loaded($telemetryInfo);
+        $info = new Info(
+            9001,
+            'foo',
+            [],
+            [],
+            [],
+            'bar',
+            [],
+            []
+        );
+
+        $event = new Loaded(
+            $telemetryInfo,
+            $info
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
     }

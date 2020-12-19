@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use SebastianBergmann\GlobalState\Snapshot;
 
 final class DispatchingEmitter implements Emitter
@@ -248,9 +249,12 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new TestSuite\BeforeClassFinished($this->telemetryInfo()));
     }
 
-    public function testSuiteLoaded(): void
+    public function testSuiteLoaded(FrameworkTestSuite $testSuite): void
     {
-        $this->dispatcher->dispatch(new TestSuite\Loaded($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new TestSuite\Loaded(
+            $this->telemetryInfo(),
+            TestSuite\Info::fromTestSuite($testSuite)
+        ));
     }
 
     public function testSuiteRunFinished(): void

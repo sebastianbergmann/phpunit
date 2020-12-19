@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\TestSuite;
 use SebastianBergmann\GlobalState\Snapshot;
 
 final class NullEmitter implements \PHPUnit\Event\Emitter
@@ -148,7 +149,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testSuiteLoaded(): void
+    public function testSuiteLoaded(TestSuite $testSuite): void
     {
     }
 

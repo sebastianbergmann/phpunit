@@ -1106,7 +1106,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSuiteLoaded();
+        $emitter->testSuiteLoaded($this->createMock(Framework\TestSuite::class));
 
         $this->assertSame(1, $subscriber->recordedEventCount());
         $this->assertInstanceOf(TestSuite\Loaded::class, $subscriber->lastRecordedEvent());

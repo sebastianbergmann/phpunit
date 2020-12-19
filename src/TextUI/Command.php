@@ -376,6 +376,8 @@ class Command
 
                     exit(TestRunner::EXCEPTION_EXIT);
                 }
+
+                Event\Registry::emitter()->testSuiteLoaded($this->arguments['test']);
             }
         } elseif (isset($this->arguments['bootstrap'])) {
             $this->handleBootstrap($this->arguments['bootstrap']);
