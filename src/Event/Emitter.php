@@ -136,10 +136,6 @@ interface Emitter
      */
     public function testMockObjectCreatedForAbstractClass(string $className): void;
 
-    /**
-     * @psalm-param class-string $originalClassName
-     * @psalm-param class-string $mockClassName
-     */
     public function testMockObjectCreatedFromWsdl(
         string $wsdlFile,
         string $originalClassName,
@@ -163,26 +159,6 @@ interface Emitter
      * @psalm-param class-string $className
      */
     public function testTestStubCreated(string $className): void;
-
-    /**
-     * @psalm-param class-string $testClassName
-     */
-    public function testSuiteBeforeClassCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
-
-    /**
-     * @psalm-param class-string $testClassName
-     */
-    public function testSuiteBeforeClassFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
-
-    /**
-     * @psalm-param class-string $testClassName
-     */
-    public function testSuiteAfterClassCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
-
-    /**
-     * @psalm-param class-string $testClassName
-     */
-    public function testSuiteAfterClassFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
 
     public function testSuiteLoaded(TestSuite $testSuite): void;
 
