@@ -933,7 +933,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
-    public function testTestPreConditionCalledDispatchesTestBeforeTestMethodEvent(): void
+    public function testTestPreConditionCalledDispatchesTestPreConditionCalledEvent(): void
     {
         $testClassName = self::class;
         $calledMethod  = new Code\ClassMethod(...array_values(explode(
