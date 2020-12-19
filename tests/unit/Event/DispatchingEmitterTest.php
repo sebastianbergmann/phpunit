@@ -784,62 +784,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\BeforeFirstTestMethodFinished::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestCaseSetUpBeforeClassFinishedDispatchesTestSetUpBeforeClassFinishedEvent(): void
-    {
-        $subscriber = new class extends RecordingSubscriber implements TestCase\SetUpBeforeClassFinishedSubscriber {
-            public function notify(TestCase\SetUpBeforeClassFinished $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            TestCase\SetUpBeforeClassFinishedSubscriber::class,
-            TestCase\SetUpBeforeClassFinished::class,
-            $subscriber
-        );
-
-        $telemetrySystem = self::createTelemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->testCaseSetUpBeforeClassFinished();
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestCase\SetUpBeforeClassFinished::class, $subscriber->lastRecordedEvent());
-    }
-
-    public function testTestCaseSetUpFinishedDispatchesTestCaseSetUpFinishedEvent(): void
-    {
-        $subscriber = new class extends RecordingSubscriber implements TestCase\SetUpFinishedSubscriber {
-            public function notify(TestCase\SetUpFinished $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            TestCase\SetUpFinishedSubscriber::class,
-            TestCase\SetUpFinished::class,
-            $subscriber
-        );
-
-        $telemetrySystem = self::createTelemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->testCaseSetUpFinished();
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestCase\SetUpFinished::class, $subscriber->lastRecordedEvent());
-    }
-
     public function testTestCaseTearDownAfterClassFinishedDispatchesTestCaseTearDownAfterClassFinishedEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements TestCase\TearDownAfterClassFinishedSubscriber {

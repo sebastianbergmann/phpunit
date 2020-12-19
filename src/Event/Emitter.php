@@ -71,10 +71,6 @@ interface Emitter
 
     public function testBeforeFirstTestMethodFinished(): void;
 
-    public function testCaseSetUpBeforeClassFinished(): void;
-
-    public function testCaseSetUpFinished(): void;
-
     public function testCaseTearDownAfterClassFinished(): void;
 
     /**

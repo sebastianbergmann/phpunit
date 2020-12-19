@@ -79,8 +79,6 @@ final class Registry
             Test\SkippedDueToUnsatisfiedRequirements::class,
             Test\SkippedIncomplete::class,
             Test\SkippedWithMessage::class,
-            TestCase\SetUpBeforeClassFinished::class,
-            TestCase\SetUpFinished::class,
             TestCase\TearDownAfterClassFinished::class,
             TestDouble\MockCreated::class,
             TestDouble\MockForTraitCreated::class,
