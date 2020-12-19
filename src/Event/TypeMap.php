@@ -27,6 +27,12 @@ final class TypeMap
     private array $mapping = [];
 
     /**
+     * @psalm-assert class-string $subcriberInterface
+     * @psalm-assert class-string $eventClass
+     *
+     * @psalm-param class-string $subscriberInterface
+     * @psalm-param class-string $eventClass
+     *
      * @throws AlreadyAssigned
      * @throws AlreadyRegistered
      * @throws NotAnEvent
