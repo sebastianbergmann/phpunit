@@ -16,13 +16,44 @@ final class PartialMockCreated implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
+    /**
+     * @var class-string
+     */
+    private string $className;
+
+    /**
+     * @var list<string>
+     */
+    private array $methodNames;
+
+    /**
+     * @param class-string $className
+     */
+    public function __construct(Telemetry\Info $telemetryInfo, string $className, string ...$methodNames)
     {
         $this->telemetryInfo = $telemetryInfo;
+        $this->className     = $className;
+        $this->methodNames   = $methodNames;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    /**
+     * @return class-string
+     */
+    public function className(): string
+    {
+        return $this->className;
+    }
+
+    /**
+     * @return list<string>
+     */
+    public function methodNames(): array
+    {
+        return $this->methodNames;
     }
 }

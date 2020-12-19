@@ -910,6 +910,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestDoublePartialMockCreatedDispatchesTestDoublePartialMockCreatedEvent(): void
     {
+        $className   = self::class;
+        $methodNames = [
+            'foo',
+            'bar',
+            'baz',
+        ];
+
         $subscriber = new class extends RecordingSubscriber implements TestDouble\PartialMockCreatedSubscriber {
             public function notify(TestDouble\PartialMockCreated $event): void
             {
@@ -930,10 +937,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoublePartialMockCreated();
+        $emitter->testDoublePartialMockCreated(
+            $className,
+            ...$methodNames
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestDouble\PartialMockCreated::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestDouble\PartialMockCreated::class, $event);
+
+        $this->assertSame($className, $event->className());
+        $this->assertSame($methodNames, $event->methodNames());
     }
 
     public function testTestDoubleTestProxyCreatedDispatchesTestDoubleTestProxyCreatedEvent(): void

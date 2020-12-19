@@ -19,9 +19,21 @@ final class PartialMockCreatedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $className     = self::class;
+        $methodNames   = [
+            'foo',
+            'bar',
+            'baz',
+        ];
 
-        $event = new PartialMockCreated($telemetryInfo);
+        $event = new PartialMockCreated(
+            $telemetryInfo,
+            $className,
+            ...$methodNames
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($className, $event->className());
+        $this->assertSame($methodNames, $event->methodNames());
     }
 }
