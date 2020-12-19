@@ -549,7 +549,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestAbortedWithMessageDispatchesTestAbortedWithMessage(): void
     {
-        $testMethod = new Code\ClassMethod(...array_values(explode(
+        $test = new Code\Test(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -576,7 +576,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testAbortedWithMessage(
-            $testMethod,
+            $test,
             $message
         );
 
@@ -586,7 +586,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\AbortedWithMessage::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($test, $event->test());
         $this->assertSame($message, $event->message());
     }
 
@@ -667,7 +667,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestPreparedDispatchesTestPreparedEvent(): void
     {
-        $testMethod = new Code\ClassMethod(...array_values(explode(
+        $test = new Code\Test(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -692,7 +692,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testPrepared($testMethod);
+        $emitter->testPrepared($test);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -700,7 +700,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\Prepared::class, $event);
 
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($test, $event->test());
     }
 
     public function testTestSetUpFinishedDispatchesTestSetUpFinishedEvent(): void

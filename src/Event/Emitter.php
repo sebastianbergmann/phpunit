@@ -53,13 +53,13 @@ interface Emitter
 
     public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void;
 
-    public function testAbortedWithMessage(Code\ClassMethod $testMethod, string $message): void;
+    public function testAbortedWithMessage(Code\Test $test, string $message): void;
 
     public function testSkippedDueToUnsatisfiedRequirements(Code\ClassMethod $testMethod, string ...$missingRequirements): void;
 
     public function testSkippedWithMessage(): void;
 
-    public function testPrepared(Code\ClassMethod $testMethod): void;
+    public function testPrepared(Code\Test $test): void;
 
     public function testSetUpFinished(): void;
 

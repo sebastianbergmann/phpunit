@@ -20,17 +20,17 @@ final class PreparedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
-        $testMethod    = new Code\ClassMethod(...array_values(explode(
+        $test          = new Code\Test(...array_values(explode(
             '::',
             __METHOD__
         )));
 
         $event = new Prepared(
             $telemetryInfo,
-            $testMethod
+            $test
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($test, $event->test());
     }
 }

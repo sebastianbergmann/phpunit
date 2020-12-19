@@ -777,12 +777,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 ...$methodsCalledPreCondition
             );
 
-            if (method_exists($this, $this->name)) {
-                Event\Registry::emitter()->testPrepared(new Event\Code\ClassMethod(
-                    static::class,
-                    $this->name
-                ));
-            }
+            Event\Registry::emitter()->testPrepared(new Event\Code\Test(
+                static::class,
+                $this->name
+            ));
 
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
@@ -804,15 +802,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (IncompleteTest $e) {
             $this->status = TestStatus::incomplete($e->getMessage());
 
-            if (method_exists($this, $this->name)) {
-                Event\Registry::emitter()->testAbortedWithMessage(
-                    new Event\Code\ClassMethod(
-                        static::class,
-                        $this->name
-                    ),
-                    $e->getMessage()
-                );
-            }
+            Event\Registry::emitter()->testAbortedWithMessage(
+                new Event\Code\Test(
+                    static::class,
+                    $this->name
+                ),
+                $e->getMessage()
+            );
         } catch (SkippedTest $e) {
             $this->status = TestStatus::skipped($e->getMessage());
 

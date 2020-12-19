@@ -17,14 +17,14 @@ final class AbortedWithMessage implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private Code\ClassMethod $testMethod;
+    private Code\Test $test;
 
     private string $message;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\ClassMethod $testMethod, string $message)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->testMethod    = $testMethod;
+        $this->test          = $test;
         $this->message       = $message;
     }
 
@@ -33,9 +33,9 @@ final class AbortedWithMessage implements Event
         return $this->telemetryInfo;
     }
 
-    public function testMethod(): Code\ClassMethod
+    public function test(): Code\Test
     {
-        return $this->testMethod;
+        return $this->test;
     }
 
     public function message(): string

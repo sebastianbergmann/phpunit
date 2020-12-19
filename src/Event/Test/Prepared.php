@@ -17,12 +17,12 @@ final class Prepared implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private Code\ClassMethod $testMethod;
+    private Code\Test $test;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\ClassMethod $testMethod)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->testMethod    = $testMethod;
+        $this->test          = $test;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -30,8 +30,8 @@ final class Prepared implements Event
         return $this->telemetryInfo;
     }
 
-    public function testMethod(): Code\ClassMethod
+    public function test(): Code\Test
     {
-        return $this->testMethod;
+        return $this->test;
     }
 }

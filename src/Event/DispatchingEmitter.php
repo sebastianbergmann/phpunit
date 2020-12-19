@@ -146,11 +146,11 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testAbortedWithMessage(Code\ClassMethod $testMethod, string $message): void
+    public function testAbortedWithMessage(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(new Test\AbortedWithMessage(
             $this->telemetryInfo(),
-            $testMethod,
+            $test,
             $message
         ));
     }
@@ -169,11 +169,11 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\SkippedWithMessage($this->telemetryInfo()));
     }
 
-    public function testPrepared(Code\ClassMethod $testMethod): void
+    public function testPrepared(Code\Test $test): void
     {
         $this->dispatcher->dispatch(new Test\Prepared(
             $this->telemetryInfo(),
-            $testMethod
+            $test
         ));
     }
 
