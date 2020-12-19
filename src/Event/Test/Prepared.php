@@ -9,17 +9,17 @@
  */
 namespace PHPUnit\Event\Test;
 
+use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
-use SebastianBergmann\CodeUnit;
 
 final class Prepared implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private CodeUnit\ClassMethodUnit $testMethod;
+    private Code\ClassMethod $testMethod;
 
-    public function __construct(Telemetry\Info $telemetryInfo, CodeUnit\ClassMethodUnit $testMethod)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\ClassMethod $testMethod)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->testMethod    = $testMethod;
@@ -30,7 +30,7 @@ final class Prepared implements Event
         return $this->telemetryInfo;
     }
 
-    public function testMethod(): CodeUnit\ClassMethodUnit
+    public function testMethod(): Code\ClassMethod
     {
         return $this->testMethod;
     }

@@ -10,7 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
-use SebastianBergmann\CodeUnit;
+use PHPUnit\Event\Code;
 
 /**
  * @covers \PHPUnit\Event\Test\BeforeFirstTestMethodFinished
@@ -21,8 +21,8 @@ final class BeforeFirstTestMethodFinishedTest extends AbstractEventTestCase
     {
         $telemetryInfo = self::createTelemetryInfo();
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): CodeUnit\ClassMethodUnit {
-            return CodeUnit\ClassMethodUnit::forClassMethod(
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+            return new Code\ClassMethod(
                 self::class,
                 $methodName
             );

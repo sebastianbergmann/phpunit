@@ -7,12 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Event\Code;
+use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestSuite;
-use SebastianBergmann\CodeUnit;
 use SebastianBergmann\GlobalState\Snapshot;
 
-final class NullEmitter implements \PHPUnit\Event\Emitter
+final class NullEmitter implements Emitter
 {
     public function applicationConfigured(): void
     {
@@ -74,15 +75,15 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testSkippedByDataProvider(CodeUnit\ClassMethodUnit $testMethod, string $message): void
+    public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void
     {
     }
 
-    public function testAbortedWithMessage(CodeUnit\ClassMethodUnit $testMethod, string $message): void
+    public function testAbortedWithMessage(Code\ClassMethod $testMethod, string $message): void
     {
     }
 
-    public function testSkippedDueToUnsatisfiedRequirements(CodeUnit\ClassMethodUnit $testMethod, string ...$missingRequirements): void
+    public function testSkippedDueToUnsatisfiedRequirements(Code\ClassMethod $testMethod, string ...$missingRequirements): void
     {
     }
 
@@ -90,7 +91,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testPrepared(CodeUnit\ClassMethodUnit $testMethod): void
+    public function testPrepared(Code\ClassMethod $testMethod): void
     {
     }
 
@@ -106,27 +107,27 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testBeforeFirstTestMethodCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void
+    public function testBeforeFirstTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
     }
 
-    public function testBeforeFirstTestMethodFinished(string $testClassName, CodeUnit\ClassMethodUnit ...$calledMethods): void
+    public function testBeforeFirstTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
     }
 
-    public function testBeforeTestMethodCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void
+    public function testBeforeTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
     }
 
-    public function testBeforeTestMethodFinished(string $testClassName, CodeUnit\ClassMethodUnit ...$calledMethods): void
+    public function testBeforeTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
     }
 
-    public function testPreConditionCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void
+    public function testPreConditionCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
     }
 
-    public function testPreConditionFinished(string $testClassName, CodeUnit\ClassMethodUnit ...$calledMethods): void
+    public function testPreConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
     }
 

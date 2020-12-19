@@ -9,19 +9,19 @@
  */
 namespace PHPUnit\Event\Test;
 
+use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
-use SebastianBergmann\CodeUnit;
 
 final class AbortedWithMessage implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private CodeUnit\ClassMethodUnit $testMethod;
+    private Code\ClassMethod $testMethod;
 
     private string $message;
 
-    public function __construct(Telemetry\Info $telemetryInfo, CodeUnit\ClassMethodUnit $testMethod, string $message)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\ClassMethod $testMethod, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->testMethod    = $testMethod;
@@ -33,7 +33,7 @@ final class AbortedWithMessage implements Event
         return $this->telemetryInfo;
     }
 
-    public function testMethod(): CodeUnit\ClassMethodUnit
+    public function testMethod(): Code\ClassMethod
     {
         return $this->testMethod;
     }

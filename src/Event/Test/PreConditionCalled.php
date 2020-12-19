@@ -9,20 +9,20 @@
  */
 namespace PHPUnit\Event\Test;
 
+use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
-use SebastianBergmann\CodeUnit;
 
 final class PreConditionCalled implements Event
 {
-    private Telemetry\Info $telemetryInfo;
+    private Telemetry\Info$telemetryInfo;
 
     /**
      * @psalm-var class-string
      */
     private string $testClassName;
 
-    private CodeUnit\ClassMethodUnit $calledMethod;
+    private Code\ClassMethod $calledMethod;
 
     /**
      * @psalm-param class-string $testClassName
@@ -30,7 +30,7 @@ final class PreConditionCalled implements Event
     public function __construct(
         Telemetry\Info $telemetryInfo,
         string $testClassName,
-        CodeUnit\ClassMethodUnit $calledMethod
+        Code\ClassMethod $calledMethod
     ) {
         $this->telemetryInfo = $telemetryInfo;
         $this->testClassName = $testClassName;
@@ -50,7 +50,7 @@ final class PreConditionCalled implements Event
         return $this->testClassName;
     }
 
-    public function calledMethod(): CodeUnit\ClassMethodUnit
+    public function calledMethod(): Code\ClassMethod
     {
         return $this->calledMethod;
     }

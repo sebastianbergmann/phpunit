@@ -9,13 +9,13 @@
  */
 namespace PHPUnit\Event\Test;
 
+use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
-use SebastianBergmann\CodeUnit;
 
 final class BeforeFirstTestMethodFinished implements Event
 {
-    private Telemetry\Info $telemetryInfo;
+    private Telemetry\Info$telemetryInfo;
 
     /**
      * @psalm-var class-string
@@ -23,9 +23,9 @@ final class BeforeFirstTestMethodFinished implements Event
     private string $testClassName;
 
     /**
-     * @psalm-var list<CodeUnit\ClassMethodUnit>
+     * @psalm-var list<Code\ClassMethod>
      *
-     * @var array<int, CodeUnit\ClassMethodUnit>
+     * @var array<int, Code\ClassMethod>
      */
     private $calledMethods;
 
@@ -35,7 +35,7 @@ final class BeforeFirstTestMethodFinished implements Event
     public function __construct(
         Telemetry\Info $telemetryInfo,
         string $testClassName,
-        CodeUnit\ClassMethodUnit ...$calledMethods
+        Code\ClassMethod ...$calledMethods
     ) {
         $this->telemetryInfo = $telemetryInfo;
         $this->testClassName = $testClassName;
@@ -56,9 +56,9 @@ final class BeforeFirstTestMethodFinished implements Event
     }
 
     /**
-     * @psalm-return list<CodeUnit\ClassMethodUnit>
+     * @psalm-return list<Code\ClassMethod>
      *
-     * @return array<int, CodeUnit\ClassMethodUnit>
+     * @return array<int, Code\ClassMethod>
      */
     public function calledMethods(): array
     {

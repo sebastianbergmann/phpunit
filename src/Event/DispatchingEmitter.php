@@ -11,7 +11,6 @@ namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
-use SebastianBergmann\CodeUnit;
 use SebastianBergmann\GlobalState\Snapshot;
 
 final class DispatchingEmitter implements Emitter
@@ -138,7 +137,7 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\PassedButRisky($this->telemetryInfo()));
     }
 
-    public function testSkippedByDataProvider(CodeUnit\ClassMethodUnit $testMethod, string $message): void
+    public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void
     {
         $this->dispatcher->dispatch(new Test\SkippedByDataProvider(
             $this->telemetryInfo(),
@@ -147,7 +146,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testAbortedWithMessage(CodeUnit\ClassMethodUnit $testMethod, string $message): void
+    public function testAbortedWithMessage(Code\ClassMethod $testMethod, string $message): void
     {
         $this->dispatcher->dispatch(new Test\AbortedWithMessage(
             $this->telemetryInfo(),
@@ -156,7 +155,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testSkippedDueToUnsatisfiedRequirements(CodeUnit\ClassMethodUnit $testMethod, string ...$missingRequirements): void
+    public function testSkippedDueToUnsatisfiedRequirements(Code\ClassMethod $testMethod, string ...$missingRequirements): void
     {
         $this->dispatcher->dispatch(new Test\SkippedDueToUnsatisfiedRequirements(
             $this->telemetryInfo(),
@@ -170,7 +169,7 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\SkippedWithMessage($this->telemetryInfo()));
     }
 
-    public function testPrepared(CodeUnit\ClassMethodUnit $testMethod): void
+    public function testPrepared(Code\ClassMethod $testMethod): void
     {
         $this->dispatcher->dispatch(new Test\Prepared(
             $this->telemetryInfo(),
@@ -193,7 +192,7 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\AfterLastTestMethodFinished($this->telemetryInfo()));
     }
 
-    public function testBeforeFirstTestMethodCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void
+    public function testBeforeFirstTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
         $this->dispatcher->dispatch(new Test\BeforeFirstTestMethodCalled(
             $this->telemetryInfo(),
@@ -202,7 +201,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testBeforeFirstTestMethodFinished(string $testClassName, CodeUnit\ClassMethodUnit ...$calledMethods): void
+    public function testBeforeFirstTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
         $this->dispatcher->dispatch(new Test\BeforeFirstTestMethodFinished(
             $this->telemetryInfo(),
@@ -211,7 +210,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testBeforeTestMethodCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void
+    public function testBeforeTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
         $this->dispatcher->dispatch(new Test\BeforeTestMethodCalled(
             $this->telemetryInfo(),
@@ -220,7 +219,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testBeforeTestMethodFinished(string $testClassName, CodeUnit\ClassMethodUnit ...$calledMethods): void
+    public function testBeforeTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
         $this->dispatcher->dispatch(new Test\BeforeTestMethodFinished(
             $this->telemetryInfo(),
@@ -229,7 +228,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testPreConditionCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void
+    public function testPreConditionCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
         $this->dispatcher->dispatch(new Test\PreConditionCalled(
             $this->telemetryInfo(),
@@ -238,7 +237,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testPreConditionFinished(string $testClassName, CodeUnit\ClassMethodUnit ...$calledMethods): void
+    public function testPreConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
         $this->dispatcher->dispatch(new Test\PreConditionFinished(
             $this->telemetryInfo(),

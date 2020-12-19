@@ -12,7 +12,6 @@ namespace PHPUnit\Event;
 use PHPUnit\Framework;
 use PHPUnit\TestFixture;
 use RecordingSubscriber;
-use SebastianBergmann\CodeUnit;
 use SebastianBergmann\GlobalState\Snapshot;
 use stdClass;
 
@@ -507,7 +506,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSkippedByDataProviderDispatchesTestSkippedByDataProviderEvent(): void
     {
-        $testMethod = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $testMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -550,7 +549,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestAbortedWithMessageDispatchesTestAbortedWithMessage(): void
     {
-        $testMethod = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $testMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -593,7 +592,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSkippedDueToUnsatisfiedRequirementsDispatchesSkippedDueToUnsatisfiedRequirementsEvent(): void
     {
-        $testMethod = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $testMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -668,7 +667,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestPreparedDispatchesTestPreparedEvent(): void
     {
-        $testMethod = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $testMethod = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -791,7 +790,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestBeforeFirstTestMethodCalledDispatchesTestBeforeFirstTestMethodEvent(): void
     {
         $testClassName = self::class;
-        $calledMethod  = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -834,8 +833,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestBeforeFirstTestMethodFinishedDispatchesTestBeforeFirstTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): CodeUnit\ClassMethodUnit {
-            return CodeUnit\ClassMethodUnit::forClassMethod(
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+            return new Code\ClassMethod(
                 self::class,
                 $methodName
             );
@@ -879,7 +878,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestBeforeTestMethodCalledDispatchesTestBeforeTestMethodEvent(): void
     {
         $testClassName = self::class;
-        $calledMethod  = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -922,7 +921,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestPreConditionCalledDispatchesTestBeforeTestMethodEvent(): void
     {
         $testClassName = self::class;
-        $calledMethod  = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -965,8 +964,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestBeforeTestMethodFinishedDispatchesTestBeforeTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): CodeUnit\ClassMethodUnit {
-            return CodeUnit\ClassMethodUnit::forClassMethod(
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+            return new Code\ClassMethod(
                 self::class,
                 $methodName
             );
@@ -1010,8 +1009,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestPreConditionFinishedDispatchesTestPreConditionFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): CodeUnit\ClassMethodUnit {
-            return CodeUnit\ClassMethodUnit::forClassMethod(
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+            return new Code\ClassMethod(
                 self::class,
                 $methodName
             );

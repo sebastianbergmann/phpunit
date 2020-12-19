@@ -10,7 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
-use SebastianBergmann\CodeUnit;
+use PHPUnit\Event\Code;
 
 /**
  * @covers \PHPUnit\Event\Test\BeforeTestMethodCalled
@@ -21,7 +21,7 @@ final class BeforeTestMethodCalledTest extends AbstractEventTestCase
     {
         $telemetryInfo = self::createTelemetryInfo();
         $testClassName = self::class;
-        $calledMethod  = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));

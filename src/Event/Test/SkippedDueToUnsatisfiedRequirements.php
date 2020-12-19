@@ -9,15 +9,15 @@
  */
 namespace PHPUnit\Event\Test;
 
+use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
-use SebastianBergmann\CodeUnit;
 
 final class SkippedDueToUnsatisfiedRequirements implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private CodeUnit\ClassMethodUnit $testMethod;
+    private Code\ClassMethod $testMethod;
 
     /**
      * @psalm-var list<string>
@@ -28,7 +28,7 @@ final class SkippedDueToUnsatisfiedRequirements implements Event
 
     public function __construct(
         Telemetry\Info $telemetryInfo,
-        CodeUnit\ClassMethodUnit $testMethod,
+        Code\ClassMethod $testMethod,
         string ...$missingRequirements
     ) {
         $this->telemetryInfo       = $telemetryInfo;
@@ -41,7 +41,7 @@ final class SkippedDueToUnsatisfiedRequirements implements Event
         return $this->telemetryInfo;
     }
 
-    public function testMethod(): CodeUnit\ClassMethodUnit
+    public function testMethod(): Code\ClassMethod
     {
         return $this->testMethod;
     }

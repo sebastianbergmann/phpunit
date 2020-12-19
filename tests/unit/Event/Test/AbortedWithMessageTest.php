@@ -10,7 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
-use SebastianBergmann\CodeUnit;
+use PHPUnit\Event\Code;
 
 /**
  * @covers \PHPUnit\Event\Test\SkippedByDataProvider
@@ -20,7 +20,7 @@ final class AbortedWithMessageTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
-        $testMethod    = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $testMethod    = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));

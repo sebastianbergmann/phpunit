@@ -24,7 +24,6 @@ use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\InvalidDataSetException;
 use ReflectionClass;
-use SebastianBergmann\CodeUnit;
 use Throwable;
 
 /**
@@ -71,7 +70,7 @@ final class TestBuilder
             );
 
             Event\Registry::emitter()->testSkippedByDataProvider(
-                CodeUnit\ClassMethodUnit::forClassMethod(
+                new Event\Code\ClassMethod(
                     $className,
                     $methodName
                 ),
