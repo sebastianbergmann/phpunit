@@ -47,7 +47,7 @@ interface Emitter
 
     public function testFailed(): void;
 
-    public function testFinished(): void;
+    public function testFinished(Code\Test $test): void;
 
     public function testPassed(): void;
 

@@ -423,6 +423,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestFinishedDispatchesTestFinishedEvent(): void
     {
+        $test = new Code\Test(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+
         $subscriber = new class extends RecordingSubscriber implements Test\FinishedSubscriber {
             public function notify(Test\Finished $event): void
             {
@@ -443,10 +448,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testFinished();
+        $emitter->testFinished($test);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\Finished::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\Finished::class, $event);
+
+        $this->assertSame($test, $event->test());
     }
 
     public function testTestPassedDispatchesTestPassedEvent(): void

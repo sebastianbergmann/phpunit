@@ -124,9 +124,12 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\Failed($this->telemetryInfo()));
     }
 
-    public function testFinished(): void
+    public function testFinished(Code\Test $test): void
     {
-        $this->dispatcher->dispatch(new Test\Finished($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\Finished(
+            $this->telemetryInfo(),
+            $test
+        ));
     }
 
     public function testPassed(): void

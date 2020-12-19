@@ -788,6 +788,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             ));
 
             $this->testResult = $this->runTest();
+
+            $emitter->testFinished(new Event\Code\Test(
+                static::class,
+                $this->name
+            ));
+
             $this->verifyMockObjects();
 
             $methodsCalledPostCondition = [];

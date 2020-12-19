@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code;
 
 /**
  * @covers \PHPUnit\Event\Test\Finished
@@ -19,9 +20,17 @@ final class FinishedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $test          = new Code\Test(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
 
-        $event = new Finished($telemetryInfo);
+        $event = new Finished(
+            $telemetryInfo,
+            $test
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($test, $event->test());
     }
 }
