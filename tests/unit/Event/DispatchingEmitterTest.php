@@ -13,6 +13,7 @@ use PHPUnit\Framework;
 use PHPUnit\TestFixture;
 use RecordingSubscriber;
 use SebastianBergmann\GlobalState\Snapshot;
+use stdClass;
 
 /**
  * @covers \PHPUnit\Event\DispatchingEmitter
@@ -954,6 +955,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestDoubleTestProxyCreatedDispatchesTestDoubleTestProxyCreatedEvent(): void
     {
+        $className            = self::class;
+        $constructorArguments = [
+            'foo',
+            new stdClass(),
+            [
+                'bar',
+                'baz',
+            ],
+        ];
+
         $subscriber = new class extends RecordingSubscriber implements TestDouble\TestProxyCreatedSubscriber {
             public function notify(TestDouble\TestProxyCreated $event): void
             {
@@ -974,10 +985,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoubleTestProxyCreated();
+        $emitter->testDoubleTestProxyCreated(
+            $className,
+            $constructorArguments
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestDouble\TestProxyCreated::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestDouble\TestProxyCreated::class, $event);
+
+        $this->assertSame($className, $event->className());
+        $this->assertSame($constructorArguments, $event->constructorArguments());
     }
 
     public function testTestSuiteAfterClassFinishedDispatchesTestSuiteAfterClassFinishedEvent(): void

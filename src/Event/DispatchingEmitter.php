@@ -221,9 +221,16 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testDoubleTestProxyCreated(): void
+    /**
+     * @param class-string $className
+     */
+    public function testDoubleTestProxyCreated(string $className, array $constructorArguments): void
     {
-        $this->dispatcher->dispatch(new TestDouble\TestProxyCreated($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new TestDouble\TestProxyCreated(
+            $this->telemetryInfo(),
+            $className,
+            $constructorArguments
+        ));
     }
 
     public function testSuiteAfterClassFinished(): void

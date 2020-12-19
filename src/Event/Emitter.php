@@ -89,7 +89,10 @@ interface Emitter
      */
     public function testDoublePartialMockCreated(string $className, string ...$methodNames): void;
 
-    public function testDoubleTestProxyCreated(): void;
+    /**
+     * @param class-string $className
+     */
+    public function testDoubleTestProxyCreated(string $className, array $constructorArguments): void;
 
     public function testSuiteAfterClassFinished(): void;
 

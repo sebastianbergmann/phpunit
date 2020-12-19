@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestDouble;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use stdClass;
 
 /**
  * @covers \PHPUnit\Event\TestDouble\TestProxyCreated
@@ -18,10 +19,25 @@ final class TestProxyCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo        = self::createTelemetryInfo();
+        $className            = self::class;
+        $constructorArguments = [
+            'foo',
+            new stdClass(),
+            [
+                'bar',
+                'baz',
+            ],
+        ];
 
-        $event = new TestProxyCreated($telemetryInfo);
+        $event = new TestProxyCreated(
+            $telemetryInfo,
+            $className,
+            $constructorArguments
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($className, $event->className());
+        $this->assertSame($constructorArguments, $event->constructorArguments());
     }
 }

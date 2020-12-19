@@ -16,13 +16,38 @@ final class TestProxyCreated implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
+    /**
+     * @var class-string
+     */
+    private string $className;
+
+    private array $constructorArguments;
+
+    /**
+     * @param class-string $className
+     */
+    public function __construct(Telemetry\Info $telemetryInfo, string $className, array $constructorArguments)
     {
-        $this->telemetryInfo = $telemetryInfo;
+        $this->telemetryInfo        = $telemetryInfo;
+        $this->className            = $className;
+        $this->constructorArguments = $constructorArguments;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    /**
+     * @return class-string
+     */
+    public function className(): string
+    {
+        return $this->className;
+    }
+
+    public function constructorArguments(): array
+    {
+        return $this->constructorArguments;
     }
 }
