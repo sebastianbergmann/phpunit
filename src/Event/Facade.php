@@ -107,6 +107,7 @@ final class Facade
             TestDouble\PartialMockObjectCreated::class,
             TestDouble\TestProxyCreated::class,
             TestDouble\TestStubCreated::class,
+            TestRunner\Finished::class,
             TestRunner\Started::class,
             TestSuite\Finished::class,
             TestSuite\Loaded::class,

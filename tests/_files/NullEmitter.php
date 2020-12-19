@@ -21,6 +21,10 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testRunnerFinished(): void
+    {
+    }
+
     public function assertionMade($value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
     {
     }

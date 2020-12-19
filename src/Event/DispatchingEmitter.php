@@ -43,6 +43,11 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
+    public function testRunnerFinished(): void
+    {
+        $this->dispatcher->dispatch(new TestRunner\Finished($this->telemetryInfo()));
+    }
+
     public function assertionMade($value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
     {
         $this->dispatcher->dispatch(new Assertion\Made(

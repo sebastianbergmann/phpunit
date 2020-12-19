@@ -19,6 +19,8 @@ interface Emitter
 {
     public function testRunnerStarted(): void;
 
+    public function testRunnerFinished(): void;
+
     /**
      * @param mixed $value
      */
