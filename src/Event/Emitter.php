@@ -43,7 +43,7 @@ interface Emitter
 
     public function testRunConfigured(): void;
 
-    public function testErrored(): void;
+    public function testErrored(Code\Test $test, string $message): void;
 
     public function testFailed(Code\Test $test, string $message): void;
 

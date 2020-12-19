@@ -367,6 +367,12 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestErroredDispatchesTestErroredEvent(): void
     {
+        $test = new Code\Test(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
         $subscriber = new class extends RecordingSubscriber implements Test\ErroredSubscriber {
             public function notify(Test\Errored $event): void
             {
@@ -387,10 +393,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testErrored();
+        $emitter->testErrored(
+            $test,
+            $message
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\Errored::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\Errored::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame($message, $event->message());
     }
 
     public function testTestFailedDispatchesTestFailedEvent(): void
