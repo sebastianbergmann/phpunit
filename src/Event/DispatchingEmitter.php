@@ -88,9 +88,14 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function globalStateModified(): void
+    public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $message): void
     {
-        $this->dispatcher->dispatch(new GlobalState\Modified($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new GlobalState\Modified(
+            $this->telemetryInfo(),
+            $snapshotBefore,
+            $snapshotAfter,
+            $message
+        ));
     }
 
     public function globalStateRestored(): void

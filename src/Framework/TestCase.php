@@ -1747,14 +1747,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if ($this->beStrictAboutChangesToGlobalState) {
+            $snapshotAfter = $this->createGlobalStateSnapshot($this->backupGlobals === true);
+
             try {
                 $this->compareGlobalStateSnapshots(
                     $this->snapshot,
-                    $this->createGlobalStateSnapshot($this->backupGlobals === true)
+                    $snapshotAfter
                 );
             } catch (RiskyTestError $rte) {
                 // Intentionally left empty
-                Event\Registry::emitter()->globalStateModified();
+
+                Event\Registry::emitter()->globalStateModified(
+                    $this->snapshot,
+                    $snapshotAfter,
+                    $rte->getMessage()
+                );
             }
         }
 

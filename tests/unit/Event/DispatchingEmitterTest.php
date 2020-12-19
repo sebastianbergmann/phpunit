@@ -258,6 +258,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testGlobalStateModifiedDispatchesGlobalStateModifiedEvent(): void
     {
+        $snapshotBefore = new Snapshot();
+        $snapshotAfter  = new Snapshot();
+        $message        = 'Hmm, who would have thought?';
+
         $subscriber = new class extends RecordingSubscriber implements GlobalState\ModifiedSubscriber {
             public function notify(GlobalState\Modified $event): void
             {
@@ -278,10 +282,21 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->globalStateModified();
+        $emitter->globalStateModified(
+            $snapshotBefore,
+            $snapshotAfter,
+            $message
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(GlobalState\Modified::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(GlobalState\Modified::class, $event);
+
+        $this->assertSame($snapshotBefore, $event->snapshotBefore());
+        $this->assertSame($snapshotAfter, $event->snapshotAfter());
+        $this->assertSame($message, $event->message());
     }
 
     public function testGlobalStateRestoredDispatchesGlobalStateRestoredEvent(): void

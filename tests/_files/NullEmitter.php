@@ -40,7 +40,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function globalStateModified(): void
+    public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $message): void
     {
     }
 
