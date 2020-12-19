@@ -259,6 +259,15 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
+    public function testPostConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
+    {
+        $this->dispatcher->dispatch(new Test\PostConditionFinished(
+            $this->telemetryInfo(),
+            $testClassName,
+            ...$calledMethods
+        ));
+    }
+
     public function testAfterLastTestMethodCalled(): void
     {
         $this->dispatcher->dispatch(new Test\AfterLastTestMethodCalled($this->telemetryInfo()));

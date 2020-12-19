@@ -135,6 +135,10 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testPostConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
+    {
+    }
+
     public function testAfterLastTestMethodCalled(): void
     {
     }

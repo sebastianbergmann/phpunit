@@ -785,17 +785,28 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();
 
+            $methodsCalledPostCondition = [];
+
             foreach ($hookMethods['postCondition'] as $method) {
                 $this->{$method}();
 
+                $methodCalledPostCondition = new Event\Code\ClassMethod(
+                    static::class,
+                    $method
+                );
+
                 Event\Registry::emitter()->testPostConditionCalled(
                     static::class,
-                    new Event\Code\ClassMethod(
-                        static::class,
-                        $method
-                    )
+                    $methodCalledPostCondition
                 );
+
+                $methodsCalledPostCondition[] = $methodCalledPostCondition;
             }
+
+            Event\Registry::emitter()->testPostConditionFinished(
+                static::class,
+                ...$methodsCalledPostCondition
+            );
 
             if (!empty($this->warnings)) {
                 throw new Warning(

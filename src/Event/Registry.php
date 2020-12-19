@@ -80,6 +80,7 @@ final class Registry
             Test\Passed::class,
             Test\PassedButRisky::class,
             Test\PostConditionCalled::class,
+            Test\PostConditionFinished::class,
             Test\PreConditionCalled::class,
             Test\PreConditionFinished::class,
             Test\Prepared::class,
