@@ -12,7 +12,7 @@ namespace PHPUnit\Event\TestRunner;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PHPUnit\Event\Application\Extensions
+ * @covers \PHPUnit\Event\TestRunner\Extensions
  */
 final class ExtensionsTest extends TestCase
 {

@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 
 /**
- * @covers \PHPUnit\Event\Application\PHPUnit
+ * @covers \PHPUnit\Event\TestRunner\PHPUnit
  */
 final class PHPUnitTest extends TestCase
 {
