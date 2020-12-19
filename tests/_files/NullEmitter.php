@@ -90,7 +90,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testPrepared(): void
+    public function testPrepared(CodeUnit\ClassMethodUnit $testMethod): void
     {
     }
 

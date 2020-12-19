@@ -778,7 +778,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 ...$methodsCalledPreCondition
             );
 
-            Event\Registry::emitter()->testPrepared();
+            if (method_exists($this, $this->name)) {
+                Event\Registry::emitter()->testPrepared(CodeUnit\ClassMethodUnit::forClassMethod(
+                    static::class,
+                    $this->name
+                ));
+            }
 
             $this->testResult = $this->runTest();
             $this->verifyMockObjects();

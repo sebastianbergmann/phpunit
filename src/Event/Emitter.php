@@ -60,7 +60,7 @@ interface Emitter
 
     public function testSkippedWithMessage(): void;
 
-    public function testPrepared(): void;
+    public function testPrepared(CodeUnit\ClassMethodUnit $testMethod): void;
 
     public function testSetUpFinished(): void;
 
