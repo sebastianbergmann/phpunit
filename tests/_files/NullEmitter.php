@@ -166,11 +166,11 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testSuiteRunStarted(): void
+    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
     }
 
-    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
+    public function testSuiteStarted(): void
     {
     }
 }

@@ -1299,34 +1299,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(TestSuite\RunFinished::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestSuiteRunStartedDispatchesTestSuiteRunStartedEvent(): void
-    {
-        $subscriber = new class extends RecordingSubscriber implements TestSuite\RunStartedSubscriber {
-            public function notify(TestSuite\RunStarted $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            TestSuite\RunStartedSubscriber::class,
-            TestSuite\RunStarted::class,
-            $subscriber
-        );
-
-        $telemetrySystem = self::createTelemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->testSuiteRunStarted();
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestSuite\RunStarted::class, $subscriber->lastRecordedEvent());
-    }
-
     public function testTestSuiteSortedDispatchesTestSuiteSortedEvent(): void
     {
         $executionOrder        = 9001;
@@ -1368,6 +1340,34 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($executionOrder, $event->executionOrder());
         $this->assertSame($executionOrderDefects, $event->executionOrderDefects());
         $this->assertSame($resolveDependencies, $event->resolveDependencies());
+    }
+
+    public function testTestSuiteStartedDispatchesTestSuiteStartedEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestSuite\StartedSubscriber {
+            public function notify(TestSuite\Started $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
+            TestSuite\StartedSubscriber::class,
+            TestSuite\Started::class,
+            $subscriber
+        );
+
+        $telemetrySystem = self::createTelemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem
+        );
+
+        $emitter->testSuiteStarted();
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+        $this->assertInstanceOf(TestSuite\Started::class, $subscriber->lastRecordedEvent());
     }
 
     private static function createDispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): Dispatcher

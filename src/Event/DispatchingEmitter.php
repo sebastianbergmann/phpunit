@@ -300,11 +300,6 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new TestSuite\RunFinished($this->telemetryInfo()));
     }
 
-    public function testSuiteRunStarted(): void
-    {
-        $this->dispatcher->dispatch(new TestSuite\RunStarted($this->telemetryInfo()));
-    }
-
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
         $this->dispatcher->dispatch(new TestSuite\Sorted(
@@ -313,6 +308,11 @@ final class DispatchingEmitter implements Emitter
             $executionOrderDefects,
             $resolveDependencies
         ));
+    }
+
+    public function testSuiteStarted(): void
+    {
+        $this->dispatcher->dispatch(new TestSuite\Started($this->telemetryInfo()));
     }
 
     private function telemetryInfo(): Telemetry\Info

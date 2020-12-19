@@ -11,7 +11,7 @@ namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\Subscriber;
 
-interface RunStartedSubscriber extends Subscriber
+interface StartedSubscriber extends Subscriber
 {
-    public function notify(RunStarted $event): void;
+    public function notify(Started $event): void;
 }
