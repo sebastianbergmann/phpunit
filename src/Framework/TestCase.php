@@ -866,6 +866,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         } catch (AssertionFailedError $e) {
             $this->status = TestStatus::failure($e->getMessage());
+
+            $emitter->testFailed(
+                new Event\Code\Test(
+                    static::class,
+                    $this->name
+                ),
+                $e->getMessage()
+            );
         } catch (Throwable $_e) {
             $e            = $_e;
             $this->status = TestStatus::error($_e->getMessage());

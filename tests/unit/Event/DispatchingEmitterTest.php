@@ -395,6 +395,12 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestFailedDispatchesTestFailedEvent(): void
     {
+        $test = new Code\Test(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
         $subscriber = new class extends RecordingSubscriber implements Test\FailedSubscriber {
             public function notify(Test\Failed $event): void
             {
@@ -415,10 +421,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testFailed();
+        $emitter->testFailed(
+            $test,
+            $message
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\Failed::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\Failed::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame($message, $event->message());
     }
 
     public function testTestFinishedDispatchesTestFinishedEvent(): void
@@ -1736,9 +1751,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame($name, $event->name());
 
-        $testResultMapper = new TestResultMapper();
+        $mappedResult = (new TestResultMapper())->map($result);
 
-        $this->assertEquals($testResultMapper->map($result), $event->result());
+        $this->assertEquals($mappedResult, $event->result());
         $this->assertSame($codeCoverage, $event->codeCoverage());
     }
 
