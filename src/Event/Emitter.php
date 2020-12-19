@@ -57,7 +57,7 @@ interface Emitter
 
     public function testSkippedDueToUnsatisfiedRequirements(Code\ClassMethod $testMethod, string ...$missingRequirements): void;
 
-    public function testSkippedWithMessage(): void;
+    public function testSkippedWithMessage(Code\Test $test, string $message): void;
 
     public function testPrepared(Code\Test $test): void;
 

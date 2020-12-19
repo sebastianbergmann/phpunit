@@ -10,18 +10,30 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code;
 
 /**
- * @covers \PHPUnit\Event\Test\SkippedWithMessage
+ * @covers \PHPUnit\Event\Test\SkippedByDataProvider
  */
 final class SkippedWithMessageTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $test          = new Code\Test(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
-        $event = new SkippedWithMessage($telemetryInfo);
+        $event = new SkippedWithMessage(
+            $telemetryInfo,
+            $test,
+            $message
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($test, $event->test());
+        $this->assertSame($message, $event->message());
     }
 }

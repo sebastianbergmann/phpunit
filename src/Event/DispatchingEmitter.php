@@ -164,9 +164,13 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testSkippedWithMessage(): void
+    public function testSkippedWithMessage(Code\Test $test, string $message): void
     {
-        $this->dispatcher->dispatch(new Test\SkippedWithMessage($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\SkippedWithMessage(
+            $this->telemetryInfo(),
+            $test,
+            $message
+        ));
     }
 
     public function testPrepared(Code\Test $test): void

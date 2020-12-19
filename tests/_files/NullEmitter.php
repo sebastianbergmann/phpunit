@@ -87,7 +87,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSkippedWithMessage(): void
+    public function testSkippedWithMessage(Code\Test $test, string $message): void
     {
     }
 

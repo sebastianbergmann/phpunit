@@ -637,8 +637,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($missingRequirements, $event->missingRequirements());
     }
 
-    public function testTestRunSkippedWithWarningDispatchesTestRunSkippedWithWarningEvent(): void
+    public function testTestSkippedMessageDispatchesTestSkippedWithMessageEvent(): void
     {
+        $test = new Code\Test(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
         $subscriber = new class extends RecordingSubscriber implements Test\SkippedWithMessageSubscriber {
             public function notify(Test\SkippedWithMessage $event): void
             {
@@ -659,10 +665,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSkippedWithMessage();
+        $emitter->testSkippedWithMessage(
+            $test,
+            $message
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\SkippedWithMessage::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\SkippedWithMessage::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame($message, $event->message());
     }
 
     public function testTestPreparedDispatchesTestPreparedEvent(): void
