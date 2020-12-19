@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -16,13 +17,21 @@ final class Passed implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
+    private Code\Test $test;
+
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
     {
         $this->telemetryInfo = $telemetryInfo;
+        $this->test          = $test;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    public function test(): Code\Test
+    {
+        return $this->test;
     }
 }

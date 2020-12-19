@@ -49,7 +49,7 @@ interface Emitter
 
     public function testFinished(Code\Test $test): void;
 
-    public function testPassed(): void;
+    public function testPassed(Code\Test $test): void;
 
     public function testPassedButRisky(): void;
 
