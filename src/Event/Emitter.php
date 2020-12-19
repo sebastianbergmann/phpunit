@@ -67,7 +67,7 @@ interface Emitter
 
     public function testAfterLastTestMethodFinished(): void;
 
-    public function testCaseBeforeClassCalled(): void;
+    public function testBeforeFirstTestMethodCalled(): void;
 
     public function testBeforeFirstTestMethodFinished(): void;
 

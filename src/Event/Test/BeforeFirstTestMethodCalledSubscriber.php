@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestCase;
+namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Subscriber;
 
-interface BeforeClassCalledSubscriber extends Subscriber
+interface BeforeFirstTestMethodCalledSubscriber extends Subscriber
 {
-    public function notify(BeforeClassCalled $event): void;
+    public function notify(BeforeFirstTestMethodCalled $event): void;
 }
