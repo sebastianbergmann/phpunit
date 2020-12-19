@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestCase;
+namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Subscriber;
 
-interface AfterClassFinishedSubscriber extends Subscriber
+interface AfterLastTestMethodFinishedSubscriber extends Subscriber
 {
-    public function notify(AfterClassFinished $event): void;
+    public function notify(AfterLastTestMethodFinished $event): void;
 }

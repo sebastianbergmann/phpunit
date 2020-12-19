@@ -64,7 +64,7 @@ interface Emitter
 
     public function testTearDownFinished(): void;
 
-    public function testCaseAfterClassFinished(): void;
+    public function testAfterLastTestMethodFinished(): void;
 
     public function testCaseBeforeClassCalled(): void;
 
