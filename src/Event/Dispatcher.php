@@ -27,9 +27,21 @@ final class Dispatcher
      */
     private array $subscribers = [];
 
+    /**
+     * @psalm-var list<Tracer\Tracer>
+     *
+     * @var array<int, Tracer\Tracer>
+     */
+    private array $tracers = [];
+
     public function __construct(TypeMap $map)
     {
         $this->typeMap = $map;
+    }
+
+    public function registerTracer(Tracer\Tracer $tracer): void
+    {
+        $this->tracers[] = $tracer;
     }
 
     /**
@@ -65,6 +77,10 @@ final class Dispatcher
                 'Unknown event type "%s"',
                 $eventClassName
             ));
+        }
+
+        foreach ($this->tracers as $tracer) {
+            $tracer->trace($event);
         }
 
         if (!array_key_exists($eventClassName, $this->subscribers)) {
