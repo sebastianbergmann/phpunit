@@ -54,7 +54,7 @@ interface Emitter
 
     public function testSkippedByDataProvider(CodeUnit\ClassMethodUnit $testMethod, string $message): void;
 
-    public function testAbortedWithMessage(): void;
+    public function testAbortedWithMessage(CodeUnit\ClassMethodUnit $testMethod, string $message): void;
 
     public function testSkippedDueToUnsatisfiedRequirements(CodeUnit\ClassMethodUnit $testMethod, string ...$missingRequirements): void;
 

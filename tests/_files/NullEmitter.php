@@ -78,7 +78,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testAbortedWithMessage(): void
+    public function testAbortedWithMessage(CodeUnit\ClassMethodUnit $testMethod, string $message): void
     {
     }
 

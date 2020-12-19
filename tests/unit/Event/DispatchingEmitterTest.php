@@ -550,6 +550,12 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestAbortedWithMessageDispatchesTestAbortedWithMessage(): void
     {
+        $testMethod = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
         $subscriber = new class extends RecordingSubscriber implements Test\AbortedWithMessageSubscriber {
             public function notify(Test\AbortedWithMessage $event): void
             {
@@ -570,10 +576,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testAbortedWithMessage();
+        $emitter->testAbortedWithMessage(
+            $testMethod,
+            $message
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\AbortedWithMessage::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\AbortedWithMessage::class, $event);
+
+        $this->assertSame($testMethod, $event->testMethod());
+        $this->assertSame($message, $event->message());
     }
 
     public function testTestSkippedDueToUnsatisfiedRequirementsDispatchesSkippedDueToUnsatisfiedRequirementsEvent(): void

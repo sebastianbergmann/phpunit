@@ -147,9 +147,13 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testAbortedWithMessage(): void
+    public function testAbortedWithMessage(CodeUnit\ClassMethodUnit $testMethod, string $message): void
     {
-        $this->dispatcher->dispatch(new Test\AbortedWithMessage($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\AbortedWithMessage(
+            $this->telemetryInfo(),
+            $testMethod,
+            $message
+        ));
     }
 
     public function testSkippedDueToUnsatisfiedRequirements(CodeUnit\ClassMethodUnit $testMethod, string ...$missingRequirements): void
