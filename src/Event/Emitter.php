@@ -97,6 +97,11 @@ interface Emitter
      */
     public function testPreConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
 
+    /**
+     * @psalm-param class-string $testClassName
+     */
+    public function testPostConditionCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
+
     public function testAfterLastTestMethodCalled(): void;
 
     /**
