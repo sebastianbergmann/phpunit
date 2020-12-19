@@ -179,7 +179,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSuiteAfterClassFinished(): void
+    public function testSuiteAfterClassFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
     }
 
