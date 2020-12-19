@@ -12,7 +12,7 @@ namespace PHPUnit\Event\Code;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PHPUnit\Event\Comparator\Registered
+ * @covers \PHPUnit\Event\Code\Test
  */
 final class TestTest extends TestCase
 {

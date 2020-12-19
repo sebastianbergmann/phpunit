@@ -13,7 +13,7 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 
 /**
- * @covers \PHPUnit\Event\Test\SkippedByDataProvider
+ * @covers \PHPUnit\Event\Test\AbortedWithMessage
  */
 final class AbortedWithMessageTest extends AbstractEventTestCase
 {
