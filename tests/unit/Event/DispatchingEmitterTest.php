@@ -563,8 +563,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSkippedDueToUnsatisfiedRequirementsDispatchesSkippedDueToUnsatisfiedRequirementsEvent(): void
     {
-        $testClassName  = self::class;
-        $testMethodName = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+        $testMethod = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
             '::',
             __METHOD__
         )));
@@ -595,8 +594,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testSkippedDueToUnsatisfiedRequirements(
-            $testClassName,
-            $testMethodName,
+            $testMethod,
             ...$missingRequirements
         );
 
@@ -606,8 +604,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(Test\SkippedDueToUnsatisfiedRequirements::class, $event);
 
-        $this->assertSame($testClassName, $event->testClassName());
-        $this->assertSame($testMethodName, $event->testMethodName());
+        $this->assertSame($testMethod, $event->testMethod());
         $this->assertSame($missingRequirements, $event->missingRequirements());
     }
 

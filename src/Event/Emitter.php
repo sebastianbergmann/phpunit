@@ -56,10 +56,7 @@ interface Emitter
 
     public function testSkippedIncomplete(): void;
 
-    /**
-     * @psalm-param class-string $testClassName
-     */
-    public function testSkippedDueToUnsatisfiedRequirements(string $testClassName, CodeUnit\ClassMethodUnit $testMethodName, string ...$missingRequirements): void;
+    public function testSkippedDueToUnsatisfiedRequirements(CodeUnit\ClassMethodUnit $testMethod, string ...$missingRequirements): void;
 
     public function testSkippedWithMessage(): void;
 
