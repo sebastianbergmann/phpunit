@@ -26,7 +26,7 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) ExtensionTest::testOne
-Error: Class 'PHPUnit\TestFixture\TestExtension\Test' not found
+Error: Class %sPHPUnit\TestFixture\TestExtension\Test%s not found
 
 %sExtensionTest.php:%d
 
