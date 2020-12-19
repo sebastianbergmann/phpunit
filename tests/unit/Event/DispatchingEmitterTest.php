@@ -548,18 +548,18 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($message, $event->message());
     }
 
-    public function testTestSkippedIncompleteDispatchesTestSkippedIncompleteEvent(): void
+    public function testTestAbortedWithMessageDispatchesTestAbortedWithMessage(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\SkippedIncompleteSubscriber {
-            public function notify(Test\SkippedIncomplete $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\AbortedWithMessageSubscriber {
+            public function notify(Test\AbortedWithMessage $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\SkippedIncompleteSubscriber::class,
-            Test\SkippedIncomplete::class,
+            Test\AbortedWithMessageSubscriber::class,
+            Test\AbortedWithMessage::class,
             $subscriber
         );
 
@@ -570,10 +570,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSkippedIncomplete();
+        $emitter->testAbortedWithMessage();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\SkippedIncomplete::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\AbortedWithMessage::class, $subscriber->lastRecordedEvent());
     }
 
     public function testTestSkippedDueToUnsatisfiedRequirementsDispatchesSkippedDueToUnsatisfiedRequirementsEvent(): void

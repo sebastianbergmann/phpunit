@@ -78,7 +78,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testSkippedIncomplete(): void
+    public function testAbortedWithMessage(): void
     {
     }
 

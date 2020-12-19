@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Subscriber;
 
-interface SkippedIncompleteSubscriber extends Subscriber
+interface AbortedWithMessageSubscriber extends Subscriber
 {
-    public function notify(SkippedIncomplete $event): void;
+    public function notify(AbortedWithMessage $event): void;
 }
