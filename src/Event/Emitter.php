@@ -111,6 +111,11 @@ interface Emitter
     public function testDoubleMockObjectCreatedForTrait(string $traitName): void;
 
     /**
+     * @psalm-param trait-string $className
+     */
+    public function testDoubleMockObjectCreatedForAbstractClass(string $className): void;
+
+    /**
      * @psalm-param class-string $className
      */
     public function testDoublePartialMockCreated(string $className, string ...$methodNames): void;
