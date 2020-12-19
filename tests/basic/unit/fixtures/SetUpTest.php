@@ -25,7 +25,7 @@ use RuntimeException;
  */
 class SetUpTest extends TestCase
 {
-    public function setUp(): void
+    protected function setUp(): void
     {
         throw new RuntimeException('throw exception in setUp');
     }
