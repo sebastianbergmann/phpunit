@@ -860,6 +860,51 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
+    public function testTestBeforeTestMethodFinishedDispatchesTestBeforeTestMethodFinishedEvent(): void
+    {
+        $testClassName = self::class;
+        $calledMethods = array_map(static function (string $methodName): CodeUnit\ClassMethodUnit {
+            return CodeUnit\ClassMethodUnit::forClassMethod(
+                self::class,
+                $methodName
+            );
+        }, get_class_methods($this));
+
+        $subscriber = new class extends RecordingSubscriber implements Test\BeforeTestMethodFinishedSubscriber {
+            public function notify(Test\BeforeTestMethodFinished $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
+            Test\BeforeTestMethodFinishedSubscriber::class,
+            Test\BeforeTestMethodFinished::class,
+            $subscriber
+        );
+
+        $telemetrySystem = self::createTelemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem
+        );
+
+        $emitter->testBeforeTestMethodFinished(
+            $testClassName,
+            ...$calledMethods
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\BeforeTestMethodFinished::class, $event);
+
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($calledMethods, $event->calledMethods());
+    }
+
     public function testAfterLastTestMethodCalledDispatchesAfterLastTestMethodCalledEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodCalledSubscriber {

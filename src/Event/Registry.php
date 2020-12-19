@@ -69,6 +69,7 @@ final class Registry
             Test\BeforeFirstTestMethodCalled::class,
             Test\BeforeFirstTestMethodFinished::class,
             Test\BeforeTestMethodCalled::class,
+            Test\BeforeTestMethodFinished::class,
             Test\Errored::class,
             Test\Failed::class,
             Test\Finished::class,
