@@ -10,7 +10,9 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
 interface Emitter
@@ -170,7 +172,7 @@ interface Emitter
 
     public function testSuiteLoaded(TestSuite $testSuite): void;
 
-    public function testSuiteRunFinished(): void;
+    public function testSuiteRunFinished(string $name, TestResult $result, ?CodeCoverage $codeCoverage): void;
 
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void;
 

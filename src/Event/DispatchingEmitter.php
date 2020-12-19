@@ -10,7 +10,9 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Constraint;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
+use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
 final class DispatchingEmitter implements Emitter
@@ -382,9 +384,14 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testSuiteRunFinished(): void
+    public function testSuiteRunFinished(string $name, TestResult $result, ?CodeCoverage $codeCoverage): void
     {
-        $this->dispatcher->dispatch(new TestSuite\RunFinished($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new TestSuite\RunFinished(
+            $this->telemetryInfo(),
+            $name,
+            (new TestResultMapper())->map($result),
+            $codeCoverage
+        ));
     }
 
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void

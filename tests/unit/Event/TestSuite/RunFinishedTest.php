@@ -10,18 +10,73 @@
 namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use SebastianBergmann\CodeCoverage;
 
 /**
  * @covers \PHPUnit\Event\TestSuite\RunFinished
  */
 final class RunFinishedTest extends AbstractEventTestCase
 {
-    public function testConstructorSetsValues(): void
+    public function testConstructorSetsValuesWhenCodeCoverageIsNull(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $name          = 'foo';
+        $result        = new Result(
+            5,
+            new FailureCollection(),
+            new FailureCollection(),
+            new FailureCollection(),
+            new FailureCollection(),
+            new FailureCollection(),
+            new FailureCollection(),
+            [],
+            []
+        );
+        $codeCoverage = null;
 
-        $event = new RunFinished($telemetryInfo);
+        $event = new RunFinished(
+            $telemetryInfo,
+            $name,
+            $result,
+            $codeCoverage
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($name, $event->name());
+        $this->assertSame($result, $event->result());
+        $this->assertSame($codeCoverage, $event->codeCoverage());
+    }
+
+    public function testConstructorSetsValuesWhenCodeCoverageIsNotNull(): void
+    {
+        $telemetryInfo = self::createTelemetryInfo();
+        $name          = 'foo';
+        $result        = new Result(
+            5,
+            new FailureCollection(),
+            new FailureCollection(),
+            new FailureCollection(),
+            new FailureCollection(),
+            new FailureCollection(),
+            new FailureCollection(),
+            [],
+            []
+        );
+        $codeCoverage = new CodeCoverage\CodeCoverage(
+            $this->createMock(CodeCoverage\Driver\Driver::class),
+            new CodeCoverage\Filter()
+        );
+
+        $event = new RunFinished(
+            $telemetryInfo,
+            $name,
+            $result,
+            $codeCoverage
+        );
+
+        $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($name, $event->name());
+        $this->assertSame($result, $event->result());
+        $this->assertSame($codeCoverage, $event->codeCoverage());
     }
 }

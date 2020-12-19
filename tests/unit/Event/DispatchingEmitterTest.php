@@ -12,6 +12,7 @@ namespace PHPUnit\Event;
 use PHPUnit\Framework;
 use PHPUnit\TestFixture;
 use RecordingSubscriber;
+use SebastianBergmann\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 use stdClass;
 
@@ -1621,6 +1622,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSuiteRunFinishedDispatchesTestSuiteRunFinishedEvent(): void
     {
+        $name         = 'foo';
+        $result       = new Framework\TestResult();
+        $codeCoverage = new CodeCoverage\CodeCoverage(
+            $this->createMock(CodeCoverage\Driver\Driver::class),
+            new CodeCoverage\Filter()
+        );
+
         $subscriber = new class extends RecordingSubscriber implements TestSuite\RunFinishedSubscriber {
             public function notify(TestSuite\RunFinished $event): void
             {
@@ -1641,10 +1649,23 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSuiteRunFinished();
+        $emitter->testSuiteRunFinished(
+            $name,
+            $result,
+            $codeCoverage
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestSuite\RunFinished::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestSuite\RunFinished::class, $event);
+        $this->assertSame($name, $event->name());
+
+        $testResultMapper = new TestResultMapper();
+
+        $this->assertEquals($testResultMapper->map($result), $event->result());
+        $this->assertSame($codeCoverage, $event->codeCoverage());
     }
 
     public function testTestSuiteSortedDispatchesTestSuiteSortedEvent(): void

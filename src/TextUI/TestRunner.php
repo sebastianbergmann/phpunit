@@ -612,7 +612,11 @@ final class TestRunner
 
         $suite->run($result);
 
-        Event\Registry::emitter()->testSuiteRunFinished();
+        Event\Registry::emitter()->testSuiteRunFinished(
+            $suite->getName(),
+            $result,
+            CodeCoverage::isActive() ? CodeCoverage::instance() : null
+        );
 
         foreach ($this->extensions as $extension) {
             if ($extension instanceof AfterLastTestHook) {
