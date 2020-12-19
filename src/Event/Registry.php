@@ -87,7 +87,6 @@ final class Registry
             TestDouble\PartialMockCreated::class,
             TestDouble\TestProxyCreated::class,
             TestSuite\AfterClassFinished::class,
-            TestSuite\BeforeClassFinished::class,
             TestSuite\Loaded::class,
             TestSuite\RunFinished::class,
             TestSuite\RunStarted::class,

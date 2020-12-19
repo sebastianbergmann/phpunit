@@ -99,8 +99,6 @@ interface Emitter
 
     public function testSuiteAfterClassFinished(): void;
 
-    public function testSuiteBeforeClassFinished(): void;
-
     public function testSuiteLoaded(TestSuite $testSuite): void;
 
     public function testSuiteRunFinished(): void;
