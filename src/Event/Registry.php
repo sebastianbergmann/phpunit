@@ -44,14 +44,17 @@ final class Registry
     private static function typeMap(): TypeMap
     {
         if (self::$typeMap === null) {
-            self::$typeMap = new TypeMap();
-            self::registerDefaultTypes();
+            $typeMap = new TypeMap();
+
+            self::registerDefaultTypes($typeMap);
+
+            self::$typeMap = $typeMap;
         }
 
         return self::$typeMap;
     }
 
-    private static function registerDefaultTypes(): void
+    private static function registerDefaultTypes(TypeMap $typeMap): void
     {
         $defaultEvents = [
             Application\Configured::class,
@@ -94,7 +97,7 @@ final class Registry
         ];
 
         foreach ($defaultEvents as $eventClass) {
-            self::typeMap()->addMapping(
+            $typeMap->addMapping(
                 $eventClass . 'Subscriber',
                 $eventClass
             );
