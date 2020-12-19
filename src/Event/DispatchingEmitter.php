@@ -176,6 +176,11 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new TestCase\AfterClassFinished($this->telemetryInfo()));
     }
 
+    public function testCaseBeforeClassCalled(): void
+    {
+        $this->dispatcher->dispatch(new TestCase\BeforeClassCalled($this->telemetryInfo()));
+    }
+
     public function testCaseBeforeClassFinished(): void
     {
         $this->dispatcher->dispatch(new TestCase\BeforeClassFinished($this->telemetryInfo()));

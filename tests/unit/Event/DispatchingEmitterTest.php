@@ -728,6 +728,34 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(TestCase\AfterClassFinished::class, $subscriber->lastRecordedEvent());
     }
 
+    public function testTestCaseBeforeClassCalledDispatchesTestCaseBeforeClassCalledEvent(): void
+    {
+        $subscriber = new class extends RecordingSubscriber implements TestCase\BeforeClassCalledSubscriber {
+            public function notify(TestCase\BeforeClassCalled $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
+            TestCase\BeforeClassCalledSubscriber::class,
+            TestCase\BeforeClassCalled::class,
+            $subscriber
+        );
+
+        $telemetrySystem = self::createTelemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem
+        );
+
+        $emitter->testCaseBeforeClassCalled();
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+        $this->assertInstanceOf(TestCase\BeforeClassCalled::class, $subscriber->lastRecordedEvent());
+    }
+
     public function testTestCaseBeforeClassFinishedDispatchesTestCaseBeforeClassFinishedEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements TestCase\BeforeClassFinishedSubscriber {

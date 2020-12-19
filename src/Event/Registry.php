@@ -77,6 +77,7 @@ final class Registry
             Test\SetUpFinished::class,
             Test\TearDownFinished::class,
             TestCase\AfterClassFinished::class,
+            TestCase\BeforeClassCalled::class,
             TestCase\BeforeClassFinished::class,
             TestCase\SetUpBeforeClassFinished::class,
             TestCase\SetUpFinished::class,
