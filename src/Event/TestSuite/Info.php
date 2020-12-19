@@ -19,29 +19,39 @@ final class Info
     private string $name;
 
     /**
-     * @var array<string, list<class-string>>
+     * @psalm-var array<string, list<class-string>>
+     *
+     * @var array<string, array<int, string>>
      */
     private array $groups;
 
     /**
-     * @var list<ExecutionOrderDependency>
+     * @psalm-var list<ExecutionOrderDependency>
+     *
+     * @var array<int, ExecutionOrderDependency>
      */
     private array $provides;
 
     /**
-     * @var list<ExecutionOrderDependency>
+     * @psalm-var list<ExecutionOrderDependency>
+     *
+     * @var array<int, ExecutionOrderDependency>
      */
     private array $requires;
 
     private string $sortId;
 
     /**
-     * @var list<class-string>
+     * @psalm-var list<class-string>
+     *
+     * @var array<int, string>
      */
     private array $tests;
 
     /**
-     * @var list<string>
+     * @psalm-var list<string>
+     *
+     * @var array<int, string>
      */
     private array $warnings;
 
@@ -108,7 +118,9 @@ final class Info
     }
 
     /**
-     * @return array<string, list<class-string>>
+     * @psalm-return array<string, list<class-string>>
+     *
+     * @return array<string, array<int, string>>
      */
     public function groups(): array
     {
@@ -116,7 +128,9 @@ final class Info
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
+     *
+     * @return array<int, ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -124,7 +138,9 @@ final class Info
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
+     *
+     * @return array<int, ExecutionOrderDependency>
      */
     public function requires(): array
     {
@@ -137,7 +153,9 @@ final class Info
     }
 
     /**
-     * @return list<class-string>
+     * @psalm-return list<class-string>
+     *
+     * @return array<int, string>
      */
     public function tests(): array
     {

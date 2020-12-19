@@ -17,17 +17,19 @@ final class PartialMockCreated implements Event
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @var class-string
+     * @psalm-var class-string
      */
     private string $className;
 
     /**
-     * @var list<string>
+     * @psalm-var list<string>
+     *
+     * @var array<int, string>
      */
     private array $methodNames;
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $className, string ...$methodNames)
     {
@@ -42,7 +44,7 @@ final class PartialMockCreated implements Event
     }
 
     /**
-     * @return class-string
+     * @psalm-return class-string
      */
     public function className(): string
     {
@@ -50,7 +52,9 @@ final class PartialMockCreated implements Event
     }
 
     /**
-     * @return list<string>
+     * @psalm-return list<string>
+     *
+     * @return array<int, string>
      */
     public function methodNames(): array
     {

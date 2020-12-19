@@ -20,7 +20,9 @@ use function sprintf;
 class TypeMap
 {
     /**
-     * @var array<class-string, class-string>
+     * @psalm-var array<class-string, class-string>
+     *
+     * @var array<string, string>
      */
     private array $mapping = [];
 

@@ -17,14 +17,14 @@ final class TestProxyCreated implements Event
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @var class-string
+     * @psalm-var class-string
      */
     private string $className;
 
     private array $constructorArguments;
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $className, array $constructorArguments)
     {
@@ -39,7 +39,7 @@ final class TestProxyCreated implements Event
     }
 
     /**
-     * @return class-string
+     * @psalm-return class-string
      */
     public function className(): string
     {

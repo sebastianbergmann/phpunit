@@ -27,7 +27,7 @@ interface Emitter
     public function bootstrapFinished(string $filename): void;
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     public function comparatorRegistered(string $className): void;
 
@@ -74,22 +74,22 @@ interface Emitter
     public function testAfterLastTestMethodCalled(): void;
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     public function testDoubleMockCreated(string $className): void;
 
     /**
-     * @param trait-string $traitName
+     * @psalm-param trait-string $traitName
      */
     public function testDoubleMockForTraitCreated(string $traitName): void;
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     public function testDoublePartialMockCreated(string $className, string ...$methodNames): void;
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     public function testDoubleTestProxyCreated(string $className, array $constructorArguments): void;
 

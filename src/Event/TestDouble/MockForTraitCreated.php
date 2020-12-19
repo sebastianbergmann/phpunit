@@ -17,12 +17,12 @@ final class MockForTraitCreated implements Event
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @var trait-string
+     * @psalm-var trait-string
      */
     private string $traitName;
 
     /**
-     * @param trait-string $traitName
+     * @psalm-param trait-string $traitName
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $traitName)
     {
@@ -36,7 +36,7 @@ final class MockForTraitCreated implements Event
     }
 
     /**
-     * @return trait-string
+     * @psalm-return trait-string
      */
     public function traitName(): string
     {

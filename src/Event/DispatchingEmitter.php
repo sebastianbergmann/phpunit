@@ -218,7 +218,7 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     public function testDoubleTestProxyCreated(string $className, array $constructorArguments): void
     {

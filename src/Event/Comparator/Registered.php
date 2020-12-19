@@ -17,12 +17,12 @@ final class Registered implements Event
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @var class-string
+     * @psalm-var class-string
      */
     private string $className;
 
     /**
-     * @param class-string $className
+     * @psalm-param class-string $className
      */
     public function __construct(Telemetry\Info $telemetryInfo, string $className)
     {
@@ -36,7 +36,7 @@ final class Registered implements Event
     }
 
     /**
-     * @return class-string
+     * @psalm-return class-string
      */
     public function className(): string
     {
