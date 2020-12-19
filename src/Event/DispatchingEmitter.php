@@ -279,6 +279,25 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
+    public function testDoubleMockObjectCreatedFromWsdl(
+        string $wsdlFile,
+        string $originalClassName,
+        string $mockClassName,
+        array $methods,
+        bool $callOriginalConstructor,
+        array $options
+    ): void {
+        $this->dispatcher->dispatch(new TestDouble\MockObjectCreatedFromWsdl(
+            $this->telemetryInfo(),
+            $wsdlFile,
+            $originalClassName,
+            $mockClassName,
+            $methods,
+            $callOriginalConstructor,
+            $options
+        ));
+    }
+
     public function testDoublePartialMockObjectCreated(string $className, string ...$methodNames): void
     {
         $this->dispatcher->dispatch(new TestDouble\PartialMockObjectCreated(

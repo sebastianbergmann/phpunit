@@ -115,6 +115,19 @@ interface Emitter
     public function testDoubleMockObjectCreatedForAbstractClass(string $className): void;
 
     /**
+     * @psalm-param class-string $originalClassName
+     * @psalm-param class-string $mockClassName
+     */
+    public function testDoubleMockObjectCreatedFromWsdl(
+        string $wsdlFile,
+        string $originalClassName,
+        string $mockClassName,
+        array $methods,
+        bool $callOriginalConstructor,
+        array $options
+    ): void;
+
+    /**
      * @psalm-param class-string $className
      */
     public function testDoublePartialMockObjectCreated(string $className, string ...$methodNames): void;

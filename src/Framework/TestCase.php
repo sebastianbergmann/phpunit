@@ -1510,6 +1510,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             false
         );
 
+        Event\Registry::emitter()->testDoubleMockObjectCreatedFromWsdl(
+            $wsdlFile,
+            $originalClassName,
+            $mockClassName,
+            $methods,
+            $callOriginalConstructor,
+            $options
+        );
+
         $this->registerMockObject($mockObject);
 
         return $mockObject;

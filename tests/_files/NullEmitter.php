@@ -147,6 +147,16 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testDoubleMockObjectCreatedFromWsdl(
+        string $wsdlFile,
+        string $originalClassName,
+        string $mockClassName,
+        array $methods,
+        bool $callOriginalConstructor,
+        array $options
+    ): void {
+    }
+
     public function testDoublePartialMockObjectCreated(string $className, string ...$methodNames): void
     {
     }

@@ -90,6 +90,7 @@ final class Registry
             TestDouble\MockObjectCreated::class,
             TestDouble\MockObjectCreatedForAbstractClass::class,
             TestDouble\MockObjectCreatedForTrait::class,
+            TestDouble\MockObjectCreatedFromWsdl::class,
             TestDouble\PartialMockObjectCreated::class,
             TestDouble\TestProxyCreated::class,
             TestDouble\TestStubCreated::class,

@@ -1198,6 +1198,65 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($className, $event->className());
     }
 
+    public function testTestDoubleMockObjectCreatedFromWsdlDispatchesTestDoubleMockObjectCreatedFromWsdlEvent(): void
+    {
+        $wsdlFile          = __FILE__;
+        $originalClassName = self::class;
+        $mockClassName     = stdClass::class;
+        $methods           = [
+            'foo',
+            'bar',
+        ];
+        $callOriginalConstructor = false;
+        $options                 = [
+            'foo' => 'bar',
+            'bar' => 'baz',
+            'baz' => 9000,
+        ];
+
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedFromWsdlSubscriber {
+            public function notify(TestDouble\MockObjectCreatedFromWsdl $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
+            TestDouble\MockObjectCreatedFromWsdlSubscriber::class,
+            TestDouble\MockObjectCreatedFromWsdl::class,
+            $subscriber
+        );
+
+        $telemetrySystem = self::createTelemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem
+        );
+
+        $emitter->testDoubleMockObjectCreatedFromWsdl(
+            $wsdlFile,
+            $originalClassName,
+            $mockClassName,
+            $methods,
+            $callOriginalConstructor,
+            $options
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestDouble\MockObjectCreatedFromWsdl::class, $event);
+
+        $this->assertSame($wsdlFile, $event->wsdlFile());
+        $this->assertSame($originalClassName, $event->originalClassName());
+        $this->assertSame($mockClassName, $event->mockClassName());
+        $this->assertSame($methods, $event->methods());
+        $this->assertSame($callOriginalConstructor, $event->callOriginalConstructor());
+        $this->assertSame($options, $event->options());
+    }
+
     public function testTestDoublePartialMockObjectCreatedDispatchesTestDoublePartialMockObjectCreatedEvent(): void
     {
         $className   = self::class;
