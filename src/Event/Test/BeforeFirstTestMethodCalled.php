@@ -26,7 +26,6 @@ final class BeforeFirstTestMethodCalled implements Event
 
     /**
      * @psalm-param class-string $testClassName
-     * @psalm-param class-string $className
      */
     public function __construct(
         Telemetry\Info $telemetryInfo,

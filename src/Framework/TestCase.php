@@ -701,19 +701,28 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $hasMetRequirements = true;
 
             if ($this->inIsolation) {
+                $methodsCalledBeforeFirstTest = [];
+
                 foreach ($hookMethods['beforeClass'] as $method) {
                     $this->{$method}();
 
+                    $methodCalledBeforeFirstTest = CodeUnit\ClassMethodUnit::forClassMethod(
+                        static::class,
+                        $method
+                    );
+
                     Event\Registry::emitter()->testBeforeFirstTestMethodCalled(
                         static::class,
-                        CodeUnit\ClassMethodUnit::forClassMethod(
-                            static::class,
-                            $method
-                        )
+                        $methodCalledBeforeFirstTest
                     );
+
+                    $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
                 }
 
-                Event\Registry::emitter()->testBeforeFirstTestMethodFinished();
+                Event\Registry::emitter()->testBeforeFirstTestMethodFinished(
+                    static::class,
+                    ...$methodsCalledBeforeFirstTest
+                );
             }
 
             if (method_exists(static::class, $this->name) &&
