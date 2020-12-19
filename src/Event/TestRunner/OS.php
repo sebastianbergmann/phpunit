@@ -7,19 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Application;
+namespace PHPUnit\Event\TestRunner;
 
-use PHPUnit\Runner\Version;
+use const PHP_OS;
+use const PHP_OS_FAMILY;
 
-final class PHPUnit
+final class OS
 {
-    public function version(): string
+    public function asString(): string
     {
-        return Version::id();
+        return PHP_OS;
     }
 
-    public function series(): string
+    public function family(): string
     {
-        return Version::series();
+        return PHP_OS_FAMILY;
     }
 }

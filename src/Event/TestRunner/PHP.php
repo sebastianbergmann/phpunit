@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Application;
+namespace PHPUnit\Event\TestRunner;
 
 use const PHP_EXTRA_VERSION;
 use const PHP_MAJOR_VERSION;

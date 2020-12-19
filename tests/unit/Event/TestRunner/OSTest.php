@@ -7,21 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Application;
+namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\Version;
 
 /**
- * @covers \PHPUnit\Event\Application\PHPUnit
+ * @covers \PHPUnit\Event\Application\OS
  */
-final class PHPUnitTest extends TestCase
+final class OSTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $phpUnit = new PHPUnit();
+        $os = new OS();
 
-        $this->assertSame(Version::id(), $phpUnit->version());
-        $this->assertSame(Version::series(), $phpUnit->series());
+        $this->assertSame(PHP_OS, $os->asString());
+        $this->assertSame(PHP_OS_FAMILY, $os->family());
     }
 }

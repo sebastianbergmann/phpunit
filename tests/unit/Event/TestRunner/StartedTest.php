@@ -7,10 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Application;
+namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\TestRunner\Started;
 
 /**
  * @covers \PHPUnit\Event\TestRunner\Started
