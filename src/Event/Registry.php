@@ -32,6 +32,19 @@ final class Registry
         return self::$emitter;
     }
 
+    public static function registerTracer(Tracer\Tracer $tracer): void
+    {
+        self::dispatcher()->registerTracer($tracer);
+    }
+
+    /**
+     * @throws UnknownSubscriberType
+     */
+    public static function registerSubscriber(Subscriber $subscriber): void
+    {
+        self::dispatcher()->registerSubscriber($subscriber);
+    }
+
     private static function dispatcher(): Dispatcher
     {
         if (self::$dispatcher === null) {
