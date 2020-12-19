@@ -109,11 +109,6 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testRunConfigured(): void
-    {
-        $this->dispatcher->dispatch(new Test\RunConfigured($this->telemetryInfo()));
-    }
-
     public function testErrored(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(new Test\Errored(

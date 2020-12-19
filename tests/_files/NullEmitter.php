@@ -53,10 +53,6 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testRunConfigured(): void
-    {
-    }
-
     public function testErrored(Code\Test $test, string $message): void
     {
     }

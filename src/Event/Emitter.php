@@ -41,8 +41,6 @@ interface Emitter
 
     public function globalStateRestored(Snapshot $snapshot): void;
 
-    public function testRunConfigured(): void;
-
     public function testErrored(Code\Test $test, string $message): void;
 
     public function testFailed(Code\Test $test, string $message): void;

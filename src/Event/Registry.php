@@ -86,7 +86,6 @@ final class Registry
             Test\PreConditionCalled::class,
             Test\PreConditionFinished::class,
             Test\Prepared::class,
-            Test\RunConfigured::class,
             Test\SetUpFinished::class,
             Test\SkippedByDataProvider::class,
             Test\SkippedDueToUnsatisfiedRequirements::class,

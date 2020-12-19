@@ -337,34 +337,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($snapshot, $event->snapshot());
     }
 
-    public function testTestRunConfiguredDispatchesTestRunConfiguredEvent(): void
-    {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunConfiguredSubscriber {
-            public function notify(Test\RunConfigured $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunConfiguredSubscriber::class,
-            Test\RunConfigured::class,
-            $subscriber
-        );
-
-        $telemetrySystem = self::createTelemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->testRunConfigured();
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunConfigured::class, $subscriber->lastRecordedEvent());
-    }
-
     public function testTestErroredDispatchesTestErroredEvent(): void
     {
         $test = new Code\Test(...array_values(explode(
