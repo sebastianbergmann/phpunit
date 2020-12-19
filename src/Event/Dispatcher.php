@@ -35,7 +35,7 @@ final class Dispatcher
     /**
      * @throws UnknownSubscriberType
      */
-    public function register(Subscriber $subscriber): void
+    public function registerSubscriber(Subscriber $subscriber): void
     {
         if (!$this->typeMap->isKnownSubscriberType($subscriber)) {
             throw new UnknownSubscriberType(sprintf(

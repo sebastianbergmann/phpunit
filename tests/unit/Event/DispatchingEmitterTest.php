@@ -1915,7 +1915,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $dispatcher = new Dispatcher($typeMap);
 
-        $dispatcher->register($subscriber);
+        $dispatcher->registerSubscriber($subscriber);
 
         return $dispatcher;
     }

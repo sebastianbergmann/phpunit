@@ -29,7 +29,7 @@ final class DispatcherTest extends TestCase
 
         $this->expectException(RuntimeException::class);
 
-        $dispatcher->register($subscriber);
+        $dispatcher->registerSubscriber($subscriber);
     }
 
     public function testDispatchRejectsUnknownEventType(): void
@@ -55,7 +55,7 @@ final class DispatcherTest extends TestCase
 
         $dispatcher = new Dispatcher($typeMap);
 
-        $dispatcher->register($subscriber);
+        $dispatcher->registerSubscriber($subscriber);
 
         $dispatcher->dispatch($event);
 
