@@ -784,44 +784,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($test, $event->test());
     }
 
-    public function testTestSetUpFinishedDispatchesTestSetUpFinishedEvent(): void
-    {
-        $test = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
-
-        $subscriber = new class extends RecordingSubscriber implements Test\SetUpFinishedSubscriber {
-            public function notify(Test\SetUpFinished $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\SetUpFinishedSubscriber::class,
-            Test\SetUpFinished::class,
-            $subscriber
-        );
-
-        $telemetrySystem = self::createTelemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->testSetUpFinished($test);
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\SetUpFinished::class, $event);
-
-        $this->assertSame($test, $event->test());
-    }
-
     public function testTestAfterTestMethodFinishedDispatchesTestAfterTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;

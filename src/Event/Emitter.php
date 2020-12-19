@@ -63,8 +63,6 @@ interface Emitter
 
     public function testPrepared(Code\Test $test): void;
 
-    public function testSetUpFinished(Code\Test $test): void;
-
     /**
      * @psalm-param class-string $testClassName
      */
