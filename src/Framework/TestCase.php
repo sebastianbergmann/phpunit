@@ -732,6 +732,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             foreach ($hookMethods['before'] as $method) {
                 $this->{$method}();
+
+                Event\Registry::emitter()->testBeforeTestMethodCalled(
+                    static::class,
+                    CodeUnit\ClassMethodUnit::forClassMethod(
+                        static::class,
+                        $method
+                    )
+                );
             }
 
             Event\Registry::emitter()->testSetUpFinished();

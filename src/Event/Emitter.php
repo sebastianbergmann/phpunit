@@ -78,6 +78,11 @@ interface Emitter
      */
     public function testBeforeFirstTestMethodFinished(string $testClassName, CodeUnit\ClassMethodUnit ...$calledMethods): void;
 
+    /**
+     * @psalm-param class-string $testClassName
+     */
+    public function testBeforeTestMethodCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void;
+
     public function testAfterLastTestMethodCalled(): void;
 
     /**
