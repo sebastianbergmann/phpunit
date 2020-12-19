@@ -82,7 +82,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testSkippedDueToUnsatisfiedRequirements(): void
+    public function testSkippedDueToUnsatisfiedRequirements(string $testClassName, CodeUnit\ClassMethodUnit $testMethodName, string ...$missingRequirements): void
     {
     }
 

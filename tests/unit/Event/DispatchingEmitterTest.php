@@ -563,6 +563,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSkippedDueToUnsatisfiedRequirementsDispatchesSkippedDueToUnsatisfiedRequirementsEvent(): void
     {
+        $testClassName  = self::class;
+        $testMethodName = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+        $missingRequirements = [
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'Nunc felis nulla, euismod vel convallis ac, tincidunt quis ante.',
+            'Maecenas aliquam eget nunc sed iaculis.',
+        ];
+
         $subscriber = new class extends RecordingSubscriber implements Test\SkippedDueToUnsatisfiedRequirementsSubscriber {
             public function notify(Test\SkippedDueToUnsatisfiedRequirements $event): void
             {
@@ -583,10 +594,21 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSkippedDueToUnsatisfiedRequirements();
+        $emitter->testSkippedDueToUnsatisfiedRequirements(
+            $testClassName,
+            $testMethodName,
+            ...$missingRequirements
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\SkippedDueToUnsatisfiedRequirements::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\SkippedDueToUnsatisfiedRequirements::class, $event);
+
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($testMethodName, $event->testMethodName());
+        $this->assertSame($missingRequirements, $event->missingRequirements());
     }
 
     public function testTestRunSkippedWithWarningDispatchesTestRunSkippedWithWarningEvent(): void

@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use SebastianBergmann\CodeUnit;
 
 /**
  * @covers \PHPUnit\Event\Test\SkippedDueToUnsatisfiedRequirements
@@ -18,10 +19,28 @@ final class SkippedDueToUnsatisfiedRequirementsTest extends AbstractEventTestCas
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo  = self::createTelemetryInfo();
+        $testClassName  = self::class;
+        $testMethodName = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+        $missingRequirements = [
+            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
+            'Nunc felis nulla, euismod vel convallis ac, tincidunt quis ante.',
+            'Maecenas aliquam eget nunc sed iaculis.',
+        ];
 
-        $event = new SkippedDueToUnsatisfiedRequirements($telemetryInfo);
+        $event = new SkippedDueToUnsatisfiedRequirements(
+            $telemetryInfo,
+            $testClassName,
+            $testMethodName,
+            ...$missingRequirements
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($testMethodName, $event->testMethodName());
+        $this->assertSame($missingRequirements, $event->missingRequirements());
     }
 }
