@@ -1284,7 +1284,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($calledMethod, $event->calledMethod());
     }
 
-    public function testTestDoubleMockObjectCreatedDispatchesTestDoubleMockObjectCreatedEvent(): void
+    public function testTestMockObjectCreatedDispatchesTestDoubleMockObjectCreatedEvent(): void
     {
         $className = self::class;
 
@@ -1308,7 +1308,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoubleMockObjectCreated($className);
+        $emitter->testMockObjectCreated($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1319,7 +1319,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($className, $event->className());
     }
 
-    public function testTestDoubleMockObjectCreatedForTraitDispatchesTestDoubleMockObjectCreatedForTraitEvent(): void
+    public function testTestMockObjectCreatedForTraitDispatchesTestDoubleMockObjectCreatedForTraitEvent(): void
     {
         $traitName = TestFixture\ExampleTrait::class;
 
@@ -1343,7 +1343,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoubleMockObjectCreatedForTrait($traitName);
+        $emitter->testMockObjectCreatedForTrait($traitName);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
         $event = $subscriber->lastRecordedEvent();
@@ -1353,7 +1353,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($traitName, $event->traitName());
     }
 
-    public function testTestDoubleMockObjectCreatedForAbstractClassDispatchesTestDoubleMockObjectCreatedForAbstractClassEvent(): void
+    public function testTestMockObjectCreatedForAbstractClassDispatchesTestDoubleMockObjectCreatedForAbstractClassEvent(): void
     {
         $className = stdClass::class;
 
@@ -1377,7 +1377,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoubleMockObjectCreatedForAbstractClass($className);
+        $emitter->testMockObjectCreatedForAbstractClass($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1388,7 +1388,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($className, $event->className());
     }
 
-    public function testTestDoubleMockObjectCreatedFromWsdlDispatchesTestDoubleMockObjectCreatedFromWsdlEvent(): void
+    public function testTestMockObjectCreatedFromWsdlDispatchesTestDoubleMockObjectCreatedFromWsdlEvent(): void
     {
         $wsdlFile          = __FILE__;
         $originalClassName = self::class;
@@ -1424,7 +1424,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoubleMockObjectCreatedFromWsdl(
+        $emitter->testMockObjectCreatedFromWsdl(
             $wsdlFile,
             $originalClassName,
             $mockClassName,
@@ -1447,7 +1447,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($options, $event->options());
     }
 
-    public function testTestDoublePartialMockObjectCreatedDispatchesTestDoublePartialMockObjectCreatedEvent(): void
+    public function testTestPartialMockObjectCreatedDispatchesTestDoublePartialMockObjectCreatedEvent(): void
     {
         $className   = self::class;
         $methodNames = [
@@ -1476,7 +1476,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoublePartialMockObjectCreated(
+        $emitter->testPartialMockObjectCreated(
             $className,
             ...$methodNames
         );
@@ -1491,7 +1491,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($methodNames, $event->methodNames());
     }
 
-    public function testTestDoubleTestProxyCreatedDispatchesTestDoubleTestProxyCreatedEvent(): void
+    public function testTestTestProxyCreatedDispatchesTestDoubleTestProxyCreatedEvent(): void
     {
         $className            = self::class;
         $constructorArguments = [
@@ -1523,7 +1523,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoubleTestProxyCreated(
+        $emitter->testTestProxyCreated(
             $className,
             $constructorArguments
         );
@@ -1538,7 +1538,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($constructorArguments, $event->constructorArguments());
     }
 
-    public function testTestDoubleTestStubCreatedDispatchesTestDoubleTestStubCreatedEvent(): void
+    public function testTestTestStubCreatedDispatchesTestDoubleTestStubCreatedEvent(): void
     {
         $className = self::class;
 
@@ -1562,7 +1562,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoubleTestStubCreated($className);
+        $emitter->testTestStubCreated($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 

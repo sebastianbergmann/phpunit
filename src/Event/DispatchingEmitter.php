@@ -305,7 +305,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testDoubleMockObjectCreated(string $className): void
+    public function testMockObjectCreated(string $className): void
     {
         $this->dispatcher->dispatch(new TestDouble\MockObjectCreated(
             $this->telemetryInfo(),
@@ -313,7 +313,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testDoubleMockObjectCreatedForTrait(string $traitName): void
+    public function testMockObjectCreatedForTrait(string $traitName): void
     {
         $this->dispatcher->dispatch(new TestDouble\MockObjectCreatedForTrait(
             $this->telemetryInfo(),
@@ -321,7 +321,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testDoubleMockObjectCreatedForAbstractClass(string $className): void
+    public function testMockObjectCreatedForAbstractClass(string $className): void
     {
         $this->dispatcher->dispatch(new TestDouble\MockObjectCreatedForAbstractClass(
             $this->telemetryInfo(),
@@ -329,7 +329,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testDoubleMockObjectCreatedFromWsdl(
+    public function testMockObjectCreatedFromWsdl(
         string $wsdlFile,
         string $originalClassName,
         string $mockClassName,
@@ -348,7 +348,7 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testDoublePartialMockObjectCreated(string $className, string ...$methodNames): void
+    public function testPartialMockObjectCreated(string $className, string ...$methodNames): void
     {
         $this->dispatcher->dispatch(new TestDouble\PartialMockObjectCreated(
             $this->telemetryInfo(),
@@ -360,7 +360,7 @@ final class DispatchingEmitter implements Emitter
     /**
      * @psalm-param class-string $className
      */
-    public function testDoubleTestProxyCreated(string $className, array $constructorArguments): void
+    public function testTestProxyCreated(string $className, array $constructorArguments): void
     {
         $this->dispatcher->dispatch(new TestDouble\TestProxyCreated(
             $this->telemetryInfo(),
@@ -372,7 +372,7 @@ final class DispatchingEmitter implements Emitter
     /**
      * @psalm-param class-string $className
      */
-    public function testDoubleTestStubCreated(string $className): void
+    public function testTestStubCreated(string $className): void
     {
         $this->dispatcher->dispatch(new TestDouble\TestStubCreated(
             $this->telemetryInfo(),

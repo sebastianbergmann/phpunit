@@ -1444,7 +1444,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $stub = $this->createMockObject($originalClassName);
 
-        Event\Registry::emitter()->testDoubleTestStubCreated($originalClassName);
+        Event\Registry::emitter()->testTestStubCreated($originalClassName);
 
         return $stub;
     }
@@ -1460,7 +1460,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $mock = $this->createMockObject($originalClassName);
 
-        Event\Registry::emitter()->testDoubleMockObjectCreated($originalClassName);
+        Event\Registry::emitter()->testMockObjectCreated($originalClassName);
 
         return $mock;
     }
@@ -1502,7 +1502,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             ->onlyMethods($methods)
             ->getMock();
 
-        Event\Registry::emitter()->testDoublePartialMockObjectCreated(
+        Event\Registry::emitter()->testPartialMockObjectCreated(
             $originalClassName,
             ...$methods
         );
@@ -1524,7 +1524,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             ->enableProxyingToOriginalMethods()
             ->getMock();
 
-        Event\Registry::emitter()->testDoubleTestProxyCreated(
+        Event\Registry::emitter()->testTestProxyCreated(
             $originalClassName,
             $constructorArguments
         );
@@ -1558,7 +1558,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->registerMockObject($mockObject);
 
-        Event\Registry::emitter()->testDoubleMockObjectCreatedForAbstractClass($originalClassName);
+        Event\Registry::emitter()->testMockObjectCreatedForAbstractClass($originalClassName);
 
         return $mockObject;
     }
@@ -1600,7 +1600,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             false
         );
 
-        Event\Registry::emitter()->testDoubleMockObjectCreatedFromWsdl(
+        Event\Registry::emitter()->testMockObjectCreatedFromWsdl(
             $wsdlFile,
             $originalClassName,
             $mockClassName,
@@ -1638,7 +1638,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->registerMockObject($mockObject);
 
-        Event\Registry::emitter()->testDoubleMockObjectCreatedForTrait($traitName);
+        Event\Registry::emitter()->testMockObjectCreatedForTrait($traitName);
 
         return $mockObject;
     }

@@ -124,23 +124,23 @@ interface Emitter
     /**
      * @psalm-param class-string $className
      */
-    public function testDoubleMockObjectCreated(string $className): void;
+    public function testMockObjectCreated(string $className): void;
 
     /**
      * @psalm-param trait-string $traitName
      */
-    public function testDoubleMockObjectCreatedForTrait(string $traitName): void;
+    public function testMockObjectCreatedForTrait(string $traitName): void;
 
     /**
      * @psalm-param class-string $className
      */
-    public function testDoubleMockObjectCreatedForAbstractClass(string $className): void;
+    public function testMockObjectCreatedForAbstractClass(string $className): void;
 
     /**
      * @psalm-param class-string $originalClassName
      * @psalm-param class-string $mockClassName
      */
-    public function testDoubleMockObjectCreatedFromWsdl(
+    public function testMockObjectCreatedFromWsdl(
         string $wsdlFile,
         string $originalClassName,
         string $mockClassName,
@@ -152,17 +152,17 @@ interface Emitter
     /**
      * @psalm-param class-string $className
      */
-    public function testDoublePartialMockObjectCreated(string $className, string ...$methodNames): void;
+    public function testPartialMockObjectCreated(string $className, string ...$methodNames): void;
 
     /**
      * @psalm-param class-string $className
      */
-    public function testDoubleTestProxyCreated(string $className, array $constructorArguments): void;
+    public function testTestProxyCreated(string $className, array $constructorArguments): void;
 
     /**
      * @psalm-param class-string $className
      */
-    public function testDoubleTestStubCreated(string $className): void;
+    public function testTestStubCreated(string $className): void;
 
     public function testSuiteAfterClassFinished(): void;
 

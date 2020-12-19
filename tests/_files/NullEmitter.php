@@ -141,19 +141,19 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testDoubleMockObjectCreated(string $className): void
+    public function testMockObjectCreated(string $className): void
     {
     }
 
-    public function testDoubleMockObjectCreatedForTrait(string $traitName): void
+    public function testMockObjectCreatedForTrait(string $traitName): void
     {
     }
 
-    public function testDoubleMockObjectCreatedForAbstractClass(string $className): void
+    public function testMockObjectCreatedForAbstractClass(string $className): void
     {
     }
 
-    public function testDoubleMockObjectCreatedFromWsdl(
+    public function testMockObjectCreatedFromWsdl(
         string $wsdlFile,
         string $originalClassName,
         string $mockClassName,
@@ -163,15 +163,15 @@ final class NullEmitter implements Emitter
     ): void {
     }
 
-    public function testDoublePartialMockObjectCreated(string $className, string ...$methodNames): void
+    public function testPartialMockObjectCreated(string $className, string ...$methodNames): void
     {
     }
 
-    public function testDoubleTestProxyCreated(string $className, array $constructorArguments): void
+    public function testTestProxyCreated(string $className, array $constructorArguments): void
     {
     }
 
-    public function testDoubleTestStubCreated(string $className): void
+    public function testTestStubCreated(string $className): void
     {
     }
 
