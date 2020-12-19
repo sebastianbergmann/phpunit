@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestDouble;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\TestFixture;
 
 /**
  * @covers \PHPUnit\Event\TestDouble\MockForTraitCreated
@@ -19,9 +20,14 @@ final class MockForTraitCreatedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $traitName     = TestFixture\ExampleTrait::class;
 
-        $event = new MockForTraitCreated($telemetryInfo);
+        $event = new MockForTraitCreated(
+            $telemetryInfo,
+            $traitName
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($traitName, $event->traitName());
     }
 }

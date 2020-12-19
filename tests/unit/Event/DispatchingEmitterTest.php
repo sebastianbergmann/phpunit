@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework;
+use PHPUnit\TestFixture;
 use RecordingSubscriber;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -875,6 +876,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestDoubleMockForTraitCreatedDispatchesTestDoubleMockForTraitCreatedEvent(): void
     {
+        $traitName = TestFixture\ExampleTrait::class;
+
         $subscriber = new class extends RecordingSubscriber implements TestDouble\MockForTraitCreatedSubscriber {
             public function notify(TestDouble\MockForTraitCreated $event): void
             {
@@ -895,10 +898,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoubleMockForTraitCreated();
+        $emitter->testDoubleMockForTraitCreated($traitName);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestDouble\MockForTraitCreated::class, $subscriber->lastRecordedEvent());
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestDouble\MockForTraitCreated::class, $event);
+
+        $this->assertSame($traitName, $event->traitName());
     }
 
     public function testTestDoublePartialMockCreatedDispatchesTestDoublePartialMockCreatedEvent(): void

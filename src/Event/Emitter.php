@@ -79,7 +79,10 @@ interface Emitter
      */
     public function testDoubleMockCreated(string $className): void;
 
-    public function testDoubleMockForTraitCreated(): void;
+    /**
+     * @param trait-string $traitName
+     */
+    public function testDoubleMockForTraitCreated(string $traitName): void;
 
     public function testDoublePartialMockCreated(): void;
 

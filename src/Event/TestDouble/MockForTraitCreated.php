@@ -16,13 +16,30 @@ final class MockForTraitCreated implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
+    /**
+     * @var trait-string
+     */
+    private string $traitName;
+
+    /**
+     * @param trait-string $traitName
+     */
+    public function __construct(Telemetry\Info $telemetryInfo, string $traitName)
     {
         $this->telemetryInfo = $telemetryInfo;
+        $this->traitName     = $traitName;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    /**
+     * @return trait-string
+     */
+    public function traitName(): string
+    {
+        return $this->traitName;
     }
 }
