@@ -905,6 +905,49 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($calledMethods, $event->calledMethods());
     }
 
+    public function testTestPreConditionCalledDispatchesTestBeforeTestMethodEvent(): void
+    {
+        $testClassName = self::class;
+        $calledMethod  = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+
+        $subscriber = new class extends RecordingSubscriber implements Test\PreConditionCalledSubscriber {
+            public function notify(Test\PreConditionCalled $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
+            Test\PreConditionCalledSubscriber::class,
+            Test\PreConditionCalled::class,
+            $subscriber
+        );
+
+        $telemetrySystem = self::createTelemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem
+        );
+
+        $emitter->testPreConditionCalled(
+            $testClassName,
+            $calledMethod
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\PreConditionCalled::class, $event);
+
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($calledMethod, $event->calledMethod());
+    }
+
     public function testAfterLastTestMethodCalledDispatchesAfterLastTestMethodCalledEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodCalledSubscriber {
