@@ -88,7 +88,6 @@ final class Registry
             TestDouble\TestProxyCreated::class,
             TestSuite\AfterClassFinished::class,
             TestSuite\BeforeClassFinished::class,
-            TestSuite\Configured::class,
             TestSuite\Loaded::class,
             TestSuite\RunFinished::class,
             TestSuite\RunStarted::class,

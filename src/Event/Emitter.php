@@ -100,8 +100,6 @@ interface Emitter
 
     public function testSuiteBeforeClassFinished(): void;
 
-    public function testSuiteConfigured(): void;
-
     public function testSuiteLoaded(): void;
 
     public function testSuiteRunFinished(): void;
