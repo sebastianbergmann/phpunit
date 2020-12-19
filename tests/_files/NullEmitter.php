@@ -155,6 +155,10 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testDoubleTestStubCreated(string $className): void
+    {
+    }
+
     public function testSuiteAfterClassFinished(): void
     {
     }

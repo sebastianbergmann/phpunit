@@ -1352,7 +1352,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createStub(string $originalClassName): Stub
     {
-        return $this->createMockObject($originalClassName);
+        $stub = $this->createMockObject($originalClassName);
+
+        Event\Registry::emitter()->testDoubleTestStubCreated($originalClassName);
+
+        return $stub;
     }
 
     /**

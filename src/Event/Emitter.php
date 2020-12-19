@@ -124,6 +124,11 @@ interface Emitter
      */
     public function testDoubleTestProxyCreated(string $className, array $constructorArguments): void;
 
+    /**
+     * @psalm-param class-string $className
+     */
+    public function testDoubleTestStubCreated(string $className): void;
+
     public function testSuiteAfterClassFinished(): void;
 
     public function testSuiteLoaded(TestSuite $testSuite): void;

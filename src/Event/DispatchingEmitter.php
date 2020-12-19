@@ -300,6 +300,17 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
+    /**
+     * @psalm-param class-string $className
+     */
+    public function testDoubleTestStubCreated(string $className): void
+    {
+        $this->dispatcher->dispatch(new TestDouble\TestStubCreated(
+            $this->telemetryInfo(),
+            $className
+        ));
+    }
+
     public function testSuiteAfterClassFinished(): void
     {
         $this->dispatcher->dispatch(new TestSuite\AfterClassFinished($this->telemetryInfo()));

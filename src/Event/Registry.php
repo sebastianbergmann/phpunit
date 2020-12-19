@@ -92,6 +92,7 @@ final class Registry
             TestDouble\MockObjectCreatedForTrait::class,
             TestDouble\PartialMockObjectCreated::class,
             TestDouble\TestProxyCreated::class,
+            TestDouble\TestStubCreated::class,
             TestSuite\AfterClassFinished::class,
             TestSuite\Loaded::class,
             TestSuite\RunFinished::class,
