@@ -23,7 +23,10 @@ final class Extensions implements IteratorAggregate
         return extension_loaded($name);
     }
 
-    public function getIterator()
+    /**
+     * @return ArrayIterator<int, string>
+     */
+    public function getIterator(): ArrayIterator
     {
         $all = array_merge(
             get_loaded_extensions(true),
