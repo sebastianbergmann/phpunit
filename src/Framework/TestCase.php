@@ -773,7 +773,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $methodsCalledPreCondition[] = $methodCalledPreCondition;
             }
 
-            Event\Registry::emitter()->testBeforeTestMethodFinished(
+            Event\Registry::emitter()->testPreConditionFinished(
                 static::class,
                 ...$methodsCalledPreCondition
             );
