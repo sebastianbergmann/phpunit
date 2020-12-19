@@ -12,15 +12,15 @@ namespace PHPUnit\Event\Test;
 use PHPUnit\Event\AbstractEventTestCase;
 
 /**
- * @covers \PHPUnit\Event\Test\RunSkippedWithWarning
+ * @covers \PHPUnit\Event\Test\SkippedByDataProvider
  */
-final class RunSkippedWithWarningTest extends AbstractEventTestCase
+final class SkippedByDataProviderTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
 
-        $event = new RunSkippedWithWarning($telemetryInfo);
+        $event = new SkippedByDataProvider($telemetryInfo);
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
     }

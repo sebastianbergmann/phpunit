@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Subscriber;
 
-interface RunSkippedIncompleteSubscriber extends Subscriber
+interface PassedButRiskySubscriber extends Subscriber
 {
-    public function notify(RunSkippedIncomplete $event): void;
+    public function notify(PassedButRisky $event): void;
 }

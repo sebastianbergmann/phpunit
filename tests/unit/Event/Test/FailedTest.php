@@ -12,15 +12,15 @@ namespace PHPUnit\Event\Test;
 use PHPUnit\Event\AbstractEventTestCase;
 
 /**
- * @covers \PHPUnit\Event\Test\RunSkippedIncomplete
+ * @covers \PHPUnit\Event\Test\Failed
  */
-final class RunSkippedIncompleteTest extends AbstractEventTestCase
+final class FailedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
 
-        $event = new RunSkippedIncomplete($telemetryInfo);
+        $event = new Failed($telemetryInfo);
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
     }

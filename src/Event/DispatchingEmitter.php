@@ -111,54 +111,54 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\RunConfigured($this->telemetryInfo()));
     }
 
-    public function testRunErrored(): void
+    public function testErrored(): void
     {
-        $this->dispatcher->dispatch(new Test\RunErrored($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\Errored($this->telemetryInfo()));
     }
 
-    public function testRunFailed(): void
+    public function testFailed(): void
     {
-        $this->dispatcher->dispatch(new Test\RunFailed($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\Failed($this->telemetryInfo()));
     }
 
-    public function testRunFinished(): void
+    public function testFinished(): void
     {
-        $this->dispatcher->dispatch(new Test\RunFinished($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\Finished($this->telemetryInfo()));
     }
 
-    public function testRunPassed(): void
+    public function testPassed(): void
     {
-        $this->dispatcher->dispatch(new Test\RunPassed($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\Passed($this->telemetryInfo()));
     }
 
-    public function testRunRisky(): void
+    public function testPassedButRisky(): void
     {
-        $this->dispatcher->dispatch(new Test\RunRisky($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\PassedButRisky($this->telemetryInfo()));
     }
 
-    public function testRunSkippedByDataProvider(): void
+    public function testSkippedByDataProvider(): void
     {
-        $this->dispatcher->dispatch(new Test\RunSkippedByDataProvider($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\SkippedByDataProvider($this->telemetryInfo()));
     }
 
-    public function testRunSkippedIncomplete(): void
+    public function testSkippedIncomplete(): void
     {
-        $this->dispatcher->dispatch(new Test\RunSkippedIncomplete($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\SkippedIncomplete($this->telemetryInfo()));
     }
 
-    public function testRunSkippedWithFailedRequirements(): void
+    public function testSkippedDueToUnsatisfiedRequirements(): void
     {
-        $this->dispatcher->dispatch(new Test\RunSkippedWithFailedRequirements($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\SkippedDueToUnsatisfiedRequirements($this->telemetryInfo()));
     }
 
-    public function testRunSkippedWithWarning(): void
+    public function testSkippedWithMessage(): void
     {
-        $this->dispatcher->dispatch(new Test\RunSkippedWithWarning($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\SkippedWithMessage($this->telemetryInfo()));
     }
 
-    public function testRunStarted(): void
+    public function testPrepared(): void
     {
-        $this->dispatcher->dispatch(new Test\RunStarted($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\Prepared($this->telemetryInfo()));
     }
 
     public function testSetUpFinished(): void

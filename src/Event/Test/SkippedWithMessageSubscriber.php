@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Subscriber;
 
-interface RunFinishedSubscriber extends Subscriber
+interface SkippedWithMessageSubscriber extends Subscriber
 {
-    public function notify(RunFinished $event): void;
+    public function notify(SkippedWithMessage $event): void;
 }

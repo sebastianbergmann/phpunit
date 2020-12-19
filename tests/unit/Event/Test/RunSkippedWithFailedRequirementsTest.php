@@ -12,7 +12,7 @@ namespace PHPUnit\Event\Test;
 use PHPUnit\Event\AbstractEventTestCase;
 
 /**
- * @covers \PHPUnit\Event\Test\RunSkippedWithFailedRequirements
+ * @covers \PHPUnit\Event\Test\SkippedDueToUnsatisfiedRequirements
  */
 final class RunSkippedWithFailedRequirementsTest extends AbstractEventTestCase
 {
@@ -20,7 +20,7 @@ final class RunSkippedWithFailedRequirementsTest extends AbstractEventTestCase
     {
         $telemetryInfo = self::createTelemetryInfo();
 
-        $event = new RunSkippedWithFailedRequirements($telemetryInfo);
+        $event = new SkippedDueToUnsatisfiedRequirements($telemetryInfo);
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
     }

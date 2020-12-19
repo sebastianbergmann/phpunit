@@ -364,18 +364,18 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\RunConfigured::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestRunErroredDispatchesTestRunErroredEvent(): void
+    public function testTestErroredDispatchesTestErroredEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunErroredSubscriber {
-            public function notify(Test\RunErrored $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\ErroredSubscriber {
+            public function notify(Test\Errored $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunErroredSubscriber::class,
-            Test\RunErrored::class,
+            Test\ErroredSubscriber::class,
+            Test\Errored::class,
             $subscriber
         );
 
@@ -386,24 +386,24 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunErrored();
+        $emitter->testErrored();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunErrored::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\Errored::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestRunFailedDispatchesTestRunFailedEvent(): void
+    public function testTestFailedDispatchesTestFailedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunFailedSubscriber {
-            public function notify(Test\RunFailed $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\FailedSubscriber {
+            public function notify(Test\Failed $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunFailedSubscriber::class,
-            Test\RunFailed::class,
+            Test\FailedSubscriber::class,
+            Test\Failed::class,
             $subscriber
         );
 
@@ -414,24 +414,24 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunFailed();
+        $emitter->testFailed();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunFailed::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\Failed::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestRunFinishedDispatchesTestRunFinishedEvent(): void
+    public function testTestFinishedDispatchesTestFinishedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunFinishedSubscriber {
-            public function notify(Test\RunFinished $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\FinishedSubscriber {
+            public function notify(Test\Finished $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunFinishedSubscriber::class,
-            Test\RunFinished::class,
+            Test\FinishedSubscriber::class,
+            Test\Finished::class,
             $subscriber
         );
 
@@ -442,24 +442,24 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunFinished();
+        $emitter->testFinished();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunFinished::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\Finished::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestRunPassedDispatchesTestRunPassedEvent(): void
+    public function testTestPassedDispatchesTestPassedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunPassedSubscriber {
-            public function notify(Test\RunPassed $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\PassedSubscriber {
+            public function notify(Test\Passed $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunPassedSubscriber::class,
-            Test\RunPassed::class,
+            Test\PassedSubscriber::class,
+            Test\Passed::class,
             $subscriber
         );
 
@@ -470,24 +470,24 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunPassed();
+        $emitter->testPassed();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunPassed::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\Passed::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestRunRiskyDispatchesTestRunRiskyEvent(): void
+    public function testTestPassedButRiskyDispatchesTestPassedButRiskyEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunRiskySubscriber {
-            public function notify(Test\RunRisky $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\PassedButRiskySubscriber {
+            public function notify(Test\PassedButRisky $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunRiskySubscriber::class,
-            Test\RunRisky::class,
+            Test\PassedButRiskySubscriber::class,
+            Test\PassedButRisky::class,
             $subscriber
         );
 
@@ -498,24 +498,24 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunRisky();
+        $emitter->testPassedButRisky();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunRisky::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\PassedButRisky::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestRunSkippedByDataProviderDispatchesTestRunSkippedByDataProviderEvent(): void
+    public function testTestSkippedByDataProviderDispatchesTestSkippedByDataProviderEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunSkippedByDataProviderSubscriber {
-            public function notify(Test\RunSkippedByDataProvider $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\SkippedByDataProviderSubscriber {
+            public function notify(Test\SkippedByDataProvider $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunSkippedByDataProviderSubscriber::class,
-            Test\RunSkippedByDataProvider::class,
+            Test\SkippedByDataProviderSubscriber::class,
+            Test\SkippedByDataProvider::class,
             $subscriber
         );
 
@@ -526,24 +526,24 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunSkippedByDataProvider();
+        $emitter->testSkippedByDataProvider();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunSkippedByDataProvider::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\SkippedByDataProvider::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestRunSkippedIncompleteDispatchesTestRunSkippedIncompleteEvent(): void
+    public function testTestSkippedIncompleteDispatchesTestSkippedIncompleteEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunSkippedIncompleteSubscriber {
-            public function notify(Test\RunSkippedIncomplete $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\SkippedIncompleteSubscriber {
+            public function notify(Test\SkippedIncomplete $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunSkippedIncompleteSubscriber::class,
-            Test\RunSkippedIncomplete::class,
+            Test\SkippedIncompleteSubscriber::class,
+            Test\SkippedIncomplete::class,
             $subscriber
         );
 
@@ -554,24 +554,24 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunSkippedIncomplete();
+        $emitter->testSkippedIncomplete();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunSkippedIncomplete::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\SkippedIncomplete::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestRunSkippedWithFailedRequirementsDispatchesTestRunSkippedWithFailedRequirementsEvent(): void
+    public function testTestSkippedDueToUnsatisfiedRequirementsDispatchesSkippedDueToUnsatisfiedRequirementsEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunSkippedWithFailedRequirementsSubscriber {
-            public function notify(Test\RunSkippedWithFailedRequirements $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\SkippedDueToUnsatisfiedRequirementsSubscriber {
+            public function notify(Test\SkippedDueToUnsatisfiedRequirements $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunSkippedWithFailedRequirementsSubscriber::class,
-            Test\RunSkippedWithFailedRequirements::class,
+            Test\SkippedDueToUnsatisfiedRequirementsSubscriber::class,
+            Test\SkippedDueToUnsatisfiedRequirements::class,
             $subscriber
         );
 
@@ -582,24 +582,24 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunSkippedWithFailedRequirements();
+        $emitter->testSkippedDueToUnsatisfiedRequirements();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunSkippedWithFailedRequirements::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\SkippedDueToUnsatisfiedRequirements::class, $subscriber->lastRecordedEvent());
     }
 
     public function testTestRunSkippedWithWarningDispatchesTestRunSkippedWithWarningEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunSkippedWithWarningSubscriber {
-            public function notify(Test\RunSkippedWithWarning $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\SkippedWithMessageSubscriber {
+            public function notify(Test\SkippedWithMessage $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunSkippedWithWarningSubscriber::class,
-            Test\RunSkippedWithWarning::class,
+            Test\SkippedWithMessageSubscriber::class,
+            Test\SkippedWithMessage::class,
             $subscriber
         );
 
@@ -610,24 +610,24 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunSkippedWithWarning();
+        $emitter->testSkippedWithMessage();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunSkippedWithWarning::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\SkippedWithMessage::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestRunStartedDispatchesTestRunStartedEvent(): void
+    public function testTestPreparedDispatchesTestPreparedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Test\RunStartedSubscriber {
-            public function notify(Test\RunStarted $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\PreparedSubscriber {
+            public function notify(Test\Prepared $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\RunStartedSubscriber::class,
-            Test\RunStarted::class,
+            Test\PreparedSubscriber::class,
+            Test\Prepared::class,
             $subscriber
         );
 
@@ -638,10 +638,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunStarted();
+        $emitter->testPrepared();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\RunStarted::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\Prepared::class, $subscriber->lastRecordedEvent());
     }
 
     public function testTestSetUpFinishedDispatchesTestSetUpFinishedEvent(): void

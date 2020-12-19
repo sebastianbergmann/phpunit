@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Subscriber;
 
-interface RunErroredSubscriber extends Subscriber
+interface ErroredSubscriber extends Subscriber
 {
-    public function notify(RunErrored $event): void;
+    public function notify(Errored $event): void;
 }

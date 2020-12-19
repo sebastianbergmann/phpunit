@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Subscriber;
 
-interface RunSkippedByDataProviderSubscriber extends Subscriber
+interface FailedSubscriber extends Subscriber
 {
-    public function notify(RunSkippedByDataProvider $event): void;
+    public function notify(Failed $event): void;
 }

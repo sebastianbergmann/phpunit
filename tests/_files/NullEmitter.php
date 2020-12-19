@@ -52,43 +52,43 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testRunErrored(): void
+    public function testErrored(): void
     {
     }
 
-    public function testRunFailed(): void
+    public function testFailed(): void
     {
     }
 
-    public function testRunFinished(): void
+    public function testFinished(): void
     {
     }
 
-    public function testRunPassed(): void
+    public function testPassed(): void
     {
     }
 
-    public function testRunRisky(): void
+    public function testPassedButRisky(): void
     {
     }
 
-    public function testRunSkippedByDataProvider(): void
+    public function testSkippedByDataProvider(): void
     {
     }
 
-    public function testRunSkippedIncomplete(): void
+    public function testSkippedIncomplete(): void
     {
     }
 
-    public function testRunSkippedWithFailedRequirements(): void
+    public function testSkippedDueToUnsatisfiedRequirements(): void
     {
     }
 
-    public function testRunSkippedWithWarning(): void
+    public function testSkippedWithMessage(): void
     {
     }
 
-    public function testRunStarted(): void
+    public function testPrepared(): void
     {
     }
 

@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Subscriber;
 
-interface RunSkippedWithWarningSubscriber extends Subscriber
+interface PassedSubscriber extends Subscriber
 {
-    public function notify(RunSkippedWithWarning $event): void;
+    public function notify(Passed $event): void;
 }

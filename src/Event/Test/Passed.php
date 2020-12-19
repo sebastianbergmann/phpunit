@@ -12,7 +12,7 @@ namespace PHPUnit\Event\Test;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
-final class RunFinished implements Event
+final class Passed implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
