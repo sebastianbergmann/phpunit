@@ -1954,8 +1954,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $snapshotAfter
                 );
             } catch (RiskyTestError $rte) {
-                // Intentionally left empty
-
                 Event\Registry::emitter()->globalStateModified(
                     $this->snapshot,
                     $snapshotAfter,
