@@ -126,6 +126,10 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
+    public function testPreConditionFinished(string $testClassName, CodeUnit\ClassMethodUnit ...$calledMethods): void
+    {
+    }
+
     public function testAfterLastTestMethodCalled(): void
     {
     }

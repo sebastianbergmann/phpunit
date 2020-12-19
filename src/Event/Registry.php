@@ -79,6 +79,7 @@ final class Registry
             Test\Passed::class,
             Test\PassedButRisky::class,
             Test\PreConditionCalled::class,
+            Test\PreConditionFinished::class,
             Test\Prepared::class,
             Test\RunConfigured::class,
             Test\SetUpFinished::class,
