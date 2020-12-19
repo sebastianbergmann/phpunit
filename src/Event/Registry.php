@@ -87,7 +87,7 @@ final class Registry
             Test\SkippedByDataProvider::class,
             Test\SkippedDueToUnsatisfiedRequirements::class,
             Test\SkippedWithMessage::class,
-            TestDouble\MockCreated::class,
+            TestDouble\MockObjectCreated::class,
             TestDouble\MockObjectCreatedForAbstractClass::class,
             TestDouble\MockObjectCreatedForTrait::class,
             TestDouble\PartialMockObjectCreated::class,

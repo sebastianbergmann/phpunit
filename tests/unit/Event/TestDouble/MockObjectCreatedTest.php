@@ -12,16 +12,16 @@ namespace PHPUnit\Event\TestDouble;
 use PHPUnit\Event\AbstractEventTestCase;
 
 /**
- * @covers \PHPUnit\Event\TestDouble\MockCreated
+ * @covers \PHPUnit\Event\TestDouble\MockObjectCreated
  */
-final class MockCreatedTest extends AbstractEventTestCase
+final class MockObjectCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
         $className     = self::class;
 
-        $event = new MockCreated(
+        $event = new MockObjectCreated(
             $telemetryInfo,
             $className
         );

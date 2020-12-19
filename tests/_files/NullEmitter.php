@@ -135,7 +135,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testDoubleMockCreated(string $className): void
+    public function testDoubleMockObjectCreated(string $className): void
     {
     }
 

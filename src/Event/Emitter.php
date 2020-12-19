@@ -102,7 +102,7 @@ interface Emitter
     /**
      * @psalm-param class-string $className
      */
-    public function testDoubleMockCreated(string $className): void;
+    public function testDoubleMockObjectCreated(string $className): void;
 
     /**
      * @psalm-param trait-string $traitName

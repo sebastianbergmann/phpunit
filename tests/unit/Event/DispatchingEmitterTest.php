@@ -1094,20 +1094,20 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\AfterLastTestMethodCalled::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestDoubleMockCreatedDispatchesTestDoubleMockCreatedEvent(): void
+    public function testTestDoubleMockObjectCreatedDispatchesTestDoubleMockObjectCreatedEvent(): void
     {
         $className = self::class;
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockCreatedSubscriber {
-            public function notify(TestDouble\MockCreated $event): void
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedSubscriber {
+            public function notify(TestDouble\MockObjectCreated $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            TestDouble\MockCreatedSubscriber::class,
-            TestDouble\MockCreated::class,
+            TestDouble\MockObjectCreatedSubscriber::class,
+            TestDouble\MockObjectCreated::class,
             $subscriber
         );
 
@@ -1118,13 +1118,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoubleMockCreated($className);
+        $emitter->testDoubleMockObjectCreated($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestDouble\MockCreated::class, $event);
+        $this->assertInstanceOf(TestDouble\MockObjectCreated::class, $event);
 
         $this->assertSame($className, $event->className());
     }

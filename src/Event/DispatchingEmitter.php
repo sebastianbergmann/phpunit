@@ -255,9 +255,9 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\AfterLastTestMethodCalled($this->telemetryInfo()));
     }
 
-    public function testDoubleMockCreated(string $className): void
+    public function testDoubleMockObjectCreated(string $className): void
     {
-        $this->dispatcher->dispatch(new TestDouble\MockCreated(
+        $this->dispatcher->dispatch(new TestDouble\MockObjectCreated(
             $this->telemetryInfo(),
             $className
         ));

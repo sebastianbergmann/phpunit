@@ -11,7 +11,7 @@ namespace PHPUnit\Event\TestDouble;
 
 use PHPUnit\Event\Subscriber;
 
-interface MockCreatedSubscriber extends Subscriber
+interface MockObjectCreatedSubscriber extends Subscriber
 {
-    public function notify(MockCreated $event): void;
+    public function notify(MockObjectCreated $event): void;
 }
