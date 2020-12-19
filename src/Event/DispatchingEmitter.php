@@ -186,9 +186,13 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\SetUpFinished($this->telemetryInfo()));
     }
 
-    public function testAfterTestMethodFinished(): void
+    public function testAfterTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
-        $this->dispatcher->dispatch(new Test\AfterTestMethodFinished($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\AfterTestMethodFinished(
+            $this->telemetryInfo(),
+            $testClassName,
+            ...$calledMethods
+        ));
     }
 
     public function testAfterLastTestMethodFinished(): void

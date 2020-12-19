@@ -855,17 +855,28 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         // caught and passed on when no exception was raised before.
         try {
             if ($hasMetRequirements) {
+                $methodsCalledAfterTest = [];
+
                 foreach ($hookMethods['after'] as $method) {
                     $this->{$method}();
 
+                    $methodCalledAfterTest = new Event\Code\ClassMethod(
+                        static::class,
+                        $method
+                    );
+
                     $emitter->testAfterTestMethodCalled(
                         static::class,
-                        new Event\Code\ClassMethod(
-                            static::class,
-                            $method
-                        )
+                        $methodCalledAfterTest
                     );
+
+                    $methodsCalledAfterTest[] = $methodCalledAfterTest;
                 }
+
+                $emitter->testAfterTestMethodFinished(
+                    static::class,
+                    ...$methodsCalledAfterTest
+                );
 
                 if ($this->inIsolation) {
                     foreach ($hookMethods['afterClass'] as $method) {
