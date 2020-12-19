@@ -1344,6 +1344,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSuiteStartedDispatchesTestSuiteStartedEvent(): void
     {
+        $name = 'foo';
+
         $subscriber = new class extends RecordingSubscriber implements TestSuite\StartedSubscriber {
             public function notify(TestSuite\Started $event): void
             {
@@ -1364,10 +1366,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSuiteStarted();
+        $emitter->testSuiteStarted($name);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestSuite\Started::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(TestSuite\Started::class, $event);
+
+        $this->assertSame($name, $event->name());
     }
 
     private static function createDispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): Dispatcher

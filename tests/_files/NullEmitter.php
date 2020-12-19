@@ -170,7 +170,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testSuiteStarted(): void
+    public function testSuiteStarted(string $name): void
     {
     }
 }

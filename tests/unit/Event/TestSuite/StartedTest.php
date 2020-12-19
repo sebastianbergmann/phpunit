@@ -19,9 +19,14 @@ final class StartedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $name          = 'foo';
 
-        $event = new Started($telemetryInfo);
+        $event = new Started(
+            $telemetryInfo,
+            $name
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($name, $event->name());
     }
 }

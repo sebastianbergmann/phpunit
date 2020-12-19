@@ -16,13 +16,21 @@ final class Started implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    public function __construct(Telemetry\Info $telemetryInfo)
+    private string $name;
+
+    public function __construct(Telemetry\Info $telemetryInfo, string $name)
     {
         $this->telemetryInfo = $telemetryInfo;
+        $this->name          = $name;
     }
 
     public function telemetryInfo(): Telemetry\Info
     {
         return $this->telemetryInfo;
+    }
+
+    public function name(): string
+    {
+        return $this->name;
     }
 }
