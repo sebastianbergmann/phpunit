@@ -712,6 +712,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                         )
                     );
                 }
+
+                Event\Registry::emitter()->testBeforeFirstTestMethodFinished();
             }
 
             if (method_exists(static::class, $this->name) &&
