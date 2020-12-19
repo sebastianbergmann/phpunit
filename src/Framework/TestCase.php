@@ -695,6 +695,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $hasMetRequirements = false;
 
+        $emitter = Event\Registry::emitter();
+
         try {
             $this->checkRequirements();
             $hasMetRequirements = true;
@@ -710,7 +712,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                         $method
                     );
 
-                    Event\Registry::emitter()->testBeforeFirstTestMethodCalled(
+                    $emitter->testBeforeFirstTestMethodCalled(
                         static::class,
                         $methodCalledBeforeFirstTest
                     );
@@ -718,7 +720,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
                 }
 
-                Event\Registry::emitter()->testBeforeFirstTestMethodFinished(
+                $emitter->testBeforeFirstTestMethodFinished(
                     static::class,
                     ...$methodsCalledBeforeFirstTest
                 );
@@ -739,7 +741,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $method
                 );
 
-                Event\Registry::emitter()->testBeforeTestMethodCalled(
+                $emitter->testBeforeTestMethodCalled(
                     static::class,
                     $methodCallBeforeTest
                 );
@@ -747,12 +749,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $methodsCalledBeforeTest[] = $methodCallBeforeTest;
             }
 
-            Event\Registry::emitter()->testBeforeTestMethodFinished(
+            $emitter->testBeforeTestMethodFinished(
                 static::class,
                 ...$methodsCalledBeforeTest
             );
 
-            Event\Registry::emitter()->testSetUpFinished();
+            $emitter->testSetUpFinished();
 
             $methodsCalledPreCondition = [];
 
@@ -764,7 +766,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $method
                 );
 
-                Event\Registry::emitter()->testPreConditionCalled(
+                $emitter->testPreConditionCalled(
                     static::class,
                     $methodCalledPreCondition
                 );
@@ -772,12 +774,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $methodsCalledPreCondition[] = $methodCalledPreCondition;
             }
 
-            Event\Registry::emitter()->testPreConditionFinished(
+            $emitter->testPreConditionFinished(
                 static::class,
                 ...$methodsCalledPreCondition
             );
 
-            Event\Registry::emitter()->testPrepared(new Event\Code\Test(
+            $emitter->testPrepared(new Event\Code\Test(
                 static::class,
                 $this->name
             ));
@@ -795,7 +797,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $method
                 );
 
-                Event\Registry::emitter()->testPostConditionCalled(
+                $emitter->testPostConditionCalled(
                     static::class,
                     $methodCalledPostCondition
                 );
@@ -803,7 +805,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $methodsCalledPostCondition[] = $methodCalledPostCondition;
             }
 
-            Event\Registry::emitter()->testPostConditionFinished(
+            $emitter->testPostConditionFinished(
                 static::class,
                 ...$methodsCalledPostCondition
             );
@@ -821,7 +823,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (IncompleteTest $e) {
             $this->status = TestStatus::incomplete($e->getMessage());
 
-            Event\Registry::emitter()->testAbortedWithMessage(
+            $emitter->testAbortedWithMessage(
                 new Event\Code\Test(
                     static::class,
                     $this->name
@@ -831,7 +833,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (SkippedTest $e) {
             $this->status = TestStatus::skipped($e->getMessage());
 
-            Event\Registry::emitter()->testSkippedWithMessage(
+            $emitter->testSkippedWithMessage(
                 new Event\Code\Test(
                     static::class,
                     $this->name
@@ -862,7 +864,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                         $this->{$method}();
                     }
 
-                    Event\Registry::emitter()->testAfterLastTestMethodFinished();
+                    $emitter->testAfterLastTestMethodFinished();
                 }
             }
         } catch (Throwable $_e) {
