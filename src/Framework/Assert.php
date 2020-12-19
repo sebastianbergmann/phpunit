@@ -2007,7 +2007,7 @@ abstract class Assert
 
             $hasFailed = true;
         } finally {
-            Event\Registry::emitter()->assertionMade(
+            Event\Facade::emitter()->assertionMade(
                 $value,
                 $constraint,
                 $message,

@@ -69,7 +69,7 @@ final class TestBuilder
                 )
             );
 
-            Event\Registry::emitter()->testSkippedByDataProvider(
+            Event\Facade::emitter()->testSkippedByDataProvider(
                 new Event\Code\ClassMethod(
                     $className,
                     $methodName

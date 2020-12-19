@@ -104,7 +104,7 @@ class Command
      */
     public function run(array $argv, bool $exit = true): int
     {
-        Event\Registry::emitter()->testRunnerStarted();
+        Event\Facade::emitter()->testRunnerStarted();
 
         $this->handleArguments($argv);
 
@@ -375,7 +375,7 @@ class Command
                     exit(TestRunner::EXCEPTION_EXIT);
                 }
 
-                Event\Registry::emitter()->testSuiteLoaded($this->arguments['test']);
+                Event\Facade::emitter()->testSuiteLoaded($this->arguments['test']);
             }
         } elseif (isset($this->arguments['bootstrap'])) {
             $this->handleBootstrap($this->arguments['bootstrap']);
@@ -501,7 +501,7 @@ class Command
             );
         }
 
-        Event\Registry::emitter()->bootstrapFinished($filename);
+        Event\Facade::emitter()->bootstrapFinished($filename);
     }
 
     protected function handleVersionCheck(): void

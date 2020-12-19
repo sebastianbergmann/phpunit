@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Event;
 
-final class Registry
+final class Facade
 {
     private static ?TypeMap $typeMap = null;
 

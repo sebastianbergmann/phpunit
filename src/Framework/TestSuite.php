@@ -408,7 +408,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $test = null;
 
-        $emitter = Event\Registry::emitter();
+        $emitter = Event\Facade::emitter();
 
         $methodsCalledBeforeClass = [];
 

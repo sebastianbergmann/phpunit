@@ -177,7 +177,7 @@ final class TestRunner
 
             $sorter->reorderTestsInSuite($suite, $arguments['executionOrder'], $arguments['resolveDependencies'], $arguments['executionOrderDefects']);
 
-            Event\Registry::emitter()->testSuiteSorted(
+            Event\Facade::emitter()->testSuiteSorted(
                 $arguments['executionOrder'],
                 $arguments['executionOrderDefects'],
                 $arguments['resolveDependencies']
@@ -608,11 +608,11 @@ final class TestRunner
             $this->write(PHP_EOL);
         }
 
-        Event\Registry::emitter()->testSuiteStarted($suite->getName());
+        Event\Facade::emitter()->testSuiteStarted($suite->getName());
 
         $suite->run($result);
 
-        Event\Registry::emitter()->testSuiteFinished(
+        Event\Facade::emitter()->testSuiteFinished(
             $suite->getName(),
             $result,
             CodeCoverage::isActive() ? CodeCoverage::instance() : null
