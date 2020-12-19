@@ -756,18 +756,18 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(TestCase\BeforeClassCalled::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testTestCaseBeforeClassFinishedDispatchesTestCaseBeforeClassFinishedEvent(): void
+    public function testTestBeforeFirstTestMethodFinishedDispatchesTestBeforeFirstTestMethodFinishedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestCase\BeforeClassFinishedSubscriber {
-            public function notify(TestCase\BeforeClassFinished $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\BeforeFirstTestMethodFinishedSubscriber {
+            public function notify(Test\BeforeFirstTestMethodFinished $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            TestCase\BeforeClassFinishedSubscriber::class,
-            TestCase\BeforeClassFinished::class,
+            Test\BeforeFirstTestMethodFinishedSubscriber::class,
+            Test\BeforeFirstTestMethodFinished::class,
             $subscriber
         );
 
@@ -778,10 +778,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testCaseBeforeClassFinished();
+        $emitter->testBeforeFirstTestMethodFinished();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestCase\BeforeClassFinished::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\BeforeFirstTestMethodFinished::class, $subscriber->lastRecordedEvent());
     }
 
     public function testTestCaseSetUpBeforeClassFinishedDispatchesTestSetUpBeforeClassFinishedEvent(): void
