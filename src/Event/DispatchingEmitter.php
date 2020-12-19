@@ -11,6 +11,7 @@ namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
+use SebastianBergmann\CodeUnit;
 use SebastianBergmann\GlobalState\Snapshot;
 
 final class DispatchingEmitter implements Emitter
@@ -177,9 +178,13 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Test\AfterLastTestMethodFinished($this->telemetryInfo()));
     }
 
-    public function testBeforeFirstTestMethodCalled(): void
+    public function testBeforeFirstTestMethodCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void
     {
-        $this->dispatcher->dispatch(new Test\BeforeFirstTestMethodCalled($this->telemetryInfo()));
+        $this->dispatcher->dispatch(new Test\BeforeFirstTestMethodCalled(
+            $this->telemetryInfo(),
+            $testClassName,
+            $calledMethod
+        ));
     }
 
     public function testBeforeFirstTestMethodFinished(): void

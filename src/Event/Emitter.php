@@ -11,6 +11,7 @@ namespace PHPUnit\Event;
 
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestSuite;
+use SebastianBergmann\CodeUnit;
 use SebastianBergmann\GlobalState\Snapshot;
 
 interface Emitter
@@ -67,7 +68,10 @@ interface Emitter
 
     public function testAfterLastTestMethodFinished(): void;
 
-    public function testBeforeFirstTestMethodCalled(): void;
+    /**
+     * @psalm-param class-string $testClassName
+     */
+    public function testBeforeFirstTestMethodCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void;
 
     public function testBeforeFirstTestMethodFinished(): void;
 

@@ -93,6 +93,7 @@ use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
 use ReflectionClass;
 use ReflectionException;
+use SebastianBergmann\CodeUnit;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
@@ -702,9 +703,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($this->inIsolation) {
                 foreach ($hookMethods['beforeClass'] as $method) {
                     $this->{$method}();
-                }
 
-                Event\Registry::emitter()->testBeforeFirstTestMethodCalled();
+                    Event\Registry::emitter()->testBeforeFirstTestMethodCalled(
+                        static::class,
+                        CodeUnit\ClassMethodUnit::forClassMethod(
+                            static::class,
+                            $method
+                        )
+                    );
+                }
             }
 
             if (method_exists(static::class, $this->name) &&

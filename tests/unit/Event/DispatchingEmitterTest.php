@@ -12,6 +12,7 @@ namespace PHPUnit\Event;
 use PHPUnit\Framework;
 use PHPUnit\TestFixture;
 use RecordingSubscriber;
+use SebastianBergmann\CodeUnit;
 use SebastianBergmann\GlobalState\Snapshot;
 use stdClass;
 
@@ -730,6 +731,12 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestBeforeFirstTestMethodCalledDispatchesTestBeforeFirstTestMethodEvent(): void
     {
+        $testClassName = self::class;
+        $calledMethod  = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+
         $subscriber = new class extends RecordingSubscriber implements Test\BeforeFirstTestMethodCalledSubscriber {
             public function notify(Test\BeforeFirstTestMethodCalled $event): void
             {
@@ -750,10 +757,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testBeforeFirstTestMethodCalled();
+        $emitter->testBeforeFirstTestMethodCalled(
+            $testClassName,
+            $calledMethod
+        );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\BeforeFirstTestMethodCalled::class, $subscriber->lastRecordedEvent());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\BeforeFirstTestMethodCalled::class, $event);
+
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($calledMethod, $event->calledMethod());
     }
 
     public function testTestBeforeFirstTestMethodFinishedDispatchesTestBeforeFirstTestMethodFinishedEvent(): void

@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestSuite;
+use SebastianBergmann\CodeUnit;
 use SebastianBergmann\GlobalState\Snapshot;
 
 final class NullEmitter implements \PHPUnit\Event\Emitter
@@ -105,7 +106,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testBeforeFirstTestMethodCalled(): void
+    public function testBeforeFirstTestMethodCalled(string $testClassName, CodeUnit\ClassMethodUnit $calledMethod): void
     {
     }
 

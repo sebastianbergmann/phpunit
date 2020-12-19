@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use SebastianBergmann\CodeUnit;
 
 /**
  * @covers \PHPUnit\Event\Test\BeforeFirstTestMethodCalled
@@ -19,9 +20,20 @@ final class BeforeFirstTestMethodCalledTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $testClassName = self::class;
+        $calledMethod  = CodeUnit\ClassMethodUnit::forClassMethod(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
 
-        $event = new BeforeFirstTestMethodCalled($telemetryInfo);
+        $event = new BeforeFirstTestMethodCalled(
+            $telemetryInfo,
+            $testClassName,
+            $calledMethod
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($testClassName, $event->testClassName());
+        $this->assertSame($calledMethod, $event->calledMethod());
     }
 }
