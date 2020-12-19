@@ -384,11 +384,11 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testSuiteRunFinished(string $name, TestResult $result, ?CodeCoverage $codeCoverage): void
+    public function testSuiteRunFinished(string $testSuiteName, TestResult $result, ?CodeCoverage $codeCoverage): void
     {
         $this->dispatcher->dispatch(new TestSuite\RunFinished(
             $this->telemetryInfo(),
-            $name,
+            $testSuiteName,
             (new TestResultMapper())->map($result),
             $codeCoverage
         ));

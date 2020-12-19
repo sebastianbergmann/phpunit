@@ -191,7 +191,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSuiteRunFinished(string $name, TestResult $result, ?CodeCoverage $codeCoverage): void
+    public function testSuiteRunFinished(string $testSuiteName, TestResult $result, ?CodeCoverage $codeCoverage): void
     {
     }
 

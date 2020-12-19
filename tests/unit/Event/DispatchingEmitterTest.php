@@ -1660,6 +1660,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $event = $subscriber->lastRecordedEvent();
 
         $this->assertInstanceOf(TestSuite\RunFinished::class, $event);
+
         $this->assertSame($name, $event->name());
 
         $testResultMapper = new TestResultMapper();
