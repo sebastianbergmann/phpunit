@@ -66,7 +66,7 @@ abstract class BaseTestRunner
     /**
      * @var string
      */
-    public const SUITE_METHODNAME = 'suite';
+    public const SUITE_METHOD_NAME = 'suite';
 
     /**
      * Returns the Test corresponding to the given suite.
@@ -110,7 +110,7 @@ abstract class BaseTestRunner
         }
 
         try {
-            $suiteMethod = $testClass->getMethod(self::SUITE_METHODNAME);
+            $suiteMethod = $testClass->getMethod(self::SUITE_METHOD_NAME);
 
             if (!$suiteMethod->isStatic()) {
                 $this->runFailed(

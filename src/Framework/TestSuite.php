@@ -314,10 +314,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         } elseif ($testClass instanceof ReflectionClass) {
             $suiteMethod = false;
 
-            if (!$testClass->isAbstract() && $testClass->hasMethod(BaseTestRunner::SUITE_METHODNAME)) {
+            if (!$testClass->isAbstract() && $testClass->hasMethod(BaseTestRunner::SUITE_METHOD_NAME)) {
                 try {
                     $method = $testClass->getMethod(
-                        BaseTestRunner::SUITE_METHODNAME
+                        BaseTestRunner::SUITE_METHOD_NAME
                     );
                     // @codeCoverageIgnoreStart
                 } catch (ReflectionException $e) {
@@ -438,10 +438,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
 
             if (!$class->isAbstract()) {
-                if ($class->hasMethod(BaseTestRunner::SUITE_METHODNAME)) {
+                if ($class->hasMethod(BaseTestRunner::SUITE_METHOD_NAME)) {
                     try {
                         $method = $class->getMethod(
-                            BaseTestRunner::SUITE_METHODNAME
+                            BaseTestRunner::SUITE_METHOD_NAME
                         );
                         // @codeCoverageIgnoreStart
                     } catch (ReflectionException $e) {
