@@ -49,18 +49,18 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Application\Configured::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testApplicationStartedDispatchesApplicationStartedEvent(): void
+    public function testTestRunnerStartedDispatchesTestRunnerStartedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Application\StartedSubscriber {
-            public function notify(Application\Started $event): void
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\StartedSubscriber {
+            public function notify(TestRunner\Started $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Application\StartedSubscriber::class,
-            Application\Started::class,
+            TestRunner\StartedSubscriber::class,
+            TestRunner\Started::class,
             $subscriber
         );
 
@@ -71,10 +71,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->applicationStarted();
+        $emitter->testRunnerStarted();
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Application\Started::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(TestRunner\Started::class, $subscriber->lastRecordedEvent());
     }
 
     public function testAssertionMadeDispatchesAssertionMadeEvent(): void

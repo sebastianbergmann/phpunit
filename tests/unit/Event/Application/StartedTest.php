@@ -10,9 +10,10 @@
 namespace PHPUnit\Event\Application;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\TestRunner\Started;
 
 /**
- * @covers \PHPUnit\Event\Application\Started
+ * @covers \PHPUnit\Event\TestRunner\Started
  */
 final class StartedTest extends AbstractEventTestCase
 {

@@ -19,7 +19,7 @@ interface Emitter
 {
     public function applicationConfigured(): void;
 
-    public function applicationStarted(): void;
+    public function testRunnerStarted(): void;
 
     /**
      * @param mixed $value

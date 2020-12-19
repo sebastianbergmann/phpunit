@@ -58,7 +58,6 @@ final class Registry
     {
         $defaultEvents = [
             Application\Configured::class,
-            Application\Started::class,
             Assertion\Made::class,
             Bootstrap\Finished::class,
             Comparator\Registered::class,
@@ -96,6 +95,7 @@ final class Registry
             TestDouble\PartialMockObjectCreated::class,
             TestDouble\TestProxyCreated::class,
             TestDouble\TestStubCreated::class,
+            TestRunner\Started::class,
             TestSuite\AfterClassFinished::class,
             TestSuite\Loaded::class,
             TestSuite\RunFinished::class,

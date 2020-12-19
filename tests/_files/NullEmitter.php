@@ -21,7 +21,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function applicationStarted(): void
+    public function testRunnerStarted(): void
     {
     }
 

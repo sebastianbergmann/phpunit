@@ -39,9 +39,9 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new Application\Configured($this->telemetryInfo()));
     }
 
-    public function applicationStarted(): void
+    public function testRunnerStarted(): void
     {
-        $this->dispatcher->dispatch(new Application\Started(
+        $this->dispatcher->dispatch(new TestRunner\Started(
             $this->telemetryInfo(),
             new Application\Runtime()
         ));
