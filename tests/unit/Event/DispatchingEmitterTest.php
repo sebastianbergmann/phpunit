@@ -497,6 +497,49 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($test, $event->test());
     }
 
+    public function testTestPassedWithWarningDispatchesTestPassedWithWarningEvent(): void
+    {
+        $test = new Code\Test(...array_values(explode(
+            '::',
+            __METHOD__
+        )));
+        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
+
+        $subscriber = new class extends RecordingSubscriber implements Test\PassedWithWarningSubscriber {
+            public function notify(Test\PassedWithWarning $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = self::createDispatcherWithRegisteredSubscriber(
+            Test\PassedWithWarningSubscriber::class,
+            Test\PassedWithWarning::class,
+            $subscriber
+        );
+
+        $telemetrySystem = self::createTelemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem
+        );
+
+        $emitter->testPassedWithWarning(
+            $test,
+            $message
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\PassedWithWarning::class, $event);
+
+        $this->assertSame($test, $event->test());
+        $this->assertSame($message, $event->message());
+    }
+
     public function testTestPassedButRiskyDispatchesTestPassedButRiskyEvent(): void
     {
         $subscriber = new class extends RecordingSubscriber implements Test\PassedButRiskySubscriber {

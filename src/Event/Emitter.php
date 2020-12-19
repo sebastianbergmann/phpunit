@@ -51,6 +51,8 @@ interface Emitter
 
     public function testPassed(Code\Test $test): void;
 
+    public function testPassedWithWarning(Code\Test $test, string $message): void;
+
     public function testPassedButRisky(): void;
 
     public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void;
