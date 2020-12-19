@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-class System
+final class System
 {
     private StopWatch $stopWatch;
 

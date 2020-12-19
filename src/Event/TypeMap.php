@@ -17,7 +17,7 @@ use function in_array;
 use function interface_exists;
 use function sprintf;
 
-class TypeMap
+final class TypeMap
 {
     /**
      * @psalm-var array<class-string, class-string>
