@@ -1124,7 +1124,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($className, $event->className());
     }
 
-    public function testTestDoublePartialMockCreatedDispatchesTestDoublePartialMockCreatedEvent(): void
+    public function testTestDoublePartialMockObjectCreatedDispatchesTestDoublePartialMockObjectCreatedEvent(): void
     {
         $className   = self::class;
         $methodNames = [
@@ -1133,16 +1133,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'baz',
         ];
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\PartialMockCreatedSubscriber {
-            public function notify(TestDouble\PartialMockCreated $event): void
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\PartialMockObjectCreatedSubscriber {
+            public function notify(TestDouble\PartialMockObjectCreated $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            TestDouble\PartialMockCreatedSubscriber::class,
-            TestDouble\PartialMockCreated::class,
+            TestDouble\PartialMockObjectCreatedSubscriber::class,
+            TestDouble\PartialMockObjectCreated::class,
             $subscriber
         );
 
@@ -1153,7 +1153,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testDoublePartialMockCreated(
+        $emitter->testDoublePartialMockObjectCreated(
             $className,
             ...$methodNames
         );
@@ -1162,7 +1162,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestDouble\PartialMockCreated::class, $event);
+        $this->assertInstanceOf(TestDouble\PartialMockObjectCreated::class, $event);
 
         $this->assertSame($className, $event->className());
         $this->assertSame($methodNames, $event->methodNames());

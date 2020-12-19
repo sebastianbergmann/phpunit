@@ -118,7 +118,7 @@ interface Emitter
     /**
      * @psalm-param class-string $className
      */
-    public function testDoublePartialMockCreated(string $className, string ...$methodNames): void;
+    public function testDoublePartialMockObjectCreated(string $className, string ...$methodNames): void;
 
     /**
      * @psalm-param class-string $className

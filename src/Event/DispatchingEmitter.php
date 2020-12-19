@@ -261,9 +261,9 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
-    public function testDoublePartialMockCreated(string $className, string ...$methodNames): void
+    public function testDoublePartialMockObjectCreated(string $className, string ...$methodNames): void
     {
-        $this->dispatcher->dispatch(new TestDouble\PartialMockCreated(
+        $this->dispatcher->dispatch(new TestDouble\PartialMockObjectCreated(
             $this->telemetryInfo(),
             $className,
             ...$methodNames

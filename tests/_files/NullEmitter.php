@@ -146,7 +146,7 @@ final class NullEmitter implements \PHPUnit\Event\Emitter
     {
     }
 
-    public function testDoublePartialMockCreated(string $className, string ...$methodNames): void
+    public function testDoublePartialMockObjectCreated(string $className, string ...$methodNames): void
     {
     }
 

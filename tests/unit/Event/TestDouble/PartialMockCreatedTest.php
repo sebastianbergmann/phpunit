@@ -12,9 +12,9 @@ namespace PHPUnit\Event\TestDouble;
 use PHPUnit\Event\AbstractEventTestCase;
 
 /**
- * @covers \PHPUnit\Event\TestDouble\PartialMockCreated
+ * @covers \PHPUnit\Event\TestDouble\PartialMockObjectCreated
  */
-final class PartialMockCreatedTest extends AbstractEventTestCase
+final class PartialMockObjectCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
@@ -26,7 +26,7 @@ final class PartialMockCreatedTest extends AbstractEventTestCase
             'baz',
         ];
 
-        $event = new PartialMockCreated(
+        $event = new PartialMockObjectCreated(
             $telemetryInfo,
             $className,
             ...$methodNames
