@@ -14,7 +14,7 @@ use PHPUnit\Event\AbstractEventTestCase;
 /**
  * @covers \PHPUnit\Event\Test\SkippedDueToUnsatisfiedRequirements
  */
-final class RunSkippedWithFailedRequirementsTest extends AbstractEventTestCase
+final class SkippedDueToUnsatisfiedRequirementsTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
