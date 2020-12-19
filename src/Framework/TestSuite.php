@@ -408,6 +408,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $test = null;
 
+        $methodsCalledBeforeClass = [];
+
         if (class_exists($this->name, false)) {
             try {
                 foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
@@ -418,13 +420,17 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                         call_user_func([$this->name, $beforeClassMethod]);
 
+                        $methodCalledBeforeClass = new Event\Code\ClassMethod(
+                            $this->name,
+                            $beforeClassMethod
+                        );
+
                         Event\Registry::emitter()->testSuiteBeforeClassCalled(
                             $this->name,
-                            new Event\Code\ClassMethod(
-                                $this->name,
-                                $beforeClassMethod
-                            )
+                            $methodCalledBeforeClass
                         );
+
+                        $methodsCalledBeforeClass[] = $methodCalledBeforeClass;
                     }
                 }
             } catch (SkippedTestSuiteError $error) {
@@ -467,6 +473,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 return;
             }
         }
+
+        Event\Registry::emitter()->testSuiteBeforeClassFinished(
+            $this->name,
+            ...$methodsCalledBeforeClass
+        );
 
         foreach ($this as $test) {
             if ($result->shouldStop()) {

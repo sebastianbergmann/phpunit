@@ -389,6 +389,15 @@ final class DispatchingEmitter implements Emitter
         ));
     }
 
+    public function testSuiteBeforeClassFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
+    {
+        $this->dispatcher->dispatch(new TestSuite\BeforeClassFinished(
+            $this->telemetryInfo(),
+            $testClassName,
+            ...$calledMethods
+        ));
+    }
+
     public function testSuiteAfterClassCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
         $this->dispatcher->dispatch(new TestSuite\AfterClassCalled(

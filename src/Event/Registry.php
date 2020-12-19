@@ -98,6 +98,7 @@ final class Registry
             TestSuite\AfterClassCalled::class,
             TestSuite\AfterClassFinished::class,
             TestSuite\BeforeClassCalled::class,
+            TestSuite\BeforeClassFinished::class,
             TestSuite\Finished::class,
             TestSuite\Loaded::class,
             TestSuite\Sorted::class,
