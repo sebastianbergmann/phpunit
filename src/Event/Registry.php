@@ -69,6 +69,7 @@ final class Registry
             Test\AbortedWithMessage::class,
             Test\AfterLastTestMethodCalled::class,
             Test\AfterLastTestMethodFinished::class,
+            Test\AfterTestMethodCalled::class,
             Test\AfterTestMethodFinished::class,
             Test\BeforeFirstTestMethodCalled::class,
             Test\BeforeFirstTestMethodFinished::class,

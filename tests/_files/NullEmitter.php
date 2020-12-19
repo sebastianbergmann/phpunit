@@ -139,6 +139,10 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testAfterTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
+    {
+    }
+
     public function testAfterLastTestMethodCalled(): void
     {
     }
