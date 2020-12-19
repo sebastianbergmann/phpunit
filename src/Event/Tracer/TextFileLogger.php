@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Tracer;
 
+use Event\Tracer\LogDurationFormatter;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry\Info;
 
@@ -25,7 +26,7 @@ final class TextFileLogger implements Tracer
     {
         file_put_contents(
             $this->filename,
-            $this->renderEvent($event),
+            self::renderEvent($event),
             FILE_APPEND
         );
     }
@@ -41,12 +42,14 @@ final class TextFileLogger implements Tracer
 
     private static function renderTelemetry(Info $telemetryInfo): string
     {
+        $durationFormatter = new LogDurationFormatter();
+
         return sprintf(
             '[%s / %s] [%d Bytes / %d Bytes]',
-            $telemetryInfo->durationSinceStart()->asString(),
-            $telemetryInfo->durationSincePrevious()->asString(),
+            $telemetryInfo->durationSinceStart()->asString($durationFormatter),
+            $telemetryInfo->durationSincePrevious()->asString($durationFormatter),
             $telemetryInfo->memoryUsage()->bytes(),
-            $telemetryInfo->peakMemoryUsage()->bytes(),
+            $telemetryInfo->peakMemoryUsage()->bytes()
         );
     }
 }
