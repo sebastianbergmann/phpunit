@@ -125,7 +125,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: xdebug
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1
 
@@ -157,6 +156,54 @@ jobs:
         run: bash ./build/scripts/sanity-check
 
       - name: Run tests with phpunit
+        run: php ./phpunit
+
+  code-coverage:
+    name: Code Coverage
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - 8.0
+
+        dependencies:
+          - highest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: pcov
+          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
+          ini-values: assert.exception=1, zend.assertions=1
+
+      - name: Determine composer cache directory
+        run: echo "COMPOSER_CACHE_DIR=$(./tools/composer config cache-dir)" >> $GITHUB_ENV
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.COMPOSER_CACHE_DIR }}
+          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
+
+      - name: Install lowest dependencies with composer
+        if: matrix.dependencies == 'lowest'
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+
+      - name: Install highest dependencies with composer
+        if: matrix.dependencies == 'highest'
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+
+      - name: Collect code coverage with phpunit
         run: php ./phpunit --coverage-clover=coverage.xml
 
       - name: Send code coverage report to Codecov.io
