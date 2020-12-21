@@ -58,7 +58,7 @@ final class MetadataCollection implements Countable, IteratorAggregate
     public function mergeWith(self $other): self
     {
         return new self(
-            array_merge(
+            ...array_merge(
                 $this->asArray(),
                 $other->asArray()
             )
