@@ -12,17 +12,17 @@ namespace PHPUnit\Util\Metadata;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PHPUnit\Util\Metadata\Metadata
- * @covers \PHPUnit\Util\Metadata\AfterClass
  * @covers \PHPUnit\Util\Metadata\After
+ * @covers \PHPUnit\Util\Metadata\AfterClass
  * @covers \PHPUnit\Util\Metadata\BackupGlobals
  * @covers \PHPUnit\Util\Metadata\BackupStaticProperties
- * @covers \PHPUnit\Util\Metadata\BeforeClass
  * @covers \PHPUnit\Util\Metadata\Before
+ * @covers \PHPUnit\Util\Metadata\BeforeClass
  * @covers \PHPUnit\Util\Metadata\CodeCoverageIgnore
  * @covers \PHPUnit\Util\Metadata\CoversNothing
  * @covers \PHPUnit\Util\Metadata\DoesNotPerformAssertions
  * @covers \PHPUnit\Util\Metadata\Group
+ * @covers \PHPUnit\Util\Metadata\Metadata
  * @covers \PHPUnit\Util\Metadata\PostCondition
  * @covers \PHPUnit\Util\Metadata\PreCondition
  * @covers \PHPUnit\Util\Metadata\PreserveGlobalState

@@ -10,8 +10,6 @@
 namespace PHPUnit\Util\Metadata;
 
 use function count;
-use function iterator_count;
-use Countable;
 use Iterator;
 
 /**
