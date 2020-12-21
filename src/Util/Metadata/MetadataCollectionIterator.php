@@ -17,7 +17,7 @@ use Iterator;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MetadataCollectionIterator implements Countable, Iterator
+final class MetadataCollectionIterator implements Iterator
 {
     /**
      * @var Metadata[]
@@ -29,11 +29,6 @@ final class MetadataCollectionIterator implements Countable, Iterator
     public function __construct(MetadataCollection $metadata)
     {
         $this->metadata = $metadata->asArray();
-    }
-
-    public function count(): int
-    {
-        return iterator_count($this);
     }
 
     public function rewind(): void
