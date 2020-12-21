@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
-class RequiresOperatingSystemFamily
+final class RequiresOperatingSystemFamily
 {
     private string $operatingSystemFamily;
 
