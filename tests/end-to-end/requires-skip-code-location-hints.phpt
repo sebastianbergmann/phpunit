@@ -4,6 +4,7 @@ phpunit --no-configuration ../_files/RequirementsTest.php
 <?php declare(strict_types=1);
 require_once(__DIR__ . '/../bootstrap.php');
 
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../_files/RequirementsTest.php');
 

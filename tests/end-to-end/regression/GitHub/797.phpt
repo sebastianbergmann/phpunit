@@ -2,6 +2,7 @@
 GH-797: Disabled $preserveGlobalState does not load bootstrap.php.
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][]  = '--process-isolation';
 $_SERVER['argv'][]  = '--bootstrap';

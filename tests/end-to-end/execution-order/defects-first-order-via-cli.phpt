@@ -5,6 +5,7 @@ phpunit --order-by=defects ./tests/_files/MultiDependencyTest.php
 $tmpResultCache = \tempnam(sys_get_temp_dir(), __FILE__);
 \file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/_files/MultiDependencyTest_result_cache.txt'));
 
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--order-by=defects';

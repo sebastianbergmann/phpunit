@@ -2,6 +2,7 @@
 phpunit --testdox-text php://stdout ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--testdox-text';
 $_SERVER['argv'][] = 'php://stdout';

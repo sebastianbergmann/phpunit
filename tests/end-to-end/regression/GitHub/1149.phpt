@@ -2,6 +2,7 @@
 GH-1149: Test swallows output buffer when run in a separate process
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/1149/Issue1149Test.php';
 

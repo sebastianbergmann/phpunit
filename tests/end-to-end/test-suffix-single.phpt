@@ -2,6 +2,7 @@
 phpunit --test-suffix .test.php ../../_files/
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--test-suffix';
 $_SERVER['argv'][] = '.test.php';

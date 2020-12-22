@@ -2,6 +2,7 @@
 phpunit ../../_files/ConcreteTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/ConcreteTest.php';
 

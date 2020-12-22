@@ -2,6 +2,7 @@
 phpunit -c ../../_files/configuration_stop_on_warning.xml --stop-on-warning ./tests/_files/StopOnWarningTestSuite.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/configuration_stop_on_warning.xml');
 $_SERVER['argv'][] = '--stop-on-warning';

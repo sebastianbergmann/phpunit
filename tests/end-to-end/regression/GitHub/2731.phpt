@@ -2,6 +2,7 @@
 GH-2731: Empty exception message cannot be expected
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/2731/Issue2731Test.php';
 

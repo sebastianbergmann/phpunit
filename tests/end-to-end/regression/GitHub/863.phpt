@@ -2,6 +2,7 @@
 GH-863: Number of tests to run calculated incorrectly when --repeat is used
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--repeat';
 $_SERVER['argv'][] = '50';

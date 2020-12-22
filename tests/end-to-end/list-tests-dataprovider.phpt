@@ -2,6 +2,7 @@
 phpunit --list-tests ../../_files/DataProviderTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--list-tests';
 $_SERVER['argv'][] = __DIR__ . '/../_files/DataProviderTest.php';

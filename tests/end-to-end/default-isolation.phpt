@@ -2,6 +2,7 @@
 phpunit --process-isolation ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = __DIR__ . '/../_files/BankAccountTest.php';

@@ -2,6 +2,7 @@
 phpunit --configuration tests/_files/phpunit-example-extension
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/phpunit-example-extension';
 

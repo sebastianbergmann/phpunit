@@ -7,6 +7,7 @@ if (!extension_loaded('xdebug')) {
 }
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = __DIR__ . '/../_files/configuration_whitelist.xml';
 $_SERVER['argv'][] = '--dump-xdebug-filter';

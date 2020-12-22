@@ -2,6 +2,7 @@
 #2382: Data Providers throw error with uncloneable object
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/2382/Issue2382Test.php';
 

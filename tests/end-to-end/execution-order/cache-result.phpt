@@ -4,6 +4,7 @@ phpunit --order-by=no-depends,reverse --cache-result --cache-result-file ./tests
 <?php declare(strict_types=1);
 $target = tempnam(sys_get_temp_dir(), __FILE__);
 
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--ignore-dependencies';   // keep coverage for legacy CLI option
 $_SERVER['argv'][] = '--order-by=reverse';

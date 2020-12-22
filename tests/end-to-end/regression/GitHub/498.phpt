@@ -2,6 +2,7 @@
 GH-498: The test methods won't be run if a dataProvider throws Exception and --group is added in command line
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--group';
 $_SERVER['argv'][] = 'trueOnly';

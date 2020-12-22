@@ -2,6 +2,7 @@
 GH-2972: Test suite shouldn't fail when it contains both *.phpt files and unconventionally named tests
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/2972/';
 

@@ -8,6 +8,7 @@ file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/_files/TestWith
 
 $phpunitXmlConfig = __DIR__ . '/_files/order-by-duration.phpunit.xml';
 
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration=' . $phpunitXmlConfig;
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--cache-result';
