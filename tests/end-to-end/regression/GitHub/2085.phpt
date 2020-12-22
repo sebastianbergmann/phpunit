@@ -15,6 +15,7 @@ if (!\extension_loaded('pcntl') || \strpos(\ini_get('disable_functions'), 'pcntl
 }
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--enforce-time-limit';
 $_SERVER['argv'][] = '--default-time-limit=1';

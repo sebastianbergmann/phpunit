@@ -2,6 +2,7 @@
 Configuration migration from PHPUnit 8.5 format works with custom filename
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = 'custom.xml';
 $_SERVER['argv'][] = '--migrate-configuration';

@@ -2,6 +2,7 @@
 --stop-on-failure fails to stop on PHP 7
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--stop-on-error';
 $_SERVER['argv'][] = __DIR__ . '/2145/Issue2145Test.php';

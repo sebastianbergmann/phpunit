@@ -2,6 +2,7 @@
 phpunit --order-by=depends,random ../_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--verbose';
 $_SERVER['argv'][] = '--resolve-dependencies';     // keep coverage for legacy CLI option

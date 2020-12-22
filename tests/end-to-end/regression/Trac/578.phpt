@@ -7,6 +7,7 @@ if (\PHP_MAJOR_VERSION >= 8) {
 }
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/578/Issue578Test.php';
 

@@ -2,6 +2,7 @@
 phpunit --process-isolation --filter @false\ test ../../_files/DataProviderFilterTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = '--filter';

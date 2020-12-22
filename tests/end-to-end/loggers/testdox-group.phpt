@@ -2,6 +2,7 @@
 phpunit --testdox-text php://stdout --testdox-group one ../../_files/TestDoxGroupTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--testdox-text';
 $_SERVER['argv'][] = 'php://stdout';

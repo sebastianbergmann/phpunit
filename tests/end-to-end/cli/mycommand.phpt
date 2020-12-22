@@ -2,6 +2,7 @@
 phpunit ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--my-option=123';
 $_SERVER['argv'][] = '--my-other-option';

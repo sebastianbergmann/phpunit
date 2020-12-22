@@ -2,6 +2,7 @@
 GH-455: expectOutputString not working in strict mode
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--disallow-test-output';
 $_SERVER['argv'][] = __DIR__ . '/445/Issue445Test.php';

@@ -2,6 +2,7 @@
 phpunit --filter testBalanceIsInitiallyZero ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--filter';
 $_SERVER['argv'][] = 'testBalanceIsInitiallyZero';

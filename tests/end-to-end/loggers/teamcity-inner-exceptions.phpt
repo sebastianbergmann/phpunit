@@ -2,6 +2,7 @@
 phpunit --teamcity ../../_files/ExceptionStackTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--teamcity';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/ExceptionStackTest.php');

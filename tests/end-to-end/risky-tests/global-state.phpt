@@ -2,6 +2,7 @@
 Changes to global state are reported when backupGlobals="true" and beStrictAboutChangesToGlobalState="true" are configured
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/global-state/phpunit.xml';
 

@@ -2,6 +2,7 @@
 #2366: Using a test double from a data provider only works once
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/2366/Issue2366Test.php';
 
