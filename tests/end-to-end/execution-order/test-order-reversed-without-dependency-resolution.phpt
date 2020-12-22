@@ -2,16 +2,14 @@
 phpunit --order-by=no-depends,reverse ../_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--no-configuration',
-    '--debug',
-    '--verbose',
-    '--order-by=no-depends,reverse',
-    \realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--verbose';
+$_SERVER['argv'][] = '--order-by=no-depends,reverse';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

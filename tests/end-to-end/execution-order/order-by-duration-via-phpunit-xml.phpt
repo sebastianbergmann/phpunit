@@ -8,10 +8,10 @@ file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/_files/TestWith
 
 $phpunitXmlConfig = __DIR__ . '/_files/order-by-duration.phpunit.xml';
 
-$_SERVER['argv'][1] = '--configuration=' . $phpunitXmlConfig;
-$_SERVER['argv'][2] = '--debug';
-$_SERVER['argv'][3] = '--cache-result';
-$_SERVER['argv'][4] = '--cache-result-file=' . $tmpResultCache;
+$_SERVER['argv'][] = '--configuration=' . $phpunitXmlConfig;
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--cache-result';
+$_SERVER['argv'][] = '--cache-result-file=' . $tmpResultCache;
 
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

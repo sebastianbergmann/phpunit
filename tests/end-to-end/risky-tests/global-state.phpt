@@ -2,8 +2,8 @@
 Changes to global state are reported when backupGlobals="true" and beStrictAboutChangesToGlobalState="true" are configured
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--configuration';
-$_SERVER['argv'][2] = __DIR__ . '/global-state/phpunit.xml';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/global-state/phpunit.xml';
 
 require __DIR__ . '/../../bootstrap.php';
 

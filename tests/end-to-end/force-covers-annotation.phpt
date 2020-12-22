@@ -2,9 +2,9 @@
 phpunit ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--configuration';
-$_SERVER['argv'][2] = __DIR__ . '/force-covers-annotation/phpunit.xml';
-$_SERVER['argv'][3] = __DIR__ . '/force-covers-annotation/tests/Test.php';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/force-covers-annotation/phpunit.xml';
+$_SERVER['argv'][] = __DIR__ . '/force-covers-annotation/tests/Test.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

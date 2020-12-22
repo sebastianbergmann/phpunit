@@ -2,13 +2,12 @@
 phpunit -c ../../_files/configuration.depends-on-class.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '-c',
-    \realpath(__DIR__ . '/../../_files/configuration.depends-on-class.xml'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '-c';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/configuration.depends-on-class.xml');
+
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

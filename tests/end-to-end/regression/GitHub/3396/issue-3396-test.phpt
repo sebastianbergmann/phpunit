@@ -6,12 +6,12 @@ $tmpResultCache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);;
 
 file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/../../../../_files/DataproviderExecutionOrderTest_result_cache.txt'));
 
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--order-by=defects';
-$_SERVER['argv'][3] = '--debug';
-$_SERVER['argv'][4] = '--cache-result';
-$_SERVER['argv'][5] = '--cache-result-file=' . $tmpResultCache;
-$_SERVER['argv'][6] = \dirname(\dirname(\dirname(__DIR__))) . '/../_files/DataproviderExecutionOrderTest.php';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--order-by=defects';
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--cache-result';
+$_SERVER['argv'][] = '--cache-result-file=' . $tmpResultCache;
+$_SERVER['argv'][] = \dirname(\dirname(\dirname(__DIR__))) . '/../_files/DataproviderExecutionOrderTest.php';
 
 require __DIR__ . '/../../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

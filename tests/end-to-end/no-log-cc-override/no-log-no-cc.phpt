@@ -2,21 +2,15 @@
 phpunit -c _files/phpunit.xml --no-logging --log-junit php://stdout _files/NoLogNoCcTest.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--configuration',
-    \realpath(__DIR__ . '/_files/phpunit.xml'),
-    '--no-logging',
-    '--log-junit',
-    'php://stdout',
-//    '--no-coverage',
-//    '--coverage-filter',
-//    \realpath(__DIR__ . '/_files/NoLogNoCc.php'),
-//    '--coverage-text',
-    \realpath(__DIR__ . '/_files/NoLogNoCcTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/_files/phpunit.xml');
+$_SERVER['argv'][] = '--no-logging';
+$_SERVER['argv'][] = '--log-junit';
+$_SERVER['argv'][] = 'php://stdout';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/_files/NoLogNoCcTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

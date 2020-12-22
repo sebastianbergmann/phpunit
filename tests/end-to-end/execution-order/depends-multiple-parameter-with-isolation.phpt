@@ -2,14 +2,12 @@
 phpunit --process-isolation _files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--no-configuration',
-    '--process-isolation',
-    \realpath(__DIR__ . '/_files/MultiDependencyTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--process-isolation';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/_files/MultiDependencyTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
