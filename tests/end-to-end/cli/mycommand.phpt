@@ -2,17 +2,14 @@
 phpunit ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--no-configuration',
-    '--my-option=123',
-    '--my-other-option',
-    \realpath(__DIR__ . '/../../_files/BankAccountTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--my-option=123';
+$_SERVER['argv'][] = '--my-other-option';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/BankAccountTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
-
 require __DIR__ . '/_files/MyCommand.php';
+
 MyCommand::main();
 --EXPECTF--
 MyCommand::myHandler 123

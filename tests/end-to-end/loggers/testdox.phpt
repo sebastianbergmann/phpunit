@@ -2,17 +2,15 @@
 phpunit --testdox -c tests/basic/configuration.basic.xml
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '-c',
-    realpath(__DIR__ . '/../../basic/configuration.basic.xml'),
-    '--testdox',
-    '--colors=never',
-    '--no-interaction',
-    realpath(__DIR__ . '/../../unit/Util/ColorTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '-c';
+$_SERVER['argv'][] = realpath(__DIR__ . '/../../basic/configuration.basic.xml');
+$_SERVER['argv'][] = '--testdox';
+$_SERVER['argv'][] = '--colors=never';
+$_SERVER['argv'][] = '--no-interaction';
+$_SERVER['argv'][] = realpath(__DIR__ . '/../../unit/Util/ColorTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

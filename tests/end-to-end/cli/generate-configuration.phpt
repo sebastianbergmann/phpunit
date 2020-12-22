@@ -6,8 +6,8 @@ phpunit --generate-configuration
 
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--generate-configuration';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--generate-configuration';
 
 require __DIR__ . '/../../bootstrap.php';
 chdir(sys_get_temp_dir());

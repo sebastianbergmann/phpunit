@@ -5,17 +5,15 @@ phpunit --order-by=defects ./tests/_files/MultiDependencyTest.php
 $tmpResultCache = \tempnam(sys_get_temp_dir(), __FILE__);
 \file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/_files/MultiDependencyTest_result_cache.txt'));
 
-$arguments = [
-    '--no-configuration',
-    '--debug',
-    '--order-by=defects',
-    '--cache-result',
-    '--cache-result-file=' . $tmpResultCache,
-    \realpath(__DIR__ . '/_files/MultiDependencyTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--order-by=defects';
+$_SERVER['argv'][] = '--cache-result';
+$_SERVER['argv'][] = '--cache-result-file=' . $tmpResultCache;
+$_SERVER['argv'][] = \realpath(__DIR__ . '/_files/MultiDependencyTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 
 \unlink($tmpResultCache);

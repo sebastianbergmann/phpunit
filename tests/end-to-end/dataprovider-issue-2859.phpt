@@ -2,8 +2,8 @@
 phpunit -c ../../_files/DataProviderIssue2859/phpunit.xml
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '-c';
-$_SERVER['argv'][2] = __DIR__ . '/../_files/DataProviderIssue2859/phpunit.xml';
+$_SERVER['argv'][] = '-c';
+$_SERVER['argv'][] = __DIR__ . '/../_files/DataProviderIssue2859/phpunit.xml';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

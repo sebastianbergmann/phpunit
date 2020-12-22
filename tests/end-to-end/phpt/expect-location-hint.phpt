@@ -2,14 +2,12 @@
 PHPT EXPECT comparison returns correct code location hint
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--no-configuration',
-    '--verbose',
-    \realpath(__DIR__ . '/../_files/phpt-expect-location-hint-example.phpt'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--verbose';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../_files/phpt-expect-location-hint-example.phpt');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

@@ -2,15 +2,13 @@
 phpunit -c ../_files/configuration_stop_on_defect.xml ./tests/_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--debug',
-    '-c',
-    \realpath(__DIR__ . '/../../_files/configuration_execution_order_options.xml'),
-    \realpath(__DIR__ . '/_files/MultiDependencyTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '-c';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/configuration_execution_order_options.xml');
+$_SERVER['argv'][] = \realpath(__DIR__ . '/_files/MultiDependencyTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

@@ -6,12 +6,12 @@ phpunit --order-by=duration ./tests/end-to-end/execution-order/_files/TestWithDi
 $tmpResultCache = tempnam(sys_get_temp_dir(), __FILE__);
 file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/_files/TestWithDifferentDurations.phpunit.result.cache.txt'));
 
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--debug';
-$_SERVER['argv'][3] = '--order-by=duration';
-$_SERVER['argv'][4] = '--cache-result';
-$_SERVER['argv'][5] = '--cache-result-file=' . $tmpResultCache;
-$_SERVER['argv'][6] = __DIR__ . '/_files/TestWithDifferentDurations.php';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--order-by=duration';
+$_SERVER['argv'][] = '--cache-result';
+$_SERVER['argv'][] = '--cache-result-file=' . $tmpResultCache;
+$_SERVER['argv'][] = __DIR__ . '/_files/TestWithDifferentDurations.php';
 
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

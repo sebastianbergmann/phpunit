@@ -2,14 +2,12 @@
 phpunit --teamcity ../../_files/ExceptionStackTest.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--no-configuration',
-    '--teamcity',
-    \realpath(__DIR__ . '/../../_files/ExceptionStackTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--teamcity';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/ExceptionStackTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

@@ -2,9 +2,9 @@
 phpunit --process-isolation ../../_files/FatalTest.php
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--process-isolation';
-$_SERVER['argv'][3] = __DIR__ . '/../_files/FatalTest.php';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--process-isolation';
+$_SERVER['argv'][] = __DIR__ . '/../_files/FatalTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
