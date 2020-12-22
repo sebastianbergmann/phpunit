@@ -2,6 +2,7 @@
 phpunit -c _files/phpunit.xml --no-logging --log-junit php://stdout _files/NoLogNoCcTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/_files/phpunit.xml');
 $_SERVER['argv'][] = '--no-logging';

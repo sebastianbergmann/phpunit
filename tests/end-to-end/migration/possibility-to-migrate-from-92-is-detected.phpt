@@ -2,6 +2,7 @@
 Possibility to migrate XML configuration file from PHPUnit 9.2 format is detected
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/possibility-to-migrate-from-92-is-detected/phpunit.xml';
 

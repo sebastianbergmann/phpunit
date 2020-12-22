@@ -4,6 +4,7 @@ phpunit --list-tests-xml ../../_files/DataProviderTest.php
 <?php declare(strict_types=1);
 $target = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);
 
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--list-tests-xml';
 $_SERVER['argv'][] = $target;

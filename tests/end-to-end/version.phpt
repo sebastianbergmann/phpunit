@@ -2,6 +2,7 @@
 phpunit --version
 --FILE--
 <?php
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--version';
 

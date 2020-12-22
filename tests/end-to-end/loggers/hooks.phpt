@@ -2,6 +2,7 @@
 phpunit --configuration _files/hooks.xml _files/HookTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/_files/hooks.xml');
 $_SERVER['argv'][] = \realpath(__DIR__ . '/_files/HookTest.php');

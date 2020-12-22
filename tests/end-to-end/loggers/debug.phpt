@@ -4,6 +4,7 @@ phpunit --debug -c tests/basic/configuration.basic.xml
 <?php declare(strict_types=1);
 require_once(__DIR__ . '/../../bootstrap.php');
 
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../basic/configuration.basic.xml');
 $_SERVER['argv'][] = '--debug';

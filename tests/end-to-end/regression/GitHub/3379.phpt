@@ -2,6 +2,7 @@
 GH-3379: Dependent test of skipped test has status -1
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/3379/';
 

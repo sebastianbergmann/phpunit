@@ -2,6 +2,7 @@
 phpunit --log-junit php://stdout ../../_files/DataProviderTest.php
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = 'php://stdout';

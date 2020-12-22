@@ -2,6 +2,7 @@
 #2380: Data Providers cannot be generators anymore
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/2380/Issue2380Test.php';
 

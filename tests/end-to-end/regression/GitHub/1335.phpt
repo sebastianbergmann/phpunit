@@ -2,6 +2,7 @@
 https://github.com/sebastianbergmann/phpunit/issues/1335
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--bootstrap';
 $_SERVER['argv'][] = __DIR__ . '/1335/bootstrap1335.php';

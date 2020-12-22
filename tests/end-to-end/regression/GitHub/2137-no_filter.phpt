@@ -2,6 +2,7 @@
 #2137: Error message for invalid dataprovider
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/2137/Issue2137Test.php';
 

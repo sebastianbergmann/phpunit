@@ -2,6 +2,7 @@
 Configuration migration from PHPUnit 9.2 format works
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--migrate-configuration';
 
 chdir(sys_get_temp_dir());

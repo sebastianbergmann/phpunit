@@ -2,6 +2,7 @@
 https://github.com/sebastianbergmann/phpunit/issues/3093
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--order-by=reverse';
 $_SERVER['argv'][] = __DIR__ . '/Issue3093Test.php';

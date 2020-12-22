@@ -3,6 +3,7 @@ https://github.com/sebastianbergmann/phpunit/issues/4498
 --FILE--
 <?php declare(strict_types=1);
 
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/4498/Issue4498Test.php';
 

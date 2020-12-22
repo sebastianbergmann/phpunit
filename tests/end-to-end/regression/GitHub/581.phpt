@@ -2,6 +2,7 @@
 GH-581: PHPUnit_Util_Type::export adds extra newlines in Windows
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/581/Issue581Test.php';
 

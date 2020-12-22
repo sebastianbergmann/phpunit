@@ -2,6 +2,7 @@
 phpunit --covers 'PHPUnit\TestFixture\AnnotationFilter'
 --FILE--
 <?php declare(strict_types=1);
+$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/phpunit.xml';
