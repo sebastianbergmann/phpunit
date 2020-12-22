@@ -2,10 +2,10 @@
 phpunit --exclude-group balanceIsInitiallyZero ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--exclude-group';
-$_SERVER['argv'][3] = 'balanceIsInitiallyZero';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/BankAccountTest.php';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--exclude-group';
+$_SERVER['argv'][] = 'balanceIsInitiallyZero';
+$_SERVER['argv'][] = __DIR__ . '/../_files/BankAccountTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

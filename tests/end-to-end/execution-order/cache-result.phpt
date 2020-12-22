@@ -4,17 +4,15 @@ phpunit --order-by=no-depends,reverse --cache-result --cache-result-file ./tests
 <?php declare(strict_types=1);
 $target = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);
 
-$arguments = [
-    '--no-configuration',
-    '--ignore-dependencies',   // keep coverage for legacy CLI option
-    '--order-by=reverse',
-    '--cache-result',
-    '--cache-result-file=' . $target,
-    realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--ignore-dependencies';   // keep coverage for legacy CLI option
+$_SERVER['argv'][] = '--order-by=reverse';
+$_SERVER['argv'][] = '--cache-result';
+$_SERVER['argv'][] = '--cache-result-file=' . $target;
+$_SERVER['argv'][] = realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main(false);
 
 print file_get_contents($target);

@@ -2,11 +2,11 @@
 phpunit --covers 'PHPUnit\TestFixture\AnnotationFilter'
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--debug';
-$_SERVER['argv'][2] = '--configuration';
-$_SERVER['argv'][3] = __DIR__ . '/phpunit.xml';
-$_SERVER['argv'][4] = '--covers';
-$_SERVER['argv'][5] = 'PHPUnit\TestFixture\AnnotationFilter';
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/phpunit.xml';
+$_SERVER['argv'][] = '--covers';
+$_SERVER['argv'][] = 'PHPUnit\TestFixture\AnnotationFilter';
 
 require __DIR__ . '/../../bootstrap.php';
 

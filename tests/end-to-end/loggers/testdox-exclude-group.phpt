@@ -2,17 +2,15 @@
 phpunit --testdox-text php://stdout --testdox-exclude-group one ../../_files/TestDoxGroupTest.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--no-configuration',
-    '--testdox-text',
-    'php://stdout',
-    '--testdox-exclude-group',
-    'one',
-    \realpath(__DIR__ . '/_files/TestDoxGroupTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--testdox-text';
+$_SERVER['argv'][] = 'php://stdout';
+$_SERVER['argv'][] = '--testdox-exclude-group';
+$_SERVER['argv'][] = 'one';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/_files/TestDoxGroupTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

@@ -2,9 +2,9 @@
 Configuration migration from PHPUnit 8.5 format works with custom filename
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--configuration';
-$_SERVER['argv'][2] = 'custom.xml';
-$_SERVER['argv'][3] = '--migrate-configuration';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = 'custom.xml';
+$_SERVER['argv'][] = '--migrate-configuration';
 
 chdir(sys_get_temp_dir());
 copy(__DIR__ . '/migration-from-85/phpunit-8.5.xml', 'custom.xml');

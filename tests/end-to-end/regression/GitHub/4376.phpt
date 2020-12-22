@@ -2,8 +2,8 @@
 https://github.com/sebastianbergmann/phpunit/issues/4376
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--configuration';
-$_SERVER['argv'][2] = __DIR__ . '/4376/';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/4376/';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

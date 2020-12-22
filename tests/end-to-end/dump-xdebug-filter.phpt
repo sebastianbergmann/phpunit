@@ -7,10 +7,10 @@ if (!extension_loaded('xdebug')) {
 }
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '-c';
-$_SERVER['argv'][2] = __DIR__ . '/../_files/configuration_xdebug_filter.xml';
-$_SERVER['argv'][3] = '--dump-xdebug-filter';
-$_SERVER['argv'][4] = 'php://stderr';
+$_SERVER['argv'][] = '-c';
+$_SERVER['argv'][] = __DIR__ . '/../_files/configuration_xdebug_filter.xml';
+$_SERVER['argv'][] = '--dump-xdebug-filter';
+$_SERVER['argv'][] = 'php://stderr';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

@@ -2,10 +2,10 @@
 phpunit --test-suffix .test.php,.my.php ../../_files/
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--test-suffix';
-$_SERVER['argv'][3] = '.test.php,.my.php';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--test-suffix';
+$_SERVER['argv'][] = '.test.php,.my.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
