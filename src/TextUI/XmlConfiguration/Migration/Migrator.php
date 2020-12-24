@@ -20,9 +20,9 @@ use PHPUnit\Util\Xml\SchemaDetector;
 final class Migrator
 {
     /**
+     * @throws Exception
      * @throws MigrationBuilderException
      * @throws MigrationException
-     * @throws Exception
      * @throws XmlException
      */
     public function migrate(string $filename): string

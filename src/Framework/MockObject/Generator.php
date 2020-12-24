@@ -88,15 +88,15 @@ final class Generator
      *
      * @param null|array $methods
      *
-     * @throws ClassIsFinalException
-     * @throws ClassAlreadyExistsException
-     * @throws ReflectionException
-     * @throws UnknownTypeException
-     * @throws InvalidMethodNameException
-     * @throws DuplicateMethodException
-     * @throws OriginalConstructorInvocationRequiredException
-     * @throws RuntimeException
      * @throws \PHPUnit\Framework\InvalidArgumentException
+     * @throws ClassAlreadyExistsException
+     * @throws ClassIsFinalException
+     * @throws DuplicateMethodException
+     * @throws InvalidMethodNameException
+     * @throws OriginalConstructorInvocationRequiredException
+     * @throws ReflectionException
+     * @throws RuntimeException
+     * @throws UnknownTypeException
      */
     public function getMock(string $type, $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject
     {
@@ -178,16 +178,16 @@ final class Generator
      * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      *
-     * @throws RuntimeException
-     * @throws ReflectionException
-     * @throws ClassIsFinalException
-     * @throws ClassAlreadyExistsException
-     * @throws UnknownTypeException
-     * @throws UnknownClassException
-     * @throws InvalidMethodNameException
-     * @throws DuplicateMethodException
-     * @throws OriginalConstructorInvocationRequiredException
      * @throws \PHPUnit\Framework\InvalidArgumentException
+     * @throws ClassAlreadyExistsException
+     * @throws ClassIsFinalException
+     * @throws DuplicateMethodException
+     * @throws InvalidMethodNameException
+     * @throws OriginalConstructorInvocationRequiredException
+     * @throws ReflectionException
+     * @throws RuntimeException
+     * @throws UnknownClassException
+     * @throws UnknownTypeException
      */
     public function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = null, bool $cloneArguments = true): MockObject
     {
@@ -239,17 +239,17 @@ final class Generator
      *
      * @psalm-param trait-string $traitName
      *
-     * @throws RuntimeException
-     * @throws ReflectionException
-     * @throws UnknownTraitException
-     * @throws ClassIsFinalException
-     * @throws ClassAlreadyExistsException
-     * @throws UnknownTypeException
-     * @throws UnknownClassException
-     * @throws InvalidMethodNameException
-     * @throws DuplicateMethodException
-     * @throws OriginalConstructorInvocationRequiredException
      * @throws \PHPUnit\Framework\InvalidArgumentException
+     * @throws ClassAlreadyExistsException
+     * @throws ClassIsFinalException
+     * @throws DuplicateMethodException
+     * @throws InvalidMethodNameException
+     * @throws OriginalConstructorInvocationRequiredException
+     * @throws ReflectionException
+     * @throws RuntimeException
+     * @throws UnknownClassException
+     * @throws UnknownTraitException
+     * @throws UnknownTypeException
      */
     public function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = null, bool $cloneArguments = true): MockObject
     {
@@ -284,8 +284,8 @@ final class Generator
      *
      * @psalm-param trait-string $traitName
      *
-     * @throws RuntimeException
      * @throws ReflectionException
+     * @throws RuntimeException
      * @throws UnknownTraitException
      */
     public function getObjectForTrait(string $traitName, string $traitClassName = '', bool $callAutoload = true, bool $callOriginalConstructor = false, array $arguments = []): object
@@ -323,9 +323,9 @@ final class Generator
     }
 
     /**
-     * @throws RuntimeException
-     * @throws ReflectionException
      * @throws ClassIsFinalException
+     * @throws ReflectionException
+     * @throws RuntimeException
      */
     public function generate(string $type, array $methods = null, string $mockClassName = '', bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false): MockClass
     {
@@ -580,8 +580,8 @@ final class Generator
     }
 
     /**
-     * @throws RuntimeException
      * @throws ReflectionException
+     * @throws RuntimeException
      */
     private function getObject(MockType $mockClass, $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true)
     {
@@ -645,9 +645,9 @@ final class Generator
     }
 
     /**
-     * @throws RuntimeException
-     * @throws ReflectionException
      * @throws ClassIsFinalException
+     * @throws ReflectionException
+     * @throws RuntimeException
      */
     private function generateMock(string $type, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
