@@ -230,6 +230,7 @@ return PhpCsFixer\Config::create()
             'annotations' => [
                 'covers',
                 'dataProvider',
+                'throws',
                 'uses',
             ],
         ],
