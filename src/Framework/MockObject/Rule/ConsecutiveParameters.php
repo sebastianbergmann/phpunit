@@ -60,8 +60,8 @@ final class ConsecutiveParameters implements ParametersRule
     }
 
     /**
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function apply(BaseInvocation $invocation): void
     {
@@ -87,8 +87,8 @@ final class ConsecutiveParameters implements ParametersRule
      *
      * @param int $callIndex
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     private function verifyInvocation(BaseInvocation $invocation, $callIndex): void
     {

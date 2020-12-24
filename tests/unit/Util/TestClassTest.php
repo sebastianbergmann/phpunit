@@ -66,9 +66,9 @@ final class TestClassTest extends TestCase
      * @testdox Test::getRequirements() for $test
      * @dataProvider requirementsProvider
      *
-     * @throws Warning
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Warning
      */
     public function testGetRequirements($test, $result): void
     {
@@ -512,10 +512,10 @@ final class TestClassTest extends TestCase
      * @testdox Test::getRequirements() with constraints for $test
      * @dataProvider requirementsWithVersionConstraintsProvider
      *
-     * @throws Exception
-     * @throws Warning
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
+     * @throws Warning
      */
     public function testGetRequirementsWithVersionConstraints($test, array $result): void
     {
@@ -704,9 +704,9 @@ final class TestClassTest extends TestCase
      * @testdox Test::getMissingRequirements() for $test
      * @dataProvider missingRequirementsProvider
      *
-     * @throws Warning
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Warning
      */
     public function testGetMissingRequirements($test, $result): void
     {
@@ -1208,9 +1208,9 @@ final class TestClassTest extends TestCase
     /**
      * @dataProvider getLinesToBeCoveredProvider
      *
-     * @throws CodeCoverageException
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws CodeCoverageException
      */
     public function testGetLinesToBeCovered($test, $lines): void
     {

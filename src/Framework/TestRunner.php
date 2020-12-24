@@ -38,10 +38,10 @@ use Throwable;
 final class TestRunner
 {
     /**
-     * @throws CodeCoverageException
-     * @throws UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws CodeCoverageException
+     * @throws UnintentionallyCoveredCodeException
      */
     public function run(TestCase $test, TestResult $result): void
     {

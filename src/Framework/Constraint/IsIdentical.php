@@ -51,8 +51,8 @@ final class IsIdentical extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
