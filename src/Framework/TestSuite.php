@@ -35,7 +35,6 @@ use function strpos;
 use function substr;
 use Iterator;
 use IteratorAggregate;
-use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Test as TestUtil;
@@ -311,33 +310,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         if ($testClass instanceof self) {
             $this->addTest($testClass);
         } elseif ($testClass instanceof ReflectionClass) {
-            $suiteMethod = false;
-
-            if (!$testClass->isAbstract() && $testClass->hasMethod(BaseTestRunner::SUITE_METHOD_NAME)) {
-                try {
-                    $method = $testClass->getMethod(
-                        BaseTestRunner::SUITE_METHOD_NAME
-                    );
-                    // @codeCoverageIgnoreStart
-                } catch (ReflectionException $e) {
-                    throw new Exception(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
-                // @codeCoverageIgnoreEnd
-
-                if ($method->isStatic()) {
-                    $this->addTest(
-                        $method->invoke(null, $testClass->getName())
-                    );
-
-                    $suiteMethod = true;
-                }
-            }
-
-            if (!$suiteMethod && !$testClass->isAbstract() && $testClass->isSubclassOf(TestCase::class)) {
+            if (!$testClass->isAbstract() && $testClass->isSubclassOf(TestCase::class)) {
                 $this->addTest(new self($testClass));
             }
         } else {
@@ -436,49 +409,29 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 continue;
             }
 
-            if (!$class->isAbstract()) {
-                if ($class->hasMethod(BaseTestRunner::SUITE_METHOD_NAME)) {
-                    try {
-                        $method = $class->getMethod(
-                            BaseTestRunner::SUITE_METHOD_NAME
-                        );
-                        // @codeCoverageIgnoreStart
-                    } catch (ReflectionException $e) {
-                        throw new Exception(
-                            $e->getMessage(),
-                            (int) $e->getCode(),
-                            $e
-                        );
-                    }
-                    // @codeCoverageIgnoreEnd
+            if (!$class->isAbstract() && $class->implementsInterface(Test::class)) {
+                $expectedClassName = $shortName;
 
-                    if ($method->isStatic()) {
-                        $this->addTest($method->invoke(null, $className));
-                    }
-                } elseif ($class->implementsInterface(Test::class)) {
-                    $expectedClassName = $shortName;
-
-                    if (($pos = strpos($expectedClassName, '.')) !== false) {
-                        $expectedClassName = substr(
-                            $expectedClassName,
-                            0,
-                            $pos
-                        );
-                    }
-
-                    if ($class->getShortName() !== $expectedClassName) {
-                        $this->addWarning(
-                            sprintf(
-                                "Test case class not matching filename is deprecated\n               in %s\n               Class name was '%s', expected '%s'",
-                                $filename,
-                                $class->getShortName(),
-                                $expectedClassName
-                            )
-                        );
-                    }
-
-                    $this->addTestSuite($class);
+                if (($pos = strpos($expectedClassName, '.')) !== false) {
+                    $expectedClassName = substr(
+                        $expectedClassName,
+                        0,
+                        $pos
+                    );
                 }
+
+                if ($class->getShortName() !== $expectedClassName) {
+                    $this->addWarning(
+                        sprintf(
+                            "Test case class not matching filename is deprecated\n               in %s\n               Class name was '%s', expected '%s'",
+                            $filename,
+                            $class->getShortName(),
+                            $expectedClassName
+                        )
+                    );
+                }
+
+                $this->addTestSuite($class);
             }
         }
 

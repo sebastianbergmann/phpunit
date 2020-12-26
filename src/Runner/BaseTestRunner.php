@@ -15,7 +15,6 @@ use function substr;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use ReflectionClass;
-use ReflectionException;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
@@ -23,11 +22,6 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  */
 abstract class BaseTestRunner
 {
-    /**
-     * @var string
-     */
-    public const SUITE_METHOD_NAME = 'suite';
-
     /**
      * Returns the Test corresponding to the given suite.
      * This is a template method, subclasses override
@@ -60,30 +54,14 @@ abstract class BaseTestRunner
         }
 
         try {
-            $testClass = $this->loadSuiteClass(
-                $suiteClassFile
-            );
+            $testClass = $this->loadSuiteClass($suiteClassFile);
         } catch (\PHPUnit\Exception $e) {
             $this->runFailed($e->getMessage());
 
             return null;
         }
 
-        try {
-            $suiteMethod = $testClass->getMethod(self::SUITE_METHOD_NAME);
-
-            if (!$suiteMethod->isStatic()) {
-                $this->runFailed(
-                    'suite() method must be static.'
-                );
-
-                return null;
-            }
-
-            $test = $suiteMethod->invoke(null, $testClass->getName());
-        } catch (ReflectionException $e) {
-            $test = new TestSuite($testClass);
-        }
+        $test = new TestSuite($testClass);
 
         $this->clearStatus();
 
