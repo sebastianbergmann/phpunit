@@ -19,7 +19,6 @@ use function stripos;
 use function strlen;
 use function substr;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\FileLoader;
 use ReflectionClass;
 use ReflectionException;
 
@@ -37,8 +36,7 @@ final class TestSuiteLoader
         $loadedClasses  = get_declared_classes();
 
         if (!class_exists($suiteClassName, false)) {
-            /* @noinspection UnusedFunctionResultInspection */
-            FileLoader::checkAndLoad($suiteClassFile);
+            include_once $suiteClassFile;
 
             $loadedClasses = array_values(
                 array_diff(get_declared_classes(), $loadedClasses)

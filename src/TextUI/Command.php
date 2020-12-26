@@ -20,6 +20,7 @@ use function extension_loaded;
 use function fgets;
 use function file_get_contents;
 use function file_put_contents;
+use function fopen;
 use function getcwd;
 use function ini_get;
 use function ini_set;
@@ -47,7 +48,6 @@ use PHPUnit\TextUI\XmlConfiguration\Generator;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\Migrator;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\TextTestListRenderer;
@@ -468,8 +468,17 @@ class Command
      */
     protected function handleBootstrap(string $filename): void
     {
+        if (@fopen($filename, 'r') === false) {
+            $this->exitWithErrorMessage(
+                sprintf(
+                    'Cannot open boostrap script "%s".' . "\n",
+                    $filename
+                )
+            );
+        }
+
         try {
-            FileLoader::checkAndLoad($filename);
+            include_once $filename;
         } catch (Throwable $t) {
             $this->exitWithErrorMessage($t->getMessage());
         }

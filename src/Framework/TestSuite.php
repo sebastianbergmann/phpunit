@@ -38,7 +38,6 @@ use IteratorAggregate;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
@@ -375,7 +374,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         // The given file may contain further stub classes in addition to the
         // test class itself. Figure out the actual test class.
-        $filename   = FileLoader::checkAndLoad($filename);
+        include_once $filename;
         $newClasses = array_diff(get_declared_classes(), $this->declaredClasses);
 
         // The diff is empty in case a parent class (with test methods) is added

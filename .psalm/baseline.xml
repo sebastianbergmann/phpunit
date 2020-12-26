@@ -704,8 +704,7 @@
       <code>is_string($testClass)</code>
       <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
     </DocblockTypeContradiction>
-    <MissingThrowsDocblock occurrences="3">
-      <code>FileLoader::checkAndLoad($filename)</code>
+    <MissingThrowsDocblock occurrences="2">
       <code>new PhptTestCase($filename)</code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument occurrences="3">
@@ -724,6 +723,9 @@
       <code>null === $this-&gt;backupStaticAttributes &amp;&amp; is_bool($backupStaticAttributes)</code>
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
+    <UnresolvableInclude occurrences="1">
+      <code>include_once $filename</code>
+    </UnresolvableInclude>
   </file>
   <file src="src/Runner/DefaultTestResultCache.php">
     <MissingClosureReturnType occurrences="1">
@@ -758,9 +760,9 @@
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>FileLoader::checkAndLoad($suiteClassFile)</code>
-    </MissingThrowsDocblock>
+    <UnresolvableInclude occurrences="1">
+      <code>include_once $suiteClassFile</code>
+    </UnresolvableInclude>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
     <MissingClosureParamType occurrences="6">
@@ -825,6 +827,9 @@
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof Configuration)</code>
     </RedundantCondition>
+    <UnresolvableInclude occurrences="1">
+      <code>include_once $filename</code>
+    </UnresolvableInclude>
     <UnsafeInstantiation occurrences="1">
       <code>new static</code>
     </UnsafeInstantiation>
