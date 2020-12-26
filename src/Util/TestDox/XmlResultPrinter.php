@@ -162,7 +162,7 @@ final class XmlResultPrinter extends Printer implements TestListener
         $testNode->setAttribute('methodName', $test->getName());
         $testNode->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(get_class($test)));
         $testNode->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestCase($test));
-        $testNode->setAttribute('status', (string) $test->getStatus());
+        $testNode->setAttribute('status', $test->status()->type());
         $testNode->setAttribute('time', (string) $time);
         $testNode->setAttribute('size', (string) $test->getSize());
         $testNode->setAttribute('groups', implode(',', $groups));

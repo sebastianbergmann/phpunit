@@ -66,13 +66,13 @@ final class TestSuiteSorter
      * List of sorting weights for all test result codes. A higher number gives higher priority.
      */
     private const DEFECT_SORT_WEIGHT = [
-        BaseTestRunner::STATUS_ERROR      => 6,
-        BaseTestRunner::STATUS_FAILURE    => 5,
-        BaseTestRunner::STATUS_WARNING    => 4,
-        BaseTestRunner::STATUS_INCOMPLETE => 3,
-        BaseTestRunner::STATUS_RISKY      => 2,
-        BaseTestRunner::STATUS_SKIPPED    => 1,
-        BaseTestRunner::STATUS_UNKNOWN    => 0,
+        'error'      => 6,
+        'failure'    => 5,
+        'warning'    => 4,
+        'incomplete' => 3,
+        'risky'      => 2,
+        'skipped'    => 1,
+        'unknown'    => 0,
     ];
 
     private const SIZE_SORT_WEIGHT = [
@@ -207,7 +207,7 @@ final class TestSuiteSorter
             }
 
             if (!isset($this->defectSortOrder[$test->sortId()])) {
-                $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->getState($test->sortId())];
+                $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->status($test->sortId())->type()];
                 $max                                    = max($max, $this->defectSortOrder[$test->sortId()]);
             }
         }
@@ -314,7 +314,7 @@ final class TestSuiteSorter
             return 0;
         }
 
-        return $this->cache->getTime($a->sortId()) <=> $this->cache->getTime($b->sortId());
+        return $this->cache->time($a->sortId()) <=> $this->cache->time($b->sortId());
     }
 
     /**

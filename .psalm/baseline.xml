@@ -1329,7 +1329,7 @@
       <code>$prefix['trace']</code>
     </PossiblyInvalidArrayOffset>
     <PossiblyUndefinedArrayOffset occurrences="1">
-      <code>self::STATUS_STYLES[$result['status']]['message']</code>
+      <code>self::STATUS_STYLES[$result['status']-&gt;type()]['message']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">
@@ -1353,7 +1353,7 @@
   </file>
   <file src="src/Util/TestDox/TestDoxPrinter.php">
     <MissingThrowsDocblock occurrences="1">
-      <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
+      <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
     <UndefinedInterfaceMethod occurrences="1">
       <code>getName</code>

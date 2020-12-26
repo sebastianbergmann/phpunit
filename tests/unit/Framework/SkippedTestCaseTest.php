@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use function array_shift;
 use function sprintf;
-use PHPUnit\Runner\BaseTestRunner;
 
 final class SkippedTestCaseTest extends TestCase
 {
@@ -71,7 +70,7 @@ final class SkippedTestCaseTest extends TestCase
 
         $result = $testCase->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $testCase->getStatus());
+        $this->assertTrue($testCase->status()->isSkipped());
         $this->assertSame(1, $result->skippedCount());
 
         $failures = $result->skipped();

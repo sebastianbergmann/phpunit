@@ -15,10 +15,10 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\WarningTestCase;
-use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\TextUI\ResultPrinter as ResultPrinterInterface;
 use PHPUnit\Util\Printer;
 use Throwable;
@@ -35,7 +35,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
      */
     protected $testClass = '';
 
-    protected ?int $testStatus = null;
+    protected ?TestStatus $testStatus = null;
 
     protected array $tests = [];
 
@@ -95,7 +95,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_ERROR;
+        $this->testStatus = TestStatus::error();
         $this->failed++;
     }
 
@@ -108,7 +108,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_WARNING;
+        $this->testStatus = TestStatus::warning();
         $this->warned++;
     }
 
@@ -121,7 +121,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_FAILURE;
+        $this->testStatus = TestStatus::failure();
         $this->failed++;
     }
 
@@ -134,7 +134,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_INCOMPLETE;
+        $this->testStatus = TestStatus::incomplete();
         $this->incomplete++;
     }
 
@@ -147,7 +147,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_RISKY;
+        $this->testStatus = TestStatus::risky();
         $this->risky++;
     }
 
@@ -160,7 +160,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_SKIPPED;
+        $this->testStatus = TestStatus::skipped();
         $this->skipped++;
     }
 
@@ -207,7 +207,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             $this->currentTestMethodPrettified = $this->prettifier->prettifyTestCase($test);
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_PASSED;
+        $this->testStatus = TestStatus::success();
     }
 
     /**
@@ -228,7 +228,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
     protected function doEndClass(): void
     {
         foreach ($this->tests as $test) {
-            $this->onTest($test[0], $test[1] === BaseTestRunner::STATUS_PASSED);
+            $this->onTest($test[0], $test[1]->isSuccess());
         }
 
         $this->endClass($this->testClass);

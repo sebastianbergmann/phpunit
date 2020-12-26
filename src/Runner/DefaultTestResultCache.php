@@ -15,15 +15,22 @@ use function defined;
 use function dirname;
 use function file_get_contents;
 use function file_put_contents;
-use function in_array;
 use function is_dir;
 use function is_file;
 use function is_float;
-use function is_int;
 use function is_string;
 use function serialize;
 use function sprintf;
 use function unserialize;
+use PHPUnit\Framework\TestStatus\Error;
+use PHPUnit\Framework\TestStatus\Failure;
+use PHPUnit\Framework\TestStatus\Incomplete;
+use PHPUnit\Framework\TestStatus\Risky;
+use PHPUnit\Framework\TestStatus\Skipped;
+use PHPUnit\Framework\TestStatus\Success;
+use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\Framework\TestStatus\Unknown;
+use PHPUnit\Framework\TestStatus\Warning;
 use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\Filesystem;
 use Serializable;
@@ -39,20 +46,6 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
     public const DEFAULT_RESULT_CACHE_FILENAME = '.phpunit.result.cache';
 
     /**
-     * Provide extra protection against incomplete or corrupt caches.
-     *
-     * @var int[]
-     */
-    private const ALLOWED_CACHE_TEST_STATUSES = [
-        BaseTestRunner::STATUS_SKIPPED,
-        BaseTestRunner::STATUS_INCOMPLETE,
-        BaseTestRunner::STATUS_FAILURE,
-        BaseTestRunner::STATUS_ERROR,
-        BaseTestRunner::STATUS_RISKY,
-        BaseTestRunner::STATUS_WARNING,
-    ];
-
-    /**
      * Path and filename for result cache file.
      */
     private string $cacheFilename;
@@ -65,7 +58,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
      * $this->defects[$testName] = BaseTestRunner::TEST_SKIPPED;
      * </code>
      *
-     * @var array<string, int>
+     * @var array<string, TestStatus>
      */
     private array $defects = [];
 
@@ -123,16 +116,16 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
         );
     }
 
-    public function setState(string $testName, int $state): void
+    public function setStatus(string $testName, TestStatus $status): void
     {
-        if ($state !== BaseTestRunner::STATUS_PASSED) {
-            $this->defects[$testName] = $state;
+        if (!$status->isSuccess()) {
+            $this->defects[$testName] = $status;
         }
     }
 
-    public function getState(string $testName): int
+    public function status(string $testName): TestStatus
     {
-        return $this->defects[$testName] ?? BaseTestRunner::STATUS_UNKNOWN;
+        return $this->defects[$testName] ?? TestStatus::unknown();
     }
 
     public function setTime(string $testName, float $time): void
@@ -140,7 +133,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
         $this->times[$testName] = $time;
     }
 
-    public function getTime(string $testName): float
+    public function time(string $testName): float
     {
         return $this->times[$testName] ?? 0.0;
     }
@@ -163,7 +156,22 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
 
         $cache = Handler::invokeIgnoringWarnings(
             static function () use ($cacheData) {
-                return @unserialize($cacheData, ['allowed_classes' => [self::class]]);
+                return @unserialize(
+                    $cacheData,
+                    [
+                        'allowed_classes' => [
+                            self::class,
+                            Error::class,
+                            Failure::class,
+                            Incomplete::class,
+                            Risky::class,
+                            Skipped::class,
+                            Success::class,
+                            Unknown::class,
+                            Warning::class,
+                        ],
+                    ]
+                );
             }
         );
 
@@ -180,7 +188,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
     public function copyStateToCache(self $targetCache): void
     {
         foreach ($this->defects as $name => $state) {
-            $targetCache->setState($name, $state);
+            $targetCache->setStatus($name, $state);
         }
 
         foreach ($this->times as $name => $time) {
@@ -218,13 +226,11 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
         }
 
         if (isset($data['defects'])) {
-            foreach ($data['defects'] as $testName => $testResult) {
+            foreach ($data['defects'] as $testName => $testStatus) {
                 assert(is_string($testName));
-                assert(is_int($testResult));
+                assert($testStatus instanceof TestStatus);
 
-                if (in_array($testResult, self::ALLOWED_CACHE_TEST_STATUSES, true)) {
-                    $this->defects[$testName] = $testResult;
-                }
+                $this->defects[$testName] = $testStatus;
             }
         }
     }

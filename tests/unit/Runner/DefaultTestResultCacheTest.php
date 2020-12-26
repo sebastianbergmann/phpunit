@@ -29,6 +29,6 @@ final class DefaultTestResultCacheTest extends TestCase
 
     public function testGetTimeForNonExistentTestNameReturnsFloatZero(): void
     {
-        $this->assertSame(0.0, $this->subject->getTime('doesNotExist'));
+        $this->assertSame(0.0, $this->subject->time('doesNotExist'));
     }
 }

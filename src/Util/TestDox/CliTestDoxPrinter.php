@@ -23,8 +23,9 @@ use function strpos;
 use function trim;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Runner\BaseTestRunner;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Color;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
@@ -68,41 +69,41 @@ class CliTestDoxPrinter extends TestDoxPrinter
     ];
 
     private const STATUS_STYLES = [
-        BaseTestRunner::STATUS_PASSED => [
+        'success' => [
             'symbol' => '✔',
             'color'  => 'fg-green',
         ],
-        BaseTestRunner::STATUS_ERROR => [
+        'error' => [
             'symbol'  => '✘',
             'color'   => 'fg-yellow',
             'message' => 'bg-yellow,fg-black',
         ],
-        BaseTestRunner::STATUS_FAILURE => [
+        'failure' => [
             'symbol'  => '✘',
             'color'   => 'fg-red',
             'message' => 'bg-red,fg-white',
         ],
-        BaseTestRunner::STATUS_SKIPPED => [
+        'skipped' => [
             'symbol'  => '↩',
             'color'   => 'fg-cyan',
             'message' => 'fg-cyan',
         ],
-        BaseTestRunner::STATUS_RISKY => [
+        'risky' => [
             'symbol'  => '☢',
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
         ],
-        BaseTestRunner::STATUS_INCOMPLETE => [
+        'incomplete' => [
             'symbol'  => '∅',
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
         ],
-        BaseTestRunner::STATUS_WARNING => [
+        'warning' => [
             'symbol'  => '⚠',
             'color'   => 'fg-yellow',
             'message' => 'fg-yellow',
         ],
-        BaseTestRunner::STATUS_UNKNOWN => [
+        'unknown' => [
             'symbol'  => '?',
             'color'   => 'fg-blue',
             'message' => 'fg-white,bg-blue',
@@ -157,9 +158,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    protected function registerTestResult(Test $test, ?Throwable $t, int $status, float $time, bool $verbose): void
+    protected function registerTestResult(Test $test, ?Throwable $t, TestStatus $status, float $time, bool $verbose): void
     {
-        if ($status !== BaseTestRunner::STATUS_PASSED) {
+        if (!$status->isSuccess()) {
             $this->nonSuccessfulTestResults[] = $this->testIndex;
         }
 
@@ -198,8 +199,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
             $testName = $result['testMethod'];
         }
 
-        $style = self::STATUS_STYLES[$result['status']];
-        $line  = sprintf(
+        $style = self::STATUS_STYLES[$result['status']->type()];
+
+        $line = sprintf(
             ' %s %s%s' . PHP_EOL,
             $this->colorizeTextBox($style['color'], $style['symbol']),
             $testName,
@@ -212,9 +214,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
         $this->write($result['message']);
     }
 
-    protected function formatThrowable(Throwable $t, ?int $status = null): string
+    protected function formatThrowable(Throwable $t): string
     {
-        return trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
+        return trim(TestFailure::exceptionToString($t));
     }
 
     protected function colorizeMessageAndDiff(string $style, string $buffer): array
@@ -280,7 +282,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     protected function formatTestResultMessage(Throwable $t, array $result, ?string $prefix = null): string
     {
-        $message = $this->formatThrowable($t, $result['status']);
+        $message = $this->formatThrowable($t);
         $diff    = '';
 
         if (!($this->verbose || $result['verbose'])) {
@@ -288,7 +290,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
 
         if ($message && $this->colors) {
-            $style            = self::STATUS_STYLES[$result['status']]['message'] ?? '';
+            $style            = self::STATUS_STYLES[$result['status']->type()]['message'] ?? '';
             [$message, $diff] = $this->colorizeMessageAndDiff($style, $message);
         }
 
@@ -297,7 +299,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
 
         if ($this->colors) {
-            $color  = self::STATUS_STYLES[$result['status']]['color'] ?? '';
+            $color  = self::STATUS_STYLES[$result['status']->type()]['color'] ?? '';
             $prefix = array_map(static function ($p) use ($color) {
                 return Color::colorize($color, $p);
             }, self::PREFIX_DECORATED);

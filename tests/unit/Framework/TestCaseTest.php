@@ -27,7 +27,6 @@ use DependencySuccessTest;
 use InvalidArgumentException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
-use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\TestFixture\ChangeCurrentWorkingDirectoryTest;
 use PHPUnit\TestFixture\ClassWithScalarTypeDeclarations;
 use PHPUnit\TestFixture\DoNoAssertionTestCase;
@@ -128,7 +127,7 @@ class TestCaseTest extends TestCase
         $test   = new Success;
         $result = $test->run();
 
-        $this->assertEquals(BaseTestRunner::STATUS_PASSED, $test->getStatus());
+        $this->assertTrue($test->status()->isSuccess());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
         $this->assertEquals(0, $result->skippedCount());
@@ -140,7 +139,7 @@ class TestCaseTest extends TestCase
         $test   = new Failure;
         $result = $test->run();
 
-        $this->assertEquals(BaseTestRunner::STATUS_FAILURE, $test->getStatus());
+        $this->assertTrue($test->status()->isFailure());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(1, $result->failureCount());
         $this->assertEquals(0, $result->skippedCount());
@@ -152,7 +151,7 @@ class TestCaseTest extends TestCase
         $test   = new TestError;
         $result = $test->run();
 
-        $this->assertEquals(BaseTestRunner::STATUS_ERROR, $test->getStatus());
+        $this->assertTrue($test->status()->isError());
         $this->assertEquals(1, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
         $this->assertEquals(0, $result->skippedCount());
@@ -164,8 +163,8 @@ class TestCaseTest extends TestCase
         $test   = new TestSkipped;
         $result = $test->run();
 
-        $this->assertEquals(BaseTestRunner::STATUS_SKIPPED, $test->getStatus());
-        $this->assertEquals('Skipped test', $test->getStatusMessage());
+        $this->assertTrue($test->status()->isSkipped());
+        $this->assertEquals('Skipped test', $test->status()->message());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
         $this->assertEquals(1, $result->skippedCount());
@@ -177,8 +176,8 @@ class TestCaseTest extends TestCase
         $test   = new TestIncomplete;
         $result = $test->run();
 
-        $this->assertEquals(BaseTestRunner::STATUS_INCOMPLETE, $test->getStatus());
-        $this->assertEquals('Incomplete test', $test->getStatusMessage());
+        $this->assertTrue($test->status()->isIncomplete());
+        $this->assertEquals('Incomplete test', $test->status()->message());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
         $this->assertEquals(0, $result->skippedCount());
@@ -243,8 +242,8 @@ class TestCaseTest extends TestCase
         $this->assertTrue($test->testSomething);
         $this->assertTrue($test->assertPostConditions);
         $this->assertTrue($test->tearDown);
-        $this->assertEquals(BaseTestRunner::STATUS_ERROR, $test->getStatus());
-        $this->assertSame('throw Exception in tearDown()', $test->getStatusMessage());
+        $this->assertTrue($test->status()->isError());
+        $this->assertSame('throw Exception in tearDown()', $test->status()->message());
     }
 
     public function testExceptionInTestIsDetectedInTeardown(): void
@@ -378,7 +377,7 @@ class TestCaseTest extends TestCase
         $this->assertCount(1, $result);
         $this->assertEquals(
             "Failed asserting that exception message 'A runtime error occurred' contains 'A logic error occurred'.",
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -428,7 +427,7 @@ class TestCaseTest extends TestCase
         $this->assertCount(1, $result);
         $this->assertEquals(
             "Failed asserting that exception message 'A runtime error occurred' matches '/logic .*? occurred/'.",
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -442,7 +441,7 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(
             "Invalid expected exception message regex given: '#runtime .*? occurred/'",
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -726,7 +725,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'PHPUnit >= 1111111 is required.',
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -738,7 +737,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'PHP >= 9999999 is required.',
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -750,7 +749,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'Operating system matching /DOESNOTEXIST/i is required.',
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -762,7 +761,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'Operating system DOESNOTEXIST is required.',
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -774,7 +773,7 @@ class TestCaseTest extends TestCase
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
             'Function testFunc is required.',
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -785,7 +784,7 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(
             'Extension testExt is required.',
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -796,7 +795,7 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(
             'Extension testExt >= 1.8.0 is required.',
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -815,7 +814,7 @@ class TestCaseTest extends TestCase
             'Extension testExtOne is required.' . PHP_EOL .
             'Extension testExt2 is required.' . PHP_EOL .
             'Extension testExtThree >= 2.0 is required.',
-            $test->getStatusMessage()
+            $test->status()->message()
         );
     }
 
@@ -943,7 +942,7 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_ERROR, $test->getStatus());
+        $this->assertTrue($test->status()->isError());
         $this->assertTrue($test->hasFailed());
     }
 
@@ -953,7 +952,7 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_PASSED, $test->getStatus());
+        $this->assertTrue($test->status()->isSuccess());
         $this->assertFalse($test->hasFailed());
     }
 
@@ -1150,7 +1149,7 @@ class TestCaseTest extends TestCase
     {
         $test = new TestWithDifferentStatuses();
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $test->getStatus());
+        $this->assertTrue($test->status()->isUnknown());
         $this->assertFalse($test->hasFailed());
     }
 
@@ -1160,7 +1159,7 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_FAILURE, $test->getStatus());
+        $this->assertTrue($test->status()->isFailure());
         $this->assertTrue($test->hasFailed());
     }
 
@@ -1170,7 +1169,7 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_ERROR, $test->getStatus());
+        $this->assertTrue($test->status()->isError());
         $this->assertTrue($test->hasFailed());
     }
 
@@ -1180,7 +1179,7 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_PASSED, $test->getStatus());
+        $this->assertTrue($test->status()->isSuccess());
         $this->assertFalse($test->hasFailed());
     }
 
@@ -1190,7 +1189,7 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_INCOMPLETE, $test->getStatus());
+        $this->assertTrue($test->status()->isIncomplete());
         $this->assertFalse($test->hasFailed());
     }
 
@@ -1200,7 +1199,7 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_RISKY, $test->getStatus());
+        $this->assertTrue($test->status()->isRisky());
         $this->assertFalse($test->hasFailed());
     }
 
@@ -1210,7 +1209,7 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $test->getStatus());
+        $this->assertTrue($test->status()->isSkipped());
         $this->assertFalse($test->hasFailed());
     }
 
@@ -1220,7 +1219,7 @@ class TestCaseTest extends TestCase
 
         $test->run();
 
-        $this->assertSame(BaseTestRunner::STATUS_WARNING, $test->getStatus());
+        $this->assertTrue($test->status()->isWarning());
         $this->assertFalse($test->hasFailed());
     }
 
@@ -1303,7 +1302,7 @@ class TestCaseTest extends TestCase
 
         $result = $test->run();
 
-        $this->assertEquals(BaseTestRunner::STATUS_PASSED, $test->getStatus());
+        $this->assertTrue($test->status()->isSuccess());
         $this->assertEquals(0, $result->errorCount());
         $this->assertEquals(0, $result->failureCount());
         $this->assertEquals(0, $result->skippedCount());

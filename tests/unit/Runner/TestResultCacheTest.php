@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\BaseTestRunner;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Runner\DefaultTestResultCache;
 
 /**
@@ -23,28 +23,28 @@ final class TestResultCacheTest extends TestCase
         $cache     = new DefaultTestResultCache($cacheFile);
         $cache->load();
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState(\MultiDependencyTest::class . '::testOne'));
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $cache->getState(\MultiDependencyTest::class . '::testFive'));
+        $this->assertTrue($cache->status(\MultiDependencyTest::class . '::testOne')->isUnknown());
+        $this->assertTrue($cache->status(\MultiDependencyTest::class . '::testFive')->isSkipped());
     }
 
     public function testDoesClearCacheBeforeLoad(): void
     {
         $cacheFile = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
         $cache     = new DefaultTestResultCache($cacheFile);
-        $cache->setState('someTest', BaseTestRunner::STATUS_FAILURE);
+        $cache->setStatus('someTest', TestStatus::failure());
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState(\MultiDependencyTest::class . '::testFive'));
+        $this->assertTrue($cache->status(\MultiDependencyTest::class . '::testFive')->isUnknown());
 
         $cache->load();
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState(\MultiDependencyTest::class . '::someTest'));
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $cache->getState(\MultiDependencyTest::class . '::testFive'));
+        $this->assertTrue($cache->status(\MultiDependencyTest::class . '::someTest')->isUnknown());
+        $this->assertTrue($cache->status(\MultiDependencyTest::class . '::testFive')->isSkipped());
     }
 
     public function testShouldNotSerializePassedTestsAsDefectButTimeIsStored(): void
     {
         $cache = new DefaultTestResultCache;
-        $cache->setState('testOne', BaseTestRunner::STATUS_PASSED);
+        $cache->setStatus('testOne', TestStatus::success());
         $cache->setTime('testOne', 123);
 
         $data = \serialize($cache);
@@ -57,14 +57,14 @@ final class TestResultCacheTest extends TestCase
         $cacheFile = \tempnam(\sys_get_temp_dir(), 'phpunit_');
         $cache     = new DefaultTestResultCache($cacheFile);
         $testName  = 'test' . \uniqid();
-        $cache->setState($testName, BaseTestRunner::STATUS_SKIPPED);
+        $cache->setStatus($testName, TestStatus::skipped());
         $cache->persist();
         unset($cache);
 
         // Load the cache we just created
         $loadedCache = new DefaultTestResultCache($cacheFile);
         $loadedCache->load();
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $loadedCache->getState($testName));
+        $this->assertTrue($loadedCache->status($testName)->isSkipped());
 
         // Clean up
         \unlink($cacheFile);

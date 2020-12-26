@@ -77,7 +77,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnCallback as ReturnCallbackStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf as ReturnSelfStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
-use PHPUnit\Runner\BaseTestRunner;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Error\Deprecation;
 use PHPUnit\Util\Error\Error;
@@ -187,9 +187,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private ?MockGenerator $mockObjectGenerator = null;
 
-    private int $status = BaseTestRunner::STATUS_UNKNOWN;
-
-    private string $statusMessage = '';
+    private ?TestStatus $status = null;
 
     private int $numAssertions = 0;
 
@@ -532,26 +530,25 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->expectExceptionMessageMatches($regularExpression);
     }
 
-    public function getStatus(): int
+    public function status(): TestStatus
     {
+        if ($this->status === null) {
+            return TestStatus::unknown();
+        }
+
         return $this->status;
     }
 
     public function markAsRisky(): void
     {
-        $this->status = BaseTestRunner::STATUS_RISKY;
-    }
-
-    public function getStatusMessage(): string
-    {
-        return $this->statusMessage;
+        $this->status = TestStatus::risky();
     }
 
     public function hasFailed(): bool
     {
-        $status = $this->getStatus();
+        $status = $this->status();
 
-        return $status === BaseTestRunner::STATUS_FAILURE || $status === BaseTestRunner::STATUS_ERROR;
+        return $status->isFailure() || $status->isError();
     }
 
     /**
@@ -853,23 +850,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 );
             }
 
-            $this->status = BaseTestRunner::STATUS_PASSED;
+            $this->status = TestStatus::success();
         } catch (IncompleteTest $e) {
-            $this->status        = BaseTestRunner::STATUS_INCOMPLETE;
-            $this->statusMessage = $e->getMessage();
+            $this->status = TestStatus::incomplete($e->getMessage());
         } catch (SkippedTest $e) {
-            $this->status        = BaseTestRunner::STATUS_SKIPPED;
-            $this->statusMessage = $e->getMessage();
+            $this->status = TestStatus::skipped($e->getMessage());
         } catch (Warning $e) {
-            $this->status        = BaseTestRunner::STATUS_WARNING;
-            $this->statusMessage = $e->getMessage();
+            $this->status = TestStatus::warning($e->getMessage());
         } catch (AssertionFailedError $e) {
-            $this->status        = BaseTestRunner::STATUS_FAILURE;
-            $this->statusMessage = $e->getMessage();
+            $this->status = TestStatus::failure($e->getMessage());
         } catch (Throwable $_e) {
-            $e                   = $_e;
-            $this->status        = BaseTestRunner::STATUS_ERROR;
-            $this->statusMessage = $_e->getMessage();
+            $e            = $_e;
+            $this->status = TestStatus::error($_e->getMessage());
         }
 
         $this->mockObjects = [];
@@ -899,8 +891,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if (isset($_e)) {
-            $this->status        = BaseTestRunner::STATUS_ERROR;
-            $this->statusMessage = $_e->getMessage();
+            $this->status = TestStatus::error($_e->getMessage());
         }
 
         clearstatcache();
@@ -1750,15 +1741,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function markSkippedForNotSpecifyingDependency(): void
     {
-        $this->status = BaseTestRunner::STATUS_SKIPPED;
+        $message = 'This method has an invalid @depends annotation.';
+
+        $this->status = TestStatus::skipped($message);
 
         $this->result->startTest($this);
 
         $this->result->addFailure(
             $this,
-            new SkippedTestError(
-                'This method has an invalid @depends annotation.'
-            ),
+            new SkippedTestError($message),
             0
         );
 
@@ -1767,18 +1758,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
     {
-        $this->status = BaseTestRunner::STATUS_SKIPPED;
+        $message = sprintf(
+            'This test depends on "%s" to pass.',
+            $dependency->getTarget()
+        );
+
+        $this->status = TestStatus::skipped($message);
 
         $this->result->startTest($this);
 
         $this->result->addFailure(
             $this,
-            new SkippedTestError(
-                sprintf(
-                    'This test depends on "%s" to pass.',
-                    $dependency->getTarget()
-                )
-            ),
+            new SkippedTestError($message),
             0
         );
 
@@ -1787,18 +1778,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function markWarningForUncallableDependency(ExecutionOrderDependency $dependency): void
     {
-        $this->status = BaseTestRunner::STATUS_WARNING;
+        $message = sprintf(
+            'This test depends on "%s" which does not exist.',
+            $dependency->getTarget()
+        );
+
+        $this->status = TestStatus::warning($message);
 
         $this->result->startTest($this);
 
         $this->result->addWarning(
             $this,
-            new Warning(
-                sprintf(
-                    'This test depends on "%s" which does not exist.',
-                    $dependency->getTarget()
-                )
-            ),
+            new Warning($message),
             0
         );
 
