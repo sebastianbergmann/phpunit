@@ -65,8 +65,6 @@ final class TestResult implements Countable
     private array $skipped = [];
 
     /**
-     * @deprecated Use the `TestHook` interfaces instead
-     *
      * @psalm-var list<TestListener>
      */
     private array $listeners = [];
