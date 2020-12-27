@@ -563,7 +563,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function run(TestResult $result): void
     {
         if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
-            $this->setTestResultObject($result);
+            $this->result = $result;
         }
 
         if (!$this instanceof ErrorTestCase &&
@@ -1058,14 +1058,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function getTestResultObject(): ?TestResult
     {
         return $this->result;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public function setTestResultObject(TestResult $result): void
-    {
-        $this->result = $result;
     }
 
     /**
