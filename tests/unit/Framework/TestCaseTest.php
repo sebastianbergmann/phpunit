@@ -1123,12 +1123,6 @@ class TestCaseTest extends TestCase
         $this->assertSame($data, $test->myTestData);
     }
 
-    public function testGettingNullTestResultObject(): void
-    {
-        $test = new Success;
-        $this->assertNull($test->getTestResultObject());
-    }
-
     public function testSizeUnknown(): void
     {
         $test = new TestWithDifferentSizes('testWithSizeUnknown');

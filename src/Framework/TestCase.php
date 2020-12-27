@@ -1055,14 +1055,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function getTestResultObject(): ?TestResult
-    {
-        return $this->result;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public function registerMockObject(MockObject $mockObject): void
     {
         $this->mockObjects[] = $mockObject;
