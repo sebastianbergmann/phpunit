@@ -16,6 +16,7 @@ use function sys_get_temp_dir;
 use function touch;
 use function unlink;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 
 /**
@@ -123,7 +124,7 @@ EOF;
              ->with($fileSection)
              ->willReturn(['stdout' => '', 'stderr' => '']);
 
-        $this->testCase->run();
+        $this->testCase->run(new TestResult);
     }
 
     public function testRenderFileSection(): void
@@ -147,7 +148,7 @@ EOF
              ->with($renderedCode)
              ->willReturn(['stdout' => '', 'stderr' => '']);
 
-        $this->testCase->run();
+        $this->testCase->run(new TestResult);
     }
 
     public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord(): void
@@ -166,14 +167,17 @@ EOF
              ->with($skipifSection)
              ->willReturn(['stdout' => 'skip: Reason', 'stderr' => '']);
 
-        $this->testCase->run();
+        $this->testCase->run(new TestResult);
     }
 
     public function testShouldSkipTestWhenPhptFileIsEmpty(): void
     {
         $this->setPhpContent('');
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
+
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
     }
@@ -189,7 +193,9 @@ Something
 EOF
         );
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -208,7 +214,9 @@ echo "Hello world!\n";
 EOF
         );
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -227,7 +235,9 @@ Tears and misery
 EOF
         );
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -244,7 +254,9 @@ EOF
              ->with(self::FILE_SECTION)
              ->willReturn(['stdout' => 'Hello PHPUnit!', 'stderr' => '']);
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertTrue($result->wasSuccessful());
     }
@@ -259,7 +271,9 @@ EOF
              ->with(self::FILE_SECTION)
              ->willReturn(['stdout' => 'Hello PHPUnit!', 'stderr' => '']);
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertTrue($result->wasSuccessful());
     }
@@ -274,7 +288,9 @@ EOF
              ->with(self::FILE_SECTION)
              ->willReturn(['stdout' => 'Hello PHPUnit!', 'stderr' => '']);
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertTrue($result->wasSuccessful());
     }
@@ -283,7 +299,9 @@ EOF
     {
         $this->setPhpContent(self::EXPECT_MISSING_ASSERTION_CONTENT);
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->errors());
         $skipMessage = $result->errors()[0]->thrownException()->getMessage();

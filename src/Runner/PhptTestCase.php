@@ -107,12 +107,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result): void
     {
-        if ($result === null) {
-            $result = new TestResult;
-        }
-
         try {
             $sections = $this->parse();
         } catch (Exception $e) {
@@ -120,7 +116,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->addFailure($this, new SkippedTestError($e->getMessage()), 0);
             $result->endTest($this, 0);
 
-            return $result;
+            return;
         }
 
         $code     = $this->render($sections['FILE']);
@@ -147,7 +143,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $skip = $this->runSkip($sections, $result, $settings);
 
         if ($skip) {
-            return $result;
+            return;
         }
 
         if (isset($sections['XFAIL'])) {
@@ -230,8 +226,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $this->runClean($sections, $result->collectsCodeCoverageInformation());
 
         $result->endTest($this, $time);
-
-        return $result;
     }
 
     /**

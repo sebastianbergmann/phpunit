@@ -68,7 +68,9 @@ final class SkippedTestCaseTest extends TestCase
             $message
         );
 
-        $result = $testCase->run();
+        $result = new TestResult;
+
+        $testCase->run($result);
 
         $this->assertTrue($testCase->status()->isSkipped());
         $this->assertSame(1, $result->skippedCount());

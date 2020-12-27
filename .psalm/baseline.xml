@@ -665,11 +665,6 @@
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
   </file>
-  <file src="src/Framework/TestResult.php">
-    <DeprecatedProperty occurrences="1">
-      <code>$this-&gt;listeners</code>
-    </DeprecatedProperty>
-  </file>
   <file src="src/Framework/TestRunner.php">
     <MissingThrowsDocblock occurrences="8">
       <code>GlobalState::getIncludedFilesAsString()</code>

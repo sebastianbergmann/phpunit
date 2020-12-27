@@ -553,7 +553,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * Runs the test case and collects the results in a TestResult object.
-     * If no TestResult object is passed a new one will be created.
      *
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
@@ -561,12 +560,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws CodeCoverageException
      * @throws UtilException
      */
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result): void
     {
-        if ($result === null) {
-            $result = new TestResult;
-        }
-
         if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
             $this->setTestResultObject($result);
         }
@@ -575,7 +570,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             !$this instanceof WarningTestCase &&
             !$this instanceof SkippedTestCase &&
             !$this->handleDependencies()) {
-            return $result;
+            return;
         }
 
         if (!$this->shouldRunInSeparateProcess()) {
@@ -590,8 +585,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->result = null;
-
-        return $result;
     }
 
     /**

@@ -68,7 +68,9 @@ final class IncompleteTestCaseTest extends TestCase
             $message
         );
 
-        $result = $testCase->run();
+        $result = new TestResult;
+
+        $testCase->run($result);
 
         $this->assertTrue($testCase->status()->isIncomplete());
         $this->assertSame(1, $result->notImplementedCount());

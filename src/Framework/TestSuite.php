@@ -514,20 +514,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Runs the tests and collects their result in a TestResult.
      *
-     * @throws \PHPUnit\Framework\CodeCoverageException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws CodeCoverageException
      * @throws Warning
      */
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result): void
     {
-        if ($result === null) {
-            $result = $this->createResult();
-        }
-
         if (count($this) === 0) {
-            return $result;
+            return;
         }
 
         /** @psalm-var class-string $className */
@@ -558,7 +554,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                 $result->endTestSuite($this);
 
-                return $result;
+                return;
             } catch (Throwable $t) {
                 $errorAdded = false;
 
@@ -586,7 +582,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                 $result->endTestSuite($this);
 
-                return $result;
+                return;
             }
         }
 
@@ -626,8 +622,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         $result->endTestSuite($this);
-
-        return $result;
     }
 
     public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void
@@ -791,14 +785,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     public function sortId(): string
     {
         return $this->getName() . '::class';
-    }
-
-    /**
-     * Creates a default TestResult object.
-     */
-    protected function createResult(): TestResult
-    {
-        return new TestResult;
     }
 
     /**
