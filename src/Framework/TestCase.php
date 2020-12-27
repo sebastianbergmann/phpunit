@@ -2118,13 +2118,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return false;
         }
 
-        try {
-            $method = $class->getMethod($methodName);
-        } catch (ReflectionException $e) {
-            return false;
-        }
-
-        return TestUtil::isTestMethod($method);
+        return TestUtil::isTestMethod(
+            $class->getMethod($methodName)
+        );
     }
 
     /**
