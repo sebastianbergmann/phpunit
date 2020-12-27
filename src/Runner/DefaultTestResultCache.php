@@ -45,31 +45,14 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
      */
     public const DEFAULT_RESULT_CACHE_FILENAME = '.phpunit.result.cache';
 
-    /**
-     * Path and filename for result cache file.
-     */
     private string $cacheFilename;
 
     /**
-     * The list of defective tests.
-     *
-     * <code>
-     * // Mark a test skipped
-     * $this->defects[$testName] = BaseTestRunner::TEST_SKIPPED;
-     * </code>
-     *
      * @var array<string, TestStatus>
      */
     private array $defects = [];
 
     /**
-     * The list of execution duration of suites and tests (in seconds).
-     *
-     * <code>
-     * // Record running time for test
-     * $this->times[$testName] = 1.234;
-     * </code>
-     *
      * @var array<string, float>
      */
     private array $times = [];
