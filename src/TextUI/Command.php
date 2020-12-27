@@ -38,6 +38,7 @@ use function trim;
 use function version_compare;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\PharLoader;
+use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration;
@@ -56,6 +57,7 @@ use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
+use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
 
@@ -109,7 +111,7 @@ class Command
         if ($this->arguments['test'] instanceof TestSuite) {
             $suite = $this->arguments['test'];
         } else {
-            $suite = $runner->getTest(
+            $suite = $this->getTest(
                 $this->arguments['test'],
                 $this->arguments['testSuffixes']
             );
@@ -807,5 +809,41 @@ class Command
         }
 
         return null;
+    }
+
+    /**
+     * @param array|string $suffixes
+     */
+    private function getTest(string $suiteClassFile, $suffixes = ''): TestSuite
+    {
+        if (is_dir($suiteClassFile)) {
+            /** @var string[] $files */
+            $files = (new FileIteratorFacade)->getFilesAsArray(
+                $suiteClassFile,
+                $suffixes
+            );
+
+            $suite = new TestSuite($suiteClassFile);
+            $suite->addTestFiles($files);
+
+            return $suite;
+        }
+
+        if (is_file($suiteClassFile) && substr($suiteClassFile, -5, 5) === '.phpt') {
+            $suite = new TestSuite;
+            $suite->addTestFile($suiteClassFile);
+
+            return $suite;
+        }
+
+        try {
+            $testClass = (new TestSuiteLoader)->load($suiteClassFile);
+        } catch (\PHPUnit\Exception $e) {
+            print $e->getMessage() . PHP_EOL;
+
+            exit(1);
+        }
+
+        return new TestSuite($testClass);
     }
 }

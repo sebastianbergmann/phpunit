@@ -31,7 +31,6 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\AfterLastTestHook;
-use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\DefaultTestResultCache;
 use PHPUnit\Runner\Extension\ExtensionHandler;
@@ -79,7 +78,7 @@ use SebastianBergmann\Timer\Timer;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestRunner extends BaseTestRunner
+final class TestRunner
 {
     public const SUCCESS_EXIT = 0;
 
@@ -200,7 +199,7 @@ final class TestRunner extends BaseTestRunner
             unset($_suite);
         }
 
-        $result = $this->createTestResult();
+        $result = new TestResult;
 
         $listener       = new TestListenerAdapter;
         $listenerNeeded = false;
@@ -792,22 +791,6 @@ final class TestRunner extends BaseTestRunner
     public function addExtension(Hook $extension): void
     {
         $this->extensions[] = $extension;
-    }
-
-    /**
-     * Override to define how to handle a failed loading of
-     * a test suite.
-     */
-    protected function runFailed(string $message): void
-    {
-        $this->write($message . PHP_EOL);
-
-        exit(self::FAILURE_EXIT);
-    }
-
-    private function createTestResult(): TestResult
-    {
-        return new TestResult;
     }
 
     private function write(string $buffer): void

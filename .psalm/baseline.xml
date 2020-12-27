@@ -795,7 +795,9 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="19">
+    <MissingThrowsDocblock occurrences="23">
+      <code>addTestFile</code>
+      <code>addTestFiles</code>
       <code>argument</code>
       <code>argument</code>
       <code>atLeastVersion</code>
@@ -804,13 +806,15 @@
       <code>defaultTestSuite</code>
       <code>detect</code>
       <code>extensionsDirectory</code>
-      <code>getTest</code>
       <code>handleListSuites</code>
       <code>handleListTests</code>
       <code>handleListTestsXml</code>
       <code>includePath</code>
       <code>iniSettings</code>
       <code>mapToLegacyArray</code>
+      <code>new TestSuite</code>
+      <code>new TestSuite($suiteClassFile)</code>
+      <code>new TestSuite($testClass)</code>
       <code>printerClass</code>
       <code>stop</code>
       <code>unrecognizedOrderBy</code>
@@ -818,12 +822,6 @@
     <MoreSpecificReturnType occurrences="1">
       <code>null|Printer|string</code>
     </MoreSpecificReturnType>
-    <PossiblyNullArgument occurrences="4">
-      <code>$suite</code>
-      <code>$suite</code>
-      <code>$suite</code>
-      <code>$suite</code>
-    </PossiblyNullArgument>
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof Configuration)</code>
     </RedundantCondition>
