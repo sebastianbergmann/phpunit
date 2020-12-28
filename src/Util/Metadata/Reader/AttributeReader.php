@@ -19,7 +19,9 @@ final class AttributeReader implements Reader
      */
     public function forClass(string $className): MetadataCollection
     {
-        return MetadataCollection::fromArray([]);
+        $result = [];
+
+        return MetadataCollection::fromArray($result);
     }
 
     /**
@@ -27,6 +29,8 @@ final class AttributeReader implements Reader
      */
     public function forMethod(string $className, string $methodName): MetadataCollection
     {
-        return MetadataCollection::fromArray([]);
+        $result = [];
+
+        return MetadataCollection::fromArray($result);
     }
 }
