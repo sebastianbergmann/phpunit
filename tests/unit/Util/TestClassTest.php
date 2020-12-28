@@ -48,7 +48,7 @@ use PHPUnit\TestFixture\RequirementsTest;
 use PHPUnit\TestFixture\Test3194;
 use PHPUnit\TestFixture\VariousDocblockDefinedDataProvider;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
-use PHPUnit\Util\Annotation\DocBlock;
+use PHPUnit\Util\Metadata\Annotation\DocBlock;
 use ReflectionClass;
 use ReflectionMethod;
 

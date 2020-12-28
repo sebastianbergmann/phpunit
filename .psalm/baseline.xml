@@ -1211,14 +1211,6 @@
       <code>$this-&gt;testSuites</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/Util/Annotation/DocBlock.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>throw new SkippedTestError;</code>
-    </MissingThrowsDocblock>
-    <RedundantCast occurrences="1">
-      <code>(string) $matches['value'][$i]</code>
-    </RedundantCast>
-  </file>
   <file src="src/Util/Color.php">
     <MissingClosureParamType occurrences="2">
       <code>$matches</code>
@@ -1314,8 +1306,18 @@
       <code>getName</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="src/Util/Metadata/MetadataCollection.php">
-    <InvalidArgument occurrences="1"/>
+  <file src="src/Util/Metadata/Annotation/DocBlock.php">
+    <MissingThrowsDocblock occurrences="1">
+      <code>throw new SkippedTestError;</code>
+    </MissingThrowsDocblock>
+    <RedundantCast occurrences="1">
+      <code>(string) $matches['value'][$i]</code>
+    </RedundantCast>
+  </file>
+  <file src="src/Util/Metadata/Reader/AttributeReader.php">
+    <UndefinedMethod occurrences="1">
+      <code>getAttributes</code>
+    </UndefinedMethod>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">

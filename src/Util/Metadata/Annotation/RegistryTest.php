@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Annotation;
+namespace PHPUnit\Util\Metadata\Annotation;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
@@ -17,9 +17,9 @@ use ThisClassDoesNotExist;
 /**
  * @small
  *
- * @covers \PHPUnit\Util\Annotation\Registry
+ * @covers \PHPUnit\Util\Metadata\Annotation\Registry
  *
- * @uses   \PHPUnit\Util\Annotation\DocBlock
+ * @uses   \PHPUnit\Util\Metadata\Annotation\DocBlock
  */
 final class RegistryTest extends TestCase
 {
@@ -30,8 +30,8 @@ final class RegistryTest extends TestCase
         $this->assertSame(
             [
                 'small'  => [''],
-                'covers' => ['\PHPUnit\Util\Annotation\Registry'],
-                'uses'   => ['\PHPUnit\Util\Annotation\DocBlock'],
+                'covers' => ['\PHPUnit\Util\Metadata\Annotation\Registry'],
+                'uses'   => ['\PHPUnit\Util\Metadata\Annotation\DocBlock'],
             ],
             $annotation->symbolAnnotations()
         );
