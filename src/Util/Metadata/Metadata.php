@@ -60,6 +60,11 @@ abstract class Metadata
         return false;
     }
 
+    public function isCoversFunction(): bool
+    {
+        return false;
+    }
+
     public function isCoversNothing(): bool
     {
         return false;
@@ -111,6 +116,11 @@ abstract class Metadata
     }
 
     public function isUsesMethod(): bool
+    {
+        return false;
+    }
+
+    public function isUsesFunction(): bool
     {
         return false;
     }
