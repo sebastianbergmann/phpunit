@@ -42,6 +42,7 @@ final class MigrationBuilder
 
         '9.5' => [
             RemoveListeners::class,
+            RemoveTestSuiteLoaderAttributes::class,
         ],
     ];
 
