@@ -31,6 +31,8 @@ use PHPUnit\Framework\TestCase;
  * @covers \PHPUnit\Util\Metadata\RunInSeparateProcess
  * @covers \PHPUnit\Util\Metadata\RunTestsInSeparateProcesses
  * @covers \PHPUnit\Util\Metadata\Test
+ * @covers \PHPUnit\Util\Metadata\UsesClass
+ * @covers \PHPUnit\Util\Metadata\UsesMethod
  */
 final class MetadataTest extends TestCase
 {
@@ -56,6 +58,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBeAfterClass(): void
@@ -80,6 +84,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBeBackupGlobals(): void
@@ -104,6 +110,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
 
         $this->assertFalse($metadata->enabled());
     }
@@ -130,6 +138,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
 
         $this->assertFalse($metadata->enabled());
     }
@@ -156,6 +166,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBeBefore(): void
@@ -180,6 +192,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBeCodeCoverageIgnore(): void
@@ -204,6 +218,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBeCoversClass(): void
@@ -228,6 +244,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
 
         $this->assertSame(self::class, $metadata->className());
     }
@@ -254,6 +272,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame(__METHOD__, $metadata->methodName());
@@ -281,6 +301,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBeDoesNotPerformAssertions(): void
@@ -305,6 +327,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBeGroup(): void
@@ -329,6 +353,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
 
         $this->assertSame('name', $metadata->groupName());
     }
@@ -355,6 +381,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBeRunInSeparateProcess(): void
@@ -379,6 +407,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBeTest(): void
@@ -403,6 +433,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBePreCondition(): void
@@ -427,6 +459,8 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBePostCondition(): void
@@ -451,6 +485,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertTrue($metadata->isPostCondition());
         $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
     }
 
     public function testCanBePreserveGlobalState(): void
@@ -475,7 +511,66 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isPreCondition());
         $this->assertFalse($metadata->isPostCondition());
         $this->assertTrue($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
 
         $this->assertFalse($metadata->enabled());
+    }
+
+    public function testCanBeUsesClass(): void
+    {
+        $metadata = new UsesClass(self::class);
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCodeCoverageIgnore());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertTrue($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesMethod());
+
+        $this->assertSame(self::class, $metadata->className());
+    }
+
+    public function testCanBeUsesMethod(): void
+    {
+        $metadata = new UsesMethod(self::class, __METHOD__);
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCodeCoverageIgnore());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertTrue($metadata->isUsesMethod());
+
+        $this->assertSame(self::class, $metadata->className());
+        $this->assertSame(__METHOD__, $metadata->methodName());
     }
 }

@@ -104,4 +104,14 @@ abstract class Metadata
     {
         return false;
     }
+
+    public function isUsesClass(): bool
+    {
+        return false;
+    }
+
+    public function isUsesMethod(): bool
+    {
+        return false;
+    }
 }
