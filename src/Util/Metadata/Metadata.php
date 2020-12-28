@@ -120,6 +120,46 @@ abstract class Metadata
         return false;
     }
 
+    public function isRequiresFunction(): bool
+    {
+        return false;
+    }
+
+    public function isRequiresOperatingSystem(): bool
+    {
+        return false;
+    }
+
+    public function isRequiresOperatingSystemFamily(): bool
+    {
+        return false;
+    }
+
+    public function isRequiresPhp(): bool
+    {
+        return false;
+    }
+
+    public function isRequiresPhpExtension(): bool
+    {
+        return false;
+    }
+
+    public function isRequiresPhpunit(): bool
+    {
+        return false;
+    }
+
+    public function isTestDox(): bool
+    {
+        return false;
+    }
+
+    public function isTestWith(): bool
+    {
+        return false;
+    }
+
     public function isUsesClass(): bool
     {
         return false;
