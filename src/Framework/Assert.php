@@ -33,6 +33,7 @@ use function preg_split;
 use function strpos;
 use ArrayAccess;
 use Countable;
+use Generator;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -273,6 +274,10 @@ abstract class Assert
     {
         if (!$haystack instanceof Countable && !is_iterable($haystack)) {
             throw InvalidArgumentException::create(2, 'countable or iterable');
+        }
+
+        if ($haystack instanceof Generator) {
+            self::createWarning('Passing an argument of type Generator for the $haystack parameter is deprecated. Support for this will be removed in PHPUnit 11.');
         }
 
         static::assertThat(
