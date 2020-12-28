@@ -14,7 +14,6 @@ use function get_class;
 use Countable;
 use Error;
 use PHPUnit\Util\Printer;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
 use Throwable;
 
 /**
@@ -72,8 +71,6 @@ final class TestResult implements Countable
     private int $runTests = 0;
 
     private float $time = 0;
-
-    private ?CodeCoverage $codeCoverage = null;
 
     private bool $convertDeprecationsToExceptions = true;
 
@@ -395,11 +392,6 @@ final class TestResult implements Countable
         return $this->passedTestClasses;
     }
 
-    public function collectsCodeCoverageInformation(): bool
-    {
-        return $this->codeCoverage !== null;
-    }
-
     public function count(): int
     {
         return $this->runTests;
@@ -413,16 +405,6 @@ final class TestResult implements Countable
     public function stop(): void
     {
         $this->stop = true;
-    }
-
-    public function codeCoverage(): ?CodeCoverage
-    {
-        return $this->codeCoverage;
-    }
-
-    public function setCodeCoverage(CodeCoverage $codeCoverage): void
-    {
-        $this->codeCoverage = $codeCoverage;
     }
 
     public function convertDeprecationsToExceptions(bool $flag): void

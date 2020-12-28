@@ -121,7 +121,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $code     = $this->render($sections['FILE']);
         $xfail    = false;
-        $settings = $this->parseIniSection($this->settings($result->collectsCodeCoverageInformation()));
+        $settings = $this->parseIniSection($this->settings(CodeCoverage::isActive()));
 
         $result->startTest($this);
 
@@ -158,21 +158,18 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $this->phpUtil->setArgs($sections['ARGS']);
         }
 
-        if ($result->collectsCodeCoverageInformation()) {
+        if (CodeCoverage::isActive()) {
             $codeCoverageCacheDirectory = null;
-            $pathCoverage               = false;
 
-            $codeCoverage = $result->codeCoverage();
-
-            if ($codeCoverage) {
-                if ($codeCoverage->cachesStaticAnalysis()) {
-                    $codeCoverageCacheDirectory = $codeCoverage->cacheDirectory();
-                }
-
-                $pathCoverage = $codeCoverage->collectsBranchAndPathCoverage();
+            if (CodeCoverage::instance()->cachesStaticAnalysis()) {
+                $codeCoverageCacheDirectory = CodeCoverage::instance()->cacheDirectory();
             }
 
-            $this->renderForCoverage($code, $pathCoverage, $codeCoverageCacheDirectory);
+            $this->renderForCoverage(
+                $code,
+                CodeCoverage::instance()->collectsBranchAndPathCoverage(),
+                $codeCoverageCacheDirectory
+            );
         }
 
         $timer = new Timer;
@@ -182,8 +179,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $time         = $timer->stop()->asSeconds();
         $this->output = $jobResult['stdout'] ?? '';
 
-        if (isset($codeCoverage) && ($coverage = $this->cleanupForCoverage())) {
-            $codeCoverage->append($coverage, $this, true, [], []);
+        if (CodeCoverage::isActive() && ($coverage = $this->cleanupForCoverage())) {
+            CodeCoverage::instance()->append($coverage, $this, true, [], []);
         }
 
         try {
@@ -223,7 +220,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->addFailure($this, new IncompleteTestError('XFAIL section but test passes'), $time);
         }
 
-        $this->runClean($sections, $result->collectsCodeCoverageInformation());
+        $this->runClean($sections, CodeCoverage::isActive());
 
         $result->endTest($this, $time);
     }

@@ -34,6 +34,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\Runner\CodeCoverage;
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -301,22 +302,21 @@ abstract class AbstractPhpProcess
                 $test->setResult($childResult['testResult']);
                 $test->addToAssertionCount($childResult['numAssertions']);
 
-                $childResult = $childResult['result'];
-                assert($childResult instanceof TestResult);
-
-                if ($result->collectsCodeCoverageInformation()) {
-                    $result->codeCoverage()->merge(
-                        $childResult->codeCoverage()
+                if (CodeCoverage::isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
+                    CodeCoverage::instance()->merge(
+                        $childResult['codeCoverage']
                     );
                 }
 
-                $time           = $childResult->time();
-                $notImplemented = $childResult->notImplemented();
-                $risky          = $childResult->risky();
-                $skipped        = $childResult->skipped();
-                $errors         = $childResult->errors();
-                $warnings       = $childResult->warnings();
-                $failures       = $childResult->failures();
+                assert($childResult['result'] instanceof TestResult);
+
+                $time           = $childResult['result']->time();
+                $notImplemented = $childResult['result']->notImplemented();
+                $risky          = $childResult['result']->risky();
+                $skipped        = $childResult['result']->skipped();
+                $errors         = $childResult['result']->errors();
+                $warnings       = $childResult['result']->warnings();
+                $failures       = $childResult['result']->failures();
 
                 if (!empty($notImplemented)) {
                     $result->addFailure(

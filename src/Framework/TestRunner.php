@@ -17,6 +17,7 @@ use function serialize;
 use function sprintf;
 use function var_export;
 use AssertionError;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\GlobalState;
@@ -76,13 +77,13 @@ final class TestRunner
             $errorHandler->register();
         }
 
-        $collectCodeCoverage = $result->collectsCodeCoverageInformation() &&
+        $collectCodeCoverage = CodeCoverage::isActive() &&
                                !$test instanceof ErrorTestCase &&
                                !$test instanceof WarningTestCase &&
                                $isAnyCoverageRequired;
 
         if ($collectCodeCoverage) {
-            $result->codeCoverage()->start($test);
+            CodeCoverage::start($test);
         }
 
         $monitorFunctions = $result->isStrictAboutResourceUsageDuringSmallTests() &&
@@ -262,7 +263,7 @@ final class TestRunner
             }
 
             try {
-                $result->codeCoverage()->stop(
+                CodeCoverage::stop(
                     $append,
                     $linesToBeCovered,
                     $linesToBeUsed
@@ -394,7 +395,7 @@ final class TestRunner
             $iniSettings   = '';
         }
 
-        $coverage                                   = $result->collectsCodeCoverageInformation() ? 'true' : 'false';
+        $coverage                                   = CodeCoverage::isActive() ? 'true' : 'false';
         $isStrictAboutTestsThatDoNotTestAnything    = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
         $isStrictAboutOutputDuringTests             = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
         $enforcesTimeLimit                          = $result->enforcesTimeLimit() ? 'true' : 'false';
@@ -413,22 +414,21 @@ final class TestRunner
             $phar = '\'\'';
         }
 
-        $codeCoverage               = $result->codeCoverage();
         $codeCoverageFilter         = null;
         $cachesStaticAnalysis       = 'false';
         $codeCoverageCacheDirectory = null;
-        $driverMethod               = 'forLineCoverage';
+        $pathCoverage               = 'false';
 
-        if ($codeCoverage) {
-            $codeCoverageFilter = $codeCoverage->filter();
+        if (CodeCoverage::isActive()) {
+            $codeCoverageFilter = CodeCoverage::instance()->filter();
 
-            if ($codeCoverage->collectsBranchAndPathCoverage()) {
-                $driverMethod = 'forLineAndPathCoverage';
+            if (CodeCoverage::instance()->collectsBranchAndPathCoverage()) {
+                $pathCoverage = 'true';
             }
 
-            if ($codeCoverage->cachesStaticAnalysis()) {
+            if (CodeCoverage::instance()->cachesStaticAnalysis()) {
                 $cachesStaticAnalysis       = 'true';
-                $codeCoverageCacheDirectory = $codeCoverage->cacheDirectory();
+                $codeCoverageCacheDirectory = CodeCoverage::instance()->cacheDirectory();
             }
         }
 
@@ -457,7 +457,7 @@ final class TestRunner
             'collectCodeCoverageInformation'             => $coverage,
             'cachesStaticAnalysis'                       => $cachesStaticAnalysis,
             'codeCoverageCacheDirectory'                 => $codeCoverageCacheDirectory,
-            'driverMethod'                               => $driverMethod,
+            'pathCoverage'                               => $pathCoverage,
             'data'                                       => $data,
             'dataName'                                   => $dataName,
             'dependencyInput'                            => $dependencyInput,

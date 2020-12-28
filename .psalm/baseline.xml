@@ -666,7 +666,12 @@
     </RedundantCondition>
   </file>
   <file src="src/Framework/TestRunner.php">
-    <MissingThrowsDocblock occurrences="8">
+    <MissingThrowsDocblock occurrences="14">
+      <code>CodeCoverage::instance()</code>
+      <code>CodeCoverage::instance()</code>
+      <code>CodeCoverage::instance()</code>
+      <code>CodeCoverage::instance()</code>
+      <code>CodeCoverage::start($test)</code>
       <code>GlobalState::getIncludedFilesAsString()</code>
       <code>cacheDirectory</code>
       <code>getName</code>
@@ -674,13 +679,6 @@
       <code>runTestJob</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$linesToBeCovered</code>
-    </PossiblyInvalidArgument>
-    <PossiblyNullReference occurrences="2">
-      <code>start</code>
-      <code>stop</code>
-    </PossiblyNullReference>
     <PossiblyUndefinedVariable occurrences="5">
       <code>$_timeout</code>
       <code>$_timeout</code>
@@ -722,6 +720,27 @@
       <code>include_once $filename</code>
     </UnresolvableInclude>
   </file>
+  <file src="src/Runner/CodeCoverage.php">
+    <InvalidNullableReturnType occurrences="2">
+      <code>Driver</code>
+      <code>\SebastianBergmann\CodeCoverage\CodeCoverage</code>
+    </InvalidNullableReturnType>
+    <MissingParamType occurrences="1">
+      <code>$linesToBeCovered</code>
+    </MissingParamType>
+    <MissingThrowsDocblock occurrences="2">
+      <code>forLineAndPathCoverage</code>
+      <code>forLineCoverage</code>
+    </MissingThrowsDocblock>
+    <NullableReturnStatement occurrences="2">
+      <code>self::$driver</code>
+      <code>self::$instance</code>
+    </NullableReturnStatement>
+    <PossiblyNullReference occurrences="2">
+      <code>start</code>
+      <code>stop</code>
+    </PossiblyNullReference>
+  </file>
   <file src="src/Runner/DefaultTestResultCache.php">
     <MissingClosureReturnType occurrences="1">
       <code>static function () use ($cacheData) {</code>
@@ -746,7 +765,8 @@
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="3">
+    <MissingThrowsDocblock occurrences="4">
+      <code>append</code>
       <code>cacheDirectory</code>
       <code>stop</code>
     </MissingThrowsDocblock>
@@ -854,6 +874,9 @@
       <code>addListener</code>
       <code>flushListeners</code>
     </DeprecatedMethod>
+    <InternalMethod occurrences="1">
+      <code>nameAndVersion</code>
+    </InternalMethod>
     <InvalidArgument occurrences="6">
       <code>$e</code>
       <code>$e</code>
@@ -1252,18 +1275,15 @@
       <code>$errno</code>
       <code>$errstr</code>
     </MissingClosureParamType>
+    <MissingThrowsDocblock occurrences="1">
+      <code>CodeCoverage::instance()</code>
+    </MissingThrowsDocblock>
     <MoreSpecificReturnType occurrences="1">
       <code>Exception</code>
     </MoreSpecificReturnType>
     <PossiblyFalseOperand occurrences="1">
       <code>strrpos($key, "\0")</code>
     </PossiblyFalseOperand>
-    <PossiblyNullArgument occurrences="1">
-      <code>$childResult-&gt;codeCoverage()</code>
-    </PossiblyNullArgument>
-    <PossiblyNullReference occurrences="1">
-      <code>merge</code>
-    </PossiblyNullReference>
     <UndefinedInterfaceMethod occurrences="2">
       <code>addToAssertionCount</code>
       <code>setResult</code>

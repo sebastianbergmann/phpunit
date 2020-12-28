@@ -1,6 +1,5 @@
 <?php
-use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Driver\Selector;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 
@@ -36,18 +35,14 @@ function __phpunit_run_isolated_test()
     $result = new PHPUnit\Framework\TestResult;
 
     if ({collectCodeCoverageInformation}) {
-        $filter = unserialize('{codeCoverageFilter}');
-
-        $codeCoverage = new CodeCoverage(
-            (new Selector)->{driverMethod}($filter),
-            $filter
+        CodeCoverage::activate(
+            unserialize('{codeCoverageFilter}'),
+            {pathCoverage}
         );
 
         if ({cachesStaticAnalysis}) {
-            $codeCoverage->cacheStaticAnalysis(unserialize('{codeCoverageCacheDirectory}'));
+            CodeCoverage::instance()->cacheStaticAnalysis(unserialize('{codeCoverageCacheDirectory}'));
         }
-
-        $result->setCodeCoverage($codeCoverage);
     }
 
     $result->beStrictAboutTestsThatDoNotTestAnything({isStrictAboutTestsThatDoNotTestAnything});
@@ -81,6 +76,7 @@ function __phpunit_run_isolated_test()
     print serialize(
       [
         'testResult'    => $test->getResult(),
+        'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
         'numAssertions' => $test->getNumAssertions(),
         'result'        => $result,
         'output'        => $output

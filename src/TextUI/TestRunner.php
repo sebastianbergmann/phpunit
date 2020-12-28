@@ -32,6 +32,7 @@ use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\BeforeFirstTestHook;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\DefaultTestResultCache;
 use PHPUnit\Runner\Extension\ExtensionHandler;
 use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
@@ -59,8 +60,6 @@ use PHPUnit\Util\TestDox\XmlResultPrinter;
 use PHPUnit\Util\Xml\SchemaDetector;
 use ReflectionClass;
 use ReflectionException;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
@@ -422,43 +421,38 @@ final class TestRunner
             try {
                 if (isset($codeCoverageConfiguration) &&
                     ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))) {
-                    $codeCoverageDriver = (new Selector)->forLineAndPathCoverage($this->codeCoverageFilter);
+                    CodeCoverage::activate($this->codeCoverageFilter, true);
                 } else {
-                    $codeCoverageDriver = (new Selector)->forLineCoverage($this->codeCoverageFilter);
+                    CodeCoverage::activate($this->codeCoverageFilter, false);
                 }
 
-                $codeCoverage = new CodeCoverage(
-                    $codeCoverageDriver,
-                    $this->codeCoverageFilter
-                );
-
                 if (isset($codeCoverageConfiguration) && $codeCoverageConfiguration->hasCacheDirectory()) {
-                    $codeCoverage->cacheStaticAnalysis($codeCoverageConfiguration->cacheDirectory()->path());
+                    CodeCoverage::instance()->cacheStaticAnalysis($codeCoverageConfiguration->cacheDirectory()->path());
                 }
 
                 if (isset($arguments['coverageCacheDirectory'])) {
-                    $codeCoverage->cacheStaticAnalysis($arguments['coverageCacheDirectory']);
+                    CodeCoverage::instance()->cacheStaticAnalysis($arguments['coverageCacheDirectory']);
                 }
 
-                $codeCoverage->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
+                CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
 
                 if ($arguments['strictCoverage']) {
-                    $codeCoverage->enableCheckForUnintentionallyCoveredCode();
+                    CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
                 }
 
                 if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
                     if ($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']) {
-                        $codeCoverage->ignoreDeprecatedCode();
+                        CodeCoverage::instance()->ignoreDeprecatedCode();
                     } else {
-                        $codeCoverage->doNotIgnoreDeprecatedCode();
+                        CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
                     }
                 }
 
                 if (isset($arguments['disableCodeCoverageIgnore'])) {
                     if ($arguments['disableCodeCoverageIgnore']) {
-                        $codeCoverage->disableAnnotationsForIgnoringCode();
+                        CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
                     } else {
-                        $codeCoverage->enableAnnotationsForIgnoringCode();
+                        CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
                     }
                 }
 
@@ -467,15 +461,15 @@ final class TestRunner
 
                     if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
                         if ($codeCoverageConfiguration->includeUncoveredFiles()) {
-                            $codeCoverage->includeUncoveredFiles();
+                            CodeCoverage::instance()->includeUncoveredFiles();
                         } else {
-                            $codeCoverage->excludeUncoveredFiles();
+                            CodeCoverage::instance()->excludeUncoveredFiles();
                         }
 
                         if ($codeCoverageConfiguration->processUncoveredFiles()) {
-                            $codeCoverage->processUncoveredFiles();
+                            CodeCoverage::instance()->processUncoveredFiles();
                         } else {
-                            $codeCoverage->doNotProcessUncoveredFiles();
+                            CodeCoverage::instance()->doNotProcessUncoveredFiles();
                         }
                     }
                 }
@@ -487,7 +481,7 @@ final class TestRunner
                         $warnings[] = 'Incorrect filter configuration, code coverage will not be processed';
                     }
 
-                    unset($codeCoverage);
+                    CodeCoverage::deactivate();
                 }
             } catch (CodeCoverageException $e) {
                 $warnings[] = $e->getMessage();
@@ -500,8 +494,8 @@ final class TestRunner
             } else {
                 $runtime = 'PHP ' . PHP_VERSION;
 
-                if (isset($codeCoverageDriver)) {
-                    $runtime .= ' with ' . $codeCoverageDriver->nameAndVersion();
+                if (CodeCoverage::isActive()) {
+                    $runtime .= ' with ' . CodeCoverage::driver()->nameAndVersion();
                 }
 
                 $this->writeMessage('Runtime', $runtime);
@@ -575,10 +569,6 @@ final class TestRunner
 
         $this->printer->write("\n");
 
-        if (isset($codeCoverage)) {
-            $result->setCodeCoverage($codeCoverage);
-        }
-
         $result->beStrictAboutTestsThatDoNotTestAnything($arguments['reportUselessTests']);
         $result->beStrictAboutOutputDuringTests($arguments['disallowTestOutput']);
         $result->beStrictAboutTodoAnnotatedTests($arguments['disallowTodoAnnotatedTests']);
@@ -630,13 +620,13 @@ final class TestRunner
         $result->flushListeners();
         $this->printer->printResult($result);
 
-        if (isset($codeCoverage)) {
+        if (CodeCoverage::isActive()) {
             if (isset($arguments['coverageClover'])) {
                 $this->codeCoverageGenerationStart('Clover XML');
 
                 try {
                     $writer = new CloverReport;
-                    $writer->process($codeCoverage, $arguments['coverageClover']);
+                    $writer->process(CodeCoverage::instance(), $arguments['coverageClover']);
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -651,7 +641,7 @@ final class TestRunner
 
                 try {
                     $writer = new CoberturaReport;
-                    $writer->process($codeCoverage, $arguments['coverageCobertura']);
+                    $writer->process(CodeCoverage::instance(), $arguments['coverageCobertura']);
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -666,7 +656,7 @@ final class TestRunner
 
                 try {
                     $writer = new Crap4jReport($arguments['crap4jThreshold']);
-                    $writer->process($codeCoverage, $arguments['coverageCrap4J']);
+                    $writer->process(CodeCoverage::instance(), $arguments['coverageCrap4J']);
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -689,7 +679,7 @@ final class TestRunner
                         )
                     );
 
-                    $writer->process($codeCoverage, $arguments['coverageHtml']);
+                    $writer->process(CodeCoverage::instance(), $arguments['coverageHtml']);
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -704,7 +694,7 @@ final class TestRunner
 
                 try {
                     $writer = new PhpReport;
-                    $writer->process($codeCoverage, $arguments['coveragePHP']);
+                    $writer->process(CodeCoverage::instance(), $arguments['coveragePHP']);
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -731,7 +721,7 @@ final class TestRunner
                 );
 
                 $outputStream->write(
-                    $processor->process($codeCoverage, $colors)
+                    $processor->process(CodeCoverage::instance(), $colors)
                 );
             }
 
@@ -740,7 +730,7 @@ final class TestRunner
 
                 try {
                     $writer = new XmlReport(Version::id());
-                    $writer->process($codeCoverage, $arguments['coverageXml']);
+                    $writer->process(CodeCoverage::instance(), $arguments['coverageXml']);
 
                     $this->codeCoverageGenerationSucceeded();
 
