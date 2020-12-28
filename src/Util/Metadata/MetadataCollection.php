@@ -50,18 +50,13 @@ final class MetadataCollection implements Countable, IteratorAggregate
         return count($this->metadata);
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->count() === 0;
+    }
+
     public function getIterator(): MetadataCollectionIterator
     {
         return new MetadataCollectionIterator($this);
-    }
-
-    public function mergeWith(self $other): self
-    {
-        return new self(
-            ...array_merge(
-                $this->asArray(),
-                $other->asArray()
-            )
-        );
     }
 }

@@ -12,16 +12,16 @@ namespace PHPUnit\Util\Metadata;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class MergingParser implements Reader
+final class ReaderChain implements Reader
 {
-    /**
-     * @var Reader[]
-     */
-    private array $readers;
+    private Reader $attributeReader;
 
-    public function __construct(Reader ...$readers)
+    private Reader $annotationReader;
+
+    public function __construct(Reader $attributeReader, Reader $annotationReader)
     {
-        $this->readers = $readers;
+        $this->attributeReader  = $attributeReader;
+        $this->annotationReader = $annotationReader;
     }
 
     /**
@@ -29,13 +29,13 @@ final class MergingParser implements Reader
      */
     public function forClass(string $className): MetadataCollection
     {
-        $metadata = MetadataCollection::fromArray([]);
+        $metadata = $this->attributeReader->forClass($className);
 
-        foreach ($this->readers as $reader) {
-            $metadata = $metadata->mergeWith($reader->forClass($className));
+        if (!$metadata->isEmpty()) {
+            return $metadata;
         }
 
-        return $metadata;
+        return $this->annotationReader->forClass($className);
     }
 
     /**
@@ -43,12 +43,12 @@ final class MergingParser implements Reader
      */
     public function forMethod(string $className, string $methodName): MetadataCollection
     {
-        $metadata = MetadataCollection::fromArray([]);
+        $metadata = $this->attributeReader->forMethod($className, $methodName);
 
-        foreach ($this->readers as $reader) {
-            $metadata = $metadata->mergeWith($reader->forMethod($className, $methodName));
+        if (!$metadata->isEmpty()) {
+            return $metadata;
         }
 
-        return $metadata;
+        return $this->annotationReader->forMethod($className, $methodName);
     }
 }

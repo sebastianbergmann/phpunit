@@ -21,6 +21,14 @@ use PHPUnit\Framework\TestCase;
  */
 final class MetadataCollectionTest extends TestCase
 {
+    public function testCanBeEmpty(): void
+    {
+        $collection = MetadataCollection::fromArray([]);
+
+        $this->assertCount(0, $collection);
+        $this->assertTrue($collection->isEmpty());
+    }
+
     public function testCanBeCreatedFromArray(): void
     {
         $metadata = new Test;
@@ -37,6 +45,7 @@ final class MetadataCollectionTest extends TestCase
         $collection = MetadataCollection::fromArray([$metadata]);
 
         $this->assertCount(1, $collection);
+        $this->assertFalse($collection->isEmpty());
     }
 
     public function testIsIterable(): void
@@ -47,18 +56,5 @@ final class MetadataCollectionTest extends TestCase
             $this->assertSame(0, $key);
             $this->assertSame($metadata, $value);
         }
-    }
-
-    public function testCanBeMerged(): void
-    {
-        $a = new Test;
-        $b = new Test;
-        $c = MetadataCollection::fromArray([$a]);
-        $d = MetadataCollection::fromArray([$b]);
-        $e = $c->mergeWith($d);
-
-        $this->assertCount(2, $e);
-        $this->assertContains($a, $e);
-        $this->assertContains($b, $e);
     }
 }

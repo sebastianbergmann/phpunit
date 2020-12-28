@@ -32,7 +32,7 @@ final class Registry
     {
         if (PHP_MAJOR_VERSION >= 8) {
             return new CachingReader(
-                new MergingParser(
+                new ReaderChain(
                     new AttributeReader,
                     new AnnotationReader
                 )
