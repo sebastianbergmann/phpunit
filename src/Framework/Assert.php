@@ -79,6 +79,7 @@ use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
+use PHPUnit\Util\Warning as WarningUtil;
 use PHPUnit\Util\Xml;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
@@ -277,7 +278,9 @@ abstract class Assert
         }
 
         if ($haystack instanceof Generator) {
-            self::createWarning('Passing an argument of type Generator for the $haystack parameter is deprecated. Support for this will be removed in PHPUnit 11.');
+            (new WarningUtil)->createForTestCaseObjectOnCallStack(
+                'Passing an argument of type Generator for the $haystack parameter is deprecated. Support for this will be removed in PHPUnit 11.'
+            );
         }
 
         static::assertThat(
@@ -2515,21 +2518,5 @@ abstract class Assert
     private static function isValidClassAttributeName(string $attributeName): bool
     {
         return (bool) preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
-    }
-
-    /**
-     * @codeCoverageIgnore
-     */
-    private static function createWarning(string $warning): void
-    {
-        foreach (debug_backtrace() as $step) {
-            if (isset($step['object']) && $step['object'] instanceof TestCase) {
-                assert($step['object'] instanceof TestCase);
-
-                $step['object']->addWarning($warning);
-
-                break;
-            }
-        }
     }
 }

@@ -142,9 +142,6 @@
       <code>$expected</code>
       <code>$expected</code>
     </PossiblyInvalidArgument>
-    <RedundantCondition occurrences="1">
-      <code>assert($step['object'] instanceof TestCase)</code>
-    </RedundantCondition>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <MissingParamType occurrences="85">
@@ -1385,6 +1382,11 @@
     <MissingThrowsDocblock occurrences="1">
       <code>ensureOperatorIsValid</code>
     </MissingThrowsDocblock>
+  </file>
+  <file src="src/Util/Warning.php">
+    <RedundantCondition occurrences="1">
+      <code>assert($step['object'] instanceof TestCase)</code>
+    </RedundantCondition>
   </file>
   <file src="src/Util/Xml.php">
     <ArgumentTypeCoercion occurrences="1">

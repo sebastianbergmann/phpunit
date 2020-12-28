@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\MockObject\Builder;
 use function array_map;
 use function array_merge;
 use function count;
-use function debug_backtrace;
 use function in_array;
 use function is_string;
 use function strtolower;
@@ -36,7 +35,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap;
 use PHPUnit\Framework\MockObject\Stub\Stub;
-use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Warning as WarningUtil;
 use Throwable;
 
 /**
@@ -197,19 +196,9 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     {
         $this->ensureParametersCanBeConfigured();
 
-        $stack = debug_backtrace();
-
-        while (!empty($stack)) {
-            $frame = array_pop($stack);
-
-            if (isset($frame['object']) && $frame['object'] instanceof TestCase) {
-                $frame['object']->addWarning(
-                    'The withConsecutive() method has been deprecated. It will be removed in PHPUnit 11.'
-                );
-
-                break;
-            }
-        }
+        (new WarningUtil)->createForTestCaseObjectOnCallStack(
+            'The withConsecutive() method has been deprecated. It will be removed in PHPUnit 11.'
+        );
 
         $this->matcher->setParametersRule(new Rule\ConsecutiveParameters($arguments));
 
