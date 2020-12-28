@@ -945,17 +945,9 @@ final class TestRunner
                 $arguments['excludeGroups'] = array_diff($groupConfiguration->exclude()->asArrayOfStrings(), $groupCliArgs);
             }
 
-            $extensionHandler = new ExtensionHandler;
-
             foreach ($arguments['configurationObject']->extensions() as $extension) {
-                $extensionHandler->registerExtension($extension, $this);
+                (new ExtensionHandler)->registerExtension($extension, $this);
             }
-
-            foreach ($arguments['configurationObject']->listeners() as $listener) {
-                $arguments['listeners'][] = $extensionHandler->createTestListenerInstance($listener);
-            }
-
-            unset($extensionHandler);
 
             foreach ($arguments['unavailableExtensions'] as $extension) {
                 $arguments['warnings'][] = sprintf(

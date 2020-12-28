@@ -2,7 +2,7 @@
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema">
     <xs:annotation>
         <xs:documentation source="https://phpunit.de/documentation.html">
-            This Schema file defines the rules by which the XML configuration file of PHPUnit 10.0 may be structured.
+            This Schema file defines the rules by which the XML configuration file of PHPUnit 9.5 may be structured.
         </xs:documentation>
         <xs:appinfo source="https://phpunit.de/documentation.html"/>
     </xs:annotation>
@@ -58,6 +58,11 @@
     <xs:complexType name="extensionsType">
         <xs:sequence>
             <xs:element name="extension" type="objectType" maxOccurs="unbounded"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:complexType name="listenersType">
+        <xs:sequence>
+            <xs:element name="listener" type="objectType" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
     <xs:complexType name="objectType">
@@ -239,6 +244,8 @@
         <xs:attribute name="timeoutForSmallTests" type="xs:integer" default="1"/>
         <xs:attribute name="timeoutForMediumTests" type="xs:integer" default="10"/>
         <xs:attribute name="timeoutForLargeTests" type="xs:integer" default="60"/>
+        <xs:attribute name="testSuiteLoaderClass" type="xs:string" default="PHPUnit\Runner\StandardTestSuiteLoader"/>
+        <xs:attribute name="testSuiteLoaderFile" type="xs:anyURI"/>
         <xs:attribute name="defaultTestSuite" type="xs:string" default=""/>
         <xs:attribute name="verbose" type="xs:boolean" default="false"/>
         <xs:attribute name="testdox" type="xs:boolean" default="false"/>
@@ -258,6 +265,7 @@
             <xs:element name="coverage" type="coverageType" minOccurs="0"/>
             <xs:element name="logging" type="loggingType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>
+            <xs:element name="listeners" type="listenersType" minOccurs="0"/>
             <xs:element name="php" type="phpType" minOccurs="0"/>
         </xs:all>
     </xs:group>

@@ -848,7 +848,7 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedMethod occurrences="10">
+    <DeprecatedMethod occurrences="9">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
@@ -857,7 +857,6 @@
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
-      <code>createTestListenerInstance</code>
       <code>flushListeners</code>
     </DeprecatedMethod>
     <InvalidArgument occurrences="6">

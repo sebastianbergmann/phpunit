@@ -96,7 +96,6 @@ final class Loader
             $this->codeCoverage($filename, $xpath, $document),
             $this->groups($xpath),
             $this->testdoxGroups($xpath),
-            $this->listeners($filename, $xpath),
             $this->logging($filename, $xpath),
             $this->php($filename, $xpath),
             $this->phpunit($filename, $document),
@@ -566,19 +565,6 @@ final class Loader
             GroupCollection::fromArray($include),
             GroupCollection::fromArray($exclude)
         );
-    }
-
-    private function listeners(string $filename, DOMXPath $xpath): ExtensionCollection
-    {
-        $listeners = [];
-
-        foreach ($xpath->query('listeners/listener') as $listener) {
-            assert($listener instanceof DOMElement);
-
-            $listeners[] = $this->getElementConfigurationParameters($filename, $listener);
-        }
-
-        return ExtensionCollection::fromArray($listeners);
     }
 
     private function getBooleanAttribute(DOMElement $element, string $attribute, bool $default): bool

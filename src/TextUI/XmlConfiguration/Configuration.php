@@ -31,8 +31,6 @@ final class Configuration
 
     private Groups $testdoxGroups;
 
-    private ExtensionCollection $listeners;
-
     private Logging $logging;
 
     private Php $php;
@@ -41,7 +39,7 @@ final class Configuration
 
     private TestSuiteCollection $testSuite;
 
-    public function __construct(string $filename, ValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, ExtensionCollection $listeners, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(string $filename, ValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
         $this->filename         = $filename;
         $this->validationResult = $validationResult;
@@ -49,7 +47,6 @@ final class Configuration
         $this->codeCoverage     = $codeCoverage;
         $this->groups           = $groups;
         $this->testdoxGroups    = $testdoxGroups;
-        $this->listeners        = $listeners;
         $this->logging          = $logging;
         $this->php              = $php;
         $this->phpunit          = $phpunit;
@@ -89,11 +86,6 @@ final class Configuration
     public function testdoxGroups(): Groups
     {
         return $this->testdoxGroups;
-    }
-
-    public function listeners(): ExtensionCollection
-    {
-        return $this->listeners;
     }
 
     public function logging(): Logging

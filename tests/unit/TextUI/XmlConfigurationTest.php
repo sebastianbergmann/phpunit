@@ -236,66 +236,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(['name'], $testdox->exclude()->asArrayOfStrings());
     }
 
-    public function testListenerConfigurationIsReadCorrectly(): void
-    {
-        $dir         = __DIR__;
-        $includePath = ini_get('include_path');
-
-        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
-
-        $i = 1;
-
-        foreach ($this->configuration('configuration.xml')->listeners() as $listener) {
-            switch ($i) {
-                case 1:
-                    $this->assertSame('MyListener', $listener->className());
-                    $this->assertTrue($listener->hasSourceFile());
-                    $this->assertSame('/optional/path/to/MyListener.php', $listener->sourceFile());
-                    $this->assertTrue($listener->hasArguments());
-                    $this->assertEquals(
-                        [
-                            0 => [
-                                0 => 'Sebastian',
-                            ],
-                            1 => 22,
-                            2 => 'April',
-                            3 => 19.78,
-                            4 => null,
-                            5 => new stdClass,
-                            6 => TEST_FILES_PATH . 'MyTestFile.php',
-                            7 => TEST_FILES_PATH . 'MyRelativePath',
-                            8 => true,
-                        ],
-                        $listener->arguments()
-                    );
-
-                    break;
-
-                case 2:
-                    $this->assertSame('IncludePathListener', $listener->className());
-                    $this->assertTrue($listener->hasSourceFile());
-                    $this->assertSame(TEST_FILES_PATH . 'ConfigurationTest.php', $listener->sourceFile());
-                    $this->assertFalse($listener->hasArguments());
-                    $this->assertSame([], $listener->arguments());
-
-                    break;
-
-                case 3:
-                    $this->assertSame('CompactArgumentsListener', $listener->className());
-                    $this->assertTrue($listener->hasSourceFile());
-                    $this->assertSame('/CompactArgumentsListener.php', $listener->sourceFile());
-                    $this->assertTrue($listener->hasArguments());
-                    $this->assertSame([0 => 42, 1 => false], $listener->arguments());
-
-                    break;
-            }
-
-            $i++;
-        }
-
-        ini_set('include_path', $includePath);
-    }
-
     public function testExtensionConfigurationIsReadCorrectly(): void
     {
         $dir         = __DIR__;

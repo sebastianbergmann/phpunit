@@ -11,7 +11,6 @@ namespace PHPUnit\Runner\Extension;
 
 use function class_exists;
 use function sprintf;
-use PHPUnit\Framework\TestListener;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Runner\Hook;
 use PHPUnit\TextUI\TestRunner;
@@ -41,27 +40,6 @@ final class ExtensionHandler
         }
 
         $runner->addExtension($extension);
-    }
-
-    /**
-     * @throws Exception
-     *
-     * @deprecated
-     */
-    public function createTestListenerInstance(Extension $listenerConfiguration): TestListener
-    {
-        $listener = $this->createInstance($listenerConfiguration);
-
-        if (!$listener instanceof TestListener) {
-            throw new Exception(
-                sprintf(
-                    'Class "%s" does not implement the PHPUnit\Framework\TestListener interface',
-                    $listenerConfiguration->className()
-                )
-            );
-        }
-
-        return $listener;
     }
 
     /**

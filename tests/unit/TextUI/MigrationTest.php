@@ -28,4 +28,19 @@ final class MigrationTest extends TestCase
             )
         );
     }
+
+    /**
+     * @testdox Can migrate PHPUnit 9.5 configuration
+     */
+    public function testCanMigratePhpUnit95Configuration(): void
+    {
+        $this->assertEquals(
+            (new XmlLoader)->loadFile(__DIR__ . '/../../_files/XmlConfigurationMigration/output-10.0.xml'),
+            (new XmlLoader)->load(
+                (new Migrator)->migrate(
+                    __DIR__ . '/../../_files/XmlConfigurationMigration/input-9.5.xml'
+                )
+            )
+        );
+    }
 }

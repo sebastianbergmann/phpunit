@@ -39,6 +39,10 @@ final class MigrationBuilder
             CoverageXmlToReport::class,
             ConvertLogTypes::class,
         ],
+
+        '9.5' => [
+            RemoveListeners::class,
+        ],
     ];
 
     /**
