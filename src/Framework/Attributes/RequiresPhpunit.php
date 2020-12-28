@@ -35,6 +35,9 @@ final class RequiresPhpunit
         return $this->version;
     }
 
+    /**
+     * @psalm-return '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
+     */
     public function operator(): string
     {
         return $this->operator;

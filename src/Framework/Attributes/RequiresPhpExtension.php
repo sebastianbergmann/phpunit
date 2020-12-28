@@ -43,6 +43,9 @@ final class RequiresPhpExtension
         return $this->version;
     }
 
+    /**
+     * @psalm-return '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
+     */
     public function operator(): string
     {
         return $this->operator;
