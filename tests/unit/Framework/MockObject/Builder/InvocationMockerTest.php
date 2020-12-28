@@ -52,20 +52,6 @@ final class InvocationMockerTest extends TestCase
         $this->assertEquals(3, $mock->foo());
     }
 
-    public function testWillReturnOnConsecutiveCalls(): void
-    {
-        $mock = $this->getMockBuilder(stdClass::class)
-            ->addMethods(['foo'])
-            ->getMock();
-
-        $mock->method('foo')
-             ->willReturnOnConsecutiveCalls(1, 2, 3);
-
-        $this->assertEquals(1, $mock->foo());
-        $this->assertEquals(2, $mock->foo());
-        $this->assertEquals(3, $mock->foo());
-    }
-
     public function testWillReturnByReference(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)

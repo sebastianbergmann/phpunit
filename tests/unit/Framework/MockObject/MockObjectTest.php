@@ -319,29 +319,6 @@ final class MockObjectTest extends TestCase
         $this->assertEquals($mock, $mock->doSomething());
     }
 
-    public function testStubbedReturnOnConsecutiveCalls(): void
-    {
-        $mock = $this->getMockBuilder(AnInterface::class)
-                     ->getMock();
-
-        $mock->method('doSomething')
-             ->will($this->onConsecutiveCalls('a', 'b', 'c'));
-
-        $this->assertEquals('a', $mock->doSomething());
-        $this->assertEquals('b', $mock->doSomething());
-        $this->assertEquals('c', $mock->doSomething());
-
-        $mock = $this->getMockBuilder(AnInterface::class)
-                     ->getMock();
-
-        $mock->method('doSomething')
-             ->willReturnOnConsecutiveCalls('a', 'b', 'c');
-
-        $this->assertEquals('a', $mock->doSomething());
-        $this->assertEquals('b', $mock->doSomething());
-        $this->assertEquals('c', $mock->doSomething());
-    }
-
     public function testStaticMethodCallback(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
