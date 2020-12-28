@@ -70,6 +70,16 @@ abstract class Metadata
         return false;
     }
 
+    public function isDataProvider(): bool
+    {
+        return false;
+    }
+
+    public function isDepends(): bool
+    {
+        return false;
+    }
+
     public function isDoesNotPerformAssertions(): bool
     {
         return false;
