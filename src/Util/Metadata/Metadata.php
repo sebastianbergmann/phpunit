@@ -55,6 +55,11 @@ abstract class Metadata
         return false;
     }
 
+    public function isCoversMethod(): bool
+    {
+        return false;
+    }
+
     public function isCoversNothing(): bool
     {
         return false;
