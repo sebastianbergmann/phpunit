@@ -10,18 +10,19 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use DOMDocument;
+use PHPUnit\Runner\Version;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class UpdateSchemaLocationTo93 implements Migration
+final class UpdateSchemaLocation implements Migration
 {
     public function migrate(DOMDocument $document): void
     {
         $document->documentElement->setAttributeNS(
             'http://www.w3.org/2001/XMLSchema-instance',
             'xsi:noNamespaceSchemaLocation',
-            'https://schema.phpunit.de/9.3/phpunit.xsd'
+            'https://schema.phpunit.de/' . Version::series() . '/phpunit.xsd'
         );
     }
 }
