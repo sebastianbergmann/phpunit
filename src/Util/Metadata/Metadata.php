@@ -50,6 +50,11 @@ abstract class Metadata
         return false;
     }
 
+    public function isCoversClass(): bool
+    {
+        return false;
+    }
+
     public function isCoversNothing(): bool
     {
         return false;
