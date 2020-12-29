@@ -28,6 +28,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
+use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 
 /**
@@ -668,6 +669,30 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestDox());
         $this->assertSame('text', $metadata->asArray()[0]->text());
+    }
+
+    /**
+     * @testdox Parses #[TestWith] attribute on method
+     */
+    public function test_parses_TestWith_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(TestWithTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTestWith());
+        $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+    }
+
+    /**
+     * @testdox Parses #[TestWithJson] attribute on method
+     */
+    public function test_parses_TestWithJson_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(TestWithTest::class, 'testTwo');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTestWith());
+        $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
     }
 
     /**

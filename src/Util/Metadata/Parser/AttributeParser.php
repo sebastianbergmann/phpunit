@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\Metadata;
 
+use function json_decode;
 use function strpos;
 use PHPUnit\Framework\Attributes\After as AfterAttribute;
 use PHPUnit\Framework\Attributes\AfterClass as AfterClassAttribute;
@@ -42,6 +43,8 @@ use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses as RunTestsInSepara
 use PHPUnit\Framework\Attributes\Small as SmallAttribute;
 use PHPUnit\Framework\Attributes\Test as TestAttribute;
 use PHPUnit\Framework\Attributes\TestDox as TestDoxAttribute;
+use PHPUnit\Framework\Attributes\TestWith as TestWithAttribute;
+use PHPUnit\Framework\Attributes\TestWithJson as TestWithJsonAttribute;
 use PHPUnit\Framework\Attributes\Ticket as TicketAttribute;
 use PHPUnit\Framework\Attributes\UsesClass as UsesClassAttribute;
 use PHPUnit\Framework\Attributes\UsesFunction as UsesFunctionAttribute;
@@ -338,6 +341,16 @@ final class AttributeParser implements Parser
 
                 case TestDoxAttribute::class:
                     $result[] = new TestDox($attributeInstance->text());
+
+                    break;
+
+                case TestWithAttribute::class:
+                    $result[] = new TestWith($attributeInstance->data());
+
+                    break;
+
+                case TestWithJsonAttribute::class:
+                    $result[] = new TestWith(json_decode($attributeInstance->json(), true, 512, JSON_THROW_ON_ERROR));
 
                     break;
 
