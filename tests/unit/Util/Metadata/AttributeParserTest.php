@@ -18,6 +18,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
+use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 
@@ -180,6 +181,18 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
         $this->assertSame('medium', $metadata->asArray()[0]->groupName());
+    }
+
+    /**
+     * @testdox Parses #[PreserveGlobalState] attribute on class
+     */
+    public function test_parses_PreserveGlobalState_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(PreserveGlobalStateTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isPreserveGlobalState());
+        $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
     /**
@@ -415,6 +428,18 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isPreCondition());
+    }
+
+    /**
+     * @testdox Parses #[PreserveGlobalState] attribute on method
+     */
+    public function test_parses_PreserveGlobalState_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(PreserveGlobalStateTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isPreserveGlobalState());
+        $this->assertFalse($metadata->asArray()[0]->enabled());
     }
 
     /**

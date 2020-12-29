@@ -30,6 +30,7 @@ use PHPUnit\Framework\Attributes\Large as LargeAttribute;
 use PHPUnit\Framework\Attributes\Medium as MediumAttribute;
 use PHPUnit\Framework\Attributes\PostCondition as PostConditionAttribute;
 use PHPUnit\Framework\Attributes\PreCondition as PreConditionAttribute;
+use PHPUnit\Framework\Attributes\PreserveGlobalState as PreserveGlobalStateAttribute;
 use PHPUnit\Framework\Attributes\Small as SmallAttribute;
 use PHPUnit\Framework\Attributes\Test as TestAttribute;
 use PHPUnit\Framework\Attributes\Ticket as TicketAttribute;
@@ -105,6 +106,11 @@ final class AttributeParser implements Parser
 
                 case MediumAttribute::class:
                     $result[] = new Group('medium');
+
+                    break;
+
+                case PreserveGlobalStateAttribute::class:
+                    $result[] = new PreserveGlobalState($attributeInstance->enabled());
 
                     break;
 
@@ -225,6 +231,11 @@ final class AttributeParser implements Parser
 
                 case PreConditionAttribute::class:
                     $result[] = new PreCondition;
+
+                    break;
+
+                case PreserveGlobalStateAttribute::class:
+                    $result[] = new PreserveGlobalState($attributeInstance->enabled());
 
                     break;
 
