@@ -22,6 +22,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemFamilyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpExtensionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
@@ -247,6 +248,21 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhp());
         $this->assertSame('8.0.0', $metadata->asArray()[0]->version());
         $this->assertSame('>=', $metadata->asArray()[0]->operator());
+    }
+
+    /**
+     * @testdox Parses #[RequiresPhpExtension] attribute on class
+     */
+    public function test_parses_RequiresPhpExtension_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(RequiresPhpExtensionTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
+        $this->assertSame('foo', $metadata->asArray()[0]->extension());
+        $this->assertNull($metadata->asArray()[0]->version());
+        $this->assertSame('>=', $metadata->asArray()[0]->operator());
+        $this->assertFalse($metadata->asArray()[0]->hasVersionRequirement());
     }
 
     /**
@@ -556,6 +572,30 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhp());
         $this->assertSame('9.0.0', $metadata->asArray()[0]->version());
         $this->assertSame('<', $metadata->asArray()[0]->operator());
+    }
+
+    /**
+     * @testdox Parses #[RequiresPhpExtension] attribute on method
+     */
+    public function test_parses_RequiresPhpExtension_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(RequiresPhpExtensionTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
+        $this->assertSame('bar', $metadata->asArray()[0]->extension());
+        $this->assertSame('1.0.0', $metadata->asArray()[0]->version());
+        $this->assertSame('>=', $metadata->asArray()[0]->operator());
+        $this->assertTrue($metadata->asArray()[0]->hasVersionRequirement());
+
+        $metadata = (new AttributeParser)->forMethod(RequiresPhpExtensionTest::class, 'testTwo');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
+        $this->assertSame('baz', $metadata->asArray()[0]->extension());
+        $this->assertSame('2.0.0', $metadata->asArray()[0]->version());
+        $this->assertSame('<', $metadata->asArray()[0]->operator());
+        $this->assertTrue($metadata->asArray()[0]->hasVersionRequirement());
     }
 
     /**
