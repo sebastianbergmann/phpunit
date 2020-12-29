@@ -19,6 +19,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 
@@ -193,6 +194,18 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isPreserveGlobalState());
         $this->assertTrue($metadata->asArray()[0]->enabled());
+    }
+
+    /**
+     * @testdox Parses #[RequiresFunction] attribute on class
+     */
+    public function test_parses_RequiresFunction_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(RequiresFunctionTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
+        $this->assertSame('f', $metadata->asArray()[0]->functionName());
     }
 
     /**
@@ -440,6 +453,18 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isPreserveGlobalState());
         $this->assertFalse($metadata->asArray()[0]->enabled());
+    }
+
+    /**
+     * @testdox Parses #[RequiresFunction] attribute on method
+     */
+    public function test_parses_RequiresFunction_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(RequiresFunctionTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
+        $this->assertSame('g', $metadata->asArray()[0]->functionName());
     }
 
     /**
