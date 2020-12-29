@@ -11,7 +11,6 @@ namespace PHPUnit\Runner;
 
 use const PHP_EOL;
 use function file_put_contents;
-use function strtr;
 use function sys_get_temp_dir;
 use function touch;
 use function unlink;
@@ -251,24 +250,5 @@ EOF
     private function setPhpContent($content): void
     {
         file_put_contents($this->filename, $content);
-    }
-
-    /**
-     * Ensures the correct line ending is used for comparison.
-     *
-     * @param string $content
-     *
-     * @return string
-     */
-    private function ensureCorrectEndOfLine($content)
-    {
-        return strtr(
-            $content,
-            [
-                "\r\n" => PHP_EOL,
-                "\r"   => PHP_EOL,
-                "\n"   => PHP_EOL,
-            ]
-        );
     }
 }
