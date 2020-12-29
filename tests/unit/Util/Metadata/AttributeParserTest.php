@@ -19,6 +19,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
 use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
+use PHPUnit\TestFixture\Metadata\Attribute\ProcessIsolationTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemFamilyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemTest;
@@ -277,6 +278,17 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpunit());
         $this->assertSame('10.0.0', $metadata->asArray()[0]->version());
         $this->assertSame('>=', $metadata->asArray()[0]->operator());
+    }
+
+    /**
+     * @testdox Parses #[RunTestsInSeparateProcesses] attribute on class
+     */
+    public function test_parses_RunTestsInSeparateProcesses_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(ProcessIsolationTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRunTestsInSeparateProcesses());
     }
 
     /**
@@ -622,6 +634,17 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpunit());
         $this->assertSame('11.0.0', $metadata->asArray()[0]->version());
         $this->assertSame('<', $metadata->asArray()[0]->operator());
+    }
+
+    /**
+     * @testdox Parses #[RunInSeparateProcess] attribute on method
+     */
+    public function test_parses_RunInSeparateProcess_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(ProcessIsolationTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRunInSeparateProcess());
     }
 
     /**
