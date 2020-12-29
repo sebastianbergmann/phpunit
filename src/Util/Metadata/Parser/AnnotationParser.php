@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Util\Metadata;
 
+use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -21,6 +23,9 @@ final class AnnotationParser implements Parser
     {
         $result = [];
 
+        foreach (AnnotationRegistry::getInstance()->forClassName($className)->symbolAnnotations() as $annotation) {
+        }
+
         return MetadataCollection::fromArray($result);
     }
 
@@ -30,6 +35,9 @@ final class AnnotationParser implements Parser
     public function forMethod(string $className, string $methodName): MetadataCollection
     {
         $result = [];
+
+        foreach (AnnotationRegistry::getInstance()->forMethod($className, $methodName)->symbolAnnotations() as $annotation) {
+        }
 
         return MetadataCollection::fromArray($result);
     }
