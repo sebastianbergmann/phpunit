@@ -199,7 +199,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('small', $metadata->asArray()[0]->groupName());
     }
 
-    public function test_Parses_testDox_annotation_on_class(): void
+    public function test_Parses_testdox_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(TestDoxTest::class);
 
