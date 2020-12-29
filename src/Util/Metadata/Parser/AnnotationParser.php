@@ -23,7 +23,7 @@ final class AnnotationParser implements Parser
     {
         $result = [];
 
-        foreach (AnnotationRegistry::getInstance()->forClassName($className)->symbolAnnotations() as $annotation) {
+        foreach (AnnotationRegistry::getInstance()->forClassName($className)->symbolAnnotations() as $annotation => $values) {
         }
 
         return MetadataCollection::fromArray($result);
@@ -36,7 +36,7 @@ final class AnnotationParser implements Parser
     {
         $result = [];
 
-        foreach (AnnotationRegistry::getInstance()->forMethod($className, $methodName)->symbolAnnotations() as $annotation) {
+        foreach (AnnotationRegistry::getInstance()->forMethod($className, $methodName)->symbolAnnotations() as $annotation => $values) {
         }
 
         return MetadataCollection::fromArray($result);
