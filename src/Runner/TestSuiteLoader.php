@@ -27,13 +27,27 @@ use ReflectionException;
  */
 final class TestSuiteLoader
 {
+    private static $loadedClasses = [];
+    private static $declaredClasses = [];
+
+    public function __construct()
+    {
+        if (empty(self::$declaredClasses)) {
+            self::$declaredClasses = get_declared_classes();
+        }
+    }
+
     /**
      * @throws Exception
      */
     public function load(string $suiteClassFile): ReflectionClass
     {
         $suiteClassName = basename($suiteClassFile, '.php');
-        $loadedClasses  = get_declared_classes();
+        $dotPos = strpos($suiteClassName, '.');
+        if ($dotPos !== false) {
+            $suiteClassName = substr($suiteClassName, 0, $dotPos);
+        }
+        $loadedClasses  = self::$declaredClasses;
 
         if (!class_exists($suiteClassName, false)) {
             include_once $suiteClassFile;
@@ -42,7 +56,9 @@ final class TestSuiteLoader
                 array_diff(get_declared_classes(), $loadedClasses)
             );
 
-            if (empty($loadedClasses)) {
+            self::$loadedClasses += $loadedClasses;
+
+            if (empty(self::$loadedClasses)) {
                 throw $this->exceptionFor($suiteClassName, $suiteClassFile);
             }
         }
@@ -51,7 +67,7 @@ final class TestSuiteLoader
             // this block will handle namespaced classes
             $offset = 0 - strlen($suiteClassName);
 
-            foreach ($loadedClasses as $loadedClass) {
+            foreach (self::$loadedClasses as $loadedClass) {
                 if (stripos(substr($loadedClass, $offset - 1), '\\' . $suiteClassName) === 0) {
                     $suiteClassName = $loadedClass;
 
