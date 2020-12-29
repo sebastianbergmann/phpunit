@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\Metadata;
 
+use const JSON_THROW_ON_ERROR;
 use function json_decode;
 use function strpos;
 use PHPUnit\Framework\Attributes\After as AfterAttribute;
