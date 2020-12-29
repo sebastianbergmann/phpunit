@@ -49,9 +49,9 @@ final class AnnotationParserTest extends TestCase
     }
 
     /**
-     * @testdox Parses backupStaticProperties annotation on class
+     * @testdox Parses backupStaticAttributes annotation on class
      */
-    public function test_parses_backupStaticProperties_annotation_on_class(): void
+    public function test_parses_backupStaticAttributes_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(BackupStaticPropertiesTest::class);
 
