@@ -17,7 +17,7 @@ final class RequiresPhpExtension extends Metadata
 {
     private string $extension;
 
-    private string $version;
+    private ?string $version;
 
     /**
      * @psalm-var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
@@ -27,7 +27,7 @@ final class RequiresPhpExtension extends Metadata
     /**
      * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator
      */
-    public function __construct(string $extension, string $version, string $operator)
+    public function __construct(string $extension, ?string $version, string $operator)
     {
         $this->extension = $extension;
         $this->version   = $version;
@@ -44,7 +44,12 @@ final class RequiresPhpExtension extends Metadata
         return $this->extension;
     }
 
-    public function version(): string
+    public function hasVersionRequirement(): bool
+    {
+        return $this->version !== null;
+    }
+
+    public function version(): ?string
     {
         return $this->version;
     }

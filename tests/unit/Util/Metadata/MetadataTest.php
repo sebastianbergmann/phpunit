@@ -1068,6 +1068,7 @@ final class MetadataTest extends TestCase
         $this->assertSame('test', $metadata->extension());
         $this->assertSame('8.0.0', $metadata->version());
         $this->assertSame('>=', $metadata->operator());
+        $this->assertTrue($metadata->hasVersionRequirement());
     }
 
     public function testCanBeRequiresPhpunit(): void

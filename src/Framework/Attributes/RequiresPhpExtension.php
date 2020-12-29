@@ -19,7 +19,7 @@ final class RequiresPhpExtension
 {
     private string $extension;
 
-    private string $version;
+    private ?string $version;
 
     /**
      * @psalm-var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
@@ -29,7 +29,7 @@ final class RequiresPhpExtension
     /**
      * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator
      */
-    public function __construct(string $extension, string $version, string $operator = '>=')
+    public function __construct(string $extension, ?string $version = null, string $operator = '>=')
     {
         $this->extension = $extension;
         $this->version   = $version;
@@ -41,7 +41,7 @@ final class RequiresPhpExtension
         return $this->extension;
     }
 
-    public function version(): string
+    public function version(): ?string
     {
         return $this->version;
     }
