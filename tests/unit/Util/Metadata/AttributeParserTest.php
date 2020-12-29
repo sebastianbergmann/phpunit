@@ -20,6 +20,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemFamilyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
@@ -219,6 +220,18 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
         $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
+    }
+
+    /**
+     * @testdox Parses #[RequiresOperatingSystemFamily] attribute on class
+     */
+    public function test_parses_RequiresOperatingSystemFamily_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(RequiresOperatingSystemFamilyTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystemFamily());
+        $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
     }
 
     /**
@@ -490,6 +503,18 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
         $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
+    }
+
+    /**
+     * @testdox Parses #[RequiresOperatingSystemFamily] attribute on method
+     */
+    public function test_parses_RequiresOperatingSystemFamily_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(RequiresOperatingSystemFamilyTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystemFamily());
+        $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
     }
 
     /**
