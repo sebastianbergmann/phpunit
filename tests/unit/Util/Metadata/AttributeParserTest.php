@@ -23,6 +23,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemFamilyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 
@@ -245,6 +246,19 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhp());
         $this->assertSame('8.0.0', $metadata->asArray()[0]->version());
+        $this->assertSame('>=', $metadata->asArray()[0]->operator());
+    }
+
+    /**
+     * @testdox Parses #[RequiresPhpunit] attribute on class
+     */
+    public function test_parses_RequiresPhpunit_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(RequiresPhpunitTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpunit());
+        $this->assertSame('10.0.0', $metadata->asArray()[0]->version());
         $this->assertSame('>=', $metadata->asArray()[0]->operator());
     }
 
@@ -541,6 +555,19 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhp());
         $this->assertSame('9.0.0', $metadata->asArray()[0]->version());
+        $this->assertSame('<', $metadata->asArray()[0]->operator());
+    }
+
+    /**
+     * @testdox Parses #[RequiresPhpunit] attribute on method
+     */
+    public function test_parses_RequiresPhpunit_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(RequiresPhpunitTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpunit());
+        $this->assertSame('11.0.0', $metadata->asArray()[0]->version());
         $this->assertSame('<', $metadata->asArray()[0]->operator());
     }
 
