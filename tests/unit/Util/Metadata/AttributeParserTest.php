@@ -26,6 +26,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpExtensionTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
+use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 
 /**
@@ -288,6 +289,18 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
         $this->assertSame('small', $metadata->asArray()[0]->groupName());
+    }
+
+    /**
+     * @testdox Parses #[TestDox] attribute on class
+     */
+    public function test_parses_TestDox_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(TestDoxTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTestDox());
+        $this->assertSame('text', $metadata->asArray()[0]->text());
     }
 
     /**
@@ -620,6 +633,18 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTest());
+    }
+
+    /**
+     * @testdox Parses #[TestDox] attribute on method
+     */
+    public function test_parses_TestDox_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(TestDoxTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTestDox());
+        $this->assertSame('text', $metadata->asArray()[0]->text());
     }
 
     /**

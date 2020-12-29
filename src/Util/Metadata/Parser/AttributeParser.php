@@ -39,6 +39,7 @@ use PHPUnit\Framework\Attributes\RequiresPhpExtension as RequiresPhpExtensionAtt
 use PHPUnit\Framework\Attributes\RequiresPhpunit as RequiresPhpunitAttribute;
 use PHPUnit\Framework\Attributes\Small as SmallAttribute;
 use PHPUnit\Framework\Attributes\Test as TestAttribute;
+use PHPUnit\Framework\Attributes\TestDox as TestDoxAttribute;
 use PHPUnit\Framework\Attributes\Ticket as TicketAttribute;
 use PHPUnit\Framework\Attributes\UsesClass as UsesClassAttribute;
 use PHPUnit\Framework\Attributes\UsesFunction as UsesFunctionAttribute;
@@ -156,6 +157,11 @@ final class AttributeParser implements Parser
 
                 case SmallAttribute::class:
                     $result[] = new Group('small');
+
+                    break;
+
+                case TestDoxAttribute::class:
+                    $result[] = new TestDox($attributeInstance->text());
 
                     break;
 
@@ -315,6 +321,11 @@ final class AttributeParser implements Parser
 
                 case TestAttribute::class:
                     $result[] = new Test;
+
+                    break;
+
+                case TestDoxAttribute::class:
+                    $result[] = new TestDox($attributeInstance->text());
 
                     break;
 
