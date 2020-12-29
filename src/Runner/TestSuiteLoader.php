@@ -37,16 +37,22 @@ final class TestSuiteLoader
         }
     }
 
+    private function classNameFromFileName(string $suiteClassFile): string
+    {
+        $className = basename($suiteClassFile, '.php');
+        $dotPos = strpos($className, '.');
+        if ($dotPos !== false) {
+            $className = substr($className, 0, $dotPos);
+        }
+        return $className;
+    }
+
     /**
      * @throws Exception
      */
     public function load(string $suiteClassFile): ReflectionClass
     {
-        $suiteClassName = basename($suiteClassFile, '.php');
-        $dotPos = strpos($suiteClassName, '.');
-        if ($dotPos !== false) {
-            $suiteClassName = substr($suiteClassName, 0, $dotPos);
-        }
+        $suiteClassName = $this->classNameFromFileName($suiteClassFile);
         $loadedClasses  = self::$declaredClasses;
 
         if (!class_exists($suiteClassName, false)) {
