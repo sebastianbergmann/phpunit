@@ -20,6 +20,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\LargeTest;
 use PHPUnit\TestFixture\Metadata\Attribute\MediumTest;
 use PHPUnit\TestFixture\Metadata\Attribute\PreserveGlobalStateTest;
 use PHPUnit\TestFixture\Metadata\Attribute\RequiresFunctionTest;
+use PHPUnit\TestFixture\Metadata\Attribute\RequiresOperatingSystemTest;
 use PHPUnit\TestFixture\Metadata\Attribute\SmallTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 
@@ -206,6 +207,18 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
         $this->assertSame('f', $metadata->asArray()[0]->functionName());
+    }
+
+    /**
+     * @testdox Parses #[RequiresOperatingSystem] attribute on class
+     */
+    public function test_parses_RequiresOperatingSystem_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(RequiresOperatingSystemTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
+        $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
     }
 
     /**
@@ -465,6 +478,18 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
         $this->assertSame('g', $metadata->asArray()[0]->functionName());
+    }
+
+    /**
+     * @testdox Parses #[RequiresOperatingSystem] attribute on method
+     */
+    public function test_parses_RequiresOperatingSystem_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forClass(RequiresOperatingSystemTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
+        $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
     }
 
     /**
