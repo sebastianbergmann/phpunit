@@ -62,22 +62,13 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
-    public function test_Parses_coversClass_annotation_on_class(): void
+    public function test_Parses_covers_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(CoversTest::class);
 
         $this->assertCount(3, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isCoversClass());
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
-    }
-
-    public function test_Parses_coversFunction_annotation_on_class(): void
-    {
-        $metadata = (new AnnotationParser)->forClass(CoversTest::class);
-
-        $this->assertCount(3, $metadata);
-        $this->assertTrue($metadata->asArray()[1]->isCoversFunction());
-        $this->assertSame('f', $metadata->asArray()[1]->functionName());
     }
 
     public function test_Parses_coversNothing_annotation_on_class(): void
@@ -226,22 +217,13 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('ticket', $metadata->asArray()[1]->groupName());
     }
 
-    public function test_Parses_usesClass_annotation_on_class(): void
+    public function test_Parses_uses_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(UsesTest::class);
 
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isUsesClass());
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
-    }
-
-    public function test_Parses_usesFunction_annotation_on_class(): void
-    {
-        $metadata = (new AnnotationParser)->forClass(UsesTest::class);
-
-        $this->assertCount(2, $metadata);
-        $this->assertTrue($metadata->asArray()[1]->isUsesFunction());
-        $this->assertSame('f', $metadata->asArray()[1]->functionName());
     }
 
     public function test_Parses_after_annotation_on_method(): void
@@ -320,29 +302,9 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('provider', $metadata->asArray()[0]->methodName());
     }
 
-    public function test_Parses_dataProviderExternal_annotation_on_method(): void
-    {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDataProviderExternal');
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isDataProvider());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
-        $this->assertSame('provider', $metadata->asArray()[0]->methodName());
-    }
-
     public function test_Parses_depends_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDepends');
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isDepends());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
-        $this->assertSame('one', $metadata->asArray()[0]->methodName());
-    }
-
-    public function test_Parses_dependsExternal_annotation_on_method(): void
-    {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDependsExternal');
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDepends());
