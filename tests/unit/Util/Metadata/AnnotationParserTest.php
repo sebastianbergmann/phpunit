@@ -36,10 +36,7 @@ use PHPUnit\TestFixture\Metadata\Annotation\UsesTest;
  */
 final class AnnotationParserTest extends TestCase
 {
-    /**
-     * @testdox Parses backupGlobals annotation on class
-     */
-    public function test_parses_backupGlobals_annotation_on_class(): void
+    public function test_Parses_backupGlobals_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(BackupGlobalsTest::class);
 
@@ -48,10 +45,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses backupStaticAttributes annotation on class
-     */
-    public function test_parses_backupStaticAttributes_annotation_on_class(): void
+    public function test_Parses_backupStaticAttributes_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(BackupStaticPropertiesTest::class);
 
@@ -60,10 +54,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses codeCoverageIgnore annotation on class
-     */
-    public function test_parses_codeCoverageIgnore_annotation_on_class(): void
+    public function test_Parses_codeCoverageIgnore_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(Example::class);
 
@@ -71,10 +62,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
-    /**
-     * @testdox Parses coversClass annotation on class
-     */
-    public function test_parses_coversClass_annotation_on_class(): void
+    public function test_Parses_coversClass_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(CoversTest::class);
 
@@ -83,10 +71,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
     }
 
-    /**
-     * @testdox Parses coversFunction annotation on class
-     */
-    public function test_parses_coversFunction_annotation_on_class(): void
+    public function test_Parses_coversFunction_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(CoversTest::class);
 
@@ -95,10 +80,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('f', $metadata->asArray()[1]->functionName());
     }
 
-    /**
-     * @testdox Parses coversNothing annotation on class
-     */
-    public function test_parses_coversNothing_annotation_on_class(): void
+    public function test_Parses_coversNothing_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(CoversTest::class);
 
@@ -106,10 +88,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[2]->isCoversNothing());
     }
 
-    /**
-     * @testdox Parses doesNotPerformAssertions annotation on class
-     */
-    public function test_parses_doesNotPerformAssertions_annotation_on_class(): void
+    public function test_Parses_doesNotPerformAssertions_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(DoesNotPerformAssertionsTest::class);
 
@@ -117,10 +96,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
     }
 
-    /**
-     * @testdox Parses group annotation on class
-     */
-    public function test_parses_group_annotation_on_class(): void
+    public function test_Parses_group_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(GroupTest::class);
 
@@ -129,10 +105,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('group', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses large annotation on class
-     */
-    public function test_parses_large_annotation_on_class(): void
+    public function test_Parses_large_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(LargeTest::class);
 
@@ -141,10 +114,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('large', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses medium annotation on class
-     */
-    public function test_parses_medium_annotation_on_class(): void
+    public function test_Parses_medium_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(MediumTest::class);
 
@@ -153,10 +123,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('medium', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses preserveGlobalState annotation on class
-     */
-    public function test_parses_preserveGlobalState_annotation_on_class(): void
+    public function test_Parses_preserveGlobalState_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(PreserveGlobalStateTest::class);
 
@@ -165,10 +132,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses requiresFunction annotation on class
-     */
-    public function test_parses_requiresFunction_annotation_on_class(): void
+    public function test_Parses_requiresFunction_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresFunctionTest::class);
 
@@ -177,10 +141,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('f', $metadata->asArray()[0]->functionName());
     }
 
-    /**
-     * @testdox Parses requiresOperatingSystem annotation on class
-     */
-    public function test_parses_requiresOperatingSystem_annotation_on_class(): void
+    public function test_Parses_requiresOperatingSystem_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemTest::class);
 
@@ -189,10 +150,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
     }
 
-    /**
-     * @testdox Parses requiresOperatingSystemFamily annotation on class
-     */
-    public function test_parses_requiresOperatingSystemFamily_annotation_on_class(): void
+    public function test_Parses_requiresOperatingSystemFamily_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemFamilyTest::class);
 
@@ -201,10 +159,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
     }
 
-    /**
-     * @testdox Parses requiresPhp annotation on class
-     */
-    public function test_parses_requiresPhp_annotation_on_class(): void
+    public function test_Parses_requiresPhp_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresPhpTest::class);
 
@@ -214,10 +169,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('>=', $metadata->asArray()[0]->operator());
     }
 
-    /**
-     * @testdox Parses requiresPhpExtension annotation on class
-     */
-    public function test_parses_requiresPhpExtension_annotation_on_class(): void
+    public function test_Parses_requiresPhpExtension_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresPhpExtensionTest::class);
 
@@ -229,10 +181,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->hasVersionRequirement());
     }
 
-    /**
-     * @testdox Parses requiresPhpunit annotation on class
-     */
-    public function test_parses_requiresPhpunit_annotation_on_class(): void
+    public function test_Parses_requiresPhpunit_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresPhpunitTest::class);
 
@@ -242,10 +191,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('>=', $metadata->asArray()[0]->operator());
     }
 
-    /**
-     * @testdox Parses runTestsInSeparateProcesses annotation on class
-     */
-    public function test_parses_runTestsInSeparateProcesses_annotation_on_class(): void
+    public function test_Parses_runTestsInSeparateProcesses_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(ProcessIsolationTest::class);
 
@@ -253,10 +199,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRunTestsInSeparateProcesses());
     }
 
-    /**
-     * @testdox Parses small annotation on class
-     */
-    public function test_parses_small_annotation_on_class(): void
+    public function test_Parses_small_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(SmallTest::class);
 
@@ -265,10 +208,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('small', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses testDox annotation on class
-     */
-    public function test_parses_testDox_annotation_on_class(): void
+    public function test_Parses_testDox_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(TestDoxTest::class);
 
@@ -277,10 +217,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('text', $metadata->asArray()[0]->text());
     }
 
-    /**
-     * @testdox Parses ticket annotation on class
-     */
-    public function test_parses_ticket_annotation_on_class(): void
+    public function test_Parses_ticket_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(GroupTest::class);
 
@@ -289,10 +226,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('ticket', $metadata->asArray()[1]->groupName());
     }
 
-    /**
-     * @testdox Parses usesClass annotation on class
-     */
-    public function test_parses_usesClass_annotation_on_class(): void
+    public function test_Parses_usesClass_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(UsesTest::class);
 
@@ -301,10 +235,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
     }
 
-    /**
-     * @testdox Parses usesFunction annotation on class
-     */
-    public function test_parses_usesFunction_annotation_on_class(): void
+    public function test_Parses_usesFunction_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(UsesTest::class);
 
@@ -313,10 +244,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('f', $metadata->asArray()[1]->functionName());
     }
 
-    /**
-     * @testdox Parses after annotation on method
-     */
-    public function test_parses_after_annotation_on_method(): void
+    public function test_Parses_after_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'afterTest');
 
@@ -324,10 +252,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isAfter());
     }
 
-    /**
-     * @testdox Parses afterClass annotation on method
-     */
-    public function test_parses_afterClass_annotation_on_method(): void
+    public function test_Parses_afterClass_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'afterTests');
 
@@ -335,10 +260,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isAfterClass());
     }
 
-    /**
-     * @testdox Parses backupGlobals annotation on method
-     */
-    public function test_parses_backupGlobals_annotation_on_method(): void
+    public function test_Parses_backupGlobals_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(BackupGlobalsTest::class, 'testOne');
 
@@ -347,10 +269,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses backupStaticProperties annotation on method
-     */
-    public function test_parses_backupStaticProperties_annotation_on_method(): void
+    public function test_Parses_backupStaticProperties_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(BackupStaticPropertiesTest::class, 'testOne');
 
@@ -359,10 +278,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses before annotation on method
-     */
-    public function test_parses_before_annotation_on_method(): void
+    public function test_Parses_before_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'beforeTest');
 
@@ -370,10 +286,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isBefore());
     }
 
-    /**
-     * @testdox Parses beforeClass annotation on method
-     */
-    public function test_parses_beforeClass_annotation_on_method(): void
+    public function test_Parses_beforeClass_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'beforeTests');
 
@@ -381,10 +294,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isBeforeClass());
     }
 
-    /**
-     * @testdox Parses codeCoverageIgnore annotation on method
-     */
-    public function test_parses_codeCoverageIgnore_annotation_on_method(): void
+    public function test_Parses_codeCoverageIgnore_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(Example::class, 'method');
 
@@ -392,10 +302,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
-    /**
-     * @testdox Parses coversNothing annotation on method
-     */
-    public function test_parses_coversNothing_annotation_on_method(): void
+    public function test_Parses_coversNothing_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(CoversTest::class, 'testOne');
 
@@ -403,10 +310,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCoversNothing());
     }
 
-    /**
-     * @testdox Parses dataProvider annotation on method
-     */
-    public function test_parses_dataProvider_annotation_on_method(): void
+    public function test_Parses_dataProvider_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDataProvider');
 
@@ -416,10 +320,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('provider', $metadata->asArray()[0]->methodName());
     }
 
-    /**
-     * @testdox Parses dataProviderExternal annotation on method
-     */
-    public function test_parses_dataProviderExternal_annotation_on_method(): void
+    public function test_Parses_dataProviderExternal_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDataProviderExternal');
 
@@ -429,10 +330,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('provider', $metadata->asArray()[0]->methodName());
     }
 
-    /**
-     * @testdox Parses depends annotation on method
-     */
-    public function test_parses_depends_annotation_on_method(): void
+    public function test_Parses_depends_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDepends');
 
@@ -442,10 +340,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('one', $metadata->asArray()[0]->methodName());
     }
 
-    /**
-     * @testdox Parses dependsExternal annotation on method
-     */
-    public function test_parses_dependsExternal_annotation_on_method(): void
+    public function test_Parses_dependsExternal_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDependsExternal');
 
@@ -455,10 +350,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('one', $metadata->asArray()[0]->methodName());
     }
 
-    /**
-     * @testdox Parses doesNotPerformAssertions annotation on method
-     */
-    public function test_parses_doesNotPerformAssertions_annotation_on_method(): void
+    public function test_Parses_doesNotPerformAssertions_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(DoesNotPerformAssertionsTest::class, 'testOne');
 
@@ -466,10 +358,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
     }
 
-    /**
-     * @testdox Parses group annotation on method
-     */
-    public function test_parses_group_annotation_on_method(): void
+    public function test_Parses_group_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(GroupTest::class, 'testOne');
 
@@ -478,10 +367,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('another-group', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses postCondition annotation on method
-     */
-    public function test_parses_postCondition_annotation_on_method(): void
+    public function test_Parses_postCondition_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'postCondition');
 
@@ -489,10 +375,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isPostCondition());
     }
 
-    /**
-     * @testdox Parses preCondition annotation on method
-     */
-    public function test_parses_preCondition_annotation_on_method(): void
+    public function test_Parses_preCondition_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'preCondition');
 
@@ -500,10 +383,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isPreCondition());
     }
 
-    /**
-     * @testdox Parses preserveGlobalState annotation on method
-     */
-    public function test_parses_preserveGlobalState_annotation_on_method(): void
+    public function test_Parses_preserveGlobalState_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(PreserveGlobalStateTest::class, 'testOne');
 
@@ -512,10 +392,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses requiresFunction annotation on method
-     */
-    public function test_parses_requiresFunction_annotation_on_method(): void
+    public function test_Parses_requiresFunction_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(RequiresFunctionTest::class, 'testOne');
 
@@ -524,10 +401,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('g', $metadata->asArray()[0]->functionName());
     }
 
-    /**
-     * @testdox Parses requiresOperatingSystem annotation on method
-     */
-    public function test_parses_requiresOperatingSystem_annotation_on_method(): void
+    public function test_Parses_requiresOperatingSystem_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemTest::class);
 
@@ -536,10 +410,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
     }
 
-    /**
-     * @testdox Parses requiresOperatingSystemFamily annotation on method
-     */
-    public function test_parses_requiresOperatingSystemFamily_annotation_on_method(): void
+    public function test_Parses_requiresOperatingSystemFamily_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(RequiresOperatingSystemFamilyTest::class, 'testOne');
 
@@ -548,10 +419,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
     }
 
-    /**
-     * @testdox Parses requiresPhp annotation on method
-     */
-    public function test_parses_requiresPhp_annotation_on_method(): void
+    public function test_Parses_requiresPhp_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(RequiresPhpTest::class, 'testOne');
 
@@ -561,10 +429,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('<', $metadata->asArray()[0]->operator());
     }
 
-    /**
-     * @testdox Parses requiresPhpExtension annotation on method
-     */
-    public function test_parses_requiresPhpExtension_annotation_on_method(): void
+    public function test_Parses_requiresPhpExtension_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(RequiresPhpExtensionTest::class, 'testOne');
 
@@ -585,10 +450,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->hasVersionRequirement());
     }
 
-    /**
-     * @testdox Parses requiresPhpunit annotation on method
-     */
-    public function test_parses_requiresPhpunit_annotation_on_method(): void
+    public function test_Parses_requiresPhpunit_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(RequiresPhpunitTest::class, 'testOne');
 
@@ -598,10 +460,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('<', $metadata->asArray()[0]->operator());
     }
 
-    /**
-     * @testdox Parses runInSeparateProcess annotation on method
-     */
-    public function test_parses_runInSeparateProcess_annotation_on_method(): void
+    public function test_Parses_runInSeparateProcess_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(ProcessIsolationTest::class, 'testOne');
 
@@ -609,10 +468,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRunInSeparateProcess());
     }
 
-    /**
-     * @testdox Parses test annotation on method
-     */
-    public function test_parses_test_annotation_on_method(): void
+    public function test_Parses_test_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'one');
 
@@ -620,10 +476,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isTest());
     }
 
-    /**
-     * @testdox Parses testdox annotation on method
-     */
-    public function test_parses_testdox_annotation_on_method(): void
+    public function test_Parses_testdox_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(TestDoxTest::class, 'testOne');
 
@@ -632,10 +485,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('text', $metadata->asArray()[0]->text());
     }
 
-    /**
-     * @testdox Parses testWith annotation on method
-     */
-    public function test_parses_testWith_annotation_on_method(): void
+    public function test_Parses_testWith_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(TestWithTest::class, 'testOne');
 
@@ -644,10 +494,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
     }
 
-    /**
-     * @testdox Parses ticket annotation on method
-     */
-    public function test_parses_ticket_annotation_on_method(): void
+    public function test_Parses_ticket_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(GroupTest::class, 'testOne');
 
