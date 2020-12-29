@@ -8,18 +8,11 @@ $_SERVER['argv'][] = __DIR__ . '/../_files/OneClassPerFile/wrongClassName/';
 
 require __DIR__ . '/../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+try {
+    PHPUnit\TextUI\Command::main();
+} catch (\Exception $e) {
+    echo $e->getMessage();
+}
 ?>
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
-
-
-Warning:       Test case class not matching filename is deprecated
-               in %sWrongClassNameTest.php
-               Class name was 'WrongClassNameBar', expected 'WrongClassNameTest'
-
-.                                                                   1 / 1 (100%)
-
-Time: %s, Memory: %s
-
-OK (1 test, 1 assertion)
+Class 'WrongClassNameTest' could not be found in '%s/_files/OneClassPerFile/wrongClassName/WrongClassNameTest.php'.

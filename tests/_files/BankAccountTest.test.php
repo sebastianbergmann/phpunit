@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 /**
  * Tests for the BankAccount class.
  */
-class BankAccountWithCustomExtensionTest extends TestCase
+class BankAccountTest extends TestCase
 {
     protected $ba;
 
