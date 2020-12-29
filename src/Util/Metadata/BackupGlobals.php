@@ -15,9 +15,9 @@ namespace PHPUnit\Util\Metadata;
  */
 final class BackupGlobals extends Metadata
 {
-    private bool $enabled;
+    private ?bool $enabled;
 
-    public function __construct(bool $enabled)
+    public function __construct(?bool $enabled)
     {
         $this->enabled = $enabled;
     }
@@ -27,7 +27,7 @@ final class BackupGlobals extends Metadata
         return true;
     }
 
-    public function enabled(): bool
+    public function enabled(): ?bool
     {
         return $this->enabled;
     }
