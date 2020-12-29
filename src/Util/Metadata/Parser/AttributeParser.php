@@ -34,6 +34,7 @@ use PHPUnit\Framework\Attributes\PreserveGlobalState as PreserveGlobalStateAttri
 use PHPUnit\Framework\Attributes\RequiresFunction as RequiresFunctionAttribute;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystem as RequiresOperatingSystemAttribute;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystemFamily as RequiresOperatingSystemFamilyAttribute;
+use PHPUnit\Framework\Attributes\RequiresPhp as RequiresPhpAttribute;
 use PHPUnit\Framework\Attributes\Small as SmallAttribute;
 use PHPUnit\Framework\Attributes\Test as TestAttribute;
 use PHPUnit\Framework\Attributes\Ticket as TicketAttribute;
@@ -129,6 +130,11 @@ final class AttributeParser implements Parser
 
                 case RequiresOperatingSystemFamilyAttribute::class:
                     $result[] = new RequiresOperatingSystemFamily($attributeInstance->operatingSystemFamily());
+
+                    break;
+
+                case RequiresPhpAttribute::class:
+                    $result[] = new RequiresPhp($attributeInstance->version(), $attributeInstance->operator());
 
                     break;
 
@@ -269,6 +275,11 @@ final class AttributeParser implements Parser
 
                 case RequiresOperatingSystemFamilyAttribute::class:
                     $result[] = new RequiresOperatingSystemFamily($attributeInstance->operatingSystemFamily());
+
+                    break;
+
+                case RequiresPhpAttribute::class:
+                    $result[] = new RequiresPhp($attributeInstance->version(), $attributeInstance->operator());
 
                     break;
 
