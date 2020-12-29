@@ -12,10 +12,6 @@ namespace PHPUnit\Framework\Attributes;
 use Attribute;
 
 #[Attribute(Attribute::TARGET_CLASS)]
-final class Large extends Group
+final class Large
 {
-    public function __construct()
-    {
-        parent::__construct('large');
-    }
 }
