@@ -12,16 +12,29 @@ namespace PHPUnit\Util\Metadata;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class AttributeReader implements Reader
+final class CachingParser implements Parser
 {
+    private Parser $reader;
+
+    private array $cache = [];
+
+    public function __construct(Parser $reader)
+    {
+        $this->reader = $reader;
+    }
+
     /**
      * @psalm-param class-string $className
      */
     public function forClass(string $className): MetadataCollection
     {
-        $result = [];
+        if (isset($this->cache[$className])) {
+            return $this->cache[$className];
+        }
 
-        return MetadataCollection::fromArray($result);
+        $this->cache[$className] = $this->reader->forClass($className);
+
+        return $this->cache[$className];
     }
 
     /**
@@ -29,8 +42,14 @@ final class AttributeReader implements Reader
      */
     public function forMethod(string $className, string $methodName): MetadataCollection
     {
-        $result = [];
+        $key = $className . '::' . $methodName;
 
-        return MetadataCollection::fromArray($result);
+        if (isset($this->cache[$key])) {
+            return $this->cache[$key];
+        }
+
+        $this->cache[$key] = $this->reader->forMethod($className, $methodName);
+
+        return $this->cache[$key];
     }
 }

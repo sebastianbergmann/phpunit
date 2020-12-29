@@ -1314,8 +1314,9 @@
       <code>(string) $matches['value'][$i]</code>
     </RedundantCast>
   </file>
-  <file src="src/Util/Metadata/Reader/AttributeReader.php">
-    <UndefinedMethod occurrences="1">
+  <file src="src/Util/Metadata/Parser/AttributeParser.php">
+    <UndefinedMethod occurrences="2">
+      <code>getAttributes</code>
       <code>getAttributes</code>
     </UndefinedMethod>
   </file>

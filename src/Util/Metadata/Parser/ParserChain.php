@@ -12,13 +12,13 @@ namespace PHPUnit\Util\Metadata;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ReaderChain implements Reader
+final class ParserChain implements Parser
 {
-    private Reader $attributeReader;
+    private Parser $attributeReader;
 
-    private Reader $annotationReader;
+    private Parser $annotationReader;
 
-    public function __construct(Reader $attributeReader, Reader $annotationReader)
+    public function __construct(Parser $attributeReader, Parser $annotationReader)
     {
         $this->attributeReader  = $attributeReader;
         $this->annotationReader = $annotationReader;

@@ -12,7 +12,7 @@ namespace PHPUnit\Util\Metadata;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-interface Reader
+interface Parser
 {
     /**
      * @psalm-param class-string $className

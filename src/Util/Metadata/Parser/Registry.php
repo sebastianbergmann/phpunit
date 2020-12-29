@@ -17,9 +17,9 @@ namespace PHPUnit\Util\Metadata;
  */
 final class Registry
 {
-    private static ?Reader $instance = null;
+    private static ?Parser $instance = null;
 
-    public static function reader(): Reader
+    public static function reader(): Parser
     {
         return self::$instance ?? self::$instance = self::build();
     }
@@ -28,17 +28,17 @@ final class Registry
     {
     }
 
-    private static function build(): Reader
+    private static function build(): Parser
     {
         if (PHP_MAJOR_VERSION >= 8) {
-            return new CachingReader(
-                new ReaderChain(
-                    new AttributeReader,
-                    new AnnotationReader
+            return new CachingParser(
+                new ParserChain(
+                    new AttributeParser,
+                    new AnnotationParser
                 )
             );
         }
 
-        return new CachingReader(new AnnotationReader);
+        return new CachingParser(new AnnotationParser);
     }
 }
