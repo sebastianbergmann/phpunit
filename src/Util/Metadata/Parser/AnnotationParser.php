@@ -50,21 +50,7 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'covers':
-                    foreach ($values as $value) {
-                        if (strpos($value, '::') === 0) {
-                            $result[] = new CoversFunction(trim(substr($value, strlen('::')), '\\'));
-
-                            continue;
-                        }
-
-                        if (strpos($value, '::') !== false) {
-                            $result[] = new CoversMethod(...explode('::', $value));
-
-                            continue;
-                        }
-
-                        $result[] = new CoversClass(trim($value, '\\'));
-                    }
+                    $this->parseCovers($values, $result);
 
                     break;
 
@@ -102,70 +88,7 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'requires':
-                    foreach ($values as $value) {
-                        if (strpos($value, 'function ') === 0) {
-                            $result[] = new RequiresFunction(substr($value, strlen('function ')));
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'OS ') === 0) {
-                            $result[] = new RequiresOperatingSystem(substr($value, strlen('OS ')));
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'OSFAMILY ') === 0) {
-                            $result[] = new RequiresOperatingSystemFamily(substr($value, strlen('OSFAMILY ')));
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'PHP ') === 0) {
-                            $parts    = explode(' ', substr($value, strlen('PHP ')));
-                            $operator = '>=';
-
-                            if (count($parts) === 1) {
-                                $version = $parts[0];
-                            } elseif (count($parts) === 2) {
-                                [$operator, $version] = $parts;
-                            }
-
-                            $result[] = new RequiresPhp($version, $operator);
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'PHPUnit ') === 0) {
-                            $parts    = explode(' ', substr($value, strlen('PHPUnit ')));
-                            $operator = '>=';
-
-                            if (count($parts) === 1) {
-                                $version = $parts[0];
-                            } elseif (count($parts) === 2) {
-                                [$operator, $version] = $parts;
-                            }
-
-                            $result[] = new RequiresPhpunit($version, $operator);
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'extension ') === 0) {
-                            $parts     = explode(' ', substr($value, strlen('extension ')));
-                            $extension = array_shift($parts);
-                            $version   = null;
-                            $operator  = '>=';
-
-                            if (count($parts) === 1) {
-                                $version = $parts[0];
-                            } elseif (count($parts) === 2) {
-                                [$operator, $version] = $parts;
-                            }
-
-                            $result[] = new RequiresPhpExtension($extension, $version, $operator);
-                        }
-                    }
+                    $this->parseRequires($values, $result);
 
                     break;
 
@@ -185,21 +108,7 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'uses':
-                    foreach ($values as $value) {
-                        if (strpos($value, '::') === 0) {
-                            $result[] = new UsesFunction(trim(substr($value, strlen('::')), '\\'));
-
-                            continue;
-                        }
-
-                        if (strpos($value, '::') !== false) {
-                            $result[] = new UsesMethod(...explode('::', $value));
-
-                            continue;
-                        }
-
-                        $result[] = new UsesClass(trim($value, '\\'));
-                    }
+                    $this->parseUses($values, $result);
 
                     break;
             }
@@ -253,21 +162,7 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'covers':
-                    foreach ($values as $value) {
-                        if (strpos($value, '::') === 0) {
-                            $result[] = new CoversFunction(trim(substr($value, strlen('::')), '\\'));
-
-                            continue;
-                        }
-
-                        if (strpos($value, '::') !== false) {
-                            $result[] = new CoversMethod(...explode('::', $value));
-
-                            continue;
-                        }
-
-                        $result[] = new CoversClass(trim($value, '\\'));
-                    }
+                    $this->parseCovers($values, $result);
 
                     break;
 
@@ -331,70 +226,7 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'requires':
-                    foreach ($values as $value) {
-                        if (strpos($value, 'function ') === 0) {
-                            $result[] = new RequiresFunction(substr($value, strlen('function ')));
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'OS ') === 0) {
-                            $result[] = new RequiresOperatingSystem(substr($value, strlen('OS ')));
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'OSFAMILY ') === 0) {
-                            $result[] = new RequiresOperatingSystemFamily(substr($value, strlen('OSFAMILY ')));
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'PHP ') === 0) {
-                            $parts    = explode(' ', substr($value, strlen('PHP ')));
-                            $operator = '>=';
-
-                            if (count($parts) === 1) {
-                                $version = $parts[0];
-                            } elseif (count($parts) === 2) {
-                                [$operator, $version] = $parts;
-                            }
-
-                            $result[] = new RequiresPhp($version, $operator);
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'PHPUnit ') === 0) {
-                            $parts    = explode(' ', substr($value, strlen('PHPUnit ')));
-                            $operator = '>=';
-
-                            if (count($parts) === 1) {
-                                $version = $parts[0];
-                            } elseif (count($parts) === 2) {
-                                [$operator, $version] = $parts;
-                            }
-
-                            $result[] = new RequiresPhpunit($version, $operator);
-
-                            continue;
-                        }
-
-                        if (strpos($value, 'extension ') === 0) {
-                            $parts     = explode(' ', substr($value, strlen('extension ')));
-                            $extension = array_shift($parts);
-                            $version   = null;
-                            $operator  = '>=';
-
-                            if (count($parts) === 1) {
-                                $version = $parts[0];
-                            } elseif (count($parts) === 2) {
-                                [$operator, $version] = $parts;
-                            }
-
-                            $result[] = new RequiresPhpExtension($extension, $version, $operator);
-                        }
-                    }
+                    $this->parseRequires($values, $result);
 
                     break;
 
@@ -419,10 +251,121 @@ final class AnnotationParser implements Parser
                     }
 
                     break;
+
+                case 'uses':
+                    $this->parseUses($values, $result);
+
+                    break;
             }
         }
 
         return MetadataCollection::fromArray($result);
+    }
+
+    private function parseCovers(array $values, array &$result): void
+    {
+        foreach ($values as $value) {
+            if (strpos($value, '::') === 0) {
+                $result[] = new CoversFunction(trim(substr($value, strlen('::')), '\\'));
+
+                continue;
+            }
+
+            if (strpos($value, '::') !== false) {
+                $result[] = new CoversMethod(...explode('::', $value));
+
+                continue;
+            }
+
+            $result[] = new CoversClass(trim($value, '\\'));
+        }
+    }
+
+    private function parseUses(array $values, array &$result): void
+    {
+        foreach ($values as $value) {
+            if (strpos($value, '::') === 0) {
+                $result[] = new UsesFunction(trim(substr($value, strlen('::')), '\\'));
+
+                continue;
+            }
+
+            if (strpos($value, '::') !== false) {
+                $result[] = new UsesMethod(...explode('::', $value));
+
+                continue;
+            }
+
+            $result[] = new UsesClass(trim($value, '\\'));
+        }
+    }
+
+    private function parseRequires(array $values, array &$result): void
+    {
+        foreach ($values as $value) {
+            if (strpos($value, 'function ') === 0) {
+                $result[] = new RequiresFunction(substr($value, strlen('function ')));
+
+                continue;
+            }
+
+            if (strpos($value, 'OS ') === 0) {
+                $result[] = new RequiresOperatingSystem(substr($value, strlen('OS ')));
+
+                continue;
+            }
+
+            if (strpos($value, 'OSFAMILY ') === 0) {
+                $result[] = new RequiresOperatingSystemFamily(substr($value, strlen('OSFAMILY ')));
+
+                continue;
+            }
+
+            if (strpos($value, 'PHP ') === 0) {
+                $parts    = explode(' ', substr($value, strlen('PHP ')));
+                $operator = '>=';
+
+                if (count($parts) === 1) {
+                    $version = $parts[0];
+                } elseif (count($parts) === 2) {
+                    [$operator, $version] = $parts;
+                }
+
+                $result[] = new RequiresPhp($version, $operator);
+
+                continue;
+            }
+
+            if (strpos($value, 'PHPUnit ') === 0) {
+                $parts    = explode(' ', substr($value, strlen('PHPUnit ')));
+                $operator = '>=';
+
+                if (count($parts) === 1) {
+                    $version = $parts[0];
+                } elseif (count($parts) === 2) {
+                    [$operator, $version] = $parts;
+                }
+
+                $result[] = new RequiresPhpunit($version, $operator);
+
+                continue;
+            }
+
+            if (strpos($value, 'extension ') === 0) {
+                $parts     = explode(' ', substr($value, strlen('extension ')));
+                $extension = array_shift($parts);
+                $version   = null;
+                $operator  = '>=';
+
+                if (count($parts) === 1) {
+                    $version = $parts[0];
+                } elseif (count($parts) === 2) {
+                    [$operator, $version] = $parts;
+                }
+
+                $result[] = new RequiresPhpExtension($extension, $version, $operator);
+            }
+        }
     }
 
     private function stringToBool(string $value): ?bool
