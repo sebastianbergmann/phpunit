@@ -1306,13 +1306,34 @@
       <code>getName</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="src/Util/Metadata/Annotation/DocBlock.php">
+  <file src="src/Util/Metadata/Parser/Annotation/DocBlock.php">
     <MissingThrowsDocblock occurrences="1">
       <code>throw new SkippedTestError;</code>
     </MissingThrowsDocblock>
     <RedundantCast occurrences="1">
       <code>(string) $matches['value'][$i]</code>
     </RedundantCast>
+  </file>
+  <file src="src/Util/Metadata/Parser/AnnotationParser.php">
+    <ArgumentTypeCoercion occurrences="9">
+      <code>$operator</code>
+      <code>$operator</code>
+      <code>$operator</code>
+      <code>explode('::', $value)</code>
+      <code>explode('::', $value)</code>
+      <code>explode('::', $value)</code>
+      <code>explode('::', $value)</code>
+      <code>trim($value, '\\')</code>
+      <code>trim($value, '\\')</code>
+    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="2">
+      <code>forClassName</code>
+      <code>forMethod</code>
+    </MissingThrowsDocblock>
+    <PossiblyUndefinedVariable occurrences="2">
+      <code>$version</code>
+      <code>$version</code>
+    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Util/Metadata/Parser/AttributeParser.php">
     <UndefinedMethod occurrences="2">
