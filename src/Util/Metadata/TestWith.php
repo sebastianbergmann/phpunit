@@ -15,11 +15,11 @@ namespace PHPUnit\Util\Metadata;
  */
 final class TestWith extends Metadata
 {
-    private string $json;
+    private array $data;
 
-    public function __construct(string $json)
+    public function __construct(array $data)
     {
-        $this->json = $json;
+        $this->data = $data;
     }
 
     public function isTestWith(): bool
@@ -27,8 +27,8 @@ final class TestWith extends Metadata
         return true;
     }
 
-    public function json(): string
+    public function data(): array
     {
-        return $this->json;
+        return $this->data;
     }
 }

@@ -1153,7 +1153,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeTestWith(): void
     {
-        $metadata = new TestWith('{}');
+        $metadata = new TestWith(['a', 'b']);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1188,7 +1188,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isUsesFunction());
 
-        $this->assertSame('{}', $metadata->json());
+        $this->assertSame(['a', 'b'], $metadata->data());
     }
 
     public function testCanBeUsesClass(): void
