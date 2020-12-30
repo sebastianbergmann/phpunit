@@ -27,8 +27,10 @@ use ReflectionException;
  */
 final class TestSuiteLoader
 {
+    /** @var string[] */
     private static $loadedClasses = [];
 
+    /** @var string[] */
     private static $declaredClasses = [];
 
     public function __construct()
