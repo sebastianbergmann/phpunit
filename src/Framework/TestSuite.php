@@ -10,16 +10,12 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
-use function array_diff;
 use function array_keys;
 use function array_map;
-use function array_merge;
 use function array_unique;
-use function basename;
 use function call_user_func;
 use function class_exists;
 use function count;
-use function dirname;
 use function get_declared_classes;
 use function implode;
 use function is_bool;
@@ -28,8 +24,6 @@ use function is_file;
 use function is_object;
 use function is_string;
 use function method_exists;
-use function preg_match;
-use function preg_quote;
 use function sprintf;
 use function strpos;
 use function substr;
