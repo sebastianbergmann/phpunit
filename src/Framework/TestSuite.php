@@ -317,6 +317,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * added, a <code>PHPUnit\Framework\WarningTestCase</code> will be created instead,
      * leaving the current test run untouched.
      *
+     * @throws \PHPUnit\Runner\Exception
      * @throws Exception
      */
     public function addTestFile(string $filename): void
