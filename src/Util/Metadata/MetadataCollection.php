@@ -10,6 +10,7 @@
 namespace PHPUnit\Util\Metadata;
 
 use function array_filter;
+use function array_merge;
 use function count;
 use Countable;
 use IteratorAggregate;
@@ -59,6 +60,16 @@ final class MetadataCollection implements Countable, IteratorAggregate
     public function getIterator(): MetadataCollectionIterator
     {
         return new MetadataCollectionIterator($this);
+    }
+
+    public function mergeWith(self $other): self
+    {
+        return new self(
+            ...array_merge(
+                $this->asArray(),
+                $other->asArray()
+            )
+        );
     }
 
     public function isAfter(): self

@@ -88,6 +88,17 @@ final class MetadataCollectionTest extends TestCase
         }
     }
 
+    public function testCanBeMerged(): void
+    {
+        $a = MetadataCollection::fromArray([new Before]);
+        $b = MetadataCollection::fromArray([new After]);
+        $c = $a->mergeWith($b);
+
+        $this->assertCount(2, $c);
+        $this->assertTrue($c->asArray()[0]->isBefore());
+        $this->assertTrue($c->asArray()[1]->isAfter());
+    }
+
     public function test_Can_be_filtered_for_AfterClass(): void
     {
         $collection = $this->collectionWithOneOfEach()->isAfterClass();
