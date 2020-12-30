@@ -96,11 +96,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private ?\PHPUnit\Runner\Filter\Factory $iteratorFilter = null;
 
     /**
-     * @var string[]
-     */
-    private array $declaredClasses;
-
-    /**
      * @psalm-var array<int,string>
      */
     private array $warnings = [];
@@ -134,8 +129,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 'ReflectionClass object or string'
             );
         }
-
-        $this->declaredClasses = get_declared_classes();
 
         if (!$theClass instanceof ReflectionClass) {
             if (class_exists($theClass, true)) {
@@ -331,9 +324,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     {
         if (is_file($filename) && substr($filename, -5) === '.phpt') {
             $this->addTest(new PhptTestCase($filename));
-
-            $this->declaredClasses = get_declared_classes();
-
             return;
         }
 
