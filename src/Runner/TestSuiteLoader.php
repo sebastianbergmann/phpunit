@@ -28,6 +28,7 @@ use ReflectionException;
 final class TestSuiteLoader
 {
     private static $loadedClasses = [];
+
     private static $declaredClasses = [];
 
     public function __construct()
@@ -35,16 +36,6 @@ final class TestSuiteLoader
         if (empty(self::$declaredClasses)) {
             self::$declaredClasses = get_declared_classes();
         }
-    }
-
-    private function classNameFromFileName(string $suiteClassFile): string
-    {
-        $className = basename($suiteClassFile, '.php');
-        $dotPos = strpos($className, '.');
-        if ($dotPos !== false) {
-            $className = substr($className, 0, $dotPos);
-        }
-        return $className;
     }
 
     /**
@@ -126,6 +117,18 @@ final class TestSuiteLoader
     public function reload(ReflectionClass $aClass): ReflectionClass
     {
         return $aClass;
+    }
+
+    private function classNameFromFileName(string $suiteClassFile): string
+    {
+        $className = basename($suiteClassFile, '.php');
+        $dotPos    = strpos($className, '.');
+
+        if ($dotPos !== false) {
+            $className = substr($className, 0, $dotPos);
+        }
+
+        return $className;
     }
 
     private function exceptionFor(string $className, string $filename): Exception
