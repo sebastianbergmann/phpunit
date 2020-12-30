@@ -16,7 +16,6 @@ use function array_unique;
 use function call_user_func;
 use function class_exists;
 use function count;
-use function get_declared_classes;
 use function implode;
 use function is_bool;
 use function is_callable;
@@ -324,6 +323,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     {
         if (is_file($filename) && substr($filename, -5) === '.phpt') {
             $this->addTest(new PhptTestCase($filename));
+
             return;
         }
 
