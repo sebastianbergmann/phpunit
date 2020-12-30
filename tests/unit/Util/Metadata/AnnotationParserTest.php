@@ -161,7 +161,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhp());
         $this->assertSame('8.0.0', $metadata->asArray()[0]->version());
-        $this->assertSame('>=', $metadata->asArray()[0]->operator());
+        $this->assertSame('>=', $metadata->asArray()[0]->operator()->asString());
     }
 
     public function test_Parses_requiresPhpExtension_annotation_on_class(): void
@@ -172,7 +172,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
         $this->assertSame('foo', $metadata->asArray()[0]->extension());
         $this->assertNull($metadata->asArray()[0]->version());
-        $this->assertSame('>=', $metadata->asArray()[0]->operator());
+        $this->assertSame('>=', $metadata->asArray()[0]->operator()->asString());
         $this->assertFalse($metadata->asArray()[0]->hasVersionRequirement());
     }
 
@@ -183,7 +183,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpunit());
         $this->assertSame('10.0.0', $metadata->asArray()[0]->version());
-        $this->assertSame('>=', $metadata->asArray()[0]->operator());
+        $this->assertSame('>=', $metadata->asArray()[0]->operator()->asString());
     }
 
     public function test_Parses_runTestsInSeparateProcesses_annotation_on_class(): void
@@ -396,7 +396,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhp());
         $this->assertSame('9.0.0', $metadata->asArray()[0]->version());
-        $this->assertSame('<', $metadata->asArray()[0]->operator());
+        $this->assertSame('<', $metadata->asArray()[0]->operator()->asString());
     }
 
     public function test_Parses_requiresPhpExtension_annotation_on_method(): void
@@ -407,7 +407,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
         $this->assertSame('bar', $metadata->asArray()[0]->extension());
         $this->assertSame('1.0.0', $metadata->asArray()[0]->version());
-        $this->assertSame('>=', $metadata->asArray()[0]->operator());
+        $this->assertSame('>=', $metadata->asArray()[0]->operator()->asString());
         $this->assertTrue($metadata->asArray()[0]->hasVersionRequirement());
 
         $metadata = (new AnnotationParser)->forMethod(RequiresPhpExtensionTest::class, 'testTwo');
@@ -416,7 +416,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
         $this->assertSame('baz', $metadata->asArray()[0]->extension());
         $this->assertSame('2.0.0', $metadata->asArray()[0]->version());
-        $this->assertSame('<', $metadata->asArray()[0]->operator());
+        $this->assertSame('<', $metadata->asArray()[0]->operator()->asString());
         $this->assertTrue($metadata->asArray()[0]->hasVersionRequirement());
     }
 
@@ -427,7 +427,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpunit());
         $this->assertSame('11.0.0', $metadata->asArray()[0]->version());
-        $this->assertSame('<', $metadata->asArray()[0]->operator());
+        $this->assertSame('<', $metadata->asArray()[0]->operator()->asString());
     }
 
     public function test_Parses_runInSeparateProcess_annotation_on_method(): void

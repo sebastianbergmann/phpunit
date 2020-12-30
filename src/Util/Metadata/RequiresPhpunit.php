@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Util\Metadata;
 
+use PHPUnit\Util\VersionComparisonOperator;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
@@ -17,15 +19,9 @@ final class RequiresPhpunit extends Metadata
 {
     private string $version;
 
-    /**
-     * @psalm-var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
-     */
-    private string $operator;
+    private VersionComparisonOperator $operator;
 
-    /**
-     * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator
-     */
-    public function __construct(string $version, string $operator)
+    public function __construct(string $version, VersionComparisonOperator $operator)
     {
         $this->version  = $version;
         $this->operator = $operator;
@@ -41,7 +37,7 @@ final class RequiresPhpunit extends Metadata
         return $this->version;
     }
 
-    public function operator(): string
+    public function operator(): VersionComparisonOperator
     {
         return $this->operator;
     }

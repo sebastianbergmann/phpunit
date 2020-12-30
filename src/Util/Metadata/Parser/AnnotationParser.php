@@ -19,6 +19,7 @@ use function strpos;
 use function substr;
 use function trim;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
+use PHPUnit\Util\VersionComparisonOperator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -331,7 +332,10 @@ final class AnnotationParser implements Parser
                     [$operator, $version] = $parts;
                 }
 
-                $result[] = new RequiresPhp($version, $operator);
+                $result[] = new RequiresPhp(
+                    $version,
+                    new VersionComparisonOperator($operator)
+                );
 
                 continue;
             }
@@ -346,7 +350,10 @@ final class AnnotationParser implements Parser
                     [$operator, $version] = $parts;
                 }
 
-                $result[] = new RequiresPhpunit($version, $operator);
+                $result[] = new RequiresPhpunit(
+                    $version,
+                    new VersionComparisonOperator($operator)
+                );
 
                 continue;
             }
@@ -363,7 +370,11 @@ final class AnnotationParser implements Parser
                     [$operator, $version] = $parts;
                 }
 
-                $result[] = new RequiresPhpExtension($extension, $version, $operator);
+                $result[] = new RequiresPhpExtension(
+                    $extension,
+                    $version,
+                    new VersionComparisonOperator($operator)
+                );
             }
         }
     }
