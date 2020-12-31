@@ -187,13 +187,26 @@ final class AnnotationParser implements Parser
 
                 case 'depends':
                     foreach ($values as $value) {
+                        $deepClone    = false;
+                        $shallowClone = false;
+
+                        if (strpos($value, 'clone ') === 0) {
+                            $deepClone = true;
+                            $value     = substr($value, strlen('clone '));
+                        } elseif (strpos($value, 'shallowClone ') === 0) {
+                            $shallowClone = true;
+                            $value        = substr($value, strlen('shallowClone '));
+                        }
+
                         if (strpos($value, '::') !== false) {
-                            $result[] = new Depends(...explode('::', $value));
+                            [$className, $methodName] = explode('::', $value);
+
+                            $result[] = new Depends($className, $methodName, $deepClone, $shallowClone);
 
                             continue;
                         }
 
-                        $result[] = new Depends($className, $value);
+                        $result[] = new Depends($className, $value, $deepClone, $shallowClone);
                     }
 
                     break;

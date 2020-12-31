@@ -60,6 +60,8 @@ final class SmallTest extends TestCase
 
     /**
      * @depends one
+     * @depends clone one
+     * @depends shallowClone one
      */
     public function testWithDepends(): void
     {

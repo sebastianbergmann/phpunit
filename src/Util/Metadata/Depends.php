@@ -22,13 +22,19 @@ final class Depends extends Metadata
 
     private string $methodName;
 
+    private bool $deepClone;
+
+    private bool $shallowClone;
+
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName)
+    public function __construct(string $className, string $methodName, bool $deepClone, bool $shallowClone)
     {
-        $this->className  = $className;
-        $this->methodName = $methodName;
+        $this->className    = $className;
+        $this->methodName   = $methodName;
+        $this->deepClone    = $deepClone;
+        $this->shallowClone = $shallowClone;
     }
 
     public function isDepends(): bool
@@ -47,5 +53,15 @@ final class Depends extends Metadata
     public function methodName(): string
     {
         return $this->methodName;
+    }
+
+    public function deepClone(): bool
+    {
+        return $this->deepClone;
+    }
+
+    public function shallowClone(): bool
+    {
+        return $this->shallowClone;
     }
 }

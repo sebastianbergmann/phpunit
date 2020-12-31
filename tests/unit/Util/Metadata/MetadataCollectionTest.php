@@ -372,7 +372,7 @@ final class MetadataCollectionTest extends TestCase
                 new CoversMethod('', ''),
                 new CoversNothing,
                 new DataProvider('', ''),
-                new Depends('', ''),
+                new Depends('', '', false, false),
                 new DoesNotPerformAssertions,
                 new Group(''),
                 new PostCondition,

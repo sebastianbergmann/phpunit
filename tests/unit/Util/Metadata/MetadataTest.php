@@ -521,7 +521,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeDepends(): void
     {
-        $metadata = new Depends(self::class, 'method');
+        $metadata = new Depends(self::class, 'method', false, false);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -558,6 +558,8 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame('method', $metadata->methodName());
+        $this->assertFalse($metadata->deepClone());
+        $this->assertFalse($metadata->shallowClone());
     }
 
     public function testCanBeDoesNotPerformAssertions(): void
