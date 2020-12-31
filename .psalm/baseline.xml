@@ -1315,11 +1315,10 @@
     </RedundantCast>
   </file>
   <file src="src/Util/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="9">
-      <code>$operator</code>
-      <code>$operator</code>
-      <code>$operator</code>
-      <code>explode('::', $value)</code>
+    <ArgumentTypeCoercion occurrences="8">
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
       <code>explode('::', $value)</code>
       <code>explode('::', $value)</code>
       <code>explode('::', $value)</code>
