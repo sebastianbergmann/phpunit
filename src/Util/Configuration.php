@@ -909,7 +909,7 @@ final class Configuration
             $xsdFilename = __PHPUNIT_PHAR_ROOT__ . '/phpunit.xsd';
         }
 
-        $this->document->schemaValidate($xsdFilename);
+        $this->document->schemaValidateSource(\file_get_contents($xsdFilename));
         $this->errors = \libxml_get_errors();
         \libxml_clear_errors();
         \libxml_use_internal_errors($original);
