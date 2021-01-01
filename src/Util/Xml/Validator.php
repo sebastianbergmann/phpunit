@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use function file_get_contents;
 use function libxml_clear_errors;
 use function libxml_get_errors;
 use function libxml_use_internal_errors;
@@ -23,7 +24,7 @@ final class Validator
     {
         $originalErrorHandling = libxml_use_internal_errors(true);
 
-        $document->schemaValidate($xsdFilename);
+        $document->schemaValidateSource(file_get_contents($xsdFilename));
 
         $errors = libxml_get_errors();
         libxml_clear_errors();
