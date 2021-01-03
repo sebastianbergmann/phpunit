@@ -9,9 +9,13 @@
  */
 namespace PHPUnit\Runner;
 
+use function is_dir;
+use function is_file;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestSuite;
+use ReflectionClass;
+use ReflectionException;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
 /**
@@ -83,7 +87,7 @@ abstract class BaseTestRunner
      */
     public function getTest(string $suiteClassName, string $suiteClassFile = '', $suffixes = ''): ?Test
     {
-        if (empty($suiteClassFile) && \is_dir($suiteClassName) && !\is_file($suiteClassName . '.php')) {
+        if (empty($suiteClassFile) && is_dir($suiteClassName) && !is_file($suiteClassName . '.php')) {
             /** @var string[] $files */
             $files = (new FileIteratorFacade)->getFilesAsArray(
                 $suiteClassName,
@@ -119,7 +123,7 @@ abstract class BaseTestRunner
             }
 
             $test = $suiteMethod->invoke(null, $testClass->getName());
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             try {
                 $test = new TestSuite($testClass);
             } catch (Exception $e) {
@@ -136,7 +140,7 @@ abstract class BaseTestRunner
     /**
      * Returns the loaded ReflectionClass for a suite name.
      */
-    protected function loadSuiteClass(string $suiteClassName, string $suiteClassFile = ''): \ReflectionClass
+    protected function loadSuiteClass(string $suiteClassName, string $suiteClassFile = ''): ReflectionClass
     {
         return $this->getLoader()->load($suiteClassName, $suiteClassFile);
     }

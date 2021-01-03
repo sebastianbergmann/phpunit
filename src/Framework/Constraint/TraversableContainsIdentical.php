@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_array;
+use function is_string;
+use function sprintf;
+use function strpos;
 use SplObjectStorage;
 
 /**
@@ -34,7 +38,7 @@ final class TraversableContainsIdentical extends Constraint
      */
     public function toString(): string
     {
-        if (\is_string($this->value) && \strpos($this->value, "\n") !== false) {
+        if (is_string($this->value) && strpos($this->value, "\n") !== false) {
             return 'contains "' . $this->value . '"';
         }
 
@@ -63,7 +67,7 @@ final class TraversableContainsIdentical extends Constraint
     }
 
     /**
-     * Returns the description of the failure
+     * Returns the description of the failure.
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
@@ -74,9 +78,9 @@ final class TraversableContainsIdentical extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return \sprintf(
+        return sprintf(
             '%s %s',
-            \is_array($other) ? 'an array' : 'a traversable',
+            is_array($other) ? 'an array' : 'a traversable',
             $this->toString()
         );
     }

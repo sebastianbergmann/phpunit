@@ -9,10 +9,11 @@
  */
 namespace PHPUnit\SelfTest\Basic;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class SetUpBeforeClassTest
+ * Class SetUpBeforeClassTest.
  *
  * Behaviour to test:
  * - setUpBeforeClass() errors do reach the user
@@ -28,12 +29,12 @@ class SetUpBeforeClassTest extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        throw new \Exception('forcing an Exception in setUpBeforeClass()');
+        throw new Exception('forcing an Exception in setUpBeforeClass()');
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
-        throw new \Exception('setUp() should never have been run');
+        throw new Exception('setUp() should never have been run');
     }
 
     public function testOne(): void

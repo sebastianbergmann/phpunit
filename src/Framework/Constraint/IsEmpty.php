@@ -9,7 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function count;
+use function gettype;
+use function sprintf;
+use function strpos;
 use Countable;
+use EmptyIterator;
 
 /**
  * Constraint that checks whether a variable is empty().
@@ -32,19 +37,19 @@ final class IsEmpty extends Constraint
      */
     protected function matches($other): bool
     {
-        if ($other instanceof \EmptyIterator) {
+        if ($other instanceof EmptyIterator) {
             return true;
         }
 
         if ($other instanceof Countable) {
-            return \count($other) === 0;
+            return count($other) === 0;
         }
 
         return empty($other);
     }
 
     /**
-     * Returns the description of the failure
+     * Returns the description of the failure.
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
@@ -53,11 +58,11 @@ final class IsEmpty extends Constraint
      */
     protected function failureDescription($other): string
     {
-        $type = \gettype($other);
+        $type = gettype($other);
 
-        return \sprintf(
+        return sprintf(
             '%s %s %s',
-            \strpos($type, 'a') === 0 || \strpos($type, 'o') === 0 ? 'an' : 'a',
+            strpos($type, 'a') === 0 || strpos($type, 'o') === 0 ? 'an' : 'a',
             $type,
             $this->toString()
         );

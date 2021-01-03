@@ -9,6 +9,20 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
+use function array_keys;
+use function array_map;
+use function array_values;
+use function count;
+use function explode;
+use function implode;
+use function min;
+use function preg_replace;
+use function preg_replace_callback;
+use function sprintf;
+use function strtr;
+use function trim;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -63,11 +77,11 @@ final class Color
 
     public static function colorize(string $color, string $buffer): string
     {
-        if (\trim($buffer) === '') {
+        if (trim($buffer) === '') {
             return $buffer;
         }
 
-        $codes  = \array_map('\trim', \explode(',', $color));
+        $codes  = array_map('\trim', explode(',', $color));
         $styles = [];
 
         foreach ($codes as $code) {
@@ -80,7 +94,7 @@ final class Color
             return $buffer;
         }
 
-        return self::optimizeColor(\sprintf("\x1b[%sm", \implode(';', $styles)) . $buffer . "\x1b[0m");
+        return self::optimizeColor(sprintf("\x1b[%sm", implode(';', $styles)) . $buffer . "\x1b[0m");
     }
 
     public static function colorizePath(string $path, ?string $prevPath = null, bool $colorizeFilename = false): string
@@ -89,18 +103,18 @@ final class Color
             $prevPath = '';
         }
 
-        $path     = \explode(\DIRECTORY_SEPARATOR, $path);
-        $prevPath = \explode(\DIRECTORY_SEPARATOR, $prevPath);
+        $path     = explode(DIRECTORY_SEPARATOR, $path);
+        $prevPath = explode(DIRECTORY_SEPARATOR, $prevPath);
 
-        for ($i = 0; $i < \min(\count($path), \count($prevPath)); $i++) {
+        for ($i = 0; $i < min(count($path), count($prevPath)); $i++) {
             if ($path[$i] == $prevPath[$i]) {
                 $path[$i] = self::dim($path[$i]);
             }
         }
 
         if ($colorizeFilename) {
-            $last        = \count($path) - 1;
-            $path[$last] = \preg_replace_callback(
+            $last        = count($path) - 1;
+            $path[$last] = preg_replace_callback(
                 '/([\-_\.]+|phpt$)/',
                 static function ($matches) {
                     return self::dim($matches[0]);
@@ -109,12 +123,12 @@ final class Color
             );
         }
 
-        return self::optimizeColor(\implode(self::dim(\DIRECTORY_SEPARATOR), $path));
+        return self::optimizeColor(implode(self::dim(DIRECTORY_SEPARATOR), $path));
     }
 
     public static function dim(string $buffer): string
     {
-        if (\trim($buffer) === '') {
+        if (trim($buffer) === '') {
             return $buffer;
         }
 
@@ -125,8 +139,8 @@ final class Color
     {
         $replaceMap = $visualizeEOL ? self::WHITESPACE_EOL_MAP : self::WHITESPACE_MAP;
 
-        return \preg_replace_callback('/\s+/', static function ($matches) use ($replaceMap) {
-            return self::dim(\strtr($matches[0], $replaceMap));
+        return preg_replace_callback('/\s+/', static function ($matches) use ($replaceMap) {
+            return self::dim(strtr($matches[0], $replaceMap));
         }, $buffer);
     }
 
@@ -138,6 +152,6 @@ final class Color
             "/(\e\\[[^m]*m)+(\e\\[0m)/"           => '$2',
         ];
 
-        return \preg_replace(\array_keys($patterns), \array_values($patterns), $buffer);
+        return preg_replace(array_keys($patterns), array_values($patterns), $buffer);
     }
 }

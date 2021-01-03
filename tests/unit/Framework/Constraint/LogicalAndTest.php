@@ -9,9 +9,19 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_map;
+use function array_sum;
+use function implode;
+use function sprintf;
+use CountConstraint;
+use FalsyConstraint;
+use Generator;
+use NamedConstraint;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
+use stdClass;
+use TruthyConstraint;
 
 /**
  * @small
@@ -21,15 +31,15 @@ final class LogicalAndTest extends ConstraintTestCase
     public function testSetConstraintsRejectsInvalidConstraint(): void
     {
         $constraints = [
-            new \TruthyConstraint,
-            new \FalsyConstraint,
-            new \stdClass,
+            new TruthyConstraint,
+            new FalsyConstraint,
+            new stdClass,
         ];
 
         $constraint = new LogicalAnd;
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage(\sprintf(
+        $this->expectExceptionMessage(sprintf(
             'All parameters to %s must be a constraint object.',
             LogicalAnd::class
         ));
@@ -45,15 +55,15 @@ final class LogicalAndTest extends ConstraintTestCase
             8,
         ];
 
-        $constraints = \array_map(function (int $count) {
-            return \CountConstraint::fromCount($count);
+        $constraints = array_map(static function (int $count) {
+            return CountConstraint::fromCount($count);
         }, $counts);
 
         $constraint = new LogicalAnd;
 
         $constraint->setConstraints($constraints);
 
-        $expected = \array_sum($counts);
+        $expected = array_sum($counts);
 
         $this->assertSame($expected, $constraint->count());
     }
@@ -66,13 +76,13 @@ final class LogicalAndTest extends ConstraintTestCase
             'is rich in unsaturated fats',
         ];
 
-        $constraints = \array_map(function (string $name) {
-            return \NamedConstraint::fromName($name);
+        $constraints = array_map(static function (string $name) {
+            return NamedConstraint::fromName($name);
         }, $names);
 
         $constraint = LogicalAnd::fromConstraints(...$constraints);
 
-        $expected = \implode(' and ', $names);
+        $expected = implode(' and ', $names);
 
         $this->assertSame($expected, $constraint->toString());
     }
@@ -186,16 +196,16 @@ EOF;
         $this->assertNull($constraint->evaluate('whatever'));
     }
 
-    public function providerFailingConstraints(): \Generator
+    public function providerFailingConstraints(): Generator
     {
         $values = [
             'single' => [
-                new \FalsyConstraint,
+                new FalsyConstraint,
             ],
             'multiple' => [
-                new \TruthyConstraint,
-                new \FalsyConstraint,
-                new \TruthyConstraint,
+                new TruthyConstraint,
+                new FalsyConstraint,
+                new TruthyConstraint,
             ],
         ];
 
@@ -206,16 +216,16 @@ EOF;
         }
     }
 
-    public function providerSucceedingConstraints(): \Generator
+    public function providerSucceedingConstraints(): Generator
     {
         $values = [
             'single' => [
-                new \TruthyConstraint,
+                new TruthyConstraint,
             ],
             'multiple' => [
-                new \TruthyConstraint,
-                new \TruthyConstraint,
-                new \TruthyConstraint,
+                new TruthyConstraint,
+                new TruthyConstraint,
+                new TruthyConstraint,
             ],
         ];
 
@@ -228,9 +238,9 @@ EOF;
 
     private function stringify(array $constraints): string
     {
-        return \implode(
+        return implode(
             ' and ',
-            \array_map(function (Constraint $constraint) {
+            array_map(static function (Constraint $constraint) {
                 return $constraint->toString();
             }, $constraints)
         );

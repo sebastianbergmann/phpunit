@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject\Builder;
 
 use PHPUnit\Framework\MockObject\Stub\Stub;
+use Throwable;
 
 interface InvocationStubber
 {
@@ -57,5 +58,5 @@ interface InvocationStubber
     public function willReturnOnConsecutiveCalls(...$values)/*: self */;
 
     /** @return self */
-    public function willThrowException(\Throwable $exception)/*: self */;
+    public function willThrowException(Throwable $exception)/*: self */;
 }

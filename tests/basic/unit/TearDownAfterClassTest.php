@@ -9,10 +9,11 @@
  */
 namespace PHPUnit\SelfTest\Basic;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 /**
- * Class TearDownAfterClassTest
+ * Class TearDownAfterClassTest.
  *
  * Behaviour to test:
  * - tearDownAfterClass() errors do reach the user
@@ -23,7 +24,7 @@ class TearDownAfterClassTest extends TestCase
 {
     public static function tearDownAfterClass(): void
     {
-        throw new \Exception('forcing an Exception in tearDownAfterClass()');
+        throw new Exception('forcing an Exception in tearDownAfterClass()');
     }
 
     public function testOne(): void

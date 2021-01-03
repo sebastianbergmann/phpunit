@@ -9,6 +9,26 @@
  */
 namespace PHPUnit\Framework;
 
+use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
+use function array_pop;
+use BeforeAndAfterTest;
+use BeforeClassAndAfterClassTest;
+use BeforeClassWithOnlyDataProviderTest;
+use DataProviderDependencyTest;
+use DataProviderIncompleteTest;
+use DataProviderSkippedTest;
+use ExceptionInTearDownAfterClassTest;
+use InheritedTestCase;
+use NoTestCases;
+use NotPublicTestCase;
+use NotVoidTestCase;
+use OneTestCase;
+use OverrideTestCase;
+use RequirementsClassBeforeClassHookTest;
+use TestCaseWithExceptionInHook;
+use TestWithTest;
+
 /**
  * @small
  */
@@ -35,7 +55,7 @@ final class TestSuiteTest extends TestCase
     public function testSuiteNameCanBeSameAsExistingNonTestClassName(): void
     {
         $suite = new TestSuite('stdClass');
-        $suite->addTestSuite(\OneTestCase::class);
+        $suite->addTestSuite(OneTestCase::class);
         $suite->run($this->result);
 
         $this->assertCount(1, $this->result);
@@ -43,7 +63,7 @@ final class TestSuiteTest extends TestCase
 
     public function testAddTestSuite(): void
     {
-        $suite = new TestSuite(\OneTestCase::class);
+        $suite = new TestSuite(OneTestCase::class);
 
         $suite->run($this->result);
 
@@ -52,7 +72,7 @@ final class TestSuiteTest extends TestCase
 
     public function testInheritedTests(): void
     {
-        $suite = new TestSuite(\InheritedTestCase::class);
+        $suite = new TestSuite(InheritedTestCase::class);
 
         $suite->run($this->result);
 
@@ -62,7 +82,7 @@ final class TestSuiteTest extends TestCase
 
     public function testNoTestCases(): void
     {
-        $suite = new TestSuite(\NoTestCases::class);
+        $suite = new TestSuite(NoTestCases::class);
 
         $suite->run($this->result);
 
@@ -74,21 +94,21 @@ final class TestSuiteTest extends TestCase
 
     public function testNotPublicTestCase(): void
     {
-        $suite = new TestSuite(\NotPublicTestCase::class);
+        $suite = new TestSuite(NotPublicTestCase::class);
 
         $this->assertCount(1, $suite);
     }
 
     public function testNotVoidTestCase(): void
     {
-        $suite = new TestSuite(\NotVoidTestCase::class);
+        $suite = new TestSuite(NotVoidTestCase::class);
 
         $this->assertCount(1, $suite);
     }
 
     public function testOneTestCase(): void
     {
-        $suite = new TestSuite(\OneTestCase::class);
+        $suite = new TestSuite(OneTestCase::class);
 
         $suite->run($this->result);
 
@@ -100,7 +120,7 @@ final class TestSuiteTest extends TestCase
 
     public function testShadowedTests(): void
     {
-        $suite = new TestSuite(\OverrideTestCase::class);
+        $suite = new TestSuite(OverrideTestCase::class);
 
         $suite->run($this->result);
 
@@ -109,42 +129,42 @@ final class TestSuiteTest extends TestCase
 
     public function testBeforeClassAndAfterClassAnnotations(): void
     {
-        $suite = new TestSuite(\BeforeClassAndAfterClassTest::class);
+        $suite = new TestSuite(BeforeClassAndAfterClassTest::class);
 
-        \BeforeClassAndAfterClassTest::resetProperties();
+        BeforeClassAndAfterClassTest::resetProperties();
         $suite->run($this->result);
 
-        $this->assertEquals(1, \BeforeClassAndAfterClassTest::$beforeClassWasRun, '@beforeClass method was not run once for the whole suite.');
-        $this->assertEquals(1, \BeforeClassAndAfterClassTest::$afterClassWasRun, '@afterClass method was not run once for the whole suite.');
+        $this->assertEquals(1, BeforeClassAndAfterClassTest::$beforeClassWasRun, '@beforeClass method was not run once for the whole suite.');
+        $this->assertEquals(1, BeforeClassAndAfterClassTest::$afterClassWasRun, '@afterClass method was not run once for the whole suite.');
     }
 
     public function testBeforeClassWithDataProviders(): void
     {
-        $suite = new TestSuite(\BeforeClassWithOnlyDataProviderTest::class);
+        $suite = new TestSuite(BeforeClassWithOnlyDataProviderTest::class);
 
-        \BeforeClassWithOnlyDataProviderTest::resetProperties();
+        BeforeClassWithOnlyDataProviderTest::resetProperties();
         $suite->run($this->result);
 
-        $this->assertTrue(\BeforeClassWithOnlyDataProviderTest::$setUpBeforeClassWasCalled, 'setUpBeforeClass method was not run.');
-        $this->assertTrue(\BeforeClassWithOnlyDataProviderTest::$beforeClassWasCalled, '@beforeClass method was not run.');
+        $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$setUpBeforeClassWasCalled, 'setUpBeforeClass method was not run.');
+        $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$beforeClassWasCalled, '@beforeClass method was not run.');
     }
 
     public function testBeforeAnnotation(): void
     {
-        $test = new TestSuite(\BeforeAndAfterTest::class);
+        $test = new TestSuite(BeforeAndAfterTest::class);
 
-        \BeforeAndAfterTest::resetProperties();
+        BeforeAndAfterTest::resetProperties();
         $test->run();
 
-        $this->assertEquals(2, \BeforeAndAfterTest::$beforeWasRun);
-        $this->assertEquals(2, \BeforeAndAfterTest::$afterWasRun);
+        $this->assertEquals(2, BeforeAndAfterTest::$beforeWasRun);
+        $this->assertEquals(2, BeforeAndAfterTest::$afterWasRun);
     }
 
     public function testTestWithAnnotation(): void
     {
-        $test = new TestSuite(\TestWithTest::class);
+        $test = new TestSuite(TestWithTest::class);
 
-        \BeforeAndAfterTest::resetProperties();
+        BeforeAndAfterTest::resetProperties();
         $result = $test->run();
 
         $this->assertCount(4, $result->passed());
@@ -152,7 +172,7 @@ final class TestSuiteTest extends TestCase
 
     public function testSkippedTestDataProvider(): void
     {
-        $suite = new TestSuite(\DataProviderSkippedTest::class);
+        $suite = new TestSuite(DataProviderSkippedTest::class);
 
         $suite->run($this->result);
 
@@ -162,7 +182,7 @@ final class TestSuiteTest extends TestCase
 
     public function testItErrorsOnlyOnceOnHookException(): void
     {
-        $suite = new TestSuite(\TestCaseWithExceptionInHook::class);
+        $suite = new TestSuite(TestCaseWithExceptionInHook::class);
 
         $suite->run($this->result);
 
@@ -173,12 +193,12 @@ final class TestSuiteTest extends TestCase
 
     public function testTestDataProviderDependency(): void
     {
-        $suite = new TestSuite(\DataProviderDependencyTest::class);
+        $suite = new TestSuite(DataProviderDependencyTest::class);
 
         $suite->run($this->result);
 
         $skipped           = $this->result->skipped();
-        $lastSkippedResult = \array_pop($skipped);
+        $lastSkippedResult = array_pop($skipped);
         $message           = $lastSkippedResult->thrownException()->getMessage();
 
         $this->assertStringContainsString('Test for DataProviderDependencyTest::testDependency skipped by data provider', $message);
@@ -186,7 +206,7 @@ final class TestSuiteTest extends TestCase
 
     public function testIncompleteTestDataProvider(): void
     {
-        $suite = new TestSuite(\DataProviderIncompleteTest::class);
+        $suite = new TestSuite(DataProviderIncompleteTest::class);
 
         $suite->run($this->result);
 
@@ -196,7 +216,7 @@ final class TestSuiteTest extends TestCase
 
     public function testRequirementsBeforeClassHook(): void
     {
-        $suite = new TestSuite(\RequirementsClassBeforeClassHookTest::class);
+        $suite = new TestSuite(RequirementsClassBeforeClassHookTest::class);
 
         $suite->run($this->result);
 
@@ -210,7 +230,7 @@ final class TestSuiteTest extends TestCase
             'DontSkipInheritedClass'
         );
 
-        $dir = TEST_FILES_PATH . \DIRECTORY_SEPARATOR . 'Inheritance' . \DIRECTORY_SEPARATOR;
+        $dir = TEST_FILES_PATH . DIRECTORY_SEPARATOR . 'Inheritance' . DIRECTORY_SEPARATOR;
 
         $suite->addTestFile($dir . 'InheritanceA.php');
         $suite->addTestFile($dir . 'InheritanceB.php');
@@ -225,7 +245,7 @@ final class TestSuiteTest extends TestCase
      */
     public function testTearDownAfterClassInTestSuite(): void
     {
-        $suite = new TestSuite(\ExceptionInTearDownAfterClassTest::class);
+        $suite = new TestSuite(ExceptionInTearDownAfterClassTest::class);
         $suite->run($this->result);
 
         $this->assertSame(3, $this->result->count());
@@ -234,7 +254,7 @@ final class TestSuiteTest extends TestCase
         $failure = $this->result->failures()[0];
 
         $this->assertSame(
-            'Exception in ExceptionInTearDownAfterClassTest::tearDownAfterClass' . \PHP_EOL .
+            'Exception in ExceptionInTearDownAfterClassTest::tearDownAfterClass' . PHP_EOL .
             'throw Exception in tearDownAfterClass()',
             $failure->thrownException()->getMessage()
         );

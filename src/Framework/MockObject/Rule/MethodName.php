@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject\Rule;
 
+use function is_string;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
@@ -31,7 +32,7 @@ final class MethodName
      */
     public function __construct($constraint)
     {
-        if (\is_string($constraint)) {
+        if (is_string($constraint)) {
             $constraint = new MethodNameConstraint($constraint);
         }
 

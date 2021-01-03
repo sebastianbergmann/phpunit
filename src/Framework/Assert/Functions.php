@@ -64,16 +64,16 @@ use PHPUnit\Framework\MockObject\Stub\ReturnSelf as ReturnSelfStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 
-if (!\function_exists('PHPUnit\Framework\assertArrayHasKey')) {
+if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
     /**
      * Asserts that an array has a specified key.
      *
      * @param int|string        $key
      * @param array|ArrayAccess $array
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertArrayHasKey
      */
@@ -83,16 +83,16 @@ if (!\function_exists('PHPUnit\Framework\assertArrayHasKey')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertArraySubset')) {
+if (!function_exists('PHPUnit\Framework\assertArraySubset')) {
     /**
      * Asserts that an array has a specified subset.
      *
      * @param array|ArrayAccess $subset
      * @param array|ArrayAccess $array
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @codeCoverageIgnore
      *
@@ -105,16 +105,16 @@ if (!\function_exists('PHPUnit\Framework\assertArraySubset')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
+if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
     /**
      * Asserts that an array does not have a specified key.
      *
      * @param int|string        $key
      * @param array|ArrayAccess $array
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertArrayNotHasKey
      */
@@ -124,13 +124,13 @@ if (!\function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertContains')) {
+if (!function_exists('PHPUnit\Framework\assertContains')) {
     /**
      * Asserts that a haystack contains a needle.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertContains
      */
@@ -140,23 +140,23 @@ if (!\function_exists('PHPUnit\Framework\assertContains')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertContainsEquals')) {
+if (!function_exists('PHPUnit\Framework\assertContainsEquals')) {
     function assertContainsEquals($needle, iterable $haystack, string $message = ''): void
     {
         Assert::assertContainsEquals(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeContains')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeContains')) {
     /**
      * Asserts that a haystack that is stored in a static attribute of a class
      * or an attribute of an object contains a needle.
      *
      * @param object|string $haystackClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -169,13 +169,13 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeContains')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotContains')) {
+if (!function_exists('PHPUnit\Framework\assertNotContains')) {
     /**
      * Asserts that a haystack does not contain a needle.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotContains
      */
@@ -185,23 +185,23 @@ if (!\function_exists('PHPUnit\Framework\assertNotContains')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotContainsEquals')) {
+if (!function_exists('PHPUnit\Framework\assertNotContainsEquals')) {
     function assertNotContainsEquals($needle, iterable $haystack, string $message = ''): void
     {
         Assert::assertNotContainsEquals(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeNotContains')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeNotContains')) {
     /**
      * Asserts that a haystack that is stored in a static attribute of a class
      * or an attribute of an object does not contain a needle.
      *
      * @param object|string $haystackClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -214,12 +214,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotContains')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertContainsOnly')) {
+if (!function_exists('PHPUnit\Framework\assertContainsOnly')) {
     /**
      * Asserts that a haystack contains only values of a given type.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertContainsOnly
      */
@@ -229,12 +229,12 @@ if (!\function_exists('PHPUnit\Framework\assertContainsOnly')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertContainsOnlyInstancesOf')) {
+if (!function_exists('PHPUnit\Framework\assertContainsOnlyInstancesOf')) {
     /**
      * Asserts that a haystack contains only instances of a given class name.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertContainsOnlyInstancesOf
      */
@@ -244,7 +244,7 @@ if (!\function_exists('PHPUnit\Framework\assertContainsOnlyInstancesOf')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeContainsOnly')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeContainsOnly')) {
     /**
      * Asserts that a haystack that is stored in a static attribute of a class
      * or an attribute of an object contains only values of a given type.
@@ -252,9 +252,9 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeContainsOnly')) {
      * @param object|string $haystackClassOrObject
      * @param bool          $isNativeType
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -267,12 +267,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeContainsOnly')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotContainsOnly')) {
+if (!function_exists('PHPUnit\Framework\assertNotContainsOnly')) {
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotContainsOnly
      */
@@ -282,7 +282,7 @@ if (!\function_exists('PHPUnit\Framework\assertNotContainsOnly')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeNotContainsOnly')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeNotContainsOnly')) {
     /**
      * Asserts that a haystack that is stored in a static attribute of a class
      * or an attribute of an object does not contain only values of a given
@@ -291,9 +291,9 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotContainsOnly')) {
      * @param object|string $haystackClassOrObject
      * @param bool          $isNativeType
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -306,15 +306,15 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotContainsOnly')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertCount')) {
+if (!function_exists('PHPUnit\Framework\assertCount')) {
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
      * @param Countable|iterable $haystack
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertCount
      */
@@ -324,16 +324,16 @@ if (!\function_exists('PHPUnit\Framework\assertCount')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeCount')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeCount')) {
     /**
      * Asserts the number of elements of an array, Countable or Traversable
      * that is stored in an attribute.
      *
      * @param object|string $haystackClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -346,15 +346,15 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeCount')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotCount')) {
+if (!function_exists('PHPUnit\Framework\assertNotCount')) {
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
      * @param Countable|iterable $haystack
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotCount
      */
@@ -364,16 +364,16 @@ if (!\function_exists('PHPUnit\Framework\assertNotCount')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeNotCount')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeNotCount')) {
     /**
      * Asserts the number of elements of an array, Countable or Traversable
      * that is stored in an attribute.
      *
      * @param object|string $haystackClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -386,12 +386,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotCount')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertEquals')) {
+if (!function_exists('PHPUnit\Framework\assertEquals')) {
     /**
      * Asserts that two variables are equal.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertEquals
      */
@@ -401,12 +401,12 @@ if (!\function_exists('PHPUnit\Framework\assertEquals')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertEqualsCanonicalizing')) {
+if (!function_exists('PHPUnit\Framework\assertEqualsCanonicalizing')) {
     /**
      * Asserts that two variables are equal (canonicalizing).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertEqualsCanonicalizing
      */
@@ -416,12 +416,12 @@ if (!\function_exists('PHPUnit\Framework\assertEqualsCanonicalizing')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertEqualsIgnoringCase')) {
+if (!function_exists('PHPUnit\Framework\assertEqualsIgnoringCase')) {
     /**
      * Asserts that two variables are equal (ignoring case).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertEqualsIgnoringCase
      */
@@ -431,12 +431,12 @@ if (!\function_exists('PHPUnit\Framework\assertEqualsIgnoringCase')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertEqualsWithDelta')) {
+if (!function_exists('PHPUnit\Framework\assertEqualsWithDelta')) {
     /**
      * Asserts that two variables are equal (with delta).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertEqualsWithDelta
      */
@@ -446,15 +446,15 @@ if (!\function_exists('PHPUnit\Framework\assertEqualsWithDelta')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeEquals')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeEquals')) {
     /**
      * Asserts that a variable is equal to an attribute of an object.
      *
      * @param object|string $actualClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -467,7 +467,7 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeEquals')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotEquals')) {
+if (!function_exists('PHPUnit\Framework\assertNotEquals')) {
     /**
      * Asserts that two variables are not equal.
      *
@@ -476,8 +476,8 @@ if (!\function_exists('PHPUnit\Framework\assertNotEquals')) {
      * @param bool  $canonicalize
      * @param bool  $ignoreCase
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotEquals
      */
@@ -487,12 +487,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotEquals')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotEqualsCanonicalizing')) {
+if (!function_exists('PHPUnit\Framework\assertNotEqualsCanonicalizing')) {
     /**
      * Asserts that two variables are not equal (canonicalizing).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotEqualsCanonicalizing
      */
@@ -502,12 +502,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotEqualsCanonicalizing')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotEqualsIgnoringCase')) {
+if (!function_exists('PHPUnit\Framework\assertNotEqualsIgnoringCase')) {
     /**
      * Asserts that two variables are not equal (ignoring case).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotEqualsIgnoringCase
      */
@@ -517,12 +517,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotEqualsIgnoringCase')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotEqualsWithDelta')) {
+if (!function_exists('PHPUnit\Framework\assertNotEqualsWithDelta')) {
     /**
      * Asserts that two variables are not equal (with delta).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotEqualsWithDelta
      */
@@ -532,15 +532,15 @@ if (!\function_exists('PHPUnit\Framework\assertNotEqualsWithDelta')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeNotEquals')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeNotEquals')) {
     /**
      * Asserts that a variable is not equal to an attribute of an object.
      *
      * @param object|string $actualClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -553,12 +553,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotEquals')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertEmpty')) {
+if (!function_exists('PHPUnit\Framework\assertEmpty')) {
     /**
      * Asserts that a variable is empty.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert empty $actual
      *
@@ -570,16 +570,16 @@ if (!\function_exists('PHPUnit\Framework\assertEmpty')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeEmpty')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeEmpty')) {
     /**
      * Asserts that a static attribute of a class or an attribute of an object
      * is empty.
      *
      * @param object|string $haystackClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -592,12 +592,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeEmpty')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotEmpty')) {
+if (!function_exists('PHPUnit\Framework\assertNotEmpty')) {
     /**
      * Asserts that a variable is not empty.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !empty $actual
      *
@@ -609,16 +609,16 @@ if (!\function_exists('PHPUnit\Framework\assertNotEmpty')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeNotEmpty')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeNotEmpty')) {
     /**
      * Asserts that a static attribute of a class or an attribute of an object
      * is not empty.
      *
      * @param object|string $haystackClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -631,12 +631,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotEmpty')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertGreaterThan')) {
+if (!function_exists('PHPUnit\Framework\assertGreaterThan')) {
     /**
      * Asserts that a value is greater than another value.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertGreaterThan
      */
@@ -646,15 +646,15 @@ if (!\function_exists('PHPUnit\Framework\assertGreaterThan')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeGreaterThan')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeGreaterThan')) {
     /**
      * Asserts that an attribute is greater than another value.
      *
      * @param object|string $actualClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -667,12 +667,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeGreaterThan')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertGreaterThanOrEqual')) {
+if (!function_exists('PHPUnit\Framework\assertGreaterThanOrEqual')) {
     /**
      * Asserts that a value is greater than or equal to another value.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertGreaterThanOrEqual
      */
@@ -682,15 +682,15 @@ if (!\function_exists('PHPUnit\Framework\assertGreaterThanOrEqual')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeGreaterThanOrEqual')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeGreaterThanOrEqual')) {
     /**
      * Asserts that an attribute is greater than or equal to another value.
      *
      * @param object|string $actualClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -703,12 +703,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeGreaterThanOrEqual')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertLessThan')) {
+if (!function_exists('PHPUnit\Framework\assertLessThan')) {
     /**
      * Asserts that a value is smaller than another value.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertLessThan
      */
@@ -718,15 +718,15 @@ if (!\function_exists('PHPUnit\Framework\assertLessThan')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeLessThan')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeLessThan')) {
     /**
      * Asserts that an attribute is smaller than another value.
      *
      * @param object|string $actualClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -739,12 +739,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeLessThan')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertLessThanOrEqual')) {
+if (!function_exists('PHPUnit\Framework\assertLessThanOrEqual')) {
     /**
      * Asserts that a value is smaller than or equal to another value.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertLessThanOrEqual
      */
@@ -754,15 +754,15 @@ if (!\function_exists('PHPUnit\Framework\assertLessThanOrEqual')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeLessThanOrEqual')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeLessThanOrEqual')) {
     /**
      * Asserts that an attribute is smaller than or equal to another value.
      *
      * @param object|string $actualClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -775,13 +775,13 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeLessThanOrEqual')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileEquals')) {
+if (!function_exists('PHPUnit\Framework\assertFileEquals')) {
     /**
      * Asserts that the contents of one file is equal to the contents of another
      * file.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileEquals
      */
@@ -791,13 +791,13 @@ if (!\function_exists('PHPUnit\Framework\assertFileEquals')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileEqualsCanonicalizing')) {
+if (!function_exists('PHPUnit\Framework\assertFileEqualsCanonicalizing')) {
     /**
      * Asserts that the contents of one file is equal to the contents of another
      * file (canonicalizing).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileEqualsCanonicalizing
      */
@@ -807,13 +807,13 @@ if (!\function_exists('PHPUnit\Framework\assertFileEqualsCanonicalizing')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileEqualsIgnoringCase')) {
+if (!function_exists('PHPUnit\Framework\assertFileEqualsIgnoringCase')) {
     /**
      * Asserts that the contents of one file is equal to the contents of another
      * file (ignoring case).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileEqualsIgnoringCase
      */
@@ -823,13 +823,13 @@ if (!\function_exists('PHPUnit\Framework\assertFileEqualsIgnoringCase')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileNotEquals')) {
+if (!function_exists('PHPUnit\Framework\assertFileNotEquals')) {
     /**
      * Asserts that the contents of one file is not equal to the contents of
      * another file.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileNotEquals
      */
@@ -839,13 +839,13 @@ if (!\function_exists('PHPUnit\Framework\assertFileNotEquals')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileNotEqualsCanonicalizing')) {
+if (!function_exists('PHPUnit\Framework\assertFileNotEqualsCanonicalizing')) {
     /**
      * Asserts that the contents of one file is not equal to the contents of another
      * file (canonicalizing).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileNotEqualsCanonicalizing
      */
@@ -855,13 +855,13 @@ if (!\function_exists('PHPUnit\Framework\assertFileNotEqualsCanonicalizing')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileNotEqualsIgnoringCase')) {
+if (!function_exists('PHPUnit\Framework\assertFileNotEqualsIgnoringCase')) {
     /**
      * Asserts that the contents of one file is not equal to the contents of another
      * file (ignoring case).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileNotEqualsIgnoringCase
      */
@@ -871,13 +871,13 @@ if (!\function_exists('PHPUnit\Framework\assertFileNotEqualsIgnoringCase')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringEqualsFile')) {
+if (!function_exists('PHPUnit\Framework\assertStringEqualsFile')) {
     /**
      * Asserts that the contents of a string is equal
      * to the contents of a file.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringEqualsFile
      */
@@ -887,13 +887,13 @@ if (!\function_exists('PHPUnit\Framework\assertStringEqualsFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringEqualsFileCanonicalizing')) {
+if (!function_exists('PHPUnit\Framework\assertStringEqualsFileCanonicalizing')) {
     /**
      * Asserts that the contents of a string is equal
      * to the contents of a file (canonicalizing).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringEqualsFileCanonicalizing
      */
@@ -903,13 +903,13 @@ if (!\function_exists('PHPUnit\Framework\assertStringEqualsFileCanonicalizing'))
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringEqualsFileIgnoringCase')) {
+if (!function_exists('PHPUnit\Framework\assertStringEqualsFileIgnoringCase')) {
     /**
      * Asserts that the contents of a string is equal
      * to the contents of a file (ignoring case).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringEqualsFileIgnoringCase
      */
@@ -919,13 +919,13 @@ if (!\function_exists('PHPUnit\Framework\assertStringEqualsFileIgnoringCase')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringNotEqualsFile')) {
+if (!function_exists('PHPUnit\Framework\assertStringNotEqualsFile')) {
     /**
      * Asserts that the contents of a string is not equal
      * to the contents of a file.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringNotEqualsFile
      */
@@ -935,13 +935,13 @@ if (!\function_exists('PHPUnit\Framework\assertStringNotEqualsFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringNotEqualsFileCanonicalizing')) {
+if (!function_exists('PHPUnit\Framework\assertStringNotEqualsFileCanonicalizing')) {
     /**
      * Asserts that the contents of a string is not equal
      * to the contents of a file (canonicalizing).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringNotEqualsFileCanonicalizing
      */
@@ -951,13 +951,13 @@ if (!\function_exists('PHPUnit\Framework\assertStringNotEqualsFileCanonicalizing
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringNotEqualsFileIgnoringCase')) {
+if (!function_exists('PHPUnit\Framework\assertStringNotEqualsFileIgnoringCase')) {
     /**
      * Asserts that the contents of a string is not equal
      * to the contents of a file (ignoring case).
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringNotEqualsFileIgnoringCase
      */
@@ -967,12 +967,12 @@ if (!\function_exists('PHPUnit\Framework\assertStringNotEqualsFileIgnoringCase')
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsReadable')) {
+if (!function_exists('PHPUnit\Framework\assertIsReadable')) {
     /**
      * Asserts that a file/dir is readable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertIsReadable
      */
@@ -982,12 +982,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsReadable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotIsReadable')) {
+if (!function_exists('PHPUnit\Framework\assertNotIsReadable')) {
     /**
      * Asserts that a file/dir exists and is not readable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotIsReadable
      */
@@ -997,12 +997,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotIsReadable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsWritable')) {
+if (!function_exists('PHPUnit\Framework\assertIsWritable')) {
     /**
      * Asserts that a file/dir exists and is writable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertIsWritable
      */
@@ -1012,12 +1012,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsWritable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotIsWritable')) {
+if (!function_exists('PHPUnit\Framework\assertNotIsWritable')) {
     /**
      * Asserts that a file/dir exists and is not writable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotIsWritable
      */
@@ -1027,12 +1027,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotIsWritable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertDirectoryExists')) {
+if (!function_exists('PHPUnit\Framework\assertDirectoryExists')) {
     /**
      * Asserts that a directory exists.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertDirectoryExists
      */
@@ -1042,12 +1042,12 @@ if (!\function_exists('PHPUnit\Framework\assertDirectoryExists')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertDirectoryNotExists')) {
+if (!function_exists('PHPUnit\Framework\assertDirectoryNotExists')) {
     /**
      * Asserts that a directory does not exist.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertDirectoryNotExists
      */
@@ -1057,12 +1057,12 @@ if (!\function_exists('PHPUnit\Framework\assertDirectoryNotExists')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertDirectoryIsReadable')) {
+if (!function_exists('PHPUnit\Framework\assertDirectoryIsReadable')) {
     /**
      * Asserts that a directory exists and is readable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertDirectoryIsReadable
      */
@@ -1072,12 +1072,12 @@ if (!\function_exists('PHPUnit\Framework\assertDirectoryIsReadable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertDirectoryNotIsReadable')) {
+if (!function_exists('PHPUnit\Framework\assertDirectoryNotIsReadable')) {
     /**
      * Asserts that a directory exists and is not readable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertDirectoryNotIsReadable
      */
@@ -1087,12 +1087,12 @@ if (!\function_exists('PHPUnit\Framework\assertDirectoryNotIsReadable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertDirectoryIsWritable')) {
+if (!function_exists('PHPUnit\Framework\assertDirectoryIsWritable')) {
     /**
      * Asserts that a directory exists and is writable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertDirectoryIsWritable
      */
@@ -1102,12 +1102,12 @@ if (!\function_exists('PHPUnit\Framework\assertDirectoryIsWritable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertDirectoryNotIsWritable')) {
+if (!function_exists('PHPUnit\Framework\assertDirectoryNotIsWritable')) {
     /**
      * Asserts that a directory exists and is not writable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertDirectoryNotIsWritable
      */
@@ -1117,12 +1117,12 @@ if (!\function_exists('PHPUnit\Framework\assertDirectoryNotIsWritable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileExists')) {
+if (!function_exists('PHPUnit\Framework\assertFileExists')) {
     /**
      * Asserts that a file exists.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileExists
      */
@@ -1132,12 +1132,12 @@ if (!\function_exists('PHPUnit\Framework\assertFileExists')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileNotExists')) {
+if (!function_exists('PHPUnit\Framework\assertFileNotExists')) {
     /**
      * Asserts that a file does not exist.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileNotExists
      */
@@ -1147,12 +1147,12 @@ if (!\function_exists('PHPUnit\Framework\assertFileNotExists')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileIsReadable')) {
+if (!function_exists('PHPUnit\Framework\assertFileIsReadable')) {
     /**
      * Asserts that a file exists and is readable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileIsReadable
      */
@@ -1162,12 +1162,12 @@ if (!\function_exists('PHPUnit\Framework\assertFileIsReadable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileNotIsReadable')) {
+if (!function_exists('PHPUnit\Framework\assertFileNotIsReadable')) {
     /**
      * Asserts that a file exists and is not readable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileNotIsReadable
      */
@@ -1177,12 +1177,12 @@ if (!\function_exists('PHPUnit\Framework\assertFileNotIsReadable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileIsWritable')) {
+if (!function_exists('PHPUnit\Framework\assertFileIsWritable')) {
     /**
      * Asserts that a file exists and is writable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileIsWritable
      */
@@ -1192,12 +1192,12 @@ if (!\function_exists('PHPUnit\Framework\assertFileIsWritable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFileNotIsWritable')) {
+if (!function_exists('PHPUnit\Framework\assertFileNotIsWritable')) {
     /**
      * Asserts that a file exists and is not writable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFileNotIsWritable
      */
@@ -1207,12 +1207,12 @@ if (!\function_exists('PHPUnit\Framework\assertFileNotIsWritable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertTrue')) {
+if (!function_exists('PHPUnit\Framework\assertTrue')) {
     /**
      * Asserts that a condition is true.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert true $condition
      *
@@ -1224,12 +1224,12 @@ if (!\function_exists('PHPUnit\Framework\assertTrue')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotTrue')) {
+if (!function_exists('PHPUnit\Framework\assertNotTrue')) {
     /**
      * Asserts that a condition is not true.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !true $condition
      *
@@ -1241,12 +1241,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotTrue')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFalse')) {
+if (!function_exists('PHPUnit\Framework\assertFalse')) {
     /**
      * Asserts that a condition is false.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert false $condition
      *
@@ -1258,12 +1258,12 @@ if (!\function_exists('PHPUnit\Framework\assertFalse')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotFalse')) {
+if (!function_exists('PHPUnit\Framework\assertNotFalse')) {
     /**
      * Asserts that a condition is not false.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !false $condition
      *
@@ -1275,12 +1275,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotFalse')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNull')) {
+if (!function_exists('PHPUnit\Framework\assertNull')) {
     /**
      * Asserts that a variable is null.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert null $actual
      *
@@ -1292,12 +1292,12 @@ if (!\function_exists('PHPUnit\Framework\assertNull')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotNull')) {
+if (!function_exists('PHPUnit\Framework\assertNotNull')) {
     /**
      * Asserts that a variable is not null.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !null $actual
      *
@@ -1309,12 +1309,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotNull')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertFinite')) {
+if (!function_exists('PHPUnit\Framework\assertFinite')) {
     /**
      * Asserts that a variable is finite.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertFinite
      */
@@ -1324,12 +1324,12 @@ if (!\function_exists('PHPUnit\Framework\assertFinite')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertInfinite')) {
+if (!function_exists('PHPUnit\Framework\assertInfinite')) {
     /**
      * Asserts that a variable is infinite.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertInfinite
      */
@@ -1339,12 +1339,12 @@ if (!\function_exists('PHPUnit\Framework\assertInfinite')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNan')) {
+if (!function_exists('PHPUnit\Framework\assertNan')) {
     /**
      * Asserts that a variable is nan.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNan
      */
@@ -1354,13 +1354,13 @@ if (!\function_exists('PHPUnit\Framework\assertNan')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertClassHasAttribute')) {
+if (!function_exists('PHPUnit\Framework\assertClassHasAttribute')) {
     /**
      * Asserts that a class has a specified attribute.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertClassHasAttribute
      */
@@ -1370,13 +1370,13 @@ if (!\function_exists('PHPUnit\Framework\assertClassHasAttribute')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertClassNotHasAttribute')) {
+if (!function_exists('PHPUnit\Framework\assertClassNotHasAttribute')) {
     /**
      * Asserts that a class does not have a specified attribute.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertClassNotHasAttribute
      */
@@ -1386,13 +1386,13 @@ if (!\function_exists('PHPUnit\Framework\assertClassNotHasAttribute')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertClassHasStaticAttribute')) {
+if (!function_exists('PHPUnit\Framework\assertClassHasStaticAttribute')) {
     /**
      * Asserts that a class has a specified static attribute.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertClassHasStaticAttribute
      */
@@ -1402,13 +1402,13 @@ if (!\function_exists('PHPUnit\Framework\assertClassHasStaticAttribute')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertClassNotHasStaticAttribute')) {
+if (!function_exists('PHPUnit\Framework\assertClassNotHasStaticAttribute')) {
     /**
      * Asserts that a class does not have a specified static attribute.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertClassNotHasStaticAttribute
      */
@@ -1418,15 +1418,15 @@ if (!\function_exists('PHPUnit\Framework\assertClassNotHasStaticAttribute')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertObjectHasAttribute')) {
+if (!function_exists('PHPUnit\Framework\assertObjectHasAttribute')) {
     /**
      * Asserts that an object has a specified attribute.
      *
      * @param object $object
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertObjectHasAttribute
      */
@@ -1436,15 +1436,15 @@ if (!\function_exists('PHPUnit\Framework\assertObjectHasAttribute')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertObjectNotHasAttribute')) {
+if (!function_exists('PHPUnit\Framework\assertObjectNotHasAttribute')) {
     /**
      * Asserts that an object does not have a specified attribute.
      *
      * @param object $object
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertObjectNotHasAttribute
      */
@@ -1454,14 +1454,14 @@ if (!\function_exists('PHPUnit\Framework\assertObjectNotHasAttribute')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertSame')) {
+if (!function_exists('PHPUnit\Framework\assertSame')) {
     /**
      * Asserts that two variables have the same type and value.
      * Used on objects, it asserts that two variables reference
      * the same object.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType
      * @psalm-param ExpectedType $expected
@@ -1475,16 +1475,16 @@ if (!\function_exists('PHPUnit\Framework\assertSame')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeSame')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeSame')) {
     /**
      * Asserts that a variable and an attribute of an object have the same type
      * and value.
      *
      * @param object|string $actualClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -1497,14 +1497,14 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeSame')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotSame')) {
+if (!function_exists('PHPUnit\Framework\assertNotSame')) {
     /**
      * Asserts that two variables do not have the same type and value.
      * Used on objects, it asserts that two variables do not reference
      * the same object.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotSame
      */
@@ -1514,16 +1514,16 @@ if (!\function_exists('PHPUnit\Framework\assertNotSame')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeNotSame')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeNotSame')) {
     /**
      * Asserts that a variable and an attribute of an object do not have the
      * same type and value.
      *
      * @param object|string $actualClassOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -1536,13 +1536,13 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotSame')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertInstanceOf')) {
+if (!function_exists('PHPUnit\Framework\assertInstanceOf')) {
     /**
      * Asserts that a variable is of a given type.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
      * @psalm-param class-string<ExpectedType> $expected
@@ -1556,15 +1556,15 @@ if (!\function_exists('PHPUnit\Framework\assertInstanceOf')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeInstanceOf')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeInstanceOf')) {
     /**
      * Asserts that an attribute is of a given type.
      *
      * @param object|string $classOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -1579,13 +1579,13 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeInstanceOf')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotInstanceOf')) {
+if (!function_exists('PHPUnit\Framework\assertNotInstanceOf')) {
     /**
      * Asserts that a variable is not of a given type.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
      * @psalm-param class-string<ExpectedType> $expected
@@ -1599,15 +1599,15 @@ if (!\function_exists('PHPUnit\Framework\assertNotInstanceOf')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeNotInstanceOf')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeNotInstanceOf')) {
     /**
      * Asserts that an attribute is of a given type.
      *
      * @param object|string $classOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -1622,12 +1622,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotInstanceOf')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertInternalType')) {
+if (!function_exists('PHPUnit\Framework\assertInternalType')) {
     /**
      * Asserts that a variable is of a given type.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
      * @codeCoverageIgnore
@@ -1640,15 +1640,15 @@ if (!\function_exists('PHPUnit\Framework\assertInternalType')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeInternalType')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeInternalType')) {
     /**
      * Asserts that an attribute is of a given type.
      *
      * @param object|string $classOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -1661,12 +1661,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeInternalType')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsArray')) {
+if (!function_exists('PHPUnit\Framework\assertIsArray')) {
     /**
      * Asserts that a variable is of type array.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert array $actual
      *
@@ -1678,12 +1678,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsArray')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsBool')) {
+if (!function_exists('PHPUnit\Framework\assertIsBool')) {
     /**
      * Asserts that a variable is of type bool.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert bool $actual
      *
@@ -1695,12 +1695,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsBool')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsFloat')) {
+if (!function_exists('PHPUnit\Framework\assertIsFloat')) {
     /**
      * Asserts that a variable is of type float.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert float $actual
      *
@@ -1712,12 +1712,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsFloat')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsInt')) {
+if (!function_exists('PHPUnit\Framework\assertIsInt')) {
     /**
      * Asserts that a variable is of type int.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert int $actual
      *
@@ -1729,12 +1729,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsInt')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNumeric')) {
+if (!function_exists('PHPUnit\Framework\assertIsNumeric')) {
     /**
      * Asserts that a variable is of type numeric.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert numeric $actual
      *
@@ -1746,12 +1746,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNumeric')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsObject')) {
+if (!function_exists('PHPUnit\Framework\assertIsObject')) {
     /**
      * Asserts that a variable is of type object.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert object $actual
      *
@@ -1763,12 +1763,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsObject')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsResource')) {
+if (!function_exists('PHPUnit\Framework\assertIsResource')) {
     /**
      * Asserts that a variable is of type resource.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert resource $actual
      *
@@ -1780,12 +1780,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsResource')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsString')) {
+if (!function_exists('PHPUnit\Framework\assertIsString')) {
     /**
      * Asserts that a variable is of type string.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert string $actual
      *
@@ -1797,12 +1797,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsString')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsScalar')) {
+if (!function_exists('PHPUnit\Framework\assertIsScalar')) {
     /**
      * Asserts that a variable is of type scalar.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert scalar $actual
      *
@@ -1814,12 +1814,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsScalar')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsCallable')) {
+if (!function_exists('PHPUnit\Framework\assertIsCallable')) {
     /**
      * Asserts that a variable is of type callable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert callable $actual
      *
@@ -1831,12 +1831,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsCallable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsIterable')) {
+if (!function_exists('PHPUnit\Framework\assertIsIterable')) {
     /**
      * Asserts that a variable is of type iterable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert iterable $actual
      *
@@ -1848,12 +1848,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsIterable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotInternalType')) {
+if (!function_exists('PHPUnit\Framework\assertNotInternalType')) {
     /**
      * Asserts that a variable is not of a given type.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
      * @codeCoverageIgnore
@@ -1866,12 +1866,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotInternalType')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotArray')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotArray')) {
     /**
      * Asserts that a variable is not of type array.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !array $actual
      *
@@ -1883,12 +1883,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotArray')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotBool')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotBool')) {
     /**
      * Asserts that a variable is not of type bool.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !bool $actual
      *
@@ -1900,12 +1900,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotBool')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotFloat')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotFloat')) {
     /**
      * Asserts that a variable is not of type float.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !float $actual
      *
@@ -1917,12 +1917,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotFloat')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotInt')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotInt')) {
     /**
      * Asserts that a variable is not of type int.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !int $actual
      *
@@ -1934,12 +1934,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotInt')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotNumeric')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotNumeric')) {
     /**
      * Asserts that a variable is not of type numeric.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !numeric $actual
      *
@@ -1951,12 +1951,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotNumeric')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotObject')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotObject')) {
     /**
      * Asserts that a variable is not of type object.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !object $actual
      *
@@ -1968,12 +1968,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotObject')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotResource')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotResource')) {
     /**
      * Asserts that a variable is not of type resource.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !resource $actual
      *
@@ -1985,12 +1985,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotResource')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotString')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotString')) {
     /**
      * Asserts that a variable is not of type string.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !string $actual
      *
@@ -2002,12 +2002,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotString')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotScalar')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotScalar')) {
     /**
      * Asserts that a variable is not of type scalar.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !scalar $actual
      *
@@ -2019,12 +2019,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotScalar')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotCallable')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotCallable')) {
     /**
      * Asserts that a variable is not of type callable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !callable $actual
      *
@@ -2036,12 +2036,12 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotCallable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertIsNotIterable')) {
+if (!function_exists('PHPUnit\Framework\assertIsNotIterable')) {
     /**
      * Asserts that a variable is not of type iterable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @psalm-assert !iterable $actual
      *
@@ -2053,15 +2053,15 @@ if (!\function_exists('PHPUnit\Framework\assertIsNotIterable')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertAttributeNotInternalType')) {
+if (!function_exists('PHPUnit\Framework\assertAttributeNotInternalType')) {
     /**
      * Asserts that an attribute is of a given type.
      *
      * @param object|string $classOrObject
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
      * @codeCoverageIgnore
@@ -2074,12 +2074,12 @@ if (!\function_exists('PHPUnit\Framework\assertAttributeNotInternalType')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertRegExp')) {
+if (!function_exists('PHPUnit\Framework\assertRegExp')) {
     /**
      * Asserts that a string matches a given regular expression.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertRegExp
      */
@@ -2089,12 +2089,12 @@ if (!\function_exists('PHPUnit\Framework\assertRegExp')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotRegExp')) {
+if (!function_exists('PHPUnit\Framework\assertNotRegExp')) {
     /**
      * Asserts that a string does not match a given regular expression.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotRegExp
      */
@@ -2104,7 +2104,7 @@ if (!\function_exists('PHPUnit\Framework\assertNotRegExp')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertSameSize')) {
+if (!function_exists('PHPUnit\Framework\assertSameSize')) {
     /**
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
@@ -2112,9 +2112,9 @@ if (!\function_exists('PHPUnit\Framework\assertSameSize')) {
      * @param Countable|iterable $expected
      * @param Countable|iterable $actual
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertSameSize
      */
@@ -2124,7 +2124,7 @@ if (!\function_exists('PHPUnit\Framework\assertSameSize')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertNotSameSize')) {
+if (!function_exists('PHPUnit\Framework\assertNotSameSize')) {
     /**
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is not the same.
@@ -2132,9 +2132,9 @@ if (!\function_exists('PHPUnit\Framework\assertNotSameSize')) {
      * @param Countable|iterable $expected
      * @param Countable|iterable $actual
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertNotSameSize
      */
@@ -2144,12 +2144,12 @@ if (!\function_exists('PHPUnit\Framework\assertNotSameSize')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringMatchesFormat')) {
+if (!function_exists('PHPUnit\Framework\assertStringMatchesFormat')) {
     /**
      * Asserts that a string matches a given format string.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringMatchesFormat
      */
@@ -2159,12 +2159,12 @@ if (!\function_exists('PHPUnit\Framework\assertStringMatchesFormat')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringNotMatchesFormat')) {
+if (!function_exists('PHPUnit\Framework\assertStringNotMatchesFormat')) {
     /**
      * Asserts that a string does not match a given format string.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringNotMatchesFormat
      */
@@ -2174,12 +2174,12 @@ if (!\function_exists('PHPUnit\Framework\assertStringNotMatchesFormat')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringMatchesFormatFile')) {
+if (!function_exists('PHPUnit\Framework\assertStringMatchesFormatFile')) {
     /**
      * Asserts that a string matches a given format file.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringMatchesFormatFile
      */
@@ -2189,12 +2189,12 @@ if (!\function_exists('PHPUnit\Framework\assertStringMatchesFormatFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringNotMatchesFormatFile')) {
+if (!function_exists('PHPUnit\Framework\assertStringNotMatchesFormatFile')) {
     /**
      * Asserts that a string does not match a given format string.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringNotMatchesFormatFile
      */
@@ -2204,12 +2204,12 @@ if (!\function_exists('PHPUnit\Framework\assertStringNotMatchesFormatFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringStartsWith')) {
+if (!function_exists('PHPUnit\Framework\assertStringStartsWith')) {
     /**
      * Asserts that a string starts with a given prefix.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringStartsWith
      */
@@ -2219,15 +2219,15 @@ if (!\function_exists('PHPUnit\Framework\assertStringStartsWith')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringStartsNotWith')) {
+if (!function_exists('PHPUnit\Framework\assertStringStartsNotWith')) {
     /**
      * Asserts that a string starts not with a given prefix.
      *
      * @param string $prefix
      * @param string $string
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringStartsNotWith
      */
@@ -2237,10 +2237,10 @@ if (!\function_exists('PHPUnit\Framework\assertStringStartsNotWith')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringContainsString')) {
+if (!function_exists('PHPUnit\Framework\assertStringContainsString')) {
     /**
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringContainsString
      */
@@ -2250,10 +2250,10 @@ if (!\function_exists('PHPUnit\Framework\assertStringContainsString')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringCase')) {
+if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringCase')) {
     /**
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringContainsStringIgnoringCase
      */
@@ -2263,10 +2263,10 @@ if (!\function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringCase'
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringNotContainsString')) {
+if (!function_exists('PHPUnit\Framework\assertStringNotContainsString')) {
     /**
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringNotContainsString
      */
@@ -2276,10 +2276,10 @@ if (!\function_exists('PHPUnit\Framework\assertStringNotContainsString')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringNotContainsStringIgnoringCase')) {
+if (!function_exists('PHPUnit\Framework\assertStringNotContainsStringIgnoringCase')) {
     /**
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringNotContainsStringIgnoringCase
      */
@@ -2289,12 +2289,12 @@ if (!\function_exists('PHPUnit\Framework\assertStringNotContainsStringIgnoringCa
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringEndsWith')) {
+if (!function_exists('PHPUnit\Framework\assertStringEndsWith')) {
     /**
      * Asserts that a string ends with a given suffix.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringEndsWith
      */
@@ -2304,12 +2304,12 @@ if (!\function_exists('PHPUnit\Framework\assertStringEndsWith')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertStringEndsNotWith')) {
+if (!function_exists('PHPUnit\Framework\assertStringEndsNotWith')) {
     /**
      * Asserts that a string ends not with a given suffix.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertStringEndsNotWith
      */
@@ -2319,13 +2319,13 @@ if (!\function_exists('PHPUnit\Framework\assertStringEndsNotWith')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertXmlFileEqualsXmlFile')) {
+if (!function_exists('PHPUnit\Framework\assertXmlFileEqualsXmlFile')) {
     /**
      * Asserts that two XML files are equal.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertXmlFileEqualsXmlFile
      */
@@ -2335,13 +2335,13 @@ if (!\function_exists('PHPUnit\Framework\assertXmlFileEqualsXmlFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertXmlFileNotEqualsXmlFile')) {
+if (!function_exists('PHPUnit\Framework\assertXmlFileNotEqualsXmlFile')) {
     /**
      * Asserts that two XML files are not equal.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertXmlFileNotEqualsXmlFile
      */
@@ -2351,15 +2351,15 @@ if (!\function_exists('PHPUnit\Framework\assertXmlFileNotEqualsXmlFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFile')) {
+if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFile')) {
     /**
      * Asserts that two XML documents are equal.
      *
      * @param DOMDocument|string $actualXml
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertXmlStringEqualsXmlFile
      */
@@ -2369,15 +2369,15 @@ if (!\function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFile')) {
+if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFile')) {
     /**
      * Asserts that two XML documents are not equal.
      *
      * @param DOMDocument|string $actualXml
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertXmlStringNotEqualsXmlFile
      */
@@ -2387,16 +2387,16 @@ if (!\function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
+if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
     /**
      * Asserts that two XML documents are equal.
      *
      * @param DOMDocument|string $expectedXml
      * @param DOMDocument|string $actualXml
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertXmlStringEqualsXmlString
      */
@@ -2406,16 +2406,16 @@ if (!\function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
+if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     /**
      * Asserts that two XML documents are not equal.
      *
      * @param DOMDocument|string $expectedXml
      * @param DOMDocument|string $actualXml
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertXmlStringNotEqualsXmlString
      */
@@ -2425,13 +2425,13 @@ if (!\function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertEqualXMLStructure')) {
+if (!function_exists('PHPUnit\Framework\assertEqualXMLStructure')) {
     /**
      * Asserts that a hierarchy of DOMElements matches.
      *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws AssertionFailedError
      * @throws ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @see Assert::assertEqualXMLStructure
      */
@@ -2441,12 +2441,12 @@ if (!\function_exists('PHPUnit\Framework\assertEqualXMLStructure')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertThat')) {
+if (!function_exists('PHPUnit\Framework\assertThat')) {
     /**
      * Evaluates a PHPUnit\Framework\Constraint matcher object.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertThat
      */
@@ -2456,12 +2456,12 @@ if (!\function_exists('PHPUnit\Framework\assertThat')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertJson')) {
+if (!function_exists('PHPUnit\Framework\assertJson')) {
     /**
      * Asserts that a string is a valid JSON string.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertJson
      */
@@ -2471,12 +2471,12 @@ if (!\function_exists('PHPUnit\Framework\assertJson')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertJsonStringEqualsJsonString')) {
+if (!function_exists('PHPUnit\Framework\assertJsonStringEqualsJsonString')) {
     /**
      * Asserts that two given JSON encoded objects or arrays are equal.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertJsonStringEqualsJsonString
      */
@@ -2486,15 +2486,15 @@ if (!\function_exists('PHPUnit\Framework\assertJsonStringEqualsJsonString')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertJsonStringNotEqualsJsonString')) {
+if (!function_exists('PHPUnit\Framework\assertJsonStringNotEqualsJsonString')) {
     /**
      * Asserts that two given JSON encoded objects or arrays are not equal.
      *
      * @param string $expectedJson
      * @param string $actualJson
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertJsonStringNotEqualsJsonString
      */
@@ -2504,12 +2504,12 @@ if (!\function_exists('PHPUnit\Framework\assertJsonStringNotEqualsJsonString')) 
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertJsonStringEqualsJsonFile')) {
+if (!function_exists('PHPUnit\Framework\assertJsonStringEqualsJsonFile')) {
     /**
      * Asserts that the generated JSON encoded object and the content of the given file are equal.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertJsonStringEqualsJsonFile
      */
@@ -2519,12 +2519,12 @@ if (!\function_exists('PHPUnit\Framework\assertJsonStringEqualsJsonFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertJsonStringNotEqualsJsonFile')) {
+if (!function_exists('PHPUnit\Framework\assertJsonStringNotEqualsJsonFile')) {
     /**
      * Asserts that the generated JSON encoded object and the content of the given file are not equal.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertJsonStringNotEqualsJsonFile
      */
@@ -2534,12 +2534,12 @@ if (!\function_exists('PHPUnit\Framework\assertJsonStringNotEqualsJsonFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertJsonFileEqualsJsonFile')) {
+if (!function_exists('PHPUnit\Framework\assertJsonFileEqualsJsonFile')) {
     /**
      * Asserts that two JSON files are equal.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertJsonFileEqualsJsonFile
      */
@@ -2549,12 +2549,12 @@ if (!\function_exists('PHPUnit\Framework\assertJsonFileEqualsJsonFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\assertJsonFileNotEqualsJsonFile')) {
+if (!function_exists('PHPUnit\Framework\assertJsonFileNotEqualsJsonFile')) {
     /**
      * Asserts that two JSON files are not equal.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @see Assert::assertJsonFileNotEqualsJsonFile
      */
@@ -2564,308 +2564,308 @@ if (!\function_exists('PHPUnit\Framework\assertJsonFileNotEqualsJsonFile')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\logicalAnd')) {
+if (!function_exists('PHPUnit\Framework\logicalAnd')) {
     function logicalAnd(): LogicalAnd
     {
         return Assert::logicalAnd(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\logicalOr')) {
+if (!function_exists('PHPUnit\Framework\logicalOr')) {
     function logicalOr(): LogicalOr
     {
         return Assert::logicalOr(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\logicalNot')) {
+if (!function_exists('PHPUnit\Framework\logicalNot')) {
     function logicalNot(Constraint $constraint): LogicalNot
     {
         return Assert::logicalNot(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\logicalXor')) {
+if (!function_exists('PHPUnit\Framework\logicalXor')) {
     function logicalXor(): LogicalXor
     {
         return Assert::logicalXor(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\anything')) {
+if (!function_exists('PHPUnit\Framework\anything')) {
     function anything(): IsAnything
     {
         return Assert::anything(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isTrue')) {
+if (!function_exists('PHPUnit\Framework\isTrue')) {
     function isTrue(): IsTrue
     {
         return Assert::isTrue(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\callback')) {
+if (!function_exists('PHPUnit\Framework\callback')) {
     function callback(callable $callback): Callback
     {
         return Assert::callback(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isFalse')) {
+if (!function_exists('PHPUnit\Framework\isFalse')) {
     function isFalse(): IsFalse
     {
         return Assert::isFalse(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isJson')) {
+if (!function_exists('PHPUnit\Framework\isJson')) {
     function isJson(): IsJson
     {
         return Assert::isJson(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isNull')) {
+if (!function_exists('PHPUnit\Framework\isNull')) {
     function isNull(): IsNull
     {
         return Assert::isNull(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isFinite')) {
+if (!function_exists('PHPUnit\Framework\isFinite')) {
     function isFinite(): IsFinite
     {
         return Assert::isFinite(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isInfinite')) {
+if (!function_exists('PHPUnit\Framework\isInfinite')) {
     function isInfinite(): IsInfinite
     {
         return Assert::isInfinite(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isNan')) {
+if (!function_exists('PHPUnit\Framework\isNan')) {
     function isNan(): IsNan
     {
         return Assert::isNan(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\attribute')) {
+if (!function_exists('PHPUnit\Framework\attribute')) {
     function attribute(Constraint $constraint, string $attributeName): Attribute
     {
         return Assert::attribute(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\contains')) {
+if (!function_exists('PHPUnit\Framework\contains')) {
     function contains($value, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): TraversableContains
     {
         return Assert::contains(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\containsEqual')) {
+if (!function_exists('PHPUnit\Framework\containsEqual')) {
     function containsEqual($value): TraversableContainsEqual
     {
         return Assert::containsEqual(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\containsIdentical')) {
+if (!function_exists('PHPUnit\Framework\containsIdentical')) {
     function containsIdentical($value): TraversableContainsIdentical
     {
         return Assert::containsIdentical(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\containsOnly')) {
+if (!function_exists('PHPUnit\Framework\containsOnly')) {
     function containsOnly(string $type): TraversableContainsOnly
     {
         return Assert::containsOnly(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\containsOnlyInstancesOf')) {
+if (!function_exists('PHPUnit\Framework\containsOnlyInstancesOf')) {
     function containsOnlyInstancesOf(string $className): TraversableContainsOnly
     {
         return Assert::containsOnlyInstancesOf(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\arrayHasKey')) {
+if (!function_exists('PHPUnit\Framework\arrayHasKey')) {
     function arrayHasKey($key): ArrayHasKey
     {
         return Assert::arrayHasKey(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\equalTo')) {
+if (!function_exists('PHPUnit\Framework\equalTo')) {
     function equalTo($value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): IsEqual
     {
         return Assert::equalTo(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\attributeEqualTo')) {
+if (!function_exists('PHPUnit\Framework\attributeEqualTo')) {
     function attributeEqualTo(string $attributeName, $value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): Attribute
     {
         return Assert::attributeEqualTo(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isEmpty')) {
+if (!function_exists('PHPUnit\Framework\isEmpty')) {
     function isEmpty(): IsEmpty
     {
         return Assert::isEmpty(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isWritable')) {
+if (!function_exists('PHPUnit\Framework\isWritable')) {
     function isWritable(): IsWritable
     {
         return Assert::isWritable(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isReadable')) {
+if (!function_exists('PHPUnit\Framework\isReadable')) {
     function isReadable(): IsReadable
     {
         return Assert::isReadable(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\directoryExists')) {
+if (!function_exists('PHPUnit\Framework\directoryExists')) {
     function directoryExists(): DirectoryExists
     {
         return Assert::directoryExists(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\fileExists')) {
+if (!function_exists('PHPUnit\Framework\fileExists')) {
     function fileExists(): FileExists
     {
         return Assert::fileExists(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\greaterThan')) {
+if (!function_exists('PHPUnit\Framework\greaterThan')) {
     function greaterThan($value): GreaterThan
     {
         return Assert::greaterThan(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\greaterThanOrEqual')) {
+if (!function_exists('PHPUnit\Framework\greaterThanOrEqual')) {
     function greaterThanOrEqual($value): LogicalOr
     {
         return Assert::greaterThanOrEqual(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\classHasAttribute')) {
+if (!function_exists('PHPUnit\Framework\classHasAttribute')) {
     function classHasAttribute(string $attributeName): ClassHasAttribute
     {
         return Assert::classHasAttribute(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\classHasStaticAttribute')) {
+if (!function_exists('PHPUnit\Framework\classHasStaticAttribute')) {
     function classHasStaticAttribute(string $attributeName): ClassHasStaticAttribute
     {
         return Assert::classHasStaticAttribute(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\objectHasAttribute')) {
+if (!function_exists('PHPUnit\Framework\objectHasAttribute')) {
     function objectHasAttribute($attributeName): ObjectHasAttribute
     {
         return Assert::objectHasAttribute(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\identicalTo')) {
+if (!function_exists('PHPUnit\Framework\identicalTo')) {
     function identicalTo($value): IsIdentical
     {
         return Assert::identicalTo(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isInstanceOf')) {
+if (!function_exists('PHPUnit\Framework\isInstanceOf')) {
     function isInstanceOf(string $className): IsInstanceOf
     {
         return Assert::isInstanceOf(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\isType')) {
+if (!function_exists('PHPUnit\Framework\isType')) {
     function isType(string $type): IsType
     {
         return Assert::isType(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\lessThan')) {
+if (!function_exists('PHPUnit\Framework\lessThan')) {
     function lessThan($value): LessThan
     {
         return Assert::lessThan(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\lessThanOrEqual')) {
+if (!function_exists('PHPUnit\Framework\lessThanOrEqual')) {
     function lessThanOrEqual($value): LogicalOr
     {
         return Assert::lessThanOrEqual(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\matchesRegularExpression')) {
+if (!function_exists('PHPUnit\Framework\matchesRegularExpression')) {
     function matchesRegularExpression(string $pattern): RegularExpression
     {
         return Assert::matchesRegularExpression(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\matches')) {
+if (!function_exists('PHPUnit\Framework\matches')) {
     function matches(string $string): StringMatchesFormatDescription
     {
         return Assert::matches(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\stringStartsWith')) {
+if (!function_exists('PHPUnit\Framework\stringStartsWith')) {
     function stringStartsWith($prefix): StringStartsWith
     {
         return Assert::stringStartsWith(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\stringContains')) {
+if (!function_exists('PHPUnit\Framework\stringContains')) {
     function stringContains(string $string, bool $case = true): StringContains
     {
         return Assert::stringContains(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\stringEndsWith')) {
+if (!function_exists('PHPUnit\Framework\stringEndsWith')) {
     function stringEndsWith(string $suffix): StringEndsWith
     {
         return Assert::stringEndsWith(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\countOf')) {
+if (!function_exists('PHPUnit\Framework\countOf')) {
     function countOf(int $count): Count
     {
         return Assert::countOf(...\func_get_args());
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\any')) {
+if (!function_exists('PHPUnit\Framework\any')) {
     /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
@@ -2876,7 +2876,7 @@ if (!\function_exists('PHPUnit\Framework\any')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\never')) {
+if (!function_exists('PHPUnit\Framework\never')) {
     /**
      * Returns a matcher that matches when the method is never executed.
      */
@@ -2886,7 +2886,7 @@ if (!\function_exists('PHPUnit\Framework\never')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\atLeast')) {
+if (!function_exists('PHPUnit\Framework\atLeast')) {
     /**
      * Returns a matcher that matches when the method is executed
      * at least N times.
@@ -2899,7 +2899,7 @@ if (!\function_exists('PHPUnit\Framework\atLeast')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\atLeastOnce')) {
+if (!function_exists('PHPUnit\Framework\atLeastOnce')) {
     /**
      * Returns a matcher that matches when the method is executed at least once.
      */
@@ -2909,7 +2909,7 @@ if (!\function_exists('PHPUnit\Framework\atLeastOnce')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\once')) {
+if (!function_exists('PHPUnit\Framework\once')) {
     /**
      * Returns a matcher that matches when the method is executed exactly once.
      */
@@ -2919,7 +2919,7 @@ if (!\function_exists('PHPUnit\Framework\once')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\exactly')) {
+if (!function_exists('PHPUnit\Framework\exactly')) {
     /**
      * Returns a matcher that matches when the method is executed
      * exactly $count times.
@@ -2930,7 +2930,7 @@ if (!\function_exists('PHPUnit\Framework\exactly')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\atMost')) {
+if (!function_exists('PHPUnit\Framework\atMost')) {
     /**
      * Returns a matcher that matches when the method is executed
      * at most N times.
@@ -2941,7 +2941,7 @@ if (!\function_exists('PHPUnit\Framework\atMost')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\at')) {
+if (!function_exists('PHPUnit\Framework\at')) {
     /**
      * Returns a matcher that matches when the method is executed
      * at the given index.
@@ -2952,35 +2952,35 @@ if (!\function_exists('PHPUnit\Framework\at')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\returnValue')) {
+if (!function_exists('PHPUnit\Framework\returnValue')) {
     function returnValue($value): ReturnStub
     {
         return new ReturnStub($value);
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\returnValueMap')) {
+if (!function_exists('PHPUnit\Framework\returnValueMap')) {
     function returnValueMap(array $valueMap): ReturnValueMapStub
     {
         return new ReturnValueMapStub($valueMap);
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\returnArgument')) {
+if (!function_exists('PHPUnit\Framework\returnArgument')) {
     function returnArgument(int $argumentIndex): ReturnArgumentStub
     {
         return new ReturnArgumentStub($argumentIndex);
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\returnCallback')) {
+if (!function_exists('PHPUnit\Framework\returnCallback')) {
     function returnCallback($callback): ReturnCallbackStub
     {
         return new ReturnCallbackStub($callback);
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\returnSelf')) {
+if (!function_exists('PHPUnit\Framework\returnSelf')) {
     /**
      * Returns the current object.
      *
@@ -2992,14 +2992,14 @@ if (!\function_exists('PHPUnit\Framework\returnSelf')) {
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\throwException')) {
+if (!function_exists('PHPUnit\Framework\throwException')) {
     function throwException(Throwable $exception): ExceptionStub
     {
         return new ExceptionStub($exception);
     }
 }
 
-if (!\function_exists('PHPUnit\Framework\onConsecutiveCalls')) {
+if (!function_exists('PHPUnit\Framework\onConsecutiveCalls')) {
     function onConsecutiveCalls(): ConsecutiveCallsStub
     {
         $args = \func_get_args();

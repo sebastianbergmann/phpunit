@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util;
 
+use function explode;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
@@ -172,7 +173,7 @@ final class GetoptTest extends TestCase
     public function testItHandlesLongParametesWithValues(): void
     {
         $command = 'command parameter-0 --exec parameter-1 --conf config.xml --optn parameter-2 --optn=content-of-o parameter-n';
-        $args    = \explode(' ', $command);
+        $args    = explode(' ', $command);
         unset($args[0]);
         $expected = [
             [
@@ -195,7 +196,7 @@ final class GetoptTest extends TestCase
     public function testItHandlesShortParametesWithValues(): void
     {
         $command = 'command parameter-0 -x parameter-1 -c config.xml -o parameter-2 -ocontent-of-o parameter-n';
-        $args    = \explode(' ', $command);
+        $args    = explode(' ', $command);
         unset($args[0]);
         $expected = [
             [

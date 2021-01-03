@@ -9,6 +9,11 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
+use function addslashes;
+use function basename;
+use function dirname;
+use function sprintf;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -19,7 +24,7 @@ final class XDebugFilterScriptGeneratorTest extends TestCase
 {
     public function testReturnsExpectedScript(): void
     {
-        $expectedDirectory = \sprintf(\addslashes('%s' . \DIRECTORY_SEPARATOR), __DIR__);
+        $expectedDirectory = sprintf(addslashes('%s' . DIRECTORY_SEPARATOR), __DIR__);
         $expected          = <<<EOF
 <?php declare(strict_types=1);
 if (!\\function_exists('xdebug_set_filter')) {
@@ -40,7 +45,7 @@ if (!\\function_exists('xdebug_set_filter')) {
 
 EOF;
 
-        $directoryPathThatDoesNotExist = \sprintf('%s/path/that/does/not/exist', __DIR__);
+        $directoryPathThatDoesNotExist = sprintf('%s/path/that/does/not/exist', __DIR__);
         $this->assertDirectoryNotExists($directoryPathThatDoesNotExist);
 
         $filterConfiguration = [
@@ -52,12 +57,12 @@ EOF;
                         'prefix' => '',
                     ],
                     [
-                        'path'   => \sprintf('%s/', __DIR__),
+                        'path'   => sprintf('%s/', __DIR__),
                         'suffix' => '.php',
                         'prefix' => '',
                     ],
                     [
-                        'path'   => \sprintf('%s/./%s', \dirname(__DIR__), \basename(__DIR__)),
+                        'path'   => sprintf('%s/./%s', dirname(__DIR__), basename(__DIR__)),
                         'suffix' => '.php',
                         'prefix' => '',
                     ],

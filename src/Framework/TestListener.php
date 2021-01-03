@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use Throwable;
+
 /**
  * @deprecated Use the `TestHook` interfaces instead
  */
@@ -19,7 +21,7 @@ interface TestListener
      *
      * @deprecated Use `AfterTestErrorHook::executeAfterTestError` instead
      */
-    public function addError(Test $test, \Throwable $t, float $time): void;
+    public function addError(Test $test, Throwable $t, float $time): void;
 
     /**
      * A warning occurred.
@@ -40,21 +42,21 @@ interface TestListener
      *
      * @deprecated Use `AfterIncompleteTestHook::executeAfterIncompleteTest` instead
      */
-    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void;
+    public function addIncompleteTest(Test $test, Throwable $t, float $time): void;
 
     /**
      * Risky test.
      *
      * @deprecated Use `AfterRiskyTestHook::executeAfterRiskyTest` instead
      */
-    public function addRiskyTest(Test $test, \Throwable $t, float $time): void;
+    public function addRiskyTest(Test $test, Throwable $t, float $time): void;
 
     /**
      * Skipped test.
      *
      * @deprecated Use `AfterSkippedTestHook::executeAfterSkippedTest` instead
      */
-    public function addSkippedTest(Test $test, \Throwable $t, float $time): void;
+    public function addSkippedTest(Test $test, Throwable $t, float $time): void;
 
     /**
      * A test suite started.

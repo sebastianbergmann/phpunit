@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Runner;
 
+use function preg_match;
+use function round;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -33,14 +36,14 @@ final class ResultCacheExtension implements AfterIncompleteTestHook, AfterLastTe
     {
         $testName = $this->getTestName($test);
 
-        $this->cache->setTime($testName, \round($time, 3));
+        $this->cache->setTime($testName, round($time, 3));
     }
 
     public function executeAfterIncompleteTest(string $test, string $message, float $time): void
     {
         $testName = $this->getTestName($test);
 
-        $this->cache->setTime($testName, \round($time, 3));
+        $this->cache->setTime($testName, round($time, 3));
         $this->cache->setState($testName, BaseTestRunner::STATUS_INCOMPLETE);
     }
 
@@ -48,7 +51,7 @@ final class ResultCacheExtension implements AfterIncompleteTestHook, AfterLastTe
     {
         $testName = $this->getTestName($test);
 
-        $this->cache->setTime($testName, \round($time, 3));
+        $this->cache->setTime($testName, round($time, 3));
         $this->cache->setState($testName, BaseTestRunner::STATUS_RISKY);
     }
 
@@ -56,7 +59,7 @@ final class ResultCacheExtension implements AfterIncompleteTestHook, AfterLastTe
     {
         $testName = $this->getTestName($test);
 
-        $this->cache->setTime($testName, \round($time, 3));
+        $this->cache->setTime($testName, round($time, 3));
         $this->cache->setState($testName, BaseTestRunner::STATUS_SKIPPED);
     }
 
@@ -64,7 +67,7 @@ final class ResultCacheExtension implements AfterIncompleteTestHook, AfterLastTe
     {
         $testName = $this->getTestName($test);
 
-        $this->cache->setTime($testName, \round($time, 3));
+        $this->cache->setTime($testName, round($time, 3));
         $this->cache->setState($testName, BaseTestRunner::STATUS_ERROR);
     }
 
@@ -72,7 +75,7 @@ final class ResultCacheExtension implements AfterIncompleteTestHook, AfterLastTe
     {
         $testName = $this->getTestName($test);
 
-        $this->cache->setTime($testName, \round($time, 3));
+        $this->cache->setTime($testName, round($time, 3));
         $this->cache->setState($testName, BaseTestRunner::STATUS_FAILURE);
     }
 
@@ -80,7 +83,7 @@ final class ResultCacheExtension implements AfterIncompleteTestHook, AfterLastTe
     {
         $testName = $this->getTestName($test);
 
-        $this->cache->setTime($testName, \round($time, 3));
+        $this->cache->setTime($testName, round($time, 3));
         $this->cache->setState($testName, BaseTestRunner::STATUS_WARNING);
     }
 
@@ -98,7 +101,7 @@ final class ResultCacheExtension implements AfterIncompleteTestHook, AfterLastTe
     {
         $matches = [];
 
-        if (\preg_match('/^(?<name>\S+::\S+)(?:(?<dataname> with data set (?:#\d+|"[^"]+"))\s\()?/', $test, $matches)) {
+        if (preg_match('/^(?<name>\S+::\S+)(?:(?<dataname> with data set (?:#\d+|"[^"]+"))\s\()?/', $test, $matches)) {
             $test = $matches['name'] . ($matches['dataname'] ?? '');
         }
 

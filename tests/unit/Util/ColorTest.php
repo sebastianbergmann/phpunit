@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -100,7 +101,7 @@ final class ColorTest extends TestCase
 
     public function colorizePathProvider(): array
     {
-        $sep    = \DIRECTORY_SEPARATOR;
+        $sep    = DIRECTORY_SEPARATOR;
         $sepDim = Color::dim($sep);
 
         return [

@@ -11,6 +11,8 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
+use SplObjectStorage;
+use stdClass;
 
 /**
  * @small
@@ -131,7 +133,7 @@ EOF
 
     public function testConstraintTraversableToStringMethodsWithStdClass(): void
     {
-        $object     = new \stdClass;
+        $object     = new stdClass;
         $constraint = new TraversableContains($object);
         $this->assertStringMatchesFormat('contains stdClass Object &%s ()', $constraint->toString());
     }
@@ -145,10 +147,10 @@ EOF
 
     public function testConstraintTraversableToStringMethodsWithSplObjectStorage(): void
     {
-        $object     = new \stdClass;
+        $object     = new stdClass;
         $constraint = new TraversableContains($object);
 
-        $storage = new \SplObjectStorage;
+        $storage = new SplObjectStorage;
         $this->assertFalse($constraint->evaluate($storage, '', true));
 
         $storage->attach($object);
@@ -157,11 +159,11 @@ EOF
 
     public function testConstraintTraversableStdClassForFailSplObjectStorage(): void
     {
-        $object     = new \stdClass;
+        $object     = new stdClass;
         $constraint = new TraversableContains($object);
 
         try {
-            $constraint->evaluate(new \SplObjectStorage);
+            $constraint->evaluate(new SplObjectStorage);
         } catch (ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
                 <<<'EOF'
@@ -180,11 +182,11 @@ EOF
 
     public function testConstraintTraversableStdClassForFailSplObjectStorageWithCustomMessage(): void
     {
-        $object     = new \stdClass;
+        $object     = new stdClass;
         $constraint = new TraversableContains($object);
 
         try {
-            $constraint->evaluate(new \SplObjectStorage, 'custom message');
+            $constraint->evaluate(new SplObjectStorage, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
                 <<<'EOF'

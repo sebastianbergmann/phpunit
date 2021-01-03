@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Util;
 
+use function in_array;
+use function sprintf;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
@@ -42,9 +45,9 @@ final class VersionComparisonOperator
      */
     private function ensureOperatorIsValid(string $operator): void
     {
-        if (!\in_array($operator, ['<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne'], true)) {
+        if (!in_array($operator, ['<', 'lt', '<=', 'le', '>', 'gt', '>=', 'ge', '==', '=', 'eq', '!=', '<>', 'ne'], true)) {
             throw new Exception(
-                \sprintf(
+                sprintf(
                     '"%s" is not a valid version_compare() operator',
                     $operator
                 )

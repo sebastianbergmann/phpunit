@@ -9,8 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use ClassWithNonPublicAttributes;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
+use stdClass;
 
 /**
  * @small
@@ -21,13 +23,13 @@ final class ClassHasStaticAttributeTest extends ConstraintTestCase
     {
         $constraint = new ClassHasStaticAttribute('privateStaticAttribute');
 
-        $this->assertTrue($constraint->evaluate(\ClassWithNonPublicAttributes::class, '', true));
-        $this->assertFalse($constraint->evaluate(\stdClass::class, '', true));
+        $this->assertTrue($constraint->evaluate(ClassWithNonPublicAttributes::class, '', true));
+        $this->assertFalse($constraint->evaluate(stdClass::class, '', true));
         $this->assertEquals('has static attribute "privateStaticAttribute"', $constraint->toString());
         $this->assertCount(1, $constraint);
 
         try {
-            $constraint->evaluate(\stdClass::class);
+            $constraint->evaluate(stdClass::class);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<'EOF'
@@ -49,7 +51,7 @@ EOF
         $constraint = new ClassHasStaticAttribute('foo');
 
         try {
-            $constraint->evaluate(\stdClass::class, 'custom message');
+            $constraint->evaluate(stdClass::class, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 <<<'EOF'

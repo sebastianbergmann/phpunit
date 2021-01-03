@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestCase;
 class Issue2158Test extends TestCase
 {
     /**
-     * Set constant in main process
+     * Set constant in main process.
      */
     public function testSomething(): void
     {
@@ -22,7 +22,7 @@ class Issue2158Test extends TestCase
 
     /**
      * Constant defined previously in main process constant should be available and
-     * no errors should be yielded by reload of included files
+     * no errors should be yielded by reload of included files.
      *
      * @runInSeparateProcess
      */

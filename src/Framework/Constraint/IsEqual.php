@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
+use function sprintf;
+use function strpos;
+use function trim;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
@@ -53,7 +57,7 @@ final class IsEqual extends Constraint
     }
 
     /**
-     * Evaluates the constraint for parameter $other
+     * Evaluates the constraint for parameter $other.
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.
@@ -94,7 +98,7 @@ final class IsEqual extends Constraint
             }
 
             throw new ExpectationFailedException(
-                \trim($description . "\n" . $f->getMessage()),
+                trim($description . "\n" . $f->getMessage()),
                 $f
             );
         }
@@ -111,25 +115,25 @@ final class IsEqual extends Constraint
     {
         $delta = '';
 
-        if (\is_string($this->value)) {
-            if (\strpos($this->value, "\n") !== false) {
+        if (is_string($this->value)) {
+            if (strpos($this->value, "\n") !== false) {
                 return 'is equal to <text>';
             }
 
-            return \sprintf(
+            return sprintf(
                 "is equal to '%s'",
                 $this->value
             );
         }
 
         if ($this->delta != 0) {
-            $delta = \sprintf(
+            $delta = sprintf(
                 ' with delta <%F>',
                 $this->delta
             );
         }
 
-        return \sprintf(
+        return sprintf(
             'is equal to %s%s',
             $this->exporter()->export($this->value),
             $delta

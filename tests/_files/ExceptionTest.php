@@ -12,21 +12,21 @@ use PHPUnit\Framework\TestCase;
 class ExceptionTest extends TestCase
 {
     /**
-     * Exception message
+     * Exception message.
      *
      * @var string
      */
     public const ERROR_MESSAGE = 'Exception message';
 
     /**
-     * Exception message
+     * Exception message.
      *
      * @var string
      */
     public const ERROR_MESSAGE_REGEX = '#regex#';
 
     /**
-     * Exception code
+     * Exception code.
      *
      * @var int
      */
