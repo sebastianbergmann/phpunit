@@ -36,27 +36,27 @@
       <code>static::readAttribute($haystackClassOrObject, $haystackAttributeName)</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="21">
-      <code>!$actual instanceof Countable &amp;&amp; !\is_iterable($actual)</code>
-      <code>!$actual instanceof Countable &amp;&amp; !\is_iterable($actual)</code>
-      <code>!$expected instanceof Countable &amp;&amp; !\is_iterable($expected)</code>
-      <code>!$expected instanceof Countable &amp;&amp; !\is_iterable($expected)</code>
-      <code>!$haystack instanceof Countable &amp;&amp; !\is_iterable($haystack)</code>
-      <code>!$haystack instanceof Countable &amp;&amp; !\is_iterable($haystack)</code>
+      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
+      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
+      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
+      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
+      <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
+      <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
       <code>$array instanceof ArrayAccess</code>
       <code>$array instanceof ArrayAccess</code>
       <code>$array instanceof ArrayAccess</code>
       <code>$subset instanceof ArrayAccess</code>
-      <code>\is_array($array) || $array instanceof ArrayAccess</code>
-      <code>\is_array($array) || $array instanceof ArrayAccess</code>
-      <code>\is_array($array) || $array instanceof ArrayAccess</code>
-      <code>\is_array($subset) || $subset instanceof ArrayAccess</code>
-      <code>\is_int($key) || \is_string($key)</code>
-      <code>\is_int($key) || \is_string($key)</code>
-      <code>\is_object($object)</code>
-      <code>\is_object($object)</code>
-      <code>\is_object($object)</code>
-      <code>\is_string($key)</code>
-      <code>\is_string($key)</code>
+      <code>is_array($array) || $array instanceof ArrayAccess</code>
+      <code>is_array($array) || $array instanceof ArrayAccess</code>
+      <code>is_array($array) || $array instanceof ArrayAccess</code>
+      <code>is_array($subset) || $subset instanceof ArrayAccess</code>
+      <code>is_int($key) || is_string($key)</code>
+      <code>is_int($key) || is_string($key)</code>
+      <code>is_object($object)</code>
+      <code>is_object($object)</code>
+      <code>is_object($object)</code>
+      <code>is_string($key)</code>
+      <code>is_string($key)</code>
     </DocblockTypeContradiction>
     <MissingParamType occurrences="93">
       <code>$actual</code>
@@ -195,10 +195,10 @@
       <code>$subset</code>
     </PossiblyInvalidArgument>
     <RedundantCondition occurrences="1">
-      <code>\assert($step['object'] instanceof TestCase)</code>
+      <code>assert($step['object'] instanceof TestCase)</code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType occurrences="1">
-      <code>\is_object($classOrObject)</code>
+      <code>is_object($classOrObject)</code>
     </RedundantConditionGivenDocblockType>
     <TypeDoesNotContainType occurrences="1">
       <code>!$attribute</code>
@@ -363,7 +363,7 @@
       <code>evaluate</code>
     </MissingReturnType>
     <RedundantCondition occurrences="1">
-      <code>$other instanceof \Traversable</code>
+      <code>$other instanceof Traversable</code>
     </RedundantCondition>
   </file>
   <file src="src/Framework/Constraint/Attribute.php">
@@ -476,7 +476,7 @@
       <code>bool</code>
     </InvalidReturnType>
     <RedundantCondition occurrences="1">
-      <code>\is_string($resource)</code>
+      <code>is_string($resource)</code>
     </RedundantCondition>
   </file>
   <file src="src/Framework/Constraint/LogicalAnd.php">
@@ -638,8 +638,8 @@
       <code>$interfaceName</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="2">
-      <code>!\is_array($methods) &amp;&amp; null !== $methods</code>
-      <code>!\is_array($type) &amp;&amp; !\is_string($type)</code>
+      <code>!is_array($methods) &amp;&amp; null !== $methods</code>
+      <code>!is_array($type) &amp;&amp; !is_string($type)</code>
     </DocblockTypeContradiction>
     <InvalidReturnStatement occurrences="1"/>
     <InvalidReturnType occurrences="1">
@@ -658,7 +658,7 @@
     <MissingThrowsDocblock occurrences="9">
       <code>generateMock</code>
       <code>generateMock</code>
-      <code>new \Text_Template($filename)</code>
+      <code>new Text_Template($filename)</code>
       <code>throw InvalidArgumentException::create(1, 'array or string');</code>
       <code>throw InvalidArgumentException::create(2, 'array');</code>
       <code>throw new RuntimeException($exception-&gt;getMessage());</code>
@@ -734,7 +734,7 @@
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
     <MissingThrowsDocblock occurrences="3">
-      <code>new \Text_Template($filename)</code>
+      <code>new Text_Template($filename)</code>
       <code>self::getMethodParametersForCall($method)</code>
     </MissingThrowsDocblock>
     <PossiblyNullReference occurrences="1">
@@ -868,7 +868,7 @@
       <code>$this-&gt;runTestInSeparateProcess === null</code>
       <code>$this-&gt;snapshot instanceof Snapshot</code>
       <code>''</code>
-      <code>\is_int($this-&gt;dataName)</code>
+      <code>is_int($this-&gt;dataName)</code>
     </DocblockTypeContradiction>
     <InvalidArgument occurrences="1">
       <code>$header</code>
@@ -876,7 +876,7 @@
     <InvalidCatch occurrences="1"/>
     <InvalidReturnStatement occurrences="2">
       <code>$mockObject</code>
-      <code>\get_class($mock)</code>
+      <code>get_class($mock)</code>
     </InvalidReturnStatement>
     <InvalidReturnType occurrences="2">
       <code>MockObject&amp;RealInstanceType</code>
@@ -939,10 +939,10 @@
     </RedundantCondition>
     <RedundantConditionGivenDocblockType occurrences="5">
       <code>$this-&gt;prophet !== null</code>
-      <code>\is_string($_originalClassName)</code>
-      <code>\is_string($this-&gt;dataName)</code>
-      <code>\is_string($this-&gt;outputExpectedRegex)</code>
-      <code>\is_string($this-&gt;outputExpectedString)</code>
+      <code>is_string($_originalClassName)</code>
+      <code>is_string($this-&gt;dataName)</code>
+      <code>is_string($this-&gt;outputExpectedRegex)</code>
+      <code>is_string($this-&gt;outputExpectedString)</code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/TestResult.php">
@@ -995,8 +995,8 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="5">
-      <code>!\is_string($theClass) &amp;&amp; !$theClass instanceof \ReflectionClass</code>
-      <code>\is_string($testClass)</code>
+      <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
+      <code>is_string($testClass)</code>
       <code>null === $this-&gt;backupGlobals</code>
       <code>null === $this-&gt;backupStaticAttributes</code>
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState</code>
@@ -1017,12 +1017,12 @@
     </PropertyNotSetInConstructor>
     <RedundantConditionGivenDocblockType occurrences="7">
       <code>$this-&gt;iteratorFilter !== null</code>
-      <code>\is_bool($backupGlobals)</code>
-      <code>\is_bool($backupStaticAttributes)</code>
-      <code>\is_bool($beStrictAboutChangesToGlobalState)</code>
-      <code>null === $this-&gt;backupGlobals &amp;&amp; \is_bool($backupGlobals)</code>
-      <code>null === $this-&gt;backupStaticAttributes &amp;&amp; \is_bool($backupStaticAttributes)</code>
-      <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; \is_bool($beStrictAboutChangesToGlobalState)</code>
+      <code>is_bool($backupGlobals)</code>
+      <code>is_bool($backupStaticAttributes)</code>
+      <code>is_bool($beStrictAboutChangesToGlobalState)</code>
+      <code>null === $this-&gt;backupGlobals &amp;&amp; is_bool($backupGlobals)</code>
+      <code>null === $this-&gt;backupStaticAttributes &amp;&amp; is_bool($backupStaticAttributes)</code>
+      <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Runner/DefaultTestResultCache.php">
@@ -1091,7 +1091,7 @@
       <code>$test</code>
     </MissingClosureParamType>
     <PossiblyFalseArgument occurrences="1">
-      <code>\strpos($test-&gt;getName(), '::')</code>
+      <code>strpos($test-&gt;getName(), '::')</code>
     </PossiblyFalseArgument>
     <RedundantConditionGivenDocblockType occurrences="4">
       <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
@@ -1128,7 +1128,7 @@
       <code>null|Printer|string</code>
     </MoreSpecificReturnType>
     <PossiblyFalseArgument occurrences="1">
-      <code>\strrpos($this-&gt;arguments['test'], '.')</code>
+      <code>strrpos($this-&gt;arguments['test'], '.')</code>
     </PossiblyFalseArgument>
     <PossiblyNullArgument occurrences="4">
       <code>$suite</code>
@@ -1204,7 +1204,7 @@
       <code>$printer</code>
     </PropertyNotSetInConstructor>
     <RedundantCondition occurrences="1">
-      <code>\assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
+      <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>$this-&gt;printer !== null</code>
@@ -1327,8 +1327,8 @@
       <code>(string) $var-&gt;getAttribute('value')</code>
     </RedundantCast>
     <RedundantConditionGivenDocblockType occurrences="2">
-      <code>\assert($directoryNode instanceof DOMElement)</code>
-      <code>\assert($fileNode instanceof DOMElement)</code>
+      <code>assert($directoryNode instanceof DOMElement)</code>
+      <code>assert($fileNode instanceof DOMElement)</code>
     </RedundantConditionGivenDocblockType>
     <UndefinedMethod occurrences="7">
       <code>getAttribute</code>
@@ -1485,7 +1485,7 @@
       <code>Exception</code>
     </MoreSpecificReturnType>
     <PossiblyFalseOperand occurrences="1">
-      <code>\strrpos($key, "\0")</code>
+      <code>strrpos($key, "\0")</code>
     </PossiblyFalseOperand>
     <PossiblyNullArgument occurrences="1">
       <code>$childResult-&gt;getCodeCoverage()</code>
@@ -1539,7 +1539,7 @@
   </file>
   <file src="src/Util/Test.php">
     <InvalidScalarArgument occurrences="1">
-      <code>\array_flip($lineNumbers)</code>
+      <code>array_flip($lineNumbers)</code>
     </InvalidScalarArgument>
     <MissingReturnType occurrences="1">
       <code>sanitizeVersionNumber</code>
@@ -1603,7 +1603,7 @@
     </MissingParamType>
     <MissingThrowsDocblock occurrences="1"/>
     <RedundantConditionGivenDocblockType occurrences="1">
-      <code>\is_string($value)</code>
+      <code>is_string($value)</code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Util/TestDox/ResultPrinter.php">
@@ -1677,7 +1677,7 @@
       <code>$item</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="1">
-      <code>\is_string($actual)</code>
+      <code>is_string($actual)</code>
     </DocblockTypeContradiction>
     <InvalidStringClass occurrences="1">
       <code>new $className</code>
