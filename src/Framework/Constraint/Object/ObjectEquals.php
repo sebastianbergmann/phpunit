@@ -48,11 +48,11 @@ final class ObjectEquals extends Constraint
 
     /**
      * @throws ActualValueIsNotAnObjectException
-     * @throws ComparisonMethodDoesNotExistException
+     * @throws ComparisonMethodDoesNotAcceptParameterTypeException
      * @throws ComparisonMethodDoesNotDeclareBoolReturnTypeException
      * @throws ComparisonMethodDoesNotDeclareExactlyOneParameterException
      * @throws ComparisonMethodDoesNotDeclareParameterTypeException
-     * @throws ComparisonMethodDoesNotAcceptParameterTypeException
+     * @throws ComparisonMethodDoesNotExistException
      */
     protected function matches($other): bool
     {

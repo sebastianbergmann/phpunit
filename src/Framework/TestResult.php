@@ -627,10 +627,10 @@ final class TestResult implements Countable
     /**
      * Runs a TestCase.
      *
-     * @throws CodeCoverageException
-     * @throws UnintentionallyCoveredCodeException
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws CodeCoverageException
+     * @throws UnintentionallyCoveredCodeException
      */
     public function run(Test $test): void
     {

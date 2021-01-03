@@ -107,8 +107,8 @@ final class InvocationHandler
     }
 
     /**
-     * @throws RuntimeException
      * @throws Exception
+     * @throws RuntimeException
      */
     public function invoke(Invocation $invocation)
     {

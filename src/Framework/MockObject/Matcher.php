@@ -103,10 +103,10 @@ final class Matcher
     }
 
     /**
-     * @throws MethodNameNotConfiguredException
-     * @throws MatchBuilderNotFoundException
-     * @throws RuntimeException
      * @throws ExpectationFailedException
+     * @throws MatchBuilderNotFoundException
+     * @throws MethodNameNotConfiguredException
+     * @throws RuntimeException
      */
     public function invoked(Invocation $invocation)
     {
@@ -156,11 +156,11 @@ final class Matcher
     }
 
     /**
-     * @throws RuntimeException
-     * @throws MethodNameNotConfiguredException
-     * @throws MatchBuilderNotFoundException
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws MatchBuilderNotFoundException
+     * @throws MethodNameNotConfiguredException
+     * @throws RuntimeException
      */
     public function matches(Invocation $invocation): bool
     {
@@ -208,9 +208,9 @@ final class Matcher
     }
 
     /**
-     * @throws MethodNameNotConfiguredException
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     * @throws MethodNameNotConfiguredException
      */
     public function verify(): void
     {

@@ -32,7 +32,7 @@ class SetUpBeforeClassTest extends TestCase
         throw new Exception('forcing an Exception in setUpBeforeClass()');
     }
 
-    public function setUp(): void
+    protected function setUp(): void
     {
         throw new Exception('setUp() should never have been run');
     }

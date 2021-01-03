@@ -317,7 +317,7 @@ abstract class AbstractPhpProcess
                 $test->addToAssertionCount($childResult['numAssertions']);
 
                 $childResult = $childResult['result'];
-                assert($childResult instanceof  TestResult);
+                assert($childResult instanceof TestResult);
 
                 if ($result->getCollectCodeCoverageInformation()) {
                     $result->getCodeCoverage()->merge(

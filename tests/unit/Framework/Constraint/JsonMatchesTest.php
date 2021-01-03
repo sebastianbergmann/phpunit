@@ -56,8 +56,8 @@ final class JsonMatchesTest extends ConstraintTestCase
     /**
      * @dataProvider evaluateDataprovider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testEvaluate($expected, $jsonOther, $jsonValue): void
     {
@@ -69,10 +69,10 @@ final class JsonMatchesTest extends ConstraintTestCase
     /**
      * @dataProvider evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider
      *
-     * @throws ExpectationFailedException
      * @throws \PHPUnit\Framework\AssertionFailedError
      * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue): void
     {

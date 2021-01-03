@@ -337,14 +337,14 @@ final class DocBlock
 
     public function isHookToBeExecutedBeforeClass(): bool
     {
-        return $this->isMethod
-            && false !== strpos($this->docComment, '@beforeClass');
+        return $this->isMethod &&
+            false !== strpos($this->docComment, '@beforeClass');
     }
 
     public function isHookToBeExecutedAfterClass(): bool
     {
-        return $this->isMethod
-            && false !== strpos($this->docComment, '@afterClass');
+        return $this->isMethod &&
+            false !== strpos($this->docComment, '@afterClass');
     }
 
     public function isToBeExecutedBeforeTest(): bool
@@ -534,7 +534,7 @@ final class DocBlock
             $annotations = array_merge(
                 $annotations,
                 ...array_map(
-                    function (ReflectionClass $trait): array {
+                    static function (ReflectionClass $trait): array {
                         return self::parseDocBlock((string) $trait->getDocComment());
                     },
                     array_values($reflector->getTraits())

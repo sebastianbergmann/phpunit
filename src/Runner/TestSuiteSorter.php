@@ -108,8 +108,8 @@ final class TestSuiteSorter
     }
 
     /**
-     * @throws Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
      */
     public function reorderTestsInSuite(Test $suite, int $order, bool $resolveDependencies, int $orderDefects, bool $isRootTestSuite = true): void
     {

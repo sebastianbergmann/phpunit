@@ -171,9 +171,9 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     /**
      * @param mixed[] $arguments
      *
+     * @throws \PHPUnit\Framework\Exception
      * @throws MethodNameNotConfiguredException
      * @throws MethodParametersAlreadyConfiguredException
-     * @throws \PHPUnit\Framework\Exception
      *
      * @return $this
      */
@@ -189,9 +189,9 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     /**
      * @param array ...$arguments
      *
+     * @throws \PHPUnit\Framework\Exception
      * @throws MethodNameNotConfiguredException
      * @throws MethodParametersAlreadyConfiguredException
-     * @throws \PHPUnit\Framework\Exception
      *
      * @return $this
      */
@@ -222,9 +222,9 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     /**
      * @param Constraint|string $constraint
      *
-     * @throws MethodNameAlreadyConfiguredException
-     * @throws MethodCannotBeConfiguredException
      * @throws \PHPUnit\Framework\InvalidArgumentException
+     * @throws MethodCannotBeConfiguredException
+     * @throws MethodNameAlreadyConfiguredException
      *
      * @return $this
      */

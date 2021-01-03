@@ -263,8 +263,8 @@ final class AssertTest extends TestCase
     /**
      * @dataProvider equalProvider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertEqualsSucceeds($a, $b): void
     {
@@ -274,8 +274,8 @@ final class AssertTest extends TestCase
     /**
      * @dataProvider notEqualProvider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertEqualsFails($a, $b): void
     {
@@ -287,8 +287,8 @@ final class AssertTest extends TestCase
     /**
      * @dataProvider notEqualProvider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertNotEqualsSucceeds($a, $b): void
     {
@@ -299,8 +299,8 @@ final class AssertTest extends TestCase
      * @testdox assertNotEquals($a, $b) with delta $delta, canoicalize $canonicalize, ignoreCase $ignoreCase
      * @dataProvider equalProvider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertNotEqualsFails($a, $b): void
     {
@@ -313,8 +313,8 @@ final class AssertTest extends TestCase
      * @testdox assertNotSame($a, $b) fails
      * @dataProvider sameProvider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertSameSucceeds($a, $b): void
     {
@@ -325,8 +325,8 @@ final class AssertTest extends TestCase
      * @testdox assertNotSame($a, $b)
      * @dataProvider notSameProvider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertSameFails($a, $b): void
     {
@@ -339,8 +339,8 @@ final class AssertTest extends TestCase
      * @testdox assertSame($a, $b) fails
      * @dataProvider notSameProvider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertNotSameSucceeds($a, $b): void
     {
@@ -351,8 +351,8 @@ final class AssertTest extends TestCase
      * @testdox assertSame($a, $b)
      * @dataProvider sameProvider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertNotSameFails($a, $b): void
     {
@@ -551,7 +551,7 @@ XML;
     public function testAssertDirectoryIsNotReadable(): void
     {
         if (PHP_OS_FAMILY === 'Windows') {
-            self::markTestSkipped('Cannot test this behaviour on Windows');
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
         }
 
         $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('unreadable_dir_', true);
@@ -581,7 +581,7 @@ XML;
     public function testAssertDirectoryIsNotWritable(): void
     {
         if (PHP_OS_FAMILY === 'Windows') {
-            self::markTestSkipped('Cannot test this behaviour on Windows');
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
         }
 
         $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('not_writable_dir_', true);
@@ -629,7 +629,7 @@ XML;
     public function testAssertFileIsNotReadable(): void
     {
         if (PHP_OS_FAMILY === 'Windows') {
-            self::markTestSkipped('Cannot test this behaviour on Windows');
+            $this->markTestSkipped('Cannot test this behaviour on Windows');
         }
 
         $tempFile = tempnam(
@@ -1339,7 +1339,7 @@ XML;
     {
         $this->assertThat(
             null,
-            $this->callback(function ($other) {
+            $this->callback(static function ($other) {
                 return true;
             })
         );
@@ -1706,8 +1706,8 @@ XML;
     /**
      * @dataProvider validInvalidJsonDataprovider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertJsonStringEqualsJsonStringErrorRaised($expected, $actual): void
     {
@@ -1729,8 +1729,8 @@ XML;
      * @testdox Assert JSON string equals equals JSON string raised $_dataName
      * @dataProvider validInvalidJsonDataprovider
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function testAssertJsonStringNotEqualsJsonStringErrorRaised($expected, $actual): void
     {
@@ -2029,7 +2029,7 @@ XML;
 
     public function testCallableTypeCanBeAsserted(): void
     {
-        $this->assertIsCallable(function (): void {
+        $this->assertIsCallable(static function (): void {
         });
 
         try {
@@ -2198,7 +2198,7 @@ XML;
         $this->assertIsNotCallable(null);
 
         try {
-            $this->assertIsNotCallable(function (): void {
+            $this->assertIsNotCallable(static function (): void {
             });
         } catch (AssertionFailedError $e) {
             return;

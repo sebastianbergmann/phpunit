@@ -23,7 +23,7 @@ final class IsInstanceOfTest extends ConstraintTestCase
     {
         $constraint = new IsInstanceOf(stdClass::class);
 
-        self::assertTrue($constraint->evaluate(new stdClass, '', true));
+        $this->assertTrue($constraint->evaluate(new stdClass, '', true));
     }
 
     public function testConstraintFailsOnString(): void
@@ -33,7 +33,7 @@ final class IsInstanceOfTest extends ConstraintTestCase
         try {
             $constraint->evaluate('stdClass');
         } catch (ExpectationFailedException $e) {
-            self::assertSame(
+            $this->assertSame(
                 <<<'EOT'
 Failed asserting that 'stdClass' is an instance of class "stdClass".
 
@@ -50,7 +50,7 @@ EOT
 
         $constraint = new IsInstanceOf(NotExistingClass::class);
 
-        self::assertSame(
+        $this->assertSame(
             'is instance of class "PHPUnit\Framework\Constraint\NotExistingClass"',
             $constraint->toString()
         );

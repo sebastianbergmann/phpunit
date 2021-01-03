@@ -39,8 +39,8 @@ final class ExceptionMessageRegularExpression extends Constraint
      *
      * @param \PHPUnit\Framework\Exception $other
      *
-     * @throws Exception
      * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     protected function matches($other): bool
     {
