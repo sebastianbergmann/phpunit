@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 * [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
 * [#4572](https://github.com/sebastianbergmann/phpunit/issues/4572): Schema validation does not work with `%xx` sequences in path to `phpunit.xsd`
+* [#4575](https://github.com/sebastianbergmann/phpunit/issues/4575): PHPUnit 8.5 incompatibility with PHP 8.1
 
 ## [8.5.13] - 2020-12-01
 

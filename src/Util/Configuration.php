@@ -434,26 +434,16 @@ final class Configuration
             }
         }
 
-        foreach (['var', 'post', 'get', 'cookie', 'server', 'files', 'request'] as $array) {
-            /*
-             * @see https://github.com/sebastianbergmann/phpunit/issues/277
-             */
-            switch ($array) {
-                case 'var':
-                    $target = &$GLOBALS;
+        foreach ($configuration['var'] as $name => $data) {
+            $GLOBALS[$name] = $data['value'];
+        }
 
-                    break;
+        foreach ($configuration['server'] as $name => $data) {
+            $_SERVER[$name] = $data['value'];
+        }
 
-                case 'server':
-                    $target = &$_SERVER;
-
-                    break;
-
-                default:
-                    $target = &$GLOBALS['_' . strtoupper($array)];
-
-                    break;
-            }
+        foreach (['post', 'get', 'cookie', 'files', 'request'] as $array) {
+            $target = &$GLOBALS['_' . strtoupper($array)];
 
             foreach ($configuration[$array] as $name => $data) {
                 $target[$name] = $data['value'];
