@@ -11,7 +11,6 @@ namespace PHPUnit\Util\TestDox;
 
 use function array_filter;
 use function get_class;
-use function implode;
 use function strpos;
 use DOMDocument;
 use DOMElement;
@@ -165,7 +164,6 @@ final class XmlResultPrinter extends Printer implements TestListener
         $testNode->setAttribute('status', $test->status()->type());
         $testNode->setAttribute('time', (string) $time);
         $testNode->setAttribute('size', (string) $test->getSize());
-        $testNode->setAttribute('groups', implode(',', $groups));
 
         foreach ($groups as $group) {
             $groupNode = $this->document->createElement('group');

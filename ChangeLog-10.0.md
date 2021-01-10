@@ -45,5 +45,6 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4567](https://github.com/sebastianbergmann/phpunit/issues/4567): Deprecate support for generators in `assertCount()` and `Count` constraint
 * Removed the `PHPUnit\Runner\TestSuiteLoader` interface
 * Removed the `<listeners>` XML configuration element and its children
+* Removed the `groups` attribute on the `test` element in the TestDox XML report
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master
