@@ -14,8 +14,13 @@ namespace PHPUnit\Framework;
  */
 final class SkippedDueToErrorInHookMethodException extends AssertionFailedError implements SkippedTest
 {
-    public function __construct()
+    public function __construct(string $errorMessage)
     {
-        parent::__construct('This test was skipped due to an error in a hook method');
+        parent::__construct(
+            sprintf(
+                'This test was skipped due to an error in a hook method, "%s"',
+                $errorMessage
+            )
+        );
     }
 }

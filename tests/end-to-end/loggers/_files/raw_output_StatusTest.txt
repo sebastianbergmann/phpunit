@@ -91,7 +91,7 @@ Configuration: %stests%ebasic%econfiguration.basic.xml
 
  [36m↩[0m Two [36m %f [2mms[0m
    [36m┐[0m
-   [36m├[0m [36mThis test was skipped due to an error in a hook method[0m
+   [36m├[0m [36mThis test was skipped due to an error in a hook method, "Exception: forcing an Exception in setUpBeforeClass()"[0m
    [36m┴[0m
 
 [4mSet Up (PHPUnit\SelfTest\Basic\SetUp)[0m
