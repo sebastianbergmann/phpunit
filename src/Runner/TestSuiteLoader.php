@@ -46,16 +46,15 @@ final class TestSuiteLoader
     public function load(string $suiteClassFile): ReflectionClass
     {
         $suiteClassName = $this->classNameFromFileName($suiteClassFile);
-        $loadedClasses  = self::$declaredClasses;
 
         if (!class_exists($suiteClassName, false)) {
             include_once $suiteClassFile;
 
             $loadedClasses = array_values(
-                array_diff(get_declared_classes(), $loadedClasses)
+                array_diff(get_declared_classes(), array_merge(self::$declaredClasses, self::$loadedClasses))
             );
 
-            self::$loadedClasses += $loadedClasses;
+            self::$loadedClasses = array_merge($loadedClasses, self::$loadedClasses);
 
             if (empty(self::$loadedClasses)) {
                 throw $this->exceptionFor($suiteClassName, $suiteClassFile);
