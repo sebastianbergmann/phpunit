@@ -264,6 +264,24 @@ final class TestSuiteTest extends TestCase
         $this->assertCount(2, $result);
     }
 
+    public function testCorrectlyLoadSameNameClasses(): void
+    {
+        $suite = new TestSuite(
+            'CorrectlyLoadSameNameClasses'
+        );
+
+        $dir = TEST_FILES_PATH . DIRECTORY_SEPARATOR . 'SameClassNames' . DIRECTORY_SEPARATOR;
+
+        $suite->addTestFile($dir . 'NamespaceOne' . DIRECTORY_SEPARATOR . 'MyTest.php');
+        $suite->addTestFile($dir . 'NamespaceTwo' . DIRECTORY_SEPARATOR . 'MyTest.php');
+
+        $result = new TestResult;
+
+        $suite->run($result);
+
+        $this->assertCount(3, $result);
+    }
+
     /**
      * @testdox Handles exceptions in tearDownAfterClass()
      */
