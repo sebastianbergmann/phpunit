@@ -26,21 +26,21 @@ final class TextFileLogger implements Tracer
     {
         file_put_contents(
             $this->filename,
-            self::renderEvent($event),
+            $this->renderEvent($event),
             FILE_APPEND
         );
     }
 
-    private static function renderEvent(Event $event): string
+    private function renderEvent(Event $event): string
     {
         return sprintf(
             "%s - %s\n",
-            self::renderTelemetry($event->telemetryInfo()),
+            $this->renderTelemetry($event->telemetryInfo()),
             get_class($event)
         );
     }
 
-    private static function renderTelemetry(Info $telemetryInfo): string
+    private function renderTelemetry(Info $telemetryInfo): string
     {
         $durationFormatter = new LogDurationFormatter();
 
