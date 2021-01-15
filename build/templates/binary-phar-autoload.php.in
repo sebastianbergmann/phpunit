@@ -21,7 +21,7 @@ if (__FILE__ === realpath($_SERVER['SCRIPT_NAME'])) {
     $execute = false;
 }
 
-$options = getopt('', array('manifest'));
+$options = getopt('', ['manifest']);
 
 if (isset($options['manifest'])) {
     $printManifest = true;
