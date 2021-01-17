@@ -2019,7 +2019,12 @@ abstract class Assert
      */
     public static function assertInternalType(string $expected, $actual, string $message = ''): void
     {
-        self::createWarning('assertInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertIsArray(), assertIsBool(), assertIsFloat(), assertIsInt(), assertIsNumeric(), assertIsObject(), assertIsResource(), assertIsString(), assertIsScalar(), assertIsCallable(), or assertIsIterable() instead.');
+        self::createWarning(
+            sprintf(
+                'assertInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use %s() instead.',
+                self::assertInternalTypeReplacement($expected, false)
+            )
+        );
 
         static::assertThat(
             $actual,
@@ -2249,7 +2254,12 @@ abstract class Assert
      */
     public static function assertNotInternalType(string $expected, $actual, string $message = ''): void
     {
-        self::createWarning('assertNotInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use assertIsNotArray(), assertIsNotBool(), assertIsNotFloat(), assertIsNotInt(), assertIsNotNumeric(), assertIsNotObject(), assertIsNotResource(), assertIsNotString(), assertIsNotScalar(), assertIsNotCallable(), or assertIsNotIterable() instead.');
+        self::createWarning(
+            sprintf(
+                'assertNotInternalType() is deprecated and will be removed in PHPUnit 9. Refactor your test to use %s() instead.',
+                self::assertInternalTypeReplacement($expected, true)
+            )
+        );
 
         static::assertThat(
             $actual,
@@ -3579,5 +3589,57 @@ abstract class Assert
                 break;
             }
         }
+    }
+
+    private static function assertInternalTypeReplacement(string $type, bool $not): string
+    {
+        switch ($type) {
+            case 'numeric':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Numeric';
+
+            case 'integer':
+            case 'int':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Int';
+
+            case 'double':
+            case 'float':
+            case 'real':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Float';
+
+            case 'string':
+                return 'assertIs' . ($not ? 'Not' : '') . 'String';
+
+            case 'boolean':
+            case 'bool':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Bool';
+
+            case 'null':
+                return 'assert' . ($not ? 'Not' : '') . 'Null';
+
+            case 'array':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Array';
+
+            case 'object':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Object';
+
+            case 'resource':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Resource';
+
+            case 'scalar':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Scalar';
+
+            case 'callable':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Callable';
+
+            case 'iterable':
+                return 'assertIs' . ($not ? 'Not' : '') . 'Iterable';
+        }
+
+        throw new Exception(
+            sprintf(
+                '"%s" is not a type supported by assertInternalType() / assertNotInternalType()',
+                $type
+            )
+        );
     }
 }
