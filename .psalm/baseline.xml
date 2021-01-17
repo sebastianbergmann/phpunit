@@ -158,7 +158,7 @@
       <code>getStaticAttribute</code>
       <code>readAttribute</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="32">
+    <MissingThrowsDocblock occurrences="34">
       <code>new IsType($expected)</code>
       <code>new IsType($expected)</code>
       <code>new IsType($type)</code>
@@ -186,6 +186,8 @@
       <code>new IsType(IsType::TYPE_STRING)</code>
       <code>new TraversableContainsOnly($className, false)</code>
       <code>new TraversableContainsOnly($type)</code>
+      <code>self::assertInternalTypeReplacement($expected, false)</code>
+      <code>self::assertInternalTypeReplacement($expected, true)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
     </MissingThrowsDocblock>
