@@ -3591,6 +3591,9 @@ abstract class Assert
         }
     }
 
+    /**
+     * @throws Exception
+     */
     private static function assertInternalTypeReplacement(string $type, bool $not): string
     {
         switch ($type) {
