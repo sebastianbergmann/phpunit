@@ -518,7 +518,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertTrue($phpunit->noInteraction());
     }
 
-    public function test_TestDox_configuration_is_parsed_correctly(): void
+    public function testTestDoxConfigurationIsParsedCorrectly(): void
     {
         $this->assertSame(
             CliTestDoxPrinter::class,
@@ -526,7 +526,7 @@ final class XmlConfigurationTest extends TestCase
         );
     }
 
-    public function test_Conflict_between_testdox_and_printerClass_is_detected(): void
+    public function testConflictBetweenTestdoxAndPrinterClassIsDetected(): void
     {
         $phpunit = $this->configuration('configuration_testdox_printerClass.xml')->phpunit();
 

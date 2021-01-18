@@ -62,7 +62,7 @@ final class TraversableContainsEqualTest extends ConstraintTestCase
         $this->assertFalse($constraint->evaluate([$c], '', true));
     }
 
-    public function test_SplObjectStorage_ContainsObject(): void
+    public function testSplObjectStorageContainsObject(): void
     {
         $a      = new stdClass;
         $a->foo = 'bar';

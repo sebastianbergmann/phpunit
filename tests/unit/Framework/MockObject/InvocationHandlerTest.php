@@ -15,7 +15,7 @@ use RuntimeException;
 
 class InvocationHandlerTest extends TestCase
 {
-    public function testExceptionThrownIn__ToStringIsDeferred(): void
+    public function testExceptionThrownInToStringIsDeferred(): void
     {
         $mock = $this->createMock(StringableClass::class);
         $mock->method('__toString')

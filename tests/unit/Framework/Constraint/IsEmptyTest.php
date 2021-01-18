@@ -73,7 +73,7 @@ EOF
     /**
      * @ticket https://github.com/sebastianbergmann/phpunit/issues/3743
      */
-    public function test_EmptyIterator_is_handled_correctly(): void
+    public function testEmptyIteratorIsHandledCorrectly(): void
     {
         $constraint = new IsEmpty;
 
