@@ -37,6 +37,7 @@ final class Duration
     {
         $this->ensureNotNegativeInt($seconds, 'seconds');
         $this->ensureNotNegativeInt($nanoseconds, 'nanoseconds');
+        $this->ensureNotGreaterThan(999999999, $nanoseconds, 'nanoseconds');
 
         $this->seconds     = $seconds;
         $this->nanoseconds = $nanoseconds;
@@ -88,6 +89,20 @@ final class Duration
             throw new InvalidArgumentException(sprintf(
                 'Value for %s must not be negative.',
                 $which
+            ));
+        }
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function ensureNotGreaterThan(int $limit, int $value, string $which): void
+    {
+        if ($value > $limit) {
+            throw new InvalidArgumentException(sprintf(
+                'Value for %s must not be greater than %d.',
+                $which,
+                $limit
             ));
         }
     }

@@ -40,10 +40,21 @@ final class DurationTest extends TestCase
         );
     }
 
+    public function testFromSecondsAndNanosecondsRejectsNanosecondsGreaterThan999999999(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value for nanoseconds must not be greater than 999999999');
+
+        Duration::fromSecondsAndNanoseconds(
+            0,
+            1000000000
+        );
+    }
+
     public function testFromSecondsAndNanosecondsReturnsDuration(): void
     {
         $seconds     = 123;
-        $nanoseconds = 456;
+        $nanoseconds = 999999999;
 
         $duration = Duration::fromSecondsAndNanoseconds(
             $seconds,
