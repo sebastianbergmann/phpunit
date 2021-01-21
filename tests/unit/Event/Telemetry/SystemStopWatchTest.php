@@ -21,11 +21,11 @@ final class SystemStopWatchTest extends TestCase
     {
         $clock = new SystemStopWatch();
 
-        $before = new HRTime(...hrtime(false));
+        $before = HRTime::fromSecondsAndNanoseconds(...hrtime(false));
 
         $current = $clock->current();
 
-        $after = new HRTime(...hrtime(false));
+        $after = HRTime::fromSecondsAndNanoseconds(...hrtime(false));
 
         $durationBetweenCurrentAndBefore = $current->duration($before);
 

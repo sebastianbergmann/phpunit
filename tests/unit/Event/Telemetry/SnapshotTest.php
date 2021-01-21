@@ -19,7 +19,7 @@ final class SnapshotTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $time            = new HRTime(...hrtime(false));
+        $time            = HRTime::fromSecondsAndNanoseconds(...hrtime(false));
         $memoryUsage     = MemoryUsage::fromBytes(2000);
         $peakMemoryUsage = MemoryUsage::fromBytes(3000);
 

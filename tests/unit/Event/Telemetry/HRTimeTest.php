@@ -17,45 +17,45 @@ use PHPUnit\Framework\TestCase;
  */
 final class HRTimeTest extends TestCase
 {
-    public function testConstructorRejectsNegativeSeconds(): void
+    public function testFromSecondsAndNanosecondsRejectsNegativeSeconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value for seconds must not be negative');
 
-        new HRTime(
+        HRTime::fromSecondsAndNanoseconds(
             -1,
             0
         );
     }
 
-    public function testConstructorRejectsNegativeNanoseconds(): void
+    public function testFromSecondsAndNanosecondsRejectsNegativeNanoseconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value for nanoseconds must not be negative');
 
-        new HRTime(
+        HRTime::fromSecondsAndNanoseconds(
             0,
             -1
         );
     }
 
-    public function testConstructorRejectsNanosecondsGreaterThan999999999(): void
+    public function testFromSecondsAndNanosecondsRejectsNanosecondsGreaterThan999999999(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value for nanoseconds must not be greater than 999999999');
 
-        new HRTime(
+        HRTime::fromSecondsAndNanoseconds(
             0,
             1000000000
         );
     }
 
-    public function testConstructorSetsValues(): void
+    public function testFromSecondsAndNanosecondsReturnsHRTime(): void
     {
         $seconds     = 123;
         $nanoseconds = 456;
 
-        $time = new HRTime(
+        $time = HRTime::fromSecondsAndNanoseconds(
             $seconds,
             $nanoseconds
         );
@@ -73,12 +73,12 @@ final class HRTimeTest extends TestCase
         int $currentSeconds,
         int $currentNanoseconds
     ): void {
-        $start = new HRTime(
+        $start = HRTime::fromSecondsAndNanoseconds(
             $startSeconds,
             $startNanoseconds
         );
 
-        $current = new HRTime(
+        $current = HRTime::fromSecondsAndNanoseconds(
             $currentSeconds,
             $currentNanoseconds
         );
@@ -126,12 +126,12 @@ final class HRTimeTest extends TestCase
         int $currentNanoseconds,
         Duration $duration
     ): void {
-        $start = new HRTime(
+        $start = HRTime::fromSecondsAndNanoseconds(
             $startSeconds,
             $startNanoseconds
         );
 
-        $current = new HRTime(
+        $current = HRTime::fromSecondsAndNanoseconds(
             $currentSeconds,
             $currentNanoseconds
         );

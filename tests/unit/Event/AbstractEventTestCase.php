@@ -20,7 +20,7 @@ abstract class AbstractEventTestCase extends TestCase
     {
         return new Telemetry\Info(
             new Telemetry\Snapshot(
-                new HRTime(...hrtime(false)),
+                HRTime::fromSecondsAndNanoseconds(...hrtime(false)),
                 Telemetry\MemoryUsage::fromBytes(1000),
                 Telemetry\MemoryUsage::fromBytes(2000)
             ),

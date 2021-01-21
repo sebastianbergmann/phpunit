@@ -19,7 +19,7 @@ final class SystemTest extends TestCase
 {
     public function testSnapshotReturnsSnapshot(): void
     {
-        $time = new HRTime(...hrtime(false));
+        $time = HRTime::fromSecondsAndNanoseconds(...hrtime(false));
 
         $clock = new class($time) implements StopWatch {
             /**
