@@ -39,6 +39,17 @@ final class HRTimeTest extends TestCase
         );
     }
 
+    public function testConstructorRejectsNanosecondsGreaterThan999999999(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value for nanoseconds must not be greater than 999999999');
+
+        new HRTime(
+            0,
+            1000000000
+        );
+    }
+
     public function testConstructorSetsValues(): void
     {
         $seconds     = 123;
