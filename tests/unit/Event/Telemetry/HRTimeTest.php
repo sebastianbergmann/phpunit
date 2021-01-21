@@ -65,34 +65,34 @@ final class HRTimeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideStartGreaterThanCurrent
+     * @dataProvider provideStartGreaterThanEnd
      */
-    public function testDurationRejectsStartGreaterThanCurrent(
+    public function testDurationRejectsStartGreaterThanEnd(
         int $startSeconds,
         int $startNanoseconds,
-        int $currentSeconds,
-        int $currentNanoseconds
+        int $endSeconds,
+        int $endNanoseconds
     ): void {
         $start = HRTime::fromSecondsAndNanoseconds(
             $startSeconds,
             $startNanoseconds
         );
 
-        $current = HRTime::fromSecondsAndNanoseconds(
-            $currentSeconds,
-            $currentNanoseconds
+        $end = HRTime::fromSecondsAndNanoseconds(
+            $endSeconds,
+            $endNanoseconds
         );
 
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Other needs to be greater.');
 
-        $current->duration($start);
+        $end->duration($start);
     }
 
     /**
      * @return array<string, array<{0: int, 1: int, 2: int, 3: int>
      */
-    public function provideStartGreaterThanCurrent(): array
+    public function provideStartGreaterThanEnd(): array
     {
         return [
             'seconds-greater' => [
@@ -117,13 +117,13 @@ final class HRTimeTest extends TestCase
     }
 
     /**
-     * @dataProvider provideStartCurrentAndDuration
+     * @dataProvider provideStartEndAndDuration
      */
-    public function testDurationReturnsDifferenceBetweenTimeAndOtherTime(
+    public function testDurationReturnsDifferenceBetweenEndAndStart(
         int $startSeconds,
         int $startNanoseconds,
-        int $currentSeconds,
-        int $currentNanoseconds,
+        int $endSeconds,
+        int $endNanoseconds,
         Duration $duration
     ): void {
         $start = HRTime::fromSecondsAndNanoseconds(
@@ -131,35 +131,35 @@ final class HRTimeTest extends TestCase
             $startNanoseconds
         );
 
-        $current = HRTime::fromSecondsAndNanoseconds(
-            $currentSeconds,
-            $currentNanoseconds
+        $end = HRTime::fromSecondsAndNanoseconds(
+            $endSeconds,
+            $endNanoseconds
         );
 
-        $this->assertEquals($duration, $current->duration($start));
+        $this->assertEquals($duration, $end->duration($start));
     }
 
     /**
      * @return array<string, array<{0: int, 1: int, 2: int, 3: int, 4: Duration>
      */
-    public function provideStartCurrentAndDuration(): array
+    public function provideStartEndAndDuration(): array
     {
         return [
-            'start-equal-to-current' => [
+            'start-equal-to-end' => [
                 10,
                 50,
                 10,
                 50,
                 Duration::fromSecondsAndNanoseconds(0, 0),
             ],
-            'start-smaller-than-current' => [
+            'start-smaller-than-end' => [
                 10,
                 50,
                 12,
                 70,
                 Duration::fromSecondsAndNanoseconds(2, 20),
             ],
-            'start-nanoseconds-greater-than-current-nanoseconds' => [
+            'start-nanoseconds-greater-than-end-nanoseconds' => [
                 10,
                 50,
                 12,
