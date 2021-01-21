@@ -81,7 +81,7 @@ final class HRTimeTest extends TestCase
     /**
      * @return array<string, array<{0: int, 1: int, 2: int, 3: int>
      */
-    public function provideStartGreaterThanCurrent()
+    public function provideStartGreaterThanCurrent(): array
     {
         return [
             'seconds-greater' => [
@@ -131,7 +131,7 @@ final class HRTimeTest extends TestCase
     /**
      * @return array<string, array<{0: int, 1: int, 2: int, 3: int, 4: Duration>
      */
-    public function provideStartCurrentAndDuration()
+    public function provideStartCurrentAndDuration(): array
     {
         return [
             'start-equal-to-current' => [
