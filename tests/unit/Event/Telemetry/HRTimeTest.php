@@ -20,7 +20,7 @@ final class HRTimeTest extends TestCase
     public function testConstructorRejectsNegativeSeconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for second must not be negative');
+        $this->expectExceptionMessage('Value for seconds must not be negative');
 
         new HRTime(
             -1,
@@ -31,7 +31,7 @@ final class HRTimeTest extends TestCase
     public function testConstructorRejectsNegativeNanoseconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for nanosecond must not be negative');
+        $this->expectExceptionMessage('Value for nanoseconds must not be negative');
 
         new HRTime(
             0,
