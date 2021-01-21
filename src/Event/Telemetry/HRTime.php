@@ -46,27 +46,22 @@ final class HRTime
      */
     public function duration(self $other): Duration
     {
-        $seconds     = $this->seconds;
-        $nanoseconds = $this->nanoseconds;
+        $seconds     = $this->seconds - $other->seconds();
+        $nanoseconds = $this->nanoseconds - $other->nanoseconds();
 
-        $nanoDuration = $nanoseconds - $other->nanoseconds();
-
-        if ($nanoDuration < 0) {
+        if ($nanoseconds < 0) {
             $seconds--;
-            $nanoseconds += 1000000000;
 
-            $nanoDuration = $nanoseconds - $other->nanoseconds();
+            $nanoseconds += 1000000000;
         }
 
-        $secondDuration = $seconds - $other->seconds();
-
-        if ($secondDuration < 0) {
+        if ($seconds < 0) {
             throw new InvalidArgumentException('Other needs to be greater.');
         }
 
         return Duration::fromSecondsAndNanoseconds(
-            $secondDuration,
-            $nanoDuration
+            $seconds,
+            $nanoseconds
         );
     }
 
