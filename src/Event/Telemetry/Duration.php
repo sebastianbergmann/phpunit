@@ -35,8 +35,8 @@ final class Duration
      */
     private function __construct(int $seconds, int $nanoseconds)
     {
-        $this->ensureNotNegativeInt($seconds, 'second');
-        $this->ensureNotNegativeInt($nanoseconds, 'nanosecond');
+        $this->ensureNotNegativeInt($seconds, 'seconds');
+        $this->ensureNotNegativeInt($nanoseconds, 'nanoseconds');
 
         $this->seconds     = $seconds;
         $this->nanoseconds = $nanoseconds;
