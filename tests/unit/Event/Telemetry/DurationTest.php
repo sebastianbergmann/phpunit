@@ -18,6 +18,37 @@ use PHPUnit\Framework\TestCase;
  */
 final class DurationTest extends TestCase
 {
+    public function testFromSecondsRejectsNegativeSeconds(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value for seconds must not be negative');
+
+        Duration::fromSeconds(-1);
+    }
+
+    /**
+     * @dataProvider provideIntGreaterThanOrEqualToZero
+     */
+    public function testFromSecondsReturnsDuration(int $seconds): void
+    {
+        $duration = Duration::fromSeconds($seconds);
+
+        $this->assertSame($seconds, $duration->seconds());
+        $this->assertSame(0, $duration->nanoseconds());
+    }
+
+    /**
+     * @return array<string, array{0: int>
+     */
+    public function provideIntGreaterThanOrEqualToZero(): array
+    {
+        return [
+            'zero'             => [0],
+            'one'              => [1],
+            'greater-than-one' => [12345],
+        ];
+    }
+
     public function testFromSecondsAndNanosecondsRejectsNegativeSeconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
