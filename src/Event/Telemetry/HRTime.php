@@ -55,10 +55,10 @@ final class HRTime
     /**
      * @throws InvalidArgumentException
      */
-    public function duration(self $other): Duration
+    public function duration(self $start): Duration
     {
-        $seconds     = $this->seconds - $other->seconds();
-        $nanoseconds = $this->nanoseconds - $other->nanoseconds();
+        $seconds     = $this->seconds - $start->seconds();
+        $nanoseconds = $this->nanoseconds - $start->nanoseconds();
 
         if ($nanoseconds < 0) {
             $seconds--;
@@ -67,7 +67,7 @@ final class HRTime
         }
 
         if ($seconds < 0) {
-            throw new InvalidArgumentException('Other needs to be greater.');
+            throw new InvalidArgumentException('Start needs to be greater.');
         }
 
         return Duration::fromSecondsAndNanoseconds(
