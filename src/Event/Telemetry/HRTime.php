@@ -67,7 +67,7 @@ final class HRTime
         }
 
         if ($seconds < 0) {
-            throw new InvalidArgumentException('Start needs to be greater.');
+            throw new InvalidArgumentException('Start needs to be smaller.');
         }
 
         return Duration::fromSecondsAndNanoseconds(

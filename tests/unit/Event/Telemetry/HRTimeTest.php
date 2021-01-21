@@ -84,7 +84,7 @@ final class HRTimeTest extends TestCase
         );
 
         $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Start needs to be greater.');
+        $this->expectExceptionMessage('Start needs to be smaller.');
 
         $end->duration($start);
     }
