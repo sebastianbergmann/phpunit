@@ -24,9 +24,9 @@ abstract class AbstractEventTestCase extends TestCase
                 Telemetry\MemoryUsage::fromBytes(1000),
                 Telemetry\MemoryUsage::fromBytes(2000)
             ),
-            new Duration(123, 456),
+            Duration::fromSecondsAndNanoseconds(123, 456),
             Telemetry\MemoryUsage::fromBytes(2000),
-            new Duration(234, 567),
+            Duration::fromSecondsAndNanoseconds(234, 567),
             Telemetry\MemoryUsage::fromBytes(3000)
         );
     }

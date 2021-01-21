@@ -63,7 +63,10 @@ final class HRTime
             throw new InvalidArgumentException('Other needs to be greater.');
         }
 
-        return new Duration($secondDuration, $nanoDuration);
+        return Duration::fromSecondsAndNanoseconds(
+            $secondDuration,
+            $nanoDuration
+        );
     }
 
     /**

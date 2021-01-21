@@ -139,21 +139,21 @@ final class HRTimeTest extends TestCase
                 50,
                 10,
                 50,
-                new Duration(0, 0),
+                Duration::fromSecondsAndNanoseconds(0, 0),
             ],
             'start-smaller-than-current' => [
                 10,
                 50,
                 12,
                 70,
-                new Duration(2, 20),
+                Duration::fromSecondsAndNanoseconds(2, 20),
             ],
             'start-nanoseconds-greater-than-current-nanoseconds' => [
                 10,
                 50,
                 12,
                 30,
-                new Duration(1, 999999980),
+                Duration::fromSecondsAndNanoseconds(1, 999999980),
             ],
         ];
     }

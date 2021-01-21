@@ -22,7 +22,18 @@ final class Duration
     /**
      * @throws InvalidArgumentException
      */
-    public function __construct(int $seconds, int $nanoseconds)
+    public static function fromSecondsAndNanoseconds(int $seconds, int $nanoseconds): self
+    {
+        return new self(
+            $seconds,
+            $nanoseconds
+        );
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     */
+    private function __construct(int $seconds, int $nanoseconds)
     {
         $this->ensureNotNegativeInt($seconds, 'second');
         $this->ensureNotNegativeInt($nanoseconds, 'nanosecond');

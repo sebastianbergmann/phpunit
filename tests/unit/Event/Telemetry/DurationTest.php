@@ -18,34 +18,34 @@ use PHPUnit\Framework\TestCase;
  */
 final class DurationTest extends TestCase
 {
-    public function testConstructorRejectsNegativeSeconds(): void
+    public function testFromSecondsAndNanosecondsRejectsNegativeSeconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value for second must not be negative');
 
-        new Duration(
+        Duration::fromSecondsAndNanoseconds(
             -1,
             0
         );
     }
 
-    public function testConstructorRejectsNegativeNanoseconds(): void
+    public function testFromSecondsAndNanosecondsRejectsNegativeNanoseconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
         $this->expectExceptionMessage('Value for nanosecond must not be negative');
 
-        new Duration(
+        Duration::fromSecondsAndNanoseconds(
             0,
             -1
         );
     }
 
-    public function testConstructorSetsValues(): void
+    public function testFromSecondsAndNanosecondsReturnsDuration(): void
     {
         $seconds     = 123;
         $nanoseconds = 456;
 
-        $duration = new Duration(
+        $duration = Duration::fromSecondsAndNanoseconds(
             $seconds,
             $nanoseconds
         );
@@ -67,7 +67,7 @@ final class DurationTest extends TestCase
             }
         };
 
-        $duration = new Duration(
+        $duration = Duration::fromSecondsAndNanoseconds(
             123,
             456
         );
@@ -82,7 +82,7 @@ final class DurationTest extends TestCase
      */
     public function testAsStringFormatsDurationWhenDurationFormatterIsNotSpecified(int $seconds, int $nanoseconds, string $formatted): void
     {
-        $duration = new Duration(
+        $duration = Duration::fromSecondsAndNanoseconds(
             $seconds,
             $nanoseconds
         );
