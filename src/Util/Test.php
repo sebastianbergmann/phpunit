@@ -316,14 +316,6 @@ final class Test
         ];
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function getInlineAnnotations(string $className, string $methodName): array
-    {
-        return Registry::getInstance()->forMethod($className, $methodName)->getInlineAnnotations();
-    }
-
     /** @psalm-param class-string $className */
     public static function getBackupSettings(string $className, string $methodName): array
     {

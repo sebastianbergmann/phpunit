@@ -16,7 +16,6 @@ use function array_key_exists;
 use function array_map;
 use function array_merge;
 use function array_pop;
-use function array_slice;
 use function array_values;
 use function count;
 use function explode;
@@ -37,7 +36,6 @@ use function sprintf;
 use function str_replace;
 use function strlen;
 use function strpos;
-use function strtolower;
 use function substr;
 use function trim;
 use PharIo\Version\VersionConstraintParser;
@@ -294,32 +292,6 @@ final class DocBlock
         }
 
         return $data;
-    }
-
-    /**
-     * @psalm-return array<string, array{line: int, value: string}>
-     */
-    public function getInlineAnnotations(): array
-    {
-        $code        = file($this->fileName);
-        $lineNumber  = $this->startLine;
-        $startLine   = $this->startLine - 1;
-        $endLine     = $this->endLine - 1;
-        $codeLines   = array_slice($code, $startLine, $endLine - $startLine + 1);
-        $annotations = [];
-
-        foreach ($codeLines as $line) {
-            if (preg_match('#/\*\*?\s*@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?\*/$#m', $line, $matches)) {
-                $annotations[strtolower($matches['name'])] = [
-                    'line'  => $lineNumber,
-                    'value' => $matches['value'],
-                ];
-            }
-
-            $lineNumber++;
-        }
-
-        return $annotations;
     }
 
     public function symbolAnnotations(): array
