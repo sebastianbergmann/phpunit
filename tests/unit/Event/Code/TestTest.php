@@ -16,9 +16,6 @@ use PHPUnit\Framework\TestCase;
  */
 final class TestTest extends TestCase
 {
-    /**
-     * @dataProvider provideTestName
-     */
     public function testConstructorSetsValues(): void
     {
         $className = self::class;
@@ -31,17 +28,5 @@ final class TestTest extends TestCase
 
         $this->assertSame($className, $test->className());
         $this->assertSame($testName, $test->testName());
-    }
-
-    /**
-     * @return array<string, array{0: string>
-     */
-    public function provideTestName(): array
-    {
-        return [
-            'colon-notation' => ['ExampleTest::testThatFooBars'],
-            'empty'          => [''],
-            'method-name'    => ['testThatFooBars'],
-        ];
     }
 }
