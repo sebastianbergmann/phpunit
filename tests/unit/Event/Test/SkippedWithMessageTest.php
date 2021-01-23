@@ -20,10 +20,11 @@ final class SkippedWithMessageTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
-        $test          = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $test          = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $event = new SkippedWithMessage(

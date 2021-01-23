@@ -339,10 +339,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestErroredDispatchesTestErroredEvent(): void
     {
-        $test = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $test = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\ErroredSubscriber {
@@ -382,10 +383,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestFailedDispatchesTestFailedEvent(): void
     {
-        $test = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $test = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\FailedSubscriber {
@@ -425,10 +427,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestFinishedDispatchesTestFinishedEvent(): void
     {
-        $test = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $test = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
 
         $subscriber = new class extends RecordingSubscriber implements Test\FinishedSubscriber {
             public function notify(Test\Finished $event): void
@@ -463,10 +466,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestPassedDispatchesTestPassedEvent(): void
     {
-        $test = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $test = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
 
         $subscriber = new class extends RecordingSubscriber implements Test\PassedSubscriber {
             public function notify(Test\Passed $event): void
@@ -501,10 +505,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestPassedWithWarningDispatchesTestPassedWithWarningEvent(): void
     {
-        $test = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $test = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\PassedWithWarningSubscriber {
@@ -615,10 +620,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestAbortedWithMessageDispatchesTestAbortedWithMessage(): void
     {
-        $test = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $test = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\AbortedWithMessageSubscriber {
@@ -705,10 +711,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSkippedMessageDispatchesTestSkippedWithMessageEvent(): void
     {
-        $test = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $test = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\SkippedWithMessageSubscriber {
@@ -748,10 +755,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestPreparedDispatchesTestPreparedEvent(): void
     {
-        $test = new Code\Test(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $test = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
 
         $subscriber = new class extends RecordingSubscriber implements Test\PreparedSubscriber {
             public function notify(Test\Prepared $event): void

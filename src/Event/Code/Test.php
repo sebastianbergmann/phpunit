@@ -16,15 +16,18 @@ final class Test
      */
     private string $className;
 
-    private string $testName;
+    private string $methodName;
+
+    private string $methodNameWithDataSet;
 
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $testName)
+    public function __construct(string $className, string $methodName, string $methodNameWithDataSet)
     {
-        $this->className = $className;
-        $this->testName  = $testName;
+        $this->className             = $className;
+        $this->methodName            = $methodName;
+        $this->methodNameWithDataSet = $methodNameWithDataSet;
     }
 
     /**
@@ -35,8 +38,13 @@ final class Test
         return $this->className;
     }
 
-    public function testName(): string
+    public function methodName(): string
     {
-        return $this->testName;
+        return $this->methodName;
+    }
+
+    public function methodNameWithDataSet(): string
+    {
+        return $this->methodNameWithDataSet;
     }
 }

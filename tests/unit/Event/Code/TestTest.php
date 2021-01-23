@@ -18,15 +18,18 @@ final class TestTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $className = self::class;
-        $testName  = 'foo';
+        $className             = self::class;
+        $methodName            = 'foo';
+        $methodNameWithDataSet = 'foo with data set #123';
 
         $test = new Test(
             $className,
-            $testName
+            $methodName,
+            $methodNameWithDataSet
         );
 
         $this->assertSame($className, $test->className());
-        $this->assertSame($testName, $test->testName());
+        $this->assertSame($methodName, $test->methodName());
+        $this->assertSame($methodNameWithDataSet, $test->methodNameWithDataSet());
     }
 }
