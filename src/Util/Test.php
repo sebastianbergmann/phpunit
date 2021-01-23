@@ -149,18 +149,6 @@ final class Test
     }
 
     /**
-     * @throws Exception
-     * @psalm-param class-string $className
-     */
-    public static function getRequirements(string $className, string $methodName): array
-    {
-        return self::mergeArraysRecursively(
-            Registry::getInstance()->forClassName($className)->requirements(),
-            Registry::getInstance()->forMethod($className, $methodName)->requirements()
-        );
-    }
-
-    /**
      * Returns the missing requirements for a test.
      *
      * @throws Exception
@@ -169,9 +157,13 @@ final class Test
      */
     public static function getMissingRequirements(string $className, string $methodName): array
     {
-        $required = self::getRequirements($className, $methodName);
-        $missing  = [];
-        $hint     = null;
+        $required = self::mergeArraysRecursively(
+            Registry::getInstance()->forClassName($className)->requirements(),
+            Registry::getInstance()->forMethod($className, $methodName)->requirements()
+        );
+
+        $missing = [];
+        $hint    = null;
 
         if (!empty($required['PHP'])) {
             $operator = new VersionComparisonOperator(empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator']);
