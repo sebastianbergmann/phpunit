@@ -91,6 +91,38 @@ final class Duration
         return $formatted;
     }
 
+    public function equals(self $other): bool
+    {
+        return $this->seconds === $other->seconds &&
+            $this->nanoseconds === $other->nanoseconds;
+    }
+
+    public function isLessThan(self $other): bool
+    {
+        if ($this->seconds < $other->seconds) {
+            return true;
+        }
+
+        if ($this->seconds > $other->seconds) {
+            return false;
+        }
+
+        return $this->nanoseconds < $other->nanoseconds;
+    }
+
+    public function isGreaterThan(self $other): bool
+    {
+        if ($this->seconds > $other->seconds) {
+            return true;
+        }
+
+        if ($this->seconds < $other->seconds) {
+            return false;
+        }
+
+        return $this->nanoseconds > $other->nanoseconds;
+    }
+
     /**
      * @throws InvalidArgumentException
      */

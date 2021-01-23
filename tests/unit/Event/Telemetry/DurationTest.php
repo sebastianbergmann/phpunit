@@ -155,4 +155,184 @@ final class DurationTest extends TestCase
             ],
         ];
     }
+
+    public function testEqualsReturnsFalseWhenValuesAreDifferent(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            456,
+            123
+        );
+
+        $this->assertFalse($one->equals($two));
+    }
+
+    public function testEqualsReturnsTrueWhenValuesAreSame(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $this->assertTrue($one->equals($two));
+    }
+
+    public function testIsLessThanReturnsFalseWhenSecondsAreGreater(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            122,
+            456
+        );
+
+        $this->assertFalse($one->isLessThan($two));
+    }
+
+    public function testIsLessThanReturnsFalseWhenSecondsAreEqualAndNanosecondsAreGreater(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            123,
+            455
+        );
+
+        $this->assertFalse($one->isLessThan($two));
+    }
+
+    public function testIsLessThanReturnsFalseWhenValuesAreSame(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $this->assertFalse($one->isLessThan($two));
+    }
+
+    public function testIsLessThanReturnsTrueWhenSecondsAreLess(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            124,
+            456
+        );
+
+        $this->assertTrue($one->isLessThan($two));
+    }
+
+    public function testIsLessThanReturnsTrueWhenSecondsAreEqualAndNanosecondsAreLess(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            123,
+            457
+        );
+
+        $this->assertTrue($one->isLessThan($two));
+    }
+
+    public function testIsGreaterThanReturnsFalseWhenSecondsAreLess(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            124,
+            456
+        );
+
+        $this->assertFalse($one->isGreaterThan($two));
+    }
+
+    public function testIsGreaterThanReturnsFalseWhenSecondsAreEqualAndNanosecondsAreLess(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            123,
+            457
+        );
+
+        $this->assertFalse($one->isGreaterThan($two));
+    }
+
+    public function testIsGreaterThanReturnsFalseWhenValuesAreSame(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $this->assertFalse($one->isGreaterThan($two));
+    }
+
+    public function testIsGreaterThanReturnsTrueWhenSecondsAreGreater(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            122,
+            456
+        );
+
+        $this->assertTrue($one->isGreaterThan($two));
+    }
+
+    public function testIsGreaterThanReturnsTrueWhenSecondsAreEqualAndNanosecondsAreGreater(): void
+    {
+        $one = Duration::fromSecondsAndNanoseconds(
+            123,
+            456
+        );
+
+        $two = Duration::fromSecondsAndNanoseconds(
+            123,
+            455
+        );
+
+        $this->assertTrue($one->isGreaterThan($two));
+    }
 }
