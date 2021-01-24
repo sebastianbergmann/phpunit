@@ -482,58 +482,60 @@ final class Test
             return self::emptyHookMethodsArray();
         }
 
-        if (!isset(self::$hookMethods[$className])) {
-            self::$hookMethods[$className] = self::emptyHookMethodsArray();
+        if (isset(self::$hookMethods[$className])) {
+            return self::$hookMethods[$className];
+        }
 
-            try {
-                foreach ((new ReflectionClass($className))->getMethods() as $method) {
-                    if ($method->getDeclaringClass()->getName() === Assert::class) {
-                        continue;
-                    }
+        self::$hookMethods[$className] = self::emptyHookMethodsArray();
 
-                    if ($method->getDeclaringClass()->getName() === TestCase::class) {
-                        continue;
-                    }
+        try {
+            foreach ((new ReflectionClass($className))->getMethods() as $method) {
+                if ($method->getDeclaringClass()->getName() === Assert::class) {
+                    continue;
+                }
 
-                    $docBlock = Registry::getInstance()->forMethod($className, $method->getName());
+                if ($method->getDeclaringClass()->getName() === TestCase::class) {
+                    continue;
+                }
 
-                    if ($method->isStatic()) {
-                        if ($docBlock->isHookToBeExecutedBeforeClass()) {
-                            array_unshift(
-                                self::$hookMethods[$className]['beforeClass'],
-                                $method->getName()
-                            );
-                        }
+                $docBlock = Registry::getInstance()->forMethod($className, $method->getName());
 
-                        if ($docBlock->isHookToBeExecutedAfterClass()) {
-                            self::$hookMethods[$className]['afterClass'][] = $method->getName();
-                        }
-                    }
-
-                    if ($docBlock->isToBeExecutedBeforeTest()) {
+                if ($method->isStatic()) {
+                    if ($docBlock->isHookToBeExecutedBeforeClass()) {
                         array_unshift(
-                            self::$hookMethods[$className]['before'],
+                            self::$hookMethods[$className]['beforeClass'],
                             $method->getName()
                         );
                     }
 
-                    if ($docBlock->isToBeExecutedAsPreCondition()) {
-                        array_unshift(
-                            self::$hookMethods[$className]['preCondition'],
-                            $method->getName()
-                        );
-                    }
-
-                    if ($docBlock->isToBeExecutedAsPostCondition()) {
-                        self::$hookMethods[$className]['postCondition'][] = $method->getName();
-                    }
-
-                    if ($docBlock->isToBeExecutedAfterTest()) {
-                        self::$hookMethods[$className]['after'][] = $method->getName();
+                    if ($docBlock->isHookToBeExecutedAfterClass()) {
+                        self::$hookMethods[$className]['afterClass'][] = $method->getName();
                     }
                 }
-            } catch (ReflectionException $e) {
+
+                if ($docBlock->isToBeExecutedBeforeTest()) {
+                    array_unshift(
+                        self::$hookMethods[$className]['before'],
+                        $method->getName()
+                    );
+                }
+
+                if ($docBlock->isToBeExecutedAsPreCondition()) {
+                    array_unshift(
+                        self::$hookMethods[$className]['preCondition'],
+                        $method->getName()
+                    );
+                }
+
+                if ($docBlock->isToBeExecutedAsPostCondition()) {
+                    self::$hookMethods[$className]['postCondition'][] = $method->getName();
+                }
+
+                if ($docBlock->isToBeExecutedAfterTest()) {
+                    self::$hookMethods[$className]['after'][] = $method->getName();
+                }
             }
+        } catch (ReflectionException $e) {
         }
 
         return self::$hookMethods[$className];
