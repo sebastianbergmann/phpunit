@@ -10,7 +10,6 @@
 namespace PHPUnit\Util\Metadata;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\VersionComparisonOperator;
 
 /**
  * @covers \PHPUnit\Util\Metadata\MetadataCollection
@@ -383,9 +382,9 @@ final class MetadataCollectionTest extends TestCase
                 new RequiresFunction(''),
                 new RequiresOperatingSystemFamily(''),
                 new RequiresOperatingSystem(''),
-                new RequiresPhpExtension('', '', new VersionComparisonOperator('>=')),
-                new RequiresPhp('', new VersionComparisonOperator('>=')),
-                new RequiresPhpunit('', new VersionComparisonOperator('>=')),
+                new RequiresPhpExtension('', ''),
+                new RequiresPhp(''),
+                new RequiresPhpunit(''),
                 new RunInSeparateProcess,
                 new RunTestsInSeparateProcesses,
                 new TestDox(''),
