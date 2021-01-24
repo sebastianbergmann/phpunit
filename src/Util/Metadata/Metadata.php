@@ -79,6 +79,11 @@ abstract class Metadata
         return false;
     }
 
+    public function isCoversDefaultClass(): bool
+    {
+        return false;
+    }
+
     /**
      * @psalm-assert-if-true CoversMethod $this
      */

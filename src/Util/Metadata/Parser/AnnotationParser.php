@@ -54,6 +54,11 @@ final class AnnotationParser implements Parser
 
                     break;
 
+                case 'coversDefaultClass':
+                    $result[] = new CoversDefaultClass($values[0]);
+
+                    break;
+
                 case 'coversNothing':
                     $result[] = new CoversNothing;
 

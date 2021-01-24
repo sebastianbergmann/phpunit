@@ -165,6 +165,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isCoversClass());
     }
 
+    public function test_Can_be_filtered_for_CoversDefaultClass(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCoversDefaultClass();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversDefaultClass());
+    }
+
     public function test_Can_be_filtered_for_CoversFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversFunction();
@@ -369,6 +377,7 @@ final class MetadataCollectionTest extends TestCase
                 new Before,
                 new CodeCoverageIgnore,
                 new CoversClass(''),
+                new CoversDefaultClass(''),
                 new CoversFunction(''),
                 new CoversMethod('', ''),
                 new CoversNothing,

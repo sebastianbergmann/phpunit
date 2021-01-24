@@ -173,6 +173,18 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isCoversDefaultClass(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isCoversDefaultClass();
+                }
+            )
+        );
+    }
+
     public function isCoversMethod(): self
     {
         return new self(

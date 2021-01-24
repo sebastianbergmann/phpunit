@@ -66,7 +66,7 @@ final class AnnotationParserTest extends TestCase
     {
         $metadata = (new AnnotationParser)->forClass(CoversTest::class);
 
-        $this->assertCount(3, $metadata);
+        $this->assertCount(4, $metadata);
 
         $this->assertTrue($metadata->asArray()[0]->isCoversFunction());
         $this->assertSame('PHPUnit\TestFixture\Metadata\Annotation\f', $metadata->asArray()[0]->functionName());
@@ -75,11 +75,21 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame(Example::class, $metadata->asArray()[1]->className());
     }
 
+    public function test_Parses_coversDefaultClass_annotation_on_class(): void
+    {
+        $metadata = (new AnnotationParser)->forClass(CoversTest::class);
+
+        $this->assertCount(4, $metadata);
+
+        $this->assertTrue($metadata->asArray()[3]->isCoversDefaultClass());
+        $this->assertSame('\PHPUnit\TestFixture\Metadata\Annotation\Example', $metadata->asArray()[3]->className());
+    }
+
     public function test_Parses_coversNothing_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(CoversTest::class);
 
-        $this->assertCount(3, $metadata);
+        $this->assertCount(4, $metadata);
         $this->assertTrue($metadata->asArray()[2]->isCoversNothing());
     }
 
