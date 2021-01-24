@@ -58,6 +58,7 @@ final class MetadataCollectionTest extends TestCase
 
         $this->assertCount(0, $collection);
         $this->assertTrue($collection->isEmpty());
+        $this->assertFalse($collection->isNotEmpty());
     }
 
     public function testCanBeCreatedFromArray(): void
@@ -77,6 +78,7 @@ final class MetadataCollectionTest extends TestCase
 
         $this->assertCount(1, $collection);
         $this->assertFalse($collection->isEmpty());
+        $this->assertTrue($collection->isNotEmpty());
     }
 
     public function testIsIterable(): void

@@ -57,6 +57,11 @@ final class MetadataCollection implements Countable, IteratorAggregate
         return $this->count() === 0;
     }
 
+    public function isNotEmpty(): bool
+    {
+        return $this->count() > 0;
+    }
+
     public function getIterator(): MetadataCollectionIterator
     {
         return new MetadataCollectionIterator($this);
