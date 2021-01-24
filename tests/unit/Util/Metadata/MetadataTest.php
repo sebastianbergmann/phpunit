@@ -46,6 +46,8 @@ use PHPUnit\Framework\TestCase;
  * @covers \PHPUnit\Util\Metadata\UsesClass
  * @covers \PHPUnit\Util\Metadata\UsesFunction
  * @covers \PHPUnit\Util\Metadata\UsesMethod
+ *
+ * @small
  */
 final class MetadataTest extends TestCase
 {

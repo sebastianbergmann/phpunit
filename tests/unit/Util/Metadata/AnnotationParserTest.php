@@ -33,6 +33,8 @@ use PHPUnit\TestFixture\Metadata\Annotation\UsesTest;
 
 /**
  * @covers \PHPUnit\Util\Metadata\AnnotationParser
+ *
+ * @small
  */
 final class AnnotationParserTest extends TestCase
 {

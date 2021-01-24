@@ -72,6 +72,8 @@ use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
  * @covers \PHPUnit\Util\Metadata\AttributeParser
  *
  * @requires PHP 8
+ *
+ * @small
  */
 final class AttributeParserTest extends TestCase
 {

@@ -48,6 +48,8 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Util\Metadata\UsesClass
  * @uses \PHPUnit\Util\Metadata\UsesFunction
  * @uses \PHPUnit\Util\Metadata\UsesMethod
+ *
+ * @small
  */
 final class MetadataCollectionTest extends TestCase
 {
