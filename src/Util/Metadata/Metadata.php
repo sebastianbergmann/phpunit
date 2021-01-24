@@ -79,6 +79,9 @@ abstract class Metadata
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true CoversDefaultClass $this
+     */
     public function isCoversDefaultClass(): bool
     {
         return false;
