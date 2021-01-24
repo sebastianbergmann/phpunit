@@ -46,7 +46,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
-use PHPUnit\Util\Metadata\Annotation\Registry;
+use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -158,8 +158,8 @@ final class Test
     public static function getMissingRequirements(string $className, string $methodName): array
     {
         $required = self::mergeArraysRecursively(
-            Registry::getInstance()->forClassName($className)->requirements(),
-            Registry::getInstance()->forMethod($className, $methodName)->requirements()
+            AnnotationRegistry::getInstance()->forClassName($className)->requirements(),
+            AnnotationRegistry::getInstance()->forMethod($className, $methodName)->requirements()
         );
 
         $missing = [];
@@ -289,7 +289,7 @@ final class Test
      */
     public static function getProvidedData(string $className, string $methodName): ?array
     {
-        return Registry::getInstance()->forMethod($className, $methodName)->getProvidedData();
+        return AnnotationRegistry::getInstance()->forMethod($className, $methodName)->getProvidedData();
     }
 
     /**
@@ -297,7 +297,7 @@ final class Test
      */
     public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
     {
-        $registry = Registry::getInstance();
+        $registry = AnnotationRegistry::getInstance();
 
         if ($methodName !== null) {
             try {
@@ -498,7 +498,7 @@ final class Test
                     continue;
                 }
 
-                $docBlock = Registry::getInstance()->forMethod($className, $method->getName());
+                $docBlock = AnnotationRegistry::getInstance()->forMethod($className, $method->getName());
 
                 if ($method->isStatic()) {
                     if ($docBlock->isHookToBeExecutedBeforeClass()) {
@@ -553,7 +553,7 @@ final class Test
 
         return array_key_exists(
             'test',
-            Registry::getInstance()->forMethod(
+            AnnotationRegistry::getInstance()->forMethod(
                 $method->getDeclaringClass()->getName(),
                 $method->getName()
             )
