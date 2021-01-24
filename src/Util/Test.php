@@ -552,14 +552,12 @@ final class Test
             return true;
         }
 
-        return array_key_exists(
-            'test',
-            AnnotationRegistry::getInstance()->forMethod(
-                $method->getDeclaringClass()->getName(),
-                $method->getName()
-            )
-            ->symbolAnnotations()
+        $metadata = MetadataRegistry::reader()->forMethod(
+            $method->getDeclaringClass()->getName(),
+            $method->getName()
         );
+
+        return $metadata->isTest()->isNotEmpty();
     }
 
     /**
