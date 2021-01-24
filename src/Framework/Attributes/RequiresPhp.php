@@ -17,32 +17,15 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class RequiresPhp
 {
-    private string $version;
+    private string $versionRequirement;
 
-    /**
-     * @psalm-var '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
-     */
-    private string $operator;
-
-    /**
-     * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator
-     */
-    public function __construct(string $version, string $operator = '>=')
+    public function __construct(string $versionRequirement)
     {
-        $this->version  = $version;
-        $this->operator = $operator;
+        $this->versionRequirement = $versionRequirement;
     }
 
-    public function version(): string
+    public function versionRequirement(): string
     {
-        return $this->version;
-    }
-
-    /**
-     * @psalm-return '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne'
-     */
-    public function operator(): string
-    {
-        return $this->operator;
+        return $this->versionRequirement;
     }
 }

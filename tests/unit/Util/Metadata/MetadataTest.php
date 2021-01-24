@@ -10,7 +10,6 @@
 namespace PHPUnit\Util\Metadata;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\VersionComparisonOperator;
 
 /**
  * @covers \PHPUnit\Util\Metadata\After
@@ -992,7 +991,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRequiresPhp(): void
     {
-        $metadata = new RequiresPhp('8.0.0', new VersionComparisonOperator('>='));
+        $metadata = new RequiresPhp('8.0.0');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1027,13 +1026,12 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isUsesFunction());
 
-        $this->assertSame('8.0.0', $metadata->version());
-        $this->assertSame('>=', $metadata->operator()->asString());
+        $this->assertSame('8.0.0', $metadata->versionRequirement());
     }
 
     public function testCanBeRequiresPhpExtension(): void
     {
-        $metadata = new RequiresPhpExtension('test', '8.0.0', new VersionComparisonOperator('>='));
+        $metadata = new RequiresPhpExtension('test', '8.0.0');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1069,14 +1067,13 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
 
         $this->assertSame('test', $metadata->extension());
-        $this->assertSame('8.0.0', $metadata->version());
-        $this->assertSame('>=', $metadata->operator()->asString());
+        $this->assertSame('8.0.0', $metadata->versionRequirement());
         $this->assertTrue($metadata->hasVersionRequirement());
     }
 
     public function testCanBeRequiresPhpunit(): void
     {
-        $metadata = new RequiresPhpunit('10.0.0', new VersionComparisonOperator('>='));
+        $metadata = new RequiresPhpunit('10.0.0');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1111,8 +1108,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isUsesFunction());
 
-        $this->assertSame('10.0.0', $metadata->version());
-        $this->assertSame('>=', $metadata->operator()->asString());
+        $this->assertSame('10.0.0', $metadata->versionRequirement());
     }
 
     public function testCanBeTestDox(): void

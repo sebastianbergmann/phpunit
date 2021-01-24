@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Util\Metadata;
 
-use PHPUnit\Util\VersionComparisonOperator;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
@@ -19,15 +17,12 @@ final class RequiresPhpExtension extends Metadata
 {
     private string $extension;
 
-    private ?string $version;
+    private ?string $versionRequirement;
 
-    private ?VersionComparisonOperator $operator = null;
-
-    public function __construct(string $extension, ?string $version, VersionComparisonOperator $operator)
+    public function __construct(string $extension, ?string $requirement)
     {
-        $this->extension = $extension;
-        $this->version   = $version;
-        $this->operator  = $operator;
+        $this->extension          = $extension;
+        $this->versionRequirement = $requirement;
     }
 
     public function isRequiresPhpExtension(): bool
@@ -42,16 +37,11 @@ final class RequiresPhpExtension extends Metadata
 
     public function hasVersionRequirement(): bool
     {
-        return $this->version !== null;
+        return $this->versionRequirement !== null;
     }
 
-    public function version(): ?string
+    public function versionRequirement(): ?string
     {
-        return $this->version;
-    }
-
-    public function operator(): ?VersionComparisonOperator
-    {
-        return $this->operator;
+        return $this->versionRequirement;
     }
 }

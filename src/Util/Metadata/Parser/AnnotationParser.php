@@ -11,15 +11,14 @@ namespace PHPUnit\Util\Metadata;
 
 use const JSON_THROW_ON_ERROR;
 use function array_shift;
-use function count;
 use function explode;
+use function implode;
 use function json_decode;
 use function strlen;
 use function strpos;
 use function substr;
 use function trim;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
-use PHPUnit\Util\VersionComparisonOperator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -336,57 +335,29 @@ final class AnnotationParser implements Parser
             }
 
             if (strpos($value, 'PHP ') === 0) {
-                $parts    = explode(' ', substr($value, strlen('PHP ')));
-                $operator = '>=';
-
-                if (count($parts) === 1) {
-                    $version = $parts[0];
-                } elseif (count($parts) === 2) {
-                    [$operator, $version] = $parts;
-                }
-
-                $result[] = new RequiresPhp(
-                    $version,
-                    new VersionComparisonOperator($operator)
-                );
+                $result[] = new RequiresPhp(substr($value, strlen('PHP ')));
 
                 continue;
             }
 
             if (strpos($value, 'PHPUnit ') === 0) {
-                $parts    = explode(' ', substr($value, strlen('PHPUnit ')));
-                $operator = '>=';
-
-                if (count($parts) === 1) {
-                    $version = $parts[0];
-                } elseif (count($parts) === 2) {
-                    [$operator, $version] = $parts;
-                }
-
-                $result[] = new RequiresPhpunit(
-                    $version,
-                    new VersionComparisonOperator($operator)
-                );
+                $result[] = new RequiresPhpunit(substr($value, strlen('PHPUnit ')));
 
                 continue;
             }
 
             if (strpos($value, 'extension ') === 0) {
-                $parts     = explode(' ', substr($value, strlen('extension ')));
-                $extension = array_shift($parts);
-                $version   = null;
-                $operator  = '>=';
+                $parts              = explode(' ', substr($value, strlen('extension ')));
+                $extension          = array_shift($parts);
+                $versionRequirement = null;
 
-                if (count($parts) === 1) {
-                    $version = $parts[0];
-                } elseif (count($parts) === 2) {
-                    [$operator, $version] = $parts;
+                if (!empty($parts)) {
+                    $versionRequirement = implode(' ', $parts);
                 }
 
                 $result[] = new RequiresPhpExtension(
                     $extension,
-                    $version,
-                    new VersionComparisonOperator($operator)
+                    $versionRequirement
                 );
             }
         }

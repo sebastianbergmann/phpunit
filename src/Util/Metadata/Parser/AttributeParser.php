@@ -53,7 +53,6 @@ use PHPUnit\Framework\Attributes\TestWithJson as TestWithJsonAttribute;
 use PHPUnit\Framework\Attributes\Ticket as TicketAttribute;
 use PHPUnit\Framework\Attributes\UsesClass as UsesClassAttribute;
 use PHPUnit\Framework\Attributes\UsesFunction as UsesFunctionAttribute;
-use PHPUnit\Util\VersionComparisonOperator;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -149,8 +148,7 @@ final class AttributeParser implements Parser
 
                 case RequiresPhpAttribute::class:
                     $result[] = new RequiresPhp(
-                        $attributeInstance->version(),
-                        new VersionComparisonOperator($attributeInstance->operator())
+                        $attributeInstance->versionRequirement()
                     );
 
                     break;
@@ -158,16 +156,14 @@ final class AttributeParser implements Parser
                 case RequiresPhpExtensionAttribute::class:
                     $result[] = new RequiresPhpExtension(
                         $attributeInstance->extension(),
-                        $attributeInstance->version(),
-                        new VersionComparisonOperator($attributeInstance->operator())
+                        $attributeInstance->versionRequirement()
                     );
 
                     break;
 
                 case RequiresPhpunitAttribute::class:
                     $result[] = new RequiresPhpunit(
-                        $attributeInstance->version(),
-                        new VersionComparisonOperator($attributeInstance->operator())
+                        $attributeInstance->versionRequirement()
                     );
 
                     break;
@@ -344,8 +340,7 @@ final class AttributeParser implements Parser
 
                 case RequiresPhpAttribute::class:
                     $result[] = new RequiresPhp(
-                        $attributeInstance->version(),
-                        new VersionComparisonOperator($attributeInstance->operator())
+                        $attributeInstance->versionRequirement()
                     );
 
                     break;
@@ -353,16 +348,14 @@ final class AttributeParser implements Parser
                 case RequiresPhpExtensionAttribute::class:
                     $result[] = new RequiresPhpExtension(
                         $attributeInstance->extension(),
-                        $attributeInstance->version(),
-                        new VersionComparisonOperator($attributeInstance->operator())
+                        $attributeInstance->versionRequirement()
                     );
 
                     break;
 
                 case RequiresPhpunitAttribute::class:
                     $result[] = new RequiresPhpunit(
-                        $attributeInstance->version(),
-                        new VersionComparisonOperator($attributeInstance->operator())
+                        $attributeInstance->versionRequirement()
                     );
 
                     break;
