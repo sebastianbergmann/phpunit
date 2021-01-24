@@ -11,7 +11,7 @@ Code Coverage Options:
   --coverage-crap4j <file>    Generate code coverage report in Crap4J XML format
   --coverage-html <dir>       Generate code coverage report in HTML format
   --coverage-php <file>       Export PHP_CodeCoverage object to file
-  --coverage-text <file>      Generate code coverage report in text format [default: standard output]
+  --coverage-text=<file>      Generate code coverage report in text format [default: standard output]
   --coverage-xml <dir>        Generate code coverage report in PHPUnit XML format
   --coverage-cache <dir>      Cache static analysis results
   --warm-coverage-cache       Warm static analysis cache

@@ -40,7 +40,7 @@ final class Help
             ['arg' => '--coverage-crap4j <file>', 'desc' => 'Generate code coverage report in Crap4J XML format'],
             ['arg' => '--coverage-html <dir>', 'desc' => 'Generate code coverage report in HTML format'],
             ['arg' => '--coverage-php <file>', 'desc' => 'Export PHP_CodeCoverage object to file'],
-            ['arg' => '--coverage-text <file>', 'desc' => 'Generate code coverage report in text format [default: standard output]'],
+            ['arg' => '--coverage-text=<file>', 'desc' => 'Generate code coverage report in text format [default: standard output]'],
             ['arg' => '--coverage-xml <dir>', 'desc' => 'Generate code coverage report in PHPUnit XML format'],
             ['arg' => '--coverage-cache <dir>', 'desc' => 'Cache static analysis results'],
             ['arg' => '--warm-coverage-cache', 'desc' => 'Warm static analysis cache'],

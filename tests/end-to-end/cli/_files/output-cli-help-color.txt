@@ -12,7 +12,7 @@
   [32m--coverage-html [36m<dir>[0m      [0m Generate code coverage report in HTML
                               format
   [32m--coverage-php [36m<file>[0m      [0m Export PHP_CodeCoverage object to file
-  [32m--coverage-text [36m<file>[0m     [0m Generate code coverage report in text
+  [32m--coverage-text=[36m<file>[0m     [0m Generate code coverage report in text
                               format [default: standard output]
   [32m--coverage-xml [36m<dir>[0m       [0m Generate code coverage report in PHPUnit
                               XML format
