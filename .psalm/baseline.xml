@@ -1329,10 +1329,6 @@
       <code>forClassName</code>
       <code>forMethod</code>
     </MissingThrowsDocblock>
-    <PossiblyUndefinedVariable occurrences="2">
-      <code>$version</code>
-      <code>$version</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Util/Metadata/Parser/AttributeParser.php">
     <UndefinedMethod occurrences="2">
@@ -1393,13 +1389,9 @@
     <MissingReturnType occurrences="1">
       <code>sanitizeVersionNumber</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="6">
+    <MissingThrowsDocblock occurrences="2">
       <code>forClassName</code>
-      <code>forMethod</code>
-      <code>forMethod</code>
       <code>getName</code>
-      <code>requirements</code>
-      <code>requirements</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
