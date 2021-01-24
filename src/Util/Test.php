@@ -688,20 +688,20 @@ final class Test
      */
     private static function shouldCoversAnnotationBeUsed(string $className, string $methodName): bool
     {
-        $annotations = self::parseTestMethodAnnotations(
-            $className,
-            $methodName
-        );
+        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
+        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
 
-        if (isset($annotations['method']['coversNothing'])) {
+        if ($metadataForMethod->isCoversNothing()->isNotEmpty()) {
             return false;
         }
 
-        if (isset($annotations['method']['covers'])) {
+        if ($metadataForMethod->isCoversClass()->isNotEmpty() ||
+            $metadataForMethod->isCoversMethod()->isNotEmpty() ||
+            $metadataForMethod->isCoversFunction()->isNotEmpty()) {
             return true;
         }
 
-        if (isset($annotations['class']['coversNothing'])) {
+        if ($metadataForClass->isCoversNothing()->isNotEmpty()) {
             return false;
         }
 
