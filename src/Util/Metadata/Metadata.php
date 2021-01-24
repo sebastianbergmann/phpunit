@@ -264,6 +264,14 @@ abstract class Metadata
     }
 
     /**
+     * @psalm-assert-if-true UsesDefaultClass $this
+     */
+    public function isUsesDefaultClass(): bool
+    {
+        return false;
+    }
+
+    /**
      * @psalm-assert-if-true UsesMethod $this
      */
     public function isUsesMethod(): bool

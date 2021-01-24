@@ -116,6 +116,11 @@ final class AnnotationParser implements Parser
                     $this->parseUses($values, $result);
 
                     break;
+
+                case 'usesDefaultClass':
+                    $result[] = new UsesDefaultClass($values[0]);
+
+                    break;
             }
         }
 

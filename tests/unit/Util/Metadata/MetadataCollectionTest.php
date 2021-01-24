@@ -47,6 +47,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Util\Metadata\TestDox
  * @uses \PHPUnit\Util\Metadata\TestWith
  * @uses \PHPUnit\Util\Metadata\UsesClass
+ * @uses \PHPUnit\Util\Metadata\UsesDefaultClass
  * @uses \PHPUnit\Util\Metadata\UsesFunction
  * @uses \PHPUnit\Util\Metadata\UsesMethod
  *
@@ -352,6 +353,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isUsesClass());
     }
 
+    public function test_Can_be_filtered_for_UsesDefaultClass(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUsesDefaultClass();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesDefaultClass());
+    }
+
     public function test_Can_be_filtered_for_UsesFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isUsesFunction();
@@ -403,6 +412,7 @@ final class MetadataCollectionTest extends TestCase
                 new Test,
                 new TestWith([]),
                 new UsesClass(''),
+                new UsesDefaultClass(''),
                 new UsesFunction(''),
                 new UsesMethod('', ''),
             ]

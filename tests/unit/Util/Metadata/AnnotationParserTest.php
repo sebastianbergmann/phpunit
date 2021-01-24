@@ -234,12 +234,22 @@ final class AnnotationParserTest extends TestCase
     {
         $metadata = (new AnnotationParser)->forClass(UsesTest::class);
 
-        $this->assertCount(2, $metadata);
+        $this->assertCount(3, $metadata);
 
         $this->assertTrue($metadata->asArray()[0]->isUsesFunction());
         $this->assertSame('PHPUnit\TestFixture\Metadata\Annotation\f', $metadata->asArray()[0]->functionName());
 
         $this->assertTrue($metadata->asArray()[1]->isUsesClass());
+        $this->assertSame(Example::class, $metadata->asArray()[1]->className());
+    }
+
+    public function test_Parses_usesDefaultClass_annotation_on_class(): void
+    {
+        $metadata = (new AnnotationParser)->forClass(UsesTest::class);
+
+        $this->assertCount(3, $metadata);
+
+        $this->assertTrue($metadata->asArray()[2]->isUsesDefaultClass());
         $this->assertSame(Example::class, $metadata->asArray()[1]->className());
     }
 

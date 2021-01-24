@@ -449,6 +449,18 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isUsesDefaultClass(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isUsesDefaultClass();
+                }
+            )
+        );
+    }
+
     public function isUsesMethod(): self
     {
         return new self(
