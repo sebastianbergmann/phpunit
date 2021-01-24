@@ -161,6 +161,18 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isCovers(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isCoversClass() || $metadata->isCoversMethod() || $metadata->isCoversFunction();
+                }
+            )
+        );
+    }
+
     public function isCoversClass(): self
     {
         return new self(
@@ -432,6 +444,18 @@ final class MetadataCollection implements Countable, IteratorAggregate
                 $this->metadata,
                 static function (Metadata $metadata): bool {
                     return $metadata->isTestWith();
+                }
+            )
+        );
+    }
+
+    public function isUses(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isUsesClass() || $metadata->isUsesMethod() || $metadata->isUsesFunction();
                 }
             )
         );

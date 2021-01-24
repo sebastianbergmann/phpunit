@@ -161,6 +161,16 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isCodeCoverageIgnore());
     }
 
+    public function test_Can_be_filtered_for_Covers(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isCovers();
+
+        $this->assertCount(3, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCoversClass());
+        $this->assertTrue($collection->asArray()[1]->isCoversFunction());
+        $this->assertTrue($collection->asArray()[2]->isCoversMethod());
+    }
+
     public function test_Can_be_filtered_for_CoversClass(): void
     {
         $collection = $this->collectionWithOneOfEach()->isCoversClass();
@@ -343,6 +353,16 @@ final class MetadataCollectionTest extends TestCase
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isTestWith());
+    }
+
+    public function test_Can_be_filtered_for_Uses(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isUses();
+
+        $this->assertCount(3, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUsesClass());
+        $this->assertTrue($collection->asArray()[1]->isUsesFunction());
+        $this->assertTrue($collection->asArray()[2]->isUsesMethod());
     }
 
     public function test_Can_be_filtered_for_UsesClass(): void
