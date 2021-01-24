@@ -96,12 +96,7 @@ final class Test
      */
     public static function getLinesToBeCovered(string $className, string $methodName)
     {
-        $annotations = self::parseTestMethodAnnotations(
-            $className,
-            $methodName
-        );
-
-        if (!self::shouldCoversAnnotationBeUsed($annotations)) {
+        if (!self::shouldCoversAnnotationBeUsed($className, $methodName)) {
             return false;
         }
 
@@ -688,8 +683,16 @@ final class Test
         );
     }
 
-    private static function shouldCoversAnnotationBeUsed(array $annotations): bool
+    /**
+     * @psalm-param class-string $className
+     */
+    private static function shouldCoversAnnotationBeUsed(string $className, string $methodName): bool
     {
+        $annotations = self::parseTestMethodAnnotations(
+            $className,
+            $methodName
+        );
+
         if (isset($annotations['method']['coversNothing'])) {
             return false;
         }
