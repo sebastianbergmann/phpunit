@@ -47,6 +47,7 @@ use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
+use PHPUnit\Util\Metadata\MetadataCollection;
 use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
 use ReflectionClass;
 use ReflectionException;
@@ -116,26 +117,33 @@ final class Test
 
     public static function requiresCodeCoverageDataCollection(TestCase $test): bool
     {
-        $annotations = self::parseTestMethodAnnotations(
-            get_class($test),
-            $test->getName(false)
-        );
+        $metadataForClass  = MetadataRegistry::reader()->forClass(get_class($test));
+        $metadataForMethod = MetadataCollection::fromArray([]);
+
+        if (method_exists($test, $test->getName(false))) {
+            $metadataForMethod = MetadataRegistry::reader()->forMethod(
+                get_class($test),
+                $test->getName(false)
+            );
+        }
 
         // If there is no @covers annotation but a @coversNothing annotation on
         // the test method then code coverage data does not need to be collected
-        if (isset($annotations['method']['coversNothing'])) {
+        if ($metadataForMethod->isCoversNothing()->isNotEmpty()) {
             return false;
         }
 
         // If there is at least one @covers annotation then
         // code coverage data needs to be collected
-        if (isset($annotations['method']['covers'])) {
+        if ($metadataForMethod->isCoversClass()->isNotEmpty() ||
+            $metadataForMethod->isCoversMethod()->isNotEmpty() ||
+            $metadataForMethod->isCoversFunction()->isNotEmpty()) {
             return true;
         }
 
         // If there is no @covers annotation but a @coversNothing annotation
         // then code coverage data does not need to be collected
-        if (isset($annotations['class']['coversNothing'])) {
+        if ($metadataForClass->isCoversNothing()->isNotEmpty()) {
             return false;
         }
 

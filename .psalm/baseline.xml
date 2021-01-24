@@ -1389,8 +1389,9 @@
     <MissingReturnType occurrences="1">
       <code>sanitizeVersionNumber</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock occurrences="3">
       <code>forClassName</code>
+      <code>getName</code>
       <code>getName</code>
     </MissingThrowsDocblock>
   </file>
