@@ -23,6 +23,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Util\Metadata\BeforeClass
  * @uses \PHPUnit\Util\Metadata\CodeCoverageIgnore
  * @uses \PHPUnit\Util\Metadata\CoversClass
+ * @uses \PHPUnit\Util\Metadata\CoversDefaultClass
  * @uses \PHPUnit\Util\Metadata\CoversFunction
  * @uses \PHPUnit\Util\Metadata\CoversMethod
  * @uses \PHPUnit\Util\Metadata\CoversNothing
