@@ -133,7 +133,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(3, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isCoversFunction());
-        $this->assertSame('f', $metadata->asArray()[1]->target());
+        $this->assertSame('f', $metadata->asArray()[1]->functionName());
     }
 
     /**
@@ -215,7 +215,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
-        $this->assertSame('f', $metadata->asArray()[0]->target());
+        $this->assertSame('f', $metadata->asArray()[0]->functionName());
     }
 
     /**
@@ -348,7 +348,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isUsesFunction());
-        $this->assertSame('f', $metadata->asArray()[1]->target());
+        $this->assertSame('f', $metadata->asArray()[1]->functionName());
     }
 
     /**
@@ -589,7 +589,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
-        $this->assertSame('g', $metadata->asArray()[0]->target());
+        $this->assertSame('g', $metadata->asArray()[0]->functionName());
     }
 
     /**
