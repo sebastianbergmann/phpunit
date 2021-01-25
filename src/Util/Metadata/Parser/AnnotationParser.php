@@ -17,7 +17,6 @@ use function json_decode;
 use function strlen;
 use function strpos;
 use function substr;
-use function trim;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
 
 /**
@@ -50,7 +49,9 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'covers':
-                    $this->parseCovers($values, $result);
+                    foreach ($values as $value) {
+                        $result[] = new Covers($value);
+                    }
 
                     break;
 
@@ -113,7 +114,9 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'uses':
-                    $this->parseUses($values, $result);
+                    foreach ($values as $value) {
+                        $result[] = new Uses($value);
+                    }
 
                     break;
 
@@ -172,7 +175,9 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'covers':
-                    $this->parseCovers($values, $result);
+                    foreach ($values as $value) {
+                        $result[] = new Covers($value);
+                    }
 
                     break;
 
@@ -276,51 +281,15 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'uses':
-                    $this->parseUses($values, $result);
+                    foreach ($values as $value) {
+                        $result[] = new Uses($value);
+                    }
 
                     break;
             }
         }
 
         return MetadataCollection::fromArray($result);
-    }
-
-    private function parseCovers(array $values, array &$result): void
-    {
-        foreach ($values as $value) {
-            if (strpos($value, '::') === 0) {
-                $result[] = new CoversFunction(trim(substr($value, strlen('::')), '\\'));
-
-                continue;
-            }
-
-            if (strpos($value, '::') !== false) {
-                $result[] = new CoversMethod(...explode('::', $value));
-
-                continue;
-            }
-
-            $result[] = new CoversClass(trim($value, '\\'));
-        }
-    }
-
-    private function parseUses(array $values, array &$result): void
-    {
-        foreach ($values as $value) {
-            if (strpos($value, '::') === 0) {
-                $result[] = new UsesFunction(trim(substr($value, strlen('::')), '\\'));
-
-                continue;
-            }
-
-            if (strpos($value, '::') !== false) {
-                $result[] = new UsesMethod(...explode('::', $value));
-
-                continue;
-            }
-
-            $result[] = new UsesClass(trim($value, '\\'));
-        }
     }
 
     private function parseRequires(array $values, array &$result): void

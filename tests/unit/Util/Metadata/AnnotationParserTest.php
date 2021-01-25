@@ -70,11 +70,11 @@ final class AnnotationParserTest extends TestCase
 
         $this->assertCount(4, $metadata);
 
-        $this->assertTrue($metadata->asArray()[0]->isCoversFunction());
-        $this->assertSame('PHPUnit\TestFixture\Metadata\Annotation\f', $metadata->asArray()[0]->functionName());
+        $this->assertTrue($metadata->asArray()[0]->isCovers());
+        $this->assertSame('::\PHPUnit\TestFixture\Metadata\Annotation\f', $metadata->asArray()[0]->target());
 
-        $this->assertTrue($metadata->asArray()[1]->isCoversClass());
-        $this->assertSame(Example::class, $metadata->asArray()[1]->className());
+        $this->assertTrue($metadata->asArray()[1]->isCovers());
+        $this->assertSame('\PHPUnit\TestFixture\Metadata\Annotation\Example', $metadata->asArray()[1]->target());
     }
 
     public function test_Parses_coversDefaultClass_annotation_on_class(): void
@@ -236,11 +236,11 @@ final class AnnotationParserTest extends TestCase
 
         $this->assertCount(3, $metadata);
 
-        $this->assertTrue($metadata->asArray()[0]->isUsesFunction());
-        $this->assertSame('PHPUnit\TestFixture\Metadata\Annotation\f', $metadata->asArray()[0]->functionName());
+        $this->assertTrue($metadata->asArray()[0]->isUses());
+        $this->assertSame('::\PHPUnit\TestFixture\Metadata\Annotation\f', $metadata->asArray()[0]->target());
 
-        $this->assertTrue($metadata->asArray()[1]->isUsesClass());
-        $this->assertSame(Example::class, $metadata->asArray()[1]->className());
+        $this->assertTrue($metadata->asArray()[1]->isUses());
+        $this->assertSame('\PHPUnit\TestFixture\Metadata\Annotation\Example', $metadata->asArray()[1]->target());
     }
 
     public function test_Parses_usesDefaultClass_annotation_on_class(): void
@@ -250,7 +250,7 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(3, $metadata);
 
         $this->assertTrue($metadata->asArray()[2]->isUsesDefaultClass());
-        $this->assertSame(Example::class, $metadata->asArray()[1]->className());
+        $this->assertSame('\PHPUnit\TestFixture\Metadata\Annotation\Example', $metadata->asArray()[1]->target());
     }
 
     public function test_Parses_after_annotation_on_method(): void

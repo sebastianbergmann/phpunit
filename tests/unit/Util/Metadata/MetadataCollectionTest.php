@@ -22,6 +22,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Util\Metadata\Before
  * @uses \PHPUnit\Util\Metadata\BeforeClass
  * @uses \PHPUnit\Util\Metadata\CodeCoverageIgnore
+ * @uses \PHPUnit\Util\Metadata\Covers
  * @uses \PHPUnit\Util\Metadata\CoversClass
  * @uses \PHPUnit\Util\Metadata\CoversDefaultClass
  * @uses \PHPUnit\Util\Metadata\CoversFunction
@@ -46,6 +47,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Util\Metadata\Test
  * @uses \PHPUnit\Util\Metadata\TestDox
  * @uses \PHPUnit\Util\Metadata\TestWith
+ * @uses \PHPUnit\Util\Metadata\Uses
  * @uses \PHPUnit\Util\Metadata\UsesClass
  * @uses \PHPUnit\Util\Metadata\UsesDefaultClass
  * @uses \PHPUnit\Util\Metadata\UsesFunction
@@ -165,10 +167,8 @@ final class MetadataCollectionTest extends TestCase
     {
         $collection = $this->collectionWithOneOfEach()->isCovers();
 
-        $this->assertCount(3, $collection);
-        $this->assertTrue($collection->asArray()[0]->isCoversClass());
-        $this->assertTrue($collection->asArray()[1]->isCoversFunction());
-        $this->assertTrue($collection->asArray()[2]->isCoversMethod());
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isCovers());
     }
 
     public function test_Can_be_filtered_for_CoversClass(): void
@@ -359,10 +359,8 @@ final class MetadataCollectionTest extends TestCase
     {
         $collection = $this->collectionWithOneOfEach()->isUses();
 
-        $this->assertCount(3, $collection);
-        $this->assertTrue($collection->asArray()[0]->isUsesClass());
-        $this->assertTrue($collection->asArray()[1]->isUsesFunction());
-        $this->assertTrue($collection->asArray()[2]->isUsesMethod());
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isUses());
     }
 
     public function test_Can_be_filtered_for_UsesClass(): void
@@ -408,6 +406,7 @@ final class MetadataCollectionTest extends TestCase
                 new BeforeClass,
                 new Before,
                 new CodeCoverageIgnore,
+                new Covers(''),
                 new CoversClass(''),
                 new CoversDefaultClass(''),
                 new CoversFunction(''),
@@ -431,6 +430,7 @@ final class MetadataCollectionTest extends TestCase
                 new TestDox(''),
                 new Test,
                 new TestWith([]),
+                new Uses(''),
                 new UsesClass(''),
                 new UsesDefaultClass(''),
                 new UsesFunction(''),

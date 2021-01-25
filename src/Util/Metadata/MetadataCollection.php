@@ -167,7 +167,7 @@ final class MetadataCollection implements Countable, IteratorAggregate
             ...array_filter(
                 $this->metadata,
                 static function (Metadata $metadata): bool {
-                    return $metadata->isCoversClass() || $metadata->isCoversMethod() || $metadata->isCoversFunction();
+                    return $metadata->isCovers();
                 }
             )
         );
@@ -455,7 +455,7 @@ final class MetadataCollection implements Countable, IteratorAggregate
             ...array_filter(
                 $this->metadata,
                 static function (Metadata $metadata): bool {
-                    return $metadata->isUsesClass() || $metadata->isUsesMethod() || $metadata->isUsesFunction();
+                    return $metadata->isUses();
                 }
             )
         );

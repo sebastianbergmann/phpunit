@@ -48,4 +48,9 @@ final class CoversMethod extends Metadata
     {
         return $this->methodName;
     }
+
+    public function asString(): string
+    {
+        return $this->className . '::' . $this->methodName;
+    }
 }

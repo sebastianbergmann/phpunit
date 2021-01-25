@@ -72,6 +72,14 @@ abstract class Metadata
     }
 
     /**
+     * @psalm-assert-if-true Covers $this
+     */
+    public function isCovers(): bool
+    {
+        return false;
+    }
+
+    /**
      * @psalm-assert-if-true CoversClass $this
      */
     public function isCoversClass(): bool
@@ -251,6 +259,14 @@ abstract class Metadata
      * @psalm-assert-if-true TestWith $this
      */
     public function isTestWith(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true Uses $this
+     */
+    public function isUses(): bool
     {
         return false;
     }

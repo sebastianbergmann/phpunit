@@ -138,7 +138,8 @@ final class Test
 
         // If there is at least one @covers annotation then
         // code coverage data needs to be collected
-        if ($metadataForMethod->isCoversClass()->isNotEmpty() ||
+        if ($metadataForMethod->isCovers()->isNotEmpty() ||
+            $metadataForMethod->isCoversClass()->isNotEmpty() ||
             $metadataForMethod->isCoversMethod()->isNotEmpty() ||
             $metadataForMethod->isCoversFunction()->isNotEmpty()) {
             return true;
@@ -715,7 +716,8 @@ final class Test
             return false;
         }
 
-        if ($metadataForMethod->isCoversClass()->isNotEmpty() ||
+        if ($metadataForMethod->isCovers()->isNotEmpty() ||
+            $metadataForMethod->isCoversClass()->isNotEmpty() ||
             $metadataForMethod->isCoversMethod()->isNotEmpty() ||
             $metadataForMethod->isCoversFunction()->isNotEmpty()) {
             return true;
