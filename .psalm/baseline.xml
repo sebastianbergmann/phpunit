@@ -1315,15 +1315,11 @@
     </RedundantCast>
   </file>
   <file src="src/Util/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="8">
+    <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>explode('::', $value)</code>
-      <code>explode('::', $value)</code>
-      <code>explode('::', $value)</code>
-      <code>trim($value, '\\')</code>
-      <code>trim($value, '\\')</code>
     </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="2">
       <code>forClassName</code>
@@ -1394,6 +1390,16 @@
       <code>getName</code>
       <code>getName</code>
     </MissingThrowsDocblock>
+    <RedundantCondition occurrences="4">
+      <code>$metadata instanceof CoversFunction</code>
+      <code>$metadata instanceof UsesFunction</code>
+      <code>assert($metadata instanceof Covers)</code>
+      <code>assert($metadata instanceof Uses)</code>
+    </RedundantCondition>
+    <UndefinedMethod occurrences="2">
+      <code>className</code>
+      <code>className</code>
+    </UndefinedMethod>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <MissingThrowsDocblock occurrences="2">
