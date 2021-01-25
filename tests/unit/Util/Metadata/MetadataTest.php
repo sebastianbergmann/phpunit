@@ -527,7 +527,7 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame(__METHOD__, $metadata->methodName());
-        $this->assertSame(self::class . '::' . __METHOD__, $metadata->asString());
+        $this->assertSame(self::class . '::' . __METHOD__, $metadata->asStringForCodeUnitMapper());
     }
 
     public function testCanBeCoversFunction(): void
@@ -1577,7 +1577,7 @@ final class MetadataTest extends TestCase
 
         $this->assertSame(self::class, $metadata->className());
         $this->assertSame(__METHOD__, $metadata->methodName());
-        $this->assertSame(self::class . '::' . __METHOD__, $metadata->asString());
+        $this->assertSame(self::class . '::' . __METHOD__, $metadata->asStringForCodeUnitMapper());
     }
 
     public function testCanBeUsesFunction(): void
