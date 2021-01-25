@@ -49,7 +49,7 @@ final class UsesMethod extends Metadata
         return $this->methodName;
     }
 
-    public function asString(): string
+    public function asStringForCodeUnitMapper(): string
     {
         return $this->className . '::' . $this->methodName;
     }
