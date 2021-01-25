@@ -50,8 +50,7 @@ final class AnnotationParser implements Parser
 
                 case 'covers':
                     foreach ($values as $value) {
-                        $value = preg_replace('/[\s()]+$/', '', $value);
-                        $value = explode(' ', $value)[0];
+                        $value = $this->cleanUpCoversOrUsesTarget($value);
 
                         $result[] = new Covers($value);
                     }
@@ -118,8 +117,7 @@ final class AnnotationParser implements Parser
 
                 case 'uses':
                     foreach ($values as $value) {
-                        $value = preg_replace('/[\s()]+$/', '', $value);
-                        $value = explode(' ', $value)[0];
+                        $value = $this->cleanUpCoversOrUsesTarget($value);
 
                         $result[] = new Uses($value);
                     }
@@ -182,8 +180,7 @@ final class AnnotationParser implements Parser
 
                 case 'covers':
                     foreach ($values as $value) {
-                        $value = preg_replace('/[\s()]+$/', '', $value);
-                        $value = explode(' ', $value)[0];
+                        $value = $this->cleanUpCoversOrUsesTarget($value);
 
                         $result[] = new Covers($value);
                     }
@@ -291,8 +288,7 @@ final class AnnotationParser implements Parser
 
                 case 'uses':
                     foreach ($values as $value) {
-                        $value = preg_replace('/[\s()]+$/', '', $value);
-                        $value = explode(' ', $value)[0];
+                        $value = $this->cleanUpCoversOrUsesTarget($value);
 
                         $result[] = new Uses($value);
                     }
@@ -365,5 +361,12 @@ final class AnnotationParser implements Parser
         }
 
         return null;
+    }
+
+    private function cleanUpCoversOrUsesTarget(string $value): string
+    {
+        $value = preg_replace('/[\s()]+$/', '', $value);
+
+        return explode(' ', $value, 2)[0];
     }
 }
