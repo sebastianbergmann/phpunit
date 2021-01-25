@@ -31,4 +31,9 @@ final class CoversFunction extends Metadata
     {
         return $this->functionName;
     }
+
+    public function asStringForCodeUnitMapper(): string
+    {
+        return '::' . $this->functionName;
+    }
 }

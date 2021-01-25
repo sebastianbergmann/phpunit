@@ -572,6 +572,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
 
         $this->assertSame('f', $metadata->functionName());
+        $this->assertSame('::f', $metadata->asStringForCodeUnitMapper());
     }
 
     public function testCanBeCoversNothing(): void
@@ -1621,5 +1622,6 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isUsesFunction());
 
         $this->assertSame('f', $metadata->functionName());
+        $this->assertSame('::f', $metadata->asStringForCodeUnitMapper());
     }
 }
