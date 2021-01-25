@@ -438,6 +438,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
 
         $this->assertSame(self::class, $metadata->className());
+        $this->assertSame(self::class, $metadata->asStringForCodeUnitMapper());
     }
 
     public function testCanBeCoversDefaultClass(): void
@@ -1488,6 +1489,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
 
         $this->assertSame(self::class, $metadata->className());
+        $this->assertSame(self::class, $metadata->asStringForCodeUnitMapper());
     }
 
     public function testCanBeUsesDefaultClass(): void

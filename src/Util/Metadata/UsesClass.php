@@ -40,4 +40,12 @@ final class UsesClass extends Metadata
     {
         return $this->className;
     }
+
+    /**
+     * @psalm-return class-string
+     */
+    public function asStringForCodeUnitMapper(): string
+    {
+        return $this->className;
+    }
 }
