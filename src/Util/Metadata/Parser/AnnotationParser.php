@@ -50,6 +50,9 @@ final class AnnotationParser implements Parser
 
                 case 'covers':
                     foreach ($values as $value) {
+                        $value = preg_replace('/[\s()]+$/', '', $value);
+                        $value = explode(' ', $value)[0];
+
                         $result[] = new Covers($value);
                     }
 
@@ -115,6 +118,9 @@ final class AnnotationParser implements Parser
 
                 case 'uses':
                     foreach ($values as $value) {
+                        $value = preg_replace('/[\s()]+$/', '', $value);
+                        $value = explode(' ', $value)[0];
+
                         $result[] = new Uses($value);
                     }
 
@@ -176,6 +182,9 @@ final class AnnotationParser implements Parser
 
                 case 'covers':
                     foreach ($values as $value) {
+                        $value = preg_replace('/[\s()]+$/', '', $value);
+                        $value = explode(' ', $value)[0];
+
                         $result[] = new Covers($value);
                     }
 
@@ -282,6 +291,9 @@ final class AnnotationParser implements Parser
 
                 case 'uses':
                     foreach ($values as $value) {
+                        $value = preg_replace('/[\s()]+$/', '', $value);
+                        $value = explode(' ', $value)[0];
+
                         $result[] = new Uses($value);
                     }
 

@@ -12,7 +12,7 @@ namespace PHPUnit\TestFixture\Metadata\Annotation;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @uses ::\PHPUnit\TestFixture\Metadata\Annotation\f
+ * @uses ::\PHPUnit\TestFixture\Metadata\Annotation\f()
  * @uses \PHPUnit\TestFixture\Metadata\Annotation\Example
  * @usesDefaultClass \PHPUnit\TestFixture\Metadata\Annotation\Example
  */
