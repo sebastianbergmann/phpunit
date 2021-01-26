@@ -52,7 +52,10 @@ final class TestRunner
             $test->registerMockObjectsFromTestArgumentsRecursively();
         }
 
-        $isAnyCoverageRequired = TestUtil::requiresCodeCoverageDataCollection($test);
+        $isAnyCoverageRequired = TestUtil::requiresCodeCoverageDataCollection(
+            get_class($test),
+            $test->getName(false)
+        );
 
         $error      = false;
         $failure    = false;

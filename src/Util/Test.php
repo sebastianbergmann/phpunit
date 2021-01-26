@@ -107,7 +107,7 @@ final class Test
      */
     public static function getLinesToBeCovered(string $className, string $methodName)
     {
-        if (!self::shouldCoversAnnotationBeUsed($className, $methodName)) {
+        if (!self::requiresCodeCoverageDataCollection($className, $methodName)) {
             return false;
         }
 
@@ -281,13 +281,15 @@ final class Test
     }
 
     /**
+     * @psalm-param class-string $className
+     *
      * @todo Avoid calling this method for methods that do not exist
      */
-    public static function requiresCodeCoverageDataCollection(TestCase $test): bool
+    public static function requiresCodeCoverageDataCollection(string $className, string $methodName): bool
     {
         [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
-            get_class($test),
-            $test->getName(false)
+            $className,
+            $methodName
         );
 
         // If there is no @covers annotation but a @coversNothing annotation on
@@ -781,36 +783,6 @@ final class Test
             '$1',
             $version
         );
-    }
-
-    /**
-     * @psalm-param class-string $className
-     *
-     * @todo Avoid calling this method for methods that do not exist
-     */
-    private static function shouldCoversAnnotationBeUsed(string $className, string $methodName): bool
-    {
-        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
-            $className,
-            $methodName
-        );
-
-        if ($metadataForMethod->isCoversNothing()->isNotEmpty()) {
-            return false;
-        }
-
-        if ($metadataForMethod->isCovers()->isNotEmpty() ||
-            $metadataForMethod->isCoversClass()->isNotEmpty() ||
-            $metadataForMethod->isCoversMethod()->isNotEmpty() ||
-            $metadataForMethod->isCoversFunction()->isNotEmpty()) {
-            return true;
-        }
-
-        if ($metadataForClass->isCoversNothing()->isNotEmpty()) {
-            return false;
-        }
-
-        return true;
     }
 
     /**
