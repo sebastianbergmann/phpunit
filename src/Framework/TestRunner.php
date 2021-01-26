@@ -52,7 +52,7 @@ final class TestRunner
             $test->registerMockObjectsFromTestArgumentsRecursively();
         }
 
-        $isAnyCoverageRequired = TestUtil::requiresCodeCoverageDataCollection(
+        $shouldCodeCoverageBeCollected = TestUtil::shouldCodeCoverageBeCollectedFor(
             get_class($test),
             $test->getName(false)
         );
@@ -83,7 +83,7 @@ final class TestRunner
         $collectCodeCoverage = CodeCoverage::isActive() &&
                                !$test instanceof ErrorTestCase &&
                                !$test instanceof WarningTestCase &&
-                               $isAnyCoverageRequired;
+                               $shouldCodeCoverageBeCollected;
 
         if ($collectCodeCoverage) {
             CodeCoverage::start($test);

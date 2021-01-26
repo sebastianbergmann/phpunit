@@ -107,7 +107,7 @@ final class Test
      */
     public static function getLinesToBeCovered(string $className, string $methodName)
     {
-        if (!self::requiresCodeCoverageDataCollection($className, $methodName)) {
+        if (!self::shouldCodeCoverageBeCollectedFor($className, $methodName)) {
             return false;
         }
 
@@ -285,7 +285,7 @@ final class Test
      *
      * @todo Avoid calling this method for methods that do not exist
      */
-    public static function requiresCodeCoverageDataCollection(string $className, string $methodName): bool
+    public static function shouldCodeCoverageBeCollectedFor(string $className, string $methodName): bool
     {
         [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
             $className,
