@@ -73,6 +73,8 @@ final class Test
     private static array $hookMethods = [];
 
     /**
+     * @psalm-return array{0: string, 1: string}
+     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public static function describe(\PHPUnit\Framework\Test $test): array
