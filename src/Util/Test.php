@@ -111,8 +111,12 @@ final class Test
             return false;
         }
 
-        $classShortcut    = null;
-        $metadataForClass = MetadataRegistry::reader()->forClass($className);
+        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
+            $className,
+            $methodName
+        );
+
+        $classShortcut = null;
 
         if ($metadataForClass->isCoversDefaultClass()->isNotEmpty()) {
             if (count($metadataForClass->isCoversDefaultClass()) > 1) {
@@ -125,15 +129,6 @@ final class Test
             }
 
             $classShortcut = $metadataForClass->isCoversDefaultClass()->asArray()[0]->className();
-        }
-
-        $metadataForMethod = MetadataCollection::fromArray([]);
-
-        if (method_exists($className, $methodName)) {
-            $metadataForMethod = MetadataRegistry::reader()->forMethod(
-                $className,
-                $methodName
-            );
         }
 
         $codeUnits = CodeUnitCollection::fromArray([]);
@@ -210,8 +205,12 @@ final class Test
      */
     public static function getLinesToBeUsed(string $className, string $methodName): array
     {
-        $classShortcut    = null;
-        $metadataForClass = MetadataRegistry::reader()->forClass($className);
+        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
+            $className,
+            $methodName
+        );
+
+        $classShortcut = null;
 
         if ($metadataForClass->isUsesDefaultClass()->isNotEmpty()) {
             if (count($metadataForClass->isUsesDefaultClass()) > 1) {
@@ -224,15 +223,6 @@ final class Test
             }
 
             $classShortcut = $metadataForClass->isUsesDefaultClass()->asArray()[0]->className();
-        }
-
-        $metadataForMethod = MetadataCollection::fromArray([]);
-
-        if (method_exists($className, $methodName)) {
-            $metadataForMethod = MetadataRegistry::reader()->forMethod(
-                $className,
-                $methodName
-            );
         }
 
         $codeUnits = CodeUnitCollection::fromArray([]);
@@ -295,15 +285,10 @@ final class Test
      */
     public static function requiresCodeCoverageDataCollection(TestCase $test): bool
     {
-        $metadataForClass  = MetadataRegistry::reader()->forClass(get_class($test));
-        $metadataForMethod = MetadataCollection::fromArray([]);
-
-        if (method_exists($test, $test->getName(false))) {
-            $metadataForMethod = MetadataRegistry::reader()->forMethod(
-                get_class($test),
-                $test->getName(false)
-            );
-        }
+        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
+            get_class($test),
+            $test->getName(false)
+        );
 
         // If there is no @covers annotation but a @coversNothing annotation on
         // the test method then code coverage data does not need to be collected
@@ -805,15 +790,10 @@ final class Test
      */
     private static function shouldCoversAnnotationBeUsed(string $className, string $methodName): bool
     {
-        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
-        $metadataForMethod = MetadataCollection::fromArray([]);
-
-        if (method_exists($className, $methodName)) {
-            $metadataForMethod = MetadataRegistry::reader()->forMethod(
-                $className,
-                $methodName
-            );
-        }
+        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
+            $className,
+            $methodName
+        );
 
         if ($metadataForMethod->isCoversNothing()->isNotEmpty()) {
             return false;
@@ -871,5 +851,29 @@ final class Test
     private static function canonicalizeName(string $name): string
     {
         return strtolower(trim($name, '\\'));
+    }
+
+    /**
+     * @psalm-param class-string $className
+     *
+     * @psalm-return array{0: MetadataCollection, 1: MetadataCollection}
+     */
+    private static function metadataForClassAndMethod(string $className, string $methodName): array
+    {
+        $metadataForClass  = MetadataCollection::fromArray([]);
+        $metadataForMethod = MetadataCollection::fromArray([]);
+
+        if (class_exists($className)) {
+            $metadataForClass = MetadataRegistry::reader()->forClass($className);
+
+            if (method_exists($className, $methodName)) {
+                $metadataForMethod = MetadataRegistry::reader()->forMethod(
+                    $className,
+                    $methodName
+                );
+            }
+        }
+
+        return [$metadataForClass, $metadataForMethod];
     }
 }
