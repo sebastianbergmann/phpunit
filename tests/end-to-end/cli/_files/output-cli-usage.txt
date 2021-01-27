@@ -42,6 +42,7 @@ Test Selection Options:
   --list-tests                List available tests
   --list-tests-xml <file>     List available tests in XML format
   --filter <pattern>          Filter which tests to run
+  --tests-xml <file>          Filter which tests to run in XML format
   --test-suffix <suffixes>    Only search for test in files with specified suffix(es). Default: Test.php,.phpt
 
 Test Execution Options:

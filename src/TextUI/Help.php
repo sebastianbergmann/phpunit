@@ -71,6 +71,7 @@ final class Help
             ['arg' => '--list-tests', 'desc' => 'List available tests'],
             ['arg' => '--list-tests-xml <file>', 'desc' => 'List available tests in XML format'],
             ['arg' => '--filter <pattern>', 'desc' => 'Filter which tests to run'],
+            ['arg' => '--tests-xml <file>', 'desc' => 'Filter which tests to run in XML format'],
             ['arg' => '--test-suffix <suffixes>', 'desc' => 'Only search for test in files with specified suffix(es). Default: Test.php,.phpt'],
         ],
 

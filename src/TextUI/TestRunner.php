@@ -39,6 +39,7 @@ use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\NameFilterIterator;
+use PHPUnit\Runner\Filter\XmlTestsIterator;
 use PHPUnit\Runner\Hook;
 use PHPUnit\Runner\NullTestResultCache;
 use PHPUnit\Runner\ResultCacheExtension;
@@ -113,6 +114,7 @@ final class TestRunner
     /**
      * @throws \PHPUnit\Runner\Exception
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws \PHPUnit\Util\Xml\Exception
      * @throws Exception
      */
     public function run(TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
@@ -1046,13 +1048,17 @@ final class TestRunner
         $arguments['verbose']                                         = $arguments['verbose'] ?? false;
     }
 
+    /**
+     * @throws \PHPUnit\Util\Xml\Exception
+     */
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
         if (!$arguments['filter'] &&
             empty($arguments['groups']) &&
             empty($arguments['excludeGroups']) &&
             empty($arguments['testsCovering']) &&
-            empty($arguments['testsUsing'])) {
+            empty($arguments['testsUsing']) &&
+            empty($arguments['testsXml'])) {
             return;
         }
 
@@ -1100,6 +1106,13 @@ final class TestRunner
             $filterFactory->addFilter(
                 new ReflectionClass(NameFilterIterator::class),
                 $arguments['filter']
+            );
+        }
+
+        if (!empty($arguments['testsXml'])) {
+            $filterFactory->addFilter(
+                new ReflectionClass(XmlTestsIterator::class),
+                XmlTestsIterator::createFilterFromXmlFile($arguments['testsXml']),
             );
         }
 
