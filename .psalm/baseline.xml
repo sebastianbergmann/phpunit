@@ -1296,6 +1296,11 @@
     </DocblockTypeContradiction>
     <MissingThrowsDocblock occurrences="1"/>
   </file>
+  <file src="src/Util/Filter.php">
+    <MissingParamType occurrences="1">
+      <code>$prefix</code>
+    </MissingParamType>
+  </file>
   <file src="src/Util/GlobalState.php">
     <MissingParamType occurrences="1">
       <code>$variable</code>
