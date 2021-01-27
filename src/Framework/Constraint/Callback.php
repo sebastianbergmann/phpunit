@@ -9,18 +9,21 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function call_user_func;
-
 /**
+ * @psalm-template CallbackInput of mixed
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class Callback extends Constraint
 {
     /**
      * @var callable
+     *
+     * @psalm-var callable(CallbackInput $input): bool
      */
     private $callback;
 
+    /** @psalm-param callable(CallbackInput $input): bool $callback */
     public function __construct(callable $callback)
     {
         $this->callback = $callback;
@@ -39,9 +42,11 @@ final class Callback extends Constraint
      * constraint is met, false otherwise.
      *
      * @param mixed $other value or object to evaluate
+     *
+     * @psalm-param CallbackInput $other
      */
     protected function matches($other): bool
     {
-        return call_user_func($this->callback, $other);
+        return ($this->callback)($other);
     }
 }
