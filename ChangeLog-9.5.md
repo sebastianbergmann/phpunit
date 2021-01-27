@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 ### Fixed
 
+* [#4573](https://github.com/sebastianbergmann/phpunit/issues/4573): No stack trace printed when PHPUnit is used from PHAR
 * [#4590](https://github.com/sebastianbergmann/phpunit/issues/4590): `--coverage-text` CLI option is documented wrong
 
 ## [9.5.1] - 2021-01-17
