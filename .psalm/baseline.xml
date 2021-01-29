@@ -759,6 +759,13 @@
       <code>$this-&gt;filter</code>
     </PossiblyNullArgument>
   </file>
+  <file src="src/Runner/Hook/TestListenerAdapter.php">
+    <DeprecatedClass occurrences="3">
+      <code>TestHook</code>
+      <code>array</code>
+      <code>private array $hooks = [];</code>
+    </DeprecatedClass>
+  </file>
   <file src="src/Runner/PhptTestCase.php">
     <InternalClass occurrences="2">
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
@@ -776,6 +783,11 @@
     <PossiblyInvalidArgument occurrences="1">
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
+  </file>
+  <file src="src/Runner/ResultCacheExtension.php">
+    <DeprecatedInterface occurrences="1">
+      <code>ResultCacheExtension</code>
+    </DeprecatedInterface>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <UnresolvableInclude occurrences="1">
@@ -866,6 +878,12 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
+    <DeprecatedClass occurrences="4">
+      <code>Hook</code>
+      <code>array</code>
+      <code>new TestListenerAdapter</code>
+      <code>private array $extensions = [];</code>
+    </DeprecatedClass>
     <DeprecatedMethod occurrences="9">
       <code>addListener</code>
       <code>addListener</code>

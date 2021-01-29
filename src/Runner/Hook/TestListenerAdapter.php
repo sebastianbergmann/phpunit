@@ -19,6 +19,8 @@ use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated
  */
 final class TestListenerAdapter implements TestListener
 {

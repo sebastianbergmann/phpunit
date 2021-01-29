@@ -11,6 +11,8 @@ namespace PHPUnit\Runner;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @deprecated
  */
 interface BeforeFirstTestHook extends Hook
 {
