@@ -73,7 +73,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testPassedButRisky(): void
+    public function testPassedButRisky(Code\Test $test, string $message): void
     {
     }
 

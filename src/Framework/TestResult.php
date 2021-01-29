@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use function count;
 use Countable;
 use Error;
+use PHPUnit\Event;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Util\Printer;
@@ -186,6 +187,15 @@ final class TestResult implements Countable
 
             if ($test instanceof TestCase) {
                 $test->markAsRisky();
+
+                Event\Facade::emitter()->testPassedButRisky(
+                    new Event\Code\Test(
+                        get_class($test),
+                        $test->getName(false),
+                        $test->getName(true),
+                    ),
+                    $e->getMessage()
+                );
             }
 
             if ($this->stopOnRisky || $this->stopOnDefect) {

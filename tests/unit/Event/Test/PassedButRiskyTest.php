@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code;
 
 /**
  * @covers \PHPUnit\Event\Test\PassedButRisky
@@ -19,9 +20,21 @@ final class PassedButRiskyTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
+        $test          = new Code\Test(
+            self::class,
+            'foo',
+            'foo with data set #123'
+        );
+        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
-        $event = new PassedButRisky($telemetryInfo);
+        $event = new PassedButRisky(
+            $telemetryInfo,
+            $test,
+            $message
+        );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($test, $event->test());
+        $this->assertSame($message, $event->message());
     }
 }

@@ -439,6 +439,12 @@
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
   </file>
+  <file src="src/Framework/TestResult.php">
+    <MissingThrowsDocblock occurrences="2">
+      <code>getName</code>
+      <code>getName</code>
+    </MissingThrowsDocblock>
+  </file>
   <file src="src/Framework/TestRunner.php">
     <MissingThrowsDocblock occurrences="12">
       <code>CodeCoverage::instance()</code>
