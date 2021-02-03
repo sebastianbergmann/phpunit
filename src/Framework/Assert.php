@@ -2228,7 +2228,7 @@ abstract class Assert
     /**
      * @psalm-template CallbackInput of mixed
      *
-     * @psalm-param callable(mixed $callback): bool $callback
+     * @psalm-param callable(CallbackInput $callback): bool $callback
      *
      * @psalm-return Callback<CallbackInput>
      */
