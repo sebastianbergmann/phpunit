@@ -139,5 +139,5 @@ abstract class TestStatus
         return $this->message;
     }
 
-    abstract public function type(): string;
+    abstract public function asString(): string;
 }

@@ -23,7 +23,7 @@ final class Incomplete extends Known
         return true;
     }
 
-    public function type(): string
+    public function asString(): string
     {
         return 'incomplete';
     }

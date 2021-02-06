@@ -23,7 +23,7 @@ final class Unknown extends TestStatus
         return true;
     }
 
-    public function type(): string
+    public function asString(): string
     {
         return 'unknown';
     }

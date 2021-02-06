@@ -207,7 +207,7 @@ final class TestSuiteSorter
             }
 
             if (!isset($this->defectSortOrder[$test->sortId()])) {
-                $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->status($test->sortId())->type()];
+                $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->status($test->sortId())->asString()];
                 $max                                    = max($max, $this->defectSortOrder[$test->sortId()]);
             }
         }

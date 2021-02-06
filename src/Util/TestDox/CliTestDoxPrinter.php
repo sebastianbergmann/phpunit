@@ -199,7 +199,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
             $testName = $result['testMethod'];
         }
 
-        $style = self::STATUS_STYLES[$result['status']->type()];
+        $style = self::STATUS_STYLES[$result['status']->asString()];
 
         $line = sprintf(
             ' %s %s%s' . PHP_EOL,
@@ -290,7 +290,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
 
         if ($message && $this->colors) {
-            $style            = self::STATUS_STYLES[$result['status']->type()]['message'] ?? '';
+            $style            = self::STATUS_STYLES[$result['status']->asString()]['message'] ?? '';
             [$message, $diff] = $this->colorizeMessageAndDiff($style, $message);
         }
 
@@ -299,7 +299,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
         }
 
         if ($this->colors) {
-            $color  = self::STATUS_STYLES[$result['status']->type()]['color'] ?? '';
+            $color  = self::STATUS_STYLES[$result['status']->asString()]['color'] ?? '';
             $prefix = array_map(static function ($p) use ($color) {
                 return Color::colorize($color, $p);
             }, self::PREFIX_DECORATED);

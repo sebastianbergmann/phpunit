@@ -41,7 +41,7 @@ final class TestStatusTest extends TestCase
         $this->assertFalse($status->isIncomplete());
         $this->assertFalse($status->isSkipped());
 
-        $this->assertSame('unknown', $status->type());
+        $this->assertSame('unknown', $status->asString());
     }
 
     public function testCanBeSuccess(): void
@@ -58,7 +58,7 @@ final class TestStatusTest extends TestCase
         $this->assertFalse($status->isIncomplete());
         $this->assertFalse($status->isSkipped());
 
-        $this->assertSame('success', $status->type());
+        $this->assertSame('success', $status->asString());
     }
 
     public function testCanBeFailure(): void
@@ -75,7 +75,7 @@ final class TestStatusTest extends TestCase
         $this->assertFalse($status->isIncomplete());
         $this->assertFalse($status->isSkipped());
 
-        $this->assertSame('failure', $status->type());
+        $this->assertSame('failure', $status->asString());
         $this->assertSame('message', $status->message());
     }
 
@@ -93,7 +93,7 @@ final class TestStatusTest extends TestCase
         $this->assertFalse($status->isIncomplete());
         $this->assertFalse($status->isSkipped());
 
-        $this->assertSame('error', $status->type());
+        $this->assertSame('error', $status->asString());
         $this->assertSame('message', $status->message());
     }
 
@@ -111,7 +111,7 @@ final class TestStatusTest extends TestCase
         $this->assertFalse($status->isIncomplete());
         $this->assertFalse($status->isSkipped());
 
-        $this->assertSame('warning', $status->type());
+        $this->assertSame('warning', $status->asString());
         $this->assertSame('message', $status->message());
     }
 
@@ -129,7 +129,7 @@ final class TestStatusTest extends TestCase
         $this->assertFalse($status->isIncomplete());
         $this->assertFalse($status->isSkipped());
 
-        $this->assertSame('risky', $status->type());
+        $this->assertSame('risky', $status->asString());
         $this->assertSame('message', $status->message());
     }
 
@@ -147,7 +147,7 @@ final class TestStatusTest extends TestCase
         $this->assertTrue($status->isIncomplete());
         $this->assertFalse($status->isSkipped());
 
-        $this->assertSame('incomplete', $status->type());
+        $this->assertSame('incomplete', $status->asString());
         $this->assertSame('message', $status->message());
     }
 
@@ -165,7 +165,7 @@ final class TestStatusTest extends TestCase
         $this->assertFalse($status->isIncomplete());
         $this->assertTrue($status->isSkipped());
 
-        $this->assertSame('skipped', $status->type());
+        $this->assertSame('skipped', $status->asString());
         $this->assertSame('message', $status->message());
     }
 }

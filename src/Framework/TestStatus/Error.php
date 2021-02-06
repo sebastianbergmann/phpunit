@@ -23,7 +23,7 @@ final class Error extends Known
         return true;
     }
 
-    public function type(): string
+    public function asString(): string
     {
         return 'error';
     }
