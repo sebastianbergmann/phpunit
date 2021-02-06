@@ -60,26 +60,6 @@ use SebastianBergmann\Environment\OperatingSystem;
  */
 final class Test
 {
-    /**
-     * @var int
-     */
-    public const UNKNOWN = -1;
-
-    /**
-     * @var int
-     */
-    public const SMALL = 0;
-
-    /**
-     * @var int
-     */
-    public const MEDIUM = 1;
-
-    /**
-     * @var int
-     */
-    public const LARGE = 2;
-
     private static array $hookMethods = [];
 
     /**
