@@ -15,6 +15,9 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final class Unknown extends TestStatus
 {
+    /**
+     * @psalm-assert-if-true Unknown $this
+     */
     public function isUnknown(): bool
     {
         return true;

@@ -15,6 +15,9 @@ namespace PHPUnit\Framework\TestStatus;
  */
 abstract class Known extends TestStatus
 {
+    /**
+     * @psalm-assert-if-true Known $this
+     */
     public function isKnown(): bool
     {
         return true;

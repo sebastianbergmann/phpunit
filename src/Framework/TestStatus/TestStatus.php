@@ -62,46 +62,73 @@ abstract class TestStatus
         $this->message = $message;
     }
 
+    /**
+     * @psalm-assert-if-true Known $this
+     */
     public function isKnown(): bool
     {
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true Unknown $this
+     */
     public function isUnknown(): bool
     {
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true Success $this
+     */
     public function isSuccess(): bool
     {
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true Skipped $this
+     */
     public function isSkipped(): bool
     {
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true Incomplete $this
+     */
     public function isIncomplete(): bool
     {
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true Failure $this
+     */
     public function isFailure(): bool
     {
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true Error $this
+     */
     public function isError(): bool
     {
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true Warning $this
+     */
     public function isWarning(): bool
     {
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true Risky $this
+     */
     public function isRisky(): bool
     {
         return false;

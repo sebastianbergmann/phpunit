@@ -15,6 +15,9 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final class Warning extends Known
 {
+    /**
+     * @psalm-assert-if-true Warning $this
+     */
     public function isWarning(): bool
     {
         return true;

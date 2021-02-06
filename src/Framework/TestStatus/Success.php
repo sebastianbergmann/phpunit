@@ -15,6 +15,9 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final class Success extends Known
 {
+    /**
+     * @psalm-assert-if-true Success $this
+     */
     public function isSuccess(): bool
     {
         return true;

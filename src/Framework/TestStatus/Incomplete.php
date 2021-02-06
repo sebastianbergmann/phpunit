@@ -15,6 +15,9 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final class Incomplete extends Known
 {
+    /**
+     * @psalm-assert-if-true Incomplete $this
+     */
     public function isIncomplete(): bool
     {
         return true;

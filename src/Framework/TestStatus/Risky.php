@@ -15,6 +15,9 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final class Risky extends Known
 {
+    /**
+     * @psalm-assert-if-true Risky $this
+     */
     public function isRisky(): bool
     {
         return true;

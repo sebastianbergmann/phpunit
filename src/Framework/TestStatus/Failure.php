@@ -15,6 +15,9 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final class Failure extends Known
 {
+    /**
+     * @psalm-assert-if-true Failure $this
+     */
     public function isFailure(): bool
     {
         return true;

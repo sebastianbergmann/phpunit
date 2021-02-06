@@ -15,6 +15,9 @@ namespace PHPUnit\Framework\TestStatus;
  */
 final class Skipped extends Known
 {
+    /**
+     * @psalm-assert-if-true Skipped $this
+     */
     public function isSkipped(): bool
     {
         return true;
