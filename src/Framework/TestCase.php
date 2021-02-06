@@ -77,6 +77,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnCallback as ReturnCallbackStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf as ReturnSelfStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
+use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Error\Deprecation;
@@ -655,7 +656,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function getSize(): int
+    public function getSize(): TestSize
     {
         return TestUtil::getSize(
             static::class,
@@ -670,7 +671,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function hasSize(): bool
     {
-        return $this->getSize() !== TestUtil::UNKNOWN;
+        return $this->getSize()->isKnown();
     }
 
     /**
@@ -680,7 +681,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function isSmall(): bool
     {
-        return $this->getSize() === TestUtil::SMALL;
+        return $this->getSize()->isSmall();
     }
 
     /**
@@ -690,7 +691,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function isMedium(): bool
     {
-        return $this->getSize() === TestUtil::MEDIUM;
+        return $this->getSize()->isMedium();
     }
 
     /**
@@ -700,7 +701,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function isLarge(): bool
     {
-        return $this->getSize() === TestUtil::LARGE;
+        return $this->getSize()->isLarge();
     }
 
     /**
@@ -1684,9 +1685,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             if (isset($passed[$dependencyTarget])) {
-                if ($passed[$dependencyTarget]['size'] != \PHPUnit\Util\Test::UNKNOWN &&
-                    $this->getSize() != \PHPUnit\Util\Test::UNKNOWN &&
-                    $passed[$dependencyTarget]['size'] > $this->getSize()) {
+                if ($passed[$dependencyTarget]['size']->isKnown() &&
+                    $this->getSize()->isKnown() &&
+                    $passed[$dependencyTarget]['size']->isGreaterThan($this->getSize())) {
                     $this->result->addFailure(
                         $this,
                         new SkippedTestError(

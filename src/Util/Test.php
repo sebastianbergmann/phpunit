@@ -43,6 +43,7 @@ use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Annotation\Registry;
@@ -459,23 +460,23 @@ final class Test
     }
 
     /** @psalm-param class-string $className */
-    public static function getSize(string $className, ?string $methodName): int
+    public static function getSize(string $className, ?string $methodName): TestSize
     {
         $groups = array_flip(self::getGroups($className, $methodName));
 
         if (isset($groups['large'])) {
-            return self::LARGE;
+            return TestSize::large();
         }
 
         if (isset($groups['medium'])) {
-            return self::MEDIUM;
+            return TestSize::medium();
         }
 
         if (isset($groups['small'])) {
-            return self::SMALL;
+            return TestSize::small();
         }
 
-        return self::UNKNOWN;
+        return TestSize::unknown();
     }
 
     /** @psalm-param class-string $className */

@@ -605,8 +605,9 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/TestCase.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="2">
       <code>$this-&gt;expectedException</code>
+      <code>$this-&gt;getSize()</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="2">
       <code>$this-&gt;backupStaticAttributes === null</code>
@@ -682,8 +683,7 @@
       <code>runTestJob</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <PossiblyUndefinedVariable occurrences="5">
-      <code>$_timeout</code>
+    <PossiblyUndefinedVariable occurrences="4">
       <code>$_timeout</code>
       <code>$e</code>
       <code>$e</code>
@@ -1358,7 +1358,7 @@
       <code>$prefix['trace']</code>
     </PossiblyInvalidArrayOffset>
     <PossiblyUndefinedArrayOffset occurrences="1">
-      <code>self::STATUS_STYLES[$result['status']-&gt;type()]['message']</code>
+      <code>self::STATUS_STYLES[$result['status']-&gt;asString()]['message']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/Util/TestDox/HtmlResultPrinter.php">

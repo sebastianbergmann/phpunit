@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function explode;
+use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Util\Test as TestUtil;
 
 /**
@@ -66,7 +67,7 @@ final class DataProviderTestSuite extends TestSuite
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function getSize(): int
+    public function getSize(): TestSize
     {
         [$className, $methodName] = explode('::', $this->getName());
 

@@ -89,7 +89,7 @@ final class TestRunner
         $monitorFunctions = $result->isStrictAboutResourceUsageDuringSmallTests() &&
             !$test instanceof ErrorTestCase &&
             !$test instanceof WarningTestCase &&
-            $test->getSize() === \PHPUnit\Util\Test::SMALL &&
+            $test->getSize()->isSmall() &&
             function_exists('xdebug_start_function_monitor');
 
         if ($monitorFunctions) {
@@ -106,28 +106,16 @@ final class TestRunner
             if (!$test instanceof ErrorTestCase &&
                 !$test instanceof WarningTestCase &&
                 $result->enforcesTimeLimit() &&
-                ($result->defaultTimeLimit() || $test->getSize() !== \PHPUnit\Util\Test::UNKNOWN) &&
+                ($result->defaultTimeLimit() || $test->getSize()->isKnown()) &&
                 $invoker->canInvokeWithTimeout()) {
-                switch ($test->getSize()) {
-                    case \PHPUnit\Util\Test::SMALL:
-                        $_timeout = $result->timeoutForSmallTests();
+                $_timeout = $result->defaultTimeLimit();
 
-                        break;
-
-                    case \PHPUnit\Util\Test::MEDIUM:
-                        $_timeout = $result->timeoutForMediumTests();
-
-                        break;
-
-                    case \PHPUnit\Util\Test::LARGE:
-                        $_timeout = $result->timeoutForLargeTests();
-
-                        break;
-
-                    case \PHPUnit\Util\Test::UNKNOWN:
-                        $_timeout = $result->defaultTimeLimit();
-
-                        break;
+                if ($test->isSmall()) {
+                    $_timeout = $result->timeoutForSmallTests();
+                } elseif ($test->isMedium()) {
+                    $_timeout = $result->timeoutForMediumTests();
+                } elseif ($test->isLarge()) {
+                    $_timeout = $result->timeoutForLargeTests();
                 }
 
                 $invoker->invoke([$test, 'runBare'], [], $_timeout);

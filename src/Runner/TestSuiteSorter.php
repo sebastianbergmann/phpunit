@@ -23,7 +23,6 @@ use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Util\Test as TestUtil;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -76,10 +75,10 @@ final class TestSuiteSorter
     ];
 
     private const SIZE_SORT_WEIGHT = [
-        TestUtil::SMALL   => 1,
-        TestUtil::MEDIUM  => 2,
-        TestUtil::LARGE   => 3,
-        TestUtil::UNKNOWN => 4,
+        'small'   => 1,
+        'medium'  => 2,
+        'large'   => 3,
+        'unknown' => 4,
     ];
 
     /**
@@ -323,11 +322,11 @@ final class TestSuiteSorter
     private function cmpSize(Test $a, Test $b): int
     {
         $sizeA = ($a instanceof TestCase || $a instanceof DataProviderTestSuite)
-            ? $a->getSize()
-            : TestUtil::UNKNOWN;
+            ? $a->getSize()->asString()
+            : 'unknown';
         $sizeB = ($b instanceof TestCase || $b instanceof DataProviderTestSuite)
-            ? $b->getSize()
-            : TestUtil::UNKNOWN;
+            ? $b->getSize()->asString()
+            : 'unknown';
 
         return self::SIZE_SORT_WEIGHT[$sizeA] <=> self::SIZE_SORT_WEIGHT[$sizeB];
     }

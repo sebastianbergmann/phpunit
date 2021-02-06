@@ -55,7 +55,6 @@ use PHPUnit\TestFixture\TestWithDifferentStatuses;
 use PHPUnit\TestFixture\ThrowExceptionTestCase;
 use PHPUnit\TestFixture\ThrowNoExceptionTestCase;
 use PHPUnit\TestFixture\WasRun;
-use PHPUnit\Util\Test as TestUtil;
 use RuntimeException;
 use TypeError;
 
@@ -1128,9 +1127,6 @@ class TestCaseTest extends TestCase
         $test = new TestWithDifferentSizes('testWithSizeUnknown');
 
         $this->assertFalse($test->hasSize());
-
-        $this->assertSame(TestUtil::UNKNOWN, $test->getSize());
-
         $this->assertFalse($test->isLarge());
         $this->assertFalse($test->isMedium());
         $this->assertFalse($test->isSmall());
@@ -1141,9 +1137,6 @@ class TestCaseTest extends TestCase
         $test = new TestWithDifferentSizes('testWithSizeLarge');
 
         $this->assertTrue($test->hasSize());
-
-        $this->assertSame(TestUtil::LARGE, $test->getSize());
-
         $this->assertTrue($test->isLarge());
         $this->assertFalse($test->isMedium());
         $this->assertFalse($test->isSmall());
@@ -1154,9 +1147,6 @@ class TestCaseTest extends TestCase
         $test = new TestWithDifferentSizes('testWithSizeMedium');
 
         $this->assertTrue($test->hasSize());
-
-        $this->assertSame(TestUtil::MEDIUM, $test->getSize());
-
         $this->assertFalse($test->isLarge());
         $this->assertTrue($test->isMedium());
         $this->assertFalse($test->isSmall());
@@ -1167,9 +1157,6 @@ class TestCaseTest extends TestCase
         $test = new TestWithDifferentSizes('testWithSizeSmall');
 
         $this->assertTrue($test->hasSize());
-
-        $this->assertSame(TestUtil::SMALL, $test->getSize());
-
         $this->assertFalse($test->isLarge());
         $this->assertFalse($test->isMedium());
         $this->assertTrue($test->isSmall());

@@ -22,7 +22,7 @@ use Throwable;
 final class TestResult implements Countable
 {
     /**
-     * @psalm-var array<string,array{result: mixed, size: int}>
+     * @psalm-var array<string,array{result: mixed, size: \PHPUnit\Framework\TestSize\TestSize}>
      */
     private array $passed = [];
 
@@ -380,7 +380,7 @@ final class TestResult implements Countable
     }
 
     /**
-     * @psalm-return array<string,array{result: mixed, size: int}>
+     * @psalm-return array<string,array{result: mixed, size: \PHPUnit\Framework\TestSize\TestSize}>
      */
     public function passed(): array
     {
