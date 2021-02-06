@@ -536,7 +536,9 @@ final class Test
         return array_unique($dependencies);
     }
 
-    /** @psalm-param class-string $className */
+    /**
+     * @psalm-param class-string $className
+     */
     public static function getGroups(string $className, ?string $methodName = ''): array
     {
         $annotations = self::parseTestMethodAnnotations(
@@ -595,8 +597,10 @@ final class Test
         return array_unique(array_merge([], ...$groups));
     }
 
-    /** @psalm-param class-string $className */
-    public static function size(string $className, ?string $methodName): TestSize
+    /**
+     * @psalm-param class-string $className
+     */
+    public static function getSize(string $className, ?string $methodName): TestSize
     {
         $groups = array_flip(self::getGroups($className, $methodName));
 
@@ -615,7 +619,9 @@ final class Test
         return TestSize::unknown();
     }
 
-    /** @psalm-param class-string $className */
+    /**
+     * @psalm-param class-string $className
+     */
     public static function getProcessIsolationSettings(string $className, string $methodName): bool
     {
         $annotations = self::parseTestMethodAnnotations(
@@ -626,7 +632,9 @@ final class Test
         return isset($annotations['class']['runTestsInSeparateProcesses']) || isset($annotations['method']['runInSeparateProcess']);
     }
 
-    /** @psalm-param class-string $className */
+    /**
+     * @psalm-param class-string $className
+     */
     public static function getClassProcessIsolationSettings(string $className, string $methodName): bool
     {
         $annotations = self::parseTestMethodAnnotations(
@@ -637,7 +645,9 @@ final class Test
         return isset($annotations['class']['runClassInSeparateProcess']);
     }
 
-    /** @psalm-param class-string $className */
+    /**
+     * @psalm-param class-string $className
+     */
     public static function getPreserveGlobalStateSettings(string $className, string $methodName): ?bool
     {
         return self::getBooleanAnnotationSetting(
@@ -647,7 +657,9 @@ final class Test
         );
     }
 
-    /** @psalm-param class-string $className */
+    /**
+     * @psalm-param class-string $className
+     */
     public static function getHookMethods(string $className): array
     {
         if (!class_exists($className, false)) {
@@ -743,7 +755,9 @@ final class Test
         ];
     }
 
-    /** @psalm-param class-string $className */
+    /**
+     * @psalm-param class-string $className
+     */
     private static function getBooleanAnnotationSetting(string $className, ?string $methodName, string $settingName): ?bool
     {
         $annotations = self::parseTestMethodAnnotations(
