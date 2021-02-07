@@ -51,6 +51,8 @@ use PHPUnit\Util\Metadata\Covers;
 use PHPUnit\Util\Metadata\CoversClass;
 use PHPUnit\Util\Metadata\CoversFunction;
 use PHPUnit\Util\Metadata\CoversMethod;
+use PHPUnit\Util\Metadata\Group;
+use PHPUnit\Util\Metadata\Metadata;
 use PHPUnit\Util\Metadata\MetadataCollection;
 use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\Metadata\Uses;
@@ -541,60 +543,48 @@ final class Test
      */
     public static function getGroups(string $className, ?string $methodName = ''): array
     {
-        $annotations = self::parseTestMethodAnnotations(
+        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
             $className,
             $methodName
         );
 
         $groups = [];
 
-        if (isset($annotations['method']['author'])) {
-            $groups[] = $annotations['method']['author'];
-        } elseif (isset($annotations['class']['author'])) {
-            $groups[] = $annotations['class']['author'];
-        }
+        foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
+            assert($metadata instanceof Metadata);
 
-        if (isset($annotations['class']['group'])) {
-            $groups[] = $annotations['class']['group'];
-        }
+            if ($metadata->isGroup()) {
+                assert($metadata instanceof Group);
 
-        if (isset($annotations['method']['group'])) {
-            $groups[] = $annotations['method']['group'];
-        }
+                $groups[] = $metadata->groupName();
+            }
 
-        if (isset($annotations['class']['ticket'])) {
-            $groups[] = $annotations['class']['ticket'];
-        }
+            if ($metadata->isCoversClass() || $metadata->isCoversMethod() || $metadata->isCoversFunction()) {
+                assert($metadata instanceof CoversClass || $metadata instanceof CoversMethod || $metadata instanceof CoversFunction);
 
-        if (isset($annotations['method']['ticket'])) {
-            $groups[] = $annotations['method']['ticket'];
-        }
+                $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
+            }
 
-        foreach (['method', 'class'] as $element) {
-            foreach (['small', 'medium', 'large'] as $size) {
-                if (isset($annotations[$element][$size])) {
-                    $groups[] = [$size];
+            if ($metadata->isCovers()) {
+                assert($metadata instanceof Covers);
 
-                    break 2;
-                }
+                $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->target());
+            }
+
+            if ($metadata->isUsesClass() || $metadata->isUsesMethod() || $metadata->isUsesFunction()) {
+                assert($metadata instanceof UsesClass || $metadata instanceof UsesMethod || $metadata instanceof UsesFunction);
+
+                $groups[] = '__phpunit_uses_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
+            }
+
+            if ($metadata->isUses()) {
+                assert($metadata instanceof Uses);
+
+                $groups[] = '__phpunit_uses_' . self::canonicalizeName($metadata->target());
             }
         }
 
-        foreach (['method', 'class'] as $element) {
-            if (isset($annotations[$element]['covers'])) {
-                foreach ($annotations[$element]['covers'] as $coversTarget) {
-                    $groups[] = ['__phpunit_covers_' . self::canonicalizeName($coversTarget)];
-                }
-            }
-
-            if (isset($annotations[$element]['uses'])) {
-                foreach ($annotations[$element]['uses'] as $usesTarget) {
-                    $groups[] = ['__phpunit_uses_' . self::canonicalizeName($usesTarget)];
-                }
-            }
-        }
-
-        return array_unique(array_merge([], ...$groups));
+        return array_unique($groups);
     }
 
     /**

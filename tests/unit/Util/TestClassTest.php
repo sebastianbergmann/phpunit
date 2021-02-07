@@ -792,10 +792,10 @@ final class TestClassTest extends TestCase
     }
 
     /**
-     * @testdox Parse @author/@ticket for $class::$method
+     * @testdox Parse @ticket for $class::$method
      * @dataProvider getGroupsProvider
      */
-    public function testGetGroupsFromAuthorAndTicketAnnotations(string $class, string $method, array $groups): void
+    public function testGetGroupsFromTicketAnnotations(string $class, string $method, array $groups): void
     {
         $this->assertSame($groups, Test::getGroups($class, $method));
     }
@@ -806,17 +806,17 @@ final class TestClassTest extends TestCase
             [
                 NumericGroupAnnotationTest::class,
                 '',
-                ['Companion Cube', 't123456'],
+                ['t123456'],
             ],
             [
                 NumericGroupAnnotationTest::class,
                 'testTicketAnnotationSupportsNumericValue',
-                ['C. Lippy', 't123456', '3502'],
+                ['t123456', '3502'],
             ],
             [
                 NumericGroupAnnotationTest::class,
                 'testGroupAnnotationSupportsNumericValue',
-                ['Companion Cube', '3502', 't123456'],
+                ['t123456', '3502'],
             ],
         ];
     }
