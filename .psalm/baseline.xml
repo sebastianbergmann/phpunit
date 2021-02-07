@@ -1385,15 +1385,22 @@
     <MissingReturnType occurrences="1">
       <code>sanitizeVersionNumber</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="3">
+    <MissingThrowsDocblock occurrences="1">
       <code>forClassName</code>
-      <code>getName</code>
-      <code>getName</code>
     </MissingThrowsDocblock>
-    <RedundantCondition occurrences="4">
+    <PossiblyNullArgument occurrences="1">
+      <code>$methodName</code>
+    </PossiblyNullArgument>
+    <RedundantCondition occurrences="10">
+      <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
+      <code>$metadata instanceof UsesFunction</code>
       <code>assert($metadata instanceof Covers)</code>
+      <code>assert($metadata instanceof Covers)</code>
+      <code>assert($metadata instanceof Group)</code>
+      <code>assert($metadata instanceof Metadata)</code>
+      <code>assert($metadata instanceof Uses)</code>
       <code>assert($metadata instanceof Uses)</code>
     </RedundantCondition>
     <UndefinedMethod occurrences="2">
