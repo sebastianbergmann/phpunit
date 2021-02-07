@@ -16,18 +16,18 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 ...                                                                 3 / 3 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <tests>
-  <test className="PHPUnit\TestFixture\BankAccountTest" methodName="testBalanceIsInitiallyZero" prettifiedClassName="Bank Account (PHPUnit\TestFixture\BankAccount)" prettifiedMethodName="Balance is initially zero" status="success" time="%s" size="-1" given="a fresh bank account" givenStartLine="31" when="I ask it for its balance" whenStartLine="34" then="I should get 0" thenStartLine="37">
+  <test className="PHPUnit\TestFixture\BankAccountTest" methodName="testBalanceIsInitiallyZero" prettifiedClassName="Bank Account (PHPUnit\TestFixture\BankAccount)" prettifiedMethodName="Balance is initially zero" status="success" time="%s" size="unknown" given="a fresh bank account" givenStartLine="31" when="I ask it for its balance" whenStartLine="34" then="I should get 0" thenStartLine="37">
     <group name="balanceIsInitiallyZero"/>
     <group name="specification"/>
     <group name="1234"/>
     <covers target="BankAccount::getBalance"/>
   </test>
-  <test className="PHPUnit\TestFixture\BankAccountTest" methodName="testBalanceCannotBecomeNegative" prettifiedClassName="Bank Account (PHPUnit\TestFixture\BankAccount)" prettifiedMethodName="Balance cannot become negative" status="success" time="%s" size="-1">
+  <test className="PHPUnit\TestFixture\BankAccountTest" methodName="testBalanceCannotBecomeNegative" prettifiedClassName="Bank Account (PHPUnit\TestFixture\BankAccount)" prettifiedMethodName="Balance cannot become negative" status="success" time="%s" size="unknown">
     <group name="balanceCannotBecomeNegative"/>
     <group name="specification"/>
     <covers target="BankAccount::withdrawMoney"/>
   </test>
-  <test className="PHPUnit\TestFixture\BankAccountTest" methodName="testBalanceCannotBecomeNegative2" prettifiedClassName="Bank Account (PHPUnit\TestFixture\BankAccount)" prettifiedMethodName="Balance cannot become negative" status="success" time="%s" size="-1">
+  <test className="PHPUnit\TestFixture\BankAccountTest" methodName="testBalanceCannotBecomeNegative2" prettifiedClassName="Bank Account (PHPUnit\TestFixture\BankAccount)" prettifiedMethodName="Balance cannot become negative" status="success" time="%s" size="unknown">
     <group name="balanceCannotBecomeNegative"/>
     <group name="specification"/>
     <covers target="BankAccount::depositMoney"/>
