@@ -16,4 +16,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class LargeTest extends TestCase
 {
+    /**
+     * @large
+     */
+    public function testWithLargeAnnotation(): void
+    {
+    }
 }

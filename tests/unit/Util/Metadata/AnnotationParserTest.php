@@ -371,6 +371,24 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('another-group', $metadata->asArray()[0]->groupName());
     }
 
+    public function test_Parses_large_annotation_on_method(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(LargeTest::class, 'testWithLargeAnnotation');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isGroup());
+        $this->assertSame('large', $metadata->asArray()[0]->groupName());
+    }
+
+    public function test_Parses_medium_annotation_on_method(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(MediumTest::class, 'testWithMediumAnnotation');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isGroup());
+        $this->assertSame('medium', $metadata->asArray()[0]->groupName());
+    }
+
     public function test_Parses_postCondition_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'postCondition');
@@ -466,6 +484,15 @@ final class AnnotationParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRunInSeparateProcess());
+    }
+
+    public function test_Parses_small_annotation_on_method(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithSmallAnnotation');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isGroup());
+        $this->assertSame('small', $metadata->asArray()[0]->groupName());
     }
 
     public function test_Parses_test_annotation_on_method(): void

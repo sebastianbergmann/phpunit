@@ -244,6 +244,16 @@ final class AnnotationParser implements Parser
 
                     break;
 
+                case 'large':
+                    $result[] = new Group('large');
+
+                    break;
+
+                case 'medium':
+                    $result[] = new Group('medium');
+
+                    break;
+
                 case 'postCondition':
                     $result[] = new PostCondition;
 
@@ -266,6 +276,11 @@ final class AnnotationParser implements Parser
 
                 case 'runInSeparateProcess':
                     $result[] = new RunInSeparateProcess;
+
+                    break;
+
+                case 'small':
+                    $result[] = new Group('small');
 
                     break;
 

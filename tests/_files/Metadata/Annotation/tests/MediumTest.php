@@ -16,4 +16,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class MediumTest extends TestCase
 {
+    /**
+     * @medium
+     */
+    public function testWithMediumAnnotation(): void
+    {
+    }
 }

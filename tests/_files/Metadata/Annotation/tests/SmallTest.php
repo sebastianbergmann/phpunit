@@ -94,4 +94,11 @@ final class SmallTest extends TestCase
     public function afterTests(): void
     {
     }
+
+    /**
+     * @small
+     */
+    public function testWithSmallAnnotation(): void
+    {
+    }
 }
