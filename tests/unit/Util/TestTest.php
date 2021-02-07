@@ -53,7 +53,7 @@ use ReflectionMethod;
 /**
  * @small
  */
-final class TestClassTest extends TestCase
+final class TestTest extends TestCase
 {
     /**
      * @var string
