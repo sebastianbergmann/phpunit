@@ -271,7 +271,7 @@ final class TestResult implements Countable
             $key   = $class . '::' . $test->getName();
 
             $this->passed[$key] = [
-                'result' => $test->getResult(),
+                'result' => $test->result(),
                 'size'   => \PHPUnit\Util\Test::size(
                     $class,
                     $test->getName(false)

@@ -78,7 +78,7 @@ function __phpunit_run_isolated_test()
 
     print serialize(
       [
-        'testResult'    => $test->getResult(),
+        'testResult'    => $test->result(),
         'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
         'numAssertions' => $test->getNumAssertions(),
         'result'        => $result,

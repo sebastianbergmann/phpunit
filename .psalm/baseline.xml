@@ -632,7 +632,7 @@
       <code>$value</code>
     </MissingParamType>
     <MissingReturnType occurrences="2">
-      <code>getResult</code>
+      <code>result</code>
       <code>runTest</code>
     </MissingReturnType>
     <MissingThrowsDocblock occurrences="15">
