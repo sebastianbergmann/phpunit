@@ -238,7 +238,7 @@ final class TestRunner
                         $test->getName(false)
                     );
 
-                    $linesToBeUsed = \PHPUnit\Util\Test::getLinesToBeUsed(
+                    $linesToBeUsed = \PHPUnit\Util\Test::linesToBeUsed(
                         get_class($test),
                         $test->getName(false)
                     );

@@ -207,7 +207,7 @@ final class Test
      *
      * @todo Avoid calling this method for methods that do not exist
      */
-    public static function getLinesToBeUsed(string $className, string $methodName): array
+    public static function linesToBeUsed(string $className, string $methodName): array
     {
         [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
             $className,
