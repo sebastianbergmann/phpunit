@@ -1069,6 +1069,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->warnings[] = $warning;
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function sortId(): string
     {
         $id = $this->name;
