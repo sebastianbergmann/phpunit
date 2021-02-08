@@ -190,7 +190,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private ?TestStatus $status = null;
 
-    private int $numAssertions = 0;
+    private int $numberOfAssertionsPerformed = 0;
 
     private ?TestResult $result = null;
 
@@ -721,7 +721,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function runBare(): void
     {
-        $this->numAssertions = 0;
+        $this->numberOfAssertionsPerformed = 0;
 
         $this->snapshotGlobalState();
         $this->startOutputBuffering();
@@ -990,7 +990,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function addToAssertionCount(int $count): void
     {
-        $this->numAssertions += $count;
+        $this->numberOfAssertionsPerformed += $count;
     }
 
     /**
@@ -1000,7 +1000,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function getNumAssertions(): int
     {
-        return $this->numAssertions;
+        return $this->numberOfAssertionsPerformed;
     }
 
     /**
@@ -1177,7 +1177,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 )
             );
         } elseif ($this->expectedExceptionMessage !== null) {
-            $this->numAssertions++;
+            $this->numberOfAssertionsPerformed++;
 
             throw new AssertionFailedError(
                 sprintf(
@@ -1186,7 +1186,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 )
             );
         } elseif ($this->expectedExceptionMessageRegExp !== null) {
-            $this->numAssertions++;
+            $this->numberOfAssertionsPerformed++;
 
             throw new AssertionFailedError(
                 sprintf(
@@ -1195,7 +1195,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 )
             );
         } elseif ($this->expectedExceptionCode !== null) {
-            $this->numAssertions++;
+            $this->numberOfAssertionsPerformed++;
 
             throw new AssertionFailedError(
                 sprintf(
@@ -1527,7 +1527,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         foreach ($this->mockObjects as $mockObject) {
             if ($mockObject->__phpunit_hasMatchers()) {
-                $this->numAssertions++;
+                $this->numberOfAssertionsPerformed++;
             }
 
             $mockObject->__phpunit_verify(
