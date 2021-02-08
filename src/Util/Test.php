@@ -590,7 +590,7 @@ final class Test
     /**
      * @psalm-param class-string $className
      */
-    public static function getSize(string $className, ?string $methodName): TestSize
+    public static function size(string $className, ?string $methodName): TestSize
     {
         $groups = array_flip(self::getGroups($className, $methodName));
 
