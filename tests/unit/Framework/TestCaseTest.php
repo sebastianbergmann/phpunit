@@ -302,17 +302,6 @@ class TestCaseTest extends TestCase
         $this->assertTrue($result->wasSuccessful());
     }
 
-    public function testExpectExceptionAllowsAccessingExpectedException(): void
-    {
-        $exception = RuntimeException::class;
-
-        $test = new ThrowExceptionTestCase('test');
-
-        $test->expectException($exception);
-
-        $this->assertSame($exception, $test->getExpectedException());
-    }
-
     public function testExpectExceptionCodeWithSameCode(): void
     {
         $test = new ThrowExceptionTestCase('test');
@@ -339,17 +328,6 @@ class TestCaseTest extends TestCase
 
         $this->assertCount(1, $result);
         $this->assertFalse($result->wasSuccessful());
-    }
-
-    public function testExpectExceptionCodeAllowsAccessingExpectedExceptionCode(): void
-    {
-        $code = 9000;
-
-        $test = new ThrowExceptionTestCase('test');
-
-        $test->expectExceptionCode($code);
-
-        $this->assertSame($code, $test->getExpectedExceptionCode());
     }
 
     public function testExceptionWithEmptyMessage(): void
@@ -410,17 +388,6 @@ class TestCaseTest extends TestCase
         );
     }
 
-    public function testExpectExceptionMessageAllowsAccessingExpectedExceptionMessage(): void
-    {
-        $message = 'A runtime error occurred';
-
-        $test = new ThrowExceptionTestCase('test');
-
-        $test->expectExceptionMessage($message);
-
-        $this->assertSame($message, $test->getExpectedExceptionMessage());
-    }
-
     public function testExceptionWithRegexpMessage(): void
     {
         $test = new ThrowExceptionTestCase('test');
@@ -433,17 +400,6 @@ class TestCaseTest extends TestCase
 
         $this->assertCount(1, $result);
         $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testexpectExceptionMessageMatchesAllowsAccessingExpectedExceptionRegExp(): void
-    {
-        $messageRegExp = '/runtime .*? occurred/';
-
-        $test = new ThrowExceptionTestCase('test');
-
-        $test->expectExceptionMessageMatches($messageRegExp);
-
-        $this->assertSame($messageRegExp, $test->getExpectedExceptionMessageRegExp());
     }
 
     public function testExceptionWithWrongRegexpMessage(): void
@@ -554,22 +510,6 @@ class TestCaseTest extends TestCase
 
         $this->assertCount(1, $result);
         $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testExpectExceptionObjectAllowsAccessingExpectedExceptionDetails(): void
-    {
-        $exception = new RuntimeException(
-            'Cannot compute at this time',
-            9000
-        );
-
-        $test = new ThrowExceptionTestCase('testWithExpectExceptionObject');
-
-        $test->expectExceptionObject($exception);
-
-        $this->assertSame(get_class($exception), $test->getExpectedException());
-        $this->assertSame($exception->getCode(), $test->getExpectedExceptionCode());
-        $this->assertSame($exception->getMessage(), $test->getExpectedExceptionMessage());
     }
 
     public function testNoException(): void
