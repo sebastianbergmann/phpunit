@@ -261,7 +261,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         }
 
         if ($test instanceof TestCase) {
-            $this->numAssertions += $test->getNumAssertions();
+            $this->numAssertions += $test->numberOfAssertionsPerformed();
         } elseif ($test instanceof PhptTestCase) {
             $this->numAssertions++;
         }

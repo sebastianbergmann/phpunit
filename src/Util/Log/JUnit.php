@@ -314,8 +314,8 @@ final class JUnit extends Printer implements TestListener
     {
         $numAssertions = 0;
 
-        if (method_exists($test, 'getNumAssertions')) {
-            $numAssertions = $test->getNumAssertions();
+        if (method_exists($test, 'numberOfAssertionsPerformed')) {
+            $numAssertions = $test->numberOfAssertionsPerformed();
         }
 
         $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;

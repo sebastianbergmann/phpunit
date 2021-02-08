@@ -77,7 +77,7 @@ function __phpunit_run_isolated_test()
       [
         'testResult'    => $test->result(),
         'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
-        'numAssertions' => $test->getNumAssertions(),
+        'numAssertions' => $test->numberOfAssertionsPerformed(),
         'result'        => $result,
         'output'        => $output
       ]

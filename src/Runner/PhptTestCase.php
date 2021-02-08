@@ -246,7 +246,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return false;
     }
 
-    public function getNumAssertions(): int
+    public function numberOfAssertionsPerformed(): int
     {
         return 1;
     }

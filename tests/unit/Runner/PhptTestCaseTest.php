@@ -103,7 +103,7 @@ EOF;
 
     public function testAlwaysReportsNumberOfAssertionsIsOne(): void
     {
-        $this->assertSame(1, $this->testCase->getNumAssertions());
+        $this->assertSame(1, $this->testCase->numberOfAssertionsPerformed());
     }
 
     public function testAlwaysReportsItDoesNotUseADataprovider(): void

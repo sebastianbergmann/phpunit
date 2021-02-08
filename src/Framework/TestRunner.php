@@ -197,7 +197,7 @@ final class TestRunner
         }
 
         if ($result->isStrictAboutTestsThatDoNotTestAnything() &&
-            $test->getNumAssertions() === 0) {
+            $test->numberOfAssertionsPerformed() === 0) {
             $risky = true;
         }
 
@@ -288,7 +288,7 @@ final class TestRunner
             );
         } elseif ($result->isStrictAboutTestsThatDoNotTestAnything() &&
             !$test->doesNotPerformAssertions() &&
-            $test->getNumAssertions() === 0) {
+            $test->numberOfAssertionsPerformed() === 0) {
             $reflected = new ReflectionClass($test);
             $name      = $test->getName(false);
 
@@ -309,13 +309,13 @@ final class TestRunner
             );
         } elseif ($result->isStrictAboutTestsThatDoNotTestAnything() &&
             $test->doesNotPerformAssertions() &&
-            $test->getNumAssertions() > 0) {
+            $test->numberOfAssertionsPerformed() > 0) {
             $result->addFailure(
                 $test,
                 new RiskyTestError(
                     sprintf(
                         'This test is annotated with "@doesNotPerformAssertions" but performed %d assertions',
-                        $test->getNumAssertions()
+                        $test->numberOfAssertionsPerformed()
                     )
                 ),
                 $time

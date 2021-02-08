@@ -994,11 +994,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns the number of assertions performed by this test.
-     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function getNumAssertions(): int
+    public function numberOfAssertionsPerformed(): int
     {
         return $this->numberOfAssertionsPerformed;
     }
