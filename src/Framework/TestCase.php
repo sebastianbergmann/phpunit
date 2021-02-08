@@ -403,7 +403,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->getName(false)
         );
 
-        return $buffer . $this->getDataSetAsString();
+        return $buffer . $this->getDataSetAsStringWithData();
     }
 
     public function count(): int
@@ -643,7 +643,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function getName(bool $withDataSet = true): string
     {
         if ($withDataSet) {
-            return $this->name . $this->getDataSetAsString(false);
+            return $this->name . $this->getDataSetAsString();
         }
 
         return $this->name;
@@ -1022,7 +1022,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function getDataSetAsString(bool $includeData = true): string
+    public function getDataSetAsString(): string
     {
         $buffer = '';
 
@@ -1032,15 +1032,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             } else {
                 $buffer .= sprintf(' with data set "%s"', $this->dataName);
             }
-
-            if ($includeData) {
-                $exporter = new Exporter;
-
-                $buffer .= sprintf(' (%s)', $exporter->shortenedRecursiveExport($this->data));
-            }
         }
 
         return $buffer;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function getDataSetAsStringWithData(): string
+    {
+        if (empty($this->data)) {
+            return '';
+        }
+
+        return $this->getDataSetAsString() . sprintf(
+            ' (%s)',
+            (new Exporter)->shortenedRecursiveExport($this->data)
+        );
     }
 
     /**
@@ -1070,7 +1079,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if ($this->usesDataProvider()) {
-            $id .= $this->getDataSetAsString(false);
+            $id .= $this->getDataSetAsString();
         }
 
         return $id;

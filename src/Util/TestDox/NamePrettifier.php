@@ -174,7 +174,7 @@ final class NamePrettifier
     public function prettifyDataSet(TestCase $test): string
     {
         if (!$this->useColor) {
-            return $test->getDataSetAsString(false);
+            return $test->getDataSetAsString();
         }
 
         if (is_int($test->dataName())) {
