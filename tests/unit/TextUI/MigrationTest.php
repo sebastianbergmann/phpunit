@@ -20,7 +20,7 @@ final class MigrationTest extends TestCase
     public function testCanMigratePhpUnit92Configuration(): void
     {
         $this->assertEquals(
-            (new XmlLoader)->loadFile(__DIR__ . '/../../_files/XmlConfigurationMigration/output-9.3.xml'),
+            (new XmlLoader)->loadFile(__DIR__ . '/../../_files/XmlConfigurationMigration/output-9.2.xml'),
             (new XmlLoader)->load(
                 (new Migrator)->migrate(
                     __DIR__ . '/../../_files/XmlConfigurationMigration/input-9.2.xml'
@@ -35,7 +35,7 @@ final class MigrationTest extends TestCase
     public function testCanMigratePhpUnit95Configuration(): void
     {
         $this->assertEquals(
-            (new XmlLoader)->loadFile(__DIR__ . '/../../_files/XmlConfigurationMigration/output-10.0.xml'),
+            (new XmlLoader)->loadFile(__DIR__ . '/../../_files/XmlConfigurationMigration/output-9.5.xml'),
             (new XmlLoader)->load(
                 (new Migrator)->migrate(
                     __DIR__ . '/../../_files/XmlConfigurationMigration/input-9.5.xml'
