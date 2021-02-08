@@ -52,7 +52,6 @@ use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\TextTestListRenderer;
-use PHPUnit\Util\Xml\SchemaDetector;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Filter;
@@ -693,12 +692,6 @@ class Command
     private function migrateConfiguration(string $filename): void
     {
         $this->printVersionString();
-
-        if (!(new SchemaDetector)->detect($filename)->detected()) {
-            print $filename . ' does not need to be migrated.' . PHP_EOL;
-
-            exit(TestRunner::EXCEPTION_EXIT);
-        }
 
         copy($filename, $filename . '.bak');
 
