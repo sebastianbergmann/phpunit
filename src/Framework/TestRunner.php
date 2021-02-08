@@ -110,11 +110,11 @@ final class TestRunner
                 $invoker->canInvokeWithTimeout()) {
                 $_timeout = $result->defaultTimeLimit();
 
-                if ($test->isSmall()) {
+                if ($test->getSize()->isSmall()) {
                     $_timeout = $result->timeoutForSmallTests();
-                } elseif ($test->isMedium()) {
+                } elseif ($test->getSize()->isMedium()) {
                     $_timeout = $result->timeoutForMediumTests();
-                } elseif ($test->isLarge()) {
+                } elseif ($test->getSize()->isLarge()) {
                     $_timeout = $result->timeoutForLargeTests();
                 }
 

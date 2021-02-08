@@ -50,7 +50,6 @@ use PHPUnit\TestFixture\TestIncomplete;
 use PHPUnit\TestFixture\TestSkipped;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 use PHPUnit\TestFixture\TestWithDifferentOutput;
-use PHPUnit\TestFixture\TestWithDifferentSizes;
 use PHPUnit\TestFixture\TestWithDifferentStatuses;
 use PHPUnit\TestFixture\ThrowExceptionTestCase;
 use PHPUnit\TestFixture\ThrowNoExceptionTestCase;
@@ -1120,46 +1119,6 @@ class TestCaseTest extends TestCase
 
         $this->assertIsArray($test->myTestData);
         $this->assertSame($data, $test->myTestData);
-    }
-
-    public function testSizeUnknown(): void
-    {
-        $test = new TestWithDifferentSizes('testWithSizeUnknown');
-
-        $this->assertFalse($test->hasSize());
-        $this->assertFalse($test->isLarge());
-        $this->assertFalse($test->isMedium());
-        $this->assertFalse($test->isSmall());
-    }
-
-    public function testSizeLarge(): void
-    {
-        $test = new TestWithDifferentSizes('testWithSizeLarge');
-
-        $this->assertTrue($test->hasSize());
-        $this->assertTrue($test->isLarge());
-        $this->assertFalse($test->isMedium());
-        $this->assertFalse($test->isSmall());
-    }
-
-    public function testSizeMedium(): void
-    {
-        $test = new TestWithDifferentSizes('testWithSizeMedium');
-
-        $this->assertTrue($test->hasSize());
-        $this->assertFalse($test->isLarge());
-        $this->assertTrue($test->isMedium());
-        $this->assertFalse($test->isSmall());
-    }
-
-    public function testSizeSmall(): void
-    {
-        $test = new TestWithDifferentSizes('testWithSizeSmall');
-
-        $this->assertTrue($test->hasSize());
-        $this->assertFalse($test->isLarge());
-        $this->assertFalse($test->isMedium());
-        $this->assertTrue($test->isSmall());
     }
 
     public function testCanUseDependsToDependOnSuccessfulClass(): void
