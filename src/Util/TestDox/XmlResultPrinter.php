@@ -163,7 +163,7 @@ final class XmlResultPrinter extends Printer implements TestListener
         $testNode->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestCase($test));
         $testNode->setAttribute('status', $test->status()->asString());
         $testNode->setAttribute('time', (string) $time);
-        $testNode->setAttribute('size', $test->getSize()->asString());
+        $testNode->setAttribute('size', $test->size()->asString());
 
         foreach ($groups as $group) {
             $groupNode = $this->document->createElement('group');

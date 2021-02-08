@@ -650,15 +650,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns the size of the test.
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function getSize(): TestSize
+    public function size(): TestSize
     {
-        return TestUtil::getSize(
+        return TestUtil::size(
             static::class,
             $this->getName(false)
         );
@@ -1646,8 +1644,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if (isset($passed[$dependencyTarget])) {
                 if ($passed[$dependencyTarget]['size']->isKnown() &&
-                    $this->getSize()->isKnown() &&
-                    $passed[$dependencyTarget]['size']->isGreaterThan($this->getSize())) {
+                    $this->size()->isKnown() &&
+                    $passed[$dependencyTarget]['size']->isGreaterThan($this->size())) {
                     $this->result->addFailure(
                         $this,
                         new SkippedTestError(

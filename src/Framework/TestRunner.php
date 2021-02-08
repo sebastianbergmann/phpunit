@@ -89,7 +89,7 @@ final class TestRunner
         $monitorFunctions = $result->isStrictAboutResourceUsageDuringSmallTests() &&
             !$test instanceof ErrorTestCase &&
             !$test instanceof WarningTestCase &&
-            $test->getSize()->isSmall() &&
+            $test->size()->isSmall() &&
             function_exists('xdebug_start_function_monitor');
 
         if ($monitorFunctions) {
@@ -106,15 +106,15 @@ final class TestRunner
             if (!$test instanceof ErrorTestCase &&
                 !$test instanceof WarningTestCase &&
                 $result->enforcesTimeLimit() &&
-                ($result->defaultTimeLimit() || $test->getSize()->isKnown()) &&
+                ($result->defaultTimeLimit() || $test->size()->isKnown()) &&
                 $invoker->canInvokeWithTimeout()) {
                 $_timeout = $result->defaultTimeLimit();
 
-                if ($test->getSize()->isSmall()) {
+                if ($test->size()->isSmall()) {
                     $_timeout = $result->timeoutForSmallTests();
-                } elseif ($test->getSize()->isMedium()) {
+                } elseif ($test->size()->isMedium()) {
                     $_timeout = $result->timeoutForMediumTests();
-                } elseif ($test->getSize()->isLarge()) {
+                } elseif ($test->size()->isLarge()) {
                     $_timeout = $result->timeoutForLargeTests();
                 }
 

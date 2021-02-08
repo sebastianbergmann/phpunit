@@ -607,7 +607,7 @@
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$this-&gt;expectedException</code>
-      <code>$this-&gt;getSize()</code>
+      <code>$this-&gt;size()</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="2">
       <code>$this-&gt;backupStaticAttributes === null</code>

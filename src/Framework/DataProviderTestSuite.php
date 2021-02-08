@@ -67,10 +67,10 @@ final class DataProviderTestSuite extends TestSuite
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function getSize(): TestSize
+    public function size(): TestSize
     {
         [$className, $methodName] = explode('::', $this->getName());
 
-        return TestUtil::getSize($className, $methodName);
+        return TestUtil::size($className, $methodName);
     }
 }
