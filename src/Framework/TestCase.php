@@ -837,7 +837,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
         }
 
-        // Workaround for missing "finally".
         if (isset($e)) {
             $this->onNotSuccessfulTest($e);
         }
