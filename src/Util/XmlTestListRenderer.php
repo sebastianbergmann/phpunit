@@ -52,7 +52,7 @@ final class XmlTestListRenderer
 
                 $writer->startElement('testCaseMethod');
                 $writer->writeAttribute('name', $test->getName(false));
-                $writer->writeAttribute('groups', implode(',', $test->getGroups()));
+                $writer->writeAttribute('groups', implode(',', $test->groups()));
 
                 if (!empty($test->getDataSetAsString(false))) {
                     $writer->writeAttribute(

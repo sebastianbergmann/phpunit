@@ -280,7 +280,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
         }
 
         if (!empty($this->groups)) {
-            foreach ($test->getGroups() as $group) {
+            foreach ($test->groups() as $group) {
                 if (in_array($group, $this->groups, true)) {
                     return true;
                 }
@@ -290,7 +290,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
         }
 
         if (!empty($this->excludeGroups)) {
-            foreach ($test->getGroups() as $group) {
+            foreach ($test->groups() as $group) {
                 if (in_array($group, $this->excludeGroups, true)) {
                     return false;
                 }
