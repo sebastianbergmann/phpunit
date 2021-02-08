@@ -623,7 +623,7 @@ final class TestTest extends TestCase
 
         $this->assertEqualsCanonicalizing(
             $expected,
-            Test::getLinesToBeCovered(
+            Test::linesToBeCovered(
                 $test,
                 'testSomething'
             )
@@ -634,7 +634,7 @@ final class TestTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
-            Test::getLinesToBeCovered(
+            Test::linesToBeCovered(
                 CoverageFunctionParenthesesTest::class,
                 'testSomething'
             )
@@ -645,7 +645,7 @@ final class TestTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
-            Test::getLinesToBeCovered(
+            Test::linesToBeCovered(
                 CoverageFunctionParenthesesWhitespaceTest::class,
                 'testSomething'
             )
@@ -656,7 +656,7 @@ final class TestTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
-            Test::getLinesToBeCovered(
+            Test::linesToBeCovered(
                 CoverageMethodParenthesesTest::class,
                 'testSomething'
             )
@@ -667,7 +667,7 @@ final class TestTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
-            Test::getLinesToBeCovered(
+            Test::linesToBeCovered(
                 CoverageMethodParenthesesWhitespaceTest::class,
                 'testSomething'
             )
@@ -680,7 +680,7 @@ final class TestTest extends TestCase
             [
                 TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(12, 15),
             ],
-            Test::getLinesToBeCovered(
+            Test::linesToBeCovered(
                 CoverageNamespacedFunctionTest::class,
                 'testFunc'
             )
@@ -761,7 +761,7 @@ final class TestTest extends TestCase
             [
                 TEST_FILES_PATH . '3194.php' => array_merge(range(14, 20), range(22, 30)),
             ],
-            Test::getLinesToBeCovered(
+            Test::linesToBeCovered(
                 Test3194::class,
                 'testOne'
             )

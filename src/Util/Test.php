@@ -109,7 +109,7 @@ final class Test
      *
      * @todo Avoid calling this method for methods that do not exist
      */
-    public static function getLinesToBeCovered(string $className, string $methodName)
+    public static function linesToBeCovered(string $className, string $methodName)
     {
         if (!self::shouldCodeCoverageBeCollectedFor($className, $methodName)) {
             return false;

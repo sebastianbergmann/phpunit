@@ -233,7 +233,7 @@ final class TestRunner
 
             if ($append) {
                 try {
-                    $linesToBeCovered = \PHPUnit\Util\Test::getLinesToBeCovered(
+                    $linesToBeCovered = \PHPUnit\Util\Test::linesToBeCovered(
                         get_class($test),
                         $test->getName(false)
                     );
