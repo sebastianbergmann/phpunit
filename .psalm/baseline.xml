@@ -813,6 +813,10 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$printerClass</code>
     </ArgumentTypeCoercion>
+    <DeprecatedMethod occurrences="2">
+      <code>cacheDirectory</code>
+      <code>hasCacheDirectory</code>
+    </DeprecatedMethod>
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
@@ -926,6 +930,11 @@
     <RedundantCondition occurrences="1">
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
     </RedundantCondition>
+  </file>
+  <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
+    <DeprecatedMethod occurrences="1">
+      <code>hasCacheDirectory</code>
+    </DeprecatedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Filter/DirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
@@ -1122,20 +1131,15 @@
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHPUnit/PHPUnit.php">
+    <DeprecatedMethod occurrences="1">
+      <code>hasCacheResultFile</code>
+    </DeprecatedMethod>
     <MissingParamType occurrences="1">
       <code>$columns</code>
     </MissingParamType>
     <MissingReturnType occurrences="1">
       <code>columns</code>
     </MissingReturnType>
-    <RedundantCast occurrences="6">
-      <code>(string) $this-&gt;bootstrap</code>
-      <code>(string) $this-&gt;cacheResultFile</code>
-      <code>(string) $this-&gt;defaultTestSuite</code>
-      <code>(string) $this-&gt;extensionsDirectory</code>
-      <code>(string) $this-&gt;printerClass</code>
-      <code>(string) $this-&gt;printerFile</code>
-    </RedundantCast>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestDirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">

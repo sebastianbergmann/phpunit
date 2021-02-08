@@ -85,6 +85,8 @@ final class CodeCoverage
 
     /**
      * @psalm-assert-if-true !null $this->cacheDirectory
+     *
+     * @deprecated
      */
     public function hasCacheDirectory(): bool
     {
@@ -93,6 +95,8 @@ final class CodeCoverage
 
     /**
      * @throws Exception
+     *
+     * @deprecated
      */
     public function cacheDirectory(): Directory
     {

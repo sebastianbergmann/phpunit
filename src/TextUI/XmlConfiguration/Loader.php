@@ -762,6 +762,12 @@ final class Loader
             $printerClass = CliTestDoxPrinter::class;
         }
 
+        $cacheDirectory = $this->getStringAttribute($document->documentElement, 'cacheDirectory');
+
+        if ($cacheDirectory !== null) {
+            $cacheDirectory = $this->toAbsolutePath($filename, $cacheDirectory);
+        }
+
         $cacheResultFile = $this->getStringAttribute($document->documentElement, 'cacheResultFile');
 
         if ($cacheResultFile !== null) {
@@ -787,6 +793,7 @@ final class Loader
         }
 
         return new PHPUnit(
+            $cacheDirectory,
             $this->getBooleanAttribute($document->documentElement, 'cacheResult', true),
             $cacheResultFile,
             $this->getColumns($document),

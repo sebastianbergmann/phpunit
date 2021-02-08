@@ -39,6 +39,10 @@ final class Mapper
             $result['bootstrap'] = $arguments->bootstrap();
         }
 
+        if ($arguments->hasCacheDirectory()) {
+            $result['cacheDirectory'] = $arguments->cacheDirectory();
+        }
+
         if ($arguments->hasCacheResult()) {
             $result['cacheResult'] = $arguments->cacheResult();
         }

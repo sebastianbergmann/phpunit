@@ -7,16 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util;
+namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TextUI\XmlConfiguration\Generator;
 
 /**
  * @small
  * @covers \PHPUnit\TextUI\XmlConfiguration\Generator
  */
-final class ConfigurationGeneratorTest extends TestCase
+final class XmlConfigurationGeneratorTest extends TestCase
 {
     public function testGeneratesConfigurationCorrectly(): void
     {
@@ -27,7 +26,7 @@ final class ConfigurationGeneratorTest extends TestCase
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/X.Y.Z/phpunit.xsd"
          bootstrap="vendor/autoload.php"
-         cacheResultFile=".phpunit.cache/test-results"
+         cacheDirectory=".phpunit.cache"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
@@ -42,8 +41,7 @@ final class ConfigurationGeneratorTest extends TestCase
         </testsuite>
     </testsuites>
 
-    <coverage cacheDirectory=".phpunit.cache/code-coverage"
-              processUncoveredFiles="true">
+    <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">src</directory>
         </include>

@@ -4,7 +4,7 @@
          bootstrap="tests/bootstrap.php"
          colors="true"
          verbose="true"
-         cacheResultFile=".phpunit.cache/test-results"
+         cacheDirectory=".phpunit.cache"
          failOnRisky="true"
          failOnWarning="true">
     <testsuites>
@@ -18,8 +18,7 @@
         </testsuite>
     </testsuites>
 
-    <coverage cacheDirectory=".phpunit.cache/code-coverage"
-              processUncoveredFiles="true"
+    <coverage processUncoveredFiles="true"
               ignoreDeprecatedCodeUnits="true">
         <include>
             <directory suffix=".php">src</directory>

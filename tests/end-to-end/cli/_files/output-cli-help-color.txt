@@ -16,7 +16,6 @@
                               format [default: standard output]
   [32m--coverage-xml [36m<dir>[0m       [0m Generate code coverage report in PHPUnit
                               XML format
-  [32m--coverage-cache [36m<dir>[0m     [0m Cache static analysis results
   [32m--warm-coverage-cache      [0m Warm static analysis cache
   [32m--coverage-filter [36m<dir>[0m    [0m Include <dir> in code coverage analysis
   [32m--path-coverage            [0m Perform path coverage analysis
@@ -126,7 +125,7 @@
   [32m--include-path [36m<path(s)>[0m   [0m Prepend PHP's include_path with given
                               path(s)
   [32m-d [36m<key[=value]>[0m           [0m Sets a php.ini value
-  [32m--cache-result-file [36m<file>[0m [0m Specify result cache path and filename
+  [32m--cache-directory [36m<dir>[0m    [0m Specify cache directory
   [32m--generate-configuration   [0m Generate configuration file with
                               suggested settings
   [32m--migrate-configuration    [0m Migrate configuration file to current

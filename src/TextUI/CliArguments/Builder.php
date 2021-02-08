@@ -33,6 +33,7 @@ final class Builder
         'bootstrap=',
         'cache-result',
         'do-not-cache-result',
+        'cache-directory=',
         'cache-result-file=',
         'check-version',
         'colors==',
@@ -143,6 +144,7 @@ final class Builder
         $beStrictAboutChangesToGlobalState          = null;
         $beStrictAboutResourceUsageDuringSmallTests = null;
         $bootstrap                                  = null;
+        $cacheDirectory                             = null;
         $cacheResult                                = null;
         $cacheResultFile                            = null;
         $checkVersion                               = null;
@@ -239,6 +241,11 @@ final class Builder
 
                 case '--bootstrap':
                     $bootstrap = $option[1];
+
+                    break;
+
+                case '--cache-directory':
+                    $cacheDirectory = $option[1];
 
                     break;
 
@@ -781,6 +788,7 @@ final class Builder
             $beStrictAboutChangesToGlobalState,
             $beStrictAboutResourceUsageDuringSmallTests,
             $bootstrap,
+            $cacheDirectory,
             $cacheResult,
             $cacheResultFile,
             $checkVersion,

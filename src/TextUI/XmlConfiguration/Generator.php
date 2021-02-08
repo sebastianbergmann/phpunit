@@ -24,7 +24,7 @@ final class Generator
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/{phpunit_version}/phpunit.xsd"
          bootstrap="{bootstrap_script}"
-         cacheResultFile="{cache_directory}/test-results"
+         cacheDirectory="{cache_directory}"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
@@ -39,8 +39,7 @@ final class Generator
         </testsuite>
     </testsuites>
 
-    <coverage cacheDirectory="{cache_directory}/code-coverage"
-              processUncoveredFiles="true">
+    <coverage processUncoveredFiles="true">
         <include>
             <directory suffix=".php">{src_directory}</directory>
         </include>

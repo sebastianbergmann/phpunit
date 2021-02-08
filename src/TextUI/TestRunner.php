@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI;
 
+use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use const PHP_SAPI;
 use const PHP_VERSION;
@@ -50,6 +51,7 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
+use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
@@ -149,25 +151,20 @@ final class TestRunner
         }
 
         if ($arguments['cacheResult']) {
-            if (!isset($arguments['cacheResultFile'])) {
-                if (isset($arguments['configurationObject'])) {
-                    assert($arguments['configurationObject'] instanceof Configuration);
+            if (isset($arguments['cacheDirectory']) &&
+                Filesystem::createDirectory($arguments['cacheDirectory'])) {
+                $cacheResultFile = realpath($arguments['cacheDirectory']) . DIRECTORY_SEPARATOR . 'test-results';
+            } elseif (isset($arguments['cacheResultFile'])) {
+                $cacheResultFile = $arguments['cacheResultFile'];
+            } elseif (isset($arguments['configurationObject'])) {
+                assert($arguments['configurationObject'] instanceof Configuration);
 
-                    $cacheLocation = $arguments['configurationObject']->filename();
-                } else {
-                    $cacheLocation = $_SERVER['PHP_SELF'];
-                }
-
-                $arguments['cacheResultFile'] = null;
-
-                $cacheResultFile = realpath($cacheLocation);
-
-                if ($cacheResultFile !== false) {
-                    $arguments['cacheResultFile'] = dirname($cacheResultFile);
-                }
+                $cacheResultFile = dirname(realpath($arguments['configurationObject']->filename())) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
+            } else {
+                $cacheResultFile = dirname(realpath($_SERVER['PHP_SELF'])) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
             }
 
-            $cache = new DefaultTestResultCache($arguments['cacheResultFile']);
+            $cache = new DefaultTestResultCache($cacheResultFile);
 
             $this->addExtension(new ResultCacheExtension($cache));
         }
@@ -426,12 +423,16 @@ final class TestRunner
                     CodeCoverage::activate($this->codeCoverageFilter, false);
                 }
 
-                if (isset($codeCoverageConfiguration) && $codeCoverageConfiguration->hasCacheDirectory()) {
-                    CodeCoverage::instance()->cacheStaticAnalysis($codeCoverageConfiguration->cacheDirectory()->path());
-                }
-
-                if (isset($arguments['coverageCacheDirectory'])) {
+                if (isset($arguments['cacheDirectory']) &&
+                    Filesystem::createDirectory($arguments['cacheDirectory'])) {
+                    CodeCoverage::instance()->cacheStaticAnalysis(realpath($arguments['cacheDirectory']) . DIRECTORY_SEPARATOR . 'code-coverage');
+                } elseif (isset($arguments['coverageCacheDirectory']) &&
+                          Filesystem::createDirectory($arguments['coverageCacheDirectory'])) {
                     CodeCoverage::instance()->cacheStaticAnalysis($arguments['coverageCacheDirectory']);
+                } elseif (isset($codeCoverageConfiguration) &&
+                          $codeCoverageConfiguration->hasCacheDirectory() &&
+                          Filesystem::createDirectory($codeCoverageConfiguration->cacheDirectory()->path())) {
+                    CodeCoverage::instance()->cacheStaticAnalysis($codeCoverageConfiguration->cacheDirectory()->path());
                 }
 
                 CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
@@ -905,6 +906,10 @@ final class TestRunner
 
             if (!isset($arguments['bootstrap']) && $phpunitConfiguration->hasBootstrap()) {
                 $arguments['bootstrap'] = $phpunitConfiguration->bootstrap();
+            }
+
+            if (!isset($arguments['cacheDirectory']) && $phpunitConfiguration->hasCacheDirectory()) {
+                $arguments['cacheDirectory'] = $phpunitConfiguration->cacheDirectory();
             }
 
             if (!isset($arguments['cacheResultFile']) && $phpunitConfiguration->hasCacheResultFile()) {
