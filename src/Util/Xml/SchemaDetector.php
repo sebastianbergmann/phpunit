@@ -26,7 +26,7 @@ final class SchemaDetector
             true
         );
 
-        foreach (['9.2', '8.5'] as $candidate) {
+        foreach (['9.5', '9.2', '8.5'] as $candidate) {
             $schema = (new SchemaFinder)->find($candidate);
 
             if (!(new Validator)->validate($document, $schema)->hasValidationErrors()) {
