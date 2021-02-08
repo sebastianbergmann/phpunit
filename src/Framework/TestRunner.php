@@ -326,7 +326,7 @@ final class TestRunner
                 new OutputError(
                     sprintf(
                         'This test printed output: %s',
-                        $test->getActualOutput()
+                        $test->output()
                     )
                 ),
                 $time

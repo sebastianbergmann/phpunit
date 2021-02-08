@@ -251,7 +251,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return 1;
     }
 
-    public function getActualOutput(): string
+    public function output(): string
     {
         return $this->output;
     }

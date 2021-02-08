@@ -415,7 +415,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $this->outputRetrievedForAssertion = true;
 
-        return $this->getActualOutput();
+        return $this->output();
     }
 
     public function expectOutputRegex(string $expectedRegex): void
@@ -665,18 +665,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function getActualOutput(): string
-    {
-        if (!$this->outputBufferingActive) {
-            return $this->output;
-        }
-
-        return (string) ob_get_contents();
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public function hasOutput(): bool
     {
         if ($this->output === '') {
@@ -688,6 +676,18 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return true;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function output(): string
+    {
+        if (!$this->outputBufferingActive) {
+            return $this->output;
+        }
+
+        return (string) ob_get_contents();
     }
 
     /**

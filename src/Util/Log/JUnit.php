@@ -339,8 +339,8 @@ final class JUnit extends Printer implements TestListener
 
         $testOutput = '';
 
-        if (method_exists($test, 'hasOutput') && method_exists($test, 'getActualOutput')) {
-            $testOutput = $test->hasOutput() ? $test->getActualOutput() : '';
+        if (method_exists($test, 'hasOutput') && method_exists($test, 'output')) {
+            $testOutput = $test->hasOutput() ? $test->output() : '';
         }
 
         if (!empty($testOutput)) {

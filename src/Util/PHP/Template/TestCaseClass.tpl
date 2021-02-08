@@ -59,7 +59,7 @@ function __phpunit_run_isolated_test()
     $test->run($result);
     $output = '';
     if (!$test->hasExpectationOnOutput()) {
-        $output = $test->getActualOutput();
+        $output = $test->output();
     }
 
     ini_set('xdebug.scream', '0');
