@@ -300,7 +300,7 @@ final class Mapper
         }
 
         if ($arguments->hasBackupStaticAttributes()) {
-            $result['backupStaticAttributes'] = $arguments->backupStaticAttributes();
+            $result['backupStaticProperties'] = $arguments->backupStaticAttributes();
         }
 
         if ($arguments->hasVerbose()) {

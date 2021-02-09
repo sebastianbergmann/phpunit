@@ -495,7 +495,7 @@ final class Test
     /**
      * @psalm-param class-string $className
      *
-     * @psalm-return array{backupGlobals: ?bool, backupStaticAttributes: ?bool}
+     * @psalm-return array{backupGlobals: ?bool, backupStaticProperties: ?bool}
      */
     public static function getBackupSettings(string $className, string $methodName): array
     {
@@ -524,7 +524,7 @@ final class Test
             }
         }
 
-        $backupStaticAttributes = null;
+        $backupStaticProperties = null;
 
         if ($metadataForMethod->isBackupStaticProperties()->isNotEmpty()) {
             $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
@@ -532,7 +532,7 @@ final class Test
             assert($metadata instanceof BackupStaticProperties);
 
             if ($metadata->enabled() !== null) {
-                $backupStaticAttributes = $metadata->enabled();
+                $backupStaticProperties = $metadata->enabled();
             }
         } elseif ($metadataForClass->isBackupStaticProperties()->isNotEmpty()) {
             $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
@@ -540,13 +540,13 @@ final class Test
             assert($metadata instanceof BackupStaticProperties);
 
             if ($metadata->enabled() !== null) {
-                $backupStaticAttributes = $metadata->enabled();
+                $backupStaticProperties = $metadata->enabled();
             }
         }
 
         return [
             'backupGlobals'          => $backupGlobals,
-            'backupStaticAttributes' => $backupStaticAttributes,
+            'backupStaticProperties' => $backupStaticProperties,
         ];
     }
 

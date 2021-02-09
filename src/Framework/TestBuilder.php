@@ -181,9 +181,9 @@ final class TestBuilder
             $test->setBackupGlobals($backupSettings['backupGlobals']);
         }
 
-        if ($backupSettings['backupStaticAttributes'] !== null) {
+        if ($backupSettings['backupStaticProperties'] !== null) {
             $test->setBackupStaticAttributes(
-                $backupSettings['backupStaticAttributes']
+                $backupSettings['backupStaticProperties']
             );
         }
     }

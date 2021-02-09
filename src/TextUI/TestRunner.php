@@ -138,7 +138,7 @@ final class TestRunner
             $suite->setBackupGlobals(true);
         }
 
-        if ($arguments['backupStaticAttributes'] === true) {
+        if ($arguments['backupStaticProperties'] === true) {
             $suite->setBackupStaticAttributes(true);
         }
 
@@ -863,7 +863,7 @@ final class TestRunner
             $phpunitConfiguration = $arguments['configurationObject']->phpunit();
 
             $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? $phpunitConfiguration->backupGlobals();
-            $arguments['backupStaticAttributes']                          = $arguments['backupStaticAttributes'] ?? $phpunitConfiguration->backupStaticProperties();
+            $arguments['backupStaticProperties']                          = $arguments['backupStaticProperties'] ?? $phpunitConfiguration->backupStaticProperties();
             $arguments['beStrictAboutChangesToGlobalState']               = $arguments['beStrictAboutChangesToGlobalState'] ?? $phpunitConfiguration->beStrictAboutChangesToGlobalState();
             $arguments['cacheResult']                                     = $arguments['cacheResult'] ?? $phpunitConfiguration->cacheResult();
             $arguments['colors']                                          = $arguments['colors'] ?? $phpunitConfiguration->colors();
@@ -1002,7 +1002,7 @@ final class TestRunner
         unset($extensionHandler);
 
         $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? null;
-        $arguments['backupStaticAttributes']                          = $arguments['backupStaticAttributes'] ?? null;
+        $arguments['backupStaticProperties']                          = $arguments['backupStaticProperties'] ?? null;
         $arguments['beStrictAboutChangesToGlobalState']               = $arguments['beStrictAboutChangesToGlobalState'] ?? null;
         $arguments['beStrictAboutResourceUsageDuringSmallTests']      = $arguments['beStrictAboutResourceUsageDuringSmallTests'] ?? false;
         $arguments['cacheResult']                                     = $arguments['cacheResult'] ?? true;
