@@ -480,7 +480,7 @@ final class XmlConfigurationTest extends TestCase
         $phpunit = $this->configuration('configuration.xml')->phpunit();
 
         $this->assertTrue($phpunit->backupGlobals());
-        $this->assertFalse($phpunit->backupStaticAttributes());
+        $this->assertFalse($phpunit->backupStaticProperties());
         $this->assertFalse($phpunit->beStrictAboutChangesToGlobalState());
         $this->assertSame('/path/to/bootstrap.php', $phpunit->bootstrap());
         $this->assertSame(80, $phpunit->columns());

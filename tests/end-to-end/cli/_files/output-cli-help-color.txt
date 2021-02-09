@@ -70,7 +70,7 @@
 
   [32m--process-isolation        [0m Run each test in a separate PHP process
   [32m--globals-backup           [0m Backup and restore $GLOBALS for each test
-  [32m--static-backup            [0m Backup and restore static attributes for
+  [32m--static-backup            [0m Backup and restore static properties for
                               each test
 
   [32m--colors [36m<flag>[0m            [0m Use colors in output ("never", "auto" or

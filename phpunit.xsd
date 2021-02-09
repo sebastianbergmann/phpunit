@@ -202,7 +202,7 @@
     </xs:complexType>
     <xs:attributeGroup name="configAttributeGroup">
         <xs:attribute name="backupGlobals" type="xs:boolean" default="false"/>
-        <xs:attribute name="backupStaticAttributes" type="xs:boolean" default="false"/>
+        <xs:attribute name="backupStaticProperties" type="xs:boolean" default="false"/>
         <xs:attribute name="bootstrap" type="xs:anyURI"/>
         <xs:attribute name="cacheDirectory" type="xs:anyURI"/>
         <xs:attribute name="cacheResult" type="xs:boolean" default="true"/>

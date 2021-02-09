@@ -792,6 +792,14 @@ final class Loader
             $printerFile = $this->toAbsolutePath($filename, $printerFile);
         }
 
+        $backupStaticProperties = false;
+
+        if ($document->documentElement->hasAttribute('backupStaticProperties')) {
+            $backupStaticProperties = $this->getBooleanAttribute($document->documentElement, 'backupStaticProperties', false);
+        } elseif ($document->documentElement->hasAttribute('backupStaticAttributes')) {
+            $backupStaticProperties = $this->getBooleanAttribute($document->documentElement, 'backupStaticAttributes', false);
+        }
+
         return new PHPUnit(
             $cacheDirectory,
             $this->getBooleanAttribute($document->documentElement, 'cacheResult', true),
@@ -840,7 +848,7 @@ final class Loader
             $resolveDependencies,
             $defectsFirst,
             $this->getBooleanAttribute($document->documentElement, 'backupGlobals', false),
-            $this->getBooleanAttribute($document->documentElement, 'backupStaticAttributes', false),
+            $backupStaticProperties,
             $this->getBooleanAttribute($document->documentElement, 'registerMockObjectsFromTestArgumentsRecursively', false),
             $conflictBetweenPrinterClassAndTestdox
         );

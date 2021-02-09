@@ -56,7 +56,7 @@ Test Execution Options:
 
   --process-isolation         Run each test in a separate PHP process
   --globals-backup            Backup and restore $GLOBALS for each test
-  --static-backup             Backup and restore static attributes for each test
+  --static-backup             Backup and restore static properties for each test
 
   --colors <flag>             Use colors in output ("never", "auto" or "always")
   --columns <n>               Number of columns to use for progress output

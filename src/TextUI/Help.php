@@ -86,7 +86,7 @@ final class Help
 
             ['arg'    => '--process-isolation', 'desc' => 'Run each test in a separate PHP process'],
             ['arg'    => '--globals-backup', 'desc' => 'Backup and restore $GLOBALS for each test'],
-            ['arg'    => '--static-backup', 'desc' => 'Backup and restore static attributes for each test'],
+            ['arg'    => '--static-backup', 'desc' => 'Backup and restore static properties for each test'],
             ['spacer' => ''],
 
             ['arg'    => '--colors <flag>', 'desc' => 'Use colors in output ("never", "auto" or "always")'],
