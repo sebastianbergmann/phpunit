@@ -1168,6 +1168,10 @@ if (!function_exists('PHPUnit\Framework\assertClassHasAttribute')) {
      * @throws Exception
      * @throws ExpectationFailedException
      *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
+     *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
      * @see Assert::assertClassHasAttribute
@@ -1185,6 +1189,10 @@ if (!function_exists('PHPUnit\Framework\assertClassNotHasAttribute')) {
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1204,6 +1212,10 @@ if (!function_exists('PHPUnit\Framework\assertClassHasStaticAttribute')) {
      * @throws Exception
      * @throws ExpectationFailedException
      *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
+     *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
      * @see Assert::assertClassHasStaticAttribute
@@ -1221,6 +1233,10 @@ if (!function_exists('PHPUnit\Framework\assertClassNotHasStaticAttribute')) {
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1242,6 +1258,10 @@ if (!function_exists('PHPUnit\Framework\assertObjectHasAttribute')) {
      * @throws Exception
      * @throws ExpectationFailedException
      *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
+     *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
      * @see Assert::assertObjectHasAttribute
@@ -1261,6 +1281,10 @@ if (!function_exists('PHPUnit\Framework\assertObjectNotHasAttribute')) {
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
+     *
+     * @codeCoverageIgnore
+     *
+     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *

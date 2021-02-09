@@ -1,6 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.x-dev@">
   <file src="src/Framework/Assert.php">
+    <DeprecatedClass occurrences="12">
+      <code>ClassHasAttribute</code>
+      <code>ClassHasStaticAttribute</code>
+      <code>ObjectHasAttribute</code>
+      <code>new ClassHasAttribute($attributeName)</code>
+      <code>new ClassHasAttribute($attributeName)</code>
+      <code>new ClassHasAttribute($attributeName)</code>
+      <code>new ClassHasStaticAttribute($attributeName)</code>
+      <code>new ClassHasStaticAttribute($attributeName)</code>
+      <code>new ClassHasStaticAttribute($attributeName)</code>
+      <code>new ObjectHasAttribute($attributeName)</code>
+      <code>new ObjectHasAttribute($attributeName)</code>
+      <code>new ObjectHasAttribute($attributeName)</code>
+    </DeprecatedClass>
     <DocblockTypeContradiction occurrences="16">
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
@@ -144,6 +158,22 @@
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Framework/Assert/Functions.php">
+    <DeprecatedClass occurrences="3">
+      <code>ClassHasAttribute</code>
+      <code>ClassHasStaticAttribute</code>
+      <code>ObjectHasAttribute</code>
+    </DeprecatedClass>
+    <DeprecatedMethod occurrences="9">
+      <code>Assert::assertClassHasAttribute(...func_get_args())</code>
+      <code>Assert::assertClassHasStaticAttribute(...func_get_args())</code>
+      <code>Assert::assertClassNotHasAttribute(...func_get_args())</code>
+      <code>Assert::assertClassNotHasStaticAttribute(...func_get_args())</code>
+      <code>Assert::assertObjectHasAttribute(...func_get_args())</code>
+      <code>Assert::assertObjectNotHasAttribute(...func_get_args())</code>
+      <code>Assert::classHasAttribute(...func_get_args())</code>
+      <code>Assert::classHasStaticAttribute(...func_get_args())</code>
+      <code>Assert::objectHasAttribute(...func_get_args())</code>
+    </DeprecatedMethod>
     <MissingParamType occurrences="85">
       <code>$actual</code>
       <code>$actual</code>
@@ -330,7 +360,15 @@
     <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/Framework/Constraint/Object/ClassHasStaticAttribute.php">
+    <DeprecatedClass occurrences="1">
+      <code>ClassHasAttribute</code>
+    </DeprecatedClass>
     <MissingThrowsDocblock occurrences="1"/>
+  </file>
+  <file src="src/Framework/Constraint/Object/ObjectHasAttribute.php">
+    <DeprecatedClass occurrences="1">
+      <code>ClassHasAttribute</code>
+    </DeprecatedClass>
   </file>
   <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
     <UnsafeInstantiation occurrences="1">
