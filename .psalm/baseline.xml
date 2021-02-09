@@ -858,7 +858,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$class-&gt;newInstance($outputStream)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="23">
+    <MissingThrowsDocblock occurrences="22">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -867,7 +867,6 @@
       <code>bootstrap</code>
       <code>cacheDirectory</code>
       <code>defaultTestSuite</code>
-      <code>detect</code>
       <code>extensionsDirectory</code>
       <code>handleListSuites</code>
       <code>handleListTests</code>
