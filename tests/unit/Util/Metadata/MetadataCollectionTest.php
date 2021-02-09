@@ -42,6 +42,7 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Util\Metadata\RequiresPhp
  * @uses \PHPUnit\Util\Metadata\RequiresPhpExtension
  * @uses \PHPUnit\Util\Metadata\RequiresPhpunit
+ * @uses \PHPUnit\Util\Metadata\RunClassInSeparateProcess
  * @uses \PHPUnit\Util\Metadata\RunInSeparateProcess
  * @uses \PHPUnit\Util\Metadata\RunTestsInSeparateProcesses
  * @uses \PHPUnit\Util\Metadata\Test
@@ -315,6 +316,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isRequiresPhpunit());
     }
 
+    public function test_Can_be_filtered_for_RunClassInSeparateProcess(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRunClassInSeparateProcess();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRunClassInSeparateProcess());
+    }
+
     public function test_Can_be_filtered_for_RunInSeparateProcess(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRunInSeparateProcess();
@@ -425,6 +434,7 @@ final class MetadataCollectionTest extends TestCase
                 new RequiresPhpExtension('', ''),
                 new RequiresPhp(''),
                 new RequiresPhpunit(''),
+                new RunClassInSeparateProcess,
                 new RunInSeparateProcess,
                 new RunTestsInSeparateProcesses,
                 new TestDox(''),

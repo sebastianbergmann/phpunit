@@ -152,9 +152,9 @@ abstract class Metadata
     }
 
     /**
-     * @psalm-assert-if-true RunTestsInSeparateProcesses $this
+     * @psalm-assert-if-true RunClassInSeparateProcess $this
      */
-    public function isRunTestsInSeparateProcesses(): bool
+    public function isRunClassInSeparateProcess(): bool
     {
         return false;
     }
@@ -163,6 +163,14 @@ abstract class Metadata
      * @psalm-assert-if-true RunInSeparateProcess $this
      */
     public function isRunInSeparateProcess(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true RunTestsInSeparateProcesses $this
+     */
+    public function isRunTestsInSeparateProcesses(): bool
     {
         return false;
     }

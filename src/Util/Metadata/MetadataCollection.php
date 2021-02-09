@@ -281,13 +281,13 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
-    public function isRunTestsInSeparateProcesses(): self
+    public function isRunClassInSeparateProcess(): self
     {
         return new self(
             ...array_filter(
                 $this->metadata,
                 static function (Metadata $metadata): bool {
-                    return $metadata->isRunTestsInSeparateProcesses();
+                    return $metadata->isRunClassInSeparateProcess();
                 }
             )
         );
@@ -300,6 +300,18 @@ final class MetadataCollection implements Countable, IteratorAggregate
                 $this->metadata,
                 static function (Metadata $metadata): bool {
                     return $metadata->isRunInSeparateProcess();
+                }
+            )
+        );
+    }
+
+    public function isRunTestsInSeparateProcesses(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isRunTestsInSeparateProcesses();
                 }
             )
         );

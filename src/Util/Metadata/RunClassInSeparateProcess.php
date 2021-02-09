@@ -7,20 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture\Metadata\Annotation;
-
-use PHPUnit\Framework\TestCase;
+namespace PHPUnit\Util\Metadata;
 
 /**
- * @runClassInSeparateProcess
- * @runTestsInSeparateProcesses
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @psalm-immutable
  */
-final class ProcessIsolationTest extends TestCase
+final class RunClassInSeparateProcess extends Metadata
 {
-    /**
-     * @runInSeparateProcess
-     */
-    public function testOne(): void
+    public function isRunClassInSeparateProcess(): bool
     {
+        return true;
     }
 }

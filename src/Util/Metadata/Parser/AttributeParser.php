@@ -43,6 +43,7 @@ use PHPUnit\Framework\Attributes\RequiresOperatingSystemFamily as RequiresOperat
 use PHPUnit\Framework\Attributes\RequiresPhp as RequiresPhpAttribute;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension as RequiresPhpExtensionAttribute;
 use PHPUnit\Framework\Attributes\RequiresPhpunit as RequiresPhpunitAttribute;
+use PHPUnit\Framework\Attributes\RunClassInSeparateProcess as RunClassInSeparateProcessAttribute;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess as RunInSeparateProcessAttribute;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses as RunTestsInSeparateProcessesAttribute;
 use PHPUnit\Framework\Attributes\Small as SmallAttribute;
@@ -165,6 +166,11 @@ final class AttributeParser implements Parser
                     $result[] = new RequiresPhpunit(
                         $attributeInstance->versionRequirement()
                     );
+
+                    break;
+
+                case RunClassInSeparateProcessAttribute::class:
+                    $result[] = new RunClassInSeparateProcess;
 
                     break;
 

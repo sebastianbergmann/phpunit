@@ -59,6 +59,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
  * @covers \PHPUnit\Framework\Attributes\RequiresPhp
  * @covers \PHPUnit\Framework\Attributes\RequiresPhpExtension
  * @covers \PHPUnit\Framework\Attributes\RequiresPhpunit
+ * @covers \PHPUnit\Framework\Attributes\RunClassInSeparateProcess
  * @covers \PHPUnit\Framework\Attributes\RunInSeparateProcess
  * @covers \PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses
  * @covers \PHPUnit\Framework\Attributes\Small
@@ -281,14 +282,25 @@ final class AttributeParserTest extends TestCase
     }
 
     /**
+     * @testdox Parses #[RunClassInSeparateProcess] attribute on class
+     */
+    public function test_parses_RunClassInSeparateProcess_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(ProcessIsolationTest::class);
+
+        $this->assertCount(2, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRunClassInSeparateProcess());
+    }
+
+    /**
      * @testdox Parses #[RunTestsInSeparateProcesses] attribute on class
      */
     public function test_parses_RunTestsInSeparateProcesses_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(ProcessIsolationTest::class);
 
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRunTestsInSeparateProcesses());
+        $this->assertCount(2, $metadata);
+        $this->assertTrue($metadata->asArray()[1]->isRunTestsInSeparateProcesses());
     }
 
     /**

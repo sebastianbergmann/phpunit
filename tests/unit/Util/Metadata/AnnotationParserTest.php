@@ -195,12 +195,20 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('10.0.0', $metadata->asArray()[0]->versionRequirement());
     }
 
+    public function test_Parses_runClassInSeparateProcess_annotation_on_class(): void
+    {
+        $metadata = (new AnnotationParser)->forClass(ProcessIsolationTest::class);
+
+        $this->assertCount(2, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRunClassInSeparateProcess());
+    }
+
     public function test_Parses_runTestsInSeparateProcesses_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(ProcessIsolationTest::class);
 
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRunTestsInSeparateProcesses());
+        $this->assertCount(2, $metadata);
+        $this->assertTrue($metadata->asArray()[1]->isRunTestsInSeparateProcesses());
     }
 
     public function test_Parses_small_annotation_on_class(): void

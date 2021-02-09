@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
+use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
 use PHPUnit\Framework\TestCase;
 
+#[RunClassInSeparateProcess]
 #[RunTestsInSeparateProcesses]
 final class ProcessIsolationTest extends TestCase
 {

@@ -100,6 +100,11 @@ final class AnnotationParser implements Parser
 
                     break;
 
+                case 'runClassInSeparateProcess':
+                    $result[] = new RunClassInSeparateProcess;
+
+                    break;
+
                 case 'runTestsInSeparateProcesses':
                     $result[] = new RunTestsInSeparateProcesses;
 
