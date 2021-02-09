@@ -47,6 +47,8 @@ use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
+use PHPUnit\Util\Metadata\BackupGlobals;
+use PHPUnit\Util\Metadata\BackupStaticProperties;
 use PHPUnit\Util\Metadata\Covers;
 use PHPUnit\Util\Metadata\CoversClass;
 use PHPUnit\Util\Metadata\CoversFunction;
@@ -490,20 +492,61 @@ final class Test
         ];
     }
 
-    /** @psalm-param class-string $className */
+    /**
+     * @psalm-param class-string $className
+     *
+     * @psalm-return array{backupGlobals: ?bool, backupStaticAttributes: ?bool}
+     */
     public static function getBackupSettings(string $className, string $methodName): array
     {
+        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
+            $className,
+            $methodName
+        );
+
+        $backupGlobals = null;
+
+        if ($metadataForMethod->isBackupGlobals()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isBackupGlobals()->asArray()[0];
+
+            assert($metadata instanceof BackupGlobals);
+
+            if ($metadata->enabled() !== null) {
+                $backupGlobals = $metadata->enabled();
+            }
+        } elseif ($metadataForClass->isBackupGlobals()->isNotEmpty()) {
+            $metadata = $metadataForClass->isBackupGlobals()->asArray()[0];
+
+            assert($metadata instanceof BackupGlobals);
+
+            if ($metadata->enabled() !== null) {
+                $backupGlobals = $metadata->enabled();
+            }
+        }
+
+        $backupStaticAttributes = null;
+
+        if ($metadataForMethod->isBackupStaticProperties()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
+
+            assert($metadata instanceof BackupStaticProperties);
+
+            if ($metadata->enabled() !== null) {
+                $backupStaticAttributes = $metadata->enabled();
+            }
+        } elseif ($metadataForClass->isBackupStaticProperties()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
+
+            assert($metadata instanceof BackupStaticProperties);
+
+            if ($metadata->enabled() !== null) {
+                $backupStaticAttributes = $metadata->enabled();
+            }
+        }
+
         return [
-            'backupGlobals' => self::getBooleanAnnotationSetting(
-                $className,
-                $methodName,
-                'backupGlobals'
-            ),
-            'backupStaticAttributes' => self::getBooleanAnnotationSetting(
-                $className,
-                $methodName,
-                'backupStaticAttributes'
-            ),
+            'backupGlobals'          => $backupGlobals,
+            'backupStaticAttributes' => $backupStaticAttributes,
         ];
     }
 
