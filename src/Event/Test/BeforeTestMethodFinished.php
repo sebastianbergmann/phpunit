@@ -64,4 +64,9 @@ final class BeforeTestMethodFinished implements Event
     {
         return $this->calledMethods;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

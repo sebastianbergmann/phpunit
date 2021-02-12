@@ -25,4 +25,9 @@ final class Finished implements Event
     {
         return $this->telemetryInfo;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

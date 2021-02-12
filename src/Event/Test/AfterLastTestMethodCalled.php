@@ -54,4 +54,9 @@ final class AfterLastTestMethodCalled implements Event
     {
         return $this->calledMethod;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

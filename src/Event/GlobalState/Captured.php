@@ -34,4 +34,9 @@ final class Captured implements Event
     {
         return $this->snapshot;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

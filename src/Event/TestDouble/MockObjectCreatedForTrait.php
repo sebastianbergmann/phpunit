@@ -42,4 +42,9 @@ final class MockObjectCreatedForTrait implements Event
     {
         return $this->traitName;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

@@ -55,4 +55,9 @@ final class SkippedDueToUnsatisfiedRequirements implements Event
     {
         return $this->missingRequirements;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

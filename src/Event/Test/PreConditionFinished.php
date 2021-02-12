@@ -64,4 +64,9 @@ final class PreConditionFinished implements Event
     {
         return $this->calledMethods;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

@@ -33,4 +33,9 @@ final class Loaded implements Event
     {
         return $this->info;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

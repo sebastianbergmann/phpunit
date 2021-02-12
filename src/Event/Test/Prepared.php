@@ -34,4 +34,9 @@ final class Prepared implements Event
     {
         return $this->test;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

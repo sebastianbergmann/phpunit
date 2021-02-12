@@ -106,4 +106,9 @@ final class MockObjectCreatedFromWsdl implements Event
     {
         return $this->options;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

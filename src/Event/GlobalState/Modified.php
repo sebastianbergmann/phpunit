@@ -54,4 +54,9 @@ final class Modified implements Event
     {
         return $this->message;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

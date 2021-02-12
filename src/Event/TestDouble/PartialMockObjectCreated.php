@@ -60,4 +60,9 @@ final class PartialMockObjectCreated implements Event
     {
         return $this->methodNames;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

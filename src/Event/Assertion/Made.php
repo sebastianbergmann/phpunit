@@ -72,4 +72,9 @@ final class Made implements Event
     {
         return $this->hasFailed;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

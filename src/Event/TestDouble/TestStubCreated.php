@@ -42,4 +42,9 @@ final class TestStubCreated implements Event
     {
         return $this->className;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

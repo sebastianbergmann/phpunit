@@ -33,4 +33,9 @@ final class Started implements Event
     {
         return $this->runtime;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

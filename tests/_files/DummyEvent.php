@@ -15,4 +15,8 @@ final class DummyEvent implements Event
     public function telemetryInfo(): Info
     {
     }
+
+    public function asString(): string
+    {
+    }
 }

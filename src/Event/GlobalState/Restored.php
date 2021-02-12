@@ -34,4 +34,9 @@ final class Restored implements Event
     {
         return $this->snapshot;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

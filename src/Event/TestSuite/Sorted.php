@@ -53,4 +53,9 @@ final class Sorted implements Event
     {
         return $this->resolveDependencies;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

@@ -54,4 +54,9 @@ final class Finished implements Event
     {
         return $this->codeCoverage;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

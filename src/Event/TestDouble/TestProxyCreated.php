@@ -50,4 +50,9 @@ final class TestProxyCreated implements Event
     {
         return $this->constructorArguments;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

@@ -33,4 +33,9 @@ final class Finished implements Event
     {
         return $this->filename;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

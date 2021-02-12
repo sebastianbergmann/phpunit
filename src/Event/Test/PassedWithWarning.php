@@ -42,4 +42,9 @@ final class PassedWithWarning implements Event
     {
         return $this->message;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }

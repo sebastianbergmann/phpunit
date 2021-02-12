@@ -41,4 +41,9 @@ final class Loaded implements Event
     {
         return $this->version;
     }
+
+    public function asString(): string
+    {
+        return '';
+    }
 }
