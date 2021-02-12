@@ -80,7 +80,7 @@ class Command
     /**
      * @psalm-var list<string>
      */
-    private $warnings = [];
+    private array $warnings = [];
 
     /**
      * @throws Exception
