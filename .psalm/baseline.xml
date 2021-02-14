@@ -152,10 +152,6 @@
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="2">
-      <code>$expected</code>
-      <code>$expected</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <DeprecatedClass occurrences="3">
@@ -413,6 +409,11 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Framework/ErrorTestCase.php">
+    <NonInvariantDocblockPropertyType occurrences="1">
+      <code>$backupGlobals</code>
+    </NonInvariantDocblockPropertyType>
+  </file>
   <file src="src/Framework/Exception/Exception.php">
     <MissingParamType occurrences="2">
       <code>$code</code>
@@ -429,6 +430,11 @@
     <PossiblyNullArgument occurrences="1">
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
+  </file>
+  <file src="src/Framework/IncompleteTestCase.php">
+    <NonInvariantDocblockPropertyType occurrences="1">
+      <code>$backupGlobals</code>
+    </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Framework/MockObject/Builder/Identity.php">
     <MissingReturnType occurrences="1">
@@ -532,17 +538,6 @@
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) var_export($parameter-&gt;getDefaultValue(), true)</code>
     </RedundantCastGivenDocblockType>
-    <RedundantCondition occurrences="1">
-      <code>$type instanceof ReflectionUnionType</code>
-    </RedundantCondition>
-    <TypeDoesNotContainType occurrences="1">
-      <code>$type instanceof ReflectionUnionType</code>
-    </TypeDoesNotContainType>
-    <UndefinedClass occurrences="3">
-      <code>ReflectionUnionType</code>
-      <code>ReflectionUnionType</code>
-      <code>ReflectionUnionType</code>
-    </UndefinedClass>
   </file>
   <file src="src/Framework/MockObject/MockObject.php">
     <MissingParamType occurrences="1">
@@ -628,6 +623,11 @@
     <MissingReturnType occurrences="1">
       <code>invoke</code>
     </MissingReturnType>
+  </file>
+  <file src="src/Framework/SkippedTestCase.php">
+    <NonInvariantDocblockPropertyType occurrences="1">
+      <code>$backupGlobals</code>
+    </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Framework/TestBuilder.php">
     <MissingParamType occurrences="1">
@@ -752,6 +752,11 @@
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
   </file>
+  <file src="src/Framework/WarningTestCase.php">
+    <NonInvariantDocblockPropertyType occurrences="1">
+      <code>$backupGlobals</code>
+    </NonInvariantDocblockPropertyType>
+  </file>
   <file src="src/Runner/CodeCoverage.php">
     <InvalidNullableReturnType occurrences="2">
       <code>Driver</code>
@@ -782,11 +787,17 @@
     <MissingReturnType occurrences="1">
       <code>doAccept</code>
     </MissingReturnType>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>current</code>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PossiblyNullArgument occurrences="1">
       <code>$this-&gt;filter</code>
     </PossiblyNullArgument>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>current</code>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
     <DeprecatedClass occurrences="3">
