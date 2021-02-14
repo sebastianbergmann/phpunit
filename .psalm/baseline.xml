@@ -191,9 +191,7 @@
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="3">
-      <code>$expected</code>
-      <code>$expected</code>
+    <PossiblyInvalidArgument occurrences="1">
       <code>$subset</code>
     </PossiblyInvalidArgument>
     <RedundantCondition occurrences="1">
@@ -597,6 +595,11 @@
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
   </file>
+  <file src="src/Framework/IncompleteTestCase.php">
+    <NonInvariantDocblockPropertyType occurrences="1">
+      <code>$backupGlobals</code>
+    </NonInvariantDocblockPropertyType>
+  </file>
   <file src="src/Framework/MockObject/Builder/Identity.php">
     <MissingReturnType occurrences="1">
       <code>id</code>
@@ -744,6 +747,11 @@
     <PossiblyNullReference occurrences="1">
       <code>allowsNull</code>
     </PossiblyNullReference>
+    <UndefinedMethod occurrences="3">
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+    </UndefinedMethod>
   </file>
   <file src="src/Framework/MockObject/MockObject.php">
     <MissingParamType occurrences="1">
@@ -841,6 +849,11 @@
     <MissingReturnType occurrences="1">
       <code>invoke</code>
     </MissingReturnType>
+  </file>
+  <file src="src/Framework/SkippedTestCase.php">
+    <NonInvariantDocblockPropertyType occurrences="1">
+      <code>$backupGlobals</code>
+    </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Framework/TestBuilder.php">
     <MissingParamType occurrences="1">
@@ -1029,6 +1042,11 @@
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
   </file>
+  <file src="src/Framework/WarningTestCase.php">
+    <NonInvariantDocblockPropertyType occurrences="1">
+      <code>$backupGlobals</code>
+    </NonInvariantDocblockPropertyType>
+  </file>
   <file src="src/Runner/DefaultTestResultCache.php">
     <MissingClosureReturnType occurrences="1">
       <code>static function () use ($cacheData) {</code>
@@ -1043,6 +1061,9 @@
     <MissingReturnType occurrences="1">
       <code>doAccept</code>
     </MissingReturnType>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>current</code>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PropertyNotSetInConstructor occurrences="2">
@@ -1052,6 +1073,9 @@
     <RedundantPropertyInitializationCheck occurrences="1">
       <code>$accepted &amp;&amp; isset($this-&gt;filterMax)</code>
     </RedundantPropertyInitializationCheck>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>current</code>
+    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
     <DeprecatedInterface occurrences="1">
@@ -1542,6 +1566,9 @@
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Util/Test.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>array_flip($lineNumbers)</code>
+    </InvalidScalarArgument>
     <MissingReturnType occurrences="1">
       <code>sanitizeVersionNumber</code>
     </MissingReturnType>
