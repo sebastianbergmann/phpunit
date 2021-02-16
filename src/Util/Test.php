@@ -125,12 +125,9 @@ final class Test
             return false;
         }
 
-        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
-            $className,
-            $methodName
-        );
-
-        $classShortcut = null;
+        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
+        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $classShortcut     = null;
 
         if ($metadataForClass->isCoversDefaultClass()->isNotEmpty()) {
             if (count($metadataForClass->isCoversDefaultClass()) > 1) {
@@ -219,12 +216,9 @@ final class Test
      */
     public static function linesToBeUsed(string $className, string $methodName): array
     {
-        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
-            $className,
-            $methodName
-        );
-
-        $classShortcut = null;
+        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
+        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $classShortcut     = null;
 
         if ($metadataForClass->isUsesDefaultClass()->isNotEmpty()) {
             if (count($metadataForClass->isUsesDefaultClass()) > 1) {
@@ -301,10 +295,8 @@ final class Test
      */
     public static function shouldCodeCoverageBeCollectedFor(string $className, string $methodName): bool
     {
-        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
-            $className,
-            $methodName
-        );
+        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
+        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
 
         // If there is no @covers annotation but a @coversNothing annotation on
         // the test method then code coverage data does not need to be collected
@@ -536,12 +528,9 @@ final class Test
      */
     public static function getBackupSettings(string $className, string $methodName): array
     {
-        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
-            $className,
-            $methodName
-        );
-
-        $backupGlobals = null;
+        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
+        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $backupGlobals     = null;
 
         if ($metadataForMethod->isBackupGlobals()->isNotEmpty()) {
             $metadata = $metadataForMethod->isBackupGlobals()->asArray()[0];
@@ -623,12 +612,9 @@ final class Test
      */
     public static function getGroups(string $className, ?string $methodName = ''): array
     {
-        [$metadataForClass, $metadataForMethod] = self::metadataForClassAndMethod(
-            $className,
-            $methodName
-        );
-
-        $groups = [];
+        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
+        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $groups            = [];
 
         foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
             assert($metadata instanceof Metadata);
@@ -909,30 +895,6 @@ final class Test
     private static function canonicalizeName(string $name): string
     {
         return strtolower(trim($name, '\\'));
-    }
-
-    /**
-     * @psalm-param class-string $className
-     *
-     * @psalm-return array{0: MetadataCollection, 1: MetadataCollection}
-     */
-    private static function metadataForClassAndMethod(string $className, string $methodName): array
-    {
-        $metadataForClass  = MetadataCollection::fromArray([]);
-        $metadataForMethod = MetadataCollection::fromArray([]);
-
-        if (class_exists($className)) {
-            $metadataForClass = MetadataRegistry::reader()->forClass($className);
-
-            if (method_exists($className, $methodName)) {
-                $metadataForMethod = MetadataRegistry::reader()->forMethod(
-                    $className,
-                    $methodName
-                );
-            }
-        }
-
-        return [$metadataForClass, $metadataForMethod];
     }
 
     private static function dataProvidedByMethods(MetadataCollection $dataProvider): array
