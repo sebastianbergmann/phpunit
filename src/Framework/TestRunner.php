@@ -327,21 +327,15 @@ final class TestRunner
                 ),
                 $time
             );
-        } elseif ($result->isStrictAboutTodoAnnotatedTests()) {
-            $annotations = TestUtil::parseTestMethodAnnotations(
-                get_class($test),
-                $test->getName(false)
+        } elseif ($result->isStrictAboutTodoAnnotatedTests() &&
+                  $this->hasTodoMetadata(get_class($test), $test->getName(false))) {
+            $result->addFailure(
+                $test,
+                new RiskyTestError(
+                    'Test method is annotated with @todo'
+                ),
+                $time
             );
-
-            if (isset($annotations['method']['todo'])) {
-                $result->addFailure(
-                    $test,
-                    new RiskyTestError(
-                        'Test method is annotated with @todo'
-                    ),
-                    $time
-                );
-            }
         }
 
         $result->endTest($test, $time);
@@ -498,5 +492,15 @@ final class TestRunner
         }
 
         return false;
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function hasTodoMetadata(string $className, string $methodName): bool
+    {
+        $metadata = MetadataRegistry::reader()->forClass($className)->mergeWith(MetadataRegistry::reader()->forMethod($className, $methodName));
+
+        return $metadata->isTodo()->isNotEmpty();
     }
 }
