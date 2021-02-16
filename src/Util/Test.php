@@ -553,7 +553,7 @@ final class Test
     /**
      * @psalm-param class-string $className
      */
-    public static function getGroups(string $className, ?string $methodName = ''): array
+    public static function groups(string $className, ?string $methodName = ''): array
     {
         $metadataForClass  = MetadataRegistry::reader()->forClass($className);
         $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
@@ -601,7 +601,7 @@ final class Test
      */
     public static function size(string $className, ?string $methodName): TestSize
     {
-        $groups = array_flip(self::getGroups($className, $methodName));
+        $groups = array_flip(self::groups($className, $methodName));
 
         if (isset($groups['large'])) {
             return TestSize::large();
@@ -621,7 +621,7 @@ final class Test
     /**
      * @psalm-param class-string $className
      */
-    public static function getHookMethods(string $className): array
+    public static function hookMethods(string $className): array
     {
         if (!class_exists($className, false)) {
             return self::emptyHookMethodsArray();

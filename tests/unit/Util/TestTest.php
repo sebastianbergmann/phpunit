@@ -663,7 +663,7 @@ final class TestTest extends TestCase
      */
     public function testGetGroupsFromTicketAnnotations(string $class, string $method, array $groups): void
     {
-        $this->assertSame($groups, Test::getGroups($class, $method));
+        $this->assertSame($groups, Test::groups($class, $method));
     }
 
     public function getGroupsProvider(): array

@@ -412,7 +412,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         /** @psalm-var class-string $className */
         $className   = $this->name;
-        $hookMethods = TestUtil::getHookMethods($className);
+        $hookMethods = TestUtil::hookMethods($className);
 
         $result->startTestSuite($this);
 
@@ -688,7 +688,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $this->addTest(
             $test,
-            TestUtil::getGroups($class->getName(), $methodName)
+            TestUtil::groups($class->getName(), $methodName)
         );
     }
 

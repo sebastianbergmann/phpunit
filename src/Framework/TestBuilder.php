@@ -114,7 +114,7 @@ final class TestBuilder
             $className . '::' . $methodName
         );
 
-        $groups = TestUtil::getGroups($className, $methodName);
+        $groups = TestUtil::groups($className, $methodName);
 
         if ($data instanceof ErrorTestCase ||
             $data instanceof SkippedTestCase ||
