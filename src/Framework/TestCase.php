@@ -84,6 +84,7 @@ use PHPUnit\Util\Error\Error;
 use PHPUnit\Util\Error\Notice;
 use PHPUnit\Util\Error\Warning as WarningError;
 use PHPUnit\Util\Exception as UtilException;
+use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
 use ReflectionClass;
@@ -733,7 +734,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 }
             }
 
-            $this->setDoesNotPerformAssertionsFromAnnotation();
+            if (MetadataRegistry::reader()->forMethod(static::class, $this->name)->isDoesNotPerformAssertions()->isNotEmpty()) {
+                $this->doesNotPerformAssertions = true;
+            }
 
             foreach ($hookMethods['before'] as $method) {
                 $this->{$method}();
@@ -1938,18 +1941,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     );
                 }
             }
-        }
-    }
-
-    private function setDoesNotPerformAssertionsFromAnnotation(): void
-    {
-        $annotations = TestUtil::parseTestMethodAnnotations(
-            static::class,
-            $this->name
-        );
-
-        if (isset($annotations['method']['doesNotPerformAssertions'])) {
-            $this->doesNotPerformAssertions = true;
         }
     }
 
