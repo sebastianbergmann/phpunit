@@ -28,6 +28,7 @@ use PHPUnit\TestFixture\Metadata\Annotation\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Annotation\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Annotation\SmallTest;
 use PHPUnit\TestFixture\Metadata\Annotation\TestDoxTest;
+use PHPUnit\TestFixture\Metadata\Annotation\TodoTest;
 use PHPUnit\TestFixture\Metadata\Annotation\UsesTest;
 
 /**
@@ -235,6 +236,14 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
         $this->assertSame('ticket', $metadata->asArray()[1]->groupName());
+    }
+
+    public function test_Parses_todo_annotation_on_class(): void
+    {
+        $metadata = (new AnnotationParser)->forClass(TodoTest::class);
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTodo());
     }
 
     public function test_Parses_uses_annotation_on_class(): void
@@ -517,6 +526,14 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestDox());
         $this->assertSame('text', $metadata->asArray()[0]->text());
+    }
+
+    public function test_Parses_todo_annotation_on_method(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(TodoTest::class, 'testOne');
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTodo());
     }
 
     public function test_Parses_ticket_annotation_on_method(): void

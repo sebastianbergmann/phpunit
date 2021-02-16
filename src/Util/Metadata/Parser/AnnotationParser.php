@@ -119,6 +119,11 @@ final class AnnotationParser implements Parser
 
                     break;
 
+                case 'todo':
+                    $result[] = new Todo;
+
+                    break;
+
                 case 'uses':
                     foreach ($values as $value) {
                         $value = $this->cleanUpCoversOrUsesTarget($value);
@@ -301,6 +306,11 @@ final class AnnotationParser implements Parser
 
                 case 'testdox':
                     $result[] = new TestDox($values[0]);
+
+                    break;
+
+                case 'todo':
+                    $result[] = new Todo;
 
                     break;
 

@@ -272,6 +272,14 @@ abstract class Metadata
     }
 
     /**
+     * @psalm-assert-if-true Todo $this
+     */
+    public function isTodo(): bool
+    {
+        return false;
+    }
+
+    /**
      * @psalm-assert-if-true Uses $this
      */
     public function isUses(): bool

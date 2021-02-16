@@ -461,6 +461,18 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isTodo(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isTodo();
+                }
+            )
+        );
+    }
+
     public function isUses(): self
     {
         return new self(
