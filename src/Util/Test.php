@@ -829,39 +829,6 @@ final class Test
     }
 
     /**
-     * @psalm-param class-string $className
-     */
-    private static function getBooleanAnnotationSetting(string $className, ?string $methodName, string $settingName): ?bool
-    {
-        $annotations = self::parseTestMethodAnnotations(
-            $className,
-            $methodName
-        );
-
-        if (isset($annotations['method'][$settingName])) {
-            if ($annotations['method'][$settingName][0] === 'enabled') {
-                return true;
-            }
-
-            if ($annotations['method'][$settingName][0] === 'disabled') {
-                return false;
-            }
-        }
-
-        if (isset($annotations['class'][$settingName])) {
-            if ($annotations['class'][$settingName][0] === 'enabled') {
-                return true;
-            }
-
-            if ($annotations['class'][$settingName][0] === 'disabled') {
-                return false;
-            }
-        }
-
-        return null;
-    }
-
-    /**
      * Trims any extensions from version string that follows after
      * the <major>.<minor>[.<patch>] format.
      */
