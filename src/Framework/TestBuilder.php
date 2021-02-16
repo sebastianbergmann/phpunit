@@ -39,7 +39,7 @@ final class TestBuilder
             $methodName
         );
 
-        $preserveGlobalState = TestUtil::getPreserveGlobalStateSettings(
+        $preserveGlobalState = TestUtil::shouldGlobalStateBePreserved(
             $className,
             $methodName
         );

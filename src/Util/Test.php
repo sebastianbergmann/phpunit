@@ -62,6 +62,7 @@ use PHPUnit\Util\Metadata\DataProvider;
 use PHPUnit\Util\Metadata\Group;
 use PHPUnit\Util\Metadata\Metadata;
 use PHPUnit\Util\Metadata\MetadataCollection;
+use PHPUnit\Util\Metadata\PreserveGlobalState;
 use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\Metadata\TestWith;
 use PHPUnit\Util\Metadata\Uses;
@@ -704,13 +705,29 @@ final class Test
     /**
      * @psalm-param class-string $className
      */
-    public static function getPreserveGlobalStateSettings(string $className, string $methodName): ?bool
+    public static function shouldGlobalStateBePreserved(string $className, string $methodName): ?bool
     {
-        return self::getBooleanAnnotationSetting(
-            $className,
-            $methodName,
-            'preserveGlobalState'
-        );
+        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+
+        if ($metadataForMethod->isPreserveGlobalState()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isPreserveGlobalState()->asArray()[0];
+
+            assert($metadata instanceof PreserveGlobalState);
+
+            return $metadata->enabled();
+        }
+
+        $metadataForClass = MetadataRegistry::reader()->forClass($className);
+
+        if ($metadataForClass->isPreserveGlobalState()->isNotEmpty()) {
+            $metadata = $metadataForClass->isPreserveGlobalState()->asArray()[0];
+
+            assert($metadata instanceof PreserveGlobalState);
+
+            return $metadata->enabled();
+        }
+
+        return null;
     }
 
     /**
