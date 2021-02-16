@@ -19,7 +19,6 @@ use function preg_match;
 use function preg_match_all;
 use function preg_split;
 use function realpath;
-use function strpos;
 use function substr;
 use function trim;
 use PharIo\Version\VersionConstraintParser;
@@ -243,38 +242,6 @@ final class DocBlock
     public function symbolAnnotations(): array
     {
         return $this->symbolAnnotations;
-    }
-
-    public function isHookToBeExecutedBeforeClass(): bool
-    {
-        return $this->isMethod &&
-            false !== strpos($this->docComment, '@beforeClass');
-    }
-
-    public function isHookToBeExecutedAfterClass(): bool
-    {
-        return $this->isMethod &&
-            false !== strpos($this->docComment, '@afterClass');
-    }
-
-    public function isToBeExecutedBeforeTest(): bool
-    {
-        return 1 === preg_match('/@before\b/', $this->docComment);
-    }
-
-    public function isToBeExecutedAfterTest(): bool
-    {
-        return 1 === preg_match('/@after\b/', $this->docComment);
-    }
-
-    public function isToBeExecutedAsPreCondition(): bool
-    {
-        return 1 === preg_match('/@preCondition\b/', $this->docComment);
-    }
-
-    public function isToBeExecutedAsPostCondition(): bool
-    {
-        return 1 === preg_match('/@postCondition\b/', $this->docComment);
     }
 
     /** @return array<string, array<int, string>> */
