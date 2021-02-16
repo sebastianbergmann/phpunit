@@ -15,6 +15,10 @@ use function sprintf;
 use function trim;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\InvalidDataSetException;
+use PHPUnit\Util\Metadata\BackupGlobals;
+use PHPUnit\Util\Metadata\BackupStaticProperties;
+use PHPUnit\Util\Metadata\PreserveGlobalState;
+use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use Throwable;
@@ -33,26 +37,6 @@ final class TestBuilder
                 sprintf('Cannot instantiate class "%s".', $className)
             );
         }
-
-        $backupSettings = TestUtil::getBackupSettings(
-            $className,
-            $methodName
-        );
-
-        $preserveGlobalState = TestUtil::shouldGlobalStateBePreserved(
-            $className,
-            $methodName
-        );
-
-        $runTestInSeparateProcess = TestUtil::getProcessIsolationSettings(
-            $className,
-            $methodName
-        );
-
-        $runClassInSeparateProcess = TestUtil::getClassProcessIsolationSettings(
-            $className,
-            $methodName
-        );
 
         try {
             $data = TestUtil::providedData(
@@ -97,10 +81,10 @@ final class TestBuilder
                 $methodName,
                 $className,
                 $data,
-                $runTestInSeparateProcess,
-                $preserveGlobalState,
-                $runClassInSeparateProcess,
-                $backupSettings
+                $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
+                $this->shouldGlobalStateBePreserved($className, $methodName),
+                $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
+                $this->backupSettings($className, $methodName)
             );
         } else {
             $test = new $className($methodName);
@@ -109,10 +93,10 @@ final class TestBuilder
         if ($test instanceof TestCase) {
             $this->configureTestCase(
                 $test,
-                $runTestInSeparateProcess,
-                $preserveGlobalState,
-                $runClassInSeparateProcess,
-                $backupSettings
+                $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
+                $this->shouldGlobalStateBePreserved($className, $methodName),
+                $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
+                $this->backupSettings($className, $methodName)
             );
         }
 
@@ -210,5 +194,112 @@ final class TestBuilder
             $message,
             Filter::getFilteredStacktrace($t)
         );
+    }
+
+    /**
+     * @psalm-param class-string $className
+     *
+     * @psalm-return array{backupGlobals: ?bool, backupStaticProperties: ?bool}
+     */
+    private function backupSettings(string $className, string $methodName): array
+    {
+        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
+        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $backupGlobals     = null;
+
+        if ($metadataForMethod->isBackupGlobals()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isBackupGlobals()->asArray()[0];
+
+            assert($metadata instanceof BackupGlobals);
+
+            if ($metadata->enabled() !== null) {
+                $backupGlobals = $metadata->enabled();
+            }
+        } elseif ($metadataForClass->isBackupGlobals()->isNotEmpty()) {
+            $metadata = $metadataForClass->isBackupGlobals()->asArray()[0];
+
+            assert($metadata instanceof BackupGlobals);
+
+            if ($metadata->enabled() !== null) {
+                $backupGlobals = $metadata->enabled();
+            }
+        }
+
+        $backupStaticProperties = null;
+
+        if ($metadataForMethod->isBackupStaticProperties()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
+
+            assert($metadata instanceof BackupStaticProperties);
+
+            if ($metadata->enabled() !== null) {
+                $backupStaticProperties = $metadata->enabled();
+            }
+        } elseif ($metadataForClass->isBackupStaticProperties()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
+
+            assert($metadata instanceof BackupStaticProperties);
+
+            if ($metadata->enabled() !== null) {
+                $backupStaticProperties = $metadata->enabled();
+            }
+        }
+
+        return [
+            'backupGlobals'          => $backupGlobals,
+            'backupStaticProperties' => $backupStaticProperties,
+        ];
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function shouldGlobalStateBePreserved(string $className, string $methodName): ?bool
+    {
+        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+
+        if ($metadataForMethod->isPreserveGlobalState()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isPreserveGlobalState()->asArray()[0];
+
+            assert($metadata instanceof PreserveGlobalState);
+
+            return $metadata->enabled();
+        }
+
+        $metadataForClass = MetadataRegistry::reader()->forClass($className);
+
+        if ($metadataForClass->isPreserveGlobalState()->isNotEmpty()) {
+            $metadata = $metadataForClass->isPreserveGlobalState()->asArray()[0];
+
+            assert($metadata instanceof PreserveGlobalState);
+
+            return $metadata->enabled();
+        }
+
+        return null;
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function shouldTestMethodBeRunInSeparateProcess(string $className, string $methodName): bool
+    {
+        if (MetadataRegistry::reader()->forClass($className)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
+            return true;
+        }
+
+        if (MetadataRegistry::reader()->forMethod($className, $methodName)->isRunInSeparateProcess()->isNotEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess(string $className): bool
+    {
+        return MetadataRegistry::reader()->forClass($className)->isRunClassInSeparateProcess()->isNotEmpty();
     }
 }

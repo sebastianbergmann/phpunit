@@ -52,8 +52,6 @@ use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
-use PHPUnit\Util\Metadata\BackupGlobals;
-use PHPUnit\Util\Metadata\BackupStaticProperties;
 use PHPUnit\Util\Metadata\Covers;
 use PHPUnit\Util\Metadata\CoversClass;
 use PHPUnit\Util\Metadata\CoversFunction;
@@ -62,7 +60,6 @@ use PHPUnit\Util\Metadata\DataProvider;
 use PHPUnit\Util\Metadata\Group;
 use PHPUnit\Util\Metadata\Metadata;
 use PHPUnit\Util\Metadata\MetadataCollection;
-use PHPUnit\Util\Metadata\PreserveGlobalState;
 use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\Metadata\TestWith;
 use PHPUnit\Util\Metadata\Uses;
@@ -525,61 +522,6 @@ final class Test
     /**
      * @psalm-param class-string $className
      *
-     * @psalm-return array{backupGlobals: ?bool, backupStaticProperties: ?bool}
-     */
-    public static function getBackupSettings(string $className, string $methodName): array
-    {
-        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
-        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
-        $backupGlobals     = null;
-
-        if ($metadataForMethod->isBackupGlobals()->isNotEmpty()) {
-            $metadata = $metadataForMethod->isBackupGlobals()->asArray()[0];
-
-            assert($metadata instanceof BackupGlobals);
-
-            if ($metadata->enabled() !== null) {
-                $backupGlobals = $metadata->enabled();
-            }
-        } elseif ($metadataForClass->isBackupGlobals()->isNotEmpty()) {
-            $metadata = $metadataForClass->isBackupGlobals()->asArray()[0];
-
-            assert($metadata instanceof BackupGlobals);
-
-            if ($metadata->enabled() !== null) {
-                $backupGlobals = $metadata->enabled();
-            }
-        }
-
-        $backupStaticProperties = null;
-
-        if ($metadataForMethod->isBackupStaticProperties()->isNotEmpty()) {
-            $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
-
-            assert($metadata instanceof BackupStaticProperties);
-
-            if ($metadata->enabled() !== null) {
-                $backupStaticProperties = $metadata->enabled();
-            }
-        } elseif ($metadataForClass->isBackupStaticProperties()->isNotEmpty()) {
-            $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
-
-            assert($metadata instanceof BackupStaticProperties);
-
-            if ($metadata->enabled() !== null) {
-                $backupStaticProperties = $metadata->enabled();
-            }
-        }
-
-        return [
-            'backupGlobals'          => $backupGlobals,
-            'backupStaticProperties' => $backupStaticProperties,
-        ];
-    }
-
-    /**
-     * @psalm-param class-string $className
-     *
      * @return ExecutionOrderDependency[]
      */
     public static function getDependencies(string $className, string $methodName): array
@@ -674,60 +616,6 @@ final class Test
         }
 
         return TestSize::unknown();
-    }
-
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function getProcessIsolationSettings(string $className, string $methodName): bool
-    {
-        $annotations = self::parseTestMethodAnnotations(
-            $className,
-            $methodName
-        );
-
-        return isset($annotations['class']['runTestsInSeparateProcesses']) || isset($annotations['method']['runInSeparateProcess']);
-    }
-
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function getClassProcessIsolationSettings(string $className, string $methodName): bool
-    {
-        $annotations = self::parseTestMethodAnnotations(
-            $className,
-            $methodName
-        );
-
-        return isset($annotations['class']['runClassInSeparateProcess']);
-    }
-
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function shouldGlobalStateBePreserved(string $className, string $methodName): ?bool
-    {
-        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
-
-        if ($metadataForMethod->isPreserveGlobalState()->isNotEmpty()) {
-            $metadata = $metadataForMethod->isPreserveGlobalState()->asArray()[0];
-
-            assert($metadata instanceof PreserveGlobalState);
-
-            return $metadata->enabled();
-        }
-
-        $metadataForClass = MetadataRegistry::reader()->forClass($className);
-
-        if ($metadataForClass->isPreserveGlobalState()->isNotEmpty()) {
-            $metadata = $metadataForClass->isPreserveGlobalState()->asArray()[0];
-
-            assert($metadata instanceof PreserveGlobalState);
-
-            return $metadata->enabled();
-        }
-
-        return null;
     }
 
     /**
