@@ -1429,6 +1429,10 @@
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>is_string($value)</code>
     </RedundantConditionGivenDocblockType>
+    <UndefinedMethod occurrences="2">
+      <code>text</code>
+      <code>text</code>
+    </UndefinedMethod>
   </file>
   <file src="src/Util/TestDox/ResultPrinter.php">
     <MissingThrowsDocblock occurrences="1">
@@ -1447,6 +1451,16 @@
     <MissingThrowsDocblock occurrences="2">
       <code>parent::__construct($out)</code>
     </MissingThrowsDocblock>
+    <RedundantCondition occurrences="8">
+      <code>assert($metadata instanceof Covers)</code>
+      <code>assert($metadata instanceof CoversClass)</code>
+      <code>assert($metadata instanceof CoversFunction)</code>
+      <code>assert($metadata instanceof CoversMethod)</code>
+      <code>assert($metadata instanceof Uses)</code>
+      <code>assert($metadata instanceof UsesClass)</code>
+      <code>assert($metadata instanceof UsesFunction)</code>
+      <code>assert($metadata instanceof UsesMethod)</code>
+    </RedundantCondition>
   </file>
   <file src="src/Util/TextTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">
