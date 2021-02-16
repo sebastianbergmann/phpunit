@@ -144,17 +144,22 @@ final class NamePrettifier
 
         $annotationWithPlaceholders = false;
 
-        $callback = static function (string $variable): string {
-            return sprintf('/%s(?=\b)/', preg_quote($variable, '/'));
-        };
-
         if (isset($annotations['method']['testdox'][0])) {
             $result = $annotations['method']['testdox'][0];
 
             if (strpos($result, '$') !== false) {
                 $annotation   = $annotations['method']['testdox'][0];
                 $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
-                $variables    = array_map($callback, array_keys($providedData));
+
+                $variables = array_map(
+                    static function (string $variable): string {
+                        return sprintf(
+                            '/%s(?=\b)/',
+                            preg_quote($variable, '/')
+                        );
+                    },
+                    array_keys($providedData)
+                );
 
                 $result = trim(preg_replace($variables, $providedData, $annotation));
 
