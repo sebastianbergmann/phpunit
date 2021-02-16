@@ -10,6 +10,7 @@
 namespace PHPUnit\Util\TestDox;
 
 use function array_filter;
+use function assert;
 use function get_class;
 use function strpos;
 use DOMDocument;
@@ -22,9 +23,17 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\WarningTestCase;
+use PHPUnit\Util\Metadata\Covers;
+use PHPUnit\Util\Metadata\CoversClass;
+use PHPUnit\Util\Metadata\CoversFunction;
+use PHPUnit\Util\Metadata\CoversMethod;
 use PHPUnit\Util\Metadata\InlineAnnotationParser;
+use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
+use PHPUnit\Util\Metadata\Uses;
+use PHPUnit\Util\Metadata\UsesClass;
+use PHPUnit\Util\Metadata\UsesFunction;
+use PHPUnit\Util\Metadata\UsesMethod;
 use PHPUnit\Util\Printer;
-use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
 use Throwable;
@@ -172,24 +181,88 @@ final class XmlResultPrinter extends Printer implements TestListener
             $testNode->appendChild($groupNode);
         }
 
-        $annotations = TestUtil::parseTestMethodAnnotations(
-            get_class($test),
-            $test->getName(false)
-        );
+        $metadataForClass  = MetadataRegistry::reader()->forClass(get_class($test));
+        $metadataForMethod = MetadataRegistry::reader()->forMethod(get_class($test), $test->getName(false));
 
-        foreach (['class', 'method'] as $type) {
-            foreach ($annotations[$type] as $annotation => $values) {
-                if ($annotation !== 'covers' && $annotation !== 'uses') {
-                    continue;
-                }
+        foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
+            if ($metadata->isCovers()) {
+                assert($metadata instanceof Covers);
 
-                foreach ($values as $value) {
-                    $coversNode = $this->document->createElement($annotation);
+                $coversNode = $this->document->createElement('covers');
 
-                    $coversNode->setAttribute('target', $value);
+                $coversNode->setAttribute('target', $metadata->target());
 
-                    $testNode->appendChild($coversNode);
-                }
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isCoversClass()) {
+                assert($metadata instanceof CoversClass);
+
+                $coversNode = $this->document->createElement('covers');
+
+                $coversNode->setAttribute('target', $metadata->className());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isCoversMethod()) {
+                assert($metadata instanceof CoversMethod);
+
+                $coversNode = $this->document->createElement('covers');
+
+                $coversNode->setAttribute('target', $metadata->className() . '::' . $metadata->methodName());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isCoversFunction()) {
+                assert($metadata instanceof CoversFunction);
+
+                $coversNode = $this->document->createElement('covers');
+
+                $coversNode->setAttribute('target', $metadata->functionName());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isUses()) {
+                assert($metadata instanceof Uses);
+
+                $coversNode = $this->document->createElement('uses');
+
+                $coversNode->setAttribute('target', $metadata->target());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isUsesClass()) {
+                assert($metadata instanceof UsesClass);
+
+                $coversNode = $this->document->createElement('uses');
+
+                $coversNode->setAttribute('target', $metadata->className());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isUsesMethod()) {
+                assert($metadata instanceof UsesMethod);
+
+                $coversNode = $this->document->createElement('uses');
+
+                $coversNode->setAttribute('target', $metadata->className() . '::' . $metadata->methodName());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isUsesFunction()) {
+                assert($metadata instanceof UsesFunction);
+
+                $coversNode = $this->document->createElement('uses');
+
+                $coversNode->setAttribute('target', $metadata->functionName());
+
+                $testNode->appendChild($coversNode);
             }
         }
 
