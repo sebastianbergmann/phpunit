@@ -42,6 +42,7 @@ use function trim;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Exception as UtilException;
+use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\Test;
 use ReflectionException;
 use ReflectionMethod;
@@ -137,18 +138,15 @@ final class NamePrettifier
      */
     public function prettifyTestCase(TestCase $test): string
     {
-        $annotations = Test::parseTestMethodAnnotations(
-            get_class($test),
-            $test->getName(false)
-        );
-
         $annotationWithPlaceholders = false;
 
-        if (isset($annotations['method']['testdox'][0])) {
-            $result = $annotations['method']['testdox'][0];
+        $metadata = MetadataRegistry::reader()->forMethod(get_class($test), $test->getName(false));
+
+        if ($metadata->isTestDox()->isNotEmpty()) {
+            $result = $metadata->isTestDox()->asArray()[0]->text();
 
             if (strpos($result, '$') !== false) {
-                $annotation   = $annotations['method']['testdox'][0];
+                $annotation   = $result;
                 $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
 
                 $variables = array_map(
