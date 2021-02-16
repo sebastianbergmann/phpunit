@@ -14,6 +14,7 @@ use function array_keys;
 use function array_map;
 use function array_pop;
 use function array_values;
+use function class_exists;
 use function explode;
 use function get_class;
 use function gettype;
@@ -43,7 +44,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
-use PHPUnit\Util\Test;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionObject;
@@ -73,14 +73,12 @@ final class NamePrettifier
      */
     public function prettifyTestClass(string $className): string
     {
-        try {
-            $annotations = Test::parseTestMethodAnnotations($className);
+        if (class_exists($className)) {
+            $metadata = MetadataRegistry::reader()->forClass($className);
 
-            if (isset($annotations['class']['testdox'][0])) {
-                return $annotations['class']['testdox'][0];
+            if ($metadata->isTestDox()->isNotEmpty()) {
+                return $metadata->isTestDox()->asArray()[0]->text();
             }
-        } catch (UtilException $e) {
-            // ignore, determine className by parsing the provided name
         }
 
         $parts     = explode('\\', $className);
