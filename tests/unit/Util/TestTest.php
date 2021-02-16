@@ -41,7 +41,6 @@ use PHPUnit\TestFixture\NamespaceCoverageCoversClassPublicTest;
 use PHPUnit\TestFixture\NamespaceCoverageCoversClassTest;
 use PHPUnit\TestFixture\NamespaceCoverageMethodTest;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
-use PHPUnit\TestFixture\ParseTestMethodAnnotationsMock;
 use PHPUnit\TestFixture\RequirementsTest;
 use PHPUnit\TestFixture\Test3194;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
