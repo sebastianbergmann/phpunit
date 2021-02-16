@@ -32,16 +32,21 @@ use function method_exists;
 use function phpversion;
 use function preg_match;
 use function preg_replace;
+use function rtrim;
 use function sprintf;
+use function str_replace;
 use function strpos;
 use function strtolower;
+use function substr;
 use function trim;
 use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidCoversTargetException;
+use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\Warning;
@@ -53,10 +58,12 @@ use PHPUnit\Util\Metadata\Covers;
 use PHPUnit\Util\Metadata\CoversClass;
 use PHPUnit\Util\Metadata\CoversFunction;
 use PHPUnit\Util\Metadata\CoversMethod;
+use PHPUnit\Util\Metadata\DataProvider;
 use PHPUnit\Util\Metadata\Group;
 use PHPUnit\Util\Metadata\Metadata;
 use PHPUnit\Util\Metadata\MetadataCollection;
 use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
+use PHPUnit\Util\Metadata\TestWith;
 use PHPUnit\Util\Metadata\Uses;
 use PHPUnit\Util\Metadata\UsesClass;
 use PHPUnit\Util\Metadata\UsesFunction;
@@ -68,6 +75,7 @@ use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
 use SebastianBergmann\Environment\OperatingSystem;
+use Traversable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -458,14 +466,43 @@ final class Test
     }
 
     /**
-     * Returns the provided data for a method.
+     * @psalm-param class-string $className
      *
      * @throws Exception
-     * @psalm-param class-string $className
      */
-    public static function getProvidedData(string $className, string $methodName): ?array
+    public static function providedData(string $className, string $methodName): ?array
     {
-        return AnnotationRegistry::getInstance()->forMethod($className, $methodName)->getProvidedData();
+        $dataProvider = MetadataRegistry::reader()->forMethod($className, $methodName)->isDataProvider();
+        $testWith     = MetadataRegistry::reader()->forMethod($className, $methodName)->isTestWith();
+
+        if ($dataProvider->isEmpty() && $testWith->isEmpty()) {
+            return self::dataProvidedByTestWithAnnotation($className, $methodName);
+        }
+
+        if ($dataProvider->isNotEmpty()) {
+            $data = self::dataProvidedByMethods($dataProvider);
+        } else {
+            $data = self::dataProvidedByMetadata($testWith);
+        }
+
+        if ($data === []) {
+            throw new SkippedTestError(
+                'Skipped due to empty data set provided by data provider'
+            );
+        }
+
+        foreach ($data as $key => $value) {
+            if (!is_array($value)) {
+                throw new InvalidDataSetException(
+                    sprintf(
+                        'Data set %s is invalid.',
+                        is_int($key) ? '#' . $key : '"' . $key . '"'
+                    )
+                );
+            }
+        }
+
+        return $data;
     }
 
     /**
@@ -896,5 +933,127 @@ final class Test
         }
 
         return [$metadataForClass, $metadataForMethod];
+    }
+
+    private static function dataProvidedByMethods(MetadataCollection $dataProvider): array
+    {
+        $result = [];
+
+        foreach ($dataProvider as $_dataProvider) {
+            assert($_dataProvider instanceof DataProvider);
+
+            try {
+                $class  = new ReflectionClass($_dataProvider->className());
+                $method = $class->getMethod($_dataProvider->methodName());
+                // @codeCoverageIgnoreStart
+            } catch (ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+                // @codeCoverageIgnoreEnd
+            }
+
+            if ($method->isStatic()) {
+                $object = null;
+            } else {
+                $object = $class->newInstance();
+            }
+
+            if ($method->getNumberOfParameters() === 0) {
+                $data = $method->invoke($object);
+            } else {
+                $data = $method->invoke($object, $_dataProvider->methodName());
+            }
+
+            if ($data instanceof Traversable) {
+                $origData = $data;
+                $data     = [];
+
+                foreach ($origData as $key => $value) {
+                    if (is_int($key)) {
+                        $data[] = $value;
+                    } elseif (array_key_exists($key, $data)) {
+                        throw new InvalidDataProviderException(
+                            sprintf(
+                                'The key "%s" has already been defined by a previous data provider',
+                                $key,
+                            )
+                        );
+                    } else {
+                        $data[$key] = $value;
+                    }
+                }
+            }
+
+            if (is_array($data)) {
+                $result = array_merge($result, $data);
+            }
+        }
+
+        return $result;
+    }
+
+    private static function dataProvidedByMetadata(MetadataCollection $testWith): array
+    {
+        $result = [];
+
+        foreach ($testWith as $_testWith) {
+            assert($_testWith instanceof TestWith);
+
+            $result[] = $_testWith->data();
+        }
+
+        return $result;
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private static function dataProvidedByTestWithAnnotation(string $className, string $methodName): ?array
+    {
+        $docComment = (new ReflectionMethod($className, $methodName))->getDocComment();
+
+        if (!$docComment) {
+            return null;
+        }
+
+        $docComment = str_replace("\r\n", "\n", $docComment);
+        $docComment = preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
+        $docComment = (string) substr($docComment, 0, -1);
+        $docComment = rtrim($docComment, "\n");
+
+        if (!preg_match('/@testWith\s+/', $docComment, $matches, PREG_OFFSET_CAPTURE)) {
+            return null;
+        }
+
+        $offset            = strlen($matches[0][0]) + $matches[0][1];
+        $annotationContent = substr($docComment, $offset);
+        $data              = [];
+
+        foreach (explode("\n", $annotationContent) as $candidateRow) {
+            $candidateRow = trim($candidateRow);
+
+            if ($candidateRow[0] !== '[') {
+                break;
+            }
+
+            $dataSet = json_decode($candidateRow, true);
+
+            if (json_last_error() !== JSON_ERROR_NONE) {
+                throw new Exception(
+                    'The data set for the @testWith annotation cannot be parsed: ' . json_last_error_msg()
+                );
+            }
+
+            $data[] = $dataSet;
+        }
+
+        if (!$data) {
+            throw new Exception('The data set for the @testWith annotation cannot be parsed.');
+        }
+
+        return $data;
     }
 }

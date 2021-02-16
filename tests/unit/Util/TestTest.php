@@ -44,11 +44,9 @@ use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 use PHPUnit\TestFixture\ParseTestMethodAnnotationsMock;
 use PHPUnit\TestFixture\RequirementsTest;
 use PHPUnit\TestFixture\Test3194;
-use PHPUnit\TestFixture\VariousDocblockDefinedDataProvider;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 use PHPUnit\Util\Metadata\Annotation\DocBlock;
 use ReflectionClass;
-use ReflectionMethod;
 
 /**
  * @small
@@ -277,7 +275,7 @@ final class TestTest extends TestCase
      */
     public function testMultipleDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(MultipleDataProviderTest::class, 'testOne');
+        $dataSets = Test::providedData(MultipleDataProviderTest::class, 'testOne');
 
         $this->assertCount(9, $dataSets);
 
@@ -298,7 +296,7 @@ final class TestTest extends TestCase
 
     public function testMultipleYieldIteratorDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(MultipleDataProviderTest::class, 'testTwo');
+        $dataSets = Test::providedData(MultipleDataProviderTest::class, 'testTwo');
 
         $this->assertCount(9, $dataSets);
 
@@ -319,7 +317,7 @@ final class TestTest extends TestCase
 
     public function testWithVariousIterableDataProvidersFromParent(): void
     {
-        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testFromParent');
+        $dataSets = Test::providedData(VariousIterableDataProviderTest::class, 'testFromParent');
 
         $this->assertEquals([
             ['J'],
@@ -337,7 +335,7 @@ final class TestTest extends TestCase
 
     public function testWithVariousIterableDataProvidersInParent(): void
     {
-        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testInParent');
+        $dataSets = Test::providedData(VariousIterableDataProviderTest::class, 'testInParent');
 
         $this->assertEquals([
             ['J'],
@@ -355,7 +353,7 @@ final class TestTest extends TestCase
 
     public function testWithVariousIterableAbstractDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testAbstract');
+        $dataSets = Test::providedData(VariousIterableDataProviderTest::class, 'testAbstract');
 
         $this->assertEquals([
             ['S'],
@@ -373,7 +371,7 @@ final class TestTest extends TestCase
 
     public function testWithVariousIterableStaticDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testStatic');
+        $dataSets = Test::providedData(VariousIterableDataProviderTest::class, 'testStatic');
 
         $this->assertEquals([
             ['A'],
@@ -390,7 +388,7 @@ final class TestTest extends TestCase
 
     public function testWithVariousIterableNonStaticDataProviders(): void
     {
-        $dataSets = Test::getProvidedData(VariousIterableDataProviderTest::class, 'testNonStatic');
+        $dataSets = Test::providedData(VariousIterableDataProviderTest::class, 'testNonStatic');
 
         $this->assertEquals([
             ['S'],
@@ -408,132 +406,10 @@ final class TestTest extends TestCase
     public function testWithDuplicateKeyDataProviders(): void
     {
         $this->expectException(InvalidDataProviderException::class);
-        $this->expectExceptionMessage('The key "foo" has already been defined in the data provider "dataProvider".');
+        $this->expectExceptionMessage('The key "foo" has already been defined by a previous data provider');
 
-        Test::getProvidedData(DuplicateKeyDataProviderTest::class, 'test');
-    }
-
-    public function testTestWithEmptyAnnotation(): void
-    {
-        $result = DocBlock::ofMethod(
-            new ReflectionMethod(
-                VariousDocblockDefinedDataProvider::class,
-                'anotherAnnotation'
-            ),
-            VariousDocblockDefinedDataProvider::class
-        )->getProvidedData();
-
-        $this->assertNull($result);
-    }
-
-    public function testTestWithSimpleCase(): void
-    {
-        $result = DocBlock::ofMethod(
-            new ReflectionMethod(
-                VariousDocblockDefinedDataProvider::class,
-                'testWith1'
-            ),
-            VariousDocblockDefinedDataProvider::class
-        )->getProvidedData();
-
-        $this->assertEquals([[1]], $result);
-    }
-
-    public function testTestWithMultiLineMultiParameterCase(): void
-    {
-        $result = DocBlock::ofMethod(
-            new ReflectionMethod(
-                VariousDocblockDefinedDataProvider::class,
-                'testWith1234'
-            ),
-            VariousDocblockDefinedDataProvider::class
-        )->getProvidedData();
-
-        $this->assertEquals([[1, 2], [3, 4]], $result);
-    }
-
-    public function testTestWithVariousTypes(): void
-    {
-        $result = DocBlock::ofMethod(
-            new ReflectionMethod(
-                VariousDocblockDefinedDataProvider::class,
-                'testWithABTrueNull'
-            ),
-            VariousDocblockDefinedDataProvider::class
-        )->getProvidedData();
-
-        $this->assertEquals([['ab'], [true], [null]], $result);
-    }
-
-    public function testTestWithAnnotationAfter(): void
-    {
-        $result = DocBlock::ofMethod(
-            new ReflectionMethod(
-                VariousDocblockDefinedDataProvider::class,
-                'testWith12AndAnotherAnnotation'
-            ),
-            VariousDocblockDefinedDataProvider::class
-        )->getProvidedData();
-
-        $this->assertEquals([[1], [2]], $result);
-    }
-
-    public function testTestWithSimpleTextAfter(): void
-    {
-        $result = DocBlock::ofMethod(
-            new ReflectionMethod(
-                VariousDocblockDefinedDataProvider::class,
-                'testWith12AndBlahBlah'
-            ),
-            VariousDocblockDefinedDataProvider::class
-        )->getProvidedData();
-
-        $this->assertEquals([[1], [2]], $result);
-    }
-
-    public function testTestWithCharacterEscape(): void
-    {
-        $result = DocBlock::ofMethod(
-            new ReflectionMethod(
-                VariousDocblockDefinedDataProvider::class,
-                'testWithEscapedString'
-            ),
-            VariousDocblockDefinedDataProvider::class
-        )->getProvidedData();
-
-        $this->assertEquals([['"', '"']], $result);
-    }
-
-    public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed(): void
-    {
-        $docBlock = DocBlock::ofMethod(
-            new ReflectionMethod(
-                VariousDocblockDefinedDataProvider::class,
-                'testWithMalformedValue'
-            ),
-            VariousDocblockDefinedDataProvider::class
-        );
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageMatches('/^The data set for the @testWith annotation cannot be parsed:/');
-
-        $docBlock->getProvidedData();
-    }
-
-    public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed(): void
-    {
-        $docBlock = DocBlock::ofMethod(
-            new ReflectionMethod(
-                VariousDocblockDefinedDataProvider::class,
-                'testWithWellFormedAndMalformedValue'
-            ),
-            VariousDocblockDefinedDataProvider::class
-        );
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageMatches('/^The data set for the @testWith annotation cannot be parsed:/');
-
-        $docBlock->getProvidedData();
+        /* @noinspection UnusedFunctionResultInspection */
+        Test::providedData(DuplicateKeyDataProviderTest::class, 'test');
     }
 
     public function testParseDependsAnnotation(): void

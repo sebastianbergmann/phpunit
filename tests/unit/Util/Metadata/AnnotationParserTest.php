@@ -28,7 +28,6 @@ use PHPUnit\TestFixture\Metadata\Annotation\RequiresPhpTest;
 use PHPUnit\TestFixture\Metadata\Annotation\RequiresPhpunitTest;
 use PHPUnit\TestFixture\Metadata\Annotation\SmallTest;
 use PHPUnit\TestFixture\Metadata\Annotation\TestDoxTest;
-use PHPUnit\TestFixture\Metadata\Annotation\TestWithTest;
 use PHPUnit\TestFixture\Metadata\Annotation\UsesTest;
 
 /**
@@ -518,15 +517,6 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestDox());
         $this->assertSame('text', $metadata->asArray()[0]->text());
-    }
-
-    public function test_Parses_testWith_annotation_on_method(): void
-    {
-        $metadata = (new AnnotationParser)->forMethod(TestWithTest::class, 'testOne');
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isTestWith());
-        $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
     }
 
     public function test_Parses_ticket_annotation_on_method(): void

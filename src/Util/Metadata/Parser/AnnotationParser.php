@@ -9,11 +9,9 @@
  */
 namespace PHPUnit\Util\Metadata;
 
-use const JSON_THROW_ON_ERROR;
 use function array_shift;
 use function explode;
 use function implode;
-use function json_decode;
 use function strlen;
 use function strpos;
 use function substr;
@@ -296,13 +294,6 @@ final class AnnotationParser implements Parser
 
                 case 'testdox':
                     $result[] = new TestDox($values[0]);
-
-                    break;
-
-                case 'testWith':
-                    foreach ($values as $value) {
-                        $result[] = new TestWith(json_decode($value, true, 512, JSON_THROW_ON_ERROR));
-                    }
 
                     break;
 

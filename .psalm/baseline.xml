@@ -1307,9 +1307,6 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/Metadata/Parser/Annotation/DocBlock.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>throw new SkippedTestError;</code>
-    </MissingThrowsDocblock>
     <RedundantCast occurrences="1">
       <code>(string) $matches['value'][$i]</code>
     </RedundantCast>
@@ -1325,12 +1322,6 @@
       <code>forClassName</code>
       <code>forMethod</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Util/Metadata/Parser/AttributeParser.php">
-    <UndefinedMethod occurrences="2">
-      <code>getAttributes</code>
-      <code>getAttributes</code>
-    </UndefinedMethod>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
@@ -1385,8 +1376,9 @@
     <MissingReturnType occurrences="1">
       <code>sanitizeVersionNumber</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="3">
       <code>forClassName</code>
+      <code>throw new Exception('The data set for the @testWith annotation cannot be parsed.');</code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument occurrences="1">
       <code>$methodName</code>

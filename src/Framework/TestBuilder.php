@@ -55,7 +55,7 @@ final class TestBuilder
         );
 
         try {
-            $data = TestUtil::getProvidedData(
+            $data = TestUtil::providedData(
                 $className,
                 $methodName
             );

@@ -9,47 +9,25 @@
  */
 namespace PHPUnit\Util\Metadata\Annotation;
 
-use const JSON_ERROR_NONE;
-use const PREG_OFFSET_CAPTURE;
 use function array_filter;
-use function array_key_exists;
 use function array_map;
 use function array_merge;
-use function array_pop;
 use function array_values;
 use function count;
-use function explode;
 use function file;
-use function implode;
-use function is_array;
-use function is_int;
-use function json_decode;
-use function json_last_error;
-use function json_last_error_msg;
 use function preg_match;
 use function preg_match_all;
-use function preg_replace;
 use function preg_split;
 use function realpath;
-use function rtrim;
-use function sprintf;
-use function str_replace;
-use function strlen;
 use function strpos;
 use function substr;
 use function trim;
 use PharIo\Version\VersionConstraintParser;
-use PHPUnit\Framework\InvalidDataProviderException;
-use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\Warning;
-use PHPUnit\Util\Exception;
-use PHPUnit\Util\InvalidDataSetException;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
 use Reflector;
-use Traversable;
 
 /**
  * This is an abstraction around a PHPUnit-specific docBlock,
@@ -262,38 +240,6 @@ final class DocBlock
         );
     }
 
-    /**
-     * Returns the provided data for a method.
-     *
-     * @throws Exception
-     */
-    public function getProvidedData(): ?array
-    {
-        /** @noinspection SuspiciousBinaryOperationInspection */
-        $data = $this->getDataFromDataProviderAnnotation($this->docComment) ?? $this->getDataFromTestWithAnnotation($this->docComment);
-
-        if ($data === null) {
-            return null;
-        }
-
-        if ($data === []) {
-            throw new SkippedTestError;
-        }
-
-        foreach ($data as $key => $value) {
-            if (!is_array($value)) {
-                throw new InvalidDataSetException(
-                    sprintf(
-                        'Data set %s is invalid.',
-                        is_int($key) ? '#' . $key : '"' . $key . '"'
-                    )
-                );
-            }
-        }
-
-        return $data;
-    }
-
     public function symbolAnnotations(): array
     {
         return $this->symbolAnnotations;
@@ -329,146 +275,6 @@ final class DocBlock
     public function isToBeExecutedAsPostCondition(): bool
     {
         return 1 === preg_match('/@postCondition\b/', $this->docComment);
-    }
-
-    private function getDataFromDataProviderAnnotation(string $docComment): ?array
-    {
-        $methodName = null;
-        $className  = $this->className;
-
-        if ($this->isMethod) {
-            $methodName = $this->name;
-        }
-
-        if (!preg_match_all(self::REGEX_DATA_PROVIDER, $docComment, $matches)) {
-            return null;
-        }
-
-        $result = [];
-
-        foreach ($matches[1] as $match) {
-            $dataProviderMethodNameNamespace = explode('\\', $match);
-            $leaf                            = explode('::', array_pop($dataProviderMethodNameNamespace));
-            $dataProviderMethodName          = array_pop($leaf);
-
-            if (empty($dataProviderMethodNameNamespace)) {
-                $dataProviderMethodNameNamespace = '';
-            } else {
-                $dataProviderMethodNameNamespace = implode('\\', $dataProviderMethodNameNamespace) . '\\';
-            }
-
-            if (empty($leaf)) {
-                $dataProviderClassName = $className;
-            } else {
-                /** @psalm-var class-string $dataProviderClassName */
-                $dataProviderClassName = $dataProviderMethodNameNamespace . array_pop($leaf);
-            }
-
-            try {
-                $dataProviderClass = new ReflectionClass($dataProviderClassName);
-
-                $dataProviderMethod = $dataProviderClass->getMethod(
-                    $dataProviderMethodName
-                );
-                // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
-                throw new Exception(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-                // @codeCoverageIgnoreEnd
-            }
-
-            if ($dataProviderMethod->isStatic()) {
-                $object = null;
-            } else {
-                $object = $dataProviderClass->newInstanceWithoutConstructor();
-            }
-
-            if ($dataProviderMethod->getNumberOfParameters() === 0) {
-                $data = $dataProviderMethod->invoke($object);
-            } else {
-                $data = $dataProviderMethod->invoke($object, $methodName);
-            }
-
-            if ($data instanceof Traversable) {
-                $origData = $data;
-                $data     = [];
-
-                foreach ($origData as $key => $value) {
-                    if (is_int($key)) {
-                        $data[] = $value;
-                    } elseif (array_key_exists($key, $data)) {
-                        throw new InvalidDataProviderException(
-                            sprintf(
-                                'The key "%s" has already been defined in the data provider "%s".',
-                                $key,
-                                $match
-                            )
-                        );
-                    } else {
-                        $data[$key] = $value;
-                    }
-                }
-            }
-
-            if (is_array($data)) {
-                $result = array_merge($result, $data);
-            }
-        }
-
-        return $result;
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function getDataFromTestWithAnnotation(string $docComment): ?array
-    {
-        $docComment = $this->cleanUpMultiLineAnnotation($docComment);
-
-        if (!preg_match(self::REGEX_TEST_WITH, $docComment, $matches, PREG_OFFSET_CAPTURE)) {
-            return null;
-        }
-
-        $offset            = strlen($matches[0][0]) + $matches[0][1];
-        $annotationContent = substr($docComment, $offset);
-        $data              = [];
-
-        foreach (explode("\n", $annotationContent) as $candidateRow) {
-            $candidateRow = trim($candidateRow);
-
-            if ($candidateRow[0] !== '[') {
-                break;
-            }
-
-            $dataSet = json_decode($candidateRow, true);
-
-            if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception(
-                    'The data set for the @testWith annotation cannot be parsed: ' . json_last_error_msg()
-                );
-            }
-
-            $data[] = $dataSet;
-        }
-
-        if (!$data) {
-            throw new Exception('The data set for the @testWith annotation cannot be parsed.');
-        }
-
-        return $data;
-    }
-
-    private function cleanUpMultiLineAnnotation(string $docComment): string
-    {
-        //removing initial '   * ' for docComment
-        $docComment = str_replace("\r\n", "\n", $docComment);
-        $docComment = preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
-        $docComment = (string) substr($docComment, 0, -1);
-
-        return rtrim($docComment, "\n");
     }
 
     /** @return array<string, array<int, string>> */
