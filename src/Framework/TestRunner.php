@@ -21,6 +21,7 @@ use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\GlobalState;
+use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
@@ -204,26 +205,18 @@ final class TestRunner
             $risky = true;
         }
 
-        if ($result->enforcesCoversAnnotation() && !$error && !$failure && !$warning && !$incomplete && !$skipped && !$risky) {
-            $annotations = TestUtil::parseTestMethodAnnotations(
-                get_class($test),
-                $test->getName(false)
+        if (!$error && !$failure && !$warning && !$incomplete && !$skipped && !$risky &&
+            $result->enforcesCoversAnnotation() &&
+            !$this->hasCoverageMetadata(get_class($test), $test->getName(false))) {
+            $result->addFailure(
+                $test,
+                new MissingCoversAnnotationException(
+                    'This test does not have a @covers annotation but is expected to have one'
+                ),
+                $time
             );
 
-            if (!isset($annotations['class']['covers']) &&
-                !isset($annotations['method']['covers']) &&
-                !isset($annotations['class']['coversNothing']) &&
-                !isset($annotations['method']['coversNothing'])) {
-                $result->addFailure(
-                    $test,
-                    new MissingCoversAnnotationException(
-                        'This test does not have a @covers annotation but is expected to have one'
-                    ),
-                    $time
-                );
-
-                $risky = true;
-            }
+            $risky = true;
         }
 
         if ($collectCodeCoverage) {
@@ -475,5 +468,35 @@ final class TestRunner
 
         $php = AbstractPhpProcess::factory();
         $php->runTestJob($template->render(), $test, $result);
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function hasCoverageMetadata(string $className, string $methodName): bool
+    {
+        $metadata = MetadataRegistry::reader()->forClass($className)->mergeWith(MetadataRegistry::reader()->forMethod($className, $methodName));
+
+        if ($metadata->isCovers()->isNotEmpty()) {
+            return true;
+        }
+
+        if ($metadata->isCoversClass()->isNotEmpty()) {
+            return true;
+        }
+
+        if ($metadata->isCoversMethod()->isNotEmpty()) {
+            return true;
+        }
+
+        if ($metadata->isCoversFunction()->isNotEmpty()) {
+            return true;
+        }
+
+        if ($metadata->isCoversNothing()->isNotEmpty()) {
+            return true;
+        }
+
+        return false;
     }
 }
