@@ -621,16 +621,6 @@ final class TestTest extends TestCase
         ];
     }
 
-    public function testParseTestMethodAnnotationsIncorporatesTraits(): void
-    {
-        $result = Test::parseTestMethodAnnotations(ParseTestMethodAnnotationsMock::class);
-
-        $this->assertArrayHasKey('class', $result);
-        $this->assertArrayHasKey('method', $result);
-        $this->assertArrayHasKey('theClassAnnotation', $result['class']);
-        $this->assertArrayHasKey('theTraitAnnotation', $result['class']);
-    }
-
     public function testCoversAnnotationIncludesTraitsUsedByClass(): void
     {
         $this->assertSame(
