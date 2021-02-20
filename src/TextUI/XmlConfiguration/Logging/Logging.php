@@ -20,11 +20,11 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Xml as TestDoxXml;
  */
 final class Logging
 {
-    private ?Junit $junit = null;
+    private ?Junit $junit;
 
-    private ?Text $text = null;
+    private ?Text $text;
 
-    private ?TeamCity $teamCity = null;
+    private ?TeamCity $teamCity;
 
     private ?TestDoxHtml $testDoxHtml;
 
