@@ -13,7 +13,6 @@ use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const PHP_EOL;
 use function array_shift;
 use function array_unshift;
-use function assert;
 use function class_exists;
 use function count;
 use function debug_backtrace;
@@ -80,7 +79,6 @@ use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Warning as WarningUtil;
-use PHPUnit\Util\Xml;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 /**
