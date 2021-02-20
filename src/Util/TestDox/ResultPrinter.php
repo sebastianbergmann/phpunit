@@ -33,7 +33,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
     /**
      * @psalm-var class-string
      */
-    protected string $testClass = '';
+    protected ?string $testClass = null;
 
     protected ?TestStatus $testStatus = null;
 
@@ -192,7 +192,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
         $class = get_class($test);
 
         if ($this->testClass !== $class) {
-            if ($this->testClass !== '') {
+            if ($this->testClass !== null) {
                 $this->doEndClass();
             }
 
