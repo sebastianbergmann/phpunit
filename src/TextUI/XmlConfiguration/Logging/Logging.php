@@ -26,20 +26,11 @@ final class Logging
 
     private ?TeamCity $teamCity = null;
 
-    /**
-     * @var ?TestDoxHtml
-     */
-    private $testDoxHtml;
+    private ?TestDoxHtml $testDoxHtml;
 
-    /**
-     * @var ?TestDoxText
-     */
-    private $testDoxText;
+    private ?TestDoxText $testDoxText;
 
-    /**
-     * @var ?TestDoxXml
-     */
-    private $testDoxXml;
+    private ?TestDoxXml $testDoxXml;
 
     public function __construct(?Junit $junit, ?Text $text, ?TeamCity $teamCity, ?TestDoxHtml $testDoxHtml, ?TestDoxText $testDoxText, ?TestDoxXml $testDoxXml)
     {

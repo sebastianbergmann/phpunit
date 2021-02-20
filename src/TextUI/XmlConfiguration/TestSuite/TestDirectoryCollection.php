@@ -22,7 +22,7 @@ final class TestDirectoryCollection implements Countable, IteratorAggregate
     /**
      * @var TestDirectory[]
      */
-    private $directories;
+    private array $directories;
 
     /**
      * @param TestDirectory[] $directories

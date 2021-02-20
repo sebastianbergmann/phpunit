@@ -35,10 +35,7 @@ final class Matcher
 
     private ?MethodName $methodNameRule = null;
 
-    /**
-     * @var ParametersRule
-     */
-    private $parametersRule;
+    private ?ParametersRule $parametersRule = null;
 
     private ?Stub $stub = null;
 

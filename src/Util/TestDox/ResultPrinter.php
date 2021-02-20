@@ -31,9 +31,9 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
     protected NamePrettifier $prettifier;
 
     /**
-     * @var string
+     * @psalm-var class-string
      */
-    protected $testClass = '';
+    protected string $testClass = '';
 
     protected ?TestStatus $testStatus = null;
 

@@ -22,7 +22,7 @@ final class VariableCollection implements Countable, IteratorAggregate
     /**
      * @var Variable[]
      */
-    private $variables;
+    private array $variables;
 
     /**
      * @param Variable[] $variables

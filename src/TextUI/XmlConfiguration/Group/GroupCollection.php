@@ -20,7 +20,7 @@ final class GroupCollection implements IteratorAggregate
     /**
      * @var Group[]
      */
-    private $groups;
+    private array $groups;
 
     /**
      * @param Group[] $groups

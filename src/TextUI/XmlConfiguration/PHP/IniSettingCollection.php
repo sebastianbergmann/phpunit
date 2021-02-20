@@ -22,7 +22,7 @@ final class IniSettingCollection implements Countable, IteratorAggregate
     /**
      * @var IniSetting[]
      */
-    private $iniSettings;
+    private array $iniSettings;
 
     /**
      * @param IniSetting[] $iniSettings

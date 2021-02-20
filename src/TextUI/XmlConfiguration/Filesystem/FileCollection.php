@@ -22,7 +22,7 @@ final class FileCollection implements Countable, IteratorAggregate
     /**
      * @var File[]
      */
-    private $files;
+    private array $files;
 
     /**
      * @param File[] $files

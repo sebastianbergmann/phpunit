@@ -33,10 +33,7 @@ use PHPUnit\Framework\Exception;
  */
 class DefaultPhpProcess extends AbstractPhpProcess
 {
-    /**
-     * @var string
-     */
-    protected $tempFile;
+    private ?string $tempFile = null;
 
     /**
      * Runs a single job (PHP code) using a separate PHP process.

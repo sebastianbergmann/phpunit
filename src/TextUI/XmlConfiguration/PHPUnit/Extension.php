@@ -16,10 +16,9 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 final class Extension
 {
     /**
-     * @var string
      * @psalm-var class-string
      */
-    private $className;
+    private string $className;
 
     private string $sourceFile;
 

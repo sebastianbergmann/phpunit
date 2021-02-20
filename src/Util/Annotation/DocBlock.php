@@ -109,11 +109,9 @@ final class DocBlock
     private string $name;
 
     /**
-     * @var string
-     *
      * @psalm-var class-string
      */
-    private $className;
+    private string $className;
 
     public static function ofClass(ReflectionClass $class): self
     {

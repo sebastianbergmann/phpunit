@@ -22,7 +22,7 @@ final class ConstantCollection implements Countable, IteratorAggregate
     /**
      * @var Constant[]
      */
-    private $constants;
+    private array $constants;
 
     /**
      * @param Constant[] $constants

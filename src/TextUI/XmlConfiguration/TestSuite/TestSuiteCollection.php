@@ -22,7 +22,7 @@ final class TestSuiteCollection implements Countable, IteratorAggregate
     /**
      * @var TestSuite[]
      */
-    private $testSuites;
+    private array $testSuites;
 
     /**
      * @param TestSuite[] $testSuites

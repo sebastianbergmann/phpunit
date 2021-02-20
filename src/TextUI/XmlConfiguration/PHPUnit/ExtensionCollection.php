@@ -20,7 +20,7 @@ final class ExtensionCollection implements IteratorAggregate
     /**
      * @var Extension[]
      */
-    private $extensions;
+    private array $extensions;
 
     /**
      * @param Extension[] $extensions

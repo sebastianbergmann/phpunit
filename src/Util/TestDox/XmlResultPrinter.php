@@ -38,10 +38,7 @@ final class XmlResultPrinter extends Printer implements TestListener
 
     private NamePrettifier $prettifier;
 
-    /**
-     * @var null|Throwable
-     */
-    private $exception;
+    private ?Throwable $exception = null;
 
     /**
      * @param resource|string $out

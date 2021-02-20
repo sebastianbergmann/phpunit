@@ -50,7 +50,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     /**
      * @var ConfigurableMethod[]
      */
-    private $configurableMethods;
+    private array $configurableMethods;
 
     public function __construct(InvocationHandler $handler, Matcher $matcher, ConfigurableMethod ...$configurableMethods)
     {

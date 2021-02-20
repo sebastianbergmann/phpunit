@@ -22,7 +22,7 @@ final class MockClass implements MockType
     /**
      * @var class-string
      */
-    private $mockName;
+    private string $mockName;
 
     /**
      * @var ConfigurableMethod[]
