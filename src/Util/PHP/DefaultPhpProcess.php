@@ -31,7 +31,7 @@ use PHPUnit\Framework\Exception;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class DefaultPhpProcess extends AbstractPhpProcess
+final class DefaultPhpProcess extends AbstractPhpProcess
 {
     private ?string $tempFile = null;
 
