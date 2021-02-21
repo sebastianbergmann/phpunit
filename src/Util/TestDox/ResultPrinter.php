@@ -231,7 +231,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             $this->onTest($test[0], $test[1]->isSuccess());
         }
 
-        $this->endClass($this->testClass);
+        $this->endClass((string) $this->testClass);
     }
 
     /**
