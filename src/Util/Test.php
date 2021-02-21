@@ -844,6 +844,8 @@ final class Test
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws Exception
      */
     private static function dataProvidedByTestWithAnnotation(string $className, string $methodName): ?array
     {
