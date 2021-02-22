@@ -792,7 +792,7 @@ final class Test
             if ($method->isStatic()) {
                 $object = null;
             } else {
-                $object = $class->newInstance();
+                $object = $class->newInstanceWithoutConstructor();
             }
 
             if ($method->getNumberOfParameters() === 0) {
