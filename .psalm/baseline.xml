@@ -489,9 +489,6 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Matcher.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>$this-&gt;parametersRule === null</code>
-    </DocblockTypeContradiction>
     <InvalidNullableReturnType occurrences="1">
       <code>MethodName</code>
     </InvalidNullableReturnType>
@@ -501,17 +498,9 @@
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;methodNameRule</code>
     </NullableReturnStatement>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$parametersRule</code>
-    </PropertyNotSetInConstructor>
     <RedundantCondition occurrences="1">
       <code>$this-&gt;invocationRule !== null</code>
     </RedundantCondition>
-    <RedundantConditionGivenDocblockType occurrences="3">
-      <code>$this-&gt;parametersRule !== null</code>
-      <code>$this-&gt;parametersRule !== null</code>
-      <code>$this-&gt;parametersRule !== null</code>
-    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -630,16 +619,12 @@
     </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Framework/TestBuilder.php">
-    <MissingParamType occurrences="1">
-      <code>$data</code>
-    </MissingParamType>
     <MissingReturnType occurrences="1">
       <code>buildTestWithoutData</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="4">
+    <MissingThrowsDocblock occurrences="3">
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
-      <code>throw new Exception('No valid test provided.');</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/TestCase.php">
@@ -1359,20 +1344,12 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$tempFile</code>
-    </PropertyNotSetInConstructor>
     <RedundantCondition occurrences="1">
       <code>$_SERVER</code>
     </RedundantCondition>
     <TypeDoesNotContainNull occurrences="1">
       <code>[]</code>
     </TypeDoesNotContainNull>
-  </file>
-  <file src="src/Util/PHP/WindowsPhpProcess.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>WindowsPhpProcess</code>
-    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/Printer.php">
     <PropertyNotSetInConstructor occurrences="1">
