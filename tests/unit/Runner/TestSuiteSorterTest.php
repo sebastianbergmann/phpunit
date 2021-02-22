@@ -646,7 +646,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testSorterQuietlyIgnoresNonReorderable(): void
     {
         $suite          = new TestSuite;
-        $testCollection = [new Success('testOne'), new NotReorderableTest, new FailureTest(null)];
+        $testCollection = [new Success('testOne'), new NotReorderableTest, new FailureTest('testAssertArrayEqualsArray')];
         $suite->setTests($testCollection);
 
         $sorter = new TestSuiteSorter;

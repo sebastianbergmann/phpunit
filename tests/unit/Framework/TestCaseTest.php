@@ -1130,7 +1130,7 @@ class TestCaseTest extends TestCase
 
     public function testHasFailedReturnsFalseWhenTestHasNotRunYet(): void
     {
-        $test = new TestWithDifferentStatuses(null);
+        $test = new TestWithDifferentStatuses('testThatPasses');
 
         $this->assertTrue($test->status()->isUnknown());
         $this->assertFalse($test->hasFailed());
