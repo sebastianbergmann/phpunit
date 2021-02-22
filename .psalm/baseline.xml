@@ -619,13 +619,16 @@
     </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Framework/TestBuilder.php">
-    <MissingReturnType occurrences="1">
-      <code>buildTestWithoutData</code>
-    </MissingReturnType>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>$test</code>
+    </LessSpecificReturnStatement>
     <MissingThrowsDocblock occurrences="3">
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
+    <MoreSpecificReturnType occurrences="1">
+      <code>Test</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion occurrences="2">
