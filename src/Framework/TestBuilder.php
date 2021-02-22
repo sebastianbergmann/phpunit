@@ -140,6 +140,8 @@ final class TestBuilder
 
     /**
      * @psalm-param class-string $className
+     *
+     * @param array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data
      */
     private function buildDataProviderTestSuite(string $methodName, string $className, $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
     {
