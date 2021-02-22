@@ -12,7 +12,6 @@ namespace PHPUnit\Framework;
 use function assert;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\TestFixture\EmptyDataProviderTest;
-use PHPUnit\TestFixture\ModifiedConstructorTestCase;
 use PHPUnit\TestFixture\TestWithAnnotations;
 use ReflectionClass;
 
@@ -44,12 +43,6 @@ final class TestBuilderTest extends TestCase
 
         /* @var ErrorTestCase $test */
         $this->assertSame('Cannot instantiate class "foo".', $test->getMessage());
-    }
-
-    public function testCreateTestForTestClassWithModifiedConstructor(): void
-    {
-        $test = (new TestBuilder)->build(new ReflectionClass(ModifiedConstructorTestCase::class), 'testCase');
-        $this->assertInstanceOf(ModifiedConstructorTestCase::class, $test);
     }
 
     public function testCreateWithEmptyData(): void

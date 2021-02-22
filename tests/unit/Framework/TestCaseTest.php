@@ -1099,13 +1099,6 @@ class TestCaseTest extends TestCase
         $this->assertSame($methodName, $testCase->getName());
     }
 
-    public function testGetNameReturnsEmptyStringAsDefault(): void
-    {
-        $testCase = new TestWithDifferentNames(null);
-
-        $this->assertSame('', $testCase->getName());
-    }
-
     /**
      * @dataProvider providerInvalidName
      */
@@ -1122,7 +1115,6 @@ class TestCaseTest extends TestCase
     public function providerInvalidName(): array
     {
         return [
-            'null'         => [null],
             'string-empty' => [''],
             'string-blank' => ['  '],
         ];

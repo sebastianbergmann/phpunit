@@ -99,11 +99,10 @@ final class TestBuilder
                 $backupSettings
             );
         } else {
-            $test = $this->buildTestWithoutData($className);
+            $test = new $className($methodName);
         }
 
         if ($test instanceof TestCase) {
-            $test->setName($methodName);
             $this->configureTestCase(
                 $test,
                 $runTestInSeparateProcess,
@@ -114,12 +113,6 @@ final class TestBuilder
         }
 
         return $test;
-    }
-
-    /** @psalm-param class-string $className */
-    private function buildTestWithoutData(string $className)
-    {
-        return new $className(null);
     }
 
     /**
