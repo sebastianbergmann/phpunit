@@ -52,9 +52,10 @@ function __phpunit_run_isolated_test()
     $result->beStrictAboutTodoAnnotatedTests({isStrictAboutTodoAnnotatedTests});
     $result->beStrictAboutResourceUsageDuringSmallTests({isStrictAboutResourceUsageDuringSmallTests});
 
-    $test = new {className}('{methodName}', unserialize('{data}'), '{dataName}');
+    $test = new {className}('{methodName}');
     \assert($test instanceof TestCase);
 
+    $test->setData('{dataName}', unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(true);
 

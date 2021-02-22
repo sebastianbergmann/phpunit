@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use function assert;
-use function count;
 use function get_class;
 use function sprintf;
 use function trim;
@@ -55,67 +54,52 @@ final class TestBuilder
             $methodName
         );
 
-        $constructor = $theClass->getConstructor();
+        try {
+            $data = TestUtil::getProvidedData(
+                $className,
+                $methodName
+            );
+        } catch (IncompleteTestError $e) {
+            $message = sprintf(
+                "Test for %s::%s marked incomplete by data provider\n%s",
+                $className,
+                $methodName,
+                $this->throwableToString($e)
+            );
 
-        if ($constructor === null) {
-            throw new Exception('No valid test provided.');
+            $data = new IncompleteTestCase($className, $methodName, $message);
+        } catch (SkippedTestError $e) {
+            $message = sprintf(
+                "Test for %s::%s skipped by data provider\n%s",
+                $className,
+                $methodName,
+                $this->throwableToString($e)
+            );
+
+            $data = new SkippedTestCase($className, $methodName, $message);
+        } catch (Throwable $t) {
+            $message = sprintf(
+                "The data provider specified for %s::%s is invalid.\n%s",
+                $className,
+                $methodName,
+                $this->throwableToString($t)
+            );
+
+            $data = new ErrorTestCase($message);
         }
 
-        $parameters = $constructor->getParameters();
-
-        // TestCase() or TestCase($name)
-        if (count($parameters) < 2) {
+        if (isset($data)) {
+            $test = $this->buildDataProviderTestSuite(
+                $methodName,
+                $className,
+                $data,
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $runClassInSeparateProcess,
+                $backupSettings
+            );
+        } else {
             $test = $this->buildTestWithoutData($className);
-        } // TestCase($name, $data)
-        else {
-            try {
-                $data = TestUtil::getProvidedData(
-                    $className,
-                    $methodName
-                );
-            } catch (IncompleteTestError $e) {
-                $message = sprintf(
-                    "Test for %s::%s marked incomplete by data provider\n%s",
-                    $className,
-                    $methodName,
-                    $this->throwableToString($e)
-                );
-
-                $data = new IncompleteTestCase($className, $methodName, $message);
-            } catch (SkippedTestError $e) {
-                $message = sprintf(
-                    "Test for %s::%s skipped by data provider\n%s",
-                    $className,
-                    $methodName,
-                    $this->throwableToString($e)
-                );
-
-                $data = new SkippedTestCase($className, $methodName, $message);
-            } catch (Throwable $t) {
-                $message = sprintf(
-                    "The data provider specified for %s::%s is invalid.\n%s",
-                    $className,
-                    $methodName,
-                    $this->throwableToString($t)
-                );
-
-                $data = new ErrorTestCase($message);
-            }
-
-            // Test method with @dataProvider.
-            if (isset($data)) {
-                $test = $this->buildDataProviderTestSuite(
-                    $methodName,
-                    $className,
-                    $data,
-                    $runTestInSeparateProcess,
-                    $preserveGlobalState,
-                    $runClassInSeparateProcess,
-                    $backupSettings
-                );
-            } else {
-                $test = $this->buildTestWithoutData($className);
-            }
         }
 
         if ($test instanceof TestCase) {
@@ -157,9 +141,11 @@ final class TestBuilder
             $dataProviderTestSuite->addTest($data, $groups);
         } else {
             foreach ($data as $_dataName => $_data) {
-                $_test = new $className($methodName, $_data, $_dataName);
+                $_test = new $className($methodName);
 
                 assert($_test instanceof TestCase);
+
+                $_test->setData($_dataName, $_data);
 
                 $this->configureTestCase(
                     $_test,

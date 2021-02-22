@@ -1037,7 +1037,10 @@ class TestCaseTest extends TestCase
 
     public function testProvidingOfAutoreferencedArray(): void
     {
-        $test = new TestAutoreferenced('testJsonEncodeException', $this->getAutoreferencedArray());
+        $test = new TestAutoreferenced('testJsonEncodeException');
+
+        $test->setData(0, $this->getAutoreferencedArray());
+
         $test->runBare();
 
         $this->assertIsArray($test->myTestData);
@@ -1054,7 +1057,10 @@ class TestCaseTest extends TestCase
             [$this->createStub(Mockable::class)],
         ];
 
-        $test = new TestAutoreferenced('testJsonEncodeException', [$data]);
+        $test = new TestAutoreferenced('testJsonEncodeException');
+
+        $test->setData(0, [$data]);
+
         $test->runBare();
 
         $this->assertIsArray($test->myTestData);

@@ -146,12 +146,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private bool $inIsolation = false;
 
-    private array $data;
+    private array $data = [];
 
     /**
      * @var int|string
      */
-    private $dataName;
+    private $dataName = '';
 
     private ?string $expectedException = null;
 
@@ -346,18 +346,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param int|string $dataName
-     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(?string $name, array $data = [], $dataName = '')
+    public function __construct(?string $name)
     {
         if ($name !== null) {
             $this->setName($name);
         }
-
-        $this->data     = $data;
-        $this->dataName = $dataName;
     }
 
     /**
@@ -1108,6 +1103,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function requires(): array
     {
         return $this->dependencies;
+    }
+
+    /**
+     * @param int|string $dataName
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function setData($dataName, array $data): void
+    {
+        $this->dataName = $dataName;
+        $this->data     = $data;
     }
 
     /**

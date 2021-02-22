@@ -21,33 +21,6 @@ use ReflectionClass;
  */
 final class TestBuilderTest extends TestCase
 {
-    public function testCreateTestForConstructorlessTestClass(): void
-    {
-        $reflector = $this->getMockBuilder(ReflectionClass::class)
-                          ->setConstructorArgs([$this])
-                          ->getMock();
-
-        assert($reflector instanceof MockObject);
-        assert($reflector instanceof ReflectionClass);
-
-        $reflector->expects($this->once())
-                  ->method('getConstructor')
-                  ->willReturn(null);
-
-        $reflector->expects($this->once())
-                  ->method('isInstantiable')
-                  ->willReturn(true);
-
-        $reflector->expects($this->once())
-                  ->method('getName')
-                  ->willReturn(__CLASS__);
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('No valid test provided.');
-
-        (new TestBuilder)->build($reflector, 'TestForConstructorlessTestClass');
-    }
-
     public function testCreateTestForNotInstantiableTestClass(): void
     {
         $reflector = $this->getMockBuilder(ReflectionClass::class)
