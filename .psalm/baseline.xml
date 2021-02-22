@@ -1375,9 +1375,8 @@
     <MissingReturnType occurrences="1">
       <code>sanitizeVersionNumber</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="3">
+    <MissingThrowsDocblock occurrences="2">
       <code>forClassName</code>
-      <code>throw new Exception('The data set for the @testWith annotation cannot be parsed.');</code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument occurrences="1">
       <code>$methodName</code>
