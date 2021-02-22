@@ -1095,7 +1095,7 @@ class TestCaseTest extends TestCase
 
     public function testGetNameReturnsEmptyStringAsDefault(): void
     {
-        $testCase = new TestWithDifferentNames();
+        $testCase = new TestWithDifferentNames(null);
 
         $this->assertSame('', $testCase->getName());
     }
@@ -1124,7 +1124,7 @@ class TestCaseTest extends TestCase
 
     public function testHasFailedReturnsFalseWhenTestHasNotRunYet(): void
     {
-        $test = new TestWithDifferentStatuses();
+        $test = new TestWithDifferentStatuses(null);
 
         $this->assertTrue($test->status()->isUnknown());
         $this->assertFalse($test->hasFailed());

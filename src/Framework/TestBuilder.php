@@ -135,7 +135,7 @@ final class TestBuilder
     /** @psalm-param class-string $className */
     private function buildTestWithoutData(string $className)
     {
-        return new $className;
+        return new $className(null);
     }
 
     /** @psalm-param class-string $className */

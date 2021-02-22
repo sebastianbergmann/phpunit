@@ -11,6 +11,6 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class EmptyTestCaseTest extends TestCase
+final class EmptyTestCaseTest extends TestCase
 {
 }

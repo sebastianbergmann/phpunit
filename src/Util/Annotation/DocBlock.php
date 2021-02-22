@@ -43,6 +43,7 @@ use function trim;
 use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Util\Exception;
 use PHPUnit\Util\InvalidDataSetException;
@@ -411,7 +412,13 @@ final class DocBlock
             if ($dataProviderMethod->isStatic()) {
                 $object = null;
             } else {
-                $object = $dataProviderClass->newInstance();
+                $arguments = [];
+
+                if ($dataProviderClass->isSubclassOf(TestCase::class)) {
+                    $arguments = [null];
+                }
+
+                $object = $dataProviderClass->newInstanceArgs($arguments);
             }
 
             if ($dataProviderMethod->getNumberOfParameters() === 0) {

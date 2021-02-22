@@ -48,7 +48,7 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testCurrentForNonEmptyTestSuiteInitiallyReturnsFirstTest(): void
     {
-        $test      = new EmptyTestCaseTest;
+        $test      = new EmptyTestCaseTest(null);
         $testSuite = new TestSuite;
         $testSuite->addTest($test);
         $subject = new TestSuiteIterator($testSuite);
@@ -69,7 +69,7 @@ final class TestSuiteIteratorTest extends TestCase
     public function testRewindResetsCurrentToFirstElement(): void
     {
         $testSuite = new TestSuite;
-        $test      = new EmptyTestCaseTest;
+        $test      = new EmptyTestCaseTest(null);
         $testSuite->addTest($test);
         $subject = new TestSuiteIterator($testSuite);
         $subject->next();
@@ -118,7 +118,7 @@ final class TestSuiteIteratorTest extends TestCase
     public function testGetChildrenReturnsNewInstanceWithCurrentTestSuite(): void
     {
         $childSuite = new TestSuite;
-        $test       = new EmptyTestCaseTest;
+        $test       = new EmptyTestCaseTest(null);
         $childSuite->addTest($test);
 
         $testSuite = new TestSuite;
@@ -160,7 +160,7 @@ final class TestSuiteIteratorTest extends TestCase
     {
         $suite = new TestSuite;
 
-        $suite->addTest(new EmptyTestCaseTest);
+        $suite->addTest(new EmptyTestCaseTest(null));
 
         return $suite;
     }
