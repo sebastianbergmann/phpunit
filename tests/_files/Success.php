@@ -11,9 +11,9 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class Success extends TestCase
+final class Success extends TestCase
 {
-    protected function runTest(): void
+    public function testOne(): void
     {
         $this->assertTrue(true);
     }

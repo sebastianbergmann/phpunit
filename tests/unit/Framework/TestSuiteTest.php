@@ -370,7 +370,7 @@ final class TestSuiteTest extends TestCase
     public function testResolverOnlyUsesSuitesAndCases(): void
     {
         $suite = new TestSuite('SomeName');
-        $suite->addTest(new DoubleTestCase(new Success));
+        $suite->addTest(new DoubleTestCase(new Success('testOne')));
         $suite->addTestSuite(new TestSuite(DependencyOnClassTest::class));
 
         $this->assertEquals([

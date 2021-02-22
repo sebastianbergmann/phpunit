@@ -12,9 +12,9 @@ namespace PHPUnit\TestFixture;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
-class TestError extends TestCase
+final class TestError extends TestCase
 {
-    protected function runTest(): void
+    public function testOne(): void
     {
         throw new Exception;
     }

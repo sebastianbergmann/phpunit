@@ -122,7 +122,7 @@ class TestCaseTest extends TestCase
 
     public function testSuccess(): void
     {
-        $test   = new Success;
+        $test   = new Success('testOne');
         $result = new TestResult;
 
         $test->run($result);
@@ -136,7 +136,7 @@ class TestCaseTest extends TestCase
 
     public function testFailure(): void
     {
-        $test   = new Failure;
+        $test   = new Failure('testOne');
         $result = new TestResult;
 
         $test->run($result);
@@ -150,7 +150,7 @@ class TestCaseTest extends TestCase
 
     public function testError(): void
     {
-        $test   = new TestError;
+        $test   = new TestError('testOne');
         $result = new TestResult;
 
         $test->run($result);
@@ -164,7 +164,7 @@ class TestCaseTest extends TestCase
 
     public function testSkipped(): void
     {
-        $test   = new TestSkipped;
+        $test   = new TestSkipped('testOne');
         $result = new TestResult;
 
         $test->run($result);
@@ -179,7 +179,7 @@ class TestCaseTest extends TestCase
 
     public function testIncomplete(): void
     {
-        $test   = new TestIncomplete;
+        $test   = new TestIncomplete('testOne');
         $result = new TestResult;
 
         $test->run($result);
@@ -282,11 +282,11 @@ class TestCaseTest extends TestCase
 
     public function testWasRun(): void
     {
-        $test = new WasRun;
+        $test = new WasRun('testOne');
 
         $test->run(new TestResult);
 
-        $this->assertTrue($test->wasRun);
+        $this->assertTrue($test->wasRun());
     }
 
     public function testException(): void

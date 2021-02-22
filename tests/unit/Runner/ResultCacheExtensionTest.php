@@ -84,58 +84,58 @@ final class ResultCacheExtensionTest extends TestCase
 
     public function testError(): void
     {
-        $test = new TestError('test_name');
+        $test = new TestError('testOne');
         $test->run($this->result);
 
-        $this->assertTrue($this->cache->status(TestError::class . '::test_name')->isError());
+        $this->assertTrue($this->cache->status(TestError::class . '::testOne')->isError());
     }
 
     public function testFailure(): void
     {
-        $test = new Failure('test_name');
+        $test = new Failure('testOne');
         $test->run($this->result);
 
-        $this->assertTrue($this->cache->status(Failure::class . '::test_name')->isFailure());
+        $this->assertTrue($this->cache->status(Failure::class . '::testOne')->isFailure());
     }
 
     public function testSkipped(): void
     {
-        $test = new TestSkipped('test_name');
+        $test = new TestSkipped('testOne');
         $test->run($this->result);
 
-        $this->assertTrue($this->cache->status(TestSkipped::class . '::test_name')->isSkipped());
+        $this->assertTrue($this->cache->status(TestSkipped::class . '::testOne')->isSkipped());
     }
 
     public function testIncomplete(): void
     {
-        $test = new TestIncomplete('test_name');
+        $test = new TestIncomplete('testOne');
         $test->run($this->result);
 
-        $this->assertTrue($this->cache->status(TestIncomplete::class . '::test_name')->isIncomplete());
+        $this->assertTrue($this->cache->status(TestIncomplete::class . '::testOne')->isIncomplete());
     }
 
     public function testPassedTestsOnlyCacheTime(): void
     {
-        $test = new Success('test_name');
+        $test = new Success('testOne');
         $test->run($this->result);
 
-        $this->assertTrue($this->cache->status(Success::class . '::test_name')->isUnknown());
+        $this->assertTrue($this->cache->status(Success::class . '::testOne')->isUnknown());
     }
 
     public function testWarning(): void
     {
-        $test = new TestWarning('test_name');
+        $test = new TestWarning('testOne');
         $test->run($this->result);
 
-        $this->assertTrue($this->cache->status(TestWarning::class . '::test_name')->isWarning());
+        $this->assertTrue($this->cache->status(TestWarning::class . '::testOne')->isWarning());
     }
 
     public function testRisky(): void
     {
-        $test = new TestRisky('test_name');
+        $test = new TestRisky('testOne');
         $test->run($this->result);
 
-        $this->assertTrue($this->cache->status(TestRisky::class . '::test_name')->isRisky());
+        $this->assertTrue($this->cache->status(TestRisky::class . '::testOne')->isRisky());
     }
 
     public function testEmptySuite(): void

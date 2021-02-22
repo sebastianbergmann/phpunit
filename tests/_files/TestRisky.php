@@ -11,9 +11,9 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class TestRisky extends TestCase
+final class TestRisky extends TestCase
 {
-    protected function runTest(): void
+    public function testOne(): void
     {
         $this->markAsRisky();
     }
