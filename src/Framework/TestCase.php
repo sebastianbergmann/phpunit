@@ -734,7 +734,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 }
             }
 
-            if (MetadataRegistry::parser()->forMethod(static::class, $this->name)->isDoesNotPerformAssertions()->isNotEmpty()) {
+            if (method_exists(static::class, $this->name) &&
+                MetadataRegistry::parser()->forMethod(static::class, $this->name)->isDoesNotPerformAssertions()->isNotEmpty()) {
                 $this->doesNotPerformAssertions = true;
             }
 
