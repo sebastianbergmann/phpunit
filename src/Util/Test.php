@@ -114,8 +114,6 @@ final class Test
      *
      * @return array|bool
      * @psalm-param class-string $className
-     *
-     * @todo Avoid calling this method for methods that do not exist
      */
     public static function linesToBeCovered(string $className, string $methodName)
     {
@@ -209,8 +207,6 @@ final class Test
      *
      * @throws CodeCoverageException
      * @psalm-param class-string $className
-     *
-     * @todo Avoid calling this method for methods that do not exist
      */
     public static function linesToBeUsed(string $className, string $methodName): array
     {
