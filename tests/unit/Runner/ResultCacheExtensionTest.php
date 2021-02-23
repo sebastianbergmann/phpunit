@@ -10,7 +10,6 @@
 namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestCaseTest;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\EmptyTestCaseTest;
@@ -53,33 +52,6 @@ final class ResultCacheExtensionTest extends TestCase
 
         $this->result = new TestResult;
         $this->result->addListener($listener);
-    }
-
-    /**
-     * @testdox Clean up test name $_dataName
-     * @dataProvider longTestNamesDataprovider
-     */
-    public function testStripsDataproviderParametersFromTestName(string $testName, string $expectedTestName): void
-    {
-        $test = new TestCaseTest($testName);
-        $test->run($this->result);
-
-        $this->assertTrue($this->cache->status($expectedTestName)->isError());
-    }
-
-    public function longTestNamesDataprovider(): array
-    {
-        return [
-            'ClassName::testMethod' => [
-                'testSomething',
-                TestCaseTest::class . '::testSomething', ],
-            'ClassName::testMethod and data set number and vardump' => [
-                'testMethod with data set #123 (\'a\', "A", 0, false)',
-                TestCaseTest::class . '::testMethod with data set #123', ],
-            'ClassName::testMethod and data set name and vardump' => [
-                'testMethod with data set "data name" (\'a\', "A\", 0, false)',
-                TestCaseTest::class . '::testMethod with data set "data name"', ],
-        ];
     }
 
     public function testError(): void
