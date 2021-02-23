@@ -469,7 +469,7 @@ final class TestRunner
      */
     private function hasCoverageMetadata(string $className, string $methodName): bool
     {
-        $metadata = MetadataRegistry::reader()->forClass($className)->mergeWith(MetadataRegistry::reader()->forMethod($className, $methodName));
+        $metadata = MetadataRegistry::parser()->forClass($className)->mergeWith(MetadataRegistry::parser()->forMethod($className, $methodName));
 
         if ($metadata->isCovers()->isNotEmpty()) {
             return true;
@@ -499,7 +499,7 @@ final class TestRunner
      */
     private function hasTodoMetadata(string $className, string $methodName): bool
     {
-        $metadata = MetadataRegistry::reader()->forClass($className)->mergeWith(MetadataRegistry::reader()->forMethod($className, $methodName));
+        $metadata = MetadataRegistry::parser()->forClass($className)->mergeWith(MetadataRegistry::parser()->forMethod($className, $methodName));
 
         return $metadata->isTodo()->isNotEmpty();
     }

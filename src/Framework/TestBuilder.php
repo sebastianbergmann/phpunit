@@ -203,8 +203,8 @@ final class TestBuilder
      */
     private function backupSettings(string $className, string $methodName): array
     {
-        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
-        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
+        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
         $backupGlobals     = null;
 
         if ($metadataForMethod->isBackupGlobals()->isNotEmpty()) {
@@ -256,7 +256,7 @@ final class TestBuilder
      */
     private function shouldGlobalStateBePreserved(string $className, string $methodName): ?bool
     {
-        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
 
         if ($metadataForMethod->isPreserveGlobalState()->isNotEmpty()) {
             $metadata = $metadataForMethod->isPreserveGlobalState()->asArray()[0];
@@ -266,7 +266,7 @@ final class TestBuilder
             return $metadata->enabled();
         }
 
-        $metadataForClass = MetadataRegistry::reader()->forClass($className);
+        $metadataForClass = MetadataRegistry::parser()->forClass($className);
 
         if ($metadataForClass->isPreserveGlobalState()->isNotEmpty()) {
             $metadata = $metadataForClass->isPreserveGlobalState()->asArray()[0];
@@ -284,11 +284,11 @@ final class TestBuilder
      */
     private function shouldTestMethodBeRunInSeparateProcess(string $className, string $methodName): bool
     {
-        if (MetadataRegistry::reader()->forClass($className)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
+        if (MetadataRegistry::parser()->forClass($className)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
             return true;
         }
 
-        if (MetadataRegistry::reader()->forMethod($className, $methodName)->isRunInSeparateProcess()->isNotEmpty()) {
+        if (MetadataRegistry::parser()->forMethod($className, $methodName)->isRunInSeparateProcess()->isNotEmpty()) {
             return true;
         }
 
@@ -300,6 +300,6 @@ final class TestBuilder
      */
     private function shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess(string $className): bool
     {
-        return MetadataRegistry::reader()->forClass($className)->isRunClassInSeparateProcess()->isNotEmpty();
+        return MetadataRegistry::parser()->forClass($className)->isRunClassInSeparateProcess()->isNotEmpty();
     }
 }

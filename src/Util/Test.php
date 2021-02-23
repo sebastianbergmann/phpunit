@@ -126,8 +126,8 @@ final class Test
             return false;
         }
 
-        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
-        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
+        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
         $classShortcut     = null;
 
         if ($metadataForClass->isCoversDefaultClass()->isNotEmpty()) {
@@ -215,8 +215,8 @@ final class Test
      */
     public static function linesToBeUsed(string $className, string $methodName): array
     {
-        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
-        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
+        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
         $classShortcut     = null;
 
         if ($metadataForClass->isUsesDefaultClass()->isNotEmpty()) {
@@ -296,8 +296,8 @@ final class Test
             return false;
         }
 
-        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
-        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
+        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
 
         // If there is no @covers annotation but a @coversNothing annotation on
         // the test method then code coverage data does not need to be collected
@@ -465,8 +465,8 @@ final class Test
      */
     public static function providedData(string $className, string $methodName): ?array
     {
-        $dataProvider = MetadataRegistry::reader()->forMethod($className, $methodName)->isDataProvider();
-        $testWith     = MetadataRegistry::reader()->forMethod($className, $methodName)->isTestWith();
+        $dataProvider = MetadataRegistry::parser()->forMethod($className, $methodName)->isDataProvider();
+        $testWith     = MetadataRegistry::parser()->forMethod($className, $methodName)->isTestWith();
 
         if ($dataProvider->isEmpty() && $testWith->isEmpty()) {
             return self::dataProvidedByTestWithAnnotation($className, $methodName);
@@ -558,8 +558,8 @@ final class Test
      */
     public static function groups(string $className, ?string $methodName = ''): array
     {
-        $metadataForClass  = MetadataRegistry::reader()->forClass($className);
-        $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
+        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
+        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
         $groups            = [];
 
         foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
@@ -646,7 +646,7 @@ final class Test
                     continue;
                 }
 
-                $metadata = MetadataRegistry::reader()->forMethod($className, $method->getName());
+                $metadata = MetadataRegistry::parser()->forMethod($className, $method->getName());
 
                 if ($method->isStatic()) {
                     if ($metadata->isBeforeClass()->isNotEmpty()) {
@@ -699,7 +699,7 @@ final class Test
             return true;
         }
 
-        $metadata = MetadataRegistry::reader()->forMethod(
+        $metadata = MetadataRegistry::parser()->forMethod(
             $method->getDeclaringClass()->getName(),
             $method->getName()
         );

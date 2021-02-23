@@ -74,7 +74,7 @@ final class NamePrettifier
     public function prettifyTestClass(string $className): string
     {
         if (class_exists($className)) {
-            $metadata = MetadataRegistry::reader()->forClass($className);
+            $metadata = MetadataRegistry::parser()->forClass($className);
 
             if ($metadata->isTestDox()->isNotEmpty()) {
                 return $metadata->isTestDox()->asArray()[0]->text();
@@ -138,7 +138,7 @@ final class NamePrettifier
     {
         $annotationWithPlaceholders = false;
 
-        $metadata = MetadataRegistry::reader()->forMethod(get_class($test), $test->getName(false));
+        $metadata = MetadataRegistry::parser()->forMethod(get_class($test), $test->getName(false));
 
         if ($metadata->isTestDox()->isNotEmpty()) {
             $result = $metadata->isTestDox()->asArray()[0]->text();

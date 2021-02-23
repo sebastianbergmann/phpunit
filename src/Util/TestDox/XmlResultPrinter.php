@@ -181,8 +181,8 @@ final class XmlResultPrinter extends Printer implements TestListener
             $testNode->appendChild($groupNode);
         }
 
-        $metadataForClass  = MetadataRegistry::reader()->forClass(get_class($test));
-        $metadataForMethod = MetadataRegistry::reader()->forMethod(get_class($test), $test->getName(false));
+        $metadataForClass  = MetadataRegistry::parser()->forClass(get_class($test));
+        $metadataForMethod = MetadataRegistry::parser()->forMethod(get_class($test), $test->getName(false));
 
         foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
             if ($metadata->isCovers()) {

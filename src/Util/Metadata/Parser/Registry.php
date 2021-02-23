@@ -19,7 +19,7 @@ final class Registry
 {
     private static ?Parser $instance = null;
 
-    public static function reader(): Parser
+    public static function parser(): Parser
     {
         return self::$instance ?? self::$instance = self::build();
     }
