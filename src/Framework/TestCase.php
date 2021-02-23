@@ -55,7 +55,6 @@ use function setlocale;
 use function sprintf;
 use function strpos;
 use function substr;
-use function trim;
 use DeepCopy\DeepCopy;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
@@ -164,7 +163,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private $expectedExceptionCode;
 
-    private string $name = '';
+    private string $name;
 
     /**
      * @var list<ExecutionOrderDependency>
@@ -1125,12 +1124,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function runTest()
     {
-        if (trim($this->name) === '') {
-            throw new Exception(
-                'PHPUnit\Framework\TestCase::$name must be a non-blank string.'
-            );
-        }
-
         $testArguments = array_merge($this->data, $this->dependencyInput);
 
         $this->registerMockObjectsFromTestArguments($testArguments);

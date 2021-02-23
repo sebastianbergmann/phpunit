@@ -1099,27 +1099,6 @@ class TestCaseTest extends TestCase
         $this->assertSame($methodName, $testCase->getName());
     }
 
-    /**
-     * @dataProvider providerInvalidName
-     */
-    public function testRunBareThrowsExceptionWhenTestHasInvalidName($name): void
-    {
-        $testCase = new TestWithDifferentNames($name);
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('PHPUnit\Framework\TestCase::$name must be a non-blank string.');
-
-        $testCase->runBare();
-    }
-
-    public function providerInvalidName(): array
-    {
-        return [
-            'string-empty' => [''],
-            'string-blank' => ['  '],
-        ];
-    }
-
     public function testHasFailedReturnsFalseWhenTestHasNotRunYet(): void
     {
         $test = new TestWithDifferentStatuses('testThatPasses');
