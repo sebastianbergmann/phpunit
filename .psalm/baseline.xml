@@ -1318,8 +1318,9 @@
       <code>$className</code>
       <code>explode('::', $value)</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="2">
       <code>forClassName</code>
+      <code>forMethod</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">

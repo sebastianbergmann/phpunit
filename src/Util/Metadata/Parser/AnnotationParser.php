@@ -15,7 +15,6 @@ use function implode;
 use function strlen;
 use function strpos;
 use function substr;
-use PHPUnit\Util\Exception;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
 
 /**
@@ -148,15 +147,9 @@ final class AnnotationParser implements Parser
      */
     public function forMethod(string $className, string $methodName): MetadataCollection
     {
-        try {
-            $annotations = AnnotationRegistry::getInstance()->forMethod($className, $methodName)->symbolAnnotations();
-        } catch (Exception $e) {
-            return MetadataCollection::fromArray([]);
-        }
-
         $result = [];
 
-        foreach ($annotations as $annotation => $values) {
+        foreach (AnnotationRegistry::getInstance()->forMethod($className, $methodName)->symbolAnnotations() as $annotation => $values) {
             switch ($annotation) {
                 case 'after':
                     $result[] = new After;

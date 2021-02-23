@@ -55,7 +55,6 @@ use PHPUnit\Framework\Attributes\Ticket as TicketAttribute;
 use PHPUnit\Framework\Attributes\UsesClass as UsesClassAttribute;
 use PHPUnit\Framework\Attributes\UsesFunction as UsesFunctionAttribute;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -215,15 +214,9 @@ final class AttributeParser implements Parser
      */
     public function forMethod(string $className, string $methodName): MetadataCollection
     {
-        try {
-            $method = new ReflectionMethod($className, $methodName);
-        } catch (ReflectionException $e) {
-            return MetadataCollection::fromArray([]);
-        }
-
         $result = [];
 
-        foreach ($method->getAttributes() as $attribute) {
+        foreach ((new ReflectionMethod($className, $methodName))->getAttributes() as $attribute) {
             if (strpos($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\') !== 0) {
                 continue;
             }
