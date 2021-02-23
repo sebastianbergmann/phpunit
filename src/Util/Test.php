@@ -559,8 +559,13 @@ final class Test
     public static function groups(string $className, ?string $methodName = ''): array
     {
         $metadataForClass  = MetadataRegistry::parser()->forClass($className);
-        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
-        $groups            = [];
+        $metadataForMethod = MetadataCollection::fromArray([]);
+
+        if (method_exists($className, $methodName)) {
+            $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
+        }
+
+        $groups = [];
 
         foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
             assert($metadata instanceof Metadata);
