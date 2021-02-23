@@ -60,32 +60,36 @@ final class TestBuilder
                 $methodName
             );
         } catch (IncompleteTestError $e) {
-            $message = sprintf(
-                "Test for %s::%s marked incomplete by data provider\n%s",
+            $data = new IncompleteTestCase(
                 $className,
                 $methodName,
-                $this->throwableToString($e)
+                sprintf(
+                    "Test for %s::%s marked incomplete by data provider\n%s",
+                    $className,
+                    $methodName,
+                    $this->throwableToString($e)
+                )
             );
-
-            $data = new IncompleteTestCase($className, $methodName, $message);
         } catch (SkippedTestError $e) {
-            $message = sprintf(
-                "Test for %s::%s skipped by data provider\n%s",
+            $data = new SkippedTestCase(
                 $className,
                 $methodName,
-                $this->throwableToString($e)
+                sprintf(
+                    "Test for %s::%s skipped by data provider\n%s",
+                    $className,
+                    $methodName,
+                    $this->throwableToString($e)
+                )
             );
-
-            $data = new SkippedTestCase($className, $methodName, $message);
         } catch (Throwable $t) {
-            $message = sprintf(
-                "The data provider specified for %s::%s is invalid.\n%s",
-                $className,
-                $methodName,
-                $this->throwableToString($t)
+            $data = new ErrorTestCase(
+                sprintf(
+                    "The data provider specified for %s::%s is invalid.\n%s",
+                    $className,
+                    $methodName,
+                    $this->throwableToString($t)
+                )
             );
-
-            $data = new ErrorTestCase($message);
         }
 
         if (isset($data)) {
