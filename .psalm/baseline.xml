@@ -527,6 +527,17 @@
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) var_export($parameter-&gt;getDefaultValue(), true)</code>
     </RedundantCastGivenDocblockType>
+    <RedundantCondition occurrences="1">
+      <code>$type instanceof ReflectionUnionType</code>
+    </RedundantCondition>
+    <TypeDoesNotContainType occurrences="1">
+      <code>$type instanceof ReflectionUnionType</code>
+    </TypeDoesNotContainType>
+    <UndefinedClass occurrences="3">
+      <code>ReflectionUnionType</code>
+      <code>ReflectionUnionType</code>
+      <code>ReflectionUnionType</code>
+    </UndefinedClass>
   </file>
   <file src="src/Framework/MockObject/MockObject.php">
     <MissingParamType occurrences="1">
@@ -775,17 +786,11 @@
     <MissingReturnType occurrences="1">
       <code>doAccept</code>
     </MissingReturnType>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>current</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PossiblyNullArgument occurrences="1">
       <code>$this-&gt;filter</code>
     </PossiblyNullArgument>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>current</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
     <DeprecatedClass occurrences="3">
