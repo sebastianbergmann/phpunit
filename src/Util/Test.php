@@ -24,6 +24,7 @@ use function explode;
 use function extension_loaded;
 use function function_exists;
 use function get_class;
+use function in_array;
 use function ini_get;
 use function interface_exists;
 use function is_array;
@@ -42,14 +43,18 @@ use function trim;
 use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
+use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\ExecutionOrderDependency;
+use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\Warning;
+use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
 use PHPUnit\Util\Metadata\Covers;
@@ -284,11 +289,13 @@ final class Test
 
     /**
      * @psalm-param class-string $className
-     *
-     * @todo Avoid calling this method for methods that do not exist
      */
     public static function shouldCodeCoverageBeCollectedFor(string $className, string $methodName): bool
     {
+        if (in_array($className, [ErrorTestCase::class, IncompleteTestCase::class, SkippedTestCase::class, WarningTestCase::class], true)) {
+            return false;
+        }
+
         $metadataForClass  = MetadataRegistry::reader()->forClass($className);
         $metadataForMethod = MetadataRegistry::reader()->forMethod($className, $methodName);
 
