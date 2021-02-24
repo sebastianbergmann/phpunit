@@ -20,12 +20,12 @@ final class WarningTestCase extends TestCase
     protected $backupGlobals = false;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $backupStaticAttributes = false;
 
     /**
-     * @var bool
+     * @var ?bool
      */
     protected $runTestInSeparateProcess = false;
 
