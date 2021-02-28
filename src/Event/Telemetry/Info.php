@@ -69,4 +69,14 @@ final class Info
     {
         return $this->memorySincePrevious;
     }
+
+    public function asString(): string
+    {
+        return sprintf(
+            '[%s / %s] [%d Bytes]',
+            $this->durationSinceStart()->asString(),
+            $this->durationSincePrevious()->asString(),
+            $this->memoryUsage()->bytes()
+        );
+    }
 }
