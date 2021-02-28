@@ -59,25 +59,27 @@ final class Duration
             return $formatter->format($this);
         }
 
-        $formatted = '';
-        $seconds   = $this->seconds();
+        $seconds = $this->seconds();
+        $minutes = 00;
+        $hours   = 00;
 
         if ($seconds > 60 * 60) {
-            $hours     = floor($seconds / 60 / 60);
-            $formatted = sprintf('%02d', $hours) . ':';
+            $hours = floor($seconds / 60 / 60);
             $seconds -= ($hours * 60 * 60);
         }
 
         if ($seconds > 60) {
             $minutes = floor($seconds / 60);
-            $formatted .= sprintf('%02d', $minutes) . ':';
             $seconds -= ($minutes * 60);
         }
 
-        $formatted .= sprintf('%02d', $seconds) . '.';
-        $formatted .= sprintf('%09d', $this->nanoseconds());
-
-        return $formatted;
+        return sprintf(
+            '%02d:%02d:%02d.%09d',
+            $hours,
+            $minutes,
+            $seconds,
+            $this->nanoseconds()
+        );
     }
 
     public function equals(self $other): bool
