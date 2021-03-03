@@ -88,11 +88,8 @@ class ExecutionOrderDependencyTest extends TestCase
      * @testdox Create valid dependency with clone option $option
      * @dataProvider createWithCloneOptionProvider
      */
-    public function testCreateDependencyWithCloneOption(
-        ?string $option,
-        bool $expectedShallowClone,
-        bool $expectedDeepClone
-    ): void {
+    public function testCreateDependencyWithCloneOption(?string $option, bool $expectedShallowClone, bool $expectedDeepClone): void
+    {
         $dependency = new ExecutionOrderDependency('ClassName', 'methodName', $option);
 
         $this->assertSame(
