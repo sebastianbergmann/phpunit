@@ -27,9 +27,9 @@ final class ExecutionOrderDependency
 
     private string $methodName = '';
 
-    private bool $useShallowClone = false;
+    private bool $shallowClone = false;
 
-    private bool $useDeepClone = false;
+    private bool $deepClone = false;
 
     public static function fromDependsAnnotation(string $className, string $annotation): self
     {
@@ -145,9 +145,9 @@ final class ExecutionOrderDependency
         }
 
         if ($option === 'clone') {
-            $this->useDeepClone = true;
+            $this->deepClone = true;
         } elseif ($option === 'shallowClone') {
-            $this->useShallowClone = true;
+            $this->shallowClone = true;
         }
     }
 
@@ -162,14 +162,14 @@ final class ExecutionOrderDependency
         return $this->className !== '' && $this->methodName !== '';
     }
 
-    public function useShallowClone(): bool
+    public function shallowClone(): bool
     {
-        return $this->useShallowClone;
+        return $this->shallowClone;
     }
 
-    public function useDeepClone(): bool
+    public function deepClone(): bool
     {
-        return $this->useDeepClone;
+        return $this->deepClone;
     }
 
     public function targetIsClass(): bool

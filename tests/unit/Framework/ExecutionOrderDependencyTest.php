@@ -97,13 +97,13 @@ class ExecutionOrderDependencyTest extends TestCase
 
         $this->assertSame(
             $expectedShallowClone,
-            $dependency->useShallowClone(),
+            $dependency->shallowClone(),
             'Incorrect shallowClone option'
         );
 
         $this->assertSame(
             $expectedDeepClone,
-            $dependency->useDeepClone(),
+            $dependency->deepClone(),
             'Incorrect clone option'
         );
     }
@@ -120,7 +120,7 @@ class ExecutionOrderDependencyTest extends TestCase
         $dependency = ExecutionOrderDependency::fromDependsAnnotation('ClassOne', 'clone methodOne');
 
         $this->assertSame('ClassOne::methodOne', $dependency->getTarget());
-        $this->assertTrue($dependency->useDeepClone());
+        $this->assertTrue($dependency->deepClone());
     }
 
     public function testMergeHandlesEmptyDependencyLists(): void
