@@ -34,11 +34,9 @@ class ExecutionOrderDependencyTest extends TestCase
     public static function createWithCloneOptionProvider(): array
     {
         return [
-            // Cloning option values
-            ['clone', false, true],
-            ['!clone', false, false],
-            ['shallowClone', true, false],
-            ['!shallowClone', false, false],
+            'no clone'      => [false, false, false, false],
+            'deep clone'    => [true, false, false, true],
+            'shallow clone' => [false, true, true, false],
         ];
     }
 
@@ -88,9 +86,9 @@ class ExecutionOrderDependencyTest extends TestCase
      * @testdox Create valid dependency with clone option $option
      * @dataProvider createWithCloneOptionProvider
      */
-    public function testCreateDependencyWithCloneOption(?string $option, bool $expectedShallowClone, bool $expectedDeepClone): void
+    public function testCreateDependencyWithCloneOption(bool $deepClone, bool $shallowClone, bool $expectedShallowClone, bool $expectedDeepClone): void
     {
-        $dependency = new ExecutionOrderDependency('ClassName', 'methodName', $option);
+        $dependency = new ExecutionOrderDependency('ClassName', 'methodName', $deepClone, $shallowClone);
 
         $this->assertSame(
             $expectedShallowClone,

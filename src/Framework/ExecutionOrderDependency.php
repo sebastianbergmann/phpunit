@@ -27,9 +27,9 @@ final class ExecutionOrderDependency
 
     private string $methodName = '';
 
-    private bool $shallowClone = false;
+    private bool $shallowClone;
 
-    private bool $deepClone = false;
+    private bool $deepClone;
 
     public static function fromDependsAnnotation(string $className, string $annotation): self
     {
@@ -49,7 +49,12 @@ final class ExecutionOrderDependency
             $target = $className . '::' . $target;
         }
 
-        return new self($target, null, $cloneOption);
+        return new self(
+            $target,
+            null,
+            $cloneOption === 'clone',
+            $cloneOption === 'shallowClone'
+        );
     }
 
     /**
@@ -131,7 +136,7 @@ final class ExecutionOrderDependency
         return $diff;
     }
 
-    public function __construct(string $classOrCallableName, ?string $methodName = null, ?string $option = null)
+    public function __construct(string $classOrCallableName, ?string $methodName = null, bool $deepClone = false, bool $shallowClone = false)
     {
         if ($classOrCallableName === '') {
             return;
@@ -144,11 +149,8 @@ final class ExecutionOrderDependency
             $this->methodName = !empty($methodName) ? $methodName : 'class';
         }
 
-        if ($option === 'clone') {
-            $this->deepClone = true;
-        } elseif ($option === 'shallowClone') {
-            $this->shallowClone = true;
-        }
+        $this->deepClone    = $deepClone;
+        $this->shallowClone = $shallowClone;
     }
 
     public function __toString(): string
