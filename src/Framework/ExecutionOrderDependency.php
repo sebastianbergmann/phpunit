@@ -31,7 +31,7 @@ final class ExecutionOrderDependency
 
     private bool $useDeepClone = false;
 
-    public static function createFromDependsAnnotation(string $className, string $annotation): self
+    public static function fromDependsAnnotation(string $className, string $annotation): self
     {
         // Split clone option and target
         $parts = explode(' ', trim($annotation), 2);

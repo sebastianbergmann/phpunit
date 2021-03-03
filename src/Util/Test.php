@@ -547,7 +547,7 @@ final class Test
         $dependencies = [];
 
         foreach ($dependsAnnotations as $value) {
-            $dependencies[] = ExecutionOrderDependency::createFromDependsAnnotation($className, $value);
+            $dependencies[] = ExecutionOrderDependency::fromDependsAnnotation($className, $value);
         }
 
         return array_unique($dependencies);

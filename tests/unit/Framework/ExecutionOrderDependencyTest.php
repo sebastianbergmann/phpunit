@@ -53,7 +53,7 @@ class ExecutionOrderDependencyTest extends TestCase
 
     public function testDependsAnnotationRequireATargetToBeValid(): void
     {
-        $dependency = ExecutionOrderDependency::createFromDependsAnnotation('SomeClass', '');
+        $dependency = ExecutionOrderDependency::fromDependsAnnotation('SomeClass', '');
 
         $this->assertFalse($dependency->isValid());
         $this->assertSame('', $dependency->getTarget());
@@ -110,14 +110,14 @@ class ExecutionOrderDependencyTest extends TestCase
 
     public function testCreateDependencyFromAnnotation(): void
     {
-        $dependency = ExecutionOrderDependency::createFromDependsAnnotation('ClassOne', 'ClassOne::methodOne');
+        $dependency = ExecutionOrderDependency::fromDependsAnnotation('ClassOne', 'ClassOne::methodOne');
 
         $this->assertSame('ClassOne::methodOne', $dependency->getTarget());
     }
 
     public function testCreateDependencyFromAnnotationWithCloneOption(): void
     {
-        $dependency = ExecutionOrderDependency::createFromDependsAnnotation('ClassOne', 'clone methodOne');
+        $dependency = ExecutionOrderDependency::fromDependsAnnotation('ClassOne', 'clone methodOne');
 
         $this->assertSame('ClassOne::methodOne', $dependency->getTarget());
         $this->assertTrue($dependency->useDeepClone());
@@ -151,7 +151,7 @@ class ExecutionOrderDependencyTest extends TestCase
     {
         $depOne   = new ExecutionOrderDependency('classOne');
         $depTwo   = new ExecutionOrderDependency('classTwo::methodTwo');
-        $depThree = ExecutionOrderDependency::createFromDependsAnnotation('classThree', 'clone methodThree');
+        $depThree = ExecutionOrderDependency::fromDependsAnnotation('classThree', 'clone methodThree');
 
         $this->assertSame(
             [$depOne, $depTwo, $depThree],
@@ -167,7 +167,7 @@ class ExecutionOrderDependencyTest extends TestCase
         $depOne        = new ExecutionOrderDependency('classOne');
         $depTwo        = new ExecutionOrderDependency('classTwo::methodTwo');
         $depThree      = new ExecutionOrderDependency('classThree::methodThree');
-        $depThreeClone = ExecutionOrderDependency::createFromDependsAnnotation('classThree', 'clone methodThree');
+        $depThreeClone = ExecutionOrderDependency::fromDependsAnnotation('classThree', 'clone methodThree');
         $depFour       = new ExecutionOrderDependency('classFour::methodFour');
 
         $this->assertSame(
