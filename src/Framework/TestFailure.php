@@ -13,6 +13,7 @@ use function get_class;
 use function sprintf;
 use function trim;
 use PHPUnit\Util\Error\Error;
+use PHPUnit\Util\Test as TestUtil;
 use Throwable;
 
 /**
@@ -68,11 +69,7 @@ final class TestFailure
      */
     public function __construct(Test $failedTest, Throwable $t)
     {
-        if ($failedTest instanceof SelfDescribing) {
-            $this->testName = $failedTest->toString();
-        } else {
-            $this->testName = get_class($failedTest);
-        }
+        $this->testName = TestUtil::describeAsString($failedTest);
 
         if (!$failedTest instanceof TestCase || !$failedTest->isInIsolation()) {
             $this->failedTest = $failedTest;
