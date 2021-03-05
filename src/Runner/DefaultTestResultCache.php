@@ -171,7 +171,9 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
     public function copyStateToCache(self $targetCache): void
     {
         foreach ($this->defects as $name => $state) {
-            $targetCache->setStatus($name, $state);
+            if ($state instanceof TestStatus) {
+                $targetCache->setStatus($name, $state);
+            }
         }
 
         foreach ($this->times as $name => $time) {
