@@ -10,7 +10,6 @@
 namespace PHPUnit\Runner;
 
 use const DIRECTORY_SEPARATOR;
-use function assert;
 use function defined;
 use function dirname;
 use function file_get_contents;
@@ -209,18 +208,17 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
 
         if (isset($data['times'])) {
             foreach ($data['times'] as $testName => $testTime) {
-                assert(is_string($testName));
-                assert(is_float($testTime));
-                $this->times[$testName] = $testTime;
+                if (is_string($testName) && is_float($testTime)) {
+                    $this->times[$testName] = $testTime;
+                }
             }
         }
 
         if (isset($data['defects'])) {
             foreach ($data['defects'] as $testName => $testStatus) {
-                assert(is_string($testName));
-                assert($testStatus instanceof TestStatus);
-
-                $this->defects[$testName] = $testStatus;
+                if (is_string($testName) && $testStatus instanceof TestStatus) {
+                    $this->defects[$testName] = $testStatus;
+                }
             }
         }
     }

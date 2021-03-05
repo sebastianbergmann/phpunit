@@ -19,14 +19,11 @@ use ReflectionClass;
  */
 final class DefaultTestResultCacheTest extends TestCase
 {
-    /**
-     * @var DefaultTestResultCache
-     */
-    private $subject;
+    private DefaultTestResultCache $subject;
 
     protected function setUp(): void
     {
-        $this->subject = new DefaultTestResultCache();
+        $this->subject = new DefaultTestResultCache;
     }
 
     public function testGetTimeForNonExistentTestNameReturnsFloatZero(): void
