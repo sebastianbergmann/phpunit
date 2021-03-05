@@ -168,6 +168,11 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
         }
     }
 
+    /**
+     * @psalm-suppress RedundantConditionGivenDocblockType
+     *
+     * PHPUnit before version 10 used a different cache file format without TestStatus
+     */
     public function copyStateToCache(self $targetCache): void
     {
         foreach ($this->defects as $name => $state) {
