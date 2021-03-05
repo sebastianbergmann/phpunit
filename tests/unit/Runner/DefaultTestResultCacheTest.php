@@ -38,18 +38,28 @@ final class DefaultTestResultCacheTest extends TestCase
         // to set up a full end-to-end test with an old cache file
         $cache          = new DefaultTestResultCache;
         $reflectedCache = new ReflectionClass($cache);
-        $defects        = $reflectedCache->getProperty('defects');
+
+        // Set a test status in the old integer and new value-object format
+        $defects = $reflectedCache->getProperty('defects');
         $defects->setAccessible(true);
         $defects->setValue($cache, [
-            'testOne' => TestStatus::skipped(),
-            'testTwo' => 1,
+            'newStatus'    => TestStatus::skipped(),
+            'legacyStatus' => 1,
         ]);
 
-        $targetCache = new DefaultTestResultCache;
-        $cache->copyStateToCache($targetCache);
+        // Simulate a save-load cycle
+        $loadedCache = unserialize(serialize($cache));
 
-        // Validate expected behaviour: the test with old success value is silently ignored
-        $this->assertEquals(TestStatus::skipped(), $targetCache->status('testOne'));
-        $this->assertEquals(TestStatus::unknown(), $targetCache->status('testTwo'));
+        $this->assertTrue($loadedCache instanceof DefaultTestResultCache);
+        $this->assertEquals(TestStatus::skipped(), $loadedCache->status('newStatus'));
+        $this->assertEquals(TestStatus::unknown(), $loadedCache->status('legacyStatus'));
+
+        // Test the state duplication internals
+        $copiedCache = new DefaultTestResultCache;
+        /* @var DefaultTestResultCache $loadedCache */
+        $cache->copyStateToCache($copiedCache);
+
+        $this->assertEquals(TestStatus::skipped(), $copiedCache->status('newStatus'));
+        $this->assertEquals(TestStatus::unknown(), $copiedCache->status('legacyStatus'));
     }
 }
