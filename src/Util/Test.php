@@ -330,6 +330,8 @@ final class Test
      *
      * @psalm-param class-string $className
      *
+     * @psalm-return list<string>
+     *
      * @throws Exception
      * @throws Warning
      */
