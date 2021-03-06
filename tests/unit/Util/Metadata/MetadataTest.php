@@ -10,6 +10,7 @@
 namespace PHPUnit\Util\Metadata;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\VersionComparisonOperator;
 
 /**
  * @covers \PHPUnit\Util\Metadata\After
