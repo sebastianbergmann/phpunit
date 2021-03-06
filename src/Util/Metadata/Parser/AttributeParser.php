@@ -38,11 +38,13 @@ use PHPUnit\Framework\Attributes\PostCondition as PostConditionAttribute;
 use PHPUnit\Framework\Attributes\PreCondition as PreConditionAttribute;
 use PHPUnit\Framework\Attributes\PreserveGlobalState as PreserveGlobalStateAttribute;
 use PHPUnit\Framework\Attributes\RequiresFunction as RequiresFunctionAttribute;
+use PHPUnit\Framework\Attributes\RequiresMethod as RequiresMethodAttribute;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystem as RequiresOperatingSystemAttribute;
 use PHPUnit\Framework\Attributes\RequiresOperatingSystemFamily as RequiresOperatingSystemFamilyAttribute;
 use PHPUnit\Framework\Attributes\RequiresPhp as RequiresPhpAttribute;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension as RequiresPhpExtensionAttribute;
 use PHPUnit\Framework\Attributes\RequiresPhpunit as RequiresPhpunitAttribute;
+use PHPUnit\Framework\Attributes\RequiresSetting as RequiresSettingAttribute;
 use PHPUnit\Framework\Attributes\RunClassInSeparateProcess as RunClassInSeparateProcessAttribute;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess as RunInSeparateProcessAttribute;
 use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses as RunTestsInSeparateProcessesAttribute;
@@ -132,6 +134,14 @@ final class AttributeParser implements Parser
 
                     break;
 
+                case RequiresMethodAttribute::class:
+                    $result[] = new RequiresMethod(
+                        $attributeInstance->className(),
+                        $attributeInstance->methodName()
+                    );
+
+                    break;
+
                 case RequiresFunctionAttribute::class:
                     $result[] = new RequiresFunction($attributeInstance->functionName());
 
@@ -165,6 +175,14 @@ final class AttributeParser implements Parser
                 case RequiresPhpunitAttribute::class:
                     $result[] = new RequiresPhpunit(
                         $attributeInstance->versionRequirement()
+                    );
+
+                    break;
+
+                case RequiresSettingAttribute::class:
+                    $result[] = new RequiresSetting(
+                        $attributeInstance->setting(),
+                        $attributeInstance->value()
                     );
 
                     break;
@@ -329,6 +347,14 @@ final class AttributeParser implements Parser
 
                     break;
 
+                case RequiresMethodAttribute::class:
+                    $result[] = new RequiresMethod(
+                        $attributeInstance->className(),
+                        $attributeInstance->methodName()
+                    );
+
+                    break;
+
                 case RequiresFunctionAttribute::class:
                     $result[] = new RequiresFunction($attributeInstance->functionName());
 
@@ -362,6 +388,14 @@ final class AttributeParser implements Parser
                 case RequiresPhpunitAttribute::class:
                     $result[] = new RequiresPhpunit(
                         $attributeInstance->versionRequirement()
+                    );
+
+                    break;
+
+                case RequiresSettingAttribute::class:
+                    $result[] = new RequiresSetting(
+                        $attributeInstance->setting(),
+                        $attributeInstance->value()
                     );
 
                     break;
