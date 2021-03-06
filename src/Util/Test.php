@@ -328,9 +328,10 @@ final class Test
     /**
      * Returns the missing requirements for a test.
      *
+     * @psalm-param class-string $className
+     *
      * @throws Exception
      * @throws Warning
-     * @psalm-param class-string $className
      */
     public static function getMissingRequirements(string $className, string $methodName): array
     {
