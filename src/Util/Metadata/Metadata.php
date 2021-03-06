@@ -208,6 +208,14 @@ abstract class Metadata
     }
 
     /**
+     * @psalm-assert-if-true RequiresMethod $this
+     */
+    public function isRequiresMethod(): bool
+    {
+        return false;
+    }
+
+    /**
      * @psalm-assert-if-true RequiresFunction $this
      */
     public function isRequiresFunction(): bool
@@ -251,6 +259,14 @@ abstract class Metadata
      * @psalm-assert-if-true RequiresPhpunit $this
      */
     public function isRequiresPhpunit(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true RequiresSetting $this
+     */
+    public function isRequiresSetting(): bool
     {
         return false;
     }

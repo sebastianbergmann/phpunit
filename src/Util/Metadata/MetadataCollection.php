@@ -365,6 +365,18 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isRequiresMethod(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isRequiresMethod();
+                }
+            )
+        );
+    }
+
     public function isRequiresFunction(): self
     {
         return new self(
@@ -432,6 +444,18 @@ final class MetadataCollection implements Countable, IteratorAggregate
                 $this->metadata,
                 static function (Metadata $metadata): bool {
                     return $metadata->isRequiresPhpunit();
+                }
+            )
+        );
+    }
+
+    public function isRequiresSetting(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isRequiresSetting();
                 }
             )
         );

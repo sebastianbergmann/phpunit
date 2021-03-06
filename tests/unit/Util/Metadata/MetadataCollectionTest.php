@@ -36,12 +36,14 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Util\Metadata\PostCondition
  * @uses \PHPUnit\Util\Metadata\PreCondition
  * @uses \PHPUnit\Util\Metadata\PreserveGlobalState
+ * @uses \PHPUnit\Util\Metadata\RequiresMethod
  * @uses \PHPUnit\Util\Metadata\RequiresFunction
  * @uses \PHPUnit\Util\Metadata\RequiresOperatingSystem
  * @uses \PHPUnit\Util\Metadata\RequiresOperatingSystemFamily
  * @uses \PHPUnit\Util\Metadata\RequiresPhp
  * @uses \PHPUnit\Util\Metadata\RequiresPhpExtension
  * @uses \PHPUnit\Util\Metadata\RequiresPhpunit
+ * @uses \PHPUnit\Util\Metadata\RequiresSetting
  * @uses \PHPUnit\Util\Metadata\RunClassInSeparateProcess
  * @uses \PHPUnit\Util\Metadata\RunInSeparateProcess
  * @uses \PHPUnit\Util\Metadata\RunTestsInSeparateProcesses
@@ -269,6 +271,14 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isPreserveGlobalState());
     }
 
+    public function test_Can_be_filtered_for_RequiresMethod(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequiresMethod();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequiresMethod());
+    }
+
     public function test_Can_be_filtered_for_RequiresFunction(): void
     {
         $collection = $this->collectionWithOneOfEach()->isRequiresFunction();
@@ -315,6 +325,14 @@ final class MetadataCollectionTest extends TestCase
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isRequiresPhpunit());
+    }
+
+    public function test_Can_be_filtered_for_RequiresSetting(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isRequiresSetting();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isRequiresSetting());
     }
 
     public function test_Can_be_filtered_for_RunClassInSeparateProcess(): void
@@ -437,12 +455,14 @@ final class MetadataCollectionTest extends TestCase
                 new PostCondition,
                 new PreCondition,
                 new PreserveGlobalState(true),
+                new RequiresMethod('', ''),
                 new RequiresFunction(''),
                 new RequiresOperatingSystemFamily(''),
                 new RequiresOperatingSystem(''),
                 new RequiresPhpExtension('', ''),
                 new RequiresPhp(''),
                 new RequiresPhpunit(''),
+                new RequiresSetting('foo', 'bar'),
                 new RunClassInSeparateProcess,
                 new RunInSeparateProcess,
                 new RunTestsInSeparateProcesses,
