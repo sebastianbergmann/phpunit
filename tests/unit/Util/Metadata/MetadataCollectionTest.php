@@ -36,8 +36,8 @@ use PHPUnit\Framework\TestCase;
  * @uses \PHPUnit\Util\Metadata\PostCondition
  * @uses \PHPUnit\Util\Metadata\PreCondition
  * @uses \PHPUnit\Util\Metadata\PreserveGlobalState
- * @uses \PHPUnit\Util\Metadata\RequiresMethod
  * @uses \PHPUnit\Util\Metadata\RequiresFunction
+ * @uses \PHPUnit\Util\Metadata\RequiresMethod
  * @uses \PHPUnit\Util\Metadata\RequiresOperatingSystem
  * @uses \PHPUnit\Util\Metadata\RequiresOperatingSystemFamily
  * @uses \PHPUnit\Util\Metadata\RequiresPhp
