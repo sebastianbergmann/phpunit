@@ -154,7 +154,7 @@ final class AnnotationParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
-        $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
+        $this->assertSame('/Linux/i', $metadata->asArray()[0]->regularExpression());
     }
 
     public function test_Parses_requiresOperatingSystemFamily_annotation_on_class(): void
@@ -445,7 +445,7 @@ final class AnnotationParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
-        $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
+        $this->assertSame('/Linux/i', $metadata->asArray()[0]->regularExpression());
     }
 
     public function test_Parses_requiresOperatingSystemFamily_annotation_on_method(): void
