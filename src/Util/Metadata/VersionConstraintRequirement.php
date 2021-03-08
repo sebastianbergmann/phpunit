@@ -17,7 +17,7 @@ use PharIo\Version\VersionConstraint;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class VersionConstraintRequirement implements VersionRequirement
+final class VersionConstraintRequirement extends VersionRequirement
 {
     private VersionConstraint $constraint;
 
@@ -34,6 +34,11 @@ final class VersionConstraintRequirement implements VersionRequirement
         return $this->constraint->complies(
             new Version($this->sanitize($version))
         );
+    }
+
+    public function constraint(): VersionConstraint
+    {
+        return $this->constraint;
     }
 
     private function sanitize(string $version): string

@@ -17,7 +17,7 @@ use PHPUnit\Util\VersionComparisonOperator;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class VersionComparisonRequirement implements VersionRequirement
+final class VersionComparisonRequirement extends VersionRequirement
 {
     private string $version;
 
@@ -32,5 +32,15 @@ final class VersionComparisonRequirement implements VersionRequirement
     public function isSatisfiedBy(string $version): bool
     {
         return version_compare($version, $this->version, $this->operator->asString());
+    }
+
+    public function version(): string
+    {
+        return $this->version;
+    }
+
+    public function operator(): VersionComparisonOperator
+    {
+        return $this->operator;
     }
 }
