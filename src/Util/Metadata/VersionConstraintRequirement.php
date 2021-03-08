@@ -36,9 +36,9 @@ final class VersionConstraintRequirement extends VersionRequirement
         );
     }
 
-    public function constraint(): VersionConstraint
+    public function asString(): string
     {
-        return $this->constraint;
+        return $this->constraint->asString();
     }
 
     private function sanitize(string $version): string

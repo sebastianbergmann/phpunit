@@ -15,12 +15,12 @@ use PHPUnit\Framework\TestCase;
 #[RequiresPhpExtension('foo')]
 final class RequiresPhpExtensionTest extends TestCase
 {
-    #[RequiresPhpExtension('bar', '1.0.0')]
+    #[RequiresPhpExtension('bar', '>= 1.0')]
     public function testOne(): void
     {
     }
 
-    #[RequiresPhpExtension('baz', '2.0.0', '<')]
+    #[RequiresPhpExtension('baz', '^1.0')]
     public function testTwo(): void
     {
     }

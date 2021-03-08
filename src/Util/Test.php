@@ -10,6 +10,7 @@
 namespace PHPUnit\Util;
 
 use const PHP_OS;
+use const PHP_OS_FAMILY;
 use const PHP_VERSION;
 use function addcslashes;
 use function array_flip;
@@ -40,7 +41,6 @@ use function strpos;
 use function strtolower;
 use function substr;
 use function trim;
-use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\ErrorTestCase;
@@ -53,7 +53,6 @@ use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSize\TestSize;
-use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Runner\Version;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
@@ -66,6 +65,14 @@ use PHPUnit\Util\Metadata\Group;
 use PHPUnit\Util\Metadata\Metadata;
 use PHPUnit\Util\Metadata\MetadataCollection;
 use PHPUnit\Util\Metadata\Registry as MetadataRegistry;
+use PHPUnit\Util\Metadata\RequiresFunction;
+use PHPUnit\Util\Metadata\RequiresMethod;
+use PHPUnit\Util\Metadata\RequiresOperatingSystem;
+use PHPUnit\Util\Metadata\RequiresOperatingSystemFamily;
+use PHPUnit\Util\Metadata\RequiresPhp;
+use PHPUnit\Util\Metadata\RequiresPhpExtension;
+use PHPUnit\Util\Metadata\RequiresPhpunit;
+use PHPUnit\Util\Metadata\RequiresSetting;
 use PHPUnit\Util\Metadata\TestWith;
 use PHPUnit\Util\Metadata\Uses;
 use PHPUnit\Util\Metadata\UsesClass;
@@ -77,7 +84,6 @@ use ReflectionMethod;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
-use SebastianBergmann\Environment\OperatingSystem;
 use Traversable;
 
 /**
@@ -326,136 +332,115 @@ final class Test
     }
 
     /**
-     * Returns the missing requirements for a test.
-     *
      * @psalm-param class-string $className
      *
      * @psalm-return list<string>
-     *
-     * @throws Exception
-     * @throws Warning
      */
     public static function getMissingRequirements(string $className, string $methodName): array
     {
-        $required = self::mergeArraysRecursively(
-            AnnotationRegistry::getInstance()->forClassName($className)->requirements(),
-            AnnotationRegistry::getInstance()->forMethod($className, $methodName)->requirements()
-        );
-
         $missing = [];
-        $hint    = null;
 
-        if (!empty($required['PHP'])) {
-            $operator = new VersionComparisonOperator(empty($required['PHP']['operator']) ? '>=' : $required['PHP']['operator']);
+        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
+        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
 
-            if (!version_compare(PHP_VERSION, $required['PHP']['version'], $operator->asString())) {
-                $missing[] = sprintf('PHP %s %s is required.', $operator->asString(), $required['PHP']['version']);
-                $hint      = 'PHP';
+        foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
+            if ($metadata->isRequiresPhp()) {
+                assert($metadata instanceof RequiresPhp);
+
+                if (!$metadata->versionRequirement()->isSatisfiedBy(PHP_VERSION)) {
+                    $missing[] = sprintf(
+                        'PHP %s is required.',
+                        $metadata->versionRequirement()->asString()
+                    );
+                }
             }
-        } elseif (!empty($required['PHP_constraint'])) {
-            $version = new \PharIo\Version\Version(self::sanitizeVersionNumber(PHP_VERSION));
 
-            if (!$required['PHP_constraint']['constraint']->complies($version)) {
-                $missing[] = sprintf(
-                    'PHP version does not match the required constraint %s.',
-                    $required['PHP_constraint']['constraint']->asString()
+            if ($metadata->isRequiresPhpExtension()) {
+                assert($metadata instanceof RequiresPhpExtension);
+
+                if (!extension_loaded($metadata->extension()) ||
+                    ($metadata->hasVersionRequirement() &&
+                     !$metadata->versionRequirement()->isSatisfiedBy(phpversion($metadata->extension())))) {
+                    $missing[] = sprintf(
+                        'PHP extension %s%s is required.',
+                        $metadata->extension(),
+                        $metadata->hasVersionRequirement() ? (' ' . $metadata->versionRequirement()->asString()) : ''
+                    );
+                }
+            }
+
+            if ($metadata->isRequiresPhpunit()) {
+                assert($metadata instanceof RequiresPhpunit);
+
+                if (!$metadata->versionRequirement()->isSatisfiedBy(Version::id())) {
+                    $missing[] = sprintf(
+                        'PHPUnit %s is required.',
+                        $metadata->versionRequirement()->asString()
+                    );
+                }
+            }
+
+            if ($metadata->isRequiresOperatingSystemFamily()) {
+                assert($metadata instanceof RequiresOperatingSystemFamily);
+
+                if ($metadata->operatingSystemFamily() !== PHP_OS_FAMILY) {
+                    $missing[] = sprintf(
+                        'Operating system %s is required.',
+                        $metadata->operatingSystemFamily()
+                    );
+                }
+            }
+
+            if ($metadata->isRequiresOperatingSystem()) {
+                assert($metadata instanceof RequiresOperatingSystem);
+
+                $pattern = sprintf(
+                    '/%s/i',
+                    addcslashes($metadata->operatingSystem(), '/')
                 );
 
-                $hint = 'PHP_constraint';
-            }
-        }
-
-        if (!empty($required['PHPUnit'])) {
-            $phpunitVersion = Version::id();
-
-            $operator = new VersionComparisonOperator(empty($required['PHPUnit']['operator']) ? '>=' : $required['PHPUnit']['operator']);
-
-            if (!version_compare($phpunitVersion, $required['PHPUnit']['version'], $operator->asString())) {
-                $missing[] = sprintf('PHPUnit %s %s is required.', $operator->asString(), $required['PHPUnit']['version']);
-                $hint      = $hint ?? 'PHPUnit';
-            }
-        } elseif (!empty($required['PHPUnit_constraint'])) {
-            $phpunitVersion = new \PharIo\Version\Version(self::sanitizeVersionNumber(Version::id()));
-
-            if (!$required['PHPUnit_constraint']['constraint']->complies($phpunitVersion)) {
-                $missing[] = sprintf(
-                    'PHPUnit version does not match the required constraint %s.',
-                    $required['PHPUnit_constraint']['constraint']->asString()
-                );
-
-                $hint = $hint ?? 'PHPUnit_constraint';
-            }
-        }
-
-        if (!empty($required['OSFAMILY']) && $required['OSFAMILY'] !== (new OperatingSystem)->getFamily()) {
-            $missing[] = sprintf('Operating system %s is required.', $required['OSFAMILY']);
-            $hint      = $hint ?? 'OSFAMILY';
-        }
-
-        if (!empty($required['OS'])) {
-            $requiredOsPattern = sprintf('/%s/i', addcslashes($required['OS'], '/'));
-
-            if (!preg_match($requiredOsPattern, PHP_OS)) {
-                $missing[] = sprintf('Operating system matching %s is required.', $requiredOsPattern);
-                $hint      = $hint ?? 'OS';
-            }
-        }
-
-        if (!empty($required['functions'])) {
-            foreach ($required['functions'] as $function) {
-                $pieces = explode('::', $function);
-
-                if (count($pieces) === 2 && class_exists($pieces[0]) && method_exists($pieces[0], $pieces[1])) {
-                    continue;
-                }
-
-                if (function_exists($function)) {
-                    continue;
-                }
-
-                $missing[] = sprintf('Function %s is required.', $function);
-                $hint      = $hint ?? 'function_' . $function;
-            }
-        }
-
-        if (!empty($required['setting'])) {
-            foreach ($required['setting'] as $setting => $value) {
-                if (ini_get($setting) !== $value) {
-                    $missing[] = sprintf('Setting "%s" must be "%s".', $setting, $value);
-                    $hint      = $hint ?? '__SETTING_' . $setting;
+                if (!preg_match($pattern, PHP_OS)) {
+                    $missing[] = sprintf(
+                        'Operating system %s is required.',
+                        $metadata->operatingSystem()
+                    );
                 }
             }
-        }
 
-        if (!empty($required['extensions'])) {
-            foreach ($required['extensions'] as $extension) {
-                if (isset($required['extension_versions'][$extension])) {
-                    continue;
-                }
+            if ($metadata->isRequiresFunction()) {
+                assert($metadata instanceof RequiresFunction);
 
-                if (!extension_loaded($extension)) {
-                    $missing[] = sprintf('Extension %s is required.', $extension);
-                    $hint      = $hint ?? 'extension_' . $extension;
+                if (!function_exists($metadata->functionName())) {
+                    $missing[] = sprintf(
+                        'Function %s() is required.',
+                        $metadata->functionName()
+                    );
                 }
             }
-        }
 
-        if (!empty($required['extension_versions'])) {
-            foreach ($required['extension_versions'] as $extension => $req) {
-                $actualVersion = phpversion($extension);
+            if ($metadata->isRequiresMethod()) {
+                assert($metadata instanceof RequiresMethod);
 
-                $operator = new VersionComparisonOperator(empty($req['operator']) ? '>=' : $req['operator']);
-
-                if ($actualVersion === false || !version_compare($actualVersion, $req['version'], $operator->asString())) {
-                    $missing[] = sprintf('Extension %s %s %s is required.', $extension, $operator->asString(), $req['version']);
-                    $hint      = $hint ?? 'extension_' . $extension;
+                if (!method_exists($metadata->className(), $metadata->methodName())) {
+                    $missing[] = sprintf(
+                        'Method %s::%s() is required.',
+                        $metadata->className(),
+                        $metadata->methodName()
+                    );
                 }
             }
-        }
 
-        if ($hint && isset($required['__OFFSET'])) {
-            array_unshift($missing, '__OFFSET_FILE=' . $required['__OFFSET']['__FILE']);
-            array_unshift($missing, '__OFFSET_LINE=' . ($required['__OFFSET'][$hint] ?? 1));
+            if ($metadata->isRequiresSetting()) {
+                assert($metadata instanceof RequiresSetting);
+
+                if (ini_get($metadata->setting()) !== $metadata->value()) {
+                    $missing[] = sprintf(
+                        'Setting "%s" is required to be "%s".',
+                        $metadata->setting(),
+                        $metadata->value()
+                    );
+                }
+            }
         }
 
         return $missing;

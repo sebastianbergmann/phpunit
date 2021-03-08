@@ -15,9 +15,9 @@ namespace PHPUnit\Util\Metadata;
  */
 final class RequiresPhp extends Metadata
 {
-    private string $versionRequirement;
+    private VersionRequirement $versionRequirement;
 
-    public function __construct(string $versionRequirement)
+    public function __construct(VersionRequirement $versionRequirement)
     {
         $this->versionRequirement = $versionRequirement;
     }
@@ -27,7 +27,7 @@ final class RequiresPhp extends Metadata
         return true;
     }
 
-    public function versionRequirement(): string
+    public function versionRequirement(): VersionRequirement
     {
         return $this->versionRequirement;
     }

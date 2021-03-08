@@ -1333,7 +1333,7 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesMethod());
         $this->assertFalse($metadata->isUsesFunction());
 
-        $this->assertSame('Linux', $metadata->regularExpression());
+        $this->assertSame('Linux', $metadata->operatingSystem());
     }
 
     public function testCanBeRequiresOperatingSystemFamily(): void

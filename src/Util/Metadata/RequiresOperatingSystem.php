@@ -15,11 +15,11 @@ namespace PHPUnit\Util\Metadata;
  */
 final class RequiresOperatingSystem extends Metadata
 {
-    private string $regularExpression;
+    private string $operatingSystem;
 
-    public function __construct(string $regularExpression)
+    public function __construct(string $operatingSystem)
     {
-        $this->regularExpression = $regularExpression;
+        $this->operatingSystem = $operatingSystem;
     }
 
     public function isRequiresOperatingSystem(): bool
@@ -27,8 +27,8 @@ final class RequiresOperatingSystem extends Metadata
         return true;
     }
 
-    public function regularExpression(): string
+    public function operatingSystem(): string
     {
-        return $this->regularExpression;
+        return $this->operatingSystem;
     }
 }

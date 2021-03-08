@@ -756,7 +756,7 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
-            'Operating system matching /DOESNOTEXIST/i is required.',
+            'Operating system DOESNOTEXIST is required.',
             $test->status()->message()
         );
     }
@@ -784,7 +784,7 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(1, $result->skippedCount());
         $this->assertEquals(
-            'Function testFunc is required.',
+            'Function testFunc() is required.',
             $test->status()->message()
         );
     }
@@ -797,7 +797,7 @@ class TestCaseTest extends TestCase
         $test->run($result);
 
         $this->assertEquals(
-            'Extension testExt is required.',
+            'PHP extension testExt is required.',
             $test->status()->message()
         );
     }
@@ -810,7 +810,7 @@ class TestCaseTest extends TestCase
         $test->run($result);
 
         $this->assertEquals(
-            'Extension testExt >= 1.8.0 is required.',
+            'PHP extension testExt >= 1.8.0 is required.',
             $test->status()->message()
         );
     }
@@ -824,14 +824,14 @@ class TestCaseTest extends TestCase
 
         $this->assertEquals(
             'PHP >= 99-dev is required.' . PHP_EOL .
+            'PHP extension testExtOne is required.' . PHP_EOL .
+            'PHP extension testExt2 is required.' . PHP_EOL .
+            'PHP extension testExtThree >= 2.0 is required.' . PHP_EOL .
             'PHPUnit >= 99-dev is required.' . PHP_EOL .
-            'Operating system matching /DOESNOTEXIST/i is required.' . PHP_EOL .
-            'Function testFuncOne is required.' . PHP_EOL .
-            'Function testFunc2 is required.' . PHP_EOL .
-            'Setting "not_a_setting" must be "Off".' . PHP_EOL .
-            'Extension testExtOne is required.' . PHP_EOL .
-            'Extension testExt2 is required.' . PHP_EOL .
-            'Extension testExtThree >= 2.0 is required.',
+            'Operating system DOESNOTEXIST is required.' . PHP_EOL .
+            'Function testFuncOne() is required.' . PHP_EOL .
+            'Function testFunc2() is required.' . PHP_EOL .
+            'Setting "not_a_setting" is required to be "Off".',
             $test->status()->message()
         );
     }

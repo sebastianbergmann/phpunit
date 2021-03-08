@@ -49,4 +49,6 @@ abstract class VersionRequirement
     }
 
     abstract public function isSatisfiedBy(string $version): bool;
+
+    abstract public function asString(): string;
 }

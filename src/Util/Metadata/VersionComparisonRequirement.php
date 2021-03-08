@@ -34,13 +34,8 @@ final class VersionComparisonRequirement extends VersionRequirement
         return version_compare($version, $this->version, $this->operator->asString());
     }
 
-    public function version(): string
+    public function asString(): string
     {
-        return $this->version;
-    }
-
-    public function operator(): VersionComparisonOperator
-    {
-        return $this->operator;
+        return $this->operator->asString() . ' ' . $this->version;
     }
 }

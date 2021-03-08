@@ -159,22 +159,34 @@ final class AttributeParser implements Parser
 
                 case RequiresPhpAttribute::class:
                     $result[] = new RequiresPhp(
-                        $attributeInstance->versionRequirement()
+                        VersionConstraintRequirement::from(
+                            $attributeInstance->versionRequirement()
+                        )
                     );
 
                     break;
 
                 case RequiresPhpExtensionAttribute::class:
+                    $versionConstraint = null;
+
+                    if ($attributeInstance->hasVersionRequirement()) {
+                        $versionConstraint = VersionConstraintRequirement::from(
+                            $attributeInstance->versionRequirement()
+                        );
+                    }
+
                     $result[] = new RequiresPhpExtension(
                         $attributeInstance->extension(),
-                        $attributeInstance->versionRequirement()
+                        $versionConstraint
                     );
 
                     break;
 
                 case RequiresPhpunitAttribute::class:
                     $result[] = new RequiresPhpunit(
-                        $attributeInstance->versionRequirement()
+                        VersionConstraintRequirement::from(
+                            $attributeInstance->versionRequirement()
+                        )
                     );
 
                     break;
@@ -372,22 +384,34 @@ final class AttributeParser implements Parser
 
                 case RequiresPhpAttribute::class:
                     $result[] = new RequiresPhp(
-                        $attributeInstance->versionRequirement()
+                        VersionConstraintRequirement::from(
+                            $attributeInstance->versionRequirement()
+                        )
                     );
 
                     break;
 
                 case RequiresPhpExtensionAttribute::class:
+                    $versionConstraint = null;
+
+                    if ($attributeInstance->hasVersionRequirement()) {
+                        $versionConstraint = VersionConstraintRequirement::from(
+                            $attributeInstance->versionRequirement()
+                        );
+                    }
+
                     $result[] = new RequiresPhpExtension(
                         $attributeInstance->extension(),
-                        $attributeInstance->versionRequirement()
+                        $versionConstraint
                     );
 
                     break;
 
                 case RequiresPhpunitAttribute::class:
                     $result[] = new RequiresPhpunit(
-                        $attributeInstance->versionRequirement()
+                        VersionConstraintRequirement::from(
+                            $attributeInstance->versionRequirement()
+                        )
                     );
 
                     break;

@@ -9,13 +9,14 @@
  */
 namespace PHPUnit\Util\Metadata;
 
-use function array_shift;
+use function array_merge;
 use function explode;
-use function implode;
+use function method_exists;
 use function strlen;
 use function strpos;
 use function substr;
 use PHPUnit\Util\Metadata\Annotation\Registry as AnnotationRegistry;
+use PHPUnit\Util\VersionComparisonOperator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -93,11 +94,6 @@ final class AnnotationParser implements Parser
 
                     break;
 
-                case 'requires':
-                    $this->parseRequires($values, $result);
-
-                    break;
-
                 case 'runClassInSeparateProcess':
                     $result[] = new RunClassInSeparateProcess;
 
@@ -138,6 +134,13 @@ final class AnnotationParser implements Parser
                     break;
             }
         }
+
+        $result = array_merge(
+            $result,
+            $this->parseRequirements(
+                AnnotationRegistry::getInstance()->forClassName($className)->requirements()
+            )
+        );
 
         return MetadataCollection::fromArray($result);
     }
@@ -277,11 +280,6 @@ final class AnnotationParser implements Parser
 
                     break;
 
-                case 'requires':
-                    $this->parseRequires($values, $result);
-
-                    break;
-
                 case 'runInSeparateProcess':
                     $result[] = new RunInSeparateProcess;
 
@@ -318,57 +316,16 @@ final class AnnotationParser implements Parser
             }
         }
 
-        return MetadataCollection::fromArray($result);
-    }
-
-    private function parseRequires(array $values, array &$result): void
-    {
-        foreach ($values as $value) {
-            if (strpos($value, 'function ') === 0) {
-                $result[] = new RequiresFunction(substr($value, strlen('function ')));
-
-                continue;
-            }
-
-            if (strpos($value, 'OS ') === 0) {
-                $result[] = new RequiresOperatingSystem(substr($value, strlen('OS ')));
-
-                continue;
-            }
-
-            if (strpos($value, 'OSFAMILY ') === 0) {
-                $result[] = new RequiresOperatingSystemFamily(substr($value, strlen('OSFAMILY ')));
-
-                continue;
-            }
-
-            if (strpos($value, 'PHP ') === 0) {
-                $result[] = new RequiresPhp(substr($value, strlen('PHP ')));
-
-                continue;
-            }
-
-            if (strpos($value, 'PHPUnit ') === 0) {
-                $result[] = new RequiresPhpunit(substr($value, strlen('PHPUnit ')));
-
-                continue;
-            }
-
-            if (strpos($value, 'extension ') === 0) {
-                $parts              = explode(' ', substr($value, strlen('extension ')));
-                $extension          = array_shift($parts);
-                $versionRequirement = null;
-
-                if (!empty($parts)) {
-                    $versionRequirement = implode(' ', $parts);
-                }
-
-                $result[] = new RequiresPhpExtension(
-                    $extension,
-                    $versionRequirement
-                );
-            }
+        if (method_exists($className, $methodName)) {
+            $result = array_merge(
+                $result,
+                $this->parseRequirements(
+                    AnnotationRegistry::getInstance()->forMethod($className, $methodName)->requirements()
+                )
+            );
         }
+
+        return MetadataCollection::fromArray($result);
     }
 
     private function stringToBool(string $value): ?bool
@@ -389,5 +346,89 @@ final class AnnotationParser implements Parser
         $value = preg_replace('/[\s()]+$/', '', $value);
 
         return explode(' ', $value, 2)[0];
+    }
+
+    /**
+     * @psalm-return list<Metadata>
+     */
+    private function parseRequirements(array $requirements): array
+    {
+        $result = [];
+
+        if (!empty($requirements['PHP'])) {
+            $result[] = new RequiresPhp(
+                new VersionComparisonRequirement(
+                    $requirements['PHP']['version'],
+                    new VersionComparisonOperator(empty($requirements['PHP']['operator']) ? '>=' : $requirements['PHP']['operator'])
+                )
+            );
+        } elseif (!empty($requirements['PHP_constraint'])) {
+            $result[] = new RequiresPhp(
+                new VersionConstraintRequirement($requirements['PHP_constraint']['constraint'])
+            );
+        }
+
+        if (!empty($requirements['extensions'])) {
+            foreach ($requirements['extensions'] as $extension) {
+                if (isset($requirements['extension_versions'][$extension])) {
+                    continue;
+                }
+
+                $result[] = new RequiresPhpExtension($extension, null);
+            }
+        }
+
+        if (!empty($requirements['extension_versions'])) {
+            foreach ($requirements['extension_versions'] as $extension => $version) {
+                $result[] = new RequiresPhpExtension(
+                    $extension,
+                    new VersionComparisonRequirement(
+                        $version['version'],
+                        new VersionComparisonOperator(empty($version['operator']) ? '>=' : $version['operator'])
+                    )
+                );
+            }
+        }
+
+        if (!empty($requirements['PHPUnit'])) {
+            $result[] = new RequiresPhpunit(
+                new VersionComparisonRequirement(
+                    $requirements['PHPUnit']['version'],
+                    new VersionComparisonOperator(empty($requirements['PHPUnit']['operator']) ? '>=' : $requirements['PHPUnit']['operator'])
+                )
+            );
+        } elseif (!empty($requirements['PHPUnit_constraint'])) {
+            $result[] = new RequiresPhpunit(
+                new VersionConstraintRequirement($requirements['PHPUnit_constraint']['constraint'])
+            );
+        }
+
+        if (!empty($requirements['OSFAMILY'])) {
+            $result[] = new RequiresOperatingSystemFamily($requirements['OSFAMILY']);
+        }
+
+        if (!empty($requirements['OS'])) {
+            $result[] = new RequiresOperatingSystem($requirements['OS']);
+        }
+
+        if (!empty($requirements['functions'])) {
+            foreach ($requirements['functions'] as $function) {
+                $pieces = explode('::', $function);
+
+                if (count($pieces) === 2) {
+                    $result[] = new RequiresMethod($pieces[0], $pieces[1]);
+                } else {
+                    $result[] = new RequiresFunction($function);
+                }
+            }
+        }
+
+        if (!empty($requirements['setting'])) {
+            foreach ($requirements['setting'] as $setting => $value) {
+                $result[] = new RequiresSetting($setting, $value);
+            }
+        }
+
+        return $result;
     }
 }

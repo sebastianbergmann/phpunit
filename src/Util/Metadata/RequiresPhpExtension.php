@@ -17,12 +17,12 @@ final class RequiresPhpExtension extends Metadata
 {
     private string $extension;
 
-    private ?string $versionRequirement;
+    private ?VersionRequirement $versionRequirement;
 
-    public function __construct(string $extension, ?string $requirement)
+    public function __construct(string $extension, ?VersionRequirement $versionRequirement)
     {
         $this->extension          = $extension;
-        $this->versionRequirement = $requirement;
+        $this->versionRequirement = $versionRequirement;
     }
 
     public function isRequiresPhpExtension(): bool
@@ -40,7 +40,7 @@ final class RequiresPhpExtension extends Metadata
         return $this->versionRequirement !== null;
     }
 
-    public function versionRequirement(): ?string
+    public function versionRequirement(): ?VersionRequirement
     {
         return $this->versionRequirement;
     }

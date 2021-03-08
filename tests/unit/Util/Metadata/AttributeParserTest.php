@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\Metadata;
 
+use function assert;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
@@ -228,7 +229,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
-        $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
+        $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystem());
     }
 
     /**
@@ -251,8 +252,18 @@ final class AttributeParserTest extends TestCase
         $metadata = (new AttributeParser)->forClass(RequiresPhpTest::class);
 
         $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRequiresPhp());
-        $this->assertSame('8.0.0', $metadata->asArray()[0]->versionRequirement());
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhp());
+
+        assert($requirement instanceof RequiresPhp);
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof VersionConstraintRequirement);
+
+        $this->assertSame('8.0.0', $versionRequirement->asString());
     }
 
     /**
@@ -277,8 +288,18 @@ final class AttributeParserTest extends TestCase
         $metadata = (new AttributeParser)->forClass(RequiresPhpunitTest::class);
 
         $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpunit());
-        $this->assertSame('10.0.0', $metadata->asArray()[0]->versionRequirement());
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhpunit());
+
+        assert($requirement instanceof RequiresPhpunit);
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof VersionComparisonRequirement);
+
+        $this->assertSame('>= 10.0.0', $versionRequirement->asString());
     }
 
     /**
@@ -613,7 +634,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
-        $this->assertSame('Linux', $metadata->asArray()[0]->regularExpression());
+        $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystem());
     }
 
     /**
@@ -636,8 +657,18 @@ final class AttributeParserTest extends TestCase
         $metadata = (new AttributeParser)->forMethod(RequiresPhpTest::class, 'testOne');
 
         $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRequiresPhp());
-        $this->assertSame('9.0.0', $metadata->asArray()[0]->versionRequirement());
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhp());
+
+        assert($requirement instanceof RequiresPhp);
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof VersionConstraintRequirement);
+
+        $this->assertSame('^8.0', $versionRequirement->asString());
     }
 
     /**
@@ -648,18 +679,40 @@ final class AttributeParserTest extends TestCase
         $metadata = (new AttributeParser)->forMethod(RequiresPhpExtensionTest::class, 'testOne');
 
         $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
-        $this->assertSame('bar', $metadata->asArray()[0]->extension());
-        $this->assertSame('1.0.0', $metadata->asArray()[0]->versionRequirement());
-        $this->assertTrue($metadata->asArray()[0]->hasVersionRequirement());
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhpExtension());
+
+        assert($requirement instanceof RequiresPhpExtension);
+
+        $this->assertSame('bar', $requirement->extension());
+        $this->assertTrue($requirement->hasVersionRequirement());
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof VersionComparisonRequirement);
+
+        $this->assertSame('>= 1.0', $versionRequirement->asString());
 
         $metadata = (new AttributeParser)->forMethod(RequiresPhpExtensionTest::class, 'testTwo');
 
         $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
-        $this->assertSame('baz', $metadata->asArray()[0]->extension());
-        $this->assertSame('2.0.0', $metadata->asArray()[0]->versionRequirement());
-        $this->assertTrue($metadata->asArray()[0]->hasVersionRequirement());
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhpExtension());
+
+        assert($requirement instanceof RequiresPhpExtension);
+
+        $this->assertSame('baz', $requirement->extension());
+        $this->assertTrue($requirement->hasVersionRequirement());
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof VersionConstraintRequirement);
+
+        $this->assertSame('^1.0', $versionRequirement->asString());
     }
 
     /**
@@ -670,8 +723,18 @@ final class AttributeParserTest extends TestCase
         $metadata = (new AttributeParser)->forMethod(RequiresPhpunitTest::class, 'testOne');
 
         $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isRequiresPhpunit());
-        $this->assertSame('11.0.0', $metadata->asArray()[0]->versionRequirement());
+
+        $requirement = $metadata->asArray()[0];
+
+        $this->assertTrue($requirement->isRequiresPhpunit());
+
+        assert($requirement instanceof RequiresPhpunit);
+
+        $versionRequirement = $requirement->versionRequirement();
+
+        assert($versionRequirement instanceof VersionConstraintRequirement);
+
+        $this->assertSame('^10.0', $versionRequirement->asString());
     }
 
     /**

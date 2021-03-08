@@ -12,10 +12,10 @@ namespace PHPUnit\TestFixture\Metadata\Attribute;
 use PHPUnit\Framework\Attributes\RequiresPhpunit;
 use PHPUnit\Framework\TestCase;
 
-#[RequiresPhpunit('10.0.0')]
+#[RequiresPhpunit('>= 10.0.0')]
 final class RequiresPhpunitTest extends TestCase
 {
-    #[RequiresPhpunit('11.0.0', '<')]
+    #[RequiresPhpunit('^10.0')]
     public function testOne(): void
     {
     }

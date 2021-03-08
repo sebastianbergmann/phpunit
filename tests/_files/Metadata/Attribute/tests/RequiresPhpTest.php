@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 #[RequiresPhp('8.0.0')]
 final class RequiresPhpTest extends TestCase
 {
-    #[RequiresPhp('9.0.0', '<')]
+    #[RequiresPhp('^8.0')]
     public function testOne(): void
     {
     }
