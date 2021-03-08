@@ -32,6 +32,11 @@ final class RequiresPhpExtension
         return $this->extension;
     }
 
+    public function hasVersionRequirement(): bool
+    {
+        return $this->versionRequirement !== null;
+    }
+
     public function versionRequirement(): ?string
     {
         return $this->versionRequirement;
