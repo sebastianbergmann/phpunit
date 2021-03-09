@@ -132,9 +132,8 @@ final class Test
             return false;
         }
 
-        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
-        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
-        $classShortcut     = null;
+        $metadataForClass = MetadataRegistry::parser()->forClass($className);
+        $classShortcut    = null;
 
         if ($metadataForClass->isCoversDefaultClass()->isNotEmpty()) {
             if (count($metadataForClass->isCoversDefaultClass()) > 1) {
@@ -152,7 +151,7 @@ final class Test
         $codeUnits = CodeUnitCollection::fromArray([]);
         $mapper    = new Mapper;
 
-        foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
+        foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
             if ($metadata->isCoversClass() || $metadata->isCoversMethod() || $metadata->isCoversFunction()) {
                 assert($metadata instanceof CoversClass || $metadata instanceof CoversMethod || $metadata instanceof CoversFunction);
 
@@ -221,9 +220,8 @@ final class Test
      */
     public static function linesToBeUsed(string $className, string $methodName): array
     {
-        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
-        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
-        $classShortcut     = null;
+        $metadataForClass = MetadataRegistry::parser()->forClass($className);
+        $classShortcut    = null;
 
         if ($metadataForClass->isUsesDefaultClass()->isNotEmpty()) {
             if (count($metadataForClass->isUsesDefaultClass()) > 1) {
@@ -241,7 +239,7 @@ final class Test
         $codeUnits = CodeUnitCollection::fromArray([]);
         $mapper    = new Mapper;
 
-        foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
+        foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
             if ($metadata->isUsesClass() || $metadata->isUsesMethod() || $metadata->isUsesFunction()) {
                 assert($metadata instanceof UsesClass || $metadata instanceof UsesMethod || $metadata instanceof UsesFunction);
 
@@ -340,10 +338,7 @@ final class Test
     {
         $missing = [];
 
-        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
-        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
-
-        foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
+        foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
             if ($metadata->isRequiresPhp()) {
                 assert($metadata instanceof RequiresPhp);
 
