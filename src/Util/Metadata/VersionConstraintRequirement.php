@@ -36,6 +36,9 @@ final class VersionConstraintRequirement extends VersionRequirement
         );
     }
 
+    /**
+     * @psalm-suppress ImpureMethodCall
+     */
     public function asString(): string
     {
         return $this->constraint->asString();
