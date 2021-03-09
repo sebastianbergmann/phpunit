@@ -13,6 +13,7 @@ use function count;
 use function get_class;
 use Countable;
 use Error;
+use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Util\Printer;
 use Throwable;
 
@@ -269,13 +270,18 @@ final class TestResult implements Countable
         if (!$this->lastTestFailed && $test instanceof TestCase) {
             $class = get_class($test);
             $key   = $class . '::' . $test->getName();
+            $size  = TestSize::unknown();
+
+            if ($class !== WarningTestCase::class) {
+                $size = \PHPUnit\Util\Test::size(
+                    $class,
+                    $test->getName(false)
+                );
+            }
 
             $this->passed[$key] = [
                 'result' => $test->result(),
-                'size'   => \PHPUnit\Util\Test::size(
-                    $class,
-                    $test->getName(false)
-                ),
+                'size'   => $size,
             ];
 
             $this->time += $time;
