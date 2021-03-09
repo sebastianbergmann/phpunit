@@ -35,13 +35,23 @@ final class RequiresPhpExtension extends Metadata
         return $this->extension;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->versionRequirement
+     */
     public function hasVersionRequirement(): bool
     {
         return $this->versionRequirement !== null;
     }
 
-    public function versionRequirement(): ?VersionRequirement
+    /**
+     * @throws NoVersionRequirementException
+     */
+    public function versionRequirement(): VersionRequirement
     {
+        if ($this->versionRequirement === null) {
+            throw new NoVersionRequirementException;
+        }
+
         return $this->versionRequirement;
     }
 }
