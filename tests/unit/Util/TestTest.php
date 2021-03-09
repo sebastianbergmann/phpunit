@@ -13,7 +13,6 @@ use function array_merge;
 use function get_class;
 use function preg_match;
 use function range;
-use function realpath;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidDataProviderException;
@@ -45,7 +44,6 @@ use PHPUnit\TestFixture\RequirementsTest;
 use PHPUnit\TestFixture\Test3194;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 use PHPUnit\Util\Metadata\Annotation\DocBlock;
-use ReflectionClass;
 
 /**
  * @small
@@ -610,11 +608,6 @@ final class TestTest extends TestCase
     public function getGroupsProvider(): array
     {
         return [
-            [
-                NumericGroupAnnotationTest::class,
-                '',
-                ['t123456'],
-            ],
             [
                 NumericGroupAnnotationTest::class,
                 'testTicketAnnotationSupportsNumericValue',
