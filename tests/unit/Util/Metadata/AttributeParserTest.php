@@ -276,7 +276,6 @@ final class AttributeParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
         $this->assertSame('foo', $metadata->asArray()[0]->extension());
-        $this->assertNull($metadata->asArray()[0]->versionRequirement());
         $this->assertFalse($metadata->asArray()[0]->hasVersionRequirement());
     }
 
