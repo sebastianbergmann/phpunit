@@ -627,14 +627,4 @@ final class TestTest extends TestCase
             ],
         ];
     }
-
-    private function getRequirementsTestClassFile(): string
-    {
-        if (!$this->fileRequirementsTest) {
-            $reflector                  = new ReflectionClass(RequirementsTest::class);
-            $this->fileRequirementsTest = realpath($reflector->getFileName());
-        }
-
-        return $this->fileRequirementsTest;
-    }
 }
