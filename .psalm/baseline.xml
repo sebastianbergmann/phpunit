@@ -661,7 +661,7 @@
       <code>result</code>
       <code>runTest</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="15">
+    <MissingThrowsDocblock occurrences="14">
       <code>endTest</code>
       <code>endTest</code>
       <code>endTest</code>
@@ -1312,16 +1312,15 @@
     </RedundantCast>
   </file>
   <file src="src/Util/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="4">
+    <ArgumentTypeCoercion occurrences="7">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$pieces[0]</code>
       <code>explode('::', $value)</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="2">
-      <code>forClassName</code>
-      <code>forMethod</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
@@ -1382,7 +1381,7 @@
     <PossiblyNullArgument occurrences="1">
       <code>$methodName</code>
     </PossiblyNullArgument>
-    <RedundantCondition occurrences="10">
+    <RedundantCondition occurrences="18">
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
@@ -1391,6 +1390,14 @@
       <code>assert($metadata instanceof Covers)</code>
       <code>assert($metadata instanceof Group)</code>
       <code>assert($metadata instanceof Metadata)</code>
+      <code>assert($metadata instanceof RequiresFunction)</code>
+      <code>assert($metadata instanceof RequiresMethod)</code>
+      <code>assert($metadata instanceof RequiresOperatingSystem)</code>
+      <code>assert($metadata instanceof RequiresOperatingSystemFamily)</code>
+      <code>assert($metadata instanceof RequiresPhp)</code>
+      <code>assert($metadata instanceof RequiresPhpExtension)</code>
+      <code>assert($metadata instanceof RequiresPhpunit)</code>
+      <code>assert($metadata instanceof RequiresSetting)</code>
       <code>assert($metadata instanceof Uses)</code>
       <code>assert($metadata instanceof Uses)</code>
     </RedundantCondition>
