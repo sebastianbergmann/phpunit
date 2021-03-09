@@ -51,4 +51,14 @@ final class ParserChain implements Parser
 
         return $this->annotationReader->forMethod($className, $methodName);
     }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public function forClassAndMethod(string $className, string $methodName): MetadataCollection
+    {
+        return $this->forClass($className)->mergeWith(
+            $this->forMethod($className, $methodName)
+        );
+    }
 }

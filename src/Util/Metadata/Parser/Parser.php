@@ -23,4 +23,9 @@ interface Parser
      * @psalm-param class-string $className
      */
     public function forMethod(string $className, string $methodName): MetadataCollection;
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public function forClassAndMethod(string $className, string $methodName): MetadataCollection;
 }

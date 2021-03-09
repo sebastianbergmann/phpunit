@@ -16,7 +16,11 @@ final class CachingParser implements Parser
 {
     private Parser $reader;
 
-    private array $cache = [];
+    private array $classCache = [];
+
+    private array $methodCache = [];
+
+    private array $classAndMethodCache = [];
 
     public function __construct(Parser $reader)
     {
@@ -28,13 +32,13 @@ final class CachingParser implements Parser
      */
     public function forClass(string $className): MetadataCollection
     {
-        if (isset($this->cache[$className])) {
-            return $this->cache[$className];
+        if (isset($this->classCache[$className])) {
+            return $this->classCache[$className];
         }
 
-        $this->cache[$className] = $this->reader->forClass($className);
+        $this->classCache[$className] = $this->reader->forClass($className);
 
-        return $this->cache[$className];
+        return $this->classCache[$className];
     }
 
     /**
@@ -44,12 +48,30 @@ final class CachingParser implements Parser
     {
         $key = $className . '::' . $methodName;
 
-        if (isset($this->cache[$key])) {
-            return $this->cache[$key];
+        if (isset($this->methodCache[$key])) {
+            return $this->methodCache[$key];
         }
 
-        $this->cache[$key] = $this->reader->forMethod($className, $methodName);
+        $this->methodCache[$key] = $this->reader->forMethod($className, $methodName);
 
-        return $this->cache[$key];
+        return $this->methodCache[$key];
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public function forClassAndMethod(string $className, string $methodName): MetadataCollection
+    {
+        $key = $className . '::' . $methodName;
+
+        if (isset($this->classAndMethodCache[$key])) {
+            return $this->classAndMethodCache[$key];
+        }
+
+        $this->classAndMethodCache[$key] = $this->forClass($className)->mergeWith(
+            $this->forMethod($className, $methodName)
+        );
+
+        return $this->classAndMethodCache[$key];
     }
 }
