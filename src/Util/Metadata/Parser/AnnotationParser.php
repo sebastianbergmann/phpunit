@@ -337,6 +337,9 @@ final class AnnotationParser implements Parser
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws \PHPUnit\Util\Exception
+     * @throws Warning
      */
     public function forClassAndMethod(string $className, string $methodName): MetadataCollection
     {
