@@ -539,18 +539,11 @@ final class Test
     /**
      * @psalm-param class-string $className
      */
-    public static function groups(string $className, ?string $methodName = ''): array
+    public static function groups(string $className, string $methodName): array
     {
-        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
-        $metadataForMethod = MetadataCollection::fromArray([]);
-
-        if (method_exists($className, $methodName)) {
-            $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
-        }
-
         $groups = [];
 
-        foreach ($metadataForClass->mergeWith($metadataForMethod) as $metadata) {
+        foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
             assert($metadata instanceof Metadata);
 
             if ($metadata->isGroup()) {
