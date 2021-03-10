@@ -191,7 +191,9 @@
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="1">
+    <PossiblyInvalidArgument occurrences="3">
+      <code>$expected</code>
+      <code>$expected</code>
       <code>$subset</code>
     </PossiblyInvalidArgument>
     <RedundantCondition occurrences="1">
