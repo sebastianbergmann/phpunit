@@ -9,6 +9,19 @@
  */
 namespace PHPUnit\Metadata;
 
+use function array_key_exists;
+use function array_merge;
+use function assert;
+use function explode;
+use function is_array;
+use function is_int;
+use function preg_match;
+use function preg_replace;
+use function rtrim;
+use function sprintf;
+use function str_replace;
+use function substr;
+use function trim;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Util\Exception;

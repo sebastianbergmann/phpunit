@@ -66,7 +66,9 @@ final class CodeCoverageFacade
                 assert($metadata instanceof CoversClass || $metadata instanceof CoversMethod || $metadata instanceof CoversFunction);
 
                 try {
-                    $codeUnits = $codeUnits->mergeWith($mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper()));
+                    $codeUnits = $codeUnits->mergeWith(
+                        $mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper())
+                    );
                 } catch (InvalidCodeUnitException $e) {
                     if ($metadata->isCoversClass()) {
                         $type = 'Class';
@@ -154,7 +156,9 @@ final class CodeCoverageFacade
                 assert($metadata instanceof UsesClass || $metadata instanceof UsesMethod || $metadata instanceof UsesFunction);
 
                 try {
-                    $codeUnits = $codeUnits->mergeWith($mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper()));
+                    $codeUnits = $codeUnits->mergeWith(
+                        $mapper->stringToCodeUnits($metadata->asStringForCodeUnitMapper())
+                    );
                 } catch (InvalidCodeUnitException $e) {
                     if ($metadata->isUsesClass()) {
                         $type = 'Class';

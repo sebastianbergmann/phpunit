@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\Metadata;
 
-use function assert;
+use function array_unshift;
+use function class_exists;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Registry as MetadataRegistry;
 use ReflectionClass;
 use ReflectionException;
 
@@ -48,7 +48,7 @@ final class HookFacade
                     continue;
                 }
 
-                $metadata = MetadataRegistry::parser()->forMethod($className, $method->getName());
+                $metadata = Registry::parser()->forMethod($className, $method->getName());
 
                 if ($method->isStatic()) {
                     if ($metadata->isBeforeClass()->isNotEmpty()) {

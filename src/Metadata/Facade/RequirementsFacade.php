@@ -9,7 +9,17 @@
  */
 namespace PHPUnit\Metadata;
 
+use const PHP_OS;
+use const PHP_OS_FAMILY;
+use const PHP_VERSION;
+use function addcslashes;
 use function assert;
+use function extension_loaded;
+use function function_exists;
+use function ini_get;
+use function method_exists;
+use function phpversion;
+use function preg_match;
 use function sprintf;
 use PHPUnit\Runner\Version;
 
