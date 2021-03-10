@@ -10,10 +10,9 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function count;
-use function is_array;
+use function is_countable;
 use function iterator_count;
 use function sprintf;
-use Countable;
 use EmptyIterator;
 use Generator;
 use Iterator;
@@ -57,7 +56,7 @@ class Count extends Constraint
      */
     protected function getCountOf($other): ?int
     {
-        if ($other instanceof Countable || is_array($other)) {
+        if (is_countable($other)) {
             return count($other);
         }
 

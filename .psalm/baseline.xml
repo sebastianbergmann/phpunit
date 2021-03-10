@@ -152,10 +152,6 @@
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="2">
-      <code>$expected</code>
-      <code>$expected</code>
-    </PossiblyInvalidArgument>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <DeprecatedClass occurrences="3">
