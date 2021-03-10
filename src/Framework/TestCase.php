@@ -631,8 +631,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public function getName(bool $withDataSet = true): string

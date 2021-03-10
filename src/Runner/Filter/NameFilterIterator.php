@@ -16,6 +16,9 @@ use function sprintf;
 use function str_replace;
 use Exception;
 use PHPUnit\Framework\ErrorTestCase;
+use PHPUnit\Framework\SelfDescribing;
+use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Util\RegularExpression;
@@ -54,7 +57,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
             return true;
         }
 
-        $tmp = \PHPUnit\Util\Test::describe($test);
+        $tmp = $this->describe($test);
 
         if ($test instanceof ErrorTestCase || $test instanceof WarningTestCase) {
             $name = $test->getMessage();
@@ -123,5 +126,21 @@ final class NameFilterIterator extends RecursiveFilterIterator
         }
 
         $this->filter = $filter;
+    }
+
+    /**
+     * @psalm-return array{0: string, 1: string}
+     */
+    private function describe(Test $test): array
+    {
+        if ($test instanceof TestCase) {
+            return [get_class($test), $test->getName()];
+        }
+
+        if ($test instanceof SelfDescribing) {
+            return ['', $test->toString()];
+        }
+
+        return ['', get_class($test)];
     }
 }

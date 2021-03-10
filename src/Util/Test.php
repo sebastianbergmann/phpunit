@@ -15,7 +15,6 @@ use function get_class;
 use function strpos;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Annotation\Registry as AnnotationRegistry;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
 use ReflectionMethod;
@@ -25,24 +24,6 @@ use ReflectionMethod;
  */
 final class Test
 {
-    /**
-     * @psalm-return array{0: string, 1: string}
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public static function describe(\PHPUnit\Framework\Test $test): array
-    {
-        if ($test instanceof TestCase) {
-            return [get_class($test), $test->getName()];
-        }
-
-        if ($test instanceof SelfDescribing) {
-            return ['', $test->toString()];
-        }
-
-        return ['', get_class($test)];
-    }
-
     public static function describeAsString(\PHPUnit\Framework\Test $test): string
     {
         if ($test instanceof SelfDescribing) {
