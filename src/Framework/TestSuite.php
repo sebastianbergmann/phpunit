@@ -28,6 +28,7 @@ use function strpos;
 use function substr;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Metadata\GroupsFacade;
 use PHPUnit\Metadata\HookFacade;
 use PHPUnit\Metadata\RequirementsFacade;
 use PHPUnit\Runner\Filter\Factory;
@@ -690,7 +691,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $this->addTest(
             $test,
-            TestUtil::groups($class->getName(), $methodName)
+            (new GroupsFacade)->groups($class->getName(), $methodName)
         );
     }
 

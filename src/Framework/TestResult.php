@@ -14,6 +14,7 @@ use function get_class;
 use Countable;
 use Error;
 use PHPUnit\Framework\TestSize\TestSize;
+use PHPUnit\Metadata\GroupsFacade;
 use PHPUnit\Util\Printer;
 use Throwable;
 
@@ -273,7 +274,7 @@ final class TestResult implements Countable
             $size  = TestSize::unknown();
 
             if ($class !== WarningTestCase::class) {
-                $size = \PHPUnit\Util\Test::size(
+                $size = (new GroupsFacade)->size(
                     $class,
                     $test->getName(false)
                 );

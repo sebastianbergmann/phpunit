@@ -16,11 +16,11 @@ use function trim;
 use PHPUnit\Metadata\BackupGlobals;
 use PHPUnit\Metadata\BackupStaticProperties;
 use PHPUnit\Metadata\DataProviderFacade;
+use PHPUnit\Metadata\GroupsFacade;
 use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\InvalidDataSetException;
-use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use Throwable;
 
@@ -115,7 +115,7 @@ final class TestBuilder
             $className . '::' . $methodName
         );
 
-        $groups = TestUtil::groups($className, $methodName);
+        $groups = (new GroupsFacade)->groups($className, $methodName);
 
         if ($data instanceof ErrorTestCase ||
             $data instanceof SkippedTestCase ||

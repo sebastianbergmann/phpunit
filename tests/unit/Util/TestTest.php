@@ -12,7 +12,6 @@ namespace PHPUnit\Util;
 use function get_class;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 
 /**
  * @small
@@ -54,30 +53,5 @@ final class TestTest extends TestCase
     public function methodForTestParseAnnotationThatIsOnlyOneLine(): void
     {
         // TODO Remove fixture from test class
-    }
-
-    /**
-     * @testdox Parse @ticket for $class::$method
-     * @dataProvider getGroupsProvider
-     */
-    public function testGetGroupsFromTicketAnnotations(string $class, string $method, array $groups): void
-    {
-        $this->assertSame($groups, Test::groups($class, $method));
-    }
-
-    public function getGroupsProvider(): array
-    {
-        return [
-            [
-                NumericGroupAnnotationTest::class,
-                'testTicketAnnotationSupportsNumericValue',
-                ['t123456', '3502'],
-            ],
-            [
-                NumericGroupAnnotationTest::class,
-                'testGroupAnnotationSupportsNumericValue',
-                ['t123456', '3502'],
-            ],
-        ];
     }
 }

@@ -9,31 +9,15 @@
  */
 namespace PHPUnit\Util;
 
-use function array_flip;
 use function array_merge;
 use function array_unique;
-use function assert;
 use function get_class;
 use function strpos;
-use function strtolower;
-use function trim;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Annotation\Registry as AnnotationRegistry;
-use PHPUnit\Metadata\Covers;
-use PHPUnit\Metadata\CoversClass;
-use PHPUnit\Metadata\CoversFunction;
-use PHPUnit\Metadata\CoversMethod;
-use PHPUnit\Metadata\Group;
-use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
-use PHPUnit\Metadata\Uses;
-use PHPUnit\Metadata\UsesClass;
-use PHPUnit\Metadata\UsesFunction;
-use PHPUnit\Metadata\UsesMethod;
 use ReflectionMethod;
 
 /**
@@ -123,72 +107,6 @@ final class Test
         return array_unique($dependencies);
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function groups(string $className, string $methodName): array
-    {
-        $groups = [];
-
-        foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            assert($metadata instanceof Metadata);
-
-            if ($metadata->isGroup()) {
-                assert($metadata instanceof Group);
-
-                $groups[] = $metadata->groupName();
-            }
-
-            if ($metadata->isCoversClass() || $metadata->isCoversMethod() || $metadata->isCoversFunction()) {
-                assert($metadata instanceof CoversClass || $metadata instanceof CoversMethod || $metadata instanceof CoversFunction);
-
-                $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
-            }
-
-            if ($metadata->isCovers()) {
-                assert($metadata instanceof Covers);
-
-                $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->target());
-            }
-
-            if ($metadata->isUsesClass() || $metadata->isUsesMethod() || $metadata->isUsesFunction()) {
-                assert($metadata instanceof UsesClass || $metadata instanceof UsesMethod || $metadata instanceof UsesFunction);
-
-                $groups[] = '__phpunit_uses_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
-            }
-
-            if ($metadata->isUses()) {
-                assert($metadata instanceof Uses);
-
-                $groups[] = '__phpunit_uses_' . self::canonicalizeName($metadata->target());
-            }
-        }
-
-        return array_unique($groups);
-    }
-
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function size(string $className, string $methodName): TestSize
-    {
-        $groups = array_flip(self::groups($className, $methodName));
-
-        if (isset($groups['large'])) {
-            return TestSize::large();
-        }
-
-        if (isset($groups['medium'])) {
-            return TestSize::medium();
-        }
-
-        if (isset($groups['small'])) {
-            return TestSize::small();
-        }
-
-        return TestSize::unknown();
-    }
-
     public static function isTestMethod(ReflectionMethod $method): bool
     {
         if (!$method->isPublic()) {
@@ -205,10 +123,5 @@ final class Test
         );
 
         return $metadata->isTest()->isNotEmpty();
-    }
-
-    private static function canonicalizeName(string $name): string
-    {
-        return strtolower(trim($name, '\\'));
     }
 }
