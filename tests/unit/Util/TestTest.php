@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Util;
 
-use function get_class;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\Metadata\Annotation\DependencyTest;
 
 /**
  * @small
@@ -22,36 +22,25 @@ final class TestTest extends TestCase
     {
         $this->assertEquals(
             [
-                new ExecutionOrderDependency(get_class($this), 'Foo'),
-                new ExecutionOrderDependency(get_class($this), 'ほげ'),
+                new ExecutionOrderDependency(DependencyTest::class, 'Foo'),
+                new ExecutionOrderDependency(DependencyTest::class, 'ほげ'),
                 new ExecutionOrderDependency('AnotherClass::Foo'),
             ],
-            Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
+            Test::getDependencies(
+                DependencyTest::class,
+                'testOne'
+            )
         );
-    }
-
-    /**
-     * @depends Foo
-     * @depends ほげ
-     * @depends AnotherClass::Foo
-     *
-     * @todo Remove fixture from test class
-     */
-    public function methodForTestParseAnnotation(): void
-    {
     }
 
     public function testParseAnnotationThatIsOnlyOneLine(): void
     {
         $this->assertEquals(
-            [new ExecutionOrderDependency(get_class($this), 'Bar')],
-            Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+            [new ExecutionOrderDependency(DependencyTest::class, 'Bar')],
+            Test::getDependencies(
+                DependencyTest::class,
+                'testTwo'
+            )
         );
-    }
-
-    /** @depends Bar */
-    public function methodForTestParseAnnotationThatIsOnlyOneLine(): void
-    {
-        // TODO Remove fixture from test class
     }
 }
