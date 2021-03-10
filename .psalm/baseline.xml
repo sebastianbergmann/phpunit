@@ -148,6 +148,10 @@
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
     </MissingThrowsDocblock>
+    <PossiblyInvalidArgument occurrences="2">
+      <code>$expected</code>
+      <code>$expected</code>
+    </PossiblyInvalidArgument>
     <RedundantCondition occurrences="1">
       <code>assert($step['object'] instanceof TestCase)</code>
     </RedundantCondition>
