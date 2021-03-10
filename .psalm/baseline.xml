@@ -746,6 +746,22 @@
       <code>$backupGlobals</code>
     </NonInvariantDocblockPropertyType>
   </file>
+  <file src="src/Metadata/Parser/Annotation/DocBlock.php">
+    <RedundantCast occurrences="1">
+      <code>(string) $matches['value'][$i]</code>
+    </RedundantCast>
+  </file>
+  <file src="src/Metadata/Parser/AnnotationParser.php">
+    <ArgumentTypeCoercion occurrences="7">
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$className</code>
+      <code>$pieces[0]</code>
+      <code>explode('::', $value)</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Runner/CodeCoverage.php">
     <InvalidNullableReturnType occurrences="2">
       <code>Driver</code>
@@ -1306,22 +1322,6 @@
       <code>getName</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="src/Util/Metadata/Parser/Annotation/DocBlock.php">
-    <RedundantCast occurrences="1">
-      <code>(string) $matches['value'][$i]</code>
-    </RedundantCast>
-  </file>
-  <file src="src/Util/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="7">
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$pieces[0]</code>
-      <code>explode('::', $value)</code>
-    </ArgumentTypeCoercion>
-  </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
       <code>$this-&gt;getException($failures[0])</code>
@@ -1378,9 +1378,6 @@
     <MissingThrowsDocblock occurrences="2">
       <code>forClassName</code>
     </MissingThrowsDocblock>
-    <PossiblyNullArgument occurrences="1">
-      <code>$methodName</code>
-    </PossiblyNullArgument>
     <RedundantCondition occurrences="18">
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof CoversFunction</code>

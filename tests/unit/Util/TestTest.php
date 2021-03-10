@@ -18,6 +18,7 @@ use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
+use PHPUnit\Metadata\Annotation\DocBlock;
 use PHPUnit\TestFixture\CoverageClassNothingTest;
 use PHPUnit\TestFixture\CoverageClassTest;
 use PHPUnit\TestFixture\CoverageClassWithoutAnnotationsTest;
@@ -43,7 +44,6 @@ use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 use PHPUnit\TestFixture\RequirementsTest;
 use PHPUnit\TestFixture\Test3194;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
-use PHPUnit\Util\Metadata\Annotation\DocBlock;
 
 /**
  * @small
