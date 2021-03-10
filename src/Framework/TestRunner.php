@@ -17,13 +17,13 @@ use function serialize;
 use function sprintf;
 use function var_export;
 use AssertionError;
+use PHPUnit\Metadata\CodeCoverageFacade;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
-use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
@@ -53,7 +53,7 @@ final class TestRunner
             $test->registerMockObjectsFromTestArgumentsRecursively();
         }
 
-        $shouldCodeCoverageBeCollected = TestUtil::shouldCodeCoverageBeCollectedFor(
+        $shouldCodeCoverageBeCollected = (new CodeCoverageFacade)->shouldCodeCoverageBeCollectedFor(
             get_class($test),
             $test->getName(false)
         );
@@ -226,12 +226,12 @@ final class TestRunner
 
             if ($append) {
                 try {
-                    $linesToBeCovered = \PHPUnit\Util\Test::linesToBeCovered(
+                    $linesToBeCovered = (new CodeCoverageFacade)->linesToBeCovered(
                         get_class($test),
                         $test->getName(false)
                     );
 
-                    $linesToBeUsed = \PHPUnit\Util\Test::linesToBeUsed(
+                    $linesToBeUsed = (new CodeCoverageFacade)->linesToBeUsed(
                         get_class($test),
                         $test->getName(false)
                     );
