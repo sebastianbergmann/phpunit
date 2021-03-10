@@ -700,54 +700,6 @@ final class Test
         ];
     }
 
-    /**
-     * Trims any extensions from version string that follows after
-     * the <major>.<minor>[.<patch>] format.
-     */
-    private static function sanitizeVersionNumber(string $version)
-    {
-        return preg_replace(
-            '/^(\d+\.\d+(?:.\d+)?).*$/',
-            '$1',
-            $version
-        );
-    }
-
-    /**
-     * Merge two arrays together.
-     *
-     * If an integer key exists in both arrays and preserveNumericKeys is false, the value
-     * from the second array will be appended to the first array. If both values are arrays, they
-     * are merged together, else the value of the second array overwrites the one of the first array.
-     *
-     * This implementation is copied from https://github.com/zendframework/zend-stdlib/blob/76b653c5e99b40eccf5966e3122c90615134ae46/src/ArrayUtils.php
-     *
-     * Zend Framework (http://framework.zend.com/)
-     *
-     * @see       http://github.com/zendframework/zf2 for the canonical source repository
-     *
-     * @copyright Copyright (c) 2005-2015 Zend Technologies USA Inc. (http://www.zend.com)
-     * @license   http://framework.zend.com/license/new-bsd New BSD License
-     */
-    private static function mergeArraysRecursively(array $a, array $b): array
-    {
-        foreach ($b as $key => $value) {
-            if (array_key_exists($key, $a)) {
-                if (is_int($key)) {
-                    $a[] = $value;
-                } elseif (is_array($value) && is_array($a[$key])) {
-                    $a[$key] = self::mergeArraysRecursively($a[$key], $value);
-                } else {
-                    $a[$key] = $value;
-                }
-            } else {
-                $a[$key] = $value;
-            }
-        }
-
-        return $a;
-    }
-
     private static function canonicalizeName(string $name): string
     {
         return strtolower(trim($name, '\\'));
