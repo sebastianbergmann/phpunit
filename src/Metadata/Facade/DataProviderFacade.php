@@ -24,7 +24,6 @@ use function substr;
 use function trim;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SkippedTestError;
-use PHPUnit\Util\Exception;
 use PHPUnit\Util\InvalidDataSetException;
 use ReflectionClass;
 use ReflectionException;
@@ -88,7 +87,7 @@ final class DataProviderFacade
                 $method = $class->getMethod($_dataProvider->methodName());
                 // @codeCoverageIgnoreStart
             } catch (ReflectionException $e) {
-                throw new Exception(
+                throw new InvalidDataProviderException(
                     $e->getMessage(),
                     (int) $e->getCode(),
                     $e
@@ -185,7 +184,7 @@ final class DataProviderFacade
             $dataSet = json_decode($candidateRow, true);
 
             if (json_last_error() !== JSON_ERROR_NONE) {
-                throw new Exception(
+                throw new InvalidDataProviderException(
                     'The data set for the @testWith annotation cannot be parsed: ' . json_last_error_msg()
                 );
             }
@@ -194,7 +193,9 @@ final class DataProviderFacade
         }
 
         if (!$data) {
-            throw new Exception('The data set for the @testWith annotation cannot be parsed.');
+            throw new InvalidDataProviderException(
+                'The data set for the @testWith annotation cannot be parsed.'
+            );
         }
 
         return $data;
