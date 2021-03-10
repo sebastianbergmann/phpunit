@@ -27,6 +27,7 @@ use function vsprintf;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
@@ -236,7 +237,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
             $this->write(
                 sprintf(
                     "Test '%s' started\n",
-                    \PHPUnit\Util\Test::describeAsString($test)
+                    $this->describe($test)
                 )
             );
         }
@@ -251,7 +252,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
             $this->write(
                 sprintf(
                     "Test '%s' ended\n",
-                    \PHPUnit\Util\Test::describeAsString($test)
+                    $this->describe($test)
                 )
             );
         }
@@ -546,5 +547,14 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
             $first = false;
         }
+    }
+
+    private function describe(Test $test): string
+    {
+        if ($test instanceof SelfDescribing) {
+            return $test->toString();
+        }
+
+        return get_class($test);
     }
 }

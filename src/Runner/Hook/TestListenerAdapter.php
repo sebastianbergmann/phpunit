@@ -10,11 +10,11 @@
 namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
-use PHPUnit\Util\Test as TestUtil;
 use Throwable;
 
 /**
@@ -40,7 +40,7 @@ final class TestListenerAdapter implements TestListener
     {
         foreach ($this->hooks as $hook) {
             if ($hook instanceof BeforeTestHook) {
-                $hook->executeBeforeTest(TestUtil::describeAsString($test));
+                $hook->executeBeforeTest($this->describe($test));
             }
         }
 
@@ -51,7 +51,7 @@ final class TestListenerAdapter implements TestListener
     {
         foreach ($this->hooks as $hook) {
             if ($hook instanceof AfterTestErrorHook) {
-                $hook->executeAfterTestError(TestUtil::describeAsString($test), $t->getMessage(), $time);
+                $hook->executeAfterTestError($this->describe($test), $t->getMessage(), $time);
             }
         }
 
@@ -62,7 +62,7 @@ final class TestListenerAdapter implements TestListener
     {
         foreach ($this->hooks as $hook) {
             if ($hook instanceof AfterTestWarningHook) {
-                $hook->executeAfterTestWarning(TestUtil::describeAsString($test), $e->getMessage(), $time);
+                $hook->executeAfterTestWarning($this->describe($test), $e->getMessage(), $time);
             }
         }
 
@@ -73,7 +73,7 @@ final class TestListenerAdapter implements TestListener
     {
         foreach ($this->hooks as $hook) {
             if ($hook instanceof AfterTestFailureHook) {
-                $hook->executeAfterTestFailure(TestUtil::describeAsString($test), $e->getMessage(), $time);
+                $hook->executeAfterTestFailure($this->describe($test), $e->getMessage(), $time);
             }
         }
 
@@ -84,7 +84,7 @@ final class TestListenerAdapter implements TestListener
     {
         foreach ($this->hooks as $hook) {
             if ($hook instanceof AfterIncompleteTestHook) {
-                $hook->executeAfterIncompleteTest(TestUtil::describeAsString($test), $t->getMessage(), $time);
+                $hook->executeAfterIncompleteTest($this->describe($test), $t->getMessage(), $time);
             }
         }
 
@@ -95,7 +95,7 @@ final class TestListenerAdapter implements TestListener
     {
         foreach ($this->hooks as $hook) {
             if ($hook instanceof AfterRiskyTestHook) {
-                $hook->executeAfterRiskyTest(TestUtil::describeAsString($test), $t->getMessage(), $time);
+                $hook->executeAfterRiskyTest($this->describe($test), $t->getMessage(), $time);
             }
         }
 
@@ -106,7 +106,7 @@ final class TestListenerAdapter implements TestListener
     {
         foreach ($this->hooks as $hook) {
             if ($hook instanceof AfterSkippedTestHook) {
-                $hook->executeAfterSkippedTest(TestUtil::describeAsString($test), $t->getMessage(), $time);
+                $hook->executeAfterSkippedTest($this->describe($test), $t->getMessage(), $time);
             }
         }
 
@@ -118,14 +118,14 @@ final class TestListenerAdapter implements TestListener
         if (!$this->lastTestWasNotSuccessful) {
             foreach ($this->hooks as $hook) {
                 if ($hook instanceof AfterSuccessfulTestHook) {
-                    $hook->executeAfterSuccessfulTest(TestUtil::describeAsString($test), $time);
+                    $hook->executeAfterSuccessfulTest($this->describe($test), $time);
                 }
             }
         }
 
         foreach ($this->hooks as $hook) {
             if ($hook instanceof AfterTestHook) {
-                $hook->executeAfterTest(TestUtil::describeAsString($test), $time);
+                $hook->executeAfterTest($this->describe($test), $time);
             }
         }
     }
@@ -136,5 +136,14 @@ final class TestListenerAdapter implements TestListener
 
     public function endTestSuite(TestSuite $suite): void
     {
+    }
+
+    private function describe(Test $test): string
+    {
+        if ($test instanceof SelfDescribing) {
+            return $test->toString();
+        }
+
+        return get_class($test);
     }
 }

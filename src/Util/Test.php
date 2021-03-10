@@ -11,10 +11,8 @@ namespace PHPUnit\Util;
 
 use function array_merge;
 use function array_unique;
-use function get_class;
 use function strpos;
 use PHPUnit\Framework\ExecutionOrderDependency;
-use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Metadata\Annotation\Registry as AnnotationRegistry;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
 use ReflectionMethod;
@@ -24,15 +22,6 @@ use ReflectionMethod;
  */
 final class Test
 {
-    public static function describeAsString(\PHPUnit\Framework\Test $test): string
-    {
-        if ($test instanceof SelfDescribing) {
-            return $test->toString();
-        }
-
-        return get_class($test);
-    }
-
     /**
      * @psalm-param class-string $className
      */
