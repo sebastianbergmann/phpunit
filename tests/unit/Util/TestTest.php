@@ -10,10 +10,8 @@
 namespace PHPUnit\Util;
 
 use function get_class;
-use function preg_match;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Annotation\DocBlock;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 
 /**
@@ -21,32 +19,6 @@ use PHPUnit\TestFixture\NumericGroupAnnotationTest;
  */
 final class TestTest extends TestCase
 {
-    /**
-     * @todo This test does not really test functionality of \PHPUnit\Util\Test
-     */
-    public function testGetProvidedDataRegEx(): void
-    {
-        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider method', $matches);
-        $this->assertEquals(1, $result);
-        $this->assertEquals('method', $matches[1]);
-
-        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider class::method', $matches);
-        $this->assertEquals(1, $result);
-        $this->assertEquals('class::method', $matches[1]);
-
-        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\class::method', $matches);
-        $this->assertEquals(1, $result);
-        $this->assertEquals('namespace\class::method', $matches[1]);
-
-        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider namespace\namespace\class::method', $matches);
-        $this->assertEquals(1, $result);
-        $this->assertEquals('namespace\namespace\class::method', $matches[1]);
-
-        $result = preg_match(DocBlock::REGEX_DATA_PROVIDER, '@dataProvider メソッド', $matches);
-        $this->assertEquals(1, $result);
-        $this->assertEquals('メソッド', $matches[1]);
-    }
-
     public function testParseDependsAnnotation(): void
     {
         $this->assertEquals(
