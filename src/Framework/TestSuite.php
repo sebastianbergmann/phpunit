@@ -28,6 +28,7 @@ use function strpos;
 use function substr;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Metadata\HookFacade;
 use PHPUnit\Metadata\RequirementsFacade;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
@@ -413,7 +414,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         /** @psalm-var class-string $className */
         $className   = $this->name;
-        $hookMethods = TestUtil::hookMethods($className);
+        $hookMethods = (new HookFacade)->hookMethods($className);
 
         $result->startTestSuite($this);
 

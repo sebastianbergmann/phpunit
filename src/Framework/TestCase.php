@@ -78,6 +78,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\Metadata\HookFacade;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Metadata\RequirementsFacade;
 use PHPUnit\Runner\PhptTestCase;
@@ -721,7 +722,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         clearstatcache();
         $currentWorkingDirectory = getcwd();
 
-        $hookMethods = TestUtil::hookMethods(static::class);
+        $hookMethods = (new HookFacade)->hookMethods(static::class);
 
         $hasMetRequirements = false;
 
