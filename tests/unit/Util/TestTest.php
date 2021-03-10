@@ -22,19 +22,6 @@ use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 final class TestTest extends TestCase
 {
     /**
-     * @var string
-     */
-    private $fileRequirementsTest;
-
-    public function requirementsWithInvalidVersionConstraintsThrowsExceptionProvider(): array
-    {
-        return [
-            ['testVersionConstraintInvalidPhpConstraint'],
-            ['testVersionConstraintInvalidPhpUnitConstraint'],
-        ];
-    }
-
-    /**
      * @todo This test does not really test functionality of \PHPUnit\Util\Test
      */
     public function testGetProvidedDataRegEx(): void
