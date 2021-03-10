@@ -759,7 +759,7 @@
     </UndefinedMethod>
   </file>
   <file src="src/Metadata/Facade/DataProviderFacade.php">
-    <MissingThrowsDocblock occurrences="1"/>
+    <MissingThrowsDocblock occurrences="2"/>
   </file>
   <file src="src/Metadata/Facade/GroupsFacade.php">
     <RedundantCondition occurrences="6">
