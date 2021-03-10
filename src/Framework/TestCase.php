@@ -79,6 +79,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
+use PHPUnit\Metadata\RequirementsFacade;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Error\Deprecation;
 use PHPUnit\Util\Error\Error;
@@ -1556,7 +1557,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return;
         }
 
-        $missingRequirements = TestUtil::getMissingRequirements(
+        $missingRequirements = (new RequirementsFacade)->requirementsNotSatisfiedFor(
             static::class,
             $this->name
         );

@@ -9,10 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use const PHP_OS;
-use const PHP_OS_FAMILY;
-use const PHP_VERSION;
-use function addcslashes;
 use function array_flip;
 use function array_key_exists;
 use function array_merge;
@@ -21,14 +17,9 @@ use function array_unshift;
 use function assert;
 use function class_exists;
 use function explode;
-use function extension_loaded;
-use function function_exists;
 use function get_class;
-use function ini_get;
 use function is_array;
 use function is_int;
-use function method_exists;
-use function phpversion;
 use function preg_match;
 use function preg_replace;
 use function rtrim;
@@ -55,20 +46,11 @@ use PHPUnit\Metadata\Group;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
-use PHPUnit\Metadata\RequiresFunction;
-use PHPUnit\Metadata\RequiresMethod;
-use PHPUnit\Metadata\RequiresOperatingSystem;
-use PHPUnit\Metadata\RequiresOperatingSystemFamily;
-use PHPUnit\Metadata\RequiresPhp;
-use PHPUnit\Metadata\RequiresPhpExtension;
-use PHPUnit\Metadata\RequiresPhpunit;
-use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Metadata\TestWith;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\UsesMethod;
-use PHPUnit\Runner\Version;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -106,118 +88,6 @@ final class Test
         }
 
         return get_class($test);
-    }
-
-    /**
-     * @psalm-param class-string $className
-     *
-     * @psalm-return list<string>
-     */
-    public static function getMissingRequirements(string $className, string $methodName): array
-    {
-        $missing = [];
-
-        foreach (MetadataRegistry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if ($metadata->isRequiresPhp()) {
-                assert($metadata instanceof RequiresPhp);
-
-                if (!$metadata->versionRequirement()->isSatisfiedBy(PHP_VERSION)) {
-                    $missing[] = sprintf(
-                        'PHP %s is required.',
-                        $metadata->versionRequirement()->asString()
-                    );
-                }
-            }
-
-            if ($metadata->isRequiresPhpExtension()) {
-                assert($metadata instanceof RequiresPhpExtension);
-
-                if (!extension_loaded($metadata->extension()) ||
-                    ($metadata->hasVersionRequirement() &&
-                     !$metadata->versionRequirement()->isSatisfiedBy(phpversion($metadata->extension())))) {
-                    $missing[] = sprintf(
-                        'PHP extension %s%s is required.',
-                        $metadata->extension(),
-                        $metadata->hasVersionRequirement() ? (' ' . $metadata->versionRequirement()->asString()) : ''
-                    );
-                }
-            }
-
-            if ($metadata->isRequiresPhpunit()) {
-                assert($metadata instanceof RequiresPhpunit);
-
-                if (!$metadata->versionRequirement()->isSatisfiedBy(Version::id())) {
-                    $missing[] = sprintf(
-                        'PHPUnit %s is required.',
-                        $metadata->versionRequirement()->asString()
-                    );
-                }
-            }
-
-            if ($metadata->isRequiresOperatingSystemFamily()) {
-                assert($metadata instanceof RequiresOperatingSystemFamily);
-
-                if ($metadata->operatingSystemFamily() !== PHP_OS_FAMILY) {
-                    $missing[] = sprintf(
-                        'Operating system %s is required.',
-                        $metadata->operatingSystemFamily()
-                    );
-                }
-            }
-
-            if ($metadata->isRequiresOperatingSystem()) {
-                assert($metadata instanceof RequiresOperatingSystem);
-
-                $pattern = sprintf(
-                    '/%s/i',
-                    addcslashes($metadata->operatingSystem(), '/')
-                );
-
-                if (!preg_match($pattern, PHP_OS)) {
-                    $missing[] = sprintf(
-                        'Operating system %s is required.',
-                        $metadata->operatingSystem()
-                    );
-                }
-            }
-
-            if ($metadata->isRequiresFunction()) {
-                assert($metadata instanceof RequiresFunction);
-
-                if (!function_exists($metadata->functionName())) {
-                    $missing[] = sprintf(
-                        'Function %s() is required.',
-                        $metadata->functionName()
-                    );
-                }
-            }
-
-            if ($metadata->isRequiresMethod()) {
-                assert($metadata instanceof RequiresMethod);
-
-                if (!method_exists($metadata->className(), $metadata->methodName())) {
-                    $missing[] = sprintf(
-                        'Method %s::%s() is required.',
-                        $metadata->className(),
-                        $metadata->methodName()
-                    );
-                }
-            }
-
-            if ($metadata->isRequiresSetting()) {
-                assert($metadata instanceof RequiresSetting);
-
-                if (ini_get($metadata->setting()) !== $metadata->value()) {
-                    $missing[] = sprintf(
-                        'Setting "%s" is required to be "%s".',
-                        $metadata->setting(),
-                        $metadata->value()
-                    );
-                }
-            }
-        }
-
-        return $missing;
     }
 
     /**

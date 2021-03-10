@@ -758,6 +758,18 @@
       <code>className</code>
     </UndefinedMethod>
   </file>
+  <file src="src/Metadata/Facade/RequirementsFacade.php">
+    <RedundantCondition occurrences="8">
+      <code>assert($metadata instanceof RequiresFunction)</code>
+      <code>assert($metadata instanceof RequiresMethod)</code>
+      <code>assert($metadata instanceof RequiresOperatingSystem)</code>
+      <code>assert($metadata instanceof RequiresOperatingSystemFamily)</code>
+      <code>assert($metadata instanceof RequiresPhp)</code>
+      <code>assert($metadata instanceof RequiresPhpExtension)</code>
+      <code>assert($metadata instanceof RequiresPhpunit)</code>
+      <code>assert($metadata instanceof RequiresSetting)</code>
+    </RedundantCondition>
+  </file>
   <file src="src/Metadata/Parser/Annotation/DocBlock.php">
     <RedundantCast occurrences="1">
       <code>(string) $matches['value'][$i]</code>
@@ -1387,20 +1399,12 @@
     <MissingThrowsDocblock occurrences="2">
       <code>forClassName</code>
     </MissingThrowsDocblock>
-    <RedundantCondition occurrences="14">
+    <RedundantCondition occurrences="6">
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
       <code>assert($metadata instanceof Covers)</code>
       <code>assert($metadata instanceof Group)</code>
       <code>assert($metadata instanceof Metadata)</code>
-      <code>assert($metadata instanceof RequiresFunction)</code>
-      <code>assert($metadata instanceof RequiresMethod)</code>
-      <code>assert($metadata instanceof RequiresOperatingSystem)</code>
-      <code>assert($metadata instanceof RequiresOperatingSystemFamily)</code>
-      <code>assert($metadata instanceof RequiresPhp)</code>
-      <code>assert($metadata instanceof RequiresPhpExtension)</code>
-      <code>assert($metadata instanceof RequiresPhpunit)</code>
-      <code>assert($metadata instanceof RequiresSetting)</code>
       <code>assert($metadata instanceof Uses)</code>
     </RedundantCondition>
   </file>

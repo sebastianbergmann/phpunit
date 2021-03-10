@@ -28,6 +28,7 @@ use function strpos;
 use function substr;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Metadata\RequirementsFacade;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Test as TestUtil;
@@ -422,7 +423,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             try {
                 foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
                     if (method_exists($this->name, $beforeClassMethod)) {
-                        if ($missingRequirements = TestUtil::getMissingRequirements($this->name, $beforeClassMethod)) {
+                        if ($missingRequirements = (new RequirementsFacade)->requirementsNotSatisfiedFor($this->name, $beforeClassMethod)) {
                             $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
                         }
 

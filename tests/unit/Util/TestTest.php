@@ -14,12 +14,10 @@ use function preg_match;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Warning;
 use PHPUnit\Metadata\Annotation\DocBlock;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
-use PHPUnit\TestFixture\RequirementsTest;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 
 /**
@@ -37,126 +35,6 @@ final class TestTest extends TestCase
         return [
             ['testVersionConstraintInvalidPhpConstraint'],
             ['testVersionConstraintInvalidPhpUnitConstraint'],
-        ];
-    }
-
-    /**
-     * @testdox Test::getMissingRequirements() for $test
-     * @dataProvider missingRequirementsProvider
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Warning
-     */
-    public function testGetMissingRequirements($test, $result): void
-    {
-        $this->assertEquals(
-            $result,
-            Test::getMissingRequirements(RequirementsTest::class, $test)
-        );
-    }
-
-    public function missingRequirementsProvider(): array
-    {
-        return [
-            ['testOne',            []],
-            ['testNine',           [
-                'Function testFunc() is required.',
-            ]],
-            ['testTen',            [
-                'PHP extension testExt is required.',
-            ]],
-            ['testAlwaysSkip',     [
-                'PHPUnit >= 1111111 is required.',
-            ]],
-            ['testAlwaysSkip2',    [
-                'PHP >= 9999999 is required.',
-            ]],
-            ['testAlwaysSkip3',    [
-                'Operating system DOESNOTEXIST is required.',
-            ]],
-            ['testAllPossibleRequirements', [
-                'PHP >= 99-dev is required.',
-                'PHP extension testExtOne is required.',
-                'PHP extension testExt2 is required.',
-                'PHP extension testExtThree >= 2.0 is required.',
-                'PHPUnit >= 99-dev is required.',
-                'Operating system DOESNOTEXIST is required.',
-                'Function testFuncOne() is required.',
-                'Function testFunc2() is required.',
-                'Setting "not_a_setting" is required to be "Off".',
-            ]],
-            ['testPHPVersionOperatorLessThan', [
-                'PHP < 5.4 is required.',
-            ]],
-            ['testPHPVersionOperatorLessThanEquals', [
-                'PHP <= 5.4 is required.',
-            ]],
-            ['testPHPVersionOperatorGreaterThan', [
-                'PHP > 99 is required.',
-            ]],
-            ['testPHPVersionOperatorGreaterThanEquals', [
-                'PHP >= 99 is required.',
-            ]],
-            ['testPHPVersionOperatorNoSpace', [
-                'PHP >= 99 is required.',
-            ]],
-            ['testPHPVersionOperatorEquals', [
-                'PHP = 5.4 is required.',
-            ]],
-            ['testPHPVersionOperatorDoubleEquals', [
-                'PHP == 5.4 is required.',
-            ]],
-            ['testPHPUnitVersionOperatorLessThan', [
-                'PHPUnit < 1.0 is required.',
-            ]],
-            ['testPHPUnitVersionOperatorLessThanEquals', [
-                'PHPUnit <= 1.0 is required.',
-            ]],
-            ['testPHPUnitVersionOperatorGreaterThan', [
-                'PHPUnit > 99 is required.',
-            ]],
-            ['testPHPUnitVersionOperatorGreaterThanEquals', [
-                'PHPUnit >= 99 is required.',
-            ]],
-            ['testPHPUnitVersionOperatorEquals', [
-                'PHPUnit = 1.0 is required.',
-            ]],
-            ['testPHPUnitVersionOperatorDoubleEquals', [
-                'PHPUnit == 1.0 is required.',
-            ]],
-            ['testPHPUnitVersionOperatorNoSpace', [
-                'PHPUnit >= 99 is required.',
-            ]],
-            ['testExtensionVersionOperatorLessThan', [
-                'PHP extension testExtOne < 1.0 is required.',
-            ]],
-            ['testExtensionVersionOperatorLessThanEquals', [
-                'PHP extension testExtOne <= 1.0 is required.',
-            ]],
-            ['testExtensionVersionOperatorGreaterThan', [
-                'PHP extension testExtOne > 99 is required.',
-            ]],
-            ['testExtensionVersionOperatorGreaterThanEquals', [
-                'PHP extension testExtOne >= 99 is required.',
-            ]],
-            ['testExtensionVersionOperatorEquals', [
-                'PHP extension testExtOne = 1.0 is required.',
-            ]],
-            ['testExtensionVersionOperatorDoubleEquals', [
-                'PHP extension testExtOne == 1.0 is required.',
-            ]],
-            ['testExtensionVersionOperatorNoSpace', [
-                'PHP extension testExtOne >= 99 is required.',
-            ]],
-            ['testVersionConstraintTildeMajor', [
-                'PHP ~1.0 is required.',
-                'PHPUnit ~2.0 is required.',
-            ]],
-            ['testVersionConstraintCaretMajor', [
-                'PHP ^1.0 is required.',
-                'PHPUnit ^2.0 is required.',
-            ]],
         ];
     }
 
