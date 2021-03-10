@@ -758,6 +758,9 @@
       <code>className</code>
     </UndefinedMethod>
   </file>
+  <file src="src/Metadata/Facade/DataProviderFacade.php">
+    <MissingThrowsDocblock occurrences="1"/>
+  </file>
   <file src="src/Metadata/Facade/RequirementsFacade.php">
     <RedundantCondition occurrences="8">
       <code>assert($metadata instanceof RequiresFunction)</code>
@@ -1396,7 +1399,7 @@
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Util/Test.php">
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock occurrences="1">
       <code>forClassName</code>
     </MissingThrowsDocblock>
     <RedundantCondition occurrences="6">

@@ -15,6 +15,7 @@ use function sprintf;
 use function trim;
 use PHPUnit\Metadata\BackupGlobals;
 use PHPUnit\Metadata\BackupStaticProperties;
+use PHPUnit\Metadata\DataProviderFacade;
 use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\Filter;
@@ -39,7 +40,7 @@ final class TestBuilder
         }
 
         try {
-            $data = TestUtil::providedData(
+            $data = (new DataProviderFacade)->providedData(
                 $className,
                 $methodName
             );
