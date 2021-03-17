@@ -21,6 +21,7 @@ use function array_values;
 use function count;
 use function explode;
 use function file;
+use function gettype;
 use function implode;
 use function is_array;
 use function is_int;
@@ -435,6 +436,14 @@ final class DocBlock
                 foreach ($origData as $key => $value) {
                     if (is_int($key)) {
                         $data[] = $value;
+                    } elseif (!is_string($key)) {
+                        throw new InvalidDataProviderException(
+                            sprintf(
+                                'The "%s" data provider has a key of type "%s", only integer or strings are allowed.',
+                                $match,
+                                gettype($key)
+                            )
+                        );
                     } elseif (array_key_exists($key, $data)) {
                         throw new InvalidDataProviderException(
                             sprintf(
