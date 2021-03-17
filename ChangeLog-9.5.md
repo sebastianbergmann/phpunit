@@ -6,6 +6,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 ### Fixed
 
+* [#4591](https://github.com/sebastianbergmann/phpunit/issues/4591): TeamCity logger logs warnings as test failures
 * [#4620](https://github.com/sebastianbergmann/phpunit/issues/4620): No useful output when an error occurs in the bootstrap script
 
 ## [9.5.2] - 2021-02-02
