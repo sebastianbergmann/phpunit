@@ -80,15 +80,7 @@ final class TeamCity extends DefaultResultPrinter
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
-        $this->printEvent(
-            'testFailed',
-            [
-                'name'     => $test->getName(),
-                'message'  => self::getMessage($e),
-                'details'  => self::getDetails($e),
-                'duration' => self::toMilliseconds($time),
-            ]
-        );
+        $this->write(self::getMessage($e) . PHP_EOL);
     }
 
     /**
