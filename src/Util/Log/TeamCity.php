@@ -9,6 +9,19 @@
  */
 namespace PHPUnit\Util\Log;
 
+use function class_exists;
+use function count;
+use function explode;
+use function get_class;
+use function getmypid;
+use function ini_get;
+use function is_bool;
+use function is_scalar;
+use function method_exists;
+use function print_r;
+use function round;
+use function str_replace;
+use function stripos;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -25,19 +38,6 @@ use ReflectionClass;
 use ReflectionException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use Throwable;
-use function class_exists;
-use function count;
-use function explode;
-use function get_class;
-use function getmypid;
-use function ini_get;
-use function is_bool;
-use function is_scalar;
-use function method_exists;
-use function print_r;
-use function round;
-use function str_replace;
-use function stripos;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
