@@ -72,7 +72,7 @@ final class MockBuilderTest extends TestCase
         $this->assertTrue($mock->mockableMethod());
     }
 
-    public function testAddMethodsWithNonExistentMethodNames(): void
+    public function testAddMethodsWithExistentMethodNames(): void
     {
         $this->expectException(CannotUseAddMethodsException::class);
         $this->expectExceptionMessage('Trying to set mock method "mockableMethod" with addMethods(), but it exists in class "PHPUnit\TestFixture\Mockable". Use onlyMethods() for methods that exist in the class');
@@ -82,7 +82,7 @@ final class MockBuilderTest extends TestCase
              ->getMock();
     }
 
-    public function testAddMethodsWithExistingMethodNames(): void
+    public function testAddMethodsWithNonExistingMethodNames(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
                      ->addMethods(['mockableMethodWithFakeMethod'])
