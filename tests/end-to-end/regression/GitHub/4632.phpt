@@ -21,21 +21,21 @@ Issue4632 (PHPUnit\TestFixture\Issue4632)
    │
    │ Failed asserting that false is true.
    │
-   │ %s/Issue4632Test.php:18
+   │ %sIssue4632Test.php:%d
    │
 
  ✘ One
    │
    │ Failed asserting that false is true.
    │
-   │ %s/Issue4632Test.php:18
+   │ %sIssue4632Test.php:%d
    │
 
  ✘ One
    │
    │ Failed asserting that false is true.
    │
-   │ %s/Issue4632Test.php:18
+   │ %sIssue4632Test.php:%d
    │
 
 Time: %s, Memory: %s
