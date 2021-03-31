@@ -13,22 +13,19 @@ use const PHP_EOL;
 use function array_diff;
 use function array_keys;
 use function array_merge;
-use function basename;
 use function call_user_func;
 use function class_exists;
 use function count;
 use function dirname;
 use function file_exists;
-use function get_declared_classes;
 use function implode;
 use function is_bool;
 use function is_object;
 use function is_string;
 use function method_exists;
-use function preg_match;
-use function preg_quote;
 use function sprintf;
 use function substr;
+use ClassFinder\ClassFinder;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Runner\BaseTestRunner;
@@ -121,11 +118,6 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
     private $iteratorFilter;
 
     /**
-     * @var string[]
-     */
-    private $declaredClasses;
-
-    /**
      * Constructs a new TestSuite:.
      *
      *   - PHPUnit\Framework\TestSuite() constructs an empty TestSuite.
@@ -154,8 +146,6 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
                 'ReflectionClass object or string'
             );
         }
-
-        $this->declaredClasses = get_declared_classes();
 
         if (!$theClass instanceof ReflectionClass) {
             if (class_exists($theClass, true)) {
@@ -379,54 +369,14 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
             return;
         }
 
-        // The given file may contain further stub classes in addition to the
-        // test class itself. Figure out the actual test class.
-        $filename   = FileLoader::checkAndLoad($filename);
-        $newClasses = array_diff(get_declared_classes(), $this->declaredClasses);
+        $filename     = FileLoader::checkAndLoad($filename);
+        $foundClasses = array_diff(ClassFinder::findClassesInFile($filename), $this->foundClasses);
 
-        // The diff is empty in case a parent class (with test methods) is added
-        // AFTER a child class that inherited from it. To account for that case,
-        // accumulate all discovered classes, so the parent class may be found in
-        // a later invocation.
-        if (!empty($newClasses)) {
-            // On the assumption that test classes are defined first in files,
-            // process discovered classes in approximate LIFO order, so as to
-            // avoid unnecessary reflection.
-            $this->foundClasses    = array_merge($newClasses, $this->foundClasses);
-            $this->declaredClasses = get_declared_classes();
+        if (!empty($foundClasses)) {
+            $this->foundClasses = array_merge($foundClasses, $this->foundClasses);
         }
 
-        // The test class's name must match the filename, either in full, or as
-        // a PEAR/PSR-0 prefixed short name ('NameSpace_ShortName'), or as a
-        // PSR-1 local short name ('NameSpace\ShortName'). The comparison must be
-        // anchored to prevent false-positive matches (e.g., 'OtherShortName').
-        $shortName      = basename($filename, '.php');
-        $shortNameRegEx = '/(?:^|_|\\\\)' . preg_quote($shortName, '/') . '$/';
-
-        foreach ($this->foundClasses as $i => $className) {
-            if (preg_match($shortNameRegEx, $className)) {
-                try {
-                    $class = new ReflectionClass($className);
-                    // @codeCoverageIgnoreStart
-                } catch (ReflectionException $e) {
-                    throw new Exception(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
-                // @codeCoverageIgnoreEnd
-
-                if ($class->getFileName() == $filename) {
-                    $newClasses = [$className];
-                    unset($this->foundClasses[$i]);
-
-                    break;
-                }
-            }
-        }
-
-        foreach ($newClasses as $className) {
+        foreach ($foundClasses as $className) {
             try {
                 $class = new ReflectionClass($className);
                 // @codeCoverageIgnoreStart
