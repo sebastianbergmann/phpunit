@@ -18,12 +18,13 @@ final class FooTest extends TestCase
      */
     public function testFoo($is): void
     {
-        $is = $is === is_subclass_of(\DiscoveringClasses\Testsuite2\BarTest::class, TestCase::class);
         $this->assertTrue($is);
     }
 
     public function dataProvider()
     {
-        return [[true]];
+        return [
+            [is_subclass_of(\DiscoveringClasses\Testsuite2\BarTest::class, TestCase::class)],
+        ];
     }
 }

@@ -16,5 +16,8 @@ final class BazTest extends TestCase
     public function testBaz(): void
     {
         $this->assertTrue(true);
+        $this->assertTrue(true);
+        $this->assertTrue(true);
+        $this->assertTrue(true);
     }
 }

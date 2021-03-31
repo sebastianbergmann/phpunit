@@ -16,5 +16,6 @@ final class BarTest extends TestCase
     public function testBar(): void
     {
         $this->assertTrue(true);
+        $this->assertTrue(true);
     }
 }
