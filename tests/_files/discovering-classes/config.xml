@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<phpunit bootstrap="autoload.php">
+    <testsuites>
+        <testsuite name="Testsuite1">
+            <directory>Testsuite1</directory>
+        </testsuite>
+        <testsuite name="Testsuite2">
+            <directory>Testsuite2</directory>
+        </testsuite>
+    </testsuites>
+</phpunit>

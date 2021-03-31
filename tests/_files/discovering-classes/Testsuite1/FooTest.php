@@ -1,0 +1,29 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace DiscoveringClasses\Testsuite1;
+
+use PHPUnit\Framework\TestCase;
+
+final class FooTest extends TestCase
+{
+    /**
+     * @dataProvider dataProvider
+     */
+    public function testFoo($is): void
+    {
+        $is = $is === is_subclass_of(\DiscoveringClasses\Testsuite2\BarTest::class, TestCase::class);
+        $this->assertTrue($is);
+    }
+
+    public function dataProvider()
+    {
+        return [[true]];
+    }
+}
