@@ -116,20 +116,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected $backupGlobalsExcludeList = [];
 
-    /**
-     * @var bool
-     */
-    protected $backupStaticAttributes;
+    protected ?bool $backupStaticAttributes;
 
     /**
      * @var array<string,array<int,string>>
      */
     protected $backupStaticAttributesExcludeList = [];
 
-    /**
-     * @var bool
-     */
-    protected $runTestInSeparateProcess;
+    protected ?bool $runTestInSeparateProcess;
 
     /**
      * @var bool
