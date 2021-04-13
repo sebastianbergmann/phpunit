@@ -712,6 +712,29 @@ XML;
         $this->assertFileIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
+    public function testAssertFileNotEqualsCanonicalizing(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+
+        try {
+            $this->assertFileNotEqualsCanonicalizing(__FILE__, __DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
+        } catch (AssertionFailedError $e) {
+        }
+
+        $this->expectException(AssertionFailedError::class);
+
+        try {
+            $this->assertFileNotEqualsCanonicalizing(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting', __FILE__);
+        } catch (AssertionFailedError $e) {
+        }
+
+        $this->assertFileNotEqualsCanonicalizing(TEST_FILES_PATH . 'foo.xml', TEST_FILES_PATH . 'bar.xml');
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileNotEqualsCanonicalizing(__FILE__, __FILE__);
+    }
+
     public function testAssertFinite(): void
     {
         $this->assertFinite(1);
