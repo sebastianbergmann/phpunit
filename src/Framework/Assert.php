@@ -625,6 +625,21 @@ abstract class Assert
     }
 
     /**
+     * Asserts that the contents of one file is equal to the string.
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     */
+    public static function assertFileEqualsString(string $expectedString, string $actualFile, string $message = ''): void
+    {
+        static::assertFileExists($actualFile, $message);
+
+        $constraint = new IsEqual($expectedString);
+
+        static::assertThat(file_get_contents($actualFile), $constraint, $message);
+    }
+
+    /**
      * Asserts that the contents of a string is equal
      * to the contents of a file.
      *

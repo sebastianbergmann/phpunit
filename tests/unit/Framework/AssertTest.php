@@ -1075,6 +1075,21 @@ XML;
         );
     }
 
+    public function testAssertFileEqualsString(): void
+    {
+        $this->assertFileEqualsString(
+            file_get_contents(TEST_FILES_PATH . 'foo.xml'),
+            TEST_FILES_PATH . 'foo.xml'
+        );
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertFileEqualsString(
+            file_get_contents(TEST_FILES_PATH . 'bar.xml'),
+            TEST_FILES_PATH . 'foo.xml'
+        );
+    }
+
     public function testAssertStringEqualsFile(): void
     {
         $this->assertStringEqualsFile(

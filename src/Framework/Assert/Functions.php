@@ -615,6 +615,23 @@ if (!function_exists('PHPUnit\Framework\assertFileNotEqualsIgnoringCase')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertFileEqualsString')) {
+    /**
+     * Asserts that the contents of one file is equal to the string.
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertFileEqualsString
+     */
+    function assertFileEqualsString(string $expectedString, string $actualFile, string $message = ''): void
+    {
+        Assert::assertFileEqualsString(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertStringEqualsFile')) {
     /**
      * Asserts that the contents of a string is equal
