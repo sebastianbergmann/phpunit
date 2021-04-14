@@ -138,8 +138,8 @@ final class XmlResultPrinter extends Printer implements TestListener
     /**
      * A test ended.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws \PHPUnit\Framework\Exception
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function endTest(Test $test, float $time): void
     {

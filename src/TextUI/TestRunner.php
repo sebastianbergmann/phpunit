@@ -115,6 +115,7 @@ final class TestRunner
     /**
      * @throws \PHPUnit\Runner\Exception
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws \PHPUnit\Util\Exception
      * @throws Exception
      */
     public function run(TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
