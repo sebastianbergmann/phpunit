@@ -54,7 +54,7 @@ final class XmlResultPrinter extends Printer implements TestListener
     /**
      * @param resource|string $out
      *
-     * @throws Exception
+     * @throws \PHPUnit\Util\Exception
      */
     public function __construct($out = null)
     {
@@ -149,6 +149,7 @@ final class XmlResultPrinter extends Printer implements TestListener
      * A test ended.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws \PHPUnit\Framework\Exception
      */
     public function endTest(Test $test, float $time): void
     {
