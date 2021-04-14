@@ -50,6 +50,8 @@ final class Xml
 
     /**
      * "Convert" a DOMElement object into a PHP variable.
+     *
+     * @throws \PHPUnit\Util\Exception
      */
     public static function xmlToVariable(DOMElement $element)
     {
@@ -72,7 +74,7 @@ final class Xml
                     $value = self::xmlToVariable($item);
 
                     if ($entry->hasAttribute('key')) {
-                        $variable[(string) $entry->getAttribute('key')] = $value;
+                        $variable[$entry->getAttribute('key')] = $value;
                     } else {
                         $variable[] = $value;
                     }
