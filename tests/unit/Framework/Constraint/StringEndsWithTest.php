@@ -24,6 +24,13 @@ final class StringEndsWithTest extends ConstraintTestCase
         $this->assertTrue($constraint->evaluate('foosuffix', '', true));
     }
 
+    public function testConstraintStringEndsWithEmptyValueAndReturnResult(): void
+    {
+        $constraint = new StringEndsWith('');
+
+        $this->assertTrue($constraint->evaluate('foo', '', true));
+    }
+
     public function testConstraintStringEndsWithNotCorrectValueAndReturnResult(): void
     {
         $constraint = new StringEndsWith('suffix');

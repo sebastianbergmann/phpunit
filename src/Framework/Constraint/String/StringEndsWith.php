@@ -43,6 +43,10 @@ final class StringEndsWith extends Constraint
      */
     protected function matches($other): bool
     {
+        if ($this->suffix === '') {
+            return true;
+        }
+
         return substr($other, 0 - strlen($this->suffix)) === $this->suffix;
     }
 }
