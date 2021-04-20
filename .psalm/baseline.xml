@@ -927,8 +927,9 @@
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
     </MissingThrowsDocblock>
-    <PossiblyNullPropertyAssignmentValue occurrences="3">
+    <PossiblyNullPropertyAssignmentValue occurrences="4">
       <code>$beStrictAboutChangesToGlobalState</code>
+      <code>null</code>
       <code>null</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
@@ -956,7 +957,9 @@
     <RedundantCondition occurrences="1">
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
-    <RedundantConditionGivenDocblockType occurrences="5">
+    <RedundantConditionGivenDocblockType occurrences="7">
+      <code>$this-&gt;outputExpectedRegex !== null</code>
+      <code>$this-&gt;outputExpectedString !== null</code>
       <code>$this-&gt;prophet !== null</code>
       <code>is_string($_originalClassName)</code>
       <code>is_string($this-&gt;dataName)</code>
@@ -985,26 +988,49 @@
     <DocblockTypeContradiction occurrences="1">
       <code>$this-&gt;topTestSuite === null</code>
     </DocblockTypeContradiction>
+    <InvalidCatch occurrences="1"/>
     <MissingConstructor occurrences="2">
       <code>$codeCoverage</code>
       <code>$topTestSuite</code>
     </MissingConstructor>
-    <PossiblyUndefinedVariable occurrences="2">
+    <MissingThrowsDocblock occurrences="3">
+      <code>stop</code>
+    </MissingThrowsDocblock>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$linesToBeCovered</code>
+    </PossiblyInvalidArgument>
+    <PossiblyUndefinedVariable occurrences="6">
       <code>$_timeout</code>
+      <code>$_timeout</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
       <code>$isAnyCoverageRequired</code>
     </PossiblyUndefinedVariable>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
     </RedundantConditionGivenDocblockType>
-    <UndefinedClass occurrences="2">
+    <UndefinedClass occurrences="3">
+      <code>$e</code>
       <code>Invoker</code>
       <code>TimeoutException</code>
     </UndefinedClass>
-    <UndefinedInterfaceMethod occurrences="4">
+    <UndefinedInterfaceMethod occurrences="15">
+      <code>addToAssertionCount</code>
+      <code>addToAssertionCount</code>
+      <code>doesNotPerformAssertions</code>
+      <code>doesNotPerformAssertions</code>
+      <code>getActualOutput</code>
+      <code>getName</code>
+      <code>getNumAssertions</code>
+      <code>getNumAssertions</code>
+      <code>getNumAssertions</code>
+      <code>getNumAssertions</code>
       <code>getSize</code>
       <code>getSize</code>
       <code>getSize</code>
+      <code>hasOutput</code>
       <code>runBare</code>
     </UndefinedInterfaceMethod>
   </file>
@@ -1202,7 +1228,7 @@
     <DeprecatedClass occurrences="1">
       <code>Printer&amp;TestListener</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="8">
+    <DeprecatedMethod occurrences="9">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
@@ -1211,16 +1237,28 @@
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
+      <code>flushListeners</code>
     </DeprecatedMethod>
     <DocblockTypeContradiction occurrences="2">
       <code>$this-&gt;loader === null</code>
       <code>$this-&gt;printer === null</code>
     </DocblockTypeContradiction>
-    <InvalidCatch occurrences="1"/>
-    <MissingThrowsDocblock occurrences="4">
+    <InvalidArgument occurrences="5">
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+      <code>$e</code>
+    </InvalidArgument>
+    <InvalidCatch occurrences="6"/>
+    <MissingThrowsDocblock occurrences="8">
       <code>addFilter</code>
       <code>addFilter</code>
       <code>addFilter</code>
+      <code>printResult</code>
+      <code>process</code>
+      <code>process</code>
+      <code>process</code>
       <code>reorderTestsInSuite</code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue occurrences="1">
@@ -1486,8 +1524,7 @@
     <RedundantCondition occurrences="1">
       <code>$previous-&gt;getPrevious()</code>
     </RedundantCondition>
-    <UndefinedInterfaceMethod occurrences="7">
-      <code>getName</code>
+    <UndefinedInterfaceMethod occurrences="6">
       <code>getName</code>
       <code>getName</code>
       <code>getName</code>
