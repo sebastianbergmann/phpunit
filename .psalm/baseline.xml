@@ -672,18 +672,16 @@
     <DeprecatedMethod occurrences="1">
       <code>setMethods</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="6">
+    <DocblockTypeContradiction occurrences="5">
       <code>$this-&gt;backupStaticAttributes === null</code>
       <code>$this-&gt;mockObjectGenerator === null</code>
       <code>$this-&gt;prophet === null</code>
       <code>$this-&gt;runClassInSeparateProcess === null</code>
       <code>$this-&gt;runTestInSeparateProcess === null</code>
-      <code>$this-&gt;snapshot instanceof Snapshot</code>
     </DocblockTypeContradiction>
     <InvalidArgument occurrences="1">
       <code>$header</code>
     </InvalidArgument>
-    <InvalidCatch occurrences="1"/>
     <InvalidReturnStatement occurrences="2">
       <code>$mockObject</code>
       <code>get_class($mock)</code>
@@ -724,17 +722,14 @@
       <code>null</code>
       <code>null</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PropertyNotSetInConstructor occurrences="10">
+    <PropertyNotSetInConstructor occurrences="7">
       <code>$backupStaticAttributes</code>
       <code>$mockObjectGenerator</code>
       <code>$outputBufferingLevel</code>
-      <code>$outputExpectedRegex</code>
-      <code>$outputExpectedString</code>
       <code>$prophet</code>
       <code>$result</code>
       <code>$runClassInSeparateProcess</code>
       <code>$runTestInSeparateProcess</code>
-      <code>$snapshot</code>
     </PropertyNotSetInConstructor>
     <RawObjectIteration occurrences="1">
       <code>$methodProphecies</code>
@@ -745,10 +740,8 @@
     <RedundantCondition occurrences="1">
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
-    <RedundantConditionGivenDocblockType occurrences="3">
+    <RedundantConditionGivenDocblockType occurrences="1">
       <code>$this-&gt;prophet !== null</code>
-      <code>is_string($this-&gt;outputExpectedRegex)</code>
-      <code>is_string($this-&gt;outputExpectedString)</code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/TestResult.php">
@@ -1384,8 +1377,7 @@
     <RedundantCondition occurrences="1">
       <code>$previous-&gt;getPrevious()</code>
     </RedundantCondition>
-    <UndefinedInterfaceMethod occurrences="7">
-      <code>getName</code>
+    <UndefinedInterfaceMethod occurrences="6">
       <code>getName</code>
       <code>getName</code>
       <code>getName</code>
