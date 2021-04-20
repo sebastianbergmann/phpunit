@@ -1305,8 +1305,7 @@
     <RedundantCondition occurrences="1">
       <code>$previous-&gt;getPrevious()</code>
     </RedundantCondition>
-    <UndefinedInterfaceMethod occurrences="7">
-      <code>getName</code>
+    <UndefinedInterfaceMethod occurrences="6">
       <code>getName</code>
       <code>getName</code>
       <code>getName</code>
