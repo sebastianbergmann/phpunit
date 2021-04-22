@@ -34,9 +34,9 @@ final class TestSuiteMapper
     public function map(TestSuiteCollection $configuration, string $filter, string $excludedTestSuites): TestSuiteObject
     {
         try {
-            $filterAsArray = $filter ? explode(',', $filter) : [];
+            $filterAsArray         = $filter ? explode(',', $filter) : [];
             $excludedFilterAsArray = $excludedTestSuites ? explode(',', $excludedTestSuites) : [];
-            $result        = new TestSuiteObject;
+            $result                = new TestSuiteObject;
 
             foreach ($configuration as $testSuiteConfiguration) {
                 if (!empty($filterAsArray) && !in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
