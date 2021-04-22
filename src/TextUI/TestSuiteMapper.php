@@ -31,14 +31,19 @@ final class TestSuiteMapper
      * @throws TestDirectoryNotFoundException
      * @throws TestFileNotFoundException
      */
-    public function map(TestSuiteCollection $configuration, string $filter): TestSuiteObject
+    public function map(TestSuiteCollection $configuration, string $filter, string $excludedTestSuites): TestSuiteObject
     {
         try {
             $filterAsArray = $filter ? explode(',', $filter) : [];
+            $excludedFilterAsArray = $excludedTestSuites ? explode(',', $excludedTestSuites) : [];
             $result        = new TestSuiteObject;
 
             foreach ($configuration as $testSuiteConfiguration) {
                 if (!empty($filterAsArray) && !in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
+                    continue;
+                }
+
+                if (!empty($excludedFilterAsArray) && in_array($testSuiteConfiguration->name(), $excludedFilterAsArray, true)) {
                     continue;
                 }
 

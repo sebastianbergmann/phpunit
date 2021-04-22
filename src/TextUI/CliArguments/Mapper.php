@@ -123,6 +123,10 @@ final class Mapper
             $result['testsuite'] = $arguments->testSuite();
         }
 
+        if ($arguments->hasExcludedTestSuite()) {
+            $result['excludedTestSuite'] = $arguments->excludedTestSuite();
+        }
+
         if ($arguments->hasGroups()) {
             $result['groups'] = $arguments->groups();
         }

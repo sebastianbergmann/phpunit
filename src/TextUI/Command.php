@@ -362,7 +362,8 @@ class Command
                 try {
                     $this->arguments['test'] = (new TestSuiteMapper)->map(
                         $this->arguments['configurationObject']->testSuite(),
-                        $this->arguments['testsuite'] ?? ''
+                        $this->arguments['testsuite'] ?? '',
+                        $this->arguments['excludedTestSuite'] ?? ''
                     );
                 } catch (Exception $e) {
                     $this->printVersionString();

@@ -115,6 +115,7 @@ final class Builder
         'testdox-xml=',
         'test-suffix=',
         'testsuite=',
+        'exclude-testsuite=',
         'verbose',
         'version',
     ];
@@ -222,6 +223,7 @@ final class Builder
         $testdoxXmlFile                             = null;
         $testSuffixes                               = null;
         $testSuite                                  = null;
+        $excludeTestSuite                           = null;
         $unrecognizedOptions                        = [];
         $unrecognizedOrderBy                        = null;
         $useDefaultConfiguration                    = null;
@@ -366,6 +368,11 @@ final class Builder
 
                 case '--testsuite':
                     $testSuite = $option[1];
+
+                    break;
+
+                case '--exclude-testsuite':
+                    $excludeTestSuite = $option[1];
 
                     break;
 
@@ -865,6 +872,7 @@ final class Builder
             $testdoxXmlFile,
             $testSuffixes,
             $testSuite,
+            $excludeTestSuite,
             $unrecognizedOptions,
             $unrecognizedOrderBy,
             $useDefaultConfiguration,
