@@ -9,6 +9,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#3871](https://github.com/sebastianbergmann/phpunit/issues/3871): Declare return types for `InvocationStubber` methods
 * [#4599](https://github.com/sebastianbergmann/phpunit/issues/4599): Unify cache configuration
 * [#4603](https://github.com/sebastianbergmann/phpunit/issues/4603): Use "property" instead of "attribute" for configuring the backup of static fields
+* [#4656](https://github.com/sebastianbergmann/phpunit/issues/4656): Prevent doubling of `__destruct()`
 * PHPUnit no longer invokes a static method named `suite` on a class that is declared in a file that is passed as an argument to the CLI test runner
 * PHPUnit no longer promotes variables that are global in the bootstrap script's scope to global variables in the test runner's scope (use `$GLOBALS['variable'] = 'value'` instead of `$variable = 'value'` in your bootstrap script)
 * The `status` attribute of `<test>` elements in the TestDox XML logfile now contains a textual representation instead of a number (`"success"` instead of `"0"`, for instance)

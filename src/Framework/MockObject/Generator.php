@@ -948,6 +948,10 @@ final class Generator
             return false;
         }
 
+        if ($method->isDestructor()) {
+            return false;
+        }
+
         if ($method->isFinal()) {
             return false;
         }
