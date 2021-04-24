@@ -504,7 +504,7 @@ final class Generator
         $methods = [];
 
         foreach ($class->getMethods() as $method) {
-            if (($method->isPublic() || $method->isAbstract()) && $this->canMockMethod($method)) {
+            if (($method->isPublic() || $method->isAbstract()) && $this->canMethodBeDoubled($method)) {
                 $methods[] = MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments);
             }
         }
@@ -730,7 +730,7 @@ final class Generator
                         }
                         // @codeCoverageIgnoreEnd
 
-                        if (!$this->canMockMethod($classMethod)) {
+                        if (!$this->canMethodBeDoubled($classMethod)) {
                             continue;
                         }
                     }
@@ -810,7 +810,7 @@ final class Generator
                     }
                     // @codeCoverageIgnoreEnd
 
-                    if ($this->canMockMethod($method)) {
+                    if ($this->canMethodBeDoubled($method)) {
                         $mockMethods->addMethods(
                             MockMethod::fromReflection($method, $callOriginalMethods, $cloneArguments)
                         );
@@ -942,7 +942,7 @@ final class Generator
         return $buffer;
     }
 
-    private function canMockMethod(ReflectionMethod $method): bool
+    private function canMethodBeDoubled(ReflectionMethod $method): bool
     {
         return !($this->isConstructor($method) || $method->isFinal() || $method->isPrivate() || $this->isMethodNameExcluded($method->getName()));
     }
