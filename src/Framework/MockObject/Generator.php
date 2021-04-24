@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use const PHP_MAJOR_VERSION;
 use const PREG_OFFSET_CAPTURE;
@@ -48,7 +47,6 @@ use IteratorAggregate;
 use PHPUnit\Framework\InvalidArgumentException;
 use ReflectionClass;
 use ReflectionMethod;
-use SebastianBergmann\Template\Exception as TemplateException;
 use SebastianBergmann\Template\Template;
 use SoapClient;
 use SoapFault;
@@ -60,6 +58,8 @@ use Traversable;
  */
 final class Generator
 {
+    use TemplateLoader;
+
     /**
      * @var array
      */
@@ -77,11 +77,6 @@ final class Generator
     ];
 
     private static array $cache = [];
-
-    /**
-     * @var Template[]
-     */
-    private static array $templates = [];
 
     /**
      * Returns a mock object for the specified class.
@@ -263,7 +258,7 @@ final class Generator
             'Trait_'
         );
 
-        $classTemplate = $this->getTemplate('trait_class.tpl');
+        $classTemplate = $this->loadTemplate('trait_class.tpl');
 
         $classTemplate->setVar(
             [
@@ -300,7 +295,7 @@ final class Generator
             'Trait_'
         );
 
-        $classTemplate = $this->getTemplate('trait_class.tpl');
+        $classTemplate = $this->loadTemplate('trait_class.tpl');
 
         $classTemplate->setVar(
             [
@@ -390,7 +385,7 @@ final class Generator
 
         sort($_methods);
 
-        $methodTemplate = $this->getTemplate('wsdl_method.tpl');
+        $methodTemplate = $this->loadTemplate('wsdl_method.tpl');
         $methodsBuffer  = '';
 
         foreach ($_methods as $method) {
@@ -435,7 +430,7 @@ final class Generator
 
         $optionsBuffer .= ']';
 
-        $classTemplate = $this->getTemplate('wsdl_class.tpl');
+        $classTemplate = $this->loadTemplate('wsdl_class.tpl');
         $namespace     = '';
 
         if (strpos($className, '\\') !== false) {
@@ -651,7 +646,7 @@ final class Generator
      */
     private function generateMock(string $type, ?array $explicitMethods, string $mockClassName, bool $callOriginalClone, bool $callAutoload, bool $cloneArguments, bool $callOriginalMethods): MockClass
     {
-        $classTemplate        = $this->getTemplate('mocked_class.tpl');
+        $classTemplate        = $this->loadTemplate('mocked_class.tpl');
         $additionalInterfaces = [];
         $mockedCloneMethod    = false;
         $unmockedCloneMethod  = false;
@@ -955,28 +950,6 @@ final class Generator
     private function isMethodNameExcluded(string $name): bool
     {
         return isset(self::EXCLUDED_METHOD_NAMES[$name]);
-    }
-
-    /**
-     * @throws RuntimeException
-     */
-    private function getTemplate(string $template): Template
-    {
-        $filename = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR . $template;
-
-        if (!isset(self::$templates[$filename])) {
-            try {
-                self::$templates[$filename] = new Template($filename);
-            } catch (TemplateException $e) {
-                throw new RuntimeException(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-        }
-
-        return self::$templates[$filename];
     }
 
     /**
