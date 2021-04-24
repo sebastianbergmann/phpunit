@@ -944,12 +944,19 @@ final class Generator
 
     private function canMethodBeDoubled(ReflectionMethod $method): bool
     {
-        return !($this->isConstructor($method) || $method->isFinal() || $method->isPrivate() || $this->isMethodNameExcluded($method->getName()));
-    }
+        if ($this->isConstructor($method)) {
+            return false;
+        }
 
-    private function isMethodNameExcluded(string $name): bool
-    {
-        return isset(self::EXCLUDED_METHOD_NAMES[$name]);
+        if ($method->isFinal()) {
+            return false;
+        }
+
+        if ($method->isPrivate()) {
+            return false;
+        }
+
+        return !$this->isMethodNameExcluded($method->getName());
     }
 
     /**
@@ -970,5 +977,10 @@ final class Generator
         $className = strtolower($method->getDeclaringClass()->getName());
 
         return $methodName === $className;
+    }
+
+    private function isMethodNameExcluded(string $name): bool
+    {
+        return isset(self::EXCLUDED_METHOD_NAMES[$name]);
     }
 }
