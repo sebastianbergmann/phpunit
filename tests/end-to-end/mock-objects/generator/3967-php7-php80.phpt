@@ -2,8 +2,8 @@
 https://github.com/sebastianbergmann/phpunit/issues/3967
 --SKIPIF--
 <?php declare(strict_types=1);
-if ((new ReflectionMethod(Exception::class, '__clone'))->isFinal()) {
-    print 'skip: PHP >= 8.1 required';
+if (!(new ReflectionMethod(Exception::class, '__clone'))->isFinal()) {
+    print 'skip: PHP < 8.1 required';
 }
 --FILE--
 <?php declare(strict_types=1);
@@ -36,7 +36,6 @@ class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\Moc
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\UnmockedCloneMethod;
 
     public function foo(): string
     {
