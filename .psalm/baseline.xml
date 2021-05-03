@@ -1075,11 +1075,6 @@
       <code>$backupGlobals</code>
     </NonInvariantDocblockPropertyType>
   </file>
-  <file src="src/Runner/DefaultTestResultCache.php">
-    <MissingClosureReturnType occurrences="1">
-      <code>static function () use ($cacheData) {</code>
-    </MissingClosureReturnType>
-  </file>
   <file src="src/Runner/Filter/Factory.php">
     <MissingParamType occurrences="1">
       <code>$args</code>
