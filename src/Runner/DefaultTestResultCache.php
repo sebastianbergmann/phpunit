@@ -93,6 +93,36 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
         $this->cacheFilename = $filepath ?? $_ENV['PHPUNIT_RESULT_CACHE'] ?? self::DEFAULT_RESULT_CACHE_FILENAME;
     }
 
+    public function __serialize(): array
+    {
+        return [
+            'defects' => $this->defects,
+            'times'   => $this->times,
+        ];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        if (isset($data['times'])) {
+            foreach ($data['times'] as $testName => $testTime) {
+                assert(is_string($testName));
+                assert(is_float($testTime));
+                $this->times[$testName] = $testTime;
+            }
+        }
+
+        if (isset($data['defects'])) {
+            foreach ($data['defects'] as $testName => $testResult) {
+                assert(is_string($testName));
+                assert(is_int($testResult));
+
+                if (in_array($testResult, self::ALLOWED_CACHE_TEST_STATUSES, true)) {
+                    $this->defects[$testName] = $testResult;
+                }
+            }
+        }
+    }
+
     /**
      * @throws Exception
      */
@@ -198,10 +228,7 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
 
     public function serialize(): string
     {
-        return serialize([
-            'defects' => $this->defects,
-            'times'   => $this->times,
-        ]);
+        return serialize($this->__serialize());
     }
 
     /**
@@ -209,25 +236,6 @@ final class DefaultTestResultCache implements Serializable, TestResultCache
      */
     public function unserialize($serialized): void
     {
-        $data = unserialize($serialized);
-
-        if (isset($data['times'])) {
-            foreach ($data['times'] as $testName => $testTime) {
-                assert(is_string($testName));
-                assert(is_float($testTime));
-                $this->times[$testName] = $testTime;
-            }
-        }
-
-        if (isset($data['defects'])) {
-            foreach ($data['defects'] as $testName => $testResult) {
-                assert(is_string($testName));
-                assert(is_int($testResult));
-
-                if (in_array($testResult, self::ALLOWED_CACHE_TEST_STATUSES, true)) {
-                    $this->defects[$testName] = $testResult;
-                }
-            }
-        }
+        $this->__unserialize(unserialize($serialized));
     }
 }

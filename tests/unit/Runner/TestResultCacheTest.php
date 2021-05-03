@@ -43,12 +43,16 @@ final class TestResultCacheTest extends TestCase
 
     public function testShouldNotSerializePassedTestsAsDefectButTimeIsStored(): void
     {
+        $expectedSerializedData = PHP_VERSION_ID >= 70400
+            ? 'O:37:"PHPUnit\Runner\DefaultTestResultCache":2:{s:7:"defects";a:0:{}s:5:"times";a:1:{s:7:"testOne";d:123;}}'
+            : 'C:37:"PHPUnit\Runner\DefaultTestResultCache":64:{a:2:{s:7:"defects";a:0:{}s:5:"times";a:1:{s:7:"testOne";d:123;}}}';
+
         $cache = new DefaultTestResultCache;
         $cache->setState('testOne', BaseTestRunner::STATUS_PASSED);
         $cache->setTime('testOne', 123);
 
         $data = \serialize($cache);
-        $this->assertSame('C:37:"PHPUnit\Runner\DefaultTestResultCache":64:{a:2:{s:7:"defects";a:0:{}s:5:"times";a:1:{s:7:"testOne";d:123;}}}', $data);
+        $this->assertSame($expectedSerializedData, $data);
     }
 
     public function testCanPersistCacheToFile(): void
@@ -89,8 +93,18 @@ final class TestResultCacheTest extends TestCase
         $this->assertTrue($this->isSerializedEmptyCache(\serialize($cache)));
     }
 
+    public function testUnserializeFromLegacyFormat(): void
+    {
+        $cache = \unserialize('C:37:"PHPUnit\Runner\DefaultTestResultCache":44:{a:2:{s:7:"defects";a:0:{}s:5:"times";a:0:{}}}');
+
+        $this->assertInstanceOf(DefaultTestResultCache::class, $cache);
+        $this->assertTrue($this->isSerializedEmptyCache(\serialize($cache)));
+    }
+
     public function isSerializedEmptyCache(string $data): bool
     {
-        return $data === 'C:37:"PHPUnit\Runner\DefaultTestResultCache":44:{a:2:{s:7:"defects";a:0:{}s:5:"times";a:0:{}}}';
+        return PHP_VERSION_ID >= 70400
+            ? $data === 'O:37:"PHPUnit\Runner\DefaultTestResultCache":2:{s:7:"defects";a:0:{}s:5:"times";a:0:{}}'
+            : $data === 'C:37:"PHPUnit\Runner\DefaultTestResultCache":44:{a:2:{s:7:"defects";a:0:{}s:5:"times";a:0:{}}}';
     }
 }

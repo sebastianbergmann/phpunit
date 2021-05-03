@@ -1,5 +1,5 @@
 --SKIPIF--
-<?php if (PHP_VERSION_ID < 70400) die('skip The legacy serialization format is tested in cache-result-legacy.phpt.'); ?>
+<?php if (PHP_VERSION_ID >= 70400) die('skip The new serialization format is tested in cache-result.phpt.'); ?>
 --TEST--
 phpunit --order-by=no-depends,reverse --cache-result --cache-result-file ./tests/_files/MultiDependencyTest.php
 --FILE--
@@ -31,4 +31,4 @@ Time: %s, Memory: %s
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 5, Assertions: 3, Skipped: 2.
-O:37:"PHPUnit\Runner\DefaultTestResultCache":%d:{s:7:"defects";a:2:{s:29:"MultiDependencyTest::testFour";i:1;s:30:"MultiDependencyTest::testThree";i:1;}s:5:"times";a:5:{s:29:"MultiDependencyTest::testFive";d:%f;s:29:"MultiDependencyTest::testFour";d:%f;s:30:"MultiDependencyTest::testThree";d:%f;s:28:"MultiDependencyTest::testTwo";d:%f;s:28:"MultiDependencyTest::testOne";d:%f;}}
+C:37:"PHPUnit\Runner\DefaultTestResultCache":%d:{a:2:{s:7:"defects";a:2:{s:29:"MultiDependencyTest::testFour";i:1;s:30:"MultiDependencyTest::testThree";i:1;}s:5:"times";a:5:{s:29:"MultiDependencyTest::testFive";d:%f;s:29:"MultiDependencyTest::testFour";d:%f;s:30:"MultiDependencyTest::testThree";d:%f;s:28:"MultiDependencyTest::testTwo";d:%f;s:28:"MultiDependencyTest::testOne";d:%f;}}}
