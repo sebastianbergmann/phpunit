@@ -818,11 +818,6 @@
       <code>stop</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/Runner/DefaultTestResultCache.php">
-    <MissingClosureReturnType occurrences="1">
-      <code>static function () use ($cacheData) {</code>
-    </MissingClosureReturnType>
-  </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
     <MissingReturnType occurrences="1">
       <code>doAccept</code>

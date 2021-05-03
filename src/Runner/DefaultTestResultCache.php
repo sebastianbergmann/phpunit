@@ -126,6 +126,9 @@ final class DefaultTestResultCache implements TestResultCache
         $this->times   = $data['times'];
     }
 
+    /**
+     * @throws Exception
+     */
     public function persist(): void
     {
         if (!Filesystem::createDirectory(dirname($this->cacheFilename))) {
