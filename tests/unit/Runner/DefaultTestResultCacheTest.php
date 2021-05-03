@@ -9,9 +9,13 @@
  */
 namespace PHPUnit\Runner;
 
+use function sys_get_temp_dir;
+use function tempnam;
+use function uniqid;
+use function unlink;
+use MultiDependencyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
-use ReflectionClass;
 
 /**
  * @covers \PHPUnit\Runner\DefaultTestResultCache
@@ -19,47 +23,49 @@ use ReflectionClass;
  */
 final class DefaultTestResultCacheTest extends TestCase
 {
-    private DefaultTestResultCache $subject;
-
-    protected function setUp(): void
-    {
-        $this->subject = new DefaultTestResultCache;
-    }
-
     public function testGetTimeForNonExistentTestNameReturnsFloatZero(): void
     {
-        $this->assertSame(0.0, $this->subject->time('doesNotExist'));
+        $this->assertSame(0.0, (new DefaultTestResultCache)->time('doesNotExist'));
     }
 
-    public function testOldResultCacheFormatDoesNotTriggerError(): void
+    public function testReadsCacheFromProvidedFilename(): void
     {
-        // PHPUnit before version 10 used integer constants instead of TestStatus.
-        // Note: this is a quick and cheap test for this uncommon edge case, without having
-        // to set up a full end-to-end test with an old cache file
-        $cache          = new DefaultTestResultCache;
-        $reflectedCache = new ReflectionClass($cache);
+        $cacheFile = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
+        $cache     = new DefaultTestResultCache($cacheFile);
+        $cache->load();
 
-        // Set a test status in the old integer and new value-object format
-        $defects = $reflectedCache->getProperty('defects');
-        $defects->setAccessible(true);
-        $defects->setValue($cache, [
-            'newStatus'    => TestStatus::skipped(),
-            'legacyStatus' => 1,
-        ]);
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testOne')->isUnknown());
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isSkipped());
+    }
 
-        // Simulate a save-load cycle
-        $loadedCache = unserialize(serialize($cache));
+    public function testDoesClearCacheBeforeLoad(): void
+    {
+        $cacheFile = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
+        $cache     = new DefaultTestResultCache($cacheFile);
+        $cache->setStatus('someTest', TestStatus::failure());
 
-        $this->assertTrue($loadedCache instanceof DefaultTestResultCache);
-        $this->assertEquals(TestStatus::skipped(), $loadedCache->status('newStatus'));
-        $this->assertEquals(TestStatus::unknown(), $loadedCache->status('legacyStatus'));
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isUnknown());
 
-        // Test the state duplication internals
-        $copiedCache = new DefaultTestResultCache;
-        /* @var DefaultTestResultCache $loadedCache */
-        $cache->copyStateToCache($copiedCache);
+        $cache->load();
 
-        $this->assertEquals(TestStatus::skipped(), $copiedCache->status('newStatus'));
-        $this->assertEquals(TestStatus::unknown(), $copiedCache->status('legacyStatus'));
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::someTest')->isUnknown());
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isSkipped());
+    }
+
+    public function testCanPersistCacheToFile(): void
+    {
+        $cacheFile = tempnam(sys_get_temp_dir(), 'phpunit_');
+        $cache     = new DefaultTestResultCache($cacheFile);
+        $testName  = 'test' . uniqid('', true);
+
+        $cache->setStatus($testName, TestStatus::skipped());
+        $cache->persist();
+
+        $cache = new DefaultTestResultCache($cacheFile);
+        $cache->load();
+
+        $this->assertTrue($cache->status($testName)->isSkipped());
+
+        unlink($cacheFile);
     }
 }
