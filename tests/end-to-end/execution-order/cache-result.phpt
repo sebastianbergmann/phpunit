@@ -26,7 +26,7 @@ Time: %s, Memory: %s
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 5, Assertions: 3, Skipped: 2.
-{"version":1,"defects":{"MultiDependencyTest::testFour":1,"MultiDependencyTest::testThree":1},"times":{"MultiDependencyTest::testFive":0.003,"MultiDependencyTest::testFour":0,"MultiDependencyTest::testThree":0,"MultiDependencyTest::testTwo":0,"MultiDependencyTest::testOne":0}}
+{"version":1,"defects":{"MultiDependencyTest::testFour":1,"MultiDependencyTest::testThree":1},"times":{"MultiDependencyTest::testFive":%f,"MultiDependencyTest::testFour":%f,"MultiDependencyTest::testThree":%f,"MultiDependencyTest::testTwo":%f,"MultiDependencyTest::testOne":%f}}
 --CLEAN--
 <?php declare(strict_types=1);
 unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__));
