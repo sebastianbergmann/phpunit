@@ -35,7 +35,7 @@ final class Generator
          verbose="true">
     <testsuites>
         <testsuite name="default">
-            <directory suffix="Test.php">{tests_directory}</directory>
+            <directory>{tests_directory}</directory>
         </testsuite>
     </testsuites>
 

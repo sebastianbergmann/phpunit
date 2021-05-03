@@ -37,7 +37,7 @@ final class XmlConfigurationGeneratorTest extends TestCase
          verbose="true">
     <testsuites>
         <testsuite name="default">
-            <directory suffix="Test.php">tests</directory>
+            <directory>tests</directory>
         </testsuite>
     </testsuites>
 
