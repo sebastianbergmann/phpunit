@@ -852,11 +852,6 @@
       <code>new StandardTestSuiteLoader</code>
     </DeprecatedClass>
   </file>
-  <file src="src/Runner/DefaultTestResultCache.php">
-    <MissingClosureReturnType occurrences="1">
-      <code>static function () use ($cacheData) {</code>
-    </MissingClosureReturnType>
-  </file>
   <file src="src/Runner/Extension/ExtensionHandler.php">
     <DeprecatedClass occurrences="1">
       <code>TestListener</code>
