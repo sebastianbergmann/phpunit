@@ -1,1 +1,1 @@
-C:37:"PHPUnit\Runner\DefaultTestResultCache":289:{a:2:{s:7:"defects";a:1:{s:29:"MultiDependencyTest::testFive";i:1;}s:5:"times";a:5:{s:28:"MultiDependencyTest::testOne";d:0;s:28:"MultiDependencyTest::testTwo";d:0;s:30:"MultiDependencyTest::testThree";d:0;s:29:"MultiDependencyTest::testFour";d:0;s:29:"MultiDependencyTest::testFive";d:0;}}}
+{"version":1,"defects":{"MultiDependencyTest::testFive":1},"times":{"MultiDependencyTest::testOne":0,"MultiDependencyTest::testTwo":0,"MultiDependencyTest::testThree":0,"MultiDependencyTest::testFour":0,"MultiDependencyTest::testFive":0}}

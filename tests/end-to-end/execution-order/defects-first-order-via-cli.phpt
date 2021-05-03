@@ -3,7 +3,7 @@ phpunit --order-by=defects ./tests/_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
 $tmpResultCache = \tempnam(sys_get_temp_dir(), __FILE__);
-\file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/_files/MultiDependencyTest_result_cache.txt'));
+\copy(__DIR__ . '/_files/MultiDependencyTest_result_cache.txt', $tmpResultCache);
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
