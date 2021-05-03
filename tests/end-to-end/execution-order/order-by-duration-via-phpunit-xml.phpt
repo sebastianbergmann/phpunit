@@ -4,7 +4,7 @@ phpunit --configuration=order-by-duration.phpunit.xml
 <?php declare(strict_types=1);
 $tmpResultCache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);
 
-file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/_files/TestWithDifferentDurations.phpunit.result.cache.txt'));
+\copy(__DIR__ . '/_files/TestWithDifferentDurations.phpunit.result.cache.txt', $tmpResultCache);
 
 $phpunitXmlConfig = __DIR__ . '/_files/order-by-duration.phpunit.xml';
 

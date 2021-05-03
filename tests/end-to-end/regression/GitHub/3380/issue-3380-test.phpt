@@ -4,7 +4,7 @@ https://github.com/sebastianbergmann/phpunit/issues/3380
 <?php declare(strict_types=1);
 $tmpResultCache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);
 
-file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/../../../../_files/DataproviderExecutionOrderTest_result_cache.txt'));
+\copy(__DIR__ . '/../../../../_files/DataproviderExecutionOrderTest_result_cache.txt', $tmpResultCache);
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';

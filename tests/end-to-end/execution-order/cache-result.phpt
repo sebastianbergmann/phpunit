@@ -26,7 +26,7 @@ Time: %s, Memory: %s
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 5, Assertions: 3, Skipped: 2.
-C:37:"PHPUnit\Runner\DefaultTestResultCache":%d:{a:2:{s:7:"defects";a:2:{s:29:"MultiDependencyTest::testFour";i:1;s:30:"MultiDependencyTest::testThree";i:1;}s:5:"times";a:5:{s:29:"MultiDependencyTest::testFive";d:%f;s:29:"MultiDependencyTest::testFour";d:%f;s:30:"MultiDependencyTest::testThree";d:%f;s:28:"MultiDependencyTest::testTwo";d:%f;s:28:"MultiDependencyTest::testOne";d:%f;}}}
+{"version":1,"defects":{"MultiDependencyTest::testFour":1,"MultiDependencyTest::testThree":1},"times":{"MultiDependencyTest::testFive":0.003,"MultiDependencyTest::testFour":0,"MultiDependencyTest::testThree":0,"MultiDependencyTest::testTwo":0,"MultiDependencyTest::testOne":0}}
 --CLEAN--
 <?php declare(strict_types=1);
 unlink(sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__));
