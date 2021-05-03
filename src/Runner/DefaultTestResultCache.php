@@ -12,6 +12,7 @@ namespace PHPUnit\Runner;
 use const DIRECTORY_SEPARATOR;
 use const LOCK_EX;
 use function assert;
+use function dirname;
 use function file_get_contents;
 use function file_put_contents;
 use function in_array;
@@ -20,6 +21,7 @@ use function is_dir;
 use function is_file;
 use function json_decode;
 use function json_encode;
+use PHPUnit\Util\Filesystem;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -128,6 +130,15 @@ final class DefaultTestResultCache implements TestResultCache
 
     public function persist(): void
     {
+        if (!Filesystem::createDirectory(dirname($this->cacheFilename))) {
+            throw new Exception(
+                sprintf(
+                    'Cannot create directory "%s" for result cache file',
+                    $this->cacheFilename
+                )
+            );
+        }
+
         file_put_contents(
             $this->cacheFilename,
             json_encode(
