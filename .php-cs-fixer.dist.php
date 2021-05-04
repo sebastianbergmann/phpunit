@@ -23,8 +23,8 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('ValueObjectWithEqualsMethodWithUnionReturnType.php')
     ->notName('ValueObjectWithEqualsMethodThatHasUnionParameterType.php');
 
-return PhpCsFixer\Config::create()
-    ->setFinder($finder)
+$config = new PhpCsFixer\Config;
+$config->setFinder($finder)
     ->setRiskyAllowed(true)
     ->setRules([
         'align_multiline_comment' => true,
@@ -45,7 +45,6 @@ return PhpCsFixer\Config::create()
                 'continue',
                 'declare',
                 'default',
-                'die',
                 'do',
                 'exit',
                 'for',
@@ -66,7 +65,13 @@ return PhpCsFixer\Config::create()
         ],
         'braces' => true,
         'cast_spaces' => true,
-        'class_attributes_separation' => ['elements' => ['const', 'method', 'property']],
+        'class_attributes_separation' => [
+            'elements' => [
+                'const' => 'one',
+                'method' => 'one',
+                'property' => 'one'
+            ]
+        ],
         'class_definition' => true,
         'clean_namespace' => true,
         'combine_consecutive_issets' => true,
@@ -280,7 +285,11 @@ return PhpCsFixer\Config::create()
         'ternary_operator_spaces' => true,
         'ternary_to_elvis_operator' => true,
         'ternary_to_null_coalescing' => true,
-        'trailing_comma_in_multiline_array' => true,
+        'trailing_comma_in_multiline' => [
+            'elements' => [
+                'arrays'
+            ]
+        ],
         'trim_array_spaces' => true,
         'unary_operator_spaces' => true,
         'visibility_required' => [
@@ -293,3 +302,5 @@ return PhpCsFixer\Config::create()
         'void_return' => true,
         'whitespace_after_comma_in_array' => true,
     ]);
+
+return $config;

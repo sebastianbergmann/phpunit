@@ -10,7 +10,6 @@
 namespace PHPUnit\Util;
 
 use function array_merge;
-use function get_class;
 use function preg_match;
 use function range;
 use function realpath;
@@ -1188,11 +1187,11 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             [
-                new ExecutionOrderDependency(get_class($this), 'Foo'),
-                new ExecutionOrderDependency(get_class($this), 'ほげ'),
+                new ExecutionOrderDependency(self::class, 'Foo'),
+                new ExecutionOrderDependency(self::class, 'ほげ'),
                 new ExecutionOrderDependency('AnotherClass::Foo'),
             ],
-            Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
+            Test::getDependencies(self::class, 'methodForTestParseAnnotation')
         );
     }
 
@@ -1210,8 +1209,8 @@ final class TestClassTest extends TestCase
     public function testParseAnnotationThatIsOnlyOneLine(): void
     {
         $this->assertEquals(
-            [new ExecutionOrderDependency(get_class($this), 'Bar')],
-            Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+            [new ExecutionOrderDependency(self::class, 'Bar')],
+            Test::getDependencies(self::class, 'methodForTestParseAnnotationThatIsOnlyOneLine')
         );
     }
 

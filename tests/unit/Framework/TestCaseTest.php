@@ -113,7 +113,7 @@ class TestCaseTest extends TestCase
         $this->assertInstanceOf(Reorderable::class, $this);
 
         $this->assertEquals(
-            [new ExecutionOrderDependency(get_class($this), 'testCaseDefaultExecutionOrderDependencies')],
+            [new ExecutionOrderDependency(static::class, 'testCaseDefaultExecutionOrderDependencies')],
             $this->provides()
         );
 
