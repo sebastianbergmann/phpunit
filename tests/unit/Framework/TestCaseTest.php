@@ -15,7 +15,6 @@ use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const PHP_EOL;
 use function array_map;
-use function get_class;
 use function getcwd;
 use function ini_get;
 use function ini_set;
@@ -110,7 +109,7 @@ class TestCaseTest extends TestCase
         $this->assertInstanceOf(Reorderable::class, $this);
 
         $this->assertEquals(
-            [new ExecutionOrderDependency(get_class($this), 'testCaseDefaultExecutionOrderDependencies')],
+            [new ExecutionOrderDependency(static::class, 'testCaseDefaultExecutionOrderDependencies')],
             $this->provides()
         );
 
