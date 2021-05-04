@@ -23,7 +23,7 @@ jobs:
           coverage: none
 
       - name: Run friendsofphp/php-cs-fixer
-        run: ./tools/php-cs-fixer fix --diff-format=udiff --dry-run --show-progress=dots --using-cache=no --verbose
+        run: ./tools/php-cs-fixer fix --dry-run --show-progress=dots --using-cache=no --verbose
 
   type-checker:
     name: Type Checker
