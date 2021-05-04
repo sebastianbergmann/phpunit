@@ -466,12 +466,6 @@ final class TestRunner
                         } else {
                             CodeCoverage::instance()->excludeUncoveredFiles();
                         }
-
-                        if ($codeCoverageConfiguration->processUncoveredFiles()) {
-                            CodeCoverage::instance()->processUncoveredFiles();
-                        } else {
-                            CodeCoverage::instance()->doNotProcessUncoveredFiles();
-                        }
                     }
                 }
 

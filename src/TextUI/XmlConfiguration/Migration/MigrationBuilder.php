@@ -45,6 +45,7 @@ final class MigrationBuilder
             RemoveTestSuiteLoaderAttributes::class,
             RemoveCacheResultFileAttribute::class,
             RemoveCoverageElementCacheDirectoryAttribute::class,
+            RemoveCoverageElementProcessUncoveredFilesAttribute::class,
             IntroduceCacheDirectoryAttribute::class,
             RenameBackupStaticAttributesAttribute::class,
         ],

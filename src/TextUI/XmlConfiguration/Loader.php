@@ -306,7 +306,6 @@ final class Loader
         $cacheDirectory            = null;
         $pathCoverage              = false;
         $includeUncoveredFiles     = true;
-        $processUncoveredFiles     = false;
         $ignoreDeprecatedCodeUnits = false;
         $disableCodeCoverageIgnore = false;
 
@@ -331,12 +330,6 @@ final class Loader
                 $element,
                 'includeUncoveredFiles',
                 true
-            );
-
-            $processUncoveredFiles = $this->getBooleanAttribute(
-                $element,
-                'processUncoveredFiles',
-                false
             );
 
             $ignoreDeprecatedCodeUnits = $this->getBooleanAttribute(
@@ -463,7 +456,6 @@ final class Loader
             $this->readFilterFiles($filename, $xpath, 'coverage/exclude/file'),
             $pathCoverage,
             $includeUncoveredFiles,
-            $processUncoveredFiles,
             $ignoreDeprecatedCodeUnits,
             $disableCodeCoverageIgnore,
             $clover,

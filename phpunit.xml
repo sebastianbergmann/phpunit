@@ -18,8 +18,7 @@
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true"
-              ignoreDeprecatedCodeUnits="true">
+    <coverage ignoreDeprecatedCodeUnits="true">
         <include>
             <directory suffix=".php">src</directory>
         </include>

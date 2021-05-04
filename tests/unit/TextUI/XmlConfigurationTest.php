@@ -158,7 +158,6 @@ final class XmlConfigurationTest extends TestCase
 
         $this->assertTrue($codeCoverage->pathCoverage());
         $this->assertTrue($codeCoverage->includeUncoveredFiles());
-        $this->assertTrue($codeCoverage->processUncoveredFiles());
         $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
 

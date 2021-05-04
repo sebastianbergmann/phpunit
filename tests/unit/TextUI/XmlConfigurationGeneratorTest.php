@@ -41,7 +41,7 @@ final class XmlConfigurationGeneratorTest extends TestCase
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <coverage>
         <include>
             <directory suffix=".php">src</directory>
         </include>

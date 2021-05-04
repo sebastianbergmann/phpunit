@@ -52,6 +52,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): Deprecate assertions that operate on class/object properties
 * Removed the `PHPUnit\Runner\TestSuiteLoader` interface
 * Removed the `<listeners>` XML configuration element and its children
-* Removed the `groups` attribute on the `test` element in the TestDox XML report
+* Removed the `groups` attribute on the `<test>` element in the TestDox XML report
+* Removed the `processUncoveredFiles` attribute on the `<coverage>` XML configuration element
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master

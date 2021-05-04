@@ -42,8 +42,6 @@ final class CodeCoverage
 
     private bool $includeUncoveredFiles;
 
-    private bool $processUncoveredFiles;
-
     private bool $ignoreDeprecatedCodeUnits;
 
     private bool $disableCodeCoverageIgnore;
@@ -62,7 +60,7 @@ final class CodeCoverage
 
     private ?Xml $xml = null;
 
-    public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
         $this->cacheDirectory            = $cacheDirectory;
         $this->directories               = $directories;
@@ -71,7 +69,6 @@ final class CodeCoverage
         $this->excludeFiles              = $excludeFiles;
         $this->pathCoverage              = $pathCoverage;
         $this->includeUncoveredFiles     = $includeUncoveredFiles;
-        $this->processUncoveredFiles     = $processUncoveredFiles;
         $this->ignoreDeprecatedCodeUnits = $ignoreDeprecatedCodeUnits;
         $this->disableCodeCoverageIgnore = $disableCodeCoverageIgnore;
         $this->clover                    = $clover;
@@ -152,11 +149,6 @@ final class CodeCoverage
     public function disableCodeCoverageIgnore(): bool
     {
         return $this->disableCodeCoverageIgnore;
-    }
-
-    public function processUncoveredFiles(): bool
-    {
-        return $this->processUncoveredFiles;
     }
 
     /**

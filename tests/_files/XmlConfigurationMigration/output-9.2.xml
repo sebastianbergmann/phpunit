@@ -4,7 +4,6 @@
          cacheDirectory=".phpunit.cache">
 
     <coverage includeUncoveredFiles="true"
-              processUncoveredFiles="true"
               ignoreDeprecatedCodeUnits="true"
               disableCodeCoverageIgnore="true">
         <include>

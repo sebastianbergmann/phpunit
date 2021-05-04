@@ -32,7 +32,6 @@
         <xs:attribute name="cacheDirectory" type="xs:anyURI"/>
         <xs:attribute name="pathCoverage" type="xs:boolean" default="false"/>
         <xs:attribute name="includeUncoveredFiles" type="xs:boolean" default="true"/>
-        <xs:attribute name="processUncoveredFiles" type="xs:boolean" default="false"/>
         <xs:attribute name="ignoreDeprecatedCodeUnits" type="xs:boolean" default="false"/>
         <xs:attribute name="disableCodeCoverageIgnore" type="xs:boolean" default="false"/>
     </xs:complexType>

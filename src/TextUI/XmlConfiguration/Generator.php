@@ -39,7 +39,7 @@ final class Generator
         </testsuite>
     </testsuites>
 
-    <coverage processUncoveredFiles="true">
+    <coverage>
         <include>
             <directory suffix=".php">{src_directory}</directory>
         </include>
