@@ -10,7 +10,6 @@
 namespace PHPUnit\Util;
 
 use function array_merge;
-use function get_class;
 use function preg_match;
 use function range;
 use function realpath;
@@ -1126,7 +1125,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             ['Foo', 'ほげ'],
-            Test::getDependencies(get_class($this), 'methodForTestParseAnnotation')
+            Test::getDependencies(self::class, 'methodForTestParseAnnotation')
         );
     }
 
@@ -1144,7 +1143,7 @@ final class TestClassTest extends TestCase
     {
         $this->assertEquals(
             ['Bar'],
-            Test::getDependencies(get_class($this), 'methodForTestParseAnnotationThatIsOnlyOneLine')
+            Test::getDependencies(self::class, 'methodForTestParseAnnotationThatIsOnlyOneLine')
         );
     }
 
