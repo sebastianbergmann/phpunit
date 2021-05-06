@@ -140,7 +140,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
-[8.5.16]: https://github.com/sebastianbergmann/phpunit/compare/8.5.15...8.5.16
+[8.5.16]: https://github.com/sebastianbergmann/phpunit/compare/8.5.15...8.5
 [8.5.15]: https://github.com/sebastianbergmann/phpunit/compare/8.5.14...8.5.15
 [8.5.14]: https://github.com/sebastianbergmann/phpunit/compare/8.5.13...8.5.14
 [8.5.13]: https://github.com/sebastianbergmann/phpunit/compare/8.5.12...8.5.13
