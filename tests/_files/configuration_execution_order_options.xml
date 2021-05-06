@@ -1,6 +1,3 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <phpunit executionOrder="no-depends,reverse">
-    <php>
-        <const name="PHPUNIT_TESTSUITE_RESULTCACHE" value="true"/>
-    </php>
 </phpunit>
