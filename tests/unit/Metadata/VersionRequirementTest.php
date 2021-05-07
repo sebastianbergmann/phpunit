@@ -16,6 +16,7 @@ use PHPUnit\Util\VersionComparisonOperator;
 /**
  * @covers \PHPUnit\Metadata\VersionComparisonRequirement
  * @covers \PHPUnit\Metadata\VersionConstraintRequirement
+ * @covers \PHPUnit\Metadata\VersionRequirement
  *
  * @uses \PHPUnit\Util\VersionComparisonOperator
  *
@@ -23,12 +24,12 @@ use PHPUnit\Util\VersionComparisonOperator;
  */
 final class VersionRequirementTest extends TestCase
 {
-    /**
-     * @dataProvider comparisonProvider
-     */
-    public function testVersionRequirementCanBeCheckedUsingSimpleComparison(bool $expected, string $version, VersionComparisonRequirement $requirement): void
+    public function testCanBeCreatedFromStringWithVersionConstraint(): void
     {
-        $this->assertSame($expected, $requirement->isSatisfiedBy($version));
+        $requirement = VersionRequirement::from('^1.0');
+
+        $this->assertInstanceOf(VersionConstraintRequirement::class, $requirement);
+        $this->assertSame('^1.0', $requirement->asString());
     }
 
     /**
@@ -39,11 +40,27 @@ final class VersionRequirementTest extends TestCase
         $this->assertSame($expected, $requirement->isSatisfiedBy($version));
     }
 
-    public function comparisonProvider(): array
+    public function testCanBeCreatedFromStringWithSimpleComparison(): void
     {
-        return [
-            [true, '1.0.0', new VersionComparisonRequirement('1.0.0', new VersionComparisonOperator('='))],
-        ];
+        $requirement = VersionRequirement::from('>= 1.0');
+
+        $this->assertInstanceOf(VersionComparisonRequirement::class, $requirement);
+        $this->assertSame('>= 1.0', $requirement->asString());
+    }
+
+    /**
+     * @dataProvider comparisonProvider
+     */
+    public function testVersionRequirementCanBeCheckedUsingSimpleComparison(bool $expected, string $version, VersionComparisonRequirement $requirement): void
+    {
+        $this->assertSame($expected, $requirement->isSatisfiedBy($version));
+    }
+
+    public function testCannotBeCreatedFromInvalidString(): void
+    {
+        $this->expectException(InvalidVersionRequirementException::class);
+
+        VersionRequirement::from('invalid');
     }
 
     public function constraintProvider(): array
@@ -56,6 +73,13 @@ final class VersionRequirementTest extends TestCase
                     (new VersionConstraintParser)->parse('1.0.0')
                 ),
             ],
+        ];
+    }
+
+    public function comparisonProvider(): array
+    {
+        return [
+            [true, '1.0.0', new VersionComparisonRequirement('1.0.0', new VersionComparisonOperator('='))],
         ];
     }
 }
