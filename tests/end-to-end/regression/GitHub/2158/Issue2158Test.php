@@ -11,6 +11,8 @@ use PHPUnit\Framework\TestCase;
 
 class Issue2158Test extends TestCase
 {
+    protected $preserveGlobalState = true;
+
     /**
      * Set constant in main process.
      */

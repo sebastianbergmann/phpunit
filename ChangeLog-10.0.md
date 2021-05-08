@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Changed
 
 * [#3871](https://github.com/sebastianbergmann/phpunit/issues/3871): Declare return types for `InvocationStubber` methods
+* [#3954](https://github.com/sebastianbergmann/phpunit/issues/3954): Disable global state preservation for process isolation by default
 * [#4599](https://github.com/sebastianbergmann/phpunit/issues/4599): Unify cache configuration
 * [#4603](https://github.com/sebastianbergmann/phpunit/issues/4603): Use "property" instead of "attribute" for configuring the backup of static fields
 * [#4656](https://github.com/sebastianbergmann/phpunit/issues/4656): Prevent doubling of `__destruct()`

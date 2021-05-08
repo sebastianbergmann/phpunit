@@ -139,7 +139,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @var bool
      */
-    protected $preserveGlobalState = true;
+    protected $preserveGlobalState = false;
 
     /**
      * @var list<ExecutionOrderDependency>
