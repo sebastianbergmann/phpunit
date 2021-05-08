@@ -570,7 +570,7 @@ final class PhptTestCase implements SelfDescribing, Test
 
         $composerAutoload = '\'\'';
 
-        if (defined('PHPUNIT_COMPOSER_INSTALL') && !defined('PHPUNIT_TESTSUITE')) {
+        if (defined('PHPUNIT_COMPOSER_INSTALL')) {
             $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
         }
 
