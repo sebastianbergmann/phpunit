@@ -23,6 +23,11 @@ final class Failure extends Known
         return true;
     }
 
+    public function asInt(): int
+    {
+        return 3;
+    }
+
     public function asString(): string
     {
         return 'failure';

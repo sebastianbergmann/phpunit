@@ -23,6 +23,11 @@ final class Error extends Known
         return true;
     }
 
+    public function asInt(): int
+    {
+        return 4;
+    }
+
     public function asString(): string
     {
         return 'error';

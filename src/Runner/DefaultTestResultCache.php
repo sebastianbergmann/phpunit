@@ -107,19 +107,7 @@ final class DefaultTestResultCache implements TestResultCache
         assert(isset($data['times']) && is_array($data['times']));
 
         foreach (array_keys($data['defects']) as $test) {
-            if ($data['defects'][$test] === 1) {
-                $data['defects'][$test] = TestStatus::skipped();
-            } elseif ($data['defects'][$test] === 2) {
-                $data['defects'][$test] = TestStatus::incomplete();
-            } elseif ($data['defects'][$test] === 3) {
-                $data['defects'][$test] = TestStatus::failure();
-            } elseif ($data['defects'][$test] === 4) {
-                $data['defects'][$test] = TestStatus::error();
-            } elseif ($data['defects'][$test] === 5) {
-                $data['defects'][$test] = TestStatus::risky();
-            } elseif ($data['defects'][$test] === 6) {
-                $data['defects'][$test] = TestStatus::warning();
-            }
+            $data['defects'][$test] = TestStatus::from($data['defects'][$test]);
         }
 
         $this->defects = $data['defects'];
@@ -147,19 +135,7 @@ final class DefaultTestResultCache implements TestResultCache
         ];
 
         foreach ($this->defects as $test => $status) {
-            if ($status->isSkipped()) {
-                $data['defects'][$test] = 1;
-            } elseif ($status->isIncomplete()) {
-                $data['defects'][$test] = 2;
-            } elseif ($status->isFailure()) {
-                $data['defects'][$test] = 3;
-            } elseif ($status->isError()) {
-                $data['defects'][$test] = 4;
-            } elseif ($status->isRisky()) {
-                $data['defects'][$test] = 5;
-            } elseif ($status->isWarning()) {
-                $data['defects'][$test] = 6;
-            }
+            $data['defects'][$test] = $status->asInt();
         }
 
         file_put_contents(

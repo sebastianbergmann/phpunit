@@ -23,6 +23,11 @@ final class Skipped extends Known
         return true;
     }
 
+    public function asInt(): int
+    {
+        return 1;
+    }
+
     public function asString(): string
     {
         return 'skipped';

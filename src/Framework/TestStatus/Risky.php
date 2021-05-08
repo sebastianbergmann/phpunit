@@ -23,6 +23,11 @@ final class Risky extends Known
         return true;
     }
 
+    public function asInt(): int
+    {
+        return 5;
+    }
+
     public function asString(): string
     {
         return 'risky';

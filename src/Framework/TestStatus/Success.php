@@ -23,6 +23,11 @@ final class Success extends Known
         return true;
     }
 
+    public function asInt(): int
+    {
+        return 0;
+    }
+
     public function asString(): string
     {
         return 'success';

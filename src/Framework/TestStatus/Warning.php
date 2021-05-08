@@ -23,6 +23,11 @@ final class Warning extends Known
         return true;
     }
 
+    public function asInt(): int
+    {
+        return 6;
+    }
+
     public function asString(): string
     {
         return 'warning';

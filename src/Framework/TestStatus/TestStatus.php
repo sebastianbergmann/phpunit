@@ -17,6 +17,35 @@ abstract class TestStatus
 {
     private string $message;
 
+    public static function from(int $status): self
+    {
+        switch ($status) {
+            case 0:
+                return self::success();
+
+            case 1:
+                return self::skipped();
+
+            case 2:
+                return self::incomplete();
+
+            case 3:
+                return self::failure();
+
+            case 4:
+                return self::error();
+
+            case 5:
+                return self::risky();
+
+            case 6:
+                return self::warning();
+
+            default:
+                return self::unknown();
+        }
+    }
+
     public static function unknown(): self
     {
         return new Unknown;
@@ -138,6 +167,8 @@ abstract class TestStatus
     {
         return $this->message;
     }
+
+    abstract public function asInt(): int;
 
     abstract public function asString(): string;
 }
