@@ -13,6 +13,8 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4656](https://github.com/sebastianbergmann/phpunit/issues/4656): Prevent doubling of `__destruct()`
 * PHPUnit no longer invokes a static method named `suite` on a class that is declared in a file that is passed as an argument to the CLI test runner
 * PHPUnit no longer promotes variables that are global in the bootstrap script's scope to global variables in the test runner's scope (use `$GLOBALS['variable'] = 'value'` instead of `$variable = 'value'` in your bootstrap script)
+* `PHPUnit\Framework\TestCase::$backupGlobals` can no longer be used to enable or disable the backup/restore of global and super-global variables for a test case class
+* `PHPUnit\Framework\TestCase::$backupStaticAttributes` can no longer be used to enable or disable the backup/restore of static properties in user-defined classes for a test case class
 * `@author` is no longer an alias for `@group`
 * The `status` attribute of `<test>` elements in the TestDox XML logfile now contains a textual representation instead of a number (`"success"` instead of `"0"`, for instance)
 * The `size` attribute of `<test>` elements in the TestDox XML logfile now contains a textual representation instead of a number (`"unknown"` instead of `"-1"`, for instance)
