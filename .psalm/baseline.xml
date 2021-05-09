@@ -409,11 +409,6 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/Framework/ErrorTestCase.php">
-    <NonInvariantDocblockPropertyType occurrences="1">
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
-  </file>
   <file src="src/Framework/Exception/Exception.php">
     <MissingParamType occurrences="2">
       <code>$code</code>
@@ -430,11 +425,6 @@
     <PossiblyNullArgument occurrences="1">
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
-  </file>
-  <file src="src/Framework/IncompleteTestCase.php">
-    <NonInvariantDocblockPropertyType occurrences="1">
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Framework/MockObject/Builder/Identity.php">
     <MissingReturnType occurrences="1">
@@ -613,15 +603,23 @@
       <code>invoke</code>
     </MissingReturnType>
   </file>
-  <file src="src/Framework/SkippedTestCase.php">
-    <NonInvariantDocblockPropertyType occurrences="1">
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
-  </file>
   <file src="src/Framework/TestBuilder.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$className</code>
+    </ArgumentTypeCoercion>
+    <InvalidDocblock occurrences="2">
+      <code>private function buildDataProviderTestSuite(string $methodName, string $className, $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite</code>
+      <code>private function configureTestCase(TestCase $test, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): void</code>
+    </InvalidDocblock>
+    <InvalidStringClass occurrences="1">
+      <code>new $className($methodName)</code>
+    </InvalidStringClass>
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
     </LessSpecificReturnStatement>
+    <MissingParamType occurrences="1">
+      <code>$data</code>
+    </MissingParamType>
     <MissingThrowsDocblock occurrences="3">
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
@@ -635,20 +633,14 @@
       <code>$this-&gt;expectedException</code>
       <code>$this-&gt;size()</code>
     </ArgumentTypeCoercion>
-    <DocblockTypeContradiction occurrences="2">
-      <code>$this-&gt;backupStaticAttributes === null</code>
-      <code>$this-&gt;runTestInSeparateProcess === null</code>
-    </DocblockTypeContradiction>
     <InvalidArgument occurrences="1">
       <code>$header</code>
     </InvalidArgument>
-    <InvalidReturnStatement occurrences="2">
+    <InvalidReturnStatement occurrences="1">
       <code>$mockObject</code>
-      <code>get_class($mock)</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="2">
+    <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
-      <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
     </InvalidReturnType>
     <MissingParamType occurrences="5">
       <code>$args</code>
@@ -661,12 +653,11 @@
       <code>result</code>
       <code>runTest</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="14">
+    <MissingThrowsDocblock occurrences="13">
       <code>endTest</code>
       <code>endTest</code>
       <code>endTest</code>
       <code>generateClassFromWsdl</code>
-      <code>getMock</code>
       <code>getMock</code>
       <code>getMock</code>
       <code>getMock</code>
@@ -683,15 +674,13 @@
       <code>startTest</code>
       <code>startTest</code>
     </PossiblyNullReference>
-    <PropertyNotSetInConstructor occurrences="4">
-      <code>$backupStaticAttributes</code>
+    <PropertyNotSetInConstructor occurrences="2">
       <code>$name</code>
       <code>$outputBufferingLevel</code>
-      <code>$runTestInSeparateProcess</code>
     </PropertyNotSetInConstructor>
-    <RedundantCastGivenDocblockType occurrences="1">
-      <code>(bool) $this-&gt;backupStaticAttributes</code>
-    </RedundantCastGivenDocblockType>
+    <PropertyTypeCoercion occurrences="1">
+      <code>$this-&gt;doubledTypes</code>
+    </PropertyTypeCoercion>
     <RedundantCondition occurrences="1">
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
@@ -722,27 +711,17 @@
       <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
     </DocblockTypeContradiction>
     <MissingThrowsDocblock occurrences="1"/>
-    <PossiblyNullArgument occurrences="3">
-      <code>$this-&gt;backupGlobals</code>
-      <code>$this-&gt;backupStaticAttributes</code>
-      <code>$this-&gt;beStrictAboutChangesToGlobalState</code>
-    </PossiblyNullArgument>
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) $key</code>
     </RedundantCastGivenDocblockType>
     <RedundantConditionGivenDocblockType occurrences="6">
       <code>is_bool($backupGlobals)</code>
-      <code>is_bool($backupStaticAttributes)</code>
+      <code>is_bool($backupStaticProperties)</code>
       <code>is_bool($beStrictAboutChangesToGlobalState)</code>
       <code>null === $this-&gt;backupGlobals &amp;&amp; is_bool($backupGlobals)</code>
-      <code>null === $this-&gt;backupStaticAttributes &amp;&amp; is_bool($backupStaticAttributes)</code>
+      <code>null === $this-&gt;backupStaticProperties &amp;&amp; is_bool($backupStaticProperties)</code>
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src/Framework/WarningTestCase.php">
-    <NonInvariantDocblockPropertyType occurrences="1">
-      <code>$backupGlobals</code>
-    </NonInvariantDocblockPropertyType>
   </file>
   <file src="src/Metadata/Facade/CodeCoverageFacade.php">
     <RedundantCondition occurrences="4">
@@ -787,7 +766,7 @@
     </RedundantCast>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="7">
+    <ArgumentTypeCoercion occurrences="9">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
@@ -795,6 +774,8 @@
       <code>$className</code>
       <code>$pieces[0]</code>
       <code>explode('::', $value)</code>
+      <code>trim($tmp[0])</code>
+      <code>trim($tmp[0])</code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/Runner/CodeCoverage.php">
