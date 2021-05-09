@@ -9,10 +9,11 @@
  */
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @preserveGlobalState enabled
+ */
 class Issue2158Test extends TestCase
 {
-    protected $preserveGlobalState = true;
-
     /**
      * Set constant in main process.
      */
