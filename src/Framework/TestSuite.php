@@ -80,8 +80,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     protected int $numTests = -1;
 
-    protected bool $testCase = false;
-
     private ?array $providedTests = null;
 
     protected ?array $requiredTests = null;
@@ -202,8 +200,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 )
             );
         }
-
-        $this->testCase = true;
     }
 
     /**
@@ -416,7 +412,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $test = null;
 
-        if ($this->testCase && class_exists($this->name, false)) {
+        if (class_exists($this->name, false)) {
             try {
                 foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
                     if (method_exists($this->name, $beforeClassMethod)) {
@@ -483,7 +479,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             $test->run($result);
         }
 
-        if ($this->testCase && class_exists($this->name, false)) {
+        if (class_exists($this->name, false)) {
             foreach ($hookMethods['afterClass'] as $afterClassMethod) {
                 if (method_exists($this->name, $afterClassMethod)) {
                     try {
