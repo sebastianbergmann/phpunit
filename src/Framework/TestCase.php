@@ -112,12 +112,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
 
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
     protected $backupGlobalsExcludeList = [];
 
     /**
-     * @var array<string,array<int,string>>
+     * @psalm-var array<string,list<class-string>>
      */
     protected $backupStaticAttributesExcludeList = [];
 
@@ -130,7 +130,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private ?bool $runTestInSeparateProcess = null;
 
     /**
-     * @var list<ExecutionOrderDependency>
+     * @psalm-var list<ExecutionOrderDependency>
      */
     private array $providedTests = [];
 
@@ -159,21 +159,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private string $name;
 
     /**
-     * @var list<ExecutionOrderDependency>
+     * @psalm-var list<ExecutionOrderDependency>
      */
     private array $dependencies = [];
 
     private array $dependencyInput = [];
 
     /**
-     * @var array<string,string>
+     * @psalm-var array<string,string>
      */
     private array $iniSettings = [];
 
     private array $locale = [];
 
     /**
-     * @var MockObject[]
+     * @psalm-var list<MockObject>
      */
     private array $mockObjects = [];
 
@@ -214,24 +214,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $registerMockObjectsFromTestArgumentsRecursively = false;
 
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
     private array $warnings = [];
 
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
     private array $groups = [];
 
     private bool $doesNotPerformAssertions = false;
 
     /**
-     * @var Comparator[]
+     * @psalm-var list<Comparator>
      */
     private array $customComparators = [];
 
     /**
-     * @var string[]
+     * @psalm-var list<class-string>
      */
     private array $doubledTypes = [];
 
