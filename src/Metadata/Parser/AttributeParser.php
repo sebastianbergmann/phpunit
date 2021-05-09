@@ -31,6 +31,8 @@ use PHPUnit\Framework\Attributes\DependsExternalUsingShallowClone as DependsExte
 use PHPUnit\Framework\Attributes\DependsUsingDeepClone as DependsUsingDeepCloneAttribute;
 use PHPUnit\Framework\Attributes\DependsUsingShallowClone as DependsUsingShallowCloneAttribute;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions as DoesNotPerformAssertionsAttribute;
+use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup as ExcludeGlobalVariableFromBackupAttribute;
+use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup as ExcludeStaticPropertyFromBackupAttribute;
 use PHPUnit\Framework\Attributes\Group as GroupAttribute;
 use PHPUnit\Framework\Attributes\Large as LargeAttribute;
 use PHPUnit\Framework\Attributes\Medium as MediumAttribute;
@@ -111,6 +113,19 @@ final class AttributeParser implements Parser
 
                 case DoesNotPerformAssertionsAttribute::class:
                     $result[] = new DoesNotPerformAssertions;
+
+                    break;
+
+                case ExcludeGlobalVariableFromBackupAttribute::class:
+                    $result[] = new ExcludeGlobalVariableFromBackup($attributeInstance->globalVariableName());
+
+                    break;
+
+                case ExcludeStaticPropertyFromBackupAttribute::class:
+                    $result[] = new ExcludeStaticPropertyFromBackup(
+                        $attributeInstance->className(),
+                        $attributeInstance->propertyName()
+                    );
 
                     break;
 
@@ -336,6 +351,19 @@ final class AttributeParser implements Parser
 
                 case DoesNotPerformAssertionsAttribute::class:
                     $result[] = new DoesNotPerformAssertions;
+
+                    break;
+
+                case ExcludeGlobalVariableFromBackupAttribute::class:
+                    $result[] = new ExcludeGlobalVariableFromBackup($attributeInstance->globalVariableName());
+
+                    break;
+
+                case ExcludeStaticPropertyFromBackupAttribute::class:
+                    $result[] = new ExcludeStaticPropertyFromBackup(
+                        $attributeInstance->className(),
+                        $attributeInstance->propertyName()
+                    );
 
                     break;
 

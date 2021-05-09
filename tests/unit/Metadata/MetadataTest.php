@@ -29,6 +29,8 @@ use PHPUnit\Util\VersionComparisonOperator;
  * @covers \PHPUnit\Metadata\DataProvider
  * @covers \PHPUnit\Metadata\Depends
  * @covers \PHPUnit\Metadata\DoesNotPerformAssertions
+ * @covers \PHPUnit\Metadata\ExcludeGlobalVariableFromBackup
+ * @covers \PHPUnit\Metadata\ExcludeStaticPropertyFromBackup
  * @covers \PHPUnit\Metadata\Group
  * @covers \PHPUnit\Metadata\Metadata
  * @covers \PHPUnit\Metadata\PostCondition
@@ -78,6 +80,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -124,6 +128,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -170,6 +176,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -218,6 +226,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -266,6 +276,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -312,6 +324,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -358,6 +372,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -404,6 +420,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -452,6 +470,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -501,6 +521,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -549,6 +571,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -599,6 +623,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -648,6 +674,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -694,6 +722,8 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -743,6 +773,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertTrue($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -794,6 +826,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertTrue($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -820,6 +854,107 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
     }
 
+    public function testCanBeExcludeGlobalVariableFromBackup(): void
+    {
+        $metadata = new ExcludeGlobalVariableFromBackup('variable');
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCodeCoverageIgnore());
+        $this->assertFalse($metadata->isCovers());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversDefaultClass());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDepends());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertTrue($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isTodo());
+        $this->assertFalse($metadata->isUses());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesDefaultClass());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesFunction());
+
+        $this->assertSame('variable', $metadata->globalVariableName());
+    }
+
+    public function testCanBeExcludeStaticPropertyFromBackup(): void
+    {
+        $metadata = new ExcludeStaticPropertyFromBackup('class', 'property');
+
+        $this->assertFalse($metadata->isAfter());
+        $this->assertFalse($metadata->isAfterClass());
+        $this->assertFalse($metadata->isBackupGlobals());
+        $this->assertFalse($metadata->isBackupStaticProperties());
+        $this->assertFalse($metadata->isBeforeClass());
+        $this->assertFalse($metadata->isBefore());
+        $this->assertFalse($metadata->isCodeCoverageIgnore());
+        $this->assertFalse($metadata->isCovers());
+        $this->assertFalse($metadata->isCoversClass());
+        $this->assertFalse($metadata->isCoversDefaultClass());
+        $this->assertFalse($metadata->isCoversMethod());
+        $this->assertFalse($metadata->isCoversFunction());
+        $this->assertFalse($metadata->isCoversNothing());
+        $this->assertFalse($metadata->isDataProvider());
+        $this->assertFalse($metadata->isDepends());
+        $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertTrue($metadata->isExcludeStaticPropertyFromBackup());
+        $this->assertFalse($metadata->isGroup());
+        $this->assertFalse($metadata->isRunClassInSeparateProcess());
+        $this->assertFalse($metadata->isRunInSeparateProcess());
+        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
+        $this->assertFalse($metadata->isTest());
+        $this->assertFalse($metadata->isPreCondition());
+        $this->assertFalse($metadata->isPostCondition());
+        $this->assertFalse($metadata->isPreserveGlobalState());
+        $this->assertFalse($metadata->isRequiresMethod());
+        $this->assertFalse($metadata->isRequiresFunction());
+        $this->assertFalse($metadata->isRequiresOperatingSystem());
+        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
+        $this->assertFalse($metadata->isRequiresPhp());
+        $this->assertFalse($metadata->isRequiresPhpExtension());
+        $this->assertFalse($metadata->isRequiresPhpunit());
+        $this->assertFalse($metadata->isRequiresSetting());
+        $this->assertFalse($metadata->isTestDox());
+        $this->assertFalse($metadata->isTestWith());
+        $this->assertFalse($metadata->isTodo());
+        $this->assertFalse($metadata->isUses());
+        $this->assertFalse($metadata->isUsesClass());
+        $this->assertFalse($metadata->isUsesDefaultClass());
+        $this->assertFalse($metadata->isUsesMethod());
+        $this->assertFalse($metadata->isUsesFunction());
+
+        $this->assertSame('class', $metadata->className());
+        $this->assertSame('property', $metadata->propertyName());
+    }
+
     public function testCanBeGroup(): void
     {
         $metadata = new Group('name');
@@ -840,6 +975,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertTrue($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -888,6 +1025,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -934,6 +1073,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertTrue($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -980,6 +1121,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertTrue($metadata->isRunInSeparateProcess());
@@ -1026,6 +1169,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1072,6 +1217,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1118,6 +1265,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1163,6 +1312,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1211,6 +1362,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1260,6 +1413,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1308,6 +1463,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1356,6 +1513,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1409,6 +1568,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1455,6 +1616,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1512,6 +1675,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1558,6 +1723,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1607,6 +1774,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1655,6 +1824,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1703,6 +1874,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1751,6 +1924,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1797,6 +1972,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1846,6 +2023,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1894,6 +2073,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());
@@ -1944,6 +2125,8 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isDataProvider());
         $this->assertFalse($metadata->isDepends());
         $this->assertFalse($metadata->isDoesNotPerformAssertions());
+        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
+        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
         $this->assertFalse($metadata->isGroup());
         $this->assertFalse($metadata->isRunClassInSeparateProcess());
         $this->assertFalse($metadata->isRunInSeparateProcess());

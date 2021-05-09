@@ -143,6 +143,16 @@ abstract class Metadata
         return false;
     }
 
+    public function isExcludeGlobalVariableFromBackup(): bool
+    {
+        return false;
+    }
+
+    public function isExcludeStaticPropertyFromBackup(): bool
+    {
+        return false;
+    }
+
     /**
      * @psalm-assert-if-true Group $this
      */

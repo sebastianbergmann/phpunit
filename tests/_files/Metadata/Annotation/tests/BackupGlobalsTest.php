@@ -13,11 +13,13 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @backupGlobals enabled
+ * @excludeGlobalVariableFromBackup foo
  */
 final class BackupGlobalsTest extends TestCase
 {
     /**
      * @backupGlobals disabled
+     * @excludeGlobalVariableFromBackup bar
      */
     public function testOne(): void
     {

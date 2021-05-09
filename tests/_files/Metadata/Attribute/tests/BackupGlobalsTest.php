@@ -10,12 +10,15 @@
 namespace PHPUnit\TestFixture\Metadata\Attribute;
 
 use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\TestCase;
 
 #[BackupGlobals(true)]
+#[ExcludeGlobalVariableFromBackup('foo')]
 final class BackupGlobalsTest extends TestCase
 {
     #[BackupGlobals(false)]
+    #[ExcludeGlobalVariableFromBackup('bar')]
     public function testOne(): void
     {
     }

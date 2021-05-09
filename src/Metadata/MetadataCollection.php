@@ -221,6 +221,30 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isExcludeGlobalVariableFromBackup(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isExcludeGlobalVariableFromBackup();
+                }
+            )
+        );
+    }
+
+    public function isExcludeStaticPropertyFromBackup(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isExcludeStaticPropertyFromBackup();
+                }
+            )
+        );
+    }
+
     public function isCoversNothing(): self
     {
         return new self(

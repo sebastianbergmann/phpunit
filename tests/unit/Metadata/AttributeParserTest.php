@@ -161,6 +161,31 @@ final class AttributeParserTest extends TestCase
     }
 
     /**
+     * @testdox Parses #[ExcludeGlobalVariableFromBackup] attribute on class
+     */
+    public function test_parses_ExcludeGlobalVariableFromBackup_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(BackupGlobalsTest::class)->isExcludeGlobalVariableFromBackup();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isExcludeGlobalVariableFromBackup());
+        $this->assertSame('foo', $metadata->asArray()[0]->globalVariableName());
+    }
+
+    /**
+     * @testdox Parses #[ExcludeStaticPropertyFromBackup] attribute on class
+     */
+    public function test_parses_ExcludeStaticPropertyFromBackup_attribute_on_class(): void
+    {
+        $metadata = (new AttributeParser)->forClass(BackupStaticPropertiesTest::class)->isExcludeStaticPropertyFromBackup();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isExcludeStaticPropertyFromBackup());
+        $this->assertSame('className', $metadata->asArray()[0]->className());
+        $this->assertSame('propertyName', $metadata->asArray()[0]->propertyName());
+    }
+
+    /**
      * @testdox Parses #[Group] attribute on class
      */
     public function test_parses_Group_attribute_on_class(): void
@@ -564,6 +589,31 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
+    }
+
+    /**
+     * @testdox Parses #[ExcludeGlobalVariableFromBackup] attribute on method
+     */
+    public function test_parses_ExcludeGlobalVariableFromBackup_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(BackupGlobalsTest::class, 'testOne')->isExcludeGlobalVariableFromBackup();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isExcludeGlobalVariableFromBackup());
+        $this->assertSame('bar', $metadata->asArray()[0]->globalVariableName());
+    }
+
+    /**
+     * @testdox Parses #[ExcludeStaticPropertyFromBackup] attribute on method
+     */
+    public function test_parses_ExcludeStaticPropertyFromBackup_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(BackupStaticPropertiesTest::class, 'testOne')->isExcludeStaticPropertyFromBackup();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isExcludeStaticPropertyFromBackup());
+        $this->assertSame('anotherClassName', $metadata->asArray()[0]->className());
+        $this->assertSame('propertyName', $metadata->asArray()[0]->propertyName());
     }
 
     /**

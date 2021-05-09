@@ -12,12 +12,14 @@ namespace PHPUnit\TestFixture\Metadata\Annotation;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @backupStaticAttributes enabled
+ * @backupStaticProperties enabled
+ * @excludeStaticPropertyFromBackup className propertyName
  */
 final class BackupStaticPropertiesTest extends TestCase
 {
     /**
      * @backupStaticAttributes disabled
+     * @excludeStaticPropertyFromBackup anotherClassName propertyName
      */
     public function testOne(): void
     {

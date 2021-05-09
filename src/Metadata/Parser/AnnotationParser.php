@@ -10,11 +10,13 @@
 namespace PHPUnit\Metadata;
 
 use function array_merge;
+use function count;
 use function explode;
 use function method_exists;
 use function strlen;
 use function strpos;
 use function substr;
+use function trim;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Metadata\Annotation\Registry as AnnotationRegistry;
 use PHPUnit\Util\VersionComparisonOperator;
@@ -73,6 +75,29 @@ final class AnnotationParser implements Parser
 
                 case 'doesNotPerformAssertions':
                     $result[] = new DoesNotPerformAssertions;
+
+                    break;
+
+                case 'excludeGlobalVariableFromBackup':
+                    foreach ($values as $value) {
+                        $result[] = new ExcludeGlobalVariableFromBackup($value);
+                    }
+
+                    break;
+
+                case 'excludeStaticPropertyFromBackup':
+                    foreach ($values as $value) {
+                        $tmp = explode(' ', $value);
+
+                        if (count($tmp) !== 2) {
+                            continue;
+                        }
+
+                        $result[] = new ExcludeStaticPropertyFromBackup(
+                            trim($tmp[0]),
+                            trim($tmp[1])
+                        );
+                    }
 
                     break;
 
@@ -253,6 +278,29 @@ final class AnnotationParser implements Parser
 
                 case 'doesNotPerformAssertions':
                     $result[] = new DoesNotPerformAssertions;
+
+                    break;
+
+                case 'excludeGlobalVariableFromBackup':
+                    foreach ($values as $value) {
+                        $result[] = new ExcludeGlobalVariableFromBackup($value);
+                    }
+
+                    break;
+
+                case 'excludeStaticPropertyFromBackup':
+                    foreach ($values as $value) {
+                        $tmp = explode(' ', $value);
+
+                        if (count($tmp) !== 2) {
+                            continue;
+                        }
+
+                        $result[] = new ExcludeStaticPropertyFromBackup(
+                            trim($tmp[0]),
+                            trim($tmp[1])
+                        );
+                    }
 
                     break;
 

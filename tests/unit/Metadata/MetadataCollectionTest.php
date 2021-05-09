@@ -240,6 +240,22 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isDoesNotPerformAssertions());
     }
 
+    public function test_Can_be_filtered_for_ExcludeGlobalVariableFromBackup(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isExcludeGlobalVariableFromBackup();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isExcludeGlobalVariableFromBackup());
+    }
+
+    public function test_Can_be_filtered_for_ExcludeStaticPropertyFromBackup(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isExcludeStaticPropertyFromBackup();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isExcludeStaticPropertyFromBackup());
+    }
+
     public function test_Can_be_filtered_for_Group(): void
     {
         $collection = $this->collectionWithOneOfEach()->isGroup();
@@ -452,6 +468,8 @@ final class MetadataCollectionTest extends TestCase
                 new DataProvider('', ''),
                 new Depends('', '', false, false),
                 new DoesNotPerformAssertions,
+                new ExcludeGlobalVariableFromBackup(''),
+                new ExcludeStaticPropertyFromBackup('', ''),
                 new Group(''),
                 new PostCondition,
                 new PreCondition,
