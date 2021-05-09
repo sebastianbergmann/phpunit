@@ -47,11 +47,15 @@ $class = new ReflectionClass(Assert::class);
 $constraintMethods = '';
 
 foreach ($class->getMethods() as $method) {
-    if (!$method->hasReturnType() || $method->getReturnType()->isBuiltin()) {
+    $returnType = $method->getReturnType();
+
+    assert($returnType instanceof ReflectionNamedType || $returnType instanceof ReflectionUnionType);
+
+    if ($returnType instanceof ReflectionNamedType && $returnType->isBuiltin()) {
         continue;
     }
 
-    $returnType = new ReflectionClass($method->getReturnType()->getName());
+    $returnType = new ReflectionClass($returnType->getName());
 
     if (!$returnType->isSubclassOf(Constraint::class)) {
         continue;
@@ -86,7 +90,7 @@ foreach ($class->getMethods() as $method) {
     $docComment = \str_replace(
         ['*/', '     *'],
         ["*\n * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit\n * @see Assert::" . $method->getName() . "\n */", ' *'],
-        $method->getDocComment()
+        (string) $method->getDocComment()
     );
 
     $signature = \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1]));
