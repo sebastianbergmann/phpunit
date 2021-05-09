@@ -1289,7 +1289,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Makes configurable stub for the specified class.
+     * Creates a test stub for the specified interface or class.
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param    class-string<RealInstanceType> $originalClassName
@@ -1301,7 +1301,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns a mock object for the specified class.
+     * Creates a mock object for the specified interface or class.
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
@@ -1313,7 +1313,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns a configured mock object for the specified class.
+     * Creates (and configures) a mock object for the specified interface or class.
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
@@ -1331,7 +1331,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns a partial mock object for the specified class.
+     * Creates a partial mock object for the specified interface or class.
      *
      * @param string[] $methods
      *
@@ -1351,7 +1351,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns a test proxy for the specified class.
+     * Creates a test proxy for the specified class.
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
@@ -1393,7 +1393,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns a mock object for the specified abstract class with all abstract
+     * Creates a mock object for the specified abstract class with all abstract
      * methods of the class mocked. Concrete methods are not mocked by default.
      * To mock concrete methods, use the 7th parameter ($mockedMethods).
      *
@@ -1422,7 +1422,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns a mock object based on the given WSDL file.
+     * Creates a mock object based on the given WSDL file.
      *
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
@@ -1464,7 +1464,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns a mock object for the specified trait with all abstract methods
+     * Creates a mock object for the specified trait with all abstract methods
      * of the trait mocked. Concrete methods to mock can be specified with the
      * `$mockedMethods` parameter.
      *
@@ -1491,7 +1491,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns an object for the specified trait.
+     * Creates an object that uses the specified trait.
      *
      * @psalm-param trait-string $traitName
      */
