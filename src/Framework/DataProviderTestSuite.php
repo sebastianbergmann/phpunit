@@ -23,6 +23,8 @@ final class DataProviderTestSuite extends TestSuite
      */
     private array $dependencies = [];
 
+    private ?array $providedTests = null;
+
     /**
      * @param list<ExecutionOrderDependency> $dependencies
      */

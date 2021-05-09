@@ -87,7 +87,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     protected array $foundClasses = [];
 
-    protected ?array $providedTests = null;
+    private ?array $providedTests = null;
 
     protected ?array $requiredTests = null;
 
