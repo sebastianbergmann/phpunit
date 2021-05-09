@@ -74,11 +74,9 @@ abstract class UnaryOperator extends Operator
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other evaluated value or object
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    protected function failureDescription($other): string
+    protected function failureDescription(mixed $other): string
     {
         $reduced = $this->reduce();
 

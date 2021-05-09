@@ -11,7 +11,6 @@ namespace PHPUnit\Framework\Constraint;
 
 use function sprintf;
 use function strpos;
-use Throwable;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -37,10 +36,8 @@ final class ExceptionMessage extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
-     *
-     * @param Throwable $other
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         if ($this->expectedMessage === '') {
             return $other->getMessage() === '';
@@ -54,10 +51,8 @@ final class ExceptionMessage extends Constraint
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other evaluated value or object
      */
-    protected function failureDescription($other): string
+    protected function failureDescription(mixed $other): string
     {
         if ($this->expectedMessage === '') {
             return sprintf(

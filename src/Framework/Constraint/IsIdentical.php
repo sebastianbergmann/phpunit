@@ -118,11 +118,9 @@ final class IsIdentical extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other evaluated value or object
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    protected function failureDescription($other): string
+    protected function failureDescription(mixed $other): string
     {
         if (is_object($this->value) && is_object($other)) {
             return 'two variables reference the same object';

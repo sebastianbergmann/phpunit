@@ -32,10 +32,8 @@ final class IsEmpty extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
-     *
-     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         if ($other instanceof EmptyIterator) {
             return true;
@@ -53,10 +51,8 @@ final class IsEmpty extends Constraint
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other evaluated value or object
      */
-    protected function failureDescription($other): string
+    protected function failureDescription(mixed $other): string
     {
         $type = gettype($other);
 

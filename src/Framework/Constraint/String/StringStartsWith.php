@@ -40,10 +40,8 @@ final class StringStartsWith extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
-     *
-     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         return strpos((string) $other, $this->prefix) === 0;
     }

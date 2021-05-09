@@ -43,10 +43,8 @@ final class JsonMatches extends Constraint
      * constraint is met, false otherwise.
      *
      * This method can be overridden to implement the evaluation algorithm.
-     *
-     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         [$error, $recodedOther] = Json::canonicalize($other);
 
@@ -66,17 +64,13 @@ final class JsonMatches extends Constraint
     /**
      * Throws an exception for the given compared value and test description.
      *
-     * @param mixed             $other             evaluated value or object
-     * @param string            $description       Additional information about the test
-     * @param ComparisonFailure $comparisonFailure
-     *
      * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      *
      * @psalm-return never-return
      */
-    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
+    protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): void
     {
         if ($comparisonFailure === null) {
             [$error, $recodedOther] = Json::canonicalize($other);

@@ -34,12 +34,10 @@ final class ExceptionMessageRegularExpression extends Constraint
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param \PHPUnit\Framework\Exception $other
-     *
      * @throws \PHPUnit\Framework\Exception
      * @throws Exception
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         $match = RegularExpressionUtil::safeMatch($this->expectedMessageRegExp, $other->getMessage());
 
@@ -57,10 +55,8 @@ final class ExceptionMessageRegularExpression extends Constraint
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other evaluated value or object
      */
-    protected function failureDescription($other): string
+    protected function failureDescription(mixed $other): string
     {
         return sprintf(
             "exception message '%s' matches '%s'",

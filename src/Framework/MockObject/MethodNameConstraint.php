@@ -34,7 +34,7 @@ final class MethodNameConstraint extends Constraint
         );
     }
 
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         if (!is_string($other)) {
             return false;

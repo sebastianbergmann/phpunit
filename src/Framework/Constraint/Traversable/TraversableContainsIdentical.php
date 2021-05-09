@@ -19,10 +19,8 @@ final class TraversableContainsIdentical extends TraversableContains
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
-     *
-     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         if ($other instanceof SplObjectStorage) {
             return $other->contains($this->value());

@@ -41,11 +41,9 @@ final class Callback extends Constraint
      * Evaluates the constraint for parameter $value. Returns true if the
      * constraint is met, false otherwise.
      *
-     * @param mixed $other value or object to evaluate
-     *
      * @psalm-param CallbackInput $other
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         return ($this->callback)($other);
     }

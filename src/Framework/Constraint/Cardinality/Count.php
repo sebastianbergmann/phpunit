@@ -46,7 +46,7 @@ class Count extends Constraint
      *
      * @throws Exception
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         return $this->expectedCount === $this->getCountOf($other);
     }
@@ -124,10 +124,8 @@ class Count extends Constraint
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other evaluated value or object
      */
-    protected function failureDescription($other): string
+    protected function failureDescription(mixed $other): string
     {
         return sprintf(
             'actual size %d matches expected size %d',
