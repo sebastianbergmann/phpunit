@@ -737,6 +737,9 @@
   </file>
   <file src="src/Metadata/Facade/DataProviderFacade.php">
     <MissingThrowsDocblock occurrences="2"/>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) substr($docComment, 0, -1)</code>
+    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Metadata/Facade/GroupsFacade.php">
     <RedundantCondition occurrences="6">
@@ -764,6 +767,9 @@
     <RedundantCast occurrences="1">
       <code>(string) $matches['value'][$i]</code>
     </RedundantCast>
+    <RedundantCastGivenDocblockType occurrences="1">
+      <code>(string) substr($docBlock, 3, -2)</code>
+    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
     <ArgumentTypeCoercion occurrences="9">
