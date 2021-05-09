@@ -53,7 +53,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Enable or disable the backup and restoration of static attributes.
      */
-    protected ?bool $backupStaticAttributes = null;
+    protected ?bool $backupStaticProperties = null;
 
     protected bool $runTestInSeparateProcess = false;
 
@@ -473,7 +473,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             if ($test instanceof TestCase || $test instanceof self) {
                 $test->setBeStrictAboutChangesToGlobalState($this->beStrictAboutChangesToGlobalState);
                 $test->setBackupGlobals($this->backupGlobals);
-                $test->setBackupStaticAttributes($this->backupStaticAttributes);
+                $test->setBackupStaticProperties($this->backupStaticProperties);
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 
@@ -568,12 +568,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @param bool $backupStaticAttributes
+     * @param bool $backupStaticProperties
      */
-    public function setBackupStaticAttributes($backupStaticAttributes): void
+    public function setBackupStaticProperties($backupStaticProperties): void
     {
-        if (null === $this->backupStaticAttributes && is_bool($backupStaticAttributes)) {
-            $this->backupStaticAttributes = $backupStaticAttributes;
+        if (null === $this->backupStaticProperties && is_bool($backupStaticProperties)) {
+            $this->backupStaticProperties = $backupStaticProperties;
         }
     }
 

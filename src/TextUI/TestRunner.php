@@ -139,7 +139,7 @@ final class TestRunner
         }
 
         if ($arguments['backupStaticProperties'] === true) {
-            $suite->setBackupStaticAttributes(true);
+            $suite->setBackupStaticProperties(true);
         }
 
         if ($arguments['beStrictAboutChangesToGlobalState'] === true) {

@@ -167,7 +167,7 @@ final class TestBuilder
         }
 
         if ($backupSettings['backupStaticProperties'] !== null) {
-            $test->setBackupStaticAttributes(
+            $test->setBackupStaticProperties(
                 $backupSettings['backupStaticProperties']
             );
         }

@@ -42,6 +42,7 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'backupStaticAttributes':
+                case 'backupStaticProperties':
                     $result[] = new BackupStaticProperties($this->stringToBool($values[0]));
 
                     break;
@@ -177,6 +178,7 @@ final class AnnotationParser implements Parser
                     break;
 
                 case 'backupStaticAttributes':
+                case 'backupStaticProperties':
                     $result[] = new BackupStaticProperties($this->stringToBool($values[0]));
 
                     break;

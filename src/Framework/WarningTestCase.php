@@ -21,7 +21,7 @@ final class WarningTestCase extends TestCase
         $this->message = $message;
 
         $this->setBackupGlobals(false);
-        $this->setBackupStaticAttributes(false);
+        $this->setBackupStaticProperties(false);
         $this->setRunClassInSeparateProcess(false);
         $this->setRunTestInSeparateProcess(false);
 

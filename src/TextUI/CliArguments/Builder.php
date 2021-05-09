@@ -140,7 +140,7 @@ final class Builder
         $argument                                   = null;
         $atLeastVersion                             = null;
         $backupGlobals                              = null;
-        $backupStaticAttributes                     = null;
+        $backupStaticProperties                     = null;
         $beStrictAboutChangesToGlobalState          = null;
         $beStrictAboutResourceUsageDuringSmallTests = null;
         $bootstrap                                  = null;
@@ -650,7 +650,7 @@ final class Builder
                     break;
 
                 case '--static-backup':
-                    $backupStaticAttributes = true;
+                    $backupStaticProperties = true;
 
                     break;
 
@@ -784,7 +784,7 @@ final class Builder
             $argument,
             $atLeastVersion,
             $backupGlobals,
-            $backupStaticAttributes,
+            $backupStaticProperties,
             $beStrictAboutChangesToGlobalState,
             $beStrictAboutResourceUsageDuringSmallTests,
             $bootstrap,

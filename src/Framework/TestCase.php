@@ -125,7 +125,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private ?bool $backupGlobals = null;
 
-    private ?bool $backupStaticAttributes = null;
+    private ?bool $backupStaticProperties = null;
 
     private ?bool $runTestInSeparateProcess = null;
 
@@ -886,10 +886,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function setBackupStaticAttributes(?bool $backupStaticAttributes): void
+    public function setBackupStaticProperties(?bool $backupStaticProperties): void
     {
-        if ($this->backupStaticAttributes === null && $backupStaticAttributes !== null) {
-            $this->backupStaticAttributes = $backupStaticAttributes;
+        if ($this->backupStaticProperties === null && $backupStaticProperties !== null) {
+            $this->backupStaticProperties = $backupStaticProperties;
         }
     }
 
@@ -1730,7 +1730,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function snapshotGlobalState(): void
     {
         if ($this->runTestInSeparateProcess || $this->inIsolation ||
-            (!$this->backupGlobals && !$this->backupStaticAttributes)) {
+            (!$this->backupGlobals && !$this->backupStaticProperties)) {
             return;
         }
 
@@ -1764,7 +1764,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $restorer->restoreGlobalVariables($this->snapshot);
         }
 
-        if ($this->backupStaticAttributes) {
+        if ($this->backupStaticProperties) {
             $restorer->restoreStaticAttributes($this->snapshot);
         }
 
@@ -1803,7 +1803,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return new Snapshot(
             $excludeList,
             $backupGlobals,
-            (bool) $this->backupStaticAttributes,
+            (bool) $this->backupStaticProperties,
             false,
             false,
             false,
@@ -1836,7 +1836,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        if ($this->backupStaticAttributes) {
+        if ($this->backupStaticProperties) {
             $this->compareGlobalStateSnapshotPart(
                 $before->staticAttributes(),
                 $after->staticAttributes(),

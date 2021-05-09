@@ -21,7 +21,7 @@ final class IncompleteTestCase extends TestCase
         parent::__construct($className . '::' . $methodName);
 
         $this->setBackupGlobals(false);
-        $this->setBackupStaticAttributes(false);
+        $this->setBackupStaticProperties(false);
         $this->setRunClassInSeparateProcess(false);
         $this->setRunTestInSeparateProcess(false);
 

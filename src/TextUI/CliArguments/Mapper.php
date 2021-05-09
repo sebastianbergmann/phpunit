@@ -299,8 +299,8 @@ final class Mapper
             $result['backupGlobals'] = $arguments->backupGlobals();
         }
 
-        if ($arguments->hasBackupStaticAttributes()) {
-            $result['backupStaticProperties'] = $arguments->backupStaticAttributes();
+        if ($arguments->hasBackupStaticProperties()) {
+            $result['backupStaticProperties'] = $arguments->backupStaticProperties();
         }
 
         if ($arguments->hasVerbose()) {
