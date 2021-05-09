@@ -471,9 +471,18 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
 
             if ($test instanceof TestCase || $test instanceof self) {
-                $test->setBeStrictAboutChangesToGlobalState($this->beStrictAboutChangesToGlobalState);
-                $test->setBackupGlobals($this->backupGlobals);
-                $test->setBackupStaticProperties($this->backupStaticProperties);
+                if ($this->backupGlobals !== null) {
+                    $test->setBackupGlobals($this->backupGlobals);
+                }
+
+                if ($this->backupStaticProperties !== null) {
+                    $test->setBackupStaticProperties($this->backupStaticProperties);
+                }
+
+                if ($this->beStrictAboutChangesToGlobalState !== null) {
+                    $test->setBeStrictAboutChangesToGlobalState($this->beStrictAboutChangesToGlobalState);
+                }
+
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 

@@ -868,7 +868,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function setBeStrictAboutChangesToGlobalState(?bool $beStrictAboutChangesToGlobalState): void
+    public function setBeStrictAboutChangesToGlobalState(bool $beStrictAboutChangesToGlobalState): void
     {
         $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;
     }
@@ -876,9 +876,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function setBackupGlobals(?bool $backupGlobals): void
+    public function setBackupGlobals(bool $backupGlobals): void
     {
-        if ($this->backupGlobals === null && $backupGlobals !== null) {
+        if ($this->backupGlobals === null) {
             $this->backupGlobals = $backupGlobals;
         }
     }
@@ -886,9 +886,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function setBackupStaticProperties(?bool $backupStaticProperties): void
+    public function setBackupStaticProperties(bool $backupStaticProperties): void
     {
-        if ($this->backupStaticProperties === null && $backupStaticProperties !== null) {
+        if ($this->backupStaticProperties === null) {
             $this->backupStaticProperties = $backupStaticProperties;
         }
     }
