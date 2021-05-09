@@ -82,20 +82,6 @@ final class AssertTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Book::class, $test2);
     }
 
-    public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertArrayHasKey(null, []);
-    }
-
-    public function testAssertArrayHasKeyThrowsExceptionForInvalidSecondArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertArrayHasKey(0, null);
-    }
-
     public function testAssertArrayHasIntegerKey(): void
     {
         $this->assertArrayHasKey(0, ['foo']);
@@ -103,20 +89,6 @@ final class AssertTest extends TestCase
         $this->expectException(AssertionFailedError::class);
 
         $this->assertArrayHasKey(1, ['foo']);
-    }
-
-    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidFirstArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertArrayNotHasKey(null, []);
-    }
-
-    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidSecondArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertArrayNotHasKey(0, null);
     }
 
     public function testAssertArrayNotHasIntegerKey(): void
@@ -1165,13 +1137,6 @@ XML;
         );
     }
 
-    public function testAssertStringStartsNotWithThrowsException2(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringStartsNotWith('', null);
-    }
-
     public function testAssertStringStartsWith(): void
     {
         $this->assertStringStartsWith('prefix', 'prefixfoo');
@@ -1291,19 +1256,6 @@ XML;
         $this->assertCount(2, new ArrayIterator([1, 2, 3]));
     }
 
-    public function testAssertCountThrowsExceptionIfElementIsNotCountable(): void
-    {
-        try {
-            $this->assertCount(2, '');
-        } catch (Exception $e) {
-            $this->assertEquals('Argument #2 of PHPUnit\Framework\Assert::assertCount() must be a countable or iterable', $e->getMessage());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testAssertNotCount(): void
     {
         $this->assertNotCount(2, [1, 2, 3]);
@@ -1311,13 +1263,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotCount(2, [1, 2]);
-    }
-
-    public function testAssertNotCountThrowsExceptionIfElementIsNotCountable(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotCount(2, '');
     }
 
     public function testAssertSameSize(): void
@@ -1329,32 +1274,6 @@ XML;
         $this->assertSameSize([1, 2], [1, 2, 3]);
     }
 
-    public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCountable(): void
-    {
-        try {
-            $this->assertSameSize('a', []);
-        } catch (Exception $e) {
-            $this->assertEquals('Argument #1 of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testAssertSameSizeThrowsExceptionIfActualIsNotCountable(): void
-    {
-        try {
-            $this->assertSameSize([], '');
-        } catch (Exception $e) {
-            $this->assertEquals('Argument #2 of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testAssertNotSameSize(): void
     {
         $this->assertNotSameSize([1, 2], [1, 2, 3]);
@@ -1362,20 +1281,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotSameSize([1, 2], [3, 4]);
-    }
-
-    public function testAssertNotSameSizeThrowsExceptionIfExpectedIsNotCountable(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotSameSize('a', []);
-    }
-
-    public function testAssertNotSameSizeThrowsExceptionIfActualIsNotCountable(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotSameSize([], '');
     }
 
     /**

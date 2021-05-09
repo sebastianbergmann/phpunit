@@ -21,12 +21,8 @@ use function file_get_contents;
 use function func_get_args;
 use function implode;
 use function interface_exists;
-use function is_array;
 use function is_bool;
-use function is_int;
-use function is_iterable;
 use function is_object;
-use function is_string;
 use function preg_match;
 use function preg_split;
 use function strpos;
@@ -91,29 +87,12 @@ abstract class Assert
     /**
      * Asserts that an array has a specified key.
      *
-     * @param int|string        $key
-     * @param array|ArrayAccess $array
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    public static function assertArrayHasKey($key, $array, string $message = ''): void
+    public static function assertArrayHasKey(int|string $key, array|ArrayAccess $array, string $message = ''): void
     {
-        if (!(is_int($key) || is_string($key))) {
-            throw InvalidArgumentException::create(
-                1,
-                'integer or string'
-            );
-        }
-
-        if (!(is_array($array) || $array instanceof ArrayAccess)) {
-            throw InvalidArgumentException::create(
-                2,
-                'array or ArrayAccess'
-            );
-        }
-
         $constraint = new ArrayHasKey($key);
 
         static::assertThat($array, $constraint, $message);
@@ -122,29 +101,12 @@ abstract class Assert
     /**
      * Asserts that an array does not have a specified key.
      *
-     * @param int|string        $key
-     * @param array|ArrayAccess $array
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    public static function assertArrayNotHasKey($key, $array, string $message = ''): void
+    public static function assertArrayNotHasKey(int|string $key, array|ArrayAccess $array, string $message = ''): void
     {
-        if (!(is_int($key) || is_string($key))) {
-            throw InvalidArgumentException::create(
-                1,
-                'integer or string'
-            );
-        }
-
-        if (!(is_array($array) || $array instanceof ArrayAccess)) {
-            throw InvalidArgumentException::create(
-                2,
-                'array or ArrayAccess'
-            );
-        }
-
         $constraint = new LogicalNot(
             new ArrayHasKey($key)
         );
@@ -159,14 +121,14 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    public static function assertContains($needle, iterable $haystack, string $message = ''): void
+    public static function assertContains(mixed $needle, iterable $haystack, string $message = ''): void
     {
         $constraint = new TraversableContainsIdentical($needle);
 
         static::assertThat($haystack, $constraint, $message);
     }
 
-    public static function assertContainsEquals($needle, iterable $haystack, string $message = ''): void
+    public static function assertContainsEquals(mixed $needle, iterable $haystack, string $message = ''): void
     {
         $constraint = new TraversableContainsEqual($needle);
 
@@ -180,7 +142,7 @@ abstract class Assert
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    public static function assertNotContains($needle, iterable $haystack, string $message = ''): void
+    public static function assertNotContains(mixed $needle, iterable $haystack, string $message = ''): void
     {
         $constraint = new LogicalNot(
             new TraversableContainsIdentical($needle)
@@ -189,7 +151,7 @@ abstract class Assert
         static::assertThat($haystack, $constraint, $message);
     }
 
-    public static function assertNotContainsEquals($needle, iterable $haystack, string $message = ''): void
+    public static function assertNotContainsEquals(mixed $needle, iterable $haystack, string $message = ''): void
     {
         $constraint = new LogicalNot(new TraversableContainsEqual($needle));
 
@@ -263,18 +225,12 @@ abstract class Assert
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
-     * @param Countable|iterable $haystack
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    public static function assertCount(int $expectedCount, $haystack, string $message = ''): void
+    public static function assertCount(int $expectedCount, Countable|iterable $haystack, string $message = ''): void
     {
-        if (!$haystack instanceof Countable && !is_iterable($haystack)) {
-            throw InvalidArgumentException::create(2, 'countable or iterable');
-        }
-
         if ($haystack instanceof Generator) {
             (new WarningUtil)->createForTestCaseObjectOnCallStack(
                 'Passing an argument of type Generator for the $haystack parameter is deprecated. Support for this will be removed in PHPUnit 11.'
@@ -291,18 +247,12 @@ abstract class Assert
     /**
      * Asserts the number of elements of an array, Countable or Traversable.
      *
-     * @param Countable|iterable $haystack
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    public static function assertNotCount(int $expectedCount, $haystack, string $message = ''): void
+    public static function assertNotCount(int $expectedCount, Countable|iterable $haystack, string $message = ''): void
     {
-        if (!$haystack instanceof Countable && !is_iterable($haystack)) {
-            throw InvalidArgumentException::create(2, 'countable or iterable');
-        }
-
         $constraint = new LogicalNot(
             new Count($expectedCount)
         );
@@ -316,7 +266,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertEquals($expected, $actual, string $message = ''): void
+    public static function assertEquals(mixed $expected, mixed $actual, string $message = ''): void
     {
         $constraint = new IsEqual($expected);
 
@@ -329,7 +279,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertEqualsCanonicalizing($expected, $actual, string $message = ''): void
+    public static function assertEqualsCanonicalizing(mixed $expected, mixed $actual, string $message = ''): void
     {
         $constraint = new IsEqualCanonicalizing($expected);
 
@@ -342,7 +292,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertEqualsIgnoringCase($expected, $actual, string $message = ''): void
+    public static function assertEqualsIgnoringCase(mixed $expected, mixed $actual, string $message = ''): void
     {
         $constraint = new IsEqualIgnoringCase($expected);
 
@@ -355,7 +305,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertEqualsWithDelta($expected, $actual, float $delta, string $message = ''): void
+    public static function assertEqualsWithDelta(mixed $expected, mixed $actual, float $delta, string $message = ''): void
     {
         $constraint = new IsEqualWithDelta(
             $expected,
@@ -371,7 +321,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertNotEquals($expected, $actual, string $message = ''): void
+    public static function assertNotEquals(mixed $expected, mixed $actual, string $message = ''): void
     {
         $constraint = new LogicalNot(
             new IsEqual($expected)
@@ -386,7 +336,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertNotEqualsCanonicalizing($expected, $actual, string $message = ''): void
+    public static function assertNotEqualsCanonicalizing(mixed $expected, mixed $actual, string $message = ''): void
     {
         $constraint = new LogicalNot(
             new IsEqualCanonicalizing($expected)
@@ -401,7 +351,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertNotEqualsIgnoringCase($expected, $actual, string $message = ''): void
+    public static function assertNotEqualsIgnoringCase(mixed $expected, mixed $actual, string $message = ''): void
     {
         $constraint = new LogicalNot(
             new IsEqualIgnoringCase($expected)
@@ -416,7 +366,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertNotEqualsWithDelta($expected, $actual, float $delta, string $message = ''): void
+    public static function assertNotEqualsWithDelta(mixed $expected, mixed $actual, float $delta, string $message = ''): void
     {
         $constraint = new LogicalNot(
             new IsEqualWithDelta(
@@ -448,7 +398,7 @@ abstract class Assert
      *
      * @psalm-assert empty $actual
      */
-    public static function assertEmpty($actual, string $message = ''): void
+    public static function assertEmpty(mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::isEmpty(), $message);
     }
@@ -461,7 +411,7 @@ abstract class Assert
      *
      * @psalm-assert !empty $actual
      */
-    public static function assertNotEmpty($actual, string $message = ''): void
+    public static function assertNotEmpty(mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::logicalNot(static::isEmpty()), $message);
     }
@@ -472,7 +422,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertGreaterThan($expected, $actual, string $message = ''): void
+    public static function assertGreaterThan(mixed $expected, mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::greaterThan($expected), $message);
     }
@@ -483,7 +433,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertGreaterThanOrEqual($expected, $actual, string $message = ''): void
+    public static function assertGreaterThanOrEqual(mixed $expected, mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -498,7 +448,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertLessThan($expected, $actual, string $message = ''): void
+    public static function assertLessThan(mixed $expected, mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::lessThan($expected), $message);
     }
@@ -509,7 +459,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertLessThanOrEqual($expected, $actual, string $message = ''): void
+    public static function assertLessThanOrEqual(mixed $expected, mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::lessThanOrEqual($expected), $message);
     }
@@ -918,7 +868,7 @@ abstract class Assert
      *
      * @psalm-assert true $condition
      */
-    public static function assertTrue($condition, string $message = ''): void
+    public static function assertTrue(mixed $condition, string $message = ''): void
     {
         static::assertThat($condition, static::isTrue(), $message);
     }
@@ -931,7 +881,7 @@ abstract class Assert
      *
      * @psalm-assert !true $condition
      */
-    public static function assertNotTrue($condition, string $message = ''): void
+    public static function assertNotTrue(mixed $condition, string $message = ''): void
     {
         static::assertThat($condition, static::logicalNot(static::isTrue()), $message);
     }
@@ -944,7 +894,7 @@ abstract class Assert
      *
      * @psalm-assert false $condition
      */
-    public static function assertFalse($condition, string $message = ''): void
+    public static function assertFalse(mixed $condition, string $message = ''): void
     {
         static::assertThat($condition, static::isFalse(), $message);
     }
@@ -957,7 +907,7 @@ abstract class Assert
      *
      * @psalm-assert !false $condition
      */
-    public static function assertNotFalse($condition, string $message = ''): void
+    public static function assertNotFalse(mixed $condition, string $message = ''): void
     {
         static::assertThat($condition, static::logicalNot(static::isFalse()), $message);
     }
@@ -970,7 +920,7 @@ abstract class Assert
      *
      * @psalm-assert null $actual
      */
-    public static function assertNull($actual, string $message = ''): void
+    public static function assertNull(mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::isNull(), $message);
     }
@@ -983,7 +933,7 @@ abstract class Assert
      *
      * @psalm-assert !null $actual
      */
-    public static function assertNotNull($actual, string $message = ''): void
+    public static function assertNotNull(mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::logicalNot(static::isNull()), $message);
     }
@@ -994,7 +944,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertFinite($actual, string $message = ''): void
+    public static function assertFinite(mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::isFinite(), $message);
     }
@@ -1005,7 +955,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertInfinite($actual, string $message = ''): void
+    public static function assertInfinite(mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::isInfinite(), $message);
     }
@@ -1016,7 +966,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertNan($actual, string $message = ''): void
+    public static function assertNan(mixed $actual, string $message = ''): void
     {
         static::assertThat($actual, static::isNan(), $message);
     }
@@ -1152,8 +1102,6 @@ abstract class Assert
     /**
      * Asserts that an object has a specified attribute.
      *
-     * @param object $object
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
@@ -1162,7 +1110,7 @@ abstract class Assert
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
-    public static function assertObjectHasAttribute(string $attributeName, $object, string $message = ''): void
+    public static function assertObjectHasAttribute(string $attributeName, object $object, string $message = ''): void
     {
         if (!self::isValidObjectAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
@@ -1186,8 +1134,6 @@ abstract class Assert
     /**
      * Asserts that an object does not have a specified attribute.
      *
-     * @param object $object
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
@@ -1196,7 +1142,7 @@ abstract class Assert
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
-    public static function assertObjectNotHasAttribute(string $attributeName, $object, string $message = ''): void
+    public static function assertObjectNotHasAttribute(string $attributeName, object $object, string $message = ''): void
     {
         if (!self::isValidObjectAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
@@ -1231,7 +1177,7 @@ abstract class Assert
      * @psalm-param ExpectedType $expected
      * @psalm-assert =ExpectedType $actual
      */
-    public static function assertSame($expected, $actual, string $message = ''): void
+    public static function assertSame(mixed $expected, mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1248,7 +1194,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertNotSame($expected, $actual, string $message = ''): void
+    public static function assertNotSame(mixed $expected, mixed $actual, string $message = ''): void
     {
         if (is_bool($expected) && is_bool($actual)) {
             static::assertNotEquals($expected, $actual, $message);
@@ -1274,7 +1220,7 @@ abstract class Assert
      * @psalm-param class-string<ExpectedType> $expected
      * @psalm-assert =ExpectedType $actual
      */
-    public static function assertInstanceOf(string $expected, $actual, string $message = ''): void
+    public static function assertInstanceOf(string $expected, mixed $actual, string $message = ''): void
     {
         if (!class_exists($expected) && !interface_exists($expected)) {
             throw InvalidArgumentException::create(1, 'class or interface name');
@@ -1298,7 +1244,7 @@ abstract class Assert
      * @psalm-param class-string<ExpectedType> $expected
      * @psalm-assert !ExpectedType $actual
      */
-    public static function assertNotInstanceOf(string $expected, $actual, string $message = ''): void
+    public static function assertNotInstanceOf(string $expected, mixed $actual, string $message = ''): void
     {
         if (!class_exists($expected) && !interface_exists($expected)) {
             throw InvalidArgumentException::create(1, 'class or interface name');
@@ -1321,7 +1267,7 @@ abstract class Assert
      *
      * @psalm-assert array $actual
      */
-    public static function assertIsArray($actual, string $message = ''): void
+    public static function assertIsArray(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1338,7 +1284,7 @@ abstract class Assert
      *
      * @psalm-assert bool $actual
      */
-    public static function assertIsBool($actual, string $message = ''): void
+    public static function assertIsBool(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1355,7 +1301,7 @@ abstract class Assert
      *
      * @psalm-assert float $actual
      */
-    public static function assertIsFloat($actual, string $message = ''): void
+    public static function assertIsFloat(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1372,7 +1318,7 @@ abstract class Assert
      *
      * @psalm-assert int $actual
      */
-    public static function assertIsInt($actual, string $message = ''): void
+    public static function assertIsInt(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1389,7 +1335,7 @@ abstract class Assert
      *
      * @psalm-assert numeric $actual
      */
-    public static function assertIsNumeric($actual, string $message = ''): void
+    public static function assertIsNumeric(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1406,7 +1352,7 @@ abstract class Assert
      *
      * @psalm-assert object $actual
      */
-    public static function assertIsObject($actual, string $message = ''): void
+    public static function assertIsObject(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1423,7 +1369,7 @@ abstract class Assert
      *
      * @psalm-assert resource $actual
      */
-    public static function assertIsResource($actual, string $message = ''): void
+    public static function assertIsResource(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1440,7 +1386,7 @@ abstract class Assert
      *
      * @psalm-assert resource $actual
      */
-    public static function assertIsClosedResource($actual, string $message = ''): void
+    public static function assertIsClosedResource(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1457,7 +1403,7 @@ abstract class Assert
      *
      * @psalm-assert string $actual
      */
-    public static function assertIsString($actual, string $message = ''): void
+    public static function assertIsString(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1474,7 +1420,7 @@ abstract class Assert
      *
      * @psalm-assert scalar $actual
      */
-    public static function assertIsScalar($actual, string $message = ''): void
+    public static function assertIsScalar(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1491,7 +1437,7 @@ abstract class Assert
      *
      * @psalm-assert callable $actual
      */
-    public static function assertIsCallable($actual, string $message = ''): void
+    public static function assertIsCallable(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1508,7 +1454,7 @@ abstract class Assert
      *
      * @psalm-assert iterable $actual
      */
-    public static function assertIsIterable($actual, string $message = ''): void
+    public static function assertIsIterable(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1525,7 +1471,7 @@ abstract class Assert
      *
      * @psalm-assert !array $actual
      */
-    public static function assertIsNotArray($actual, string $message = ''): void
+    public static function assertIsNotArray(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1542,7 +1488,7 @@ abstract class Assert
      *
      * @psalm-assert !bool $actual
      */
-    public static function assertIsNotBool($actual, string $message = ''): void
+    public static function assertIsNotBool(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1559,7 +1505,7 @@ abstract class Assert
      *
      * @psalm-assert !float $actual
      */
-    public static function assertIsNotFloat($actual, string $message = ''): void
+    public static function assertIsNotFloat(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1576,7 +1522,7 @@ abstract class Assert
      *
      * @psalm-assert !int $actual
      */
-    public static function assertIsNotInt($actual, string $message = ''): void
+    public static function assertIsNotInt(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1593,7 +1539,7 @@ abstract class Assert
      *
      * @psalm-assert !numeric $actual
      */
-    public static function assertIsNotNumeric($actual, string $message = ''): void
+    public static function assertIsNotNumeric(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1610,7 +1556,7 @@ abstract class Assert
      *
      * @psalm-assert !object $actual
      */
-    public static function assertIsNotObject($actual, string $message = ''): void
+    public static function assertIsNotObject(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1627,7 +1573,7 @@ abstract class Assert
      *
      * @psalm-assert !resource $actual
      */
-    public static function assertIsNotResource($actual, string $message = ''): void
+    public static function assertIsNotResource(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1644,7 +1590,7 @@ abstract class Assert
      *
      * @psalm-assert !resource $actual
      */
-    public static function assertIsNotClosedResource($actual, string $message = ''): void
+    public static function assertIsNotClosedResource(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1661,7 +1607,7 @@ abstract class Assert
      *
      * @psalm-assert !string $actual
      */
-    public static function assertIsNotString($actual, string $message = ''): void
+    public static function assertIsNotString(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1678,7 +1624,7 @@ abstract class Assert
      *
      * @psalm-assert !scalar $actual
      */
-    public static function assertIsNotScalar($actual, string $message = ''): void
+    public static function assertIsNotScalar(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1695,7 +1641,7 @@ abstract class Assert
      *
      * @psalm-assert !callable $actual
      */
-    public static function assertIsNotCallable($actual, string $message = ''): void
+    public static function assertIsNotCallable(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1712,7 +1658,7 @@ abstract class Assert
      *
      * @psalm-assert !iterable $actual
      */
-    public static function assertIsNotIterable($actual, string $message = ''): void
+    public static function assertIsNotIterable(mixed $actual, string $message = ''): void
     {
         static::assertThat(
             $actual,
@@ -1753,23 +1699,12 @@ abstract class Assert
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is the same.
      *
-     * @param Countable|iterable $expected
-     * @param Countable|iterable $actual
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    public static function assertSameSize($expected, $actual, string $message = ''): void
+    public static function assertSameSize(Countable|iterable $expected, Countable|iterable $actual, string $message = ''): void
     {
-        if (!$expected instanceof Countable && !is_iterable($expected)) {
-            throw InvalidArgumentException::create(1, 'countable or iterable');
-        }
-
-        if (!$actual instanceof Countable && !is_iterable($actual)) {
-            throw InvalidArgumentException::create(2, 'countable or iterable');
-        }
-
         static::assertThat(
             $actual,
             new SameSize($expected),
@@ -1781,23 +1716,12 @@ abstract class Assert
      * Assert that the size of two arrays (or `Countable` or `Traversable` objects)
      * is not the same.
      *
-     * @param Countable|iterable $expected
-     * @param Countable|iterable $actual
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      * @throws ExpectationFailedException
      */
-    public static function assertNotSameSize($expected, $actual, string $message = ''): void
+    public static function assertNotSameSize(Countable|iterable $expected, Countable|iterable $actual, string $message = ''): void
     {
-        if (!$expected instanceof Countable && !is_iterable($expected)) {
-            throw InvalidArgumentException::create(1, 'countable or iterable');
-        }
-
-        if (!$actual instanceof Countable && !is_iterable($actual)) {
-            throw InvalidArgumentException::create(2, 'countable or iterable');
-        }
-
         static::assertThat(
             $actual,
             new LogicalNot(
@@ -1889,13 +1813,10 @@ abstract class Assert
     /**
      * Asserts that a string starts not with a given prefix.
      *
-     * @param string $prefix
-     * @param string $string
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertStringStartsNotWith($prefix, $string, string $message = ''): void
+    public static function assertStringStartsNotWith(string $prefix, string $string, string $message = ''): void
     {
         static::assertThat(
             $string,
@@ -2074,7 +1995,7 @@ abstract class Assert
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertThat($value, Constraint $constraint, string $message = ''): void
+    public static function assertThat(mixed $value, Constraint $constraint, string $message = ''): void
     {
         self::$count += count($constraint);
 
@@ -2109,13 +2030,10 @@ abstract class Assert
     /**
      * Asserts that two given JSON encoded objects or arrays are not equal.
      *
-     * @param string $expectedJson
-     * @param string $actualJson
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertJsonStringNotEqualsJsonString($expectedJson, $actualJson, string $message = ''): void
+    public static function assertJsonStringNotEqualsJsonString(string $expectedJson, string $actualJson, string $message = ''): void
     {
         static::assertJson($expectedJson, $message);
         static::assertJson($actualJson, $message);
@@ -2313,12 +2231,12 @@ abstract class Assert
         return new IsNan;
     }
 
-    public static function containsEqual($value): TraversableContainsEqual
+    public static function containsEqual(mixed $value): TraversableContainsEqual
     {
         return new TraversableContainsEqual($value);
     }
 
-    public static function containsIdentical($value): TraversableContainsIdentical
+    public static function containsIdentical(mixed $value): TraversableContainsIdentical
     {
         return new TraversableContainsIdentical($value);
     }
@@ -2333,30 +2251,27 @@ abstract class Assert
         return new TraversableContainsOnly($className, false);
     }
 
-    /**
-     * @param int|string $key
-     */
-    public static function arrayHasKey($key): ArrayHasKey
+    public static function arrayHasKey(int|string $key): ArrayHasKey
     {
         return new ArrayHasKey($key);
     }
 
-    public static function equalTo($value): IsEqual
+    public static function equalTo(mixed $value): IsEqual
     {
         return new IsEqual($value, 0.0, false, false);
     }
 
-    public static function equalToCanonicalizing($value): IsEqualCanonicalizing
+    public static function equalToCanonicalizing(mixed $value): IsEqualCanonicalizing
     {
         return new IsEqualCanonicalizing($value);
     }
 
-    public static function equalToIgnoringCase($value): IsEqualIgnoringCase
+    public static function equalToIgnoringCase(mixed $value): IsEqualIgnoringCase
     {
         return new IsEqualIgnoringCase($value);
     }
 
-    public static function equalToWithDelta($value, float $delta): IsEqualWithDelta
+    public static function equalToWithDelta(mixed $value, float $delta): IsEqualWithDelta
     {
         return new IsEqualWithDelta($value, $delta);
     }
@@ -2386,12 +2301,12 @@ abstract class Assert
         return new FileExists;
     }
 
-    public static function greaterThan($value): GreaterThan
+    public static function greaterThan(mixed $value): GreaterThan
     {
         return new GreaterThan($value);
     }
 
-    public static function greaterThanOrEqual($value): LogicalOr
+    public static function greaterThanOrEqual(mixed $value): LogicalOr
     {
         return static::logicalOr(
             new IsEqual($value),
@@ -2424,12 +2339,12 @@ abstract class Assert
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
      */
-    public static function objectHasAttribute($attributeName): ObjectHasAttribute
+    public static function objectHasAttribute(string $attributeName): ObjectHasAttribute
     {
         return new ObjectHasAttribute($attributeName);
     }
 
-    public static function identicalTo($value): IsIdentical
+    public static function identicalTo(mixed $value): IsIdentical
     {
         return new IsIdentical($value);
     }
@@ -2444,12 +2359,12 @@ abstract class Assert
         return new IsType($type);
     }
 
-    public static function lessThan($value): LessThan
+    public static function lessThan(mixed $value): LessThan
     {
         return new LessThan($value);
     }
 
-    public static function lessThanOrEqual($value): LogicalOr
+    public static function lessThanOrEqual(mixed $value): LogicalOr
     {
         return static::logicalOr(
             new IsEqual($value),
@@ -2467,7 +2382,7 @@ abstract class Assert
         return new StringMatchesFormatDescription($string);
     }
 
-    public static function stringStartsWith($prefix): StringStartsWith
+    public static function stringStartsWith(string $prefix): StringStartsWith
     {
         return new StringStartsWith($prefix);
     }
