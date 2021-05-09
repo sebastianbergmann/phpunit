@@ -33,10 +33,9 @@ final class IsEmptyTest extends ConstraintTestCase
         try {
             $constraint->evaluate(['foo']);
         } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
+            $this->assertStringContainsString(
                 <<<'EOF'
-Failed asserting that an array is empty.
-
+Failed asserting that an array is empty
 EOF
                 ,
                 TestFailure::exceptionToString($e)
@@ -55,10 +54,9 @@ EOF
         try {
             $constraint->evaluate(['foo'], 'custom message');
         } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
+            $this->assertStringContainsString(
                 <<<EOF
-custom message\nFailed asserting that an array is empty.
-
+custom message\nFailed asserting that an array is empty
 EOF
                 ,
                 TestFailure::exceptionToString($e)

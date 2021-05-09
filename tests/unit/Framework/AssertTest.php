@@ -1233,9 +1233,11 @@ XML;
     {
         $this->assertEmpty([]);
 
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertEmpty(['foo']);
+        try {
+            $this->assertEmpty(['foo']);
+        } catch (AssertionFailedError $e) {
+            $this->assertStringContainsString('foo', $e->getMessage());
+        }
     }
 
     public function testAssertNotEmpty(): void
