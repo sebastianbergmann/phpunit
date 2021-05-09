@@ -1366,33 +1366,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Mocks the specified class and returns the name of the mocked class.
-     *
-     * @param null|array $methods $methods
-     *
-     * @psalm-template RealInstanceType of object
-     * @psalm-param class-string<RealInstanceType>|string $originalClassName
-     * @psalm-return class-string<MockObject&RealInstanceType>
-     */
-    protected function getMockClass(string $originalClassName, $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = false, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = false): string
-    {
-        $this->recordDoubledType($originalClassName);
-
-        $mock = $this->getMockObjectGenerator()->getMock(
-            $originalClassName,
-            $methods,
-            $arguments,
-            $mockClassName,
-            $callOriginalConstructor,
-            $callOriginalClone,
-            $callAutoload,
-            $cloneArguments
-        );
-
-        return get_class($mock);
-    }
-
-    /**
      * Creates a mock object for the specified abstract class with all abstract
      * methods of the class mocked. Concrete methods are not mocked by default.
      * To mock concrete methods, use the 7th parameter ($mockedMethods).

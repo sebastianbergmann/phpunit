@@ -55,5 +55,6 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `<listeners>` XML configuration element and its children
 * Removed the `groups` attribute on the `<test>` element in the TestDox XML report
 * Removed the `processUncoveredFiles` attribute on the `<coverage>` XML configuration element
+* Removed the `PHPUnit\Framework\TestCase::getMockClass()` method
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master
