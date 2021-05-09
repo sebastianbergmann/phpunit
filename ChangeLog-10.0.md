@@ -4,6 +4,13 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ## [10.0.0] - 2021-MM-DD
 
+### Added
+
+* `@excludeGlobalVariableFromBackup variable` annotation for excluding a global variable from the backup/restore of global and super-global variables
+* `#[ExcludeGlobalVariableFromBackup('variable')]` attribute for excluding a global variable from the backup/restore of global and super-global variables
+* `@excludeStaticPropertyFromBackup className propertyName` annotation for excluding a static property from the backup/restore of static properties in user-defined classes
+* `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute for excluding a static property from the backup/restore of static properties in user-defined classes
+
 ### Changed
 
 * [#3871](https://github.com/sebastianbergmann/phpunit/issues/3871): Declare return types for `InvocationStubber` methods
@@ -58,5 +65,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `groups` attribute on the `<test>` element in the TestDox XML report
 * Removed the `processUncoveredFiles` attribute on the `<coverage>` XML configuration element
 * Removed the `PHPUnit\Framework\TestCase::getMockClass()` method
+* Removed the `PHPUnit\Framework\TestCase::$backupGlobalsExcludeList` property, use the `@excludeGlobalVariableFromBackup variable` annotation or the `#[ExcludeGlobalVariableFromBackup('variable')]` attribute instead for excluding a global variable from the backup/restore of global and super-global variables
+* Removed the `PHPUnit\Framework\TestCase::$backupStaticAttributesExcludeList` property, use the `@excludeStaticPropertyFromBackup className propertyName` annotation or the `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute instead for excluding a static property from the backup/restore of static properties in user-defined classes
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master

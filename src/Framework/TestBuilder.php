@@ -16,6 +16,8 @@ use function trim;
 use PHPUnit\Metadata\BackupGlobals;
 use PHPUnit\Metadata\BackupStaticProperties;
 use PHPUnit\Metadata\DataProviderFacade;
+use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
+use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Metadata\GroupsFacade;
 use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
@@ -108,6 +110,7 @@ final class TestBuilder
      * @psalm-param class-string $className
      *
      * @param array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data
+     * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>}
      */
     private function buildDataProviderTestSuite(string $methodName, string $className, $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
     {
@@ -144,6 +147,9 @@ final class TestBuilder
         return $dataProviderTestSuite;
     }
 
+    /**
+     * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>}
+     */
     private function configureTestCase(TestCase $test, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): void
     {
         if ($runTestInSeparateProcess) {
@@ -166,11 +172,15 @@ final class TestBuilder
             $test->setBackupGlobals($backupSettings['backupGlobals']);
         }
 
+        $test->setBackupGlobalsExcludeList($backupSettings['backupGlobalsExcludeList']);
+
         if ($backupSettings['backupStaticProperties'] !== null) {
             $test->setBackupStaticProperties(
                 $backupSettings['backupStaticProperties']
             );
         }
+
+        $test->setBackupStaticPropertiesExcludeList($backupSettings['backupStaticPropertiesExcludeList']);
     }
 
     private function throwableToString(Throwable $t): string
@@ -200,13 +210,16 @@ final class TestBuilder
     /**
      * @psalm-param class-string $className
      *
-     * @psalm-return array{backupGlobals: ?bool, backupStaticProperties: ?bool}
+     * @psalm-return array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>}
      */
     private function backupSettings(string $className, string $methodName): array
     {
-        $metadataForClass  = MetadataRegistry::parser()->forClass($className);
-        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
-        $backupGlobals     = null;
+        $metadataForClass          = MetadataRegistry::parser()->forClass($className);
+        $metadataForMethod         = MetadataRegistry::parser()->forMethod($className, $methodName);
+        $metadataForClassAndMethod = MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
+
+        $backupGlobals            = null;
+        $backupGlobalsExcludeList = [];
 
         if ($metadataForMethod->isBackupGlobals()->isNotEmpty()) {
             $metadata = $metadataForMethod->isBackupGlobals()->asArray()[0];
@@ -226,7 +239,14 @@ final class TestBuilder
             }
         }
 
-        $backupStaticProperties = null;
+        foreach ($metadataForClassAndMethod->isExcludeGlobalVariableFromBackup() as $metadata) {
+            assert($metadata instanceof ExcludeGlobalVariableFromBackup);
+
+            $backupGlobalsExcludeList[] = $metadata->globalVariableName();
+        }
+
+        $backupStaticProperties            = null;
+        $backupStaticPropertiesExcludeList = [];
 
         if ($metadataForMethod->isBackupStaticProperties()->isNotEmpty()) {
             $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
@@ -246,9 +266,21 @@ final class TestBuilder
             }
         }
 
+        foreach ($metadataForClassAndMethod->isExcludeStaticPropertyFromBackup() as $metadata) {
+            assert($metadata instanceof ExcludeStaticPropertyFromBackup);
+
+            if (!isset($backupStaticPropertiesExcludeList[$metadata->className()])) {
+                $backupStaticPropertiesExcludeList[$metadata->className()] = [];
+            }
+
+            $backupStaticPropertiesExcludeList[$metadata->className()][] = $metadata->propertyName();
+        }
+
         return [
-            'backupGlobals'          => $backupGlobals,
-            'backupStaticProperties' => $backupStaticProperties,
+            'backupGlobals'                     => $backupGlobals,
+            'backupGlobalsExcludeList'          => $backupGlobalsExcludeList,
+            'backupStaticProperties'            => $backupStaticProperties,
+            'backupStaticPropertiesExcludeList' => $backupStaticPropertiesExcludeList,
         ];
     }
 

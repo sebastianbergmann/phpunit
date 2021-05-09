@@ -56,11 +56,13 @@ use PHPUnit\TestFixture\WasRun;
 use RuntimeException;
 use TypeError;
 
+/**
+ * @excludeGlobalVariableFromBackup i
+ * @excludeGlobalVariableFromBackup singleton
+ */
 class TestCaseTest extends TestCase
 {
     protected static $testStatic = 456;
-
-    protected $backupGlobalsExcludeList = ['i', 'singleton'];
 
     public static function setUpBeforeClass(): void
     {

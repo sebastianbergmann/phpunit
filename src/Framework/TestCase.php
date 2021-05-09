@@ -111,17 +111,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 {
     private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
 
+    protected bool $preserveGlobalState = false;
+
     /**
      * @psalm-var list<string>
      */
-    protected $backupGlobalsExcludeList = [];
+    private array $backupGlobalsExcludeList = [];
 
     /**
      * @psalm-var array<string,list<class-string>>
      */
-    protected $backupStaticAttributesExcludeList = [];
-
-    protected bool $preserveGlobalState = false;
+    private array $backupStaticPropertiesExcludeList = [];
 
     private ?bool $backupGlobals = null;
 
@@ -886,11 +886,27 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
+    public function setBackupGlobalsExcludeList(array $backupGlobalsExcludeList): void
+    {
+        $this->backupGlobalsExcludeList = $backupGlobalsExcludeList;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public function setBackupStaticProperties(bool $backupStaticProperties): void
     {
         if ($this->backupStaticProperties === null) {
             $this->backupStaticProperties = $backupStaticProperties;
         }
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function setBackupStaticPropertiesExcludeList(array $backupStaticPropertiesExcludeList): void
+    {
+        $this->backupStaticPropertiesExcludeList = $backupStaticPropertiesExcludeList;
     }
 
     /**
@@ -1793,7 +1809,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $excludeList->addClassNamePrefix('Doctrine\Instantiator');
             $excludeList->addStaticAttribute(ComparatorFactory::class, 'instance');
 
-            foreach ($this->backupStaticAttributesExcludeList as $class => $attributes) {
+            foreach ($this->backupStaticPropertiesExcludeList as $class => $attributes) {
                 foreach ($attributes as $attribute) {
                     $excludeList->addStaticAttribute($class, $attribute);
                 }
