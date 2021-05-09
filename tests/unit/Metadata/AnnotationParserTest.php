@@ -41,7 +41,7 @@ final class AnnotationParserTest extends TestCase
 {
     public function test_Parses_backupGlobals_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(BackupGlobalsTest::class);
+        $metadata = (new AnnotationParser)->forClass(BackupGlobalsTest::class)->isBackupGlobals();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBackupGlobals());
@@ -50,7 +50,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_backupStaticAttributes_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(BackupStaticPropertiesTest::class);
+        $metadata = (new AnnotationParser)->forClass(BackupStaticPropertiesTest::class)->isBackupStaticProperties();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBackupStaticProperties());
@@ -59,7 +59,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_codeCoverageIgnore_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(Example::class);
+        $metadata = (new AnnotationParser)->forClass(Example::class)->isCodeCoverageIgnore();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
@@ -67,9 +67,9 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_covers_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(CoversTest::class);
+        $metadata = (new AnnotationParser)->forClass(CoversTest::class)->isCovers();
 
-        $this->assertCount(4, $metadata);
+        $this->assertCount(2, $metadata);
 
         $this->assertTrue($metadata->asArray()[0]->isCovers());
         $this->assertSame('::\PHPUnit\TestFixture\Metadata\Annotation\f', $metadata->asArray()[0]->target());
@@ -80,25 +80,25 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_coversDefaultClass_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(CoversTest::class);
+        $metadata = (new AnnotationParser)->forClass(CoversTest::class)->isCoversDefaultClass();
 
-        $this->assertCount(4, $metadata);
+        $this->assertCount(1, $metadata);
 
-        $this->assertTrue($metadata->asArray()[3]->isCoversDefaultClass());
-        $this->assertSame('\PHPUnit\TestFixture\Metadata\Annotation\Example', $metadata->asArray()[3]->className());
+        $this->assertTrue($metadata->asArray()[0]->isCoversDefaultClass());
+        $this->assertSame('\PHPUnit\TestFixture\Metadata\Annotation\Example', $metadata->asArray()[0]->className());
     }
 
     public function test_Parses_coversNothing_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(CoversTest::class);
+        $metadata = (new AnnotationParser)->forClass(CoversTest::class)->isCoversNothing();
 
-        $this->assertCount(4, $metadata);
-        $this->assertTrue($metadata->asArray()[2]->isCoversNothing());
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isCoversNothing());
     }
 
     public function test_Parses_doesNotPerformAssertions_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(DoesNotPerformAssertionsTest::class);
+        $metadata = (new AnnotationParser)->forClass(DoesNotPerformAssertionsTest::class)->isDoesNotPerformAssertions();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
@@ -106,7 +106,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_group_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(GroupTest::class);
+        $metadata = (new AnnotationParser)->forClass(GroupTest::class)->isGroup();
 
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
@@ -115,7 +115,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_large_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(LargeTest::class);
+        $metadata = (new AnnotationParser)->forClass(LargeTest::class)->isGroup();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
@@ -124,7 +124,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_medium_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(MediumTest::class);
+        $metadata = (new AnnotationParser)->forClass(MediumTest::class)->isGroup();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
@@ -133,7 +133,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_preserveGlobalState_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(PreserveGlobalStateTest::class);
+        $metadata = (new AnnotationParser)->forClass(PreserveGlobalStateTest::class)->isPreserveGlobalState();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isPreserveGlobalState());
@@ -142,7 +142,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresFunction_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(RequiresFunctionTest::class);
+        $metadata = (new AnnotationParser)->forClass(RequiresFunctionTest::class)->isRequiresFunction();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
@@ -151,7 +151,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresOperatingSystem_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemTest::class);
+        $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemTest::class)->isRequiresOperatingSystem();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
@@ -160,7 +160,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresOperatingSystemFamily_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemFamilyTest::class);
+        $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemFamilyTest::class)->isRequiresOperatingSystemFamily();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystemFamily());
@@ -169,7 +169,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresPhp_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(RequiresPhpTest::class);
+        $metadata = (new AnnotationParser)->forClass(RequiresPhpTest::class)->isRequiresPhp();
 
         $this->assertCount(1, $metadata);
 
@@ -189,7 +189,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresPhpExtension_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(RequiresPhpExtensionTest::class);
+        $metadata = (new AnnotationParser)->forClass(RequiresPhpExtensionTest::class)->isRequiresPhpExtension();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresPhpExtension());
@@ -199,7 +199,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresPhpunit_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(RequiresPhpunitTest::class);
+        $metadata = (new AnnotationParser)->forClass(RequiresPhpunitTest::class)->isRequiresPhpunit();
 
         $this->assertCount(1, $metadata);
 
@@ -219,23 +219,23 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_runClassInSeparateProcess_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(ProcessIsolationTest::class);
+        $metadata = (new AnnotationParser)->forClass(ProcessIsolationTest::class)->isRunClassInSeparateProcess();
 
-        $this->assertCount(2, $metadata);
+        $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRunClassInSeparateProcess());
     }
 
     public function test_Parses_runTestsInSeparateProcesses_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(ProcessIsolationTest::class);
+        $metadata = (new AnnotationParser)->forClass(ProcessIsolationTest::class)->isRunTestsInSeparateProcesses();
 
-        $this->assertCount(2, $metadata);
-        $this->assertTrue($metadata->asArray()[1]->isRunTestsInSeparateProcesses());
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isRunTestsInSeparateProcesses());
     }
 
     public function test_Parses_small_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(SmallTest::class);
+        $metadata = (new AnnotationParser)->forClass(SmallTest::class)->isGroup();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
@@ -244,7 +244,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_testdox_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(TestDoxTest::class);
+        $metadata = (new AnnotationParser)->forClass(TestDoxTest::class)->isTestDox();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestDox());
@@ -253,7 +253,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_ticket_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(GroupTest::class);
+        $metadata = (new AnnotationParser)->forClass(GroupTest::class)->isGroup();
 
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
@@ -262,7 +262,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_todo_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(TodoTest::class);
+        $metadata = (new AnnotationParser)->forClass(TodoTest::class)->isTodo();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTodo());
@@ -270,9 +270,9 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_uses_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(UsesTest::class);
+        $metadata = (new AnnotationParser)->forClass(UsesTest::class)->isUses();
 
-        $this->assertCount(3, $metadata);
+        $this->assertCount(2, $metadata);
 
         $this->assertTrue($metadata->asArray()[0]->isUses());
         $this->assertSame('::\PHPUnit\TestFixture\Metadata\Annotation\f', $metadata->asArray()[0]->target());
@@ -283,17 +283,17 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_usesDefaultClass_annotation_on_class(): void
     {
-        $metadata = (new AnnotationParser)->forClass(UsesTest::class);
+        $metadata = (new AnnotationParser)->forClass(UsesTest::class)->isUsesDefaultClass();
 
-        $this->assertCount(3, $metadata);
+        $this->assertCount(1, $metadata);
 
-        $this->assertTrue($metadata->asArray()[2]->isUsesDefaultClass());
-        $this->assertSame('\PHPUnit\TestFixture\Metadata\Annotation\Example', $metadata->asArray()[1]->target());
+        $this->assertTrue($metadata->asArray()[0]->isUsesDefaultClass());
+        $this->assertSame('\PHPUnit\TestFixture\Metadata\Annotation\Example', $metadata->asArray()[0]->className());
     }
 
     public function test_Parses_after_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'afterTest');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'afterTest')->isAfter();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isAfter());
@@ -301,7 +301,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_afterClass_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'afterTests');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'afterTests')->isAfterClass();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isAfterClass());
@@ -309,7 +309,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_backupGlobals_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(BackupGlobalsTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(BackupGlobalsTest::class, 'testOne')->isBackupGlobals();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBackupGlobals());
@@ -318,7 +318,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_backupStaticProperties_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(BackupStaticPropertiesTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(BackupStaticPropertiesTest::class, 'testOne')->isBackupStaticProperties();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBackupStaticProperties());
@@ -327,7 +327,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_before_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'beforeTest');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'beforeTest')->isBefore();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBefore());
@@ -335,7 +335,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_beforeClass_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'beforeTests');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'beforeTests')->isBeforeClass();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isBeforeClass());
@@ -343,7 +343,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_codeCoverageIgnore_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(Example::class, 'method');
+        $metadata = (new AnnotationParser)->forMethod(Example::class, 'method')->isCodeCoverageIgnore();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
@@ -351,7 +351,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_coversNothing_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(CoversTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(CoversTest::class, 'testOne')->isCoversNothing();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isCoversNothing());
@@ -359,7 +359,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_dataProvider_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDataProvider');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDataProvider')->isDataProvider();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDataProvider());
@@ -369,7 +369,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_depends_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDepends');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDepends')->isDepends();
 
         $this->assertCount(3, $metadata);
 
@@ -394,7 +394,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_doesNotPerformAssertions_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(DoesNotPerformAssertionsTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(DoesNotPerformAssertionsTest::class, 'testOne')->isDoesNotPerformAssertions();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
@@ -402,7 +402,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_group_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(GroupTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(GroupTest::class, 'testOne')->isGroup();
 
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
@@ -411,7 +411,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_large_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(LargeTest::class, 'testWithLargeAnnotation');
+        $metadata = (new AnnotationParser)->forMethod(LargeTest::class, 'testWithLargeAnnotation')->isGroup();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
@@ -420,7 +420,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_medium_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(MediumTest::class, 'testWithMediumAnnotation');
+        $metadata = (new AnnotationParser)->forMethod(MediumTest::class, 'testWithMediumAnnotation')->isGroup();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
@@ -429,7 +429,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_postCondition_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'postCondition');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'postCondition')->isPostCondition();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isPostCondition());
@@ -437,7 +437,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_preCondition_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'preCondition');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'preCondition')->isPreCondition();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isPreCondition());
@@ -445,7 +445,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_preserveGlobalState_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(PreserveGlobalStateTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(PreserveGlobalStateTest::class, 'testOne')->isPreserveGlobalState();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isPreserveGlobalState());
@@ -454,7 +454,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresFunction_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(RequiresFunctionTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(RequiresFunctionTest::class, 'testOne')->isRequiresFunction();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresFunction());
@@ -463,7 +463,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresOperatingSystem_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemTest::class);
+        $metadata = (new AnnotationParser)->forClass(RequiresOperatingSystemTest::class)->isRequiresOperatingSystem();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystem());
@@ -472,7 +472,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresOperatingSystemFamily_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(RequiresOperatingSystemFamilyTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(RequiresOperatingSystemFamilyTest::class, 'testOne')->isRequiresOperatingSystemFamily();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystemFamily());
@@ -481,7 +481,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresPhp_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(RequiresPhpTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(RequiresPhpTest::class, 'testOne')->isRequiresPhp();
 
         $this->assertCount(1, $metadata);
 
@@ -500,7 +500,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresPhpExtension_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(RequiresPhpExtensionTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(RequiresPhpExtensionTest::class, 'testOne')->isRequiresPhpExtension();
 
         $this->assertCount(1, $metadata);
 
@@ -541,7 +541,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_requiresPhpunit_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(RequiresPhpunitTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(RequiresPhpunitTest::class, 'testOne')->isRequiresPhpunit();
 
         $this->assertCount(1, $metadata);
 
@@ -560,7 +560,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_runInSeparateProcess_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(ProcessIsolationTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(ProcessIsolationTest::class, 'testOne')->isRunInSeparateProcess();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRunInSeparateProcess());
@@ -568,7 +568,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_small_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithSmallAnnotation');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithSmallAnnotation')->isGroup();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isGroup());
@@ -577,7 +577,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_test_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'one');
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'one')->isTest();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTest());
@@ -585,7 +585,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_testdox_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(TestDoxTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(TestDoxTest::class, 'testOne')->isTestDox();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestDox());
@@ -594,7 +594,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_todo_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(TodoTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(TodoTest::class, 'testOne')->isTodo();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTodo());
@@ -602,7 +602,7 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_ticket_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(GroupTest::class, 'testOne');
+        $metadata = (new AnnotationParser)->forMethod(GroupTest::class, 'testOne')->isGroup();
 
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
