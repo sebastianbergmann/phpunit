@@ -19,6 +19,7 @@ use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
+use PHPUnit\Framework\ReportAttachmentProviding;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestFailure;
@@ -341,6 +342,12 @@ final class JUnit extends Printer implements TestListener
 
         if (method_exists($test, 'hasOutput') && method_exists($test, 'output')) {
             $testOutput = $test->hasOutput() ? $test->output() : '';
+        }
+
+        if ($test instanceof ReportAttachmentProviding) {
+            foreach ($test->provideTestResultAttachmentPaths() as $attachmentPath) {
+                $testOutput .= sprintf('[[ATTACHMENT|%s]]', $attachmentPath);
+            }
         }
 
         if (!empty($testOutput)) {
