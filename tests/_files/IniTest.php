@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 
 class IniTest extends TestCase
 {
-    protected $preserveGlobalState = true;
+    protected bool $preserveGlobalState = true;
 
     public function testIni(): void
     {
