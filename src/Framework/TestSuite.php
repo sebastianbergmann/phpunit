@@ -33,6 +33,7 @@ use PHPUnit\Metadata\HookFacade;
 use PHPUnit\Metadata\RequirementsFacade;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
@@ -321,7 +322,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         $this->addTestSuite(
-            (new \PHPUnit\Runner\TestSuiteLoader)->load($filename)
+            (new TestSuiteLoader)->load($filename)
         );
     }
 
