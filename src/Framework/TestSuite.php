@@ -73,7 +73,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      *
      * @var Test[]
      */
-    protected array $tests = [];
+    private array $tests = [];
 
     /**
      * The number of tests in the test suite.
