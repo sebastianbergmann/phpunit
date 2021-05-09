@@ -111,30 +111,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 {
     private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
 
-    /**
-     * @var ?bool
-     */
-    protected $backupGlobals;
+    protected ?bool $backupGlobals = null;
 
     /**
      * @var string[]
      */
     protected $backupGlobalsExcludeList = [];
 
-    /**
-     * @var bool
-     */
-    protected $backupStaticAttributes;
+    protected ?bool $backupStaticAttributes = null;
 
     /**
      * @var array<string,array<int,string>>
      */
     protected $backupStaticAttributesExcludeList = [];
 
-    /**
-     * @var bool
-     */
-    protected $runTestInSeparateProcess;
+    protected ?bool $runTestInSeparateProcess = null;
 
     /**
      * @var bool

@@ -14,26 +14,16 @@ namespace PHPUnit\Framework;
  */
 final class WarningTestCase extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $backupGlobals = false;
-
-    /**
-     * @var bool
-     */
-    protected $backupStaticAttributes = false;
-
-    /**
-     * @var bool
-     */
-    protected $runTestInSeparateProcess = false;
-
     private string $message;
 
     public function __construct(string $message = '')
     {
         $this->message = $message;
+
+        $this->setBackupGlobals(false);
+        $this->setBackupStaticAttributes(false);
+        $this->setRunClassInSeparateProcess(false);
+        $this->setRunTestInSeparateProcess(false);
 
         parent::__construct('Warning');
     }
