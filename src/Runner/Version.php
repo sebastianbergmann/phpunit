@@ -44,7 +44,7 @@ final class Version
     public static function series(): string
     {
         if (str_contains(self::id(), '-')) {
-            $version = explode('-', self::id())[0];
+            $version = explode('-', self::id(), 2)[0];
         } else {
             $version = self::id();
         }
