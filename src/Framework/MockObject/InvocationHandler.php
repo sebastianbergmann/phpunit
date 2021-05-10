@@ -64,11 +64,7 @@ final class InvocationHandler
      */
     public function lookupMatcher(string $id): ?Matcher
     {
-        if (isset($this->matcherMap[$id])) {
-            return $this->matcherMap[$id];
-        }
-
-        return null;
+        return $this->matcherMap[$id] ?? null;
     }
 
     /**

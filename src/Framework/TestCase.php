@@ -500,11 +500,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     public function status(): TestStatus
     {
-        if ($this->status === null) {
-            return TestStatus::unknown();
-        }
-
-        return $this->status;
+        return $this->status ?? TestStatus::unknown();
     }
 
     public function markAsRisky(): void

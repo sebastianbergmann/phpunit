@@ -26,9 +26,7 @@ final class ReturnArgument implements Stub
 
     public function invoke(Invocation $invocation)
     {
-        if (isset($invocation->getParameters()[$this->argumentIndex])) {
-            return $invocation->getParameters()[$this->argumentIndex];
-        }
+        return $invocation->getParameters()[$this->argumentIndex] ?? null;
     }
 
     public function toString(): string
