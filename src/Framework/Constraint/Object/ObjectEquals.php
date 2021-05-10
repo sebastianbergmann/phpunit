@@ -63,7 +63,6 @@ final class ObjectEquals extends Constraint
             );
         }
 
-        /** @noinspection PhpUnhandledExceptionInspection */
         $method = $object->getMethod($this->method);
 
         if (!$method->hasReturnType()) {
