@@ -38,7 +38,7 @@ final class DataProviderFacade
     /**
      * @psalm-param class-string $className
      *
-     * @throws Exception
+     * @throws InvalidDataSetException
      */
     public function providedData(string $className, string $methodName): ?array
     {
@@ -151,7 +151,7 @@ final class DataProviderFacade
     /**
      * @psalm-param class-string $className
      *
-     * @throws Exception
+     * @throws InvalidDataProviderException
      */
     private function dataProvidedByTestWithAnnotation(string $className, string $methodName): ?array
     {
