@@ -20,17 +20,18 @@ final class MockClass implements MockType
     private string $classCode;
 
     /**
-     * @var class-string
+     * @psalm-var class-string
      */
     private string $mockName;
 
     /**
-     * @var ConfigurableMethod[]
+     * @psalm-var list<ConfigurableMethod>
      */
     private array $configurableMethods;
 
     /**
      * @psalm-param class-string $mockName
+     * @psalm-param list<ConfigurableMethod> $configurableMethods
      */
     public function __construct(string $classCode, string $mockName, array $configurableMethods)
     {

@@ -29,11 +29,9 @@ final class Factory
     private array $filters = [];
 
     /**
-     * @param array|string $args
-     *
      * @throws Exception
      */
-    public function addFilter(ReflectionClass $filter, $args): void
+    public function addFilter(ReflectionClass $filter, array|string $args): void
     {
         if (!$filter->isSubclassOf(RecursiveFilterIterator::class)) {
             throw new Exception(

@@ -18,12 +18,12 @@ use IteratorAggregate;
 final class GroupCollection implements IteratorAggregate
 {
     /**
-     * @var Group[]
+     * @psalm-var list<Group>
      */
     private array $groups;
 
     /**
-     * @param Group[] $groups
+     * @psalm-param list<Group> $groups
      */
     public static function fromArray(array $groups): self
     {
@@ -36,7 +36,7 @@ final class GroupCollection implements IteratorAggregate
     }
 
     /**
-     * @return Group[]
+     * @psalm-return list<Group>
      */
     public function asArray(): array
     {
@@ -44,7 +44,7 @@ final class GroupCollection implements IteratorAggregate
     }
 
     /**
-     * @return string[]
+     * @psalm-return list<string>
      */
     public function asArrayOfStrings(): array
     {

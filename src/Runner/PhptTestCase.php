@@ -267,7 +267,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -275,7 +275,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {
@@ -284,10 +284,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     /**
      * Parse --INI-- section key value pairs and return as array.
-     *
-     * @param array|string $content
      */
-    private function parseIniSection($content, array $ini = []): array
+    private function parseIniSection(array|string $content, array $ini = []): array
     {
         if (is_string($content)) {
             $content = explode("\n", trim($content));

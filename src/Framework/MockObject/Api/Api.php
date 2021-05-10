@@ -18,7 +18,7 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 trait Api
 {
     /**
-     * @var ConfigurableMethod[]
+     * @psalm-var list<ConfigurableMethod>
      */
     private static array $__phpunit_configurableMethods;
 

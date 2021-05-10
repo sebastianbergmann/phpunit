@@ -20,12 +20,12 @@ use IteratorAggregate;
 final class TestDirectoryCollection implements Countable, IteratorAggregate
 {
     /**
-     * @var TestDirectory[]
+     * @psalm-var list<TestDirectory>
      */
     private array $directories;
 
     /**
-     * @param TestDirectory[] $directories
+     * @psalm-param list<TestDirectory> $directories
      */
     public static function fromArray(array $directories): self
     {
@@ -38,7 +38,7 @@ final class TestDirectoryCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @return TestDirectory[]
+     * @psalm-return list<TestDirectory>
      */
     public function asArray(): array
     {

@@ -17,10 +17,7 @@ use function sprintf;
  */
 final class IncompatibleReturnValueException extends \PHPUnit\Framework\Exception implements Exception
 {
-    /**
-     * @param mixed $value
-     */
-    public function __construct(ConfigurableMethod $method, $value)
+    public function __construct(ConfigurableMethod $method, mixed $value)
     {
         parent::__construct(
             sprintf(

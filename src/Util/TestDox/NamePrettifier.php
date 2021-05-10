@@ -55,7 +55,7 @@ use SebastianBergmann\Exporter\Exporter;
 final class NamePrettifier
 {
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
     private array $strings = [];
 

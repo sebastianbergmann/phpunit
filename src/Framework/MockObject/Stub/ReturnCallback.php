@@ -21,9 +21,12 @@ use PHPUnit\Framework\MockObject\Invocation;
  */
 final class ReturnCallback implements Stub
 {
+    /**
+     * @var callable
+     */
     private $callback;
 
-    public function __construct($callback)
+    public function __construct(callable $callback)
     {
         $this->callback = $callback;
     }

@@ -25,10 +25,14 @@ final class Registry
 {
     private static ?Registry $instance = null;
 
-    /** @var array<string, DocBlock> indexed by class name */
+    /**
+     * @psalm-var array<string, DocBlock> indexed by class name
+     */
     private array $classDocBlocks = [];
 
-    /** @var array<string, array<string, DocBlock>> indexed by class name and method name */
+    /**
+     * @psalm-var array<string, array<string, DocBlock>> indexed by class name and method name
+     */
     private array $methodDocBlocks = [];
 
     public static function getInstance(): self

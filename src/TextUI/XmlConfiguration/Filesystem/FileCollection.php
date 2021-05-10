@@ -20,12 +20,12 @@ use IteratorAggregate;
 final class FileCollection implements Countable, IteratorAggregate
 {
     /**
-     * @var File[]
+     * @psalm-var list<File>
      */
     private array $files;
 
     /**
-     * @param File[] $files
+     * @psalm-param list<File> $files
      */
     public static function fromArray(array $files): self
     {
@@ -38,7 +38,7 @@ final class FileCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @return File[]
+     * @psalm-return list<File>
      */
     public function asArray(): array
     {

@@ -85,12 +85,10 @@ final class ConsecutiveParameters implements ParametersRule
     /**
      * Verify a single invocation.
      *
-     * @param int $callIndex
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    private function verifyInvocation(BaseInvocation $invocation, $callIndex): void
+    private function verifyInvocation(BaseInvocation $invocation, int $callIndex): void
     {
         if (!isset($this->parameterGroups[$callIndex])) {
             // no parameter assertion for this call index

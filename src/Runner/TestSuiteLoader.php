@@ -27,10 +27,14 @@ use ReflectionException;
  */
 final class TestSuiteLoader
 {
-    /** @var string[] */
+    /**
+     * @psalm-var list<class-string>
+     */
     private static array $loadedClasses = [];
 
-    /** @var string[] */
+    /**
+     * @psalm-var list<class-string>
+     */
     private static array $declaredClasses = [];
 
     public function __construct()
@@ -51,7 +55,13 @@ final class TestSuiteLoader
             include_once $suiteClassFile;
 
             $loadedClasses = array_values(
-                array_diff(get_declared_classes(), array_merge(self::$declaredClasses, self::$loadedClasses))
+                array_diff(
+                    get_declared_classes(),
+                    array_merge(
+                        self::$declaredClasses,
+                        self::$loadedClasses
+                    )
+                )
             );
 
             self::$loadedClasses = array_merge($loadedClasses, self::$loadedClasses);

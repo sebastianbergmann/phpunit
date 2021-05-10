@@ -19,10 +19,7 @@ final class InvokedAtLeastCount extends InvocationOrder
 {
     private int $requiredInvocations;
 
-    /**
-     * @param int $requiredInvocations
-     */
-    public function __construct($requiredInvocations)
+    public function __construct(int $requiredInvocations)
     {
         $this->requiredInvocations = $requiredInvocations;
     }

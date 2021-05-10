@@ -145,19 +145,10 @@ final class Help
 
     ];
 
-    /**
-     * @var int Number of columns required to write the longest option name to the console
-     */
-    private int $maxArgLength = 0;
+    private int $lengthOfLongestOptionName = 0;
 
-    /**
-     * @var int Number of columns left for the description field after padding and option
-     */
-    private int $maxDescLength;
+    private int $columnsAvailableForDescription;
 
-    /**
-     * @var bool Use color highlights for sections, options and parameters
-     */
     private ?bool $hasColor = false;
 
     public function __construct(?int $width = null, ?bool $withColor = null)
@@ -175,12 +166,12 @@ final class Help
         foreach (self::HELP_TEXT as $options) {
             foreach ($options as $option) {
                 if (isset($option['arg'])) {
-                    $this->maxArgLength = max($this->maxArgLength, isset($option['arg']) ? strlen($option['arg']) : 0);
+                    $this->lengthOfLongestOptionName = max($this->lengthOfLongestOptionName, isset($option['arg']) ? strlen($option['arg']) : 0);
                 }
             }
         }
 
-        $this->maxDescLength = $width - $this->maxArgLength - 4;
+        $this->columnsAvailableForDescription = $width - $this->lengthOfLongestOptionName - 4;
     }
 
     /**
@@ -214,7 +205,7 @@ final class Help
                 }
 
                 if (isset($option['arg'])) {
-                    $arg = str_pad($option['arg'], $this->maxArgLength);
+                    $arg = str_pad($option['arg'], $this->lengthOfLongestOptionName);
                     print self::LEFT_MARGIN . $arg . ' ' . $option['desc'] . PHP_EOL;
                 }
             }
@@ -238,7 +229,7 @@ final class Help
                 }
 
                 if (isset($option['arg'])) {
-                    $arg = Color::colorize('fg-green', str_pad($option['arg'], $this->maxArgLength));
+                    $arg = Color::colorize('fg-green', str_pad($option['arg'], $this->lengthOfLongestOptionName));
                     $arg = preg_replace_callback(
                         '/(<[^>]+>)/',
                         static function ($matches) {
@@ -246,12 +237,12 @@ final class Help
                         },
                         $arg
                     );
-                    $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->maxDescLength, PHP_EOL));
+                    $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->columnsAvailableForDescription, PHP_EOL));
 
                     print self::LEFT_MARGIN . $arg . ' ' . $desc[0] . PHP_EOL;
 
                     for ($i = 1; $i < count($desc); $i++) {
-                        print str_repeat(' ', $this->maxArgLength + 3) . $desc[$i] . PHP_EOL;
+                        print str_repeat(' ', $this->lengthOfLongestOptionName + 3) . $desc[$i] . PHP_EOL;
                     }
                 }
             }

@@ -17,10 +17,7 @@ use PHPUnit\Util\Error\Handler;
  */
 final class RegularExpression
 {
-    /**
-     * @return false|int
-     */
-    public static function safeMatch(string $pattern, string $subject)
+    public static function safeMatch(string $pattern, string $subject): false|int
     {
         return Handler::invokeIgnoringWarnings(
             static function () use ($pattern, $subject) {

@@ -22,12 +22,12 @@ use IteratorAggregate;
 final class MetadataCollection implements Countable, IteratorAggregate
 {
     /**
-     * @var Metadata[]
+     * @psalm-var list<Metadata>
      */
     private array $metadata;
 
     /**
-     * @param Metadata[] $metadata
+     * @psalm-param list<Metadata> $metadata
      */
     public static function fromArray(array $metadata): self
     {
@@ -40,7 +40,7 @@ final class MetadataCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @return Metadata[]
+     * @psalm-return list<Metadata>
      */
     public function asArray(): array
     {

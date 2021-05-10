@@ -21,10 +21,7 @@ final class ConsecutiveCalls implements Stub
 {
     private array $stack;
 
-    /**
-     * @var mixed
-     */
-    private $value;
+    private mixed $value;
 
     public function __construct(array $stack)
     {

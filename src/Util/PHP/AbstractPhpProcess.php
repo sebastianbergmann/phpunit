@@ -51,7 +51,7 @@ abstract class AbstractPhpProcess
     protected string $args = '';
 
     /**
-     * @var array<string, string>
+     * @psalm-var array<string, string>
      */
     protected array $env = [];
 
@@ -124,7 +124,7 @@ abstract class AbstractPhpProcess
     /**
      * Sets the array of environment variables to start the child process with.
      *
-     * @param array<string, string> $env
+     * @psalm-param array<string, string> $env
      */
     public function setEnv(array $env): void
     {
@@ -297,7 +297,7 @@ abstract class AbstractPhpProcess
                     $output = $childResult['output'];
                 }
 
-                /* @var TestCase $test */
+                assert($test instanceof TestCase);
 
                 $test->setResult($childResult['testResult']);
                 $test->addToAssertionCount($childResult['numAssertions']);

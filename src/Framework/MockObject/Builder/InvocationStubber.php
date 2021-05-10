@@ -21,32 +21,20 @@ interface InvocationStubber
 
     public function willReturn($value, ...$nextValues): self;
 
-    /**
-     * @param mixed $reference
-     */
-    public function willReturnReference(&$reference): self;
+    public function willReturnReference(mixed &$reference): self;
 
     /**
      * @param array<int, array<int, mixed>> $valueMap
      */
     public function willReturnMap(array $valueMap): self;
 
-    /**
-     * @param int $argumentIndex
-     */
-    public function willReturnArgument($argumentIndex): self;
+    public function willReturnArgument(int $argumentIndex): self;
 
-    /**
-     * @param callable $callback
-     */
-    public function willReturnCallback($callback): self;
+    public function willReturnCallback(callable $callback): self;
 
     public function willReturnSelf(): self;
 
-    /**
-     * @param mixed $values
-     */
-    public function willReturnOnConsecutiveCalls(...$values): self;
+    public function willReturnOnConsecutiveCalls(mixed ...$values): self;
 
     public function willThrowException(Throwable $exception): self;
 }

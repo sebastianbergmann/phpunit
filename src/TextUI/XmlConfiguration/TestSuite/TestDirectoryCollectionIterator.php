@@ -20,7 +20,7 @@ use Iterator;
 final class TestDirectoryCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var TestDirectory[]
+     * @psalm-var list<TestDirectory>
      */
     private array $directories;
 

@@ -23,18 +23,12 @@ final class MethodName
     private Constraint $constraint;
 
     /**
-     * @param Constraint|string $constraint
-     *
      * @throws InvalidArgumentException
      */
-    public function __construct($constraint)
+    public function __construct(Constraint|string $constraint)
     {
         if (is_string($constraint)) {
             $constraint = new MethodNameConstraint($constraint);
-        }
-
-        if (!$constraint instanceof Constraint) {
-            throw InvalidArgumentException::create(1, 'PHPUnit\Framework\Constraint\Constraint object or string');
         }
 
         $this->constraint = $constraint;

@@ -55,7 +55,7 @@ use TheSeer\Tokenizer\Tokenizer;
 final class ExcludeList
 {
     /**
-     * @var array<string,int>
+     * @psalm-var array<string,int>
      */
     private const EXCLUDED_CLASS_NAMES = [
         // composer
@@ -144,7 +144,7 @@ final class ExcludeList
     ];
 
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
     private static ?array $directories = null;
 
@@ -165,7 +165,7 @@ final class ExcludeList
     /**
      * @throws Exception
      *
-     * @return string[]
+     * @psalm-return list<string>
      */
     public function getExcludedDirectories(): array
     {

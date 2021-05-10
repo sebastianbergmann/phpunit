@@ -26,7 +26,6 @@ use PHPUnit\Framework\Warning;
 use ReflectionClass;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
-use Reflector;
 
 /**
  * This is an abstraction around a PHPUnit-specific docBlock,
@@ -58,12 +57,12 @@ final class DocBlock
 
     private bool $isMethod;
 
-    /** @var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index */
+    /**
+     * @psalm-var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index
+     */
     private array $symbolAnnotations;
 
     /**
-     * @var null|array<string, mixed>
-     *
      * @psalm-var null|(array{
      *   __OFFSET: array<string, int>&array{__FILE: string},
      *   setting?: array<string, string>,
@@ -244,7 +243,9 @@ final class DocBlock
         return $this->symbolAnnotations;
     }
 
-    /** @return array<string, array<int, string>> */
+    /**
+     * @psalm-return array<string, array<int, string>>
+     */
     private static function parseDocBlock(string $docBlock): array
     {
         // Strip away the docblock header and footer to ease parsing of one line annotations
@@ -262,8 +263,7 @@ final class DocBlock
         return $annotations;
     }
 
-    /** @param ReflectionClass|ReflectionFunctionAbstract $reflector */
-    private static function extractAnnotationsFromReflector(Reflector $reflector): array
+    private static function extractAnnotationsFromReflector(ReflectionClass|ReflectionFunctionAbstract $reflector): array
     {
         $annotations = [];
 

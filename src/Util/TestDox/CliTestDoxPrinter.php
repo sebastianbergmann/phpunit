@@ -111,7 +111,7 @@ class CliTestDoxPrinter extends TestDoxPrinter
     ];
 
     /**
-     * @var int[]
+     * @psalm-var list<int>
      */
     private array $nonSuccessfulTestResults = [];
 
@@ -119,11 +119,10 @@ class CliTestDoxPrinter extends TestDoxPrinter
 
     /**
      * @param null|resource|string $out
-     * @param int|string           $numberOfColumns
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 

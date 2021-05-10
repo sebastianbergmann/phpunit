@@ -96,7 +96,7 @@ final class TestRunner
     private bool $messagePrinted = false;
 
     /**
-     * @var Hook[]
+     * @psalm-var list<Hook>
      */
     private array $extensions = [];
 

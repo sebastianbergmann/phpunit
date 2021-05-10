@@ -20,7 +20,7 @@ use Iterator;
 final class IniSettingCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var IniSetting[]
+     * @psalm-var list<IniSetting>
      */
     private array $iniSettings;
 

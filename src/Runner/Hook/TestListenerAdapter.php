@@ -25,7 +25,7 @@ use Throwable;
 final class TestListenerAdapter implements TestListener
 {
     /**
-     * @var TestHook[]
+     * @psalm-var list<TestHook>
      */
     private array $hooks = [];
 

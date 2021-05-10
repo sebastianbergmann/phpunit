@@ -21,17 +21,17 @@ use Throwable;
 final class InvocationHandler
 {
     /**
-     * @var Matcher[]
+     * @psalm-var list<Matcher>
      */
     private array $matchers = [];
 
     /**
-     * @var Matcher[]
+     * @psalm-var array<string,Matcher>
      */
     private array $matcherMap = [];
 
     /**
-     * @var ConfigurableMethod[]
+     * @psalm-var list<ConfigurableMethod>
      */
     private array $configurableMethods;
 
@@ -39,6 +39,9 @@ final class InvocationHandler
 
     private ?ReturnValueNotConfiguredException $deferredError = null;
 
+    /**
+     * @psalm-param list<ConfigurableMethod> $configurableMethods
+     */
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {
         $this->configurableMethods   = $configurableMethods;
@@ -58,8 +61,6 @@ final class InvocationHandler
 
     /**
      * Looks up the match builder with identification $id and returns it.
-     *
-     * @param string $id The identification of the match builder
      */
     public function lookupMatcher(string $id): ?Matcher
     {
@@ -73,9 +74,6 @@ final class InvocationHandler
     /**
      * Registers a matcher with the identification $id. The matcher can later be
      * looked up using lookupMatcher() to figure out if it has been invoked.
-     *
-     * @param string  $id      The identification of the matcher
-     * @param Matcher $matcher The builder which is being registered
      *
      * @throws MatcherAlreadyRegisteredException
      */

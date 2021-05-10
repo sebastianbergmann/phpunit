@@ -48,19 +48,19 @@ class TestDoxPrinter extends DefaultResultPrinter
     protected int $testFlushIndex = 0;
 
     /**
-     * @var array<int, array> Buffer for test results
+     * @psalm-var array<int, array> Buffer for test results
      */
     protected array $testResults = [];
 
     /**
-     * @var array<string, int> Lookup table for testname to testResults[index]
+     * @psalm-var array<string, int> Lookup table for testname to testResults[index]
      */
     protected array $testNameResultIndex = [];
 
     protected bool $enableOutputBuffer = false;
 
     /**
-     * @var array array<string>
+     * @psalm-var array<string>
      */
     protected array $originalExecutionOrder = [];
 
@@ -70,11 +70,10 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     /**
      * @param null|resource|string $out
-     * @param int|string           $numberOfColumns
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 

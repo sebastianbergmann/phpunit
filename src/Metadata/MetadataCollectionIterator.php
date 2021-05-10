@@ -18,7 +18,7 @@ use Iterator;
 final class MetadataCollectionIterator implements Iterator
 {
     /**
-     * @var Metadata[]
+     * @psalm-var list<Metadata>
      */
     private array $metadata;
 

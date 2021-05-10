@@ -20,7 +20,7 @@ use Iterator;
 final class TestSuiteCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var TestSuite[]
+     * @psalm-var list<TestSuite>
      */
     private array $testSuites;
 

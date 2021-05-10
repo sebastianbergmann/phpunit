@@ -20,12 +20,12 @@ use IteratorAggregate;
 final class ConstantCollection implements Countable, IteratorAggregate
 {
     /**
-     * @var Constant[]
+     * @psalm-var list<Constant>
      */
     private array $constants;
 
     /**
-     * @param Constant[] $constants
+     * @psalm-param list<Constant> $constants
      */
     public static function fromArray(array $constants): self
     {
@@ -38,7 +38,7 @@ final class ConstantCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @return Constant[]
+     * @psalm-return list<Constant>
      */
     public function asArray(): array
     {

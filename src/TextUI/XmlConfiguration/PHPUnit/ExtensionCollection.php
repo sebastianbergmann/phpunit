@@ -18,12 +18,12 @@ use IteratorAggregate;
 final class ExtensionCollection implements IteratorAggregate
 {
     /**
-     * @var Extension[]
+     * @psalm-var list<Extension>
      */
     private array $extensions;
 
     /**
-     * @param Extension[] $extensions
+     * @psalm-param list<Extension> $extensions
      */
     public static function fromArray(array $extensions): self
     {
@@ -36,7 +36,7 @@ final class ExtensionCollection implements IteratorAggregate
     }
 
     /**
-     * @return Extension[]
+     * @psalm-return list<Extension>
      */
     public function asArray(): array
     {

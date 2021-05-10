@@ -20,10 +20,7 @@ final class InvokedCount extends InvocationOrder
 {
     private int $expectedCount;
 
-    /**
-     * @param int $expectedCount
-     */
-    public function __construct($expectedCount)
+    public function __construct(int $expectedCount)
     {
         $this->expectedCount = $expectedCount;
     }

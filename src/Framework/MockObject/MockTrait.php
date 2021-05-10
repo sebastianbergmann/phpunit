@@ -19,7 +19,7 @@ final class MockTrait implements MockType
     private string $classCode;
 
     /**
-     * @var class-string
+     * @psalm-var class-string
      */
     private string $mockName;
 

@@ -25,7 +25,6 @@ use function array_search;
 use function array_unique;
 use function array_values;
 use function basename;
-use function call_user_func;
 use function chdir;
 use function class_exists;
 use function clearstatcache;
@@ -140,10 +139,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private array $data = [];
 
-    /**
-     * @var int|string
-     */
-    private $dataName = '';
+    private int|string $dataName = '';
 
     private ?string $expectedException = null;
 
@@ -151,10 +147,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private ?string $expectedExceptionMessageRegExp = null;
 
-    /**
-     * @var null|int|string
-     */
-    private $expectedExceptionCode;
+    private null|int|string $expectedExceptionCode = null;
 
     private string $name;
 
@@ -185,21 +178,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private ?TestResult $result = null;
 
-    /**
-     * @var mixed
-     */
-    private $testResult;
+    private mixed $testResult = null;
 
     private string $output = '';
 
     private ?string $outputExpectedRegex = null;
 
     private ?string $outputExpectedString = null;
-
-    /**
-     * @var mixed
-     */
-    private $outputCallback = false;
 
     private bool $outputBufferingActive = false;
 
@@ -420,10 +405,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->expectedException = $exception;
     }
 
-    /**
-     * @param int|string $code
-     */
-    public function expectExceptionCode($code): void
+    public function expectExceptionCode(int|string $code): void
     {
         $this->expectedExceptionCode = $code;
     }
@@ -594,7 +576,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @return string[]
+     * @psalm-return list<string>
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
@@ -972,14 +954,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function setOutputCallback(callable $callback): void
-    {
-        $this->outputCallback = $callback;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public function registerMockObject(MockObject $mockObject): void
     {
         $this->mockObjects[] = $mockObject;
@@ -1010,11 +984,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @return int|string
-     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function dataName()
+    public function dataName(): int|string
     {
         return $this->dataName;
     }
@@ -1091,7 +1063,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * Returns the normalized test name as class::method.
      *
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -1105,7 +1077,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * no need for the [!][shallow]clone prefix that is filtered out
      * during normalization.
      *
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {
@@ -1113,11 +1085,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @param int|string $dataName
-     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function setData($dataName, array $data): void
+    public function setData(int|string $dataName, array $data): void
     {
         $this->dataName = $dataName;
         $this->data     = $data;
@@ -1731,13 +1701,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        $this->output = ob_get_contents();
-
-        if ($this->outputCallback !== false) {
-            $this->output = (string) call_user_func($this->outputCallback, $this->output);
-        }
-
-        ob_end_clean();
+        $this->output = ob_get_clean();
 
         $this->outputBufferingActive = false;
         $this->outputBufferingLevel  = ob_get_level();

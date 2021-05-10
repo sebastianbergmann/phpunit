@@ -90,13 +90,11 @@ final class Invocation implements SelfDescribing
 
     /**
      * @throws RuntimeException
-     *
-     * @return mixed Mocked return value
      */
-    public function generateReturnValue()
+    public function generateReturnValue(): mixed
     {
         if ($this->isReturnTypeNullable || $this->proxiedCall) {
-            return;
+            return null;
         }
 
         $returnType = $this->returnType;
@@ -107,15 +105,16 @@ final class Invocation implements SelfDescribing
 
             foreach ($types as $type) {
                 if ($type === 'null') {
-                    return;
+                    return null;
                 }
             }
         }
 
         switch (strtolower($returnType)) {
             case '':
+            case 'mixed':
             case 'void':
-                return;
+                return null;
 
             case 'string':
                 return '';
@@ -151,9 +150,6 @@ final class Invocation implements SelfDescribing
                 };
 
                 return $generator();
-
-            case 'mixed':
-                return null;
 
             default:
                 return (new Generator)->getMock($this->returnType, [], [], '', false);

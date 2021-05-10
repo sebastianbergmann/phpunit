@@ -31,12 +31,11 @@ use SebastianBergmann\CodeUnit\Mapper;
 final class CodeCoverageFacade
 {
     /**
-     * @throws CodeCoverageException
-     *
-     * @return array|bool
      * @psalm-param class-string $className
+     *
+     * @throws CodeCoverageException
      */
-    public function linesToBeCovered(string $className, string $methodName)
+    public function linesToBeCovered(string $className, string $methodName): array|bool
     {
         if (!$this->shouldCodeCoverageBeCollectedFor($className, $methodName)) {
             return false;

@@ -17,7 +17,6 @@ use function call_user_func;
 use function class_exists;
 use function count;
 use function implode;
-use function is_bool;
 use function is_callable;
 use function is_file;
 use function is_object;
@@ -77,9 +76,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     protected ?array $requiredTests = null;
 
     /**
-     * The tests in the test suite.
-     *
-     * @var Test[]
+     * @psalm-var list<Test>
      */
     private array $tests = [];
 
@@ -111,11 +108,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      *     name of an existing class) or constructs an empty TestSuite
      *     with the given name.
      *
-     * @param ReflectionClass|string $theClass
-     *
      * @throws Exception
      */
-    public function __construct($theClass = '', string $name = '')
+    public function __construct(ReflectionClass|string $theClass = '', string $name = '')
     {
         if (!is_string($theClass) && !$theClass instanceof ReflectionClass) {
             throw InvalidArgumentException::create(
@@ -213,10 +208,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * Adds a test to the suite.
-     *
-     * @param array $groups
      */
-    public function addTest(Test $test, $groups = []): void
+    public function addTest(Test $test, array $groups = []): void
     {
         try {
             $class = new ReflectionClass($test);
@@ -525,7 +518,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Returns the tests as an enumeration.
      *
-     * @return Test[]
+     * @psalm-return list<Test>
      */
     public function tests(): array
     {
@@ -535,7 +528,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Set tests of the test suite.
      *
-     * @param Test[] $tests
+     * @psalm-param list<Test> $tests
      */
     public function setTests(array $tests): void
     {
@@ -545,43 +538,32 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Mark the test suite as skipped.
      *
-     * @param string $message
-     *
      * @throws SkippedTestSuiteError
      *
      * @psalm-return never-return
      */
-    public function markTestSuiteSkipped($message = ''): void
+    public function markTestSuiteSkipped(string $message = ''): void
     {
         throw new SkippedTestSuiteError($message);
     }
 
-    /**
-     * @param bool $beStrictAboutChangesToGlobalState
-     */
-    public function setBeStrictAboutChangesToGlobalState($beStrictAboutChangesToGlobalState): void
+    public function setBeStrictAboutChangesToGlobalState(bool $beStrictAboutChangesToGlobalState): void
     {
-        if (null === $this->beStrictAboutChangesToGlobalState && is_bool($beStrictAboutChangesToGlobalState)) {
+        if (null === $this->beStrictAboutChangesToGlobalState) {
             $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;
         }
     }
 
-    /**
-     * @param bool $backupGlobals
-     */
-    public function setBackupGlobals($backupGlobals): void
+    public function setBackupGlobals(bool $backupGlobals): void
     {
-        if (null === $this->backupGlobals && is_bool($backupGlobals)) {
+        if (null === $this->backupGlobals) {
             $this->backupGlobals = $backupGlobals;
         }
     }
 
-    /**
-     * @param bool $backupStaticProperties
-     */
-    public function setBackupStaticProperties($backupStaticProperties): void
+    public function setBackupStaticProperties(bool $backupStaticProperties): void
     {
-        if (null === $this->backupStaticProperties && is_bool($backupStaticProperties)) {
+        if (null === $this->backupStaticProperties) {
             $this->backupStaticProperties = $backupStaticProperties;
         }
     }
@@ -620,7 +602,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -645,7 +627,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {

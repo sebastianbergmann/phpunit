@@ -14,15 +14,9 @@ namespace PHPUnit\Framework\Constraint;
  */
 final class GreaterThan extends Constraint
 {
-    /**
-     * @var float|int
-     */
-    private $value;
+    private float|int $value;
 
-    /**
-     * @param float|int $value
-     */
-    public function __construct($value)
+    public function __construct(float|int $value)
     {
         $this->value = $value;
     }

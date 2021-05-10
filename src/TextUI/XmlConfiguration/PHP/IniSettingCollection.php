@@ -20,12 +20,12 @@ use IteratorAggregate;
 final class IniSettingCollection implements Countable, IteratorAggregate
 {
     /**
-     * @var IniSetting[]
+     * @psalm-var list<IniSetting>
      */
     private array $iniSettings;
 
     /**
-     * @param IniSetting[] $iniSettings
+     * @psalm-param list<IniSetting> $iniSettings
      */
     public static function fromArray(array $iniSettings): self
     {
@@ -38,7 +38,7 @@ final class IniSettingCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @return IniSetting[]
+     * @psalm-return list<IniSetting>
      */
     public function asArray(): array
     {

@@ -20,12 +20,12 @@ use IteratorAggregate;
 final class VariableCollection implements Countable, IteratorAggregate
 {
     /**
-     * @var Variable[]
+     * @psalm-var list<Variable>
      */
     private array $variables;
 
     /**
-     * @param Variable[] $variables
+     * @psalm-param list<Variable> $variables
      */
     public static function fromArray(array $variables): self
     {
@@ -38,7 +38,7 @@ final class VariableCollection implements Countable, IteratorAggregate
     }
 
     /**
-     * @return Variable[]
+     * @psalm-return list<Variable>
      */
     public function asArray(): array
     {

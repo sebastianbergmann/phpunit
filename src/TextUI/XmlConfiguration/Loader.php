@@ -468,17 +468,7 @@ final class Loader
         );
     }
 
-    /**
-     * If $value is 'false' or 'true', this returns the value that $value represents.
-     * Otherwise, returns $default, which may be a string in rare cases.
-     *
-     * @see \PHPUnit\TextUI\XmlConfigurationTest::testPHPConfigurationIsReadCorrectly
-     *
-     * @param bool|string $default
-     *
-     * @return bool|string
-     */
-    private function getBoolean(string $value, $default)
+    private function getBoolean(string $value, bool|string $default): bool|string
     {
         if (strtolower($value) === 'false') {
             return false;
@@ -863,10 +853,7 @@ final class Loader
         return $colors;
     }
 
-    /**
-     * @return int|string
-     */
-    private function getColumns(DOMDocument $document)
+    private function getColumns(DOMDocument $document): int|string
     {
         $columns = 80;
 
@@ -982,11 +969,10 @@ final class Loader
     }
 
     /**
-     * @return DOMElement[]
+     * @psalm-return list<DOMElement>
      */
     private function getTestSuiteElements(DOMXPath $xpath): array
     {
-        /** @var DOMElement[] $elements */
         $elements = [];
 
         $testSuiteNodes = $xpath->query('testsuites/testsuite');

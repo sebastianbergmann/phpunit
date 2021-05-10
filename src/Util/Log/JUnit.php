@@ -50,37 +50,37 @@ final class JUnit extends Printer implements TestListener
     private array $testSuites = [];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
     private array $testSuiteTests = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
     private array $testSuiteAssertions = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
     private array $testSuiteErrors = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
     private array $testSuiteWarnings = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
     private array $testSuiteFailures = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
     private array $testSuiteSkipped = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
     private array $testSuiteTimes = [0];
 

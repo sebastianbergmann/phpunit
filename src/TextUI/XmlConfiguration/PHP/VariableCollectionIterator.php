@@ -20,7 +20,7 @@ use Iterator;
 final class VariableCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var Variable[]
+     * @psalm-var list<Variable>
      */
     private array $variables;
 

@@ -25,16 +25,13 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
 final class Parameters implements ParametersRule
 {
     /**
-     * @var Constraint[]
+     * @psalm-var list<Constraint>
      */
     private array $parameters = [];
 
     private ?BaseInvocation $invocation = null;
 
-    /**
-     * @var bool|ExpectationFailedException
-     */
-    private $parameterVerificationResult;
+    private null|bool|ExpectationFailedException $parameterVerificationResult;
 
     /**
      * @throws \PHPUnit\Framework\Exception

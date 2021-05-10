@@ -67,12 +67,12 @@ use Throwable;
 class Command
 {
     /**
-     * @var array<string,mixed>
+     * @psalm-var array<string,mixed>
      */
     protected array $arguments = [];
 
     /**
-     * @var array<string,mixed>
+     * @psalm-var array<string,mixed>
      */
     protected array $longOptions = [];
 
@@ -816,13 +816,9 @@ class Command
         return null;
     }
 
-    /**
-     * @param array|string $suffixes
-     */
-    private function getTest(string $suiteClassFile, $suffixes = ''): TestSuite
+    private function getTest(string $suiteClassFile, array|string $suffixes = ''): TestSuite
     {
         if (is_dir($suiteClassFile)) {
-            /** @var string[] $files */
             $files = (new FileIteratorFacade)->getFilesAsArray(
                 $suiteClassFile,
                 $suffixes

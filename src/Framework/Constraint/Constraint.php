@@ -36,7 +36,7 @@ abstract class Constraint implements Countable, SelfDescribing
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
+    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
     {
         $success = false;
 
@@ -154,9 +154,6 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * The method shall return empty string, when it does not handle
      * customization by itself.
-     *
-     * @param Operator $operator the $operator of the expression
-     * @param mixed    $role     role of $this constraint in the $operator expression
      */
     protected function toStringInContext(Operator $operator, mixed $role): string
     {
@@ -174,12 +171,8 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * The method shall return empty string, when it does not handle
      * customization by itself.
-     *
-     * @param Operator $operator the $operator of the expression
-     * @param mixed    $role     role of $this constraint in the $operator expression
-     * @param mixed    $other    evaluated value or object
      */
-    protected function failureDescriptionInContext(Operator $operator, $role, $other): string
+    protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
     {
         $string = $this->toStringInContext($operator, $role);
 

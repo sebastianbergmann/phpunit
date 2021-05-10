@@ -20,7 +20,7 @@ use Iterator;
 final class ConstantCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var Constant[]
+     * @psalm-var list<Constant>
      */
     private array $constants;
 

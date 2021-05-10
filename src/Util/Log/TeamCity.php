@@ -48,10 +48,7 @@ final class TeamCity extends DefaultResultPrinter
 
     private string $startedTestName;
 
-    /**
-     * @var false|int
-     */
-    private $flowId;
+    private false|int $flowId;
 
     public function printResult(TestResult $result): void
     {
@@ -350,9 +347,9 @@ final class TeamCity extends DefaultResultPrinter
     }
 
     /**
-     * @param string $className
+     * @psalm-param class-string $className
      */
-    private static function getFileName($className): string
+    private static function getFileName(string $className): string
     {
         try {
             return (new ReflectionClass($className))->getFileName();
@@ -367,9 +364,6 @@ final class TeamCity extends DefaultResultPrinter
         // @codeCoverageIgnoreEnd
     }
 
-    /**
-     * @param float $time microseconds
-     */
     private static function toMilliseconds(float $time): int
     {
         return (int) round($time * 1000);

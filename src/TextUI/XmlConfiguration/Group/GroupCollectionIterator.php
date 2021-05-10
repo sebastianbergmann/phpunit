@@ -20,7 +20,7 @@ use Iterator;
 final class GroupCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var Group[]
+     * @psalm-var list<Group>
      */
     private array $groups;
 

@@ -17,10 +17,7 @@ final class Variable
 {
     private string $name;
 
-    /**
-     * @var mixed
-     */
-    private $value;
+    private mixed $value;
 
     private bool $force;
 

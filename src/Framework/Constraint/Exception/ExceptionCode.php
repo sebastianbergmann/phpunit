@@ -16,15 +16,9 @@ use function sprintf;
  */
 final class ExceptionCode extends Constraint
 {
-    /**
-     * @var int|string
-     */
-    private $expectedCode;
+    private int|string $expectedCode;
 
-    /**
-     * @param int|string $expected
-     */
-    public function __construct($expected)
+    public function __construct(int|string $expected)
     {
         $this->expectedCode = $expected;
     }

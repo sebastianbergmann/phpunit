@@ -81,8 +81,6 @@ final class Generator
     /**
      * Returns a mock object for the specified class.
      *
-     * @param null|array $methods
-     *
      * @throws \PHPUnit\Framework\InvalidArgumentException
      * @throws ClassAlreadyExistsException
      * @throws ClassIsFinalException
@@ -93,7 +91,7 @@ final class Generator
      * @throws RuntimeException
      * @throws UnknownTypeException
      */
-    public function getMock(string $type, $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject
+    public function getMock(string $type, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject
     {
         if (!is_array($methods) && null !== $methods) {
             throw InvalidArgumentException::create(2, 'array');
@@ -455,7 +453,7 @@ final class Generator
     /**
      * @throws ReflectionException
      *
-     * @return string[]
+     * @psalm-return list<string>
      */
     public function getClassMethods(string $className): array
     {
@@ -485,7 +483,7 @@ final class Generator
     /**
      * @throws ReflectionException
      *
-     * @return MockMethod[]
+     * @psalm-return list<MockMethod>
      */
     public function mockClassMethods(string $className, bool $callOriginalMethods, bool $cloneArguments): array
     {
@@ -515,7 +513,7 @@ final class Generator
     /**
      * @throws ReflectionException
      *
-     * @return MockMethod[]
+     * @psalm-return list<MockMethod>
      */
     public function mockInterfaceMethods(string $interfaceName, bool $cloneArguments): array
     {
@@ -545,7 +543,7 @@ final class Generator
      *
      * @throws ReflectionException
      *
-     * @return ReflectionMethod[]
+     * @psalm-return list<ReflectionMethod>
      */
     private function userDefinedInterfaceMethods(string $interfaceName): array
     {

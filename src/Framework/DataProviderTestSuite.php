@@ -19,14 +19,14 @@ use PHPUnit\Metadata\GroupsFacade;
 final class DataProviderTestSuite extends TestSuite
 {
     /**
-     * @var list<ExecutionOrderDependency>
+     * @psalm-var list<ExecutionOrderDependency>
      */
     private array $dependencies = [];
 
     private ?array $providedTests = null;
 
     /**
-     * @param list<ExecutionOrderDependency> $dependencies
+     * @psalm-param list<ExecutionOrderDependency> $dependencies
      */
     public function setDependencies(array $dependencies): void
     {
@@ -43,7 +43,7 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -55,7 +55,7 @@ final class DataProviderTestSuite extends TestSuite
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {

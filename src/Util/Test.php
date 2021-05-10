@@ -49,7 +49,7 @@ final class Test
     /**
      * @psalm-param class-string $className
      *
-     * @return ExecutionOrderDependency[]
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public static function getDependencies(string $className, string $methodName): array
     {

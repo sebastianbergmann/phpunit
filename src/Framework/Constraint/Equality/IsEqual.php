@@ -22,10 +22,7 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
  */
 final class IsEqual extends Constraint
 {
-    /**
-     * @var mixed
-     */
-    private $value;
+    private mixed $value;
 
     private float $delta;
 
@@ -33,7 +30,7 @@ final class IsEqual extends Constraint
 
     private bool $ignoreCase;
 
-    public function __construct($value, float $delta = 0.0, bool $canonicalize = false, bool $ignoreCase = false)
+    public function __construct(mixed $value, float $delta = 0.0, bool $canonicalize = false, bool $ignoreCase = false)
     {
         $this->value        = $value;
         $this->delta        = $delta;
@@ -52,10 +49,8 @@ final class IsEqual extends Constraint
      * failure.
      *
      * @throws ExpectationFailedException
-     *
-     * @return bool
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
+    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
     {
         // If $this->value and $other are identical, they are also equal.
         // This is the most common path and will allow us to skip

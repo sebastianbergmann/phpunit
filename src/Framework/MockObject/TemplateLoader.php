@@ -18,7 +18,7 @@ use SebastianBergmann\Template\Template;
 trait TemplateLoader
 {
     /**
-     * @var Template[]
+     * @psalm-var array<string,Template>
      */
     private static array $templates = [];
 

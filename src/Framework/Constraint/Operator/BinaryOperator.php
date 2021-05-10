@@ -19,7 +19,7 @@ use function count;
 abstract class BinaryOperator extends Operator
 {
     /**
-     * @var Constraint[]
+     * @psalm-var list<Constraint>
      */
     private array $constraints = [];
 
@@ -33,13 +33,16 @@ abstract class BinaryOperator extends Operator
     }
 
     /**
-     * @param mixed[] $constraints
+     * @psalm-param list<mixed> $constraints
      */
     public function setConstraints(array $constraints): void
     {
-        $this->constraints = array_map(function ($constraint): Constraint {
-            return $this->checkConstraint($constraint);
-        }, array_values($constraints));
+        $this->constraints = array_map(
+            function ($constraint): Constraint {
+                return $this->checkConstraint($constraint);
+            },
+            array_values($constraints)
+        );
     }
 
     /**
@@ -120,9 +123,6 @@ abstract class BinaryOperator extends Operator
 
     /**
      * Returns string representation of given operand in context of this operator.
-     *
-     * @param Constraint $constraint operand constraint
-     * @param int        $position   position of $constraint in this expression
      */
     private function constraintToString(Constraint $constraint, int $position): string
     {

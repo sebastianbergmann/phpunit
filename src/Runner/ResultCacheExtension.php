@@ -90,11 +90,6 @@ final class ResultCacheExtension implements AfterIncompleteTestHook, AfterLastTe
         $this->flush();
     }
 
-    /**
-     * @param string $test A long description format of the current test
-     *
-     * @return string The test name without TestSuiteClassName:: and @dataprovider details
-     */
     private function getTestName(string $test): string
     {
         $matches = [];

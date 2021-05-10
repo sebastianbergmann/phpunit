@@ -19,7 +19,7 @@ final class ReturnArgument implements Stub
 {
     private int $argumentIndex;
 
-    public function __construct($argumentIndex)
+    public function __construct(int $argumentIndex)
     {
         $this->argumentIndex = $argumentIndex;
     }

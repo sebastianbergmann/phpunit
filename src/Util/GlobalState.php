@@ -32,7 +32,7 @@ use Closure;
 final class GlobalState
 {
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
     private const SUPER_GLOBAL_ARRAYS = [
         '_ENV',
@@ -53,7 +53,7 @@ final class GlobalState
     }
 
     /**
-     * @param string[] $files
+     * @psalm-param list<string> $files
      *
      * @throws Exception
      */

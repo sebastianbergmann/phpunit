@@ -20,7 +20,7 @@ use Iterator;
 final class ExtensionCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var Extension[]
+     * @psalm-var list<Extension>
      */
     private array $extensions;
 

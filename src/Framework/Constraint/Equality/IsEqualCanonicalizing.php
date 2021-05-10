@@ -22,12 +22,9 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
  */
 final class IsEqualCanonicalizing extends Constraint
 {
-    /**
-     * @var mixed
-     */
-    private $value;
+    private mixed $value;
 
-    public function __construct($value)
+    public function __construct(mixed $value)
     {
         $this->value = $value;
     }
@@ -44,7 +41,7 @@ final class IsEqualCanonicalizing extends Constraint
      *
      * @throws ExpectationFailedException
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
+    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
     {
         // If $this->value and $other are identical, they are also equal.
         // This is the most common path and will allow us to skip

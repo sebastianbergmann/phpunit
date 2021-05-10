@@ -18,15 +18,9 @@ use ArrayAccess;
  */
 final class ArrayHasKey extends Constraint
 {
-    /**
-     * @var int|string
-     */
-    private $key;
+    private int|string $key;
 
-    /**
-     * @param int|string $key
-     */
-    public function __construct($key)
+    public function __construct(int|string $key)
     {
         $this->key = $key;
     }

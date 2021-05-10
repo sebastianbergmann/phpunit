@@ -97,11 +97,10 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
      * Constructor.
      *
      * @param null|resource|string $out
-     * @param int|string           $numberOfColumns
      *
      * @throws Exception
      */
-    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out);
 

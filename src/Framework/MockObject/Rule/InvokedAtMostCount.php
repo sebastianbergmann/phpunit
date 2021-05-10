@@ -19,10 +19,7 @@ final class InvokedAtMostCount extends InvocationOrder
 {
     private int $allowedInvocations;
 
-    /**
-     * @param int $allowedInvocations
-     */
-    public function __construct($allowedInvocations)
+    public function __construct(int $allowedInvocations)
     {
         $this->allowedInvocations = $allowedInvocations;
     }

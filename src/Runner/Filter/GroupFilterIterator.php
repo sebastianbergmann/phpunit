@@ -23,7 +23,7 @@ use RecursiveIterator;
 abstract class GroupFilterIterator extends RecursiveFilterIterator
 {
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
     protected array $groupTests = [];
 

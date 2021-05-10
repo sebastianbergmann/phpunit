@@ -17,13 +17,13 @@ namespace PHPUnit\Framework\Constraint;
 final class Callback extends Constraint
 {
     /**
-     * @var callable
-     *
      * @psalm-var callable(CallbackInput $input): bool
      */
-    private $callback;
+    private mixed $callback;
 
-    /** @psalm-param callable(CallbackInput $input): bool $callback */
+    /**
+     * @psalm-param callable(CallbackInput $input): bool $callback
+     */
     public function __construct(callable $callback)
     {
         $this->callback = $callback;

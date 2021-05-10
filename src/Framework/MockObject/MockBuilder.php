@@ -22,10 +22,7 @@ final class MockBuilder
 {
     private TestCase $testCase;
 
-    /**
-     * @var string
-     */
-    private $type;
+    private string $type;
 
     private ?array $methods = [];
 
@@ -54,11 +51,9 @@ final class MockBuilder
     private Generator $generator;
 
     /**
-     * @param string|string[] $type
-     *
-     * @psalm-param class-string<MockedType>|string|string[] $type
+     * @psalm-param class-string $type
      */
-    public function __construct(TestCase $testCase, $type)
+    public function __construct(TestCase $testCase, string $type)
     {
         $this->testCase  = $testCase;
         $this->type      = $type;
@@ -159,7 +154,7 @@ final class MockBuilder
     /**
      * Specifies the subset of methods to mock, requiring each to exist in the class.
      *
-     * @param string[] $methods
+     * @psalm-param list<string> $methods
      *
      * @throws CannotUseOnlyMethodsException
      * @throws ReflectionException
@@ -200,7 +195,7 @@ final class MockBuilder
     /**
      * Specifies methods that don't exist in the class which you want to mock.
      *
-     * @param string[] $methods
+     * @psalm-param list<string> $methods
      *
      * @throws CannotUseAddMethodsException
      * @throws ReflectionException
