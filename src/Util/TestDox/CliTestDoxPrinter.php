@@ -18,8 +18,8 @@ use function get_class;
 use function implode;
 use function preg_match;
 use function sprintf;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function trim;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -233,9 +233,9 @@ class CliTestDoxPrinter extends TestDoxPrinter
             if (!$insideDiff) {
                 $message[] = $line;
             } else {
-                if (strpos($line, '-') === 0) {
+                if (str_starts_with($line, '-')) {
                     $line = Color::colorize('fg-red', Color::visualizeWhitespace($line, true));
-                } elseif (strpos($line, '+') === 0) {
+                } elseif (str_starts_with($line, '+')) {
                     $line = Color::colorize('fg-green', Color::visualizeWhitespace($line, true));
                 } elseif ($line === '@@ @@') {
                     $line = Color::colorize('fg-cyan', $line);

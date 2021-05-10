@@ -14,7 +14,7 @@ use function count;
 use function in_array;
 use function interface_exists;
 use function sprintf;
-use function strpos;
+use function str_starts_with;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\IncompleteTestCase;
@@ -101,7 +101,7 @@ final class CodeCoverageFacade
                     );
                 }
 
-                if ($classShortcut !== null && strpos($target, '::') === 0) {
+                if ($classShortcut !== null && str_starts_with($target, '::')) {
                     $target = $classShortcut . $target;
                 }
 
@@ -182,7 +182,7 @@ final class CodeCoverageFacade
 
                 $target = $metadata->target();
 
-                if ($classShortcut !== null && strpos($target, '::') === 0) {
+                if ($classShortcut !== null && str_starts_with($target, '::')) {
                     $target = $classShortcut . $target;
                 }
 

@@ -18,9 +18,10 @@ use function explode;
 use function is_file;
 use function is_numeric;
 use function preg_match;
+use function str_contains;
+use function str_starts_with;
 use function stream_resolve_include_path;
 use function strlen;
-use function strpos;
 use function strtolower;
 use function substr;
 use function trim;
@@ -234,7 +235,7 @@ final class Loader
     {
         $path = trim($path);
 
-        if (strpos($path, '/') === 0) {
+        if (str_starts_with($path, '/')) {
             return $path;
         }
 
@@ -251,7 +252,7 @@ final class Loader
             return $path;
         }
 
-        if (strpos($path, '://') !== false) {
+        if (str_contains($path, '://')) {
             return $path;
         }
 

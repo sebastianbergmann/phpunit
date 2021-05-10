@@ -22,7 +22,7 @@ use function is_scalar;
 use function preg_match;
 use function serialize;
 use function sprintf;
-use function strpos;
+use function str_starts_with;
 use function var_export;
 use Closure;
 
@@ -76,7 +76,7 @@ final class GlobalState
                 continue;
             }
 
-            if ($prefix !== false && strpos($file, $prefix) === 0) {
+            if ($prefix !== false && str_starts_with($file, $prefix)) {
                 continue;
             }
 

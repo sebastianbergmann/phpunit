@@ -15,7 +15,8 @@ use function get_class;
 use function implode;
 use function is_object;
 use function sprintf;
-use function strpos;
+use function str_contains;
+use function str_starts_with;
 use function strtolower;
 use function substr;
 use Doctrine\Instantiator\Instantiator;
@@ -55,7 +56,7 @@ final class Invocation implements SelfDescribing
             $returnType = 'string';
         }
 
-        if (strpos($returnType, '?') === 0) {
+        if (str_starts_with($returnType, '?')) {
             $returnType                 = substr($returnType, 1);
             $this->isReturnTypeNullable = true;
         }
@@ -99,7 +100,7 @@ final class Invocation implements SelfDescribing
 
         $returnType = $this->returnType;
 
-        if (strpos($returnType, '|') !== false) {
+        if (str_contains($returnType, '|')) {
             $types      = explode('|', $returnType);
             $returnType = $types[0];
 

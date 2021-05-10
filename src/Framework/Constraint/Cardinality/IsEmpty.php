@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use function count;
 use function gettype;
 use function sprintf;
-use function strpos;
+use function str_starts_with;
 use Countable;
 use EmptyIterator;
 
@@ -58,7 +58,7 @@ final class IsEmpty extends Constraint
 
         return sprintf(
             '%s %s %s',
-            strpos($type, 'a') === 0 || strpos($type, 'o') === 0 ? 'an' : 'a',
+            str_starts_with($type, 'a') || str_starts_with($type, 'o') ? 'an' : 'a',
             $type,
             $this->toString()
         );

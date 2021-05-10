@@ -15,7 +15,7 @@ use function array_values;
 use function count;
 use function explode;
 use function in_array;
-use function strpos;
+use function str_contains;
 use function trim;
 
 /**
@@ -45,7 +45,7 @@ final class ExecutionOrderDependency
         }
 
         // Prefix provided class for targets assumed to be in scope
-        if ($target !== '' && strpos($target, '::') === false) {
+        if ($target !== '' && !str_contains($target, '::')) {
             $target = $className . '::' . $target;
         }
 
@@ -142,7 +142,7 @@ final class ExecutionOrderDependency
             return;
         }
 
-        if (strpos($classOrCallableName, '::') !== false) {
+        if (str_contains($classOrCallableName, '::')) {
             [$this->className, $this->methodName] = explode('::', $classOrCallableName);
         } else {
             $this->className  = $classOrCallableName;

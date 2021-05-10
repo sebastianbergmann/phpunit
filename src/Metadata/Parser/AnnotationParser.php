@@ -13,8 +13,9 @@ use function array_merge;
 use function count;
 use function explode;
 use function method_exists;
+use function str_contains;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function substr;
 use function trim;
 use PHPUnit\Framework\Warning;
@@ -239,7 +240,7 @@ final class AnnotationParser implements Parser
 
                 case 'dataProvider':
                     foreach ($values as $value) {
-                        if (strpos($value, '::') !== false) {
+                        if (str_contains($value, '::')) {
                             $result[] = new DataProvider(...explode('::', $value));
 
                             continue;
@@ -255,15 +256,15 @@ final class AnnotationParser implements Parser
                         $deepClone    = false;
                         $shallowClone = false;
 
-                        if (strpos($value, 'clone ') === 0) {
+                        if (str_starts_with($value, 'clone ')) {
                             $deepClone = true;
                             $value     = substr($value, strlen('clone '));
-                        } elseif (strpos($value, 'shallowClone ') === 0) {
+                        } elseif (str_starts_with($value, 'shallowClone ')) {
                             $shallowClone = true;
                             $value        = substr($value, strlen('shallowClone '));
                         }
 
-                        if (strpos($value, '::') !== false) {
+                        if (str_contains($value, '::')) {
                             [$className, $methodName] = explode('::', $value);
 
                             $result[] = new Depends($className, $methodName, $deepClone, $shallowClone);

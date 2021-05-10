@@ -24,9 +24,10 @@ use function htmlspecialchars;
 use function is_resource;
 use function is_string;
 use function sprintf;
+use function str_contains;
 use function str_replace;
+use function str_starts_with;
 use function strncmp;
-use function strpos;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -57,7 +58,7 @@ class Printer
             return;
         }
 
-        if (strpos($out, 'socket://') === 0) {
+        if (str_starts_with($out, 'socket://')) {
             $tmp = explode(':', str_replace('socket://', '', $out));
 
             if (count($tmp) !== 2) {
@@ -74,7 +75,7 @@ class Printer
             return;
         }
 
-        if (strpos($out, 'php://') === false && !Filesystem::createDirectory(dirname($out))) {
+        if (!str_contains($out, 'php://') && !Filesystem::createDirectory(dirname($out))) {
             throw new Exception(
                 sprintf(
                     'Directory "%s" was not created',

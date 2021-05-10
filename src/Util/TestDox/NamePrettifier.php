@@ -33,9 +33,10 @@ use function preg_quote;
 use function preg_replace;
 use function range;
 use function sprintf;
+use function str_contains;
 use function str_replace;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function strtolower;
 use function strtoupper;
 use function substr;
@@ -88,9 +89,9 @@ final class NamePrettifier
             $className = substr($className, 0, strlen($className) - strlen('Test'));
         }
 
-        if (strpos($className, 'Tests') === 0) {
+        if (str_starts_with($className, 'Tests')) {
             $className = substr($className, strlen('Tests'));
-        } elseif (strpos($className, 'Test') === 0) {
+        } elseif (str_starts_with($className, 'Test')) {
             $className = substr($className, strlen('Test'));
         }
 
@@ -143,7 +144,7 @@ final class NamePrettifier
         if ($metadata->isTestDox()->isNotEmpty()) {
             $result = $metadata->isTestDox()->asArray()[0]->text();
 
-            if (strpos($result, '$') !== false) {
+            if (str_contains($result, '$')) {
                 $annotation   = $result;
                 $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
 
@@ -206,9 +207,9 @@ final class NamePrettifier
             $this->strings[] = $string;
         }
 
-        if (strpos($name, 'test_') === 0) {
+        if (str_starts_with($name, 'test_')) {
             $name = substr($name, 5);
-        } elseif (strpos($name, 'test') === 0) {
+        } elseif (str_starts_with($name, 'test')) {
             $name = substr($name, 4);
         }
 
@@ -218,7 +219,7 @@ final class NamePrettifier
 
         $name[0] = strtoupper($name[0]);
 
-        if (strpos($name, '_') !== false) {
+        if (str_contains($name, '_')) {
             return trim(str_replace('_', ' ', $name));
         }
 

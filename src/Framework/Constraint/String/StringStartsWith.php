@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use PHPUnit\Framework\InvalidArgumentException;
 
 /**
@@ -43,6 +43,6 @@ final class StringStartsWith extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        return strpos((string) $other, $this->prefix) === 0;
+        return str_starts_with((string) $other, $this->prefix);
     }
 }

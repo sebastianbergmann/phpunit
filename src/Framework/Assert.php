@@ -25,7 +25,7 @@ use function is_bool;
 use function is_object;
 use function preg_match;
 use function preg_split;
-use function strpos;
+use function str_contains;
 use ArrayAccess;
 use Countable;
 use Generator;
@@ -2474,7 +2474,7 @@ abstract class Assert
         $hint  = null;
         $lines = preg_split('/\r\n|\r|\n/', $message);
 
-        while (strpos($lines[0], '__OFFSET') !== false) {
+        while (str_contains($lines[0], '__OFFSET')) {
             $offset = explode('=', array_shift($lines));
 
             if ($offset[0] === '__OFFSET_FILE') {

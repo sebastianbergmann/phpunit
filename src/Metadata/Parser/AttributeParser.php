@@ -11,7 +11,7 @@ namespace PHPUnit\Metadata;
 
 use const JSON_THROW_ON_ERROR;
 use function json_decode;
-use function strpos;
+use function str_starts_with;
 use PHPUnit\Framework\Attributes\After as AfterAttribute;
 use PHPUnit\Framework\Attributes\AfterClass as AfterClassAttribute;
 use PHPUnit\Framework\Attributes\BackupGlobals as BackupGlobalsAttribute;
@@ -74,7 +74,7 @@ final class AttributeParser implements Parser
         $result = [];
 
         foreach ((new ReflectionClass($className))->getAttributes() as $attribute) {
-            if (strpos($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\') !== 0) {
+            if (!str_starts_with($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\')) {
                 continue;
             }
 
@@ -262,7 +262,7 @@ final class AttributeParser implements Parser
         $result = [];
 
         foreach ((new ReflectionMethod($className, $methodName))->getAttributes() as $attribute) {
-            if (strpos($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\') !== 0) {
+            if (!str_starts_with($attribute->getName(), 'PHPUnit\\Framework\\Attributes\\')) {
                 continue;
             }
 

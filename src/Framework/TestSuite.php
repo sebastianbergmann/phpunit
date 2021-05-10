@@ -23,7 +23,7 @@ use function is_object;
 use function is_string;
 use function method_exists;
 use function sprintf;
-use function strpos;
+use function str_starts_with;
 use function substr;
 use Iterator;
 use IteratorAggregate;
@@ -688,7 +688,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private function containsOnlyVirtualGroups(array $groups): bool
     {
         foreach ($groups as $group) {
-            if (strpos($group, '__phpunit_') !== 0) {
+            if (!str_starts_with($group, '__phpunit_')) {
                 return false;
             }
         }

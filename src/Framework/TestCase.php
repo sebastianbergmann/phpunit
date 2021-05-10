@@ -52,6 +52,7 @@ use function pathinfo;
 use function preg_replace;
 use function setlocale;
 use function sprintf;
+use function str_contains;
 use function strpos;
 use function substr;
 use DeepCopy\DeepCopy;
@@ -1049,7 +1050,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $id = $this->name;
 
-        if (strpos($id, '::') === false) {
+        if (!str_contains($id, '::')) {
             $id = static::class . '::' . $id;
         }
 

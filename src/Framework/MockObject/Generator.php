@@ -33,6 +33,7 @@ use function range;
 use function serialize;
 use function sort;
 use function sprintf;
+use function str_contains;
 use function str_replace;
 use function strlen;
 use function strpos;
@@ -431,7 +432,7 @@ final class Generator
         $classTemplate = $this->loadTemplate('wsdl_class.tpl');
         $namespace     = '';
 
-        if (strpos($className, '\\') !== false) {
+        if (str_contains($className, '\\')) {
             $parts     = explode('\\', $className);
             $className = array_pop($parts);
             $namespace = 'namespace ' . implode('\\', $parts) . ';' . "\n\n";

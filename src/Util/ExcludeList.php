@@ -16,7 +16,7 @@ use function dirname;
 use function is_dir;
 use function realpath;
 use function sprintf;
-use function strpos;
+use function str_starts_with;
 use function sys_get_temp_dir;
 use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
@@ -186,7 +186,7 @@ final class ExcludeList
         $this->initialize();
 
         foreach (self::$directories as $directory) {
-            if (strpos($file, $directory) === 0) {
+            if (str_starts_with($file, $directory)) {
                 return true;
             }
         }

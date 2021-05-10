@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use function is_string;
 use function sprintf;
-use function strpos;
+use function str_contains;
 use function trim;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -87,7 +87,7 @@ final class IsEqualIgnoringCase extends Constraint
     public function toString(): string
     {
         if (is_string($this->value)) {
-            if (strpos($this->value, "\n") !== false) {
+            if (str_contains($this->value, "\n")) {
                 return 'is equal to <text>';
             }
 

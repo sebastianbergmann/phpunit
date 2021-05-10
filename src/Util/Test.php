@@ -11,7 +11,7 @@ namespace PHPUnit\Util;
 
 use function array_merge;
 use function array_unique;
-use function strpos;
+use function str_starts_with;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Metadata\Annotation\Registry as AnnotationRegistry;
 use PHPUnit\Metadata\Registry as MetadataRegistry;
@@ -83,7 +83,7 @@ final class Test
             return false;
         }
 
-        if (strpos($method->getName(), 'test') === 0) {
+        if (str_starts_with($method->getName(), 'test')) {
             return true;
         }
 

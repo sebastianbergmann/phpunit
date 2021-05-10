@@ -9,8 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function strlen;
-use function substr;
+use function str_ends_with;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -38,6 +37,6 @@ final class StringEndsWith extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        return substr($other, 0 - strlen($this->suffix)) === $this->suffix;
+        return str_ends_with((string) $other, $this->suffix);
     }
 }

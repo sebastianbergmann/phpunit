@@ -33,9 +33,10 @@ use function preg_split;
 use function realpath;
 use function rtrim;
 use function sprintf;
+use function str_contains;
 use function str_replace;
+use function str_starts_with;
 use function strncasecmp;
-use function strpos;
 use function substr;
 use function trim;
 use function unlink;
@@ -292,7 +293,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         foreach ($content as $setting) {
-            if (strpos($setting, '=') === false) {
+            if (!str_contains($setting, '=')) {
                 continue;
             }
 
@@ -687,13 +688,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
 
             if ($block === 'diff') {
-                if (strpos($line, '+') === 0) {
+                if (str_starts_with($line, '+')) {
                     $needle = $this->getCleanDiffLine($previousLine);
 
                     break;
                 }
 
-                if (strpos($line, '-') === 0) {
+                if (str_starts_with($line, '-')) {
                     $needle = $this->getCleanDiffLine($line);
 
                     break;
@@ -765,7 +766,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $offset        = $sectionOffset + 1;
 
             foreach (preg_split('/\r\n|\r|\n/', $sections[$section]) as $line) {
-                if (strpos($line, $needle) !== false) {
+                if (str_contains($line, $needle)) {
                     return [[
                         'file' => realpath($this->filename),
                         'line' => $offset,

@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function sprintf;
-use function strpos;
+use function str_contains;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -43,7 +43,7 @@ final class ExceptionMessage extends Constraint
             return $other->getMessage() === '';
         }
 
-        return strpos((string) $other->getMessage(), $this->expectedMessage) !== false;
+        return str_contains((string) $other->getMessage(), $this->expectedMessage);
     }
 
     /**

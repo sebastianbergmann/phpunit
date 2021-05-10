@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use function mb_stripos;
 use function mb_strtolower;
 use function sprintf;
-use function strpos;
+use function str_contains;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -72,6 +72,6 @@ final class StringContains extends Constraint
          * Additionally, we want this method to be binary safe so we can check if some binary data is in other binary
          * data.
          */
-        return strpos($other, $this->string) !== false;
+        return str_contains($other, $this->string);
     }
 }

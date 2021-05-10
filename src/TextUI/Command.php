@@ -33,8 +33,8 @@ use function printf;
 use function realpath;
 use function sort;
 use function sprintf;
+use function str_starts_with;
 use function stream_resolve_include_path;
-use function strpos;
 use function trim;
 use function version_compare;
 use PHPUnit\Framework\TestSuite;
@@ -563,7 +563,7 @@ class Command
         sort($groups);
 
         foreach ($groups as $group) {
-            if (strpos($group, '__phpunit_') === 0) {
+            if (str_starts_with($group, '__phpunit_')) {
                 continue;
             }
 

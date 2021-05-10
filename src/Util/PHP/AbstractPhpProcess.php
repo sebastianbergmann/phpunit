@@ -20,7 +20,7 @@ use function restore_error_handler;
 use function set_error_handler;
 use function sprintf;
 use function str_replace;
-use function strpos;
+use function str_starts_with;
 use function strrpos;
 use function substr;
 use function trim;
@@ -267,7 +267,7 @@ abstract class AbstractPhpProcess
             );
 
             try {
-                if (strpos($stdout, "#!/usr/bin/env php\n") === 0) {
+                if (str_starts_with($stdout, "#!/usr/bin/env php\n")) {
                     $stdout = substr($stdout, 19);
                 }
 

@@ -13,7 +13,7 @@ use function array_slice;
 use function dirname;
 use function explode;
 use function implode;
-use function strpos;
+use function str_contains;
 use SebastianBergmann\Version as VersionId;
 
 /**
@@ -43,7 +43,7 @@ final class Version
 
     public static function series(): string
     {
-        if (strpos(self::id(), '-')) {
+        if (str_contains(self::id(), '-')) {
             $version = explode('-', self::id())[0];
         } else {
             $version = self::id();
