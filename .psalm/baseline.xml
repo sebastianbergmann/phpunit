@@ -15,108 +15,6 @@
       <code>new ObjectHasAttribute($attributeName)</code>
       <code>new ObjectHasAttribute($attributeName)</code>
     </DeprecatedClass>
-    <DocblockTypeContradiction occurrences="16">
-      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
-      <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
-      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
-      <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
-      <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
-      <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
-      <code>$array instanceof ArrayAccess</code>
-      <code>$array instanceof ArrayAccess</code>
-      <code>is_array($array) || $array instanceof ArrayAccess</code>
-      <code>is_array($array) || $array instanceof ArrayAccess</code>
-      <code>is_int($key) || is_string($key)</code>
-      <code>is_int($key) || is_string($key)</code>
-      <code>is_object($object)</code>
-      <code>is_object($object)</code>
-      <code>is_string($key)</code>
-      <code>is_string($key)</code>
-    </DocblockTypeContradiction>
-    <MissingParamType occurrences="82">
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$attributeName</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$prefix</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-    </MissingParamType>
     <MissingThrowsDocblock occurrences="37">
       <code>loadFile</code>
       <code>loadFile</code>
@@ -152,6 +50,10 @@
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
     </MissingThrowsDocblock>
+    <TypeDoesNotContainType occurrences="2">
+      <code>is_object($object)</code>
+      <code>is_object($object)</code>
+    </TypeDoesNotContainType>
   </file>
   <file src="src/Framework/Assert/Functions.php">
     <DeprecatedClass occurrences="3">
@@ -170,91 +72,8 @@
       <code>Assert::classHasStaticAttribute(...func_get_args())</code>
       <code>Assert::objectHasAttribute(...func_get_args())</code>
     </DeprecatedMethod>
-    <MissingParamType occurrences="85">
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$actual</code>
-      <code>$attributeName</code>
+    <MissingParamType occurrences="2">
       <code>$callback</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$condition</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$expected</code>
-      <code>$key</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$needle</code>
-      <code>$prefix</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
-      <code>$value</code>
       <code>$value</code>
     </MissingParamType>
     <MissingThrowsDocblock occurrences="1">
@@ -294,63 +113,10 @@
       <code>$other</code>
     </MissingParamType>
   </file>
-  <file src="src/Framework/Constraint/Equality/IsEqual.php">
-    <MissingParamType occurrences="2">
-      <code>$other</code>
-      <code>$value</code>
-    </MissingParamType>
-  </file>
-  <file src="src/Framework/Constraint/Equality/IsEqualCanonicalizing.php">
-    <MissingParamType occurrences="2">
-      <code>$other</code>
-      <code>$value</code>
-    </MissingParamType>
-  </file>
-  <file src="src/Framework/Constraint/Equality/IsEqualIgnoringCase.php">
-    <MissingParamType occurrences="2">
-      <code>$other</code>
-      <code>$value</code>
-    </MissingParamType>
-  </file>
-  <file src="src/Framework/Constraint/Equality/IsEqualWithDelta.php">
-    <MissingParamType occurrences="2">
-      <code>$other</code>
-      <code>$value</code>
-    </MissingParamType>
-  </file>
   <file src="src/Framework/Constraint/Exception/Exception.php">
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($other)</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Constraint/Exception/ExceptionCode.php">
-    <MoreSpecificImplementedParamType occurrences="1">
-      <code>$other</code>
-    </MoreSpecificImplementedParamType>
-  </file>
-  <file src="src/Framework/Constraint/Exception/ExceptionMessage.php">
-    <MoreSpecificImplementedParamType occurrences="1">
-      <code>$other</code>
-    </MoreSpecificImplementedParamType>
-    <RedundantCast occurrences="1">
-      <code>(string) $other-&gt;getMessage()</code>
-    </RedundantCast>
-  </file>
-  <file src="src/Framework/Constraint/Exception/ExceptionMessageRegularExpression.php">
-    <MoreSpecificImplementedParamType occurrences="1">
-      <code>$other</code>
-    </MoreSpecificImplementedParamType>
-  </file>
-  <file src="src/Framework/Constraint/IsAnything.php">
-    <MissingParamType occurrences="1">
-      <code>$other</code>
-    </MissingParamType>
-  </file>
-  <file src="src/Framework/Constraint/IsIdentical.php">
-    <MissingParamType occurrences="2">
-      <code>$other</code>
-      <code>$value</code>
-    </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Object/ClassHasAttribute.php">
     <MissingThrowsDocblock occurrences="1"/>
@@ -376,12 +142,10 @@
       <code>evaluate</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Framework/Constraint/Operator/Operator.php">
-    <MissingParamType occurrences="1">
-      <code>$constraint</code>
-    </MissingParamType>
-  </file>
   <file src="src/Framework/Constraint/String/StringMatchesFormatDescription.php">
+    <MissingParamType occurrences="1">
+      <code>$other</code>
+    </MissingParamType>
     <MissingThrowsDocblock occurrences="1">
       <code>new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"))</code>
     </MissingThrowsDocblock>
@@ -392,12 +156,16 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Traversable/TraversableContains.php">
-    <MissingParamType occurrences="1">
-      <code>$value</code>
-    </MissingParamType>
     <MissingReturnType occurrences="1">
       <code>value</code>
     </MissingReturnType>
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;value</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="2">
+      <code>$this-&gt;value</code>
+      <code>$this-&gt;value</code>
+    </UndefinedThisPropertyFetch>
   </file>
   <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -432,9 +200,13 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
-    <MissingParamType occurrences="2">
-      <code>$id</code>
-      <code>$id</code>
+    <MethodSignatureMismatch occurrences="3">
+      <code>$arguments</code>
+      <code>$nextValues</code>
+      <code>$value</code>
+    </MethodSignatureMismatch>
+    <MissingParamType occurrences="1">
+      <code>$arguments</code>
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationStubber.php">
@@ -459,9 +231,6 @@
       <code>$className</code>
       <code>$interfaceName</code>
     </ArgumentTypeCoercion>
-    <DocblockTypeContradiction occurrences="1">
-      <code>!is_array($methods) &amp;&amp; null !== $methods</code>
-    </DocblockTypeContradiction>
     <InvalidReturnStatement occurrences="1"/>
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
@@ -472,6 +241,9 @@
     <MissingReturnType occurrences="1">
       <code>getObject</code>
     </MissingReturnType>
+    <TypeDoesNotContainType occurrences="1">
+      <code>!is_array($methods) &amp;&amp; null !== $methods</code>
+    </TypeDoesNotContainType>
   </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingReturnType occurrences="1">
@@ -509,9 +281,6 @@
       <code>MockObject&amp;MockedType</code>
       <code>MockObject&amp;MockedType</code>
     </InvalidReturnType>
-    <PossiblyInvalidPropertyAssignmentValue occurrences="1">
-      <code>$type</code>
-    </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
     <RedundantCastGivenDocblockType occurrences="1">
@@ -529,24 +298,10 @@
       <code>invokedDo</code>
     </MissingReturnType>
   </file>
-  <file src="src/Framework/MockObject/Rule/MethodName.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>$constraint instanceof Constraint</code>
-    </DocblockTypeContradiction>
-  </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
-    <PossiblyNullPropertyAssignmentValue occurrences="1">
-      <code>null</code>
-    </PossiblyNullPropertyAssignmentValue>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
-    <RedundantCastGivenDocblockType occurrences="1">
-      <code>(bool) $this-&gt;parameterVerificationResult</code>
-    </RedundantCastGivenDocblockType>
-    <RedundantPropertyInitializationCheck occurrences="1">
-      <code>isset($this-&gt;parameterVerificationResult)</code>
-    </RedundantPropertyInitializationCheck>
   </file>
   <file src="src/Framework/MockObject/Stub/ConsecutiveCalls.php">
     <MissingReturnType occurrences="1">
@@ -554,28 +309,19 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnArgument.php">
-    <MissingParamType occurrences="1">
-      <code>$argumentIndex</code>
-    </MissingParamType>
     <MissingReturnType occurrences="1">
       <code>invoke</code>
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnCallback.php">
-    <MissingParamType occurrences="1">
-      <code>$callback</code>
-    </MissingParamType>
-    <MissingPropertyType occurrences="1">
-      <code>$callback</code>
-    </MissingPropertyType>
     <MissingReturnType occurrences="1">
       <code>invoke</code>
     </MissingReturnType>
+    <PossiblyInvalidOperand occurrences="1">
+      <code>$this-&gt;callback</code>
+    </PossiblyInvalidOperand>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnReference.php">
-    <MissingParamType occurrences="1">
-      <code>$reference</code>
-    </MissingParamType>
     <MissingReturnType occurrences="1">
       <code>invoke</code>
     </MissingReturnType>
@@ -586,9 +332,6 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Stub/ReturnStub.php">
-    <MissingParamType occurrences="1">
-      <code>$value</code>
-    </MissingParamType>
     <MissingReturnType occurrences="1">
       <code>invoke</code>
     </MissingReturnType>
@@ -608,7 +351,7 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
     <InvalidDocblock occurrences="2">
-      <code>private function buildDataProviderTestSuite(string $methodName, string $className, $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite</code>
+      <code>private function buildDataProviderTestSuite(string $methodName, string $className, array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite</code>
       <code>private function configureTestCase(TestCase $test, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): void</code>
     </InvalidDocblock>
     <InvalidStringClass occurrences="1">
@@ -617,9 +360,6 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
     </LessSpecificReturnStatement>
-    <MissingParamType occurrences="1">
-      <code>$data</code>
-    </MissingParamType>
     <MissingThrowsDocblock occurrences="3">
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
@@ -642,6 +382,9 @@
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>array_unique($this-&gt;doubledTypes)</code>
+    </LessSpecificReturnStatement>
     <MissingParamType occurrences="5">
       <code>$args</code>
       <code>$args</code>
@@ -668,6 +411,9 @@
       <code>new Differ($header)</code>
       <code>onlyMethods</code>
     </MissingThrowsDocblock>
+    <MoreSpecificReturnType occurrences="1">
+      <code>list&lt;string&gt;</code>
+    </MoreSpecificReturnType>
     <PossiblyNullReference occurrences="4">
       <code>passed</code>
       <code>startTest</code>
@@ -705,8 +451,7 @@
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Framework/TestSuite.php">
-    <DocblockTypeContradiction occurrences="3">
-      <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
+    <DocblockTypeContradiction occurrences="2">
       <code>is_string($testClass)</code>
       <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
     </DocblockTypeContradiction>
@@ -714,14 +459,9 @@
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) $key</code>
     </RedundantCastGivenDocblockType>
-    <RedundantConditionGivenDocblockType occurrences="6">
-      <code>is_bool($backupGlobals)</code>
-      <code>is_bool($backupStaticProperties)</code>
-      <code>is_bool($beStrictAboutChangesToGlobalState)</code>
-      <code>null === $this-&gt;backupGlobals &amp;&amp; is_bool($backupGlobals)</code>
-      <code>null === $this-&gt;backupStaticProperties &amp;&amp; is_bool($backupStaticProperties)</code>
-      <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
-    </RedundantConditionGivenDocblockType>
+    <TypeDoesNotContainType occurrences="1">
+      <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
+    </TypeDoesNotContainType>
   </file>
   <file src="src/Metadata/Facade/CodeCoverageFacade.php">
     <RedundantCondition occurrences="4">
@@ -736,7 +476,9 @@
     </UndefinedMethod>
   </file>
   <file src="src/Metadata/Facade/DataProviderFacade.php">
-    <MissingThrowsDocblock occurrences="2"/>
+    <MissingThrowsDocblock occurrences="2">
+      <code>dataProvidedByTestWithAnnotation</code>
+    </MissingThrowsDocblock>
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) substr($docComment, 0, -1)</code>
     </RedundantCastGivenDocblockType>
@@ -857,6 +599,9 @@
     </UnresolvableInclude>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$tests</code>
+    </ArgumentTypeCoercion>
     <MissingClosureParamType occurrences="6">
       <code>$left</code>
       <code>$left</code>
@@ -1141,9 +886,6 @@
     </PossiblyNullReference>
   </file>
   <file src="src/TextUI/XmlConfiguration/PHP/Constant.php">
-    <MissingParamType occurrences="1">
-      <code>$value</code>
-    </MissingParamType>
     <MissingReturnType occurrences="1">
       <code>value</code>
     </MissingReturnType>
@@ -1204,9 +946,6 @@
     <DeprecatedMethod occurrences="1">
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingParamType occurrences="1">
-      <code>$columns</code>
-    </MissingParamType>
     <MissingReturnType occurrences="1">
       <code>columns</code>
     </MissingReturnType>
@@ -1262,7 +1001,7 @@
   </file>
   <file src="src/Util/ExcludeList.php">
     <InvalidNullableReturnType occurrences="1">
-      <code>string[]</code>
+      <code>list&lt;string&gt;</code>
     </InvalidNullableReturnType>
     <MissingThrowsDocblock occurrences="1"/>
     <NullableReturnStatement occurrences="1">
@@ -1310,9 +1049,6 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/Log/TeamCity.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$className</code>
-    </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="2">
       <code>$actualString === null</code>
       <code>$expectedString === null</code>
@@ -1366,10 +1102,6 @@
     <PossiblyFalseOperand occurrences="1">
       <code>strrpos($key, "\0")</code>
     </PossiblyFalseOperand>
-    <UndefinedInterfaceMethod occurrences="2">
-      <code>addToAssertionCount</code>
-      <code>setResult</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <RedundantCondition occurrences="1">
@@ -1389,9 +1121,15 @@
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Util/Test.php">
+    <LessSpecificReturnStatement occurrences="1">
+      <code>array_unique($dependencies)</code>
+    </LessSpecificReturnStatement>
     <MissingThrowsDocblock occurrences="1">
       <code>forClassName</code>
     </MissingThrowsDocblock>
+    <MoreSpecificReturnType occurrences="1">
+      <code>list&lt;ExecutionOrderDependency&gt;</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <MissingThrowsDocblock occurrences="2">
