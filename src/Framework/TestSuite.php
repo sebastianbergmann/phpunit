@@ -23,8 +23,8 @@ use function is_object;
 use function is_string;
 use function method_exists;
 use function sprintf;
+use function str_ends_with;
 use function str_starts_with;
-use function substr;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Metadata\GroupsFacade;
@@ -308,7 +308,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function addTestFile(string $filename): void
     {
-        if (is_file($filename) && substr($filename, -5) === '.phpt') {
+        if (is_file($filename) && str_ends_with($filename, '.phpt')) {
             $this->addTest(new PhptTestCase($filename));
 
             return;
