@@ -19,31 +19,16 @@ abstract class TestStatus
 
     public static function from(int $status): self
     {
-        switch ($status) {
-            case 0:
-                return self::success();
-
-            case 1:
-                return self::skipped();
-
-            case 2:
-                return self::incomplete();
-
-            case 3:
-                return self::failure();
-
-            case 4:
-                return self::error();
-
-            case 5:
-                return self::risky();
-
-            case 6:
-                return self::warning();
-
-            default:
-                return self::unknown();
-        }
+        return match ($status) {
+            0       => self::success(),
+            1       => self::skipped(),
+            2       => self::incomplete(),
+            3       => self::failure(),
+            4       => self::error(),
+            5       => self::risky(),
+            6       => self::warning(),
+            default => self::unknown(),
+        };
     }
 
     public static function unknown(): self

@@ -51,22 +51,10 @@ final class JsonMatchesErrorMessageProvider
      */
     public static function translateTypeToPrefix(string $type): string
     {
-        switch (strtolower($type)) {
-            case 'expected':
-                $prefix = 'Expected value JSON decode error - ';
-
-                break;
-            case 'actual':
-                $prefix = 'Actual value JSON decode error - ';
-
-                break;
-
-            default:
-                $prefix = '';
-
-                break;
-        }
-
-        return $prefix;
+        return match (strtolower($type)) {
+            'expected' => 'Expected value JSON decode error - ',
+            'actual'   => 'Actual value JSON decode error - ',
+            default    => '',
+        };
     }
 }
