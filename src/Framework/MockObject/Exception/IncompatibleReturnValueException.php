@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function get_debug_type;
 use function sprintf;
 
 /**
@@ -25,7 +26,7 @@ final class IncompatibleReturnValueException extends \PHPUnit\Framework\Exceptio
             sprintf(
                 'Method %s may not return value of type %s, its return declaration is "%s"',
                 $method->getName(),
-                is_object($value) ? get_class($value) : gettype($value),
+                get_debug_type($value),
                 $method->getReturnTypeDeclaration()
             )
         );
