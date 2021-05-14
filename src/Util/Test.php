@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use function array_unique;
 use function assert;
 use function str_starts_with;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -29,7 +28,6 @@ final class Test
      */
     public static function getDependencies(string $className, string $methodName): array
     {
-        // Normalize dependency name to className::methodName
         $dependencies = [];
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName)->isDepends() as $metadata) {
@@ -38,7 +36,7 @@ final class Test
             $dependencies[] = ExecutionOrderDependency::from($metadata);
         }
 
-        return array_unique($dependencies);
+        return $dependencies;
     }
 
     public static function isTestMethod(ReflectionMethod $method): bool
