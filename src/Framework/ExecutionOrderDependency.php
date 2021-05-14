@@ -12,11 +12,9 @@ namespace PHPUnit\Framework;
 use function array_filter;
 use function array_map;
 use function array_values;
-use function count;
 use function explode;
 use function in_array;
 use function str_contains;
-use function trim;
 use PHPUnit\Metadata\Depends;
 
 /**
@@ -39,32 +37,6 @@ final class ExecutionOrderDependency
             $metadata->methodName(),
             $metadata->deepClone(),
             $metadata->shallowClone()
-        );
-    }
-
-    public static function fromDependsAnnotation(string $className, string $annotation): self
-    {
-        // Split clone option and target
-        $parts = explode(' ', trim($annotation), 2);
-
-        if (count($parts) === 1) {
-            $cloneOption = '';
-            $target      = $parts[0];
-        } else {
-            $cloneOption = $parts[0];
-            $target      = $parts[1];
-        }
-
-        // Prefix provided class for targets assumed to be in scope
-        if ($target !== '' && !str_contains($target, '::')) {
-            $target = $className . '::' . $target;
-        }
-
-        return new self(
-            $target,
-            null,
-            $cloneOption === 'clone',
-            $cloneOption === 'shallowClone'
         );
     }
 
