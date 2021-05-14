@@ -533,19 +533,19 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(3, $metadata);
 
-        $this->assertTrue($metadata->asArray()[0]->isDepends());
+        $this->assertTrue($metadata->asArray()[0]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
         $this->assertSame('one', $metadata->asArray()[0]->methodName());
         $this->assertFalse($metadata->asArray()[0]->deepClone());
         $this->assertFalse($metadata->asArray()[0]->shallowClone());
 
-        $this->assertTrue($metadata->asArray()[1]->isDepends());
+        $this->assertTrue($metadata->asArray()[1]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[1]->className());
         $this->assertSame('one', $metadata->asArray()[1]->methodName());
         $this->assertTrue($metadata->asArray()[1]->deepClone());
         $this->assertFalse($metadata->asArray()[1]->shallowClone());
 
-        $this->assertTrue($metadata->asArray()[2]->isDepends());
+        $this->assertTrue($metadata->asArray()[2]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[2]->className());
         $this->assertSame('one', $metadata->asArray()[2]->methodName());
         $this->assertFalse($metadata->asArray()[2]->deepClone());
@@ -561,19 +561,19 @@ final class AttributeParserTest extends TestCase
 
         $this->assertCount(3, $metadata);
 
-        $this->assertTrue($metadata->asArray()[0]->isDepends());
+        $this->assertTrue($metadata->asArray()[0]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
         $this->assertSame('one', $metadata->asArray()[0]->methodName());
         $this->assertFalse($metadata->asArray()[0]->deepClone());
         $this->assertFalse($metadata->asArray()[0]->shallowClone());
 
-        $this->assertTrue($metadata->asArray()[1]->isDepends());
+        $this->assertTrue($metadata->asArray()[1]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[1]->className());
         $this->assertSame('one', $metadata->asArray()[1]->methodName());
         $this->assertTrue($metadata->asArray()[1]->deepClone());
         $this->assertFalse($metadata->asArray()[1]->shallowClone());
 
-        $this->assertTrue($metadata->asArray()[2]->isDepends());
+        $this->assertTrue($metadata->asArray()[2]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[2]->className());
         $this->assertSame('one', $metadata->asArray()[2]->methodName());
         $this->assertFalse($metadata->asArray()[2]->deepClone());

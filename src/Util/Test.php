@@ -12,7 +12,8 @@ namespace PHPUnit\Util;
 use function assert;
 use function str_starts_with;
 use PHPUnit\Framework\ExecutionOrderDependency;
-use PHPUnit\Metadata\Depends;
+use PHPUnit\Metadata\DependsOnClass;
+use PHPUnit\Metadata\DependsOnMethod;
 use PHPUnit\Metadata\Registry;
 use ReflectionMethod;
 
@@ -31,9 +32,17 @@ final class Test
         $dependencies = [];
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName)->isDepends() as $metadata) {
-            assert($metadata instanceof Depends);
+            if ($metadata->isDependsOnClass()) {
+                assert($metadata instanceof DependsOnClass);
 
-            $dependencies[] = ExecutionOrderDependency::from($metadata);
+                $dependencies[] = ExecutionOrderDependency::forClass($metadata);
+            }
+
+            if ($metadata->isDependsOnMethod()) {
+                assert($metadata instanceof DependsOnMethod);
+
+                $dependencies[] = ExecutionOrderDependency::forMethod($metadata);
+            }
         }
 
         return $dependencies;

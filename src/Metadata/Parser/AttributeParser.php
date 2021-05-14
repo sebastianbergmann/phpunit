@@ -320,32 +320,32 @@ final class AttributeParser implements Parser
                     break;
 
                 case DependsAttribute::class:
-                    $result[] = new Depends($className, $attributeInstance->methodName(), false, false);
+                    $result[] = new DependsOnMethod($className, $attributeInstance->methodName(), false, false);
 
                     break;
 
                 case DependsUsingDeepCloneAttribute::class:
-                    $result[] = new Depends($className, $attributeInstance->methodName(), true, false);
+                    $result[] = new DependsOnMethod($className, $attributeInstance->methodName(), true, false);
 
                     break;
 
                 case DependsUsingShallowCloneAttribute::class:
-                    $result[] = new Depends($className, $attributeInstance->methodName(), false, true);
+                    $result[] = new DependsOnMethod($className, $attributeInstance->methodName(), false, true);
 
                     break;
 
                 case DependsExternalAttribute::class:
-                    $result[] = new Depends($attributeInstance->className(), $attributeInstance->methodName(), false, false);
+                    $result[] = new DependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), false, false);
 
                     break;
 
                 case DependsExternalUsingDeepCloneAttribute::class:
-                    $result[] = new Depends($attributeInstance->className(), $attributeInstance->methodName(), true, false);
+                    $result[] = new DependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), true, false);
 
                     break;
 
                 case DependsExternalUsingShallowCloneAttribute::class:
-                    $result[] = new Depends($attributeInstance->className(), $attributeInstance->methodName(), false, true);
+                    $result[] = new DependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), false, true);
 
                     break;
 

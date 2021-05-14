@@ -268,15 +268,25 @@ final class AnnotationParser implements Parser
                             $value = substr($value, strlen('!shallowClone '));
                         }
 
+                        if (empty($value)) {
+                            continue;
+                        }
+
                         if (str_contains($value, '::')) {
                             [$className, $methodName] = explode('::', $value);
 
-                            $result[] = new Depends($className, $methodName, $deepClone, $shallowClone);
+                            if ($methodName === 'class') {
+                                $result[] = new DependsOnClass($className, $deepClone, $shallowClone);
+
+                                continue;
+                            }
+
+                            $result[] = new DependsOnMethod($className, $methodName, $deepClone, $shallowClone);
 
                             continue;
                         }
 
-                        $result[] = new Depends($className, $value, $deepClone, $shallowClone);
+                        $result[] = new DependsOnMethod($className, $value, $deepClone, $shallowClone);
                     }
 
                     break;

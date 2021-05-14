@@ -392,31 +392,31 @@ final class AnnotationParserTest extends TestCase
 
         $this->assertCount(5, $metadata);
 
-        $this->assertTrue($metadata->asArray()[0]->isDepends());
+        $this->assertTrue($metadata->asArray()[0]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
         $this->assertSame('one', $metadata->asArray()[0]->methodName());
         $this->assertFalse($metadata->asArray()[0]->deepClone());
         $this->assertFalse($metadata->asArray()[0]->shallowClone());
 
-        $this->assertTrue($metadata->asArray()[1]->isDepends());
+        $this->assertTrue($metadata->asArray()[1]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[1]->className());
         $this->assertSame('one', $metadata->asArray()[1]->methodName());
         $this->assertTrue($metadata->asArray()[1]->deepClone());
         $this->assertFalse($metadata->asArray()[1]->shallowClone());
 
-        $this->assertTrue($metadata->asArray()[2]->isDepends());
+        $this->assertTrue($metadata->asArray()[2]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[2]->className());
         $this->assertSame('one', $metadata->asArray()[2]->methodName());
         $this->assertFalse($metadata->asArray()[2]->deepClone());
         $this->assertTrue($metadata->asArray()[2]->shallowClone());
 
-        $this->assertTrue($metadata->asArray()[3]->isDepends());
+        $this->assertTrue($metadata->asArray()[3]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[3]->className());
         $this->assertSame('one', $metadata->asArray()[3]->methodName());
         $this->assertFalse($metadata->asArray()[3]->deepClone());
         $this->assertFalse($metadata->asArray()[3]->shallowClone());
 
-        $this->assertTrue($metadata->asArray()[4]->isDepends());
+        $this->assertTrue($metadata->asArray()[4]->isDependsOnMethod());
         $this->assertSame(SmallTest::class, $metadata->asArray()[4]->className());
         $this->assertSame('one', $metadata->asArray()[4]->methodName());
         $this->assertFalse($metadata->asArray()[4]->deepClone());

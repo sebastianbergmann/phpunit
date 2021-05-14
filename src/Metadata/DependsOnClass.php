@@ -13,14 +13,12 @@ namespace PHPUnit\Metadata;
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class Depends extends Metadata
+final class DependsOnClass extends Metadata
 {
     /**
      * @psalm-var class-string
      */
     private string $className;
-
-    private string $methodName;
 
     private bool $deepClone;
 
@@ -29,15 +27,14 @@ final class Depends extends Metadata
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName, bool $deepClone, bool $shallowClone)
+    public function __construct(string $className, bool $deepClone, bool $shallowClone)
     {
         $this->className    = $className;
-        $this->methodName   = $methodName;
         $this->deepClone    = $deepClone;
         $this->shallowClone = $shallowClone;
     }
 
-    public function isDepends(): bool
+    public function isDependsOnClass(): bool
     {
         return true;
     }
@@ -48,11 +45,6 @@ final class Depends extends Metadata
     public function className(): string
     {
         return $this->className;
-    }
-
-    public function methodName(): string
-    {
-        return $this->methodName;
     }
 
     public function deepClone(): bool

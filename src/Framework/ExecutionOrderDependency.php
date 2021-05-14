@@ -15,7 +15,8 @@ use function array_values;
 use function explode;
 use function in_array;
 use function str_contains;
-use PHPUnit\Metadata\Depends;
+use PHPUnit\Metadata\DependsOnClass;
+use PHPUnit\Metadata\DependsOnMethod;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -30,7 +31,17 @@ final class ExecutionOrderDependency
 
     private bool $deepClone;
 
-    public static function from(Depends $metadata): self
+    public static function forClass(DependsOnClass $metadata): self
+    {
+        return new self(
+            $metadata->className(),
+            'class',
+            $metadata->deepClone(),
+            $metadata->shallowClone()
+        );
+    }
+
+    public static function forMethod(DependsOnMethod $metadata): self
     {
         return new self(
             $metadata->className(),

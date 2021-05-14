@@ -128,9 +128,17 @@ abstract class Metadata
     }
 
     /**
-     * @psalm-assert-if-true Depends $this
+     * @psalm-assert-if-true DependsOnClass $this
      */
-    public function isDepends(): bool
+    public function isDependsOnClass(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true DependsOnMethod $this
+     */
+    public function isDependsOnMethod(): bool
     {
         return false;
     }

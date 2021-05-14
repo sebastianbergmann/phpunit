@@ -30,7 +30,7 @@ use PHPUnit\Util\VersionComparisonOperator;
  * @uses \PHPUnit\Metadata\CoversMethod
  * @uses \PHPUnit\Metadata\CoversNothing
  * @uses \PHPUnit\Metadata\DataProvider
- * @uses \PHPUnit\Metadata\Depends
+ * @uses \PHPUnit\Metadata\DependsOnMethod
  * @uses \PHPUnit\Metadata\DoesNotPerformAssertions
  * @uses \PHPUnit\Metadata\Group
  * @uses \PHPUnit\Metadata\Metadata
@@ -229,7 +229,7 @@ final class MetadataCollectionTest extends TestCase
         $collection = $this->collectionWithOneOfEach()->isDepends();
 
         $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isDepends());
+        $this->assertTrue($collection->asArray()[0]->isDependsOnMethod());
     }
 
     public function test_Can_be_filtered_for_DoesNotPerformAssertions(): void
@@ -466,7 +466,7 @@ final class MetadataCollectionTest extends TestCase
                 new CoversMethod('', ''),
                 new CoversNothing,
                 new DataProvider('', ''),
-                new Depends('', '', false, false),
+                new DependsOnMethod('', '', false, false),
                 new DoesNotPerformAssertions,
                 new ExcludeGlobalVariableFromBackup(''),
                 new ExcludeStaticPropertyFromBackup('', ''),

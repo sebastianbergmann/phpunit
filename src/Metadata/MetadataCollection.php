@@ -275,7 +275,31 @@ final class MetadataCollection implements Countable, IteratorAggregate
             ...array_filter(
                 $this->metadata,
                 static function (Metadata $metadata): bool {
-                    return $metadata->isDepends();
+                    return $metadata->isDependsOnClass() || $metadata->isDependsOnMethod();
+                }
+            )
+        );
+    }
+
+    public function isDependsOnClass(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isDependsOnClass();
+                }
+            )
+        );
+    }
+
+    public function isDependsOnMethod(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isDependsOnMethod();
                 }
             )
         );
