@@ -17,6 +17,7 @@ use function explode;
 use function in_array;
 use function str_contains;
 use function trim;
+use PHPUnit\Metadata\Depends;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -30,6 +31,16 @@ final class ExecutionOrderDependency
     private bool $shallowClone;
 
     private bool $deepClone;
+
+    public static function from(Depends $metadata): self
+    {
+        return new self(
+            $metadata->className(),
+            $metadata->methodName(),
+            $metadata->deepClone(),
+            $metadata->shallowClone()
+        );
+    }
 
     public static function fromDependsAnnotation(string $className, string $annotation): self
     {

@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Util;
 
-use function array_merge;
 use function array_unique;
+use function assert;
 use function str_starts_with;
 use PHPUnit\Framework\ExecutionOrderDependency;
-use PHPUnit\Metadata\Annotation\Registry as AnnotationRegistry;
-use PHPUnit\Metadata\Registry as MetadataRegistry;
+use PHPUnit\Metadata\Depends;
+use PHPUnit\Metadata\Registry;
 use ReflectionMethod;
 
 /**
@@ -24,54 +24,18 @@ final class Test
 {
     /**
      * @psalm-param class-string $className
-     */
-    public static function parseTestMethodAnnotations(string $className, ?string $methodName = ''): array
-    {
-        $registry = AnnotationRegistry::getInstance();
-
-        if ($methodName !== null) {
-            try {
-                return [
-                    'method' => $registry->forMethod($className, $methodName)->symbolAnnotations(),
-                    'class'  => $registry->forClassName($className)->symbolAnnotations(),
-                ];
-            } catch (Exception $methodNotFound) {
-                // ignored
-            }
-        }
-
-        return [
-            'method' => null,
-            'class'  => $registry->forClassName($className)->symbolAnnotations(),
-        ];
-    }
-
-    /**
-     * @psalm-param class-string $className
      *
      * @psalm-return list<ExecutionOrderDependency>
      */
     public static function getDependencies(string $className, string $methodName): array
     {
-        $annotations = self::parseTestMethodAnnotations(
-            $className,
-            $methodName
-        );
-
-        $dependsAnnotations = $annotations['class']['depends'] ?? [];
-
-        if (isset($annotations['method']['depends'])) {
-            $dependsAnnotations = array_merge(
-                $dependsAnnotations,
-                $annotations['method']['depends']
-            );
-        }
-
         // Normalize dependency name to className::methodName
         $dependencies = [];
 
-        foreach ($dependsAnnotations as $value) {
-            $dependencies[] = ExecutionOrderDependency::fromDependsAnnotation($className, $value);
+        foreach (Registry::parser()->forClassAndMethod($className, $methodName)->isDepends() as $metadata) {
+            assert($metadata instanceof Depends);
+
+            $dependencies[] = ExecutionOrderDependency::from($metadata);
         }
 
         return array_unique($dependencies);
@@ -87,7 +51,7 @@ final class Test
             return true;
         }
 
-        $metadata = MetadataRegistry::parser()->forMethod(
+        $metadata = Registry::parser()->forMethod(
             $method->getDeclaringClass()->getName(),
             $method->getName()
         );
