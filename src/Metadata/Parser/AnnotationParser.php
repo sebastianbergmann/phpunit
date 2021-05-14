@@ -259,9 +259,13 @@ final class AnnotationParser implements Parser
                         if (str_starts_with($value, 'clone ')) {
                             $deepClone = true;
                             $value     = substr($value, strlen('clone '));
+                        } elseif (str_starts_with($value, '!clone ')) {
+                            $value = substr($value, strlen('!clone '));
                         } elseif (str_starts_with($value, 'shallowClone ')) {
                             $shallowClone = true;
                             $value        = substr($value, strlen('shallowClone '));
+                        } elseif (str_starts_with($value, '!shallowClone ')) {
+                            $value = substr($value, strlen('!shallowClone '));
                         }
 
                         if (str_contains($value, '::')) {

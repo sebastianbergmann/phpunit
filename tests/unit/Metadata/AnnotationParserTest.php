@@ -390,7 +390,7 @@ final class AnnotationParserTest extends TestCase
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDepends')->isDepends();
 
-        $this->assertCount(3, $metadata);
+        $this->assertCount(5, $metadata);
 
         $this->assertTrue($metadata->asArray()[0]->isDepends());
         $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
@@ -409,6 +409,18 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('one', $metadata->asArray()[2]->methodName());
         $this->assertFalse($metadata->asArray()[2]->deepClone());
         $this->assertTrue($metadata->asArray()[2]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[3]->isDepends());
+        $this->assertSame(SmallTest::class, $metadata->asArray()[3]->className());
+        $this->assertSame('one', $metadata->asArray()[3]->methodName());
+        $this->assertFalse($metadata->asArray()[3]->deepClone());
+        $this->assertFalse($metadata->asArray()[3]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[4]->isDepends());
+        $this->assertSame(SmallTest::class, $metadata->asArray()[4]->className());
+        $this->assertSame('one', $metadata->asArray()[4]->methodName());
+        $this->assertFalse($metadata->asArray()[4]->deepClone());
+        $this->assertFalse($metadata->asArray()[4]->shallowClone());
     }
 
     public function test_Parses_doesNotPerformAssertions_annotation_on_method(): void
