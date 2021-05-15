@@ -11,9 +11,11 @@ namespace PHPUnit\Metadata;
 
 use function assert;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\Metadata\Annotation\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Annotation\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Annotation\BackupStaticPropertiesTest;
 use PHPUnit\TestFixture\Metadata\Annotation\CoversTest;
+use PHPUnit\TestFixture\Metadata\Annotation\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Annotation\DoesNotPerformAssertionsTest;
 use PHPUnit\TestFixture\Metadata\Annotation\Example;
 use PHPUnit\TestFixture\Metadata\Annotation\GroupTest;
@@ -388,39 +390,102 @@ final class AnnotationParserTest extends TestCase
 
     public function test_Parses_depends_annotation_on_method(): void
     {
-        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDepends')->isDepends();
+        $metadata = (new AnnotationParser)->forMethod(DependencyTest::class, 'testOne')->isDependsOnMethod();
 
         $this->assertCount(5, $metadata);
 
         $this->assertTrue($metadata->asArray()[0]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
-        $this->assertSame('one', $metadata->asArray()[0]->methodName());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[0]->className());
+        $this->assertSame('testOne', $metadata->asArray()[0]->methodName());
         $this->assertFalse($metadata->asArray()[0]->deepClone());
         $this->assertFalse($metadata->asArray()[0]->shallowClone());
 
         $this->assertTrue($metadata->asArray()[1]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[1]->className());
-        $this->assertSame('one', $metadata->asArray()[1]->methodName());
-        $this->assertTrue($metadata->asArray()[1]->deepClone());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[1]->className());
+        $this->assertSame('testOne', $metadata->asArray()[1]->methodName());
+        $this->assertFalse($metadata->asArray()[1]->deepClone());
         $this->assertFalse($metadata->asArray()[1]->shallowClone());
 
         $this->assertTrue($metadata->asArray()[2]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[2]->className());
-        $this->assertSame('one', $metadata->asArray()[2]->methodName());
-        $this->assertFalse($metadata->asArray()[2]->deepClone());
-        $this->assertTrue($metadata->asArray()[2]->shallowClone());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[2]->className());
+        $this->assertSame('testOne', $metadata->asArray()[2]->methodName());
+        $this->assertTrue($metadata->asArray()[2]->deepClone());
+        $this->assertFalse($metadata->asArray()[2]->shallowClone());
 
         $this->assertTrue($metadata->asArray()[3]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[3]->className());
-        $this->assertSame('one', $metadata->asArray()[3]->methodName());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[3]->className());
+        $this->assertSame('testOne', $metadata->asArray()[3]->methodName());
         $this->assertFalse($metadata->asArray()[3]->deepClone());
         $this->assertFalse($metadata->asArray()[3]->shallowClone());
 
         $this->assertTrue($metadata->asArray()[4]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[4]->className());
-        $this->assertSame('one', $metadata->asArray()[4]->methodName());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[4]->className());
+        $this->assertSame('testOne', $metadata->asArray()[4]->methodName());
         $this->assertFalse($metadata->asArray()[4]->deepClone());
-        $this->assertFalse($metadata->asArray()[4]->shallowClone());
+        $this->assertTrue($metadata->asArray()[4]->shallowClone());
+
+        $metadata = (new AnnotationParser)->forMethod(DependencyTest::class, 'testTwo')->isDependsOnMethod();
+
+        $this->assertCount(5, $metadata);
+
+        $this->assertTrue($metadata->asArray()[0]->isDependsOnMethod());
+        $this->assertSame(DependencyTest::class, $metadata->asArray()[0]->className());
+        $this->assertSame('testOne', $metadata->asArray()[0]->methodName());
+        $this->assertFalse($metadata->asArray()[0]->deepClone());
+        $this->assertFalse($metadata->asArray()[0]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[1]->isDependsOnMethod());
+        $this->assertSame(DependencyTest::class, $metadata->asArray()[1]->className());
+        $this->assertSame('testOne', $metadata->asArray()[1]->methodName());
+        $this->assertFalse($metadata->asArray()[1]->deepClone());
+        $this->assertFalse($metadata->asArray()[1]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[2]->isDependsOnMethod());
+        $this->assertSame(DependencyTest::class, $metadata->asArray()[2]->className());
+        $this->assertSame('testOne', $metadata->asArray()[2]->methodName());
+        $this->assertTrue($metadata->asArray()[2]->deepClone());
+        $this->assertFalse($metadata->asArray()[2]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[3]->isDependsOnMethod());
+        $this->assertSame(DependencyTest::class, $metadata->asArray()[3]->className());
+        $this->assertSame('testOne', $metadata->asArray()[3]->methodName());
+        $this->assertFalse($metadata->asArray()[3]->deepClone());
+        $this->assertFalse($metadata->asArray()[3]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[4]->isDependsOnMethod());
+        $this->assertSame(DependencyTest::class, $metadata->asArray()[4]->className());
+        $this->assertSame('testOne', $metadata->asArray()[4]->methodName());
+        $this->assertFalse($metadata->asArray()[4]->deepClone());
+        $this->assertTrue($metadata->asArray()[4]->shallowClone());
+
+        $metadata = (new AnnotationParser)->forMethod(DependencyTest::class, 'testThree')->isDependsOnClass();
+
+        $this->assertCount(5, $metadata);
+
+        $this->assertTrue($metadata->asArray()[0]->isDependsOnClass());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[0]->className());
+        $this->assertFalse($metadata->asArray()[0]->deepClone());
+        $this->assertFalse($metadata->asArray()[0]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[1]->isDependsOnClass());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[1]->className());
+        $this->assertFalse($metadata->asArray()[1]->deepClone());
+        $this->assertFalse($metadata->asArray()[1]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[2]->isDependsOnClass());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[2]->className());
+        $this->assertTrue($metadata->asArray()[2]->deepClone());
+        $this->assertFalse($metadata->asArray()[2]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[3]->isDependsOnClass());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[3]->className());
+        $this->assertFalse($metadata->asArray()[3]->deepClone());
+        $this->assertFalse($metadata->asArray()[3]->shallowClone());
+
+        $this->assertTrue($metadata->asArray()[4]->isDependsOnClass());
+        $this->assertSame(AnotherTest::class, $metadata->asArray()[4]->className());
+        $this->assertFalse($metadata->asArray()[4]->deepClone());
+        $this->assertTrue($metadata->asArray()[4]->shallowClone());
     }
 
     public function test_Parses_doesNotPerformAssertions_annotation_on_method(): void

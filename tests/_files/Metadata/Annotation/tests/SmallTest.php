@@ -59,24 +59,6 @@ final class SmallTest extends TestCase
     }
 
     /**
-     * @depends one
-     * @depends clone one
-     * @depends shallowClone one
-     * @depends !clone one
-     * @depends !shallowClone one
-     */
-    public function testWithDepends(): void
-    {
-    }
-
-    /**
-     * @depends \PHPUnit\TestFixture\Metadata\Annotation\SmallTest::one
-     */
-    public function testWithDependsExternal(): void
-    {
-    }
-
-    /**
      * @postCondition
      */
     public function postCondition(): void

@@ -11,22 +11,38 @@ namespace PHPUnit\TestFixture\Metadata\Annotation;
 
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- */
 final class DependencyTest extends TestCase
 {
     /**
-     * @depends Foo
-     * @depends ほげ
-     * @depends AnotherClass::Foo
+     * @depends PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::testOne
+     * @depends !clone PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::testOne
+     * @depends clone PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::testOne
+     * @depends !shallowClone PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::testOne
+     * @depends shallowClone PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::testOne
      */
     public function testOne(): void
     {
     }
 
-    /** @depends Bar */
+    /**
+     * @depends testOne
+     * @depends !clone testOne
+     * @depends clone testOne
+     * @depends !shallowClone testOne
+     * @depends shallowClone testOne
+     */
     public function testTwo(): void
+    {
+    }
+
+    /**
+     * @depends PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::class
+     * @depends !clone PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::class
+     * @depends clone PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::class
+     * @depends !shallowClone PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::class
+     * @depends shallowClone PHPUnit\TestFixture\Metadata\Annotation\AnotherTest::class
+     */
+    public function testThree(): void
     {
     }
 }
