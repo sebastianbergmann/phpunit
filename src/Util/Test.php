@@ -9,11 +9,7 @@
  */
 namespace PHPUnit\Util;
 
-use function assert;
 use function str_starts_with;
-use PHPUnit\Framework\ExecutionOrderDependency;
-use PHPUnit\Metadata\DependsOnClass;
-use PHPUnit\Metadata\DependsOnMethod;
 use PHPUnit\Metadata\Registry;
 use ReflectionMethod;
 
@@ -22,32 +18,6 @@ use ReflectionMethod;
  */
 final class Test
 {
-    /**
-     * @psalm-param class-string $className
-     *
-     * @psalm-return list<ExecutionOrderDependency>
-     */
-    public static function getDependencies(string $className, string $methodName): array
-    {
-        $dependencies = [];
-
-        foreach (Registry::parser()->forClassAndMethod($className, $methodName)->isDepends() as $metadata) {
-            if ($metadata->isDependsOnClass()) {
-                assert($metadata instanceof DependsOnClass);
-
-                $dependencies[] = ExecutionOrderDependency::forClass($metadata);
-            }
-
-            if ($metadata->isDependsOnMethod()) {
-                assert($metadata instanceof DependsOnMethod);
-
-                $dependencies[] = ExecutionOrderDependency::forMethod($metadata);
-            }
-        }
-
-        return $dependencies;
-    }
-
     public static function isTestMethod(ReflectionMethod $method): bool
     {
         if (!$method->isPublic()) {

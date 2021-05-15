@@ -27,6 +27,7 @@ use function str_ends_with;
 use function str_starts_with;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Metadata\DependenciesFacade;
 use PHPUnit\Metadata\GroupsFacade;
 use PHPUnit\Metadata\HookFacade;
 use PHPUnit\Metadata\RequirementsFacade;
@@ -668,7 +669,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
-                TestUtil::getDependencies($class->getName(), $methodName)
+                DependenciesFacade::dependencies($class->getName(), $methodName)
             );
         }
 
