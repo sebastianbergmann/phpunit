@@ -30,15 +30,11 @@ final class Registry
 
     private static function build(): Parser
     {
-        if (PHP_MAJOR_VERSION >= 8) {
-            return new CachingParser(
-                new ParserChain(
-                    new AttributeParser,
-                    new AnnotationParser
-                )
-            );
-        }
-
-        return new CachingParser(new AnnotationParser);
+        return new CachingParser(
+            new ParserChain(
+                new AttributeParser,
+                new AnnotationParser
+            )
+        );
     }
 }

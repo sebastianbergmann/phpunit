@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use const PHP_EOL;
-use const PHP_MAJOR_VERSION;
 use const PREG_OFFSET_CAPTURE;
 use const WSDL_CACHE_NONE;
 use function array_merge;
@@ -967,19 +966,7 @@ final class Generator
      */
     private function isConstructor(ReflectionMethod $method): bool
     {
-        $methodName = strtolower($method->getName());
-
-        if ($methodName === '__construct') {
-            return true;
-        }
-
-        if (PHP_MAJOR_VERSION >= 8) {
-            return false;
-        }
-
-        $className = strtolower($method->getDeclaringClass()->getName());
-
-        return $methodName === $className;
+        return strtolower($method->getName()) === '__construct';
     }
 
     private function isMethodNameExcluded(string $name): bool
