@@ -36,7 +36,11 @@ final class DependenciesFacade
             if ($metadata->isDependsOnMethod()) {
                 assert($metadata instanceof DependsOnMethod);
 
-                $dependencies[] = ExecutionOrderDependency::forMethod($metadata);
+                if (empty($metadata->methodName())) {
+                    $dependencies[] = ExecutionOrderDependency::invalid();
+                } else {
+                    $dependencies[] = ExecutionOrderDependency::forMethod($metadata);
+                }
             }
         }
 

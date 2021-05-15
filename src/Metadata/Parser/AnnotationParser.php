@@ -268,10 +268,6 @@ final class AnnotationParser implements Parser
                             $value = substr($value, strlen('!shallowClone '));
                         }
 
-                        if (empty($value)) {
-                            continue;
-                        }
-
                         if (str_contains($value, '::')) {
                             [$className, $methodName] = explode('::', $value);
 

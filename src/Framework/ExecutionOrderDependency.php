@@ -31,6 +31,16 @@ final class ExecutionOrderDependency
 
     private bool $deepClone;
 
+    public static function invalid(): self
+    {
+        return new self(
+            '',
+            '',
+            false,
+            false
+        );
+    }
+
     public static function forClass(DependsOnClass $metadata): self
     {
         return new self(
