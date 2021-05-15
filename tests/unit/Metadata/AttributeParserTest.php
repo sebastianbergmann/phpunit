@@ -641,6 +641,60 @@ final class AttributeParserTest extends TestCase
     }
 
     /**
+     * @testdox Parses #[DependsOnClass] attribute on method
+     */
+    public function test_parses_DependsOnClass_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testSeven')->isDependsOnClass();
+
+        $this->assertCount(1, $metadata);
+
+        $depends = $metadata->asArray()[0];
+
+        assert($depends instanceof DependsOnClass);
+
+        $this->assertSame(AnotherTest::class, $depends->className());
+        $this->assertFalse($depends->deepClone());
+        $this->assertFalse($depends->shallowClone());
+    }
+
+    /**
+     * @testdox Parses #[DependsOnClassUsingDeepClone] attribute on method
+     */
+    public function test_parses_DependsOnClassUsingDeepClone_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testEight')->isDependsOnClass();
+
+        $this->assertCount(1, $metadata);
+
+        $depends = $metadata->asArray()[0];
+
+        assert($depends instanceof DependsOnClass);
+
+        $this->assertSame(AnotherTest::class, $depends->className());
+        $this->assertTrue($depends->deepClone());
+        $this->assertFalse($depends->shallowClone());
+    }
+
+    /**
+     * @testdox Parses #[DependsOnClassUsingShallowClone] attribute on method
+     */
+    public function test_parses_DependsOnClassUsingShallowClone_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testNine')->isDependsOnClass();
+
+        $this->assertCount(1, $metadata);
+
+        $depends = $metadata->asArray()[0];
+
+        assert($depends instanceof DependsOnClass);
+
+        $this->assertSame(AnotherTest::class, $depends->className());
+        $this->assertFalse($depends->deepClone());
+        $this->assertTrue($depends->shallowClone());
+    }
+
+    /**
      * @testdox Parses #[DoesNotPerformAssertions] attribute on method
      */
     public function test_parses_DoesNotPerformAssertions_attribute_on_method(): void

@@ -28,6 +28,9 @@ use PHPUnit\Framework\Attributes\Depends as DependsAttribute;
 use PHPUnit\Framework\Attributes\DependsExternal as DependsExternalAttribute;
 use PHPUnit\Framework\Attributes\DependsExternalUsingDeepClone as DependsExternalUsingDeepCloneAttribute;
 use PHPUnit\Framework\Attributes\DependsExternalUsingShallowClone as DependsExternalUsingShallowCloneAttribute;
+use PHPUnit\Framework\Attributes\DependsOnClass as DependsOnClassAttribute;
+use PHPUnit\Framework\Attributes\DependsOnClassUsingDeepClone as DependsOnClassUsingDeepCloneAttribute;
+use PHPUnit\Framework\Attributes\DependsOnClassUsingShallowClone as DependsOnClassUsingShallowCloneAttribute;
 use PHPUnit\Framework\Attributes\DependsUsingDeepClone as DependsUsingDeepCloneAttribute;
 use PHPUnit\Framework\Attributes\DependsUsingShallowClone as DependsUsingShallowCloneAttribute;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions as DoesNotPerformAssertionsAttribute;
@@ -346,6 +349,21 @@ final class AttributeParser implements Parser
 
                 case DependsExternalUsingShallowCloneAttribute::class:
                     $result[] = new DependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), false, true);
+
+                    break;
+
+                case DependsOnClassAttribute::class:
+                    $result[] = new DependsOnClass($attributeInstance->className(), false, false);
+
+                    break;
+
+                case DependsOnClassUsingDeepCloneAttribute::class:
+                    $result[] = new DependsOnClass($attributeInstance->className(), true, false);
+
+                    break;
+
+                case DependsOnClassUsingShallowCloneAttribute::class:
+                    $result[] = new DependsOnClass($attributeInstance->className(), false, true);
 
                     break;
 
