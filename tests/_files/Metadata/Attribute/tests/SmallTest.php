@@ -15,12 +15,6 @@ use PHPUnit\Framework\Attributes\Before;
 use PHPUnit\Framework\Attributes\BeforeClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DataProviderExternal;
-use PHPUnit\Framework\Attributes\Depends;
-use PHPUnit\Framework\Attributes\DependsExternal;
-use PHPUnit\Framework\Attributes\DependsExternalUsingDeepClone;
-use PHPUnit\Framework\Attributes\DependsExternalUsingShallowClone;
-use PHPUnit\Framework\Attributes\DependsUsingDeepClone;
-use PHPUnit\Framework\Attributes\DependsUsingShallowClone;
 use PHPUnit\Framework\Attributes\PostCondition;
 use PHPUnit\Framework\Attributes\PreCondition;
 use PHPUnit\Framework\Attributes\Small;
@@ -57,20 +51,6 @@ final class SmallTest extends TestCase
 
     #[DataProviderExternal(self::class, 'provider')]
     public function testWithDataProviderExternal(): void
-    {
-    }
-
-    #[Depends('one')]
-    #[DependsUsingDeepClone('one')]
-    #[DependsUsingShallowClone('one')]
-    public function testWithDepends(): void
-    {
-    }
-
-    #[DependsExternal(self::class, 'one')]
-    #[DependsExternalUsingDeepClone(self::class, 'one')]
-    #[DependsExternalUsingShallowClone(self::class, 'one')]
-    public function testWithDependsExternal(): void
     {
     }
 

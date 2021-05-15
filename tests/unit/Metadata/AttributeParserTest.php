@@ -11,9 +11,11 @@ namespace PHPUnit\Metadata;
 
 use function assert;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
 use PHPUnit\TestFixture\Metadata\Attribute\CoversTest;
+use PHPUnit\TestFixture\Metadata\Attribute\DependencyTest;
 use PHPUnit\TestFixture\Metadata\Attribute\DoesNotPerformAssertionsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\Example;
 use PHPUnit\TestFixture\Metadata\Attribute\GroupTest;
@@ -529,27 +531,56 @@ final class AttributeParserTest extends TestCase
      */
     public function test_parses_Depends_attribute_on_method(): void
     {
-        $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'testWithDepends')->isDepends();
+        $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testOne')->isDependsOnMethod();
 
-        $this->assertCount(3, $metadata);
+        $this->assertCount(1, $metadata);
 
-        $this->assertTrue($metadata->asArray()[0]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
-        $this->assertSame('one', $metadata->asArray()[0]->methodName());
-        $this->assertFalse($metadata->asArray()[0]->deepClone());
-        $this->assertFalse($metadata->asArray()[0]->shallowClone());
+        $depends = $metadata->asArray()[0];
 
-        $this->assertTrue($metadata->asArray()[1]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[1]->className());
-        $this->assertSame('one', $metadata->asArray()[1]->methodName());
-        $this->assertTrue($metadata->asArray()[1]->deepClone());
-        $this->assertFalse($metadata->asArray()[1]->shallowClone());
+        assert($depends instanceof DependsOnMethod);
 
-        $this->assertTrue($metadata->asArray()[2]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[2]->className());
-        $this->assertSame('one', $metadata->asArray()[2]->methodName());
-        $this->assertFalse($metadata->asArray()[2]->deepClone());
-        $this->assertTrue($metadata->asArray()[2]->shallowClone());
+        $this->assertSame(DependencyTest::class, $depends->className());
+        $this->assertSame('testOne', $depends->methodName());
+        $this->assertFalse($depends->deepClone());
+        $this->assertFalse($depends->shallowClone());
+    }
+
+    /**
+     * @testdox Parses #[DependsUsingDeepClone] attribute on method
+     */
+    public function test_parses_DependsUsingDeepClone_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testTwo')->isDependsOnMethod();
+
+        $this->assertCount(1, $metadata);
+
+        $depends = $metadata->asArray()[0];
+
+        assert($depends instanceof DependsOnMethod);
+
+        $this->assertSame(DependencyTest::class, $depends->className());
+        $this->assertSame('testOne', $depends->methodName());
+        $this->assertTrue($depends->deepClone());
+        $this->assertFalse($depends->shallowClone());
+    }
+
+    /**
+     * @testdox Parses #[DependsUsingShallowClone] attribute on method
+     */
+    public function test_parses_DependsUsingShallowClone_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testThree')->isDependsOnMethod();
+
+        $this->assertCount(1, $metadata);
+
+        $depends = $metadata->asArray()[0];
+
+        assert($depends instanceof DependsOnMethod);
+
+        $this->assertSame(DependencyTest::class, $depends->className());
+        $this->assertSame('testOne', $depends->methodName());
+        $this->assertFalse($depends->deepClone());
+        $this->assertTrue($depends->shallowClone());
     }
 
     /**
@@ -557,27 +588,56 @@ final class AttributeParserTest extends TestCase
      */
     public function test_parses_DependsExternal_attribute_on_method(): void
     {
-        $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'testWithDependsExternal')->isDepends();
+        $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testFour')->isDependsOnMethod();
 
-        $this->assertCount(3, $metadata);
+        $this->assertCount(1, $metadata);
 
-        $this->assertTrue($metadata->asArray()[0]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
-        $this->assertSame('one', $metadata->asArray()[0]->methodName());
-        $this->assertFalse($metadata->asArray()[0]->deepClone());
-        $this->assertFalse($metadata->asArray()[0]->shallowClone());
+        $depends = $metadata->asArray()[0];
 
-        $this->assertTrue($metadata->asArray()[1]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[1]->className());
-        $this->assertSame('one', $metadata->asArray()[1]->methodName());
-        $this->assertTrue($metadata->asArray()[1]->deepClone());
-        $this->assertFalse($metadata->asArray()[1]->shallowClone());
+        assert($depends instanceof DependsOnMethod);
 
-        $this->assertTrue($metadata->asArray()[2]->isDependsOnMethod());
-        $this->assertSame(SmallTest::class, $metadata->asArray()[2]->className());
-        $this->assertSame('one', $metadata->asArray()[2]->methodName());
-        $this->assertFalse($metadata->asArray()[2]->deepClone());
-        $this->assertTrue($metadata->asArray()[2]->shallowClone());
+        $this->assertSame(AnotherTest::class, $depends->className());
+        $this->assertSame('testOne', $depends->methodName());
+        $this->assertFalse($depends->deepClone());
+        $this->assertFalse($depends->shallowClone());
+    }
+
+    /**
+     * @testdox Parses #[DependsExternalUsingDeepClone] attribute on method
+     */
+    public function test_parses_DependsExternalUsingDeepClone_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testFive')->isDependsOnMethod();
+
+        $this->assertCount(1, $metadata);
+
+        $depends = $metadata->asArray()[0];
+
+        assert($depends instanceof DependsOnMethod);
+
+        $this->assertSame(AnotherTest::class, $depends->className());
+        $this->assertSame('testOne', $depends->methodName());
+        $this->assertTrue($depends->deepClone());
+        $this->assertFalse($depends->shallowClone());
+    }
+
+    /**
+     * @testdox Parses #[DependsExternalUsingShallowClone] attribute on method
+     */
+    public function test_parses_DependsExternalUsingShallowClone_attribute_on_method(): void
+    {
+        $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testSix')->isDependsOnMethod();
+
+        $this->assertCount(1, $metadata);
+
+        $depends = $metadata->asArray()[0];
+
+        assert($depends instanceof DependsOnMethod);
+
+        $this->assertSame(AnotherTest::class, $depends->className());
+        $this->assertSame('testOne', $depends->methodName());
+        $this->assertFalse($depends->deepClone());
+        $this->assertTrue($depends->shallowClone());
     }
 
     /**
