@@ -483,6 +483,12 @@
       <code>(string) substr($docComment, 0, -1)</code>
     </RedundantCastGivenDocblockType>
   </file>
+  <file src="src/Metadata/Facade/DependenciesFacade.php">
+    <RedundantCondition occurrences="2">
+      <code>assert($metadata instanceof DependsOnClass)</code>
+      <code>assert($metadata instanceof DependsOnMethod)</code>
+    </RedundantCondition>
+  </file>
   <file src="src/Metadata/Facade/GroupsFacade.php">
     <RedundantCondition occurrences="6">
       <code>$metadata instanceof CoversFunction</code>
@@ -509,12 +515,10 @@
     <RedundantCast occurrences="1">
       <code>(string) $matches['value'][$i]</code>
     </RedundantCast>
-    <RedundantCastGivenDocblockType occurrences="1">
-      <code>(string) substr($docBlock, 3, -2)</code>
-    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="9">
+    <ArgumentTypeCoercion occurrences="10">
+      <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
@@ -1119,17 +1123,6 @@
       <code>$this-&gt;stream</code>
       <code>$this-&gt;stream</code>
     </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src/Util/Test.php">
-    <LessSpecificReturnStatement occurrences="1">
-      <code>array_unique($dependencies)</code>
-    </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="1">
-      <code>forClassName</code>
-    </MissingThrowsDocblock>
-    <MoreSpecificReturnType occurrences="1">
-      <code>list&lt;ExecutionOrderDependency&gt;</code>
-    </MoreSpecificReturnType>
   </file>
   <file src="src/Util/TestDox/CliTestDoxPrinter.php">
     <MissingThrowsDocblock occurrences="2">
