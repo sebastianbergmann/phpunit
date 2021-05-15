@@ -14,7 +14,6 @@ use function array_map;
 use function array_merge;
 use function array_values;
 use function count;
-use function file;
 use function preg_match;
 use function preg_match_all;
 use function preg_split;
@@ -51,11 +50,7 @@ final class DocBlock
 
     private const REGEX_REQUIRES = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^\s<>=!]+))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
 
-    private const REGEX_TEST_WITH = '/@testWith\s+/';
-
     private string $docComment;
-
-    private bool $isMethod;
 
     /**
      * @psalm-var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index
@@ -76,30 +71,15 @@ final class DocBlock
 
     private int $startLine;
 
-    private int $endLine;
-
     private string $fileName;
-
-    private string $name;
-
-    /**
-     * @psalm-var class-string
-     */
-    private string $className;
 
     public static function ofClass(ReflectionClass $class): self
     {
-        $className = $class->getName();
-
         return new self(
             (string) $class->getDocComment(),
-            false,
             self::extractAnnotationsFromReflector($class),
             $class->getStartLine(),
-            $class->getEndLine(),
             $class->getFileName(),
-            $className,
-            $className
         );
     }
 
@@ -110,13 +90,9 @@ final class DocBlock
     {
         return new self(
             (string) $method->getDocComment(),
-            true,
             self::extractAnnotationsFromReflector($method),
             $method->getStartLine(),
-            $method->getEndLine(),
             $method->getFileName(),
-            $method->getName(),
-            $classNameInHierarchy
         );
     }
 
@@ -124,19 +100,13 @@ final class DocBlock
      * Note: we do not preserve an instance of the reflection object, since it cannot be safely (de-)serialized.
      *
      * @param array<string, array<int, string>> $symbolAnnotations
-     *
-     * @psalm-param class-string $className
      */
-    private function __construct(string $docComment, bool $isMethod, array $symbolAnnotations, int $startLine, int $endLine, string $fileName, string $name, string $className)
+    private function __construct(string $docComment, array $symbolAnnotations, int $startLine, string $fileName)
     {
         $this->docComment        = $docComment;
-        $this->isMethod          = $isMethod;
         $this->symbolAnnotations = $symbolAnnotations;
         $this->startLine         = $startLine;
-        $this->endLine           = $endLine;
         $this->fileName          = $fileName;
-        $this->name              = $name;
-        $this->className         = $className;
     }
 
     /**
@@ -249,7 +219,7 @@ final class DocBlock
     private static function parseDocBlock(string $docBlock): array
     {
         // Strip away the docblock header and footer to ease parsing of one line annotations
-        $docBlock    = (string) substr($docBlock, 3, -2);
+        $docBlock    = substr($docBlock, 3, -2);
         $annotations = [];
 
         if (preg_match_all('/@(?P<name>[A-Za-z_-]+)(?:[ \t]+(?P<value>.*?))?[ \t]*\r?$/m', $docBlock, $matches)) {
