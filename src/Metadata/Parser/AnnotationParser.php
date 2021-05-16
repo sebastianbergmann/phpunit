@@ -37,6 +37,7 @@ use PHPUnit\Metadata\DoesNotPerformAssertions;
 use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Metadata\Group;
+use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\PostCondition;
 use PHPUnit\Metadata\PreCondition;
