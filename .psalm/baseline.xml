@@ -455,6 +455,9 @@
       <code>is_string($testClass)</code>
       <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
     </DocblockTypeContradiction>
+    <InvalidArgument occurrences="1">
+      <code>Dependencies::dependencies($class-&gt;getName(), $methodName)</code>
+    </InvalidArgument>
     <MissingThrowsDocblock occurrences="1"/>
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) $key</code>
@@ -463,7 +466,7 @@
       <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
     </TypeDoesNotContainType>
   </file>
-  <file src="src/Metadata/Facade/CodeCoverageFacade.php">
+  <file src="src/Metadata/Api/CodeCoverage.php">
     <RedundantCondition occurrences="4">
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
@@ -475,7 +478,7 @@
       <code>className</code>
     </UndefinedMethod>
   </file>
-  <file src="src/Metadata/Facade/DataProviderFacade.php">
+  <file src="src/Metadata/Api/DataProvider.php">
     <MissingThrowsDocblock occurrences="2">
       <code>dataProvidedByTestWithAnnotation</code>
     </MissingThrowsDocblock>
@@ -483,13 +486,12 @@
       <code>(string) substr($docComment, 0, -1)</code>
     </RedundantCastGivenDocblockType>
   </file>
-  <file src="src/Metadata/Facade/DependenciesFacade.php">
-    <RedundantCondition occurrences="2">
-      <code>assert($metadata instanceof DependsOnClass)</code>
-      <code>assert($metadata instanceof DependsOnMethod)</code>
-    </RedundantCondition>
+  <file src="src/Metadata/Api/Dependencies.php">
+    <MismatchingDocblockReturnType occurrences="1">
+      <code>ExecutionOrderDependency</code>
+    </MismatchingDocblockReturnType>
   </file>
-  <file src="src/Metadata/Facade/GroupsFacade.php">
+  <file src="src/Metadata/Api/Groups.php">
     <RedundantCondition occurrences="6">
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
@@ -499,7 +501,7 @@
       <code>assert($metadata instanceof Uses)</code>
     </RedundantCondition>
   </file>
-  <file src="src/Metadata/Facade/RequirementsFacade.php">
+  <file src="src/Metadata/Api/Requirements.php">
     <RedundantCondition occurrences="8">
       <code>assert($metadata instanceof RequiresFunction)</code>
       <code>assert($metadata instanceof RequiresMethod)</code>
@@ -517,18 +519,24 @@
     </RedundantCast>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="10">
+    <ArgumentTypeCoercion occurrences="9">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
-      <code>$pieces[0]</code>
       <code>explode('::', $value)</code>
       <code>trim($tmp[0])</code>
       <code>trim($tmp[0])</code>
     </ArgumentTypeCoercion>
+    <InvalidArgument occurrences="2">
+      <code>$result</code>
+      <code>$result</code>
+    </InvalidArgument>
+    <UndefinedDocblockClass occurrences="1">
+      <code>list&lt;Metadata&gt;</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="src/Runner/CodeCoverage.php">
     <InvalidNullableReturnType occurrences="2">
