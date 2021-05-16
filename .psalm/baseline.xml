@@ -519,24 +519,18 @@
     </RedundantCast>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="9">
+    <ArgumentTypeCoercion occurrences="10">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
+      <code>$pieces[0]</code>
       <code>explode('::', $value)</code>
       <code>trim($tmp[0])</code>
       <code>trim($tmp[0])</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="2">
-      <code>$result</code>
-      <code>$result</code>
-    </InvalidArgument>
-    <UndefinedDocblockClass occurrences="1">
-      <code>list&lt;Metadata&gt;</code>
-    </UndefinedDocblockClass>
   </file>
   <file src="src/Runner/CodeCoverage.php">
     <InvalidNullableReturnType occurrences="2">
