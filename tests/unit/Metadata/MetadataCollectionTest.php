@@ -31,6 +31,7 @@ use PHPUnit\Util\VersionComparisonOperator;
  * @uses \PHPUnit\Metadata\CoversMethod
  * @uses \PHPUnit\Metadata\CoversNothing
  * @uses \PHPUnit\Metadata\DataProvider
+ * @uses \PHPUnit\Metadata\DependsOnClass
  * @uses \PHPUnit\Metadata\DependsOnMethod
  * @uses \PHPUnit\Metadata\DoesNotPerformAssertions
  * @uses \PHPUnit\Metadata\Group
@@ -228,6 +229,23 @@ final class MetadataCollectionTest extends TestCase
     public function test_Can_be_filtered_for_Depends(): void
     {
         $collection = $this->collectionWithOneOfEach()->isDepends();
+
+        $this->assertCount(2, $collection);
+        $this->assertTrue($collection->asArray()[0]->isDependsOnClass());
+        $this->assertTrue($collection->asArray()[1]->isDependsOnMethod());
+    }
+
+    public function test_Can_be_filtered_for_DependsOnClass(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isDependsOnClass();
+
+        $this->assertCount(1, $collection);
+        $this->assertTrue($collection->asArray()[0]->isDependsOnClass());
+    }
+
+    public function test_Can_be_filtered_for_DependsOnMethod(): void
+    {
+        $collection = $this->collectionWithOneOfEach()->isDependsOnMethod();
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isDependsOnMethod());
@@ -467,6 +485,7 @@ final class MetadataCollectionTest extends TestCase
                 new CoversMethod('', ''),
                 new CoversNothing,
                 new DataProvider('', ''),
+                new DependsOnClass('', false, false),
                 new DependsOnMethod('', '', false, false),
                 new DoesNotPerformAssertions,
                 new ExcludeGlobalVariableFromBackup(''),
