@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
 use const PHP_OS;
 use const PHP_OS_FAMILY;
@@ -21,12 +21,21 @@ use function method_exists;
 use function phpversion;
 use function preg_match;
 use function sprintf;
+use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Metadata\RequiresFunction;
+use PHPUnit\Metadata\RequiresMethod;
+use PHPUnit\Metadata\RequiresOperatingSystem;
+use PHPUnit\Metadata\RequiresOperatingSystemFamily;
+use PHPUnit\Metadata\RequiresPhp;
+use PHPUnit\Metadata\RequiresPhpExtension;
+use PHPUnit\Metadata\RequiresPhpunit;
+use PHPUnit\Metadata\RequiresSetting;
 use PHPUnit\Runner\Version;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RequirementsFacade
+final class Requirements
 {
     /**
      * @psalm-param class-string $className

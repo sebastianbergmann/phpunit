@@ -13,14 +13,14 @@ use function assert;
 use function get_class;
 use function sprintf;
 use function trim;
+use PHPUnit\Metadata\Api\DataProvider;
+use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\BackupGlobals;
 use PHPUnit\Metadata\BackupStaticProperties;
-use PHPUnit\Metadata\DataProviderFacade;
 use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
-use PHPUnit\Metadata\GroupsFacade;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
-use PHPUnit\Metadata\Registry as MetadataRegistry;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\InvalidDataSetException;
 use ReflectionClass;
@@ -42,7 +42,7 @@ final class TestBuilder
         }
 
         try {
-            $data = (new DataProviderFacade)->providedData(
+            $data = (new DataProvider)->providedData(
                 $className,
                 $methodName
             );
@@ -116,7 +116,7 @@ final class TestBuilder
             $className . '::' . $methodName
         );
 
-        $groups = (new GroupsFacade)->groups($className, $methodName);
+        $groups = (new Groups)->groups($className, $methodName);
 
         if ($data instanceof ErrorTestCase ||
             $data instanceof SkippedTestCase ||

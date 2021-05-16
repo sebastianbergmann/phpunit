@@ -7,11 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Version;
 
 use function preg_match;
 use PharIo\Version\UnsupportedVersionConstraintException;
 use PharIo\Version\VersionConstraintParser;
+use PHPUnit\Metadata\InvalidVersionRequirementException;
 use PHPUnit\Util\VersionComparisonOperator;
 
 /**
@@ -19,7 +20,7 @@ use PHPUnit\Util\VersionComparisonOperator;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class VersionRequirement
+abstract class Requirement
 {
     private const VERSION_COMPARISON = '/(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
 
@@ -29,14 +30,14 @@ abstract class VersionRequirement
     public static function from(string $versionRequirement): self
     {
         try {
-            return new VersionConstraintRequirement(
+            return new ConstraintRequirement(
                 (new VersionConstraintParser)->parse(
                     $versionRequirement
                 )
             );
         } catch (UnsupportedVersionConstraintException $e) {
             if (preg_match(self::VERSION_COMPARISON, $versionRequirement, $matches)) {
-                return new VersionComparisonRequirement(
+                return new ComparisonRequirement(
                     $matches['version'],
                     new VersionComparisonOperator(
                         !empty($matches['operator']) ? $matches['operator'] : '>='

@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Version;
 
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraint;
@@ -17,7 +17,7 @@ use PharIo\Version\VersionConstraint;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class VersionConstraintRequirement extends VersionRequirement
+final class ConstraintRequirement extends Requirement
 {
     private VersionConstraint $constraint;
 

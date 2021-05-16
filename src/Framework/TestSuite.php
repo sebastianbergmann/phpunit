@@ -27,10 +27,10 @@ use function str_ends_with;
 use function str_starts_with;
 use Iterator;
 use IteratorAggregate;
-use PHPUnit\Metadata\DependenciesFacade;
-use PHPUnit\Metadata\GroupsFacade;
-use PHPUnit\Metadata\HookFacade;
-use PHPUnit\Metadata\RequirementsFacade;
+use PHPUnit\Metadata\Api\Dependencies;
+use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\Metadata\Api\HookMethods;
+use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -401,7 +401,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         /** @psalm-var class-string $className */
         $className   = $this->name;
-        $hookMethods = (new HookFacade)->hookMethods($className);
+        $hookMethods = (new HookMethods)->hookMethods($className);
 
         $result->startTestSuite($this);
 
@@ -411,7 +411,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             try {
                 foreach ($hookMethods['beforeClass'] as $beforeClassMethod) {
                     if (method_exists($this->name, $beforeClassMethod)) {
-                        if ($missingRequirements = (new RequirementsFacade)->requirementsNotSatisfiedFor($this->name, $beforeClassMethod)) {
+                        if ($missingRequirements = (new Requirements)->requirementsNotSatisfiedFor($this->name, $beforeClassMethod)) {
                             $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
                         }
 
@@ -669,13 +669,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
-                DependenciesFacade::dependencies($class->getName(), $methodName)
+                Dependencies::dependencies($class->getName(), $methodName)
             );
         }
 
         $this->addTest(
             $test,
-            (new GroupsFacade)->groups($class->getName(), $methodName)
+            (new Groups)->groups($class->getName(), $methodName)
         );
     }
 

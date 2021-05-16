@@ -11,6 +11,7 @@ namespace PHPUnit\Metadata;
 
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
@@ -25,7 +26,7 @@ final class DataProviderFacadeTest extends TestCase
      */
     public function testMultipleDataProviders(): void
     {
-        $dataSets = (new DataProviderFacade)->providedData(MultipleDataProviderTest::class, 'testOne');
+        $dataSets = (new DataProvider)->providedData(MultipleDataProviderTest::class, 'testOne');
 
         $this->assertCount(9, $dataSets);
 
@@ -46,7 +47,7 @@ final class DataProviderFacadeTest extends TestCase
 
     public function testMultipleYieldIteratorDataProviders(): void
     {
-        $dataSets = (new DataProviderFacade)->providedData(MultipleDataProviderTest::class, 'testTwo');
+        $dataSets = (new DataProvider)->providedData(MultipleDataProviderTest::class, 'testTwo');
 
         $this->assertCount(9, $dataSets);
 
@@ -67,7 +68,7 @@ final class DataProviderFacadeTest extends TestCase
 
     public function testWithVariousIterableDataProvidersFromParent(): void
     {
-        $dataSets = (new DataProviderFacade)->providedData(VariousIterableDataProviderTest::class, 'testFromParent');
+        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testFromParent');
 
         $this->assertEquals([
             ['J'],
@@ -85,7 +86,7 @@ final class DataProviderFacadeTest extends TestCase
 
     public function testWithVariousIterableDataProvidersInParent(): void
     {
-        $dataSets = (new DataProviderFacade)->providedData(VariousIterableDataProviderTest::class, 'testInParent');
+        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testInParent');
 
         $this->assertEquals([
             ['J'],
@@ -103,7 +104,7 @@ final class DataProviderFacadeTest extends TestCase
 
     public function testWithVariousIterableAbstractDataProviders(): void
     {
-        $dataSets = (new DataProviderFacade)->providedData(VariousIterableDataProviderTest::class, 'testAbstract');
+        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testAbstract');
 
         $this->assertEquals([
             ['S'],
@@ -121,7 +122,7 @@ final class DataProviderFacadeTest extends TestCase
 
     public function testWithVariousIterableStaticDataProviders(): void
     {
-        $dataSets = (new DataProviderFacade)->providedData(VariousIterableDataProviderTest::class, 'testStatic');
+        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testStatic');
 
         $this->assertEquals([
             ['A'],
@@ -138,7 +139,7 @@ final class DataProviderFacadeTest extends TestCase
 
     public function testWithVariousIterableNonStaticDataProviders(): void
     {
-        $dataSets = (new DataProviderFacade)->providedData(VariousIterableDataProviderTest::class, 'testNonStatic');
+        $dataSets = (new DataProvider)->providedData(VariousIterableDataProviderTest::class, 'testNonStatic');
 
         $this->assertEquals([
             ['S'],
@@ -159,6 +160,6 @@ final class DataProviderFacadeTest extends TestCase
         $this->expectExceptionMessage('The key "foo" has already been defined by a previous data provider');
 
         /* @noinspection UnusedFunctionResultInspection */
-        (new DataProviderFacade)->providedData(DuplicateKeyDataProviderTest::class, 'test');
+        (new DataProvider)->providedData(DuplicateKeyDataProviderTest::class, 'test');
     }
 }

@@ -11,6 +11,9 @@ namespace PHPUnit\Metadata;
 
 use function assert;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Parser\AttributeParser;
+use PHPUnit\Metadata\Version\ComparisonRequirement;
+use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\TestFixture\Metadata\Attribute\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Attribute\BackupStaticPropertiesTest;
@@ -73,7 +76,7 @@ use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
  * @covers \PHPUnit\Framework\Attributes\Ticket
  * @covers \PHPUnit\Framework\Attributes\UsesClass
  * @covers \PHPUnit\Framework\Attributes\UsesFunction
- * @covers \PHPUnit\Metadata\AttributeParser
+ * @covers \PHPUnit\Metadata\Parser\AttributeParser
  *
  * @requires PHP 8
  *
@@ -288,7 +291,7 @@ final class AttributeParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionConstraintRequirement);
+        assert($versionRequirement instanceof ConstraintRequirement);
 
         $this->assertSame('8.0.0', $versionRequirement->asString());
     }
@@ -323,7 +326,7 @@ final class AttributeParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionComparisonRequirement);
+        assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('>= 10.0.0', $versionRequirement->asString());
     }
@@ -829,7 +832,7 @@ final class AttributeParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionConstraintRequirement);
+        assert($versionRequirement instanceof ConstraintRequirement);
 
         $this->assertSame('^8.0', $versionRequirement->asString());
     }
@@ -854,7 +857,7 @@ final class AttributeParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionComparisonRequirement);
+        assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('>= 1.0', $versionRequirement->asString());
 
@@ -873,7 +876,7 @@ final class AttributeParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionConstraintRequirement);
+        assert($versionRequirement instanceof ConstraintRequirement);
 
         $this->assertSame('^1.0', $versionRequirement->asString());
     }
@@ -895,7 +898,7 @@ final class AttributeParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionConstraintRequirement);
+        assert($versionRequirement instanceof ConstraintRequirement);
 
         $this->assertSame('^10.0', $versionRequirement->asString());
     }

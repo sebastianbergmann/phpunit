@@ -10,7 +10,7 @@
 namespace PHPUnit\Util;
 
 use function str_starts_with;
-use PHPUnit\Metadata\Registry;
+use PHPUnit\Metadata\Parser\Registry;
 use ReflectionMethod;
 
 /**

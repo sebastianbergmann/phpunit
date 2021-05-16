@@ -10,6 +10,8 @@
 namespace PHPUnit\Metadata\Annotation;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Annotation\Parser\DocBlock;
+use PHPUnit\Metadata\Annotation\Parser\Registry;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 use PHPUnit\Util\Exception;
 use ThisClassDoesNotExist;
@@ -17,9 +19,9 @@ use ThisClassDoesNotExist;
 /**
  * @small
  *
- * @covers \PHPUnit\Metadata\Annotation\Registry
+ * @covers \PHPUnit\Metadata\Annotation\Parser\Registry
  *
- * @uses   \PHPUnit\Metadata\Annotation\DocBlock
+ * @uses   \PHPUnit\Metadata\Annotation\Parser\DocBlock
  */
 final class RegistryTest extends TestCase
 {
@@ -30,8 +32,8 @@ final class RegistryTest extends TestCase
         $this->assertSame(
             [
                 'small'  => [''],
-                'covers' => ['\PHPUnit\Metadata\Annotation\Registry'],
-                'uses'   => ['\PHPUnit\Metadata\Annotation\DocBlock'],
+                'covers' => ['\PHPUnit\Metadata\Annotation\Parser\Registry'],
+                'uses'   => ['\PHPUnit\Metadata\Annotation\Parser\DocBlock'],
             ],
             $annotation->symbolAnnotations()
         );

@@ -11,6 +11,8 @@ namespace PHPUnit\Metadata;
 
 use function assert;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Parser\AnnotationParser;
+use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\TestFixture\Metadata\Annotation\AnotherTest;
 use PHPUnit\TestFixture\Metadata\Annotation\BackupGlobalsTest;
 use PHPUnit\TestFixture\Metadata\Annotation\BackupStaticPropertiesTest;
@@ -35,7 +37,7 @@ use PHPUnit\TestFixture\Metadata\Annotation\TodoTest;
 use PHPUnit\TestFixture\Metadata\Annotation\UsesTest;
 
 /**
- * @covers \PHPUnit\Metadata\AnnotationParser
+ * @covers \PHPUnit\Metadata\Parser\AnnotationParser
  *
  * @small
  */
@@ -199,11 +201,11 @@ final class AnnotationParserTest extends TestCase
         assert($requirement instanceof RequiresPhp);
 
         $this->assertTrue($requirement->isRequiresPhp());
-        $this->assertInstanceOf(VersionComparisonRequirement::class, $requirement->versionRequirement());
+        $this->assertInstanceOf(ComparisonRequirement::class, $requirement->versionRequirement());
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionComparisonRequirement);
+        assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('>= 8.0.0', $versionRequirement->asString());
     }
@@ -229,11 +231,11 @@ final class AnnotationParserTest extends TestCase
         assert($requirement instanceof RequiresPhpunit);
 
         $this->assertTrue($requirement->isRequiresPhpunit());
-        $this->assertInstanceOf(VersionComparisonRequirement::class, $requirement->versionRequirement());
+        $this->assertInstanceOf(ComparisonRequirement::class, $requirement->versionRequirement());
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionComparisonRequirement);
+        assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('>= 10.0.0', $versionRequirement->asString());
     }
@@ -608,7 +610,7 @@ final class AnnotationParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionComparisonRequirement);
+        assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('< 9.0.0', $versionRequirement->asString());
     }
@@ -630,7 +632,7 @@ final class AnnotationParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionComparisonRequirement);
+        assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('>= 1.0.0', $versionRequirement->asString());
 
@@ -649,7 +651,7 @@ final class AnnotationParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionComparisonRequirement);
+        assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('< 2.0.0', $versionRequirement->asString());
     }
@@ -668,7 +670,7 @@ final class AnnotationParserTest extends TestCase
 
         $versionRequirement = $requirement->versionRequirement();
 
-        assert($versionRequirement instanceof VersionComparisonRequirement);
+        assert($versionRequirement instanceof ComparisonRequirement);
 
         $this->assertSame('< 11.0.0', $versionRequirement->asString());
     }

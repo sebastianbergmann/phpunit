@@ -42,7 +42,7 @@ use function strtoupper;
 use function substr;
 use function trim;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Metadata\Registry as MetadataRegistry;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Exception as UtilException;
 use ReflectionException;

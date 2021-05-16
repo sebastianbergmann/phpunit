@@ -7,19 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
 use function array_unshift;
 use function class_exists;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Parser\Registry;
 use ReflectionClass;
 use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class HookFacade
+final class HookMethods
 {
     private static array $hookMethods = [];
 

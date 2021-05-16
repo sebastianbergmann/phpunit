@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
 use function array_key_exists;
 use function array_merge;
@@ -24,6 +24,10 @@ use function substr;
 use function trim;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\SkippedTestError;
+use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
+use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Metadata\TestWith;
 use PHPUnit\Util\InvalidDataSetException;
 use ReflectionClass;
 use ReflectionException;
@@ -33,7 +37,7 @@ use Traversable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DataProviderFacade
+final class DataProvider
 {
     /**
      * @psalm-param class-string $className
@@ -80,7 +84,7 @@ final class DataProviderFacade
         $result = [];
 
         foreach ($dataProvider as $_dataProvider) {
-            assert($_dataProvider instanceof DataProvider);
+            assert($_dataProvider instanceof DataProviderMetadata);
 
             try {
                 $class  = new ReflectionClass($_dataProvider->className());

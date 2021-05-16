@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
 use function assert;
 use function count;
@@ -21,6 +21,15 @@ use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Framework\WarningTestCase;
+use PHPUnit\Metadata\Covers;
+use PHPUnit\Metadata\CoversClass;
+use PHPUnit\Metadata\CoversFunction;
+use PHPUnit\Metadata\CoversMethod;
+use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Metadata\Uses;
+use PHPUnit\Metadata\UsesClass;
+use PHPUnit\Metadata\UsesFunction;
+use PHPUnit\Metadata\UsesMethod;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
@@ -28,7 +37,7 @@ use SebastianBergmann\CodeUnit\Mapper;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class CodeCoverageFacade
+final class CodeCoverage
 {
     /**
      * @psalm-param class-string $className

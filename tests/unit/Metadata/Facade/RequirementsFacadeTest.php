@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\TestFixture\RequirementsTest;
 use PHPUnit\Util\Test;
 
@@ -26,7 +27,7 @@ final class RequirementsFacadeTest extends TestCase
     {
         $this->assertEquals(
             $result,
-            (new RequirementsFacade)->requirementsNotSatisfiedFor(RequirementsTest::class, $test)
+            (new Requirements)->requirementsNotSatisfiedFor(RequirementsTest::class, $test)
         );
     }
 

@@ -11,7 +11,7 @@ namespace PHPUnit\Framework;
 
 use function explode;
 use PHPUnit\Framework\TestSize\TestSize;
-use PHPUnit\Metadata\GroupsFacade;
+use PHPUnit\Metadata\Api\Groups;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -73,6 +73,6 @@ final class DataProviderTestSuite extends TestSuite
     {
         [$className, $methodName] = explode('::', $this->getName());
 
-        return (new GroupsFacade)->size($className, $methodName);
+        return (new Groups)->size($className, $methodName);
     }
 }

@@ -79,10 +79,10 @@ use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
-use PHPUnit\Metadata\GroupsFacade;
-use PHPUnit\Metadata\HookFacade;
-use PHPUnit\Metadata\Registry as MetadataRegistry;
-use PHPUnit\Metadata\RequirementsFacade;
+use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\Metadata\Api\HookMethods;
+use PHPUnit\Metadata\Api\Requirements;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Error\Deprecation;
 use PHPUnit\Util\Error\Error;
@@ -617,7 +617,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function size(): TestSize
     {
-        return (new GroupsFacade)->size(
+        return (new Groups)->size(
             static::class,
             $this->getName(false)
         );
@@ -689,7 +689,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         clearstatcache();
         $currentWorkingDirectory = getcwd();
 
-        $hookMethods = (new HookFacade)->hookMethods(static::class);
+        $hookMethods = (new HookMethods)->hookMethods(static::class);
 
         $hasMetRequirements = false;
 
@@ -1512,7 +1512,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return;
         }
 
-        $missingRequirements = (new RequirementsFacade)->requirementsNotSatisfiedFor(
+        $missingRequirements = (new Requirements)->requirementsNotSatisfiedFor(
             static::class,
             $this->name
         );

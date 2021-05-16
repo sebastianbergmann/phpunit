@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 
 /**
@@ -23,7 +24,7 @@ final class GroupsFacadeTest extends TestCase
      */
     public function testGetGroupsFromTicketAnnotations(string $class, string $method, array $groups): void
     {
-        $this->assertSame($groups, (new GroupsFacade)->groups($class, $method));
+        $this->assertSame($groups, (new Groups)->groups($class, $method));
     }
 
     public function getGroupsProvider(): array

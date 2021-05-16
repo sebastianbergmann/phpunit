@@ -13,6 +13,7 @@ use function array_merge;
 use function get_class;
 use function range;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Api\CodeCoverage;
 use PHPUnit\TestFixture\CoverageClassNothingTest;
 use PHPUnit\TestFixture\CoverageClassTest;
 use PHPUnit\TestFixture\CoverageClassWithoutAnnotationsTest;
@@ -85,7 +86,7 @@ final class CodeCoverageFacadeTest extends TestCase
 
         $this->assertEqualsCanonicalizing(
             $expected,
-            (new CodeCoverageFacade)->linesToBeCovered(
+            (new CodeCoverage)->linesToBeCovered(
                 $test,
                 'testSomething'
             )
@@ -96,7 +97,7 @@ final class CodeCoverageFacadeTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
-            (new CodeCoverageFacade)->linesToBeCovered(
+            (new CodeCoverage)->linesToBeCovered(
                 CoverageFunctionParenthesesTest::class,
                 'testSomething'
             )
@@ -107,7 +108,7 @@ final class CodeCoverageFacadeTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
-            (new CodeCoverageFacade)->linesToBeCovered(
+            (new CodeCoverage)->linesToBeCovered(
                 CoverageFunctionParenthesesWhitespaceTest::class,
                 'testSomething'
             )
@@ -118,7 +119,7 @@ final class CodeCoverageFacadeTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
-            (new CodeCoverageFacade)->linesToBeCovered(
+            (new CodeCoverage)->linesToBeCovered(
                 CoverageMethodParenthesesTest::class,
                 'testSomething'
             )
@@ -129,7 +130,7 @@ final class CodeCoverageFacadeTest extends TestCase
     {
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
-            (new CodeCoverageFacade)->linesToBeCovered(
+            (new CodeCoverage)->linesToBeCovered(
                 CoverageMethodParenthesesWhitespaceTest::class,
                 'testSomething'
             )
@@ -142,7 +143,7 @@ final class CodeCoverageFacadeTest extends TestCase
             [
                 TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(12, 15),
             ],
-            (new CodeCoverageFacade)->linesToBeCovered(
+            (new CodeCoverage)->linesToBeCovered(
                 CoverageNamespacedFunctionTest::class,
                 'testFunc'
             )
@@ -213,7 +214,7 @@ final class CodeCoverageFacadeTest extends TestCase
             [
                 TEST_FILES_PATH . '3194.php' => array_merge(range(14, 20), range(22, 30)),
             ],
-            (new CodeCoverageFacade)->linesToBeCovered(
+            (new CodeCoverage)->linesToBeCovered(
                 Test3194::class,
                 'testOne'
             )
@@ -226,7 +227,7 @@ final class CodeCoverageFacadeTest extends TestCase
     public function testCanSkipCoverage($testCase, $expectedCanSkip): void
     {
         $test             = new $testCase('testSomething');
-        $coverageRequired = (new CodeCoverageFacade)->shouldCodeCoverageBeCollectedFor(get_class($test), $test->getName(false));
+        $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor(get_class($test), $test->getName(false));
         $canSkipCoverage  = !$coverageRequired;
 
         $this->assertEquals($expectedCanSkip, $canSkipCoverage);

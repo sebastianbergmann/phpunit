@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Parser;
 
 use function array_merge;
 use function count;
@@ -19,7 +19,46 @@ use function strlen;
 use function substr;
 use function trim;
 use PHPUnit\Framework\Warning;
-use PHPUnit\Metadata\Annotation\Registry as AnnotationRegistry;
+use PHPUnit\Metadata\After;
+use PHPUnit\Metadata\AfterClass;
+use PHPUnit\Metadata\Annotation\Parser\Registry as AnnotationRegistry;
+use PHPUnit\Metadata\BackupGlobals;
+use PHPUnit\Metadata\BackupStaticProperties;
+use PHPUnit\Metadata\Before;
+use PHPUnit\Metadata\BeforeClass;
+use PHPUnit\Metadata\CodeCoverageIgnore;
+use PHPUnit\Metadata\Covers;
+use PHPUnit\Metadata\CoversDefaultClass;
+use PHPUnit\Metadata\CoversNothing;
+use PHPUnit\Metadata\DataProvider;
+use PHPUnit\Metadata\DependsOnClass;
+use PHPUnit\Metadata\DependsOnMethod;
+use PHPUnit\Metadata\DoesNotPerformAssertions;
+use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
+use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
+use PHPUnit\Metadata\Group;
+use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\PostCondition;
+use PHPUnit\Metadata\PreCondition;
+use PHPUnit\Metadata\PreserveGlobalState;
+use PHPUnit\Metadata\RequiresFunction;
+use PHPUnit\Metadata\RequiresMethod;
+use PHPUnit\Metadata\RequiresOperatingSystem;
+use PHPUnit\Metadata\RequiresOperatingSystemFamily;
+use PHPUnit\Metadata\RequiresPhp;
+use PHPUnit\Metadata\RequiresPhpExtension;
+use PHPUnit\Metadata\RequiresPhpunit;
+use PHPUnit\Metadata\RequiresSetting;
+use PHPUnit\Metadata\RunClassInSeparateProcess;
+use PHPUnit\Metadata\RunInSeparateProcess;
+use PHPUnit\Metadata\RunTestsInSeparateProcesses;
+use PHPUnit\Metadata\Test;
+use PHPUnit\Metadata\TestDox;
+use PHPUnit\Metadata\Todo;
+use PHPUnit\Metadata\Uses;
+use PHPUnit\Metadata\UsesDefaultClass;
+use PHPUnit\Metadata\Version\ComparisonRequirement;
+use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Util\VersionComparisonOperator;
 
 /**
@@ -438,14 +477,14 @@ final class AnnotationParser implements Parser
 
         if (!empty($requirements['PHP'])) {
             $result[] = new RequiresPhp(
-                new VersionComparisonRequirement(
+                new ComparisonRequirement(
                     $requirements['PHP']['version'],
                     new VersionComparisonOperator(empty($requirements['PHP']['operator']) ? '>=' : $requirements['PHP']['operator'])
                 )
             );
         } elseif (!empty($requirements['PHP_constraint'])) {
             $result[] = new RequiresPhp(
-                new VersionConstraintRequirement($requirements['PHP_constraint']['constraint'])
+                new ConstraintRequirement($requirements['PHP_constraint']['constraint'])
             );
         }
 
@@ -463,7 +502,7 @@ final class AnnotationParser implements Parser
             foreach ($requirements['extension_versions'] as $extension => $version) {
                 $result[] = new RequiresPhpExtension(
                     $extension,
-                    new VersionComparisonRequirement(
+                    new ComparisonRequirement(
                         $version['version'],
                         new VersionComparisonOperator(empty($version['operator']) ? '>=' : $version['operator'])
                     )
@@ -473,14 +512,14 @@ final class AnnotationParser implements Parser
 
         if (!empty($requirements['PHPUnit'])) {
             $result[] = new RequiresPhpunit(
-                new VersionComparisonRequirement(
+                new ComparisonRequirement(
                     $requirements['PHPUnit']['version'],
                     new VersionComparisonOperator(empty($requirements['PHPUnit']['operator']) ? '>=' : $requirements['PHPUnit']['operator'])
                 )
             );
         } elseif (!empty($requirements['PHPUnit_constraint'])) {
             $result[] = new RequiresPhpunit(
-                new VersionConstraintRequirement($requirements['PHPUnit_constraint']['constraint'])
+                new ConstraintRequirement($requirements['PHPUnit_constraint']['constraint'])
             );
         }
 

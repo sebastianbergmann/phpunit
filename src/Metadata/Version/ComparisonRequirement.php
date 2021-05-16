@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Version;
 
 use function version_compare;
 use PHPUnit\Util\VersionComparisonOperator;
@@ -17,7 +17,7 @@ use PHPUnit\Util\VersionComparisonOperator;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class VersionComparisonRequirement extends VersionRequirement
+final class ComparisonRequirement extends Requirement
 {
     private string $version;
 

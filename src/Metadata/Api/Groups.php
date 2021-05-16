@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
 use function array_flip;
 use function array_unique;
@@ -15,11 +15,22 @@ use function assert;
 use function strtolower;
 use function trim;
 use PHPUnit\Framework\TestSize\TestSize;
+use PHPUnit\Metadata\Covers;
+use PHPUnit\Metadata\CoversClass;
+use PHPUnit\Metadata\CoversFunction;
+use PHPUnit\Metadata\CoversMethod;
+use PHPUnit\Metadata\Group;
+use PHPUnit\Metadata\Metadata;
+use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Metadata\Uses;
+use PHPUnit\Metadata\UsesClass;
+use PHPUnit\Metadata\UsesFunction;
+use PHPUnit\Metadata\UsesMethod;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class GroupsFacade
+final class Groups
 {
     /**
      * @psalm-param class-string $className

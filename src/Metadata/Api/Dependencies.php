@@ -7,20 +7,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Api;
 
 use function assert;
 use PHPUnit\Framework\ExecutionOrderDependency;
+use PHPUnit\Metadata\DependsOnClass;
+use PHPUnit\Metadata\DependsOnMethod;
+use PHPUnit\Metadata\Parser\Registry;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DependenciesFacade
+final class Dependencies
 {
     /**
      * @psalm-param class-string $className
      *
-     * @psalm-return list<ExecutionOrderDependency>
+     * @psalm-return ExecutionOrderDependency
      */
     public static function dependencies(string $className, string $methodName): array
     {

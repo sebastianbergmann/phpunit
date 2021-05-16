@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Metadata;
 
+use PHPUnit\Metadata\Version\Requirement;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
@@ -17,9 +19,9 @@ final class RequiresPhpExtension extends Metadata
 {
     private string $extension;
 
-    private ?VersionRequirement $versionRequirement;
+    private ?Requirement $versionRequirement;
 
-    public function __construct(string $extension, ?VersionRequirement $versionRequirement)
+    public function __construct(string $extension, ?Requirement $versionRequirement)
     {
         $this->extension          = $extension;
         $this->versionRequirement = $versionRequirement;
@@ -46,7 +48,7 @@ final class RequiresPhpExtension extends Metadata
     /**
      * @throws NoVersionRequirementException
      */
-    public function versionRequirement(): VersionRequirement
+    public function versionRequirement(): Requirement
     {
         if ($this->versionRequirement === null) {
             throw new NoVersionRequirementException;

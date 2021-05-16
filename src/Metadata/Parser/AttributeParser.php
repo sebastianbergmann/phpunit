@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Metadata;
+namespace PHPUnit\Metadata\Parser;
 
 use const JSON_THROW_ON_ERROR;
 use function json_decode;
@@ -61,6 +61,44 @@ use PHPUnit\Framework\Attributes\TestWithJson as TestWithJsonAttribute;
 use PHPUnit\Framework\Attributes\Ticket as TicketAttribute;
 use PHPUnit\Framework\Attributes\UsesClass as UsesClassAttribute;
 use PHPUnit\Framework\Attributes\UsesFunction as UsesFunctionAttribute;
+use PHPUnit\Metadata\After;
+use PHPUnit\Metadata\AfterClass;
+use PHPUnit\Metadata\BackupGlobals;
+use PHPUnit\Metadata\BackupStaticProperties;
+use PHPUnit\Metadata\Before;
+use PHPUnit\Metadata\BeforeClass;
+use PHPUnit\Metadata\CodeCoverageIgnore;
+use PHPUnit\Metadata\CoversClass;
+use PHPUnit\Metadata\CoversFunction;
+use PHPUnit\Metadata\CoversNothing;
+use PHPUnit\Metadata\DataProvider;
+use PHPUnit\Metadata\DependsOnClass;
+use PHPUnit\Metadata\DependsOnMethod;
+use PHPUnit\Metadata\DoesNotPerformAssertions;
+use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
+use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
+use PHPUnit\Metadata\Group;
+use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\PostCondition;
+use PHPUnit\Metadata\PreCondition;
+use PHPUnit\Metadata\PreserveGlobalState;
+use PHPUnit\Metadata\RequiresFunction;
+use PHPUnit\Metadata\RequiresMethod;
+use PHPUnit\Metadata\RequiresOperatingSystem;
+use PHPUnit\Metadata\RequiresOperatingSystemFamily;
+use PHPUnit\Metadata\RequiresPhp;
+use PHPUnit\Metadata\RequiresPhpExtension;
+use PHPUnit\Metadata\RequiresPhpunit;
+use PHPUnit\Metadata\RequiresSetting;
+use PHPUnit\Metadata\RunClassInSeparateProcess;
+use PHPUnit\Metadata\RunInSeparateProcess;
+use PHPUnit\Metadata\RunTestsInSeparateProcesses;
+use PHPUnit\Metadata\Test;
+use PHPUnit\Metadata\TestDox;
+use PHPUnit\Metadata\TestWith;
+use PHPUnit\Metadata\UsesClass;
+use PHPUnit\Metadata\UsesFunction;
+use PHPUnit\Metadata\Version\ConstraintRequirement;
 use ReflectionClass;
 use ReflectionMethod;
 
@@ -177,7 +215,7 @@ final class AttributeParser implements Parser
 
                 case RequiresPhpAttribute::class:
                     $result[] = new RequiresPhp(
-                        VersionConstraintRequirement::from(
+                        ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         )
                     );
@@ -188,7 +226,7 @@ final class AttributeParser implements Parser
                     $versionConstraint = null;
 
                     if ($attributeInstance->hasVersionRequirement()) {
-                        $versionConstraint = VersionConstraintRequirement::from(
+                        $versionConstraint = ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         );
                     }
@@ -202,7 +240,7 @@ final class AttributeParser implements Parser
 
                 case RequiresPhpunitAttribute::class:
                     $result[] = new RequiresPhpunit(
-                        VersionConstraintRequirement::from(
+                        ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         )
                     );
@@ -430,7 +468,7 @@ final class AttributeParser implements Parser
 
                 case RequiresPhpAttribute::class:
                     $result[] = new RequiresPhp(
-                        VersionConstraintRequirement::from(
+                        ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         )
                     );
@@ -441,7 +479,7 @@ final class AttributeParser implements Parser
                     $versionConstraint = null;
 
                     if ($attributeInstance->hasVersionRequirement()) {
-                        $versionConstraint = VersionConstraintRequirement::from(
+                        $versionConstraint = ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         );
                     }
@@ -455,7 +493,7 @@ final class AttributeParser implements Parser
 
                 case RequiresPhpunitAttribute::class:
                     $result[] = new RequiresPhpunit(
-                        VersionConstraintRequirement::from(
+                        ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         )
                     );

@@ -17,8 +17,8 @@ use function serialize;
 use function sprintf;
 use function var_export;
 use AssertionError;
-use PHPUnit\Metadata\CodeCoverageFacade;
-use PHPUnit\Metadata\Registry as MetadataRegistry;
+use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\ExcludeList;
@@ -53,7 +53,7 @@ final class TestRunner
             $test->registerMockObjectsFromTestArgumentsRecursively();
         }
 
-        $shouldCodeCoverageBeCollected = (new CodeCoverageFacade)->shouldCodeCoverageBeCollectedFor(
+        $shouldCodeCoverageBeCollected = (new CodeCoverageMetadataApi)->shouldCodeCoverageBeCollectedFor(
             get_class($test),
             $test->getName(false)
         );
@@ -226,12 +226,12 @@ final class TestRunner
 
             if ($append) {
                 try {
-                    $linesToBeCovered = (new CodeCoverageFacade)->linesToBeCovered(
+                    $linesToBeCovered = (new CodeCoverageMetadataApi)->linesToBeCovered(
                         get_class($test),
                         $test->getName(false)
                     );
 
-                    $linesToBeUsed = (new CodeCoverageFacade)->linesToBeUsed(
+                    $linesToBeUsed = (new CodeCoverageMetadataApi)->linesToBeUsed(
                         get_class($test),
                         $test->getName(false)
                     );
