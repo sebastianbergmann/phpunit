@@ -89,7 +89,7 @@ final class TestRunner
 
     private static bool $versionStringPrinted = false;
 
-    private ?CodeCoverageFilter $codeCoverageFilter = null;
+    private ?CodeCoverageFilter $codeCoverageFilter;
 
     private ?ResultPrinter $printer = null;
 

@@ -28,7 +28,7 @@ use PHPUnit\TextUI\XmlConfiguration\FileCollection;
  */
 final class CodeCoverage
 {
-    private ?\PHPUnit\TextUI\XmlConfiguration\Directory $cacheDirectory = null;
+    private ?\PHPUnit\TextUI\XmlConfiguration\Directory $cacheDirectory;
 
     private \PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection $directories;
 
@@ -46,19 +46,19 @@ final class CodeCoverage
 
     private bool $disableCodeCoverageIgnore;
 
-    private ?Clover $clover = null;
+    private ?Clover $clover;
 
-    private ?Cobertura $cobertura = null;
+    private ?Cobertura $cobertura;
 
-    private ?Crap4j $crap4j = null;
+    private ?Crap4j $crap4j;
 
-    private ?Html $html = null;
+    private ?Html $html;
 
-    private ?Php $php = null;
+    private ?Php $php;
 
-    private ?Text $text = null;
+    private ?Text $text;
 
-    private ?Xml $xml = null;
+    private ?Xml $xml;
 
     public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {

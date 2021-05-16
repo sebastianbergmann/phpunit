@@ -149,7 +149,7 @@ final class Help
 
     private int $columnsAvailableForDescription;
 
-    private ?bool $hasColor = false;
+    private ?bool $hasColor;
 
     public function __construct(?int $width = null, ?bool $withColor = null)
     {

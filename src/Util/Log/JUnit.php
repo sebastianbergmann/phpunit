@@ -42,7 +42,7 @@ final class JUnit extends Printer implements TestListener
 
     private DOMElement $root;
 
-    private bool $reportRiskyTests = false;
+    private bool $reportRiskyTests;
 
     /**
      * @var DOMElement[]

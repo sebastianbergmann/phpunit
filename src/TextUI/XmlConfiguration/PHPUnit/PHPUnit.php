@@ -15,11 +15,11 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class PHPUnit
 {
-    private ?string $cacheDirectory = null;
+    private ?string $cacheDirectory;
 
     private bool $cacheResult;
 
-    private ?string $cacheResultFile = null;
+    private ?string $cacheResultFile;
 
     private int|string $columns;
 
@@ -43,7 +43,7 @@ final class PHPUnit
 
     private bool $forceCoversAnnotation;
 
-    private ?string $bootstrap = null;
+    private ?string $bootstrap;
 
     private bool $processIsolation;
 
@@ -71,11 +71,11 @@ final class PHPUnit
 
     private bool $stopOnSkipped;
 
-    private ?string $extensionsDirectory = null;
+    private ?string $extensionsDirectory;
 
-    private ?string $printerClass = null;
+    private ?string $printerClass;
 
-    private ?string $printerFile = null;
+    private ?string $printerFile;
 
     private bool $beStrictAboutChangesToGlobalState;
 
@@ -99,7 +99,7 @@ final class PHPUnit
 
     private int $timeoutForLargeTests;
 
-    private ?string $defaultTestSuite = null;
+    private ?string $defaultTestSuite;
 
     private int $executionOrder;
 

@@ -53,7 +53,7 @@ final class MockMethod
 
     private bool $static;
 
-    private ?string $deprecation = null;
+    private ?string $deprecation;
 
     /**
      * @throws ReflectionException

@@ -15,188 +15,188 @@ namespace PHPUnit\TextUI\CliArguments;
  */
 final class Configuration
 {
-    private ?string $argument = null;
+    private ?string $argument;
 
-    private ?string $atLeastVersion = null;
+    private ?string $atLeastVersion;
 
-    private ?bool $backupGlobals = null;
+    private ?bool $backupGlobals;
 
-    private ?bool $backupStaticProperties = null;
+    private ?bool $backupStaticProperties;
 
-    private ?bool $beStrictAboutChangesToGlobalState = null;
+    private ?bool $beStrictAboutChangesToGlobalState;
 
-    private ?bool $beStrictAboutResourceUsageDuringSmallTests = null;
+    private ?bool $beStrictAboutResourceUsageDuringSmallTests;
 
-    private ?string $bootstrap = null;
+    private ?string $bootstrap;
 
-    private ?string $cacheDirectory = null;
+    private ?string $cacheDirectory;
 
-    private ?bool $cacheResult = null;
+    private ?bool $cacheResult;
 
-    private ?string $cacheResultFile = null;
+    private ?string $cacheResultFile;
 
-    private ?bool $checkVersion = null;
+    private ?bool $checkVersion;
 
-    private ?string $colors = null;
+    private ?string $colors;
 
     private null|int|string $columns;
 
-    private ?string $configuration = null;
+    private ?string $configuration;
 
-    private ?array $coverageFilter = null;
+    private ?array $coverageFilter;
 
-    private ?string $coverageClover = null;
+    private ?string $coverageClover;
 
-    private ?string $coverageCobertura = null;
+    private ?string $coverageCobertura;
 
-    private ?string $coverageCrap4J = null;
+    private ?string $coverageCrap4J;
 
-    private ?string $coverageHtml = null;
+    private ?string $coverageHtml;
 
-    private ?string $coveragePhp = null;
+    private ?string $coveragePhp;
 
-    private ?string $coverageText = null;
+    private ?string $coverageText;
 
-    private ?bool $coverageTextShowUncoveredFiles = null;
+    private ?bool $coverageTextShowUncoveredFiles;
 
-    private ?bool $coverageTextShowOnlySummary = null;
+    private ?bool $coverageTextShowOnlySummary;
 
-    private ?string $coverageXml = null;
+    private ?string $coverageXml;
 
-    private ?bool $pathCoverage = null;
+    private ?bool $pathCoverage;
 
-    private ?string $coverageCacheDirectory = null;
+    private ?string $coverageCacheDirectory;
 
-    private ?bool $warmCoverageCache = null;
+    private ?bool $warmCoverageCache;
 
-    private ?bool $debug = null;
+    private ?bool $debug;
 
-    private ?int $defaultTimeLimit = null;
+    private ?int $defaultTimeLimit;
 
-    private ?bool $disableCodeCoverageIgnore = null;
+    private ?bool $disableCodeCoverageIgnore;
 
-    private ?bool $disallowTestOutput = null;
+    private ?bool $disallowTestOutput;
 
-    private ?bool $disallowTodoAnnotatedTests = null;
+    private ?bool $disallowTodoAnnotatedTests;
 
-    private ?bool $enforceTimeLimit = null;
+    private ?bool $enforceTimeLimit;
 
-    private ?array $excludeGroups = null;
+    private ?array $excludeGroups;
 
-    private ?int $executionOrder = null;
+    private ?int $executionOrder;
 
-    private ?int $executionOrderDefects = null;
+    private ?int $executionOrderDefects;
 
-    private ?array $extensions = null;
+    private ?array $extensions;
 
-    private ?array $unavailableExtensions = null;
+    private ?array $unavailableExtensions;
 
-    private ?bool $failOnEmptyTestSuite = null;
+    private ?bool $failOnEmptyTestSuite;
 
-    private ?bool $failOnIncomplete = null;
+    private ?bool $failOnIncomplete;
 
-    private ?bool $failOnRisky = null;
+    private ?bool $failOnRisky;
 
-    private ?bool $failOnSkipped = null;
+    private ?bool $failOnSkipped;
 
-    private ?bool $failOnWarning = null;
+    private ?bool $failOnWarning;
 
-    private ?string $filter = null;
+    private ?string $filter;
 
-    private ?bool $generateConfiguration = null;
+    private ?bool $generateConfiguration;
 
-    private ?bool $migrateConfiguration = null;
+    private ?bool $migrateConfiguration;
 
-    private ?array $groups = null;
+    private ?array $groups;
 
-    private ?array $testsCovering = null;
+    private ?array $testsCovering;
 
-    private ?array $testsUsing = null;
+    private ?array $testsUsing;
 
-    private ?bool $help = null;
+    private ?bool $help;
 
-    private ?string $includePath = null;
+    private ?string $includePath;
 
-    private ?array $iniSettings = null;
+    private ?array $iniSettings;
 
-    private ?string $junitLogfile = null;
+    private ?string $junitLogfile;
 
-    private ?bool $listGroups = null;
+    private ?bool $listGroups;
 
-    private ?bool $listSuites = null;
+    private ?bool $listSuites;
 
-    private ?bool $listTests = null;
+    private ?bool $listTests;
 
-    private ?string $listTestsXml = null;
+    private ?string $listTestsXml;
 
-    private ?bool $noCoverage = null;
+    private ?bool $noCoverage;
 
-    private ?bool $noExtensions = null;
+    private ?bool $noExtensions;
 
-    private ?bool $noInteraction = null;
+    private ?bool $noInteraction;
 
-    private ?bool $noLogging = null;
+    private ?bool $noLogging;
 
-    private ?string $printer = null;
+    private ?string $printer;
 
-    private ?bool $processIsolation = null;
+    private ?bool $processIsolation;
 
-    private ?int $randomOrderSeed = null;
+    private ?int $randomOrderSeed;
 
-    private ?int $repeat = null;
+    private ?int $repeat;
 
-    private ?bool $reportUselessTests = null;
+    private ?bool $reportUselessTests;
 
-    private ?bool $resolveDependencies = null;
+    private ?bool $resolveDependencies;
 
-    private ?bool $reverseList = null;
+    private ?bool $reverseList;
 
-    private ?bool $stderr = null;
+    private ?bool $stderr;
 
-    private ?bool $strictCoverage = null;
+    private ?bool $strictCoverage;
 
-    private ?bool $stopOnDefect = null;
+    private ?bool $stopOnDefect;
 
-    private ?bool $stopOnError = null;
+    private ?bool $stopOnError;
 
-    private ?bool $stopOnFailure = null;
+    private ?bool $stopOnFailure;
 
-    private ?bool $stopOnIncomplete = null;
+    private ?bool $stopOnIncomplete;
 
-    private ?bool $stopOnRisky = null;
+    private ?bool $stopOnRisky;
 
-    private ?bool $stopOnSkipped = null;
+    private ?bool $stopOnSkipped;
 
-    private ?bool $stopOnWarning = null;
+    private ?bool $stopOnWarning;
 
-    private ?string $teamcityLogfile = null;
+    private ?string $teamcityLogfile;
 
-    private ?array $testdoxExcludeGroups = null;
+    private ?array $testdoxExcludeGroups;
 
-    private ?array $testdoxGroups = null;
+    private ?array $testdoxGroups;
 
-    private ?string $testdoxHtmlFile = null;
+    private ?string $testdoxHtmlFile;
 
-    private ?string $testdoxTextFile = null;
+    private ?string $testdoxTextFile;
 
-    private ?string $testdoxXmlFile = null;
+    private ?string $testdoxXmlFile;
 
-    private ?array $testSuffixes = null;
+    private ?array $testSuffixes;
 
-    private ?string $testSuite = null;
+    private ?string $testSuite;
 
     /**
      * @psalm-var array<string,string>
      */
     private array $unrecognizedOptions;
 
-    private ?string $unrecognizedOrderBy = null;
+    private ?string $unrecognizedOrderBy;
 
-    private ?bool $useDefaultConfiguration = null;
+    private ?bool $useDefaultConfiguration;
 
-    private ?bool $verbose = null;
+    private ?bool $verbose;
 
-    private ?bool $version = null;
+    private ?bool $version;
 
     /**
      * @psalm-param array<string,string> $unrecognizedOptions
