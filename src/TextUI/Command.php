@@ -804,6 +804,7 @@ class Command
     {
         $candidates = [
             $directory . '/phpunit.xml',
+            $directory . '/phpunit.dist.xml',
             $directory . '/phpunit.xml.dist',
         ];
 
