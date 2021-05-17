@@ -36,10 +36,7 @@ use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\DefaultTestResultCache;
 use PHPUnit\Runner\Extension\ExtensionHandler;
-use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\Factory;
-use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
-use PHPUnit\Runner\Filter\NameFilterIterator;
 use PHPUnit\Runner\Hook;
 use PHPUnit\Runner\NullTestResultCache;
 use PHPUnit\Runner\ResultCacheExtension;
@@ -1058,22 +1055,19 @@ final class TestRunner
         $filterFactory = new Factory;
 
         if (!empty($arguments['excludeGroups'])) {
-            $filterFactory->addFilter(
-                new ReflectionClass(ExcludeGroupFilterIterator::class),
+            $filterFactory->addExcludeGroupFilter(
                 $arguments['excludeGroups']
             );
         }
 
         if (!empty($arguments['groups'])) {
-            $filterFactory->addFilter(
-                new ReflectionClass(IncludeGroupFilterIterator::class),
+            $filterFactory->addIncludeGroupFilter(
                 $arguments['groups']
             );
         }
 
         if (!empty($arguments['testsCovering'])) {
-            $filterFactory->addFilter(
-                new ReflectionClass(IncludeGroupFilterIterator::class),
+            $filterFactory->addIncludeGroupFilter(
                 array_map(
                     static function (string $name): string {
                         return '__phpunit_covers_' . $name;
@@ -1084,8 +1078,7 @@ final class TestRunner
         }
 
         if (!empty($arguments['testsUsing'])) {
-            $filterFactory->addFilter(
-                new ReflectionClass(IncludeGroupFilterIterator::class),
+            $filterFactory->addIncludeGroupFilter(
                 array_map(
                     static function (string $name): string {
                         return '__phpunit_uses_' . $name;
@@ -1096,8 +1089,7 @@ final class TestRunner
         }
 
         if ($arguments['filter']) {
-            $filterFactory->addFilter(
-                new ReflectionClass(NameFilterIterator::class),
+            $filterFactory->addNameFilter(
                 $arguments['filter']
             );
         }

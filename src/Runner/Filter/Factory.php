@@ -10,12 +10,9 @@
 namespace PHPUnit\Runner\Filter;
 
 use function assert;
-use function sprintf;
 use FilterIterator;
 use Iterator;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\Exception;
-use RecursiveFilterIterator;
 use ReflectionClass;
 
 /**
@@ -28,21 +25,25 @@ final class Factory
      */
     private array $filters = [];
 
-    /**
-     * @throws Exception
-     */
-    public function addFilter(ReflectionClass $filter, array|string $arguments): void
+    public function addExcludeGroupFilter(array $groups): void
     {
-        if (!$filter->isSubclassOf(RecursiveFilterIterator::class)) {
-            throw new Exception(
-                sprintf(
-                    'Class "%s" does not extend RecursiveFilterIterator',
-                    $filter->name
-                )
-            );
-        }
+        $this->filters[] = [
+            new ReflectionClass(ExcludeGroupFilterIterator::class), $groups,
+        ];
+    }
 
-        $this->filters[] = [$filter, $arguments];
+    public function addIncludeGroupFilter(array $groups): void
+    {
+        $this->filters[] = [
+            new ReflectionClass(IncludeGroupFilterIterator::class), $groups,
+        ];
+    }
+
+    public function addNameFilter(string $name): void
+    {
+        $this->filters[] = [
+            new ReflectionClass(NameFilterIterator::class), $name,
+        ];
     }
 
     public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
