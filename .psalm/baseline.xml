@@ -386,8 +386,8 @@
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
     <MissingParamType occurrences="5">
-      <code>$args</code>
-      <code>$args</code>
+      <code>$arguments</code>
+      <code>$arguments</code>
       <code>$callback</code>
       <code>$result</code>
       <code>$value</code>
@@ -723,12 +723,7 @@
       <code>$e</code>
     </InvalidArgument>
     <InvalidStringClass occurrences="1"/>
-    <MissingThrowsDocblock occurrences="11">
-      <code>addFilter</code>
-      <code>addFilter</code>
-      <code>addFilter</code>
-      <code>addFilter</code>
-      <code>addFilter</code>
+    <MissingThrowsDocblock occurrences="6">
       <code>detect</code>
       <code>new Printer($arguments['coverageText'])</code>
       <code>reorderTestsInSuite</code>
