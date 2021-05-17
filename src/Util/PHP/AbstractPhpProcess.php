@@ -48,7 +48,7 @@ abstract class AbstractPhpProcess
 
     protected string $stdin = '';
 
-    protected string $args = '';
+    protected string $arguments = '';
 
     /**
      * @psalm-var array<string, string>
@@ -108,9 +108,9 @@ abstract class AbstractPhpProcess
     /**
      * Sets the string of arguments to pass to the php job.
      */
-    public function setArgs(string $args): void
+    public function setArgs(string $arguments): void
     {
-        $this->args = $args;
+        $this->arguments = $arguments;
     }
 
     /**
@@ -118,7 +118,7 @@ abstract class AbstractPhpProcess
      */
     public function getArgs(): string
     {
-        return $this->args;
+        return $this->arguments;
     }
 
     /**
@@ -211,11 +211,11 @@ abstract class AbstractPhpProcess
             $command .= ' ' . escapeshellarg($file);
         }
 
-        if ($this->args) {
+        if ($this->arguments) {
             if (!$file) {
                 $command .= ' --';
             }
-            $command .= ' ' . $this->args;
+            $command .= ' ' . $this->arguments;
         }
 
         if ($this->stderrRedirection) {

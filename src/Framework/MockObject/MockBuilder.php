@@ -239,9 +239,9 @@ final class MockBuilder
      *
      * @return $this
      */
-    public function setConstructorArgs(array $args): self
+    public function setConstructorArgs(array $arguments): self
     {
-        $this->constructorArgs = $args;
+        $this->constructorArgs = $arguments;
 
         return $this;
     }

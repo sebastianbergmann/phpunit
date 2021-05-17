@@ -2770,8 +2770,8 @@ if (!function_exists('PHPUnit\Framework\throwException')) {
 if (!function_exists('PHPUnit\Framework\onConsecutiveCalls')) {
     function onConsecutiveCalls(): ConsecutiveCallsStub
     {
-        $args = func_get_args();
+        $arguments = func_get_args();
 
-        return new ConsecutiveCallsStub($args);
+        return new ConsecutiveCallsStub($arguments);
     }
 }

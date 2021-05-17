@@ -318,9 +318,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return new ExceptionStub($exception);
     }
 
-    public static function onConsecutiveCalls(...$args): ConsecutiveCallsStub
+    public static function onConsecutiveCalls(...$arguments): ConsecutiveCallsStub
     {
-        return new ConsecutiveCallsStub($args);
+        return new ConsecutiveCallsStub($arguments);
     }
 
     /**
@@ -1230,13 +1230,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws Exception
      */
-    protected function setLocale(...$args): void
+    protected function setLocale(...$arguments): void
     {
-        if (count($args) < 2) {
+        if (count($arguments) < 2) {
             throw new Exception;
         }
 
-        [$category, $locale] = $args;
+        [$category, $locale] = $arguments;
 
         if (!in_array($category, self::LOCALE_CATEGORIES, true)) {
             throw new Exception;
@@ -1248,7 +1248,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->locale[$category] = setlocale($category, 0);
 
-        $result = setlocale(...$args);
+        $result = setlocale(...$arguments);
 
         if ($result === false) {
             throw new Exception(

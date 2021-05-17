@@ -31,7 +31,7 @@ final class Factory
     /**
      * @throws Exception
      */
-    public function addFilter(ReflectionClass $filter, array|string $args): void
+    public function addFilter(ReflectionClass $filter, array|string $arguments): void
     {
         if (!$filter->isSubclassOf(RecursiveFilterIterator::class)) {
             throw new Exception(
@@ -42,14 +42,14 @@ final class Factory
             );
         }
 
-        $this->filters[] = [$filter, $args];
+        $this->filters[] = [$filter, $arguments];
     }
 
     public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
     {
         foreach ($this->filters as $filter) {
-            [$class, $args] = $filter;
-            $iterator       = $class->newInstance($iterator, $args, $suite);
+            [$class, $arguments] = $filter;
+            $iterator            = $class->newInstance($iterator, $arguments, $suite);
         }
 
         assert($iterator instanceof FilterIterator);

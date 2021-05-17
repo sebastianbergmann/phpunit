@@ -394,25 +394,25 @@ final class Generator
             $name         = str_replace('(', '', $lastFunction[0]);
 
             if (empty($methods) || in_array($name, $methods, true)) {
-                $args = explode(
+                $arguments = explode(
                     ',',
                     str_replace(')', '', substr($method, $nameEnd + 1))
                 );
 
-                foreach (range(0, count($args) - 1) as $i) {
-                    $parameterStart = strpos($args[$i], '$');
+                foreach (range(0, count($arguments) - 1) as $i) {
+                    $parameterStart = strpos($arguments[$i], '$');
 
                     if (!$parameterStart) {
                         continue;
                     }
 
-                    $args[$i] = substr($args[$i], $parameterStart);
+                    $arguments[$i] = substr($arguments[$i], $parameterStart);
                 }
 
                 $methodTemplate->setVar(
                     [
                         'method_name' => $name,
-                        'arguments'   => implode(', ', $args),
+                        'arguments'   => implode(', ', $arguments),
                     ]
                 );
 
