@@ -85,7 +85,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     private ?bool $beStrictAboutChangesToGlobalState = null;
 
-    private ?\PHPUnit\Runner\Filter\Factory $iteratorFilter = null;
+    private ?Factory $iteratorFilter = null;
 
     /**
      * @psalm-var array<int,string>
