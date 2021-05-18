@@ -152,18 +152,14 @@ final class TestBuilder
     {
         if ($runTestInSeparateProcess) {
             $test->setRunTestInSeparateProcess(true);
-
-            if ($preserveGlobalState !== null) {
-                $test->setPreserveGlobalState($preserveGlobalState);
-            }
         }
 
         if ($runClassInSeparateProcess) {
             $test->setRunClassInSeparateProcess(true);
+        }
 
-            if ($preserveGlobalState !== null) {
-                $test->setPreserveGlobalState($preserveGlobalState);
-            }
+        if ($preserveGlobalState !== null) {
+            $test->setPreserveGlobalState($preserveGlobalState);
         }
 
         if ($backupSettings['backupGlobals'] !== null) {
