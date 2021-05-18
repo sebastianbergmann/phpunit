@@ -977,6 +977,7 @@ final class MockObjectTest extends TestCase
     /**
      * @see    https://github.com/sebastianbergmann/phpunit-mock-objects/issues/171
      * @ticket 171
+     * @requires PHP < 8.1
      */
     public function testStubForClassThatImplementsSerializableCanBeCreatedWithoutInvokingTheConstructor(): void
     {
