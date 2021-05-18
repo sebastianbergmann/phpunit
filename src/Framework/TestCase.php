@@ -111,36 +111,31 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 {
     private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
 
-    private bool $preserveGlobalState = false;
+    private ?bool $backupGlobals = null;
 
     /**
      * @psalm-var list<string>
      */
     private array $backupGlobalsExcludeList = [];
 
+    private ?bool $backupStaticProperties = null;
+
     /**
      * @psalm-var array<string,list<class-string>>
      */
     private array $backupStaticPropertiesExcludeList = [];
 
-    private ?bool $backupGlobals = null;
+    private ?bool $beStrictAboutChangesToGlobalState = false;
 
-    private ?bool $backupStaticProperties = null;
-
-    private ?bool $runTestInSeparateProcess = null;
-
-    /**
-     * @psalm-var list<ExecutionOrderDependency>
-     */
-    private array $providedTests = [];
+    private ?Snapshot $snapshot = null;
 
     private ?bool $runClassInSeparateProcess = null;
 
+    private ?bool $runTestInSeparateProcess = null;
+
+    private bool $preserveGlobalState = false;
+
     private bool $inIsolation = false;
-
-    private array $data = [];
-
-    private int|string $dataName = '';
 
     private ?string $expectedException = null;
 
@@ -150,7 +145,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private null|int|string $expectedExceptionCode = null;
 
+    /**
+     * @psalm-var list<ExecutionOrderDependency>
+     */
+    private array $providedTests = [];
+
+    private array $data = [];
+
+    private int|string $dataName = '';
+
     private string $name;
+
+    /**
+     * @psalm-var list<string>
+     */
+    private array $groups = [];
 
     /**
      * @psalm-var list<ExecutionOrderDependency>
@@ -166,18 +175,25 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private array $locale = [];
 
+    private ?MockGenerator $mockObjectGenerator = null;
+
     /**
      * @psalm-var list<MockObject>
      */
     private array $mockObjects = [];
 
-    private ?MockGenerator $mockObjectGenerator = null;
+    /**
+     * @psalm-var list<class-string>
+     */
+    private array $doubledTypes = [];
+
+    private bool $registerMockObjectsFromTestArgumentsRecursively = false;
+
+    private ?TestResult $result = null;
 
     private ?TestStatus $status = null;
 
     private int $numberOfAssertionsPerformed = 0;
-
-    private ?TestResult $result = null;
 
     private mixed $testResult = null;
 
@@ -193,21 +209,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private bool $outputRetrievedForAssertion = false;
 
-    private ?Snapshot $snapshot = null;
-
-    private ?bool $beStrictAboutChangesToGlobalState = false;
-
-    private bool $registerMockObjectsFromTestArgumentsRecursively = false;
-
     /**
      * @psalm-var list<string>
      */
     private array $warnings = [];
-
-    /**
-     * @psalm-var list<string>
-     */
-    private array $groups = [];
 
     private bool $doesNotPerformAssertions = false;
 
@@ -215,11 +220,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-var list<Comparator>
      */
     private array $customComparators = [];
-
-    /**
-     * @psalm-var list<class-string>
-     */
-    private array $doubledTypes = [];
 
     /**
      * Returns a matcher that matches when the method is executed
