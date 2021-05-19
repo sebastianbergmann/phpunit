@@ -10,7 +10,6 @@
 namespace PHPUnit\Util\Log;
 
 use function class_exists;
-use function get_class;
 use function method_exists;
 use function sprintf;
 use function str_replace;
@@ -388,7 +387,7 @@ final class JUnit extends Printer implements TestListener
         if ($t instanceof ExceptionWrapper) {
             $fault->setAttribute('type', $t->getClassName());
         } else {
-            $fault->setAttribute('type', get_class($t));
+            $fault->setAttribute('type', $t::class);
         }
 
         $this->currentTestCase->appendChild($fault);

@@ -16,7 +16,6 @@ use function array_pop;
 use function array_values;
 use function class_exists;
 use function explode;
-use function get_class;
 use function gettype;
 use function implode;
 use function in_array;
@@ -139,7 +138,7 @@ final class NamePrettifier
     {
         $annotationWithPlaceholders = false;
 
-        $metadata = MetadataRegistry::parser()->forMethod(get_class($test), $test->getName(false));
+        $metadata = MetadataRegistry::parser()->forMethod($test::class, $test->getName(false));
 
         if ($metadata->isTestDox()->isNotEmpty()) {
             $result = $metadata->isTestDox()->asArray()[0]->text();
@@ -253,7 +252,7 @@ final class NamePrettifier
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
     {
         try {
-            $reflector = new ReflectionMethod(get_class($test), $test->getName(false));
+            $reflector = new ReflectionMethod($test::class, $test->getName(false));
             // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
             throw new UtilException(
@@ -293,7 +292,7 @@ final class NamePrettifier
                 if ($reflector->hasMethod('__toString')) {
                     $value = (string) $value;
                 } else {
-                    $value = get_class($value);
+                    $value = $value::class;
                 }
             }
 

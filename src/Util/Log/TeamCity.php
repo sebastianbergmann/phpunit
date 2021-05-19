@@ -12,7 +12,6 @@ namespace PHPUnit\Util\Log;
 use function class_exists;
 use function count;
 use function explode;
-use function get_class;
 use function getmypid;
 use function ini_get;
 use function is_bool;
@@ -242,7 +241,7 @@ final class TeamCity extends DefaultResultPrinter
         $params                = ['name' => $testName];
 
         if ($test instanceof TestCase) {
-            $className              = get_class($test);
+            $className              = $test::class;
             $fileName               = self::getFileName($className);
             $params['locationHint'] = "php_qn://{$fileName}::\\{$className}::{$testName}";
         }

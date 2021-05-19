@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function abs;
-use function get_class;
 use function is_array;
 use function is_float;
 use function is_infinite;
@@ -98,7 +97,7 @@ final class IsIdentical extends Constraint
     {
         if (is_object($this->value)) {
             return 'is identical to an object of class "' .
-                get_class($this->value) . '"';
+                $this->value::class . '"';
         }
 
         return 'is identical to ' . $this->exporter()->export($this->value);

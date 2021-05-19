@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\MockObject\Stub;
 
 use function call_user_func_array;
-use function get_class;
 use function is_array;
 use function is_object;
 use function sprintf;
@@ -40,7 +39,7 @@ final class ReturnCallback implements Stub
     {
         if (is_array($this->callback)) {
             if (is_object($this->callback[0])) {
-                $class = get_class($this->callback[0]);
+                $class = $this->callback[0]::class;
                 $type  = '->';
             } else {
                 $class = $this->callback[0];

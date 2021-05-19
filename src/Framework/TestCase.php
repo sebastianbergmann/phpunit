@@ -31,7 +31,6 @@ use function clearstatcache;
 use function count;
 use function defined;
 use function explode;
-use function get_class;
 use function getcwd;
 use function implode;
 use function in_array;
@@ -428,7 +427,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function expectExceptionObject(\Exception $exception): void
     {
-        $this->expectException(get_class($exception));
+        $this->expectException($exception::class);
         $this->expectExceptionMessage($exception->getMessage());
         $this->expectExceptionCode($exception->getCode());
     }

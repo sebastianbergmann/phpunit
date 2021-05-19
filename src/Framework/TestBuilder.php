@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use function assert;
-use function get_class;
 use function sprintf;
 use function trim;
 use PHPUnit\Metadata\Api\DataProvider;
@@ -195,7 +194,7 @@ final class TestBuilder
 
         return sprintf(
             "%s: %s\n%s",
-            get_class($t),
+            $t::class,
             $message,
             Filter::getFilteredStacktrace($t)
         );

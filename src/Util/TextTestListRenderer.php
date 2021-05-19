@@ -10,7 +10,6 @@
 namespace PHPUnit\Util;
 
 use const PHP_EOL;
-use function get_class;
 use function sprintf;
 use function str_replace;
 use PHPUnit\Framework\TestCase;
@@ -34,7 +33,7 @@ final class TextTestListRenderer
             if ($test instanceof TestCase) {
                 $name = sprintf(
                     '%s::%s',
-                    get_class($test),
+                    $test::class,
                     str_replace(' with data set ', '', $test->getName())
                 );
             } elseif ($test instanceof PhptTestCase) {

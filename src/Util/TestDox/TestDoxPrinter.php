@@ -11,7 +11,6 @@ namespace PHPUnit\Util\TestDox;
 
 use const PHP_EOL;
 use function array_map;
-use function get_class;
 use function implode;
 use function method_exists;
 use function preg_split;
@@ -205,7 +204,7 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function formatClassName(Test $test): string
     {
-        return get_class($test);
+        return $test::class;
     }
 
     protected function testHasPassed(): bool

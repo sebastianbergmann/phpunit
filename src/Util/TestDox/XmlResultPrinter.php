@@ -11,7 +11,6 @@ namespace PHPUnit\Util\TestDox;
 
 use function array_filter;
 use function assert;
-use function get_class;
 use function str_starts_with;
 use DOMDocument;
 use DOMElement;
@@ -166,9 +165,9 @@ final class XmlResultPrinter extends Printer implements TestListener
 
         $testNode = $this->document->createElement('test');
 
-        $testNode->setAttribute('className', get_class($test));
+        $testNode->setAttribute('className', $test::class);
         $testNode->setAttribute('methodName', $test->getName());
-        $testNode->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(get_class($test)));
+        $testNode->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass($test::class));
         $testNode->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestCase($test));
         $testNode->setAttribute('status', $test->status()->asString());
         $testNode->setAttribute('time', (string) $time);
@@ -182,7 +181,7 @@ final class XmlResultPrinter extends Printer implements TestListener
             $testNode->appendChild($groupNode);
         }
 
-        foreach (MetadataRegistry::parser()->forClassAndMethod(get_class($test), $test->getName(false)) as $metadata) {
+        foreach (MetadataRegistry::parser()->forClassAndMethod($test::class, $test->getName(false)) as $metadata) {
             if ($metadata->isCovers()) {
                 assert($metadata instanceof Covers);
 
@@ -273,7 +272,7 @@ final class XmlResultPrinter extends Printer implements TestListener
         }
 
         $inlineAnnotations = (new InlineAnnotationParser)->parse(
-            get_class($test),
+            $test::class,
             $test->getName(false)
         );
 

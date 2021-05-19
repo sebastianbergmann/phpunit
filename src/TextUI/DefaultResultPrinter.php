@@ -554,6 +554,6 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
             return $test->toString();
         }
 
-        return get_class($test);
+        return $test::class;
     }
 }

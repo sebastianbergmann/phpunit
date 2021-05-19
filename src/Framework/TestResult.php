@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use function count;
-use function get_class;
 use Countable;
 use Error;
 use PHPUnit\Framework\TestSize\TestSize;
@@ -265,7 +264,7 @@ final class TestResult implements Countable
         }
 
         if (!$this->lastTestFailed && $test instanceof TestCase) {
-            $class = get_class($test);
+            $class = $test::class;
             $key   = $class . '::' . $test->getName();
             $size  = TestSize::unknown();
 

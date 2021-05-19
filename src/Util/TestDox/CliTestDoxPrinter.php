@@ -14,7 +14,6 @@ use function array_map;
 use function ceil;
 use function count;
 use function explode;
-use function get_class;
 use function implode;
 use function preg_match;
 use function sprintf;
@@ -148,10 +147,10 @@ class CliTestDoxPrinter extends TestDoxPrinter
     protected function formatClassName(Test $test): string
     {
         if ($test instanceof TestCase) {
-            return $this->prettifier->prettifyTestClass(get_class($test));
+            return $this->prettifier->prettifyTestClass($test::class);
         }
 
-        return get_class($test);
+        return $test::class;
     }
 
     /**

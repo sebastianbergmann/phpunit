@@ -21,7 +21,6 @@ use function fgets;
 use function file_get_contents;
 use function file_put_contents;
 use function fopen;
-use function get_class;
 use function getcwd;
 use function ini_get;
 use function ini_set;
@@ -490,7 +489,7 @@ class Command
             $this->exitWithErrorMessage(
                 sprintf(
                     'Error in bootstrap script: %s:%s%s',
-                    get_class($t),
+                    $t::class,
                     PHP_EOL,
                     $t->getMessage()
                 )

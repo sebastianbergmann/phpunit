@@ -144,6 +144,6 @@ final class TestListenerAdapter implements TestListener
             return $test->toString();
         }
 
-        return get_class($test);
+        return $test::class;
     }
 }

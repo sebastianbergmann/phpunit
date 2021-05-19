@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use const PHP_EOL;
 use function defined;
-use function get_class;
 use function get_include_path;
 use function serialize;
 use function sprintf;
@@ -52,7 +51,7 @@ final class TestRunner
         }
 
         $shouldCodeCoverageBeCollected = (new CodeCoverageMetadataApi)->shouldCodeCoverageBeCollectedFor(
-            get_class($test),
+            $test::class,
             $test->getName(false)
         );
 
@@ -167,7 +166,7 @@ final class TestRunner
 
         if (!$error && !$failure && !$warning && !$incomplete && !$skipped && !$risky &&
             $result->enforcesCoversAnnotation() &&
-            !$this->hasCoverageMetadata(get_class($test), $test->getName(false))) {
+            !$this->hasCoverageMetadata($test::class, $test->getName(false))) {
             $result->addFailure(
                 $test,
                 new MissingCoversAnnotationException(
@@ -187,12 +186,12 @@ final class TestRunner
             if ($append) {
                 try {
                     $linesToBeCovered = (new CodeCoverageMetadataApi)->linesToBeCovered(
-                        get_class($test),
+                        $test::class,
                         $test->getName(false)
                     );
 
                     $linesToBeUsed = (new CodeCoverageMetadataApi)->linesToBeUsed(
-                        get_class($test),
+                        $test::class,
                         $test->getName(false)
                     );
                 } catch (InvalidCoversTargetException $cce) {

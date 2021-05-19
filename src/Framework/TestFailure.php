@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function get_class;
 use function sprintf;
 use function trim;
 use PHPUnit\Util\Error\Error;
@@ -57,7 +56,7 @@ final class TestFailure
             return $e->getClassName() . ': ' . $e->getMessage() . "\n";
         }
 
-        return get_class($e) . ': ' . $e->getMessage() . "\n";
+        return $e::class . ': ' . $e->getMessage() . "\n";
     }
 
     /**
@@ -146,6 +145,6 @@ final class TestFailure
             return $test->toString();
         }
 
-        return get_class($test);
+        return $test::class;
     }
 }

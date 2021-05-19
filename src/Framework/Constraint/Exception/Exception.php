@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function get_class;
 use function sprintf;
 use PHPUnit\Util\Filter;
 use Throwable;
@@ -64,7 +63,7 @@ final class Exception extends Constraint
 
             return sprintf(
                 'exception of type "%s" matches expected exception "%s"%s',
-                get_class($other),
+                $other::class,
                 $this->className,
                 $message
             );

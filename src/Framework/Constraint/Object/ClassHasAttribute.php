@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function get_class;
 use function is_object;
 use function sprintf;
 use PHPUnit\Framework\Exception;
@@ -73,7 +72,7 @@ class ClassHasAttribute extends Constraint
         return sprintf(
             '%sclass "%s" %s',
             is_object($other) ? 'object of ' : '',
-            is_object($other) ? get_class($other) : $other,
+            is_object($other) ? $other::class : $other,
             $this->toString()
         );
     }

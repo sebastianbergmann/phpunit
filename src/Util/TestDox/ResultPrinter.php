@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util\TestDox;
 
-use function get_class;
 use function in_array;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ErrorTestCase;
@@ -189,7 +188,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $class = get_class($test);
+        $class = $test::class;
 
         if ($this->testClass !== $class) {
             if ($this->testClass !== null) {

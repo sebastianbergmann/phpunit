@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework;
 
 use function array_keys;
-use function get_class;
 use function spl_object_hash;
 use PHPUnit\Util\Filter;
 use Throwable;
@@ -81,7 +80,7 @@ final class ExceptionWrapper extends Exception
     {
         $this->originalException($t);
 
-        $this->className = get_class($t);
+        $this->className = $t::class;
         $this->file      = $t->getFile();
         $this->line      = $t->getLine();
 

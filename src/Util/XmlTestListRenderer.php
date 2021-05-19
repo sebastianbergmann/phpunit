@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use function get_class;
 use function implode;
 use function str_replace;
 use PHPUnit\Framework\TestCase;
@@ -39,15 +38,15 @@ final class XmlTestListRenderer
 
         foreach (new RecursiveIteratorIterator($suite->getIterator()) as $test) {
             if ($test instanceof TestCase) {
-                if (get_class($test) !== $currentTestCase) {
+                if ($test::class !== $currentTestCase) {
                     if ($currentTestCase !== null) {
                         $writer->endElement();
                     }
 
                     $writer->startElement('testCaseClass');
-                    $writer->writeAttribute('name', get_class($test));
+                    $writer->writeAttribute('name', $test::class);
 
-                    $currentTestCase = get_class($test);
+                    $currentTestCase = $test::class;
                 }
 
                 $writer->startElement('testCaseMethod');
