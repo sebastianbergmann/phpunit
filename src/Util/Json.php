@@ -21,6 +21,7 @@ use function json_encode;
 use function json_last_error;
 use function ksort;
 use PHPUnit\Framework\Exception;
+use stdClass;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -76,21 +77,24 @@ final class Json
      */
     private static function recursiveSort(&$json): void
     {
-        if (!is_array($json)) {
-            // If the object is not empty, change it to an associative array
-            // so we can sort the keys (and we will still re-encode it
-            // correctly, since PHP encodes associative arrays as JSON objects.)
-            // But EMPTY objects MUST remain empty objects. (Otherwise we will
-            // re-encode it as a JSON array rather than a JSON object.)
-            // See #2919.
-            if (is_object($json) && count((array) $json) > 0) {
-                $json = (array) $json;
-            } else {
-                return;
-            }
+        // Nulls, empty arrays, and scalars need no further handling.
+        if (!$json || is_scalar($json)) {
+            return;
         }
 
-        ksort($json, SORT_STRING);
+
+        if (is_object($json)) {
+            // Objects need to be sorted during canonicalization to ensure
+            // correct comparsion since JSON objects are unordered. It must be
+            // kept as an object so that the value correctly stays as a JSON
+            // object instead of potentially being converted to an array. This
+            // approach ensures that numeric string JSON keys are preserved and
+            // don't risk being flattened due to PHP's array semantics.
+            // See #2919, #4584, #4674
+            $json = (array) $json;
+            ksort($json, SORT_STRING);
+            $json = (object) $json;
+        }
 
         foreach ($json as $key => &$value) {
             self::recursiveSort($value);
