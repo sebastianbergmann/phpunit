@@ -51,24 +51,17 @@ final class JsonMatchesTest extends ConstraintTestCase
     public static function evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider(): array
     {
         return [
-            'error UTF-8'                             => [json_encode('\xB1\x31'), json_encode(['Mascott' => 'Tux'])],
-            'string type not equals number'           => ['{"age": "5"}', '{"age": 5}'],
-            'string type not equals boolean'          => ['{"age": "true"}', '{"age": true}'],
-            'string type not equals null'             => ['{"age": "null"}', '{"age": null}'],
-            'null field different from missing field' => ['{"missing": null, "present": true}', '{"present": true}'],
-            'array elements are ordered'              => ['["first", "second"]', '["second", "first"]'],
-            'objects with numeric keys are not arrays' => ['{"0":{}}', '[{}]'],
-            'child array elements are ordered' => [
-                '{"0":null,"a":{},"b":[],"c":"1","d":1,"e":-1,"f":[1,2],"g":[2,1],"h":{"0":"0","1":"1","2":"2"}}',
-                '{"a":{},"d":1,"b":[],"e":-1,"0":null,"c":"1","f":[2,1],"h":{"2":"2","1":"1","0":"0"},"g":[2,1]}',
-
-            ],
-            'child object with numeric fields stay as object' => [
-                '{"0":null,"a":{},"b":[],"c":"1","d":1,"e":-1,"f":[1,2],"g":[2,1],"h":{"0":"0","1":"1","2":"2"}}',
-                '{"a":{},"d":1,"b":[],"e":-1,"0":null,"c":"1","f":[1,2],"h":["0","1","2"],"g":[2,1]}',
-            ],
-            'nested arrays are ordered'         => ['[[1,0],[2,3]]', '[{"1":"1","0":"0"},{"2":"2","3":"3"}]'],
-            'child objects in arrays stay in order'         => ['[{"0":"0","1":"1"},{"2":"2","3":"3"}]', '[{"2":"2","3":"3"},{"1":"1","0":"0"}]'],
+            'error UTF-8'                                     => [json_encode('\xB1\x31'), json_encode(['Mascott' => 'Tux'])],
+            'string type not equals number'                   => ['{"age": "5"}', '{"age": 5}'],
+            'string type not equals boolean'                  => ['{"age": "true"}', '{"age": true}'],
+            'string type not equals null'                     => ['{"age": "null"}', '{"age": null}'],
+            'null field different from missing field'         => ['{"missing": null, "present": true}', '{"present": true}'],
+            'array elements are ordered'                      => ['["first", "second"]', '["second", "first"]'],
+            'objects with numeric keys are not arrays'        => ['{"0":{}}', '[{}]'],
+            'child array elements are ordered'                => ['{"0":null,"a":{},"b":[],"c":"1","d":1,"e":-1,"f":[1,2],"g":[2,1],"h":{"0":"0","1":"1","2":"2"}}',                 '{"a":{},"d":1,"b":[],"e":-1,"0":null,"c":"1","f":[2,1],"h":{"2":"2","1":"1","0":"0"},"g":[2,1]}'],
+            'child object with numeric fields stay as object' => ['{"0":null,"a":{},"b":[],"c":"1","d":1,"e":-1,"f":[1,2],"g":[2,1],"h":{"0":"0","1":"1","2":"2"}}', '{"a":{},"d":1,"b":[],"e":-1,"0":null,"c":"1","f":[1,2],"h":["0","1","2"],"g":[2,1]}'],
+            'nested arrays are ordered'                       => ['[[1,0],[2,3]]', '[{"1":"1","0":"0"},{"2":"2","3":"3"}]'],
+            'child objects in arrays stay in order'           => ['[{"0":"0","1":"1"},{"2":"2","3":"3"}]', '[{"2":"2","3":"3"},{"1":"1","0":"0"}]'],
         ];
     }
 
