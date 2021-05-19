@@ -723,9 +723,8 @@
       <code>$e</code>
     </InvalidArgument>
     <InvalidStringClass occurrences="1"/>
-    <MissingThrowsDocblock occurrences="6">
+    <MissingThrowsDocblock occurrences="5">
       <code>detect</code>
-      <code>new Printer($arguments['coverageText'])</code>
       <code>reorderTestsInSuite</code>
       <code>run</code>
       <code>stop</code>
@@ -1170,9 +1169,6 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/TestDox/XmlResultPrinter.php">
-    <MissingThrowsDocblock occurrences="2">
-      <code>parent::__construct($out)</code>
-    </MissingThrowsDocblock>
     <RedundantCondition occurrences="8">
       <code>assert($metadata instanceof Covers)</code>
       <code>assert($metadata instanceof CoversClass)</code>
@@ -1209,10 +1205,6 @@
     <MissingReturnType occurrences="1">
       <code>xmlToVariable</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="1"/>
-    <RedundantCast occurrences="1">
-      <code>(string) $entry-&gt;getAttribute('key')</code>
-    </RedundantCast>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">
