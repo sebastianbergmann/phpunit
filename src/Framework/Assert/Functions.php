@@ -1798,6 +1798,34 @@ if (!function_exists('PHPUnit\Framework\assertNotSameSize')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringLineEndings')) {
+    /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     *
+     * @see Assert::assertStringContainsStringIgnoringLineEndings
+     */
+    function assertStringContainsStringIgnoringLineEndings(string $needle, string $haystack, string $message = ''): void
+    {
+        Assert::assertStringContainsStringIgnoringLineEndings(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringLineEndings')) {
+    /**
+     * Asserts that two strings equality ignoring line endings.
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     *
+     * @see Assert::assertStringEqualIgnoringLineEndings
+     */
+    function assertStringEqualIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
+    {
+        Assert::assertStringEqualIgnoringLineEndings(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertStringMatchesFormat')) {
     /**
      * Asserts that a string matches a given format string.
