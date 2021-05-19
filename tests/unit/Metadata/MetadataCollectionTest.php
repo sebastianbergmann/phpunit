@@ -53,7 +53,6 @@ use PHPUnit\Util\VersionComparisonOperator;
  * @uses \PHPUnit\Metadata\Test
  * @uses \PHPUnit\Metadata\TestDox
  * @uses \PHPUnit\Metadata\TestWith
- * @uses \PHPUnit\Metadata\Todo
  * @uses \PHPUnit\Metadata\Uses
  * @uses \PHPUnit\Metadata\UsesClass
  * @uses \PHPUnit\Metadata\UsesDefaultClass
@@ -419,14 +418,6 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isTestWith());
     }
 
-    public function test_Can_be_filtered_for_Todo(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isTodo();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isTodo());
-    }
-
     public function test_Can_be_filtered_for_Uses(): void
     {
         $collection = $this->collectionWithOneOfEach()->isUses();
@@ -518,7 +509,6 @@ final class MetadataCollectionTest extends TestCase
                 new TestDox(''),
                 new Test,
                 new TestWith([]),
-                new Todo(),
                 new Uses(''),
                 new UsesClass(''),
                 new UsesDefaultClass(''),

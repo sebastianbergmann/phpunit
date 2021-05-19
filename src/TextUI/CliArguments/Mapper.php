@@ -339,10 +339,6 @@ final class Mapper
             $result['enforceTimeLimit'] = $arguments->enforceTimeLimit();
         }
 
-        if ($arguments->hasDisallowTodoAnnotatedTests()) {
-            $result['disallowTodoAnnotatedTests'] = $arguments->disallowTodoAnnotatedTests();
-        }
-
         if ($arguments->hasReverseList()) {
             $result['reverseList'] = $arguments->reverseList();
         }

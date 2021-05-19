@@ -67,7 +67,6 @@
   [32m--enforce-time-limit       [0m Enforce time limit based on test size
   [32m--default-time-limit [36m<sec>[0m [0m Timeout in seconds for tests without
                               @small, @medium or @large
-  [32m--disallow-todo-tests      [0m Disallow @todo-annotated tests
 
   [32m--process-isolation        [0m Run each test in a separate PHP process
   [32m--globals-backup           [0m Backup and restore $GLOBALS for each test

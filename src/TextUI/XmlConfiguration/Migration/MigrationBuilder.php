@@ -49,6 +49,7 @@ final class MigrationBuilder
             IntroduceCacheDirectoryAttribute::class,
             RenameBackupStaticAttributesAttribute::class,
             RemoveBeStrictAboutResourceUsageDuringSmallTestsAttribute::class,
+            RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
         ],
     ];
 

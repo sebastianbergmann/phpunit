@@ -94,8 +94,6 @@ final class TestResult implements Countable
 
     private bool $beStrictAboutOutputDuringTests = false;
 
-    private bool $beStrictAboutTodoAnnotatedTests = false;
-
     private bool $enforceTimeLimit = false;
 
     private bool $forceCoversAnnotation = false;
@@ -495,16 +493,6 @@ final class TestResult implements Countable
     public function enforcesTimeLimit(): bool
     {
         return $this->enforceTimeLimit;
-    }
-
-    public function beStrictAboutTodoAnnotatedTests(bool $flag): void
-    {
-        $this->beStrictAboutTodoAnnotatedTests = $flag;
-    }
-
-    public function isStrictAboutTodoAnnotatedTests(): bool
-    {
-        return $this->beStrictAboutTodoAnnotatedTests;
     }
 
     public function forceCoversAnnotation(): void

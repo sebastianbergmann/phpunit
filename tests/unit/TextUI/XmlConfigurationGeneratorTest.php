@@ -31,7 +31,6 @@ final class XmlConfigurationGeneratorTest extends TestCase
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
-         beStrictAboutTodoAnnotatedTests="true"
          failOnRisky="true"
          failOnWarning="true"
          verbose="true">

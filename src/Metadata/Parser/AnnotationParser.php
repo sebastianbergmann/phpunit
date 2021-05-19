@@ -55,7 +55,6 @@ use PHPUnit\Metadata\RunInSeparateProcess;
 use PHPUnit\Metadata\RunTestsInSeparateProcesses;
 use PHPUnit\Metadata\Test;
 use PHPUnit\Metadata\TestDox;
-use PHPUnit\Metadata\Todo;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesDefaultClass;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
@@ -182,11 +181,6 @@ final class AnnotationParser implements Parser
 
                 case 'testdox':
                     $result[] = new TestDox($values[0]);
-
-                    break;
-
-                case 'todo':
-                    $result[] = new Todo;
 
                     break;
 
@@ -405,11 +399,6 @@ final class AnnotationParser implements Parser
 
                 case 'testdox':
                     $result[] = new TestDox($values[0]);
-
-                    break;
-
-                case 'todo':
-                    $result[] = new Todo;
 
                     break;
 

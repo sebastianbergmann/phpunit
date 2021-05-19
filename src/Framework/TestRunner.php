@@ -287,15 +287,6 @@ final class TestRunner
                 ),
                 $time
             );
-        } elseif ($result->isStrictAboutTodoAnnotatedTests() &&
-                  $this->hasTodoMetadata(get_class($test), $test->getName(false))) {
-            $result->addFailure(
-                $test,
-                new RiskyTestError(
-                    'Test method is annotated with @todo'
-                ),
-                $time
-            );
         }
 
         $result->endTest($test, $time);
@@ -337,7 +328,6 @@ final class TestRunner
         $isStrictAboutTestsThatDoNotTestAnything = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
         $isStrictAboutOutputDuringTests          = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
         $enforcesTimeLimit                       = $result->enforcesTimeLimit() ? 'true' : 'false';
-        $isStrictAboutTodoAnnotatedTests         = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
 
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
             $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
@@ -406,7 +396,6 @@ final class TestRunner
             'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
             'isStrictAboutOutputDuringTests'          => $isStrictAboutOutputDuringTests,
             'enforcesTimeLimit'                       => $enforcesTimeLimit,
-            'isStrictAboutTodoAnnotatedTests'         => $isStrictAboutTodoAnnotatedTests,
             'codeCoverageFilter'                      => $codeCoverageFilter,
             'configurationFilePath'                   => $configurationFilePath,
             'name'                                    => $test->getName(false),
@@ -450,15 +439,5 @@ final class TestRunner
         }
 
         return false;
-    }
-
-    /**
-     * @psalm-param class-string $className
-     */
-    private function hasTodoMetadata(string $className, string $methodName): bool
-    {
-        $metadata = MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
-
-        return $metadata->isTodo()->isNotEmpty();
     }
 }

@@ -81,7 +81,6 @@ final class Help
             ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
             ['arg'    => '--enforce-time-limit', 'desc' => 'Enforce time limit based on test size'],
             ['arg'    => '--default-time-limit <sec>', 'desc' => 'Timeout in seconds for tests without @small, @medium or @large'],
-            ['arg'    => '--disallow-todo-tests', 'desc' => 'Disallow @todo-annotated tests'],
             ['spacer' => ''],
 
             ['arg'    => '--process-isolation', 'desc' => 'Run each test in a separate PHP process'],

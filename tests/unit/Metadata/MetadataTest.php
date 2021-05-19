@@ -50,7 +50,6 @@ use PHPUnit\Util\VersionComparisonOperator;
  * @covers \PHPUnit\Metadata\Test
  * @covers \PHPUnit\Metadata\TestDox
  * @covers \PHPUnit\Metadata\TestWith
- * @covers \PHPUnit\Metadata\Todo
  * @covers \PHPUnit\Metadata\Uses
  * @covers \PHPUnit\Metadata\UsesClass
  * @covers \PHPUnit\Metadata\UsesDefaultClass
@@ -102,7 +101,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -151,7 +149,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -200,7 +197,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -251,7 +247,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -302,7 +297,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -351,7 +345,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -400,7 +393,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -449,7 +441,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -500,7 +491,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -552,7 +542,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -603,7 +592,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -656,7 +644,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -708,7 +695,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -757,7 +743,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -809,7 +794,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -863,7 +847,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -912,7 +895,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -963,7 +945,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1015,7 +996,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1066,7 +1046,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1115,7 +1094,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1164,7 +1142,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1213,7 +1190,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1262,7 +1238,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1311,7 +1286,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1359,7 +1333,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1410,7 +1383,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1462,7 +1434,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1513,7 +1484,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1564,7 +1534,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1620,7 +1589,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1669,7 +1637,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1729,7 +1696,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1778,7 +1744,6 @@ final class MetadataTest extends TestCase
         $this->assertTrue($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1830,7 +1795,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertTrue($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1881,7 +1845,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertTrue($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1932,7 +1895,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertTrue($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -1940,55 +1902,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isUsesFunction());
 
         $this->assertSame(self::class, $metadata->target());
-    }
-
-    public function testCanBeTodo(): void
-    {
-        $metadata = new Todo;
-
-        $this->assertFalse($metadata->isAfter());
-        $this->assertFalse($metadata->isAfterClass());
-        $this->assertFalse($metadata->isBackupGlobals());
-        $this->assertFalse($metadata->isBackupStaticProperties());
-        $this->assertFalse($metadata->isBeforeClass());
-        $this->assertFalse($metadata->isBefore());
-        $this->assertFalse($metadata->isCodeCoverageIgnore());
-        $this->assertFalse($metadata->isCovers());
-        $this->assertFalse($metadata->isCoversClass());
-        $this->assertFalse($metadata->isCoversDefaultClass());
-        $this->assertFalse($metadata->isCoversMethod());
-        $this->assertFalse($metadata->isCoversFunction());
-        $this->assertFalse($metadata->isCoversNothing());
-        $this->assertFalse($metadata->isDataProvider());
-        $this->assertFalse($metadata->isDependsOnClass());
-        $this->assertFalse($metadata->isDependsOnMethod());
-        $this->assertFalse($metadata->isDoesNotPerformAssertions());
-        $this->assertFalse($metadata->isExcludeGlobalVariableFromBackup());
-        $this->assertFalse($metadata->isExcludeStaticPropertyFromBackup());
-        $this->assertFalse($metadata->isGroup());
-        $this->assertFalse($metadata->isRunClassInSeparateProcess());
-        $this->assertFalse($metadata->isRunInSeparateProcess());
-        $this->assertFalse($metadata->isRunTestsInSeparateProcesses());
-        $this->assertFalse($metadata->isTest());
-        $this->assertFalse($metadata->isPreCondition());
-        $this->assertFalse($metadata->isPostCondition());
-        $this->assertFalse($metadata->isPreserveGlobalState());
-        $this->assertFalse($metadata->isRequiresMethod());
-        $this->assertFalse($metadata->isRequiresFunction());
-        $this->assertFalse($metadata->isRequiresOperatingSystem());
-        $this->assertFalse($metadata->isRequiresOperatingSystemFamily());
-        $this->assertFalse($metadata->isRequiresPhp());
-        $this->assertFalse($metadata->isRequiresPhpExtension());
-        $this->assertFalse($metadata->isRequiresPhpunit());
-        $this->assertFalse($metadata->isRequiresSetting());
-        $this->assertFalse($metadata->isTestDox());
-        $this->assertFalse($metadata->isTestWith());
-        $this->assertTrue($metadata->isTodo());
-        $this->assertFalse($metadata->isUses());
-        $this->assertFalse($metadata->isUsesClass());
-        $this->assertFalse($metadata->isUsesDefaultClass());
-        $this->assertFalse($metadata->isUsesMethod());
-        $this->assertFalse($metadata->isUsesFunction());
     }
 
     public function testCanBeUsesClass(): void
@@ -2032,7 +1945,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertTrue($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -2084,7 +1996,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertTrue($metadata->isUsesDefaultClass());
@@ -2135,7 +2046,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());
@@ -2188,7 +2098,6 @@ final class MetadataTest extends TestCase
         $this->assertFalse($metadata->isRequiresSetting());
         $this->assertFalse($metadata->isTestDox());
         $this->assertFalse($metadata->isTestWith());
-        $this->assertFalse($metadata->isTodo());
         $this->assertFalse($metadata->isUses());
         $this->assertFalse($metadata->isUsesClass());
         $this->assertFalse($metadata->isUsesDefaultClass());

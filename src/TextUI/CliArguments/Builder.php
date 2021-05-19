@@ -52,7 +52,6 @@ final class Builder
         'path-coverage',
         'debug',
         'disallow-test-output',
-        'disallow-todo-tests',
         'default-time-limit=',
         'enforce-time-limit',
         'exclude-group=',
@@ -167,7 +166,6 @@ final class Builder
         $defaultTimeLimit                  = null;
         $disableCodeCoverageIgnore         = null;
         $disallowTestOutput                = null;
-        $disallowTodoAnnotatedTests        = null;
         $enforceTimeLimit                  = null;
         $excludeGroups                     = null;
         $executionOrder                    = null;
@@ -710,11 +708,6 @@ final class Builder
 
                     break;
 
-                case '--disallow-todo-tests':
-                    $disallowTodoAnnotatedTests = true;
-
-                    break;
-
                 case '--reverse-list':
                     $reverseList = true;
 
@@ -810,7 +803,6 @@ final class Builder
             $defaultTimeLimit,
             $disableCodeCoverageIgnore,
             $disallowTestOutput,
-            $disallowTodoAnnotatedTests,
             $enforceTimeLimit,
             $excludeGroups,
             $executionOrder,

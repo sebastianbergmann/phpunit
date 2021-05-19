@@ -49,7 +49,6 @@ function __phpunit_run_isolated_test()
     $result->beStrictAboutTestsThatDoNotTestAnything({isStrictAboutTestsThatDoNotTestAnything});
     $result->beStrictAboutOutputDuringTests({isStrictAboutOutputDuringTests});
     $result->enforceTimeLimit({enforcesTimeLimit});
-    $result->beStrictAboutTodoAnnotatedTests({isStrictAboutTodoAnnotatedTests});
 
     $test = new {className}('{methodName}');
     \assert($test instanceof TestCase);
