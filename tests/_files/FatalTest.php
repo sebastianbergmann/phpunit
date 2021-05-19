@@ -13,7 +13,7 @@ class FatalTest extends TestCase
 {
     public function testFatalError(): void
     {
-        if (\extension_loaded('xdebug')) {
+        if (\extension_loaded('xdebug') && \version_compare(\phpversion('xdebug'), '3', '<')) {
             \xdebug_disable();
         }
 

@@ -2,10 +2,67 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [8.5.9] - 2020-MM-DD
+## [8.5.16] - 2021-MM-DD
+
+### Changed
+
+* The test result cache (the storage for which is implemented in `PHPUnit\Runner\DefaultTestResultCache`) no longer uses PHP's `serialize()` and `unserialize()` function for persistence. It now uses a versioned JSON format instead that is independent of PHP implementation details (see [#3581](https://github.com/sebastianbergmann/phpunit/issues/3581) and [#4662](https://github.com/sebastianbergmann/phpunit/pull/4662) for examples why this is a problem). When PHPUnit tries to load the test result cache from a file that does not exist, or from a file that does not contain data in JSON format, or from a file that contains data in a JSON format version other than the one uses by the currently running PHPUnit version, then this is considered to be a "cache miss". An empty `DefaultTestResultCache` object is created in this case. This should also prevent PHPUnit from crashing when trying to load a test result cache file created by a different version of PHPUnit (see [#4580](https://github.com/sebastianbergmann/phpunit/issues/4580) for example).
 
 ### Fixed
 
+* [#4663](https://github.com/sebastianbergmann/phpunit/issues/4663): `TestCase::expectError()` works on PHP 7.3, but not on PHP >= 7.4
+
+## [8.5.15] - 2021-03-17
+
+### Fixed
+
+* [#4591](https://github.com/sebastianbergmann/phpunit/issues/4591): TeamCity logger logs warnings as test failures
+
+## [8.5.14] - 2021-01-17
+
+### Fixed
+
+* [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
+* [#4572](https://github.com/sebastianbergmann/phpunit/issues/4572): Schema validation does not work with `%xx` sequences in path to `phpunit.xsd`
+* [#4575](https://github.com/sebastianbergmann/phpunit/issues/4575): PHPUnit 8.5 incompatibility with PHP 8.1
+
+## [8.5.13] - 2020-12-01
+
+### Fixed
+
+* Running tests in isolated processes did not work with PHP 8 on Windows
+
+## [8.5.12] - 2020-11-30
+
+### Changed
+
+* Changed PHP version constraint in `composer.json` from `^7.2` to `>=7.2` to allow the installation of PHPUnit 8.5 on PHP 8. Please note that the code coverage functionality is not available for PHPUnit 8.5 on PHP 8.
+
+### Fixed
+
+* [#4529](https://github.com/sebastianbergmann/phpunit/issues/4529): Debug mode of Xdebug 2 is not disabled for PHPT tests
+
+## [8.5.11] - 2020-11-27
+
+### Changed
+
+* Bumped required version of `phpunit/php-code-coverage`
+
+## [8.5.10] - 2020-11-27
+
+### Added
+
+* Support for Xdebug 3
+
+### Fixed
+
+* [#4516](https://github.com/sebastianbergmann/phpunit/issues/4516): `phpunit/phpunit-selenium` does not work with PHPUnit 8.5.9
+
+## [8.5.9] - 2020-11-10
+
+### Fixed
+
+* [#3965](https://github.com/sebastianbergmann/phpunit/issues/3965): Process Isolation throws exceptions when PHPDBG is used
 * [#4470](https://github.com/sebastianbergmann/phpunit/pull/4470): Infinite recursion when `--static-backup --strict-global-state` is used
 
 ## [8.5.8] - 2020-06-22
@@ -83,7 +140,14 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
-[8.5.9]: https://github.com/sebastianbergmann/phpunit/compare/8.5.8...8.5
+[8.5.16]: https://github.com/sebastianbergmann/phpunit/compare/8.5.15...8.5
+[8.5.15]: https://github.com/sebastianbergmann/phpunit/compare/8.5.14...8.5.15
+[8.5.14]: https://github.com/sebastianbergmann/phpunit/compare/8.5.13...8.5.14
+[8.5.13]: https://github.com/sebastianbergmann/phpunit/compare/8.5.12...8.5.13
+[8.5.12]: https://github.com/sebastianbergmann/phpunit/compare/8.5.11...8.5.12
+[8.5.11]: https://github.com/sebastianbergmann/phpunit/compare/8.5.10...8.5.11
+[8.5.10]: https://github.com/sebastianbergmann/phpunit/compare/8.5.9...8.5.10
+[8.5.9]: https://github.com/sebastianbergmann/phpunit/compare/8.5.8...8.5.9
 [8.5.8]: https://github.com/sebastianbergmann/phpunit/compare/8.5.7...8.5.8
 [8.5.7]: https://github.com/sebastianbergmann/phpunit/compare/8.5.6...8.5.7
 [8.5.6]: https://github.com/sebastianbergmann/phpunit/compare/8.5.5...8.5.6

@@ -2,14 +2,13 @@
 phpunit --stop-on-warning ./tests/_files/StopOnWarningTestSuite.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--no-configuration',
-    '--stop-on-warning',
-    \realpath(__DIR__ . '/../../_files/StopOnWarningTestSuite.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--stop-on-warning';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/StopOnWarningTestSuite.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

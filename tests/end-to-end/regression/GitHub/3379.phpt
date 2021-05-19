@@ -2,8 +2,9 @@
 GH-3379: Dependent test of skipped test has status -1
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--configuration';
-$_SERVER['argv'][2] = __DIR__ . '/3379/';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--configuration';
+$_SERVER['argv'][] = __DIR__ . '/3379/';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

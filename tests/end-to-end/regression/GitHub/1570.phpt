@@ -2,9 +2,10 @@
 https://github.com/sebastianbergmann/phpunit/issues/1570
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--disallow-test-output';
-$_SERVER['argv'][3] = __DIR__ . '/1570/Issue1570Test.php';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--disallow-test-output';
+$_SERVER['argv'][] = __DIR__ . '/1570/Issue1570Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

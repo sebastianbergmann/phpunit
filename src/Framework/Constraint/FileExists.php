@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function file_exists;
+use function sprintf;
+
 /**
  * Constraint that checks if the file(name) that it is evaluated for exists.
  *
@@ -32,11 +35,11 @@ final class FileExists extends Constraint
      */
     protected function matches($other): bool
     {
-        return \file_exists($other);
+        return file_exists($other);
     }
 
     /**
-     * Returns the description of the failure
+     * Returns the description of the failure.
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
@@ -45,7 +48,7 @@ final class FileExists extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return \sprintf(
+        return sprintf(
             'file "%s" exists',
             $other
         );

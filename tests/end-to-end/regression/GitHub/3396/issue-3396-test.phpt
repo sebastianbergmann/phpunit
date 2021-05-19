@@ -3,14 +3,15 @@ https://github.com/sebastianbergmann/phpunit/issues/3396
 --FILE--
 <?php declare(strict_types=1);
 $tmpResultCache = tempnam(sys_get_temp_dir(), __FILE__);
-file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/../../../../_files/DataproviderExecutionOrderTest_result_cache.txt'));
+\copy(__DIR__ . '/../../../../_files/DataproviderExecutionOrderTest_result_cache.txt', $tmpResultCache);
 
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--order-by=defects';
-$_SERVER['argv'][3] = '--debug';
-$_SERVER['argv'][4] = '--cache-result';
-$_SERVER['argv'][5] = '--cache-result-file=' . $tmpResultCache;
-$_SERVER['argv'][6] = \dirname(\dirname(\dirname(__DIR__))) . '/../_files/DataproviderExecutionOrderTest.php';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--order-by=defects';
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--cache-result';
+$_SERVER['argv'][] = '--cache-result-file=' . $tmpResultCache;
+$_SERVER['argv'][] = \dirname(\dirname(\dirname(__DIR__))) . '/../_files/DataproviderExecutionOrderTest.php';
 
 require __DIR__ . '/../../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

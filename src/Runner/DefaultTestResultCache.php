@@ -9,25 +9,34 @@
  */
 namespace PHPUnit\Runner;
 
-use PHPUnit\Util\ErrorHandler;
+use const DIRECTORY_SEPARATOR;
+use const LOCK_EX;
+use function assert;
+use function dirname;
+use function file_get_contents;
+use function file_put_contents;
+use function in_array;
+use function is_array;
+use function is_dir;
+use function is_file;
+use function json_decode;
+use function json_encode;
 use PHPUnit\Util\Filesystem;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DefaultTestResultCache implements \Serializable, TestResultCache
+final class DefaultTestResultCache implements TestResultCache
 {
     /**
-     * @var string
+     * @var int
      */
-    public const DEFAULT_RESULT_CACHE_FILENAME = '.phpunit.result.cache';
+    private const VERSION = 1;
 
     /**
-     * Provide extra protection against incomplete or corrupt caches
-     *
-     * @var int[]
+     * @psalm-var list<int>
      */
-    private const ALLOWED_CACHE_TEST_STATUSES = [
+    private const ALLOWED_TEST_STATUSES = [
         BaseTestRunner::STATUS_SKIPPED,
         BaseTestRunner::STATUS_INCOMPLETE,
         BaseTestRunner::STATUS_FAILURE,
@@ -37,83 +46,41 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
     ];
 
     /**
-     * Path and filename for result cache file
-     *
+     * @var string
+     */
+    private const DEFAULT_RESULT_CACHE_FILENAME = '.phpunit.result.cache';
+
+    /**
      * @var string
      */
     private $cacheFilename;
 
     /**
-     * The list of defective tests
-     *
-     * <code>
-     * // Mark a test skipped
-     * $this->defects[$testName] = BaseTestRunner::TEST_SKIPPED;
-     * </code>
-     *
-     * @var array<string, int>
+     * @psalm-var array<string, int>
      */
     private $defects = [];
 
     /**
-     * The list of execution duration of suites and tests (in seconds)
-     *
-     * <code>
-     * // Record running time for test
-     * $this->times[$testName] = 1.234;
-     * </code>
-     *
-     * @var array<string, float>
+     * @psalm-var array<string, float>
      */
     private $times = [];
 
     public function __construct(?string $filepath = null)
     {
-        if ($filepath !== null && \is_dir($filepath)) {
-            // cache path provided, use default cache filename in that location
-            $filepath .= \DIRECTORY_SEPARATOR . self::DEFAULT_RESULT_CACHE_FILENAME;
+        if ($filepath !== null && is_dir($filepath)) {
+            $filepath .= DIRECTORY_SEPARATOR . self::DEFAULT_RESULT_CACHE_FILENAME;
         }
 
         $this->cacheFilename = $filepath ?? $_ENV['PHPUNIT_RESULT_CACHE'] ?? self::DEFAULT_RESULT_CACHE_FILENAME;
     }
 
-    /**
-     * @throws Exception
-     */
-    public function persist(): void
+    public function setState(string $testName, int $state): void
     {
-        $this->saveToFile();
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function saveToFile(): void
-    {
-        if (\defined('PHPUNIT_TESTSUITE_RESULTCACHE')) {
+        if (!in_array($state, self::ALLOWED_TEST_STATUSES, true)) {
             return;
         }
 
-        if (!Filesystem::createDirectory(\dirname($this->cacheFilename))) {
-            throw new Exception(
-                \sprintf(
-                    'Cannot create directory "%s" for result cache file',
-                    $this->cacheFilename
-                )
-            );
-        }
-
-        \file_put_contents(
-            $this->cacheFilename,
-            \serialize($this)
-        );
-    }
-
-    public function setState(string $testName, int $state): void
-    {
-        if ($state !== BaseTestRunner::STATUS_PASSED) {
-            $this->defects[$testName] = $state;
-        }
+        $this->defects[$testName] = $state;
     }
 
     public function getState(string $testName): int
@@ -133,85 +100,58 @@ final class DefaultTestResultCache implements \Serializable, TestResultCache
 
     public function load(): void
     {
-        $this->clear();
-
-        if (!\is_file($this->cacheFilename)) {
+        if (!is_file($this->cacheFilename)) {
             return;
         }
 
-        $cacheData = @\file_get_contents($this->cacheFilename);
-
-        // @codeCoverageIgnoreStart
-        if ($cacheData === false) {
-            return;
-        }
-        // @codeCoverageIgnoreEnd
-
-        $cache = ErrorHandler::invokeIgnoringWarnings(
-            static function () use ($cacheData) {
-                return @\unserialize($cacheData, ['allowed_classes' => [self::class]]);
-            }
+        $data = json_decode(
+            file_get_contents($this->cacheFilename),
+            true
         );
 
-        if ($cache === false) {
+        if ($data === null) {
             return;
         }
 
-        if ($cache instanceof self) {
-            /* @var DefaultTestResultCache $cache */
-            $cache->copyStateToCache($this);
-        }
-    }
-
-    public function copyStateToCache(self $targetCache): void
-    {
-        foreach ($this->defects as $name => $state) {
-            $targetCache->setState($name, $state);
+        if (!isset($data['version'])) {
+            return;
         }
 
-        foreach ($this->times as $name => $time) {
-            $targetCache->setTime($name, $time);
+        if ($data['version'] !== self::VERSION) {
+            return;
         }
-    }
 
-    public function clear(): void
-    {
-        $this->defects = [];
-        $this->times   = [];
-    }
+        assert(isset($data['defects']) && is_array($data['defects']));
+        assert(isset($data['times']) && is_array($data['times']));
 
-    public function serialize(): string
-    {
-        return \serialize([
-            'defects' => $this->defects,
-            'times'   => $this->times,
-        ]);
+        $this->defects = $data['defects'];
+        $this->times   = $data['times'];
     }
 
     /**
-     * @param string $serialized
+     * @throws Exception
      */
-    public function unserialize($serialized): void
+    public function persist(): void
     {
-        $data = \unserialize($serialized);
-
-        if (isset($data['times'])) {
-            foreach ($data['times'] as $testName => $testTime) {
-                \assert(\is_string($testName));
-                \assert(\is_float($testTime));
-                $this->times[$testName] = $testTime;
-            }
+        if (!Filesystem::createDirectory(dirname($this->cacheFilename))) {
+            throw new Exception(
+                sprintf(
+                    'Cannot create directory "%s" for result cache file',
+                    $this->cacheFilename
+                )
+            );
         }
 
-        if (isset($data['defects'])) {
-            foreach ($data['defects'] as $testName => $testResult) {
-                \assert(\is_string($testName));
-                \assert(\is_int($testResult));
-
-                if (\in_array($testResult, self::ALLOWED_CACHE_TEST_STATUSES, true)) {
-                    $this->defects[$testName] = $testResult;
-                }
-            }
-        }
+        file_put_contents(
+            $this->cacheFilename,
+            json_encode(
+                [
+                    'version' => self::VERSION,
+                    'defects' => $this->defects,
+                    'times'   => $this->times,
+                ]
+            ),
+            LOCK_EX
+        );
     }
 }

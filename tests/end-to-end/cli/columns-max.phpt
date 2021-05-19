@@ -2,9 +2,10 @@
 phpunit --columns=max ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--columns=max';
-$_SERVER['argv'][3] = __DIR__ . '/../../_files/BankAccountTest.php';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--columns=max';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/BankAccountTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

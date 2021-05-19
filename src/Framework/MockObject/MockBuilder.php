@@ -9,7 +9,12 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function array_diff;
+use function array_merge;
+use function sprintf;
 use PHPUnit\Framework\TestCase;
+use ReflectionClass;
+use ReflectionException;
 
 /**
  * @psalm-template MockedType
@@ -196,14 +201,14 @@ final class MockBuilder
         if ($methods === null) {
             $this->methods = $methods;
         } else {
-            $this->methods = \array_merge($this->methods ?? [], $methods);
+            $this->methods = array_merge($this->methods ?? [], $methods);
         }
 
         return $this;
     }
 
     /**
-     * Specifies the subset of methods to mock, requiring each to exist in the class
+     * Specifies the subset of methods to mock, requiring each to exist in the class.
      *
      * @param string[] $methods
      *
@@ -220,9 +225,9 @@ final class MockBuilder
         }
 
         try {
-            $reflector = new \ReflectionClass($this->type);
+            $reflector = new ReflectionClass($this->type);
             // @codeCoverageIgnoreStart
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new RuntimeException(
                 $e->getMessage(),
                 (int) $e->getCode(),
@@ -234,7 +239,7 @@ final class MockBuilder
         foreach ($methods as $method) {
             if (!$reflector->hasMethod($method)) {
                 throw new RuntimeException(
-                    \sprintf(
+                    sprintf(
                         'Trying to set mock method "%s" with onlyMethods, but it does not exist in class "%s". Use addMethods() for methods that don\'t exist in the class.',
                         $method,
                         $this->type
@@ -243,13 +248,13 @@ final class MockBuilder
             }
         }
 
-        $this->methods = \array_merge($this->methods ?? [], $methods);
+        $this->methods = array_merge($this->methods ?? [], $methods);
 
         return $this;
     }
 
     /**
-     * Specifies methods that don't exist in the class which you want to mock
+     * Specifies methods that don't exist in the class which you want to mock.
      *
      * @param string[] $methods
      *
@@ -266,9 +271,9 @@ final class MockBuilder
         }
 
         try {
-            $reflector = new \ReflectionClass($this->type);
+            $reflector = new ReflectionClass($this->type);
             // @codeCoverageIgnoreStart
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new RuntimeException(
                 $e->getMessage(),
                 (int) $e->getCode(),
@@ -280,7 +285,7 @@ final class MockBuilder
         foreach ($methods as $method) {
             if ($reflector->hasMethod($method)) {
                 throw new RuntimeException(
-                    \sprintf(
+                    sprintf(
                         'Trying to set mock method "%s" with addMethods(), but it exists in class "%s". Use onlyMethods() for methods that exist in the class.',
                         $method,
                         $this->type
@@ -289,7 +294,7 @@ final class MockBuilder
             }
         }
 
-        $this->methods = \array_merge($this->methods ?? [], $methods);
+        $this->methods = array_merge($this->methods ?? [], $methods);
 
         return $this;
     }
@@ -300,7 +305,7 @@ final class MockBuilder
     public function setMethodsExcept(array $methods = []): self
     {
         return $this->setMethods(
-            \array_diff(
+            array_diff(
                 $this->generator->getClassMethods($this->type),
                 $methods
             )

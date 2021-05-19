@@ -4,10 +4,11 @@ phpunit --list-tests-xml ../../_files/DataProviderTest.php
 <?php declare(strict_types=1);
 $target = tempnam(sys_get_temp_dir(), __FILE__);
 
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--list-tests-xml';
-$_SERVER['argv'][3] = $target;
-$_SERVER['argv'][4] = __DIR__ . '/../_files/DataProviderTest.php';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--list-tests-xml';
+$_SERVER['argv'][] = $target;
+$_SERVER['argv'][] = __DIR__ . '/../_files/DataProviderTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main(false);

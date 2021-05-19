@@ -9,11 +9,25 @@
  */
 namespace PHPUnit\Util;
 
+use const BAR;
+use const DIRECTORY_SEPARATOR;
+use const FOO;
+use const PATH_SEPARATOR;
+use const PHP_EOL;
+use function file_put_contents;
+use function getenv;
+use function ini_get;
+use function ini_set;
+use function putenv;
+use function sys_get_temp_dir;
+use function uniqid;
+use function unlink;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
+use stdClass;
 
 /**
  * @small
@@ -102,9 +116,9 @@ final class ConfigurationTest extends TestCase
      */
     public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, $expected): void
     {
-        $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . \uniqid() . '.xml';
-        $xml         = "<phpunit {$optionName}='{$optionValue}'></phpunit>" . \PHP_EOL;
-        \file_put_contents($tmpFilename, $xml);
+        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . uniqid() . '.xml';
+        $xml         = "<phpunit {$optionName}='{$optionValue}'></phpunit>" . PHP_EOL;
+        file_put_contents($tmpFilename, $xml);
 
         $configurationInstance = Configuration::getInstance($tmpFilename);
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
@@ -112,7 +126,7 @@ final class ConfigurationTest extends TestCase
         $configurationValues = $configurationInstance->getPHPUnitConfiguration();
         $this->assertEquals($expected, $configurationValues[$optionName]);
 
-        @\unlink($tmpFilename);
+        @unlink($tmpFilename);
     }
 
     public function configurationRootOptionsProvider(): array
@@ -143,9 +157,9 @@ final class ConfigurationTest extends TestCase
 
     public function testShouldParseXmlConfigurationExecutionOrderCombined(): void
     {
-        $tmpFilename = \sys_get_temp_dir() . \DIRECTORY_SEPARATOR . 'phpunit.' . \uniqid() . '.xml';
-        $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . \PHP_EOL;
-        \file_put_contents($tmpFilename, $xml);
+        $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . uniqid() . '.xml';
+        $xml         = "<phpunit executionOrder='depends,defects'></phpunit>" . PHP_EOL;
+        file_put_contents($tmpFilename, $xml);
 
         $configurationInstance = Configuration::getInstance($tmpFilename);
         $this->assertFalse($configurationInstance->hasValidationErrors(), 'option causes validation error');
@@ -154,7 +168,7 @@ final class ConfigurationTest extends TestCase
         $this->assertSame(TestSuiteSorter::ORDER_DEFECTS_FIRST, $configurationValues['executionOrderDefects']);
         $this->assertSame(true, $configurationValues['resolveDependencies']);
 
-        @\unlink($tmpFilename);
+        @unlink($tmpFilename);
     }
 
     public function testFilterConfigurationIsReadCorrectly(): void
@@ -230,9 +244,9 @@ final class ConfigurationTest extends TestCase
     public function testListenerConfigurationIsReadCorrectly(): void
     {
         $dir         = __DIR__;
-        $includePath = \ini_get('include_path');
+        $includePath = ini_get('include_path');
 
-        \ini_set('include_path', $dir . \PATH_SEPARATOR . $includePath);
+        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
 
         $this->assertEquals(
             [
@@ -247,7 +261,7 @@ final class ConfigurationTest extends TestCase
                         2 => 'April',
                         3 => 19.78,
                         4 => null,
-                        5 => new \stdClass,
+                        5 => new stdClass,
                         6 => TEST_FILES_PATH . 'MyTestFile.php',
                         7 => TEST_FILES_PATH . 'MyRelativePath',
                         8 => true,
@@ -270,15 +284,15 @@ final class ConfigurationTest extends TestCase
             $this->configuration->getListenerConfiguration()
         );
 
-        \ini_set('include_path', $includePath);
+        ini_set('include_path', $includePath);
     }
 
     public function testExtensionConfigurationIsReadCorrectly(): void
     {
         $dir         = __DIR__;
-        $includePath = \ini_get('include_path');
+        $includePath = ini_get('include_path');
 
-        \ini_set('include_path', $dir . \PATH_SEPARATOR . $includePath);
+        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
 
         $this->assertEquals(
             [
@@ -293,7 +307,7 @@ final class ConfigurationTest extends TestCase
                         2 => 'April',
                         3 => 19.78,
                         4 => null,
-                        5 => new \stdClass,
+                        5 => new stdClass,
                         6 => TEST_FILES_PATH . 'MyTestFile.php',
                         7 => TEST_FILES_PATH . 'MyRelativePath',
                     ],
@@ -314,7 +328,7 @@ final class ConfigurationTest extends TestCase
             $this->configuration->getExtensionConfiguration()
         );
 
-        \ini_set('include_path', $includePath);
+        ini_set('include_path', $includePath);
     }
 
     public function testLoggingConfigurationIsReadCorrectly(): void
@@ -374,20 +388,20 @@ final class ConfigurationTest extends TestCase
      */
     public function testPHPConfigurationIsHandledCorrectly(): void
     {
-        $savedIniHighlightKeyword = \ini_get('highlight.keyword');
-        $savedIniHighlightString  = \ini_get('highlight.string');
+        $savedIniHighlightKeyword = ini_get('highlight.keyword');
+        $savedIniHighlightString  = ini_get('highlight.string');
 
         $this->configuration->handlePHPConfiguration();
 
-        $path = TEST_FILES_PATH . '.' . \PATH_SEPARATOR . '/path/to/lib';
-        $this->assertStringStartsWith($path, \ini_get('include_path'));
-        $this->assertEquals('#123456', \ini_get('highlight.keyword'));
-        $this->assertEquals(TEST_FILES_PATH, \ini_get('highlight.string'));
-        $this->assertFalse(\FOO);
-        $this->assertTrue(\BAR);
+        $path = TEST_FILES_PATH . '.' . PATH_SEPARATOR . '/path/to/lib';
+        $this->assertStringStartsWith($path, ini_get('include_path'));
+        $this->assertEquals('#123456', ini_get('highlight.keyword'));
+        $this->assertEquals(TEST_FILES_PATH, ini_get('highlight.string'));
+        $this->assertFalse(FOO);
+        $this->assertTrue(BAR);
         $this->assertFalse($GLOBALS['foo']);
         $this->assertTrue((bool) $_ENV['foo']);
-        $this->assertEquals(1, \getenv('foo'));
+        $this->assertEquals(1, getenv('foo'));
         $this->assertEquals('bar', $_POST['foo']);
         $this->assertEquals('bar', $_GET['foo']);
         $this->assertEquals('bar', $_COOKIE['foo']);
@@ -395,8 +409,8 @@ final class ConfigurationTest extends TestCase
         $this->assertEquals('bar', $_FILES['foo']);
         $this->assertEquals('bar', $_REQUEST['foo']);
 
-        \ini_set('highlight.keyword', $savedIniHighlightKeyword);
-        \ini_set('highlight.string', $savedIniHighlightString);
+        ini_set('highlight.keyword', $savedIniHighlightKeyword);
+        ini_set('highlight.string', $savedIniHighlightString);
     }
 
     /**
@@ -411,7 +425,7 @@ final class ConfigurationTest extends TestCase
         $this->configuration->handlePHPConfiguration();
 
         $this->assertFalse($_ENV['foo']);
-        $this->assertEquals('forced', \getenv('foo_force'));
+        $this->assertEquals('forced', getenv('foo_force'));
     }
 
     /**
@@ -426,7 +440,7 @@ final class ConfigurationTest extends TestCase
         $this->configuration->handlePHPConfiguration();
 
         $this->assertEquals('forced', $_ENV['foo_force']);
-        $this->assertEquals('forced', \getenv('foo_force'));
+        $this->assertEquals('forced', getenv('foo_force'));
     }
 
     /**
@@ -437,18 +451,18 @@ final class ConfigurationTest extends TestCase
      */
     public function testHandlePHPConfigurationDoesNotOverwriteVariablesFromPutEnv(): void
     {
-        $backupFoo = \getenv('foo');
+        $backupFoo = getenv('foo');
 
-        \putenv('foo=putenv');
+        putenv('foo=putenv');
         $this->configuration->handlePHPConfiguration();
 
         $this->assertEquals('putenv', $_ENV['foo']);
-        $this->assertEquals('putenv', \getenv('foo'));
+        $this->assertEquals('putenv', getenv('foo'));
 
         if ($backupFoo === false) {
-            \putenv('foo');     // delete variable from environment
+            putenv('foo');     // delete variable from environment
         } else {
-            \putenv("foo={$backupFoo}");
+            putenv("foo={$backupFoo}");
         }
     }
 
@@ -460,11 +474,11 @@ final class ConfigurationTest extends TestCase
      */
     public function testHandlePHPConfigurationDoesOverwriteVariablesFromPutEnvWhenForced(): void
     {
-        \putenv('foo_force=putenv');
+        putenv('foo_force=putenv');
         $this->configuration->handlePHPConfiguration();
 
         $this->assertEquals('forced', $_ENV['foo_force']);
-        $this->assertEquals('forced', \getenv('foo_force'));
+        $this->assertEquals('forced', getenv('foo_force'));
     }
 
     /**
@@ -607,9 +621,9 @@ final class ConfigurationTest extends TestCase
     /**
      * Asserts that the values in $actualConfiguration equal $expectedConfiguration.
      *
-     * @throws Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws Exception
      */
     protected function assertConfigurationEquals(Configuration $expectedConfiguration, Configuration $actualConfiguration): void
     {

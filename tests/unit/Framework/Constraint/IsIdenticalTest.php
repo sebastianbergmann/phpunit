@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
+use stdClass;
 
 /**
  * @small
@@ -19,8 +20,8 @@ final class IsIdenticalTest extends ConstraintTestCase
 {
     public function testConstraintIsIdentical(): void
     {
-        $a = new \stdClass;
-        $b = new \stdClass;
+        $a = new stdClass;
+        $b = new stdClass;
 
         $constraint = new IsIdentical($a);
 
@@ -49,8 +50,8 @@ EOF
 
     public function testConstraintIsIdentical2(): void
     {
-        $a = new \stdClass;
-        $b = new \stdClass;
+        $a = new stdClass;
+        $b = new stdClass;
 
         $constraint = new IsIdentical($a);
 

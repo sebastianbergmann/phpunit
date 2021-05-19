@@ -2,10 +2,11 @@
 https://github.com/sebastianbergmann/phpunit/issues/3889
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--test-suffix';
-$_SERVER['argv'][3] = '.test.php';
-$_SERVER['argv'][4] = __DIR__ . '/3889/Issue3889Test.test.php';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--test-suffix';
+$_SERVER['argv'][] = '.test.php';
+$_SERVER['argv'][] = __DIR__ . '/3889/Issue3889Test.test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 

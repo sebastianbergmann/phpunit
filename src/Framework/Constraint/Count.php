@@ -9,7 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function count;
+use function is_array;
+use function iterator_count;
+use function sprintf;
 use Countable;
+use EmptyIterator;
 use Generator;
 use Iterator;
 use IteratorAggregate;
@@ -29,7 +34,7 @@ class Count extends Constraint
 
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'count matches %d',
             $this->expectedCount
         );
@@ -49,11 +54,11 @@ class Count extends Constraint
      */
     protected function getCountOf($other): ?int
     {
-        if ($other instanceof Countable || \is_array($other)) {
-            return \count($other);
+        if ($other instanceof Countable || is_array($other)) {
+            return count($other);
         }
 
-        if ($other instanceof \EmptyIterator) {
+        if ($other instanceof EmptyIterator) {
             return 0;
         }
 
@@ -69,11 +74,11 @@ class Count extends Constraint
             }
 
             if (!$iterator instanceof Iterator) {
-                return \iterator_count($iterator);
+                return iterator_count($iterator);
             }
 
             $key   = $iterator->key();
-            $count = \iterator_count($iterator);
+            $count = iterator_count($iterator);
 
             // Manually rewind $iterator to previous key, since iterator_count
             // moves pointer.
@@ -114,7 +119,7 @@ class Count extends Constraint
      */
     protected function failureDescription($other): string
     {
-        return \sprintf(
+        return sprintf(
             'actual size %d matches expected size %d',
             $this->getCountOf($other),
             $this->expectedCount

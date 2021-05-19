@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_nan;
+
 /**
  * Constraint that accepts nan.
  */
@@ -30,6 +32,6 @@ final class IsNan extends Constraint
      */
     protected function matches($other): bool
     {
-        return \is_nan($other);
+        return is_nan($other);
     }
 }

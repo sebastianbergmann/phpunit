@@ -2,9 +2,10 @@
 https://github.com/sebastianbergmann/phpunit/issues/1337
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--process-isolation';
-$_SERVER['argv'][3] = __DIR__ . '/1337/Issue1337Test.php';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--process-isolation';
+$_SERVER['argv'][] = __DIR__ . '/1337/Issue1337Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

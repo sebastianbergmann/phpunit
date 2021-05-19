@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Util;
 
+use function str_replace;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -30,7 +32,7 @@ final class ConfigurationGenerator
          verbose="true">
     <testsuites>
         <testsuite name="default">
-            <directory suffix="Test.php">{tests_directory}</directory>
+            <directory>{tests_directory}</directory>
         </testsuite>
     </testsuites>
 
@@ -45,7 +47,7 @@ EOT;
 
     public function generateDefaultConfiguration(string $phpunitVersion, string $bootstrapScript, string $testsDirectory, string $srcDirectory): string
     {
-        return \str_replace(
+        return str_replace(
             [
                 '{phpunit_version}',
                 '{bootstrap_script}',

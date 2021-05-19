@@ -2,10 +2,11 @@
 phpunit --filter testFalse@false\ test ../../_files/DataProviderFilterTest.php
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--filter';
-$_SERVER['argv'][3] = 'testFalse@false test';
-$_SERVER['argv'][4] = __DIR__ . '/../_files/DataProviderFilterTest.php';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--filter';
+$_SERVER['argv'][] = 'testFalse@false test';
+$_SERVER['argv'][] = __DIR__ . '/../_files/DataProviderFilterTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

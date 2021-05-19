@@ -2,11 +2,12 @@
 phpunit --process-isolation --group balanceIsInitiallyZero ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--process-isolation';
-$_SERVER['argv'][3] = '--group';
-$_SERVER['argv'][4] = 'balanceIsInitiallyZero';
-$_SERVER['argv'][5] = __DIR__ . '/../_files/BankAccountTest.php';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--process-isolation';
+$_SERVER['argv'][] = '--group';
+$_SERVER['argv'][] = 'balanceIsInitiallyZero';
+$_SERVER['argv'][] = __DIR__ . '/../_files/BankAccountTest.php';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

@@ -2,15 +2,14 @@
 phpunit --testdox-xml php://stdout ../../_files/StatusTest.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '--no-configuration',
-    '--testdox-xml',
-    'php://stdout',
-    \realpath(__DIR__ . '/../../basic/unit/StatusTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--testdox-xml';
+$_SERVER['argv'][] = 'php://stdout';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../../basic/unit/StatusTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

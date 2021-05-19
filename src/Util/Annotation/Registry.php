@@ -9,7 +9,11 @@
  */
 namespace PHPUnit\Util\Annotation;
 
+use function array_key_exists;
 use PHPUnit\Util\Exception;
+use ReflectionClass;
+use ReflectionException;
+use ReflectionMethod;
 
 /**
  * Reflection information, and therefore DocBlock information, is static within
@@ -43,14 +47,14 @@ final class Registry
      */
     public function forClassName(string $class): DocBlock
     {
-        if (\array_key_exists($class, $this->classDocBlocks)) {
+        if (array_key_exists($class, $this->classDocBlocks)) {
             return $this->classDocBlocks[$class];
         }
 
         try {
-            $reflection = new \ReflectionClass($class);
+            $reflection = new ReflectionClass($class);
             // @codeCoverageIgnoreStart
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),
@@ -73,9 +77,9 @@ final class Registry
         }
 
         try {
-            $reflection = new \ReflectionMethod($classInHierarchy, $method);
+            $reflection = new ReflectionMethod($classInHierarchy, $method);
             // @codeCoverageIgnoreStart
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),

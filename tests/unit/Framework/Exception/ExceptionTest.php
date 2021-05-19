@@ -13,16 +13,13 @@ class ExceptionTest extends TestCase
 {
     public function testExceptionSleep(): void
     {
-        $exception = new Exception();
+        $actual = (new Exception)->__sleep();
 
-        $expectedArray = [
-            'serializableTrace',
-            'message',
-            'code',
-            'file',
-            'line',
-        ];
-
-        $this->assertSame($expectedArray, $exception->__sleep());
+        $this->assertCount(5, $actual);
+        $this->assertContains('serializableTrace', $actual);
+        $this->assertContains('message', $actual);
+        $this->assertContains('code', $actual);
+        $this->assertContains('file', $actual);
+        $this->assertContains('line', $actual);
     }
 }

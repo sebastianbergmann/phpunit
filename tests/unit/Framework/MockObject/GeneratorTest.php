@@ -14,14 +14,14 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers \PHPUnit\Framework\MockObject\Generator
  *
- * @uses \PHPUnit\Framework\MockObject\InvocationHandler
  * @uses \PHPUnit\Framework\MockObject\Builder\InvocationMocker
  * @uses \PHPUnit\Framework\MockObject\Invocation
+ * @uses \PHPUnit\Framework\MockObject\InvocationHandler
  * @uses \PHPUnit\Framework\MockObject\Matcher
  * @uses \PHPUnit\Framework\MockObject\Rule\InvocationOrder
+ * @uses \PHPUnit\Framework\MockObject\Rule\InvokedCount
  * @uses \PHPUnit\Framework\MockObject\Rule\MethodName
  * @uses \PHPUnit\Framework\MockObject\Stub\ReturnStub
- * @uses \PHPUnit\Framework\MockObject\Rule\InvokedCount
  *
  * @small
  */

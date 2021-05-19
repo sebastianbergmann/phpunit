@@ -2,9 +2,10 @@
 PHPT runner supports XFAIL section
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--verbose';
-$_SERVER['argv'][3] = \realpath(__DIR__ . '/../_files/phpt-unsupported-section.phpt');
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--verbose';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../_files/phpt-unsupported-section.phpt');
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();

@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
 use PHPUnit\Framework\MockObject\Rule\ParametersRule;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @covers \PHPUnit\Framework\MockObject\Matcher
@@ -23,7 +25,7 @@ class MatcherTest extends TestCase
     public function testParameterRuleIsAppliedToInvocation(): void
     {
         $invocationMatcher = $this->createStub(InvocationOrder::class);
-        $invocation        = new Invocation('Foo', 'bar', [], 'void', new \stdClass);
+        $invocation        = new Invocation('Foo', 'bar', [], 'void', new stdClass);
 
         $parameterRule = $this->createMock(ParametersRule::class);
         $parameterRule->expects($this->once())
@@ -40,7 +42,7 @@ class MatcherTest extends TestCase
     public function testParametersRuleTriggersFailOfInvocation(): void
     {
         $invocationMatcher = $this->createStub(InvocationOrder::class);
-        $invocation        = new Invocation('Foo', 'bar', [], 'void', new \stdClass);
+        $invocation        = new Invocation('Foo', 'bar', [], 'void', new stdClass);
 
         $parameterRule = $this->createStub(ParametersRule::class);
         $parameterRule->method('apply')
@@ -60,13 +62,13 @@ class MatcherTest extends TestCase
         $invocationMatcher = $this->createStub(InvocationOrder::class);
         $invocationMatcher->method('matches')
             ->willReturn(true);
-        $invocation = new Invocation('Foo', 'bar', [], 'void', new \stdClass);
+        $invocation = new Invocation('Foo', 'bar', [], 'void', new stdClass);
         $matcher    = new Matcher($invocationMatcher);
         $matcher->setMethodNameRule(new MethodName('bar'));
 
         $parameterRule = $this->createStub(ParametersRule::class);
         $parameterRule->method('apply')
-            ->willThrowException(new \Exception('This method should not have been called.'));
+            ->willThrowException(new Exception('This method should not have been called.'));
         $matcher->setParametersRule($parameterRule);
 
         $this->assertTrue($matcher->matches($invocation));
@@ -75,7 +77,7 @@ class MatcherTest extends TestCase
     public function testStubIsNotInvokedIfParametersRuleIsViolated(): void
     {
         $invocationMatcher = $this->createStub(InvocationOrder::class);
-        $invocation        = new Invocation('Foo', 'bar', [], 'void', new \stdClass);
+        $invocation        = new Invocation('Foo', 'bar', [], 'void', new stdClass);
 
         $stub = $this->createMock(Stub\Stub::class);
         $stub->expects($this->never())
@@ -99,7 +101,7 @@ class MatcherTest extends TestCase
     public function testStubIsInvokedIfAllMatchersAndRulesApply(): void
     {
         $invocationMatcher = $this->createStub(InvocationOrder::class);
-        $invocation        = new Invocation('Foo', 'bar', [], 'void', new \stdClass);
+        $invocation        = new Invocation('Foo', 'bar', [], 'void', new stdClass);
 
         $stub = $this->createMock(Stub\Stub::class);
         $stub->expects($this->once())

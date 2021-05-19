@@ -9,6 +9,14 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
+use function addslashes;
+use function array_map;
+use function implode;
+use function is_string;
+use function realpath;
+use function sprintf;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -18,9 +26,9 @@ final class XdebugFilterScriptGenerator
     {
         $items = $this->getWhitelistItems($filterData);
 
-        $files = \array_map(
+        $files = array_map(
             static function ($item) {
-                return \sprintf(
+                return sprintf(
                     "        '%s'",
                     $item
                 );
@@ -28,7 +36,7 @@ final class XdebugFilterScriptGenerator
             $items
         );
 
-        $files = \implode(",\n", $files);
+        $files = implode(",\n", $files);
 
         return <<<EOF
 <?php declare(strict_types=1);
@@ -53,11 +61,11 @@ EOF;
 
         if (isset($filterData['include']['directory'])) {
             foreach ($filterData['include']['directory'] as $directory) {
-                $path = \realpath($directory['path']);
+                $path = realpath($directory['path']);
 
-                if (\is_string($path)) {
-                    $files[] = \sprintf(
-                        \addslashes('%s' . \DIRECTORY_SEPARATOR),
+                if (is_string($path)) {
+                    $files[] = sprintf(
+                        addslashes('%s' . DIRECTORY_SEPARATOR),
                         $path
                     );
                 }

@@ -2,15 +2,14 @@
 phpunit -c _files/configuration.custom-printer.xml --verbose ../../_files/IncompleteTest.php
 --FILE--
 <?php declare(strict_types=1);
-$arguments = [
-    '-c',
-    \realpath(__DIR__ . '/_files/configuration.custom-printer.xml'),
-    '--verbose',
-    \realpath(__DIR__ . '/../../_files/IncompleteTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '-c';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/_files/configuration.custom-printer.xml');
+$_SERVER['argv'][] = '--verbose';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/IncompleteTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

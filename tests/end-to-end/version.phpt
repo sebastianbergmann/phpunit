@@ -2,8 +2,9 @@
 phpunit --version
 --FILE--
 <?php
-$_SERVER['argv'][1] = '--no-configuration';
-$_SERVER['argv'][2] = '--version';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--version';
 
 require __DIR__ . '/../bootstrap.php';
 

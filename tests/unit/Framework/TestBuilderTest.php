@@ -9,7 +9,12 @@
  */
 namespace PHPUnit\Framework;
 
+use function assert;
+use EmptyDataProviderTest;
+use ModifiedConstructorTestCase;
 use PHPUnit\Framework\MockObject\MockObject;
+use ReflectionClass;
+use TestWithAnnotations;
 
 /**
  * @covers \PHPUnit\Framework\TestBuilder
@@ -18,12 +23,12 @@ final class TestBuilderTest extends TestCase
 {
     public function testCreateTestForConstructorlessTestClass(): void
     {
-        $reflector = $this->getMockBuilder(\ReflectionClass::class)
+        $reflector = $this->getMockBuilder(ReflectionClass::class)
                           ->setConstructorArgs([$this])
                           ->getMock();
 
-        \assert($reflector instanceof MockObject);
-        \assert($reflector instanceof \ReflectionClass);
+        assert($reflector instanceof MockObject);
+        assert($reflector instanceof ReflectionClass);
 
         $reflector->expects($this->once())
                   ->method('getConstructor')
@@ -45,12 +50,12 @@ final class TestBuilderTest extends TestCase
 
     public function testCreateTestForNotInstantiableTestClass(): void
     {
-        $reflector = $this->getMockBuilder(\ReflectionClass::class)
+        $reflector = $this->getMockBuilder(ReflectionClass::class)
             ->setConstructorArgs([$this])
             ->getMock();
 
-        \assert($reflector instanceof MockObject);
-        \assert($reflector instanceof \ReflectionClass);
+        assert($reflector instanceof MockObject);
+        assert($reflector instanceof ReflectionClass);
 
         $reflector->expects($this->once())
             ->method('isInstantiable')
@@ -68,13 +73,13 @@ final class TestBuilderTest extends TestCase
 
     public function testCreateTestForTestClassWithModifiedConstructor(): void
     {
-        $test = (new TestBuilder)->build(new \ReflectionClass(\ModifiedConstructorTestCase::class), 'testCase');
-        $this->assertInstanceOf(\ModifiedConstructorTestCase::class, $test);
+        $test = (new TestBuilder)->build(new ReflectionClass(ModifiedConstructorTestCase::class), 'testCase');
+        $this->assertInstanceOf(ModifiedConstructorTestCase::class, $test);
     }
 
     public function testCreateWithEmptyData(): void
     {
-        $test = (new TestBuilder)->build(new \ReflectionClass(\EmptyDataProviderTest::class), 'testCase');
+        $test = (new TestBuilder)->build(new ReflectionClass(EmptyDataProviderTest::class), 'testCase');
         $this->assertInstanceOf(DataProviderTestSuite::class, $test);
         /* @var DataProviderTestSuite $test */
         $this->assertInstanceOf(SkippedTestCase::class, $test->getGroupDetails()['default'][0]);
@@ -85,8 +90,8 @@ final class TestBuilderTest extends TestCase
      */
     public function testWithAnnotations(string $methodName): void
     {
-        $test = (new TestBuilder)->build(new \ReflectionClass(\TestWithAnnotations::class), $methodName);
-        $this->assertInstanceOf(\TestWithAnnotations::class, $test);
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
+        $this->assertInstanceOf(TestWithAnnotations::class, $test);
     }
 
     public function provideWithAnnotations(): array
@@ -103,7 +108,7 @@ final class TestBuilderTest extends TestCase
      */
     public function testWithAnnotationsAndDataProvider(string $methodName): void
     {
-        $test = (new TestBuilder)->build(new \ReflectionClass(\TestWithAnnotations::class), $methodName);
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
         $this->assertInstanceOf(DataProviderTestSuite::class, $test);
     }
 

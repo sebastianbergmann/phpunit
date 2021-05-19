@@ -9,6 +9,13 @@
  */
 namespace PHPUnit\Util\Log;
 
+use function class_exists;
+use function get_class;
+use function method_exists;
+use function sprintf;
+use function str_replace;
+use DOMDocument;
+use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\SelfDescribing;
@@ -21,6 +28,9 @@ use PHPUnit\Util\Exception;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml;
+use ReflectionClass;
+use ReflectionException;
+use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -28,12 +38,12 @@ use PHPUnit\Util\Xml;
 final class JUnit extends Printer implements TestListener
 {
     /**
-     * @var \DOMDocument
+     * @var DOMDocument
      */
     private $document;
 
     /**
-     * @var \DOMElement
+     * @var DOMElement
      */
     private $root;
 
@@ -43,7 +53,7 @@ final class JUnit extends Printer implements TestListener
     private $reportRiskyTests = false;
 
     /**
-     * @var \DOMElement[]
+     * @var DOMElement[]
      */
     private $testSuites = [];
 
@@ -88,7 +98,7 @@ final class JUnit extends Printer implements TestListener
     private $testSuiteLevel = 0;
 
     /**
-     * @var \DOMElement
+     * @var DOMElement
      */
     private $currentTestCase;
 
@@ -97,7 +107,7 @@ final class JUnit extends Printer implements TestListener
      */
     public function __construct($out = null, bool $reportRiskyTests = false)
     {
-        $this->document               = new \DOMDocument('1.0', 'UTF-8');
+        $this->document               = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;
 
         $this->root = $this->document->createElement('testsuites');
@@ -121,7 +131,7 @@ final class JUnit extends Printer implements TestListener
     /**
      * An error occurred.
      */
-    public function addError(Test $test, \Throwable $t, float $time): void
+    public function addError(Test $test, Throwable $t, float $time): void
     {
         $this->doAddFault($test, $t, $time, 'error');
         $this->testSuiteErrors[$this->testSuiteLevel]++;
@@ -148,7 +158,7 @@ final class JUnit extends Printer implements TestListener
     /**
      * Incomplete test.
      */
-    public function addIncompleteTest(Test $test, \Throwable $t, float $time): void
+    public function addIncompleteTest(Test $test, Throwable $t, float $time): void
     {
         $this->doAddSkipped();
     }
@@ -156,7 +166,7 @@ final class JUnit extends Printer implements TestListener
     /**
      * Risky test.
      */
-    public function addRiskyTest(Test $test, \Throwable $t, float $time): void
+    public function addRiskyTest(Test $test, Throwable $t, float $time): void
     {
         if (!$this->reportRiskyTests || $this->currentTestCase === null) {
             return;
@@ -170,7 +180,7 @@ final class JUnit extends Printer implements TestListener
             )
         );
 
-        $error->setAttribute('type', \get_class($t));
+        $error->setAttribute('type', get_class($t));
 
         $this->currentTestCase->appendChild($error);
 
@@ -180,7 +190,7 @@ final class JUnit extends Printer implements TestListener
     /**
      * Skipped test.
      */
-    public function addSkippedTest(Test $test, \Throwable $t, float $time): void
+    public function addSkippedTest(Test $test, Throwable $t, float $time): void
     {
         $this->doAddSkipped();
     }
@@ -193,12 +203,12 @@ final class JUnit extends Printer implements TestListener
         $testSuite = $this->document->createElement('testsuite');
         $testSuite->setAttribute('name', $suite->getName());
 
-        if (\class_exists($suite->getName(), false)) {
+        if (class_exists($suite->getName(), false)) {
             try {
-                $class = new \ReflectionClass($suite->getName());
+                $class = new ReflectionClass($suite->getName());
 
                 $testSuite->setAttribute('file', $class->getFileName());
-            } catch (\ReflectionException $e) {
+            } catch (ReflectionException $e) {
             }
         }
 
@@ -256,7 +266,7 @@ final class JUnit extends Printer implements TestListener
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'time',
-            \sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel])
+            sprintf('%F', $this->testSuiteTimes[$this->testSuiteLevel])
         );
 
         if ($this->testSuiteLevel > 1) {
@@ -279,7 +289,7 @@ final class JUnit extends Printer implements TestListener
     {
         $usesDataprovider = false;
 
-        if (\method_exists($test, 'usesDataProvider')) {
+        if (method_exists($test, 'usesDataProvider')) {
             $usesDataprovider = $test->usesDataProvider();
         }
 
@@ -287,9 +297,9 @@ final class JUnit extends Printer implements TestListener
         $testCase->setAttribute('name', $test->getName());
 
         try {
-            $class = new \ReflectionClass($test);
+            $class = new ReflectionClass($test);
             // @codeCoverageIgnoreStart
-        } catch (\ReflectionException $e) {
+        } catch (ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),
@@ -304,7 +314,7 @@ final class JUnit extends Printer implements TestListener
             try {
                 $method = $class->getMethod($methodName);
                 // @codeCoverageIgnoreStart
-            } catch (\ReflectionException $e) {
+            } catch (ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
                     (int) $e->getCode(),
@@ -314,7 +324,7 @@ final class JUnit extends Printer implements TestListener
             // @codeCoverageIgnoreEnd
 
             $testCase->setAttribute('class', $class->getName());
-            $testCase->setAttribute('classname', \str_replace('\\', '.', $class->getName()));
+            $testCase->setAttribute('classname', str_replace('\\', '.', $class->getName()));
             $testCase->setAttribute('file', $class->getFileName());
             $testCase->setAttribute('line', (string) $method->getStartLine());
         }
@@ -329,7 +339,7 @@ final class JUnit extends Printer implements TestListener
     {
         $numAssertions = 0;
 
-        if (\method_exists($test, 'getNumAssertions')) {
+        if (method_exists($test, 'getNumAssertions')) {
             $numAssertions = $test->getNumAssertions();
         }
 
@@ -342,7 +352,7 @@ final class JUnit extends Printer implements TestListener
 
         $this->currentTestCase->setAttribute(
             'time',
-            \sprintf('%F', $time)
+            sprintf('%F', $time)
         );
 
         $this->testSuites[$this->testSuiteLevel]->appendChild(
@@ -354,7 +364,7 @@ final class JUnit extends Printer implements TestListener
 
         $testOutput = '';
 
-        if (\method_exists($test, 'hasOutput') && \method_exists($test, 'getActualOutput')) {
+        if (method_exists($test, 'hasOutput') && method_exists($test, 'getActualOutput')) {
             $testOutput = $test->hasOutput() ? $test->getActualOutput() : '';
         }
 
@@ -378,7 +388,7 @@ final class JUnit extends Printer implements TestListener
         return $this->document->saveXML();
     }
 
-    private function doAddFault(Test $test, \Throwable $t, float $time, $type): void
+    private function doAddFault(Test $test, Throwable $t, float $time, $type): void
     {
         if ($this->currentTestCase === null) {
             return;
@@ -401,7 +411,7 @@ final class JUnit extends Printer implements TestListener
         if ($t instanceof ExceptionWrapper) {
             $fault->setAttribute('type', $t->getClassName());
         } else {
-            $fault->setAttribute('type', \get_class($t));
+            $fault->setAttribute('type', get_class($t));
         }
 
         $this->currentTestCase->appendChild($fault);

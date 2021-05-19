@@ -7,7 +7,8 @@ if (defined('HHVM_VERSION') || defined('PHPDBG_VERSION')) {
 }
 --FILE--
 <?php declare(strict_types=1);
-$_SERVER['argv'][1] = '--no-configuration';
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][]  = '--process-isolation';
 $_SERVER['argv'][]  = __DIR__ . '/1348/Issue1348Test.php';
 

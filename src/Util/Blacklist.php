@@ -9,6 +9,12 @@
  */
 namespace PHPUnit\Util;
 
+use const DIRECTORY_SEPARATOR;
+use function class_exists;
+use function defined;
+use function dirname;
+use function strpos;
+use function sys_get_temp_dir;
 use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
 use Doctrine\Instantiator\Instantiator;
@@ -20,6 +26,8 @@ use phpDocumentor\Reflection\Project;
 use phpDocumentor\Reflection\Type;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
+use ReflectionClass;
+use ReflectionException;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeUnitReverseLookup\Wizard;
 use SebastianBergmann\Comparator\Comparator;
@@ -158,14 +166,14 @@ final class Blacklist
      */
     public function isBlacklisted(string $file): bool
     {
-        if (\defined('PHPUNIT_TESTSUITE')) {
+        if (defined('PHPUNIT_TESTSUITE')) {
             return false;
         }
 
         $this->initialize();
 
         foreach (self::$directories as $directory) {
-            if (\strpos($file, $directory) === 0) {
+            if (strpos($file, $directory) === 0) {
                 return true;
             }
         }
@@ -182,14 +190,14 @@ final class Blacklist
             self::$directories = [];
 
             foreach (self::$blacklistedClassNames as $className => $parent) {
-                if (!\class_exists($className)) {
+                if (!class_exists($className)) {
                     continue;
                 }
 
                 try {
-                    $directory = (new \ReflectionClass($className))->getFileName();
+                    $directory = (new ReflectionClass($className))->getFileName();
                     // @codeCoverageIgnoreStart
-                } catch (\ReflectionException $e) {
+                } catch (ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
                         (int) $e->getCode(),
@@ -199,17 +207,17 @@ final class Blacklist
                 // @codeCoverageIgnoreEnd
 
                 for ($i = 0; $i < $parent; $i++) {
-                    $directory = \dirname($directory);
+                    $directory = dirname($directory);
                 }
 
                 self::$directories[] = $directory;
             }
 
             // Hide process isolation workaround on Windows.
-            if (\DIRECTORY_SEPARATOR === '\\') {
+            if (DIRECTORY_SEPARATOR === '\\') {
                 // tempnam() prefix is limited to first 3 chars.
                 // @see https://php.net/manual/en/function.tempnam.php
-                self::$directories[] = \sys_get_temp_dir() . '\\PHP';
+                self::$directories[] = sys_get_temp_dir() . '\\PHP';
             }
         }
     }

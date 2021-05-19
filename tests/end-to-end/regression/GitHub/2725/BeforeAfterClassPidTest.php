@@ -9,6 +9,7 @@
  */
 namespace Issue2725;
 
+use function getmypid;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -23,7 +24,7 @@ class BeforeAfterClassPidTest extends TestCase
      */
     public static function showPidBefore(): void
     {
-        $GLOBALS[static::PID_VARIABLE] = \getmypid();
+        $GLOBALS[static::PID_VARIABLE] = getmypid();
     }
 
     /**
@@ -31,7 +32,7 @@ class BeforeAfterClassPidTest extends TestCase
      */
     public static function showPidAfter(): void
     {
-        if ($GLOBALS[static::PID_VARIABLE] - \getmypid() !== 0) {
+        if ($GLOBALS[static::PID_VARIABLE] - getmypid() !== 0) {
             print "\n@afterClass output - PID difference should be zero!";
         }
 
@@ -40,11 +41,11 @@ class BeforeAfterClassPidTest extends TestCase
 
     public function testMethod1WithItsBeforeAndAfter(): void
     {
-        $this->assertEquals($GLOBALS[static::PID_VARIABLE], \getmypid());
+        $this->assertEquals($GLOBALS[static::PID_VARIABLE], getmypid());
     }
 
     public function testMethod2WithItsBeforeAndAfter(): void
     {
-        $this->assertEquals($GLOBALS[static::PID_VARIABLE], \getmypid());
+        $this->assertEquals($GLOBALS[static::PID_VARIABLE], getmypid());
     }
 }

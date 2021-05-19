@@ -4,11 +4,9 @@ phpunit --no-configuration ../_files/RequirementsTest.php
 <?php declare(strict_types=1);
 require_once(__DIR__ . '/../bootstrap.php');
 
-$arguments = [
-    '--no-configuration',
-    \realpath(__DIR__ . '/../_files/RequirementsTest.php'),
-];
-\array_splice($_SERVER['argv'], 1, count($arguments), $arguments);
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = \realpath(__DIR__ . '/../_files/RequirementsTest.php');
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

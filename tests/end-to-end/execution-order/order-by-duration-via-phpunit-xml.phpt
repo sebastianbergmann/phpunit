@@ -2,16 +2,16 @@
 phpunit --configuration=order-by-duration.phpunit.xml
 --FILE--
 <?php declare(strict_types=1);
-
 $tmpResultCache = tempnam(sys_get_temp_dir(), __FILE__);
-file_put_contents($tmpResultCache, file_get_contents(__DIR__ . '/_files/TestWithDifferentDurations.phpunit.result.cache.txt'));
+\copy(__DIR__ . '/_files/TestWithDifferentDurations.phpunit.result.cache.txt', $tmpResultCache);
 
 $phpunitXmlConfig = __DIR__ . '/_files/order-by-duration.phpunit.xml';
 
-$_SERVER['argv'][1] = '--configuration=' . $phpunitXmlConfig;
-$_SERVER['argv'][2] = '--debug';
-$_SERVER['argv'][3] = '--cache-result';
-$_SERVER['argv'][4] = '--cache-result-file=' . $tmpResultCache;
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--configuration=' . $phpunitXmlConfig;
+$_SERVER['argv'][] = '--debug';
+$_SERVER['argv'][] = '--cache-result';
+$_SERVER['argv'][] = '--cache-result-file=' . $tmpResultCache;
 
 require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();

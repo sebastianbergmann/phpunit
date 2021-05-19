@@ -9,8 +9,14 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function array_replace_recursive;
+use function is_array;
+use function iterator_to_array;
+use function var_export;
+use ArrayObject;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
+use Traversable;
 
 /**
  * Constraint that asserts that the array it is evaluated for has a specified subset.
@@ -41,7 +47,7 @@ final class ArraySubset extends Constraint
     }
 
     /**
-     * Evaluates the constraint for parameter $other
+     * Evaluates the constraint for parameter $other.
      *
      * If $returnResult is set to false (the default), an exception is thrown
      * in case of a failure. null is returned otherwise.
@@ -50,8 +56,8 @@ final class ArraySubset extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      */
     public function evaluate($other, string $description = '', bool $returnResult = false)
     {
@@ -60,7 +66,7 @@ final class ArraySubset extends Constraint
         $other        = $this->toArray($other);
         $this->subset = $this->toArray($this->subset);
 
-        $patched = \array_replace_recursive($other, $this->subset);
+        $patched = array_replace_recursive($other, $this->subset);
 
         if ($this->strict) {
             $result = $other === $patched;
@@ -76,8 +82,8 @@ final class ArraySubset extends Constraint
             $f = new ComparisonFailure(
                 $patched,
                 $other,
-                \var_export($patched, true),
-                \var_export($other, true)
+                var_export($patched, true),
+                var_export($other, true)
             );
 
             $this->fail($other, $description, $f);
@@ -95,7 +101,7 @@ final class ArraySubset extends Constraint
     }
 
     /**
-     * Returns the description of the failure
+     * Returns the description of the failure.
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
@@ -111,16 +117,16 @@ final class ArraySubset extends Constraint
 
     private function toArray(iterable $other): array
     {
-        if (\is_array($other)) {
+        if (is_array($other)) {
             return $other;
         }
 
-        if ($other instanceof \ArrayObject) {
+        if ($other instanceof ArrayObject) {
             return $other->getArrayCopy();
         }
 
-        if ($other instanceof \Traversable) {
-            return \iterator_to_array($other);
+        if ($other instanceof Traversable) {
+            return iterator_to_array($other);
         }
 
         // Keep BC even if we know that array would not be the expected one

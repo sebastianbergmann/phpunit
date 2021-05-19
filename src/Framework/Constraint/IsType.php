@@ -9,6 +9,21 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function get_resource_type;
+use function is_array;
+use function is_bool;
+use function is_callable;
+use function is_float;
+use function is_int;
+use function is_iterable;
+use function is_numeric;
+use function is_object;
+use function is_resource;
+use function is_scalar;
+use function is_string;
+use function sprintf;
+use TypeError;
+
 /**
  * Constraint that asserts that the value it is evaluated for is of a
  * specified type.
@@ -111,7 +126,7 @@ final class IsType extends Constraint
     {
         if (!isset(self::KNOWN_TYPES[$type])) {
             throw new \PHPUnit\Framework\Exception(
-                \sprintf(
+                sprintf(
                     'Type specified for PHPUnit\Framework\Constraint\IsType <%s> ' .
                     'is not a valid type.',
                     $type
@@ -127,7 +142,7 @@ final class IsType extends Constraint
      */
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'is of type "%s"',
             $this->type
         );
@@ -143,57 +158,57 @@ final class IsType extends Constraint
     {
         switch ($this->type) {
             case 'numeric':
-                return \is_numeric($other);
+                return is_numeric($other);
 
             case 'integer':
             case 'int':
-                return \is_int($other);
+                return is_int($other);
 
             case 'double':
             case 'float':
             case 'real':
-                return \is_float($other);
+                return is_float($other);
 
             case 'string':
-                return \is_string($other);
+                return is_string($other);
 
             case 'boolean':
             case 'bool':
-                return \is_bool($other);
+                return is_bool($other);
 
             case 'null':
                 return null === $other;
 
             case 'array':
-                return \is_array($other);
+                return is_array($other);
 
             case 'object':
-                return \is_object($other);
+                return is_object($other);
 
             case 'resource':
-                if (\is_resource($other)) {
+                if (is_resource($other)) {
                     return true;
                 }
 
                 try {
-                    $resource = @\get_resource_type($other);
+                    $resource = @get_resource_type($other);
 
-                    if (\is_string($resource)) {
+                    if (is_string($resource)) {
                         return true;
                     }
-                } catch (\TypeError $e) {
+                } catch (TypeError $e) {
                 }
 
                 return false;
 
             case 'scalar':
-                return \is_scalar($other);
+                return is_scalar($other);
 
             case 'callable':
-                return \is_callable($other);
+                return is_callable($other);
 
             case 'iterable':
-                return \is_iterable($other);
+                return is_iterable($other);
         }
     }
 }

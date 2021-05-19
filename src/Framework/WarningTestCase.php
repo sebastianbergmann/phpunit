@@ -30,21 +30,14 @@ final class WarningTestCase extends TestCase
     protected $runTestInSeparateProcess = false;
 
     /**
-     * @var bool
-     */
-    protected $useErrorHandler = false;
-
-    /**
      * @var string
      */
     private $message;
 
-    /**
-     * @param string $message
-     */
-    public function __construct($message = '')
+    public function __construct(string $message = '')
     {
         $this->message = $message;
+
         parent::__construct('Warning');
     }
 
