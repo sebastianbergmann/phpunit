@@ -18,15 +18,9 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
  */
 final class InvokedCount extends InvocationOrder
 {
-    /**
-     * @var int
-     */
-    private $expectedCount;
+    private int $expectedCount;
 
-    /**
-     * @param int $expectedCount
-     */
-    public function __construct($expectedCount)
+    public function __construct(int $expectedCount)
     {
         $this->expectedCount = $expectedCount;
     }
@@ -78,23 +72,14 @@ final class InvokedCount extends InvocationOrder
         if ($count > $this->expectedCount) {
             $message = $invocation->toString() . ' ';
 
-            switch ($this->expectedCount) {
-                case 0:
-                    $message .= 'was not expected to be called.';
-
-                    break;
-
-                case 1:
-                    $message .= 'was not expected to be called more than once.';
-
-                    break;
-
-                default:
-                    $message .= sprintf(
-                        'was not expected to be called more than %d times.',
-                        $this->expectedCount
-                    );
-            }
+            $message .= match ($this->expectedCount) {
+                0       => 'was not expected to be called.',
+                1       => 'was not expected to be called more than once.',
+                default => sprintf(
+                    'was not expected to be called more than %d times.',
+                    $this->expectedCount
+                ),
+            };
 
             throw new ExpectationFailedException($message);
         }

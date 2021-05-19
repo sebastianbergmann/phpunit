@@ -23,7 +23,6 @@ use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Util\Test as TestUtil;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -66,41 +65,38 @@ final class TestSuiteSorter
      * List of sorting weights for all test result codes. A higher number gives higher priority.
      */
     private const DEFECT_SORT_WEIGHT = [
-        BaseTestRunner::STATUS_ERROR      => 6,
-        BaseTestRunner::STATUS_FAILURE    => 5,
-        BaseTestRunner::STATUS_WARNING    => 4,
-        BaseTestRunner::STATUS_INCOMPLETE => 3,
-        BaseTestRunner::STATUS_RISKY      => 2,
-        BaseTestRunner::STATUS_SKIPPED    => 1,
-        BaseTestRunner::STATUS_UNKNOWN    => 0,
+        'error'      => 6,
+        'failure'    => 5,
+        'warning'    => 4,
+        'incomplete' => 3,
+        'risky'      => 2,
+        'skipped'    => 1,
+        'unknown'    => 0,
     ];
 
     private const SIZE_SORT_WEIGHT = [
-        TestUtil::SMALL   => 1,
-        TestUtil::MEDIUM  => 2,
-        TestUtil::LARGE   => 3,
-        TestUtil::UNKNOWN => 4,
+        'small'   => 1,
+        'medium'  => 2,
+        'large'   => 3,
+        'unknown' => 4,
     ];
 
     /**
-     * @var array<string, int> Associative array of (string => DEFECT_SORT_WEIGHT) elements
+     * @psalm-var array<string, int> Associative array of (string => DEFECT_SORT_WEIGHT) elements
      */
-    private $defectSortOrder = [];
+    private array $defectSortOrder = [];
+
+    private TestResultCache $cache;
 
     /**
-     * @var TestResultCache
+     * @psalm-var array<string> A list of normalized names of tests before reordering
      */
-    private $cache;
+    private array $originalExecutionOrder = [];
 
     /**
-     * @var array<string> A list of normalized names of tests before reordering
+     * @psalm-var array<string> A list of normalized names of tests affected by reordering
      */
-    private $originalExecutionOrder = [];
-
-    /**
-     * @var array<string> A list of normalized names of tests affected by reordering
-     */
-    private $executionOrder = [];
+    private array $executionOrder = [];
 
     public function __construct(?TestResultCache $cache = null)
     {
@@ -190,7 +186,6 @@ final class TestSuiteSorter
         }
 
         if ($resolveDependencies && !($suite instanceof DataProviderTestSuite)) {
-            /** @var TestCase[] $tests */
             $tests = $suite->tests();
 
             $suite->setTests($this->resolveDependencies($tests));
@@ -210,7 +205,7 @@ final class TestSuiteSorter
             }
 
             if (!isset($this->defectSortOrder[$test->sortId()])) {
-                $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->getState($test->sortId())];
+                $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->status($test->sortId())->asString()];
                 $max                                    = max($max, $this->defectSortOrder[$test->sortId()]);
             }
         }
@@ -317,7 +312,7 @@ final class TestSuiteSorter
             return 0;
         }
 
-        return $this->cache->getTime($a->sortId()) <=> $this->cache->getTime($b->sortId());
+        return $this->cache->time($a->sortId()) <=> $this->cache->time($b->sortId());
     }
 
     /**
@@ -326,11 +321,11 @@ final class TestSuiteSorter
     private function cmpSize(Test $a, Test $b): int
     {
         $sizeA = ($a instanceof TestCase || $a instanceof DataProviderTestSuite)
-            ? $a->getSize()
-            : TestUtil::UNKNOWN;
+            ? $a->size()->asString()
+            : 'unknown';
         $sizeB = ($b instanceof TestCase || $b instanceof DataProviderTestSuite)
-            ? $b->getSize()
-            : TestUtil::UNKNOWN;
+            ? $b->size()->asString()
+            : 'unknown';
 
         return self::SIZE_SORT_WEIGHT[$sizeA] <=> self::SIZE_SORT_WEIGHT[$sizeB];
     }
@@ -346,9 +341,9 @@ final class TestSuiteSorter
      * 3. If the test has dependencies but none left to do: mark done, start again from the top
      * 4. When we reach the end add any leftover tests to the end. These will be marked 'skipped' during execution.
      *
-     * @param array<DataProviderTestSuite|TestCase> $tests
+     * @psalm-param array<DataProviderTestSuite|TestCase> $tests
      *
-     * @return array<DataProviderTestSuite|TestCase>
+     * @psalm-return array<DataProviderTestSuite|TestCase>
      */
     private function resolveDependencies(array $tests): array
     {

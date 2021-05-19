@@ -17,20 +17,11 @@ use PHPUnit\Util\VersionComparisonOperator;
  */
 final class TestFile
 {
-    /**
-     * @var string
-     */
-    private $path;
+    private string $path;
 
-    /**
-     * @var string
-     */
-    private $phpVersion;
+    private string $phpVersion;
 
-    /**
-     * @var VersionComparisonOperator
-     */
-    private $phpVersionOperator;
+    private VersionComparisonOperator $phpVersionOperator;
 
     public function __construct(string $path, string $phpVersion, VersionComparisonOperator $phpVersionOperator)
     {

@@ -17,9 +17,8 @@ class NotReorderableTest implements Test
         return 1;
     }
 
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result): void
     {
-        return new TestResult();
     }
 
     public function provides(): array

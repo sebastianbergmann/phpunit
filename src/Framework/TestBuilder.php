@@ -10,13 +10,19 @@
 namespace PHPUnit\Framework;
 
 use function assert;
-use function count;
 use function get_class;
 use function sprintf;
 use function trim;
+use PHPUnit\Metadata\Api\DataProvider;
+use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\Metadata\BackupGlobals;
+use PHPUnit\Metadata\BackupStaticProperties;
+use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
+use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\InvalidDataSetException;
-use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use Throwable;
 
@@ -35,124 +41,82 @@ final class TestBuilder
             );
         }
 
-        $backupSettings = TestUtil::getBackupSettings(
-            $className,
-            $methodName
-        );
-
-        $preserveGlobalState = TestUtil::getPreserveGlobalStateSettings(
-            $className,
-            $methodName
-        );
-
-        $runTestInSeparateProcess = TestUtil::getProcessIsolationSettings(
-            $className,
-            $methodName
-        );
-
-        $runClassInSeparateProcess = TestUtil::getClassProcessIsolationSettings(
-            $className,
-            $methodName
-        );
-
-        $constructor = $theClass->getConstructor();
-
-        if ($constructor === null) {
-            throw new Exception('No valid test provided.');
-        }
-
-        $parameters = $constructor->getParameters();
-
-        // TestCase() or TestCase($name)
-        if (count($parameters) < 2) {
-            $test = $this->buildTestWithoutData($className);
-        } // TestCase($name, $data)
-        else {
-            try {
-                $data = TestUtil::getProvidedData(
-                    $className,
-                    $methodName
-                );
-            } catch (IncompleteTestError $e) {
-                $message = sprintf(
+        try {
+            $data = (new DataProvider)->providedData(
+                $className,
+                $methodName
+            );
+        } catch (IncompleteTestError $e) {
+            $data = new IncompleteTestCase(
+                $className,
+                $methodName,
+                sprintf(
                     "Test for %s::%s marked incomplete by data provider\n%s",
                     $className,
                     $methodName,
                     $this->throwableToString($e)
-                );
-
-                $data = new IncompleteTestCase($className, $methodName, $message);
-            } catch (SkippedTestError $e) {
-                $message = sprintf(
+                )
+            );
+        } catch (SkippedTestError $e) {
+            $data = new SkippedTestCase(
+                $className,
+                $methodName,
+                sprintf(
                     "Test for %s::%s skipped by data provider\n%s",
                     $className,
                     $methodName,
                     $this->throwableToString($e)
-                );
-
-                $data = new SkippedTestCase($className, $methodName, $message);
-            } catch (Throwable $t) {
-                $message = sprintf(
+                )
+            );
+        } catch (Throwable $t) {
+            $data = new ErrorTestCase(
+                sprintf(
                     "The data provider specified for %s::%s is invalid.\n%s",
                     $className,
                     $methodName,
                     $this->throwableToString($t)
-                );
+                )
+            );
+        }
 
-                $data = new ErrorTestCase($message);
-            }
-
-            // Test method with @dataProvider.
-            if (isset($data)) {
-                $test = $this->buildDataProviderTestSuite(
-                    $methodName,
-                    $className,
-                    $data,
-                    $runTestInSeparateProcess,
-                    $preserveGlobalState,
-                    $runClassInSeparateProcess,
-                    $backupSettings
-                );
-            } else {
-                $test = $this->buildTestWithoutData($className);
-            }
+        if (isset($data)) {
+            $test = $this->buildDataProviderTestSuite(
+                $methodName,
+                $className,
+                $data,
+                $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
+                $this->shouldGlobalStateBePreserved($className, $methodName),
+                $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
+                $this->backupSettings($className, $methodName)
+            );
+        } else {
+            $test = new $className($methodName);
         }
 
         if ($test instanceof TestCase) {
-            $test->setName($methodName);
             $this->configureTestCase(
                 $test,
-                $runTestInSeparateProcess,
-                $preserveGlobalState,
-                $runClassInSeparateProcess,
-                $backupSettings
+                $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
+                $this->shouldGlobalStateBePreserved($className, $methodName),
+                $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
+                $this->backupSettings($className, $methodName)
             );
         }
 
         return $test;
     }
 
-    /** @psalm-param class-string $className */
-    private function buildTestWithoutData(string $className)
+    /**
+     * @psalm-param class-string $className
+     * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>}
+     */
+    private function buildDataProviderTestSuite(string $methodName, string $className, array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
     {
-        return new $className;
-    }
-
-    /** @psalm-param class-string $className */
-    private function buildDataProviderTestSuite(
-        string $methodName,
-        string $className,
-        $data,
-        bool $runTestInSeparateProcess,
-        ?bool $preserveGlobalState,
-        bool $runClassInSeparateProcess,
-        array $backupSettings
-    ): DataProviderTestSuite {
         $dataProviderTestSuite = new DataProviderTestSuite(
             $className . '::' . $methodName
         );
 
-        $groups = TestUtil::getGroups($className, $methodName);
+        $groups = (new Groups)->groups($className, $methodName);
 
         if ($data instanceof ErrorTestCase ||
             $data instanceof SkippedTestCase ||
@@ -160,9 +124,11 @@ final class TestBuilder
             $dataProviderTestSuite->addTest($data, $groups);
         } else {
             foreach ($data as $_dataName => $_data) {
-                $_test = new $className($methodName, $_data, $_dataName);
+                $_test = new $className($methodName);
 
                 assert($_test instanceof TestCase);
+
+                $_test->setData($_dataName, $_data);
 
                 $this->configureTestCase(
                     $_test,
@@ -179,13 +145,11 @@ final class TestBuilder
         return $dataProviderTestSuite;
     }
 
-    private function configureTestCase(
-        TestCase $test,
-        bool $runTestInSeparateProcess,
-        ?bool $preserveGlobalState,
-        bool $runClassInSeparateProcess,
-        array $backupSettings
-    ): void {
+    /**
+     * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>}
+     */
+    private function configureTestCase(TestCase $test, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): void
+    {
         if ($runTestInSeparateProcess) {
             $test->setRunTestInSeparateProcess(true);
 
@@ -206,11 +170,15 @@ final class TestBuilder
             $test->setBackupGlobals($backupSettings['backupGlobals']);
         }
 
-        if ($backupSettings['backupStaticAttributes'] !== null) {
-            $test->setBackupStaticAttributes(
-                $backupSettings['backupStaticAttributes']
+        $test->setBackupGlobalsExcludeList($backupSettings['backupGlobalsExcludeList']);
+
+        if ($backupSettings['backupStaticProperties'] !== null) {
+            $test->setBackupStaticProperties(
+                $backupSettings['backupStaticProperties']
             );
         }
+
+        $test->setBackupStaticPropertiesExcludeList($backupSettings['backupStaticPropertiesExcludeList']);
     }
 
     private function throwableToString(Throwable $t): string
@@ -235,5 +203,134 @@ final class TestBuilder
             $message,
             Filter::getFilteredStacktrace($t)
         );
+    }
+
+    /**
+     * @psalm-param class-string $className
+     *
+     * @psalm-return array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>}
+     */
+    private function backupSettings(string $className, string $methodName): array
+    {
+        $metadataForClass          = MetadataRegistry::parser()->forClass($className);
+        $metadataForMethod         = MetadataRegistry::parser()->forMethod($className, $methodName);
+        $metadataForClassAndMethod = MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
+
+        $backupGlobals            = null;
+        $backupGlobalsExcludeList = [];
+
+        if ($metadataForMethod->isBackupGlobals()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isBackupGlobals()->asArray()[0];
+
+            assert($metadata instanceof BackupGlobals);
+
+            if ($metadata->enabled() !== null) {
+                $backupGlobals = $metadata->enabled();
+            }
+        } elseif ($metadataForClass->isBackupGlobals()->isNotEmpty()) {
+            $metadata = $metadataForClass->isBackupGlobals()->asArray()[0];
+
+            assert($metadata instanceof BackupGlobals);
+
+            if ($metadata->enabled() !== null) {
+                $backupGlobals = $metadata->enabled();
+            }
+        }
+
+        foreach ($metadataForClassAndMethod->isExcludeGlobalVariableFromBackup() as $metadata) {
+            assert($metadata instanceof ExcludeGlobalVariableFromBackup);
+
+            $backupGlobalsExcludeList[] = $metadata->globalVariableName();
+        }
+
+        $backupStaticProperties            = null;
+        $backupStaticPropertiesExcludeList = [];
+
+        if ($metadataForMethod->isBackupStaticProperties()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
+
+            assert($metadata instanceof BackupStaticProperties);
+
+            if ($metadata->enabled() !== null) {
+                $backupStaticProperties = $metadata->enabled();
+            }
+        } elseif ($metadataForClass->isBackupStaticProperties()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isBackupStaticProperties()->asArray()[0];
+
+            assert($metadata instanceof BackupStaticProperties);
+
+            if ($metadata->enabled() !== null) {
+                $backupStaticProperties = $metadata->enabled();
+            }
+        }
+
+        foreach ($metadataForClassAndMethod->isExcludeStaticPropertyFromBackup() as $metadata) {
+            assert($metadata instanceof ExcludeStaticPropertyFromBackup);
+
+            if (!isset($backupStaticPropertiesExcludeList[$metadata->className()])) {
+                $backupStaticPropertiesExcludeList[$metadata->className()] = [];
+            }
+
+            $backupStaticPropertiesExcludeList[$metadata->className()][] = $metadata->propertyName();
+        }
+
+        return [
+            'backupGlobals'                     => $backupGlobals,
+            'backupGlobalsExcludeList'          => $backupGlobalsExcludeList,
+            'backupStaticProperties'            => $backupStaticProperties,
+            'backupStaticPropertiesExcludeList' => $backupStaticPropertiesExcludeList,
+        ];
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function shouldGlobalStateBePreserved(string $className, string $methodName): ?bool
+    {
+        $metadataForMethod = MetadataRegistry::parser()->forMethod($className, $methodName);
+
+        if ($metadataForMethod->isPreserveGlobalState()->isNotEmpty()) {
+            $metadata = $metadataForMethod->isPreserveGlobalState()->asArray()[0];
+
+            assert($metadata instanceof PreserveGlobalState);
+
+            return $metadata->enabled();
+        }
+
+        $metadataForClass = MetadataRegistry::parser()->forClass($className);
+
+        if ($metadataForClass->isPreserveGlobalState()->isNotEmpty()) {
+            $metadata = $metadataForClass->isPreserveGlobalState()->asArray()[0];
+
+            assert($metadata instanceof PreserveGlobalState);
+
+            return $metadata->enabled();
+        }
+
+        return null;
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function shouldTestMethodBeRunInSeparateProcess(string $className, string $methodName): bool
+    {
+        if (MetadataRegistry::parser()->forClass($className)->isRunTestsInSeparateProcesses()->isNotEmpty()) {
+            return true;
+        }
+
+        if (MetadataRegistry::parser()->forMethod($className, $methodName)->isRunInSeparateProcess()->isNotEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess(string $className): bool
+    {
+        return MetadataRegistry::parser()->forClass($className)->isRunClassInSeparateProcess()->isNotEmpty();
     }
 }

@@ -20,14 +20,11 @@ use Iterator;
 final class GroupCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var Group[]
+     * @psalm-var list<Group>
      */
-    private $groups;
+    private array $groups;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(GroupCollection $groups)
     {

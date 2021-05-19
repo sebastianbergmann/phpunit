@@ -464,20 +464,6 @@ class RequirementsTest extends TestCase
     }
 
     /**
-     * @requires   PHP ~^12345
-     */
-    public function testVersionConstraintInvalidPhpConstraint(): void
-    {
-    }
-
-    /**
-     * @requires   PHPUnit ~^12345
-     */
-    public function testVersionConstraintInvalidPhpUnitConstraint(): void
-    {
-    }
-
-    /**
      * @requires setting display_errors On
      */
     public function testSettingDisplayErrorsOn(): void

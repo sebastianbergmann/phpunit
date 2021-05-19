@@ -14,29 +14,16 @@ namespace PHPUnit\Framework;
  */
 final class IncompleteTestCase extends TestCase
 {
-    /**
-     * @var bool
-     */
-    protected $backupGlobals = false;
-
-    /**
-     * @var bool
-     */
-    protected $backupStaticAttributes = false;
-
-    /**
-     * @var bool
-     */
-    protected $runTestInSeparateProcess = false;
-
-    /**
-     * @var string
-     */
-    private $message;
+    private string $message;
 
     public function __construct(string $className, string $methodName, string $message = '')
     {
         parent::__construct($className . '::' . $methodName);
+
+        $this->setBackupGlobals(false);
+        $this->setBackupStaticProperties(false);
+        $this->setRunClassInSeparateProcess(false);
+        $this->setRunTestInSeparateProcess(false);
 
         $this->message = $message;
     }

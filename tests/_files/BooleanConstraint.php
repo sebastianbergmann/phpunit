@@ -27,7 +27,7 @@ final class BooleanConstraint extends Constraint
         return $instance;
     }
 
-    public function matches($other): bool
+    public function matches(mixed $other): bool
     {
         return $this->matches;
     }

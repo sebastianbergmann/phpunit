@@ -15,60 +15,27 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class Php
 {
-    /**
-     * @var DirectoryCollection
-     */
-    private $includePaths;
+    private DirectoryCollection $includePaths;
 
-    /**
-     * @var IniSettingCollection
-     */
-    private $iniSettings;
+    private IniSettingCollection $iniSettings;
 
-    /**
-     * @var ConstantCollection
-     */
-    private $constants;
+    private ConstantCollection $constants;
 
-    /**
-     * @var VariableCollection
-     */
-    private $globalVariables;
+    private VariableCollection $globalVariables;
 
-    /**
-     * @var VariableCollection
-     */
-    private $envVariables;
+    private VariableCollection $envVariables;
 
-    /**
-     * @var VariableCollection
-     */
-    private $postVariables;
+    private VariableCollection $postVariables;
 
-    /**
-     * @var VariableCollection
-     */
-    private $getVariables;
+    private VariableCollection $getVariables;
 
-    /**
-     * @var VariableCollection
-     */
-    private $cookieVariables;
+    private VariableCollection $cookieVariables;
 
-    /**
-     * @var VariableCollection
-     */
-    private $serverVariables;
+    private VariableCollection $serverVariables;
 
-    /**
-     * @var VariableCollection
-     */
-    private $filesVariables;
+    private VariableCollection $filesVariables;
 
-    /**
-     * @var VariableCollection
-     */
-    private $requestVariables;
+    private VariableCollection $requestVariables;
 
     public function __construct(DirectoryCollection $includePaths, IniSettingCollection $iniSettings, ConstantCollection $constants, VariableCollection $globalVariables, VariableCollection $envVariables, VariableCollection $postVariables, VariableCollection $getVariables, VariableCollection $cookieVariables, VariableCollection $serverVariables, VariableCollection $filesVariables, VariableCollection $requestVariables)
     {

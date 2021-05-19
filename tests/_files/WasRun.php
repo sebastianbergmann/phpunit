@@ -11,12 +11,17 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class WasRun extends TestCase
+final class WasRun extends TestCase
 {
-    public $wasRun = false;
+    private bool $wasRun = false;
 
-    protected function runTest(): void
+    public function testOne(): void
     {
         $this->wasRun = true;
+    }
+
+    public function wasRun(): bool
+    {
+        return $this->wasRun;
     }
 }

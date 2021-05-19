@@ -1,7 +1,6 @@
 <?php
 use PHPUnit\Framework\TestCase;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
-use SebastianBergmann\CodeCoverage\Driver\Selector;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 
@@ -37,18 +36,14 @@ function __phpunit_run_isolated_test()
     $result = new PHPUnit\Framework\TestResult;
 
     if ({collectCodeCoverageInformation}) {
-        $filter = unserialize('{codeCoverageFilter}');
-
-        $codeCoverage = new CodeCoverage(
-            (new Selector)->{driverMethod}($filter),
-            $filter
+        CodeCoverage::activate(
+            unserialize('{codeCoverageFilter}'),
+            {pathCoverage}
         );
 
         if ({cachesStaticAnalysis}) {
-            $codeCoverage->cacheStaticAnalysis(unserialize('{codeCoverageCacheDirectory}'));
+            CodeCoverage::instance()->cacheStaticAnalysis(unserialize('{codeCoverageCacheDirectory}'));
         }
-
-        $result->setCodeCoverage($codeCoverage);
     }
 
     $result->beStrictAboutTestsThatDoNotTestAnything({isStrictAboutTestsThatDoNotTestAnything});
@@ -57,9 +52,10 @@ function __phpunit_run_isolated_test()
     $result->beStrictAboutTodoAnnotatedTests({isStrictAboutTodoAnnotatedTests});
     $result->beStrictAboutResourceUsageDuringSmallTests({isStrictAboutResourceUsageDuringSmallTests});
 
-    $test = new {className}('{methodName}', unserialize('{data}'), '{dataName}');
+    $test = new {className}('{methodName}');
     \assert($test instanceof TestCase);
 
+    $test->setData('{dataName}', unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(true);
 
@@ -67,7 +63,7 @@ function __phpunit_run_isolated_test()
     $test->run($result);
     $output = '';
     if (!$test->hasExpectationOnOutput()) {
-        $output = $test->getActualOutput();
+        $output = $test->output();
     }
 
     ini_set('xdebug.scream', '0');
@@ -83,8 +79,9 @@ function __phpunit_run_isolated_test()
 
     print serialize(
       [
-        'testResult'    => $test->getResult(),
-        'numAssertions' => $test->getNumAssertions(),
+        'testResult'    => $test->result(),
+        'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
+        'numAssertions' => $test->numberOfAssertionsPerformed(),
         'result'        => $result,
         'output'        => $output
       ]

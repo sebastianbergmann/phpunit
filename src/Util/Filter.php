@@ -15,7 +15,7 @@ use function in_array;
 use function is_file;
 use function realpath;
 use function sprintf;
-use function strpos;
+use function str_starts_with;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
 use Throwable;
@@ -80,7 +80,7 @@ final class Filter
         }
 
         $file              = $frame['file'];
-        $fileIsNotPrefixed = $prefix === false || strpos($file, $prefix) !== 0;
+        $fileIsNotPrefixed = $prefix === false || !str_starts_with($file, $prefix);
 
         // @see https://github.com/sebastianbergmann/phpunit/issues/4033
         if (isset($GLOBALS['_SERVER']['SCRIPT_NAME'])) {

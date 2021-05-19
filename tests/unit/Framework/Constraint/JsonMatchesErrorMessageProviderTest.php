@@ -89,7 +89,7 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
         $this->assertEquals(
             $expected,
             JsonMatchesErrorMessageProvider::determineJsonError(
-                (string) $error,
+                $error,
                 $prefix
             )
         );

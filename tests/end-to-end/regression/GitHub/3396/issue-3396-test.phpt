@@ -6,7 +6,6 @@ $tmpResultCache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);
 
 \copy(__DIR__ . '/../../../../_files/DataproviderExecutionOrderTest_result_cache.txt', $tmpResultCache);
 
-$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--order-by=defects';
 $_SERVER['argv'][] = '--debug';

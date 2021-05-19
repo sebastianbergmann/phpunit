@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use const DIRECTORY_SEPARATOR;
 use function implode;
 use function is_string;
 use function preg_match;
@@ -22,8 +21,6 @@ use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
 use ReflectionUnionType;
-use SebastianBergmann\Template\Exception as TemplateException;
-use SebastianBergmann\Template\Template;
 use SebastianBergmann\Type\ReflectionMapper;
 use SebastianBergmann\Type\Type;
 use SebastianBergmann\Type\UnknownType;
@@ -34,65 +31,29 @@ use SebastianBergmann\Type\VoidType;
  */
 final class MockMethod
 {
-    /**
-     * @var Template[]
-     */
-    private static $templates = [];
+    use TemplateLoader;
 
-    /**
-     * @var string
-     */
-    private $className;
+    private string $className;
 
-    /**
-     * @var string
-     */
-    private $methodName;
+    private string $methodName;
 
-    /**
-     * @var bool
-     */
-    private $cloneArguments;
+    private bool $cloneArguments;
 
-    /**
-     * @var string string
-     */
-    private $modifier;
+    private string $modifier;
 
-    /**
-     * @var string
-     */
-    private $argumentsForDeclaration;
+    private string $argumentsForDeclaration;
 
-    /**
-     * @var string
-     */
-    private $argumentsForCall;
+    private string $argumentsForCall;
 
-    /**
-     * @var Type
-     */
-    private $returnType;
+    private Type $returnType;
 
-    /**
-     * @var string
-     */
-    private $reference;
+    private string $reference;
 
-    /**
-     * @var bool
-     */
-    private $callOriginalMethod;
+    private bool $callOriginalMethod;
 
-    /**
-     * @var bool
-     */
-    private $static;
+    private bool $static;
 
-    /**
-     * @var ?string
-     */
-    private $deprecation;
+    private ?string $deprecation;
 
     /**
      * @throws ReflectionException
@@ -202,7 +163,7 @@ final class MockMethod
 
         if (null !== $this->deprecation) {
             $deprecation         = "The {$this->className}::{$this->methodName} method is deprecated ({$this->deprecation}).";
-            $deprecationTemplate = $this->getTemplate('deprecation.tpl');
+            $deprecationTemplate = $this->loadTemplate('deprecation.tpl');
 
             $deprecationTemplate->setVar(
                 [
@@ -213,7 +174,7 @@ final class MockMethod
             $deprecation = $deprecationTemplate->render();
         }
 
-        $template = $this->getTemplate($templateFile);
+        $template = $this->loadTemplate($templateFile);
 
         $template->setVar(
             [
@@ -237,28 +198,6 @@ final class MockMethod
     public function getReturnType(): Type
     {
         return $this->returnType;
-    }
-
-    /**
-     * @throws RuntimeException
-     */
-    private function getTemplate(string $template): Template
-    {
-        $filename = __DIR__ . DIRECTORY_SEPARATOR . 'Generator' . DIRECTORY_SEPARATOR . $template;
-
-        if (!isset(self::$templates[$filename])) {
-            try {
-                self::$templates[$filename] = new Template($filename);
-            } catch (TemplateException $e) {
-                throw new RuntimeException(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-        }
-
-        return self::$templates[$filename];
     }
 
     /**

@@ -15,17 +15,11 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class Constant
 {
-    /**
-     * @var string
-     */
-    private $name;
+    private string $name;
 
-    /**
-     * @var mixed
-     */
-    private $value;
+    private mixed $value;
 
-    public function __construct(string $name, $value)
+    public function __construct(string $name, mixed $value)
     {
         $this->name  = $name;
         $this->value = $value;

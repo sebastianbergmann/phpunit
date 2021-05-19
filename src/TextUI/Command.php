@@ -20,6 +20,7 @@ use function extension_loaded;
 use function fgets;
 use function file_get_contents;
 use function file_put_contents;
+use function fopen;
 use function get_class;
 use function getcwd;
 use function ini_get;
@@ -32,13 +33,12 @@ use function printf;
 use function realpath;
 use function sort;
 use function sprintf;
+use function str_starts_with;
 use function stream_resolve_include_path;
-use function strpos;
 use function trim;
 use function version_compare;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\PharLoader;
-use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
@@ -50,15 +50,14 @@ use PHPUnit\TextUI\XmlConfiguration\Generator;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\Migrator;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\TextTestListRenderer;
-use PHPUnit\Util\Xml\SchemaDetector;
 use PHPUnit\Util\XmlTestListRenderer;
 use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
+use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
 
@@ -68,24 +67,21 @@ use Throwable;
 class Command
 {
     /**
-     * @var array<string,mixed>
+     * @psalm-var array<string,mixed>
      */
-    protected $arguments = [];
+    protected array $arguments = [];
 
     /**
-     * @var array<string,mixed>
+     * @psalm-var array<string,mixed>
      */
-    protected $longOptions = [];
+    protected array $longOptions = [];
 
-    /**
-     * @var bool
-     */
-    private $versionStringPrinted = false;
+    private bool $versionStringPrinted = false;
 
     /**
      * @psalm-var list<string>
      */
-    private $warnings = [];
+    private array $warnings = [];
 
     /**
      * @throws Exception
@@ -110,12 +106,12 @@ class Command
     {
         $this->handleArguments($argv);
 
-        $runner = $this->createRunner();
+        $runner = new TestRunner;
 
         if ($this->arguments['test'] instanceof TestSuite) {
             $suite = $this->arguments['test'];
         } else {
-            $suite = $runner->getTest(
+            $suite = $this->getTest(
                 $this->arguments['test'],
                 $this->arguments['testSuffixes']
             );
@@ -158,14 +154,6 @@ class Command
         }
 
         return $return;
-    }
-
-    /**
-     * Create a TestRunner, override in subclasses.
-     */
-    protected function createRunner(): TestRunner
-    {
-        return new TestRunner($this->arguments['loader']);
     }
 
     /**
@@ -295,10 +283,6 @@ class Command
             }
         }
 
-        if ($this->arguments['loader'] !== null) {
-            $this->arguments['loader'] = $this->handleLoader($this->arguments['loader']);
-        }
-
         if (isset($this->arguments['configuration'])) {
             if (is_dir($this->arguments['configuration'])) {
                 $candidate = $this->configurationFileInDirectory($this->arguments['configuration']);
@@ -370,15 +354,6 @@ class Command
                 );
             }
 
-            if ($phpunitConfiguration->hasTestSuiteLoaderClass()) {
-                $file = $phpunitConfiguration->hasTestSuiteLoaderFile() ? $phpunitConfiguration->testSuiteLoaderFile() : '';
-
-                $this->arguments['loader'] = $this->handleLoader(
-                    $phpunitConfiguration->testSuiteLoaderClass(),
-                    $file
-                );
-            }
-
             if (!isset($this->arguments['testsuite']) && $phpunitConfiguration->hasDefaultTestSuite()) {
                 $this->arguments['testsuite'] = $phpunitConfiguration->defaultTestSuite();
             }
@@ -414,69 +389,6 @@ class Command
 
             exit(TestRunner::EXCEPTION_EXIT);
         }
-    }
-
-    /**
-     * Handles the loading of the PHPUnit\Runner\TestSuiteLoader implementation.
-     *
-     * @deprecated see https://github.com/sebastianbergmann/phpunit/issues/4039
-     */
-    protected function handleLoader(string $loaderClass, string $loaderFile = ''): ?TestSuiteLoader
-    {
-        $this->warnings[] = 'Using a custom test suite loader is deprecated';
-
-        if (!class_exists($loaderClass, false)) {
-            if ($loaderFile == '') {
-                $loaderFile = Filesystem::classNameToFilename(
-                    $loaderClass
-                );
-            }
-
-            $loaderFile = stream_resolve_include_path($loaderFile);
-
-            if ($loaderFile) {
-                /**
-                 * @noinspection PhpIncludeInspection
-                 * @psalm-suppress UnresolvableInclude
-                 */
-                require $loaderFile;
-            }
-        }
-
-        if (class_exists($loaderClass, false)) {
-            try {
-                $class = new ReflectionClass($loaderClass);
-                // @codeCoverageIgnoreStart
-            } catch (\ReflectionException $e) {
-                throw new ReflectionException(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-            // @codeCoverageIgnoreEnd
-
-            if ($class->implementsInterface(TestSuiteLoader::class) && $class->isInstantiable()) {
-                $object = $class->newInstance();
-
-                assert($object instanceof TestSuiteLoader);
-
-                return $object;
-            }
-        }
-
-        if ($loaderClass == StandardTestSuiteLoader::class) {
-            return null;
-        }
-
-        $this->exitWithErrorMessage(
-            sprintf(
-                'Could not use "%s" as loader.',
-                $loaderClass
-            )
-        );
-
-        return null;
     }
 
     /**
@@ -558,8 +470,17 @@ class Command
      */
     protected function handleBootstrap(string $filename): void
     {
+        if (@fopen($filename, 'r') === false) {
+            $this->exitWithErrorMessage(
+                sprintf(
+                    'Cannot open boostrap script "%s".' . "\n",
+                    $filename
+                )
+            );
+        }
+
         try {
-            FileLoader::checkAndLoad($filename);
+            include_once $filename;
         } catch (Throwable $t) {
             if ($t instanceof \PHPUnit\Exception) {
                 $this->exitWithErrorMessage($t->getMessage());
@@ -642,7 +563,7 @@ class Command
         sort($groups);
 
         foreach ($groups as $group) {
-            if (strpos($group, '__phpunit_') === 0) {
+            if (str_starts_with($group, '__phpunit_')) {
                 continue;
             }
 
@@ -784,12 +705,6 @@ class Command
     {
         $this->printVersionString();
 
-        if (!(new SchemaDetector)->detect($filename)->detected()) {
-            print $filename . ' does not need to be migrated.' . PHP_EOL;
-
-            exit(TestRunner::EXCEPTION_EXIT);
-        }
-
         copy($filename, $filename . '.bak');
 
         print 'Created backup:         ' . $filename . '.bak' . PHP_EOL;
@@ -889,6 +804,7 @@ class Command
     {
         $candidates = [
             $directory . '/phpunit.xml',
+            $directory . '/phpunit.dist.xml',
             $directory . '/phpunit.xml.dist',
         ];
 
@@ -899,5 +815,37 @@ class Command
         }
 
         return null;
+    }
+
+    private function getTest(string $suiteClassFile, array|string $suffixes = ''): TestSuite
+    {
+        if (is_dir($suiteClassFile)) {
+            $files = (new FileIteratorFacade)->getFilesAsArray(
+                $suiteClassFile,
+                $suffixes
+            );
+
+            $suite = new TestSuite($suiteClassFile);
+            $suite->addTestFiles($files);
+
+            return $suite;
+        }
+
+        if (is_file($suiteClassFile) && substr($suiteClassFile, -5, 5) === '.phpt') {
+            $suite = new TestSuite;
+            $suite->addTestFile($suiteClassFile);
+
+            return $suite;
+        }
+
+        try {
+            $testClass = (new TestSuiteLoader)->load($suiteClassFile);
+        } catch (\PHPUnit\Exception $e) {
+            print $e->getMessage() . PHP_EOL;
+
+            exit(1);
+        }
+
+        return new TestSuite($testClass);
     }
 }

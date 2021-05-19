@@ -10,12 +10,9 @@
 namespace PHPUnit\Runner\Filter;
 
 use function assert;
-use function sprintf;
 use FilterIterator;
 use Iterator;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\Exception;
-use RecursiveFilterIterator;
 use ReflectionClass;
 
 /**
@@ -26,32 +23,34 @@ final class Factory
     /**
      * @psalm-var array<int,array{0: \ReflectionClass, 1: array|string}>
      */
-    private $filters = [];
+    private array $filters = [];
 
-    /**
-     * @param array|string $args
-     *
-     * @throws Exception
-     */
-    public function addFilter(ReflectionClass $filter, $args): void
+    public function addExcludeGroupFilter(array $groups): void
     {
-        if (!$filter->isSubclassOf(RecursiveFilterIterator::class)) {
-            throw new Exception(
-                sprintf(
-                    'Class "%s" does not extend RecursiveFilterIterator',
-                    $filter->name
-                )
-            );
-        }
+        $this->filters[] = [
+            new ReflectionClass(ExcludeGroupFilterIterator::class), $groups,
+        ];
+    }
 
-        $this->filters[] = [$filter, $args];
+    public function addIncludeGroupFilter(array $groups): void
+    {
+        $this->filters[] = [
+            new ReflectionClass(IncludeGroupFilterIterator::class), $groups,
+        ];
+    }
+
+    public function addNameFilter(string $name): void
+    {
+        $this->filters[] = [
+            new ReflectionClass(NameFilterIterator::class), $name,
+        ];
     }
 
     public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
     {
         foreach ($this->filters as $filter) {
-            [$class, $args] = $filter;
-            $iterator       = $class->newInstance($iterator, $args, $suite);
+            [$class, $arguments] = $filter;
+            $iterator            = $class->newInstance($iterator, $arguments, $suite);
         }
 
         assert($iterator instanceof FilterIterator);

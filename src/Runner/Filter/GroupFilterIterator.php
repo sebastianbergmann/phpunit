@@ -23,9 +23,9 @@ use RecursiveIterator;
 abstract class GroupFilterIterator extends RecursiveFilterIterator
 {
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
-    protected $groupTests = [];
+    protected array $groupTests = [];
 
     public function __construct(RecursiveIterator $iterator, array $groups, TestSuite $suite)
     {

@@ -8,7 +8,6 @@ $tmpResultCache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);
 
 $phpunitXmlConfig = __DIR__ . '/_files/order-by-duration.phpunit.xml';
 
-$_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration=' . $phpunitXmlConfig;
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--cache-result';

@@ -17,20 +17,11 @@ use PHPUnit\TextUI\XmlConfiguration\Directory;
  */
 final class Html
 {
-    /**
-     * @var Directory
-     */
-    private $target;
+    private Directory $target;
 
-    /**
-     * @var int
-     */
-    private $lowUpperBound;
+    private int $lowUpperBound;
 
-    /**
-     * @var int
-     */
-    private $highLowerBound;
+    private int $highLowerBound;
 
     public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound)
     {

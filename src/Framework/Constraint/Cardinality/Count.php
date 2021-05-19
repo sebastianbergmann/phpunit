@@ -10,10 +10,9 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function count;
-use function is_array;
+use function is_countable;
 use function iterator_count;
 use function sprintf;
-use Countable;
 use EmptyIterator;
 use Generator;
 use Iterator;
@@ -26,10 +25,7 @@ use Traversable;
  */
 class Count extends Constraint
 {
-    /**
-     * @var int
-     */
-    private $expectedCount;
+    private int $expectedCount;
 
     public function __construct(int $expected)
     {
@@ -50,7 +46,7 @@ class Count extends Constraint
      *
      * @throws Exception
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         return $this->expectedCount === $this->getCountOf($other);
     }
@@ -60,7 +56,7 @@ class Count extends Constraint
      */
     protected function getCountOf($other): ?int
     {
-        if ($other instanceof Countable || is_array($other)) {
+        if (is_countable($other)) {
             return count($other);
         }
 
@@ -128,10 +124,8 @@ class Count extends Constraint
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
-     *
-     * @param mixed $other evaluated value or object
      */
-    protected function failureDescription($other): string
+    protected function failureDescription(mixed $other): string
     {
         return sprintf(
             'actual size %d matches expected size %d',

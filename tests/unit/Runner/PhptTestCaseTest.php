@@ -11,11 +11,11 @@ namespace PHPUnit\Runner;
 
 use const PHP_EOL;
 use function file_put_contents;
-use function strtr;
 use function sys_get_temp_dir;
 use function touch;
 use function unlink;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 
 /**
@@ -103,51 +103,12 @@ EOF;
 
     public function testAlwaysReportsNumberOfAssertionsIsOne(): void
     {
-        $this->assertSame(1, $this->testCase->getNumAssertions());
+        $this->assertSame(1, $this->testCase->numberOfAssertionsPerformed());
     }
 
     public function testAlwaysReportsItDoesNotUseADataprovider(): void
     {
         $this->assertSame(false, $this->testCase->usesDataProvider());
-    }
-
-    public function testShouldRunFileSectionAsTest(): void
-    {
-        $this->setPhpContent($this->ensureCorrectEndOfLine(self::EXPECT_CONTENT));
-
-        $fileSection = '<?php echo "Hello PHPUnit!"; ?>' . PHP_EOL;
-
-        $this->phpProcess
-             ->expects($this->once())
-             ->method('runJob')
-             ->with($fileSection)
-             ->willReturn(['stdout' => '', 'stderr' => '']);
-
-        $this->testCase->run();
-    }
-
-    public function testRenderFileSection(): void
-    {
-        $this->setPhpContent($this->ensureCorrectEndOfLine(
-            <<<'EOF'
---TEST--
-Something to decribe it
---FILE--
-<?php echo __DIR__ . __FILE__; ?>
---EXPECT--
-Something
-EOF
-        ));
-
-        $renderedCode = "<?php echo '" . $this->dirname . "' . '" . $this->filename . "'; ?>" . PHP_EOL;
-
-        $this->phpProcess
-             ->expects($this->once())
-             ->method('runJob')
-             ->with($renderedCode)
-             ->willReturn(['stdout' => '', 'stderr' => '']);
-
-        $this->testCase->run();
     }
 
     public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord(): void
@@ -166,14 +127,17 @@ EOF
              ->with($skipifSection)
              ->willReturn(['stdout' => 'skip: Reason', 'stderr' => '']);
 
-        $this->testCase->run();
+        $this->testCase->run(new TestResult);
     }
 
     public function testShouldSkipTestWhenPhptFileIsEmpty(): void
     {
         $this->setPhpContent('');
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
+
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
     }
@@ -189,7 +153,9 @@ Something
 EOF
         );
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -208,7 +174,9 @@ echo "Hello world!\n";
 EOF
         );
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -227,63 +195,22 @@ Tears and misery
 EOF
         );
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
         $this->assertSame('Invalid PHPT file: empty section header', $skipMessage);
     }
 
-    public function testShouldValidateExpectSession(): void
-    {
-        $this->setPhpContent(self::EXPECT_CONTENT);
-
-        $this->phpProcess
-             ->expects($this->once())
-             ->method('runJob')
-             ->with(self::FILE_SECTION)
-             ->willReturn(['stdout' => 'Hello PHPUnit!', 'stderr' => '']);
-
-        $result = $this->testCase->run();
-
-        $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testShouldValidateExpectfSession(): void
-    {
-        $this->setPhpContent(self::EXPECTF_CONTENT);
-
-        $this->phpProcess
-             ->expects($this->once())
-             ->method('runJob')
-             ->with(self::FILE_SECTION)
-             ->willReturn(['stdout' => 'Hello PHPUnit!', 'stderr' => '']);
-
-        $result = $this->testCase->run();
-
-        $this->assertTrue($result->wasSuccessful());
-    }
-
-    public function testShouldValidateExpectregexSession(): void
-    {
-        $this->setPhpContent(self::EXPECTREGEX_CONTENT);
-
-        $this->phpProcess
-             ->expects($this->once())
-             ->method('runJob')
-             ->with(self::FILE_SECTION)
-             ->willReturn(['stdout' => 'Hello PHPUnit!', 'stderr' => '']);
-
-        $result = $this->testCase->run();
-
-        $this->assertTrue($result->wasSuccessful());
-    }
-
     public function testShouldSkipTestWhenExpectHasNoValue(): void
     {
         $this->setPhpContent(self::EXPECT_MISSING_ASSERTION_CONTENT);
 
-        $result = $this->testCase->run();
+        $result = new TestResult;
+
+        $this->testCase->run($result);
 
         $this->assertCount(1, $result->errors());
         $skipMessage = $result->errors()[0]->thrownException()->getMessage();
@@ -323,24 +250,5 @@ EOF
     private function setPhpContent($content): void
     {
         file_put_contents($this->filename, $content);
-    }
-
-    /**
-     * Ensures the correct line ending is used for comparison.
-     *
-     * @param string $content
-     *
-     * @return string
-     */
-    private function ensureCorrectEndOfLine($content)
-    {
-        return strtr(
-            $content,
-            [
-                "\r\n" => PHP_EOL,
-                "\r"   => PHP_EOL,
-                "\n"   => PHP_EOL,
-            ]
-        );
     }
 }

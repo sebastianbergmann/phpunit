@@ -14,7 +14,10 @@ namespace PHPUnit\Framework\Constraint;
  */
 final class SameSize extends Count
 {
-    public function __construct(iterable $expected)
+    /**
+     * @psalm-param \Countable|iterable $expected
+     */
+    public function __construct($expected)
     {
         parent::__construct((int) $this->getCountOf($expected));
     }

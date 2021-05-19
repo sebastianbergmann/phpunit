@@ -9,6 +9,9 @@
  */
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @preserveGlobalState enabled
+ */
 class Issue2158Test extends TestCase
 {
     /**

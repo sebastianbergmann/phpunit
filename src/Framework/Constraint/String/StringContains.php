@@ -12,22 +12,16 @@ namespace PHPUnit\Framework\Constraint;
 use function mb_stripos;
 use function mb_strtolower;
 use function sprintf;
-use function strpos;
+use function str_contains;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class StringContains extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $string;
+    private string $string;
 
-    /**
-     * @var bool
-     */
-    private $ignoreCase;
+    private bool $ignoreCase;
 
     public function __construct(string $string, bool $ignoreCase = false)
     {
@@ -55,10 +49,8 @@ final class StringContains extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
-     *
-     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         if ('' === $this->string) {
             return true;
@@ -80,6 +72,6 @@ final class StringContains extends Constraint
          * Additionally, we want this method to be binary safe so we can check if some binary data is in other binary
          * data.
          */
-        return strpos($other, $this->string) !== false;
+        return str_contains($other, $this->string);
     }
 }

@@ -25,7 +25,6 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
@@ -117,9 +116,9 @@ final class XmlConfigurationTest extends TestCase
             'executionOrder random'                           => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
             'executionOrder reverse'                          => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
             'executionOrder size'                             => ['executionOrder', 'size', TestSuiteSorter::ORDER_SIZE],
+            'cacheDirectory absolute path'                    => ['cacheDirectory', '/path/to/cache', '/path/to/cache'],
             'cacheResult=false'                               => ['cacheResult', 'false', false],
             'cacheResult=true'                                => ['cacheResult', 'true', true],
-            'cacheResultFile absolute path'                   => ['cacheResultFile', '/path/to/result/cache', '/path/to/result/cache'],
             'columns'                                         => ['columns', 'max', 'max'],
             'stopOnFailure'                                   => ['stopOnFailure', 'true', true],
             'stopOnWarning'                                   => ['stopOnWarning', 'true', true],
@@ -130,7 +129,6 @@ final class XmlConfigurationTest extends TestCase
             'failOnWarning'                                   => ['failOnWarning', 'true', true],
             'failOnRisky'                                     => ['failOnRisky', 'true', true],
             'processIsolation'                                => ['processIsolation', 'true', true],
-            'testSuiteLoaderFile absolute path'               => ['testSuiteLoaderFile', '/path/to/file', '/path/to/file'],
             'reverseDefectList'                               => ['reverseDefectList', 'true', true],
             'registerMockObjectsFromTestArgumentsRecursively' => ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
         ];
@@ -160,68 +158,6 @@ final class XmlConfigurationTest extends TestCase
 
         $this->assertTrue($codeCoverage->pathCoverage());
         $this->assertTrue($codeCoverage->includeUncoveredFiles());
-        $this->assertTrue($codeCoverage->processUncoveredFiles());
-        $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
-        $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
-
-        /** @var Directory $directory */
-        $directory = iterator_to_array($codeCoverage->directories(), false)[0];
-        $this->assertSame('/path/to/files', $directory->path());
-        $this->assertSame('', $directory->prefix());
-        $this->assertSame('.php', $directory->suffix());
-        $this->assertSame('DEFAULT', $directory->group());
-
-        /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[0];
-        $this->assertSame('/path/to/file', $file->path());
-
-        /** @var File $file */
-        $file = iterator_to_array($codeCoverage->files(), false)[1];
-        $this->assertSame('/path/to/file', $file->path());
-
-        /** @var Directory $directory */
-        $directory = iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
-        $this->assertSame('/path/to/files', $directory->path());
-        $this->assertSame('', $directory->prefix());
-        $this->assertSame('.php', $directory->suffix());
-        $this->assertSame('DEFAULT', $directory->group());
-
-        /** @var File $file */
-        $file = iterator_to_array($codeCoverage->excludeFiles(), false)[0];
-        $this->assertSame('/path/to/file', $file->path());
-
-        $this->assertTrue($codeCoverage->hasClover());
-        $this->assertSame(TEST_FILES_PATH . 'clover.xml', $codeCoverage->clover()->target()->path());
-
-        $this->assertTrue($codeCoverage->hasCobertura());
-        $this->assertSame(TEST_FILES_PATH . 'cobertura.xml', $codeCoverage->cobertura()->target()->path());
-
-        $this->assertTrue($codeCoverage->hasCrap4j());
-        $this->assertSame(TEST_FILES_PATH . 'crap4j.xml', $codeCoverage->crap4j()->target()->path());
-
-        $this->assertTrue($codeCoverage->hasHtml());
-        $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->html()->target()->path());
-        $this->assertSame(50, $codeCoverage->html()->lowUpperBound());
-        $this->assertSame(90, $codeCoverage->html()->highLowerBound());
-
-        $this->assertTrue($codeCoverage->hasPhp());
-        $this->assertSame(TEST_FILES_PATH . 'coverage.php', $codeCoverage->php()->target()->path());
-
-        $this->assertTrue($codeCoverage->hasText());
-        $this->assertSame(TEST_FILES_PATH . 'coverage.txt', $codeCoverage->text()->target()->path());
-        $this->assertFalse($codeCoverage->text()->showUncoveredFiles());
-        $this->assertTrue($codeCoverage->text()->showOnlySummary());
-
-        $this->assertTrue($codeCoverage->hasXml());
-        $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->xml()->target()->path());
-    }
-
-    public function testLegacyCodeCoverageConfigurationIsReadCorrectly(): void
-    {
-        $codeCoverage = $this->configuration('configuration_legacy_codecoverage.xml')->codeCoverage();
-
-        $this->assertTrue($codeCoverage->includeUncoveredFiles());
-        $this->assertTrue($codeCoverage->processUncoveredFiles());
         $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
 
@@ -299,66 +235,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(['name'], $testdox->exclude()->asArrayOfStrings());
     }
 
-    public function testListenerConfigurationIsReadCorrectly(): void
-    {
-        $dir         = __DIR__;
-        $includePath = ini_get('include_path');
-
-        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
-
-        $i = 1;
-
-        foreach ($this->configuration('configuration.xml')->listeners() as $listener) {
-            switch ($i) {
-                case 1:
-                    $this->assertSame('MyListener', $listener->className());
-                    $this->assertTrue($listener->hasSourceFile());
-                    $this->assertSame('/optional/path/to/MyListener.php', $listener->sourceFile());
-                    $this->assertTrue($listener->hasArguments());
-                    $this->assertEquals(
-                        [
-                            0 => [
-                                0 => 'Sebastian',
-                            ],
-                            1 => 22,
-                            2 => 'April',
-                            3 => 19.78,
-                            4 => null,
-                            5 => new stdClass,
-                            6 => TEST_FILES_PATH . 'MyTestFile.php',
-                            7 => TEST_FILES_PATH . 'MyRelativePath',
-                            8 => true,
-                        ],
-                        $listener->arguments()
-                    );
-
-                    break;
-
-                case 2:
-                    $this->assertSame('IncludePathListener', $listener->className());
-                    $this->assertTrue($listener->hasSourceFile());
-                    $this->assertSame(TEST_FILES_PATH . 'ConfigurationTest.php', $listener->sourceFile());
-                    $this->assertFalse($listener->hasArguments());
-                    $this->assertSame([], $listener->arguments());
-
-                    break;
-
-                case 3:
-                    $this->assertSame('CompactArgumentsListener', $listener->className());
-                    $this->assertTrue($listener->hasSourceFile());
-                    $this->assertSame('/CompactArgumentsListener.php', $listener->sourceFile());
-                    $this->assertTrue($listener->hasArguments());
-                    $this->assertSame([0 => 42, 1 => false], $listener->arguments());
-
-                    break;
-            }
-
-            $i++;
-        }
-
-        ini_set('include_path', $includePath);
-    }
-
     public function testExtensionConfigurationIsReadCorrectly(): void
     {
         $dir         = __DIR__;
@@ -421,29 +297,6 @@ final class XmlConfigurationTest extends TestCase
     public function testLoggingConfigurationIsReadCorrectly(): void
     {
         $logging = $this->configuration('configuration_logging.xml')->logging();
-
-        $this->assertTrue($logging->hasJunit());
-        $this->assertSame(TEST_FILES_PATH . 'junit.xml', $logging->junit()->target()->path());
-
-        $this->assertTrue($logging->hasTeamCity());
-        $this->assertSame(TEST_FILES_PATH . 'teamcity.txt', $logging->teamCity()->target()->path());
-
-        $this->assertTrue($logging->hasTestDoxHtml());
-        $this->assertSame(TEST_FILES_PATH . 'testdox.html', $logging->testDoxHtml()->target()->path());
-
-        $this->assertTrue($logging->hasTestDoxText());
-        $this->assertSame(TEST_FILES_PATH . 'testdox.txt', $logging->testDoxText()->target()->path());
-
-        $this->assertTrue($logging->hasTestDoxXml());
-        $this->assertSame(TEST_FILES_PATH . 'testdox.xml', $logging->testDoxXml()->target()->path());
-
-        $this->assertTrue($logging->hasText());
-        $this->assertSame(TEST_FILES_PATH . 'logfile.txt', $logging->text()->target()->path());
-    }
-
-    public function testLegacyLoggingConfigurationIsReadCorrectly(): void
-    {
-        $logging = $this->configuration('configuration_legacy_logging.xml')->logging();
 
         $this->assertTrue($logging->hasJunit());
         $this->assertSame(TEST_FILES_PATH . 'junit.xml', $logging->junit()->target()->path());
@@ -626,7 +479,7 @@ final class XmlConfigurationTest extends TestCase
         $phpunit = $this->configuration('configuration.xml')->phpunit();
 
         $this->assertTrue($phpunit->backupGlobals());
-        $this->assertFalse($phpunit->backupStaticAttributes());
+        $this->assertFalse($phpunit->backupStaticProperties());
         $this->assertFalse($phpunit->beStrictAboutChangesToGlobalState());
         $this->assertSame('/path/to/bootstrap.php', $phpunit->bootstrap());
         $this->assertSame(80, $phpunit->columns());
@@ -646,7 +499,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertFalse($phpunit->enforceTimeLimit());
         $this->assertSame('/tmp', $phpunit->extensionsDirectory());
         $this->assertSame(DefaultResultPrinter::class, $phpunit->printerClass());
-        $this->assertSame(StandardTestSuiteLoader::class, $phpunit->testSuiteLoaderClass());
         $this->assertSame('My Test Suite', $phpunit->defaultTestSuite());
         $this->assertFalse($phpunit->verbose());
         $this->assertSame(1, $phpunit->timeoutForSmallTests());

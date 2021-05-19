@@ -30,10 +30,10 @@ final class Builder
 {
     private const LONG_OPTIONS = [
         'atleast-version=',
-        'prepend=',
         'bootstrap=',
         'cache-result',
         'do-not-cache-result',
+        'cache-directory=',
         'cache-result-file=',
         'check-version',
         'colors==',
@@ -72,7 +72,6 @@ final class Builder
         'list-suites',
         'list-tests',
         'list-tests-xml=',
-        'loader=',
         'log-junit=',
         'log-teamcity=',
         'migrate-configuration',
@@ -118,8 +117,6 @@ final class Builder
         'testsuite=',
         'verbose',
         'version',
-        'whitelist=',
-        'dump-xdebug-filter=',
     ];
 
     private const SHORT_OPTIONS = 'd:c:hv';
@@ -143,10 +140,11 @@ final class Builder
         $argument                                   = null;
         $atLeastVersion                             = null;
         $backupGlobals                              = null;
-        $backupStaticAttributes                     = null;
+        $backupStaticProperties                     = null;
         $beStrictAboutChangesToGlobalState          = null;
         $beStrictAboutResourceUsageDuringSmallTests = null;
         $bootstrap                                  = null;
+        $cacheDirectory                             = null;
         $cacheResult                                = null;
         $cacheResultFile                            = null;
         $checkVersion                               = null;
@@ -196,7 +194,6 @@ final class Builder
         $listSuites                                 = null;
         $listTests                                  = null;
         $listTestsXml                               = null;
-        $loader                                     = null;
         $noCoverage                                 = null;
         $noExtensions                               = null;
         $noInteraction                              = null;
@@ -230,7 +227,6 @@ final class Builder
         $useDefaultConfiguration                    = null;
         $verbose                                    = null;
         $version                                    = null;
-        $xdebugFilterFile                           = null;
 
         if (isset($options[1][0])) {
             $argument = $options[1][0];
@@ -245,6 +241,11 @@ final class Builder
 
                 case '--bootstrap':
                     $bootstrap = $option[1];
+
+                    break;
+
+                case '--cache-directory':
+                    $cacheDirectory = $option[1];
 
                     break;
 
@@ -430,11 +431,6 @@ final class Builder
 
                 case '--printer':
                     $printer = $option[1];
-
-                    break;
-
-                case '--loader':
-                    $loader = $option[1];
 
                     break;
 
@@ -654,7 +650,7 @@ final class Builder
                     break;
 
                 case '--static-backup':
-                    $backupStaticAttributes = true;
+                    $backupStaticProperties = true;
 
                     break;
 
@@ -730,7 +726,6 @@ final class Builder
                     break;
 
                 case '--coverage-filter':
-                case '--whitelist':
                     if ($coverageFilter === null) {
                         $coverageFilter = [];
                     }
@@ -764,11 +759,6 @@ final class Builder
 
                     break;
 
-                case '--dump-xdebug-filter':
-                    $xdebugFilterFile = $option[1];
-
-                    break;
-
                 default:
                     $unrecognizedOptions[str_replace('--', '', $option[0])] = $option[1];
             }
@@ -794,10 +784,11 @@ final class Builder
             $argument,
             $atLeastVersion,
             $backupGlobals,
-            $backupStaticAttributes,
+            $backupStaticProperties,
             $beStrictAboutChangesToGlobalState,
             $beStrictAboutResourceUsageDuringSmallTests,
             $bootstrap,
+            $cacheDirectory,
             $cacheResult,
             $cacheResultFile,
             $checkVersion,
@@ -846,7 +837,6 @@ final class Builder
             $listSuites,
             $listTests,
             $listTestsXml,
-            $loader,
             $noCoverage,
             $noExtensions,
             $noInteraction,
@@ -880,8 +870,7 @@ final class Builder
             $useDefaultConfiguration,
             $verbose,
             $version,
-            $coverageFilter,
-            $xdebugFilterFile
+            $coverageFilter
         );
     }
 }

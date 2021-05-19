@@ -16,6 +16,10 @@ use ReflectionException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
+ * @codeCoverageIgnore
+ *
+ * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
  */
 final class ClassHasStaticAttribute extends ClassHasAttribute
 {
@@ -33,10 +37,8 @@ final class ClassHasStaticAttribute extends ClassHasAttribute
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
-     *
-     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         try {
             $class = new ReflectionClass($other);

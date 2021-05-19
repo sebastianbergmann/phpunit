@@ -27,35 +27,17 @@ use PHPUnit\Framework\TestFailure;
  */
 final class Matcher
 {
-    /**
-     * @var InvocationOrder
-     */
-    private $invocationRule;
+    private InvocationOrder $invocationRule;
 
-    /**
-     * @var mixed
-     */
-    private $afterMatchBuilderId;
+    private ?string $afterMatchBuilderId = null;
 
-    /**
-     * @var bool
-     */
-    private $afterMatchBuilderIsInvoked = false;
+    private bool $afterMatchBuilderIsInvoked = false;
 
-    /**
-     * @var MethodName
-     */
-    private $methodNameRule;
+    private ?MethodName $methodNameRule = null;
 
-    /**
-     * @var ParametersRule
-     */
-    private $parametersRule;
+    private ?ParametersRule $parametersRule = null;
 
-    /**
-     * @var Stub
-     */
-    private $stub;
+    private ?Stub $stub = null;
 
     public function __construct(InvocationOrder $rule)
     {

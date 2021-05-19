@@ -10,7 +10,6 @@
 namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestCaseTest;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\EmptyTestCaseTest;
@@ -55,87 +54,60 @@ final class ResultCacheExtensionTest extends TestCase
         $this->result->addListener($listener);
     }
 
-    /**
-     * @testdox Clean up test name $_dataName
-     * @dataProvider longTestNamesDataprovider
-     */
-    public function testStripsDataproviderParametersFromTestName(string $testName, string $expectedTestName): void
-    {
-        $test = new TestCaseTest($testName);
-        $test->run($this->result);
-
-        $this->assertSame(BaseTestRunner::STATUS_ERROR, $this->cache->getState($expectedTestName));
-    }
-
-    public function longTestNamesDataprovider(): array
-    {
-        return [
-            'ClassName::testMethod' => [
-                'testSomething',
-                TestCaseTest::class . '::testSomething', ],
-            'ClassName::testMethod and data set number and vardump' => [
-                'testMethod with data set #123 (\'a\', "A", 0, false)',
-                TestCaseTest::class . '::testMethod with data set #123', ],
-            'ClassName::testMethod and data set name and vardump' => [
-                'testMethod with data set "data name" (\'a\', "A\", 0, false)',
-                TestCaseTest::class . '::testMethod with data set "data name"', ],
-        ];
-    }
-
     public function testError(): void
     {
-        $test = new TestError('test_name');
+        $test = new TestError('testOne');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_ERROR, $this->cache->getState(TestError::class . '::test_name'));
+        $this->assertTrue($this->cache->status(TestError::class . '::testOne')->isError());
     }
 
     public function testFailure(): void
     {
-        $test = new Failure('test_name');
+        $test = new Failure('testOne');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_FAILURE, $this->cache->getState(Failure::class . '::test_name'));
+        $this->assertTrue($this->cache->status(Failure::class . '::testOne')->isFailure());
     }
 
     public function testSkipped(): void
     {
-        $test = new TestSkipped('test_name');
+        $test = new TestSkipped('testOne');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $this->cache->getState(TestSkipped::class . '::test_name'));
+        $this->assertTrue($this->cache->status(TestSkipped::class . '::testOne')->isSkipped());
     }
 
     public function testIncomplete(): void
     {
-        $test = new TestIncomplete('test_name');
+        $test = new TestIncomplete('testOne');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_INCOMPLETE, $this->cache->getState(TestIncomplete::class . '::test_name'));
+        $this->assertTrue($this->cache->status(TestIncomplete::class . '::testOne')->isIncomplete());
     }
 
     public function testPassedTestsOnlyCacheTime(): void
     {
-        $test = new Success('test_name');
+        $test = new Success('testOne');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $this->cache->getState(Success::class . '::test_name'));
+        $this->assertTrue($this->cache->status(Success::class . '::testOne')->isUnknown());
     }
 
     public function testWarning(): void
     {
-        $test = new TestWarning('test_name');
+        $test = new TestWarning('testOne');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_WARNING, $this->cache->getState(TestWarning::class . '::test_name'));
+        $this->assertTrue($this->cache->status(TestWarning::class . '::testOne')->isWarning());
     }
 
     public function testRisky(): void
     {
-        $test = new TestRisky('test_name');
+        $test = new TestRisky('testOne');
         $test->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_RISKY, $this->cache->getState(TestRisky::class . '::test_name'));
+        $this->assertTrue($this->cache->status(TestRisky::class . '::testOne')->isRisky());
     }
 
     public function testEmptySuite(): void
@@ -144,6 +116,6 @@ final class ResultCacheExtensionTest extends TestCase
         $suite->addTestSuite(EmptyTestCaseTest::class);
         $suite->run($this->result);
 
-        $this->assertSame(BaseTestRunner::STATUS_WARNING, $this->cache->getState('Warning'));
+        $this->assertTrue($this->cache->status('Warning')->isWarning());
     }
 }

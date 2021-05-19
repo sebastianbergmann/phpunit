@@ -19,15 +19,9 @@ use SebastianBergmann\Exporter\Exporter;
  */
 final class ConsecutiveCalls implements Stub
 {
-    /**
-     * @var array
-     */
-    private $stack;
+    private array $stack;
 
-    /**
-     * @var mixed
-     */
-    private $value;
+    private mixed $value;
 
     public function __construct(array $stack)
     {

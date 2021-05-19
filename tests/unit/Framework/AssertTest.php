@@ -34,7 +34,6 @@ use DateTime;
 use DateTimeZone;
 use PHPUnit\TestFixture\Author;
 use PHPUnit\TestFixture\Book;
-use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use PHPUnit\TestFixture\ClassWithToString;
 use PHPUnit\TestFixture\ObjectEquals\ValueObject;
 use PHPUnit\TestFixture\SampleArrayAccess;
@@ -83,20 +82,6 @@ final class AssertTest extends TestCase
         $this->assertContainsOnlyInstancesOf(Book::class, $test2);
     }
 
-    public function testAssertArrayHasKeyThrowsExceptionForInvalidFirstArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertArrayHasKey(null, []);
-    }
-
-    public function testAssertArrayHasKeyThrowsExceptionForInvalidSecondArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertArrayHasKey(0, null);
-    }
-
     public function testAssertArrayHasIntegerKey(): void
     {
         $this->assertArrayHasKey(0, ['foo']);
@@ -104,20 +89,6 @@ final class AssertTest extends TestCase
         $this->expectException(AssertionFailedError::class);
 
         $this->assertArrayHasKey(1, ['foo']);
-    }
-
-    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidFirstArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertArrayNotHasKey(null, []);
-    }
-
-    public function testAssertArrayNotHasKeyThrowsExceptionForInvalidSecondArgument(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertArrayNotHasKey(0, null);
     }
 
     public function testAssertArrayNotHasIntegerKey(): void
@@ -678,76 +649,6 @@ XML;
         $this->assertFileIsWritable(__DIR__ . DIRECTORY_SEPARATOR . 'NotExisting');
     }
 
-    public function testAssertObjectHasAttribute(): void
-    {
-        $o = new Author('Terry Pratchett');
-
-        $this->assertObjectHasAttribute('name', $o);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectHasAttribute('foo', $o);
-    }
-
-    public function testAssertObjectHasAttributeNumericAttribute(): void
-    {
-        $object           = new stdClass;
-        $object->{'2020'} = 'Tokyo';
-
-        $this->assertObjectHasAttribute('2020', $object);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectHasAttribute('2018', $object);
-    }
-
-    public function testAssertObjectHasAttributeMultiByteAttribute(): void
-    {
-        $object         = new stdClass;
-        $object->{'東京'} = 2020;
-
-        $this->assertObjectHasAttribute('東京', $object);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectHasAttribute('長野', $object);
-    }
-
-    public function testAssertObjectNotHasAttribute(): void
-    {
-        $o = new Author('Terry Pratchett');
-
-        $this->assertObjectNotHasAttribute('foo', $o);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectNotHasAttribute('name', $o);
-    }
-
-    public function testAssertObjectNotHasAttributeNumericAttribute(): void
-    {
-        $object           = new stdClass;
-        $object->{'2020'} = 'Tokyo';
-
-        $this->assertObjectNotHasAttribute('2018', $object);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectNotHasAttribute('2020', $object);
-    }
-
-    public function testAssertObjectNotHasAttributeMultiByteAttribute(): void
-    {
-        $object         = new stdClass;
-        $object->{'東京'} = 2020;
-
-        $this->assertObjectNotHasAttribute('長野', $object);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectNotHasAttribute('東京', $object);
-    }
-
     public function testAssertFinite(): void
     {
         $this->assertFinite(1);
@@ -953,216 +854,6 @@ XML;
         $this->assertLessThanOrEqual(1, 2);
     }
 
-    public function testAssertClassHasAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassHasAttribute('1', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testAssertClassHasAttributeThrowsExceptionIfClassDoesNotExist(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassHasAttribute('attribute', 'ClassThatDoesNotExist');
-    }
-
-    public function testAssertClassNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassNotHasAttribute('1', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testAssertClassNotHasAttributeThrowsExceptionIfClassDoesNotExist(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassNotHasAttribute('attribute', 'ClassThatDoesNotExist');
-    }
-
-    public function testAssertClassHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassHasStaticAttribute('1', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testAssertClassHasStaticAttributeThrowsExceptionIfClassDoesNotExist(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassHasStaticAttribute('attribute', 'ClassThatDoesNotExist');
-    }
-
-    public function testAssertClassNotHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassNotHasStaticAttribute('1', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testAssertClassNotHasStaticAttributeThrowsExceptionIfClassDoesNotExist(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertClassNotHasStaticAttribute('attribute', 'ClassThatDoesNotExist');
-    }
-
-    public function testAssertObjectHasAttributeThrowsException2(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertObjectHasAttribute('foo', null);
-    }
-
-    public function testAssertObjectHasAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertObjectHasAttribute('1', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testAssertObjectNotHasAttributeThrowsException2(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertObjectNotHasAttribute('foo', null);
-    }
-
-    public function testAssertObjectNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertObjectNotHasAttribute('1', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testClassHasPublicAttribute(): void
-    {
-        $this->assertClassHasAttribute('publicAttribute', ClassWithNonPublicAttributes::class);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertClassHasAttribute('attribute', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testClassNotHasPublicAttribute(): void
-    {
-        $this->assertClassNotHasAttribute('attribute', ClassWithNonPublicAttributes::class);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertClassNotHasAttribute('publicAttribute', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testClassHasPublicStaticAttribute(): void
-    {
-        $this->assertClassHasStaticAttribute('publicStaticAttribute', ClassWithNonPublicAttributes::class);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertClassHasStaticAttribute('attribute', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testClassNotHasPublicStaticAttribute(): void
-    {
-        $this->assertClassNotHasStaticAttribute('attribute', ClassWithNonPublicAttributes::class);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertClassNotHasStaticAttribute('publicStaticAttribute', ClassWithNonPublicAttributes::class);
-    }
-
-    public function testObjectHasPublicAttribute(): void
-    {
-        $obj = new ClassWithNonPublicAttributes;
-
-        $this->assertObjectHasAttribute('publicAttribute', $obj);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectHasAttribute('attribute', $obj);
-    }
-
-    public function testObjectNotHasPublicAttribute(): void
-    {
-        $obj = new ClassWithNonPublicAttributes;
-
-        $this->assertObjectNotHasAttribute('attribute', $obj);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectNotHasAttribute('publicAttribute', $obj);
-    }
-
-    public function testObjectHasOnTheFlyAttribute(): void
-    {
-        $obj      = new stdClass;
-        $obj->foo = 'bar';
-
-        $this->assertObjectHasAttribute('foo', $obj);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectHasAttribute('bar', $obj);
-    }
-
-    public function testObjectNotHasOnTheFlyAttribute(): void
-    {
-        $obj      = new stdClass;
-        $obj->foo = 'bar';
-
-        $this->assertObjectNotHasAttribute('bar', $obj);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectNotHasAttribute('foo', $obj);
-    }
-
-    public function testObjectHasProtectedAttribute(): void
-    {
-        $obj = new ClassWithNonPublicAttributes;
-
-        $this->assertObjectHasAttribute('protectedAttribute', $obj);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectHasAttribute('attribute', $obj);
-    }
-
-    public function testObjectNotHasProtectedAttribute(): void
-    {
-        $obj = new ClassWithNonPublicAttributes;
-
-        $this->assertObjectNotHasAttribute('attribute', $obj);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectNotHasAttribute('protectedAttribute', $obj);
-    }
-
-    public function testObjectHasPrivateAttribute(): void
-    {
-        $obj = new ClassWithNonPublicAttributes;
-
-        $this->assertObjectHasAttribute('privateAttribute', $obj);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectHasAttribute('attribute', $obj);
-    }
-
-    public function testObjectNotHasPrivateAttribute(): void
-    {
-        $obj = new ClassWithNonPublicAttributes;
-
-        $this->assertObjectNotHasAttribute('attribute', $obj);
-
-        $this->expectException(AssertionFailedError::class);
-
-        $this->assertObjectNotHasAttribute('privateAttribute', $obj);
-    }
-
     /**
      * @doesNotPerformAssertions
      */
@@ -1251,30 +942,6 @@ XML;
     public function testAssertThatArrayHasKey(): void
     {
         $this->assertThat(['foo' => 'bar'], $this->arrayHasKey('foo'));
-    }
-
-    public function testAssertThatClassHasAttribute(): void
-    {
-        $this->assertThat(
-            new ClassWithNonPublicAttributes,
-            $this->classHasAttribute('publicAttribute')
-        );
-    }
-
-    public function testAssertThatClassHasStaticAttribute(): void
-    {
-        $this->assertThat(
-            new ClassWithNonPublicAttributes,
-            $this->classHasStaticAttribute('publicStaticAttribute')
-        );
-    }
-
-    public function testAssertThatObjectHasAttribute(): void
-    {
-        $this->assertThat(
-            new ClassWithNonPublicAttributes,
-            $this->objectHasAttribute('publicAttribute')
-        );
     }
 
     public function testAssertThatEqualTo(): void
@@ -1470,13 +1137,6 @@ XML;
         );
     }
 
-    public function testAssertStringStartsNotWithThrowsException2(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertStringStartsNotWith('', null);
-    }
-
     public function testAssertStringStartsWith(): void
     {
         $this->assertStringStartsWith('prefix', 'prefixfoo');
@@ -1511,6 +1171,69 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertStringEndsNotWith('suffix', 'foosuffix');
+    }
+
+    public function dataAssertStringContainsStringIgnoringLineEndings(): array
+    {
+        return [
+            ["b\nc", "b\r\nc"],
+            ["b\nc", "a\r\nb\r\nc\r\nd"],
+        ];
+    }
+
+    /**
+     * @dataProvider dataAssertStringContainsStringIgnoringLineEndings
+     */
+    public function testAssertStringContainsStringIgnoringLineEndings(string $needle, string $haystack): void
+    {
+        $this->assertStringContainsStringIgnoringLineEndings($needle, $haystack);
+    }
+
+    public function testNotAssertStringContainsStringIgnoringLineEndings(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->assertStringContainsStringIgnoringLineEndings("b\nc", "\r\nc\r\n");
+    }
+
+    public function dataAssertStringEqualIgnoringLineEndings(): array
+    {
+        return [
+            'lf-crlf' => ["a\nb", "a\r\nb"],
+            'cr-crlf' => ["a\rb", "a\r\nb"],
+            'crlf-crlf' => ["a\r\nb", "a\r\nb"],
+            'lf-cr' => ["a\nb", "a\rb"],
+            'cr-cr' => ["a\rb", "a\rb"],
+            'crlf-cr' => ["a\r\nb", "a\rb"],
+            'lf-lf' => ["a\nb", "a\nb"],
+            'cr-lf' => ["a\rb", "a\nb"],
+            'crlf-lf' => ["a\r\nb", "a\nb"],
+        ];
+    }
+
+    /**
+     * @dataProvider dataAssertStringEqualIgnoringLineEndings
+     */
+    public function testAssertStringEqualIgnoringLineEndings(string $expected, string $actual): void
+    {
+        $this->assertStringEqualIgnoringLineEndings($expected, $actual);
+    }
+
+    public function dataNotAssertStringEqualIgnoringLineEndings(): array
+    {
+        return [
+            ["a\nb", 'ab'],
+            ["a\rb", 'ab'],
+            ["a\r\nb", 'ab'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataNotAssertStringEqualIgnoringLineEndings
+     */
+    public function testNotAssertStringEqualIgnoringLineEndings(string $expected, string $actual): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->assertStringEqualIgnoringLineEndings($expected, $actual);
     }
 
     public function testAssertStringMatchesFormat(): void
@@ -1596,19 +1319,6 @@ XML;
         $this->assertCount(2, new ArrayIterator([1, 2, 3]));
     }
 
-    public function testAssertCountThrowsExceptionIfElementIsNotCountable(): void
-    {
-        try {
-            $this->assertCount(2, '');
-        } catch (Exception $e) {
-            $this->assertEquals('Argument #2 of PHPUnit\Framework\Assert::assertCount() must be a countable or iterable', $e->getMessage());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testAssertNotCount(): void
     {
         $this->assertNotCount(2, [1, 2, 3]);
@@ -1616,13 +1326,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotCount(2, [1, 2]);
-    }
-
-    public function testAssertNotCountThrowsExceptionIfElementIsNotCountable(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotCount(2, '');
     }
 
     public function testAssertSameSize(): void
@@ -1634,32 +1337,6 @@ XML;
         $this->assertSameSize([1, 2], [1, 2, 3]);
     }
 
-    public function testAssertSameSizeThrowsExceptionIfExpectedIsNotCountable(): void
-    {
-        try {
-            $this->assertSameSize('a', []);
-        } catch (Exception $e) {
-            $this->assertEquals('Argument #1 of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testAssertSameSizeThrowsExceptionIfActualIsNotCountable(): void
-    {
-        try {
-            $this->assertSameSize([], '');
-        } catch (Exception $e) {
-            $this->assertEquals('Argument #2 of PHPUnit\Framework\Assert::assertSameSize() must be a countable or iterable', $e->getMessage());
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testAssertNotSameSize(): void
     {
         $this->assertNotSameSize([1, 2], [1, 2, 3]);
@@ -1667,20 +1344,6 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotSameSize([1, 2], [3, 4]);
-    }
-
-    public function testAssertNotSameSizeThrowsExceptionIfExpectedIsNotCountable(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotSameSize('a', []);
-    }
-
-    public function testAssertNotSameSizeThrowsExceptionIfActualIsNotCountable(): void
-    {
-        $this->expectException(Exception::class);
-
-        $this->assertNotSameSize([], '');
     }
 
     /**

@@ -20,14 +20,11 @@ use Iterator;
 final class ExtensionCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var Extension[]
+     * @psalm-var list<Extension>
      */
-    private $extensions;
+    private array $extensions;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(ExtensionCollection $extensions)
     {

@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use PHPUnit\Framework\InvalidArgumentException;
 
 /**
@@ -18,10 +18,7 @@ use PHPUnit\Framework\InvalidArgumentException;
  */
 final class StringStartsWith extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $prefix;
+    private string $prefix;
 
     public function __construct(string $prefix)
     {
@@ -43,11 +40,9 @@ final class StringStartsWith extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
-     *
-     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
-        return strpos((string) $other, $this->prefix) === 0;
+        return str_starts_with((string) $other, $this->prefix);
     }
 }

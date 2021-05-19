@@ -26,22 +26,21 @@ use function is_file;
 use function is_readable;
 use function is_string;
 use function ltrim;
-use function phpversion;
 use function preg_match;
 use function preg_replace;
 use function preg_split;
 use function realpath;
 use function rtrim;
 use function sprintf;
+use function str_contains;
 use function str_replace;
+use function str_starts_with;
 use function strncasecmp;
-use function strpos;
 use function substr;
 use function trim;
 use function unlink;
 use function unserialize;
 use function var_export;
-use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -65,20 +64,11 @@ use Throwable;
  */
 final class PhptTestCase implements Reorderable, SelfDescribing, Test
 {
-    /**
-     * @var string
-     */
-    private $filename;
+    private string $filename;
 
-    /**
-     * @var AbstractPhpProcess
-     */
-    private $phpUtil;
+    private AbstractPhpProcess $phpUtil;
 
-    /**
-     * @var string
-     */
-    private $output = '';
+    private string $output = '';
 
     /**
      * Constructs a test case with the given filename.
@@ -116,12 +106,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result): void
     {
-        if ($result === null) {
-            $result = new TestResult;
-        }
-
         try {
             $sections = $this->parse();
         } catch (Exception $e) {
@@ -129,12 +115,12 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->addFailure($this, new SkippedTestError($e->getMessage()), 0);
             $result->endTest($this, 0);
 
-            return $result;
+            return;
         }
 
         $code     = $this->render($sections['FILE']);
         $xfail    = false;
-        $settings = $this->parseIniSection($this->settings($result->getCollectCodeCoverageInformation()));
+        $settings = $this->parseIniSection($this->settings(CodeCoverage::isActive()));
 
         $result->startTest($this);
 
@@ -150,13 +136,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $this->phpUtil->setUseStderrRedirection(true);
 
         if ($result->enforcesTimeLimit()) {
-            $this->phpUtil->setTimeout($result->getTimeoutForLargeTests());
+            $this->phpUtil->setTimeout($result->timeoutForLargeTests());
         }
 
         $skip = $this->runSkip($sections, $result, $settings);
 
         if ($skip) {
-            return $result;
+            return;
         }
 
         if (isset($sections['XFAIL'])) {
@@ -171,21 +157,18 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $this->phpUtil->setArgs($sections['ARGS']);
         }
 
-        if ($result->getCollectCodeCoverageInformation()) {
+        if (CodeCoverage::isActive()) {
             $codeCoverageCacheDirectory = null;
-            $pathCoverage               = false;
 
-            $codeCoverage = $result->getCodeCoverage();
-
-            if ($codeCoverage) {
-                if ($codeCoverage->cachesStaticAnalysis()) {
-                    $codeCoverageCacheDirectory = $codeCoverage->cacheDirectory();
-                }
-
-                $pathCoverage = $codeCoverage->collectsBranchAndPathCoverage();
+            if (CodeCoverage::instance()->cachesStaticAnalysis()) {
+                $codeCoverageCacheDirectory = CodeCoverage::instance()->cacheDirectory();
             }
 
-            $this->renderForCoverage($code, $pathCoverage, $codeCoverageCacheDirectory);
+            $this->renderForCoverage(
+                $code,
+                CodeCoverage::instance()->collectsBranchAndPathCoverage(),
+                $codeCoverageCacheDirectory
+            );
         }
 
         $timer = new Timer;
@@ -195,8 +178,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $time         = $timer->stop()->asSeconds();
         $this->output = $jobResult['stdout'] ?? '';
 
-        if (isset($codeCoverage) && ($coverage = $this->cleanupForCoverage())) {
-            $codeCoverage->append($coverage, $this, true, [], []);
+        if (CodeCoverage::isActive() && ($coverage = $this->cleanupForCoverage())) {
+            CodeCoverage::instance()->append($coverage, $this, true, [], []);
         }
 
         try {
@@ -236,11 +219,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->addFailure($this, new IncompleteTestError('XFAIL section but test passes'), $time);
         }
 
-        $this->runClean($sections, $result->getCollectCodeCoverageInformation());
+        $this->runClean($sections, CodeCoverage::isActive());
 
         $result->endTest($this, $time);
-
-        return $result;
     }
 
     /**
@@ -264,12 +245,12 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return false;
     }
 
-    public function getNumAssertions(): int
+    public function numberOfAssertionsPerformed(): int
     {
         return 1;
     }
 
-    public function getActualOutput(): string
+    public function output(): string
     {
         return $this->output;
     }
@@ -285,7 +266,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -293,7 +274,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function requires(): array
     {
@@ -302,17 +283,15 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     /**
      * Parse --INI-- section key value pairs and return as array.
-     *
-     * @param array|string $content
      */
-    private function parseIniSection($content, array $ini = []): array
+    private function parseIniSection(array|string $content, array $ini = []): array
     {
         if (is_string($content)) {
             $content = explode("\n", trim($content));
         }
 
         foreach ($content as $setting) {
-            if (strpos($setting, '=') === false) {
+            if (!str_contains($setting, '=')) {
                 continue;
             }
 
@@ -707,13 +686,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
 
             if ($block === 'diff') {
-                if (strpos($line, '+') === 0) {
+                if (str_starts_with($line, '+')) {
                     $needle = $this->getCleanDiffLine($previousLine);
 
                     break;
                 }
 
-                if (strpos($line, '-') === 0) {
+                if (str_starts_with($line, '-')) {
                     $needle = $this->getCleanDiffLine($line);
 
                     break;
@@ -785,7 +764,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $offset        = $sectionOffset + 1;
 
             foreach (preg_split('/\r\n|\r|\n/', $sections[$section]) as $line) {
-                if (strpos($line, $needle) !== false) {
+                if (str_contains($line, $needle)) {
                     return [[
                         'file' => realpath($this->filename),
                         'line' => $offset,
@@ -844,18 +823,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         if (extension_loaded('xdebug')) {
-            if (version_compare(phpversion('xdebug'), '3', '>=')) {
-                if ($collectCoverage) {
-                    $settings[] = 'xdebug.mode=coverage';
-                } else {
-                    $settings[] = 'xdebug.mode=off';
-                }
+            if ($collectCoverage) {
+                $settings[] = 'xdebug.mode=coverage';
             } else {
-                $settings[] = 'xdebug.default_enable=0';
-
-                if ($collectCoverage) {
-                    $settings[] = 'xdebug.coverage_enable=1';
-                }
+                $settings[] = 'xdebug.mode=off';
             }
         }
 

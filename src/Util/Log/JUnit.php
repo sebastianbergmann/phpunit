@@ -38,70 +38,55 @@ use Throwable;
  */
 final class JUnit extends Printer implements TestListener
 {
-    /**
-     * @var DOMDocument
-     */
-    private $document;
+    private DOMDocument $document;
 
-    /**
-     * @var DOMElement
-     */
-    private $root;
+    private DOMElement $root;
 
-    /**
-     * @var bool
-     */
-    private $reportRiskyTests = false;
+    private bool $reportRiskyTests;
 
     /**
      * @var DOMElement[]
      */
-    private $testSuites = [];
+    private array $testSuites = [];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
-    private $testSuiteTests = [0];
+    private array $testSuiteTests = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
-    private $testSuiteAssertions = [0];
+    private array $testSuiteAssertions = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
-    private $testSuiteErrors = [0];
+    private array $testSuiteErrors = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
-    private $testSuiteWarnings = [0];
+    private array $testSuiteWarnings = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
-    private $testSuiteFailures = [0];
+    private array $testSuiteFailures = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
-    private $testSuiteSkipped = [0];
+    private array $testSuiteSkipped = [0];
 
     /**
-     * @var int[]
+     * @psalm-var array<int,int>
      */
-    private $testSuiteTimes = [0];
+    private array $testSuiteTimes = [0];
 
-    /**
-     * @var int
-     */
-    private $testSuiteLevel = 0;
+    private int $testSuiteLevel = 0;
 
-    /**
-     * @var DOMElement
-     */
-    private $currentTestCase;
+    private ?DOMElement $currentTestCase = null;
 
     /**
      * @param null|mixed $out
@@ -329,8 +314,8 @@ final class JUnit extends Printer implements TestListener
     {
         $numAssertions = 0;
 
-        if (method_exists($test, 'getNumAssertions')) {
-            $numAssertions = $test->getNumAssertions();
+        if (method_exists($test, 'numberOfAssertionsPerformed')) {
+            $numAssertions = $test->numberOfAssertionsPerformed();
         }
 
         $this->testSuiteAssertions[$this->testSuiteLevel] += $numAssertions;
@@ -354,8 +339,8 @@ final class JUnit extends Printer implements TestListener
 
         $testOutput = '';
 
-        if (method_exists($test, 'hasOutput') && method_exists($test, 'getActualOutput')) {
-            $testOutput = $test->hasOutput() ? $test->getActualOutput() : '';
+        if (method_exists($test, 'hasOutput') && method_exists($test, 'output')) {
+            $testOutput = $test->hasOutput() ? $test->output() : '';
         }
 
         if (!empty($testOutput)) {

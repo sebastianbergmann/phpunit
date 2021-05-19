@@ -9,481 +9,208 @@
  */
 namespace PHPUnit\TextUI\CliArguments;
 
-use PHPUnit\TextUI\XmlConfiguration\Extension;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
 final class Configuration
 {
-    /**
-     * @var ?string
-     */
-    private $argument;
-
-    /**
-     * @var ?string
-     */
-    private $atLeastVersion;
+    private ?string $argument;
 
-    /**
-     * @var ?bool
-     */
-    private $backupGlobals;
+    private ?string $atLeastVersion;
 
-    /**
-     * @var ?bool
-     */
-    private $backupStaticAttributes;
+    private ?bool $backupGlobals;
 
-    /**
-     * @var ?bool
-     */
-    private $beStrictAboutChangesToGlobalState;
+    private ?bool $backupStaticProperties;
 
-    /**
-     * @var ?bool
-     */
-    private $beStrictAboutResourceUsageDuringSmallTests;
+    private ?bool $beStrictAboutChangesToGlobalState;
 
-    /**
-     * @var ?string
-     */
-    private $bootstrap;
+    private ?bool $beStrictAboutResourceUsageDuringSmallTests;
 
-    /**
-     * @var ?bool
-     */
-    private $cacheResult;
+    private ?string $bootstrap;
 
-    /**
-     * @var ?string
-     */
-    private $cacheResultFile;
+    private ?string $cacheDirectory;
 
-    /**
-     * @var ?bool
-     */
-    private $checkVersion;
+    private ?bool $cacheResult;
 
-    /**
-     * @var ?string
-     */
-    private $colors;
+    private ?string $cacheResultFile;
 
-    /**
-     * @var null|int|string
-     */
-    private $columns;
+    private ?bool $checkVersion;
 
-    /**
-     * @var ?string
-     */
-    private $configuration;
+    private ?string $colors;
 
-    /**
-     * @var null|string[]
-     */
-    private $coverageFilter;
+    private null|int|string $columns;
 
-    /**
-     * @var ?string
-     */
-    private $coverageClover;
+    private ?string $configuration;
 
-    /**
-     * @var ?string
-     */
-    private $coverageCobertura;
+    private ?array $coverageFilter;
 
-    /**
-     * @var ?string
-     */
-    private $coverageCrap4J;
+    private ?string $coverageClover;
 
-    /**
-     * @var ?string
-     */
-    private $coverageHtml;
+    private ?string $coverageCobertura;
 
-    /**
-     * @var ?string
-     */
-    private $coveragePhp;
+    private ?string $coverageCrap4J;
 
-    /**
-     * @var ?string
-     */
-    private $coverageText;
+    private ?string $coverageHtml;
 
-    /**
-     * @var ?bool
-     */
-    private $coverageTextShowUncoveredFiles;
+    private ?string $coveragePhp;
 
-    /**
-     * @var ?bool
-     */
-    private $coverageTextShowOnlySummary;
+    private ?string $coverageText;
 
-    /**
-     * @var ?string
-     */
-    private $coverageXml;
+    private ?bool $coverageTextShowUncoveredFiles;
 
-    /**
-     * @var ?bool
-     */
-    private $pathCoverage;
+    private ?bool $coverageTextShowOnlySummary;
 
-    /**
-     * @var ?string
-     */
-    private $coverageCacheDirectory;
+    private ?string $coverageXml;
 
-    /**
-     * @var ?bool
-     */
-    private $warmCoverageCache;
+    private ?bool $pathCoverage;
 
-    /**
-     * @var ?bool
-     */
-    private $debug;
+    private ?string $coverageCacheDirectory;
 
-    /**
-     * @var ?int
-     */
-    private $defaultTimeLimit;
+    private ?bool $warmCoverageCache;
 
-    /**
-     * @var ?bool
-     */
-    private $disableCodeCoverageIgnore;
+    private ?bool $debug;
 
-    /**
-     * @var ?bool
-     */
-    private $disallowTestOutput;
+    private ?int $defaultTimeLimit;
 
-    /**
-     * @var ?bool
-     */
-    private $disallowTodoAnnotatedTests;
+    private ?bool $disableCodeCoverageIgnore;
 
-    /**
-     * @var ?bool
-     */
-    private $enforceTimeLimit;
+    private ?bool $disallowTestOutput;
 
-    /**
-     * @var null|string[]
-     */
-    private $excludeGroups;
+    private ?bool $disallowTodoAnnotatedTests;
 
-    /**
-     * @var ?int
-     */
-    private $executionOrder;
+    private ?bool $enforceTimeLimit;
 
-    /**
-     * @var ?int
-     */
-    private $executionOrderDefects;
+    private ?array $excludeGroups;
 
-    /**
-     * @var null|Extension[]
-     */
-    private $extensions;
+    private ?int $executionOrder;
 
-    /**
-     * @var null|string[]
-     */
-    private $unavailableExtensions;
+    private ?int $executionOrderDefects;
 
-    /**
-     * @var ?bool
-     */
-    private $failOnEmptyTestSuite;
+    private ?array $extensions;
 
-    /**
-     * @var ?bool
-     */
-    private $failOnIncomplete;
+    private ?array $unavailableExtensions;
 
-    /**
-     * @var ?bool
-     */
-    private $failOnRisky;
+    private ?bool $failOnEmptyTestSuite;
 
-    /**
-     * @var ?bool
-     */
-    private $failOnSkipped;
+    private ?bool $failOnIncomplete;
 
-    /**
-     * @var ?bool
-     */
-    private $failOnWarning;
+    private ?bool $failOnRisky;
 
-    /**
-     * @var ?string
-     */
-    private $filter;
+    private ?bool $failOnSkipped;
 
-    /**
-     * @var ?bool
-     */
-    private $generateConfiguration;
+    private ?bool $failOnWarning;
 
-    /**
-     * @var ?bool
-     */
-    private $migrateConfiguration;
+    private ?string $filter;
 
-    /**
-     * @var null|string[]
-     */
-    private $groups;
+    private ?bool $generateConfiguration;
 
-    /**
-     * @var null|string[]
-     */
-    private $testsCovering;
+    private ?bool $migrateConfiguration;
 
-    /**
-     * @var null|string[]
-     */
-    private $testsUsing;
+    private ?array $groups;
 
-    /**
-     * @var ?bool
-     */
-    private $help;
+    private ?array $testsCovering;
 
-    /**
-     * @var ?string
-     */
-    private $includePath;
+    private ?array $testsUsing;
 
-    /**
-     * @var null|string[]
-     */
-    private $iniSettings;
+    private ?bool $help;
 
-    /**
-     * @var ?string
-     */
-    private $junitLogfile;
+    private ?string $includePath;
 
-    /**
-     * @var ?bool
-     */
-    private $listGroups;
+    private ?array $iniSettings;
 
-    /**
-     * @var ?bool
-     */
-    private $listSuites;
+    private ?string $junitLogfile;
 
-    /**
-     * @var ?bool
-     */
-    private $listTests;
+    private ?bool $listGroups;
 
-    /**
-     * @var ?string
-     */
-    private $listTestsXml;
+    private ?bool $listSuites;
 
-    /**
-     * @var ?string
-     */
-    private $loader;
+    private ?bool $listTests;
 
-    /**
-     * @var ?bool
-     */
-    private $noCoverage;
+    private ?string $listTestsXml;
 
-    /**
-     * @var ?bool
-     */
-    private $noExtensions;
+    private ?bool $noCoverage;
 
-    /**
-     * @var ?bool
-     */
-    private $noInteraction;
+    private ?bool $noExtensions;
 
-    /**
-     * @var ?bool
-     */
-    private $noLogging;
+    private ?bool $noInteraction;
 
-    /**
-     * @var ?string
-     */
-    private $printer;
+    private ?bool $noLogging;
 
-    /**
-     * @var ?bool
-     */
-    private $processIsolation;
+    private ?string $printer;
 
-    /**
-     * @var ?int
-     */
-    private $randomOrderSeed;
+    private ?bool $processIsolation;
 
-    /**
-     * @var ?int
-     */
-    private $repeat;
+    private ?int $randomOrderSeed;
 
-    /**
-     * @var ?bool
-     */
-    private $reportUselessTests;
+    private ?int $repeat;
 
-    /**
-     * @var ?bool
-     */
-    private $resolveDependencies;
+    private ?bool $reportUselessTests;
 
-    /**
-     * @var ?bool
-     */
-    private $reverseList;
+    private ?bool $resolveDependencies;
 
-    /**
-     * @var ?bool
-     */
-    private $stderr;
+    private ?bool $reverseList;
 
-    /**
-     * @var ?bool
-     */
-    private $strictCoverage;
+    private ?bool $stderr;
 
-    /**
-     * @var ?bool
-     */
-    private $stopOnDefect;
+    private ?bool $strictCoverage;
 
-    /**
-     * @var ?bool
-     */
-    private $stopOnError;
+    private ?bool $stopOnDefect;
 
-    /**
-     * @var ?bool
-     */
-    private $stopOnFailure;
+    private ?bool $stopOnError;
 
-    /**
-     * @var ?bool
-     */
-    private $stopOnIncomplete;
+    private ?bool $stopOnFailure;
 
-    /**
-     * @var ?bool
-     */
-    private $stopOnRisky;
+    private ?bool $stopOnIncomplete;
 
-    /**
-     * @var ?bool
-     */
-    private $stopOnSkipped;
+    private ?bool $stopOnRisky;
 
-    /**
-     * @var ?bool
-     */
-    private $stopOnWarning;
+    private ?bool $stopOnSkipped;
 
-    /**
-     * @var ?string
-     */
-    private $teamcityLogfile;
+    private ?bool $stopOnWarning;
 
-    /**
-     * @var null|string[]
-     */
-    private $testdoxExcludeGroups;
+    private ?string $teamcityLogfile;
 
-    /**
-     * @var null|string[]
-     */
-    private $testdoxGroups;
+    private ?array $testdoxExcludeGroups;
 
-    /**
-     * @var ?string
-     */
-    private $testdoxHtmlFile;
+    private ?array $testdoxGroups;
 
-    /**
-     * @var ?string
-     */
-    private $testdoxTextFile;
+    private ?string $testdoxHtmlFile;
 
-    /**
-     * @var ?string
-     */
-    private $testdoxXmlFile;
+    private ?string $testdoxTextFile;
 
-    /**
-     * @var null|string[]
-     */
-    private $testSuffixes;
+    private ?string $testdoxXmlFile;
 
-    /**
-     * @var ?string
-     */
-    private $testSuite;
+    private ?array $testSuffixes;
 
-    /**
-     * @var string[]
-     */
-    private $unrecognizedOptions;
+    private ?string $testSuite;
 
     /**
-     * @var ?string
+     * @psalm-var array<string,string>
      */
-    private $unrecognizedOrderBy;
+    private array $unrecognizedOptions;
 
-    /**
-     * @var ?bool
-     */
-    private $useDefaultConfiguration;
+    private ?string $unrecognizedOrderBy;
 
-    /**
-     * @var ?bool
-     */
-    private $verbose;
+    private ?bool $useDefaultConfiguration;
 
-    /**
-     * @var ?bool
-     */
-    private $version;
+    private ?bool $verbose;
 
-    /**
-     * @var ?string
-     */
-    private $xdebugFilterFile;
+    private ?bool $version;
 
     /**
-     * @param null|int|string $columns
+     * @psalm-param array<string,string> $unrecognizedOptions
      */
-    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticAttributes, ?bool $beStrictAboutChangesToGlobalState, ?bool $beStrictAboutResourceUsageDuringSmallTests, ?string $bootstrap, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $disallowTodoAnnotatedTests, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?array $extensions, ?array $unavailableExtensions, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?string $loader, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter, ?string $xdebugFilterFile)
+    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?bool $beStrictAboutResourceUsageDuringSmallTests, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $disallowTodoAnnotatedTests, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?array $extensions, ?array $unavailableExtensions, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter)
     {
         $this->argument                                   = $argument;
         $this->atLeastVersion                             = $atLeastVersion;
         $this->backupGlobals                              = $backupGlobals;
-        $this->backupStaticAttributes                     = $backupStaticAttributes;
+        $this->backupStaticProperties                     = $backupStaticProperties;
         $this->beStrictAboutChangesToGlobalState          = $beStrictAboutChangesToGlobalState;
         $this->beStrictAboutResourceUsageDuringSmallTests = $beStrictAboutResourceUsageDuringSmallTests;
         $this->bootstrap                                  = $bootstrap;
+        $this->cacheDirectory                             = $cacheDirectory;
         $this->cacheResult                                = $cacheResult;
         $this->cacheResultFile                            = $cacheResultFile;
         $this->checkVersion                               = $checkVersion;
@@ -533,7 +260,6 @@ final class Configuration
         $this->listSuites                                 = $listSuites;
         $this->listTests                                  = $listTests;
         $this->listTestsXml                               = $listTestsXml;
-        $this->loader                                     = $loader;
         $this->noCoverage                                 = $noCoverage;
         $this->noExtensions                               = $noExtensions;
         $this->noInteraction                              = $noInteraction;
@@ -567,7 +293,6 @@ final class Configuration
         $this->useDefaultConfiguration                    = $useDefaultConfiguration;
         $this->verbose                                    = $verbose;
         $this->version                                    = $version;
-        $this->xdebugFilterFile                           = $xdebugFilterFile;
     }
 
     public function hasArgument(): bool
@@ -621,21 +346,21 @@ final class Configuration
         return $this->backupGlobals;
     }
 
-    public function hasBackupStaticAttributes(): bool
+    public function hasBackupStaticProperties(): bool
     {
-        return $this->backupStaticAttributes !== null;
+        return $this->backupStaticProperties !== null;
     }
 
     /**
      * @throws Exception
      */
-    public function backupStaticAttributes(): bool
+    public function backupStaticProperties(): bool
     {
-        if ($this->backupStaticAttributes === null) {
+        if ($this->backupStaticProperties === null) {
             throw new Exception;
         }
 
-        return $this->backupStaticAttributes;
+        return $this->backupStaticProperties;
     }
 
     public function hasBeStrictAboutChangesToGlobalState(): bool
@@ -687,6 +412,23 @@ final class Configuration
         }
 
         return $this->bootstrap;
+    }
+
+    public function hasCacheDirectory(): bool
+    {
+        return $this->cacheDirectory !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function cacheDirectory(): string
+    {
+        if ($this->cacheDirectory === null) {
+            throw new Exception;
+        }
+
+        return $this->cacheDirectory;
     }
 
     public function hasCacheResult(): bool
@@ -1488,23 +1230,6 @@ final class Configuration
         return $this->listTestsXml;
     }
 
-    public function hasLoader(): bool
-    {
-        return $this->loader !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function loader(): string
-    {
-        if ($this->loader === null) {
-            throw new Exception;
-        }
-
-        return $this->loader;
-    }
-
     public function hasNoCoverage(): bool
     {
         return $this->noCoverage !== null;
@@ -2086,22 +1811,5 @@ final class Configuration
         }
 
         return $this->version;
-    }
-
-    public function hasXdebugFilterFile(): bool
-    {
-        return $this->xdebugFilterFile !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function xdebugFilterFile(): string
-    {
-        if ($this->xdebugFilterFile === null) {
-            throw new Exception;
-        }
-
-        return $this->xdebugFilterFile;
     }
 }

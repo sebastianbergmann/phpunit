@@ -19,10 +19,7 @@ use PHPUnit\Framework\MockObject\Invocation;
  */
 final class ReturnValueMap implements Stub
 {
-    /**
-     * @var array
-     */
-    private $valueMap;
+    private array $valueMap;
 
     public function __construct(array $valueMap)
     {

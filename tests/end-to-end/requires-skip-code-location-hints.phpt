@@ -12,19 +12,9 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-RRRRRRRRSSSSSRRRRSSSSRSSSSSSSRRSSSSSSSRRSSSSSSSSSSSSSSSSSSSWWS    62 / 62 (100%)
+RRRRRRRRSSSSSRRRRSSSSRSSSSSSSRRSSSSSSSRRSSSSSSSSSSSSSSSSSSSS      60 / 60 (100%)
 
 Time: %s, Memory: %s
-
-There were 2 warnings:
-
-1) PHPUnit\TestFixture\RequirementsTest::testVersionConstraintInvalidPhpConstraint
-Version constraint ~^12345 is not supported.
-%a
-2) PHPUnit\TestFixture\RequirementsTest::testVersionConstraintInvalidPhpUnitConstraint
-Version constraint ~^12345 is not supported.
-%a
---
 
 There were 17 risky tests:
 
@@ -113,5 +103,5 @@ This test did not perform any assertions
 
 %stests%e_files%eRequirementsTest.php:%d
 
-WARNINGS!
-Tests: 62, Assertions: 0, Warnings: 2, Skipped: 43, Risky: 17.
+OK, but incomplete, skipped, or risky tests!
+Tests: 60, Assertions: 0, Skipped: 43, Risky: 17.

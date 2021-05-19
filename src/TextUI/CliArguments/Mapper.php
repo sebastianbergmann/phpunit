@@ -25,7 +25,6 @@ final class Mapper
             'listSuites'              => false,
             'listTests'               => false,
             'listTestsXml'            => false,
-            'loader'                  => null,
             'useDefaultConfiguration' => true,
             'loadedExtensions'        => [],
             'unavailableExtensions'   => [],
@@ -38,6 +37,10 @@ final class Mapper
 
         if ($arguments->hasBootstrap()) {
             $result['bootstrap'] = $arguments->bootstrap();
+        }
+
+        if ($arguments->hasCacheDirectory()) {
+            $result['cacheDirectory'] = $arguments->cacheDirectory();
         }
 
         if ($arguments->hasCacheResult()) {
@@ -162,10 +165,6 @@ final class Mapper
 
         if ($arguments->hasPrinter()) {
             $result['printer'] = $arguments->printer();
-        }
-
-        if ($arguments->hasLoader()) {
-            $result['loader'] = $arguments->loader();
         }
 
         if ($arguments->hasJunitLogfile()) {
@@ -300,8 +299,8 @@ final class Mapper
             $result['backupGlobals'] = $arguments->backupGlobals();
         }
 
-        if ($arguments->hasBackupStaticAttributes()) {
-            $result['backupStaticAttributes'] = $arguments->backupStaticAttributes();
+        if ($arguments->hasBackupStaticProperties()) {
+            $result['backupStaticProperties'] = $arguments->backupStaticProperties();
         }
 
         if ($arguments->hasVerbose()) {
@@ -354,10 +353,6 @@ final class Mapper
 
         if ($arguments->hasRandomOrderSeed()) {
             $result['randomOrderSeed'] = $arguments->randomOrderSeed();
-        }
-
-        if ($arguments->hasXdebugFilterFile()) {
-            $result['xdebugFilterFile'] = $arguments->xdebugFilterFile();
         }
 
         return $result;

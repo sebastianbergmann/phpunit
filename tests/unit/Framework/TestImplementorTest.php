@@ -22,7 +22,7 @@ final class TestImplementorTest extends TestCase
     {
         $result = new TestResult;
 
-        $test = new DoubleTestCase(new Success);
+        $test = new DoubleTestCase(new Success('testOne'));
         $test->run($result);
 
         $this->assertCount(count($test), $result);

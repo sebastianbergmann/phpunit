@@ -18,7 +18,6 @@
          failOnWarning="false"
          extensionsDirectory="/tmp"
          printerClass="PHPUnit\TextUI\DefaultResultPrinter"
-         testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader"
          defaultTestSuite="My Test Suite"
          beStrictAboutChangesToGlobalState="false"
          beStrictAboutOutputDuringTests="false"
@@ -58,33 +57,6 @@
             <group>name</group>
         </exclude>
     </testdoxGroups>
-
-    <listeners>
-        <listener class="MyListener" file="/optional/path/to/MyListener.php">
-            <arguments>
-                <array>
-                    <element key="0">
-                        <string>Sebastian</string>
-                    </element>
-                </array>
-                <integer>22</integer>
-                <string>April</string>
-                <double>19.78</double>
-                <null/>
-                <object class="stdClass"/>
-                <file>MyTestFile.php</file>
-                <directory>MyRelativePath</directory>
-                <boolean>true</boolean>
-            </arguments>
-        </listener>
-        <listener class="IncludePathListener" file="ConfigurationTest.php"/>
-        <listener class="CompactArgumentsListener" file="/CompactArgumentsListener.php">
-            <arguments>
-                <integer>42</integer>
-                <boolean>false</boolean>
-            </arguments>
-        </listener>
-    </listeners>
 
     <extensions>
         <extension class="MyExtension" file="/optional/path/to/MyExtension.php">

@@ -38,7 +38,16 @@ final class MigrationBuilder
             CoverageTextToReport::class,
             CoverageXmlToReport::class,
             ConvertLogTypes::class,
-            UpdateSchemaLocationTo93::class,
+        ],
+
+        '9.5' => [
+            RemoveListeners::class,
+            RemoveTestSuiteLoaderAttributes::class,
+            RemoveCacheResultFileAttribute::class,
+            RemoveCoverageElementCacheDirectoryAttribute::class,
+            RemoveCoverageElementProcessUncoveredFilesAttribute::class,
+            IntroduceCacheDirectoryAttribute::class,
+            RenameBackupStaticAttributesAttribute::class,
         ],
     ];
 
@@ -56,7 +65,7 @@ final class MigrationBuilder
             );
         }
 
-        $stack = [];
+        $stack = [new UpdateSchemaLocation];
 
         foreach (self::AVAILABLE_MIGRATIONS as $version => $migrations) {
             if (version_compare($version, $fromVersion, '<')) {

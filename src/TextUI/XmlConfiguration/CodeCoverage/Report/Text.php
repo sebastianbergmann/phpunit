@@ -17,20 +17,11 @@ use PHPUnit\TextUI\XmlConfiguration\File;
  */
 final class Text
 {
-    /**
-     * @var File
-     */
-    private $target;
+    private File $target;
 
-    /**
-     * @var bool
-     */
-    private $showUncoveredFiles;
+    private bool $showUncoveredFiles;
 
-    /**
-     * @var bool
-     */
-    private $showOnlySummary;
+    private bool $showOnlySummary;
 
     public function __construct(File $target, bool $showUncoveredFiles, bool $showOnlySummary)
     {

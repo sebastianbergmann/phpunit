@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Framework\Error\Error;
 use PHPUnit\TestFixture\NotSelfDescribingTest;
+use PHPUnit\Util\Error\Error;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**

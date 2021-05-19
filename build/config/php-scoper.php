@@ -11,6 +11,5 @@
 return [
     'whitelist' => [
         'PHPUnit\*',
-        'Prophecy\*',
     ],
 ];

@@ -20,14 +20,11 @@ use Iterator;
 final class IniSettingCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var IniSetting[]
+     * @psalm-var list<IniSetting>
      */
-    private $iniSettings;
+    private array $iniSettings;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(IniSettingCollection $iniSettings)
     {

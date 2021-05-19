@@ -17,12 +17,12 @@ interface Reorderable
     public function sortId(): string;
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function provides(): array;
 
     /**
-     * @return list<ExecutionOrderDependency>
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public function requires(): array;
 }

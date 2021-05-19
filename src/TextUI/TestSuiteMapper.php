@@ -14,7 +14,7 @@ use function explode;
 use function in_array;
 use function is_dir;
 use function is_file;
-use function strpos;
+use function str_contains;
 use function version_compare;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
@@ -67,7 +67,7 @@ final class TestSuiteMapper
                         $testSuite->addTestFiles($files);
 
                         $testSuiteEmpty = false;
-                    } elseif (strpos($directory->path(), '*') === false && !is_dir($directory->path())) {
+                    } elseif (!str_contains($directory->path(), '*') && !is_dir($directory->path())) {
                         throw new TestDirectoryNotFoundException($directory->path());
                     }
                 }

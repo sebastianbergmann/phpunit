@@ -17,30 +17,15 @@ use PHPUnit\Util\VersionComparisonOperator;
  */
 final class TestDirectory
 {
-    /**
-     * @var string
-     */
-    private $path;
+    private string $path;
 
-    /**
-     * @var string
-     */
-    private $prefix;
+    private string $prefix;
 
-    /**
-     * @var string
-     */
-    private $suffix;
+    private string $suffix;
 
-    /**
-     * @var string
-     */
-    private $phpVersion;
+    private string $phpVersion;
 
-    /**
-     * @var VersionComparisonOperator
-     */
-    private $phpVersionOperator;
+    private VersionComparisonOperator $phpVersionOperator;
 
     public function __construct(string $path, string $prefix, string $suffix, string $phpVersion, VersionComparisonOperator $phpVersionOperator)
     {

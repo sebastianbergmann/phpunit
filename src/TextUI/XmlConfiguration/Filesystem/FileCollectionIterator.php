@@ -20,14 +20,11 @@ use Iterator;
 final class FileCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var File[]
+     * @psalm-var list<File>
      */
-    private $files;
+    private array $files;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(FileCollection $files)
     {

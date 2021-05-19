@@ -28,7 +28,7 @@ final class IsAnything extends Constraint
      *
      * @throws ExpectationFailedException
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
+    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
     {
         return $returnResult ? true : null;
     }

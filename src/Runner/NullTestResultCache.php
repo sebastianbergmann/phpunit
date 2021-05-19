@@ -9,25 +9,27 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\Framework\TestStatus\TestStatus;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class NullTestResultCache implements TestResultCache
 {
-    public function setState(string $testName, int $state): void
+    public function setStatus(string $testName, TestStatus $status): void
     {
     }
 
-    public function getState(string $testName): int
+    public function status(string $testName): TestStatus
     {
-        return BaseTestRunner::STATUS_UNKNOWN;
+        return TestStatus::unknown();
     }
 
     public function setTime(string $testName, float $time): void
     {
     }
 
-    public function getTime(string $testName): float
+    public function time(string $testName): float
     {
         return 0;
     }

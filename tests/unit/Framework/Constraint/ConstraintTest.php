@@ -27,7 +27,7 @@ final class ConstraintTest extends ConstraintTestCase
                 return 'is ok';
             }
 
-            final protected function matches($other): bool
+            final protected function matches(mixed $other): bool
             {
                 return parent::matches($other);
             }
@@ -42,7 +42,7 @@ final class ConstraintTest extends ConstraintTestCase
                 return parent::reduce();
             }
 
-            final protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
+            final protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): void
             {
                 parent::fail($other, $description, $comparisonFailure);
             }
@@ -52,12 +52,12 @@ final class ConstraintTest extends ConstraintTestCase
                 return parent::additionalFailureDescription($other);
             }
 
-            final protected function failureDescription($other): string
+            final protected function failureDescription(mixed $other): string
             {
                 return parent::failureDescription($other);
             }
 
-            final protected function toStringInContext(Operator $operator, $role): string
+            final protected function toStringInContext(Operator $operator, mixed $role): string
             {
                 return parent::toStringInContext($operator, $role);
             }

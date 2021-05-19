@@ -9,18 +9,14 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function strlen;
-use function substr;
+use function str_ends_with;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class StringEndsWith extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $suffix;
+    private string $suffix;
 
     public function __construct(string $suffix)
     {
@@ -38,11 +34,9 @@ final class StringEndsWith extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
-     *
-     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
-        return substr($other, 0 - strlen($this->suffix)) === $this->suffix;
+        return str_ends_with((string) $other, $this->suffix);
     }
 }

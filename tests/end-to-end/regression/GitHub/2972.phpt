@@ -11,11 +11,6 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-
-Warning:       Test case class not matching filename is deprecated
-               in %sunconventiallyNamedIssue2972Test.php
-               Class name was 'Issue2972Test', expected 'unconventiallyNamedIssue2972Test'
-
 ..                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s

@@ -14,6 +14,7 @@ use function array_keys;
 use function array_map;
 use function array_pop;
 use function array_values;
+use function class_exists;
 use function explode;
 use function get_class;
 use function gettype;
@@ -32,17 +33,18 @@ use function preg_quote;
 use function preg_replace;
 use function range;
 use function sprintf;
+use function str_contains;
 use function str_replace;
+use function str_starts_with;
 use function strlen;
-use function strpos;
 use function strtolower;
 use function strtoupper;
 use function substr;
 use function trim;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Exception as UtilException;
-use PHPUnit\Util\Test;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionObject;
@@ -54,14 +56,11 @@ use SebastianBergmann\Exporter\Exporter;
 final class NamePrettifier
 {
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
-    private $strings = [];
+    private array $strings = [];
 
-    /**
-     * @var bool
-     */
-    private $useColor;
+    private bool $useColor;
 
     public function __construct(bool $useColor = false)
     {
@@ -75,14 +74,12 @@ final class NamePrettifier
      */
     public function prettifyTestClass(string $className): string
     {
-        try {
-            $annotations = Test::parseTestMethodAnnotations($className);
+        if (class_exists($className)) {
+            $metadata = MetadataRegistry::parser()->forClass($className);
 
-            if (isset($annotations['class']['testdox'][0])) {
-                return $annotations['class']['testdox'][0];
+            if ($metadata->isTestDox()->isNotEmpty()) {
+                return $metadata->isTestDox()->asArray()[0]->text();
             }
-        } catch (UtilException $e) {
-            // ignore, determine className by parsing the provided name
         }
 
         $parts     = explode('\\', $className);
@@ -92,9 +89,9 @@ final class NamePrettifier
             $className = substr($className, 0, strlen($className) - strlen('Test'));
         }
 
-        if (strpos($className, 'Tests') === 0) {
+        if (str_starts_with($className, 'Tests')) {
             $className = substr($className, strlen('Tests'));
-        } elseif (strpos($className, 'Test') === 0) {
+        } elseif (str_starts_with($className, 'Test')) {
             $className = substr($className, strlen('Test'));
         }
 
@@ -140,24 +137,26 @@ final class NamePrettifier
      */
     public function prettifyTestCase(TestCase $test): string
     {
-        $annotations = Test::parseTestMethodAnnotations(
-            get_class($test),
-            $test->getName(false)
-        );
-
         $annotationWithPlaceholders = false;
 
-        $callback = static function (string $variable): string {
-            return sprintf('/%s(?=\b)/', preg_quote($variable, '/'));
-        };
+        $metadata = MetadataRegistry::parser()->forMethod(get_class($test), $test->getName(false));
 
-        if (isset($annotations['method']['testdox'][0])) {
-            $result = $annotations['method']['testdox'][0];
+        if ($metadata->isTestDox()->isNotEmpty()) {
+            $result = $metadata->isTestDox()->asArray()[0]->text();
 
-            if (strpos($result, '$') !== false) {
-                $annotation   = $annotations['method']['testdox'][0];
+            if (str_contains($result, '$')) {
+                $annotation   = $result;
                 $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
-                $variables    = array_map($callback, array_keys($providedData));
+
+                $variables = array_map(
+                    static function (string $variable): string {
+                        return sprintf(
+                            '/%s(?=\b)/',
+                            preg_quote($variable, '/')
+                        );
+                    },
+                    array_keys($providedData)
+                );
 
                 $result = trim(preg_replace($variables, $providedData, $annotation));
 
@@ -177,7 +176,7 @@ final class NamePrettifier
     public function prettifyDataSet(TestCase $test): string
     {
         if (!$this->useColor) {
-            return $test->getDataSetAsString(false);
+            return $test->getDataSetAsString();
         }
 
         if (is_int($test->dataName())) {
@@ -208,9 +207,9 @@ final class NamePrettifier
             $this->strings[] = $string;
         }
 
-        if (strpos($name, 'test_') === 0) {
+        if (str_starts_with($name, 'test_')) {
             $name = substr($name, 5);
-        } elseif (strpos($name, 'test') === 0) {
+        } elseif (str_starts_with($name, 'test')) {
             $name = substr($name, 4);
         }
 
@@ -220,7 +219,7 @@ final class NamePrettifier
 
         $name[0] = strtoupper($name[0]);
 
-        if (strpos($name, '_') !== false) {
+        if (str_contains($name, '_')) {
             return trim(str_replace('_', ' ', $name));
         }
 

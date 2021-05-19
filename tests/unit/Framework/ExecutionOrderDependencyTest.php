@@ -34,11 +34,9 @@ class ExecutionOrderDependencyTest extends TestCase
     public static function createWithCloneOptionProvider(): array
     {
         return [
-            // Cloning option values
-            ['clone', false, true],
-            ['!clone', false, false],
-            ['shallowClone', true, false],
-            ['!shallowClone', false, false],
+            'no clone'      => [false, false, false, false],
+            'deep clone'    => [true, false, false, true],
+            'shallow clone' => [false, true, true, false],
         ];
     }
 
@@ -49,14 +47,6 @@ class ExecutionOrderDependencyTest extends TestCase
         $this->assertTrue($dependency->targetIsClass());
         $this->assertSame('ClassDependency::class', $dependency->getTarget());
         $this->assertSame('ClassDependency', $dependency->getTargetClassName());
-    }
-
-    public function testDependsAnnotationRequireATargetToBeValid(): void
-    {
-        $dependency = ExecutionOrderDependency::createFromDependsAnnotation('SomeClass', '');
-
-        $this->assertFalse($dependency->isValid());
-        $this->assertSame('', $dependency->getTarget());
     }
 
     /**
@@ -88,39 +78,21 @@ class ExecutionOrderDependencyTest extends TestCase
      * @testdox Create valid dependency with clone option $option
      * @dataProvider createWithCloneOptionProvider
      */
-    public function testCreateDependencyWithCloneOption(
-        ?string $option,
-        bool $expectedShallowClone,
-        bool $expectedDeepClone
-    ): void {
-        $dependency = new ExecutionOrderDependency('ClassName', 'methodName', $option);
+    public function testCreateDependencyWithCloneOption(bool $deepClone, bool $shallowClone, bool $expectedShallowClone, bool $expectedDeepClone): void
+    {
+        $dependency = new ExecutionOrderDependency('ClassName', 'methodName', $deepClone, $shallowClone);
 
         $this->assertSame(
             $expectedShallowClone,
-            $dependency->useShallowClone(),
+            $dependency->shallowClone(),
             'Incorrect shallowClone option'
         );
 
         $this->assertSame(
             $expectedDeepClone,
-            $dependency->useDeepClone(),
+            $dependency->deepClone(),
             'Incorrect clone option'
         );
-    }
-
-    public function testCreateDependencyFromAnnotation(): void
-    {
-        $dependency = ExecutionOrderDependency::createFromDependsAnnotation('ClassOne', 'ClassOne::methodOne');
-
-        $this->assertSame('ClassOne::methodOne', $dependency->getTarget());
-    }
-
-    public function testCreateDependencyFromAnnotationWithCloneOption(): void
-    {
-        $dependency = ExecutionOrderDependency::createFromDependsAnnotation('ClassOne', 'clone methodOne');
-
-        $this->assertSame('ClassOne::methodOne', $dependency->getTarget());
-        $this->assertTrue($dependency->useDeepClone());
     }
 
     public function testMergeHandlesEmptyDependencyLists(): void
@@ -145,63 +117,5 @@ class ExecutionOrderDependencyTest extends TestCase
             ),
             'Right side of merge could be empty'
         );
-    }
-
-    public function testMergeUniqueDependencies(): void
-    {
-        $depOne   = new ExecutionOrderDependency('classOne');
-        $depTwo   = new ExecutionOrderDependency('classTwo::methodTwo');
-        $depThree = ExecutionOrderDependency::createFromDependsAnnotation('classThree', 'clone methodThree');
-
-        $this->assertSame(
-            [$depOne, $depTwo, $depThree],
-            ExecutionOrderDependency::mergeUnique(
-                [$depOne, $depTwo],
-                [$depTwo, $depThree]
-            )
-        );
-    }
-
-    public function testDiffDependencies(): void
-    {
-        $depOne        = new ExecutionOrderDependency('classOne');
-        $depTwo        = new ExecutionOrderDependency('classTwo::methodTwo');
-        $depThree      = new ExecutionOrderDependency('classThree::methodThree');
-        $depThreeClone = ExecutionOrderDependency::createFromDependsAnnotation('classThree', 'clone methodThree');
-        $depFour       = new ExecutionOrderDependency('classFour::methodFour');
-
-        $this->assertSame(
-            [],
-            ExecutionOrderDependency::diff(
-                [$depOne, $depTwo],
-                [$depOne, $depTwo, $depThree, $depFour]
-            )
-        );
-
-        $this->assertSame(
-            [$depOne, $depTwo],
-            ExecutionOrderDependency::diff(
-                [$depOne, $depTwo],
-                [$depThree, $depFour]
-            )
-        );
-
-        $this->assertSame(
-            [$depOne, $depFour],
-            ExecutionOrderDependency::diff(
-                [$depOne, $depTwo, $depThree, $depFour],
-                [$depTwo, $depThreeClone]
-            )
-        );
-
-        $this->assertSame(
-            [$depOne, $depTwo, $depThree, $depFour],
-            ExecutionOrderDependency::diff(
-                [$depOne, $depTwo, $depThree, $depFour],
-                []
-            )
-        );
-
-        $this->assertSame([], ExecutionOrderDependency::diff([], []));
     }
 }

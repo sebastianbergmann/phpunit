@@ -20,12 +20,14 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
-use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\DefaultResultPrinter;
+use PHPUnit\Util\Filter;
 use Throwable;
 
 /**
@@ -33,58 +35,45 @@ use Throwable;
  */
 class TestDoxPrinter extends DefaultResultPrinter
 {
-    /**
-     * @var NamePrettifier
-     */
-    protected $prettifier;
+    protected NamePrettifier $prettifier;
 
     /**
      * @var int The number of test results received from the TestRunner
      */
-    protected $testIndex = 0;
+    protected int $testIndex = 0;
 
     /**
      * @var int The number of test results already sent to the output
      */
-    protected $testFlushIndex = 0;
+    protected int $testFlushIndex = 0;
 
     /**
-     * @var array<int, array> Buffer for test results
+     * @psalm-var array<int, array> Buffer for test results
      */
-    protected $testResults = [];
+    protected array $testResults = [];
 
     /**
-     * @var array<string, int> Lookup table for testname to testResults[index]
+     * @psalm-var array<string, int> Lookup table for testname to testResults[index]
      */
-    protected $testNameResultIndex = [];
+    protected array $testNameResultIndex = [];
+
+    protected bool $enableOutputBuffer = false;
 
     /**
-     * @var bool
+     * @psalm-var array<string>
      */
-    protected $enableOutputBuffer = false;
+    protected array $originalExecutionOrder = [];
 
-    /**
-     * @var array array<string>
-     */
-    protected $originalExecutionOrder = [];
+    protected int $spinState = 0;
 
-    /**
-     * @var int
-     */
-    protected $spinState = 0;
-
-    /**
-     * @var bool
-     */
-    protected $showProgress = true;
+    protected bool $showProgress = true;
 
     /**
      * @param null|resource|string $out
-     * @param int|string           $numberOfColumns
      *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
 
@@ -116,7 +105,7 @@ class TestDoxPrinter extends DefaultResultPrinter
         }
 
         if ($this->testHasPassed()) {
-            $this->registerTestResult($test, null, BaseTestRunner::STATUS_PASSED, $time, false);
+            $this->registerTestResult($test, null, TestStatus::success(), $time, false);
         }
 
         if ($test instanceof TestCase || $test instanceof PhptTestCase) {
@@ -131,7 +120,7 @@ class TestDoxPrinter extends DefaultResultPrinter
      */
     public function addError(Test $test, Throwable $t, float $time): void
     {
-        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_ERROR, $time, true);
+        $this->registerTestResult($test, $t, TestStatus::error(), $time, true);
     }
 
     /**
@@ -139,7 +128,7 @@ class TestDoxPrinter extends DefaultResultPrinter
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
-        $this->registerTestResult($test, $e, BaseTestRunner::STATUS_WARNING, $time, true);
+        $this->registerTestResult($test, $e, TestStatus::warning(), $time, true);
     }
 
     /**
@@ -147,7 +136,7 @@ class TestDoxPrinter extends DefaultResultPrinter
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
-        $this->registerTestResult($test, $e, BaseTestRunner::STATUS_FAILURE, $time, true);
+        $this->registerTestResult($test, $e, TestStatus::failure(), $time, true);
     }
 
     /**
@@ -155,7 +144,7 @@ class TestDoxPrinter extends DefaultResultPrinter
      */
     public function addIncompleteTest(Test $test, Throwable $t, float $time): void
     {
-        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_INCOMPLETE, $time, false);
+        $this->registerTestResult($test, $t, TestStatus::incomplete(), $time, false);
     }
 
     /**
@@ -163,7 +152,7 @@ class TestDoxPrinter extends DefaultResultPrinter
      */
     public function addRiskyTest(Test $test, Throwable $t, float $time): void
     {
-        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_RISKY, $time, false);
+        $this->registerTestResult($test, $t, TestStatus::risky(), $time, false);
     }
 
     /**
@@ -171,7 +160,7 @@ class TestDoxPrinter extends DefaultResultPrinter
      */
     public function addSkippedTest(Test $test, Throwable $t, float $time): void
     {
-        $this->registerTestResult($test, $t, BaseTestRunner::STATUS_SKIPPED, $time, false);
+        $this->registerTestResult($test, $t, TestStatus::skipped(), $time, false);
     }
 
     public function writeProgress(string $progress): void
@@ -187,7 +176,7 @@ class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    protected function registerTestResult(Test $test, ?Throwable $t, int $status, float $time, bool $verbose): void
+    protected function registerTestResult(Test $test, ?Throwable $t, TestStatus $status, float $time, bool $verbose): void
     {
         $testName = $test instanceof Reorderable ? $test->sortId() : $test->getName();
 
@@ -225,7 +214,7 @@ class TestDoxPrinter extends DefaultResultPrinter
             return true;
         }
 
-        if ($this->testResults[$this->testIndex]['status'] === BaseTestRunner::STATUS_PASSED) {
+        if ($this->testResults[$this->testIndex]['status']->isSuccess()) {
             return true;
         }
 
@@ -337,9 +326,9 @@ class TestDoxPrinter extends DefaultResultPrinter
         return [];
     }
 
-    protected function formatThrowable(Throwable $t, ?int $status = null): string
+    protected function formatThrowable(Throwable $t): string
     {
-        $message = trim(\PHPUnit\Framework\TestFailure::exceptionToString($t));
+        $message = trim(TestFailure::exceptionToString($t));
 
         if ($message) {
             $message .= PHP_EOL . PHP_EOL . $this->formatStacktrace($t);
@@ -352,12 +341,12 @@ class TestDoxPrinter extends DefaultResultPrinter
 
     protected function formatStacktrace(Throwable $t): string
     {
-        return \PHPUnit\Util\Filter::getFilteredStacktrace($t);
+        return Filter::getFilteredStacktrace($t);
     }
 
     protected function formatTestResultMessage(Throwable $t, array $result, string $prefix = '│'): string
     {
-        $message = $this->formatThrowable($t, $result['status']);
+        $message = $this->formatThrowable($t);
 
         if ($message === '') {
             return '';

@@ -1,10 +1,10 @@
 --TEST--
-phpunit --configuration tests/_files/phpunit-example-extension
+phpunit --configuration tests/_files/phar-extension
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/../_files/phpunit-example-extension';
+$_SERVER['argv'][] = __DIR__ . '/../_files/phar-extension';
 
 require __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
@@ -12,8 +12,8 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
-Configuration: %s%ephpunit-example-extension%ephpunit.xml
-Extension:     phpunit/phpunit-example-extension 3.0.3
+Configuration: %s%ephar-extension%ephpunit.xml
+Extension:     phpunit/phpunit-test-extension 1.0.0
 
 .                                                                   1 / 1 (100%)
 

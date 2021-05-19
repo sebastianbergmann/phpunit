@@ -26,17 +26,9 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  */
 final class IsIdentical extends Constraint
 {
-    /**
-     * @var float
-     */
-    private const EPSILON = 0.0000000001;
+    private mixed $value;
 
-    /**
-     * @var mixed
-     */
-    private $value;
-
-    public function __construct($value)
+    public function __construct(mixed $value)
     {
         $this->value = $value;
     }
@@ -54,12 +46,12 @@ final class IsIdentical extends Constraint
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
+    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
     {
         if (is_float($this->value) && is_float($other) &&
             !is_infinite($this->value) && !is_infinite($other) &&
             !is_nan($this->value) && !is_nan($other)) {
-            $success = abs($this->value - $other) < self::EPSILON;
+            $success = abs($this->value - $other) < 0.0000000001;
         } else {
             $success = $this->value === $other;
         }
@@ -118,11 +110,9 @@ final class IsIdentical extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @param mixed $other evaluated value or object
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    protected function failureDescription($other): string
+    protected function failureDescription(mixed $other): string
     {
         if (is_object($this->value) && is_object($other)) {
             return 'two variables reference the same object';

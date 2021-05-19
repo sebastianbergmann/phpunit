@@ -20,14 +20,11 @@ use Iterator;
 final class DirectoryCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var Directory[]
+     * @psalm-var list<Directory>
      */
-    private $directories;
+    private array $directories;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(DirectoryCollection $directories)
     {

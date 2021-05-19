@@ -24,15 +24,9 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
  */
 final class ConsecutiveParameters implements ParametersRule
 {
-    /**
-     * @var array
-     */
-    private $parameterGroups = [];
+    private array $parameterGroups = [];
 
-    /**
-     * @var array
-     */
-    private $invocations = [];
+    private array $invocations = [];
 
     /**
      * @throws \PHPUnit\Framework\Exception
@@ -91,12 +85,10 @@ final class ConsecutiveParameters implements ParametersRule
     /**
      * Verify a single invocation.
      *
-     * @param int $callIndex
-     *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    private function verifyInvocation(BaseInvocation $invocation, $callIndex): void
+    private function verifyInvocation(BaseInvocation $invocation, int $callIndex): void
     {
         if (!isset($this->parameterGroups[$callIndex])) {
             // no parameter assertion for this call index

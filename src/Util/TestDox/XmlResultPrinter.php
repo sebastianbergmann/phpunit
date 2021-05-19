@@ -10,9 +10,9 @@
 namespace PHPUnit\Util\TestDox;
 
 use function array_filter;
+use function assert;
 use function get_class;
-use function implode;
-use function strpos;
+use function str_starts_with;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Framework\AssertionFailedError;
@@ -23,8 +23,17 @@ use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\WarningTestCase;
+use PHPUnit\Metadata\Covers;
+use PHPUnit\Metadata\CoversClass;
+use PHPUnit\Metadata\CoversFunction;
+use PHPUnit\Metadata\CoversMethod;
+use PHPUnit\Metadata\Parser\InlineAnnotationParser;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Metadata\Uses;
+use PHPUnit\Metadata\UsesClass;
+use PHPUnit\Metadata\UsesFunction;
+use PHPUnit\Metadata\UsesMethod;
 use PHPUnit\Util\Printer;
-use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
 use Throwable;
@@ -34,25 +43,13 @@ use Throwable;
  */
 final class XmlResultPrinter extends Printer implements TestListener
 {
-    /**
-     * @var DOMDocument
-     */
-    private $document;
+    private DOMDocument $document;
 
-    /**
-     * @var DOMElement
-     */
-    private $root;
+    private DOMElement $root;
 
-    /**
-     * @var NamePrettifier
-     */
-    private $prettifier;
+    private NamePrettifier $prettifier;
 
-    /**
-     * @var null|Throwable
-     */
-    private $exception;
+    private ?Throwable $exception = null;
 
     /**
      * @param resource|string $out
@@ -160,9 +157,9 @@ final class XmlResultPrinter extends Printer implements TestListener
         }
 
         $groups = array_filter(
-            $test->getGroups(),
+            $test->groups(),
             static function ($group) {
-                return !($group === 'small' || $group === 'medium' || $group === 'large' || strpos($group, '__phpunit_') === 0);
+                return !($group === 'small' || $group === 'medium' || $group === 'large' || str_starts_with($group, '__phpunit_'));
             }
         );
 
@@ -172,10 +169,9 @@ final class XmlResultPrinter extends Printer implements TestListener
         $testNode->setAttribute('methodName', $test->getName());
         $testNode->setAttribute('prettifiedClassName', $this->prettifier->prettifyTestClass(get_class($test)));
         $testNode->setAttribute('prettifiedMethodName', $this->prettifier->prettifyTestCase($test));
-        $testNode->setAttribute('status', (string) $test->getStatus());
+        $testNode->setAttribute('status', $test->status()->asString());
         $testNode->setAttribute('time', (string) $time);
-        $testNode->setAttribute('size', (string) $test->getSize());
-        $testNode->setAttribute('groups', implode(',', $groups));
+        $testNode->setAttribute('size', $test->size()->asString());
 
         foreach ($groups as $group) {
             $groupNode = $this->document->createElement('group');
@@ -185,24 +181,85 @@ final class XmlResultPrinter extends Printer implements TestListener
             $testNode->appendChild($groupNode);
         }
 
-        $annotations = TestUtil::parseTestMethodAnnotations(
-            get_class($test),
-            $test->getName(false)
-        );
+        foreach (MetadataRegistry::parser()->forClassAndMethod(get_class($test), $test->getName(false)) as $metadata) {
+            if ($metadata->isCovers()) {
+                assert($metadata instanceof Covers);
 
-        foreach (['class', 'method'] as $type) {
-            foreach ($annotations[$type] as $annotation => $values) {
-                if ($annotation !== 'covers' && $annotation !== 'uses') {
-                    continue;
-                }
+                $coversNode = $this->document->createElement('covers');
 
-                foreach ($values as $value) {
-                    $coversNode = $this->document->createElement($annotation);
+                $coversNode->setAttribute('target', $metadata->target());
 
-                    $coversNode->setAttribute('target', $value);
+                $testNode->appendChild($coversNode);
+            }
 
-                    $testNode->appendChild($coversNode);
-                }
+            if ($metadata->isCoversClass()) {
+                assert($metadata instanceof CoversClass);
+
+                $coversNode = $this->document->createElement('covers');
+
+                $coversNode->setAttribute('target', $metadata->className());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isCoversMethod()) {
+                assert($metadata instanceof CoversMethod);
+
+                $coversNode = $this->document->createElement('covers');
+
+                $coversNode->setAttribute('target', $metadata->className() . '::' . $metadata->methodName());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isCoversFunction()) {
+                assert($metadata instanceof CoversFunction);
+
+                $coversNode = $this->document->createElement('covers');
+
+                $coversNode->setAttribute('target', $metadata->functionName());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isUses()) {
+                assert($metadata instanceof Uses);
+
+                $coversNode = $this->document->createElement('uses');
+
+                $coversNode->setAttribute('target', $metadata->target());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isUsesClass()) {
+                assert($metadata instanceof UsesClass);
+
+                $coversNode = $this->document->createElement('uses');
+
+                $coversNode->setAttribute('target', $metadata->className());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isUsesMethod()) {
+                assert($metadata instanceof UsesMethod);
+
+                $coversNode = $this->document->createElement('uses');
+
+                $coversNode->setAttribute('target', $metadata->className() . '::' . $metadata->methodName());
+
+                $testNode->appendChild($coversNode);
+            }
+
+            if ($metadata->isUsesFunction()) {
+                assert($metadata instanceof UsesFunction);
+
+                $coversNode = $this->document->createElement('uses');
+
+                $coversNode->setAttribute('target', $metadata->functionName());
+
+                $testNode->appendChild($coversNode);
             }
         }
 
@@ -214,7 +271,10 @@ final class XmlResultPrinter extends Printer implements TestListener
             $testNode->appendChild($testDoubleNode);
         }
 
-        $inlineAnnotations = \PHPUnit\Util\Test::getInlineAnnotations(get_class($test), $test->getName(false));
+        $inlineAnnotations = (new InlineAnnotationParser)->parse(
+            get_class($test),
+            $test->getName(false)
+        );
 
         if (isset($inlineAnnotations['given'], $inlineAnnotations['when'], $inlineAnnotations['then'])) {
             $testNode->setAttribute('given', $inlineAnnotations['given']['value']);

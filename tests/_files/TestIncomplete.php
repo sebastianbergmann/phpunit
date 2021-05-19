@@ -11,9 +11,9 @@ namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class TestIncomplete extends TestCase
+final class TestIncomplete extends TestCase
 {
-    protected function runTest(): void
+    public function testOne(): void
     {
         $this->markTestIncomplete('Incomplete test');
     }

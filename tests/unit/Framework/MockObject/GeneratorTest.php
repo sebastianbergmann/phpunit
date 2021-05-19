@@ -61,13 +61,6 @@ final class GeneratorTest extends TestCase
         $this->generator->getMock(stdClass::class, [0]);
     }
 
-    public function testGetMockThrowsExceptionWithInvalidMethods(): void
-    {
-        $this->expectException(\PHPUnit\Framework\InvalidArgumentException::class);
-
-        $this->generator->getMock(stdClass::class, false);
-    }
-
     public function testGetMockThrowsExceptionWithNonExistingClass(): void
     {
         $this->expectException(UnknownTypeException::class);

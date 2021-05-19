@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use DatePeriod;
 use EmptyIterator;
 use Iterator;
 use IteratorAggregate;
@@ -20,7 +19,6 @@ use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\TestFixture\TestIterator2;
 use PHPUnit\TestFixture\TestIteratorAggregate;
 use PHPUnit\TestFixture\TestIteratorAggregate2;
-use Traversable;
 
 /**
  * @small
@@ -142,26 +140,6 @@ final class CountTest extends ConstraintTestCase
         $this->assertEquals(3, $generator->current());
         $countConstraint->evaluate($generator, '', true);
         $this->assertEquals(null, $generator->current());
-    }
-
-    /**
-     * Since PHP8, Traversable cannot be implemented directly.
-     *
-     * @requires PHP < 8.0
-     */
-    public function testCountTraversable(): void
-    {
-        $countConstraint = new Count(5);
-
-        // DatePeriod is used as an object that is Traversable but does not
-        // implement Iterator or IteratorAggregate. The following ISO 8601
-        // recurring time interval will yield five total DateTime objects.
-        $datePeriod = new DatePeriod('R4/2017-05-01T00:00:00Z/P1D');
-
-        $this->assertInstanceOf(Traversable::class, $datePeriod);
-        $this->assertNotInstanceOf(Iterator::class, $datePeriod);
-        $this->assertNotInstanceOf(IteratorAggregate::class, $datePeriod);
-        $this->assertTrue($countConstraint->evaluate($datePeriod, '', true));
     }
 
     public function testCountCanBeExportedToString(): void

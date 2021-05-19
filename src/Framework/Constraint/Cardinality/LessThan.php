@@ -14,15 +14,9 @@ namespace PHPUnit\Framework\Constraint;
  */
 final class LessThan extends Constraint
 {
-    /**
-     * @var float|int
-     */
-    private $value;
+    private float|int $value;
 
-    /**
-     * @param float|int $value
-     */
-    public function __construct($value)
+    public function __construct(float|int $value)
     {
         $this->value = $value;
     }
@@ -40,10 +34,8 @@ final class LessThan extends Constraint
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
-     *
-     * @param mixed $other value or object to evaluate
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         return $this->value > $other;
     }

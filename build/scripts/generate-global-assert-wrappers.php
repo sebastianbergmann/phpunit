@@ -27,7 +27,6 @@ use DOMElement;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\AnyInvokedCount as AnyInvokedCountMatcher;
-use PHPUnit\Framework\MockObject\Rule\InvokedAtIndex as InvokedAtIndexMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastCount as InvokedAtLeastCountMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtLeastOnce as InvokedAtLeastOnceMatcher;
 use PHPUnit\Framework\MockObject\Rule\InvokedAtMostCount as InvokedAtMostCountMatcher;
@@ -48,11 +47,15 @@ $class = new ReflectionClass(Assert::class);
 $constraintMethods = '';
 
 foreach ($class->getMethods() as $method) {
-    if (!$method->hasReturnType() || $method->getReturnType()->isBuiltin()) {
+    $returnType = $method->getReturnType();
+
+    assert($returnType instanceof ReflectionNamedType || $returnType instanceof ReflectionUnionType);
+
+    if ($returnType instanceof ReflectionNamedType && $returnType->isBuiltin()) {
         continue;
     }
 
-    $returnType = new ReflectionClass($method->getReturnType()->getName());
+    $returnType = new ReflectionClass($returnType->getName());
 
     if (!$returnType->isSubclassOf(Constraint::class)) {
         continue;
@@ -87,7 +90,7 @@ foreach ($class->getMethods() as $method) {
     $docComment = \str_replace(
         ['*/', '     *'],
         ["*\n * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit\n * @see Assert::" . $method->getName() . "\n */", ' *'],
-        $method->getDocComment()
+        (string) $method->getDocComment()
     );
 
     $signature = \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1]));
@@ -175,17 +178,6 @@ if (!function_exists('PHPUnit\Framework\atMost')) {
     function atMost(int $allowedInvocations): InvokedAtMostCountMatcher
     {
         return new InvokedAtMostCountMatcher($allowedInvocations);
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\at')) {
-    /**
-     * Returns a matcher that matches when the method is executed
-     * at the given index.
-     */
-    function at(int $index): InvokedAtIndexMatcher
-    {
-        return new InvokedAtIndexMatcher($index);
     }
 }
 

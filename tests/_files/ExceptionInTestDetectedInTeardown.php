@@ -12,15 +12,13 @@ namespace PHPUnit\TestFixture;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
-use PHPUnit\Runner\BaseTestRunner;
-
 class ExceptionInTestDetectedInTeardown extends TestCase
 {
     public $exceptionDetected = false;
 
     protected function tearDown(): void
     {
-        if (BaseTestRunner::STATUS_ERROR == $this->getStatus()) {
+        if ($this->status()->isError()) {
             $this->exceptionDetected = true;
         }
     }

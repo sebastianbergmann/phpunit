@@ -18,24 +18,15 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 trait Api
 {
     /**
-     * @var ConfigurableMethod[]
+     * @psalm-var list<ConfigurableMethod>
      */
-    private static $__phpunit_configurableMethods;
+    private static array $__phpunit_configurableMethods;
 
-    /**
-     * @var object
-     */
-    private $__phpunit_originalObject;
+    private object $__phpunit_originalObject;
 
-    /**
-     * @var bool
-     */
-    private $__phpunit_returnValueGeneration = true;
+    private bool $__phpunit_returnValueGeneration = true;
 
-    /**
-     * @var InvocationHandler
-     */
-    private $__phpunit_invocationMocker;
+    private ?InvocationHandler $__phpunit_invocationMocker = null;
 
     /** @noinspection MagicMethodsValidityInspection */
     public static function __phpunit_initConfigurableMethods(ConfigurableMethod ...$configurableMethods): void

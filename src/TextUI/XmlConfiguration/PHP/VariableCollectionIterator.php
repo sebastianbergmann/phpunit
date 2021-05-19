@@ -20,14 +20,11 @@ use Iterator;
 final class VariableCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var Variable[]
+     * @psalm-var list<Variable>
      */
-    private $variables;
+    private array $variables;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(VariableCollection $variables)
     {

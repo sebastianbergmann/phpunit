@@ -17,10 +17,7 @@ use PHPUnit\TextUI\XmlConfiguration\File;
  */
 final class Xml
 {
-    /**
-     * @var File
-     */
-    private $target;
+    private File $target;
 
     public function __construct(File $target)
     {

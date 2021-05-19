@@ -15,15 +15,9 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class Groups
 {
-    /**
-     * @var GroupCollection
-     */
-    private $include;
+    private GroupCollection $include;
 
-    /**
-     * @var GroupCollection
-     */
-    private $exclude;
+    private GroupCollection $exclude;
 
     public function __construct(GroupCollection $include, GroupCollection $exclude)
     {

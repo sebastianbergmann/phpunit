@@ -316,51 +316,9 @@
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/phpdocumentor/reflection-common/LICENSE" tofile="${basedir}/build/tmp/phar/phpdocumentor-reflection-common/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/phpdocumentor-reflection-common">
-            <fileset dir="${basedir}/vendor/phpdocumentor/reflection-common/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
-        <copy file="${basedir}/vendor/phpdocumentor/reflection-docblock/LICENSE" tofile="${basedir}/build/tmp/phar/phpdocumentor-reflection-docblock/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/phpdocumentor-reflection-docblock">
-            <fileset dir="${basedir}/vendor/phpdocumentor/reflection-docblock/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
-        <copy file="${basedir}/vendor/phpdocumentor/type-resolver/LICENSE" tofile="${basedir}/build/tmp/phar/phpdocumentor-type-resolver/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/phpdocumentor-type-resolver">
-            <fileset dir="${basedir}/vendor/phpdocumentor/type-resolver/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
-        <copy file="${basedir}/vendor/phpspec/prophecy/LICENSE" tofile="${basedir}/build/tmp/phar/phpspec-prophecy/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/phpspec-prophecy">
-            <fileset dir="${basedir}/vendor/phpspec/prophecy/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
-        <copy file="${basedir}/vendor/symfony/polyfill-ctype/LICENSE" tofile="${basedir}/build/tmp/phar/symfony-polyfill-ctype/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/symfony-polyfill-ctype">
-            <fileset dir="${basedir}/vendor/symfony/polyfill-ctype">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
         <copy file="${basedir}/vendor/theseer/tokenizer/LICENSE" tofile="${basedir}/build/tmp/phar/theseer-tokenizer/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/theseer-tokenizer">
             <fileset dir="${basedir}/vendor/theseer/tokenizer/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
-        <copy file="${basedir}/vendor/webmozart/assert/LICENSE" tofile="${basedir}/build/tmp/phar/webmozart-assert/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/webmozart-assert">
-            <fileset dir="${basedir}/vendor/webmozart/assert/src">
                 <include name="**/*.php" />
             </fileset>
         </copy>

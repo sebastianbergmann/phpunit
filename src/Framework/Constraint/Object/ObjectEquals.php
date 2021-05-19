@@ -25,15 +25,9 @@ use ReflectionObject;
  */
 final class ObjectEquals extends Constraint
 {
-    /**
-     * @var object
-     */
-    private $expected;
+    private object $expected;
 
-    /**
-     * @var string
-     */
-    private $method;
+    private string $method;
 
     public function __construct(object $object, string $method = 'equals')
     {
@@ -54,7 +48,7 @@ final class ObjectEquals extends Constraint
      * @throws ComparisonMethodDoesNotDeclareParameterTypeException
      * @throws ComparisonMethodDoesNotExistException
      */
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         if (!is_object($other)) {
             throw new ActualValueIsNotAnObjectException;
@@ -69,7 +63,6 @@ final class ObjectEquals extends Constraint
             );
         }
 
-        /** @noinspection PhpUnhandledExceptionInspection */
         $method = $object->getMethod($this->method);
 
         if (!$method->hasReturnType()) {
@@ -144,7 +137,7 @@ final class ObjectEquals extends Constraint
         return $other->{$this->method}($this->expected);
     }
 
-    protected function failureDescription($other): string
+    protected function failureDescription(mixed $other): string
     {
         return $this->toString();
     }

@@ -28,92 +28,39 @@ use PHPUnit\TextUI\XmlConfiguration\FileCollection;
  */
 final class CodeCoverage
 {
-    /**
-     * @var ?Directory
-     */
-    private $cacheDirectory;
+    private ?\PHPUnit\TextUI\XmlConfiguration\Directory $cacheDirectory;
 
-    /**
-     * @var DirectoryCollection
-     */
-    private $directories;
+    private \PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection $directories;
 
-    /**
-     * @var FileCollection
-     */
-    private $files;
+    private \PHPUnit\TextUI\XmlConfiguration\FileCollection $files;
 
-    /**
-     * @var DirectoryCollection
-     */
-    private $excludeDirectories;
+    private \PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection $excludeDirectories;
 
-    /**
-     * @var FileCollection
-     */
-    private $excludeFiles;
+    private \PHPUnit\TextUI\XmlConfiguration\FileCollection $excludeFiles;
 
-    /**
-     * @var bool
-     */
-    private $pathCoverage;
+    private bool $pathCoverage;
 
-    /**
-     * @var bool
-     */
-    private $includeUncoveredFiles;
+    private bool $includeUncoveredFiles;
 
-    /**
-     * @var bool
-     */
-    private $processUncoveredFiles;
+    private bool $ignoreDeprecatedCodeUnits;
 
-    /**
-     * @var bool
-     */
-    private $ignoreDeprecatedCodeUnits;
+    private bool $disableCodeCoverageIgnore;
 
-    /**
-     * @var bool
-     */
-    private $disableCodeCoverageIgnore;
+    private ?Clover $clover;
 
-    /**
-     * @var ?Clover
-     */
-    private $clover;
+    private ?Cobertura $cobertura;
 
-    /**
-     * @var ?Cobertura
-     */
-    private $cobertura;
+    private ?Crap4j $crap4j;
 
-    /**
-     * @var ?Crap4j
-     */
-    private $crap4j;
+    private ?Html $html;
 
-    /**
-     * @var ?Html
-     */
-    private $html;
+    private ?Php $php;
 
-    /**
-     * @var ?Php
-     */
-    private $php;
+    private ?Text $text;
 
-    /**
-     * @var ?Text
-     */
-    private $text;
+    private ?Xml $xml;
 
-    /**
-     * @var ?Xml
-     */
-    private $xml;
-
-    public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $processUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
         $this->cacheDirectory            = $cacheDirectory;
         $this->directories               = $directories;
@@ -122,7 +69,6 @@ final class CodeCoverage
         $this->excludeFiles              = $excludeFiles;
         $this->pathCoverage              = $pathCoverage;
         $this->includeUncoveredFiles     = $includeUncoveredFiles;
-        $this->processUncoveredFiles     = $processUncoveredFiles;
         $this->ignoreDeprecatedCodeUnits = $ignoreDeprecatedCodeUnits;
         $this->disableCodeCoverageIgnore = $disableCodeCoverageIgnore;
         $this->clover                    = $clover;
@@ -136,6 +82,8 @@ final class CodeCoverage
 
     /**
      * @psalm-assert-if-true !null $this->cacheDirectory
+     *
+     * @deprecated
      */
     public function hasCacheDirectory(): bool
     {
@@ -144,6 +92,8 @@ final class CodeCoverage
 
     /**
      * @throws Exception
+     *
+     * @deprecated
      */
     public function cacheDirectory(): Directory
     {
@@ -199,11 +149,6 @@ final class CodeCoverage
     public function disableCodeCoverageIgnore(): bool
     {
         return $this->disableCodeCoverageIgnore;
-    }
-
-    public function processUncoveredFiles(): bool
-    {
-        return $this->processUncoveredFiles;
     }
 
     /**

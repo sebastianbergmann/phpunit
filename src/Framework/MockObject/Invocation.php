@@ -15,7 +15,8 @@ use function get_class;
 use function implode;
 use function is_object;
 use function sprintf;
-use function strpos;
+use function str_contains;
+use function str_starts_with;
 use function strtolower;
 use function substr;
 use Doctrine\Instantiator\Instantiator;
@@ -29,40 +30,19 @@ use stdClass;
  */
 final class Invocation implements SelfDescribing
 {
-    /**
-     * @var string
-     */
-    private $className;
+    private string $className;
 
-    /**
-     * @var string
-     */
-    private $methodName;
+    private string $methodName;
 
-    /**
-     * @var array
-     */
-    private $parameters;
+    private array $parameters;
 
-    /**
-     * @var string
-     */
-    private $returnType;
+    private string $returnType;
 
-    /**
-     * @var bool
-     */
-    private $isReturnTypeNullable = false;
+    private bool $isReturnTypeNullable = false;
 
-    /**
-     * @var bool
-     */
-    private $proxiedCall;
+    private bool $proxiedCall;
 
-    /**
-     * @var object
-     */
-    private $object;
+    private object $object;
 
     public function __construct(string $className, string $methodName, array $parameters, string $returnType, object $object, bool $cloneObjects = false, bool $proxiedCall = false)
     {
@@ -76,7 +56,7 @@ final class Invocation implements SelfDescribing
             $returnType = 'string';
         }
 
-        if (strpos($returnType, '?') === 0) {
+        if (str_starts_with($returnType, '?')) {
             $returnType                 = substr($returnType, 1);
             $this->isReturnTypeNullable = true;
         }
@@ -111,32 +91,31 @@ final class Invocation implements SelfDescribing
 
     /**
      * @throws RuntimeException
-     *
-     * @return mixed Mocked return value
      */
-    public function generateReturnValue()
+    public function generateReturnValue(): mixed
     {
         if ($this->isReturnTypeNullable || $this->proxiedCall) {
-            return;
+            return null;
         }
 
         $returnType = $this->returnType;
 
-        if (strpos($returnType, '|') !== false) {
+        if (str_contains($returnType, '|')) {
             $types      = explode('|', $returnType);
             $returnType = $types[0];
 
             foreach ($types as $type) {
                 if ($type === 'null') {
-                    return;
+                    return null;
                 }
             }
         }
 
         switch (strtolower($returnType)) {
             case '':
+            case 'mixed':
             case 'void':
-                return;
+                return null;
 
             case 'string':
                 return '';
@@ -172,9 +151,6 @@ final class Invocation implements SelfDescribing
                 };
 
                 return $generator();
-
-            case 'mixed':
-                return null;
 
             default:
                 return (new Generator)->getMock($this->returnType, [], [], '', false);

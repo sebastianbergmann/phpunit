@@ -15,6 +15,7 @@ use function uniqid;
 use function unlink;
 use MultiDependencyTest;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestStatus\TestStatus;
 
 /**
  * @covers \PHPUnit\Runner\DefaultTestResultCache
@@ -24,7 +25,7 @@ final class DefaultTestResultCacheTest extends TestCase
 {
     public function testGetTimeForNonExistentTestNameReturnsFloatZero(): void
     {
-        $this->assertSame(0.0, (new DefaultTestResultCache)->getTime('doesNotExist'));
+        $this->assertSame(0.0, (new DefaultTestResultCache)->time('doesNotExist'));
     }
 
     public function testReadsCacheFromProvidedFilename(): void
@@ -33,22 +34,22 @@ final class DefaultTestResultCacheTest extends TestCase
         $cache     = new DefaultTestResultCache($cacheFile);
         $cache->load();
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState(MultiDependencyTest::class . '::testOne'));
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $cache->getState(MultiDependencyTest::class . '::testFive'));
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testOne')->isUnknown());
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isSkipped());
     }
 
     public function testDoesClearCacheBeforeLoad(): void
     {
         $cacheFile = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
         $cache     = new DefaultTestResultCache($cacheFile);
-        $cache->setState('someTest', BaseTestRunner::STATUS_FAILURE);
+        $cache->setStatus('someTest', TestStatus::failure());
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState(MultiDependencyTest::class . '::testFive'));
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isUnknown());
 
         $cache->load();
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState(MultiDependencyTest::class . '::someTest'));
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $cache->getState(MultiDependencyTest::class . '::testFive'));
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::someTest')->isUnknown());
+        $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isSkipped());
     }
 
     public function testCanPersistCacheToFile(): void
@@ -57,13 +58,13 @@ final class DefaultTestResultCacheTest extends TestCase
         $cache     = new DefaultTestResultCache($cacheFile);
         $testName  = 'test' . uniqid('', true);
 
-        $cache->setState($testName, BaseTestRunner::STATUS_SKIPPED);
+        $cache->setStatus($testName, TestStatus::skipped());
         $cache->persist();
 
         $cache = new DefaultTestResultCache($cacheFile);
         $cache->load();
 
-        $this->assertSame(BaseTestRunner::STATUS_SKIPPED, $cache->getState($testName));
+        $this->assertTrue($cache->status($testName)->isSkipped());
 
         unlink($cacheFile);
     }

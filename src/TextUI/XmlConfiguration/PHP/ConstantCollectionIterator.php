@@ -20,14 +20,11 @@ use Iterator;
 final class ConstantCollectionIterator implements Countable, Iterator
 {
     /**
-     * @var Constant[]
+     * @psalm-var list<Constant>
      */
-    private $constants;
+    private array $constants;
 
-    /**
-     * @var int
-     */
-    private $position;
+    private ?int $position = null;
 
     public function __construct(ConstantCollection $constants)
     {

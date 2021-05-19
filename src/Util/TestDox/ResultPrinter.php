@@ -15,10 +15,10 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\WarningTestCase;
-use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\TextUI\ResultPrinter as ResultPrinterInterface;
 use PHPUnit\Util\Printer;
 use Throwable;
@@ -28,75 +28,36 @@ use Throwable;
  */
 abstract class ResultPrinter extends Printer implements ResultPrinterInterface
 {
-    /**
-     * @var NamePrettifier
-     */
-    protected $prettifier;
+    protected NamePrettifier $prettifier;
 
     /**
-     * @var string
+     * @psalm-var class-string
      */
-    protected $testClass = '';
+    protected ?string $testClass = null;
 
-    /**
-     * @var int
-     */
-    protected $testStatus;
+    protected ?TestStatus $testStatus = null;
 
-    /**
-     * @var array
-     */
-    protected $tests = [];
+    protected array $tests = [];
 
-    /**
-     * @var int
-     */
-    protected $successful = 0;
+    protected int $successful = 0;
 
-    /**
-     * @var int
-     */
-    protected $warned = 0;
+    protected int $warned = 0;
 
-    /**
-     * @var int
-     */
-    protected $failed = 0;
+    protected int $failed = 0;
 
-    /**
-     * @var int
-     */
-    protected $risky = 0;
+    protected int $risky = 0;
 
-    /**
-     * @var int
-     */
-    protected $skipped = 0;
+    protected int $skipped = 0;
 
-    /**
-     * @var int
-     */
-    protected $incomplete = 0;
+    protected int $incomplete = 0;
 
-    /**
-     * @var null|string
-     */
-    protected $currentTestClassPrettified;
+    protected ?string $currentTestClassPrettified = null;
 
-    /**
-     * @var null|string
-     */
-    protected $currentTestMethodPrettified;
+    protected ?string $currentTestMethodPrettified = null;
 
-    /**
-     * @var array
-     */
-    private $groups;
+    private array $groups;
 
-    /**
-     * @var array
-     */
-    private $excludeGroups;
+    private array $excludeGroups;
 
     /**
      * @param resource $out
@@ -134,7 +95,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_ERROR;
+        $this->testStatus = TestStatus::error();
         $this->failed++;
     }
 
@@ -147,7 +108,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_WARNING;
+        $this->testStatus = TestStatus::warning();
         $this->warned++;
     }
 
@@ -160,7 +121,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_FAILURE;
+        $this->testStatus = TestStatus::failure();
         $this->failed++;
     }
 
@@ -173,7 +134,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_INCOMPLETE;
+        $this->testStatus = TestStatus::incomplete();
         $this->incomplete++;
     }
 
@@ -186,7 +147,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_RISKY;
+        $this->testStatus = TestStatus::risky();
         $this->risky++;
     }
 
@@ -199,7 +160,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_SKIPPED;
+        $this->testStatus = TestStatus::skipped();
         $this->skipped++;
     }
 
@@ -231,7 +192,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
         $class = get_class($test);
 
         if ($this->testClass !== $class) {
-            if ($this->testClass !== '') {
+            if ($this->testClass !== null) {
                 $this->doEndClass();
             }
 
@@ -246,7 +207,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
             $this->currentTestMethodPrettified = $this->prettifier->prettifyTestCase($test);
         }
 
-        $this->testStatus = BaseTestRunner::STATUS_PASSED;
+        $this->testStatus = TestStatus::success();
     }
 
     /**
@@ -267,10 +228,10 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
     protected function doEndClass(): void
     {
         foreach ($this->tests as $test) {
-            $this->onTest($test[0], $test[1] === BaseTestRunner::STATUS_PASSED);
+            $this->onTest($test[0], $test[1]->isSuccess());
         }
 
-        $this->endClass($this->testClass);
+        $this->endClass((string) $this->testClass);
     }
 
     /**
@@ -319,7 +280,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
         }
 
         if (!empty($this->groups)) {
-            foreach ($test->getGroups() as $group) {
+            foreach ($test->groups() as $group) {
                 if (in_array($group, $this->groups, true)) {
                     return true;
                 }
@@ -329,7 +290,7 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
         }
 
         if (!empty($this->excludeGroups)) {
-            foreach ($test->getGroups() as $group) {
+            foreach ($test->groups() as $group) {
                 if (in_array($group, $this->excludeGroups, true)) {
                     return false;
                 }

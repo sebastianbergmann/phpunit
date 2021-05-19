@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 use function get_class;
 use function sprintf;
 use function trim;
-use PHPUnit\Framework\Error\Error;
+use PHPUnit\Util\Error\Error;
 use Throwable;
 
 /**
@@ -20,20 +20,11 @@ use Throwable;
  */
 final class TestFailure
 {
-    /**
-     * @var null|Test
-     */
-    private $failedTest;
+    private ?Test $failedTest = null;
 
-    /**
-     * @var Throwable
-     */
-    private $thrownException;
+    private Throwable $thrownException;
 
-    /**
-     * @var string
-     */
-    private $testName;
+    private string $testName;
 
     /**
      * Returns a description for an exception.
@@ -74,11 +65,7 @@ final class TestFailure
      */
     public function __construct(Test $failedTest, Throwable $t)
     {
-        if ($failedTest instanceof SelfDescribing) {
-            $this->testName = $failedTest->toString();
-        } else {
-            $this->testName = get_class($failedTest);
-        }
+        $this->testName = $this->describe($failedTest);
 
         if (!$failedTest instanceof TestCase || !$failedTest->isInIsolation()) {
             $this->failedTest = $failedTest;
@@ -151,5 +138,14 @@ final class TestFailure
     public function isFailure(): bool
     {
         return $this->thrownException() instanceof AssertionFailedError;
+    }
+
+    private function describe(Test $test): string
+    {
+        if ($test instanceof SelfDescribing) {
+            return $test->toString();
+        }
+
+        return get_class($test);
     }
 }

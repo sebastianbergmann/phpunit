@@ -31,7 +31,7 @@ There was 1 failure:
 
 1) DependencyFailureTest::testOne
 
-%s%etests%e_files%eDependencyFailureTest.php:16
+%s%etests%e_files%edependencies%eDependencyFailureTest.php:16
 
 --
 

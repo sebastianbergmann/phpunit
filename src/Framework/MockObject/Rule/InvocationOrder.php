@@ -20,9 +20,9 @@ use PHPUnit\Framework\SelfDescribing;
 abstract class InvocationOrder implements SelfDescribing, Verifiable
 {
     /**
-     * @var BaseInvocation[]
+     * @psalm-var list<BaseInvocation>
      */
-    private $invocations = [];
+    private array $invocations = [];
 
     public function getInvocationCount(): int
     {

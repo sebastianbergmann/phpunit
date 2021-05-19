@@ -161,7 +161,8 @@ final class TestSuiteTest extends TestCase
         $test = new TestSuite(BeforeAndAfterTest::class);
 
         BeforeAndAfterTest::resetProperties();
-        $test->run();
+
+        $test->run(new TestResult);
 
         $this->assertEquals(2, BeforeAndAfterTest::$beforeWasRun);
         $this->assertEquals(2, BeforeAndAfterTest::$afterWasRun);
@@ -172,7 +173,8 @@ final class TestSuiteTest extends TestCase
         $test = new TestSuite(PreConditionAndPostConditionTest::class);
 
         PreConditionAndPostConditionTest::resetProperties();
-        $test->run();
+
+        $test->run(new TestResult);
 
         $this->assertSame(1, PreConditionAndPostConditionTest::$preConditionWasVerified);
         $this->assertSame(1, PreConditionAndPostConditionTest::$postConditionWasVerified);
@@ -180,10 +182,12 @@ final class TestSuiteTest extends TestCase
 
     public function testTestWithAnnotation(): void
     {
-        $test = new TestSuite(TestWithTest::class);
+        $test   = new TestSuite(TestWithTest::class);
+        $result = new TestResult;
 
         BeforeAndAfterTest::resetProperties();
-        $result = $test->run();
+
+        $test->run($result);
 
         $this->assertCount(4, $result->passed());
     }
@@ -253,9 +257,29 @@ final class TestSuiteTest extends TestCase
         $suite->addTestFile($dir . 'InheritanceA.php');
         $suite->addTestFile($dir . 'InheritanceB.php');
 
-        $result = $suite->run();
+        $result = new TestResult;
+
+        $suite->run($result);
 
         $this->assertCount(2, $result);
+    }
+
+    public function testCorrectlyLoadSameNameClasses(): void
+    {
+        $suite = new TestSuite(
+            'CorrectlyLoadSameNameClasses'
+        );
+
+        $dir = TEST_FILES_PATH . DIRECTORY_SEPARATOR . 'SameClassNames' . DIRECTORY_SEPARATOR;
+
+        $suite->addTestFile($dir . 'NamespaceOne' . DIRECTORY_SEPARATOR . 'MyTest.php');
+        $suite->addTestFile($dir . 'NamespaceTwo' . DIRECTORY_SEPARATOR . 'MyTest.php');
+
+        $result = new TestResult;
+
+        $suite->run($result);
+
+        $this->assertCount(3, $result);
     }
 
     /**
@@ -346,7 +370,7 @@ final class TestSuiteTest extends TestCase
     public function testResolverOnlyUsesSuitesAndCases(): void
     {
         $suite = new TestSuite('SomeName');
-        $suite->addTest(new DoubleTestCase(new Success));
+        $suite->addTest(new DoubleTestCase(new Success('testOne')));
         $suite->addTestSuite(new TestSuite(DependencyOnClassTest::class));
 
         $this->assertEquals([

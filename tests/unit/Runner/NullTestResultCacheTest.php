@@ -8,7 +8,6 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\NullTestResultCache;
 
 /**
@@ -23,7 +22,7 @@ final class NullTestResultCacheTest extends TestCase
         $cache->load();
         $cache->persist();
 
-        $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $cache->getState('testName'));
-        $this->assertSame(0.0, $cache->getTime('testName'));
+        $this->assertTrue($cache->status('testName')->isUnknown());
+        $this->assertSame(0.0, $cache->time('testName'));
     }
 }
