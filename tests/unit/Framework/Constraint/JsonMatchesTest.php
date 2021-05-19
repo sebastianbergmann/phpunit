@@ -31,6 +31,12 @@ final class JsonMatchesTest extends ConstraintTestCase
             'string type not equals boolean'          => [false, '{"age": "true"}', '{"age": true}'],
             'string type not equals null'             => [false, '{"age": "null"}', '{"age": null}'],
             'object fields are unordered'             => [true, '{"first":1, "second":"2"}', '{"second":"2", "first":1}'],
+            'object fields with numeric keys are unordered' => [
+                true,
+                '{"0":null,"a":{},"b":[],"c":"1","d":1,"e":-1,"f":[1,2],"g":[2,1],"h":{"0":"0","1":"1","2":"2"}}',
+                '{"a":{},"d":1,"b":[],"e":-1,"0":null,"c":"1","f":[1,2],"h":{"2":"2","1":"1","0":"0"},"g":[2,1]}',
+            ],
+
             'child object fields are unordered'       => [true, '{"Mascott": {"name":"Tux", "age":5}}', '{"Mascott": {"age":5, "name":"Tux"}}'],
             'null field different from missing field' => [false, '{"present": true, "missing": null}', '{"present": true}'],
             'array elements are ordered'              => [false, '["first", "second"]', '["second", "first"]'],
@@ -38,6 +44,7 @@ final class JsonMatchesTest extends ConstraintTestCase
             'single number valid json'                => [true, '5.3', '5.3'],
             'single null valid json'                  => [true, 'null', 'null'],
             'objects are not arrays'                  => [false, '{}', '[]'],
+            'arrays are not objects'                  => [false, '[]', '{}'],
         ];
     }
 
@@ -50,6 +57,16 @@ final class JsonMatchesTest extends ConstraintTestCase
             'string type not equals null'             => ['{"age": "null"}', '{"age": null}'],
             'null field different from missing field' => ['{"missing": null, "present": true}', '{"present": true}'],
             'array elements are ordered'              => ['["first", "second"]', '["second", "first"]'],
+            'objects with numeric keys are not arrays' => ['{"0":{}}', '[{}]'],
+            'child array elements are ordered' => [
+                '{"0":null,"a":{},"b":[],"c":"1","d":1,"e":-1,"f":[1,2],"g":[2,1],"h":{"0":"0","1":"1","2":"2"}}',
+                '{"a":{},"d":1,"b":[],"e":-1,"0":null,"c":"1","f":[2,1],"h":{"2":"2","1":"1","0":"0"},"g":[2,1]}',
+
+            ],
+            'child object with numeric fields stay as object' => [
+                '{"0":null,"a":{},"b":[],"c":"1","d":1,"e":-1,"f":[1,2],"g":[2,1],"h":{"0":"0","1":"1","2":"2"}}',
+                '{"a":{},"d":1,"b":[],"e":-1,"0":null,"c":"1","f":[1,2],"h":["0","1","2"],"g":[2,1]}',
+            ],
         ];
     }
 
