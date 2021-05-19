@@ -817,7 +817,6 @@ final class Loader
             $printerFile,
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutChangesToGlobalState', false),
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutOutputDuringTests', false),
-            $this->getBooleanAttribute($document->documentElement, 'beStrictAboutResourceUsageDuringSmallTests', false),
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutTestsThatDoNotTestAnything', true),
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutTodoAnnotatedTests', false),
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoversAnnotation', false),

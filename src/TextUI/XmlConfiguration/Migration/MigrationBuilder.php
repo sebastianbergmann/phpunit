@@ -48,6 +48,7 @@ final class MigrationBuilder
             RemoveCoverageElementProcessUncoveredFilesAttribute::class,
             IntroduceCacheDirectoryAttribute::class,
             RenameBackupStaticAttributesAttribute::class,
+            RemoveBeStrictAboutResourceUsageDuringSmallTestsAttribute::class,
         ],
     ];
 

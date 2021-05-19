@@ -21,7 +21,6 @@
          defaultTestSuite="My Test Suite"
          beStrictAboutChangesToGlobalState="false"
          beStrictAboutOutputDuringTests="false"
-         beStrictAboutResourceUsageDuringSmallTests="false"
          beStrictAboutTestsThatDoNotTestAnything="false"
          beStrictAboutTodoAnnotatedTests="false"
          beStrictAboutCoversAnnotation="false"

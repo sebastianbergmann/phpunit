@@ -96,8 +96,6 @@ final class TestResult implements Countable
 
     private bool $beStrictAboutTodoAnnotatedTests = false;
 
-    private bool $beStrictAboutResourceUsageDuringSmallTests = false;
-
     private bool $enforceTimeLimit = false;
 
     private bool $forceCoversAnnotation = false;
@@ -487,16 +485,6 @@ final class TestResult implements Countable
     public function isStrictAboutOutputDuringTests(): bool
     {
         return $this->beStrictAboutOutputDuringTests;
-    }
-
-    public function beStrictAboutResourceUsageDuringSmallTests(bool $flag): void
-    {
-        $this->beStrictAboutResourceUsageDuringSmallTests = $flag;
-    }
-
-    public function isStrictAboutResourceUsageDuringSmallTests(): bool
-    {
-        return $this->beStrictAboutResourceUsageDuringSmallTests;
     }
 
     public function enforceTimeLimit(bool $flag): void

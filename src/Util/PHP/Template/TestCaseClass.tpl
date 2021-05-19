@@ -49,7 +49,6 @@ function __phpunit_run_isolated_test()
     $result->beStrictAboutOutputDuringTests({isStrictAboutOutputDuringTests});
     $result->enforceTimeLimit({enforcesTimeLimit});
     $result->beStrictAboutTodoAnnotatedTests({isStrictAboutTodoAnnotatedTests});
-    $result->beStrictAboutResourceUsageDuringSmallTests({isStrictAboutResourceUsageDuringSmallTests});
 
     $test = new {className}('{name}');
     $test->setData('{dataName}', unserialize('{data}'));

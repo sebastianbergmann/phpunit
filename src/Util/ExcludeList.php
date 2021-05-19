@@ -42,7 +42,6 @@ use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\LinesOfCode\Counter;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
 use SebastianBergmann\RecursionContext\Context;
-use SebastianBergmann\ResourceOperations\ResourceOperations;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use SebastianBergmann\Type\TypeName;
@@ -129,9 +128,6 @@ final class ExcludeList
 
         // sebastian/recursion-context
         Context::class => 1,
-
-        // sebastian/resource-operations
-        ResourceOperations::class => 1,
 
         // sebastian/type
         TypeName::class => 1,

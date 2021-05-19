@@ -331,10 +331,6 @@ final class Mapper
             $result['disallowTestOutput'] = $arguments->disallowTestOutput();
         }
 
-        if ($arguments->hasBeStrictAboutResourceUsageDuringSmallTests()) {
-            $result['beStrictAboutResourceUsageDuringSmallTests'] = $arguments->beStrictAboutResourceUsageDuringSmallTests();
-        }
-
         if ($arguments->hasDefaultTimeLimit()) {
             $result['defaultTimeLimit'] = $arguments->defaultTimeLimit();
         }

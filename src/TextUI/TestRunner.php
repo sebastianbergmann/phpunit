@@ -565,7 +565,6 @@ final class TestRunner
         $result->beStrictAboutTestsThatDoNotTestAnything($arguments['reportUselessTests']);
         $result->beStrictAboutOutputDuringTests($arguments['disallowTestOutput']);
         $result->beStrictAboutTodoAnnotatedTests($arguments['disallowTodoAnnotatedTests']);
-        $result->beStrictAboutResourceUsageDuringSmallTests($arguments['beStrictAboutResourceUsageDuringSmallTests']);
 
         if ($arguments['enforceTimeLimit'] === true && !(new Invoker)->canInvokeWithTimeout()) {
             $this->writeMessage('Error', 'PHP extension pcntl is required for enforcing time limits');
@@ -886,7 +885,6 @@ final class TestRunner
             $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']       = $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'] ?? $codeCoverageConfiguration->ignoreDeprecatedCodeUnits();
             $arguments['disallowTestOutput']                              = $arguments['disallowTestOutput'] ?? $phpunitConfiguration->beStrictAboutOutputDuringTests();
             $arguments['disallowTodoAnnotatedTests']                      = $arguments['disallowTodoAnnotatedTests'] ?? $phpunitConfiguration->beStrictAboutTodoAnnotatedTests();
-            $arguments['beStrictAboutResourceUsageDuringSmallTests']      = $arguments['beStrictAboutResourceUsageDuringSmallTests'] ?? $phpunitConfiguration->beStrictAboutResourceUsageDuringSmallTests();
             $arguments['verbose']                                         = $arguments['verbose'] ?? $phpunitConfiguration->verbose();
             $arguments['reverseDefectList']                               = $arguments['reverseDefectList'] ?? $phpunitConfiguration->reverseDefectList();
             $arguments['forceCoversAnnotation']                           = $arguments['forceCoversAnnotation'] ?? $phpunitConfiguration->forceCoversAnnotation();
@@ -996,7 +994,6 @@ final class TestRunner
         $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? null;
         $arguments['backupStaticProperties']                          = $arguments['backupStaticProperties'] ?? null;
         $arguments['beStrictAboutChangesToGlobalState']               = $arguments['beStrictAboutChangesToGlobalState'] ?? null;
-        $arguments['beStrictAboutResourceUsageDuringSmallTests']      = $arguments['beStrictAboutResourceUsageDuringSmallTests'] ?? false;
         $arguments['cacheResult']                                     = $arguments['cacheResult'] ?? true;
         $arguments['colors']                                          = $arguments['colors'] ?? DefaultResultPrinter::COLOR_DEFAULT;
         $arguments['columns']                                         = $arguments['columns'] ?? 80;

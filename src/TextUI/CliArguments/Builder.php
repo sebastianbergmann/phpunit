@@ -52,7 +52,6 @@ final class Builder
         'path-coverage',
         'debug',
         'disallow-test-output',
-        'disallow-resource-usage',
         'disallow-todo-tests',
         'default-time-limit=',
         'enforce-time-limit',
@@ -138,97 +137,96 @@ final class Builder
             );
         }
 
-        $argument                                   = null;
-        $atLeastVersion                             = null;
-        $backupGlobals                              = null;
-        $backupStaticProperties                     = null;
-        $beStrictAboutChangesToGlobalState          = null;
-        $beStrictAboutResourceUsageDuringSmallTests = null;
-        $bootstrap                                  = null;
-        $cacheDirectory                             = null;
-        $cacheResult                                = null;
-        $cacheResultFile                            = null;
-        $checkVersion                               = null;
-        $colors                                     = null;
-        $columns                                    = null;
-        $configuration                              = null;
-        $coverageCacheDirectory                     = null;
-        $warmCoverageCache                          = null;
-        $coverageFilter                             = null;
-        $coverageClover                             = null;
-        $coverageCobertura                          = null;
-        $coverageCrap4J                             = null;
-        $coverageHtml                               = null;
-        $coveragePhp                                = null;
-        $coverageText                               = null;
-        $coverageTextShowUncoveredFiles             = null;
-        $coverageTextShowOnlySummary                = null;
-        $coverageXml                                = null;
-        $pathCoverage                               = null;
-        $debug                                      = null;
-        $defaultTimeLimit                           = null;
-        $disableCodeCoverageIgnore                  = null;
-        $disallowTestOutput                         = null;
-        $disallowTodoAnnotatedTests                 = null;
-        $enforceTimeLimit                           = null;
-        $excludeGroups                              = null;
-        $executionOrder                             = null;
-        $executionOrderDefects                      = null;
-        $extensions                                 = [];
-        $unavailableExtensions                      = [];
-        $failOnEmptyTestSuite                       = null;
-        $failOnIncomplete                           = null;
-        $failOnRisky                                = null;
-        $failOnSkipped                              = null;
-        $failOnWarning                              = null;
-        $filter                                     = null;
-        $generateConfiguration                      = null;
-        $migrateConfiguration                       = null;
-        $groups                                     = null;
-        $testsCovering                              = null;
-        $testsUsing                                 = null;
-        $help                                       = null;
-        $includePath                                = null;
-        $iniSettings                                = [];
-        $junitLogfile                               = null;
-        $listGroups                                 = null;
-        $listSuites                                 = null;
-        $listTests                                  = null;
-        $listTestsXml                               = null;
-        $noCoverage                                 = null;
-        $noExtensions                               = null;
-        $noInteraction                              = null;
-        $noLogging                                  = null;
-        $printer                                    = null;
-        $processIsolation                           = null;
-        $randomOrderSeed                            = null;
-        $repeat                                     = null;
-        $reportUselessTests                         = null;
-        $resolveDependencies                        = null;
-        $reverseList                                = null;
-        $stderr                                     = null;
-        $strictCoverage                             = null;
-        $stopOnDefect                               = null;
-        $stopOnError                                = null;
-        $stopOnFailure                              = null;
-        $stopOnIncomplete                           = null;
-        $stopOnRisky                                = null;
-        $stopOnSkipped                              = null;
-        $stopOnWarning                              = null;
-        $teamcityLogfile                            = null;
-        $testdoxExcludeGroups                       = null;
-        $testdoxGroups                              = null;
-        $testdoxHtmlFile                            = null;
-        $testdoxTextFile                            = null;
-        $testdoxXmlFile                             = null;
-        $testSuffixes                               = null;
-        $testSuite                                  = null;
-        $excludeTestSuite                           = null;
-        $unrecognizedOptions                        = [];
-        $unrecognizedOrderBy                        = null;
-        $useDefaultConfiguration                    = null;
-        $verbose                                    = null;
-        $version                                    = null;
+        $argument                          = null;
+        $atLeastVersion                    = null;
+        $backupGlobals                     = null;
+        $backupStaticProperties            = null;
+        $beStrictAboutChangesToGlobalState = null;
+        $bootstrap                         = null;
+        $cacheDirectory                    = null;
+        $cacheResult                       = null;
+        $cacheResultFile                   = null;
+        $checkVersion                      = null;
+        $colors                            = null;
+        $columns                           = null;
+        $configuration                     = null;
+        $coverageCacheDirectory            = null;
+        $warmCoverageCache                 = null;
+        $coverageFilter                    = null;
+        $coverageClover                    = null;
+        $coverageCobertura                 = null;
+        $coverageCrap4J                    = null;
+        $coverageHtml                      = null;
+        $coveragePhp                       = null;
+        $coverageText                      = null;
+        $coverageTextShowUncoveredFiles    = null;
+        $coverageTextShowOnlySummary       = null;
+        $coverageXml                       = null;
+        $pathCoverage                      = null;
+        $debug                             = null;
+        $defaultTimeLimit                  = null;
+        $disableCodeCoverageIgnore         = null;
+        $disallowTestOutput                = null;
+        $disallowTodoAnnotatedTests        = null;
+        $enforceTimeLimit                  = null;
+        $excludeGroups                     = null;
+        $executionOrder                    = null;
+        $executionOrderDefects             = null;
+        $extensions                        = [];
+        $unavailableExtensions             = [];
+        $failOnEmptyTestSuite              = null;
+        $failOnIncomplete                  = null;
+        $failOnRisky                       = null;
+        $failOnSkipped                     = null;
+        $failOnWarning                     = null;
+        $filter                            = null;
+        $generateConfiguration             = null;
+        $migrateConfiguration              = null;
+        $groups                            = null;
+        $testsCovering                     = null;
+        $testsUsing                        = null;
+        $help                              = null;
+        $includePath                       = null;
+        $iniSettings                       = [];
+        $junitLogfile                      = null;
+        $listGroups                        = null;
+        $listSuites                        = null;
+        $listTests                         = null;
+        $listTestsXml                      = null;
+        $noCoverage                        = null;
+        $noExtensions                      = null;
+        $noInteraction                     = null;
+        $noLogging                         = null;
+        $printer                           = null;
+        $processIsolation                  = null;
+        $randomOrderSeed                   = null;
+        $repeat                            = null;
+        $reportUselessTests                = null;
+        $resolveDependencies               = null;
+        $reverseList                       = null;
+        $stderr                            = null;
+        $strictCoverage                    = null;
+        $stopOnDefect                      = null;
+        $stopOnError                       = null;
+        $stopOnFailure                     = null;
+        $stopOnIncomplete                  = null;
+        $stopOnRisky                       = null;
+        $stopOnSkipped                     = null;
+        $stopOnWarning                     = null;
+        $teamcityLogfile                   = null;
+        $testdoxExcludeGroups              = null;
+        $testdoxGroups                     = null;
+        $testdoxHtmlFile                   = null;
+        $testdoxTextFile                   = null;
+        $testdoxXmlFile                    = null;
+        $testSuffixes                      = null;
+        $testSuite                         = null;
+        $excludeTestSuite                  = null;
+        $unrecognizedOptions               = [];
+        $unrecognizedOrderBy               = null;
+        $useDefaultConfiguration           = null;
+        $verbose                           = null;
+        $version                           = null;
 
         if (isset($options[1][0])) {
             $argument = $options[1][0];
@@ -702,11 +700,6 @@ final class Builder
 
                     break;
 
-                case '--disallow-resource-usage':
-                    $beStrictAboutResourceUsageDuringSmallTests = true;
-
-                    break;
-
                 case '--default-time-limit':
                     $defaultTimeLimit = (int) $option[1];
 
@@ -793,7 +786,6 @@ final class Builder
             $backupGlobals,
             $backupStaticProperties,
             $beStrictAboutChangesToGlobalState,
-            $beStrictAboutResourceUsageDuringSmallTests,
             $bootstrap,
             $cacheDirectory,
             $cacheResult,

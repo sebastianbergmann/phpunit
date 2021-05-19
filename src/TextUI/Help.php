@@ -79,7 +79,6 @@ final class Help
             ['arg'    => '--strict-coverage', 'desc' => 'Be strict about @covers annotation usage'],
             ['arg'    => '--strict-global-state', 'desc' => 'Be strict about changes to global state'],
             ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
-            ['arg'    => '--disallow-resource-usage', 'desc' => 'Be strict about resource usage during small tests'],
             ['arg'    => '--enforce-time-limit', 'desc' => 'Enforce time limit based on test size'],
             ['arg'    => '--default-time-limit <sec>', 'desc' => 'Timeout in seconds for tests without @small, @medium or @large'],
             ['arg'    => '--disallow-todo-tests', 'desc' => 'Disallow @todo-annotated tests'],

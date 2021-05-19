@@ -3,7 +3,8 @@
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
          cacheResultFile=".phpunit.cache/test-results"
          testSuiteLoaderClass="Foo"
-         testSuiteLoaderFile="Foo.php">
+         testSuiteLoaderFile="Foo.php"
+         beStrictAboutResourceUsageDuringSmallTests="true">
 
     <coverage cacheDirectory=".phpunit.cache/code-coverage"
               processUncoveredFiles="true">

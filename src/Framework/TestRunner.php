@@ -21,7 +21,6 @@ use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Util\Error\Handler;
-use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use ReflectionClass;
@@ -29,7 +28,6 @@ use SebastianBergmann\CodeCoverage\Exception as OriginalCodeCoverageException;
 use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Invoker\TimeoutException;
-use SebastianBergmann\ResourceOperations\ResourceOperations;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
@@ -88,17 +86,6 @@ final class TestRunner
 
         if ($collectCodeCoverage) {
             CodeCoverage::start($test);
-        }
-
-        $monitorFunctions = $result->isStrictAboutResourceUsageDuringSmallTests() &&
-            !$test instanceof ErrorTestCase &&
-            !$test instanceof WarningTestCase &&
-            $test->size()->isSmall() &&
-            function_exists('xdebug_start_function_monitor');
-
-        if ($monitorFunctions) {
-            /* @noinspection ForgottenDebugOutputInspection */
-            xdebug_start_function_monitor(ResourceOperations::getFunctions());
         }
 
         $timer = new Timer;
@@ -172,33 +159,6 @@ final class TestRunner
         $time = $timer->stop()->asSeconds();
 
         $test->addToAssertionCount(Assert::getCount());
-
-        if ($monitorFunctions) {
-            $excludeList = new ExcludeList;
-
-            /** @noinspection ForgottenDebugOutputInspection */
-            $functions = xdebug_get_monitored_functions();
-
-            /* @noinspection ForgottenDebugOutputInspection */
-            xdebug_stop_function_monitor();
-
-            foreach ($functions as $function) {
-                if (!$excludeList->isExcluded($function['filename'])) {
-                    $result->addFailure(
-                        $test,
-                        new RiskyTestError(
-                            sprintf(
-                                '%s() used in %s:%s',
-                                $function['function'],
-                                $function['filename'],
-                                $function['lineno']
-                            )
-                        ),
-                        $time
-                    );
-                }
-            }
-        }
 
         if ($result->isStrictAboutTestsThatDoNotTestAnything() &&
             $test->numberOfAssertionsPerformed() === 0) {
@@ -373,12 +333,11 @@ final class TestRunner
             $iniSettings   = '';
         }
 
-        $coverage                                   = CodeCoverage::isActive() ? 'true' : 'false';
-        $isStrictAboutTestsThatDoNotTestAnything    = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
-        $isStrictAboutOutputDuringTests             = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
-        $enforcesTimeLimit                          = $result->enforcesTimeLimit() ? 'true' : 'false';
-        $isStrictAboutTodoAnnotatedTests            = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
-        $isStrictAboutResourceUsageDuringSmallTests = $result->isStrictAboutResourceUsageDuringSmallTests() ? 'true' : 'false';
+        $coverage                                = CodeCoverage::isActive() ? 'true' : 'false';
+        $isStrictAboutTestsThatDoNotTestAnything = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
+        $isStrictAboutOutputDuringTests          = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
+        $enforcesTimeLimit                       = $result->enforcesTimeLimit() ? 'true' : 'false';
+        $isStrictAboutTodoAnnotatedTests         = $result->isStrictAboutTodoAnnotatedTests() ? 'true' : 'false';
 
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
             $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
@@ -428,30 +387,29 @@ final class TestRunner
         $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
 
         $var = [
-            'composerAutoload'                           => $composerAutoload,
-            'phar'                                       => $phar,
-            'filename'                                   => $class->getFileName(),
-            'className'                                  => $class->getName(),
-            'collectCodeCoverageInformation'             => $coverage,
-            'cachesStaticAnalysis'                       => $cachesStaticAnalysis,
-            'codeCoverageCacheDirectory'                 => $codeCoverageCacheDirectory,
-            'pathCoverage'                               => $pathCoverage,
-            'data'                                       => $data,
-            'dataName'                                   => $dataName,
-            'dependencyInput'                            => $dependencyInput,
-            'constants'                                  => $constants,
-            'globals'                                    => $globals,
-            'include_path'                               => $includePath,
-            'included_files'                             => $includedFiles,
-            'iniSettings'                                => $iniSettings,
-            'isStrictAboutTestsThatDoNotTestAnything'    => $isStrictAboutTestsThatDoNotTestAnything,
-            'isStrictAboutOutputDuringTests'             => $isStrictAboutOutputDuringTests,
-            'enforcesTimeLimit'                          => $enforcesTimeLimit,
-            'isStrictAboutTodoAnnotatedTests'            => $isStrictAboutTodoAnnotatedTests,
-            'isStrictAboutResourceUsageDuringSmallTests' => $isStrictAboutResourceUsageDuringSmallTests,
-            'codeCoverageFilter'                         => $codeCoverageFilter,
-            'configurationFilePath'                      => $configurationFilePath,
-            'name'                                       => $test->getName(false),
+            'composerAutoload'                        => $composerAutoload,
+            'phar'                                    => $phar,
+            'filename'                                => $class->getFileName(),
+            'className'                               => $class->getName(),
+            'collectCodeCoverageInformation'          => $coverage,
+            'cachesStaticAnalysis'                    => $cachesStaticAnalysis,
+            'codeCoverageCacheDirectory'              => $codeCoverageCacheDirectory,
+            'pathCoverage'                            => $pathCoverage,
+            'data'                                    => $data,
+            'dataName'                                => $dataName,
+            'dependencyInput'                         => $dependencyInput,
+            'constants'                               => $constants,
+            'globals'                                 => $globals,
+            'include_path'                            => $includePath,
+            'included_files'                          => $includedFiles,
+            'iniSettings'                             => $iniSettings,
+            'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
+            'isStrictAboutOutputDuringTests'          => $isStrictAboutOutputDuringTests,
+            'enforcesTimeLimit'                       => $enforcesTimeLimit,
+            'isStrictAboutTodoAnnotatedTests'         => $isStrictAboutTodoAnnotatedTests,
+            'codeCoverageFilter'                      => $codeCoverageFilter,
+            'configurationFilePath'                   => $configurationFilePath,
+            'name'                                    => $test->getName(false),
         ];
 
         if (!$runEntireClass) {

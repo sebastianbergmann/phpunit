@@ -64,8 +64,6 @@
   [32m--strict-coverage          [0m Be strict about @covers annotation usage
   [32m--strict-global-state      [0m Be strict about changes to global state
   [32m--disallow-test-output     [0m Be strict about output during tests
-  [32m--disallow-resource-usage  [0m Be strict about resource usage during
-                              small tests
   [32m--enforce-time-limit       [0m Enforce time limit based on test size
   [32m--default-time-limit [36m<sec>[0m [0m Timeout in seconds for tests without
                               @small, @medium or @large
