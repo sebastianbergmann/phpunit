@@ -36,7 +36,6 @@ final class JsonMatchesTest extends ConstraintTestCase
                 '{"0":null,"a":{},"b":[],"c":"1","d":1,"e":-1,"f":[1,2],"g":[2,1],"h":{"0":"0","1":"1","2":"2"}}',
                 '{"a":{},"d":1,"b":[],"e":-1,"0":null,"c":"1","f":[1,2],"h":{"2":"2","1":"1","0":"0"},"g":[2,1]}',
             ],
-
             'child object fields are unordered'       => [true, '{"Mascott": {"name":"Tux", "age":5}}', '{"Mascott": {"age":5, "name":"Tux"}}'],
             'null field different from missing field' => [false, '{"present": true, "missing": null}', '{"present": true}'],
             'array elements are ordered'              => [false, '["first", "second"]', '["second", "first"]'],
@@ -45,6 +44,7 @@ final class JsonMatchesTest extends ConstraintTestCase
             'single null valid json'                  => [true, 'null', 'null'],
             'objects are not arrays'                  => [false, '{}', '[]'],
             'arrays are not objects'                  => [false, '[]', '{}'],
+            'objects in arrays are unordered'         => [true, '[{"0":"0","1":"1"},{"2":"2","3":"3"}]', '[{"1":"1","0":"0"},{"2":"2","3":"3"}]'],
         ];
     }
 
@@ -67,6 +67,8 @@ final class JsonMatchesTest extends ConstraintTestCase
                 '{"0":null,"a":{},"b":[],"c":"1","d":1,"e":-1,"f":[1,2],"g":[2,1],"h":{"0":"0","1":"1","2":"2"}}',
                 '{"a":{},"d":1,"b":[],"e":-1,"0":null,"c":"1","f":[1,2],"h":["0","1","2"],"g":[2,1]}',
             ],
+            'nested arrays are ordered'         => ['[[1,0],[2,3]]', '[{"1":"1","0":"0"},{"2":"2","3":"3"}]'],
+            'child objects in arrays stay in order'         => ['[{"0":"0","1":"1"},{"2":"2","3":"3"}]', '[{"2":"2","3":"3"},{"1":"1","0":"0"}]'],
         ];
     }
 
