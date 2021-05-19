@@ -32,12 +32,13 @@ Logging Options:
 Test Selection Options:
 
   --list-suites               List available test suites
-  --testsuite <name>          Filter which testsuite to run
+  --testsuite <name>          Only run tests from the specified test suite(s)
+  --exclude-testsuite <name>  Exclude tests from the specified test suite(s)
   --list-groups               List available test groups
-  --group <name>              Only runs tests from the specified group(s)
+  --group <name>              Only run tests from the specified group(s)
   --exclude-group <name>      Exclude tests from the specified group(s)
-  --covers <name>             Only runs tests annotated with "@covers <name>"
-  --uses <name>               Only runs tests annotated with "@uses <name>"
+  --covers <name>             Only run tests annotated with "@covers <name>"
+  --uses <name>               Only run tests annotated with "@uses <name>"
   --list-tests                List available tests
   --list-tests-xml <file>     List available tests in XML format
   --filter <pattern>          Filter which tests to run
