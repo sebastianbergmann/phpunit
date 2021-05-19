@@ -12,6 +12,7 @@ namespace PHPUnit\Util;
 use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
+use const SORT_STRING;
 use function count;
 use function is_array;
 use function is_object;
@@ -89,7 +90,7 @@ final class Json
             }
         }
 
-        ksort($json);
+        ksort($json, SORT_STRING);
 
         foreach ($json as $key => &$value) {
             self::recursiveSort($value);
