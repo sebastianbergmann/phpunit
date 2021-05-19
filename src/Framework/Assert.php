@@ -1732,6 +1732,32 @@ abstract class Assert
     }
 
     /**
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     */
+    public static function assertStringContainsStringIgnoringLineEndings(string $needle, string $haystack, string $message = ''): void
+    {
+        $needle = self::normalizeLineEndings($needle);
+        $haystack = self::normalizeLineEndings($haystack);
+
+        static::assertThat($haystack, new StringContains($needle, false), $message);
+    }
+
+    /**
+     * Asserts that two strings equality ignoring line endings.
+     *
+     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
+     */
+    public static function assertStringEqualIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
+    {
+        $expected = self::normalizeLineEndings($expected);
+        $actual = self::normalizeLineEndings($actual);
+
+        static::assertThat($actual, new IsEqual($expected), $message);
+    }
+
+    /**
      * Asserts that a string matches a given format string.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -2501,5 +2527,13 @@ abstract class Assert
     private static function isValidClassAttributeName(string $attributeName): bool
     {
         return (bool) preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
+    }
+
+    private static function normalizeLineEndings(string $value): string
+    {
+        return strtr($value, [
+            "\r\n" => "\n",
+            "\r" => "\n",
+        ]);
     }
 }

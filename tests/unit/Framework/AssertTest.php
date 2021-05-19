@@ -1173,6 +1173,69 @@ XML;
         $this->assertStringEndsNotWith('suffix', 'foosuffix');
     }
 
+    public function dataAssertStringContainsStringIgnoringLineEndings(): array
+    {
+        return [
+            ["b\nc", "b\r\nc"],
+            ["b\nc", "a\r\nb\r\nc\r\nd"],
+        ];
+    }
+
+    /**
+     * @dataProvider dataAssertStringContainsStringIgnoringLineEndings
+     */
+    public function testAssertStringContainsStringIgnoringLineEndings(string $needle, string $haystack): void
+    {
+        $this->assertStringContainsStringIgnoringLineEndings($needle, $haystack);
+    }
+
+    public function testNotAssertStringContainsStringIgnoringLineEndings(): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->assertStringContainsStringIgnoringLineEndings("b\nc", "\r\nc\r\n");
+    }
+
+    public function dataAssertStringEqualIgnoringLineEndings(): array
+    {
+        return [
+            'lf-crlf' => ["a\nb", "a\r\nb"],
+            'cr-crlf' => ["a\rb", "a\r\nb"],
+            'crlf-crlf' => ["a\r\nb", "a\r\nb"],
+            'lf-cr' => ["a\nb", "a\rb"],
+            'cr-cr' => ["a\rb", "a\rb"],
+            'crlf-cr' => ["a\r\nb", "a\rb"],
+            'lf-lf' => ["a\nb", "a\nb"],
+            'cr-lf' => ["a\rb", "a\nb"],
+            'crlf-lf' => ["a\r\nb", "a\nb"],
+        ];
+    }
+
+    /**
+     * @dataProvider dataAssertStringEqualIgnoringLineEndings
+     */
+    public function testAssertStringEqualIgnoringLineEndings(string $expected, string $actual): void
+    {
+        $this->assertStringEqualIgnoringLineEndings($expected, $actual);
+    }
+
+    public function dataNotAssertStringEqualIgnoringLineEndings(): array
+    {
+        return [
+            ["a\nb", 'ab'],
+            ["a\rb", 'ab'],
+            ["a\r\nb", 'ab'],
+        ];
+    }
+
+    /**
+     * @dataProvider dataNotAssertStringEqualIgnoringLineEndings
+     */
+    public function testNotAssertStringEqualIgnoringLineEndings(string $expected, string $actual): void
+    {
+        $this->expectException(ExpectationFailedException::class);
+        $this->assertStringEqualIgnoringLineEndings($expected, $actual);
+    }
+
     public function testAssertStringMatchesFormat(): void
     {
         $this->assertStringMatchesFormat('*%s*', '***');
