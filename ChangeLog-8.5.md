@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 ### Fixed
 
 * [#4663](https://github.com/sebastianbergmann/phpunit/issues/4663): `TestCase::expectError()` works on PHP 7.3, but not on PHP >= 7.4
+* [#4678](https://github.com/sebastianbergmann/phpunit/pull/4678): Stubbed methods with `iterable` return types should return empty array by default
 
 ## [8.5.15] - 2021-03-17
 
