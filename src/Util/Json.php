@@ -97,6 +97,7 @@ final class Json
         foreach ($json as $key => &$value) {
             self::recursiveSort($value);
         }
+
         if ($isObject) {
             $json = (object) $json;
         }
