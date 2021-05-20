@@ -168,7 +168,7 @@ final class Invocation implements SelfDescribing
             case 'generator':
             case 'iterable':
                 $generator = static function (): \Generator {
-                    yield;
+                    yield from [];
                 };
 
                 return $generator();
