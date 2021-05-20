@@ -13,9 +13,8 @@ use const JSON_PRETTY_PRINT;
 use const JSON_UNESCAPED_SLASHES;
 use const JSON_UNESCAPED_UNICODE;
 use const SORT_STRING;
-use function count;
-use function is_array;
 use function is_object;
+use function is_scalar;
 use function json_decode;
 use function json_encode;
 use function json_last_error;
@@ -82,6 +81,7 @@ final class Json
         }
 
         $isObject = is_object($json);
+
         if ($isObject) {
             // Objects need to be sorted during canonicalization to ensure
             // correct comparsion since JSON objects are unordered. It must be
