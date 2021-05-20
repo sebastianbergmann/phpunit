@@ -82,8 +82,8 @@ final class Json
             return;
         }
 
-
-        if (is_object($json)) {
+        $isObject = is_object($json);
+        if ($isObject) {
             // Objects need to be sorted during canonicalization to ensure
             // correct comparsion since JSON objects are unordered. It must be
             // kept as an object so that the value correctly stays as a JSON
@@ -93,11 +93,13 @@ final class Json
             // See #2919, #4584, #4674
             $json = (array) $json;
             ksort($json, SORT_STRING);
-            $json = (object) $json;
         }
 
         foreach ($json as $key => &$value) {
             self::recursiveSort($value);
+        }
+        if ($isObject) {
+            $json = (object) $json;
         }
     }
 }
