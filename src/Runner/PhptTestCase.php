@@ -41,7 +41,6 @@ use function trim;
 use function unlink;
 use function unserialize;
 use function var_export;
-use function version_compare;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
