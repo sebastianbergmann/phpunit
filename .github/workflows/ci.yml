@@ -189,8 +189,9 @@ jobs:
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1
 
-      - name: Determine composer cache directory
-        run: echo "::set-env name=COMPOSER_CACHE_DIR::$(./tools/composer config cache-dir)"
+      - name: Determine composer cache directory on Linux
+        if: matrix.os == 'ubuntu-latest'
+        run: echo "COMPOSER_CACHE_DIR=$(tools/composer config cache-dir)" >> $GITHUB_ENV
 
       - name: Cache dependencies installed with composer
         uses: actions/cache@v2
