@@ -12,13 +12,13 @@ namespace PHPUnit\Event\TestRunner;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PHPUnit\Event\TestRunner\OS
+ * @covers \PHPUnit\Event\TestRunner\OperatingSystem
  */
-final class OSTest extends TestCase
+final class OperatingSystemTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $os = new OS();
+        $os = new OperatingSystem();
 
         $this->assertSame(PHP_OS, $os->asString());
         $this->assertSame(PHP_OS_FAMILY, $os->family());

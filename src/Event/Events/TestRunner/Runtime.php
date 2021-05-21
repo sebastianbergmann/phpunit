@@ -39,8 +39,8 @@ final class Runtime
         return new PHPUnit();
     }
 
-    public function os(): OS
+    public function os(): OperatingSystem
     {
-        return new OS();
+        return new OperatingSystem();
     }
 }
