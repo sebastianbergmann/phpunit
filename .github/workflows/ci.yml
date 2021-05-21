@@ -132,7 +132,6 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: xdebug
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
 
@@ -164,12 +163,109 @@ jobs:
         run: bash ./build/scripts/sanity-check
 
       - name: Run tests with phpunit
+        run: php ./phpunit
+
+  code-coverage:
+    name: Code Coverage
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - 8.0
+
+        dependencies:
+          - highest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: pcov
+          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
+          ini-values: assert.exception=1, zend.assertions=1
+
+      - name: Determine composer cache directory
+        run: echo "COMPOSER_CACHE_DIR=$(./tools/composer config cache-dir)" >> $GITHUB_ENV
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.COMPOSER_CACHE_DIR }}
+          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
+
+      - name: Install lowest dependencies with composer
+        if: matrix.dependencies == 'lowest'
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+
+      - name: Install highest dependencies with composer
+        if: matrix.dependencies == 'highest'
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+
+      - name: Collect code coverage with phpunit
         run: php ./phpunit --coverage-clover=coverage.xml
 
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v1
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
+
+  test-generated-code:
+    name: Test generated code
+
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        php-version:
+          - 7.2
+
+        dependencies:
+          - highest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: pcov
+          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
+          ini-values: assert.exception=1, zend.assertions=1
+
+      - name: Determine composer cache directory
+        run: echo "COMPOSER_CACHE_DIR=$(tools/composer config cache-dir)" >> $GITHUB_ENV
+
+      - name: Cache dependencies installed with composer
+        uses: actions/cache@v2
+        with:
+          path: ${{ env.COMPOSER_CACHE_DIR }}
+          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
+          restore-keys: |
+            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
+
+      - name: Install lowest dependencies with composer
+        if: matrix.dependencies == 'lowest'
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+
+      - name: Install highest dependencies with composer
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+
+      - name: Generate global assert wrappers
+        run: php build/scripts/generate-global-assert-wrappers.php
+
+      - name: Assert that git tree is clean
+        run: git diff || echo "Run 'php build/scripts/generate-global-assert-wrappers.php' to regenerate global assert wrappers!"
 
   build-and-test-phar:
     name: Build and test PHAR
