@@ -24,10 +24,7 @@ interface Emitter
 
     public function testRunnerFinished(): void;
 
-    /**
-     * @param mixed $value
-     */
-    public function assertionMade($value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void;
+    public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void;
 
     public function bootstrapFinished(string $filename): void;
 

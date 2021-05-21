@@ -25,7 +25,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function assertionMade($value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
+    public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
     {
     }
 

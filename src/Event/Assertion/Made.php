@@ -20,10 +20,7 @@ final class Made implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    /**
-     * @var mixed
-     */
-    private $value;
+    private mixed $value;
 
     private Constraint\Constraint $constraint;
 
@@ -31,12 +28,9 @@ final class Made implements Event
 
     private bool $hasFailed;
 
-    /**
-     * @param mixed $value
-     */
     public function __construct(
         Telemetry\Info $telemetryInfo,
-        $value,
+        mixed $value,
         Constraint\Constraint $constraint,
         string $message,
         bool $hasFailed
@@ -53,10 +47,7 @@ final class Made implements Event
         return $this->telemetryInfo;
     }
 
-    /**
-     * @return mixed
-     */
-    public function value()
+    public function value(): mixed
     {
         return $this->value;
     }

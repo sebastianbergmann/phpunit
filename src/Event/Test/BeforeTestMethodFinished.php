@@ -30,7 +30,7 @@ final class BeforeTestMethodFinished implements Event
      *
      * @var array<int, Code\ClassMethod>
      */
-    private $calledMethods;
+    private array $calledMethods;
 
     /**
      * @psalm-param class-string $testClassName

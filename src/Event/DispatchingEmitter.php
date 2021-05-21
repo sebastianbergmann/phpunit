@@ -51,7 +51,7 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(new TestRunner\Finished($this->telemetryInfo()));
     }
 
-    public function assertionMade($value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
+    public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
     {
         $this->dispatcher->dispatch(new Assertion\Made(
             $this->telemetryInfo(),
