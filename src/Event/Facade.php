@@ -20,6 +20,9 @@ final class Facade
 
     private static ?Dispatcher $dispatcher = null;
 
+    /**
+     * @internal This class is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function emitter(): Emitter
     {
         if (self::$emitter === null) {

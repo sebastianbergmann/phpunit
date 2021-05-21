@@ -15,6 +15,9 @@ use PHPUnit\Framework\TestSuite;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 interface Emitter
 {
     public function testRunnerStarted(): void;

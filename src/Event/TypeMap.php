@@ -17,6 +17,9 @@ use function in_array;
 use function interface_exists;
 use function sprintf;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class TypeMap
 {
     /**

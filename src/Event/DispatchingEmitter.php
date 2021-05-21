@@ -16,6 +16,9 @@ use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
 final class DispatchingEmitter implements Emitter
 {
     private Dispatcher $dispatcher;
