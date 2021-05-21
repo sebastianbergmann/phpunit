@@ -8,6 +8,69 @@
       <code>notify</code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="src/Event/DispatchingEmitter.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$mockClassName</code>
+      <code>$originalClassName</code>
+    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="45">
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>duration</code>
+      <code>duration</code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="src/Event/Facade.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$eventClass . 'Subscriber'</code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/Event/Telemetry/SystemStopWatch.php">
+    <MissingThrowsDocblock occurrences="1">
+      <code>HRTime::fromSecondsAndNanoseconds(...hrtime(false))</code>
+    </MissingThrowsDocblock>
+  </file>
   <file src="src/Framework/Assert.php">
     <DeprecatedClass occurrences="12">
       <code>ClassHasAttribute</code>
@@ -368,7 +431,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="4">
+    <MissingThrowsDocblock occurrences="3">
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
@@ -439,12 +502,6 @@
       <code>$this instanceof PhptTestCase</code>
     </RedundantCondition>
   </file>
-  <file src="src/Framework/TestResult.php">
-    <MissingThrowsDocblock occurrences="2">
-      <code>getName</code>
-      <code>getName</code>
-    </MissingThrowsDocblock>
-  </file>
   <file src="src/Framework/TestRunner.php">
     <MissingThrowsDocblock occurrences="12">
       <code>CodeCoverage::instance()</code>
@@ -465,6 +522,10 @@
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Framework/TestSuite.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$this-&gt;name</code>
+      <code>$this-&gt;name</code>
+    </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="2">
       <code>is_string($testClass)</code>
       <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
@@ -689,7 +750,7 @@
       <code>include_once $filename</code>
     </UnresolvableInclude>
     <UnsafeInstantiation occurrences="1">
-      <code>new static((new Event\Facade())-&gt;emitter())</code>
+      <code>new static</code>
     </UnsafeInstantiation>
   </file>
   <file src="src/TextUI/DefaultResultPrinter.php">
