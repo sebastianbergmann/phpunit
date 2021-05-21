@@ -13,6 +13,9 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 use SebastianBergmann\GlobalState\Snapshot;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class Captured implements Event
 {
     private Telemetry\Info $telemetryInfo;

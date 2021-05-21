@@ -11,6 +11,9 @@ namespace PHPUnit\Event\Comparator;
 
 use PHPUnit\Event\Subscriber;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 interface RegisteredSubscriber extends Subscriber
 {
     public function notify(Registered $event): void;

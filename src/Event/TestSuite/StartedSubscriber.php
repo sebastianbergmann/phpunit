@@ -11,6 +11,9 @@ namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\Subscriber;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 interface StartedSubscriber extends Subscriber
 {
     public function notify(Started $event): void;

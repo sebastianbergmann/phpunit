@@ -11,6 +11,9 @@ namespace PHPUnit\Event\Assertion;
 
 use PHPUnit\Event\Subscriber;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 interface MadeSubscriber extends Subscriber
 {
     public function notify(Made $event): void;

@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 interface DurationFormatter
 {
     public function format(Duration $duration): string;

@@ -14,6 +14,9 @@ use Countable;
 use IteratorAggregate;
 use PHPUnit\Event\Test\Failure;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class FailureCollection implements Countable, IteratorAggregate
 {
     /**

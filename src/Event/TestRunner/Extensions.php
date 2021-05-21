@@ -16,6 +16,9 @@ use function get_loaded_extensions;
 use ArrayIterator;
 use IteratorAggregate;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class Extensions implements IteratorAggregate
 {
     public function loaded(string $name): bool

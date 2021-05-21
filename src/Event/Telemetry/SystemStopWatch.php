@@ -11,6 +11,9 @@ namespace PHPUnit\Event\Telemetry;
 
 use function hrtime;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class SystemStopWatch implements StopWatch
 {
     public function current(): HRTime

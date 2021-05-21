@@ -13,6 +13,9 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 use PHPUnit\Framework\Constraint;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class Made implements Event
 {
     private Telemetry\Info $telemetryInfo;

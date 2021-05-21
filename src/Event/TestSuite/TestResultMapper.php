@@ -15,6 +15,9 @@ use PHPUnit\Event\TestSuite\Result;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class TestResultMapper
 {
     public function map(TestResult $result): Result

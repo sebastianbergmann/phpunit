@@ -11,6 +11,9 @@ namespace PHPUnit\Event;
 
 use RuntimeException;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class AlreadyRegistered extends RuntimeException implements Exception
 {
 }

@@ -11,6 +11,9 @@ namespace PHPUnit\Event\GlobalState;
 
 use PHPUnit\Event\Subscriber;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 interface ModifiedSubscriber extends Subscriber
 {
     public function notify(Modified $event): void;

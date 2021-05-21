@@ -12,6 +12,9 @@ namespace PHPUnit\Event\TestSuite;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\TestSuite;
 
+/**
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ */
 final class Info
 {
     private int $count;
