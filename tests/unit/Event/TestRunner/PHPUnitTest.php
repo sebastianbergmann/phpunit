@@ -19,7 +19,7 @@ final class PHPUnitTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $phpUnit = new PHPUnit();
+        $phpUnit = new PHPUnit;
 
         $this->assertSame(Version::id(), $phpUnit->version());
         $this->assertSame(Version::series(), $phpUnit->series());

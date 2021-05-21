@@ -31,16 +31,16 @@ final class Runtime
 
     public function php(): PHP
     {
-        return new PHP();
+        return new PHP;
     }
 
     public function phpunit(): PHPUnit
     {
-        return new PHPUnit();
+        return new PHPUnit;
     }
 
     public function os(): OperatingSystem
     {
-        return new OperatingSystem();
+        return new OperatingSystem;
     }
 }

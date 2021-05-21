@@ -20,8 +20,8 @@ final class ModifiedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo  = self::createTelemetryInfo();
-        $snapshotBefore = new Snapshot();
-        $snapshotAfter  = new Snapshot();
+        $snapshotBefore = new Snapshot;
+        $snapshotAfter  = new Snapshot;
         $message        = 'Hmm, who would have thought?';
 
         $event = new Modified(

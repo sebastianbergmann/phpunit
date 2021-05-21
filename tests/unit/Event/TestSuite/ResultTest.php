@@ -19,12 +19,12 @@ final class ResultTest extends TestCase
     public function testConstructorSetsValues(): void
     {
         $count          = 9001;
-        $errors         = new FailureCollection();
-        $failures       = new FailureCollection();
-        $notImplemented = new FailureCollection();
-        $risky          = new FailureCollection();
-        $skipped        = new FailureCollection();
-        $warnings       = new FailureCollection();
+        $errors         = new FailureCollection;
+        $failures       = new FailureCollection;
+        $notImplemented = new FailureCollection;
+        $risky          = new FailureCollection;
+        $skipped        = new FailureCollection;
+        $warnings       = new FailureCollection;
         $passed         = [
             'foo',
             'bar',

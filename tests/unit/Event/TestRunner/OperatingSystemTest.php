@@ -18,7 +18,7 @@ final class OperatingSystemTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $os = new OperatingSystem();
+        $os = new OperatingSystem;
 
         $this->assertSame(PHP_OS, $os->asString());
         $this->assertSame(PHP_OS_FAMILY, $os->family());

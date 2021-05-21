@@ -19,7 +19,7 @@ final class SystemStopWatchTest extends TestCase
 {
     public function testNowReturnsDateTimeImmutable(): void
     {
-        $clock = new SystemStopWatch();
+        $clock = new SystemStopWatch;
 
         $before = HRTime::fromSecondsAndNanoseconds(...hrtime(false));
 

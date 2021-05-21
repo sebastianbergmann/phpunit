@@ -226,7 +226,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testGlobalStateCapturedDispatchesGlobalStateCapturedEvent(): void
     {
-        $snapshot = new Snapshot();
+        $snapshot = new Snapshot;
 
         $subscriber = new class extends RecordingSubscriber implements GlobalState\CapturedSubscriber {
             public function notify(GlobalState\Captured $event): void
@@ -261,8 +261,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testGlobalStateModifiedDispatchesGlobalStateModifiedEvent(): void
     {
-        $snapshotBefore = new Snapshot();
-        $snapshotAfter  = new Snapshot();
+        $snapshotBefore = new Snapshot;
+        $snapshotAfter  = new Snapshot;
         $message        = 'Hmm, who would have thought?';
 
         $subscriber = new class extends RecordingSubscriber implements GlobalState\ModifiedSubscriber {
@@ -304,7 +304,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testGlobalStateRestoredDispatchesGlobalStateRestoredEvent(): void
     {
-        $snapshot = new Snapshot();
+        $snapshot = new Snapshot;
 
         $subscriber = new class extends RecordingSubscriber implements GlobalState\RestoredSubscriber {
             public function notify(GlobalState\Restored $event): void
@@ -1655,7 +1655,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestSuiteFinishedDispatchesTestSuiteFinishedEvent(): void
     {
         $name         = 'foo';
-        $result       = new Framework\TestResult();
+        $result       = new Framework\TestResult;
         $codeCoverage = new CodeCoverage\CodeCoverage(
             $this->createMock(CodeCoverage\Driver\Driver::class),
             new CodeCoverage\Filter()
@@ -1781,7 +1781,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     private static function createDispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): Dispatcher
     {
-        $typeMap = new TypeMap();
+        $typeMap = new TypeMap;
 
         $typeMap->addMapping(
             $subscriberInterface,

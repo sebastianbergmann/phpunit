@@ -18,14 +18,14 @@ final class ExtensionsTest extends TestCase
 {
     public function testLoadedReturnsFalseWhenExtensionIsNotLoaded(): void
     {
-        $extensions = new Extensions();
+        $extensions = new Extensions;
 
         $this->assertFalse($extensions->loaded('foo'));
     }
 
     public function testLoadedReturnsTrueWhenExtensionIsLoaded(): void
     {
-        $extensions = new Extensions();
+        $extensions = new Extensions;
 
         $this->assertTrue($extensions->loaded('json'));
     }
@@ -39,7 +39,7 @@ final class ExtensionsTest extends TestCase
 
         asort($expected);
 
-        $extensions = new Extensions();
+        $extensions = new Extensions;
 
         $this->assertSame($expected, iterator_to_array($extensions->getIterator()));
     }

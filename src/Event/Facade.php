@@ -63,7 +63,7 @@ final class Facade
     private static function typeMap(): TypeMap
     {
         if (self::$typeMap === null) {
-            $typeMap = new TypeMap();
+            $typeMap = new TypeMap;
 
             self::registerDefaultTypes($typeMap);
 

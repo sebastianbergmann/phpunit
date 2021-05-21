@@ -59,6 +59,6 @@ final class PHP
 
     public function extensions(): Extensions
     {
-        return new Extensions();
+        return new Extensions;
     }
 }

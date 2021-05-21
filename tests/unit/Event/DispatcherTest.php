@@ -23,7 +23,7 @@ final class DispatcherTest extends TestCase
 {
     public function testRegisterRejectsUnknownSubscriber(): void
     {
-        $subscriber = new NullSubscriber();
+        $subscriber = new NullSubscriber;
 
         $dispatcher = new Dispatcher(new TypeMap());
 
@@ -34,7 +34,7 @@ final class DispatcherTest extends TestCase
 
     public function testDispatchRejectsUnknownEventType(): void
     {
-        $event = new DummyEvent();
+        $event = new DummyEvent;
 
         $dispatcher = new Dispatcher(new TypeMap());
 
@@ -45,13 +45,13 @@ final class DispatcherTest extends TestCase
 
     public function testDispatchDispatchesEventToKnownSubscribers(): void
     {
-        $event = new DummyEvent();
+        $event = new DummyEvent;
 
-        $typeMap = new TypeMap();
+        $typeMap = new TypeMap;
 
         $typeMap->addMapping(DummySubscriber::class, DummyEvent::class);
 
-        $subscriber = new SpyingDummySubscriber();
+        $subscriber = new SpyingDummySubscriber;
 
         $dispatcher = new Dispatcher($typeMap);
 

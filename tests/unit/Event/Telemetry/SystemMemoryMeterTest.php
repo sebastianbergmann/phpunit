@@ -20,7 +20,7 @@ final class SystemMemoryMeterTest extends TestCase
 {
     public function testMemoryUsageReturnsMemoryUsage(): void
     {
-        $memoryMeter = new SystemMemoryMeter();
+        $memoryMeter = new SystemMemoryMeter;
 
         $memoryUsage = MemoryUsage::fromBytes(memory_get_usage(true));
 
@@ -29,7 +29,7 @@ final class SystemMemoryMeterTest extends TestCase
 
     public function testPeakMemoryUsageReturnsMemoryPeakUsage(): void
     {
-        $memoryMeter = new SystemMemoryMeter();
+        $memoryMeter = new SystemMemoryMeter;
 
         $peakMemoryUsage = MemoryUsage::fromBytes(memory_get_peak_usage(true));
 

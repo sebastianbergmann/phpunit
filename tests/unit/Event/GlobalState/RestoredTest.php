@@ -20,7 +20,7 @@ final class RestoredTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
-        $snapshot      = new Snapshot();
+        $snapshot      = new Snapshot;
 
         $event = new Restored(
             $telemetryInfo,

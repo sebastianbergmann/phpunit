@@ -18,7 +18,7 @@ final class PHPTest extends TestCase
 {
     public function testDefaults(): void
     {
-        $php = new PHP();
+        $php = new PHP;
 
         $this->assertSame(PHP_VERSION, $php->asString());
         $this->assertSame(PHP_SAPI, $php->sapi());
