@@ -17,8 +17,10 @@ final class UsesFunction extends Metadata
 {
     private string $functionName;
 
-    public function __construct(string $functionName)
+    public function __construct(int $level, string $functionName)
     {
+        parent::__construct($level);
+
         $this->functionName = $functionName;
     }
 

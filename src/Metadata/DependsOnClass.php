@@ -27,8 +27,10 @@ final class DependsOnClass extends Metadata
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, bool $deepClone, bool $shallowClone)
+    protected function __construct(int $level, string $className, bool $deepClone, bool $shallowClone)
     {
+        parent::__construct($level);
+
         $this->className    = $className;
         $this->deepClone    = $deepClone;
         $this->shallowClone = $shallowClone;

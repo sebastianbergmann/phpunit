@@ -25,8 +25,10 @@ final class UsesMethod extends Metadata
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName)
+    protected function __construct(int $level, string $className, string $methodName)
     {
+        parent::__construct($level);
+
         $this->className  = $className;
         $this->methodName = $methodName;
     }

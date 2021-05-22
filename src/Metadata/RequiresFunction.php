@@ -17,8 +17,10 @@ final class RequiresFunction extends Metadata
 {
     private string $functionName;
 
-    public function __construct(string $functionName)
+    protected function __construct(int $level, string $functionName)
     {
+        parent::__construct($level);
+
         $this->functionName = $functionName;
     }
 

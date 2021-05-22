@@ -62,7 +62,7 @@ final class MetadataTest extends TestCase
 {
     public function testCanBeAfter(): void
     {
-        $metadata = new After;
+        $metadata = Metadata::after();
 
         $this->assertTrue($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -110,7 +110,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeAfterClass(): void
     {
-        $metadata = new AfterClass;
+        $metadata = Metadata::afterClass();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertTrue($metadata->isAfterClass());
@@ -158,7 +158,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeBackupGlobals(): void
     {
-        $metadata = new BackupGlobals(false);
+        $metadata = Metadata::backupGlobalsOnClass(false);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -208,7 +208,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeBackupStaticProperties(): void
     {
-        $metadata = new BackupStaticProperties(false);
+        $metadata = Metadata::backupStaticPropertiesOnClass(false);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -258,7 +258,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeBeforeClass(): void
     {
-        $metadata = new BeforeClass;
+        $metadata = Metadata::beforeClass();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -306,7 +306,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeBefore(): void
     {
-        $metadata = new Before;
+        $metadata = Metadata::before();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -354,7 +354,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeCodeCoverageIgnore(): void
     {
-        $metadata = new CodeCoverageIgnore;
+        $metadata = Metadata::codeCoverageIgnoreOnClass();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -402,7 +402,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeCovers(): void
     {
-        $metadata = new Covers(self::class);
+        $metadata = Metadata::coversOnClass(self::class);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -452,7 +452,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeCoversClass(): void
     {
-        $metadata = new CoversClass(self::class);
+        $metadata = Metadata::coversClass(self::class);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -503,7 +503,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeCoversDefaultClass(): void
     {
-        $metadata = new CoversDefaultClass(self::class);
+        $metadata = Metadata::coversDefaultClass(self::class);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -553,7 +553,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeCoversMethod(): void
     {
-        $metadata = new CoversMethod(self::class, __METHOD__);
+        $metadata = Metadata::coversMethod(self::class, __METHOD__);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -605,7 +605,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeCoversFunction(): void
     {
-        $metadata = new CoversFunction('f');
+        $metadata = Metadata::coversFunction('f');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -656,7 +656,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeCoversNothing(): void
     {
-        $metadata = new CoversNothing;
+        $metadata = Metadata::coversNothingOnClass();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -704,7 +704,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeDataProvider(): void
     {
-        $metadata = new DataProvider(self::class, 'method');
+        $metadata = Metadata::dataProvider(self::class, 'method');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -755,7 +755,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeDepends(): void
     {
-        $metadata = new DependsOnMethod(self::class, 'method', false, false);
+        $metadata = Metadata::dependsOnMethod(self::class, 'method', false, false);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -808,7 +808,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeDoesNotPerformAssertions(): void
     {
-        $metadata = new DoesNotPerformAssertions;
+        $metadata = Metadata::doesNotPerformAssertionsOnClass();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -856,7 +856,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeExcludeGlobalVariableFromBackup(): void
     {
-        $metadata = new ExcludeGlobalVariableFromBackup('variable');
+        $metadata = Metadata::excludeGlobalVariableFromBackupOnClass('variable');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -906,7 +906,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeExcludeStaticPropertyFromBackup(): void
     {
-        $metadata = new ExcludeStaticPropertyFromBackup('class', 'property');
+        $metadata = Metadata::excludeStaticPropertyFromBackupOnClass('class', 'property');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -957,7 +957,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeGroup(): void
     {
-        $metadata = new Group('name');
+        $metadata = Metadata::groupOnClass('name');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1007,7 +1007,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRunTestsInSeparateProcesses(): void
     {
-        $metadata = new RunTestsInSeparateProcesses;
+        $metadata = Metadata::runTestsInSeparateProcesses();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1055,7 +1055,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRunClassInSeparateProcess(): void
     {
-        $metadata = new RunClassInSeparateProcess;
+        $metadata = Metadata::runClassInSeparateProcess();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1103,7 +1103,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRunInSeparateProcess(): void
     {
-        $metadata = new RunInSeparateProcess;
+        $metadata = Metadata::runInSeparateProcess();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1151,7 +1151,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeTest(): void
     {
-        $metadata = new Test;
+        $metadata = Metadata::test();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1199,7 +1199,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBePreCondition(): void
     {
-        $metadata = new PreCondition;
+        $metadata = Metadata::preCondition();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1247,7 +1247,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBePostCondition(): void
     {
-        $metadata = new PostCondition;
+        $metadata = Metadata::postCondition();
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1295,7 +1295,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBePreserveGlobalState(): void
     {
-        $metadata = new PreserveGlobalState(false);
+        $metadata = Metadata::preserveGlobalStateOnClass(false);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1344,7 +1344,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRequiresMethod(): void
     {
-        $metadata = new RequiresMethod(self::class, __METHOD__);
+        $metadata = Metadata::requiresMethodOnClass(self::class, __METHOD__);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1395,7 +1395,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRequiresFunction(): void
     {
-        $metadata = new RequiresFunction('f');
+        $metadata = Metadata::requiresFunctionOnClass('f');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1445,7 +1445,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRequiresOperatingSystem(): void
     {
-        $metadata = new RequiresOperatingSystem('Linux');
+        $metadata = Metadata::requiresOperatingSystemOnClass('Linux');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1495,7 +1495,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRequiresOperatingSystemFamily(): void
     {
-        $metadata = new RequiresOperatingSystemFamily('Linux');
+        $metadata = Metadata::requiresOperatingSystemFamilyOnClass('Linux');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1545,7 +1545,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRequiresPhp(): void
     {
-        $metadata = new RequiresPhp(
+        $metadata = Metadata::requiresPhpOnClass(
             new ComparisonRequirement(
                 '8.0.0',
                 new VersionComparisonOperator('>=')
@@ -1598,7 +1598,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRequiresPhpExtension(): void
     {
-        $metadata = new RequiresPhpExtension('test', null);
+        $metadata = Metadata::requiresPhpExtensionOnClass('test', null);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1652,7 +1652,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRequiresPhpunit(): void
     {
-        $metadata = new RequiresPhpunit(
+        $metadata = Metadata::requiresPhpunitOnClass(
             new ComparisonRequirement(
                 '10.0.0',
                 new VersionComparisonOperator('>=')
@@ -1705,7 +1705,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeRequiresSetting(): void
     {
-        $metadata = new RequiresSetting('foo', 'bar');
+        $metadata = Metadata::requiresSettingOnClass('foo', 'bar');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1756,7 +1756,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeTestDox(): void
     {
-        $metadata = new TestDox('text');
+        $metadata = Metadata::testDoxOnClass('text');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1806,7 +1806,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeTestWith(): void
     {
-        $metadata = new TestWith(['a', 'b']);
+        $metadata = Metadata::testWith(['a', 'b']);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1856,7 +1856,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeUses(): void
     {
-        $metadata = new Uses(self::class);
+        $metadata = Metadata::usesOnClass(self::class);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1906,7 +1906,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeUsesClass(): void
     {
-        $metadata = new UsesClass(self::class);
+        $metadata = Metadata::usesClass(self::class);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -1957,7 +1957,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeUsesDefaultClass(): void
     {
-        $metadata = new UsesDefaultClass(self::class);
+        $metadata = Metadata::usesDefaultClass(self::class);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -2007,7 +2007,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeUsesMethod(): void
     {
-        $metadata = new UsesMethod(self::class, __METHOD__);
+        $metadata = Metadata::usesMethod(self::class, __METHOD__);
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());
@@ -2059,7 +2059,7 @@ final class MetadataTest extends TestCase
 
     public function testCanBeUsesFunction(): void
     {
-        $metadata = new UsesFunction('f');
+        $metadata = Metadata::usesFunction('f');
 
         $this->assertFalse($metadata->isAfter());
         $this->assertFalse($metadata->isAfterClass());

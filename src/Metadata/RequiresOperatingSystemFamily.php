@@ -17,8 +17,10 @@ final class RequiresOperatingSystemFamily extends Metadata
 {
     private string $operatingSystemFamily;
 
-    public function __construct(string $operatingSystemFamily)
+    protected function __construct(int $level, string $operatingSystemFamily)
     {
+        parent::__construct($level);
+
         $this->operatingSystemFamily = $operatingSystemFamily;
     }
 

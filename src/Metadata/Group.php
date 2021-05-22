@@ -17,8 +17,10 @@ final class Group extends Metadata
 {
     private string $groupName;
 
-    public function __construct(string $groupName)
+    protected function __construct(int $level, string $groupName)
     {
+        parent::__construct($level);
+
         $this->groupName = $groupName;
     }
 

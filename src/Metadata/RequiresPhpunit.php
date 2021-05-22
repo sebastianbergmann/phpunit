@@ -19,8 +19,10 @@ final class RequiresPhpunit extends Metadata
 {
     private Requirement $versionRequirement;
 
-    public function __construct(Requirement $versionRequirement)
+    protected function __construct(int $level, Requirement $versionRequirement)
     {
+        parent::__construct($level);
+
         $this->versionRequirement = $versionRequirement;
     }
 

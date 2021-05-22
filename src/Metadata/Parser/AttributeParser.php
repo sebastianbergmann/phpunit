@@ -12,92 +12,57 @@ namespace PHPUnit\Metadata\Parser;
 use const JSON_THROW_ON_ERROR;
 use function json_decode;
 use function str_starts_with;
-use PHPUnit\Framework\Attributes\After as AfterAttribute;
-use PHPUnit\Framework\Attributes\AfterClass as AfterClassAttribute;
-use PHPUnit\Framework\Attributes\BackupGlobals as BackupGlobalsAttribute;
-use PHPUnit\Framework\Attributes\BackupStaticProperties as BackupStaticPropertiesAttribute;
-use PHPUnit\Framework\Attributes\Before as BeforeAttribute;
-use PHPUnit\Framework\Attributes\BeforeClass as BeforeClassAttribute;
-use PHPUnit\Framework\Attributes\CodeCoverageIgnore as CodeCoverageIgnoreAttribute;
-use PHPUnit\Framework\Attributes\CoversClass as CoversClassAttribute;
-use PHPUnit\Framework\Attributes\CoversFunction as CoversFunctionAttribute;
-use PHPUnit\Framework\Attributes\CoversNothing as CoversNothingAttribute;
-use PHPUnit\Framework\Attributes\DataProvider as DataProviderAttribute;
-use PHPUnit\Framework\Attributes\DataProviderExternal as DataProviderExternalAttribute;
-use PHPUnit\Framework\Attributes\Depends as DependsAttribute;
-use PHPUnit\Framework\Attributes\DependsExternal as DependsExternalAttribute;
-use PHPUnit\Framework\Attributes\DependsExternalUsingDeepClone as DependsExternalUsingDeepCloneAttribute;
-use PHPUnit\Framework\Attributes\DependsExternalUsingShallowClone as DependsExternalUsingShallowCloneAttribute;
-use PHPUnit\Framework\Attributes\DependsOnClass as DependsOnClassAttribute;
-use PHPUnit\Framework\Attributes\DependsOnClassUsingDeepClone as DependsOnClassUsingDeepCloneAttribute;
-use PHPUnit\Framework\Attributes\DependsOnClassUsingShallowClone as DependsOnClassUsingShallowCloneAttribute;
-use PHPUnit\Framework\Attributes\DependsUsingDeepClone as DependsUsingDeepCloneAttribute;
-use PHPUnit\Framework\Attributes\DependsUsingShallowClone as DependsUsingShallowCloneAttribute;
-use PHPUnit\Framework\Attributes\DoesNotPerformAssertions as DoesNotPerformAssertionsAttribute;
-use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup as ExcludeGlobalVariableFromBackupAttribute;
-use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup as ExcludeStaticPropertyFromBackupAttribute;
-use PHPUnit\Framework\Attributes\Group as GroupAttribute;
-use PHPUnit\Framework\Attributes\Large as LargeAttribute;
-use PHPUnit\Framework\Attributes\Medium as MediumAttribute;
-use PHPUnit\Framework\Attributes\PostCondition as PostConditionAttribute;
-use PHPUnit\Framework\Attributes\PreCondition as PreConditionAttribute;
-use PHPUnit\Framework\Attributes\PreserveGlobalState as PreserveGlobalStateAttribute;
-use PHPUnit\Framework\Attributes\RequiresFunction as RequiresFunctionAttribute;
-use PHPUnit\Framework\Attributes\RequiresMethod as RequiresMethodAttribute;
-use PHPUnit\Framework\Attributes\RequiresOperatingSystem as RequiresOperatingSystemAttribute;
-use PHPUnit\Framework\Attributes\RequiresOperatingSystemFamily as RequiresOperatingSystemFamilyAttribute;
-use PHPUnit\Framework\Attributes\RequiresPhp as RequiresPhpAttribute;
-use PHPUnit\Framework\Attributes\RequiresPhpExtension as RequiresPhpExtensionAttribute;
-use PHPUnit\Framework\Attributes\RequiresPhpunit as RequiresPhpunitAttribute;
-use PHPUnit\Framework\Attributes\RequiresSetting as RequiresSettingAttribute;
-use PHPUnit\Framework\Attributes\RunClassInSeparateProcess as RunClassInSeparateProcessAttribute;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess as RunInSeparateProcessAttribute;
-use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses as RunTestsInSeparateProcessesAttribute;
-use PHPUnit\Framework\Attributes\Small as SmallAttribute;
-use PHPUnit\Framework\Attributes\Test as TestAttribute;
-use PHPUnit\Framework\Attributes\TestDox as TestDoxAttribute;
-use PHPUnit\Framework\Attributes\TestWith as TestWithAttribute;
-use PHPUnit\Framework\Attributes\TestWithJson as TestWithJsonAttribute;
-use PHPUnit\Framework\Attributes\Ticket as TicketAttribute;
-use PHPUnit\Framework\Attributes\UsesClass as UsesClassAttribute;
-use PHPUnit\Framework\Attributes\UsesFunction as UsesFunctionAttribute;
-use PHPUnit\Metadata\After;
-use PHPUnit\Metadata\AfterClass;
-use PHPUnit\Metadata\BackupGlobals;
-use PHPUnit\Metadata\BackupStaticProperties;
-use PHPUnit\Metadata\Before;
-use PHPUnit\Metadata\BeforeClass;
-use PHPUnit\Metadata\CodeCoverageIgnore;
-use PHPUnit\Metadata\CoversClass;
-use PHPUnit\Metadata\CoversFunction;
-use PHPUnit\Metadata\CoversNothing;
-use PHPUnit\Metadata\DataProvider;
-use PHPUnit\Metadata\DependsOnClass;
-use PHPUnit\Metadata\DependsOnMethod;
-use PHPUnit\Metadata\DoesNotPerformAssertions;
-use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
-use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
-use PHPUnit\Metadata\Group;
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\BackupStaticProperties;
+use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\CodeCoverageIgnore;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DependsExternal;
+use PHPUnit\Framework\Attributes\DependsExternalUsingDeepClone;
+use PHPUnit\Framework\Attributes\DependsExternalUsingShallowClone;
+use PHPUnit\Framework\Attributes\DependsOnClass;
+use PHPUnit\Framework\Attributes\DependsOnClassUsingDeepClone;
+use PHPUnit\Framework\Attributes\DependsOnClassUsingShallowClone;
+use PHPUnit\Framework\Attributes\DependsUsingDeepClone;
+use PHPUnit\Framework\Attributes\DependsUsingShallowClone;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
+use PHPUnit\Framework\Attributes\ExcludeStaticPropertyFromBackup;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\PostCondition;
+use PHPUnit\Framework\Attributes\PreCondition;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RequiresFunction;
+use PHPUnit\Framework\Attributes\RequiresMethod;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystemFamily;
+use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
+use PHPUnit\Framework\Attributes\RequiresPhpunit;
+use PHPUnit\Framework\Attributes\RequiresSetting;
+use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\TestWithJson;
+use PHPUnit\Framework\Attributes\Ticket;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\Attributes\UsesFunction;
+use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
-use PHPUnit\Metadata\PostCondition;
-use PHPUnit\Metadata\PreCondition;
-use PHPUnit\Metadata\PreserveGlobalState;
-use PHPUnit\Metadata\RequiresFunction;
-use PHPUnit\Metadata\RequiresMethod;
-use PHPUnit\Metadata\RequiresOperatingSystem;
-use PHPUnit\Metadata\RequiresOperatingSystemFamily;
-use PHPUnit\Metadata\RequiresPhp;
-use PHPUnit\Metadata\RequiresPhpExtension;
-use PHPUnit\Metadata\RequiresPhpunit;
-use PHPUnit\Metadata\RequiresSetting;
-use PHPUnit\Metadata\RunClassInSeparateProcess;
-use PHPUnit\Metadata\RunInSeparateProcess;
-use PHPUnit\Metadata\RunTestsInSeparateProcesses;
-use PHPUnit\Metadata\Test;
-use PHPUnit\Metadata\TestDox;
-use PHPUnit\Metadata\TestWith;
-use PHPUnit\Metadata\UsesClass;
-use PHPUnit\Metadata\UsesFunction;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use ReflectionClass;
 use ReflectionMethod;
@@ -122,99 +87,99 @@ final class AttributeParser implements Parser
             $attributeInstance = $attribute->newInstance();
 
             switch ($attribute->getName()) {
-                case BackupGlobalsAttribute::class:
-                    $result[] = new BackupGlobals($attributeInstance->enabled());
+                case BackupGlobals::class:
+                    $result[] = Metadata::backupGlobalsOnClass($attributeInstance->enabled());
 
                     break;
 
-                case BackupStaticPropertiesAttribute::class:
-                    $result[] = new BackupStaticProperties($attributeInstance->enabled());
+                case BackupStaticProperties::class:
+                    $result[] = Metadata::backupStaticPropertiesOnClass($attributeInstance->enabled());
 
                     break;
 
-                case CodeCoverageIgnoreAttribute::class:
-                    $result[] = new CodeCoverageIgnore;
+                case CodeCoverageIgnore::class:
+                    $result[] = Metadata::codeCoverageIgnoreOnClass();
 
                     break;
 
-                case CoversClassAttribute::class:
-                    $result[] = new CoversClass($attributeInstance->className());
+                case CoversClass::class:
+                    $result[] = Metadata::coversClass($attributeInstance->className());
 
                     break;
 
-                case CoversFunctionAttribute::class:
-                    $result[] = new CoversFunction($attributeInstance->functionName());
+                case CoversFunction::class:
+                    $result[] = Metadata::coversFunction($attributeInstance->functionName());
 
                     break;
 
-                case CoversNothingAttribute::class:
-                    $result[] = new CoversNothing;
+                case CoversNothing::class:
+                    $result[] = Metadata::coversNothingOnClass();
 
                     break;
 
-                case DoesNotPerformAssertionsAttribute::class:
-                    $result[] = new DoesNotPerformAssertions;
+                case DoesNotPerformAssertions::class:
+                    $result[] = Metadata::doesNotPerformAssertionsOnClass();
 
                     break;
 
-                case ExcludeGlobalVariableFromBackupAttribute::class:
-                    $result[] = new ExcludeGlobalVariableFromBackup($attributeInstance->globalVariableName());
+                case ExcludeGlobalVariableFromBackup::class:
+                    $result[] = Metadata::excludeGlobalVariableFromBackupOnClass($attributeInstance->globalVariableName());
 
                     break;
 
-                case ExcludeStaticPropertyFromBackupAttribute::class:
-                    $result[] = new ExcludeStaticPropertyFromBackup(
+                case ExcludeStaticPropertyFromBackup::class:
+                    $result[] = Metadata::excludeStaticPropertyFromBackupOnClass(
                         $attributeInstance->className(),
                         $attributeInstance->propertyName()
                     );
 
                     break;
 
-                case GroupAttribute::class:
-                    $result[] = new Group($attributeInstance->name());
+                case Group::class:
+                    $result[] = Metadata::groupOnClass($attributeInstance->name());
 
                     break;
 
-                case LargeAttribute::class:
-                    $result[] = new Group('large');
+                case Large::class:
+                    $result[] = Metadata::groupOnClass('large');
 
                     break;
 
-                case MediumAttribute::class:
-                    $result[] = new Group('medium');
+                case Medium::class:
+                    $result[] = Metadata::groupOnClass('medium');
 
                     break;
 
-                case PreserveGlobalStateAttribute::class:
-                    $result[] = new PreserveGlobalState($attributeInstance->enabled());
+                case PreserveGlobalState::class:
+                    $result[] = Metadata::preserveGlobalStateOnClass($attributeInstance->enabled());
 
                     break;
 
-                case RequiresMethodAttribute::class:
-                    $result[] = new RequiresMethod(
+                case RequiresMethod::class:
+                    $result[] = Metadata::requiresMethodOnClass(
                         $attributeInstance->className(),
                         $attributeInstance->methodName()
                     );
 
                     break;
 
-                case RequiresFunctionAttribute::class:
-                    $result[] = new RequiresFunction($attributeInstance->functionName());
+                case RequiresFunction::class:
+                    $result[] = Metadata::requiresFunctionOnClass($attributeInstance->functionName());
 
                     break;
 
-                case RequiresOperatingSystemAttribute::class:
-                    $result[] = new RequiresOperatingSystem($attributeInstance->regularExpression());
+                case RequiresOperatingSystem::class:
+                    $result[] = Metadata::requiresOperatingSystemOnClass($attributeInstance->regularExpression());
 
                     break;
 
-                case RequiresOperatingSystemFamilyAttribute::class:
-                    $result[] = new RequiresOperatingSystemFamily($attributeInstance->operatingSystemFamily());
+                case RequiresOperatingSystemFamily::class:
+                    $result[] = Metadata::requiresOperatingSystemFamilyOnClass($attributeInstance->operatingSystemFamily());
 
                     break;
 
-                case RequiresPhpAttribute::class:
-                    $result[] = new RequiresPhp(
+                case RequiresPhp::class:
+                    $result[] = Metadata::requiresPhpOnClass(
                         ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         )
@@ -222,7 +187,7 @@ final class AttributeParser implements Parser
 
                     break;
 
-                case RequiresPhpExtensionAttribute::class:
+                case RequiresPhpExtension::class:
                     $versionConstraint = null;
 
                     if ($attributeInstance->hasVersionRequirement()) {
@@ -231,15 +196,15 @@ final class AttributeParser implements Parser
                         );
                     }
 
-                    $result[] = new RequiresPhpExtension(
+                    $result[] = Metadata::requiresPhpExtensionOnClass(
                         $attributeInstance->extension(),
                         $versionConstraint
                     );
 
                     break;
 
-                case RequiresPhpunitAttribute::class:
-                    $result[] = new RequiresPhpunit(
+                case RequiresPhpunit::class:
+                    $result[] = Metadata::requiresPhpunitOnClass(
                         ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         )
@@ -247,46 +212,46 @@ final class AttributeParser implements Parser
 
                     break;
 
-                case RequiresSettingAttribute::class:
-                    $result[] = new RequiresSetting(
+                case RequiresSetting::class:
+                    $result[] = Metadata::requiresSettingOnClass(
                         $attributeInstance->setting(),
                         $attributeInstance->value()
                     );
 
                     break;
 
-                case RunClassInSeparateProcessAttribute::class:
-                    $result[] = new RunClassInSeparateProcess;
+                case RunClassInSeparateProcess::class:
+                    $result[] = Metadata::runClassInSeparateProcess();
 
                     break;
 
-                case RunTestsInSeparateProcessesAttribute::class:
-                    $result[] = new RunTestsInSeparateProcesses;
+                case RunTestsInSeparateProcesses::class:
+                    $result[] = Metadata::runTestsInSeparateProcesses();
 
                     break;
 
-                case SmallAttribute::class:
-                    $result[] = new Group('small');
+                case Small::class:
+                    $result[] = Metadata::groupOnClass('small');
 
                     break;
 
-                case TestDoxAttribute::class:
-                    $result[] = new TestDox($attributeInstance->text());
+                case TestDox::class:
+                    $result[] = Metadata::testDoxOnClass($attributeInstance->text());
 
                     break;
 
-                case TicketAttribute::class:
-                    $result[] = new Group($attributeInstance->text());
+                case Ticket::class:
+                    $result[] = Metadata::groupOnClass($attributeInstance->text());
 
                     break;
 
-                case UsesClassAttribute::class:
-                    $result[] = new UsesClass($attributeInstance->className());
+                case UsesClass::class:
+                    $result[] = Metadata::usesClass($attributeInstance->className());
 
                     break;
 
-                case UsesFunctionAttribute::class:
-                    $result[] = new UsesFunction($attributeInstance->functionName());
+                case UsesFunction::class:
+                    $result[] = Metadata::usesFunction($attributeInstance->functionName());
 
                     break;
             }
@@ -310,164 +275,164 @@ final class AttributeParser implements Parser
             $attributeInstance = $attribute->newInstance();
 
             switch ($attribute->getName()) {
-                case AfterAttribute::class:
-                    $result[] = new After;
+                case After::class:
+                    $result[] = Metadata::after();
 
                     break;
 
-                case AfterClassAttribute::class:
-                    $result[] = new AfterClass;
+                case AfterClass::class:
+                    $result[] = Metadata::afterClass();
 
                     break;
 
-                case BackupGlobalsAttribute::class:
-                    $result[] = new BackupGlobals($attributeInstance->enabled());
+                case BackupGlobals::class:
+                    $result[] = Metadata::backupGlobalsOnMethod($attributeInstance->enabled());
 
                     break;
 
-                case BackupStaticPropertiesAttribute::class:
-                    $result[] = new BackupStaticProperties($attributeInstance->enabled());
+                case BackupStaticProperties::class:
+                    $result[] = Metadata::backupStaticPropertiesOnMethod($attributeInstance->enabled());
 
                     break;
 
-                case BeforeAttribute::class:
-                    $result[] = new Before;
+                case Before::class:
+                    $result[] = Metadata::before();
 
                     break;
 
-                case BeforeClassAttribute::class:
-                    $result[] = new BeforeClass;
+                case BeforeClass::class:
+                    $result[] = Metadata::beforeClass();
 
                     break;
 
-                case CodeCoverageIgnoreAttribute::class:
-                    $result[] = new CodeCoverageIgnore;
+                case CodeCoverageIgnore::class:
+                    $result[] = Metadata::codeCoverageIgnoreOnMethod();
 
                     break;
 
-                case CoversNothingAttribute::class:
-                    $result[] = new CoversNothing;
+                case CoversNothing::class:
+                    $result[] = Metadata::coversNothingOnMethod();
 
                     break;
 
-                case DataProviderAttribute::class:
-                    $result[] = new DataProvider($className, $attributeInstance->methodName());
+                case DataProvider::class:
+                    $result[] = Metadata::dataProvider($className, $attributeInstance->methodName());
 
                     break;
 
-                case DataProviderExternalAttribute::class:
-                    $result[] = new DataProvider($attributeInstance->className(), $attributeInstance->methodName());
+                case DataProviderExternal::class:
+                    $result[] = Metadata::dataProvider($attributeInstance->className(), $attributeInstance->methodName());
 
                     break;
 
-                case DependsAttribute::class:
-                    $result[] = new DependsOnMethod($className, $attributeInstance->methodName(), false, false);
+                case Depends::class:
+                    $result[] = Metadata::dependsOnMethod($className, $attributeInstance->methodName(), false, false);
 
                     break;
 
-                case DependsUsingDeepCloneAttribute::class:
-                    $result[] = new DependsOnMethod($className, $attributeInstance->methodName(), true, false);
+                case DependsUsingDeepClone::class:
+                    $result[] = Metadata::dependsOnMethod($className, $attributeInstance->methodName(), true, false);
 
                     break;
 
-                case DependsUsingShallowCloneAttribute::class:
-                    $result[] = new DependsOnMethod($className, $attributeInstance->methodName(), false, true);
+                case DependsUsingShallowClone::class:
+                    $result[] = Metadata::dependsOnMethod($className, $attributeInstance->methodName(), false, true);
 
                     break;
 
-                case DependsExternalAttribute::class:
-                    $result[] = new DependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), false, false);
+                case DependsExternal::class:
+                    $result[] = Metadata::dependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), false, false);
 
                     break;
 
-                case DependsExternalUsingDeepCloneAttribute::class:
-                    $result[] = new DependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), true, false);
+                case DependsExternalUsingDeepClone::class:
+                    $result[] = Metadata::dependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), true, false);
 
                     break;
 
-                case DependsExternalUsingShallowCloneAttribute::class:
-                    $result[] = new DependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), false, true);
+                case DependsExternalUsingShallowClone::class:
+                    $result[] = Metadata::dependsOnMethod($attributeInstance->className(), $attributeInstance->methodName(), false, true);
 
                     break;
 
-                case DependsOnClassAttribute::class:
-                    $result[] = new DependsOnClass($attributeInstance->className(), false, false);
+                case DependsOnClass::class:
+                    $result[] = Metadata::dependsOnClass($attributeInstance->className(), false, false);
 
                     break;
 
-                case DependsOnClassUsingDeepCloneAttribute::class:
-                    $result[] = new DependsOnClass($attributeInstance->className(), true, false);
+                case DependsOnClassUsingDeepClone::class:
+                    $result[] = Metadata::dependsOnClass($attributeInstance->className(), true, false);
 
                     break;
 
-                case DependsOnClassUsingShallowCloneAttribute::class:
-                    $result[] = new DependsOnClass($attributeInstance->className(), false, true);
+                case DependsOnClassUsingShallowClone::class:
+                    $result[] = Metadata::dependsOnClass($attributeInstance->className(), false, true);
 
                     break;
 
-                case DoesNotPerformAssertionsAttribute::class:
-                    $result[] = new DoesNotPerformAssertions;
+                case DoesNotPerformAssertions::class:
+                    $result[] = Metadata::doesNotPerformAssertionsOnMethod();
 
                     break;
 
-                case ExcludeGlobalVariableFromBackupAttribute::class:
-                    $result[] = new ExcludeGlobalVariableFromBackup($attributeInstance->globalVariableName());
+                case ExcludeGlobalVariableFromBackup::class:
+                    $result[] = Metadata::excludeGlobalVariableFromBackupOnMethod($attributeInstance->globalVariableName());
 
                     break;
 
-                case ExcludeStaticPropertyFromBackupAttribute::class:
-                    $result[] = new ExcludeStaticPropertyFromBackup(
+                case ExcludeStaticPropertyFromBackup::class:
+                    $result[] = Metadata::excludeStaticPropertyFromBackupOnMethod(
                         $attributeInstance->className(),
                         $attributeInstance->propertyName()
                     );
 
                     break;
 
-                case GroupAttribute::class:
-                    $result[] = new Group($attributeInstance->name());
+                case Group::class:
+                    $result[] = Metadata::groupOnMethod($attributeInstance->name());
 
                     break;
 
-                case PostConditionAttribute::class:
-                    $result[] = new PostCondition;
+                case PostCondition::class:
+                    $result[] = Metadata::postCondition();
 
                     break;
 
-                case PreConditionAttribute::class:
-                    $result[] = new PreCondition;
+                case PreCondition::class:
+                    $result[] = Metadata::preCondition();
 
                     break;
 
-                case PreserveGlobalStateAttribute::class:
-                    $result[] = new PreserveGlobalState($attributeInstance->enabled());
+                case PreserveGlobalState::class:
+                    $result[] = Metadata::preserveGlobalStateOnMethod($attributeInstance->enabled());
 
                     break;
 
-                case RequiresMethodAttribute::class:
-                    $result[] = new RequiresMethod(
+                case RequiresMethod::class:
+                    $result[] = Metadata::requiresMethodOnMethod(
                         $attributeInstance->className(),
                         $attributeInstance->methodName()
                     );
 
                     break;
 
-                case RequiresFunctionAttribute::class:
-                    $result[] = new RequiresFunction($attributeInstance->functionName());
+                case RequiresFunction::class:
+                    $result[] = Metadata::requiresFunctionOnMethod($attributeInstance->functionName());
 
                     break;
 
-                case RequiresOperatingSystemAttribute::class:
-                    $result[] = new RequiresOperatingSystem($attributeInstance->regularExpression());
+                case RequiresOperatingSystem::class:
+                    $result[] = Metadata::requiresOperatingSystemOnMethod($attributeInstance->regularExpression());
 
                     break;
 
-                case RequiresOperatingSystemFamilyAttribute::class:
-                    $result[] = new RequiresOperatingSystemFamily($attributeInstance->operatingSystemFamily());
+                case RequiresOperatingSystemFamily::class:
+                    $result[] = Metadata::requiresOperatingSystemFamilyOnMethod($attributeInstance->operatingSystemFamily());
 
                     break;
 
-                case RequiresPhpAttribute::class:
-                    $result[] = new RequiresPhp(
+                case RequiresPhp::class:
+                    $result[] = Metadata::requiresPhpOnMethod(
                         ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         )
@@ -475,7 +440,7 @@ final class AttributeParser implements Parser
 
                     break;
 
-                case RequiresPhpExtensionAttribute::class:
+                case RequiresPhpExtension::class:
                     $versionConstraint = null;
 
                     if ($attributeInstance->hasVersionRequirement()) {
@@ -484,15 +449,15 @@ final class AttributeParser implements Parser
                         );
                     }
 
-                    $result[] = new RequiresPhpExtension(
+                    $result[] = Metadata::requiresPhpExtensionOnMethod(
                         $attributeInstance->extension(),
                         $versionConstraint
                     );
 
                     break;
 
-                case RequiresPhpunitAttribute::class:
-                    $result[] = new RequiresPhpunit(
+                case RequiresPhpunit::class:
+                    $result[] = Metadata::requiresPhpunitOnMethod(
                         ConstraintRequirement::from(
                             $attributeInstance->versionRequirement()
                         )
@@ -500,41 +465,41 @@ final class AttributeParser implements Parser
 
                     break;
 
-                case RequiresSettingAttribute::class:
-                    $result[] = new RequiresSetting(
+                case RequiresSetting::class:
+                    $result[] = Metadata::requiresSettingOnMethod(
                         $attributeInstance->setting(),
                         $attributeInstance->value()
                     );
 
                     break;
 
-                case RunInSeparateProcessAttribute::class:
-                    $result[] = new RunInSeparateProcess;
+                case RunInSeparateProcess::class:
+                    $result[] = Metadata::runInSeparateProcess();
 
                     break;
 
-                case TestAttribute::class:
-                    $result[] = new Test;
+                case Test::class:
+                    $result[] = Metadata::test();
 
                     break;
 
-                case TestDoxAttribute::class:
-                    $result[] = new TestDox($attributeInstance->text());
+                case TestDox::class:
+                    $result[] = Metadata::testDoxOnMethod($attributeInstance->text());
 
                     break;
 
-                case TestWithAttribute::class:
-                    $result[] = new TestWith($attributeInstance->data());
+                case TestWith::class:
+                    $result[] = Metadata::testWith($attributeInstance->data());
 
                     break;
 
-                case TestWithJsonAttribute::class:
-                    $result[] = new TestWith(json_decode($attributeInstance->json(), true, 512, JSON_THROW_ON_ERROR));
+                case TestWithJson::class:
+                    $result[] = Metadata::testWith(json_decode($attributeInstance->json(), true, 512, JSON_THROW_ON_ERROR));
 
                     break;
 
-                case TicketAttribute::class:
-                    $result[] = new Group($attributeInstance->text());
+                case Ticket::class:
+                    $result[] = Metadata::groupOnMethod($attributeInstance->text());
 
                     break;
             }

@@ -19,8 +19,10 @@ final class RequiresSetting extends Metadata
 
     private string $value;
 
-    public function __construct(string $setting, string $value)
+    protected function __construct(int $level, string $setting, string $value)
     {
+        parent::__construct($level);
+
         $this->setting = $setting;
         $this->value   = $value;
     }

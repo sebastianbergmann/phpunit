@@ -23,8 +23,10 @@ final class CoversClass extends Metadata
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className)
+    protected function __construct(int $level, string $className)
     {
+        parent::__construct($level);
+
         $this->className = $className;
     }
 

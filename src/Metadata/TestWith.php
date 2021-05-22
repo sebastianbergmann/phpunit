@@ -17,8 +17,10 @@ final class TestWith extends Metadata
 {
     private array $data;
 
-    public function __construct(array $data)
+    protected function __construct(int $level, array $data)
     {
+        parent::__construct($level);
+
         $this->data = $data;
     }
 

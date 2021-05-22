@@ -17,8 +17,10 @@ final class BackupGlobals extends Metadata
 {
     private ?bool $enabled;
 
-    public function __construct(?bool $enabled)
+    protected function __construct(int $level, ?bool $enabled)
     {
+        parent::__construct($level);
+
         $this->enabled = $enabled;
     }
 

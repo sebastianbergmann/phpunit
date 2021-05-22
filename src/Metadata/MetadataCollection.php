@@ -77,6 +77,30 @@ final class MetadataCollection implements Countable, IteratorAggregate
         );
     }
 
+    public function isClassLevel(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isClassLevel();
+                }
+            )
+        );
+    }
+
+    public function isMethodLevel(): self
+    {
+        return new self(
+            ...array_filter(
+                $this->metadata,
+                static function (Metadata $metadata): bool {
+                    return $metadata->isMethodLevel();
+                }
+            )
+        );
+    }
+
     public function isAfter(): self
     {
         return new self(

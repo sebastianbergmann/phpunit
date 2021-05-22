@@ -17,8 +17,10 @@ final class Covers extends Metadata
 {
     private string $target;
 
-    public function __construct(string $target)
+    protected function __construct(int $level, string $target)
     {
+        parent::__construct($level);
+
         $this->target = $target;
     }
 

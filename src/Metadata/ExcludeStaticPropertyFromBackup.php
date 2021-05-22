@@ -25,8 +25,10 @@ final class ExcludeStaticPropertyFromBackup extends Metadata
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $propertyName)
+    protected function __construct(int $level, string $className, string $propertyName)
     {
+        parent::__construct($level);
+
         $this->className    = $className;
         $this->propertyName = $propertyName;
     }

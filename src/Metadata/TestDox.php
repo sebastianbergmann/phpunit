@@ -17,8 +17,10 @@ final class TestDox extends Metadata
 {
     private string $text;
 
-    public function __construct(string $text)
+    protected function __construct(int $level, string $text)
     {
+        parent::__construct($level);
+
         $this->text = $text;
     }
 

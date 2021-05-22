@@ -74,7 +74,7 @@ final class MetadataCollectionTest extends TestCase
 
     public function testCanBeCreatedFromArray(): void
     {
-        $metadata = new Test;
+        $metadata = Metadata::test();
 
         $collection = MetadataCollection::fromArray([$metadata]);
 
@@ -83,7 +83,7 @@ final class MetadataCollectionTest extends TestCase
 
     public function testIsCountable(): void
     {
-        $metadata = new Test;
+        $metadata = Metadata::test();
 
         $collection = MetadataCollection::fromArray([$metadata]);
 
@@ -94,7 +94,7 @@ final class MetadataCollectionTest extends TestCase
 
     public function testIsIterable(): void
     {
-        $metadata = new Test;
+        $metadata = Metadata::test();
 
         foreach (MetadataCollection::fromArray([$metadata]) as $key => $value) {
             $this->assertSame(0, $key);
@@ -104,13 +104,31 @@ final class MetadataCollectionTest extends TestCase
 
     public function testCanBeMerged(): void
     {
-        $a = MetadataCollection::fromArray([new Before]);
-        $b = MetadataCollection::fromArray([new After]);
+        $a = MetadataCollection::fromArray([Metadata::before()]);
+        $b = MetadataCollection::fromArray([Metadata::after()]);
         $c = $a->mergeWith($b);
 
         $this->assertCount(2, $c);
         $this->assertTrue($c->asArray()[0]->isBefore());
         $this->assertTrue($c->asArray()[1]->isAfter());
+    }
+
+    public function test_Can_be_filtered_for_class_level_metadata(): void
+    {
+        $collection = MetadataCollection::fromArray(
+            [
+                Metadata::coversOnClass(''),
+                Metadata::coversOnMethod(''),
+            ]
+        );
+
+        $this->assertCount(2, $collection);
+
+        $this->assertCount(1, $collection->isClassLevel());
+        $this->assertTrue($collection->isClassLevel()->asArray()[0]->isClassLevel());
+
+        $this->assertCount(1, $collection->isMethodLevel());
+        $this->assertTrue($collection->isMethodLevel()->asArray()[0]->isMethodLevel());
     }
 
     public function test_Can_be_filtered_for_AfterClass(): void
@@ -462,58 +480,58 @@ final class MetadataCollectionTest extends TestCase
     {
         return MetadataCollection::fromArray(
             [
-                new AfterClass,
-                new After,
-                new BackupGlobals(true),
-                new BackupStaticProperties(true),
-                new BeforeClass,
-                new Before,
-                new CodeCoverageIgnore,
-                new Covers(''),
-                new CoversClass(''),
-                new CoversDefaultClass(''),
-                new CoversFunction(''),
-                new CoversMethod('', ''),
-                new CoversNothing,
-                new DataProvider('', ''),
-                new DependsOnClass('', false, false),
-                new DependsOnMethod('', '', false, false),
-                new DoesNotPerformAssertions,
-                new ExcludeGlobalVariableFromBackup(''),
-                new ExcludeStaticPropertyFromBackup('', ''),
-                new Group(''),
-                new PostCondition,
-                new PreCondition,
-                new PreserveGlobalState(true),
-                new RequiresMethod('', ''),
-                new RequiresFunction(''),
-                new RequiresOperatingSystemFamily(''),
-                new RequiresOperatingSystem(''),
-                new RequiresPhpExtension('', null),
-                new RequiresPhp(
+                Metadata::afterClass(),
+                Metadata::after(),
+                Metadata::backupGlobalsOnClass(true),
+                Metadata::backupStaticPropertiesOnClass(true),
+                Metadata::beforeClass(),
+                Metadata::before(),
+                Metadata::codeCoverageIgnoreOnClass(),
+                Metadata::coversOnClass(''),
+                Metadata::coversClass(''),
+                Metadata::coversDefaultClass(''),
+                Metadata::coversFunction(''),
+                Metadata::coversMethod('', ''),
+                Metadata::coversNothingOnClass(),
+                Metadata::dataProvider('', ''),
+                Metadata::dependsOnClass('', false, false),
+                Metadata::dependsOnMethod('', '', false, false),
+                Metadata::doesNotPerformAssertionsOnClass(),
+                Metadata::excludeGlobalVariableFromBackupOnClass(''),
+                Metadata::excludeStaticPropertyFromBackupOnClass('', ''),
+                Metadata::groupOnClass(''),
+                Metadata::postCondition(),
+                Metadata::preCondition(),
+                Metadata::preserveGlobalStateOnClass(true),
+                Metadata::requiresMethodOnClass('', ''),
+                Metadata::requiresFunctionOnClass(''),
+                Metadata::requiresOperatingSystemFamilyOnClass(''),
+                Metadata::requiresOperatingSystemOnClass(''),
+                Metadata::requiresPhpExtensionOnClass('', null),
+                Metadata::requiresPhpOnClass(
                     new ComparisonRequirement(
                         '8.0.0',
                         new VersionComparisonOperator('>=')
                     )
                 ),
-                new RequiresPhpunit(
+                Metadata::requiresPhpunitOnClass(
                     new ComparisonRequirement(
                         '10.0.0',
                         new VersionComparisonOperator('>=')
                     )
                 ),
-                new RequiresSetting('foo', 'bar'),
-                new RunClassInSeparateProcess,
-                new RunInSeparateProcess,
-                new RunTestsInSeparateProcesses,
-                new TestDox(''),
-                new Test,
-                new TestWith([]),
-                new Uses(''),
-                new UsesClass(''),
-                new UsesDefaultClass(''),
-                new UsesFunction(''),
-                new UsesMethod('', ''),
+                Metadata::requiresSettingOnClass('foo', 'bar'),
+                Metadata::runClassInSeparateProcess(),
+                Metadata::runInSeparateProcess(),
+                Metadata::runTestsInSeparateProcesses(),
+                Metadata::testDoxOnClass(''),
+                Metadata::test(),
+                Metadata::testWith([]),
+                Metadata::usesOnClass(''),
+                Metadata::usesClass(''),
+                Metadata::usesDefaultClass(''),
+                Metadata::usesFunction(''),
+                Metadata::usesMethod('', ''),
             ]
         );
     }

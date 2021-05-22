@@ -17,8 +17,10 @@ final class ExcludeGlobalVariableFromBackup extends Metadata
 {
     private string $globalVariableName;
 
-    public function __construct(string $globalVariableName)
+    protected function __construct(int $level, string $globalVariableName)
     {
+        parent::__construct($level);
+
         $this->globalVariableName = $globalVariableName;
     }
 

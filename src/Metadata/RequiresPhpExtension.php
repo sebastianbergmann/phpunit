@@ -21,8 +21,10 @@ final class RequiresPhpExtension extends Metadata
 
     private ?Requirement $versionRequirement;
 
-    public function __construct(string $extension, ?Requirement $versionRequirement)
+    protected function __construct(int $level, string $extension, ?Requirement $versionRequirement)
     {
+        parent::__construct($level);
+
         $this->extension          = $extension;
         $this->versionRequirement = $versionRequirement;
     }
