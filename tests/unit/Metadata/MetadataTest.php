@@ -25,7 +25,6 @@ use PHPUnit\Util\VersionComparisonOperator;
  * @covers \PHPUnit\Metadata\CoversClass
  * @covers \PHPUnit\Metadata\CoversDefaultClass
  * @covers \PHPUnit\Metadata\CoversFunction
- * @covers \PHPUnit\Metadata\CoversMethod
  * @covers \PHPUnit\Metadata\CoversNothing
  * @covers \PHPUnit\Metadata\DataProvider
  * @covers \PHPUnit\Metadata\DependsOnMethod
