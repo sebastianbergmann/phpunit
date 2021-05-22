@@ -588,19 +588,23 @@
       <code>assert($metadata instanceof RequiresSetting)</code>
     </RedundantCondition>
   </file>
+  <file src="src/Metadata/Metadata.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$className</code>
+      <code>$className</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Metadata/Parser/Annotation/DocBlock.php">
     <RedundantCast occurrences="1">
       <code>(string) $matches['value'][$i]</code>
     </RedundantCast>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="10">
+    <ArgumentTypeCoercion occurrences="8">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
-      <code>$className</code>
+      <code>$pieces[0]</code>
       <code>$pieces[0]</code>
       <code>explode('::', $value)</code>
       <code>trim($tmp[0])</code>
