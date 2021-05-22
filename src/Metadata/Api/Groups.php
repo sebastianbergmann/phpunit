@@ -18,14 +18,12 @@ use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversFunction;
-use PHPUnit\Metadata\CoversMethod;
 use PHPUnit\Metadata\Group;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesFunction;
-use PHPUnit\Metadata\UsesMethod;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -48,8 +46,8 @@ final class Groups
                 $groups[] = $metadata->groupName();
             }
 
-            if ($metadata->isCoversClass() || $metadata->isCoversMethod() || $metadata->isCoversFunction()) {
-                assert($metadata instanceof CoversClass || $metadata instanceof CoversMethod || $metadata instanceof CoversFunction);
+            if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
+                assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
 
                 $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
             }
@@ -60,8 +58,8 @@ final class Groups
                 $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->target());
             }
 
-            if ($metadata->isUsesClass() || $metadata->isUsesMethod() || $metadata->isUsesFunction()) {
-                assert($metadata instanceof UsesClass || $metadata instanceof UsesMethod || $metadata instanceof UsesFunction);
+            if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
+                assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
 
                 $groups[] = '__phpunit_uses_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
             }

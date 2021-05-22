@@ -24,12 +24,10 @@ use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversFunction;
-use PHPUnit\Metadata\CoversMethod;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesFunction;
-use PHPUnit\Metadata\UsesMethod;
 use SebastianBergmann\CodeUnit\CodeUnitCollection;
 use SebastianBergmann\CodeUnit\InvalidCodeUnitException;
 use SebastianBergmann\CodeUnit\Mapper;
@@ -70,8 +68,8 @@ final class CodeCoverage
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if ($metadata->isCoversClass() || $metadata->isCoversMethod() || $metadata->isCoversFunction()) {
-                assert($metadata instanceof CoversClass || $metadata instanceof CoversMethod || $metadata instanceof CoversFunction);
+            if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
+                assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
 
                 try {
                     $codeUnits = $codeUnits->mergeWith(
@@ -80,8 +78,6 @@ final class CodeCoverage
                 } catch (InvalidCodeUnitException $e) {
                     if ($metadata->isCoversClass()) {
                         $type = 'Class';
-                    } elseif ($metadata->isCoversMethod()) {
-                        $type = 'Method';
                     } else {
                         $type = 'Function';
                     }
@@ -160,8 +156,8 @@ final class CodeCoverage
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            if ($metadata->isUsesClass() || $metadata->isUsesMethod() || $metadata->isUsesFunction()) {
-                assert($metadata instanceof UsesClass || $metadata instanceof UsesMethod || $metadata instanceof UsesFunction);
+            if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
+                assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
 
                 try {
                     $codeUnits = $codeUnits->mergeWith(
@@ -170,8 +166,6 @@ final class CodeCoverage
                 } catch (InvalidCodeUnitException $e) {
                     if ($metadata->isUsesClass()) {
                         $type = 'Class';
-                    } elseif ($metadata->isUsesMethod()) {
-                        $type = 'Method';
                     } else {
                         $type = 'Function';
                     }
@@ -235,7 +229,6 @@ final class CodeCoverage
         // code coverage data needs to be collected
         if ($metadataForMethod->isCovers()->isNotEmpty() ||
             $metadataForMethod->isCoversClass()->isNotEmpty() ||
-            $metadataForMethod->isCoversMethod()->isNotEmpty() ||
             $metadataForMethod->isCoversFunction()->isNotEmpty()) {
             return true;
         }

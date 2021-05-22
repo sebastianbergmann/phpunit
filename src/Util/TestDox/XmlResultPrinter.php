@@ -25,13 +25,11 @@ use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversFunction;
-use PHPUnit\Metadata\CoversMethod;
 use PHPUnit\Metadata\Parser\InlineAnnotationParser;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
 use PHPUnit\Metadata\UsesFunction;
-use PHPUnit\Metadata\UsesMethod;
 use PHPUnit\Util\Printer;
 use ReflectionClass;
 use ReflectionException;
@@ -202,16 +200,6 @@ final class XmlResultPrinter extends Printer implements TestListener
                 $testNode->appendChild($coversNode);
             }
 
-            if ($metadata->isCoversMethod()) {
-                assert($metadata instanceof CoversMethod);
-
-                $coversNode = $this->document->createElement('covers');
-
-                $coversNode->setAttribute('target', $metadata->className() . '::' . $metadata->methodName());
-
-                $testNode->appendChild($coversNode);
-            }
-
             if ($metadata->isCoversFunction()) {
                 assert($metadata instanceof CoversFunction);
 
@@ -238,16 +226,6 @@ final class XmlResultPrinter extends Printer implements TestListener
                 $coversNode = $this->document->createElement('uses');
 
                 $coversNode->setAttribute('target', $metadata->className());
-
-                $testNode->appendChild($coversNode);
-            }
-
-            if ($metadata->isUsesMethod()) {
-                assert($metadata instanceof UsesMethod);
-
-                $coversNode = $this->document->createElement('uses');
-
-                $coversNode->setAttribute('target', $metadata->className() . '::' . $metadata->methodName());
 
                 $testNode->appendChild($coversNode);
             }

@@ -81,14 +81,6 @@ abstract class Metadata
         return new CoversClass(self::CLASS_LEVEL, $className);
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function coversMethod(string $className, string $methodName): CoversMethod
-    {
-        return new CoversMethod(self::CLASS_LEVEL, $className, $methodName);
-    }
-
     public static function coversFunction(string $functionName): CoversFunction
     {
         return new CoversFunction(self::CLASS_LEVEL, $functionName);
@@ -335,14 +327,6 @@ abstract class Metadata
         return new UsesClass(self::CLASS_LEVEL, $className);
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function usesMethod(string $className, string $methodName): UsesMethod
-    {
-        return new UsesMethod(self::CLASS_LEVEL, $className, $methodName);
-    }
-
     public static function usesFunction(string $functionName): UsesFunction
     {
         return new UsesFunction(self::CLASS_LEVEL, $functionName);
@@ -457,14 +441,6 @@ abstract class Metadata
      * @psalm-assert-if-true CoversDefaultClass $this
      */
     public function isCoversDefaultClass(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @psalm-assert-if-true CoversMethod $this
-     */
-    public function isCoversMethod(): bool
     {
         return false;
     }
@@ -691,14 +667,6 @@ abstract class Metadata
      * @psalm-assert-if-true UsesDefaultClass $this
      */
     public function isUsesDefaultClass(): bool
-    {
-        return false;
-    }
-
-    /**
-     * @psalm-assert-if-true UsesMethod $this
-     */
-    public function isUsesMethod(): bool
     {
         return false;
     }

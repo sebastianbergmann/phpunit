@@ -28,7 +28,6 @@ use PHPUnit\Util\VersionComparisonOperator;
  * @uses \PHPUnit\Metadata\CoversClass
  * @uses \PHPUnit\Metadata\CoversDefaultClass
  * @uses \PHPUnit\Metadata\CoversFunction
- * @uses \PHPUnit\Metadata\CoversMethod
  * @uses \PHPUnit\Metadata\CoversNothing
  * @uses \PHPUnit\Metadata\DataProvider
  * @uses \PHPUnit\Metadata\DependsOnClass
@@ -57,7 +56,6 @@ use PHPUnit\Util\VersionComparisonOperator;
  * @uses \PHPUnit\Metadata\UsesClass
  * @uses \PHPUnit\Metadata\UsesDefaultClass
  * @uses \PHPUnit\Metadata\UsesFunction
- * @uses \PHPUnit\Metadata\UsesMethod
  *
  * @small
  */
@@ -217,14 +215,6 @@ final class MetadataCollectionTest extends TestCase
 
         $this->assertCount(1, $collection);
         $this->assertTrue($collection->asArray()[0]->isCoversFunction());
-    }
-
-    public function test_Can_be_filtered_for_CoversMethod(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isCoversMethod();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isCoversMethod());
     }
 
     public function test_Can_be_filtered_for_CoversNothing(): void
@@ -468,14 +458,6 @@ final class MetadataCollectionTest extends TestCase
         $this->assertTrue($collection->asArray()[0]->isUsesFunction());
     }
 
-    public function test_Can_be_filtered_for_UsesMethod(): void
-    {
-        $collection = $this->collectionWithOneOfEach()->isUsesMethod();
-
-        $this->assertCount(1, $collection);
-        $this->assertTrue($collection->asArray()[0]->isUsesMethod());
-    }
-
     private function collectionWithOneOfEach(): MetadataCollection
     {
         return MetadataCollection::fromArray(
@@ -491,7 +473,6 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::coversClass(''),
                 Metadata::coversDefaultClass(''),
                 Metadata::coversFunction(''),
-                Metadata::coversMethod('', ''),
                 Metadata::coversNothingOnClass(),
                 Metadata::dataProvider('', ''),
                 Metadata::dependsOnClass('', false, false),
@@ -531,7 +512,6 @@ final class MetadataCollectionTest extends TestCase
                 Metadata::usesClass(''),
                 Metadata::usesDefaultClass(''),
                 Metadata::usesFunction(''),
-                Metadata::usesMethod('', ''),
             ]
         );
     }
