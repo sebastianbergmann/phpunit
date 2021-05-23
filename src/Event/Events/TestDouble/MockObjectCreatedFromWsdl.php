@@ -33,8 +33,6 @@ final class MockObjectCreatedFromWsdl implements Event
 
     /**
      * @psalm-var list<string>
-     *
-     * @var array<int, string>
      */
     private array $methods;
 
@@ -46,15 +44,8 @@ final class MockObjectCreatedFromWsdl implements Event
      * @psalm-param class-string $originalClassName
      * @psalm-param class-string $mockClassName
      */
-    public function __construct(
-        Telemetry\Info $telemetryInfo,
-        string $wsdlFile,
-        string $originalClassName,
-        string $mockClassName,
-        array $methods,
-        bool $callOriginalConstructor,
-        array $options
-    ) {
+    public function __construct(Telemetry\Info $telemetryInfo, string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options)
+    {
         $this->telemetryInfo           = $telemetryInfo;
         $this->wsdlFile                = $wsdlFile;
         $this->originalClassName       = $originalClassName;
@@ -92,8 +83,6 @@ final class MockObjectCreatedFromWsdl implements Event
 
     /**
      * @psalm-return list<string>
-     *
-     * @return array<int, string>
      */
     public function methods(): array
     {

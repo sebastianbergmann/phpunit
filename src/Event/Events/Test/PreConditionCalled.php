@@ -30,11 +30,8 @@ final class PreConditionCalled implements Event
     /**
      * @psalm-param class-string $testClassName
      */
-    public function __construct(
-        Telemetry\Info $telemetryInfo,
-        string $testClassName,
-        Code\ClassMethod $calledMethod
-    ) {
+    public function __construct(Telemetry\Info $telemetryInfo, string $testClassName, Code\ClassMethod $calledMethod)
+    {
         $this->telemetryInfo = $telemetryInfo;
         $this->testClassName = $testClassName;
         $this->calledMethod  = $calledMethod;

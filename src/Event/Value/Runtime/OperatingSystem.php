@@ -7,13 +7,23 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event;
+namespace PHPUnit\Event\Runtime;
 
-use RuntimeException;
+use const PHP_OS;
+use const PHP_OS_FAMILY;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class UnknownSubscriber extends RuntimeException implements Exception
+final class OperatingSystem
 {
+    public function asString(): string
+    {
+        return PHP_OS;
+    }
+
+    public function family(): string
+    {
+        return PHP_OS_FAMILY;
+    }
 }

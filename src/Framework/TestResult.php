@@ -190,7 +190,7 @@ final class TestResult implements Countable
 
                 Event\Facade::emitter()->testPassedButRisky(
                     new Event\Code\Test(
-                        get_class($test),
+                        $test::class,
                         $test->getName(false),
                         $test->getName(true),
                     ),

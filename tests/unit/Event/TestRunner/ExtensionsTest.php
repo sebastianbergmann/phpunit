@@ -9,10 +9,11 @@
  */
 namespace PHPUnit\Event\TestRunner;
 
+use PHPUnit\Event\Runtime\Extensions;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PHPUnit\Event\TestRunner\Extensions
+ * @covers \PHPUnit\Event\Runtime\Extensions
  */
 final class ExtensionsTest extends TestCase
 {

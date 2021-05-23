@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
-use ArrayIterator;
 use Countable;
 use IteratorAggregate;
 use PHPUnit\Event\Test\Failure;
@@ -21,8 +20,6 @@ final class FailureCollection implements Countable, IteratorAggregate
 {
     /**
      * @psalm-var list<Failure>
-     *
-     * @var array<int, Failure>
      */
     private array $failures;
 
@@ -31,16 +28,21 @@ final class FailureCollection implements Countable, IteratorAggregate
         $this->failures = $failures;
     }
 
+    /**
+     * @psalm-return list<Failure>
+     */
+    public function asArray(): array
+    {
+        return $this->failures;
+    }
+
     public function count(): int
     {
         return count($this->failures);
     }
 
-    /**
-     * @return ArrayIterator<int, Failure>
-     */
-    public function getIterator(): ArrayIterator
+    public function getIterator(): FailureCollectionIterator
     {
-        return new ArrayIterator($this->failures);
+        return new FailureCollectionIterator($this);
     }
 }

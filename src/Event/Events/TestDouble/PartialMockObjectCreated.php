@@ -26,8 +26,6 @@ final class PartialMockObjectCreated implements Event
 
     /**
      * @psalm-var list<string>
-     *
-     * @var array<int, string>
      */
     private array $methodNames;
 
@@ -56,8 +54,6 @@ final class PartialMockObjectCreated implements Event
 
     /**
      * @psalm-return list<string>
-     *
-     * @return array<int, string>
      */
     public function methodNames(): array
     {

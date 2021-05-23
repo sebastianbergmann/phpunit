@@ -24,13 +24,8 @@ final class Info
 
     private MemoryUsage $memorySincePrevious;
 
-    public function __construct(
-        Snapshot $current,
-        Duration $durationSinceStart,
-        MemoryUsage $memorySinceStart,
-        Duration $durationSincePrevious,
-        MemoryUsage $memorySincePrevious
-    ) {
+    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious)
+    {
         $this->current               = $current;
         $this->durationSinceStart    = $durationSinceStart;
         $this->memorySinceStart      = $memorySinceStart;
@@ -76,7 +71,7 @@ final class Info
     public function asString(): string
     {
         return sprintf(
-            '[%s / %s] [%d Bytes]',
+            '[%s / %s] [%d bytes]',
             $this->durationSinceStart()->asString(),
             $this->durationSincePrevious()->asString(),
             $this->memoryUsage()->bytes()

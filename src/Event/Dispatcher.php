@@ -10,7 +10,6 @@
 namespace PHPUnit\Event;
 
 use function array_key_exists;
-use function get_class;
 use function sprintf;
 
 /**
@@ -22,15 +21,11 @@ final class Dispatcher
 
     /**
      * @psalm-var array<string, list<Subscriber>>
-     *
-     * @var array<string, array<int, Subscriber>>
      */
     private array $subscribers = [];
 
     /**
      * @psalm-var list<Tracer\Tracer>
-     *
-     * @var array<int, Tracer\Tracer>
      */
     private array $tracers = [];
 
@@ -45,15 +40,17 @@ final class Dispatcher
     }
 
     /**
-     * @throws UnknownSubscriberType
+     * @throws UnknownSubscriberTypeException
      */
     public function registerSubscriber(Subscriber $subscriber): void
     {
         if (!$this->typeMap->isKnownSubscriberType($subscriber)) {
-            throw new UnknownSubscriberType(sprintf(
-                'Subscriber "%s" does not implement any known interface - did you forget to register it?',
-                get_class($subscriber)
-            ));
+            throw new UnknownSubscriberTypeException(
+                sprintf(
+                    'Subscriber "%s" does not implement any known interface - did you forget to register it?',
+                    $subscriber::class
+                )
+            );
         }
 
         $eventClassName = $this->typeMap->map($subscriber);
@@ -66,17 +63,19 @@ final class Dispatcher
     }
 
     /**
-     * @throws UnknownEventType
+     * @throws UnknownEventTypeException
      */
     public function dispatch(Event $event): void
     {
-        $eventClassName = get_class($event);
+        $eventClassName = $event::class;
 
         if (!$this->typeMap->isKnownEventType($event)) {
-            throw new UnknownEventType(sprintf(
-                'Unknown event type "%s"',
-                $eventClassName
-            ));
+            throw new UnknownEventTypeException(
+                sprintf(
+                    'Unknown event type "%s"',
+                    $eventClassName
+                )
+            );
         }
 
         foreach ($this->tracers as $tracer) {

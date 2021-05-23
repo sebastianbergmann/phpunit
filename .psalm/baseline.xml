@@ -9,10 +9,6 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Event/DispatchingEmitter.php">
-    <ArgumentTypeCoercion occurrences="2">
-      <code>$mockClassName</code>
-      <code>$originalClassName</code>
-    </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="45">
       <code>dispatch</code>
       <code>dispatch</code>
@@ -66,7 +62,7 @@
       <code>$eventClass . 'Subscriber'</code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/Event/Telemetry/SystemStopWatch.php">
+  <file src="src/Event/Value/Telemetry/SystemStopWatch.php">
     <MissingThrowsDocblock occurrences="1">
       <code>HRTime::fromSecondsAndNanoseconds(...hrtime(false))</code>
     </MissingThrowsDocblock>
@@ -440,7 +436,9 @@
     </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/TestCase.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$mockClassName</code>
+      <code>$originalClassName</code>
       <code>$this-&gt;expectedException</code>
       <code>$this-&gt;size()</code>
     </ArgumentTypeCoercion>

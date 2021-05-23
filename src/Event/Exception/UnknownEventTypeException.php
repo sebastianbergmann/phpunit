@@ -14,6 +14,6 @@ use RuntimeException;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class UnknownSubscriberType extends RuntimeException implements Exception
+final class UnknownEventTypeException extends RuntimeException implements Exception
 {
 }

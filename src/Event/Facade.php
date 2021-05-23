@@ -44,7 +44,7 @@ final class Facade
     }
 
     /**
-     * @throws UnknownSubscriberType
+     * @throws UnknownSubscriberTypeException
      */
     public static function registerSubscriber(Subscriber $subscriber): void
     {

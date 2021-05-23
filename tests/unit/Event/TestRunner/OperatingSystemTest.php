@@ -9,10 +9,11 @@
  */
 namespace PHPUnit\Event\TestRunner;
 
+use PHPUnit\Event\Runtime\OperatingSystem;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers \PHPUnit\Event\TestRunner\OperatingSystem
+ * @covers \PHPUnit\Event\Runtime\OperatingSystem
  */
 final class OperatingSystemTest extends TestCase
 {

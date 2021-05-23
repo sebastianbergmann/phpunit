@@ -7,23 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestRunner;
+namespace PHPUnit\Event;
 
-use const PHP_OS;
-use const PHP_OS_FAMILY;
+use RuntimeException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class OperatingSystem
+final class InvalidEventException extends RuntimeException implements Exception
 {
-    public function asString(): string
-    {
-        return PHP_OS;
-    }
-
-    public function family(): string
-    {
-        return PHP_OS_FAMILY;
-    }
 }

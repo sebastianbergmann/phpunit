@@ -37,9 +37,9 @@ final class HRTime
      */
     private function __construct(int $seconds, int $nanoseconds)
     {
-        $this->ensureNotNegativeInt($seconds, 'seconds');
-        $this->ensureNotNegativeInt($nanoseconds, 'nanoseconds');
-        $this->ensureNotGreaterThan(999999999, $nanoseconds, 'nanoseconds');
+        $this->ensureNotNegative($seconds, 'seconds');
+        $this->ensureNotNegative($nanoseconds, 'nanoseconds');
+        $this->ensureNanoSecondsInRange($nanoseconds);
 
         $this->seconds     = $seconds;
         $this->nanoseconds = $nanoseconds;
@@ -82,27 +82,27 @@ final class HRTime
     /**
      * @throws InvalidArgumentException
      */
-    private function ensureNotNegativeInt(int $value, string $which): void
+    private function ensureNotNegative(int $value, string $type): void
     {
         if ($value < 0) {
-            throw new InvalidArgumentException(sprintf(
-                'Value for %s must not be negative',
-                $which
-            ));
+            throw new InvalidArgumentException(
+                sprintf(
+                    'Value for %s must not be negative.',
+                    $type
+                )
+            );
         }
     }
 
     /**
      * @throws InvalidArgumentException
      */
-    private function ensureNotGreaterThan(int $limit, int $value, string $which): void
+    private function ensureNanoSecondsInRange(int $nanoseconds): void
     {
-        if ($value > $limit) {
-            throw new InvalidArgumentException(sprintf(
-                'Value for %s must not be greater than %d.',
-                $which,
-                $limit
-            ));
+        if ($nanoseconds > 999999999) {
+            throw new InvalidArgumentException(
+                'Value for nanoseconds must not be greater than 999999999.'
+            );
         }
     }
 }

@@ -27,19 +27,14 @@ final class BeforeTestMethodFinished implements Event
 
     /**
      * @psalm-var list<Code\ClassMethod>
-     *
-     * @var array<int, Code\ClassMethod>
      */
     private array $calledMethods;
 
     /**
      * @psalm-param class-string $testClassName
      */
-    public function __construct(
-        Telemetry\Info $telemetryInfo,
-        string $testClassName,
-        Code\ClassMethod ...$calledMethods
-    ) {
+    public function __construct(Telemetry\Info $telemetryInfo, string $testClassName, Code\ClassMethod ...$calledMethods)
+    {
         $this->telemetryInfo = $telemetryInfo;
         $this->testClassName = $testClassName;
         $this->calledMethods = $calledMethods;
@@ -60,8 +55,6 @@ final class BeforeTestMethodFinished implements Event
 
     /**
      * @psalm-return list<Code\ClassMethod>
-     *
-     * @return array<int, Code\ClassMethod>
      */
     public function calledMethods(): array
     {

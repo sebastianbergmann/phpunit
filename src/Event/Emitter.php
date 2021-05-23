@@ -138,14 +138,11 @@ interface Emitter
      */
     public function testMockObjectCreatedForAbstractClass(string $className): void;
 
-    public function testMockObjectCreatedFromWsdl(
-        string $wsdlFile,
-        string $originalClassName,
-        string $mockClassName,
-        array $methods,
-        bool $callOriginalConstructor,
-        array $options
-    ): void;
+    /**
+     * @psalm-param class-string $originalClassName
+     * @psalm-param class-string $mockClassName
+     */
+    public function testMockObjectCreatedFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void;
 
     /**
      * @psalm-param class-string $className

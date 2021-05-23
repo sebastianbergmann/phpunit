@@ -26,12 +26,8 @@ final class Finished implements Event
 
     private ?CodeCoverage $codeCoverage;
 
-    public function __construct(
-        Telemetry\Info $telemetryInfo,
-        string $name,
-        Result $result,
-        ?CodeCoverage $codeCoverage
-    ) {
+    public function __construct(Telemetry\Info $telemetryInfo, string $name, Result $result, ?CodeCoverage $codeCoverage)
+    {
         $this->telemetryInfo = $telemetryInfo;
         $this->name          = $name;
         $this->result        = $result;

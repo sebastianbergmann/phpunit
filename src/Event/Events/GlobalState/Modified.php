@@ -26,12 +26,8 @@ final class Modified implements Event
 
     private string $message;
 
-    public function __construct(
-        Telemetry\Info $telemetryInfo,
-        Snapshot $snapshotBefore,
-        Snapshot $snapshotAfter,
-        string $message
-    ) {
+    public function __construct(Telemetry\Info $telemetryInfo, Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $message)
+    {
         $this->telemetryInfo  = $telemetryInfo;
         $this->snapshotBefore = $snapshotBefore;
         $this->snapshotAfter  = $snapshotAfter;

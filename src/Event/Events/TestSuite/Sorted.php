@@ -25,12 +25,8 @@ final class Sorted implements Event
 
     private bool $resolveDependencies;
 
-    public function __construct(
-        Telemetry\Info $telemetryInfo,
-        int $executionOrder,
-        int $executionOrderDefects,
-        bool $resolveDependencies
-    ) {
+    public function __construct(Telemetry\Info $telemetryInfo, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies)
+    {
         $this->telemetryInfo         = $telemetryInfo;
         $this->executionOrder        = $executionOrder;
         $this->executionOrderDefects = $executionOrderDefects;

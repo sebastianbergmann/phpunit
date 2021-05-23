@@ -28,13 +28,8 @@ final class Made implements Event
 
     private bool $hasFailed;
 
-    public function __construct(
-        Telemetry\Info $telemetryInfo,
-        mixed $value,
-        Constraint\Constraint $constraint,
-        string $message,
-        bool $hasFailed
-    ) {
+    public function __construct(Telemetry\Info $telemetryInfo, mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed)
+    {
         $this->telemetryInfo = $telemetryInfo;
         $this->value         = $value;
         $this->constraint    = $constraint;

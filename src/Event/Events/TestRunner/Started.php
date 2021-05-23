@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\Event;
+use PHPUnit\Event\Runtime\Runtime;
 use PHPUnit\Event\Telemetry;
 
 /**

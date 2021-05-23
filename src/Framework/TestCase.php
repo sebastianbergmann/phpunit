@@ -569,7 +569,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         ComparatorFactory::getInstance()->register($comparator);
 
-        Event\Facade::emitter()->comparatorRegistered(get_class($comparator));
+        Event\Facade::emitter()->comparatorRegistered($comparator::class);
 
         $this->customComparators[] = $comparator;
     }

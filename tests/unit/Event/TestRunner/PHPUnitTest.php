@@ -9,11 +9,12 @@
  */
 namespace PHPUnit\Event\TestRunner;
 
+use PHPUnit\Event\Runtime\PHPUnit;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 
 /**
- * @covers \PHPUnit\Event\TestRunner\PHPUnit
+ * @covers \PHPUnit\Event\Runtime\PHPUnit
  */
 final class PHPUnitTest extends TestCase
 {

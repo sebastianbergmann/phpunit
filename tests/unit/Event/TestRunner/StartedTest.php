@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Runtime\Runtime;
 
 /**
  * @covers \PHPUnit\Event\TestRunner\Started
