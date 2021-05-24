@@ -778,21 +778,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
 
             $emitter->testPrepared(
-                new Event\Code\Test(
-                    static::class,
-                    $this->getName(false),
-                    $this->getName()
-                )
+                $this->testValueObjectForEvents()
             );
 
             $this->testResult = $this->runTest();
 
             $emitter->testFinished(
-                new Event\Code\Test(
-                    static::class,
-                    $this->getName(false),
-                    $this->getName()
-                )
+                $this->testValueObjectForEvents()
             );
 
             $this->verifyMockObjects();
@@ -832,54 +824,34 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->status = TestStatus::success();
 
             $emitter->testPassed(
-                new Event\Code\Test(
-                    static::class,
-                    $this->getName(false),
-                    $this->getName()
-                )
+                $this->testValueObjectForEvents()
             );
         } catch (IncompleteTest $e) {
             $this->status = TestStatus::incomplete($e->getMessage());
 
             $emitter->testAbortedWithMessage(
-                new Event\Code\Test(
-                    static::class,
-                    $this->getName(false),
-                    $this->getName()
-                ),
+                $this->testValueObjectForEvents(),
                 $e->getMessage()
             );
         } catch (SkippedTest $e) {
             $this->status = TestStatus::skipped($e->getMessage());
 
             $emitter->testSkippedWithMessage(
-                new Event\Code\Test(
-                    static::class,
-                    $this->getName(false),
-                    $this->getName()
-                ),
+                $this->testValueObjectForEvents(),
                 $e->getMessage()
             );
         } catch (Warning $e) {
             $this->status = TestStatus::warning($e->getMessage());
 
             $emitter->testPassedWithWarning(
-                new Event\Code\Test(
-                    static::class,
-                    $this->getName(false),
-                    $this->getName()
-                ),
+                $this->testValueObjectForEvents(),
                 $e->getMessage()
             );
         } catch (AssertionFailedError $e) {
             $this->status = TestStatus::failure($e->getMessage());
 
             $emitter->testFailed(
-                new Event\Code\Test(
-                    static::class,
-                    $this->getName(false),
-                    $this->getName()
-                ),
+                $this->testValueObjectForEvents(),
                 $e->getMessage()
             );
         } catch (Throwable $_e) {
@@ -887,11 +859,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->status = TestStatus::error($_e->getMessage());
 
             $emitter->testErrored(
-                new Event\Code\Test(
-                    static::class,
-                    $this->getName(false),
-                    $this->getName()
-                ),
+                $this->testValueObjectForEvents(),
                 $_e->getMessage()
             );
         }
@@ -2251,5 +2219,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     ->disableArgumentCloning()
                     ->disallowMockingUnknownTypes()
                     ->getMock();
+    }
+
+    private function testValueObjectForEvents(): Event\Code\Test
+    {
+        return new Event\Code\Test(
+            static::class,
+            $this->getName(false),
+            $this->getName()
+        );
     }
 }
