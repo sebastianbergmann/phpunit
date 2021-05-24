@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Event\Code;
 
+use PHPUnit\Metadata\MetadataCollection;
+
 /**
  * @psalm-immutable
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -24,14 +26,17 @@ final class Test
 
     private string $methodNameWithDataSet;
 
+    private MetadataCollection $metadata;
+
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName, string $methodNameWithDataSet)
+    public function __construct(string $className, string $methodName, string $methodNameWithDataSet, MetadataCollection $metadata)
     {
         $this->className             = $className;
         $this->methodName            = $methodName;
         $this->methodNameWithDataSet = $methodNameWithDataSet;
+        $this->metadata              = $metadata;
     }
 
     /**
@@ -50,5 +55,10 @@ final class Test
     public function methodNameWithDataSet(): string
     {
         return $this->methodNameWithDataSet;
+    }
+
+    public function metadata(): MetadataCollection
+    {
+        return $this->metadata;
     }
 }

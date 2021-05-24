@@ -11,6 +11,7 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
+use PHPUnit\Metadata\MetadataCollection;
 
 /**
  * @covers \PHPUnit\Event\Test\SkippedWithMessage
@@ -23,7 +24,8 @@ final class SkippedWithMessageTest extends AbstractEventTestCase
         $test          = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 

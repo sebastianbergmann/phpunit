@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Code;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\MetadataCollection;
 
 /**
  * @covers \PHPUnit\Event\Code\Test
@@ -21,15 +22,18 @@ final class TestTest extends TestCase
         $className             = self::class;
         $methodName            = 'foo';
         $methodNameWithDataSet = 'foo with data set #123';
+        $metadata              = MetadataCollection::fromArray([]);
 
         $test = new Test(
             $className,
             $methodName,
-            $methodNameWithDataSet
+            $methodNameWithDataSet,
+            $metadata
         );
 
         $this->assertSame($className, $test->className());
         $this->assertSame($methodName, $test->methodName());
         $this->assertSame($methodNameWithDataSet, $test->methodNameWithDataSet());
+        $this->assertSame($metadata, $test->metadata());
     }
 }

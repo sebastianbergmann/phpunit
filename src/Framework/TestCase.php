@@ -82,6 +82,7 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Error\Deprecation;
@@ -2223,10 +2224,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function testValueObjectForEvents(): Event\Code\Test
     {
+        $metadata = MetadataCollection::fromArray([]);
+
+        if (!$this instanceof ErrorTestCase &&
+            !$this instanceof IncompleteTestCase &&
+            !$this instanceof SkippedTestCase &&
+            !$this instanceof WarningTestCase) {
+            $metadata = (MetadataRegistry::parser())->forClassAndMethod(static::class, $this->name);
+        }
+
         return new Event\Code\Test(
             static::class,
             $this->getName(false),
-            $this->getName()
+            $this->getName(),
+            $metadata
         );
     }
 }

@@ -10,6 +10,7 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Framework;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestFixture;
 use RecordingSubscriber;
 use SebastianBergmann\CodeCoverage;
@@ -342,7 +343,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $test = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
@@ -386,7 +388,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $test = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
@@ -430,7 +433,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $test = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
 
         $subscriber = new class extends RecordingSubscriber implements Test\FinishedSubscriber {
@@ -469,7 +473,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $test = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
 
         $subscriber = new class extends RecordingSubscriber implements Test\PassedSubscriber {
@@ -508,7 +513,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $test = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
@@ -552,7 +558,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $test = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
@@ -638,7 +645,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $test = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
@@ -729,7 +737,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $test = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
@@ -773,7 +782,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $test = new Code\Test(
             self::class,
             'foo',
-            'foo with data set #123'
+            'foo with data set #123',
+            MetadataCollection::fromArray([])
         );
 
         $subscriber = new class extends RecordingSubscriber implements Test\PreparedSubscriber {
