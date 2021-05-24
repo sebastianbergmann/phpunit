@@ -37,11 +37,16 @@ final class TestResultMapper
 
     private static function toFailureCollection(TestFailure ...$testFailures): FailureCollection
     {
-        return new FailureCollection(...array_map(static function (TestFailure $testFailure): Failure {
-            return new Failure(
-                $testFailure->getTestName(),
-                $testFailure->thrownException()
-            );
-        }, $testFailures));
+        return new FailureCollection(
+            ...array_map(
+                static function (TestFailure $testFailure): Failure {
+                    return new Failure(
+                        $testFailure->getTestName(),
+                        $testFailure->thrownException()
+                    );
+                },
+                $testFailures
+            )
+        );
     }
 }

@@ -777,19 +777,23 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 ...$methodsCalledPreCondition
             );
 
-            $emitter->testPrepared(new Event\Code\Test(
-                static::class,
-                $this->getName(false),
-                $this->getName(true)
-            ));
+            $emitter->testPrepared(
+                new Event\Code\Test(
+                    static::class,
+                    $this->getName(false),
+                    $this->getName()
+                )
+            );
 
             $this->testResult = $this->runTest();
 
-            $emitter->testFinished(new Event\Code\Test(
-                static::class,
-                $this->getName(false),
-                $this->getName(true)
-            ));
+            $emitter->testFinished(
+                new Event\Code\Test(
+                    static::class,
+                    $this->getName(false),
+                    $this->getName()
+                )
+            );
 
             $this->verifyMockObjects();
 
@@ -827,11 +831,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $this->status = TestStatus::success();
 
-            $emitter->testPassed(new Event\Code\Test(
-                static::class,
-                $this->getName(false),
-                $this->getName(true)
-            ));
+            $emitter->testPassed(
+                new Event\Code\Test(
+                    static::class,
+                    $this->getName(false),
+                    $this->getName()
+                )
+            );
         } catch (IncompleteTest $e) {
             $this->status = TestStatus::incomplete($e->getMessage());
 
@@ -839,7 +845,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 new Event\Code\Test(
                     static::class,
                     $this->getName(false),
-                    $this->getName(true)
+                    $this->getName()
                 ),
                 $e->getMessage()
             );
@@ -850,7 +856,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 new Event\Code\Test(
                     static::class,
                     $this->getName(false),
-                    $this->getName(true)
+                    $this->getName()
                 ),
                 $e->getMessage()
             );
@@ -861,7 +867,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 new Event\Code\Test(
                     static::class,
                     $this->getName(false),
-                    $this->getName(true)
+                    $this->getName()
                 ),
                 $e->getMessage()
             );
@@ -872,7 +878,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 new Event\Code\Test(
                     static::class,
                     $this->getName(false),
-                    $this->getName(true)
+                    $this->getName()
                 ),
                 $e->getMessage()
             );
@@ -884,7 +890,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 new Event\Code\Test(
                     static::class,
                     $this->getName(false),
-                    $this->getName(true)
+                    $this->getName()
                 ),
                 $_e->getMessage()
             );
