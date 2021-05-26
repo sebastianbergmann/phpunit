@@ -220,7 +220,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
      *
      * @return $this
      */
-    public function method(Constraint|string $name): self
+    public function method(Constraint|string $constraint): self
     {
         if ($this->matcher->hasMethodNameRule()) {
             throw new MethodNameAlreadyConfiguredException;
@@ -233,11 +233,11 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
             $this->configurableMethods
         );
 
-        if (is_string($name) && !in_array(strtolower($name), $configurableMethodNames, true)) {
-            throw new MethodCannotBeConfiguredException($name);
+        if (is_string($constraint) && !in_array(strtolower($constraint), $configurableMethodNames, true)) {
+            throw new MethodCannotBeConfiguredException($constraint);
         }
 
-        $this->matcher->setMethodNameRule(new Rule\MethodName($name));
+        $this->matcher->setMethodNameRule(new Rule\MethodName($constraint));
 
         return $this;
     }

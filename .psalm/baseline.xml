@@ -267,11 +267,6 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
-    <MethodSignatureMismatch occurrences="3">
-      <code>$arguments</code>
-      <code>$nextValues</code>
-      <code>$value</code>
-    </MethodSignatureMismatch>
     <MissingParamType occurrences="1">
       <code>$arguments</code>
     </MissingParamType>

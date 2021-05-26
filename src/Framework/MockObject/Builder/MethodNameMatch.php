@@ -20,5 +20,5 @@ interface MethodNameMatch extends ParametersMatch
      * Adds a new method name match and returns the parameter match object for
      * further matching possibilities.
      */
-    public function method(Constraint|string $name): self;
+    public function method(Constraint|string $constraint): self;
 }
