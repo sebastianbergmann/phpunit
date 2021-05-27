@@ -304,7 +304,7 @@ final class NamePrettifier
                 $value = (new Exporter)->export($value);
             }
 
-            if (is_string($value) && $value === '') {
+            if ($value === '') {
                 if ($this->useColor) {
                     $value = Color::colorize('dim,underlined', 'empty');
                 } else {
