@@ -9,13 +9,15 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
 
 ## Installation
 
-We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit 8.5 bundled in a single file:
+We distribute a [PHP Archive (PHAR)](https://php.net/phar) that has all required (as well as some optional) dependencies of PHPUnit bundled in a single file:
 
 ```bash
-$ wget https://phar.phpunit.de/phpunit-8.5.phar
+$ wget https://phar.phpunit.de/phpunit-X.Y.phar
 
-$ php phpunit-8.5.phar --version
+$ php phpunit-X.Y.phar --version
 ```
+
+Please replace `X.Y` with the version of PHPUnit you are interested in.
 
 Alternatively, you may use [Composer](https://getcomposer.org/) to download and install PHPUnit as well as its dependencies. Please refer to the "[Getting Started](https://phpunit.de/getting-started-with-phpunit.html)" guide for details on how to install PHPUnit.
 
