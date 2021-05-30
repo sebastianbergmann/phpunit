@@ -9,4 +9,10 @@
             <directory>tests</directory>
         </testsuite>
     </testsuites>
+
+    <coverage>
+        <include>
+            <directory>src</directory>
+        </include>
+    </coverage>
 </phpunit>
