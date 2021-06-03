@@ -22,4 +22,9 @@ final class RequiresPhpTest extends TestCase
     public function testOne(): void
     {
     }
+
+    /** @requires PHP < 9.0.0 */
+    public function testTwo(): void
+    {
+    }
 }

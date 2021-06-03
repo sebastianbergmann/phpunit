@@ -587,9 +587,17 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
     }
 
-    public function test_Parses_requiresPhp_annotation_on_method(): void
+    public function provideRequiresPhpTestMethods(): array
     {
-        $metadata = (new AnnotationParser)->forMethod(RequiresPhpTest::class, 'testOne')->isRequiresPhp();
+        return [['testOne'], ['testTwo']];
+    }
+
+    /**
+     * @dataProvider provideRequiresPhpTestMethods
+     */
+    public function test_Parses_requiresPhp_annotation_on_method(string $method): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(RequiresPhpTest::class, $method)->isRequiresPhp();
 
         $this->assertCount(1, $metadata);
 
