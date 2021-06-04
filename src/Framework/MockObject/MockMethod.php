@@ -346,7 +346,7 @@ final class MockMethod
         $returnType = $method->getReturnType();
 
         if ($returnType === null) {
-            return new UnknownType();
+            return new UnknownType;
         }
 
         // @see https://bugs.php.net/bug.php?id=70722
