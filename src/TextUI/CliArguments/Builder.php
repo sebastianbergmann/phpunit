@@ -114,6 +114,7 @@ final class Builder
         'test-suffix=',
         'testsuite=',
         'exclude-testsuite=',
+        'trace-text=',
         'verbose',
         'version',
     ];
@@ -225,6 +226,7 @@ final class Builder
         $useDefaultConfiguration           = null;
         $verbose                           = null;
         $version                           = null;
+        $plainTextTrace                    = null;
 
         if (isset($options[1][0])) {
             $argument = $options[1][0];
@@ -752,6 +754,11 @@ final class Builder
 
                     break;
 
+                case '--trace-text':
+                    $plainTextTrace = $option[1];
+
+                    break;
+
                 default:
                     $unrecognizedOptions[str_replace('--', '', $option[0])] = $option[1];
             }
@@ -862,7 +869,8 @@ final class Builder
             $useDefaultConfiguration,
             $verbose,
             $version,
-            $coverageFilter
+            $coverageFilter,
+            $plainTextTrace
         );
     }
 }

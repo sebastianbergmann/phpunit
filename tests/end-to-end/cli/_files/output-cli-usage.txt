@@ -74,6 +74,7 @@ Test Execution Options:
   --fail-on-warning           Treat tests with warnings as failures
   -v|--verbose                Output more verbose information
   --debug                     Display debugging information
+  --trace-text <file>         Stream events as plain text to file
 
   --repeat <times>            Runs the test(s) repeatedly
   --teamcity                  Report test execution progress in TeamCity format

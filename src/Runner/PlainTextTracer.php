@@ -9,15 +9,31 @@
  */
 namespace PHPUnit\Runner;
 
+use const FILE_APPEND;
+use const LOCK_EX;
+use const PHP_EOL;
+use function file_put_contents;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Tracer\Tracer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DebugTracer implements Tracer
+final class PlainTextTracer implements Tracer
 {
+    private string $path;
+
+    public function __construct(string $path)
+    {
+        $this->path = $path;
+    }
+
     public function trace(Event $event): void
     {
+        file_put_contents(
+            $this->path,
+            $event->asString() . PHP_EOL,
+            FILE_APPEND|LOCK_EX
+        );
     }
 }

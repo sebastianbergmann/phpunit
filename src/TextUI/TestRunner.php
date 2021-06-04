@@ -40,6 +40,7 @@ use PHPUnit\Runner\Extension\ExtensionHandler;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Hook;
 use PHPUnit\Runner\NullTestResultCache;
+use PHPUnit\Runner\PlainTextTracer;
 use PHPUnit\Runner\ResultCacheExtension;
 use PHPUnit\Runner\TestHook;
 use PHPUnit\Runner\TestListenerAdapter;
@@ -300,6 +301,12 @@ final class TestRunner
 
             $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
             $this->printer->setShowProgressAnimation(!$arguments['noInteraction']);
+        }
+
+        if (isset($arguments['plainTextTrace'])) {
+            Event\Facade::registerTracer(
+                new PlainTextTracer($arguments['plainTextTrace'])
+            );
         }
 
         Event\Facade::seal();

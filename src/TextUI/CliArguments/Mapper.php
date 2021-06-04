@@ -351,6 +351,10 @@ final class Mapper
             $result['randomOrderSeed'] = $arguments->randomOrderSeed();
         }
 
+        if ($arguments->hasPlainTextTrace()) {
+            $result['plainTextTrace'] = $arguments->plainTextTrace();
+        }
+
         return $result;
     }
 }

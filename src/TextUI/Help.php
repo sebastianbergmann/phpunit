@@ -105,6 +105,7 @@ final class Help
             ['arg'    => '--fail-on-warning', 'desc' => 'Treat tests with warnings as failures'],
             ['arg'    => '-v|--verbose', 'desc' => 'Output more verbose information'],
             ['arg'    => '--debug', 'desc' => 'Display debugging information'],
+            ['arg'    => '--trace-text <file>', 'desc' => 'Stream events as plain text to file'],
             ['spacer' => ''],
 
             ['arg'    => '--repeat <times>', 'desc' => 'Runs the test(s) repeatedly'],
