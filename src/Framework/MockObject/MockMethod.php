@@ -53,7 +53,7 @@ final class MockMethod
     private $cloneArguments;
 
     /**
-     * @var string string
+     * @var string
      */
     private $modifier;
 
