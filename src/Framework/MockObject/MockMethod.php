@@ -93,11 +93,6 @@ final class MockMethod
     private $deprecation;
 
     /**
-     * @var bool
-     */
-    private $allowsReturnNull;
-
-    /**
      * @throws RuntimeException
      */
     public static function fromReflection(ReflectionMethod $method, bool $callOriginalMethod, bool $cloneArguments): self
@@ -140,8 +135,7 @@ final class MockMethod
             $reference,
             $callOriginalMethod,
             $method->isStatic(),
-            $deprecation,
-            $method->hasReturnType() && $method->getReturnType()->allowsNull()
+            $deprecation
         );
     }
 
@@ -159,11 +153,10 @@ final class MockMethod
             false,
             false,
             null,
-            false
         );
     }
 
-    public function __construct(string $className, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, Type $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation, bool $allowsReturnNull)
+    public function __construct(string $className, string $methodName, bool $cloneArguments, string $modifier, string $argumentsForDeclaration, string $argumentsForCall, Type $returnType, string $reference, bool $callOriginalMethod, bool $static, ?string $deprecation)
     {
         $this->className               = $className;
         $this->methodName              = $methodName;
@@ -176,7 +169,6 @@ final class MockMethod
         $this->callOriginalMethod      = $callOriginalMethod;
         $this->static                  = $static;
         $this->deprecation             = $deprecation;
-        $this->allowsReturnNull        = $allowsReturnNull;
     }
 
     public function getName(): string
