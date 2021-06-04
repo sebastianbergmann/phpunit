@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function assert;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\TestFixture\EmptyDataProviderTest;
 use PHPUnit\TestFixture\TestWithAnnotations;
 use ReflectionClass;
@@ -20,31 +18,6 @@ use ReflectionClass;
  */
 final class TestBuilderTest extends TestCase
 {
-    public function testCreateTestForNotInstantiableTestClass(): void
-    {
-        $reflector = $this->getMockBuilder(ReflectionClass::class)
-            ->setConstructorArgs([$this])
-            ->getMock();
-
-        assert($reflector instanceof MockObject);
-        assert($reflector instanceof ReflectionClass);
-
-        $reflector->expects($this->once())
-            ->method('isInstantiable')
-            ->willReturn(false);
-
-        $reflector->expects($this->once())
-            ->method('getName')
-            ->willReturn('foo');
-
-        $test = (new TestBuilder)->build($reflector, 'TestForNonInstantiableTestClass');
-
-        $this->assertInstanceOf(ErrorTestCase::class, $test);
-
-        /* @var ErrorTestCase $test */
-        $this->assertSame('Cannot instantiate class "foo".', $test->getMessage());
-    }
-
     public function testCreateWithEmptyData(): void
     {
         $test = (new TestBuilder)->build(new ReflectionClass(EmptyDataProviderTest::class), 'testCase');

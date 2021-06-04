@@ -23,7 +23,8 @@ class Issue1337Test extends TestCase
     {
         return [
             'c:\\' => [true],
-            0.9    => [true],
+            // The following is commented out because it no longer works in PHP >= 8.1
+            //0.9    => [true],
         ];
     }
 }
