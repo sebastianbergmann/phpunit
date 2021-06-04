@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#4632](https://github.com/sebastianbergmann/phpunit/issues/4632): TestDox result printer does not handle repeated test execution correctly
 * [#4678](https://github.com/sebastianbergmann/phpunit/pull/4678): Stubbed methods with `iterable` return types should return empty array by default
+* [#4692](https://github.com/sebastianbergmann/phpunit/issues/4692): Annotations in single-line doc-comments are not handled correctly
 
 ## [9.5.4] - 2021-03-23
 
