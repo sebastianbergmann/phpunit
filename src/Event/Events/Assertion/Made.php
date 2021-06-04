@@ -12,6 +12,7 @@ namespace PHPUnit\Event\Assertion;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 use PHPUnit\Framework\Constraint;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -68,9 +69,14 @@ final class Made implements Event
             '%s Assertion Made (Constraint: %s - Value: %s - Failed: %s - Message: %s)',
             $this->telemetryInfo()->asString(),
             $this->constraint()->toString(),
-            (string) $this->value(),
+            $this->valueAsString(),
             $this->hasFailed() ? 'true' : 'false',
             $this->message()
         );
+    }
+
+    private function valueAsString(): string
+    {
+        return (new Exporter)->export($this->value());
     }
 }
