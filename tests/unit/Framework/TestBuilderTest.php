@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use function assert;
-use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\TestFixture\EmptyDataProviderTest;
 use PHPUnit\TestFixture\ModifiedConstructorTestCase;
 use PHPUnit\TestFixture\TestWithAnnotations;
@@ -21,58 +19,6 @@ use ReflectionClass;
  */
 final class TestBuilderTest extends TestCase
 {
-    public function testCreateTestForConstructorlessTestClass(): void
-    {
-        $reflector = $this->getMockBuilder(ReflectionClass::class)
-                          ->setConstructorArgs([$this])
-                          ->getMock();
-
-        assert($reflector instanceof MockObject);
-        assert($reflector instanceof ReflectionClass);
-
-        $reflector->expects($this->once())
-                  ->method('getConstructor')
-                  ->willReturn(null);
-
-        $reflector->expects($this->once())
-                  ->method('isInstantiable')
-                  ->willReturn(true);
-
-        $reflector->expects($this->once())
-                  ->method('getName')
-                  ->willReturn(__CLASS__);
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('No valid test provided.');
-
-        (new TestBuilder)->build($reflector, 'TestForConstructorlessTestClass');
-    }
-
-    public function testCreateTestForNotInstantiableTestClass(): void
-    {
-        $reflector = $this->getMockBuilder(ReflectionClass::class)
-            ->setConstructorArgs([$this])
-            ->getMock();
-
-        assert($reflector instanceof MockObject);
-        assert($reflector instanceof ReflectionClass);
-
-        $reflector->expects($this->once())
-            ->method('isInstantiable')
-            ->willReturn(false);
-
-        $reflector->expects($this->once())
-            ->method('getName')
-            ->willReturn('foo');
-
-        $test = (new TestBuilder)->build($reflector, 'TestForNonInstantiableTestClass');
-
-        $this->assertInstanceOf(ErrorTestCase::class, $test);
-
-        /* @var ErrorTestCase $test */
-        $this->assertSame('Cannot instantiate class "foo".', $test->getMessage());
-    }
-
     public function testCreateTestForTestClassWithModifiedConstructor(): void
     {
         $test = (new TestBuilder)->build(new ReflectionClass(ModifiedConstructorTestCase::class), 'testCase');
