@@ -137,6 +137,7 @@ jobs:
         run: bash ./build/scripts/sanity-check
 
       - name: Run tests with phpunit
+        continue-on-error: ${{ matrix.php-version }} == '8.1'
         run: php ./phpunit
 
   code-coverage:
