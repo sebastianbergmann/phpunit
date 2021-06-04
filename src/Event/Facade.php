@@ -18,7 +18,7 @@ final class Facade
 
     private static ?Emitter $emitter = null;
 
-    private static ?Dispatcher $dispatcher = null;
+    private static ?DeferredDispatcher $dispatcher = null;
 
     private static bool $sealed = false;
 
@@ -67,13 +67,17 @@ final class Facade
 
     public static function seal(): void
     {
+        self::$dispatcher->flush();
+
         self::$sealed = true;
     }
 
-    private static function dispatcher(): Dispatcher
+    private static function dispatcher(): DeferredDispatcher
     {
         if (self::$dispatcher === null) {
-            self::$dispatcher = new DirectDispatcher(self::typeMap());
+            self::$dispatcher = new DeferredDispatcher(
+                new DirectDispatcher(self::typeMap())
+            );
         }
 
         return self::$dispatcher;

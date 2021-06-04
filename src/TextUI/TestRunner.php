@@ -302,6 +302,8 @@ final class TestRunner
             $this->printer->setShowProgressAnimation(!$arguments['noInteraction']);
         }
 
+        Event\Facade::seal();
+
         $this->printer->write(
             Version::getVersionString() . "\n"
         );
