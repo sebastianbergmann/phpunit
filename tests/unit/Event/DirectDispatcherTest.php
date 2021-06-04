@@ -17,15 +17,15 @@ use RuntimeException;
 use SpyingDummySubscriber;
 
 /**
- * @covers \PHPUnit\Event\Dispatcher
+ * @covers \PHPUnit\Event\DirectDispatcher
  */
-final class DispatcherTest extends TestCase
+final class DirectDispatcherTest extends TestCase
 {
     public function testRegisterRejectsUnknownSubscriber(): void
     {
         $subscriber = new NullSubscriber;
 
-        $dispatcher = new Dispatcher(new TypeMap());
+        $dispatcher = new DirectDispatcher(new TypeMap());
 
         $this->expectException(RuntimeException::class);
 
@@ -36,7 +36,7 @@ final class DispatcherTest extends TestCase
     {
         $event = new DummyEvent;
 
-        $dispatcher = new Dispatcher(new TypeMap());
+        $dispatcher = new DirectDispatcher(new TypeMap());
 
         $this->expectException(RuntimeException::class);
 
@@ -53,7 +53,7 @@ final class DispatcherTest extends TestCase
 
         $subscriber = new SpyingDummySubscriber;
 
-        $dispatcher = new Dispatcher($typeMap);
+        $dispatcher = new DirectDispatcher($typeMap);
 
         $dispatcher->registerSubscriber($subscriber);
 

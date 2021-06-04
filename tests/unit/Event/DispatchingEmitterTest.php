@@ -1789,7 +1789,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($name, $event->name());
     }
 
-    private static function createDispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): Dispatcher
+    private static function createDispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): DirectDispatcher
     {
         $typeMap = new TypeMap;
 
@@ -1798,7 +1798,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $eventClass
         );
 
-        $dispatcher = new Dispatcher($typeMap);
+        $dispatcher = new DirectDispatcher($typeMap);
 
         $dispatcher->registerSubscriber($subscriber);
 

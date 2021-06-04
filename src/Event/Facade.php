@@ -54,7 +54,7 @@ final class Facade
     private static function dispatcher(): Dispatcher
     {
         if (self::$dispatcher === null) {
-            self::$dispatcher = new Dispatcher(self::typeMap());
+            self::$dispatcher = new DirectDispatcher(self::typeMap());
         }
 
         return self::$dispatcher;
