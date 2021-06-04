@@ -12,15 +12,18 @@ namespace PHPUnit\Framework\MockObject;
 use const DIRECTORY_SEPARATOR;
 use function implode;
 use function is_string;
+use function method_exists;
 use function preg_match;
 use function preg_replace;
 use function sprintf;
+use function str_replace;
 use function substr_count;
 use function trim;
 use function var_export;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionNamedType;
+use ReflectionType;
 use SebastianBergmann\Type\ObjectType;
 use SebastianBergmann\Type\Type;
 use SebastianBergmann\Type\UnknownType;
@@ -152,7 +155,7 @@ final class MockMethod
             '',
             false,
             false,
-            null,
+            null
         );
     }
 
@@ -208,13 +211,23 @@ final class MockMethod
             $deprecation = $deprecationTemplate->render();
         }
 
+        /**
+         * This is required as the version of sebastian/type used
+         * by PHPUnit 8.5 does now know about the mixed type.
+         */
+        $returnTypeDeclaration = str_replace(
+            '?mixed',
+            'mixed',
+            $this->returnType->getReturnTypeDeclaration()
+        );
+
         $template = $this->getTemplate($templateFile);
 
         $template->setVar(
             [
                 'arguments_decl'     => $this->argumentsForDeclaration,
                 'arguments_call'     => $this->argumentsForCall,
-                'return_declaration' => $this->returnType->getReturnTypeDeclaration(),
+                'return_declaration' => $returnTypeDeclaration,
                 'arguments_count'    => !empty($this->argumentsForCall) ? substr_count($this->argumentsForCall, ',') + 1 : 0,
                 'class_name'         => $this->className,
                 'method_name'        => $this->methodName,
@@ -343,19 +356,19 @@ final class MockMethod
 
     private static function deriveReturnType(ReflectionMethod $method): Type
     {
-        $returnType = $method->getReturnType();
+        $returnType = self::reflectionMethodGetReturnType($method);
 
         if ($returnType === null) {
             return new UnknownType;
         }
 
         // @see https://bugs.php.net/bug.php?id=70722
-        if ($returnType->getName() === 'self') {
+        if ($returnType instanceof ReflectionNamedType && $returnType->getName() === 'self') {
             return ObjectType::fromName($method->getDeclaringClass()->getName(), $returnType->allowsNull());
         }
 
         // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/406
-        if ($returnType->getName() === 'parent') {
+        if ($returnType instanceof ReflectionNamedType && $returnType->getName() === 'parent') {
             $parentClass = $method->getDeclaringClass()->getParentClass();
 
             if ($parentClass === false) {
@@ -373,5 +386,18 @@ final class MockMethod
         }
 
         return Type::fromName($returnType->getName(), $returnType->allowsNull());
+    }
+
+    private static function reflectionMethodGetReturnType(ReflectionMethod $method): ?ReflectionType
+    {
+        if ($method->hasReturnType()) {
+            return $method->getReturnType();
+        }
+
+        if (!method_exists($method, 'getTentativeReturnType')) {
+            return null;
+        }
+
+        return $method->getTentativeReturnType();
     }
 }
