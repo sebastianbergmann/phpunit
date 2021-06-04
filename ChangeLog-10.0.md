@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * `#[ExcludeGlobalVariableFromBackup('variable')]` attribute for excluding a global variable from the backup/restore of global and super-global variables
 * `@excludeStaticPropertyFromBackup className propertyName` annotation for excluding a static property from the backup/restore of static properties in user-defined classes
 * `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute for excluding a static property from the backup/restore of static properties in user-defined classes
+* `--trace-text` CLI option that controls streaming of event information in text format to a file
 
 ### Changed
 
