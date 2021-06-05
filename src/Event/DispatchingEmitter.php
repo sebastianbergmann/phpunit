@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\Info;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
@@ -134,24 +135,24 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testErrored(Code\Test $test, string $message): void
+    public function testErrored(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\Errored(
                 $this->telemetryInfo(),
                 $test,
-                $message
+                $throwable
             )
         );
     }
 
-    public function testFailed(Code\Test $test, string $message): void
+    public function testFailed(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\Failed(
                 $this->telemetryInfo(),
                 $test,
-                $message
+                $throwable
             )
         );
     }
@@ -177,24 +178,24 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testPassedWithWarning(Code\Test $test, string $message): void
+    public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\PassedWithWarning(
                 $this->telemetryInfo(),
                 $test,
-                $message
+                $throwable
             )
         );
     }
 
-    public function testPassedButRisky(Code\Test $test, string $message): void
+    public function testPassedButRisky(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\PassedButRisky(
                 $this->telemetryInfo(),
                 $test,
-                $message
+                $throwable
             )
         );
     }

@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Event\Code;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Emitter;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
@@ -53,11 +54,11 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testErrored(Code\Test $test, string $message): void
+    public function testErrored(Code\Test $test, Throwable $throwable): void
     {
     }
 
-    public function testFailed(Code\Test $test, string $message): void
+    public function testFailed(Code\Test $test, Throwable $throwable): void
     {
     }
 
@@ -69,11 +70,11 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testPassedWithWarning(Code\Test $test, string $message): void
+    public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void
     {
     }
 
-    public function testPassedButRisky(Code\Test $test, string $message): void
+    public function testPassedButRisky(Code\Test $test, Throwable $throwable): void
     {
     }
 

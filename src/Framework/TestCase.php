@@ -847,14 +847,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $emitter->testPassedWithWarning(
                 $this->testValueObjectForEvents(),
-                $e->getMessage()
+                Event\Code\Throwable::from($e)
             );
         } catch (AssertionFailedError $e) {
             $this->status = TestStatus::failure($e->getMessage());
 
             $emitter->testFailed(
                 $this->testValueObjectForEvents(),
-                $e->getMessage()
+                Event\Code\Throwable::from($e)
             );
         } catch (Throwable $_e) {
             $e            = $_e;
@@ -862,7 +862,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $emitter->testErrored(
                 $this->testValueObjectForEvents(),
-                $_e->getMessage()
+                Event\Code\Throwable::from($_e)
             );
         }
 

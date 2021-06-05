@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
@@ -41,17 +42,17 @@ interface Emitter
 
     public function globalStateRestored(Snapshot $snapshot): void;
 
-    public function testErrored(Code\Test $test, string $message): void;
+    public function testErrored(Code\Test $test, Throwable $throwable): void;
 
-    public function testFailed(Code\Test $test, string $message): void;
+    public function testFailed(Code\Test $test, Throwable $throwable): void;
 
     public function testFinished(Code\Test $test, string $output): void;
 
     public function testPassed(Code\Test $test): void;
 
-    public function testPassedWithWarning(Code\Test $test, string $message): void;
+    public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void;
 
-    public function testPassedButRisky(Code\Test $test, string $message): void;
+    public function testPassedButRisky(Code\Test $test, Throwable $throwable): void;
 
     public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void;
 

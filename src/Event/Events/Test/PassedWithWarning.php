@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Code;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -22,13 +23,13 @@ final class PassedWithWarning implements Event
 
     private Code\Test $testMethod;
 
-    private string $message;
+    private Throwable $throwable;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, string $message)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->testMethod    = $test;
-        $this->message       = $message;
+        $this->throwable     = $throwable;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -41,9 +42,9 @@ final class PassedWithWarning implements Event
         return $this->testMethod;
     }
 
-    public function message(): string
+    public function throwable(): Throwable
     {
-        return $this->message;
+        return $this->throwable;
     }
 
     public function asString(): string

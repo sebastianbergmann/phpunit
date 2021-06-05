@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Event;
 
+use Exception;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Framework;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestFixture;
@@ -346,7 +348,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'foo with data set #123',
             MetadataCollection::fromArray([])
         );
-        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\ErroredSubscriber {
             public function notify(Test\Errored $event): void
@@ -368,9 +369,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
+        $throwable = Throwable::from(new Exception('error'));
+
         $emitter->testErrored(
             $test,
-            $message
+            $throwable
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -380,7 +383,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\Errored::class, $event);
 
         $this->assertSame($test, $event->test());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($throwable, $event->throwable());
     }
 
     public function testTestFailedDispatchesTestFailedEvent(): void
@@ -391,7 +394,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'foo with data set #123',
             MetadataCollection::fromArray([])
         );
-        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\FailedSubscriber {
             public function notify(Test\Failed $event): void
@@ -413,9 +415,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
+        $throwable = Throwable::from(new Exception('failure'));
+
         $emitter->testFailed(
             $test,
-            $message
+            $throwable
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -425,7 +429,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\Failed::class, $event);
 
         $this->assertSame($test, $event->test());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($throwable, $event->throwable());
     }
 
     public function testTestFinishedDispatchesTestFinishedEvent(): void
@@ -516,7 +520,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'foo with data set #123',
             MetadataCollection::fromArray([])
         );
-        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\PassedWithWarningSubscriber {
             public function notify(Test\PassedWithWarning $event): void
@@ -538,9 +541,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
+        $throwable = Throwable::from(new Exception('failure'));
+
         $emitter->testPassedWithWarning(
             $test,
-            $message
+            $throwable
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -550,7 +555,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\PassedWithWarning::class, $event);
 
         $this->assertSame($test, $event->test());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($throwable, $event->throwable());
     }
 
     public function testTestPassedButRiskyDispatchesTestPassedButRiskyEvent(): void
@@ -561,7 +566,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'foo with data set #123',
             MetadataCollection::fromArray([])
         );
-        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\PassedButRiskySubscriber {
             public function notify(Test\PassedButRisky $event): void
@@ -583,9 +587,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
+        $throwable = Throwable::from(new Exception('failure'));
+
         $emitter->testPassedButRisky(
             $test,
-            $message
+            $throwable
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -594,7 +600,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $event = $subscriber->lastRecordedEvent();
 
         $this->assertSame($test, $event->test());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($throwable, $event->throwable());
     }
 
     public function testTestSkippedByDataProviderDispatchesTestSkippedByDataProviderEvent(): void
