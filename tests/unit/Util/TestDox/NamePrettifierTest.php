@@ -10,6 +10,7 @@
 namespace PHPUnit\Util\TestDox;
 
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Logging\TestDox\NamePrettifier;
 
 /**
  * @group testdox

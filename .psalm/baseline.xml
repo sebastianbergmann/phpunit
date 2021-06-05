@@ -537,6 +537,107 @@
       <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
     </TypeDoesNotContainType>
   </file>
+  <file src="src/Logging/JunitXmlLogger.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$suite-&gt;getName()</code>
+    </ArgumentTypeCoercion>
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$this-&gt;testSuiteTimes</code>
+    </InvalidPropertyAssignmentValue>
+    <MissingThrowsDocblock occurrences="4">
+      <code>Filter::getFilteredStacktrace($t)</code>
+      <code>parent::__construct($out)</code>
+    </MissingThrowsDocblock>
+    <PossiblyNullReference occurrences="1">
+      <code>setAttribute</code>
+    </PossiblyNullReference>
+    <UndefinedInterfaceMethod occurrences="2">
+      <code>getName</code>
+      <code>getName</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Logging/TeamCityLogger.php">
+    <DocblockTypeContradiction occurrences="2">
+      <code>$actualString === null</code>
+      <code>$expectedString === null</code>
+    </DocblockTypeContradiction>
+    <MissingParamType occurrences="1">
+      <code>$value</code>
+    </MissingParamType>
+    <MissingThrowsDocblock occurrences="2">
+      <code>Filter::getFilteredStacktrace($t)</code>
+    </MissingThrowsDocblock>
+    <PropertyNotSetInConstructor occurrences="2">
+      <code>$flowId</code>
+      <code>$startedTestName</code>
+    </PropertyNotSetInConstructor>
+    <RedundantCondition occurrences="1">
+      <code>$previous-&gt;getPrevious()</code>
+    </RedundantCondition>
+    <UndefinedInterfaceMethod occurrences="6">
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+      <code>getName</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Logging/TestDox/CliTestDoxPrinter.php">
+    <MissingThrowsDocblock occurrences="2">
+      <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
+      <code>stop</code>
+    </MissingThrowsDocblock>
+    <PossiblyInvalidArrayOffset occurrences="6">
+      <code>$prefix['default']</code>
+      <code>$prefix['diff']</code>
+      <code>$prefix['last']</code>
+      <code>$prefix['message']</code>
+      <code>$prefix['start']</code>
+      <code>$prefix['trace']</code>
+    </PossiblyInvalidArrayOffset>
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>self::STATUS_STYLES[$result['status']-&gt;asString()]['message']</code>
+    </PossiblyUndefinedArrayOffset>
+  </file>
+  <file src="src/Logging/TestDox/HtmlResultPrinter.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;currentTestClassPrettified</code>
+    </PossiblyNullArgument>
+  </file>
+  <file src="src/Logging/TestDox/NamePrettifier.php">
+    <InvalidCast occurrences="1">
+      <code>$value</code>
+    </InvalidCast>
+    <MissingThrowsDocblock occurrences="1"/>
+    <UndefinedMethod occurrences="2">
+      <code>text</code>
+      <code>text</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/Logging/TestDox/ResultPrinter.php">
+    <MissingThrowsDocblock occurrences="1">
+      <code>parent::__construct($out)</code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="src/Logging/TestDox/TestDoxPrinter.php">
+    <MissingThrowsDocblock occurrences="1">
+      <code>Filter::getFilteredStacktrace($t)</code>
+    </MissingThrowsDocblock>
+    <UndefinedInterfaceMethod occurrences="1">
+      <code>getName</code>
+    </UndefinedInterfaceMethod>
+  </file>
+  <file src="src/Logging/TestDox/XmlResultPrinter.php">
+    <RedundantCondition occurrences="6">
+      <code>assert($metadata instanceof Covers)</code>
+      <code>assert($metadata instanceof CoversClass)</code>
+      <code>assert($metadata instanceof CoversFunction)</code>
+      <code>assert($metadata instanceof Uses)</code>
+      <code>assert($metadata instanceof UsesClass)</code>
+      <code>assert($metadata instanceof UsesFunction)</code>
+    </RedundantCondition>
+  </file>
   <file src="src/Metadata/Api/CodeCoverage.php">
     <RedundantCondition occurrences="4">
       <code>$metadata instanceof CoversFunction</code>
@@ -1104,52 +1205,6 @@
       <code>$json</code>
     </MissingParamType>
   </file>
-  <file src="src/Util/Log/JUnit.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$suite-&gt;getName()</code>
-    </ArgumentTypeCoercion>
-    <InvalidPropertyAssignmentValue occurrences="1">
-      <code>$this-&gt;testSuiteTimes</code>
-    </InvalidPropertyAssignmentValue>
-    <MissingThrowsDocblock occurrences="4">
-      <code>Filter::getFilteredStacktrace($t)</code>
-      <code>parent::__construct($out)</code>
-    </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="1">
-      <code>setAttribute</code>
-    </PossiblyNullReference>
-    <UndefinedInterfaceMethod occurrences="2">
-      <code>getName</code>
-      <code>getName</code>
-    </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Util/Log/TeamCity.php">
-    <DocblockTypeContradiction occurrences="2">
-      <code>$actualString === null</code>
-      <code>$expectedString === null</code>
-    </DocblockTypeContradiction>
-    <MissingParamType occurrences="1">
-      <code>$value</code>
-    </MissingParamType>
-    <MissingThrowsDocblock occurrences="2">
-      <code>Filter::getFilteredStacktrace($t)</code>
-    </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="2">
-      <code>$flowId</code>
-      <code>$startedTestName</code>
-    </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="1">
-      <code>$previous-&gt;getPrevious()</code>
-    </RedundantCondition>
-    <UndefinedInterfaceMethod occurrences="6">
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-    </UndefinedInterfaceMethod>
-  </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
       <code>$this-&gt;getException($failures[0])</code>
@@ -1194,61 +1249,6 @@
       <code>$this-&gt;stream</code>
       <code>$this-&gt;stream</code>
     </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src/Util/TestDox/CliTestDoxPrinter.php">
-    <MissingThrowsDocblock occurrences="2">
-      <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
-      <code>stop</code>
-    </MissingThrowsDocblock>
-    <PossiblyInvalidArrayOffset occurrences="6">
-      <code>$prefix['default']</code>
-      <code>$prefix['diff']</code>
-      <code>$prefix['last']</code>
-      <code>$prefix['message']</code>
-      <code>$prefix['start']</code>
-      <code>$prefix['trace']</code>
-    </PossiblyInvalidArrayOffset>
-    <PossiblyUndefinedArrayOffset occurrences="1">
-      <code>self::STATUS_STYLES[$result['status']-&gt;asString()]['message']</code>
-    </PossiblyUndefinedArrayOffset>
-  </file>
-  <file src="src/Util/TestDox/HtmlResultPrinter.php">
-    <PossiblyNullArgument occurrences="1">
-      <code>$this-&gt;currentTestClassPrettified</code>
-    </PossiblyNullArgument>
-  </file>
-  <file src="src/Util/TestDox/NamePrettifier.php">
-    <InvalidCast occurrences="1">
-      <code>$value</code>
-    </InvalidCast>
-    <MissingThrowsDocblock occurrences="1"/>
-    <UndefinedMethod occurrences="2">
-      <code>text</code>
-      <code>text</code>
-    </UndefinedMethod>
-  </file>
-  <file src="src/Util/TestDox/ResultPrinter.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>parent::__construct($out)</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/Util/TestDox/TestDoxPrinter.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>Filter::getFilteredStacktrace($t)</code>
-    </MissingThrowsDocblock>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>getName</code>
-    </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Util/TestDox/XmlResultPrinter.php">
-    <RedundantCondition occurrences="6">
-      <code>assert($metadata instanceof Covers)</code>
-      <code>assert($metadata instanceof CoversClass)</code>
-      <code>assert($metadata instanceof CoversFunction)</code>
-      <code>assert($metadata instanceof Uses)</code>
-      <code>assert($metadata instanceof UsesClass)</code>
-      <code>assert($metadata instanceof UsesFunction)</code>
-    </RedundantCondition>
   </file>
   <file src="src/Util/TextTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">

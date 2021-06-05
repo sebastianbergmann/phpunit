@@ -25,10 +25,10 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
-use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use stdClass;
 
 /**

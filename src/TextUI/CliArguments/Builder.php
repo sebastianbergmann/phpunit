@@ -15,11 +15,11 @@ use function class_exists;
 use function explode;
 use function is_numeric;
 use function str_replace;
+use PHPUnit\Logging\TeamCityLogger;
+use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
-use PHPUnit\Util\Log\TeamCity;
-use PHPUnit\Util\TestDox\CliTestDoxPrinter;
 use SebastianBergmann\CliParser\Exception as CliParserException;
 use SebastianBergmann\CliParser\Parser as CliParser;
 
@@ -577,7 +577,7 @@ final class Builder
                     break;
 
                 case '--teamcity':
-                    $printer = TeamCity::class;
+                    $printer = TeamCityLogger::class;
 
                     break;
 

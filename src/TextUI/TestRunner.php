@@ -32,6 +32,12 @@ use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Logging\JunitXmlLogger;
+use PHPUnit\Logging\TeamCityLogger;
+use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
+use PHPUnit\Logging\TestDox\HtmlResultPrinter;
+use PHPUnit\Logging\TestDox\TextResultPrinter;
+use PHPUnit\Logging\TestDox\XmlResultPrinter;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\CodeCoverage;
@@ -51,13 +57,7 @@ use PHPUnit\TextUI\XmlConfiguration\Configuration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use PHPUnit\Util\Filesystem;
-use PHPUnit\Util\Log\JUnit;
-use PHPUnit\Util\Log\TeamCity;
 use PHPUnit\Util\Printer;
-use PHPUnit\Util\TestDox\CliTestDoxPrinter;
-use PHPUnit\Util\TestDox\HtmlResultPrinter;
-use PHPUnit\Util\TestDox\TextResultPrinter;
-use PHPUnit\Util\TestDox\XmlResultPrinter;
 use PHPUnit\Util\Xml\SchemaDetector;
 use ReflectionClass;
 use ReflectionException;
@@ -357,13 +357,13 @@ final class TestRunner
 
         if (isset($arguments['teamcityLogfile'])) {
             $result->addListener(
-                new TeamCity($arguments['teamcityLogfile'])
+                new TeamCityLogger($arguments['teamcityLogfile'])
             );
         }
 
         if (isset($arguments['junitLogfile'])) {
             $result->addListener(
-                new JUnit(
+                new JunitXmlLogger(
                     $arguments['junitLogfile'],
                     $arguments['reportUselessTests']
                 )

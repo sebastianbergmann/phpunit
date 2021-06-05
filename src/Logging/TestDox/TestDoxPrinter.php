@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\TestDox;
+namespace PHPUnit\Logging\TestDox;
 
 use const PHP_EOL;
 use function array_map;
@@ -32,7 +32,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class TestDoxPrinter extends DefaultResultPrinter
+abstract class TestDoxPrinter extends DefaultResultPrinter
 {
     protected NamePrettifier $prettifier;
 

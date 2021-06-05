@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Log;
+namespace PHPUnit\Logging;
 
 use function class_exists;
 use function count;
@@ -41,7 +41,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TeamCity extends DefaultResultPrinter
+final class TeamCityLogger extends DefaultResultPrinter
 {
     private bool $isSummaryTestCountPrinted = false;
 
