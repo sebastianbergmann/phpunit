@@ -785,7 +785,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->testResult = $this->runTest();
 
             $emitter->testFinished(
-                $this->testValueObjectForEvents()
+                $this->testValueObjectForEvents(),
+                $this->hasOutput() ? $this->output() : ''
             );
 
             $this->verifyMockObjects();
