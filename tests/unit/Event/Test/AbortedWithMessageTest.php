@@ -9,12 +9,13 @@
  */
 namespace PHPUnit\Event\Test;
 
+use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
- * @covers \PHPUnit\Event\Test\AbortedWithMessage
+ * @covers \PHPUnit\Event\Test\Aborted
  */
 final class AbortedWithMessageTest extends AbstractEventTestCase
 {
@@ -27,16 +28,17 @@ final class AbortedWithMessageTest extends AbstractEventTestCase
             'foo with data set #123',
             MetadataCollection::fromArray([])
         );
-        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
-        $event = new AbortedWithMessage(
+        $throwable = Code\Throwable::from(new Exception('aborted'));
+
+        $event = new Aborted(
             $telemetryInfo,
             $test,
-            $message
+            $throwable
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($throwable, $event->throwable());
     }
 }

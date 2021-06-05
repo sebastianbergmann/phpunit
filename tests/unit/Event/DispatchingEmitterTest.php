@@ -646,7 +646,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($message, $event->message());
     }
 
-    public function testTestAbortedWithMessageDispatchesTestAbortedWithMessage(): void
+    public function testTestAbortedDispatchesTestAbortedEvent(): void
     {
         $test = new Code\Test(
             self::class,
@@ -654,18 +654,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'foo with data set #123',
             MetadataCollection::fromArray([])
         );
-        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
-        $subscriber = new class extends RecordingSubscriber implements Test\AbortedWithMessageSubscriber {
-            public function notify(Test\AbortedWithMessage $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\AbortedSubscriber {
+            public function notify(Test\Aborted $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\AbortedWithMessageSubscriber::class,
-            Test\AbortedWithMessage::class,
+            Test\AbortedSubscriber::class,
+            Test\Aborted::class,
             $subscriber
         );
 
@@ -676,19 +675,21 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testAbortedWithMessage(
+        $throwable = Throwable::from(new Exception('aborted'));
+
+        $emitter->testAborted(
             $test,
-            $message
+            $throwable
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(Test\AbortedWithMessage::class, $event);
+        $this->assertInstanceOf(Test\Aborted::class, $event);
 
         $this->assertSame($test, $event->test());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($throwable, $event->throwable());
     }
 
     public function testTestSkippedDueToUnsatisfiedRequirementsDispatchesSkippedDueToUnsatisfiedRequirementsEvent(): void
@@ -738,7 +739,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($missingRequirements, $event->missingRequirements());
     }
 
-    public function testTestSkippedMessageDispatchesTestSkippedWithMessageEvent(): void
+    public function testTestSkippedDispatchesTestSkippedEvent(): void
     {
         $test = new Code\Test(
             self::class,
@@ -746,18 +747,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'foo with data set #123',
             MetadataCollection::fromArray([])
         );
-        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
-        $subscriber = new class extends RecordingSubscriber implements Test\SkippedWithMessageSubscriber {
-            public function notify(Test\SkippedWithMessage $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\SkippedSubscriber {
+            public function notify(Test\Skipped $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\SkippedWithMessageSubscriber::class,
-            Test\SkippedWithMessage::class,
+            Test\SkippedSubscriber::class,
+            Test\Skipped::class,
             $subscriber
         );
 
@@ -768,19 +768,21 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testSkippedWithMessage(
+        $throwable = Throwable::from(new Exception('skipped'));
+
+        $emitter->testSkipped(
             $test,
-            $message
+            $throwable
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(Test\SkippedWithMessage::class, $event);
+        $this->assertInstanceOf(Test\Skipped::class, $event);
 
         $this->assertSame($test, $event->test());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($throwable, $event->throwable());
     }
 
     public function testTestPreparedDispatchesTestPreparedEvent(): void

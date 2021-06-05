@@ -831,16 +831,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (IncompleteTest $e) {
             $this->status = TestStatus::incomplete($e->getMessage());
 
-            $emitter->testAbortedWithMessage(
+            $emitter->testAborted(
                 $this->testValueObjectForEvents(),
-                $e->getMessage()
+                Event\Code\Throwable::from($e)
             );
         } catch (SkippedTest $e) {
             $this->status = TestStatus::skipped($e->getMessage());
 
-            $emitter->testSkippedWithMessage(
+            $emitter->testSkipped(
                 $this->testValueObjectForEvents(),
-                $e->getMessage()
+                Event\Code\Throwable::from($e)
             );
         } catch (Warning $e) {
             $this->status = TestStatus::warning($e->getMessage());

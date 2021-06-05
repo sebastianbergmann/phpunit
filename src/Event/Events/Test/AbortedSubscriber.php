@@ -14,7 +14,7 @@ use PHPUnit\Event\Subscriber;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-interface SkippedWithMessageSubscriber extends Subscriber
+interface AbortedSubscriber extends Subscriber
 {
-    public function notify(SkippedWithMessage $event): void;
+    public function notify(Aborted $event): void;
 }

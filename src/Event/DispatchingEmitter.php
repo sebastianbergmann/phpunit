@@ -211,13 +211,13 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testAbortedWithMessage(Code\Test $test, string $message): void
+    public function testAborted(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
-            new Test\AbortedWithMessage(
+            new Test\Aborted(
                 $this->telemetryInfo(),
                 $test,
-                $message
+                $throwable
             )
         );
     }
@@ -233,13 +233,13 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSkippedWithMessage(Code\Test $test, string $message): void
+    public function testSkipped(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
-            new Test\SkippedWithMessage(
+            new Test\Skipped(
                 $this->telemetryInfo(),
                 $test,
-                $message
+                $throwable
             )
         );
     }

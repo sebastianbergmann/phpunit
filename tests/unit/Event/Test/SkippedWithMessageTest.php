@@ -9,12 +9,13 @@
  */
 namespace PHPUnit\Event\Test;
 
+use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
- * @covers \PHPUnit\Event\Test\SkippedWithMessage
+ * @covers \PHPUnit\Event\Test\Skipped
  */
 final class SkippedWithMessageTest extends AbstractEventTestCase
 {
@@ -27,16 +28,17 @@ final class SkippedWithMessageTest extends AbstractEventTestCase
             'foo with data set #123',
             MetadataCollection::fromArray([])
         );
-        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
-        $event = new SkippedWithMessage(
+        $throwable = Code\Throwable::from(new Exception('skipped'));
+
+        $event = new Skipped(
             $telemetryInfo,
             $test,
-            $message
+            $throwable
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($throwable, $event->throwable());
     }
 }

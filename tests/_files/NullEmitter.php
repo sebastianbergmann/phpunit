@@ -82,7 +82,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testAbortedWithMessage(Code\Test $test, string $message): void
+    public function testAborted(Code\Test $test, Throwable $throwable): void
     {
     }
 
@@ -90,7 +90,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSkippedWithMessage(Code\Test $test, string $message): void
+    public function testSkipped(Code\Test $test, Throwable $throwable): void
     {
     }
 
