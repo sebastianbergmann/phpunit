@@ -70,6 +70,17 @@
       <code>HRTime::fromSecondsAndNanoseconds(...hrtime(false))</code>
     </MissingThrowsDocblock>
   </file>
+  <file src="src/Event/Value/Throwable.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$t instanceof ExceptionWrapper ? $t-&gt;getClassName() : $t::class</code>
+    </ArgumentTypeCoercion>
+    <MissingDocblockType occurrences="1">
+      <code>public function className(): string</code>
+    </MissingDocblockType>
+    <MissingThrowsDocblock occurrences="1">
+      <code>Filter::getFilteredStacktrace($t)</code>
+    </MissingThrowsDocblock>
+  </file>
   <file src="src/Framework/Assert.php">
     <DeprecatedClass occurrences="12">
       <code>ClassHasAttribute</code>
