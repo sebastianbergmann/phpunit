@@ -2238,7 +2238,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             static::class,
             $this->getName(false),
             $this->getName(),
-            $metadata
+            $this->getDataSetAsStringWithData(),
+            $metadata,
         );
     }
 }

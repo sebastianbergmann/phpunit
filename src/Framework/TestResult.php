@@ -194,6 +194,7 @@ final class TestResult implements Countable
                         $test::class,
                         $test->getName(false),
                         $test->getName(),
+                        $test->getDataSetAsStringWithData(),
                         (MetadataRegistry::parser())->forClassAndMethod($test::class, $test->getName(false))
                     ),
                     Event\Code\Throwable::from($e)

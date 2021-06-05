@@ -346,6 +346,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 
@@ -392,6 +393,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 
@@ -438,6 +440,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 
@@ -478,6 +481,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 
@@ -518,6 +522,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 
@@ -564,6 +569,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 
@@ -652,6 +658,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 
@@ -745,6 +752,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 
@@ -791,6 +799,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 

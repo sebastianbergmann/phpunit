@@ -25,6 +25,7 @@ final class FinishedTest extends AbstractEventTestCase
             self::class,
             'foo',
             'foo with data set #123',
+            'foo with data set #123 (...)',
             MetadataCollection::fromArray([])
         );
 

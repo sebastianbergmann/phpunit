@@ -22,18 +22,21 @@ final class TestTest extends TestCase
         $className             = self::class;
         $methodName            = 'foo';
         $methodNameWithDataSet = 'foo with data set #123';
+        $dataSet               = 'foo with data set #123 (...)';
         $metadata              = MetadataCollection::fromArray([]);
 
         $test = new Test(
             $className,
             $methodName,
             $methodNameWithDataSet,
+            $dataSet,
             $metadata
         );
 
         $this->assertSame($className, $test->className());
         $this->assertSame($methodName, $test->methodName());
         $this->assertSame($methodNameWithDataSet, $test->methodNameWithDataSet());
+        $this->assertSame($dataSet, $test->dataSet());
         $this->assertSame($metadata, $test->metadata());
     }
 }

@@ -26,16 +26,19 @@ final class Test
 
     private string $methodNameWithDataSet;
 
+    private string $dataSet;
+
     private MetadataCollection $metadata;
 
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName, string $methodNameWithDataSet, MetadataCollection $metadata)
+    public function __construct(string $className, string $methodName, string $methodNameWithDataSet, string $dataSet, MetadataCollection $metadata)
     {
         $this->className             = $className;
         $this->methodName            = $methodName;
         $this->methodNameWithDataSet = $methodNameWithDataSet;
+        $this->dataSet               = $dataSet;
         $this->metadata              = $metadata;
     }
 
@@ -55,6 +58,11 @@ final class Test
     public function methodNameWithDataSet(): string
     {
         return $this->methodNameWithDataSet;
+    }
+
+    public function dataSet(): string
+    {
+        return $this->dataSet;
     }
 
     public function metadata(): MetadataCollection
