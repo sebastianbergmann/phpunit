@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Code;
 
+use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Util\Filter;
 
@@ -18,6 +19,11 @@ use PHPUnit\Util\Filter;
  */
 final class Throwable
 {
+    /**
+     * @psalm-var class-string
+     */
+    private string $className;
+
     private string $message;
 
     private string $description;
@@ -27,17 +33,30 @@ final class Throwable
     public static function from(\Throwable $t): self
     {
         return new self(
+            $t instanceof ExceptionWrapper ? $t->getClassName() : $t::class,
             $t->getMessage(),
             TestFailure::exceptionToString($t),
             Filter::getFilteredStacktrace($t)
         );
     }
 
-    private function __construct(string $message, string $description, string $stackTrace)
+    /**
+     * @psalm-param class-string $className
+     */
+    private function __construct(string $className, string $message, string $description, string $stackTrace)
     {
+        $this->className   = $className;
         $this->message     = $message;
         $this->description = $description;
         $this->stackTrace  = $stackTrace;
+    }
+
+    /**
+     * @psalm-return $className
+     */
+    public function className(): string
+    {
+        return $this->className;
     }
 
     public function message(): string
