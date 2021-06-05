@@ -57,6 +57,11 @@ final class Duration
         return $this->nanoseconds;
     }
 
+    public function asFloat(): float
+    {
+        return $this->seconds() + ($this->nanoseconds() / 1000000000);
+    }
+
     public function asString(DurationFormatter $formatter = null): string
     {
         if ($formatter !== null) {
