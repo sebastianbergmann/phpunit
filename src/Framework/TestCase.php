@@ -222,6 +222,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private array $customComparators = [];
 
+    private ?Event\Code\Test $testValueObjectForEvents = null;
+
     /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
@@ -951,6 +953,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->cleanupIniSettings();
         $this->cleanupLocaleSettings();
         libxml_clear_errors();
+
+        $this->testValueObjectForEvents = null;
 
         // Perform assertion on output.
         if (!isset($e)) {
@@ -2231,6 +2235,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function testValueObjectForEvents(): Event\Code\Test
     {
+        if ($this->testValueObjectForEvents !== null) {
+            return $this->testValueObjectForEvents;
+        }
+
         $metadata = MetadataCollection::fromArray([]);
 
         if (!$this instanceof ErrorTestCase &&
@@ -2240,12 +2248,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $metadata = (MetadataRegistry::parser())->forClassAndMethod(static::class, $this->name);
         }
 
-        return new Event\Code\Test(
+        $this->testValueObjectForEvents = new Event\Code\Test(
             static::class,
             $this->getName(false),
             $this->getName(),
             $this->getDataSetAsStringWithData(),
             $metadata,
         );
+
+        return $this->testValueObjectForEvents;
     }
 }
