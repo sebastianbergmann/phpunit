@@ -120,6 +120,7 @@ final class Facade
             Test\Errored::class,
             Test\Failed::class,
             Test\Finished::class,
+            Test\OutputPrinted::class,
             Test\Passed::class,
             Test\PassedButRisky::class,
             Test\PassedWithWarning::class,

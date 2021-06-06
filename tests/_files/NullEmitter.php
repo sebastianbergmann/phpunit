@@ -70,6 +70,10 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testOutputPrinted(Code\Test $test, string $output): void
+    {
+    }
+
     public function testPassed(Code\Test $test): void
     {
     }
