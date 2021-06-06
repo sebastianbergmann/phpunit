@@ -39,6 +39,15 @@ final class DispatchingEmitter implements Emitter
         $this->previousSnapshot = $system->snapshot();
     }
 
+    public function eventFacadeSealed(): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\EventFacadeSealed(
+                $this->telemetryInfo()
+            )
+        );
+    }
+
     public function testRunnerStarted(): void
     {
         $this->dispatcher->dispatch(

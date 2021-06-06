@@ -70,6 +70,8 @@ final class Facade
         self::$dispatcher->flush();
 
         self::$sealed = true;
+
+        self::emitter()->eventFacadeSealed();
     }
 
     private static function dispatcher(): DeferredDispatcher
@@ -136,6 +138,7 @@ final class Facade
             TestDouble\PartialMockObjectCreated::class,
             TestDouble\TestProxyCreated::class,
             TestDouble\TestStubCreated::class,
+            TestRunner\EventFacadeSealed::class,
             TestRunner\Finished::class,
             TestRunner\Started::class,
             TestSuite\Finished::class,

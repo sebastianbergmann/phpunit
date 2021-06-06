@@ -21,6 +21,8 @@ use SebastianBergmann\GlobalState\Snapshot;
  */
 interface Emitter
 {
+    public function eventFacadeSealed(): void;
+
     public function testRunnerStarted(): void;
 
     public function testRunnerFinished(): void;

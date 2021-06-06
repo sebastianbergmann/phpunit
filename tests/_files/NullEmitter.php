@@ -18,6 +18,10 @@ use SebastianBergmann\GlobalState\Snapshot;
 
 final class NullEmitter implements Emitter
 {
+    public function eventFacadeSealed(): void
+    {
+    }
+
     public function testRunnerStarted(): void
     {
     }
