@@ -464,7 +464,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testFinished($test, 'output');
+        $emitter->testFinished($test);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 

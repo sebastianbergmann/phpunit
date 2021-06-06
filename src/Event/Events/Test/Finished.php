@@ -22,13 +22,10 @@ final class Finished implements Event
 
     private Code\Test $test;
 
-    private string $output;
-
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, string $output)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
-        $this->output        = $output;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -39,11 +36,6 @@ final class Finished implements Event
     public function test(): Code\Test
     {
         return $this->test;
-    }
-
-    public function output(): string
-    {
-        return $this->output;
     }
 
     public function asString(): string
