@@ -2,6 +2,9 @@
 phpunit -c ../_files/configuration_stop_on_defect.xml ./tests/_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
+// @todo Refactor this test to not rely on --debug
+define('PHPUNIT_TESTSUITE', true);
+
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '-c';

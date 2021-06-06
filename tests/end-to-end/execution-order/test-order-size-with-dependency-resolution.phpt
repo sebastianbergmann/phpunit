@@ -2,6 +2,9 @@
 phpunit --verbose --order-by=depends,reverse ../execution-order/_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
+// @todo Refactor this test to not rely on --debug
+define('PHPUNIT_TESTSUITE', true);
+
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
@@ -39,6 +42,6 @@ There was 1 skipped test:
 
 1) PHPUnit\TestFixture\TestWithDifferentSizes::testWithSizeSmall
 This test depends on a test that is larger than itself.
-
+%A
 OK, but incomplete, skipped, or risky tests!
 Tests: 7, Assertions: 7, Skipped: 1.

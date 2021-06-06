@@ -93,7 +93,6 @@
   [32m--fail-on-skipped          [0m Treat skipped tests as failures
   [32m--fail-on-warning          [0m Treat tests with warnings as failures
   [32m-v|--verbose               [0m Output more verbose information
-  [32m--debug                    [0m Display debugging information
   [32m--trace-text [36m<file>[0m        [0m Stream events as plain text to file
 
   [32m--repeat [36m<times>[0m           [0m Runs the test(s) repeatedly

@@ -2,6 +2,9 @@
 phpunit --order-by=defects ./tests/_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
+// @todo Refactor this test to not rely on --debug
+define('PHPUNIT_TESTSUITE', true);
+
 $tmpResultCache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);
 
 \copy(__DIR__ . '/_files/MultiDependencyTest_result_cache.txt', $tmpResultCache);

@@ -2,6 +2,9 @@
 phpunit --order-by=no-depends,reverse ../_files/MultiDependencyTest.php
 --FILE--
 <?php declare(strict_types=1);
+// @todo Refactor this test to not rely on --debug
+define('PHPUNIT_TESTSUITE', true);
+
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--debug';
@@ -35,9 +38,9 @@ There were 2 skipped tests:
 
 1) MultiDependencyTest::testFour
 This test depends on "MultiDependencyTest::testThree" to pass.
-
+%A
 2) MultiDependencyTest::testThree
 This test depends on "MultiDependencyTest::testOne" to pass.
-
+%A
 OK, but incomplete, skipped, or risky tests!
 Tests: 5, Assertions: 3, Skipped: 2.

@@ -2,6 +2,9 @@
 GH-1216: PHPUnit bootstrap must take globals vars even when the file is specified in command line
 --FILE--
 <?php declare(strict_types=1);
+// @todo Refactor this test to not rely on --debug
+define('PHPUNIT_TESTSUITE', true);
+
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/1216/phpunit1216.xml';

@@ -2,6 +2,9 @@
 https://github.com/sebastianbergmann/phpunit/issues/3396
 --FILE--
 <?php declare(strict_types=1);
+// @todo Refactor this test to not rely on --debug
+define('PHPUNIT_TESTSUITE', true);
+
 $tmpResultCache = sys_get_temp_dir() . DIRECTORY_SEPARATOR . sha1(__FILE__);
 
 \copy(__DIR__ . '/../../../../_files/DataproviderExecutionOrderTest_result_cache.txt', $tmpResultCache);
@@ -42,13 +45,10 @@ There were 2 failures:
 
 1) DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)
 Failed asserting that 2 is identical to 3.
-
-%s%etests%e_files%eDataproviderExecutionOrderTest.php:%d
-
+%A
 2) DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)
 Failed asserting that 2 is identical to 3.
-
-%s%etests%e_files%eDataproviderExecutionOrderTest.php:%d
+%A
 
 FAILURES!
 Tests: 8, Assertions: 8, Failures: 2.

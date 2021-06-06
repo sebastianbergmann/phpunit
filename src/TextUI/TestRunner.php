@@ -19,6 +19,7 @@ use function array_merge;
 use function assert;
 use function class_exists;
 use function count;
+use function defined;
 use function dirname;
 use function htmlspecialchars;
 use function is_array;
@@ -829,7 +830,12 @@ final class TestRunner
             $arguments['warnings'] = [];
         }
 
-        $arguments['debug']     = $arguments['debug'] ?? false;
+        $arguments['debug'] = $arguments['debug'] ?? false;
+
+        if ($arguments['debug'] && !defined('PHPUNIT_TESTSUITE')) {
+            $arguments['warnings'][] = 'The --debug option is deprecated';
+        }
+
         $arguments['filter']    = $arguments['filter'] ?? false;
         $arguments['listeners'] = $arguments['listeners'] ?? [];
 

@@ -2,6 +2,9 @@
 GH-1330: Allow non-ambiguous shortened longopts
 --FILE--
 <?php declare(strict_types=1);
+// @todo Refactor this test to not rely on --debug
+define('PHPUNIT_TESTSUITE', true);
+
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--deb';
 $_SERVER['argv'][] = '--config';
