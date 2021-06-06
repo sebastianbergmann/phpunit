@@ -15,9 +15,9 @@ use PHPUnit\Event\Code;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
- * @covers \PHPUnit\Event\Test\Skipped
+ * @covers \PHPUnit\Event\Test\Aborted
  */
-final class SkippedWithMessageTest extends AbstractEventTestCase
+final class AbortedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
@@ -30,9 +30,9 @@ final class SkippedWithMessageTest extends AbstractEventTestCase
             MetadataCollection::fromArray([])
         );
 
-        $throwable = Code\Throwable::from(new Exception('skipped'));
+        $throwable = Code\Throwable::from(new Exception('aborted'));
 
-        $event = new Skipped(
+        $event = new Aborted(
             $telemetryInfo,
             $test,
             $throwable
