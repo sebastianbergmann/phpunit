@@ -23,6 +23,7 @@ use function defined;
 use function dirname;
 use function htmlspecialchars;
 use function is_array;
+use function is_file;
 use function is_int;
 use function is_string;
 use function mt_srand;
@@ -308,6 +309,10 @@ final class TestRunner
         }
 
         if (isset($arguments['plainTextTrace'])) {
+            if (is_file($arguments['plainTextTrace'])) {
+                unlink($arguments['plainTextTrace']);
+            }
+
             Event\Facade::registerTracer(
                 new PlainTextTracer($arguments['plainTextTrace'])
             );
