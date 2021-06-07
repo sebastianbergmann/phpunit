@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
@@ -52,8 +53,15 @@ final class SkippedDueToUnsatisfiedRequirements implements Event
         return $this->missingRequirements;
     }
 
+    /**
+     * @todo
+     */
     public function asString(): string
     {
-        return '';
+        return sprintf(
+            '%s %s todo',
+            $this->telemetryInfo()->asString(),
+            self::class
+        );
     }
 }

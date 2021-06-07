@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
@@ -47,8 +48,15 @@ final class Failed implements Event
         return $this->throwable;
     }
 
+    /**
+     * @todo
+     */
     public function asString(): string
     {
-        return '';
+        return sprintf(
+            '%s %s todo',
+            $this->telemetryInfo()->asString(),
+            self::class
+        );
     }
 }

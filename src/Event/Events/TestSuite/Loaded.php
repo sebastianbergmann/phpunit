@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
+use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -37,8 +38,15 @@ final class Loaded implements Event
         return $this->info;
     }
 
+    /**
+     * @todo
+     */
     public function asString(): string
     {
-        return '';
+        return sprintf(
+            '%s %s todo',
+            $this->telemetryInfo()->asString(),
+            self::class
+        );
     }
 }

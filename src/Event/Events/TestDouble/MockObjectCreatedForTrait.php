@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\TestDouble;
 
+use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -46,8 +47,15 @@ final class MockObjectCreatedForTrait implements Event
         return $this->traitName;
     }
 
+    /**
+     * @todo
+     */
     public function asString(): string
     {
-        return '';
+        return sprintf(
+            '%s %s todo',
+            $this->telemetryInfo()->asString(),
+            self::class
+        );
     }
 }

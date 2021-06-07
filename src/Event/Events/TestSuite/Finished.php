@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
+use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
@@ -54,8 +55,15 @@ final class Finished implements Event
         return $this->codeCoverage;
     }
 
+    /**
+     * @todo
+     */
     public function asString(): string
     {
-        return '';
+        return sprintf(
+            '%s %s todo',
+            $this->telemetryInfo()->asString(),
+            self::class
+        );
     }
 }

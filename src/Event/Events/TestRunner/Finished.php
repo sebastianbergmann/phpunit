@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\TestRunner;
 
+use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -29,8 +30,15 @@ final class Finished implements Event
         return $this->telemetryInfo;
     }
 
+    /**
+     * @todo
+     */
     public function asString(): string
     {
-        return '';
+        return sprintf(
+            '%s %s todo',
+            $this->telemetryInfo()->asString(),
+            self::class
+        );
     }
 }
