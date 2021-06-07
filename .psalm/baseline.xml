@@ -531,7 +531,8 @@
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Framework/TestSuite.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="3">
+      <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
