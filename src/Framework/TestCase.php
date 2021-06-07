@@ -94,6 +94,7 @@ use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionObject;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
@@ -708,6 +709,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $methodsCalledBeforeFirstTest = [];
 
                 foreach ($hookMethods['beforeClass'] as $method) {
+                    if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                        continue;
+                    }
+
                     $this->{$method}();
 
                     $methodCalledBeforeFirstTest = new Event\Code\ClassMethod(
@@ -723,10 +728,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
                 }
 
-                $emitter->testBeforeFirstTestMethodFinished(
-                    static::class,
-                    ...$methodsCalledBeforeFirstTest
-                );
+                if (!empty($methodsCalledBeforeFirstTest)) {
+                    $emitter->testBeforeFirstTestMethodFinished(
+                        static::class,
+                        ...$methodsCalledBeforeFirstTest
+                    );
+                }
             }
 
             if (method_exists(static::class, $this->name) &&
@@ -737,6 +744,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $methodsCalledBeforeTest = [];
 
             foreach ($hookMethods['before'] as $method) {
+                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                    continue;
+                }
+
                 $this->{$method}();
 
                 $methodCallBeforeTest = new Event\Code\ClassMethod(
@@ -752,14 +763,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $methodsCalledBeforeTest[] = $methodCallBeforeTest;
             }
 
-            $emitter->testBeforeTestMethodFinished(
-                static::class,
-                ...$methodsCalledBeforeTest
-            );
+            if (!empty($methodsCalledBeforeTest)) {
+                $emitter->testBeforeTestMethodFinished(
+                    static::class,
+                    ...$methodsCalledBeforeTest
+                );
+            }
 
             $methodsCalledPreCondition = [];
 
             foreach ($hookMethods['preCondition'] as $method) {
+                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                    continue;
+                }
+
                 $this->{$method}();
 
                 $methodCalledPreCondition = new Event\Code\ClassMethod(
@@ -775,10 +792,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $methodsCalledPreCondition[] = $methodCalledPreCondition;
             }
 
-            $emitter->testPreConditionFinished(
-                static::class,
-                ...$methodsCalledPreCondition
-            );
+            if (!empty($methodsCalledPreCondition)) {
+                $emitter->testPreConditionFinished(
+                    static::class,
+                    ...$methodsCalledPreCondition
+                );
+            }
 
             $emitter->testPrepared(
                 $this->testValueObjectForEvents()
@@ -802,6 +821,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $methodsCalledPostCondition = [];
 
             foreach ($hookMethods['postCondition'] as $method) {
+                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                    continue;
+                }
+
                 $this->{$method}();
 
                 $methodCalledPostCondition = new Event\Code\ClassMethod(
@@ -817,10 +840,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $methodsCalledPostCondition[] = $methodCalledPostCondition;
             }
 
-            $emitter->testPostConditionFinished(
-                static::class,
-                ...$methodsCalledPostCondition
-            );
+            if (!empty($methodsCalledPostCondition)) {
+                $emitter->testPostConditionFinished(
+                    static::class,
+                    ...$methodsCalledPostCondition
+                );
+            }
 
             if (!empty($this->warnings)) {
                 throw new Warning(
@@ -883,6 +908,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $methodsCalledAfterTest = [];
 
                 foreach ($hookMethods['after'] as $method) {
+                    if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                        continue;
+                    }
+
                     $this->{$method}();
 
                     $methodCalledAfterTest = new Event\Code\ClassMethod(
@@ -898,15 +927,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $methodsCalledAfterTest[] = $methodCalledAfterTest;
                 }
 
-                $emitter->testAfterTestMethodFinished(
-                    static::class,
-                    ...$methodsCalledAfterTest
-                );
+                if (!empty($methodsCalledAfterTest)) {
+                    $emitter->testAfterTestMethodFinished(
+                        static::class,
+                        ...$methodsCalledAfterTest
+                    );
+                }
 
                 if ($this->inIsolation) {
                     $methodsCalledAfterLastTest = [];
 
                     foreach ($hookMethods['afterClass'] as $method) {
+                        if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                            continue;
+                        }
+
                         $this->{$method}();
 
                         $methodCalledAfterLastTest = new Event\Code\ClassMethod(
@@ -922,10 +957,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                         $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
                     }
 
-                    $emitter->testAfterLastTestMethodFinished(
-                        static::class,
-                        ...$methodsCalledAfterLastTest
-                    );
+                    if (!empty($methodsCalledAfterLastTest)) {
+                        $emitter->testAfterLastTestMethodFinished(
+                            static::class,
+                            ...$methodsCalledAfterLastTest
+                        );
+                    }
                 }
             }
         } catch (Throwable $_e) {
@@ -2257,5 +2294,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         return $this->testValueObjectForEvents;
+    }
+
+    private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
+    {
+        $reflector = new ReflectionObject($this);
+
+        return !$reflector->hasMethod($methodName) ||
+               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
     }
 }
