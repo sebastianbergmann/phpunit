@@ -18,7 +18,6 @@ use function array_map;
 use function array_merge;
 use function assert;
 use function class_exists;
-use function count;
 use function defined;
 use function dirname;
 use function htmlspecialchars;
@@ -83,14 +82,6 @@ use SebastianBergmann\Timer\Timer;
  */
 final class TestRunner
 {
-    public const SUCCESS_EXIT = 0;
-
-    public const FAILURE_EXIT = 1;
-
-    public const EXCEPTION_EXIT = 2;
-
-    private static bool $versionStringPrinted = false;
-
     private ?CodeCoverageFilter $codeCoverageFilter;
 
     private ?ResultPrinter $printer = null;
@@ -120,7 +111,7 @@ final class TestRunner
      * @throws \PHPUnit\Util\Exception
      * @throws Exception
      */
-    public function run(TestSuite $suite, array $arguments = [], array $warnings = [], bool $exit = true): TestResult
+    public function run(TestSuite $suite, array &$arguments = [], array $warnings = []): TestResult
     {
         if (isset($arguments['configuration'])) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
@@ -323,8 +314,6 @@ final class TestRunner
         $this->printer->write(
             Version::getVersionString() . "\n"
         );
-
-        self::$versionStringPrinted = true;
 
         foreach ($arguments['listeners'] as $listener) {
             $result->addListener($listener);
@@ -763,40 +752,6 @@ final class TestRunner
                 } catch (CodeCoverageException $e) {
                     $this->codeCoverageGenerationFailed($e);
                 }
-            }
-        }
-
-        if ($exit) {
-            if (isset($arguments['failOnEmptyTestSuite']) && $arguments['failOnEmptyTestSuite'] === true && count($result) === 0) {
-                exit(self::FAILURE_EXIT);
-            }
-
-            if ($result->wasSuccessfulIgnoringWarnings()) {
-                if ($arguments['failOnRisky'] && !$result->allHarmless()) {
-                    exit(self::FAILURE_EXIT);
-                }
-
-                if ($arguments['failOnWarning'] && $result->warningCount() > 0) {
-                    exit(self::FAILURE_EXIT);
-                }
-
-                if ($arguments['failOnIncomplete'] && $result->notImplementedCount() > 0) {
-                    exit(self::FAILURE_EXIT);
-                }
-
-                if ($arguments['failOnSkipped'] && $result->skippedCount() > 0) {
-                    exit(self::FAILURE_EXIT);
-                }
-
-                exit(self::SUCCESS_EXIT);
-            }
-
-            if ($result->errorCount() > 0) {
-                exit(self::EXCEPTION_EXIT);
-            }
-
-            if ($result->failureCount() > 0) {
-                exit(self::FAILURE_EXIT);
             }
         }
 

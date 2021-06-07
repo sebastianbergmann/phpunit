@@ -37,6 +37,7 @@ use function stream_resolve_include_path;
 use function trim;
 use function version_compare;
 use PHPUnit\Event;
+use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -66,6 +67,12 @@ use Throwable;
  */
 class Command
 {
+    private const SUCCESS_EXIT = 0;
+
+    private const FAILURE_EXIT = 1;
+
+    private const EXCEPTION_EXIT = 2;
+
     /**
      * @psalm-var array<string,mixed>
      */
@@ -138,26 +145,22 @@ class Command
         unset($this->arguments['test'], $this->arguments['testFile']);
 
         try {
-            $result = $runner->run($suite, $this->arguments, $this->warnings, $exit);
+            $result = $runner->run($suite, $this->arguments, $this->warnings);
+
+            $returnCode = $this->returnCode($result);
         } catch (Throwable $t) {
+            $returnCode = self::EXCEPTION_EXIT;
+
             print $t->getMessage() . PHP_EOL;
-        }
-
-        $return = TestRunner::FAILURE_EXIT;
-
-        if (isset($result) && $result->wasSuccessful()) {
-            $return = TestRunner::SUCCESS_EXIT;
-        } elseif (!isset($result) || $result->errorCount() > 0) {
-            $return = TestRunner::EXCEPTION_EXIT;
         }
 
         Event\Facade::emitter()->testRunnerFinished();
 
         if ($exit) {
-            exit($return);
+            exit($returnCode);
         }
 
-        return $return;
+        return $returnCode;
     }
 
     /**
@@ -221,16 +224,16 @@ class Command
 
         if ($arguments->hasAtLeastVersion()) {
             if (version_compare(Version::id(), $arguments->atLeastVersion(), '>=')) {
-                exit(TestRunner::SUCCESS_EXIT);
+                exit(self::SUCCESS_EXIT);
             }
 
-            exit(TestRunner::FAILURE_EXIT);
+            exit(self::FAILURE_EXIT);
         }
 
         if ($arguments->hasVersion() && $arguments->version()) {
             $this->printVersionString();
 
-            exit(TestRunner::SUCCESS_EXIT);
+            exit(self::SUCCESS_EXIT);
         }
 
         if ($arguments->hasCheckVersion() && $arguments->checkVersion()) {
@@ -240,7 +243,7 @@ class Command
         if ($arguments->hasHelp()) {
             $this->showHelp();
 
-            exit(TestRunner::SUCCESS_EXIT);
+            exit(self::SUCCESS_EXIT);
         }
 
         if ($arguments->hasUnrecognizedOrderBy()) {
@@ -307,7 +310,7 @@ class Command
             if (!isset($this->arguments['configuration'])) {
                 print 'No configuration file found to migrate.' . PHP_EOL;
 
-                exit(TestRunner::EXCEPTION_EXIT);
+                exit(self::EXCEPTION_EXIT);
             }
 
             $this->migrateConfiguration(realpath($this->arguments['configuration']));
@@ -319,7 +322,7 @@ class Command
             } catch (Throwable $e) {
                 print $e->getMessage() . PHP_EOL;
 
-                exit(TestRunner::FAILURE_EXIT);
+                exit(self::FAILURE_EXIT);
             }
 
             $phpunitConfiguration = $this->arguments['configurationObject']->phpunit();
@@ -374,7 +377,7 @@ class Command
 
                     print $e->getMessage() . PHP_EOL;
 
-                    exit(TestRunner::EXCEPTION_EXIT);
+                    exit(self::EXCEPTION_EXIT);
                 }
 
                 Event\Facade::emitter()->testSuiteLoaded($this->arguments['test']);
@@ -394,7 +397,7 @@ class Command
         if (!isset($this->arguments['test'])) {
             $this->showHelp();
 
-            exit(TestRunner::EXCEPTION_EXIT);
+            exit(self::EXCEPTION_EXIT);
         }
     }
 
@@ -523,7 +526,7 @@ class Command
             print 'You are using the latest version of PHPUnit.' . PHP_EOL;
         }
 
-        exit(TestRunner::SUCCESS_EXIT);
+        exit(self::SUCCESS_EXIT);
     }
 
     /**
@@ -559,7 +562,7 @@ class Command
 
         print $message . PHP_EOL;
 
-        exit(TestRunner::FAILURE_EXIT);
+        exit(self::FAILURE_EXIT);
     }
 
     private function handleListGroups(TestSuite $suite, bool $exit): int
@@ -583,10 +586,10 @@ class Command
         }
 
         if ($exit) {
-            exit(TestRunner::SUCCESS_EXIT);
+            exit(self::SUCCESS_EXIT);
         }
 
-        return TestRunner::SUCCESS_EXIT;
+        return self::SUCCESS_EXIT;
     }
 
     /**
@@ -607,10 +610,10 @@ class Command
         }
 
         if ($exit) {
-            exit(TestRunner::SUCCESS_EXIT);
+            exit(self::SUCCESS_EXIT);
         }
 
-        return TestRunner::SUCCESS_EXIT;
+        return self::SUCCESS_EXIT;
     }
 
     /**
@@ -625,10 +628,10 @@ class Command
         print $renderer->render($suite);
 
         if ($exit) {
-            exit(TestRunner::SUCCESS_EXIT);
+            exit(self::SUCCESS_EXIT);
         }
 
-        return TestRunner::SUCCESS_EXIT;
+        return self::SUCCESS_EXIT;
     }
 
     /**
@@ -648,10 +651,10 @@ class Command
         );
 
         if ($exit) {
-            exit(TestRunner::SUCCESS_EXIT);
+            exit(self::SUCCESS_EXIT);
         }
 
-        return TestRunner::SUCCESS_EXIT;
+        return self::SUCCESS_EXIT;
     }
 
     private function generateConfiguration(): void
@@ -707,7 +710,7 @@ class Command
         print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . '.' . PHP_EOL;
         print 'Make sure to exclude the ' . $cacheDirectory . ' directory from version control.' . PHP_EOL;
 
-        exit(TestRunner::SUCCESS_EXIT);
+        exit(self::SUCCESS_EXIT);
     }
 
     private function migrateConfiguration(string $filename): void
@@ -728,10 +731,10 @@ class Command
         } catch (Throwable $t) {
             print 'Migration failed: ' . $t->getMessage() . PHP_EOL;
 
-            exit(TestRunner::EXCEPTION_EXIT);
+            exit(self::EXCEPTION_EXIT);
         }
 
-        exit(TestRunner::SUCCESS_EXIT);
+        exit(self::SUCCESS_EXIT);
     }
 
     private function handleCustomOptions(array $unrecognizedOptions): void
@@ -766,7 +769,7 @@ class Command
         } else {
             print 'Cache for static analysis has not been configured' . PHP_EOL;
 
-            exit(TestRunner::EXCEPTION_EXIT);
+            exit(self::EXCEPTION_EXIT);
         }
 
         $filter = new Filter;
@@ -789,7 +792,7 @@ class Command
         } else {
             print 'Filter for code coverage has not been configured' . PHP_EOL;
 
-            exit(TestRunner::EXCEPTION_EXIT);
+            exit(self::EXCEPTION_EXIT);
         }
 
         $timer = new Timer;
@@ -806,7 +809,7 @@ class Command
 
         print 'done [' . $timer->stop()->asString() . ']' . PHP_EOL;
 
-        exit(TestRunner::SUCCESS_EXIT);
+        exit(self::SUCCESS_EXIT);
     }
 
     private function configurationFileInDirectory(string $directory): ?string
@@ -856,5 +859,42 @@ class Command
         }
 
         return new TestSuite($testClass);
+    }
+
+    private function returnCode(TestResult $result): int
+    {
+        $returnCode = self::FAILURE_EXIT;
+
+        if ($result->wasSuccessful()) {
+            $returnCode = self::SUCCESS_EXIT;
+        }
+
+        if (isset($this->arguments['failOnEmptyTestSuite']) && $this->arguments['failOnEmptyTestSuite'] === true && count($result) === 0) {
+            $returnCode = self::FAILURE_EXIT;
+        }
+
+        if ($result->wasSuccessfulIgnoringWarnings()) {
+            if ($this->arguments['failOnRisky'] && !$result->allHarmless()) {
+                $returnCode = self::FAILURE_EXIT;
+            }
+
+            if ($this->arguments['failOnWarning'] && $result->warningCount() > 0) {
+                $returnCode = self::FAILURE_EXIT;
+            }
+
+            if ($this->arguments['failOnIncomplete'] && $result->notImplementedCount() > 0) {
+                $returnCode = self::FAILURE_EXIT;
+            }
+
+            if ($this->arguments['failOnSkipped'] && $result->skippedCount() > 0) {
+                $returnCode = self::FAILURE_EXIT;
+            }
+        }
+
+        if ($result->errorCount() > 0) {
+            $returnCode = self::EXCEPTION_EXIT;
+        }
+
+        return $returnCode;
     }
 }
