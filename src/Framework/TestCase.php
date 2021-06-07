@@ -527,6 +527,11 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
         return $this->getActualOutput();
     }
 
+    public function setOutput(string $output): void 
+    {
+        $this->output = $output;
+    }
+
     public function expectOutputRegex(string $expectedRegex): void
     {
         $this->outputExpectedRegex = $expectedRegex;
