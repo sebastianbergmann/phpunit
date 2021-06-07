@@ -812,10 +812,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 );
             }
 
-            $emitter->testFinished(
-                $this->testValueObjectForEvents()
-            );
-
             $this->verifyMockObjects();
 
             $methodsCalledPostCondition = [];
@@ -898,6 +894,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 Event\Code\Throwable::from($_e)
             );
         }
+
+        $emitter->testFinished(
+            $this->testValueObjectForEvents()
+        );
 
         $this->mockObjects = [];
 
