@@ -2000,12 +2000,12 @@ abstract class Assert
     {
         self::$count += count($constraint);
 
-        $hasFailed = false;
+        $hasFailed = true;
 
         try {
             $constraint->evaluate($value, $message);
 
-            $hasFailed = true;
+            $hasFailed = false;
         } finally {
             Event\Facade::emitter()->assertionMade(
                 $value,
