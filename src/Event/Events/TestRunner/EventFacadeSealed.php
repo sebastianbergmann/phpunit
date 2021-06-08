@@ -30,15 +30,11 @@ final class EventFacadeSealed implements Event
         return $this->telemetryInfo;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
-            $this->telemetryInfo()->asString(),
-            self::class
+            '%s Event Facade Sealed',
+            $this->telemetryInfo()->asString()
         );
     }
 }

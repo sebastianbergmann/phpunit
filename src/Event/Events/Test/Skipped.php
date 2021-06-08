@@ -48,15 +48,20 @@ final class Skipped implements Event
         return $this->throwable;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
+        $message = $this->throwable->message();
+
+        if (!empty($message)) {
+            $message = ' ' . $message;
+        }
+
         return sprintf(
-            '%s %s todo',
+            '%s Test Skipped (%s::%s%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->test->className(),
+            $this->test->methodNameWithDataSet(),
+            $message
         );
     }
 }

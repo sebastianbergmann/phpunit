@@ -39,15 +39,13 @@ final class Finished implements Event
         return $this->test;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Test Finished (%s::%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->test->className(),
+            $this->test->methodNameWithDataSet(),
         );
     }
 }

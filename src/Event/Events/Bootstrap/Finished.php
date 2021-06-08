@@ -38,15 +38,12 @@ final class Finished implements Event
         return $this->filename;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Bootstrap Finished (%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->filename
         );
     }
 }

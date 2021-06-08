@@ -54,15 +54,11 @@ final class Sorted implements Event
         return $this->resolveDependencies;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
-            $this->telemetryInfo()->asString(),
-            self::class
+            '%s Test Suite Sorted',
+            $this->telemetryInfo()->asString()
         );
     }
 }

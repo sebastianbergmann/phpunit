@@ -38,15 +38,21 @@ final class Started implements Event
         return $this->name;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
+        $name = '';
+
+        if (!empty($this->name)) {
+            $name = sprintf(
+                '(%s)',
+                $this->name
+            );
+        }
+
         return sprintf(
-            '%s %s todo',
+            '%s Test Suite Started %s',
             $this->telemetryInfo()->asString(),
-            self::class
+            $name,
         );
     }
 }

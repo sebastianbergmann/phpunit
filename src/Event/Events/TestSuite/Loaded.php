@@ -38,15 +38,12 @@ final class Loaded implements Event
         return $this->info;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Test Suite Loaded (%d tests)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->info->count()
         );
     }
 }

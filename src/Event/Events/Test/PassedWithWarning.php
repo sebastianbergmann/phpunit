@@ -22,14 +22,14 @@ final class PassedWithWarning implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private Code\Test $testMethod;
+    private Code\Test $test;
 
     private Throwable $throwable;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->testMethod    = $test;
+        $this->test          = $test;
         $this->throwable     = $throwable;
     }
 
@@ -40,7 +40,7 @@ final class PassedWithWarning implements Event
 
     public function test(): Code\Test
     {
-        return $this->testMethod;
+        return $this->test;
     }
 
     public function throwable(): Throwable
@@ -48,15 +48,20 @@ final class PassedWithWarning implements Event
         return $this->throwable;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
+        $message = $this->throwable->message();
+
+        if (!empty($message)) {
+            $message = ' ' . $message;
+        }
+
         return sprintf(
-            '%s %s todo',
+            '%s Test Skipped (%s::%s%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->test->className(),
+            $this->test->methodNameWithDataSet(),
+            $message
         );
     }
 }

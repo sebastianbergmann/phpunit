@@ -55,15 +55,21 @@ final class Finished implements Event
         return $this->codeCoverage;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
+        $name = '';
+
+        if (!empty($this->name)) {
+            $name = sprintf(
+                '(%s)',
+                $this->name
+            );
+        }
+
         return sprintf(
-            '%s %s todo',
+            '%s Test Suite Finished %s',
             $this->telemetryInfo()->asString(),
-            self::class
+            $name,
         );
     }
 }

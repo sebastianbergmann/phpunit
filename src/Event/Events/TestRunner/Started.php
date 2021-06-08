@@ -39,15 +39,12 @@ final class Started implements Event
         return $this->runtime;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Test Runner Started (%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->runtime->asString()
         );
     }
 }
