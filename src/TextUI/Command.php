@@ -39,7 +39,7 @@ use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
-use PHPUnit\TextUI\CliArguments\Configuration;
+use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\CliArguments\Mapper;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
@@ -167,7 +167,7 @@ final class Command
             $this->exitWithErrorMessage($e->getMessage());
         }
 
-        assert(isset($arguments) && $arguments instanceof Configuration);
+        assert(isset($arguments) && $arguments instanceof CliConfiguration);
 
         if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
             $this->generateConfiguration();
@@ -272,6 +272,8 @@ final class Command
 
                 exit(self::FAILURE_EXIT);
             }
+
+            CombinedConfiguration::combine($this->arguments['configurationObject'], $arguments);
 
             $phpunitConfiguration = $this->arguments['configurationObject']->phpunit();
 

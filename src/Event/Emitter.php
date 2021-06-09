@@ -13,6 +13,7 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\TextUI\Configuration;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -24,6 +25,8 @@ interface Emitter
     public function eventFacadeSealed(): void;
 
     public function testRunnerStarted(): void;
+
+    public function testRunnerConfigured(Configuration $configuration): void;
 
     public function testRunnerFinished(): void;
 

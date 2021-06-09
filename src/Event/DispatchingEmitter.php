@@ -14,6 +14,7 @@ use PHPUnit\Event\TestSuite\Info;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
+use PHPUnit\TextUI\Configuration;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -54,6 +55,16 @@ final class DispatchingEmitter implements Emitter
             new TestRunner\Started(
                 $this->telemetryInfo(),
                 new Runtime\Runtime()
+            )
+        );
+    }
+
+    public function testRunnerConfigured(Configuration $configuration): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\Configured(
+                $this->telemetryInfo(),
+                $configuration
             )
         );
     }
