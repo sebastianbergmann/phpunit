@@ -279,9 +279,6 @@ final class Command
             assert($this->arguments['configurationObject'] instanceof XmlConfiguration);
             Event\Facade::emitter()->testRunnerXmlConfigurationParsed($this->arguments['configurationObject']);
 
-            Configuration::combine($this->arguments['configurationObject'], $arguments);
-            Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
-
             $phpunitConfiguration = $this->arguments['configurationObject']->phpunit();
 
             (new PhpHandler)->handle($this->arguments['configurationObject']->php());
@@ -334,9 +331,20 @@ final class Command
             $this->handleBootstrap($this->arguments['bootstrap']);
         }
 
-        if (isset($this->arguments['configurationObject'], $this->arguments['warmCoverageCache'])) {
-            $this->handleWarmCoverageCache($this->arguments['configurationObject']);
+        if (isset($this->arguments['configurationObject'])) {
+            Configuration::initFromCliAndXml(
+                $arguments,
+                $this->arguments['configurationObject']
+            );
+
+            if (isset($this->arguments['warmCoverageCache'])) {
+                $this->handleWarmCoverageCache($this->arguments['configurationObject']);
+            }
+        } else {
+            Configuration::initFromCli($arguments, );
         }
+
+        Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
 
         if (!isset($this->arguments['test'])) {
             $this->showHelp();

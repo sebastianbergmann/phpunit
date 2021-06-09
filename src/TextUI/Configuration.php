@@ -30,7 +30,12 @@ final class Configuration
         return self::$instance;
     }
 
-    public static function combine(XmlConfiguration $xmlConfiguration, CliConfiguration $cliConfiguration): void
+    public static function initFromCli(CliConfiguration $cliConfiguration): void
+    {
+        self::$instance = new self;
+    }
+
+    public static function initFromCliAndXml(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
     {
         self::$instance = new self;
     }
