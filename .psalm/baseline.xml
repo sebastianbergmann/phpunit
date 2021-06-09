@@ -832,22 +832,26 @@
       <code>cacheDirectory</code>
       <code>hasCacheDirectory</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="12">
+    <MissingThrowsDocblock occurrences="14">
       <code>atLeastVersion</code>
-      <code>bootstrap</code>
       <code>cacheDirectory</code>
-      <code>extensionsDirectory</code>
-      <code>handleListSuites</code>
+      <code>configuration</code>
+      <code>configuration</code>
+      <code>configuration</code>
       <code>handleListTests</code>
       <code>handleListTestsXml</code>
       <code>includePath</code>
       <code>iniSettings</code>
+      <code>listTestsXml</code>
       <code>mapToLegacyArray</code>
       <code>stop</code>
       <code>unrecognizedOrderBy</code>
+      <code>useDefaultConfiguration</code>
     </MissingThrowsDocblock>
-    <RedundantCondition occurrences="2">
-      <code>assert($this-&gt;arguments['configurationObject'] instanceof XmlConfiguration)</code>
+    <PossiblyNullReference occurrences="1">
+      <code>testSuite</code>
+    </PossiblyNullReference>
+    <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>
     <UnresolvableInclude occurrences="1">

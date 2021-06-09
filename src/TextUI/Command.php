@@ -47,6 +47,7 @@ use PHPUnit\TextUI\XmlConfiguration\Generator;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\Migrator;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
+use PHPUnit\TextUI\XmlConfiguration\TestSuiteCollection;
 use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
 use SebastianBergmann\CodeCoverage\Filter;
@@ -118,22 +119,6 @@ final class Command
         $suite = Configuration::get()->testSuite();
 
         Event\Facade::emitter()->testSuiteLoaded($suite);
-
-        if ($this->arguments['listGroups']) {
-            return $this->handleListGroups($suite, $exit);
-        }
-
-        if ($this->arguments['listSuites']) {
-            return $this->handleListSuites($exit);
-        }
-
-        if ($this->arguments['listTests']) {
-            return $this->handleListTests($suite, $exit);
-        }
-
-        if ($this->arguments['listTestsXml']) {
-            return $this->handleListTestsXml($suite, $this->arguments['listTestsXml'], $exit);
-        }
 
         try {
             $result = $runner->run($suite, $this->arguments, $this->warnings);
@@ -219,49 +204,61 @@ final class Command
             );
         }
 
-        $this->arguments = (new Mapper)->mapToLegacyArray($arguments);
+        $useDefaultConfiguration = true;
 
-        if (isset($this->arguments['configuration'])) {
-            if (is_dir($this->arguments['configuration'])) {
-                $candidate = $this->configurationFileInDirectory($this->arguments['configuration']);
+        if ($arguments->hasUseDefaultConfiguration()) {
+            $useDefaultConfiguration = $arguments->useDefaultConfiguration();
+        }
+
+        if ($arguments->hasConfiguration()) {
+            if (is_dir($arguments->configuration())) {
+                $candidate = $this->configurationFileInDirectory($arguments->configuration());
 
                 if ($candidate !== null) {
-                    $this->arguments['configuration'] = $candidate;
+                    $configuration = $candidate;
                 }
+            } else {
+                $configuration = $arguments->configuration();
             }
-        } elseif ($this->arguments['useDefaultConfiguration']) {
+        } elseif ($useDefaultConfiguration) {
             $candidate = $this->configurationFileInDirectory(getcwd());
 
             if ($candidate !== null) {
-                $this->arguments['configuration'] = $candidate;
+                $configuration = $candidate;
             }
         }
 
-        if ($arguments->hasMigrateConfiguration() && $arguments->migrateConfiguration()) {
-            if (!isset($this->arguments['configuration'])) {
-                print 'No configuration file found to migrate.' . PHP_EOL;
+        $this->arguments = (new Mapper)->mapToLegacyArray($arguments);
 
-                exit(self::EXCEPTION_EXIT);
-            }
-
-            $this->migrateConfiguration(realpath($this->arguments['configuration']));
-        }
-
-        if (isset($this->arguments['configuration'])) {
+        if (isset($configuration)) {
             try {
-                $this->arguments['configurationObject'] = (new Loader)->load($this->arguments['configuration']);
+                $configurationObject = (new Loader)->load($configuration);
             } catch (Throwable $e) {
                 print $e->getMessage() . PHP_EOL;
 
                 exit(self::FAILURE_EXIT);
             }
 
-            assert($this->arguments['configurationObject'] instanceof XmlConfiguration);
-            Event\Facade::emitter()->testRunnerXmlConfigurationParsed($this->arguments['configurationObject']);
+            $this->arguments['configuration']       = $configuration;
+            $this->arguments['configurationObject'] = $configurationObject;
 
-            $phpunitConfiguration = $this->arguments['configurationObject']->phpunit();
+            Event\Facade::emitter()->testRunnerXmlConfigurationParsed($configurationObject);
+        }
 
-            (new PhpHandler)->handle($this->arguments['configurationObject']->php());
+        if ($arguments->hasMigrateConfiguration() && $arguments->migrateConfiguration()) {
+            if (!isset($configuration)) {
+                print 'No configuration file found to migrate.' . PHP_EOL;
+
+                exit(self::EXCEPTION_EXIT);
+            }
+
+            $this->migrateConfiguration(realpath($configuration));
+        }
+
+        if (isset($configurationObject)) {
+            $phpunitConfiguration = $configurationObject->phpunit();
+
+            (new PhpHandler)->handle($configurationObject->php());
 
             if (isset($this->arguments['bootstrap'])) {
                 $this->handleBootstrap($this->arguments['bootstrap']);
@@ -289,11 +286,11 @@ final class Command
             $this->handleBootstrap($this->arguments['bootstrap']);
         }
 
-        if (isset($this->arguments['configurationObject'])) {
+        if (isset($configurationObject)) {
             try {
                 Configuration::initFromCliAndXml(
                     $arguments,
-                    $this->arguments['configurationObject']
+                    $configurationObject
                 );
             } catch (Exception $e) {
                 $this->printVersionString();
@@ -304,7 +301,7 @@ final class Command
             }
 
             if (isset($this->arguments['warmCoverageCache'])) {
-                $this->handleWarmCoverageCache($this->arguments['configurationObject']);
+                $this->handleWarmCoverageCache($configurationObject);
             }
         } else {
             try {
@@ -319,6 +316,25 @@ final class Command
         }
 
         Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
+
+        if ($arguments->hasListGroups() && $arguments->listGroups()) {
+            $this->handleListGroups(Configuration::get()->testSuite());
+        }
+
+        if ($arguments->hasListSuites() && $arguments->listSuites()) {
+            $this->handleListSuites($configurationObject->testSuite());
+        }
+
+        if ($arguments->hasListTests() && $arguments->listTests()) {
+            $this->handleListTests(Configuration::get()->testSuite());
+        }
+
+        if ($arguments->hasListTestsXml() && $arguments->listTestsXml()) {
+            $this->handleListTestsXml(
+                Configuration::get()->testSuite(),
+                $arguments->listTestsXml()
+            );
+        }
     }
 
     /**
@@ -404,7 +420,7 @@ final class Command
         exit(self::FAILURE_EXIT);
     }
 
-    private function handleListGroups(TestSuite $suite, bool $exit): int
+    private function handleListGroups(TestSuite $suite): void
     {
         $this->printVersionString();
 
@@ -424,41 +440,29 @@ final class Command
             );
         }
 
-        if ($exit) {
-            exit(self::SUCCESS_EXIT);
-        }
-
-        return self::SUCCESS_EXIT;
+        exit(self::SUCCESS_EXIT);
     }
 
-    /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
-     */
-    private function handleListSuites(bool $exit): int
+    private function handleListSuites(TestSuiteCollection $testSuites): void
     {
         $this->printVersionString();
 
         print 'Available test suite(s):' . PHP_EOL;
 
-        foreach ($this->arguments['configurationObject']->testSuite() as $testSuite) {
+        foreach ($testSuites as $testSuite) {
             printf(
                 ' - %s' . PHP_EOL,
                 $testSuite->name()
             );
         }
 
-        if ($exit) {
-            exit(self::SUCCESS_EXIT);
-        }
-
-        return self::SUCCESS_EXIT;
+        exit(self::SUCCESS_EXIT);
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    private function handleListTests(TestSuite $suite, bool $exit): int
+    private function handleListTests(TestSuite $suite): void
     {
         $this->printVersionString();
 
@@ -466,17 +470,13 @@ final class Command
 
         print $renderer->render($suite);
 
-        if ($exit) {
-            exit(self::SUCCESS_EXIT);
-        }
-
-        return self::SUCCESS_EXIT;
+        exit(self::SUCCESS_EXIT);
     }
 
     /**
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    private function handleListTestsXml(TestSuite $suite, string $target, bool $exit): int
+    private function handleListTestsXml(TestSuite $suite, string $target): void
     {
         $this->printVersionString();
 
@@ -489,11 +489,7 @@ final class Command
             $target
         );
 
-        if ($exit) {
-            exit(self::SUCCESS_EXIT);
-        }
-
-        return self::SUCCESS_EXIT;
+        exit(self::SUCCESS_EXIT);
     }
 
     private function generateConfiguration(): void

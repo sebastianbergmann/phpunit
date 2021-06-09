@@ -20,15 +20,14 @@ final class Mapper
     public function mapToLegacyArray(Configuration $arguments): array
     {
         $result = [
-            'extensions'              => [],
-            'listGroups'              => false,
-            'listSuites'              => false,
-            'listTests'               => false,
-            'listTestsXml'            => false,
-            'useDefaultConfiguration' => true,
-            'loadedExtensions'        => [],
-            'unavailableExtensions'   => [],
-            'notLoadedExtensions'     => [],
+            'extensions'            => [],
+            'listGroups'            => false,
+            'listSuites'            => false,
+            'listTests'             => false,
+            'listTestsXml'          => false,
+            'loadedExtensions'      => [],
+            'unavailableExtensions' => [],
+            'notLoadedExtensions'   => [],
         ];
 
         if ($arguments->hasColors()) {
@@ -53,10 +52,6 @@ final class Mapper
 
         if ($arguments->hasColumns()) {
             $result['columns'] = $arguments->columns();
-        }
-
-        if ($arguments->hasConfiguration()) {
-            $result['configuration'] = $arguments->configuration();
         }
 
         if ($arguments->hasCoverageCacheDirectory()) {
@@ -137,22 +132,6 @@ final class Mapper
 
         if ($arguments->hasIncludePath()) {
             $result['includePath'] = $arguments->includePath();
-        }
-
-        if ($arguments->hasListGroups()) {
-            $result['listGroups'] = $arguments->listGroups();
-        }
-
-        if ($arguments->hasListSuites()) {
-            $result['listSuites'] = $arguments->listSuites();
-        }
-
-        if ($arguments->hasListTests()) {
-            $result['listTests'] = $arguments->listTests();
-        }
-
-        if ($arguments->hasListTestsXml()) {
-            $result['listTestsXml'] = $arguments->listTestsXml();
         }
 
         if ($arguments->hasJunitLogfile()) {
@@ -261,10 +240,6 @@ final class Mapper
 
         if ($arguments->hasTestdoxXmlFile()) {
             $result['testdoxXMLFile'] = $arguments->testdoxXmlFile();
-        }
-
-        if ($arguments->hasUseDefaultConfiguration()) {
-            $result['useDefaultConfiguration'] = $arguments->useDefaultConfiguration();
         }
 
         if ($arguments->hasNoExtensions()) {
