@@ -19,7 +19,6 @@ use function extension_loaded;
 use function fgets;
 use function file_get_contents;
 use function file_put_contents;
-use function fopen;
 use function getcwd;
 use function ini_get;
 use function ini_set;
@@ -237,12 +236,6 @@ final class Command
 
             (new PhpHandler)->handle($configurationObject->php());
 
-            if (isset($this->arguments['bootstrap'])) {
-                $this->handleBootstrap($this->arguments['bootstrap']);
-            } elseif ($phpunitConfiguration->hasBootstrap()) {
-                $this->handleBootstrap($phpunitConfiguration->bootstrap());
-            }
-
             if (!isset($this->arguments['stderr'])) {
                 $this->arguments['stderr'] = $phpunitConfiguration->stderr();
             }
@@ -259,8 +252,6 @@ final class Command
             if (!isset($this->arguments['columns'])) {
                 $this->arguments['columns'] = $phpunitConfiguration->columns();
             }
-        } elseif (isset($this->arguments['bootstrap'])) {
-            $this->handleBootstrap($this->arguments['bootstrap']);
         }
 
         if (isset($configurationObject)) {
@@ -312,40 +303,6 @@ final class Command
                 $arguments->listTestsXml()
             );
         }
-    }
-
-    /**
-     * Loads a bootstrap file.
-     */
-    private function handleBootstrap(string $filename): void
-    {
-        if (@fopen($filename, 'r') === false) {
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'Cannot open bootstrap script "%s".' . "\n",
-                    $filename
-                )
-            );
-        }
-
-        try {
-            include_once $filename;
-        } catch (Throwable $t) {
-            if ($t instanceof \PHPUnit\Exception) {
-                $this->exitWithErrorMessage($t->getMessage());
-            }
-
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'Error in bootstrap script: %s:%s%s',
-                    $t::class,
-                    PHP_EOL,
-                    $t->getMessage()
-                )
-            );
-        }
-
-        Event\Facade::emitter()->bootstrapFinished($filename);
     }
 
     private function handleVersionCheck(): void

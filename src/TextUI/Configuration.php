@@ -12,13 +12,16 @@ namespace PHPUnit\TextUI;
 use function assert;
 use function is_dir;
 use function is_file;
+use function is_readable;
 use function realpath;
 use function substr;
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
+use Throwable;
 
 /**
  * CLI options and XML configuration are static within a single PHPUnit process.
@@ -30,7 +33,9 @@ final class Configuration
 {
     private static ?self $instance = null;
 
-    private ?TestSuite $testSuite = null;
+    private ?TestSuite $testSuite;
+
+    private ?string $bootstrap;
 
     public static function get(): self
     {
@@ -41,6 +46,16 @@ final class Configuration
 
     public static function initFromCli(CliConfiguration $cliConfiguration): void
     {
+        $bootstrap = null;
+
+        if ($cliConfiguration->hasBootstrap()) {
+            $bootstrap = $cliConfiguration->bootstrap();
+        }
+
+        if ($bootstrap !== null) {
+            self::handleBootstrap($bootstrap);
+        }
+
         $testSuite = null;
 
         if ($cliConfiguration->hasArgument()) {
@@ -56,7 +71,7 @@ final class Configuration
             );
         }
 
-        self::$instance = new self($testSuite);
+        self::$instance = new self($testSuite, $bootstrap);
     }
 
     /**
@@ -64,6 +79,18 @@ final class Configuration
      */
     public static function initFromCliAndXml(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
     {
+        $bootstrap = null;
+
+        if ($cliConfiguration->hasBootstrap()) {
+            $bootstrap = $cliConfiguration->bootstrap();
+        } elseif ($xmlConfiguration->phpunit()->hasBootstrap()) {
+            $bootstrap = $xmlConfiguration->phpunit()->bootstrap();
+        }
+
+        if ($bootstrap !== null) {
+            self::handleBootstrap($bootstrap);
+        }
+
         if ($cliConfiguration->hasArgument()) {
             $argument = realpath($cliConfiguration->argument());
 
@@ -91,12 +118,13 @@ final class Configuration
             );
         }
 
-        self::$instance = new self($testSuite);
+        self::$instance = new self($testSuite, $bootstrap);
     }
 
-    private function __construct(?TestSuite $testSuite)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap)
     {
         $this->testSuite = $testSuite;
+        $this->bootstrap = $bootstrap;
     }
 
     /**
@@ -117,6 +145,26 @@ final class Configuration
         }
 
         return $this->testSuite;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->bootstrap
+     */
+    public function hasBootstrap(): bool
+    {
+        return $this->bootstrap !== null;
+    }
+
+    /**
+     * @throws NoBootstrapException
+     */
+    public function bootstrap(): string
+    {
+        if ($this->bootstrap === null) {
+            throw new NoBootstrapException;
+        }
+
+        return $this->bootstrap;
     }
 
     /**
@@ -160,5 +208,23 @@ final class Configuration
         }
 
         return $testSuffixes;
+    }
+
+    /**
+     * @throws InvalidBootstrapException
+     */
+    private static function handleBootstrap(string $filename): void
+    {
+        if (!is_readable($filename)) {
+            throw new InvalidBootstrapException($filename);
+        }
+
+        try {
+            include $filename;
+        } catch (Throwable $t) {
+            throw new BootstrapException($t);
+        }
+
+        Facade::emitter()->bootstrapFinished($filename);
     }
 }

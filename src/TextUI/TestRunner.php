@@ -122,8 +122,8 @@ final class TestRunner
             $tooFewColumnsRequested = true;
         }
 
-        if (isset($arguments['bootstrap'])) {
-            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $arguments['bootstrap'];
+        if (\PHPUnit\TextUI\Configuration::get()->hasBootstrap()) {
+            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = \PHPUnit\TextUI\Configuration::get()->bootstrap();
         }
 
         if ($arguments['backupGlobals'] === true) {

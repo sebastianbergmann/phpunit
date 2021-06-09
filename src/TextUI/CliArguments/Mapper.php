@@ -34,10 +34,6 @@ final class Mapper
             $result['colors'] = $arguments->colors();
         }
 
-        if ($arguments->hasBootstrap()) {
-            $result['bootstrap'] = $arguments->bootstrap();
-        }
-
         if ($arguments->hasCacheDirectory()) {
             $result['cacheDirectory'] = $arguments->cacheDirectory();
         }

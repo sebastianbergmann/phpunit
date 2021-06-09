@@ -9,4 +9,4 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Cannot open bootstrap script "nonExistingBootstrap.php".
+Cannot open bootstrap script "nonExistingBootstrap.php"
