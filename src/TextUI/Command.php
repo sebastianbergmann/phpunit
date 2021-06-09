@@ -344,7 +344,7 @@ final class Command
         if (@fopen($filename, 'r') === false) {
             $this->exitWithErrorMessage(
                 sprintf(
-                    'Cannot open boostrap script "%s".' . "\n",
+                    'Cannot open bootstrap script "%s".' . "\n",
                     $filename
                 )
             );
