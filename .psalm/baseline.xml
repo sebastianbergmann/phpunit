@@ -9,7 +9,9 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Event/DispatchingEmitter.php">
-    <MissingThrowsDocblock occurrences="48">
+    <MissingThrowsDocblock occurrences="50">
+      <code>dispatch</code>
+      <code>dispatch</code>
       <code>dispatch</code>
       <code>dispatch</code>
       <code>dispatch</code>
@@ -826,18 +828,13 @@
     </MissingReturnType>
   </file>
   <file src="src/TextUI/Command.php">
-    <DeprecatedMethod occurrences="2">
-      <code>cacheDirectory</code>
-      <code>hasCacheDirectory</code>
-    </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="20">
+    <MissingThrowsDocblock occurrences="18">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
       <code>argument</code>
       <code>atLeastVersion</code>
       <code>bootstrap</code>
-      <code>cacheDirectory</code>
       <code>defaultTestSuite</code>
       <code>extensionsDirectory</code>
       <code>handleListSuites</code>
@@ -849,12 +846,15 @@
       <code>new TestSuite</code>
       <code>new TestSuite($suiteClassFile)</code>
       <code>new TestSuite($testClass)</code>
-      <code>stop</code>
       <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
-    <RedundantCondition occurrences="1">
+    <RedundantCondition occurrences="2">
+      <code>assert($this-&gt;arguments['configurationObject'] instanceof XmlConfiguration)</code>
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>
+    <UndefinedClass occurrences="1">
+      <code>XmlConfiguration\Configuration</code>
+    </UndefinedClass>
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>

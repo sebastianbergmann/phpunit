@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI;
 
 use function assert;
-use PHPUnit\Event\Facade;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 
@@ -34,8 +33,6 @@ final class CombinedConfiguration implements Configuration
     public static function combine(XmlConfiguration $xmlConfiguration, CliConfiguration $cliConfiguration): void
     {
         self::$instance = new self;
-
-        Facade::emitter()->testRunnerConfigured(self::$instance);
     }
 
     private function __construct()

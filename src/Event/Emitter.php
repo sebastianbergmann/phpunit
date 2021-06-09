@@ -13,7 +13,9 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\TextUI\Configuration;
+use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
+use PHPUnit\TextUI\CombinedConfiguration;
+use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -26,7 +28,11 @@ interface Emitter
 
     public function testRunnerStarted(): void;
 
-    public function testRunnerConfigured(Configuration $configuration): void;
+    public function testRunnerCliConfigurationParsed(CliConfiguration $configuration): void;
+
+    public function testRunnerXmlConfigurationParsed(XmlConfiguration $configuration): void;
+
+    public function testRunnerConfigurationCombined(CombinedConfiguration $configuration): void;
 
     public function testRunnerFinished(): void;
 

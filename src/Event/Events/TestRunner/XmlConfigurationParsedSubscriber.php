@@ -14,7 +14,7 @@ use PHPUnit\Event\Subscriber;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-interface ConfiguredSubscriber extends Subscriber
+interface XmlConfigurationParsedSubscriber extends Subscriber
 {
-    public function notify(Configured $event): void;
+    public function notify(XmlConfigurationParsed $event): void;
 }

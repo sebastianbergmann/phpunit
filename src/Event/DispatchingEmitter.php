@@ -14,7 +14,9 @@ use PHPUnit\Event\TestSuite\Info;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
-use PHPUnit\TextUI\Configuration;
+use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
+use PHPUnit\TextUI\CombinedConfiguration;
+use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -59,10 +61,30 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testRunnerConfigured(Configuration $configuration): void
+    public function testRunnerCliConfigurationParsed(CliConfiguration $configuration): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\Configured(
+            new TestRunner\CliConfigurationParsed(
+                $this->telemetryInfo(),
+                $configuration
+            )
+        );
+    }
+
+    public function testRunnerXmlConfigurationParsed(XmlConfiguration $configuration): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\XmlConfigurationParsed(
+                $this->telemetryInfo(),
+                $configuration
+            )
+        );
+    }
+
+    public function testRunnerConfigurationCombined(CombinedConfiguration $configuration): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\ConfigurationCombined(
                 $this->telemetryInfo(),
                 $configuration
             )

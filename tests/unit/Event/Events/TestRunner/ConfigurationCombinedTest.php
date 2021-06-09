@@ -13,16 +13,16 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\TextUI\Configuration;
 
 /**
- * @covers \PHPUnit\Event\TestRunner\Configured
+ * @covers \PHPUnit\Event\TestRunner\ConfigurationCombined
  */
-final class ConfiguredTest extends AbstractEventTestCase
+final class ConfigurationCombinedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
         $configuration = $this->createStub(Configuration::class);
 
-        $event = new Configured($telemetryInfo, $configuration);
+        $event = new ConfigurationCombined($telemetryInfo, $configuration);
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($configuration, $event->configuration());

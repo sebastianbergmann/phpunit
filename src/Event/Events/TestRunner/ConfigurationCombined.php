@@ -17,7 +17,7 @@ use PHPUnit\TextUI\Configuration;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Configured implements Event
+final class ConfigurationCombined implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
@@ -42,7 +42,7 @@ final class Configured implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Test Runner Configured',
+            '%s Test Runner Configuration Combined',
             $this->telemetryInfo()->asString()
         );
     }

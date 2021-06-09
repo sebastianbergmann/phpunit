@@ -43,6 +43,7 @@ use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\CliArguments\Mapper;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
+use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Generator;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\Migrator;
@@ -169,6 +170,8 @@ final class Command
 
         assert(isset($arguments) && $arguments instanceof CliConfiguration);
 
+        Event\Facade::emitter()->testRunnerCliConfigurationParsed($arguments);
+
         if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
             $this->generateConfiguration();
         }
@@ -273,7 +276,11 @@ final class Command
                 exit(self::FAILURE_EXIT);
             }
 
+            assert($this->arguments['configurationObject'] instanceof XmlConfiguration);
+            Event\Facade::emitter()->testRunnerXmlConfigurationParsed($this->arguments['configurationObject']);
+
             CombinedConfiguration::combine($this->arguments['configurationObject'], $arguments);
+            Event\Facade::emitter()->testRunnerConfigurationCombined(CombinedConfiguration::get());
 
             $phpunitConfiguration = $this->arguments['configurationObject']->phpunit();
 
