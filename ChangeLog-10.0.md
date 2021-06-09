@@ -77,6 +77,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `PHPUnit\Framework\TestCase::$preserveGlobalState` property, use the `@preserveGlobalState enabled` annotation or the `#[PreserveGlobalState(true)]` attribute instead for enabling the preservation of global state when running tests in isolation
 * Removed the `--printer` option
 * Removed the `printerClass` and `printerFile` attributes on the `<phpunit>` XML configuration element
+* Removed support for extending the `PHPUnit\TextUI\Command` class
 * Deprecated the `--debug` option
 
 [10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master

@@ -23,7 +23,6 @@ use function fopen;
 use function getcwd;
 use function ini_get;
 use function ini_set;
-use function is_callable;
 use function is_dir;
 use function is_file;
 use function printf;
@@ -57,9 +56,9 @@ use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class Command
+final class Command
 {
     private const SUCCESS_EXIT = 0;
 
@@ -70,12 +69,12 @@ class Command
     /**
      * @psalm-var array<string,mixed>
      */
-    protected array $arguments = [];
+    private array $arguments = [];
 
     /**
      * @psalm-var array<string,mixed>
      */
-    protected array $longOptions = [];
+    private array $longOptions = [];
 
     private bool $versionStringPrinted = false;
 
@@ -90,7 +89,7 @@ class Command
     public static function main(bool $exit = true): int
     {
         try {
-            return (new static)->run($_SERVER['argv'], $exit);
+            return (new self)->run($_SERVER['argv'], $exit);
         } catch (Throwable $t) {
             throw new RuntimeException(
                 $t->getMessage(),
@@ -109,7 +108,7 @@ class Command
 
         $this->handleArguments($argv);
 
-        $runner = new TestRunner();
+        $runner = new TestRunner;
 
         if ($this->arguments['test'] instanceof TestSuite) {
             $suite = $this->arguments['test'];
@@ -158,51 +157,9 @@ class Command
     }
 
     /**
-     * Handles the command-line arguments.
-     *
-     * A child class of PHPUnit\TextUI\Command can hook into the argument
-     * parsing by adding the switch(es) to the $longOptions array and point to a
-     * callback method that handles the switch(es) in the child class like this
-     *
-     * <code>
-     * <?php
-     * class MyCommand extends PHPUnit\TextUI\Command
-     * {
-     *     public function __construct()
-     *     {
-     *         // my-switch won't accept a value, it's an on/off
-     *         $this->longOptions['my-switch'] = 'myHandler';
-     *         // my-secondswitch will accept a value - note the equals sign
-     *         $this->longOptions['my-secondswitch='] = 'myOtherHandler';
-     *     }
-     *
-     *     // --my-switch  -> myHandler()
-     *     protected function myHandler()
-     *     {
-     *     }
-     *
-     *     // --my-secondswitch foo -> myOtherHandler('foo')
-     *     protected function myOtherHandler ($value)
-     *     {
-     *     }
-     *
-     *     // You will also need this - the static keyword in the
-     *     // PHPUnit\TextUI\Command will mean that it'll be
-     *     // PHPUnit\TextUI\Command that gets instantiated,
-     *     // not MyCommand
-     *     public static function main($exit = true)
-     *     {
-     *         $command = new static;
-     *
-     *         return $command->run($_SERVER['argv'], $exit);
-     *     }
-     *
-     * }
-     * </code>
-     *
      * @throws Exception
      */
-    protected function handleArguments(array $argv): void
+    private function handleArguments(array $argv): void
     {
         try {
             $arguments = (new Builder)->fromParameters($argv, array_keys($this->longOptions));
@@ -263,9 +220,6 @@ class Command
         }
 
         $this->arguments = (new Mapper)->mapToLegacyArray($arguments);
-
-        $this->handleCustomOptions($arguments->unrecognizedOptions());
-        $this->handleCustomTestSuite();
 
         if (!isset($this->arguments['testSuffixes'])) {
             $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
@@ -385,7 +339,7 @@ class Command
     /**
      * Loads a bootstrap file.
      */
-    protected function handleBootstrap(string $filename): void
+    private function handleBootstrap(string $filename): void
     {
         if (@fopen($filename, 'r') === false) {
             $this->exitWithErrorMessage(
@@ -416,7 +370,7 @@ class Command
         Event\Facade::emitter()->bootstrapFinished($filename);
     }
 
-    protected function handleVersionCheck(): void
+    private function handleVersionCheck(): void
     {
         $this->printVersionString();
 
@@ -439,17 +393,10 @@ class Command
     /**
      * Show the help message.
      */
-    protected function showHelp(): void
+    private function showHelp(): void
     {
         $this->printVersionString();
         (new Help)->writeToConsole();
-    }
-
-    /**
-     * Custom callback for test suite discovery.
-     */
-    protected function handleCustomTestSuite(): void
-    {
     }
 
     private function printVersionString(): void
@@ -642,27 +589,6 @@ class Command
         }
 
         exit(self::SUCCESS_EXIT);
-    }
-
-    private function handleCustomOptions(array $unrecognizedOptions): void
-    {
-        foreach ($unrecognizedOptions as $name => $value) {
-            if (isset($this->longOptions[$name])) {
-                $handler = $this->longOptions[$name];
-            }
-
-            $name .= '=';
-
-            if (isset($this->longOptions[$name])) {
-                $handler = $this->longOptions[$name];
-            }
-
-            if (isset($handler) && is_callable([$this, $handler])) {
-                $this->{$handler}($value);
-
-                unset($handler);
-            }
-        }
     }
 
     private function handleWarmCoverageCache(XmlConfiguration\Configuration $configuration): void

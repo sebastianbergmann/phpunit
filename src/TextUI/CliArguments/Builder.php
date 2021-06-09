@@ -14,7 +14,6 @@ use function array_merge;
 use function class_exists;
 use function explode;
 use function is_numeric;
-use function str_replace;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
@@ -217,7 +216,6 @@ final class Builder
         $testSuffixes                      = null;
         $testSuite                         = null;
         $excludeTestSuite                  = null;
-        $unrecognizedOptions               = [];
         $unrecognizedOrderBy               = null;
         $useDefaultConfiguration           = null;
         $verbose                           = null;
@@ -751,9 +749,6 @@ final class Builder
                     $plainTextTrace = $option[1];
 
                     break;
-
-                default:
-                    $unrecognizedOptions[str_replace('--', '', $option[0])] = $option[1];
             }
         }
 
@@ -856,7 +851,6 @@ final class Builder
             $testSuffixes,
             $testSuite,
             $excludeTestSuite,
-            $unrecognizedOptions,
             $unrecognizedOrderBy,
             $useDefaultConfiguration,
             $verbose,
