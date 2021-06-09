@@ -279,8 +279,8 @@ final class Command
             assert($this->arguments['configurationObject'] instanceof XmlConfiguration);
             Event\Facade::emitter()->testRunnerXmlConfigurationParsed($this->arguments['configurationObject']);
 
-            CombinedConfiguration::combine($this->arguments['configurationObject'], $arguments);
-            Event\Facade::emitter()->testRunnerConfigurationCombined(CombinedConfiguration::get());
+            Configuration::combine($this->arguments['configurationObject'], $arguments);
+            Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
 
             $phpunitConfiguration = $this->arguments['configurationObject']->phpunit();
 

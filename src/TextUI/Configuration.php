@@ -9,6 +9,33 @@
  */
 namespace PHPUnit\TextUI;
 
-interface Configuration
+use function assert;
+use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
+use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
+
+/**
+ * CLI options and XML configuration are static within a single PHPUnit process.
+ * It is therefore okay to use a Singleton registry here.
+ *
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class Configuration
 {
+    private static ?self $instance = null;
+
+    public static function get(): self
+    {
+        assert(self::$instance instanceof self);
+
+        return self::$instance;
+    }
+
+    public static function combine(XmlConfiguration $xmlConfiguration, CliConfiguration $cliConfiguration): void
+    {
+        self::$instance = new self;
+    }
+
+    private function __construct()
+    {
+    }
 }

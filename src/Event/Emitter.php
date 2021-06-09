@@ -14,7 +14,7 @@ use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
-use PHPUnit\TextUI\CombinedConfiguration;
+use PHPUnit\TextUI\Configuration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
@@ -32,7 +32,7 @@ interface Emitter
 
     public function testRunnerXmlConfigurationParsed(XmlConfiguration $configuration): void;
 
-    public function testRunnerConfigurationCombined(CombinedConfiguration $configuration): void;
+    public function testRunnerConfigurationCombined(Configuration $configuration): void;
 
     public function testRunnerFinished(): void;
 
