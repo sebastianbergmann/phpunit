@@ -600,7 +600,7 @@ final class Command
         exit(self::SUCCESS_EXIT);
     }
 
-    private function handleWarmCoverageCache(XmlConfiguration\Configuration $configuration): void
+    private function handleWarmCoverageCache(XmlConfiguration $configuration): void
     {
         $this->printVersionString();
 
