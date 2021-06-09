@@ -11,7 +11,7 @@ PHPUnit\TextUI\Command::main(false);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Cannot open file "Test.php".
+Test file "Test.php" not found
 --CLEAN--
 <?php declare(strict_types=1);
 unlink(__DIR__ . '/2448/.phpunit.result.cache');

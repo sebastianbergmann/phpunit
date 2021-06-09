@@ -9,4 +9,4 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Cannot open file "nonExistingFile.php".
+Test file "nonExistingFile.php" not found

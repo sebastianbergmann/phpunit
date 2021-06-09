@@ -832,15 +832,10 @@
       <code>cacheDirectory</code>
       <code>hasCacheDirectory</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="20">
-      <code>addTestFile</code>
-      <code>addTestFiles</code>
-      <code>argument</code>
-      <code>argument</code>
+    <MissingThrowsDocblock occurrences="12">
       <code>atLeastVersion</code>
       <code>bootstrap</code>
       <code>cacheDirectory</code>
-      <code>defaultTestSuite</code>
       <code>extensionsDirectory</code>
       <code>handleListSuites</code>
       <code>handleListTests</code>
@@ -848,9 +843,6 @@
       <code>includePath</code>
       <code>iniSettings</code>
       <code>mapToLegacyArray</code>
-      <code>new TestSuite</code>
-      <code>new TestSuite($suiteClassFile)</code>
-      <code>new TestSuite($testClass)</code>
       <code>stop</code>
       <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
@@ -863,9 +855,21 @@
     </UnresolvableInclude>
   </file>
   <file src="src/TextUI/Configuration.php">
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock occurrences="14">
+      <code>addTestFile</code>
+      <code>addTestFiles</code>
+      <code>argument</code>
+      <code>argument</code>
+      <code>argument</code>
+      <code>argument</code>
+      <code>defaultTestSuite</code>
+      <code>map</code>
+      <code>new TestSuite</code>
+      <code>new TestSuite($path)</code>
+      <code>new TestSuite($testClass)</code>
       <code>testSuffixes</code>
-      <code>testSuffixes</code>
+      <code>testSuite</code>
+      <code>throw new TestFileNotFoundException($cliConfiguration-&gt;argument());</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/DefaultResultPrinter.php">

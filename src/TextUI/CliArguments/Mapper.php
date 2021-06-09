@@ -119,14 +119,6 @@ final class Mapper
             $result['filter'] = $arguments->filter();
         }
 
-        if ($arguments->hasTestSuite()) {
-            $result['testsuite'] = $arguments->testSuite();
-        }
-
-        if ($arguments->hasExcludedTestSuite()) {
-            $result['excludedTestSuite'] = $arguments->excludedTestSuite();
-        }
-
         if ($arguments->hasGroups()) {
             $result['groups'] = $arguments->groups();
         }

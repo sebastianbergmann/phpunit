@@ -36,7 +36,6 @@ use PHPUnit\Event;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\PharLoader;
-use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
@@ -52,7 +51,6 @@ use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
-use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
 
@@ -111,14 +109,15 @@ final class Command
 
         $runner = new TestRunner;
 
-        if ($this->arguments['test'] instanceof TestSuite) {
-            $suite = $this->arguments['test'];
-        } else {
-            $suite = $this->getTest(
-                $this->arguments['test'],
-                Configuration::get()->testSuffixes()
-            );
+        if (!Configuration::get()->hasTestSuite()) {
+            $this->showHelp();
+
+            exit(self::EXCEPTION_EXIT);
         }
+
+        $suite = Configuration::get()->testSuite();
+
+        Event\Facade::emitter()->testSuiteLoaded($suite);
 
         if ($this->arguments['listGroups']) {
             return $this->handleListGroups($suite, $exit);
@@ -135,8 +134,6 @@ final class Command
         if ($this->arguments['listTestsXml']) {
             return $this->handleListTestsXml($suite, $this->arguments['listTestsXml'], $exit);
         }
-
-        unset($this->arguments['test'], $this->arguments['testFile']);
 
         try {
             $result = $runner->run($suite, $this->arguments, $this->warnings);
@@ -224,19 +221,6 @@ final class Command
 
         $this->arguments = (new Mapper)->mapToLegacyArray($arguments);
 
-        if (!isset($this->arguments['test']) && $arguments->hasArgument()) {
-            $this->arguments['test'] = realpath($arguments->argument());
-
-            if ($this->arguments['test'] === false) {
-                $this->exitWithErrorMessage(
-                    sprintf(
-                        'Cannot open file "%s".',
-                        $arguments->argument()
-                    )
-                );
-            }
-        }
-
         if (isset($this->arguments['configuration'])) {
             if (is_dir($this->arguments['configuration'])) {
                 $candidate = $this->configurationFileInDirectory($this->arguments['configuration']);
@@ -301,52 +285,40 @@ final class Command
             if (!isset($this->arguments['columns'])) {
                 $this->arguments['columns'] = $phpunitConfiguration->columns();
             }
-
-            if (!isset($this->arguments['testsuite']) && $phpunitConfiguration->hasDefaultTestSuite()) {
-                $this->arguments['testsuite'] = $phpunitConfiguration->defaultTestSuite();
-            }
-
-            if (!isset($this->arguments['test'])) {
-                try {
-                    $this->arguments['test'] = (new TestSuiteMapper)->map(
-                        $this->arguments['configurationObject']->testSuite(),
-                        $this->arguments['testsuite'] ?? '',
-                        $this->arguments['excludedTestSuite'] ?? ''
-                    );
-                } catch (Exception $e) {
-                    $this->printVersionString();
-
-                    print $e->getMessage() . PHP_EOL;
-
-                    exit(self::EXCEPTION_EXIT);
-                }
-
-                Event\Facade::emitter()->testSuiteLoaded($this->arguments['test']);
-            }
         } elseif (isset($this->arguments['bootstrap'])) {
             $this->handleBootstrap($this->arguments['bootstrap']);
         }
 
         if (isset($this->arguments['configurationObject'])) {
-            Configuration::initFromCliAndXml(
-                $arguments,
-                $this->arguments['configurationObject']
-            );
+            try {
+                Configuration::initFromCliAndXml(
+                    $arguments,
+                    $this->arguments['configurationObject']
+                );
+            } catch (Exception $e) {
+                $this->printVersionString();
+
+                print $e->getMessage() . PHP_EOL;
+
+                exit(self::EXCEPTION_EXIT);
+            }
 
             if (isset($this->arguments['warmCoverageCache'])) {
                 $this->handleWarmCoverageCache($this->arguments['configurationObject']);
             }
         } else {
-            Configuration::initFromCli($arguments, );
+            try {
+                Configuration::initFromCli($arguments);
+            } catch (Exception $e) {
+                $this->printVersionString();
+
+                print $e->getMessage() . PHP_EOL;
+
+                exit(self::EXCEPTION_EXIT);
+            }
         }
 
         Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
-
-        if (!isset($this->arguments['test'])) {
-            $this->showHelp();
-
-            exit(self::EXCEPTION_EXIT);
-        }
     }
 
     /**
@@ -673,38 +645,6 @@ final class Command
         }
 
         return null;
-    }
-
-    private function getTest(string $suiteClassFile, array|string $suffixes = ''): TestSuite
-    {
-        if (is_dir($suiteClassFile)) {
-            $files = (new FileIteratorFacade)->getFilesAsArray(
-                $suiteClassFile,
-                $suffixes
-            );
-
-            $suite = new TestSuite($suiteClassFile);
-            $suite->addTestFiles($files);
-
-            return $suite;
-        }
-
-        if (is_file($suiteClassFile) && substr($suiteClassFile, -5, 5) === '.phpt') {
-            $suite = new TestSuite;
-            $suite->addTestFile($suiteClassFile);
-
-            return $suite;
-        }
-
-        try {
-            $testClass = (new TestSuiteLoader)->load($suiteClassFile);
-        } catch (\PHPUnit\Exception $e) {
-            print $e->getMessage() . PHP_EOL;
-
-            exit(1);
-        }
-
-        return new TestSuite($testClass);
     }
 
     private function returnCode(TestResult $result): int
