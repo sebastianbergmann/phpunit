@@ -14,7 +14,6 @@ use const PHP_EOL;
 use const STDIN;
 use function array_keys;
 use function assert;
-use function class_exists;
 use function copy;
 use function extension_loaded;
 use function fgets;
@@ -27,13 +26,11 @@ use function ini_set;
 use function is_callable;
 use function is_dir;
 use function is_file;
-use function is_string;
 use function printf;
 use function realpath;
 use function sort;
 use function sprintf;
 use function str_starts_with;
-use function stream_resolve_include_path;
 use function trim;
 use function version_compare;
 use PHPUnit\Event;
@@ -51,11 +48,8 @@ use PHPUnit\TextUI\XmlConfiguration\Generator;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\Migrator;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use PHPUnit\Util\Filesystem;
-use PHPUnit\Util\Printer;
 use PHPUnit\Util\TextTestListRenderer;
 use PHPUnit\Util\XmlTestListRenderer;
-use ReflectionClass;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
@@ -352,15 +346,6 @@ class Command
                 $this->arguments['columns'] = $phpunitConfiguration->columns();
             }
 
-            if (!isset($this->arguments['printer']) && $phpunitConfiguration->hasPrinterClass()) {
-                $file = $phpunitConfiguration->hasPrinterFile() ? $phpunitConfiguration->printerFile() : '';
-
-                $this->arguments['printer'] = $this->handlePrinter(
-                    $phpunitConfiguration->printerClass(),
-                    $file
-                );
-            }
-
             if (!isset($this->arguments['testsuite']) && $phpunitConfiguration->hasDefaultTestSuite()) {
                 $this->arguments['testsuite'] = $phpunitConfiguration->defaultTestSuite();
             }
@@ -386,10 +371,6 @@ class Command
             $this->handleBootstrap($this->arguments['bootstrap']);
         }
 
-        if (isset($this->arguments['printer']) && is_string($this->arguments['printer'])) {
-            $this->arguments['printer'] = $this->handlePrinter($this->arguments['printer']);
-        }
-
         if (isset($this->arguments['configurationObject'], $this->arguments['warmCoverageCache'])) {
             $this->handleWarmCoverageCache($this->arguments['configurationObject']);
         }
@@ -399,80 +380,6 @@ class Command
 
             exit(self::EXCEPTION_EXIT);
         }
-    }
-
-    /**
-     * Handles the loading of the PHPUnit\Util\Printer implementation.
-     *
-     * @return null|Printer|string
-     */
-    protected function handlePrinter(string $printerClass, string $printerFile = '')
-    {
-        if (!class_exists($printerClass, false)) {
-            if ($printerFile === '') {
-                $printerFile = Filesystem::classNameToFilename(
-                    $printerClass
-                );
-            }
-
-            $printerFile = stream_resolve_include_path($printerFile);
-
-            if ($printerFile) {
-                /**
-                 * @noinspection PhpIncludeInspection
-                 * @psalm-suppress UnresolvableInclude
-                 */
-                require $printerFile;
-            }
-        }
-
-        if (!class_exists($printerClass)) {
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'Could not use "%s" as printer: class does not exist',
-                    $printerClass
-                )
-            );
-        }
-
-        try {
-            $class = new ReflectionClass($printerClass);
-            // @codeCoverageIgnoreStart
-        } catch (\ReflectionException $e) {
-            throw new ReflectionException(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-            // @codeCoverageIgnoreEnd
-        }
-
-        if (!$class->implementsInterface(ResultPrinter::class)) {
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'Could not use "%s" as printer: class does not implement %s',
-                    $printerClass,
-                    ResultPrinter::class
-                )
-            );
-        }
-
-        if (!$class->isInstantiable()) {
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'Could not use "%s" as printer: class cannot be instantiated',
-                    $printerClass
-                )
-            );
-        }
-
-        if ($class->isSubclassOf(ResultPrinter::class)) {
-            return $printerClass;
-        }
-
-        $outputStream = isset($this->arguments['stderr']) ? 'php://stderr' : null;
-
-        return $class->newInstance($outputStream);
     }
 
     /**

@@ -15,8 +15,6 @@ use function class_exists;
 use function explode;
 use function is_numeric;
 use function str_replace;
-use PHPUnit\Logging\TeamCityLogger;
-use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
@@ -79,7 +77,6 @@ final class Builder
         'no-interaction',
         'no-extensions',
         'order-by=',
-        'printer=',
         'process-isolation',
         'repeat=',
         'dont-report-useless-tests',
@@ -196,7 +193,6 @@ final class Builder
         $noExtensions                      = null;
         $noInteraction                     = null;
         $noLogging                         = null;
-        $printer                           = null;
         $processIsolation                  = null;
         $randomOrderSeed                   = null;
         $repeat                            = null;
@@ -227,6 +223,8 @@ final class Builder
         $verbose                           = null;
         $version                           = null;
         $plainTextTrace                    = null;
+        $printerTeamCity                   = null;
+        $printerTestDox                    = null;
 
         if (isset($options[1][0])) {
             $argument = $options[1][0];
@@ -434,11 +432,6 @@ final class Builder
 
                     break;
 
-                case '--printer':
-                    $printer = $option[1];
-
-                    break;
-
                 case '--log-junit':
                     $junitLogfile = $option[1];
 
@@ -577,12 +570,12 @@ final class Builder
                     break;
 
                 case '--teamcity':
-                    $printer = TeamCityLogger::class;
+                    $printerTeamCity = true;
 
                     break;
 
                 case '--testdox':
-                    $printer = CliTestDoxPrinter::class;
+                    $printerTestDox = true;
 
                     break;
 
@@ -839,7 +832,6 @@ final class Builder
             $noExtensions,
             $noInteraction,
             $noLogging,
-            $printer,
             $processIsolation,
             $randomOrderSeed,
             $repeat,
@@ -870,7 +862,9 @@ final class Builder
             $verbose,
             $version,
             $coverageFilter,
-            $plainTextTrace
+            $plainTextTrace,
+            $printerTeamCity,
+            $printerTestDox
         );
     }
 }

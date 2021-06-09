@@ -167,10 +167,6 @@ final class Mapper
             $result['listTestsXml'] = $arguments->listTestsXml();
         }
 
-        if ($arguments->hasPrinter()) {
-            $result['printer'] = $arguments->printer();
-        }
-
         if ($arguments->hasJunitLogfile()) {
             $result['junitLogfile'] = $arguments->junitLogfile();
         }
@@ -353,6 +349,14 @@ final class Mapper
 
         if ($arguments->hasPlainTextTrace()) {
             $result['plainTextTrace'] = $arguments->plainTextTrace();
+        }
+
+        if ($arguments->hasTeamCityPrinter()) {
+            $result['teamCityPrinter'] = $arguments->teamCityPrinter();
+        }
+
+        if ($arguments->hasTestDoxPrinter()) {
+            $result['testdoxPrinter'] = $arguments->testdoxPrinter();
         }
 
         return $result;

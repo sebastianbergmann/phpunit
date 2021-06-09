@@ -822,17 +822,11 @@
     </MissingReturnType>
   </file>
   <file src="src/TextUI/Command.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$printerClass</code>
-    </ArgumentTypeCoercion>
     <DeprecatedMethod occurrences="2">
       <code>cacheDirectory</code>
       <code>hasCacheDirectory</code>
     </DeprecatedMethod>
-    <LessSpecificReturnStatement occurrences="1">
-      <code>$class-&gt;newInstance($outputStream)</code>
-    </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="22">
+    <MissingThrowsDocblock occurrences="20">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -851,13 +845,9 @@
       <code>new TestSuite</code>
       <code>new TestSuite($suiteClassFile)</code>
       <code>new TestSuite($testClass)</code>
-      <code>printerClass</code>
       <code>stop</code>
       <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
-    <MoreSpecificReturnType occurrences="1">
-      <code>null|Printer|string</code>
-    </MoreSpecificReturnType>
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof Configuration)</code>
     </RedundantCondition>
@@ -912,7 +902,6 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <InvalidStringClass occurrences="1"/>
     <MissingThrowsDocblock occurrences="6">
       <code>detect</code>
       <code>reorderTestsInSuite</code>
@@ -925,9 +914,8 @@
       <code>$this-&gt;codeCoverageFilter</code>
       <code>$this-&gt;codeCoverageFilter</code>
     </PossiblyNullArgument>
-    <PossiblyNullReference occurrences="5">
+    <PossiblyNullReference occurrences="4">
       <code>includeDirectory</code>
-      <code>write</code>
       <code>write</code>
       <code>write</code>
       <code>write</code>

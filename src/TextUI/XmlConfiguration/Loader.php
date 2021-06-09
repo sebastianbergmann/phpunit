@@ -29,7 +29,6 @@ use DOMDocument;
 use DOMElement;
 use DOMNodeList;
 use DOMXPath;
-use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\DefaultResultPrinter;
@@ -733,18 +732,6 @@ final class Loader
             }
         }
 
-        $printerClass                          = $this->getStringAttribute($document->documentElement, 'printerClass');
-        $testdox                               = $this->getBooleanAttribute($document->documentElement, 'testdox', false);
-        $conflictBetweenPrinterClassAndTestdox = false;
-
-        if ($testdox) {
-            if ($printerClass !== null) {
-                $conflictBetweenPrinterClassAndTestdox = true;
-            }
-
-            $printerClass = CliTestDoxPrinter::class;
-        }
-
         $cacheDirectory = $this->getStringAttribute($document->documentElement, 'cacheDirectory');
 
         if ($cacheDirectory !== null) {
@@ -767,12 +754,6 @@ final class Loader
 
         if ($extensionsDirectory !== null) {
             $extensionsDirectory = $this->toAbsolutePath($filename, $extensionsDirectory);
-        }
-
-        $printerFile = $this->getStringAttribute($document->documentElement, 'printerFile');
-
-        if ($printerFile !== null) {
-            $printerFile = $this->toAbsolutePath($filename, $printerFile);
         }
 
         $backupStaticProperties = false;
@@ -813,8 +794,6 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'stopOnRisky', false),
             $this->getBooleanAttribute($document->documentElement, 'stopOnSkipped', false),
             $extensionsDirectory,
-            $printerClass,
-            $printerFile,
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutChangesToGlobalState', false),
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutOutputDuringTests', false),
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutTestsThatDoNotTestAnything', true),
@@ -831,7 +810,7 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'backupGlobals', false),
             $backupStaticProperties,
             $this->getBooleanAttribute($document->documentElement, 'registerMockObjectsFromTestArgumentsRecursively', false),
-            $conflictBetweenPrinterClassAndTestdox
+            $this->getBooleanAttribute($document->documentElement, 'testdox', false)
         );
     }
 

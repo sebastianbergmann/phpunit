@@ -133,8 +133,6 @@ final class Configuration
 
     private ?bool $noLogging;
 
-    private ?string $printer;
-
     private ?bool $processIsolation;
 
     private ?int $randomOrderSeed;
@@ -167,6 +165,8 @@ final class Configuration
 
     private ?string $teamcityLogfile;
 
+    private ?bool $teamCityPrinter;
+
     private ?array $testdoxExcludeGroups;
 
     private ?array $testdoxGroups;
@@ -176,6 +176,8 @@ final class Configuration
     private ?string $testdoxTextFile;
 
     private ?string $testdoxXmlFile;
+
+    private ?bool $testdoxPrinter;
 
     private ?array $testSuffixes;
 
@@ -201,7 +203,7 @@ final class Configuration
     /**
      * @psalm-param array<string,string> $unrecognizedOptions
      */
-    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?array $extensions, ?array $unavailableExtensions, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter, ?string $plainTextTrace)
+    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?array $extensions, ?array $unavailableExtensions, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter, ?string $plainTextTrace, ?bool $printerTeamCity, ?bool $printerTestDox)
     {
         $this->argument                          = $argument;
         $this->atLeastVersion                    = $atLeastVersion;
@@ -262,7 +264,6 @@ final class Configuration
         $this->noExtensions                      = $noExtensions;
         $this->noInteraction                     = $noInteraction;
         $this->noLogging                         = $noLogging;
-        $this->printer                           = $printer;
         $this->processIsolation                  = $processIsolation;
         $this->randomOrderSeed                   = $randomOrderSeed;
         $this->repeat                            = $repeat;
@@ -293,6 +294,8 @@ final class Configuration
         $this->verbose                           = $verbose;
         $this->version                           = $version;
         $this->plainTextTrace                    = $plainTextTrace;
+        $this->teamCityPrinter                   = $printerTeamCity;
+        $this->testdoxPrinter                    = $printerTestDox;
     }
 
     public function hasArgument(): bool
@@ -1298,23 +1301,6 @@ final class Configuration
         return $this->noLogging;
     }
 
-    public function hasPrinter(): bool
-    {
-        return $this->printer !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function printer(): string
-    {
-        if ($this->printer === null) {
-            throw new Exception;
-        }
-
-        return $this->printer;
-    }
-
     public function hasProcessIsolation(): bool
     {
         return $this->processIsolation !== null;
@@ -1587,6 +1573,23 @@ final class Configuration
         return $this->teamcityLogfile;
     }
 
+    public function hasTeamCityPrinter(): bool
+    {
+        return $this->teamCityPrinter !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function teamCityPrinter(): bool
+    {
+        if ($this->teamCityPrinter === null) {
+            throw new Exception;
+        }
+
+        return $this->teamCityPrinter;
+    }
+
     public function hasTestdoxExcludeGroups(): bool
     {
         return $this->testdoxExcludeGroups !== null;
@@ -1670,6 +1673,23 @@ final class Configuration
         }
 
         return $this->testdoxXmlFile;
+    }
+
+    public function hasTestDoxPrinter(): bool
+    {
+        return $this->testdoxPrinter !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function testdoxPrinter(): bool
+    {
+        if ($this->testdoxPrinter === null) {
+            throw new Exception;
+        }
+
+        return $this->testdoxPrinter;
     }
 
     public function hasTestSuffixes(): bool

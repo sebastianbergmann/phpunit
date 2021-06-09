@@ -50,6 +50,7 @@ final class MigrationBuilder
             RenameBackupStaticAttributesAttribute::class,
             RemoveBeStrictAboutResourceUsageDuringSmallTestsAttribute::class,
             RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
+            RemovePrinterAttributes::class,
         ],
     ];
 

@@ -17,14 +17,12 @@ use function array_diff;
 use function array_map;
 use function array_merge;
 use function assert;
-use function class_exists;
 use function defined;
 use function dirname;
 use function htmlspecialchars;
 use function is_array;
 use function is_file;
 use function is_int;
-use function is_string;
 use function mt_srand;
 use function range;
 use function realpath;
@@ -61,8 +59,6 @@ use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
-use ReflectionClass;
-use ReflectionException;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
@@ -265,32 +261,15 @@ final class TestRunner
             $result->registerMockObjectsFromTestArgumentsRecursively();
         }
 
-        if ($this->printer === null) {
-            if (isset($arguments['printer'])) {
-                if ($arguments['printer'] instanceof ResultPrinter) {
-                    $this->printer = $arguments['printer'];
-                } elseif (is_string($arguments['printer']) && class_exists($arguments['printer'], false)) {
-                    try {
-                        $reflector = new ReflectionClass($arguments['printer']);
+        $printerClassName = DefaultResultPrinter::class;
 
-                        if ($reflector->implementsInterface(ResultPrinter::class)) {
-                            $this->printer = $this->createPrinter($arguments['printer'], $arguments);
-                        }
-
-                        // @codeCoverageIgnoreStart
-                    } catch (ReflectionException $e) {
-                        throw new Exception(
-                            $e->getMessage(),
-                            (int) $e->getCode(),
-                            $e
-                        );
-                    }
-                    // @codeCoverageIgnoreEnd
-                }
-            } else {
-                $this->printer = $this->createPrinter(DefaultResultPrinter::class, $arguments);
-            }
+        if (isset($arguments['teamCityPrinter']) && $arguments['teamCityPrinter'] === true) {
+            $printerClassName = TeamCityLogger::class;
+        } elseif (isset($arguments['testdoxPrinter']) && $arguments['testdoxPrinter'] === true) {
+            $printerClassName = CliTestDoxPrinter::class;
         }
+
+        $this->printer = $this->createPrinter($printerClassName, $arguments);
 
         if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
             assert($this->printer instanceof CliTestDoxPrinter);
@@ -546,10 +525,6 @@ final class TestRunner
 
         if ((new Runtime)->discardsComments()) {
             $warnings[] = 'opcache.save_comments=0 set; annotations will not work';
-        }
-
-        if (isset($arguments['conflictBetweenPrinterClassAndTestdox'])) {
-            $warnings[] = 'Directives printerClass and testdox are mutually exclusive';
         }
 
         foreach ($warnings as $warning) {
@@ -906,10 +881,6 @@ final class TestRunner
                 $arguments['executionOrderDefects'] = $phpunitConfiguration->defectsFirst() ? TestSuiteSorter::ORDER_DEFECTS_FIRST : TestSuiteSorter::ORDER_DEFAULT;
             }
 
-            if ($phpunitConfiguration->conflictBetweenPrinterClassAndTestdox()) {
-                $arguments['conflictBetweenPrinterClassAndTestdox'] = true;
-            }
-
             $groupCliArgs = [];
 
             if (!empty($arguments['groups'])) {
@@ -1107,9 +1078,12 @@ final class TestRunner
         $this->messagePrinted = true;
     }
 
-    private function createPrinter(string $class, array $arguments): ResultPrinter
+    /**
+     * @psalm-param class-string $className
+     */
+    private function createPrinter(string $className, array $arguments): ResultPrinter
     {
-        $object = new $class(
+        $object = new $className(
             (isset($arguments['stderr']) && $arguments['stderr'] === true) ? 'php://stderr' : null,
             $arguments['verbose'],
             $arguments['colors'],

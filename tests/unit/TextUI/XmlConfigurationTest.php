@@ -25,7 +25,6 @@ use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
@@ -498,7 +497,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(123, $phpunit->defaultTimeLimit());
         $this->assertFalse($phpunit->enforceTimeLimit());
         $this->assertSame('/tmp', $phpunit->extensionsDirectory());
-        $this->assertSame(DefaultResultPrinter::class, $phpunit->printerClass());
         $this->assertSame('My Test Suite', $phpunit->defaultTestSuite());
         $this->assertFalse($phpunit->verbose());
         $this->assertSame(1, $phpunit->timeoutForSmallTests());
@@ -517,18 +515,9 @@ final class XmlConfigurationTest extends TestCase
 
     public function test_TestDox_configuration_is_parsed_correctly(): void
     {
-        $this->assertSame(
-            CliTestDoxPrinter::class,
-            $this->configuration('configuration_testdox.xml')->phpunit()->printerClass()
+        $this->assertTrue(
+            $this->configuration('configuration_testdox.xml')->phpunit()->testdoxPrinter()
         );
-    }
-
-    public function test_Conflict_between_testdox_and_printerClass_is_detected(): void
-    {
-        $phpunit = $this->configuration('configuration_testdox_printerClass.xml')->phpunit();
-
-        $this->assertSame(CliTestDoxPrinter::class, $phpunit->printerClass());
-        $this->assertTrue($phpunit->conflictBetweenPrinterClassAndTestdox());
     }
 
     public function testConfigurationForSingleTestSuiteCanBeLoaded(): void

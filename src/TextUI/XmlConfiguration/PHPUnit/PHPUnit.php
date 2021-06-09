@@ -73,10 +73,6 @@ final class PHPUnit
 
     private ?string $extensionsDirectory;
 
-    private ?string $printerClass;
-
-    private ?string $printerFile;
-
     private bool $beStrictAboutChangesToGlobalState;
 
     private bool $beStrictAboutOutputDuringTests;
@@ -109,9 +105,9 @@ final class PHPUnit
 
     private bool $registerMockObjectsFromTestArgumentsRecursively;
 
-    private bool $conflictBetweenPrinterClassAndTestdox;
+    private bool $testdoxPrinter;
 
-    public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, ?string $printerClass, ?string $printerFile, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $conflictBetweenPrinterClassAndTestdox)
+    public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $testdoxPrinter)
     {
         $this->cacheDirectory                                  = $cacheDirectory;
         $this->cacheResult                                     = $cacheResult;
@@ -142,8 +138,6 @@ final class PHPUnit
         $this->stopOnRisky                                     = $stopOnRisky;
         $this->stopOnSkipped                                   = $stopOnSkipped;
         $this->extensionsDirectory                             = $extensionsDirectory;
-        $this->printerClass                                    = $printerClass;
-        $this->printerFile                                     = $printerFile;
         $this->beStrictAboutChangesToGlobalState               = $beStrictAboutChangesToGlobalState;
         $this->beStrictAboutOutputDuringTests                  = $beStrictAboutOutputDuringTests;
         $this->beStrictAboutTestsThatDoNotTestAnything         = $beStrictAboutTestsThatDoNotTestAnything;
@@ -160,7 +154,7 @@ final class PHPUnit
         $this->backupGlobals                                   = $backupGlobals;
         $this->backupStaticProperties                          = $backupStaticProperties;
         $this->registerMockObjectsFromTestArgumentsRecursively = $registerMockObjectsFromTestArgumentsRecursively;
-        $this->conflictBetweenPrinterClassAndTestdox           = $conflictBetweenPrinterClassAndTestdox;
+        $this->testdoxPrinter                                  = $testdoxPrinter;
     }
 
     /**
@@ -372,46 +366,6 @@ final class PHPUnit
         return $this->extensionsDirectory;
     }
 
-    /**
-     * @psalm-assert-if-true !null $this->printerClass
-     */
-    public function hasPrinterClass(): bool
-    {
-        return $this->printerClass !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function printerClass(): string
-    {
-        if (!$this->hasPrinterClass()) {
-            throw new Exception('ResultPrinter class is not configured');
-        }
-
-        return $this->printerClass;
-    }
-
-    /**
-     * @psalm-assert-if-true !null $this->printerFile
-     */
-    public function hasPrinterFile(): bool
-    {
-        return $this->printerFile !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    public function printerFile(): string
-    {
-        if (!$this->hasPrinterFile()) {
-            throw new Exception('ResultPrinter sourcecode file is not configured');
-        }
-
-        return $this->printerFile;
-    }
-
     public function beStrictAboutChangesToGlobalState(): bool
     {
         return $this->beStrictAboutChangesToGlobalState;
@@ -507,8 +461,8 @@ final class PHPUnit
         return $this->registerMockObjectsFromTestArgumentsRecursively;
     }
 
-    public function conflictBetweenPrinterClassAndTestdox(): bool
+    public function testdoxPrinter(): bool
     {
-        return $this->conflictBetweenPrinterClassAndTestdox;
+        return $this->testdoxPrinter;
     }
 }

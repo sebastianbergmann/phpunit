@@ -5,7 +5,9 @@
          testSuiteLoaderClass="Foo"
          testSuiteLoaderFile="Foo.php"
          beStrictAboutResourceUsageDuringSmallTests="true"
-         beStrictAboutTodoAnnotatedTests="true">
+         beStrictAboutTodoAnnotatedTests="true"
+         printerFile="foo"
+         printerClass="bar">
 
     <coverage cacheDirectory=".phpunit.cache/code-coverage"
               processUncoveredFiles="true">
