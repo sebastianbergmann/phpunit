@@ -116,7 +116,7 @@ final class Command
         } else {
             $suite = $this->getTest(
                 $this->arguments['test'],
-                $this->arguments['testSuffixes']
+                Configuration::get()->testSuffixes()
             );
         }
 
@@ -223,10 +223,6 @@ final class Command
         }
 
         $this->arguments = (new Mapper)->mapToLegacyArray($arguments);
-
-        if (!isset($this->arguments['testSuffixes'])) {
-            $this->arguments['testSuffixes'] = ['Test.php', '.phpt'];
-        }
 
         if (!isset($this->arguments['test']) && $arguments->hasArgument()) {
             $this->arguments['test'] = realpath($arguments->argument());

@@ -23,6 +23,11 @@ final class Configuration
 {
     private static ?self $instance = null;
 
+    /**
+     * @psalm-var list<string>
+     */
+    private array $testSuffixes;
+
     public static function get(): self
     {
         assert(self::$instance instanceof self);
@@ -32,15 +37,39 @@ final class Configuration
 
     public static function initFromCli(CliConfiguration $cliConfiguration): void
     {
-        self::$instance = new self;
+        $testSuffixes = ['Test.php', '.phpt'];
+
+        if ($cliConfiguration->hasTestSuffixes()) {
+            $testSuffixes = $cliConfiguration->testSuffixes();
+        }
+
+        self::$instance = new self($testSuffixes);
     }
 
     public static function initFromCliAndXml(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
     {
-        self::$instance = new self;
+        $testSuffixes = ['Test.php', '.phpt'];
+
+        if ($cliConfiguration->hasTestSuffixes()) {
+            $testSuffixes = $cliConfiguration->testSuffixes();
+        }
+
+        self::$instance = new self($testSuffixes);
     }
 
-    private function __construct()
+    /**
+     * @psalm-param list<string> $testSuffixes
+     */
+    private function __construct(array $testSuffixes)
     {
+        $this->testSuffixes = $testSuffixes;
+    }
+
+    /**
+     * @psalm-return list<string>
+     */
+    public function testSuffixes(): array
+    {
+        return $this->testSuffixes;
     }
 }

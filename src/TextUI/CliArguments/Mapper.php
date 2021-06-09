@@ -143,10 +143,6 @@ final class Mapper
             $result['testsUsing'] = $arguments->testsUsing();
         }
 
-        if ($arguments->hasTestSuffixes()) {
-            $result['testSuffixes'] = $arguments->testSuffixes();
-        }
-
         if ($arguments->hasIncludePath()) {
             $result['includePath'] = $arguments->includePath();
         }
