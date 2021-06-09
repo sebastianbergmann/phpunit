@@ -204,55 +204,32 @@ final class Command
             );
         }
 
-        $useDefaultConfiguration = true;
+        $this->arguments   = (new Mapper)->mapToLegacyArray($arguments);
+        $configurationFile = $this->configurationFilePath($arguments);
 
-        if ($arguments->hasUseDefaultConfiguration()) {
-            $useDefaultConfiguration = $arguments->useDefaultConfiguration();
-        }
-
-        if ($arguments->hasConfiguration()) {
-            if (is_dir($arguments->configuration())) {
-                $candidate = $this->configurationFileInDirectory($arguments->configuration());
-
-                if ($candidate !== null) {
-                    $configuration = $candidate;
-                }
-            } else {
-                $configuration = $arguments->configuration();
-            }
-        } elseif ($useDefaultConfiguration) {
-            $candidate = $this->configurationFileInDirectory(getcwd());
-
-            if ($candidate !== null) {
-                $configuration = $candidate;
-            }
-        }
-
-        $this->arguments = (new Mapper)->mapToLegacyArray($arguments);
-
-        if (isset($configuration)) {
+        if ($configurationFile) {
             try {
-                $configurationObject = (new Loader)->load($configuration);
+                $configurationObject = (new Loader)->load($configurationFile);
             } catch (Throwable $e) {
                 print $e->getMessage() . PHP_EOL;
 
                 exit(self::FAILURE_EXIT);
             }
 
-            $this->arguments['configuration']       = $configuration;
+            $this->arguments['configuration']       = $configurationFile;
             $this->arguments['configurationObject'] = $configurationObject;
 
             Event\Facade::emitter()->testRunnerXmlConfigurationParsed($configurationObject);
         }
 
         if ($arguments->hasMigrateConfiguration() && $arguments->migrateConfiguration()) {
-            if (!isset($configuration)) {
+            if (!$configurationFile) {
                 print 'No configuration file found to migrate.' . PHP_EOL;
 
                 exit(self::EXCEPTION_EXIT);
             }
 
-            $this->migrateConfiguration(realpath($configuration));
+            $this->migrateConfiguration(realpath($configurationFile));
         }
 
         if (isset($configurationObject)) {
@@ -626,7 +603,40 @@ final class Command
         exit(self::SUCCESS_EXIT);
     }
 
-    private function configurationFileInDirectory(string $directory): ?string
+    private function configurationFilePath(CliConfiguration $cliConfiguration): string|false
+    {
+        $useDefaultConfiguration = true;
+
+        if ($cliConfiguration->hasUseDefaultConfiguration()) {
+            $useDefaultConfiguration = $cliConfiguration->useDefaultConfiguration();
+        }
+
+        if ($cliConfiguration->hasConfiguration()) {
+            if (is_dir($cliConfiguration->configuration())) {
+                $candidate = $this->configurationFileInDirectory($cliConfiguration->configuration());
+
+                if ($candidate) {
+                    return $candidate;
+                }
+
+                return false;
+            }
+
+            return $cliConfiguration->configuration();
+        }
+
+        if ($useDefaultConfiguration) {
+            $candidate = $this->configurationFileInDirectory(getcwd());
+
+            if ($candidate) {
+                return $candidate;
+            }
+        }
+
+        return false;
+    }
+
+    private function configurationFileInDirectory(string $directory): string|false
     {
         $candidates = [
             $directory . '/phpunit.xml',
@@ -640,7 +650,7 @@ final class Command
             }
         }
 
-        return null;
+        return false;
     }
 
     private function returnCode(TestResult $result): int
