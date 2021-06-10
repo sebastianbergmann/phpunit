@@ -38,10 +38,6 @@ final class Mapper
             $result['columns'] = $arguments->columns();
         }
 
-        if ($arguments->hasWarmCoverageCache()) {
-            $result['warmCoverageCache'] = $arguments->warmCoverageCache();
-        }
-
         if ($arguments->hasCoverageClover()) {
             $result['coverageClover'] = $arguments->coverageClover();
         }

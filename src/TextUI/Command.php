@@ -273,7 +273,7 @@ final class Command
 
         Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
 
-        if (isset($configurationObject) && isset($this->arguments['warmCoverageCache'])) {
+        if (isset($configurationObject) && $arguments->hasWarmCoverageCache() && $arguments->warmCoverageCache()) {
             $this->handleWarmCoverageCache($configurationObject);
         }
 
