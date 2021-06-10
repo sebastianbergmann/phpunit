@@ -950,8 +950,9 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="7">
+    <MissingThrowsDocblock occurrences="8">
       <code>bootstrap</code>
+      <code>coverageCacheDirectory</code>
       <code>detect</code>
       <code>reorderTestsInSuite</code>
       <code>run</code>

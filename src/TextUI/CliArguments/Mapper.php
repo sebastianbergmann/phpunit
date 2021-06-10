@@ -34,24 +34,8 @@ final class Mapper
             $result['colors'] = $arguments->colors();
         }
 
-        if ($arguments->hasCacheDirectory()) {
-            $result['cacheDirectory'] = $arguments->cacheDirectory();
-        }
-
-        if ($arguments->hasCacheResult()) {
-            $result['cacheResult'] = $arguments->cacheResult();
-        }
-
-        if ($arguments->hasCacheResultFile()) {
-            $result['cacheResultFile'] = $arguments->cacheResultFile();
-        }
-
         if ($arguments->hasColumns()) {
             $result['columns'] = $arguments->columns();
-        }
-
-        if ($arguments->hasCoverageCacheDirectory()) {
-            $result['coverageCacheDirectory'] = $arguments->coverageCacheDirectory();
         }
 
         if ($arguments->hasWarmCoverageCache()) {
