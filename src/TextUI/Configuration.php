@@ -40,6 +40,8 @@ final class Configuration
 
     private ?string $bootstrap;
 
+    private bool $cacheResult;
+
     private ?string $cacheDirectory;
 
     private ?string $coverageCacheDirectory;
@@ -80,6 +82,12 @@ final class Configuration
             );
         }
 
+        if ($cliConfiguration->hasCacheResult()) {
+            $cacheResult = $cliConfiguration->cacheResult();
+        } else {
+            $cacheResult = true;
+        }
+
         $cacheDirectory         = null;
         $coverageCacheDirectory = null;
 
@@ -108,6 +116,7 @@ final class Configuration
         self::$instance = new self(
             $testSuite,
             $bootstrap,
+            $cacheResult,
             $cacheDirectory,
             $coverageCacheDirectory,
             $testResultCacheFile
@@ -158,6 +167,12 @@ final class Configuration
             );
         }
 
+        if ($cliConfiguration->hasCacheResult()) {
+            $cacheResult = $cliConfiguration->cacheResult();
+        } else {
+            $cacheResult = $xmlConfiguration->phpunit()->cacheResult();
+        }
+
         $cacheDirectory         = null;
         $coverageCacheDirectory = null;
 
@@ -193,16 +208,18 @@ final class Configuration
         self::$instance = new self(
             $testSuite,
             $bootstrap,
+            $cacheResult,
             $cacheDirectory,
             $coverageCacheDirectory,
             $testResultCacheFile
         );
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile)
     {
         $this->testSuite              = $testSuite;
         $this->bootstrap              = $bootstrap;
+        $this->cacheResult            = $cacheResult;
         $this->cacheDirectory         = $cacheDirectory;
         $this->coverageCacheDirectory = $coverageCacheDirectory;
         $this->testResultCacheFile    = $testResultCacheFile;
@@ -246,6 +263,11 @@ final class Configuration
         }
 
         return $this->bootstrap;
+    }
+
+    public function cacheResult(): bool
+    {
+        return $this->cacheResult;
     }
 
     /**
