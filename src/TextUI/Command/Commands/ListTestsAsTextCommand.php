@@ -7,9 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util;
+namespace PHPUnit\TextUI\Command;
 
-use const PHP_EOL;
 use function sprintf;
 use function str_replace;
 use PHPUnit\Framework\TestCase;
@@ -20,16 +19,20 @@ use RecursiveIteratorIterator;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TextTestListRenderer
+final class ListTestsAsTextCommand implements Command
 {
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function render(TestSuite $suite): string
+    private TestSuite $suite;
+
+    public function __construct(TestSuite $suite)
+    {
+        $this->suite = $suite;
+    }
+
+    public function execute(): Result
     {
         $buffer = 'Available test(s):' . PHP_EOL;
 
-        foreach (new RecursiveIteratorIterator($suite->getIterator()) as $test) {
+        foreach (new RecursiveIteratorIterator($this->suite->getIterator()) as $test) {
             if ($test instanceof TestCase) {
                 $name = sprintf(
                     '%s::%s',
@@ -48,6 +51,6 @@ final class TextTestListRenderer
             );
         }
 
-        return $buffer;
+        return Result::from($buffer);
     }
 }

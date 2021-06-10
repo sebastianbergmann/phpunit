@@ -11,44 +11,36 @@ namespace PHPUnit\TextUI;
 
 use const PATH_SEPARATOR;
 use const PHP_EOL;
-use const STDIN;
 use function array_keys;
 use function assert;
-use function copy;
 use function extension_loaded;
-use function fgets;
-use function file_get_contents;
-use function file_put_contents;
 use function getcwd;
 use function ini_get;
 use function ini_set;
 use function is_dir;
 use function is_file;
-use function printf;
 use function realpath;
-use function sort;
 use function sprintf;
-use function str_starts_with;
-use function trim;
 use function version_compare;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\CliArguments\Mapper;
+use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
+use PHPUnit\TextUI\Command\ListGroupsCommand;
+use PHPUnit\TextUI\Command\ListTestsAsTextCommand;
+use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
+use PHPUnit\TextUI\Command\ListTestSuitesCommand;
+use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
+use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
-use PHPUnit\TextUI\XmlConfiguration\Generator;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
-use PHPUnit\TextUI\XmlConfiguration\Migrator;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use PHPUnit\TextUI\XmlConfiguration\TestSuiteCollection;
-use PHPUnit\Util\TextTestListRenderer;
-use PHPUnit\Util\XmlTestListRenderer;
 use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\Timer\Timer;
@@ -154,7 +146,7 @@ final class Command
         Event\Facade::emitter()->testRunnerCliConfigurationParsed($arguments);
 
         if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
-            $this->generateConfiguration();
+            $this->execute(new GenerateConfigurationCommand);
         }
 
         if ($arguments->hasAtLeastVersion()) {
@@ -172,7 +164,7 @@ final class Command
         }
 
         if ($arguments->hasCheckVersion() && $arguments->checkVersion()) {
-            $this->handleVersionCheck();
+            $this->execute(new VersionCheckCommand);
         }
 
         if ($arguments->hasHelp()) {
@@ -228,7 +220,7 @@ final class Command
                 exit(self::EXCEPTION_EXIT);
             }
 
-            $this->migrateConfiguration(realpath($configurationFile));
+            $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
         }
 
         if (isset($configurationObject)) {
@@ -286,48 +278,27 @@ final class Command
         Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
 
         if ($arguments->hasListGroups() && $arguments->listGroups()) {
-            $this->handleListGroups(Configuration::get()->testSuite());
+            $this->execute(new ListGroupsCommand(Configuration::get()->testSuite()));
         }
 
         if ($arguments->hasListSuites() && $arguments->listSuites()) {
-            $this->handleListSuites($configurationObject->testSuite());
+            $this->execute(new ListTestSuitesCommand($configurationObject->testSuite()));
         }
 
         if ($arguments->hasListTests() && $arguments->listTests()) {
-            $this->handleListTests(Configuration::get()->testSuite());
+            $this->execute(new ListTestsAsTextCommand(Configuration::get()->testSuite()));
         }
 
         if ($arguments->hasListTestsXml() && $arguments->listTestsXml()) {
-            $this->handleListTestsXml(
-                Configuration::get()->testSuite(),
-                $arguments->listTestsXml()
+            $this->execute(
+                new ListTestsAsXmlCommand(
+                    $arguments->listTestsXml(),
+                    Configuration::get()->testSuite()
+                )
             );
         }
     }
 
-    private function handleVersionCheck(): void
-    {
-        $this->printVersionString();
-
-        $latestVersion = file_get_contents('https://phar.phpunit.de/latest-version-of/phpunit');
-        $isOutdated    = version_compare($latestVersion, Version::id(), '>');
-
-        if ($isOutdated) {
-            printf(
-                'You are not using the latest version of PHPUnit.' . PHP_EOL .
-                'The latest version is PHPUnit %s.' . PHP_EOL,
-                $latestVersion
-            );
-        } else {
-            print 'You are using the latest version of PHPUnit.' . PHP_EOL;
-        }
-
-        exit(self::SUCCESS_EXIT);
-    }
-
-    /**
-     * Show the help message.
-     */
     private function showHelp(): void
     {
         $this->printVersionString();
@@ -354,156 +325,19 @@ final class Command
         exit(self::FAILURE_EXIT);
     }
 
-    private function handleListGroups(TestSuite $suite): void
+    private function execute(Command\Command $command): void
     {
         $this->printVersionString();
 
-        print 'Available test group(s):' . PHP_EOL;
+        $result = $command->execute();
 
-        $groups = $suite->getGroups();
-        sort($groups);
+        print $result->output();
 
-        foreach ($groups as $group) {
-            if (str_starts_with($group, '__phpunit_')) {
-                continue;
-            }
-
-            printf(
-                ' - %s' . PHP_EOL,
-                $group
-            );
+        if ($result->wasSuccessful()) {
+            exit(self::SUCCESS_EXIT);
         }
 
-        exit(self::SUCCESS_EXIT);
-    }
-
-    private function handleListSuites(TestSuiteCollection $testSuites): void
-    {
-        $this->printVersionString();
-
-        print 'Available test suite(s):' . PHP_EOL;
-
-        foreach ($testSuites as $testSuite) {
-            printf(
-                ' - %s' . PHP_EOL,
-                $testSuite->name()
-            );
-        }
-
-        exit(self::SUCCESS_EXIT);
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    private function handleListTests(TestSuite $suite): void
-    {
-        $this->printVersionString();
-
-        $renderer = new TextTestListRenderer;
-
-        print $renderer->render($suite);
-
-        exit(self::SUCCESS_EXIT);
-    }
-
-    /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    private function handleListTestsXml(TestSuite $suite, string $target): void
-    {
-        $this->printVersionString();
-
-        $renderer = new XmlTestListRenderer;
-
-        file_put_contents($target, $renderer->render($suite));
-
-        printf(
-            'Wrote list of tests that would have been run to %s' . PHP_EOL,
-            $target
-        );
-
-        exit(self::SUCCESS_EXIT);
-    }
-
-    private function generateConfiguration(): void
-    {
-        $this->printVersionString();
-
-        print 'Generating phpunit.xml in ' . getcwd() . PHP_EOL . PHP_EOL;
-        print 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
-
-        $bootstrapScript = trim(fgets(STDIN));
-
-        print 'Tests directory (relative to path shown above; default: tests): ';
-
-        $testsDirectory = trim(fgets(STDIN));
-
-        print 'Source directory (relative to path shown above; default: src): ';
-
-        $src = trim(fgets(STDIN));
-
-        print 'Cache directory (relative to path shown above; default: .phpunit.cache): ';
-
-        $cacheDirectory = trim(fgets(STDIN));
-
-        if ($bootstrapScript === '') {
-            $bootstrapScript = 'vendor/autoload.php';
-        }
-
-        if ($testsDirectory === '') {
-            $testsDirectory = 'tests';
-        }
-
-        if ($src === '') {
-            $src = 'src';
-        }
-
-        if ($cacheDirectory === '') {
-            $cacheDirectory = '.phpunit.cache';
-        }
-
-        $generator = new Generator;
-
-        file_put_contents(
-            'phpunit.xml',
-            $generator->generateDefaultConfiguration(
-                Version::series(),
-                $bootstrapScript,
-                $testsDirectory,
-                $src,
-                $cacheDirectory
-            )
-        );
-
-        print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . '.' . PHP_EOL;
-        print 'Make sure to exclude the ' . $cacheDirectory . ' directory from version control.' . PHP_EOL;
-
-        exit(self::SUCCESS_EXIT);
-    }
-
-    private function migrateConfiguration(string $filename): void
-    {
-        $this->printVersionString();
-
-        copy($filename, $filename . '.bak');
-
-        print 'Created backup:         ' . $filename . '.bak' . PHP_EOL;
-
-        try {
-            file_put_contents(
-                $filename,
-                (new Migrator)->migrate($filename)
-            );
-
-            print 'Migrated configuration: ' . $filename . PHP_EOL;
-        } catch (Throwable $t) {
-            print 'Migration failed: ' . $t->getMessage() . PHP_EOL;
-
-            exit(self::EXCEPTION_EXIT);
-        }
-
-        exit(self::SUCCESS_EXIT);
+        exit(self::EXCEPTION_EXIT);
     }
 
     private function handleWarmCoverageCache(XmlConfiguration $configuration): void
