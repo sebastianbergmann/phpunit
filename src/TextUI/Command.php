@@ -390,24 +390,24 @@ final class Command
             $returnCode = self::SUCCESS_EXIT;
         }
 
-        if (isset($this->arguments['failOnEmptyTestSuite']) && $this->arguments['failOnEmptyTestSuite'] === true && count($result) === 0) {
+        if (Configuration::get()->failOnEmptyTestSuite() && count($result) === 0) {
             $returnCode = self::FAILURE_EXIT;
         }
 
         if ($result->wasSuccessfulIgnoringWarnings()) {
-            if ($this->arguments['failOnRisky'] && !$result->allHarmless()) {
+            if (Configuration::get()->failOnRisky() && !$result->allHarmless()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($this->arguments['failOnWarning'] && $result->warningCount() > 0) {
+            if (Configuration::get()->failOnWarning() && $result->warningCount() > 0) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($this->arguments['failOnIncomplete'] && $result->notImplementedCount() > 0) {
+            if (Configuration::get()->failOnIncomplete() && $result->notImplementedCount() > 0) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($this->arguments['failOnSkipped'] && $result->skippedCount() > 0) {
+            if (Configuration::get()->failOnSkipped() && $result->skippedCount() > 0) {
                 $returnCode = self::FAILURE_EXIT;
             }
         }

@@ -867,7 +867,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="35">
+    <MissingThrowsDocblock occurrences="45">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -893,6 +893,16 @@
       <code>defaultTestSuite</code>
       <code>disableCodeCoverageIgnore</code>
       <code>disableCodeCoverageIgnore</code>
+      <code>failOnEmptyTestSuite</code>
+      <code>failOnEmptyTestSuite</code>
+      <code>failOnIncomplete</code>
+      <code>failOnIncomplete</code>
+      <code>failOnRisky</code>
+      <code>failOnRisky</code>
+      <code>failOnSkipped</code>
+      <code>failOnSkipped</code>
+      <code>failOnWarning</code>
+      <code>failOnWarning</code>
       <code>map</code>
       <code>new TestSuite</code>
       <code>new TestSuite($path)</code>

@@ -56,6 +56,16 @@ final class Configuration
 
     private bool $disableCodeCoverageIgnore;
 
+    private bool $failOnEmptyTestSuite;
+
+    private bool $failOnIncomplete;
+
+    private bool $failOnRisky;
+
+    private bool $failOnSkipped;
+
+    private bool $failOnWarning;
+
     public static function get(): self
     {
         assert(self::$instance instanceof self);
@@ -135,6 +145,36 @@ final class Configuration
             $disableCodeCoverageIgnore = false;
         }
 
+        if ($cliConfiguration->hasFailOnEmptyTestSuite()) {
+            $failOnEmptyTestSuite = $cliConfiguration->failOnEmptyTestSuite();
+        } else {
+            $failOnEmptyTestSuite = false;
+        }
+
+        if ($cliConfiguration->hasFailOnIncomplete()) {
+            $failOnIncomplete = $cliConfiguration->failOnIncomplete();
+        } else {
+            $failOnIncomplete = false;
+        }
+
+        if ($cliConfiguration->hasFailOnRisky()) {
+            $failOnRisky = $cliConfiguration->failOnRisky();
+        } else {
+            $failOnRisky = false;
+        }
+
+        if ($cliConfiguration->hasFailOnSkipped()) {
+            $failOnSkipped = $cliConfiguration->failOnSkipped();
+        } else {
+            $failOnSkipped = false;
+        }
+
+        if ($cliConfiguration->hasFailOnWarning()) {
+            $failOnWarning = $cliConfiguration->failOnWarning();
+        } else {
+            $failOnWarning = false;
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -144,7 +184,12 @@ final class Configuration
             $testResultCacheFile,
             $codeCoverageFilter,
             false,
-            $disableCodeCoverageIgnore
+            $disableCodeCoverageIgnore,
+            $failOnEmptyTestSuite,
+            $failOnIncomplete,
+            $failOnRisky,
+            $failOnSkipped,
+            $failOnWarning
         );
     }
 
@@ -251,6 +296,36 @@ final class Configuration
             $disableCodeCoverageIgnore = $xmlConfiguration->codeCoverage()->disableCodeCoverageIgnore();
         }
 
+        if ($cliConfiguration->hasFailOnEmptyTestSuite()) {
+            $failOnEmptyTestSuite = $cliConfiguration->failOnEmptyTestSuite();
+        } else {
+            $failOnEmptyTestSuite = $xmlConfiguration->phpunit()->failOnEmptyTestSuite();
+        }
+
+        if ($cliConfiguration->hasFailOnIncomplete()) {
+            $failOnIncomplete = $cliConfiguration->failOnIncomplete();
+        } else {
+            $failOnIncomplete = $xmlConfiguration->phpunit()->failOnIncomplete();
+        }
+
+        if ($cliConfiguration->hasFailOnRisky()) {
+            $failOnRisky = $cliConfiguration->failOnRisky();
+        } else {
+            $failOnRisky = $xmlConfiguration->phpunit()->failOnRisky();
+        }
+
+        if ($cliConfiguration->hasFailOnSkipped()) {
+            $failOnSkipped = $cliConfiguration->failOnSkipped();
+        } else {
+            $failOnSkipped = $xmlConfiguration->phpunit()->failOnSkipped();
+        }
+
+        if ($cliConfiguration->hasFailOnWarning()) {
+            $failOnWarning = $cliConfiguration->failOnWarning();
+        } else {
+            $failOnWarning = $xmlConfiguration->phpunit()->failOnWarning();
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -260,11 +335,16 @@ final class Configuration
             $testResultCacheFile,
             $codeCoverageFilter,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
-            $disableCodeCoverageIgnore
+            $disableCodeCoverageIgnore,
+            $failOnEmptyTestSuite,
+            $failOnIncomplete,
+            $failOnRisky,
+            $failOnSkipped,
+            $failOnWarning
         );
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning)
     {
         $this->testSuite                                 = $testSuite;
         $this->bootstrap                                 = $bootstrap;
@@ -275,6 +355,11 @@ final class Configuration
         $this->codeCoverageFilter                        = $codeCoverageFilter;
         $this->ignoreDeprecatedCodeUnitsFromCodeCoverage = $ignoreDeprecatedCodeUnitsFromCodeCoverage;
         $this->disableCodeCoverageIgnore                 = $disableCodeCoverageIgnore;
+        $this->failOnEmptyTestSuite                      = $failOnEmptyTestSuite;
+        $this->failOnIncomplete                          = $failOnIncomplete;
+        $this->failOnRisky                               = $failOnRisky;
+        $this->failOnSkipped                             = $failOnSkipped;
+        $this->failOnWarning                             = $failOnWarning;
     }
 
     /**
@@ -380,6 +465,31 @@ final class Configuration
     public function disableCodeCoverageIgnore(): bool
     {
         return $this->disableCodeCoverageIgnore;
+    }
+
+    public function failOnEmptyTestSuite(): bool
+    {
+        return $this->failOnEmptyTestSuite;
+    }
+
+    public function failOnIncomplete(): bool
+    {
+        return $this->failOnIncomplete;
+    }
+
+    public function failOnRisky(): bool
+    {
+        return $this->failOnRisky;
+    }
+
+    public function failOnSkipped(): bool
+    {
+        return $this->failOnSkipped;
+    }
+
+    public function failOnWarning(): bool
+    {
+        return $this->failOnWarning;
     }
 
     /**
