@@ -37,11 +37,8 @@ use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
 use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
-use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
-use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use SebastianBergmann\CodeCoverage\Filter;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
@@ -273,8 +270,8 @@ final class Command
 
         Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
 
-        if (isset($configurationObject) && $arguments->hasWarmCoverageCache() && $arguments->warmCoverageCache()) {
-            $this->handleWarmCoverageCache($configurationObject);
+        if ($arguments->hasWarmCoverageCache() && $arguments->warmCoverageCache()) {
+            $this->handleWarmCoverageCache();
         }
 
         if ($arguments->hasListGroups() && $arguments->listGroups()) {
@@ -340,7 +337,7 @@ final class Command
         exit(self::EXCEPTION_EXIT);
     }
 
-    private function handleWarmCoverageCache(XmlConfiguration $configuration): void
+    private function handleWarmCoverageCache(): void
     {
         $this->printVersionString();
 
@@ -350,24 +347,9 @@ final class Command
             exit(self::EXCEPTION_EXIT);
         }
 
-        $filter = new Filter;
+        $filter = Configuration::get()->codeCoverageFilter();
 
-        if ($configuration->codeCoverage()->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-            (new FilterMapper)->map(
-                $filter,
-                $configuration->codeCoverage()
-            );
-        } elseif (isset($this->arguments['coverageFilter'])) {
-            if (!is_array($this->arguments['coverageFilter'])) {
-                $coverageFilterDirectories = [$this->arguments['coverageFilter']];
-            } else {
-                $coverageFilterDirectories = $this->arguments['coverageFilter'];
-            }
-
-            foreach ($coverageFilterDirectories as $coverageFilterDirectory) {
-                $filter->includeDirectory($coverageFilterDirectory);
-            }
-        } else {
+        if ($filter->isEmpty()) {
             print 'Filter for code coverage has not been configured' . PHP_EOL;
 
             exit(self::EXCEPTION_EXIT);
@@ -380,8 +362,8 @@ final class Command
 
         (new CacheWarmer)->warmCache(
             Configuration::get()->coverageCacheDirectory(),
-            !$configuration->codeCoverage()->disableCodeCoverageIgnore(),
-            $configuration->codeCoverage()->ignoreDeprecatedCodeUnits(),
+            !Configuration::get()->disableCodeCoverageIgnore(),
+            Configuration::get()->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
             $filter
         );
 

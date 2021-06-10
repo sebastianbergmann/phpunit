@@ -410,20 +410,16 @@ final class TestRunner
                     CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
                 }
 
-                if (isset($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'])) {
-                    if ($arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']) {
-                        CodeCoverage::instance()->ignoreDeprecatedCode();
-                    } else {
-                        CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
-                    }
+                if (Configuration::get()->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
+                    CodeCoverage::instance()->ignoreDeprecatedCode();
+                } else {
+                    CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
                 }
 
-                if (isset($arguments['disableCodeCoverageIgnore'])) {
-                    if ($arguments['disableCodeCoverageIgnore']) {
-                        CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
-                    } else {
-                        CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
-                    }
+                if (Configuration::get()->disableCodeCoverageIgnore()) {
+                    CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
+                } else {
+                    CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
                 }
 
                 if (isset($arguments['configurationObject'])) {
@@ -831,7 +827,6 @@ final class TestRunner
             $arguments['verbose']                                         = $arguments['verbose'] ?? $phpunitConfiguration->verbose();
             $arguments['reverseDefectList']                               = $arguments['reverseDefectList'] ?? $phpunitConfiguration->reverseDefectList();
             $arguments['forceCoversAnnotation']                           = $arguments['forceCoversAnnotation'] ?? $phpunitConfiguration->forceCoversAnnotation();
-            $arguments['disableCodeCoverageIgnore']                       = $arguments['disableCodeCoverageIgnore'] ?? $codeCoverageConfiguration->disableCodeCoverageIgnore();
             $arguments['registerMockObjectsFromTestArgumentsRecursively'] = $arguments['registerMockObjectsFromTestArgumentsRecursively'] ?? $phpunitConfiguration->registerMockObjectsFromTestArgumentsRecursively();
             $arguments['noInteraction']                                   = $arguments['noInteraction'] ?? $phpunitConfiguration->noInteraction();
             $arguments['executionOrder']                                  = $arguments['executionOrder'] ?? $phpunitConfiguration->executionOrder();

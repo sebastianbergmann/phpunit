@@ -258,10 +258,6 @@ final class Mapper
             $result['strictCoverage'] = $arguments->strictCoverage();
         }
 
-        if ($arguments->hasDisableCodeCoverageIgnore()) {
-            $result['disableCodeCoverageIgnore'] = $arguments->disableCodeCoverageIgnore();
-        }
-
         if ($arguments->hasBeStrictAboutChangesToGlobalState()) {
             $result['beStrictAboutChangesToGlobalState'] = $arguments->beStrictAboutChangesToGlobalState();
         }

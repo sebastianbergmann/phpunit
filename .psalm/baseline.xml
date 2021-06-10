@@ -863,7 +863,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="31">
+    <MissingThrowsDocblock occurrences="35">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -884,7 +884,11 @@
       <code>cacheResultFile</code>
       <code>coverageCacheDirectory</code>
       <code>coverageCacheDirectory</code>
+      <code>coverageFilter</code>
+      <code>coverageFilter</code>
       <code>defaultTestSuite</code>
+      <code>disableCodeCoverageIgnore</code>
+      <code>disableCodeCoverageIgnore</code>
       <code>map</code>
       <code>new TestSuite</code>
       <code>new TestSuite($path)</code>

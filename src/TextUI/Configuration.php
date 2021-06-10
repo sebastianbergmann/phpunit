@@ -21,8 +21,10 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\Util\Filesystem;
+use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use Throwable;
 
@@ -47,6 +49,12 @@ final class Configuration
     private ?string $coverageCacheDirectory;
 
     private string $testResultCacheFile;
+
+    private CodeCoverageFilter $codeCoverageFilter;
+
+    private bool $ignoreDeprecatedCodeUnitsFromCodeCoverage;
+
+    private bool $disableCodeCoverageIgnore;
 
     public static function get(): self
     {
@@ -113,13 +121,30 @@ final class Configuration
             }
         }
 
+        $codeCoverageFilter = new CodeCoverageFilter;
+
+        if ($cliConfiguration->hasCoverageFilter()) {
+            foreach ($cliConfiguration->coverageFilter() as $directory) {
+                $codeCoverageFilter->includeDirectory($directory);
+            }
+        }
+
+        if ($cliConfiguration->hasDisableCodeCoverageIgnore()) {
+            $disableCodeCoverageIgnore = $cliConfiguration->disableCodeCoverageIgnore();
+        } else {
+            $disableCodeCoverageIgnore = false;
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
             $cacheResult,
             $cacheDirectory,
             $coverageCacheDirectory,
-            $testResultCacheFile
+            $testResultCacheFile,
+            $codeCoverageFilter,
+            false,
+            $disableCodeCoverageIgnore
         );
     }
 
@@ -205,24 +230,51 @@ final class Configuration
             }
         }
 
+        $codeCoverageFilter = new CodeCoverageFilter;
+
+        if ($cliConfiguration->hasCoverageFilter()) {
+            foreach ($cliConfiguration->coverageFilter() as $directory) {
+                $codeCoverageFilter->includeDirectory($directory);
+            }
+        }
+
+        if ($xmlConfiguration->codeCoverage()->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
+            (new FilterMapper)->map(
+                $codeCoverageFilter,
+                $xmlConfiguration->codeCoverage()
+            );
+        }
+
+        if ($cliConfiguration->hasDisableCodeCoverageIgnore()) {
+            $disableCodeCoverageIgnore = $cliConfiguration->disableCodeCoverageIgnore();
+        } else {
+            $disableCodeCoverageIgnore = $xmlConfiguration->codeCoverage()->disableCodeCoverageIgnore();
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
             $cacheResult,
             $cacheDirectory,
             $coverageCacheDirectory,
-            $testResultCacheFile
+            $testResultCacheFile,
+            $codeCoverageFilter,
+            $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
+            $disableCodeCoverageIgnore
         );
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore)
     {
-        $this->testSuite              = $testSuite;
-        $this->bootstrap              = $bootstrap;
-        $this->cacheResult            = $cacheResult;
-        $this->cacheDirectory         = $cacheDirectory;
-        $this->coverageCacheDirectory = $coverageCacheDirectory;
-        $this->testResultCacheFile    = $testResultCacheFile;
+        $this->testSuite                                 = $testSuite;
+        $this->bootstrap                                 = $bootstrap;
+        $this->cacheResult                               = $cacheResult;
+        $this->cacheDirectory                            = $cacheDirectory;
+        $this->coverageCacheDirectory                    = $coverageCacheDirectory;
+        $this->testResultCacheFile                       = $testResultCacheFile;
+        $this->codeCoverageFilter                        = $codeCoverageFilter;
+        $this->ignoreDeprecatedCodeUnitsFromCodeCoverage = $ignoreDeprecatedCodeUnitsFromCodeCoverage;
+        $this->disableCodeCoverageIgnore                 = $disableCodeCoverageIgnore;
     }
 
     /**
@@ -313,6 +365,21 @@ final class Configuration
     public function testResultCacheFile(): string
     {
         return $this->testResultCacheFile;
+    }
+
+    public function codeCoverageFilter(): CodeCoverageFilter
+    {
+        return $this->codeCoverageFilter;
+    }
+
+    public function ignoreDeprecatedCodeUnitsFromCodeCoverage(): bool
+    {
+        return $this->ignoreDeprecatedCodeUnitsFromCodeCoverage;
+    }
+
+    public function disableCodeCoverageIgnore(): bool
+    {
+        return $this->disableCodeCoverageIgnore;
     }
 
     /**
