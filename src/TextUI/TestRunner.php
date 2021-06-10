@@ -54,7 +54,7 @@ use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
-use PHPUnit\TextUI\XmlConfiguration\Configuration;
+use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Printer;
@@ -122,8 +122,8 @@ final class TestRunner
             $tooFewColumnsRequested = true;
         }
 
-        if (\PHPUnit\TextUI\Configuration::get()->hasBootstrap()) {
-            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = \PHPUnit\TextUI\Configuration::get()->bootstrap();
+        if (Configuration::get()->hasBootstrap()) {
+            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = Configuration::get()->bootstrap();
         }
 
         if ($arguments['backupGlobals'] === true) {
@@ -149,7 +149,7 @@ final class TestRunner
             } elseif (isset($arguments['cacheResultFile'])) {
                 $cacheResultFile = $arguments['cacheResultFile'];
             } elseif (isset($arguments['configurationObject'])) {
-                assert($arguments['configurationObject'] instanceof Configuration);
+                assert($arguments['configurationObject'] instanceof XmlConfiguration);
 
                 $cacheResultFile = dirname(realpath($arguments['configurationObject']->filename())) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
             } else {
@@ -393,7 +393,7 @@ final class TestRunner
             }
 
             if (isset($arguments['configurationObject'])) {
-                assert($arguments['configurationObject'] instanceof Configuration);
+                assert($arguments['configurationObject'] instanceof XmlConfiguration);
 
                 $codeCoverageConfiguration = $arguments['configurationObject']->codeCoverage();
 
@@ -491,7 +491,7 @@ final class TestRunner
             }
 
             if (isset($arguments['configurationObject'])) {
-                assert($arguments['configurationObject'] instanceof Configuration);
+                assert($arguments['configurationObject'] instanceof XmlConfiguration);
 
                 $this->writeMessage(
                     'Configuration',
@@ -534,7 +534,7 @@ final class TestRunner
         }
 
         if (isset($arguments['configurationObject'])) {
-            assert($arguments['configurationObject'] instanceof Configuration);
+            assert($arguments['configurationObject'] instanceof XmlConfiguration);
 
             if ($arguments['configurationObject']->hasValidationErrors()) {
                 if ((new SchemaDetector)->detect($arguments['configurationObject']->filename())->detected()) {
