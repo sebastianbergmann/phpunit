@@ -13,7 +13,7 @@ $_SERVER['argv'][] = realpath(__DIR__ . '/../execution-order/_files/MultiDepende
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main(false);
+PHPUnit\TextUI\Application::main(false);
 
 print file_get_contents($target);
 --EXPECTF--

@@ -12,7 +12,7 @@ copy(__DIR__ . '/migration-from-85/phpunit-8.5.xml', 'custom.xml');
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

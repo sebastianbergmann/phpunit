@@ -11,6 +11,6 @@ $_SERVER['argv'][] = realpath(__DIR__ . '/../../unit/Util/ColorTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF_EXTERNAL--
 _files/raw_output_ColorTest.txt

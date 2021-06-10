@@ -10,7 +10,7 @@ $_SERVER['argv'][] = '3502';
 $_SERVER['argv'][] = __DIR__ . '/../_files/NumericGroupAnnotationTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

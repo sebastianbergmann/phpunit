@@ -14,7 +14,7 @@ $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/TestWithDifferentSizes.p
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

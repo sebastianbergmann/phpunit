@@ -11,6 +11,6 @@ $_SERVER['argv'][] = '--verbose';
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF_EXTERNAL--
 _files/raw_output_StatusTest.txt

@@ -12,7 +12,7 @@ $_SERVER['argv'][] = realpath(__DIR__ . '/../../unit/Util/ColorTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

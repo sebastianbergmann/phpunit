@@ -8,7 +8,7 @@ $_SERVER['argv'][] = '--verbose';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../_files/phpt-unsupported-section.phpt');
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

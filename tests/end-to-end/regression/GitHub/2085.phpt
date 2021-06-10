@@ -22,7 +22,7 @@ $_SERVER['argv'][] = '--default-time-limit=1';
 $_SERVER['argv'][] = __DIR__ . '/2085/Issue2085Test.php';
 
 require __DIR__ . '/../../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

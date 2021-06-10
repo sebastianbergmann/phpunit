@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '#1-3';
 $_SERVER['argv'][] = __DIR__ . '/../_files/DataProviderFilterTest.php';
 
 require __DIR__ . '/../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

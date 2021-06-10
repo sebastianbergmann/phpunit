@@ -9,7 +9,7 @@ $_SERVER['argv'][] = __DIR__ . '/../_files/OneClassPerFile/wrongClassName/';
 require __DIR__ . '/../bootstrap.php';
 
 try {
-    PHPUnit\TextUI\Command::main();
+    PHPUnit\TextUI\Application::main();
 } catch (\Exception $e) {
     echo $e->getMessage();
 }

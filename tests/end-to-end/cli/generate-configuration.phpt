@@ -13,7 +13,7 @@ $_SERVER['argv'][] = '--generate-configuration';
 
 require __DIR__ . '/../../bootstrap.php';
 chdir(sys_get_temp_dir());
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

@@ -5,7 +5,7 @@ Test fail on missing bootstrap
 --FILE--
 <?php declare(strict_types=1);
 require __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

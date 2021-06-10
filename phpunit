@@ -81,4 +81,4 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
 
 require PHPUNIT_COMPOSER_INSTALL;
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
