@@ -259,10 +259,6 @@ final class Command
 
                 exit(self::EXCEPTION_EXIT);
             }
-
-            if (isset($this->arguments['warmCoverageCache'])) {
-                $this->handleWarmCoverageCache($configurationObject);
-            }
         } else {
             try {
                 Configuration::initFromCli($arguments);
@@ -276,6 +272,10 @@ final class Command
         }
 
         Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
+
+        if (isset($this->arguments['warmCoverageCache'])) {
+            $this->handleWarmCoverageCache($configurationObject);
+        }
 
         if ($arguments->hasListGroups() && $arguments->listGroups()) {
             $this->execute(new ListGroupsCommand(Configuration::get()->testSuite()));
@@ -344,11 +344,7 @@ final class Command
     {
         $this->printVersionString();
 
-        if (isset($this->arguments['coverageCacheDirectory'])) {
-            $cacheDirectory = $this->arguments['coverageCacheDirectory'];
-        } elseif ($configuration->codeCoverage()->hasCacheDirectory()) {
-            $cacheDirectory = $configuration->codeCoverage()->cacheDirectory()->path();
-        } else {
+        if (!Configuration::get()->hasCoverageCacheDirectory()) {
             print 'Cache for static analysis has not been configured' . PHP_EOL;
 
             exit(self::EXCEPTION_EXIT);
@@ -383,7 +379,7 @@ final class Command
         print 'Warming cache for static analysis ... ';
 
         (new CacheWarmer)->warmCache(
-            $cacheDirectory,
+            Configuration::get()->coverageCacheDirectory(),
             !$configuration->codeCoverage()->disableCodeCoverageIgnore(),
             $configuration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $filter

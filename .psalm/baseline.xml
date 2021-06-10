@@ -828,18 +828,12 @@
     </MissingReturnType>
   </file>
   <file src="src/TextUI/Command.php">
-    <DeprecatedMethod occurrences="2">
-      <code>cacheDirectory</code>
-      <code>hasCacheDirectory</code>
-    </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="14">
+    <MissingThrowsDocblock occurrences="12">
       <code>atLeastVersion</code>
-      <code>cacheDirectory</code>
       <code>configuration</code>
       <code>configuration</code>
       <code>configuration</code>
-      <code>handleListTests</code>
-      <code>handleListTestsXml</code>
+      <code>coverageCacheDirectory</code>
       <code>includePath</code>
       <code>iniSettings</code>
       <code>listTestsXml</code>
@@ -848,6 +842,9 @@
       <code>unrecognizedOrderBy</code>
       <code>useDefaultConfiguration</code>
     </MissingThrowsDocblock>
+    <PossiblyNullArgument occurrences="1">
+      <code>$configurationObject</code>
+    </PossiblyNullArgument>
     <PossiblyNullReference occurrences="1">
       <code>testSuite</code>
     </PossiblyNullReference>
@@ -855,8 +852,24 @@
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>
   </file>
+  <file src="src/TextUI/Command/Commands/ListTestsAsTextCommand.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;suite-&gt;getIterator()</code>
+    </ArgumentTypeCoercion>
+  </file>
+  <file src="src/TextUI/Command/Commands/ListTestsAsXmlCommand.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;suite-&gt;getIterator()</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/TextUI/Configuration.php">
-    <MissingThrowsDocblock occurrences="20">
+    <DeprecatedMethod occurrences="4">
+      <code>cacheDirectory</code>
+      <code>cacheResultFile</code>
+      <code>hasCacheDirectory</code>
+      <code>hasCacheResultFile</code>
+    </DeprecatedMethod>
+    <MissingThrowsDocblock occurrences="29">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -866,6 +879,15 @@
       <code>bootstrap</code>
       <code>bootstrap</code>
       <code>bootstrap</code>
+      <code>cacheDirectory</code>
+      <code>cacheDirectory</code>
+      <code>cacheDirectory</code>
+      <code>cacheDirectory</code>
+      <code>cacheResultFile</code>
+      <code>cacheResultFile</code>
+      <code>cacheResultFile</code>
+      <code>coverageCacheDirectory</code>
+      <code>coverageCacheDirectory</code>
       <code>defaultTestSuite</code>
       <code>map</code>
       <code>new TestSuite</code>
@@ -1277,11 +1299,6 @@
       <code>$this-&gt;stream</code>
     </RedundantConditionGivenDocblockType>
   </file>
-  <file src="src/Util/TextTestListRenderer.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$suite-&gt;getIterator()</code>
-    </ArgumentTypeCoercion>
-  </file>
   <file src="src/Util/VersionComparisonOperator.php">
     <MissingThrowsDocblock occurrences="1">
       <code>ensureOperatorIsValid</code>
@@ -1302,10 +1319,5 @@
     <MissingReturnType occurrences="1">
       <code>xmlToVariable</code>
     </MissingReturnType>
-  </file>
-  <file src="src/Util/XmlTestListRenderer.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$suite-&gt;getIterator()</code>
-    </ArgumentTypeCoercion>
   </file>
 </files>

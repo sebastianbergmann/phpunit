@@ -9,7 +9,9 @@
  */
 namespace PHPUnit\TextUI;
 
+use const DIRECTORY_SEPARATOR;
 use function assert;
+use function dirname;
 use function is_dir;
 use function is_file;
 use function is_readable;
@@ -20,6 +22,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
+use PHPUnit\Util\Filesystem;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use Throwable;
 
@@ -36,6 +39,12 @@ final class Configuration
     private ?TestSuite $testSuite;
 
     private ?string $bootstrap;
+
+    private ?string $cacheDirectory;
+
+    private ?string $coverageCacheDirectory;
+
+    private string $testResultCacheFile;
 
     public static function get(): self
     {
@@ -71,7 +80,38 @@ final class Configuration
             );
         }
 
-        self::$instance = new self($testSuite, $bootstrap);
+        $cacheDirectory         = null;
+        $coverageCacheDirectory = null;
+
+        if ($cliConfiguration->hasCacheDirectory() && Filesystem::createDirectory($cliConfiguration->cacheDirectory())) {
+            $cacheDirectory         = realpath($cliConfiguration->cacheDirectory());
+            $coverageCacheDirectory = $cacheDirectory . DIRECTORY_SEPARATOR . 'code-coverage';
+            $testResultCacheFile    = $cacheDirectory . DIRECTORY_SEPARATOR . 'test-results';
+        } elseif ($cliConfiguration->hasCoverageCacheDirectory() && Filesystem::createDirectory($cliConfiguration->coverageCacheDirectory())) {
+            $coverageCacheDirectory = realpath($cliConfiguration->coverageCacheDirectory());
+        }
+
+        if (!isset($testResultCacheFile)) {
+            if ($cliConfiguration->hasCacheResultFile()) {
+                $testResultCacheFile = $cliConfiguration->cacheResultFile();
+            } else {
+                $candidate = realpath($_SERVER['PHP_SELF']);
+
+                if ($candidate) {
+                    $testResultCacheFile = dirname($candidate) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
+                } else {
+                    $testResultCacheFile = '.phpunit.result.cache';
+                }
+            }
+        }
+
+        self::$instance = new self(
+            $testSuite,
+            $bootstrap,
+            $cacheDirectory,
+            $coverageCacheDirectory,
+            $testResultCacheFile
+        );
     }
 
     /**
@@ -118,13 +158,54 @@ final class Configuration
             );
         }
 
-        self::$instance = new self($testSuite, $bootstrap);
+        $cacheDirectory         = null;
+        $coverageCacheDirectory = null;
+
+        if ($cliConfiguration->hasCacheDirectory() && Filesystem::createDirectory($cliConfiguration->cacheDirectory())) {
+            $cacheDirectory = realpath($cliConfiguration->cacheDirectory());
+        } elseif ($xmlConfiguration->phpunit()->hasCacheDirectory() && Filesystem::createDirectory($xmlConfiguration->phpunit()->cacheDirectory())) {
+            $cacheDirectory = realpath($xmlConfiguration->phpunit()->cacheDirectory());
+        }
+
+        if ($cacheDirectory !== null) {
+            $coverageCacheDirectory = $cacheDirectory . DIRECTORY_SEPARATOR . 'code-coverage';
+            $testResultCacheFile    = $cacheDirectory . DIRECTORY_SEPARATOR . 'test-results';
+        }
+
+        if ($coverageCacheDirectory === null) {
+            if ($cliConfiguration->hasCoverageCacheDirectory() && Filesystem::createDirectory($cliConfiguration->coverageCacheDirectory())) {
+                $coverageCacheDirectory = realpath($cliConfiguration->coverageCacheDirectory());
+            } elseif ($xmlConfiguration->codeCoverage()->hasCacheDirectory()) {
+                $coverageCacheDirectory = $xmlConfiguration->codeCoverage()->cacheDirectory()->path();
+            }
+        }
+
+        if (!isset($testResultCacheFile)) {
+            if ($cliConfiguration->hasCacheResultFile()) {
+                $testResultCacheFile = $cliConfiguration->cacheResultFile();
+            } elseif ($xmlConfiguration->phpunit()->hasCacheResultFile()) {
+                $testResultCacheFile = $xmlConfiguration->phpunit()->cacheResultFile();
+            } else {
+                $testResultCacheFile = dirname(realpath($xmlConfiguration->filename())) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
+            }
+        }
+
+        self::$instance = new self(
+            $testSuite,
+            $bootstrap,
+            $cacheDirectory,
+            $coverageCacheDirectory,
+            $testResultCacheFile
+        );
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile)
     {
-        $this->testSuite = $testSuite;
-        $this->bootstrap = $bootstrap;
+        $this->testSuite              = $testSuite;
+        $this->bootstrap              = $bootstrap;
+        $this->cacheDirectory         = $cacheDirectory;
+        $this->coverageCacheDirectory = $coverageCacheDirectory;
+        $this->testResultCacheFile    = $testResultCacheFile;
     }
 
     /**
@@ -165,6 +246,51 @@ final class Configuration
         }
 
         return $this->bootstrap;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->cacheDirectory
+     */
+    public function hasCacheDirectory(): bool
+    {
+        return $this->cacheDirectory !== null;
+    }
+
+    /**
+     * @throws NoCacheDirectoryException
+     */
+    public function cacheDirectory(): string
+    {
+        if ($this->cacheDirectory === null) {
+            throw new NoCacheDirectoryException;
+        }
+
+        return $this->cacheDirectory;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->coverageCacheDirectory
+     */
+    public function hasCoverageCacheDirectory(): bool
+    {
+        return $this->coverageCacheDirectory !== null;
+    }
+
+    /**
+     * @throws NoCoverageCacheDirectoryException
+     */
+    public function coverageCacheDirectory(): string
+    {
+        if ($this->coverageCacheDirectory === null) {
+            throw new NoCoverageCacheDirectoryException;
+        }
+
+        return $this->coverageCacheDirectory;
+    }
+
+    public function testResultCacheFile(): string
+    {
+        return $this->testResultCacheFile;
     }
 
     /**
