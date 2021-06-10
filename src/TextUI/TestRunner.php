@@ -837,10 +837,6 @@ final class TestRunner
             $arguments['executionOrder']                                  = $arguments['executionOrder'] ?? $phpunitConfiguration->executionOrder();
             $arguments['resolveDependencies']                             = $arguments['resolveDependencies'] ?? $phpunitConfiguration->resolveDependencies();
 
-            if (!isset($arguments['bootstrap']) && $phpunitConfiguration->hasBootstrap()) {
-                $arguments['bootstrap'] = $phpunitConfiguration->bootstrap();
-            }
-
             if (!isset($arguments['executionOrderDefects'])) {
                 $arguments['executionOrderDefects'] = $phpunitConfiguration->defectsFirst() ? TestSuiteSorter::ORDER_DEFECTS_FIRST : TestSuiteSorter::ORDER_DEFAULT;
             }
