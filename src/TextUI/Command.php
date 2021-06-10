@@ -21,7 +21,6 @@ use function is_dir;
 use function is_file;
 use function realpath;
 use function sprintf;
-use function version_compare;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Runner\Extension\PharLoader;
@@ -30,6 +29,7 @@ use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\CliArguments\Mapper;
+use PHPUnit\TextUI\Command\AtLeastVersionCommand;
 use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
 use PHPUnit\TextUI\Command\ListGroupsCommand;
 use PHPUnit\TextUI\Command\ListTestsAsTextCommand;
@@ -146,11 +146,7 @@ final class Command
         }
 
         if ($arguments->hasAtLeastVersion()) {
-            if (version_compare(Version::id(), $arguments->atLeastVersion(), '>=')) {
-                exit(self::SUCCESS_EXIT);
-            }
-
-            exit(self::FAILURE_EXIT);
+            $this->execute(new AtLeastVersionCommand($arguments->atLeastVersion()));
         }
 
         if ($arguments->hasVersion() && $arguments->version()) {
