@@ -828,17 +828,15 @@
     </MissingReturnType>
   </file>
   <file src="src/TextUI/Command.php">
-    <MissingThrowsDocblock occurrences="12">
+    <MissingThrowsDocblock occurrences="10">
       <code>atLeastVersion</code>
       <code>configuration</code>
       <code>configuration</code>
       <code>configuration</code>
-      <code>coverageCacheDirectory</code>
       <code>includePath</code>
       <code>iniSettings</code>
       <code>listTestsXml</code>
       <code>mapToLegacyArray</code>
-      <code>stop</code>
       <code>unrecognizedOrderBy</code>
       <code>useDefaultConfiguration</code>
     </MissingThrowsDocblock>
@@ -855,6 +853,12 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$this-&gt;suite-&gt;getIterator()</code>
     </ArgumentTypeCoercion>
+  </file>
+  <file src="src/TextUI/Command/Commands/WarmCodeCoverageCacheCommand.php">
+    <MissingThrowsDocblock occurrences="2">
+      <code>coverageCacheDirectory</code>
+      <code>stop</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration.php">
     <DeprecatedMethod occurrences="4">
