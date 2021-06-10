@@ -73,7 +73,7 @@ final class Configuration
         return self::$instance;
     }
 
-    public static function initFromCli(CliConfiguration $cliConfiguration): void
+    public static function initFromCli(CliConfiguration $cliConfiguration): self
     {
         $bootstrap = null;
 
@@ -191,12 +191,14 @@ final class Configuration
             $failOnSkipped,
             $failOnWarning
         );
+
+        return self::$instance;
     }
 
     /**
      * @throws TestFileNotFoundException
      */
-    public static function initFromCliAndXml(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
+    public static function initFromCliAndXml(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): self
     {
         $bootstrap = null;
 
@@ -342,6 +344,8 @@ final class Configuration
             $failOnSkipped,
             $failOnWarning
         );
+
+        return self::$instance;
     }
 
     private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning)

@@ -240,7 +240,7 @@ final class Command
 
         if (isset($configurationObject)) {
             try {
-                Configuration::initFromCliAndXml(
+                $configuration = Configuration::initFromCliAndXml(
                     $arguments,
                     $configurationObject
                 );
@@ -253,7 +253,7 @@ final class Command
             }
         } else {
             try {
-                Configuration::initFromCli($arguments);
+                $configuration = Configuration::initFromCli($arguments);
             } catch (Exception $e) {
                 $this->printVersionString();
 
@@ -263,14 +263,14 @@ final class Command
             }
         }
 
-        Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
+        Event\Facade::emitter()->testRunnerConfigurationCombined($configuration);
 
         if ($arguments->hasWarmCoverageCache() && $arguments->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand);
         }
 
         if ($arguments->hasListGroups() && $arguments->listGroups()) {
-            $this->execute(new ListGroupsCommand(Configuration::get()->testSuite()));
+            $this->execute(new ListGroupsCommand($configuration->testSuite()));
         }
 
         if (isset($configurationObject) && $arguments->hasListSuites() && $arguments->listSuites()) {
@@ -278,14 +278,14 @@ final class Command
         }
 
         if ($arguments->hasListTests() && $arguments->listTests()) {
-            $this->execute(new ListTestsAsTextCommand(Configuration::get()->testSuite()));
+            $this->execute(new ListTestsAsTextCommand($configuration->testSuite()));
         }
 
         if ($arguments->hasListTestsXml() && $arguments->listTestsXml()) {
             $this->execute(
                 new ListTestsAsXmlCommand(
                     $arguments->listTestsXml(),
-                    Configuration::get()->testSuite()
+                    $configuration->testSuite()
                 )
             );
         }
@@ -390,24 +390,26 @@ final class Command
             $returnCode = self::SUCCESS_EXIT;
         }
 
-        if (Configuration::get()->failOnEmptyTestSuite() && count($result) === 0) {
+        $configuration = Configuration::get();
+
+        if ($configuration->failOnEmptyTestSuite() && count($result) === 0) {
             $returnCode = self::FAILURE_EXIT;
         }
 
         if ($result->wasSuccessfulIgnoringWarnings()) {
-            if (Configuration::get()->failOnRisky() && !$result->allHarmless()) {
+            if ($configuration->failOnRisky() && !$result->allHarmless()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if (Configuration::get()->failOnWarning() && $result->warningCount() > 0) {
+            if ($configuration->failOnWarning() && $result->warningCount() > 0) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if (Configuration::get()->failOnIncomplete() && $result->notImplementedCount() > 0) {
+            if ($configuration->failOnIncomplete() && $result->notImplementedCount() > 0) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if (Configuration::get()->failOnSkipped() && $result->skippedCount() > 0) {
+            if ($configuration->failOnSkipped() && $result->skippedCount() > 0) {
                 $returnCode = self::FAILURE_EXIT;
             }
         }

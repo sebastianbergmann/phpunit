@@ -118,8 +118,10 @@ final class TestRunner
             $tooFewColumnsRequested = true;
         }
 
-        if (Configuration::get()->hasBootstrap()) {
-            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = Configuration::get()->bootstrap();
+        $configuration = Configuration::get();
+
+        if ($configuration->hasBootstrap()) {
+            $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $configuration->bootstrap();
         }
 
         if ($arguments['backupGlobals'] === true) {
@@ -138,8 +140,8 @@ final class TestRunner
             mt_srand($arguments['randomOrderSeed']);
         }
 
-        if (Configuration::get()->cacheResult()) {
-            $cache = new DefaultTestResultCache(Configuration::get()->testResultCacheFile());
+        if ($configuration->cacheResult()) {
+            $cache = new DefaultTestResultCache($configuration->testResultCacheFile());
 
             $this->addExtension(new ResultCacheExtension($cache));
         }
@@ -400,8 +402,8 @@ final class TestRunner
                     CodeCoverage::activate($this->codeCoverageFilter, false);
                 }
 
-                if (Configuration::get()->hasCoverageCacheDirectory()) {
-                    CodeCoverage::instance()->cacheStaticAnalysis(Configuration::get()->coverageCacheDirectory());
+                if ($configuration->hasCoverageCacheDirectory()) {
+                    CodeCoverage::instance()->cacheStaticAnalysis($configuration->coverageCacheDirectory());
                 }
 
                 CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
@@ -410,13 +412,13 @@ final class TestRunner
                     CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
                 }
 
-                if (Configuration::get()->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
+                if ($configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
                     CodeCoverage::instance()->ignoreDeprecatedCode();
                 } else {
                     CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
                 }
 
-                if (Configuration::get()->disableCodeCoverageIgnore()) {
+                if ($configuration->disableCodeCoverageIgnore()) {
                     CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
                 } else {
                     CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
