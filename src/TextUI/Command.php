@@ -273,7 +273,7 @@ final class Command
 
         Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
 
-        if (isset($this->arguments['warmCoverageCache'])) {
+        if (isset($configurationObject) && isset($this->arguments['warmCoverageCache'])) {
             $this->handleWarmCoverageCache($configurationObject);
         }
 
@@ -281,7 +281,7 @@ final class Command
             $this->execute(new ListGroupsCommand(Configuration::get()->testSuite()));
         }
 
-        if ($arguments->hasListSuites() && $arguments->listSuites()) {
+        if (isset($configurationObject) && $arguments->hasListSuites() && $arguments->listSuites()) {
             $this->execute(new ListTestSuitesCommand($configurationObject->testSuite()));
         }
 

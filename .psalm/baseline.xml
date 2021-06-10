@@ -842,12 +842,6 @@
       <code>unrecognizedOrderBy</code>
       <code>useDefaultConfiguration</code>
     </MissingThrowsDocblock>
-    <PossiblyNullArgument occurrences="1">
-      <code>$configurationObject</code>
-    </PossiblyNullArgument>
-    <PossiblyNullReference occurrences="1">
-      <code>testSuite</code>
-    </PossiblyNullReference>
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>
