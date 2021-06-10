@@ -37,10 +37,9 @@ use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
 use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
+use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
-use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
@@ -271,7 +270,7 @@ final class Command
         Event\Facade::emitter()->testRunnerConfigurationCombined(Configuration::get());
 
         if ($arguments->hasWarmCoverageCache() && $arguments->warmCoverageCache()) {
-            $this->handleWarmCoverageCache();
+            $this->execute(new WarmCodeCoverageCacheCommand);
         }
 
         if ($arguments->hasListGroups() && $arguments->listGroups()) {
@@ -335,41 +334,6 @@ final class Command
         }
 
         exit(self::EXCEPTION_EXIT);
-    }
-
-    private function handleWarmCoverageCache(): void
-    {
-        $this->printVersionString();
-
-        if (!Configuration::get()->hasCoverageCacheDirectory()) {
-            print 'Cache for static analysis has not been configured' . PHP_EOL;
-
-            exit(self::EXCEPTION_EXIT);
-        }
-
-        $filter = Configuration::get()->codeCoverageFilter();
-
-        if ($filter->isEmpty()) {
-            print 'Filter for code coverage has not been configured' . PHP_EOL;
-
-            exit(self::EXCEPTION_EXIT);
-        }
-
-        $timer = new Timer;
-        $timer->start();
-
-        print 'Warming cache for static analysis ... ';
-
-        (new CacheWarmer)->warmCache(
-            Configuration::get()->coverageCacheDirectory(),
-            !Configuration::get()->disableCodeCoverageIgnore(),
-            Configuration::get()->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
-            $filter
-        );
-
-        print 'done [' . $timer->stop()->asString() . ']' . PHP_EOL;
-
-        exit(self::SUCCESS_EXIT);
     }
 
     private function configurationFilePath(CliConfiguration $cliConfiguration): string|false
