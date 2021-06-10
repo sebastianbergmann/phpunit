@@ -22,4 +22,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
   <testCaseMethod name="testAdd" groups="default" dataSet="#2"/>
   <testCaseMethod name="testAdd" groups="default" dataSet="#3"/>
  </testCaseClass>
-</tests>
+</tests>%A
