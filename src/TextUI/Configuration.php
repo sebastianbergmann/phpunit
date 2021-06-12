@@ -66,6 +66,8 @@ final class Configuration
 
     private bool $failOnWarning;
 
+    private bool $outputToStandardErrorStream;
+
     public static function get(): self
     {
         assert(self::$instance instanceof self);
@@ -175,6 +177,12 @@ final class Configuration
             $failOnWarning = false;
         }
 
+        $outputToStandardErrorStream = false;
+
+        if ($cliConfiguration->hasStderr() && $cliConfiguration->stderr()) {
+            $outputToStandardErrorStream = true;
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -189,7 +197,8 @@ final class Configuration
             $failOnIncomplete,
             $failOnRisky,
             $failOnSkipped,
-            $failOnWarning
+            $failOnWarning,
+            $outputToStandardErrorStream
         );
 
         return self::$instance;
@@ -328,6 +337,12 @@ final class Configuration
             $failOnWarning = $xmlConfiguration->phpunit()->failOnWarning();
         }
 
+        if ($cliConfiguration->hasStderr() && $cliConfiguration->stderr()) {
+            $outputToStandardErrorStream = true;
+        } else {
+            $outputToStandardErrorStream = $xmlConfiguration->phpunit()->stderr();
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -342,13 +357,14 @@ final class Configuration
             $failOnIncomplete,
             $failOnRisky,
             $failOnSkipped,
-            $failOnWarning
+            $failOnWarning,
+            $outputToStandardErrorStream
         );
 
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream)
     {
         $this->testSuite                                 = $testSuite;
         $this->bootstrap                                 = $bootstrap;
@@ -364,6 +380,7 @@ final class Configuration
         $this->failOnRisky                               = $failOnRisky;
         $this->failOnSkipped                             = $failOnSkipped;
         $this->failOnWarning                             = $failOnWarning;
+        $this->outputToStandardErrorStream               = $outputToStandardErrorStream;
     }
 
     /**
@@ -494,6 +511,11 @@ final class Configuration
     public function failOnWarning(): bool
     {
         return $this->failOnWarning;
+    }
+
+    public function outputToStandardErrorStream(): bool
+    {
+        return $this->outputToStandardErrorStream;
     }
 
     /**

@@ -146,10 +146,6 @@ final class Mapper
             $result['repeat'] = $arguments->repeat();
         }
 
-        if ($arguments->hasStderr()) {
-            $result['stderr'] = $arguments->stderr();
-        }
-
         if ($arguments->hasStopOnDefect()) {
             $result['stopOnDefect'] = $arguments->stopOnDefect();
         }

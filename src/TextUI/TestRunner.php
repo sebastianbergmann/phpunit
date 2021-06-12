@@ -1030,8 +1030,10 @@ final class TestRunner
      */
     private function createPrinter(string $className, array $arguments): ResultPrinter
     {
+        $configuration = Configuration::get();
+
         $object = new $className(
-            (isset($arguments['stderr']) && $arguments['stderr'] === true) ? 'php://stderr' : null,
+            $configuration->outputToStandardErrorStream() ? 'php://stderr' : null,
             $arguments['verbose'],
             $arguments['colors'],
             $arguments['debug'],
