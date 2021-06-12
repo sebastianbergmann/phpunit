@@ -220,7 +220,9 @@ final class Application
 
             (new PhpHandler)->handle($configurationObject->php());
 
-            if (!isset($this->arguments['noExtensions']) && $phpunitConfiguration->hasExtensionsDirectory() && extension_loaded('phar')) {
+            if (!($arguments->hasNoExtensions() && $arguments->noExtensions()) &&
+                $phpunitConfiguration->hasExtensionsDirectory() &&
+                extension_loaded('phar')) {
                 $result = (new PharLoader)->loadPharExtensionsInDirectory($phpunitConfiguration->extensionsDirectory());
 
                 $this->arguments['loadedExtensions']    = $result['loadedExtensions'];

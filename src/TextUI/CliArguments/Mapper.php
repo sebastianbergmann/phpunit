@@ -190,10 +190,6 @@ final class Mapper
             $result['testdoxXMLFile'] = $arguments->testdoxXmlFile();
         }
 
-        if ($arguments->hasNoExtensions()) {
-            $result['noExtensions'] = $arguments->noExtensions();
-        }
-
         if ($arguments->hasNoCoverage()) {
             $result['noCoverage'] = $arguments->noCoverage();
         }
