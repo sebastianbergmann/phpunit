@@ -24,7 +24,6 @@ use ReflectionUnionType;
 use SebastianBergmann\Type\ReflectionMapper;
 use SebastianBergmann\Type\Type;
 use SebastianBergmann\Type\UnknownType;
-use SebastianBergmann\Type\VoidType;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -147,9 +146,9 @@ final class MockMethod
     {
         if ($this->static) {
             $templateFile = 'mocked_static_method.tpl';
-        } elseif ($this->returnType instanceof VoidType) {
+        } elseif ($this->returnType->isNever() || $this->returnType->isVoid()) {
             $templateFile = sprintf(
-                '%s_method_void.tpl',
+                '%s_method_never_or_void.tpl',
                 $this->callOriginalMethod ? 'proxied' : 'mocked'
             );
         } else {
