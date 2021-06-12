@@ -819,15 +819,7 @@
       <code>$this-&gt;cache !== null</code>
     </RedundantCondition>
   </file>
-  <file src="src/TextUI/CliArguments/Builder.php">
-    <MissingThrowsDocblock occurrences="1"/>
-  </file>
-  <file src="src/TextUI/CliArguments/Configuration.php">
-    <MissingReturnType occurrences="1">
-      <code>columns</code>
-    </MissingReturnType>
-  </file>
-  <file src="src/TextUI/Command.php">
+  <file src="src/TextUI/Application.php">
     <MissingThrowsDocblock occurrences="10">
       <code>atLeastVersion</code>
       <code>configuration</code>
@@ -843,6 +835,14 @@
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>
+  </file>
+  <file src="src/TextUI/CliArguments/Builder.php">
+    <MissingThrowsDocblock occurrences="1"/>
+  </file>
+  <file src="src/TextUI/CliArguments/Configuration.php">
+    <MissingReturnType occurrences="1">
+      <code>columns</code>
+    </MissingReturnType>
   </file>
   <file src="src/TextUI/Command/Commands/ListTestsAsTextCommand.php">
     <ArgumentTypeCoercion occurrences="1">
