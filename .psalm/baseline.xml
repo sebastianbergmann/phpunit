@@ -839,11 +839,6 @@
   <file src="src/TextUI/CliArguments/Builder.php">
     <MissingThrowsDocblock occurrences="1"/>
   </file>
-  <file src="src/TextUI/CliArguments/Configuration.php">
-    <MissingReturnType occurrences="1">
-      <code>columns</code>
-    </MissingReturnType>
-  </file>
   <file src="src/TextUI/Command/Commands/ListTestsAsTextCommand.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$this-&gt;suite-&gt;getIterator()</code>
