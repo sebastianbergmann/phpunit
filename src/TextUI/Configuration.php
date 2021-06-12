@@ -73,6 +73,8 @@ final class Configuration
 
     private bool $tooFewColumnsRequested;
 
+    private bool $loadPharExtensions;
+
     public static function get(): self
     {
         assert(self::$instance instanceof self);
@@ -200,6 +202,12 @@ final class Configuration
             $tooFewColumnsRequested = true;
         }
 
+        $loadPharExtensions = true;
+
+        if ($cliConfiguration->hasNoExtensions() && $cliConfiguration->noExtensions()) {
+            $loadPharExtensions = false;
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -217,7 +225,8 @@ final class Configuration
             $failOnWarning,
             $outputToStandardErrorStream,
             $columns,
-            $tooFewColumnsRequested
+            $tooFewColumnsRequested,
+            $loadPharExtensions
         );
 
         return self::$instance;
@@ -375,6 +384,12 @@ final class Configuration
             $tooFewColumnsRequested = true;
         }
 
+        $loadPharExtensions = true;
+
+        if ($cliConfiguration->hasNoExtensions() && $cliConfiguration->noExtensions()) {
+            $loadPharExtensions = false;
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -392,13 +407,14 @@ final class Configuration
             $failOnWarning,
             $outputToStandardErrorStream,
             $columns,
-            $tooFewColumnsRequested
+            $tooFewColumnsRequested,
+            $loadPharExtensions
         );
 
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions)
     {
         $this->testSuite                                 = $testSuite;
         $this->bootstrap                                 = $bootstrap;
@@ -417,6 +433,7 @@ final class Configuration
         $this->outputToStandardErrorStream               = $outputToStandardErrorStream;
         $this->columns                                   = $columns;
         $this->tooFewColumnsRequested                    = $tooFewColumnsRequested;
+        $this->loadPharExtensions                        = $loadPharExtensions;
     }
 
     /**
@@ -562,6 +579,11 @@ final class Configuration
     public function tooFewColumnsRequested(): bool
     {
         return $this->tooFewColumnsRequested;
+    }
+
+    public function loadPharExtensions(): bool
+    {
+        return $this->loadPharExtensions;
     }
 
     /**

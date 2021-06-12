@@ -216,20 +216,7 @@ final class Application
         }
 
         if (isset($configurationObject)) {
-            $phpunitConfiguration = $configurationObject->phpunit();
-
             (new PhpHandler)->handle($configurationObject->php());
-
-            if (!($arguments->hasNoExtensions() && $arguments->noExtensions()) &&
-                $phpunitConfiguration->hasExtensionsDirectory() &&
-                extension_loaded('phar')) {
-                $result = (new PharLoader)->loadPharExtensionsInDirectory($phpunitConfiguration->extensionsDirectory());
-
-                $this->arguments['loadedExtensions']    = $result['loadedExtensions'];
-                $this->arguments['notLoadedExtensions'] = $result['notLoadedExtensions'];
-
-                unset($result);
-            }
         }
 
         if (isset($configurationObject)) {
@@ -282,6 +269,18 @@ final class Application
                     $configuration->testSuite()
                 )
             );
+        }
+
+        if ($configuration->loadPharExtensions() &&
+            isset($configurationObject) &&
+            $configurationObject->phpunit()->hasExtensionsDirectory() &&
+            extension_loaded('phar')) {
+            $result = (new PharLoader)->loadPharExtensionsInDirectory($configurationObject->phpunit()->extensionsDirectory());
+
+            $this->arguments['loadedExtensions']    = $result['loadedExtensions'];
+            $this->arguments['notLoadedExtensions'] = $result['notLoadedExtensions'];
+
+            unset($result);
         }
     }
 

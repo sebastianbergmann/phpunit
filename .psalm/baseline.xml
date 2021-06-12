@@ -820,11 +820,12 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="10">
+    <MissingThrowsDocblock occurrences="11">
       <code>atLeastVersion</code>
       <code>configuration</code>
       <code>configuration</code>
       <code>configuration</code>
+      <code>extensionsDirectory</code>
       <code>includePath</code>
       <code>iniSettings</code>
       <code>listTestsXml</code>
