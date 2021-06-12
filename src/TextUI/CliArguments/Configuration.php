@@ -487,7 +487,7 @@ final class Configuration
     /**
      * @throws Exception
      */
-    public function columns()
+    public function columns(): int|string
     {
         if ($this->columns === null) {
             throw new Exception;
