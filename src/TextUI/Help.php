@@ -173,58 +173,62 @@ final class Help
         $this->columnsAvailableForDescription = $width - $this->lengthOfLongestOptionName - 4;
     }
 
-    /**
-     * Write the help file to the CLI, adapting width and colors to the console.
-     */
-    public function writeToConsole(): void
+    public function generate(): string
     {
         if ($this->hasColor) {
-            $this->writeWithColor();
-        } else {
-            $this->writePlaintext();
+            return $this->writeWithColor();
         }
+
+        return $this->writeWithoutColor();
     }
 
-    private function writePlaintext(): void
+    private function writeWithoutColor(): string
     {
+        $buffer = '';
+
         foreach (self::HELP_TEXT as $section => $options) {
-            print "{$section}:" . PHP_EOL;
+            $buffer .= "{$section}:" . PHP_EOL;
 
             if ($section !== 'Usage') {
-                print PHP_EOL;
+                $buffer .= PHP_EOL;
             }
 
             foreach ($options as $option) {
                 if (isset($option['spacer'])) {
-                    print PHP_EOL;
+                    $buffer .= PHP_EOL;
                 }
 
                 if (isset($option['text'])) {
-                    print self::LEFT_MARGIN . $option['text'] . PHP_EOL;
+                    $buffer .= self::LEFT_MARGIN . $option['text'] . PHP_EOL;
                 }
 
                 if (isset($option['arg'])) {
                     $arg = str_pad($option['arg'], $this->lengthOfLongestOptionName);
-                    print self::LEFT_MARGIN . $arg . ' ' . $option['desc'] . PHP_EOL;
+
+                    $buffer .= self::LEFT_MARGIN . $arg . ' ' . $option['desc'] . PHP_EOL;
                 }
             }
 
-            print PHP_EOL;
+            $buffer .= PHP_EOL;
         }
+
+        return $buffer;
     }
 
-    private function writeWithColor(): void
+    private function writeWithColor(): string
     {
+        $buffer = '';
+
         foreach (self::HELP_TEXT as $section => $options) {
-            print Color::colorize('fg-yellow', "{$section}:") . PHP_EOL;
+            $buffer .= Color::colorize('fg-yellow', "{$section}:") . PHP_EOL;
 
             foreach ($options as $option) {
                 if (isset($option['spacer'])) {
-                    print PHP_EOL;
+                    $buffer .= PHP_EOL;
                 }
 
                 if (isset($option['text'])) {
-                    print self::LEFT_MARGIN . $option['text'] . PHP_EOL;
+                    $buffer .= self::LEFT_MARGIN . $option['text'] . PHP_EOL;
                 }
 
                 if (isset($option['arg'])) {
@@ -236,17 +240,20 @@ final class Help
                         },
                         $arg
                     );
+
                     $desc = explode(PHP_EOL, wordwrap($option['desc'], $this->columnsAvailableForDescription, PHP_EOL));
 
-                    print self::LEFT_MARGIN . $arg . ' ' . $desc[0] . PHP_EOL;
+                    $buffer .= self::LEFT_MARGIN . $arg . ' ' . $desc[0] . PHP_EOL;
 
                     for ($i = 1; $i < count($desc); $i++) {
-                        print str_repeat(' ', $this->lengthOfLongestOptionName + 3) . $desc[$i] . PHP_EOL;
+                        $buffer .= str_repeat(' ', $this->lengthOfLongestOptionName + 3) . $desc[$i] . PHP_EOL;
                     }
                 }
             }
 
-            print PHP_EOL;
+            $buffer .= PHP_EOL;
         }
+
+        return $buffer;
     }
 }

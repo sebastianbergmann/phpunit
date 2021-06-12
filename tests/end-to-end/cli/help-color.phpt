@@ -8,6 +8,6 @@ require __DIR__ . '/../../bootstrap.php';
 
 $help = new PHPUnit\TextUI\Help(72, true);
 
-$help->writeToConsole();
+print $help->generate();
 --EXPECTF_EXTERNAL--
 _files/output-cli-help-color.txt

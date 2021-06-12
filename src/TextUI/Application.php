@@ -34,6 +34,7 @@ use PHPUnit\TextUI\Command\ListTestsAsTextCommand;
 use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
 use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
+use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
@@ -96,9 +97,7 @@ final class Application
         $runner = new TestRunner;
 
         if (!Configuration::get()->hasTestSuite()) {
-            $this->showHelp();
-
-            exit(self::EXCEPTION_EXIT);
+            $this->execute(new ShowHelpCommand(false));
         }
 
         $suite = Configuration::get()->testSuite();
@@ -158,9 +157,7 @@ final class Application
         }
 
         if ($arguments->hasHelp()) {
-            $this->showHelp();
-
-            exit(self::SUCCESS_EXIT);
+            $this->execute(new ShowHelpCommand(true));
         }
 
         if ($arguments->hasUnrecognizedOrderBy()) {
@@ -268,12 +265,6 @@ final class Application
                 )
             );
         }
-    }
-
-    private function showHelp(): void
-    {
-        $this->printVersionString();
-        (new Help)->writeToConsole();
     }
 
     private function printVersionString(): void
