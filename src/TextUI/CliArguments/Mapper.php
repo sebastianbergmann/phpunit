@@ -25,9 +25,7 @@ final class Mapper
             'listSuites'            => false,
             'listTests'             => false,
             'listTestsXml'          => false,
-            'loadedExtensions'      => [],
             'unavailableExtensions' => [],
-            'notLoadedExtensions'   => [],
         ];
 
         if ($arguments->hasColors()) {

@@ -75,6 +75,8 @@ final class Configuration
 
     private bool $loadPharExtensions;
 
+    private ?string $pharExtensionDirectory;
+
     public static function get(): self
     {
         assert(self::$instance instanceof self);
@@ -226,7 +228,8 @@ final class Configuration
             $outputToStandardErrorStream,
             $columns,
             $tooFewColumnsRequested,
-            $loadPharExtensions
+            $loadPharExtensions,
+            null
         );
 
         return self::$instance;
@@ -390,6 +393,12 @@ final class Configuration
             $loadPharExtensions = false;
         }
 
+        $pharExtensionDirectory = null;
+
+        if ($xmlConfiguration->phpunit()->hasExtensionsDirectory()) {
+            $pharExtensionDirectory = $xmlConfiguration->phpunit()->extensionsDirectory();
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -408,13 +417,14 @@ final class Configuration
             $outputToStandardErrorStream,
             $columns,
             $tooFewColumnsRequested,
-            $loadPharExtensions
+            $loadPharExtensions,
+            $pharExtensionDirectory
         );
 
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory)
     {
         $this->testSuite                                 = $testSuite;
         $this->bootstrap                                 = $bootstrap;
@@ -434,6 +444,7 @@ final class Configuration
         $this->columns                                   = $columns;
         $this->tooFewColumnsRequested                    = $tooFewColumnsRequested;
         $this->loadPharExtensions                        = $loadPharExtensions;
+        $this->pharExtensionDirectory                    = $pharExtensionDirectory;
     }
 
     /**
@@ -584,6 +595,26 @@ final class Configuration
     public function loadPharExtensions(): bool
     {
         return $this->loadPharExtensions;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->pharExtensionDirectory
+     */
+    public function hasPharExtensionDirectory(): bool
+    {
+        return $this->pharExtensionDirectory !== null;
+    }
+
+    /**
+     * @throws NoPharExtensionDirectoryException
+     */
+    public function pharExtensionDirectory(): string
+    {
+        if ($this->pharExtensionDirectory === null) {
+            throw new NoPharExtensionDirectoryException;
+        }
+
+        return $this->pharExtensionDirectory;
     }
 
     /**

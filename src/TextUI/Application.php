@@ -13,7 +13,6 @@ use const PATH_SEPARATOR;
 use const PHP_EOL;
 use function array_keys;
 use function assert;
-use function extension_loaded;
 use function getcwd;
 use function ini_get;
 use function ini_set;
@@ -23,7 +22,6 @@ use function realpath;
 use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
@@ -269,18 +267,6 @@ final class Application
                     $configuration->testSuite()
                 )
             );
-        }
-
-        if ($configuration->loadPharExtensions() &&
-            isset($configurationObject) &&
-            $configurationObject->phpunit()->hasExtensionsDirectory() &&
-            extension_loaded('phar')) {
-            $result = (new PharLoader)->loadPharExtensionsInDirectory($configurationObject->phpunit()->extensionsDirectory());
-
-            $this->arguments['loadedExtensions']    = $result['loadedExtensions'];
-            $this->arguments['notLoadedExtensions'] = $result['notLoadedExtensions'];
-
-            unset($result);
         }
     }
 

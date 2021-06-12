@@ -820,12 +820,11 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="11">
+    <MissingThrowsDocblock occurrences="10">
       <code>atLeastVersion</code>
       <code>configuration</code>
       <code>configuration</code>
       <code>configuration</code>
-      <code>extensionsDirectory</code>
       <code>includePath</code>
       <code>iniSettings</code>
       <code>listTestsXml</code>
@@ -863,7 +862,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="47">
+    <MissingThrowsDocblock occurrences="48">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -891,6 +890,7 @@
       <code>defaultTestSuite</code>
       <code>disableCodeCoverageIgnore</code>
       <code>disableCodeCoverageIgnore</code>
+      <code>extensionsDirectory</code>
       <code>failOnEmptyTestSuite</code>
       <code>failOnEmptyTestSuite</code>
       <code>failOnIncomplete</code>
@@ -960,10 +960,11 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="8">
+    <MissingThrowsDocblock occurrences="9">
       <code>bootstrap</code>
       <code>coverageCacheDirectory</code>
       <code>detect</code>
+      <code>pharExtensionDirectory</code>
       <code>reorderTestsInSuite</code>
       <code>run</code>
       <code>stop</code>
