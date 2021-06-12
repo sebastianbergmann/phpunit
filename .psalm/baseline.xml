@@ -867,7 +867,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="45">
+    <MissingThrowsDocblock occurrences="47">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -886,6 +886,8 @@
       <code>cacheResultFile</code>
       <code>cacheResultFile</code>
       <code>cacheResultFile</code>
+      <code>columns</code>
+      <code>columns</code>
       <code>coverageCacheDirectory</code>
       <code>coverageCacheDirectory</code>
       <code>coverageFilter</code>

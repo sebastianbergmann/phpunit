@@ -34,10 +34,6 @@ final class Mapper
             $result['colors'] = $arguments->colors();
         }
 
-        if ($arguments->hasColumns()) {
-            $result['columns'] = $arguments->columns();
-        }
-
         if ($arguments->hasCoverageClover()) {
             $result['coverageClover'] = $arguments->coverageClover();
         }

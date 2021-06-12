@@ -228,10 +228,6 @@ final class Application
 
                 unset($result);
             }
-
-            if (!isset($this->arguments['columns'])) {
-                $this->arguments['columns'] = $phpunitConfiguration->columns();
-            }
         }
 
         if (isset($configurationObject)) {

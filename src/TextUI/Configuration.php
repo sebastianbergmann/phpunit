@@ -14,6 +14,7 @@ use function assert;
 use function dirname;
 use function is_dir;
 use function is_file;
+use function is_int;
 use function is_readable;
 use function realpath;
 use function substr;
@@ -67,6 +68,10 @@ final class Configuration
     private bool $failOnWarning;
 
     private bool $outputToStandardErrorStream;
+
+    private int|string $columns;
+
+    private bool $tooFewColumnsRequested;
 
     public static function get(): self
     {
@@ -183,6 +188,18 @@ final class Configuration
             $outputToStandardErrorStream = true;
         }
 
+        $columns                = 80;
+        $tooFewColumnsRequested = false;
+
+        if ($cliConfiguration->hasColumns()) {
+            $columns = $cliConfiguration->columns();
+        }
+
+        if (is_int($columns) && $columns < 16) {
+            $columns                = 16;
+            $tooFewColumnsRequested = true;
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -198,7 +215,9 @@ final class Configuration
             $failOnRisky,
             $failOnSkipped,
             $failOnWarning,
-            $outputToStandardErrorStream
+            $outputToStandardErrorStream,
+            $columns,
+            $tooFewColumnsRequested
         );
 
         return self::$instance;
@@ -343,6 +362,19 @@ final class Configuration
             $outputToStandardErrorStream = $xmlConfiguration->phpunit()->stderr();
         }
 
+        $tooFewColumnsRequested = false;
+
+        if ($cliConfiguration->hasColumns()) {
+            $columns = $cliConfiguration->columns();
+        } else {
+            $columns = $xmlConfiguration->phpunit()->columns();
+        }
+
+        if (is_int($columns) && $columns < 16) {
+            $columns                = 16;
+            $tooFewColumnsRequested = true;
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -358,13 +390,15 @@ final class Configuration
             $failOnRisky,
             $failOnSkipped,
             $failOnWarning,
-            $outputToStandardErrorStream
+            $outputToStandardErrorStream,
+            $columns,
+            $tooFewColumnsRequested
         );
 
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested)
     {
         $this->testSuite                                 = $testSuite;
         $this->bootstrap                                 = $bootstrap;
@@ -381,6 +415,8 @@ final class Configuration
         $this->failOnSkipped                             = $failOnSkipped;
         $this->failOnWarning                             = $failOnWarning;
         $this->outputToStandardErrorStream               = $outputToStandardErrorStream;
+        $this->columns                                   = $columns;
+        $this->tooFewColumnsRequested                    = $tooFewColumnsRequested;
     }
 
     /**
@@ -516,6 +552,16 @@ final class Configuration
     public function outputToStandardErrorStream(): bool
     {
         return $this->outputToStandardErrorStream;
+    }
+
+    public function columns(): int|string
+    {
+        return $this->columns;
+    }
+
+    public function tooFewColumnsRequested(): bool
+    {
+        return $this->tooFewColumnsRequested;
     }
 
     /**
