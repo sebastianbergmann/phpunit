@@ -49,6 +49,8 @@ final class Configuration
 
     private ?string $coverageCacheDirectory;
 
+    private bool $pathCoverage;
+
     private string $testResultCacheFile;
 
     private CodeCoverageFilter $codeCoverageFilter;
@@ -210,6 +212,12 @@ final class Configuration
             $loadPharExtensions = false;
         }
 
+        $pathCoverage = false;
+
+        if ($cliConfiguration->hasPathCoverage() && $cliConfiguration->pathCoverage()) {
+            $pathCoverage = $cliConfiguration->pathCoverage();
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -218,6 +226,7 @@ final class Configuration
             $coverageCacheDirectory,
             $testResultCacheFile,
             $codeCoverageFilter,
+            $pathCoverage,
             false,
             $disableCodeCoverageIgnore,
             $failOnEmptyTestSuite,
@@ -399,6 +408,12 @@ final class Configuration
             $pharExtensionDirectory = $xmlConfiguration->phpunit()->extensionsDirectory();
         }
 
+        if ($cliConfiguration->hasPathCoverage() && $cliConfiguration->pathCoverage()) {
+            $pathCoverage = $cliConfiguration->pathCoverage();
+        } else {
+            $pathCoverage = $xmlConfiguration->codeCoverage()->pathCoverage();
+        }
+
         self::$instance = new self(
             $testSuite,
             $bootstrap,
@@ -407,6 +422,7 @@ final class Configuration
             $coverageCacheDirectory,
             $testResultCacheFile,
             $codeCoverageFilter,
+            $pathCoverage,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $disableCodeCoverageIgnore,
             $failOnEmptyTestSuite,
@@ -424,7 +440,7 @@ final class Configuration
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory)
+    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory)
     {
         $this->testSuite                                 = $testSuite;
         $this->bootstrap                                 = $bootstrap;
@@ -433,6 +449,7 @@ final class Configuration
         $this->coverageCacheDirectory                    = $coverageCacheDirectory;
         $this->testResultCacheFile                       = $testResultCacheFile;
         $this->codeCoverageFilter                        = $codeCoverageFilter;
+        $this->pathCoverage                              = $pathCoverage;
         $this->ignoreDeprecatedCodeUnitsFromCodeCoverage = $ignoreDeprecatedCodeUnitsFromCodeCoverage;
         $this->disableCodeCoverageIgnore                 = $disableCodeCoverageIgnore;
         $this->failOnEmptyTestSuite                      = $failOnEmptyTestSuite;
@@ -550,6 +567,11 @@ final class Configuration
     public function disableCodeCoverageIgnore(): bool
     {
         return $this->disableCodeCoverageIgnore;
+    }
+
+    public function pathCoverage(): bool
+    {
+        return $this->pathCoverage;
     }
 
     public function failOnEmptyTestSuite(): bool

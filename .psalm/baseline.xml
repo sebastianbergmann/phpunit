@@ -862,7 +862,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="48">
+    <MissingThrowsDocblock occurrences="50">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -905,6 +905,8 @@
       <code>new TestSuite</code>
       <code>new TestSuite($path)</code>
       <code>new TestSuite($testClass)</code>
+      <code>pathCoverage</code>
+      <code>pathCoverage</code>
       <code>self::handleBootstrap($bootstrap)</code>
       <code>self::handleBootstrap($bootstrap)</code>
       <code>testSuffixes</code>
