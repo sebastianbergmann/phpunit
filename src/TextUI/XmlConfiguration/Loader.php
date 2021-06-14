@@ -103,7 +103,7 @@ final class Loader
         );
     }
 
-    public function logging(string $filename, DOMXPath $xpath): Logging
+    private function logging(string $filename, DOMXPath $xpath): Logging
     {
         $junit   = null;
         $element = $this->element($xpath, 'logging/junit');
