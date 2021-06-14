@@ -28,15 +28,15 @@ use PHPUnit\TextUI\XmlConfiguration\FileCollection;
  */
 final class CodeCoverage
 {
-    private ?\PHPUnit\TextUI\XmlConfiguration\Directory $cacheDirectory;
+    private ?Directory $cacheDirectory;
 
-    private \PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection $directories;
+    private DirectoryCollection $directories;
 
-    private \PHPUnit\TextUI\XmlConfiguration\FileCollection $files;
+    private FileCollection $files;
 
-    private \PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection $excludeDirectories;
+    private DirectoryCollection $excludeDirectories;
 
-    private \PHPUnit\TextUI\XmlConfiguration\FileCollection $excludeFiles;
+    private FileCollection $excludeFiles;
 
     private bool $pathCoverage;
 
