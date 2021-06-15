@@ -1106,7 +1106,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testUnionReturnTypeIsDoubledCorrectly(): void
     {
@@ -1117,7 +1117,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testNullableUnionReturnTypeIsDoubledCorrectly(): void
     {
@@ -1128,7 +1128,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testMixedReturnTypeIsDoubledCorrectly(): void
     {
@@ -1139,7 +1139,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testStaticReturnTypeIsDoubledCorrectly(): void
     {
@@ -1150,7 +1150,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testUnionReturnTypeWithStaticIsDoubledCorrectly(): void
     {
@@ -1161,7 +1161,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testNullableStaticReturnTypeIsDoubledCorrectly(): void
     {
