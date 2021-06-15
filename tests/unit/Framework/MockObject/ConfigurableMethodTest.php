@@ -14,21 +14,27 @@ use SebastianBergmann\Type\Type;
 
 final class ConfigurableMethodTest extends TestCase
 {
-    public function testMethodMayReturnAssignableValue(): void
+    public function testMethodMayReturnValueThatCanBeAssigned(): void
     {
-        $assignableType = $this->createMock(Type::class);
-        $assignableType->method('isAssignable')
-            ->willReturn(true);
-        $configurable = new ConfigurableMethod('foo', $assignableType);
-        $this->assertTrue($configurable->mayReturn('everything-is-valid'));
+        $type = $this->createMock(Type::class);
+
+        $type->method('isAssignable')
+             ->willReturn(true);
+
+        $method = new ConfigurableMethod('foo', $type);
+
+        $this->assertTrue($method->mayReturn('everything-is-valid'));
     }
 
-    public function testMethodMayNotReturnUnassignableValue(): void
+    public function testMethodMayNotReturnValueThatCannotBeAssigned(): void
     {
-        $unassignableType = $this->createMock(Type::class);
-        $unassignableType->method('isAssignable')
-            ->willReturn(false);
-        $configurable = new ConfigurableMethod('foo', $unassignableType);
-        $this->assertFalse($configurable->mayReturn('everything-is-invalid'));
+        $type = $this->createMock(Type::class);
+
+        $type->method('isAssignable')
+             ->willReturn(false);
+
+        $method = new ConfigurableMethod('foo', $type);
+
+        $this->assertFalse($method->mayReturn('everything-is-invalid'));
     }
 }
