@@ -287,6 +287,10 @@ final class Mapper
             $result['noCoverage'] = $arguments->noCoverage();
         }
 
+        if ($arguments->hasNoOutput()) {
+            $result['noOutput'] = $arguments->noOutput();
+        }
+
         if ($arguments->hasNoLogging()) {
             $result['noLogging'] = $arguments->noLogging();
         }
