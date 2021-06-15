@@ -21,6 +21,7 @@ use PHPUnit\TestFixture\ClassWithStaticMethod;
 use PHPUnit\TestFixture\ClassWithStaticReturnTypes;
 use PHPUnit\TestFixture\ClassWithUnionReturnTypes;
 use PHPUnit\TestFixture\ExampleTrait;
+use PHPUnit\TestFixture\InterfaceWithMethodsThatDeclareBooleanReturnTypes;
 use PHPUnit\TestFixture\InterfaceWithStaticMethod;
 use PHPUnit\TestFixture\MethodCallback;
 use PHPUnit\TestFixture\MethodCallbackByReference;
@@ -1082,7 +1083,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testUnionReturnTypeIsDoubledCorrectly(): void
     {
@@ -1093,7 +1094,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testNullableUnionReturnTypeIsDoubledCorrectly(): void
     {
@@ -1104,7 +1105,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testMixedReturnTypeIsDoubledCorrectly(): void
     {
@@ -1115,7 +1116,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testStaticReturnTypeIsDoubledCorrectly(): void
     {
@@ -1126,7 +1127,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testUnionReturnTypeWithStaticIsDoubledCorrectly(): void
     {
@@ -1137,7 +1138,7 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @requires PHP > 8.0
+     * @requires PHP 8
      */
     public function testNullableStaticReturnTypeIsDoubledCorrectly(): void
     {
@@ -1159,6 +1160,36 @@ final class MockObjectTest extends TestCase
         $object = $this->getObjectForTrait(TraitWithConstructor::class, ['value']);
 
         $this->assertSame('value', $object->value());
+    }
+
+    /**
+     * @requires PHP 8
+     */
+    public function testMethodThatReturnsIntOrFalseCanBeStubbed(): void
+    {
+        $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
+
+        $i->method('returnsIntOrFalse')->willReturn(false);
+
+        $this->assertFalse($i->returnsIntOrFalse());
+
+        $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
+
+        $i->method('returnsIntOrFalse')->willReturn(1);
+
+        $this->assertSame(1, $i->returnsIntOrFalse());
+    }
+
+    /**
+     * @requires PHP 8
+     */
+    public function testMethodThatReturnsBoolCanBeStubbed(): void
+    {
+        $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
+
+        $i->method('returnsBool')->willReturn(false);
+
+        $this->assertFalse($i->returnsBool());
     }
 
     private function resetMockObjects(): void
