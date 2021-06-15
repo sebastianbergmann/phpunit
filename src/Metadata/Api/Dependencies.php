@@ -23,7 +23,7 @@ final class Dependencies
     /**
      * @psalm-param class-string $className
      *
-     * @psalm-return ExecutionOrderDependency
+     * @psalm-return list<ExecutionOrderDependency>
      */
     public static function dependencies(string $className, string $methodName): array
     {
