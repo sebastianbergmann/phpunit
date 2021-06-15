@@ -540,9 +540,6 @@
       <code>is_string($testClass)</code>
       <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
     </DocblockTypeContradiction>
-    <InvalidArgument occurrences="1">
-      <code>Dependencies::dependencies($class-&gt;getName(), $methodName)</code>
-    </InvalidArgument>
     <MissingThrowsDocblock occurrences="1"/>
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) $key</code>
@@ -673,9 +670,10 @@
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Metadata/Api/Dependencies.php">
-    <MismatchingDocblockReturnType occurrences="1">
-      <code>ExecutionOrderDependency</code>
-    </MismatchingDocblockReturnType>
+    <RedundantCondition occurrences="2">
+      <code>assert($metadata instanceof DependsOnClass)</code>
+      <code>assert($metadata instanceof DependsOnMethod)</code>
+    </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/Groups.php">
     <RedundantCondition occurrences="6">
