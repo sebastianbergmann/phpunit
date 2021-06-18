@@ -37,7 +37,7 @@ use Throwable;
  */
 final class Configuration
 {
-    private static ?self $instance = null;
+    private static ?Configuration $instance = null;
 
     private ?TestSuite $testSuite;
 
