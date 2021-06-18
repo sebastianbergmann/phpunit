@@ -27,6 +27,7 @@ use function trim;
 use function unserialize;
 use __PHP_Incomplete_Class;
 use ErrorException;
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
@@ -296,6 +297,8 @@ abstract class AbstractPhpProcess
                 if (!empty($childResult['output'])) {
                     $output = $childResult['output'];
                 }
+
+                Facade::forward($childResult['events']);
 
                 assert($test instanceof TestCase);
 

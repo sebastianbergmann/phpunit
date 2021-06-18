@@ -12,10 +12,12 @@ namespace PHPUnit\Framework;
 use const PHP_EOL;
 use function defined;
 use function get_include_path;
+use function hrtime;
 use function serialize;
 use function sprintf;
 use function var_export;
 use AssertionError;
+use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
@@ -375,6 +377,8 @@ final class TestRunner
 
         $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
 
+        $offset = hrtime(false);
+
         $var = [
             'composerAutoload'                        => $composerAutoload,
             'phar'                                    => $phar,
@@ -398,6 +402,8 @@ final class TestRunner
             'codeCoverageFilter'                      => $codeCoverageFilter,
             'configurationFilePath'                   => $configurationFilePath,
             'name'                                    => $test->getName(false),
+            'offsetSeconds'                           => $offset[0],
+            'offsetNanoseconds'                       => $offset[1],
         ];
 
         if (!$runEntireClass) {

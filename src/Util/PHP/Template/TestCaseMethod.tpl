@@ -1,4 +1,5 @@
 <?php
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
@@ -29,6 +30,13 @@ if ($composerAutoload) {
 
 function __phpunit_run_isolated_test()
 {
+    $dispatcher = Facade::initForIsolation(
+        PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
+            {offsetSeconds},
+            {offsetNanoseconds}
+        )
+    );
+
     if (!class_exists('{className}')) {
         require_once '{filename}';
     }
@@ -81,7 +89,8 @@ function __phpunit_run_isolated_test()
         'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
         'numAssertions' => $test->numberOfAssertionsPerformed(),
         'result'        => $result,
-        'output'        => $output
+        'output'        => $output,
+        'events'        => $dispatcher->flush()
       ]
     );
 }

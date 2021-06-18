@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Event;
 
+use function assert;
+use PHPUnit\Event\Telemetry\HRTime;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
@@ -18,7 +21,7 @@ final class Facade
 
     private static ?Emitter $emitter = null;
 
-    private static ?DeferredDispatcher $dispatcher = null;
+    private static ?DeferredDispatcher $deferredDispatcher = null;
 
     private static bool $sealed = false;
 
@@ -29,7 +32,7 @@ final class Facade
     {
         if (self::$emitter === null) {
             self::$emitter = new DispatchingEmitter(
-                self::dispatcher(),
+                self::deferredDispatcher(),
                 new Telemetry\System(
                     new Telemetry\SystemStopWatch(),
                     new Telemetry\SystemMemoryMeter()
@@ -41,6 +44,38 @@ final class Facade
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public static function initForIsolation(HRTime $offset): CollectingDispatcher
+    {
+        $dispatcher = new CollectingDispatcher;
+
+        self::$emitter = new DispatchingEmitter(
+            $dispatcher,
+            new Telemetry\System(
+                new Telemetry\SystemStopWatchWithOffset($offset),
+                new Telemetry\SystemMemoryMeter()
+            )
+        );
+
+        self::$sealed = true;
+
+        return $dispatcher;
+    }
+
+    /**
+     * @psalm-param list<Event> $events
+     */
+    public static function forward(array $events): void
+    {
+        foreach ($events as $event) {
+            assert($event instanceof Event);
+
+            self::deferredDispatcher()->dispatch($event);
+        }
+    }
+
+    /**
      * @throws EventFacadeIsSealedException
      */
     public static function registerTracer(Tracer\Tracer $tracer): void
@@ -49,7 +84,7 @@ final class Facade
             throw new EventFacadeIsSealedException;
         }
 
-        self::dispatcher()->registerTracer($tracer);
+        self::deferredDispatcher()->registerTracer($tracer);
     }
 
     /**
@@ -62,27 +97,27 @@ final class Facade
             throw new EventFacadeIsSealedException;
         }
 
-        self::dispatcher()->registerSubscriber($subscriber);
+        self::deferredDispatcher()->registerSubscriber($subscriber);
     }
 
     public static function seal(): void
     {
-        self::$dispatcher->flush();
+        self::$deferredDispatcher->flush();
 
         self::$sealed = true;
 
         self::emitter()->eventFacadeSealed();
     }
 
-    private static function dispatcher(): DeferredDispatcher
+    private static function deferredDispatcher(): DeferredDispatcher
     {
-        if (self::$dispatcher === null) {
-            self::$dispatcher = new DeferredDispatcher(
+        if (self::$deferredDispatcher === null) {
+            self::$deferredDispatcher = new DeferredDispatcher(
                 new DirectDispatcher(self::typeMap())
             );
         }
 
-        return self::$dispatcher;
+        return self::$deferredDispatcher;
     }
 
     private static function typeMap(): TypeMap
