@@ -77,7 +77,7 @@ if ($execute) {
 
     unset($execute);
 
-    PHPUnit\TextUI\Command::main();
+    PHPUnit\TextUI\Application::main();
 }
 
 __HALT_COMPILER();
