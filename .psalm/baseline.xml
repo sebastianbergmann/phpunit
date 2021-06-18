@@ -899,6 +899,9 @@
       <code>testSuite</code>
       <code>throw new BootstrapException($t);</code>
     </MissingThrowsDocblock>
+    <RedundantCondition occurrences="1">
+      <code>assert($xmlConfiguration instanceof LoadedFromFileConfiguration)</code>
+    </RedundantCondition>
     <UnresolvableInclude occurrences="1">
       <code>include $filename</code>
     </UnresolvableInclude>
@@ -947,8 +950,9 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="9">
+    <MissingThrowsDocblock occurrences="10">
       <code>bootstrap</code>
+      <code>configurationFile</code>
       <code>coverageCacheDirectory</code>
       <code>detect</code>
       <code>pharExtensionDirectory</code>

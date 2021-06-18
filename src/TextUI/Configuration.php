@@ -24,6 +24,7 @@ use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
+use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
 use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
@@ -40,6 +41,8 @@ final class Configuration
     private static ?Configuration $instance = null;
 
     private ?TestSuite $testSuite;
+
+    private ?string $configurationFile;
 
     private ?string $bootstrap;
 
@@ -92,6 +95,14 @@ final class Configuration
     public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): self
     {
         $bootstrap = null;
+
+        $configurationFile = null;
+
+        if ($xmlConfiguration->wasLoadedFromFile()) {
+            assert($xmlConfiguration instanceof LoadedFromFileConfiguration);
+
+            $configurationFile = $xmlConfiguration->filename();
+        }
 
         if ($cliConfiguration->hasBootstrap()) {
             $bootstrap = $cliConfiguration->bootstrap();
@@ -266,6 +277,7 @@ final class Configuration
 
         self::$instance = new self(
             $testSuite,
+            $configurationFile,
             $bootstrap,
             $cacheResult,
             $cacheDirectory,
@@ -290,9 +302,10 @@ final class Configuration
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory)
     {
         $this->testSuite                                 = $testSuite;
+        $this->configurationFile                         = $configurationFile;
         $this->bootstrap                                 = $bootstrap;
         $this->cacheResult                               = $cacheResult;
         $this->cacheDirectory                            = $cacheDirectory;
@@ -332,6 +345,26 @@ final class Configuration
         }
 
         return $this->testSuite;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->configurationFile
+     */
+    public function hasConfigurationFile(): bool
+    {
+        return $this->configurationFile !== null;
+    }
+
+    /**
+     * @throws NoConfigurationFileException
+     */
+    public function configurationFile(): string
+    {
+        if ($this->configurationFile === null) {
+            throw new NoConfigurationFileException;
+        }
+
+        return $this->configurationFile;
     }
 
     /**

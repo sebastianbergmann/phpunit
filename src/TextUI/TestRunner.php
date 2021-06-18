@@ -109,8 +109,8 @@ final class TestRunner
      */
     public function run(TestSuite $suite, array &$arguments = [], array $warnings = []): TestResult
     {
-        if (isset($arguments['configuration'])) {
-            $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $arguments['configuration'];
+        if ($this->configuration->hasConfigurationFile()) {
+            $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $this->configuration->configurationFile();
         }
 
         $this->handleConfiguration($arguments);
