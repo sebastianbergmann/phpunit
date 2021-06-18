@@ -89,7 +89,7 @@ final class Loader
             );
         }
 
-        return new Configuration(
+        return new LoadedFromFileConfiguration(
             $filename,
             (new Validator)->validate($document, $xsdFilename),
             $this->extensions($filename, $xpath),

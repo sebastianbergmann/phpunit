@@ -86,168 +86,10 @@ final class Configuration
         return self::$instance;
     }
 
-    public static function initFromCli(CliConfiguration $cliConfiguration): self
-    {
-        $bootstrap = null;
-
-        if ($cliConfiguration->hasBootstrap()) {
-            $bootstrap = $cliConfiguration->bootstrap();
-        }
-
-        if ($bootstrap !== null) {
-            self::handleBootstrap($bootstrap);
-        }
-
-        $testSuite = null;
-
-        if ($cliConfiguration->hasArgument()) {
-            $argument = realpath($cliConfiguration->argument());
-
-            if (!$argument) {
-                throw new TestFileNotFoundException($cliConfiguration->argument());
-            }
-
-            $testSuite = self::testSuiteFromPath(
-                $argument,
-                self::testSuffixes($cliConfiguration)
-            );
-        }
-
-        if ($cliConfiguration->hasCacheResult()) {
-            $cacheResult = $cliConfiguration->cacheResult();
-        } else {
-            $cacheResult = true;
-        }
-
-        $cacheDirectory         = null;
-        $coverageCacheDirectory = null;
-
-        if ($cliConfiguration->hasCacheDirectory() && Filesystem::createDirectory($cliConfiguration->cacheDirectory())) {
-            $cacheDirectory         = realpath($cliConfiguration->cacheDirectory());
-            $coverageCacheDirectory = $cacheDirectory . DIRECTORY_SEPARATOR . 'code-coverage';
-            $testResultCacheFile    = $cacheDirectory . DIRECTORY_SEPARATOR . 'test-results';
-        } elseif ($cliConfiguration->hasCoverageCacheDirectory() && Filesystem::createDirectory($cliConfiguration->coverageCacheDirectory())) {
-            $coverageCacheDirectory = realpath($cliConfiguration->coverageCacheDirectory());
-        }
-
-        if (!isset($testResultCacheFile)) {
-            if ($cliConfiguration->hasCacheResultFile()) {
-                $testResultCacheFile = $cliConfiguration->cacheResultFile();
-            } else {
-                $candidate = realpath($_SERVER['PHP_SELF']);
-
-                if ($candidate) {
-                    $testResultCacheFile = dirname($candidate) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
-                } else {
-                    $testResultCacheFile = '.phpunit.result.cache';
-                }
-            }
-        }
-
-        $codeCoverageFilter = new CodeCoverageFilter;
-
-        if ($cliConfiguration->hasCoverageFilter()) {
-            foreach ($cliConfiguration->coverageFilter() as $directory) {
-                $codeCoverageFilter->includeDirectory($directory);
-            }
-        }
-
-        if ($cliConfiguration->hasDisableCodeCoverageIgnore()) {
-            $disableCodeCoverageIgnore = $cliConfiguration->disableCodeCoverageIgnore();
-        } else {
-            $disableCodeCoverageIgnore = false;
-        }
-
-        if ($cliConfiguration->hasFailOnEmptyTestSuite()) {
-            $failOnEmptyTestSuite = $cliConfiguration->failOnEmptyTestSuite();
-        } else {
-            $failOnEmptyTestSuite = false;
-        }
-
-        if ($cliConfiguration->hasFailOnIncomplete()) {
-            $failOnIncomplete = $cliConfiguration->failOnIncomplete();
-        } else {
-            $failOnIncomplete = false;
-        }
-
-        if ($cliConfiguration->hasFailOnRisky()) {
-            $failOnRisky = $cliConfiguration->failOnRisky();
-        } else {
-            $failOnRisky = false;
-        }
-
-        if ($cliConfiguration->hasFailOnSkipped()) {
-            $failOnSkipped = $cliConfiguration->failOnSkipped();
-        } else {
-            $failOnSkipped = false;
-        }
-
-        if ($cliConfiguration->hasFailOnWarning()) {
-            $failOnWarning = $cliConfiguration->failOnWarning();
-        } else {
-            $failOnWarning = false;
-        }
-
-        $outputToStandardErrorStream = false;
-
-        if ($cliConfiguration->hasStderr() && $cliConfiguration->stderr()) {
-            $outputToStandardErrorStream = true;
-        }
-
-        $columns                = 80;
-        $tooFewColumnsRequested = false;
-
-        if ($cliConfiguration->hasColumns()) {
-            $columns = $cliConfiguration->columns();
-        }
-
-        if (is_int($columns) && $columns < 16) {
-            $columns                = 16;
-            $tooFewColumnsRequested = true;
-        }
-
-        $loadPharExtensions = true;
-
-        if ($cliConfiguration->hasNoExtensions() && $cliConfiguration->noExtensions()) {
-            $loadPharExtensions = false;
-        }
-
-        $pathCoverage = false;
-
-        if ($cliConfiguration->hasPathCoverage() && $cliConfiguration->pathCoverage()) {
-            $pathCoverage = $cliConfiguration->pathCoverage();
-        }
-
-        self::$instance = new self(
-            $testSuite,
-            $bootstrap,
-            $cacheResult,
-            $cacheDirectory,
-            $coverageCacheDirectory,
-            $testResultCacheFile,
-            $codeCoverageFilter,
-            $pathCoverage,
-            false,
-            $disableCodeCoverageIgnore,
-            $failOnEmptyTestSuite,
-            $failOnIncomplete,
-            $failOnRisky,
-            $failOnSkipped,
-            $failOnWarning,
-            $outputToStandardErrorStream,
-            $columns,
-            $tooFewColumnsRequested,
-            $loadPharExtensions,
-            null
-        );
-
-        return self::$instance;
-    }
-
     /**
      * @throws TestFileNotFoundException
      */
-    public static function initFromCliAndXml(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): self
+    public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): self
     {
         $bootstrap = null;
 
@@ -321,8 +163,16 @@ final class Configuration
                 $testResultCacheFile = $cliConfiguration->cacheResultFile();
             } elseif ($xmlConfiguration->phpunit()->hasCacheResultFile()) {
                 $testResultCacheFile = $xmlConfiguration->phpunit()->cacheResultFile();
-            } else {
+            } elseif ($xmlConfiguration->wasLoadedFromFile()) {
                 $testResultCacheFile = dirname(realpath($xmlConfiguration->filename())) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
+            } else {
+                $candidate = realpath($_SERVER['PHP_SELF']);
+
+                if ($candidate) {
+                    $testResultCacheFile = dirname($candidate) . DIRECTORY_SEPARATOR . '.phpunit.result.cache';
+                } else {
+                    $testResultCacheFile = '.phpunit.result.cache';
+                }
             }
         }
 
@@ -469,7 +319,7 @@ final class Configuration
      */
     public function hasTestSuite(): bool
     {
-        return $this->testSuite !== null;
+        return $this->testSuite !== null && !$this->testSuite()->isEmpty();
     }
 
     /**

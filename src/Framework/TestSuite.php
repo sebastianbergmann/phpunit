@@ -348,6 +348,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return $this->numTests;
     }
 
+    public function isEmpty(): bool
+    {
+        return $this->count() === 0;
+    }
+
     /**
      * Returns the name of the suite.
      */

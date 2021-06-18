@@ -37,6 +37,7 @@ use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
+use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use Throwable;
@@ -214,29 +215,17 @@ final class Application
             (new PhpHandler)->handle($configurationObject->php());
         }
 
-        if (isset($configurationObject)) {
-            try {
-                $configuration = Configuration::initFromCliAndXml(
-                    $arguments,
-                    $configurationObject
-                );
-            } catch (Exception $e) {
-                $this->printVersionString();
+        try {
+            $configuration = Configuration::init(
+                $arguments,
+                $configurationObject ?? DefaultConfiguration::create()
+            );
+        } catch (Exception $e) {
+            $this->printVersionString();
 
-                print $e->getMessage() . PHP_EOL;
+            print $e->getMessage() . PHP_EOL;
 
-                exit(self::EXCEPTION_EXIT);
-            }
-        } else {
-            try {
-                $configuration = Configuration::initFromCli($arguments);
-            } catch (Exception $e) {
-                $this->printVersionString();
-
-                print $e->getMessage() . PHP_EOL;
-
-                exit(self::EXCEPTION_EXIT);
-            }
+            exit(self::EXCEPTION_EXIT);
         }
 
         Event\Facade::emitter()->testRunnerConfigurationCombined($configuration);
@@ -249,7 +238,7 @@ final class Application
             $this->execute(new ListGroupsCommand($configuration->testSuite()));
         }
 
-        if (isset($configurationObject) && $arguments->hasListSuites() && $arguments->listSuites()) {
+        if ($arguments->hasListSuites() && $arguments->listSuites()) {
             $this->execute(new ListTestSuitesCommand($configurationObject->testSuite()));
         }
 

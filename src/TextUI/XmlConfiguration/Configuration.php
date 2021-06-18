@@ -11,18 +11,13 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
-use PHPUnit\Util\Xml\ValidationResult;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class Configuration
+abstract class Configuration
 {
-    private string $filename;
-
-    private ValidationResult $validationResult;
-
     private ExtensionCollection $extensions;
 
     private CodeCoverage $codeCoverage;
@@ -39,33 +34,16 @@ final class Configuration
 
     private TestSuiteCollection $testSuite;
 
-    public function __construct(string $filename, ValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
-        $this->filename         = $filename;
-        $this->validationResult = $validationResult;
-        $this->extensions       = $extensions;
-        $this->codeCoverage     = $codeCoverage;
-        $this->groups           = $groups;
-        $this->testdoxGroups    = $testdoxGroups;
-        $this->logging          = $logging;
-        $this->php              = $php;
-        $this->phpunit          = $phpunit;
-        $this->testSuite        = $testSuite;
-    }
-
-    public function filename(): string
-    {
-        return $this->filename;
-    }
-
-    public function hasValidationErrors(): bool
-    {
-        return $this->validationResult->hasValidationErrors();
-    }
-
-    public function validationErrors(): string
-    {
-        return $this->validationResult->asString();
+        $this->extensions    = $extensions;
+        $this->codeCoverage  = $codeCoverage;
+        $this->groups        = $groups;
+        $this->testdoxGroups = $testdoxGroups;
+        $this->logging       = $logging;
+        $this->php           = $php;
+        $this->phpunit       = $phpunit;
+        $this->testSuite     = $testSuite;
     }
 
     public function extensions(): ExtensionCollection
@@ -106,5 +84,21 @@ final class Configuration
     public function testSuite(): TestSuiteCollection
     {
         return $this->testSuite;
+    }
+
+    /**
+     * @psalm-assert-if-true DefaultConfiguration $this
+     */
+    public function isDefault(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true LoadedFromFileConfiguration $this
+     */
+    public function wasLoadedFromFile(): bool
+    {
+        return false;
     }
 }

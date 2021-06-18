@@ -832,6 +832,9 @@
       <code>unrecognizedOrderBy</code>
       <code>useDefaultConfiguration</code>
     </MissingThrowsDocblock>
+    <PossiblyNullReference occurrences="1">
+      <code>testSuite</code>
+    </PossiblyNullReference>
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>
@@ -862,57 +865,39 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="50">
+    <MissingThrowsDocblock occurrences="32">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
       <code>argument</code>
-      <code>argument</code>
-      <code>argument</code>
       <code>bootstrap</code>
       <code>bootstrap</code>
-      <code>bootstrap</code>
-      <code>cacheDirectory</code>
       <code>cacheDirectory</code>
       <code>cacheDirectory</code>
       <code>cacheDirectory</code>
       <code>cacheResult</code>
-      <code>cacheResult</code>
-      <code>cacheResultFile</code>
       <code>cacheResultFile</code>
       <code>cacheResultFile</code>
       <code>columns</code>
-      <code>columns</code>
       <code>coverageCacheDirectory</code>
-      <code>coverageCacheDirectory</code>
-      <code>coverageFilter</code>
       <code>coverageFilter</code>
       <code>defaultTestSuite</code>
       <code>disableCodeCoverageIgnore</code>
-      <code>disableCodeCoverageIgnore</code>
       <code>extensionsDirectory</code>
       <code>failOnEmptyTestSuite</code>
-      <code>failOnEmptyTestSuite</code>
-      <code>failOnIncomplete</code>
       <code>failOnIncomplete</code>
       <code>failOnRisky</code>
-      <code>failOnRisky</code>
       <code>failOnSkipped</code>
-      <code>failOnSkipped</code>
-      <code>failOnWarning</code>
       <code>failOnWarning</code>
       <code>map</code>
       <code>new TestSuite</code>
       <code>new TestSuite($path)</code>
       <code>new TestSuite($testClass)</code>
       <code>pathCoverage</code>
-      <code>pathCoverage</code>
-      <code>self::handleBootstrap($bootstrap)</code>
       <code>self::handleBootstrap($bootstrap)</code>
       <code>testSuffixes</code>
       <code>testSuite</code>
       <code>throw new BootstrapException($t);</code>
-      <code>throw new TestFileNotFoundException($cliConfiguration-&gt;argument());</code>
     </MissingThrowsDocblock>
     <UnresolvableInclude occurrences="1">
       <code>include $filename</code>
@@ -986,6 +971,12 @@
     <RedundantCondition occurrences="1">
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
     </RedundantCondition>
+    <UndefinedMethod occurrences="4">
+      <code>filename</code>
+      <code>filename</code>
+      <code>hasValidationErrors</code>
+      <code>validationErrors</code>
+    </UndefinedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
     <DeprecatedMethod occurrences="1">
