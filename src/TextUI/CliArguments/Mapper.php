@@ -72,10 +72,6 @@ final class Mapper
             $result['pathCoverage'] = $arguments->pathCoverage();
         }
 
-        if ($arguments->hasHelp()) {
-            $result['help'] = $arguments->help();
-        }
-
         if ($arguments->hasFilter()) {
             $result['filter'] = $arguments->filter();
         }
