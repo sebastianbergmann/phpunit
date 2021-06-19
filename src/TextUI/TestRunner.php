@@ -16,7 +16,6 @@ use function array_diff;
 use function array_map;
 use function array_merge;
 use function assert;
-use function defined;
 use function extension_loaded;
 use function htmlspecialchars;
 use function is_array;
@@ -743,12 +742,6 @@ final class TestRunner
             $arguments['warnings'] = [];
         }
 
-        $arguments['debug'] = $arguments['debug'] ?? false;
-
-        if ($arguments['debug'] && !defined('PHPUNIT_TESTSUITE')) {
-            $arguments['warnings'][] = 'The --debug option is deprecated';
-        }
-
         $arguments['filter']    = $arguments['filter'] ?? false;
         $arguments['listeners'] = $arguments['listeners'] ?? [];
 
@@ -907,6 +900,8 @@ final class TestRunner
             if (!isset($arguments['testdoxExcludeGroups']) && $testdoxGroupConfiguration->hasExclude()) {
                 $arguments['testdoxExcludeGroups'] = $testdoxGroupConfiguration->exclude()->asArrayOfStrings();
             }
+
+            $arguments['warnings'] = array_merge($arguments['warnings'], $this->configuration->warnings());
         }
 
         $extensionHandler = new ExtensionHandler;
@@ -1036,13 +1031,11 @@ final class TestRunner
      */
     private function createPrinter(string $className, array $arguments): ResultPrinter
     {
-        $configuration = Configuration::get();
-
         $object = new $className(
             $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : null,
             $arguments['verbose'],
             $arguments['colors'],
-            $arguments['debug'],
+            $this->configuration->debug(),
             $this->configuration->columns(),
             $arguments['reverseList']
         );

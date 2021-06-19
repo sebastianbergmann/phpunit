@@ -72,10 +72,6 @@ final class Mapper
             $result['pathCoverage'] = $arguments->pathCoverage();
         }
 
-        if ($arguments->hasDebug()) {
-            $result['debug'] = $arguments->debug();
-        }
-
         if ($arguments->hasHelp()) {
             $result['help'] = $arguments->help();
         }

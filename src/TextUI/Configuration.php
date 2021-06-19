@@ -11,6 +11,8 @@ namespace PHPUnit\TextUI;
 
 use const DIRECTORY_SEPARATOR;
 use function assert;
+use function count;
+use function defined;
 use function dirname;
 use function is_dir;
 use function is_file;
@@ -82,6 +84,13 @@ final class Configuration
 
     private ?string $pharExtensionDirectory;
 
+    private bool $debug;
+
+    /**
+     * @psalm-var list<string>
+     */
+    private array $warnings;
+
     public static function get(): self
     {
         assert(self::$instance instanceof self);
@@ -94,6 +103,8 @@ final class Configuration
      */
     public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): self
     {
+        $warnings = [];
+
         $bootstrap = null;
 
         $configurationFile = null;
@@ -275,6 +286,16 @@ final class Configuration
             $pathCoverage = $xmlConfiguration->codeCoverage()->pathCoverage();
         }
 
+        $debug = false;
+
+        if ($cliConfiguration->hasDebug() && $cliConfiguration->debug()) {
+            $debug = true;
+
+            if (!defined('PHPUNIT_TESTSUITE')) {
+                $warnings[] = 'The --debug option is deprecated';
+            }
+        }
+
         self::$instance = new self(
             $testSuite,
             $configurationFile,
@@ -296,13 +317,15 @@ final class Configuration
             $columns,
             $tooFewColumnsRequested,
             $loadPharExtensions,
-            $pharExtensionDirectory
+            $pharExtensionDirectory,
+            $debug,
+            $warnings
         );
 
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, array $warnings)
     {
         $this->testSuite                                 = $testSuite;
         $this->configurationFile                         = $configurationFile;
@@ -325,6 +348,8 @@ final class Configuration
         $this->tooFewColumnsRequested                    = $tooFewColumnsRequested;
         $this->loadPharExtensions                        = $loadPharExtensions;
         $this->pharExtensionDirectory                    = $pharExtensionDirectory;
+        $this->debug                                     = $debug;
+        $this->warnings                                  = $warnings;
     }
 
     /**
@@ -520,6 +545,24 @@ final class Configuration
         }
 
         return $this->pharExtensionDirectory;
+    }
+
+    public function debug(): bool
+    {
+        return $this->debug;
+    }
+
+    public function hasWarnings(): bool
+    {
+        return count($this->warnings) > 0;
+    }
+
+    /**
+     * @psalm-return list<string>
+     */
+    public function warnings(): array
+    {
+        return $this->warnings;
     }
 
     /**
