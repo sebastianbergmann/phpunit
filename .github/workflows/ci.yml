@@ -97,7 +97,7 @@ jobs:
 
     env:
       PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, display_errors=On
+      PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
       fail-fast: false
@@ -186,7 +186,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, display_errors=On
+          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
       - name: Determine composer cache directory
         run: echo "COMPOSER_CACHE_DIR=$(./tools/composer config cache-dir)" >> $GITHUB_ENV
@@ -238,7 +238,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, display_errors=On
+          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
       - name: Determine composer cache directory
         run: echo "COMPOSER_CACHE_DIR=$(tools/composer config cache-dir)" >> $GITHUB_ENV
