@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-if (substr(PHP_VERSION, 0 - strlen('-(to be removed in future macOS)')) === '-(to be removed in future macOS)') {
+if (!version_compare(PHP_VERSION, PHP_VERSION, "=")) {
     fwrite(
         STDERR,
         sprintf(
