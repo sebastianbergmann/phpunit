@@ -9,6 +9,21 @@
  * file that was distributed with this source code.
  */
 
+if (substr(PHP_VERSION, 0 - strlen('-(to be removed in future macOS)')) === '-(to be removed in future macOS)') {
+    fwrite(
+        STDERR,
+        sprintf(
+            '%s declares an invalid value for PHP_VERSION.' . PHP_EOL .
+            'This breaks fundamental functionality such as version_compare().' . PHP_EOL .
+            'Please use a different PHP interpreter.' . PHP_EOL,
+
+            PHP_BINARY
+        )
+    );
+
+    die(1);
+}
+
 if (version_compare('8.0.0', PHP_VERSION, '>')) {
     fwrite(
         STDERR,
