@@ -51,7 +51,7 @@ final class TestSuiteMapper
                 $testSuiteEmpty = true;
 
                 foreach ($testSuiteConfiguration->directories() as $directory) {
-                    if (!version_compare(PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
+                    if ($directory->phpVersion() !== PHP_VERSION && !version_compare(PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
                         continue;
                     }
 
@@ -82,7 +82,7 @@ final class TestSuiteMapper
                         throw new TestFileNotFoundException($file->path());
                     }
 
-                    if (!version_compare(PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator()->asString())) {
+                    if ($file->phpVersion() !== PHP_VERSION && !version_compare(PHP_VERSION, $file->phpVersion(), $file->phpVersionOperator()->asString())) {
                         continue;
                     }
 
