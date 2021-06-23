@@ -6,7 +6,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ### Changed
 
-* PHPUnit now errors out on startup when `PHP_VERSION` ends with `-(to be removed in future macOS)`
+* PHPUnit now errors out on startup when `PHP_VERSION` contains a value that is not compatible with `version_compare()`, for instance `X.Y.Z-(to be removed in future macOS)`
 
 ## [8.5.16] - 2021-06-05
 
