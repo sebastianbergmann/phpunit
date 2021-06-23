@@ -14,13 +14,6 @@ namespace PHPUnit\Event;
  */
 interface Dispatcher
 {
-    public function registerTracer(Tracer\Tracer $tracer): void;
-
-    /**
-     * @throws UnknownSubscriberTypeException
-     */
-    public function registerSubscriber(Subscriber $subscriber): void;
-
     /**
      * @throws UnknownEventTypeException
      */

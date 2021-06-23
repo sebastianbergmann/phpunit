@@ -26,26 +26,6 @@ final class CollectingDispatcher implements Dispatcher
         $this->events->add($event);
     }
 
-    /**
-     * @throws TracerRegistrationNotSupportedException
-     *
-     * @todo Narrow Dispatcher interface
-     */
-    public function registerTracer(Tracer\Tracer $tracer): void
-    {
-        throw new TracerRegistrationNotSupportedException;
-    }
-
-    /**
-     * @throws SubscriberRegistrationNotSupportedException
-     *
-     * @todo Narrow Dispatcher interface
-     */
-    public function registerSubscriber(Subscriber $subscriber): void
-    {
-        throw new SubscriberRegistrationNotSupportedException;
-    }
-
     public function flush(): EventCollection
     {
         $events = $this->events;

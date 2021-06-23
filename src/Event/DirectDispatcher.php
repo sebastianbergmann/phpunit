@@ -15,7 +15,7 @@ use function sprintf;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DirectDispatcher implements Dispatcher
+final class DirectDispatcher implements SubscriberSupportingDispatcher, TracerSupportingDispatcher
 {
     private TypeMap $typeMap;
 

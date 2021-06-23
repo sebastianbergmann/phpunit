@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\Event;
 
-use RuntimeException;
-
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
-final class TracerRegistrationNotSupportedException extends RuntimeException implements Exception
+interface SubscriberSupportingDispatcher extends Dispatcher
 {
+    /**
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscriber(Subscriber $subscriber): void;
 }
