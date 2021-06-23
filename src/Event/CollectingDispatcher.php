@@ -14,14 +14,16 @@ namespace PHPUnit\Event;
  */
 final class CollectingDispatcher implements Dispatcher
 {
-    /**
-     * @psalm-var list<Event>
-     */
-    private array $events = [];
+    private EventCollection $events;
+
+    public function __construct()
+    {
+        $this->events = new EventCollection;
+    }
 
     public function dispatch(Event $event): void
     {
-        $this->events[] = $event;
+        $this->events->add($event);
     }
 
     /**
@@ -44,14 +46,11 @@ final class CollectingDispatcher implements Dispatcher
         throw new SubscriberRegistrationNotSupportedException;
     }
 
-    /**
-     * @psalm-return list<Event>
-     */
-    public function flush(): array
+    public function flush(): EventCollection
     {
         $events = $this->events;
 
-        $this->events = [];
+        $this->events = new EventCollection;
 
         return $events;
     }

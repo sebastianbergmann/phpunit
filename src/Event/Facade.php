@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use function assert;
 use PHPUnit\Event\Telemetry\HRTime;
 
 /**
@@ -63,15 +62,12 @@ final class Facade
         return $dispatcher;
     }
 
-    /**
-     * @psalm-param list<Event> $events
-     */
-    public static function forward(array $events): void
+    public static function forward(EventCollection $events): void
     {
-        foreach ($events as $event) {
-            assert($event instanceof Event);
+        $dispatcher = self::deferredDispatcher();
 
-            self::deferredDispatcher()->dispatch($event);
+        foreach ($events as $event) {
+            $dispatcher->dispatch($event);
         }
     }
 

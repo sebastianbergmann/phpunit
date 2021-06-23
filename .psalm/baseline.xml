@@ -66,9 +66,6 @@
     <PossiblyNullReference occurrences="1">
       <code>flush</code>
     </PossiblyNullReference>
-    <RedundantConditionGivenDocblockType occurrences="1">
-      <code>assert($event instanceof Event)</code>
-    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Event/Value/Telemetry/SystemStopWatch.php">
     <MissingThrowsDocblock occurrences="1">

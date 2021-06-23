@@ -16,16 +16,14 @@ final class DeferredDispatcher implements Dispatcher
 {
     private Dispatcher $dispatcher;
 
-    /**
-     * @psalm-var list<Event>
-     */
-    private array $events = [];
+    private EventCollection $events;
 
     private bool $recording = true;
 
     public function __construct(Dispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
+        $this->events     = new EventCollection;
     }
 
     public function registerTracer(Tracer\Tracer $tracer): void
@@ -41,7 +39,7 @@ final class DeferredDispatcher implements Dispatcher
     public function dispatch(Event $event): void
     {
         if ($this->recording) {
-            $this->events[] = $event;
+            $this->events->add($event);
 
             return;
         }
@@ -57,6 +55,6 @@ final class DeferredDispatcher implements Dispatcher
             $this->dispatcher->dispatch($event);
         }
 
-        $this->events = [];
+        $this->events = new EventCollection;
     }
 }
