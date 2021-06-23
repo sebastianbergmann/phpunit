@@ -1,6 +1,6 @@
 #!/usr/bin/env php
 <?php
-if (!version_compare(PHP_VERSION, PHP_VERSION, "=")) {
+if (!version_compare(PHP_VERSION, PHP_VERSION, '=')) {
     fwrite(
         STDERR,
         sprintf(
