@@ -12,21 +12,15 @@ namespace PHPUnit\Event;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DeferredDispatcher implements SubscriberSupportingDispatcher, TracerSupportingDispatcher
+final class DeferredDispatcher implements SubscribableDispatcher
 {
-    /**
-     * @psalm-var SubscriberSupportingDispatcher&TracerSupportingDispatcher
-     */
-    private Dispatcher $dispatcher;
+    private SubscribableDispatcher $dispatcher;
 
     private EventCollection $events;
 
     private bool $recording = true;
 
-    /**
-     * @psalm-param SubscriberSupportingDispatcher&TracerSupportingDispatcher $dispatcher
-     */
-    public function __construct(Dispatcher $dispatcher)
+    public function __construct(SubscribableDispatcher $dispatcher)
     {
         $this->dispatcher = $dispatcher;
         $this->events     = new EventCollection;

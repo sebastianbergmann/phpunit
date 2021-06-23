@@ -12,7 +12,12 @@ namespace PHPUnit\Event;
 /**
  * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
-interface TracerSupportingDispatcher extends Dispatcher
+interface SubscribableDispatcher extends Dispatcher
 {
+    /**
+     * @throws UnknownSubscriberTypeException
+     */
+    public function registerSubscriber(Subscriber $subscriber): void;
+
     public function registerTracer(Tracer\Tracer $tracer): void;
 }
