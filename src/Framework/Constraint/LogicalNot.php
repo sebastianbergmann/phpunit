@@ -53,7 +53,7 @@ final class LogicalNot extends Constraint
             'not ',
         ];
 
-        preg_match('/(\'[\w\W]*\')([\w\W]*)("[\w\W]*")/i', $string, $matches);
+        preg_match('/(^\'[\w\W]*\')?([\w\W]*)(\'[\w\W]*\')$/i', $string, $matches);
 
         if (count($matches) > 0) {
             $nonInput = $matches[2];
