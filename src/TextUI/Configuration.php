@@ -56,6 +56,30 @@ final class Configuration
 
     private bool $pathCoverage;
 
+    private ?string $coverageClover;
+
+    private ?string $coverageCobertura;
+
+    private ?string $coverageCrap4j;
+
+    private int $coverageCrap4jThreshold;
+
+    private ?string $coverageHtml;
+
+    private int $coverageHtmlLowUpperBound;
+
+    private int $coverageHtmlHighLowerBound;
+
+    private ?string $coveragePhp;
+
+    private ?string $coverageText;
+
+    private bool $coverageTextShowUncoveredFiles;
+
+    private bool $coverageTextShowOnlySummary;
+
+    private ?string $coverageXml;
+
     private string $testResultCacheFile;
 
     private CodeCoverageFilter $codeCoverageFilter;
@@ -296,6 +320,77 @@ final class Configuration
             }
         }
 
+        $coverageClover                 = null;
+        $coverageCobertura              = null;
+        $coverageCrap4j                 = null;
+        $coverageCrap4jThreshold        = 30;
+        $coverageHtml                   = null;
+        $coverageHtmlLowUpperBound      = 50;
+        $coverageHtmlHighLowerBound     = 90;
+        $coveragePhp                    = null;
+        $coverageText                   = null;
+        $coverageTextShowUncoveredFiles = false;
+        $coverageTextShowOnlySummary    = false;
+        $coverageXml                    = null;
+
+        if (!($cliConfiguration->hasNoCoverage() && $cliConfiguration->noCoverage())) {
+            if ($cliConfiguration->hasCoverageClover()) {
+                $coverageClover = $cliConfiguration->coverageClover();
+            } elseif ($xmlConfiguration->codeCoverage()->hasClover()) {
+                $coverageClover = $xmlConfiguration->codeCoverage()->clover()->target()->path();
+            }
+
+            if ($cliConfiguration->hasCoverageCobertura()) {
+                $coverageCobertura = $cliConfiguration->coverageCobertura();
+            } elseif ($xmlConfiguration->codeCoverage()->hasCobertura()) {
+                $coverageCobertura = $xmlConfiguration->codeCoverage()->cobertura()->target()->path();
+            }
+
+            if ($xmlConfiguration->codeCoverage()->hasCrap4j()) {
+                $coverageCrap4jThreshold = $xmlConfiguration->codeCoverage()->crap4j()->threshold();
+            }
+
+            if ($cliConfiguration->hasCoverageCrap4J()) {
+                $coverageCrap4j = $cliConfiguration->coverageCrap4J();
+            } elseif ($xmlConfiguration->codeCoverage()->hasCrap4j()) {
+                $coverageCrap4j = $xmlConfiguration->codeCoverage()->crap4j()->target()->path();
+            }
+
+            if ($xmlConfiguration->codeCoverage()->hasHtml()) {
+                $coverageHtmlHighLowerBound = $xmlConfiguration->codeCoverage()->html()->highLowerBound();
+                $coverageHtmlLowUpperBound  = $xmlConfiguration->codeCoverage()->html()->lowUpperBound();
+            }
+
+            if ($cliConfiguration->hasCoverageHtml()) {
+                $coverageHtml = $cliConfiguration->coverageHtml();
+            } elseif ($xmlConfiguration->codeCoverage()->hasHtml()) {
+                $coverageHtml = $xmlConfiguration->codeCoverage()->html()->target()->path();
+            }
+
+            if ($cliConfiguration->hasCoveragePhp()) {
+                $coveragePhp = $cliConfiguration->coveragePhp();
+            } elseif ($xmlConfiguration->codeCoverage()->hasPhp()) {
+                $coveragePhp = $xmlConfiguration->codeCoverage()->php()->target()->path();
+            }
+
+            if ($xmlConfiguration->codeCoverage()->hasText()) {
+                $coverageTextShowUncoveredFiles = $xmlConfiguration->codeCoverage()->text()->showUncoveredFiles();
+                $coverageTextShowOnlySummary    = $xmlConfiguration->codeCoverage()->text()->showOnlySummary();
+            }
+
+            if ($cliConfiguration->hasCoverageText()) {
+                $coverageText = $cliConfiguration->coverageText();
+            } elseif ($xmlConfiguration->codeCoverage()->hasText()) {
+                $coverageText = $xmlConfiguration->codeCoverage()->text()->target()->path();
+            }
+
+            if ($cliConfiguration->hasCoverageXml()) {
+                $coverageXml = $cliConfiguration->coverageXml();
+            } elseif ($xmlConfiguration->codeCoverage()->hasXml()) {
+                $coverageXml = $xmlConfiguration->codeCoverage()->xml()->target()->path();
+            }
+        }
+
         self::$instance = new self(
             $testSuite,
             $configurationFile,
@@ -305,6 +400,18 @@ final class Configuration
             $coverageCacheDirectory,
             $testResultCacheFile,
             $codeCoverageFilter,
+            $coverageClover,
+            $coverageCobertura,
+            $coverageCrap4j,
+            $coverageCrap4jThreshold,
+            $coverageHtml,
+            $coverageHtmlLowUpperBound,
+            $coverageHtmlHighLowerBound,
+            $coveragePhp,
+            $coverageText,
+            $coverageTextShowUncoveredFiles,
+            $coverageTextShowOnlySummary,
+            $coverageXml,
             $pathCoverage,
             $xmlConfiguration->codeCoverage()->ignoreDeprecatedCodeUnits(),
             $disableCodeCoverageIgnore,
@@ -325,7 +432,7 @@ final class Configuration
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, array $warnings)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, array $warnings)
     {
         $this->testSuite                                 = $testSuite;
         $this->configurationFile                         = $configurationFile;
@@ -335,6 +442,18 @@ final class Configuration
         $this->coverageCacheDirectory                    = $coverageCacheDirectory;
         $this->testResultCacheFile                       = $testResultCacheFile;
         $this->codeCoverageFilter                        = $codeCoverageFilter;
+        $this->coverageClover                            = $coverageClover;
+        $this->coverageCobertura                         = $coverageCobertura;
+        $this->coverageCrap4j                            = $coverageCrap4j;
+        $this->coverageCrap4jThreshold                   = $coverageCrap4jThreshold;
+        $this->coverageHtml                              = $coverageHtml;
+        $this->coverageHtmlLowUpperBound                 = $coverageHtmlLowUpperBound;
+        $this->coverageHtmlHighLowerBound                = $coverageHtmlHighLowerBound;
+        $this->coveragePhp                               = $coveragePhp;
+        $this->coverageText                              = $coverageText;
+        $this->coverageTextShowUncoveredFiles            = $coverageTextShowUncoveredFiles;
+        $this->coverageTextShowOnlySummary               = $coverageTextShowOnlySummary;
+        $this->coverageXml                               = $coverageXml;
         $this->pathCoverage                              = $pathCoverage;
         $this->ignoreDeprecatedCodeUnitsFromCodeCoverage = $ignoreDeprecatedCodeUnitsFromCodeCoverage;
         $this->disableCodeCoverageIgnore                 = $disableCodeCoverageIgnore;
@@ -480,6 +599,126 @@ final class Configuration
     public function pathCoverage(): bool
     {
         return $this->pathCoverage;
+    }
+
+    public function hasCoverageClover(): bool
+    {
+        return $this->coverageClover !== null;
+    }
+
+    /**
+     * @throws CodeCoverageReportNotConfiguredException
+     */
+    public function coverageClover(): string
+    {
+        if ($this->coverageClover === null) {
+            throw new CodeCoverageReportNotConfiguredException;
+        }
+
+        return $this->coverageClover;
+    }
+
+    public function hasCoverageCobertura(): bool
+    {
+        return $this->coverageCobertura !== null;
+    }
+
+    /**
+     * @throws CodeCoverageReportNotConfiguredException
+     */
+    public function coverageCobertura(): string
+    {
+        return $this->coverageCobertura;
+    }
+
+    public function hasCoverageCrap4j(): bool
+    {
+        return $this->coverageCrap4j !== null;
+    }
+
+    /**
+     * @throws CodeCoverageReportNotConfiguredException
+     */
+    public function coverageCrap4j(): string
+    {
+        return $this->coverageCrap4j;
+    }
+
+    public function coverageCrap4jThreshold(): int
+    {
+        return $this->coverageCrap4jThreshold;
+    }
+
+    public function hasCoverageHtml(): bool
+    {
+        return $this->coverageHtml !== null;
+    }
+
+    /**
+     * @throws CodeCoverageReportNotConfiguredException
+     */
+    public function coverageHtml(): string
+    {
+        return $this->coverageHtml;
+    }
+
+    public function coverageHtmlLowUpperBound(): int
+    {
+        return $this->coverageHtmlLowUpperBound;
+    }
+
+    public function coverageHtmlHighLowerBound(): int
+    {
+        return $this->coverageHtmlHighLowerBound;
+    }
+
+    public function hasCoveragePhp(): bool
+    {
+        return $this->coveragePhp !== null;
+    }
+
+    /**
+     * @throws CodeCoverageReportNotConfiguredException
+     */
+    public function coveragePhp(): string
+    {
+        return $this->coveragePhp;
+    }
+
+    public function hasCoverageText(): bool
+    {
+        return $this->coverageText !== null;
+    }
+
+    /**
+     * @throws CodeCoverageReportNotConfiguredException
+     */
+    public function coverageText(): string
+    {
+        return $this->coverageText;
+    }
+
+    public function coverageTextShowUncoveredFiles(): bool
+    {
+        return $this->coverageTextShowUncoveredFiles;
+    }
+
+    public function coverageTextShowOnlySummary(): bool
+    {
+        return $this->coverageTextShowOnlySummary;
+    }
+
+    public function hasCoverageXml(): bool
+    {
+        return $this->coverageXml !== null;
+    }
+
+    /**
+     * @throws CodeCoverageReportNotConfiguredException
+     */
+    public function coverageXml(): string
+    {
+        return $this->coverageXml;
     }
 
     public function failOnEmptyTestSuite(): bool
