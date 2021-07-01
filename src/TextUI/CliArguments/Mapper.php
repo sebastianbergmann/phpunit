@@ -32,46 +32,6 @@ final class Mapper
             $result['colors'] = $arguments->colors();
         }
 
-        if ($arguments->hasCoverageClover()) {
-            $result['coverageClover'] = $arguments->coverageClover();
-        }
-
-        if ($arguments->hasCoverageCobertura()) {
-            $result['coverageCobertura'] = $arguments->coverageCobertura();
-        }
-
-        if ($arguments->hasCoverageCrap4J()) {
-            $result['coverageCrap4J'] = $arguments->coverageCrap4J();
-        }
-
-        if ($arguments->hasCoverageHtml()) {
-            $result['coverageHtml'] = $arguments->coverageHtml();
-        }
-
-        if ($arguments->hasCoveragePhp()) {
-            $result['coveragePHP'] = $arguments->coveragePhp();
-        }
-
-        if ($arguments->hasCoverageText()) {
-            $result['coverageText'] = $arguments->coverageText();
-        }
-
-        if ($arguments->hasCoverageTextShowUncoveredFiles()) {
-            $result['coverageTextShowUncoveredFiles'] = $arguments->hasCoverageTextShowUncoveredFiles();
-        }
-
-        if ($arguments->hasCoverageTextShowOnlySummary()) {
-            $result['coverageTextShowOnlySummary'] = $arguments->coverageTextShowOnlySummary();
-        }
-
-        if ($arguments->hasCoverageXml()) {
-            $result['coverageXml'] = $arguments->coverageXml();
-        }
-
-        if ($arguments->hasPathCoverage()) {
-            $result['pathCoverage'] = $arguments->pathCoverage();
-        }
-
         if ($arguments->hasFilter()) {
             $result['filter'] = $arguments->filter();
         }

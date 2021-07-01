@@ -601,6 +601,16 @@ final class Configuration
         return $this->pathCoverage;
     }
 
+    public function hasCoverageReport(): bool
+    {
+        return $this->hasCoverageClover() ||
+               $this->hasCoverageCobertura() ||
+               $this->hasCoverageCrap4j() ||
+               $this->hasCoverageHtml() ||
+               $this->hasCoverageText() ||
+               $this->hasCoverageXml();
+    }
+
     /**
      * @psalm-assert-if-true !null $this->coverageClover
      */

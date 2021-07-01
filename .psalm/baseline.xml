@@ -979,10 +979,18 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="10">
+    <MissingThrowsDocblock occurrences="18">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>coverageCacheDirectory</code>
+      <code>coverageClover</code>
+      <code>coverageCobertura</code>
+      <code>coverageCrap4j</code>
+      <code>coverageHtml</code>
+      <code>coveragePhp</code>
+      <code>coverageText</code>
+      <code>coverageText</code>
+      <code>coverageXml</code>
       <code>detect</code>
       <code>pharExtensionDirectory</code>
       <code>reorderTestsInSuite</code>

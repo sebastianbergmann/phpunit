@@ -293,7 +293,6 @@ final class TestRunner
 
         $coverageFilterFromConfigurationFile = false;
         $coverageFilterFromOption            = false;
-        $codeCoverageReports                 = 0;
 
         if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
@@ -338,35 +337,7 @@ final class TestRunner
             );
         }
 
-        if (isset($arguments['coverageClover'])) {
-            $codeCoverageReports++;
-        }
-
-        if (isset($arguments['coverageCobertura'])) {
-            $codeCoverageReports++;
-        }
-
-        if (isset($arguments['coverageCrap4J'])) {
-            $codeCoverageReports++;
-        }
-
-        if (isset($arguments['coverageHtml'])) {
-            $codeCoverageReports++;
-        }
-
-        if (isset($arguments['coveragePHP'])) {
-            $codeCoverageReports++;
-        }
-
-        if (isset($arguments['coverageText'])) {
-            $codeCoverageReports++;
-        }
-
-        if (isset($arguments['coverageXml'])) {
-            $codeCoverageReports++;
-        }
-
-        if ($codeCoverageReports > 0) {
+        if ($this->configuration->hasCoverageReport()) {
             if (isset($arguments['coverageFilter'])) {
                 if (!is_array($arguments['coverageFilter'])) {
                     $coverageFilterDirectories = [$arguments['coverageFilter']];
@@ -397,10 +368,9 @@ final class TestRunner
             }
         }
 
-        if ($codeCoverageReports > 0) {
+        if ($this->configuration->hasCoverageReport()) {
             try {
-                if (isset($codeCoverageConfiguration) &&
-                    ($codeCoverageConfiguration->pathCoverage() || (isset($arguments['pathCoverage']) && $arguments['pathCoverage'] === true))) {
+                if ($this->configuration->pathCoverage()) {
                     CodeCoverage::activate($this->codeCoverageFilter, true);
                 } else {
                     CodeCoverage::activate($this->codeCoverageFilter, false);
@@ -591,12 +561,12 @@ final class TestRunner
         $this->printer->printResult($result);
 
         if (CodeCoverage::isActive()) {
-            if (isset($arguments['coverageClover'])) {
+            if ($this->configuration->hasCoverageClover()) {
                 $this->codeCoverageGenerationStart('Clover XML');
 
                 try {
                     $writer = new CloverReport;
-                    $writer->process(CodeCoverage::instance(), $arguments['coverageClover']);
+                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageClover());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -606,12 +576,12 @@ final class TestRunner
                 }
             }
 
-            if (isset($arguments['coverageCobertura'])) {
+            if ($this->configuration->hasCoverageCobertura()) {
                 $this->codeCoverageGenerationStart('Cobertura XML');
 
                 try {
                     $writer = new CoberturaReport;
-                    $writer->process(CodeCoverage::instance(), $arguments['coverageCobertura']);
+                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageCobertura());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -621,12 +591,12 @@ final class TestRunner
                 }
             }
 
-            if (isset($arguments['coverageCrap4J'])) {
+            if ($this->configuration->hasCoverageCrap4j()) {
                 $this->codeCoverageGenerationStart('Crap4J XML');
 
                 try {
-                    $writer = new Crap4jReport($arguments['crap4jThreshold']);
-                    $writer->process(CodeCoverage::instance(), $arguments['coverageCrap4J']);
+                    $writer = new Crap4jReport($this->configuration->coverageCrap4jThreshold());
+                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageCrap4j());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -636,20 +606,20 @@ final class TestRunner
                 }
             }
 
-            if (isset($arguments['coverageHtml'])) {
+            if ($this->configuration->hasCoverageHtml()) {
                 $this->codeCoverageGenerationStart('HTML');
 
                 try {
                     $writer = new HtmlReport(
-                        $arguments['reportLowUpperBound'],
-                        $arguments['reportHighLowerBound'],
+                        $this->configuration->coverageHtmlLowUpperBound(),
+                        $this->configuration->coverageHtmlHighLowerBound(),
                         sprintf(
                             ' and <a href="https://phpunit.de/">PHPUnit %s</a>',
                             Version::id()
                         )
                     );
 
-                    $writer->process(CodeCoverage::instance(), $arguments['coverageHtml']);
+                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageHtml());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -659,12 +629,12 @@ final class TestRunner
                 }
             }
 
-            if (isset($arguments['coveragePHP'])) {
+            if ($this->configuration->hasCoveragePhp()) {
                 $this->codeCoverageGenerationStart('PHP');
 
                 try {
                     $writer = new PhpReport;
-                    $writer->process(CodeCoverage::instance(), $arguments['coveragePHP']);
+                    $writer->process(CodeCoverage::instance(), $this->configuration->coveragePhp());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -674,20 +644,20 @@ final class TestRunner
                 }
             }
 
-            if (isset($arguments['coverageText'])) {
-                if ($arguments['coverageText'] === 'php://stdout') {
+            if ($this->configuration->hasCoverageText()) {
+                if ($this->configuration->coverageText() === 'php://stdout') {
                     $outputStream = $this->printer;
                     $colors       = $arguments['colors'] && $arguments['colors'] !== DefaultResultPrinter::COLOR_NEVER;
                 } else {
-                    $outputStream = new Printer($arguments['coverageText']);
+                    $outputStream = new Printer($this->configuration->coverageText());
                     $colors       = false;
                 }
 
                 $processor = new TextReport(
-                    $arguments['reportLowUpperBound'],
-                    $arguments['reportHighLowerBound'],
-                    $arguments['coverageTextShowUncoveredFiles'],
-                    $arguments['coverageTextShowOnlySummary']
+                    50,
+                    90,
+                    $this->configuration->coverageTextShowUncoveredFiles(),
+                    $this->configuration->coverageTextShowOnlySummary()
                 );
 
                 $outputStream->write(
@@ -695,12 +665,12 @@ final class TestRunner
                 );
             }
 
-            if (isset($arguments['coverageXml'])) {
+            if ($this->configuration->hasCoverageXml()) {
                 $this->codeCoverageGenerationStart('PHPUnit XML');
 
                 try {
                     $writer = new XmlReport(Version::id());
-                    $writer->process(CodeCoverage::instance(), $arguments['coverageXml']);
+                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageXml());
 
                     $this->codeCoverageGenerationSucceeded();
 
@@ -749,50 +719,6 @@ final class TestRunner
             (new PhpHandler)->handle($arguments['configurationObject']->php());
 
             $codeCoverageConfiguration = $arguments['configurationObject']->codeCoverage();
-
-            if (!isset($arguments['noCoverage'])) {
-                if (!isset($arguments['coverageClover']) && $codeCoverageConfiguration->hasClover()) {
-                    $arguments['coverageClover'] = $codeCoverageConfiguration->clover()->target()->path();
-                }
-
-                if (!isset($arguments['coverageCobertura']) && $codeCoverageConfiguration->hasCobertura()) {
-                    $arguments['coverageCobertura'] = $codeCoverageConfiguration->cobertura()->target()->path();
-                }
-
-                if (!isset($arguments['coverageCrap4J']) && $codeCoverageConfiguration->hasCrap4j()) {
-                    $arguments['coverageCrap4J'] = $codeCoverageConfiguration->crap4j()->target()->path();
-
-                    if (!isset($arguments['crap4jThreshold'])) {
-                        $arguments['crap4jThreshold'] = $codeCoverageConfiguration->crap4j()->threshold();
-                    }
-                }
-
-                if (!isset($arguments['coverageHtml']) && $codeCoverageConfiguration->hasHtml()) {
-                    $arguments['coverageHtml'] = $codeCoverageConfiguration->html()->target()->path();
-
-                    if (!isset($arguments['reportLowUpperBound'])) {
-                        $arguments['reportLowUpperBound'] = $codeCoverageConfiguration->html()->lowUpperBound();
-                    }
-
-                    if (!isset($arguments['reportHighLowerBound'])) {
-                        $arguments['reportHighLowerBound'] = $codeCoverageConfiguration->html()->highLowerBound();
-                    }
-                }
-
-                if (!isset($arguments['coveragePHP']) && $codeCoverageConfiguration->hasPhp()) {
-                    $arguments['coveragePHP'] = $codeCoverageConfiguration->php()->target()->path();
-                }
-
-                if (!isset($arguments['coverageText']) && $codeCoverageConfiguration->hasText()) {
-                    $arguments['coverageText']                   = $codeCoverageConfiguration->text()->target()->path();
-                    $arguments['coverageTextShowUncoveredFiles'] = $codeCoverageConfiguration->text()->showUncoveredFiles();
-                    $arguments['coverageTextShowOnlySummary']    = $codeCoverageConfiguration->text()->showOnlySummary();
-                }
-
-                if (!isset($arguments['coverageXml']) && $codeCoverageConfiguration->hasXml()) {
-                    $arguments['coverageXml'] = $codeCoverageConfiguration->xml()->target()->path();
-                }
-            }
 
             $phpunitConfiguration = $arguments['configurationObject']->phpunit();
 
