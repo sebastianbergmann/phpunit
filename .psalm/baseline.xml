@@ -842,6 +842,16 @@
   <file src="src/TextUI/CliArguments/Builder.php">
     <MissingThrowsDocblock occurrences="1"/>
   </file>
+  <file src="src/TextUI/CliArguments/Configuration.php">
+    <InvalidNullableReturnType occurrences="2">
+      <code>bool</code>
+      <code>string</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="2">
+      <code>$this-&gt;excludeTestSuite</code>
+      <code>$this-&gt;teamCityPrinter</code>
+    </NullableReturnStatement>
+  </file>
   <file src="src/TextUI/Command/Commands/ListTestsAsTextCommand.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$this-&gt;suite-&gt;getIterator()</code>
@@ -865,7 +875,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="32">
+    <MissingThrowsDocblock occurrences="51">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -878,9 +888,20 @@
       <code>cacheResult</code>
       <code>cacheResultFile</code>
       <code>cacheResultFile</code>
+      <code>clover</code>
+      <code>cobertura</code>
       <code>columns</code>
       <code>coverageCacheDirectory</code>
+      <code>coverageClover</code>
+      <code>coverageCobertura</code>
+      <code>coverageCrap4J</code>
       <code>coverageFilter</code>
+      <code>coverageHtml</code>
+      <code>coveragePhp</code>
+      <code>coverageText</code>
+      <code>coverageXml</code>
+      <code>crap4j</code>
+      <code>crap4j</code>
       <code>defaultTestSuite</code>
       <code>disableCodeCoverageIgnore</code>
       <code>extensionsDirectory</code>
@@ -889,15 +910,23 @@
       <code>failOnRisky</code>
       <code>failOnSkipped</code>
       <code>failOnWarning</code>
+      <code>html</code>
+      <code>html</code>
+      <code>html</code>
       <code>map</code>
       <code>new TestSuite</code>
       <code>new TestSuite($path)</code>
       <code>new TestSuite($testClass)</code>
       <code>pathCoverage</code>
+      <code>php</code>
       <code>self::handleBootstrap($bootstrap)</code>
       <code>testSuffixes</code>
       <code>testSuite</code>
+      <code>text</code>
+      <code>text</code>
+      <code>text</code>
       <code>throw new BootstrapException($t);</code>
+      <code>xml</code>
     </MissingThrowsDocblock>
     <RedundantCondition occurrences="1">
       <code>assert($xmlConfiguration instanceof LoadedFromFileConfiguration)</code>
