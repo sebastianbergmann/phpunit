@@ -29,6 +29,7 @@ use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
 use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
+use SebastianBergmann\Environment\Console;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use Throwable;
 
@@ -116,7 +117,7 @@ final class Configuration
 
     private bool $beStrictAboutChangesToGlobalState;
 
-    private string $colors;
+    private bool $colors;
 
     private bool $convertDeprecationsToExceptions;
 
@@ -471,12 +472,6 @@ final class Configuration
             $beStrictAboutChangesToGlobalState = $xmlConfiguration->phpunit()->beStrictAboutChangesToGlobalState();
         }
 
-        if ($cliConfiguration->hasColors()) {
-            $colors = $cliConfiguration->colors();
-        } else {
-            $colors = $xmlConfiguration->phpunit()->colors();
-        }
-
         $convertDeprecationsToExceptions = $xmlConfiguration->phpunit()->convertDeprecationsToExceptions();
         $convertErrorsToExceptions       = $xmlConfiguration->phpunit()->convertErrorsToExceptions();
         $convertNoticesToExceptions      = $xmlConfiguration->phpunit()->convertNoticesToExceptions();
@@ -536,7 +531,12 @@ final class Configuration
             $enforceTimeLimit = $xmlConfiguration->phpunit()->enforceTimeLimit();
         }
 
-        $defaultTimeLimit      = $xmlConfiguration->phpunit()->defaultTimeLimit();
+        if ($cliConfiguration->hasDefaultTimeLimit()) {
+            $defaultTimeLimit = $cliConfiguration->defaultTimeLimit();
+        } else {
+            $defaultTimeLimit = $xmlConfiguration->phpunit()->defaultTimeLimit();
+        }
+
         $timeoutForSmallTests  = $xmlConfiguration->phpunit()->timeoutForSmallTests();
         $timeoutForMediumTests = $xmlConfiguration->phpunit()->timeoutForMediumTests();
         $timeoutForLargeTests  = $xmlConfiguration->phpunit()->timeoutForLargeTests();
@@ -590,6 +590,21 @@ final class Configuration
             $resolveDependencies = $cliConfiguration->resolveDependencies();
         } else {
             $resolveDependencies = $xmlConfiguration->phpunit()->resolveDependencies();
+        }
+
+        $colors          = false;
+        $colorsSupported = (new Console)->hasColorSupport();
+
+        if ($cliConfiguration->hasColors()) {
+            if ($cliConfiguration->colors() === DefaultResultPrinter::COLOR_ALWAYS) {
+                $colors = true;
+            } elseif ($cliConfiguration->colors() === DefaultResultPrinter::COLOR_AUTO && $colorsSupported) {
+                $colors = true;
+            }
+        } elseif ($xmlConfiguration->phpunit()->colors() === DefaultResultPrinter::COLOR_ALWAYS) {
+            $colors = true;
+        } elseif ($xmlConfiguration->phpunit()->colors() === DefaultResultPrinter::COLOR_AUTO && $colorsSupported) {
+            $colors = true;
         }
 
         self::$instance = new self(
@@ -664,7 +679,7 @@ final class Configuration
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, string $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, bool $resolveDependencies, array $warnings)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, bool $resolveDependencies, array $warnings)
     {
         $this->testSuite                                       = $testSuite;
         $this->configurationFile                               = $configurationFile;
@@ -1124,7 +1139,7 @@ final class Configuration
         return $this->beStrictAboutChangesToGlobalState;
     }
 
-    public function colors(): string
+    public function colors(): bool
     {
         return $this->colors;
     }

@@ -14,7 +14,6 @@ use function implode;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
-use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\Util\Color;
 
 /**
@@ -30,7 +29,7 @@ final class CliTestDoxPrinterColorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->printer = new TestableCliTestDoxPrinter(null, true, DefaultResultPrinter::COLOR_ALWAYS);
+        $this->printer = new TestableCliTestDoxPrinter(null, true, true);
     }
 
     protected function tearDown(): void

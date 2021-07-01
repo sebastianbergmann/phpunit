@@ -28,10 +28,6 @@ final class Mapper
             'unavailableExtensions' => [],
         ];
 
-        if ($arguments->hasColors()) {
-            $result['colors'] = $arguments->colors();
-        }
-
         if ($arguments->hasFilter()) {
             $result['filter'] = $arguments->filter();
         }
@@ -64,10 +60,6 @@ final class Mapper
             $result['teamcityLogfile'] = $arguments->teamcityLogfile();
         }
 
-        if ($arguments->hasExecutionOrder()) {
-            $result['executionOrder'] = $arguments->executionOrder();
-        }
-
         if ($arguments->hasExecutionOrderDefects()) {
             $result['executionOrderDefects'] = $arguments->executionOrderDefects();
         }
@@ -80,44 +72,8 @@ final class Mapper
             $result['unavailableExtensions'] = $arguments->unavailableExtensions();
         }
 
-        if ($arguments->hasResolveDependencies()) {
-            $result['resolveDependencies'] = $arguments->resolveDependencies();
-        }
-
-        if ($arguments->hasProcessIsolation()) {
-            $result['processIsolation'] = $arguments->processIsolation();
-        }
-
         if ($arguments->hasRepeat()) {
             $result['repeat'] = $arguments->repeat();
-        }
-
-        if ($arguments->hasStopOnDefect()) {
-            $result['stopOnDefect'] = $arguments->stopOnDefect();
-        }
-
-        if ($arguments->hasStopOnError()) {
-            $result['stopOnError'] = $arguments->stopOnError();
-        }
-
-        if ($arguments->hasStopOnFailure()) {
-            $result['stopOnFailure'] = $arguments->stopOnFailure();
-        }
-
-        if ($arguments->hasStopOnWarning()) {
-            $result['stopOnWarning'] = $arguments->stopOnWarning();
-        }
-
-        if ($arguments->hasStopOnIncomplete()) {
-            $result['stopOnIncomplete'] = $arguments->stopOnIncomplete();
-        }
-
-        if ($arguments->hasStopOnRisky()) {
-            $result['stopOnRisky'] = $arguments->stopOnRisky();
-        }
-
-        if ($arguments->hasStopOnSkipped()) {
-            $result['stopOnSkipped'] = $arguments->stopOnSkipped();
         }
 
         if ($arguments->hasTestdoxGroups()) {
@@ -140,60 +96,12 @@ final class Mapper
             $result['testdoxXMLFile'] = $arguments->testdoxXmlFile();
         }
 
-        if ($arguments->hasNoCoverage()) {
-            $result['noCoverage'] = $arguments->noCoverage();
-        }
-
         if ($arguments->hasNoOutput()) {
             $result['noOutput'] = $arguments->noOutput();
         }
 
         if ($arguments->hasNoLogging()) {
             $result['noLogging'] = $arguments->noLogging();
-        }
-
-        if ($arguments->hasNoInteraction()) {
-            $result['noInteraction'] = $arguments->noInteraction();
-        }
-
-        if ($arguments->hasBackupGlobals()) {
-            $result['backupGlobals'] = $arguments->backupGlobals();
-        }
-
-        if ($arguments->hasBackupStaticProperties()) {
-            $result['backupStaticProperties'] = $arguments->backupStaticProperties();
-        }
-
-        if ($arguments->hasVerbose()) {
-            $result['verbose'] = $arguments->verbose();
-        }
-
-        if ($arguments->hasReportUselessTests()) {
-            $result['reportUselessTests'] = $arguments->reportUselessTests();
-        }
-
-        if ($arguments->hasStrictCoverage()) {
-            $result['strictCoverage'] = $arguments->strictCoverage();
-        }
-
-        if ($arguments->hasBeStrictAboutChangesToGlobalState()) {
-            $result['beStrictAboutChangesToGlobalState'] = $arguments->beStrictAboutChangesToGlobalState();
-        }
-
-        if ($arguments->hasDisallowTestOutput()) {
-            $result['disallowTestOutput'] = $arguments->disallowTestOutput();
-        }
-
-        if ($arguments->hasDefaultTimeLimit()) {
-            $result['defaultTimeLimit'] = $arguments->defaultTimeLimit();
-        }
-
-        if ($arguments->hasEnforceTimeLimit()) {
-            $result['enforceTimeLimit'] = $arguments->enforceTimeLimit();
-        }
-
-        if ($arguments->hasReverseList()) {
-            $result['reverseList'] = $arguments->reverseList();
         }
 
         if ($arguments->hasCoverageFilter()) {

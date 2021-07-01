@@ -507,9 +507,9 @@ final class TestResult implements Countable
         return $this->enforceTimeLimit;
     }
 
-    public function forceCoversAnnotation(): void
+    public function forceCoversAnnotation(bool $flag): void
     {
-        $this->forceCoversAnnotation = true;
+        $this->forceCoversAnnotation = $flag;
     }
 
     public function enforcesCoversAnnotation(): bool
@@ -597,9 +597,9 @@ final class TestResult implements Countable
         return $this->timeoutForLargeTests;
     }
 
-    public function registerMockObjectsFromTestArgumentsRecursively(): void
+    public function registerMockObjectsFromTestArgumentsRecursively(bool $flag): void
     {
-        $this->registerMockObjectsFromTestArgumentsRecursively = true;
+        $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
     }
 
     public function shouldMockObjectsFromTestArgumentsBeRegisteredRecursively(): bool

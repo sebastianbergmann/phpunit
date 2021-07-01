@@ -875,11 +875,14 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="51">
+    <MissingThrowsDocblock occurrences="74">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
       <code>argument</code>
+      <code>backupGlobals</code>
+      <code>backupStaticProperties</code>
+      <code>beStrictAboutChangesToGlobalState</code>
       <code>bootstrap</code>
       <code>bootstrap</code>
       <code>cacheDirectory</code>
@@ -890,6 +893,8 @@
       <code>cacheResultFile</code>
       <code>clover</code>
       <code>cobertura</code>
+      <code>colors</code>
+      <code>colors</code>
       <code>columns</code>
       <code>coverageCacheDirectory</code>
       <code>coverageClover</code>
@@ -903,7 +908,11 @@
       <code>crap4j</code>
       <code>crap4j</code>
       <code>defaultTestSuite</code>
+      <code>defaultTimeLimit</code>
       <code>disableCodeCoverageIgnore</code>
+      <code>disallowTestOutput</code>
+      <code>enforceTimeLimit</code>
+      <code>executionOrder</code>
       <code>extensionsDirectory</code>
       <code>failOnEmptyTestSuite</code>
       <code>failOnIncomplete</code>
@@ -917,15 +926,29 @@
       <code>new TestSuite</code>
       <code>new TestSuite($path)</code>
       <code>new TestSuite($testClass)</code>
+      <code>noInteraction</code>
       <code>pathCoverage</code>
       <code>php</code>
+      <code>processIsolation</code>
+      <code>reportUselessTests</code>
+      <code>resolveDependencies</code>
+      <code>reverseList</code>
       <code>self::handleBootstrap($bootstrap)</code>
+      <code>stopOnDefect</code>
+      <code>stopOnError</code>
+      <code>stopOnFailure</code>
+      <code>stopOnIncomplete</code>
+      <code>stopOnRisky</code>
+      <code>stopOnSkipped</code>
+      <code>stopOnWarning</code>
+      <code>strictCoverage</code>
       <code>testSuffixes</code>
       <code>testSuite</code>
       <code>text</code>
       <code>text</code>
       <code>text</code>
       <code>throw new BootstrapException($t);</code>
+      <code>verbose</code>
       <code>xml</code>
     </MissingThrowsDocblock>
     <RedundantCondition occurrences="1">

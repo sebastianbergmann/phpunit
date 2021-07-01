@@ -15,7 +15,6 @@ use function array_reverse;
 use function count;
 use function floor;
 use function implode;
-use function in_array;
 use function is_int;
 use function max;
 use function preg_split;
@@ -23,7 +22,6 @@ use function sprintf;
 use function str_pad;
 use function str_repeat;
 use function strlen;
-use function vsprintf;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
@@ -100,23 +98,15 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
      *
      * @throws Exception
      */
-    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
+    public function __construct($out = null, bool $verbose = false, bool $colors = false, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out);
-
-        if (!in_array($colors, self::AVAILABLE_COLORS, true)) {
-            throw InvalidArgumentException::create(
-                3,
-                vsprintf('value from "%s", "%s" or "%s"', self::AVAILABLE_COLORS)
-            );
-        }
 
         if (!is_int($numberOfColumns) && $numberOfColumns !== 'max') {
             throw InvalidArgumentException::create(5, 'integer or "max"');
         }
 
-        $console            = new Console;
-        $maxNumberOfColumns = $console->getNumberOfColumns();
+        $maxNumberOfColumns = (new Console)->getNumberOfColumns();
 
         if ($numberOfColumns === 'max' || ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns)) {
             $numberOfColumns = $maxNumberOfColumns;
@@ -126,12 +116,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         $this->verbose         = $verbose;
         $this->debug           = $debug;
         $this->reverse         = $reverse;
-
-        if ($colors === self::COLOR_AUTO && $console->hasColorSupport()) {
-            $this->colors = true;
-        } else {
-            $this->colors = (self::COLOR_ALWAYS === $colors);
-        }
+        $this->colors          = $colors;
 
         $this->timer = new Timer;
 

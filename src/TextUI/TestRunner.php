@@ -128,19 +128,11 @@ final class TestRunner
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $this->configuration->bootstrap();
         }
 
-        if ($arguments['backupGlobals'] === true) {
-            $suite->setBackupGlobals(true);
-        }
+        $suite->setBackupGlobals($this->configuration->backupGlobals());
+        $suite->setBackupStaticProperties($this->configuration->backupStaticProperties());
+        $suite->setBeStrictAboutChangesToGlobalState($this->configuration->beStrictAboutChangesToGlobalState());
 
-        if ($arguments['backupStaticProperties'] === true) {
-            $suite->setBackupStaticProperties(true);
-        }
-
-        if ($arguments['beStrictAboutChangesToGlobalState'] === true) {
-            $suite->setBeStrictAboutChangesToGlobalState(true);
-        }
-
-        if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
+        if ($this->configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
             mt_srand($arguments['randomOrderSeed']);
         }
 
@@ -150,19 +142,26 @@ final class TestRunner
             $this->addExtension(new ResultCacheExtension($cache));
         }
 
-        if ($arguments['executionOrder'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['executionOrderDefects'] !== TestSuiteSorter::ORDER_DEFAULT || $arguments['resolveDependencies']) {
+        if ($this->configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
+            $arguments['executionOrderDefects'] !== TestSuiteSorter::ORDER_DEFAULT ||
+            $this->configuration->resolveDependencies()) {
             $cache = $cache ?? new NullTestResultCache;
 
             $cache->load();
 
             $sorter = new TestSuiteSorter($cache);
 
-            $sorter->reorderTestsInSuite($suite, $arguments['executionOrder'], $arguments['resolveDependencies'], $arguments['executionOrderDefects']);
+            $sorter->reorderTestsInSuite(
+                $suite,
+                $this->configuration->executionOrder(),
+                $this->configuration->resolveDependencies(),
+                $arguments['executionOrderDefects']
+            );
 
             Event\Facade::emitter()->testSuiteSorted(
-                $arguments['executionOrder'],
+                $this->configuration->executionOrder(),
                 $arguments['executionOrderDefects'],
-                $arguments['resolveDependencies']
+                $this->configuration->resolveDependencies()
             );
 
             $originalExecutionOrder = $sorter->getOriginalExecutionOrder();
@@ -202,53 +201,18 @@ final class TestRunner
 
         unset($listener, $listenerNeeded);
 
-        if (!$arguments['convertDeprecationsToExceptions']) {
-            $result->convertDeprecationsToExceptions(false);
-        }
-
-        if (!$arguments['convertErrorsToExceptions']) {
-            $result->convertErrorsToExceptions(false);
-        }
-
-        if (!$arguments['convertNoticesToExceptions']) {
-            $result->convertNoticesToExceptions(false);
-        }
-
-        if (!$arguments['convertWarningsToExceptions']) {
-            $result->convertWarningsToExceptions(false);
-        }
-
-        if ($arguments['stopOnError']) {
-            $result->stopOnError(true);
-        }
-
-        if ($arguments['stopOnFailure']) {
-            $result->stopOnFailure(true);
-        }
-
-        if ($arguments['stopOnWarning']) {
-            $result->stopOnWarning(true);
-        }
-
-        if ($arguments['stopOnIncomplete']) {
-            $result->stopOnIncomplete(true);
-        }
-
-        if ($arguments['stopOnRisky']) {
-            $result->stopOnRisky(true);
-        }
-
-        if ($arguments['stopOnSkipped']) {
-            $result->stopOnSkipped(true);
-        }
-
-        if ($arguments['stopOnDefect']) {
-            $result->stopOnDefect(true);
-        }
-
-        if ($arguments['registerMockObjectsFromTestArgumentsRecursively']) {
-            $result->registerMockObjectsFromTestArgumentsRecursively();
-        }
+        $result->convertDeprecationsToExceptions($this->configuration->convertDeprecationsToExceptions());
+        $result->convertErrorsToExceptions($this->configuration->convertErrorsToExceptions());
+        $result->convertNoticesToExceptions($this->configuration->convertNoticesToExceptions());
+        $result->convertWarningsToExceptions($this->configuration->convertWarningsToExceptions());
+        $result->stopOnDefect($this->configuration->stopOnDefect());
+        $result->stopOnError($this->configuration->stopOnError());
+        $result->stopOnFailure($this->configuration->stopOnFailure());
+        $result->stopOnIncomplete($this->configuration->stopOnIncomplete());
+        $result->stopOnRisky($this->configuration->stopOnRisky());
+        $result->stopOnSkipped($this->configuration->stopOnSkipped());
+        $result->stopOnWarning($this->configuration->stopOnWarning());
+        $result->registerMockObjectsFromTestArgumentsRecursively($this->configuration->registerMockObjectsFromTestArgumentsRecursively());
 
         $printerClassName = DefaultResultPrinter::class;
 
@@ -266,7 +230,7 @@ final class TestRunner
             assert($this->printer instanceof CliTestDoxPrinter);
 
             $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
-            $this->printer->setShowProgressAnimation(!$arguments['noInteraction']);
+            $this->printer->setShowProgressAnimation(!$this->configuration->noInteraction());
         }
 
         if (isset($arguments['plainTextTrace'])) {
@@ -332,7 +296,7 @@ final class TestRunner
             $result->addListener(
                 new JunitXmlLogger(
                     $arguments['junitLogfile'],
-                    $arguments['reportUselessTests']
+                    $this->configuration->reportUselessTests()
                 )
             );
         }
@@ -382,7 +346,7 @@ final class TestRunner
 
                 CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
 
-                if ($arguments['strictCoverage']) {
+                if ($this->configuration->strictCoverage()) {
                     CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
                 }
 
@@ -424,7 +388,7 @@ final class TestRunner
             }
         }
 
-        if ($arguments['verbose']) {
+        if ($this->configuration->verbose()) {
             if (PHP_SAPI === 'phpdbg') {
                 $this->writeMessage('Runtime', 'PHPDBG ' . PHP_VERSION);
             } else {
@@ -463,7 +427,7 @@ final class TestRunner
             }
         }
 
-        if ($arguments['executionOrder'] === TestSuiteSorter::ORDER_RANDOMIZED) {
+        if ($this->configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
             $this->writeMessage(
                 'Random Seed',
                 (string) $arguments['randomOrderSeed']
@@ -503,25 +467,21 @@ final class TestRunner
 
         $this->printer->write("\n");
 
-        $result->beStrictAboutTestsThatDoNotTestAnything($arguments['reportUselessTests']);
-        $result->beStrictAboutOutputDuringTests($arguments['disallowTestOutput']);
-
-        if ($arguments['enforceTimeLimit'] === true && !(new Invoker)->canInvokeWithTimeout()) {
+        if ($this->configuration->enforceTimeLimit() && !(new Invoker)->canInvokeWithTimeout()) {
             $this->writeMessage('Error', 'PHP extension pcntl is required for enforcing time limits');
         }
 
-        $result->enforceTimeLimit($arguments['enforceTimeLimit']);
-        $result->setDefaultTimeLimit($arguments['defaultTimeLimit']);
-        $result->setTimeoutForSmallTests($arguments['timeoutForSmallTests']);
-        $result->setTimeoutForMediumTests($arguments['timeoutForMediumTests']);
-        $result->setTimeoutForLargeTests($arguments['timeoutForLargeTests']);
-
-        if (isset($arguments['forceCoversAnnotation']) && $arguments['forceCoversAnnotation'] === true) {
-            $result->forceCoversAnnotation();
-        }
+        $result->beStrictAboutTestsThatDoNotTestAnything($this->configuration->reportUselessTests());
+        $result->beStrictAboutOutputDuringTests($this->configuration->disallowTestOutput());
+        $result->enforceTimeLimit($this->configuration->enforceTimeLimit());
+        $result->setDefaultTimeLimit($this->configuration->defaultTimeLimit());
+        $result->setTimeoutForSmallTests($this->configuration->timeoutForSmallTests());
+        $result->setTimeoutForMediumTests($this->configuration->timeoutForMediumTests());
+        $result->setTimeoutForLargeTests($this->configuration->timeoutForLargeTests());
+        $result->forceCoversAnnotation($this->configuration->forceCoversAnnotation());
 
         $this->processSuiteFilters($suite, $arguments);
-        $suite->setRunTestInSeparateProcess($arguments['processIsolation']);
+        $suite->setRunTestInSeparateProcess($this->configuration->processIsolation());
 
         foreach ($this->extensions as $extension) {
             if ($extension instanceof BeforeFirstTestHook) {
@@ -647,10 +607,8 @@ final class TestRunner
             if ($this->configuration->hasCoverageText()) {
                 if ($this->configuration->coverageText() === 'php://stdout') {
                     $outputStream = $this->printer;
-                    $colors       = $arguments['colors'] && $arguments['colors'] !== DefaultResultPrinter::COLOR_NEVER;
                 } else {
                     $outputStream = new Printer($this->configuration->coverageText());
-                    $colors       = false;
                 }
 
                 $processor = new TextReport(
@@ -661,7 +619,7 @@ final class TestRunner
                 );
 
                 $outputStream->write(
-                    $processor->process(CodeCoverage::instance(), $colors)
+                    $processor->process(CodeCoverage::instance(), $this->configuration->colors())
                 );
             }
 
@@ -718,42 +676,7 @@ final class TestRunner
         if (isset($arguments['configurationObject'])) {
             (new PhpHandler)->handle($arguments['configurationObject']->php());
 
-            $codeCoverageConfiguration = $arguments['configurationObject']->codeCoverage();
-
             $phpunitConfiguration = $arguments['configurationObject']->phpunit();
-
-            $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? $phpunitConfiguration->backupGlobals();
-            $arguments['backupStaticProperties']                          = $arguments['backupStaticProperties'] ?? $phpunitConfiguration->backupStaticProperties();
-            $arguments['beStrictAboutChangesToGlobalState']               = $arguments['beStrictAboutChangesToGlobalState'] ?? $phpunitConfiguration->beStrictAboutChangesToGlobalState();
-            $arguments['colors']                                          = $arguments['colors'] ?? $phpunitConfiguration->colors();
-            $arguments['convertDeprecationsToExceptions']                 = $arguments['convertDeprecationsToExceptions'] ?? $phpunitConfiguration->convertDeprecationsToExceptions();
-            $arguments['convertErrorsToExceptions']                       = $arguments['convertErrorsToExceptions'] ?? $phpunitConfiguration->convertErrorsToExceptions();
-            $arguments['convertNoticesToExceptions']                      = $arguments['convertNoticesToExceptions'] ?? $phpunitConfiguration->convertNoticesToExceptions();
-            $arguments['convertWarningsToExceptions']                     = $arguments['convertWarningsToExceptions'] ?? $phpunitConfiguration->convertWarningsToExceptions();
-            $arguments['processIsolation']                                = $arguments['processIsolation'] ?? $phpunitConfiguration->processIsolation();
-            $arguments['stopOnDefect']                                    = $arguments['stopOnDefect'] ?? $phpunitConfiguration->stopOnDefect();
-            $arguments['stopOnError']                                     = $arguments['stopOnError'] ?? $phpunitConfiguration->stopOnError();
-            $arguments['stopOnFailure']                                   = $arguments['stopOnFailure'] ?? $phpunitConfiguration->stopOnFailure();
-            $arguments['stopOnWarning']                                   = $arguments['stopOnWarning'] ?? $phpunitConfiguration->stopOnWarning();
-            $arguments['stopOnIncomplete']                                = $arguments['stopOnIncomplete'] ?? $phpunitConfiguration->stopOnIncomplete();
-            $arguments['stopOnRisky']                                     = $arguments['stopOnRisky'] ?? $phpunitConfiguration->stopOnRisky();
-            $arguments['stopOnSkipped']                                   = $arguments['stopOnSkipped'] ?? $phpunitConfiguration->stopOnSkipped();
-            $arguments['enforceTimeLimit']                                = $arguments['enforceTimeLimit'] ?? $phpunitConfiguration->enforceTimeLimit();
-            $arguments['defaultTimeLimit']                                = $arguments['defaultTimeLimit'] ?? $phpunitConfiguration->defaultTimeLimit();
-            $arguments['timeoutForSmallTests']                            = $arguments['timeoutForSmallTests'] ?? $phpunitConfiguration->timeoutForSmallTests();
-            $arguments['timeoutForMediumTests']                           = $arguments['timeoutForMediumTests'] ?? $phpunitConfiguration->timeoutForMediumTests();
-            $arguments['timeoutForLargeTests']                            = $arguments['timeoutForLargeTests'] ?? $phpunitConfiguration->timeoutForLargeTests();
-            $arguments['reportUselessTests']                              = $arguments['reportUselessTests'] ?? $phpunitConfiguration->beStrictAboutTestsThatDoNotTestAnything();
-            $arguments['strictCoverage']                                  = $arguments['strictCoverage'] ?? $phpunitConfiguration->beStrictAboutCoversAnnotation();
-            $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage']       = $arguments['ignoreDeprecatedCodeUnitsFromCodeCoverage'] ?? $codeCoverageConfiguration->ignoreDeprecatedCodeUnits();
-            $arguments['disallowTestOutput']                              = $arguments['disallowTestOutput'] ?? $phpunitConfiguration->beStrictAboutOutputDuringTests();
-            $arguments['verbose']                                         = $arguments['verbose'] ?? $phpunitConfiguration->verbose();
-            $arguments['reverseDefectList']                               = $arguments['reverseDefectList'] ?? $phpunitConfiguration->reverseDefectList();
-            $arguments['forceCoversAnnotation']                           = $arguments['forceCoversAnnotation'] ?? $phpunitConfiguration->forceCoversAnnotation();
-            $arguments['registerMockObjectsFromTestArgumentsRecursively'] = $arguments['registerMockObjectsFromTestArgumentsRecursively'] ?? $phpunitConfiguration->registerMockObjectsFromTestArgumentsRecursively();
-            $arguments['noInteraction']                                   = $arguments['noInteraction'] ?? $phpunitConfiguration->noInteraction();
-            $arguments['executionOrder']                                  = $arguments['executionOrder'] ?? $phpunitConfiguration->executionOrder();
-            $arguments['resolveDependencies']                             = $arguments['resolveDependencies'] ?? $phpunitConfiguration->resolveDependencies();
 
             if (!isset($arguments['executionOrderDefects'])) {
                 $arguments['executionOrderDefects'] = $phpunitConfiguration->defectsFirst() ? TestSuiteSorter::ORDER_DEFECTS_FIRST : TestSuiteSorter::ORDER_DEFAULT;
@@ -838,46 +761,13 @@ final class TestRunner
 
         unset($extensionHandler);
 
-        $arguments['backupGlobals']                                   = $arguments['backupGlobals'] ?? null;
-        $arguments['backupStaticProperties']                          = $arguments['backupStaticProperties'] ?? null;
-        $arguments['beStrictAboutChangesToGlobalState']               = $arguments['beStrictAboutChangesToGlobalState'] ?? null;
-        $arguments['colors']                                          = $arguments['colors'] ?? DefaultResultPrinter::COLOR_DEFAULT;
-        $arguments['convertDeprecationsToExceptions']                 = $arguments['convertDeprecationsToExceptions'] ?? true;
-        $arguments['convertErrorsToExceptions']                       = $arguments['convertErrorsToExceptions'] ?? true;
-        $arguments['convertNoticesToExceptions']                      = $arguments['convertNoticesToExceptions'] ?? true;
-        $arguments['convertWarningsToExceptions']                     = $arguments['convertWarningsToExceptions'] ?? true;
-        $arguments['crap4jThreshold']                                 = $arguments['crap4jThreshold'] ?? 30;
-        $arguments['disallowTestOutput']                              = $arguments['disallowTestOutput'] ?? false;
-        $arguments['defaultTimeLimit']                                = $arguments['defaultTimeLimit'] ?? 0;
-        $arguments['enforceTimeLimit']                                = $arguments['enforceTimeLimit'] ?? false;
-        $arguments['excludeGroups']                                   = $arguments['excludeGroups'] ?? [];
-        $arguments['executionOrder']                                  = $arguments['executionOrder'] ?? TestSuiteSorter::ORDER_DEFAULT;
-        $arguments['executionOrderDefects']                           = $arguments['executionOrderDefects'] ?? TestSuiteSorter::ORDER_DEFAULT;
-        $arguments['groups']                                          = $arguments['groups'] ?? [];
-        $arguments['noInteraction']                                   = $arguments['noInteraction'] ?? false;
-        $arguments['processIsolation']                                = $arguments['processIsolation'] ?? false;
-        $arguments['randomOrderSeed']                                 = $arguments['randomOrderSeed'] ?? time();
-        $arguments['registerMockObjectsFromTestArgumentsRecursively'] = $arguments['registerMockObjectsFromTestArgumentsRecursively'] ?? false;
-        $arguments['repeat']                                          = $arguments['repeat'] ?? false;
-        $arguments['reportHighLowerBound']                            = $arguments['reportHighLowerBound'] ?? 90;
-        $arguments['reportLowUpperBound']                             = $arguments['reportLowUpperBound'] ?? 50;
-        $arguments['reportUselessTests']                              = $arguments['reportUselessTests'] ?? true;
-        $arguments['reverseList']                                     = $arguments['reverseList'] ?? false;
-        $arguments['resolveDependencies']                             = $arguments['resolveDependencies'] ?? true;
-        $arguments['stopOnError']                                     = $arguments['stopOnError'] ?? false;
-        $arguments['stopOnFailure']                                   = $arguments['stopOnFailure'] ?? false;
-        $arguments['stopOnIncomplete']                                = $arguments['stopOnIncomplete'] ?? false;
-        $arguments['stopOnRisky']                                     = $arguments['stopOnRisky'] ?? false;
-        $arguments['stopOnSkipped']                                   = $arguments['stopOnSkipped'] ?? false;
-        $arguments['stopOnWarning']                                   = $arguments['stopOnWarning'] ?? false;
-        $arguments['stopOnDefect']                                    = $arguments['stopOnDefect'] ?? false;
-        $arguments['strictCoverage']                                  = $arguments['strictCoverage'] ?? false;
-        $arguments['testdoxExcludeGroups']                            = $arguments['testdoxExcludeGroups'] ?? [];
-        $arguments['testdoxGroups']                                   = $arguments['testdoxGroups'] ?? [];
-        $arguments['timeoutForLargeTests']                            = $arguments['timeoutForLargeTests'] ?? 60;
-        $arguments['timeoutForMediumTests']                           = $arguments['timeoutForMediumTests'] ?? 10;
-        $arguments['timeoutForSmallTests']                            = $arguments['timeoutForSmallTests'] ?? 1;
-        $arguments['verbose']                                         = $arguments['verbose'] ?? false;
+        $arguments['excludeGroups']         = $arguments['excludeGroups'] ?? [];
+        $arguments['executionOrderDefects'] = $arguments['executionOrderDefects'] ?? TestSuiteSorter::ORDER_DEFAULT;
+        $arguments['groups']                = $arguments['groups'] ?? [];
+        $arguments['randomOrderSeed']       = $arguments['randomOrderSeed'] ?? time();
+        $arguments['repeat']                = $arguments['repeat'] ?? false;
+        $arguments['testdoxExcludeGroups']  = $arguments['testdoxExcludeGroups'] ?? [];
+        $arguments['testdoxGroups']         = $arguments['testdoxGroups'] ?? [];
     }
 
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
@@ -959,11 +849,11 @@ final class TestRunner
     {
         $object = new $className(
             $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : null,
-            $arguments['verbose'],
-            $arguments['colors'],
+            $this->configuration->verbose(),
+            $this->configuration->colors(),
             $this->configuration->debug(),
             $this->configuration->columns(),
-            $arguments['reverseList']
+            $this->configuration->reverseDefectList()
         );
 
         assert($object instanceof ResultPrinter);
