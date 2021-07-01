@@ -110,6 +110,68 @@ final class Configuration
 
     private bool $debug;
 
+    private bool $backupGlobals;
+
+    private bool $backupStaticProperties;
+
+    private bool $beStrictAboutChangesToGlobalState;
+
+    private string $colors;
+
+    private bool $convertDeprecationsToExceptions;
+
+    private bool $convertErrorsToExceptions;
+
+    private bool $convertNoticesToExceptions;
+
+    private bool $convertWarningsToExceptions;
+
+    private bool $processIsolation;
+
+    private bool $stopOnDefect;
+
+    private bool $stopOnError;
+
+    private bool $stopOnFailure;
+
+    private bool $stopOnWarning;
+
+    private bool $stopOnIncomplete;
+
+    private bool $stopOnRisky;
+
+    private bool $stopOnSkipped;
+
+    private bool $enforceTimeLimit;
+
+    private int $defaultTimeLimit;
+
+    private int $timeoutForSmallTests;
+
+    private int $timeoutForMediumTests;
+
+    private int $timeoutForLargeTests;
+
+    private bool $reportUselessTests;
+
+    private bool $strictCoverage;
+
+    private bool $disallowTestOutput;
+
+    private bool $verbose;
+
+    private bool $reverseDefectList;
+
+    private bool $forceCoversAnnotation;
+
+    private bool $registerMockObjectsFromTestArgumentsRecursively;
+
+    private bool $noInteraction;
+
+    private int $executionOrder;
+
+    private bool $resolveDependencies;
+
     /**
      * @psalm-var list<string>
      */
@@ -391,6 +453,145 @@ final class Configuration
             }
         }
 
+        if ($cliConfiguration->hasBackupGlobals()) {
+            $backupGlobals = $cliConfiguration->backupGlobals();
+        } else {
+            $backupGlobals = $xmlConfiguration->phpunit()->backupGlobals();
+        }
+
+        if ($cliConfiguration->hasBackupStaticProperties()) {
+            $backupStaticProperties = $cliConfiguration->backupStaticProperties();
+        } else {
+            $backupStaticProperties = $xmlConfiguration->phpunit()->backupStaticProperties();
+        }
+
+        if ($cliConfiguration->hasBeStrictAboutChangesToGlobalState()) {
+            $beStrictAboutChangesToGlobalState = $cliConfiguration->beStrictAboutChangesToGlobalState();
+        } else {
+            $beStrictAboutChangesToGlobalState = $xmlConfiguration->phpunit()->beStrictAboutChangesToGlobalState();
+        }
+
+        if ($cliConfiguration->hasColors()) {
+            $colors = $cliConfiguration->colors();
+        } else {
+            $colors = $xmlConfiguration->phpunit()->colors();
+        }
+
+        $convertDeprecationsToExceptions = $xmlConfiguration->phpunit()->convertDeprecationsToExceptions();
+        $convertErrorsToExceptions       = $xmlConfiguration->phpunit()->convertErrorsToExceptions();
+        $convertNoticesToExceptions      = $xmlConfiguration->phpunit()->convertNoticesToExceptions();
+        $convertWarningsToExceptions     = $xmlConfiguration->phpunit()->convertWarningsToExceptions();
+
+        if ($cliConfiguration->hasProcessIsolation()) {
+            $processIsolation = $cliConfiguration->processIsolation();
+        } else {
+            $processIsolation = $xmlConfiguration->phpunit()->processIsolation();
+        }
+
+        if ($cliConfiguration->hasStopOnDefect()) {
+            $stopOnDefect = $cliConfiguration->stopOnDefect();
+        } else {
+            $stopOnDefect = $xmlConfiguration->phpunit()->stopOnDefect();
+        }
+
+        if ($cliConfiguration->hasStopOnError()) {
+            $stopOnError = $cliConfiguration->stopOnError();
+        } else {
+            $stopOnError = $xmlConfiguration->phpunit()->stopOnError();
+        }
+
+        if ($cliConfiguration->hasStopOnFailure()) {
+            $stopOnFailure = $cliConfiguration->stopOnFailure();
+        } else {
+            $stopOnFailure = $xmlConfiguration->phpunit()->stopOnFailure();
+        }
+
+        if ($cliConfiguration->hasStopOnWarning()) {
+            $stopOnWarning = $cliConfiguration->stopOnWarning();
+        } else {
+            $stopOnWarning = $xmlConfiguration->phpunit()->stopOnWarning();
+        }
+
+        if ($cliConfiguration->hasStopOnIncomplete()) {
+            $stopOnIncomplete = $cliConfiguration->stopOnIncomplete();
+        } else {
+            $stopOnIncomplete = $xmlConfiguration->phpunit()->stopOnIncomplete();
+        }
+
+        if ($cliConfiguration->hasStopOnRisky()) {
+            $stopOnRisky = $cliConfiguration->stopOnRisky();
+        } else {
+            $stopOnRisky = $xmlConfiguration->phpunit()->stopOnRisky();
+        }
+
+        if ($cliConfiguration->hasStopOnSkipped()) {
+            $stopOnSkipped = $cliConfiguration->stopOnSkipped();
+        } else {
+            $stopOnSkipped = $xmlConfiguration->phpunit()->stopOnSkipped();
+        }
+
+        if ($cliConfiguration->hasEnforceTimeLimit()) {
+            $enforceTimeLimit = $cliConfiguration->enforceTimeLimit();
+        } else {
+            $enforceTimeLimit = $xmlConfiguration->phpunit()->enforceTimeLimit();
+        }
+
+        $defaultTimeLimit      = $xmlConfiguration->phpunit()->defaultTimeLimit();
+        $timeoutForSmallTests  = $xmlConfiguration->phpunit()->timeoutForSmallTests();
+        $timeoutForMediumTests = $xmlConfiguration->phpunit()->timeoutForMediumTests();
+        $timeoutForLargeTests  = $xmlConfiguration->phpunit()->timeoutForLargeTests();
+
+        if ($cliConfiguration->hasReportUselessTests()) {
+            $reportUselessTests = $cliConfiguration->reportUselessTests();
+        } else {
+            $reportUselessTests = $xmlConfiguration->phpunit()->beStrictAboutTestsThatDoNotTestAnything();
+        }
+
+        if ($cliConfiguration->hasStrictCoverage()) {
+            $strictCoverage = $cliConfiguration->strictCoverage();
+        } else {
+            $strictCoverage = $xmlConfiguration->phpunit()->beStrictAboutCoversAnnotation();
+        }
+
+        if ($cliConfiguration->hasDisallowTestOutput()) {
+            $disallowTestOutput = $cliConfiguration->disallowTestOutput();
+        } else {
+            $disallowTestOutput = $xmlConfiguration->phpunit()->beStrictAboutOutputDuringTests();
+        }
+
+        if ($cliConfiguration->hasVerbose()) {
+            $verbose = $cliConfiguration->verbose();
+        } else {
+            $verbose = $xmlConfiguration->phpunit()->verbose();
+        }
+
+        if ($cliConfiguration->hasReverseList()) {
+            $reverseDefectList = $cliConfiguration->reverseList();
+        } else {
+            $reverseDefectList = $xmlConfiguration->phpunit()->reverseDefectList();
+        }
+
+        $forceCoversAnnotation                           = $xmlConfiguration->phpunit()->forceCoversAnnotation();
+        $registerMockObjectsFromTestArgumentsRecursively = $xmlConfiguration->phpunit()->registerMockObjectsFromTestArgumentsRecursively();
+
+        if ($cliConfiguration->hasNoInteraction()) {
+            $noInteraction = $cliConfiguration->noInteraction();
+        } else {
+            $noInteraction = $xmlConfiguration->phpunit()->noInteraction();
+        }
+
+        if ($cliConfiguration->hasExecutionOrder()) {
+            $executionOrder = $cliConfiguration->executionOrder();
+        } else {
+            $executionOrder = $xmlConfiguration->phpunit()->executionOrder();
+        }
+
+        if ($cliConfiguration->hasResolveDependencies()) {
+            $resolveDependencies = $cliConfiguration->resolveDependencies();
+        } else {
+            $resolveDependencies = $xmlConfiguration->phpunit()->resolveDependencies();
+        }
+
         self::$instance = new self(
             $testSuite,
             $configurationFile,
@@ -426,49 +627,111 @@ final class Configuration
             $loadPharExtensions,
             $pharExtensionDirectory,
             $debug,
+            $backupGlobals,
+            $backupStaticProperties,
+            $beStrictAboutChangesToGlobalState,
+            $colors,
+            $convertDeprecationsToExceptions,
+            $convertErrorsToExceptions,
+            $convertNoticesToExceptions,
+            $convertWarningsToExceptions,
+            $processIsolation,
+            $stopOnDefect,
+            $stopOnError,
+            $stopOnFailure,
+            $stopOnWarning,
+            $stopOnIncomplete,
+            $stopOnRisky,
+            $stopOnSkipped,
+            $enforceTimeLimit,
+            $defaultTimeLimit,
+            $timeoutForSmallTests,
+            $timeoutForMediumTests,
+            $timeoutForLargeTests,
+            $reportUselessTests,
+            $strictCoverage,
+            $disallowTestOutput,
+            $verbose,
+            $reverseDefectList,
+            $forceCoversAnnotation,
+            $registerMockObjectsFromTestArgumentsRecursively,
+            $noInteraction,
+            $executionOrder,
+            $resolveDependencies,
             $warnings
         );
 
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, array $warnings)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, string $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, bool $resolveDependencies, array $warnings)
     {
-        $this->testSuite                                 = $testSuite;
-        $this->configurationFile                         = $configurationFile;
-        $this->bootstrap                                 = $bootstrap;
-        $this->cacheResult                               = $cacheResult;
-        $this->cacheDirectory                            = $cacheDirectory;
-        $this->coverageCacheDirectory                    = $coverageCacheDirectory;
-        $this->testResultCacheFile                       = $testResultCacheFile;
-        $this->codeCoverageFilter                        = $codeCoverageFilter;
-        $this->coverageClover                            = $coverageClover;
-        $this->coverageCobertura                         = $coverageCobertura;
-        $this->coverageCrap4j                            = $coverageCrap4j;
-        $this->coverageCrap4jThreshold                   = $coverageCrap4jThreshold;
-        $this->coverageHtml                              = $coverageHtml;
-        $this->coverageHtmlLowUpperBound                 = $coverageHtmlLowUpperBound;
-        $this->coverageHtmlHighLowerBound                = $coverageHtmlHighLowerBound;
-        $this->coveragePhp                               = $coveragePhp;
-        $this->coverageText                              = $coverageText;
-        $this->coverageTextShowUncoveredFiles            = $coverageTextShowUncoveredFiles;
-        $this->coverageTextShowOnlySummary               = $coverageTextShowOnlySummary;
-        $this->coverageXml                               = $coverageXml;
-        $this->pathCoverage                              = $pathCoverage;
-        $this->ignoreDeprecatedCodeUnitsFromCodeCoverage = $ignoreDeprecatedCodeUnitsFromCodeCoverage;
-        $this->disableCodeCoverageIgnore                 = $disableCodeCoverageIgnore;
-        $this->failOnEmptyTestSuite                      = $failOnEmptyTestSuite;
-        $this->failOnIncomplete                          = $failOnIncomplete;
-        $this->failOnRisky                               = $failOnRisky;
-        $this->failOnSkipped                             = $failOnSkipped;
-        $this->failOnWarning                             = $failOnWarning;
-        $this->outputToStandardErrorStream               = $outputToStandardErrorStream;
-        $this->columns                                   = $columns;
-        $this->tooFewColumnsRequested                    = $tooFewColumnsRequested;
-        $this->loadPharExtensions                        = $loadPharExtensions;
-        $this->pharExtensionDirectory                    = $pharExtensionDirectory;
-        $this->debug                                     = $debug;
-        $this->warnings                                  = $warnings;
+        $this->testSuite                                       = $testSuite;
+        $this->configurationFile                               = $configurationFile;
+        $this->bootstrap                                       = $bootstrap;
+        $this->cacheResult                                     = $cacheResult;
+        $this->cacheDirectory                                  = $cacheDirectory;
+        $this->coverageCacheDirectory                          = $coverageCacheDirectory;
+        $this->testResultCacheFile                             = $testResultCacheFile;
+        $this->codeCoverageFilter                              = $codeCoverageFilter;
+        $this->coverageClover                                  = $coverageClover;
+        $this->coverageCobertura                               = $coverageCobertura;
+        $this->coverageCrap4j                                  = $coverageCrap4j;
+        $this->coverageCrap4jThreshold                         = $coverageCrap4jThreshold;
+        $this->coverageHtml                                    = $coverageHtml;
+        $this->coverageHtmlLowUpperBound                       = $coverageHtmlLowUpperBound;
+        $this->coverageHtmlHighLowerBound                      = $coverageHtmlHighLowerBound;
+        $this->coveragePhp                                     = $coveragePhp;
+        $this->coverageText                                    = $coverageText;
+        $this->coverageTextShowUncoveredFiles                  = $coverageTextShowUncoveredFiles;
+        $this->coverageTextShowOnlySummary                     = $coverageTextShowOnlySummary;
+        $this->coverageXml                                     = $coverageXml;
+        $this->pathCoverage                                    = $pathCoverage;
+        $this->ignoreDeprecatedCodeUnitsFromCodeCoverage       = $ignoreDeprecatedCodeUnitsFromCodeCoverage;
+        $this->disableCodeCoverageIgnore                       = $disableCodeCoverageIgnore;
+        $this->failOnEmptyTestSuite                            = $failOnEmptyTestSuite;
+        $this->failOnIncomplete                                = $failOnIncomplete;
+        $this->failOnRisky                                     = $failOnRisky;
+        $this->failOnSkipped                                   = $failOnSkipped;
+        $this->failOnWarning                                   = $failOnWarning;
+        $this->outputToStandardErrorStream                     = $outputToStandardErrorStream;
+        $this->columns                                         = $columns;
+        $this->tooFewColumnsRequested                          = $tooFewColumnsRequested;
+        $this->loadPharExtensions                              = $loadPharExtensions;
+        $this->pharExtensionDirectory                          = $pharExtensionDirectory;
+        $this->debug                                           = $debug;
+        $this->backupGlobals                                   = $backupGlobals;
+        $this->backupStaticProperties                          = $backupStaticProperties;
+        $this->beStrictAboutChangesToGlobalState               = $beStrictAboutChangesToGlobalState;
+        $this->colors                                          = $colors;
+        $this->convertDeprecationsToExceptions                 = $convertDeprecationsToExceptions;
+        $this->convertErrorsToExceptions                       = $convertErrorsToExceptions;
+        $this->convertNoticesToExceptions                      = $convertNoticesToExceptions;
+        $this->convertWarningsToExceptions                     = $convertWarningsToExceptions;
+        $this->processIsolation                                = $processIsolation;
+        $this->stopOnDefect                                    = $stopOnDefect;
+        $this->stopOnError                                     = $stopOnError;
+        $this->stopOnFailure                                   = $stopOnFailure;
+        $this->stopOnWarning                                   = $stopOnWarning;
+        $this->stopOnIncomplete                                = $stopOnIncomplete;
+        $this->stopOnRisky                                     = $stopOnRisky;
+        $this->stopOnSkipped                                   = $stopOnSkipped;
+        $this->enforceTimeLimit                                = $enforceTimeLimit;
+        $this->defaultTimeLimit                                = $defaultTimeLimit;
+        $this->timeoutForSmallTests                            = $timeoutForSmallTests;
+        $this->timeoutForMediumTests                           = $timeoutForMediumTests;
+        $this->timeoutForLargeTests                            = $timeoutForLargeTests;
+        $this->reportUselessTests                              = $reportUselessTests;
+        $this->strictCoverage                                  = $strictCoverage;
+        $this->disallowTestOutput                              = $disallowTestOutput;
+        $this->verbose                                         = $verbose;
+        $this->reverseDefectList                               = $reverseDefectList;
+        $this->forceCoversAnnotation                           = $forceCoversAnnotation;
+        $this->registerMockObjectsFromTestArgumentsRecursively = $registerMockObjectsFromTestArgumentsRecursively;
+        $this->noInteraction                                   = $noInteraction;
+        $this->executionOrder                                  = $executionOrder;
+        $this->resolveDependencies                             = $resolveDependencies;
+        $this->warnings                                        = $warnings;
     }
 
     /**
@@ -844,6 +1107,161 @@ final class Configuration
     public function debug(): bool
     {
         return $this->debug;
+    }
+
+    public function backupGlobals(): bool
+    {
+        return $this->backupGlobals;
+    }
+
+    public function backupStaticProperties(): bool
+    {
+        return $this->backupStaticProperties;
+    }
+
+    public function beStrictAboutChangesToGlobalState(): bool
+    {
+        return $this->beStrictAboutChangesToGlobalState;
+    }
+
+    public function colors(): string
+    {
+        return $this->colors;
+    }
+
+    public function convertDeprecationsToExceptions(): bool
+    {
+        return $this->convertDeprecationsToExceptions;
+    }
+
+    public function convertErrorsToExceptions(): bool
+    {
+        return $this->convertErrorsToExceptions;
+    }
+
+    public function convertNoticesToExceptions(): bool
+    {
+        return $this->convertNoticesToExceptions;
+    }
+
+    public function convertWarningsToExceptions(): bool
+    {
+        return $this->convertWarningsToExceptions;
+    }
+
+    public function processIsolation(): bool
+    {
+        return $this->processIsolation;
+    }
+
+    public function stopOnDefect(): bool
+    {
+        return $this->stopOnDefect;
+    }
+
+    public function stopOnError(): bool
+    {
+        return $this->stopOnError;
+    }
+
+    public function stopOnFailure(): bool
+    {
+        return $this->stopOnFailure;
+    }
+
+    public function stopOnWarning(): bool
+    {
+        return $this->stopOnWarning;
+    }
+
+    public function stopOnIncomplete(): bool
+    {
+        return $this->stopOnIncomplete;
+    }
+
+    public function stopOnRisky(): bool
+    {
+        return $this->stopOnRisky;
+    }
+
+    public function stopOnSkipped(): bool
+    {
+        return $this->stopOnSkipped;
+    }
+
+    public function enforceTimeLimit(): bool
+    {
+        return $this->enforceTimeLimit;
+    }
+
+    public function defaultTimeLimit(): int
+    {
+        return $this->defaultTimeLimit;
+    }
+
+    public function timeoutForSmallTests(): int
+    {
+        return $this->timeoutForSmallTests;
+    }
+
+    public function timeoutForMediumTests(): int
+    {
+        return $this->timeoutForMediumTests;
+    }
+
+    public function timeoutForLargeTests(): int
+    {
+        return $this->timeoutForLargeTests;
+    }
+
+    public function reportUselessTests(): bool
+    {
+        return $this->reportUselessTests;
+    }
+
+    public function strictCoverage(): bool
+    {
+        return $this->strictCoverage;
+    }
+
+    public function disallowTestOutput(): bool
+    {
+        return $this->disallowTestOutput;
+    }
+
+    public function verbose(): bool
+    {
+        return $this->verbose;
+    }
+
+    public function reverseDefectList(): bool
+    {
+        return $this->reverseDefectList;
+    }
+
+    public function forceCoversAnnotation(): bool
+    {
+        return $this->forceCoversAnnotation;
+    }
+
+    public function registerMockObjectsFromTestArgumentsRecursively(): bool
+    {
+        return $this->registerMockObjectsFromTestArgumentsRecursively;
+    }
+
+    public function noInteraction(): bool
+    {
+        return $this->noInteraction;
+    }
+
+    public function executionOrder(): int
+    {
+        return $this->executionOrder;
+    }
+
+    public function resolveDependencies(): bool
+    {
+        return $this->resolveDependencies;
     }
 
     public function hasWarnings(): bool
