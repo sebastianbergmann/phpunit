@@ -504,7 +504,7 @@ final class Configuration
      */
     public function configurationFile(): string
     {
-        if ($this->configurationFile === null) {
+        if (!$this->hasConfigurationFile()) {
             throw new NoConfigurationFileException;
         }
 
@@ -524,7 +524,7 @@ final class Configuration
      */
     public function bootstrap(): string
     {
-        if ($this->bootstrap === null) {
+        if (!$this->hasBootstrap()) {
             throw new NoBootstrapException;
         }
 
@@ -549,7 +549,7 @@ final class Configuration
      */
     public function cacheDirectory(): string
     {
-        if ($this->cacheDirectory === null) {
+        if (!$this->hasCacheDirectory()) {
             throw new NoCacheDirectoryException;
         }
 
@@ -569,7 +569,7 @@ final class Configuration
      */
     public function coverageCacheDirectory(): string
     {
-        if ($this->coverageCacheDirectory === null) {
+        if (!$this->hasCoverageCacheDirectory()) {
             throw new NoCoverageCacheDirectoryException;
         }
 
@@ -601,6 +601,9 @@ final class Configuration
         return $this->pathCoverage;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageClover
+     */
     public function hasCoverageClover(): bool
     {
         return $this->coverageClover !== null;
@@ -611,13 +614,16 @@ final class Configuration
      */
     public function coverageClover(): string
     {
-        if ($this->coverageClover === null) {
+        if (!$this->hasCoverageClover()) {
             throw new CodeCoverageReportNotConfiguredException;
         }
 
         return $this->coverageClover;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageCobertura
+     */
     public function hasCoverageCobertura(): bool
     {
         return $this->coverageCobertura !== null;
@@ -628,9 +634,16 @@ final class Configuration
      */
     public function coverageCobertura(): string
     {
+        if (!$this->hasCoverageCobertura()) {
+            throw new CodeCoverageReportNotConfiguredException;
+        }
+
         return $this->coverageCobertura;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageCrap4j
+     */
     public function hasCoverageCrap4j(): bool
     {
         return $this->coverageCrap4j !== null;
@@ -641,6 +654,10 @@ final class Configuration
      */
     public function coverageCrap4j(): string
     {
+        if (!$this->hasCoverageCrap4j()) {
+            throw new CodeCoverageReportNotConfiguredException;
+        }
+
         return $this->coverageCrap4j;
     }
 
@@ -649,6 +666,9 @@ final class Configuration
         return $this->coverageCrap4jThreshold;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageHtml
+     */
     public function hasCoverageHtml(): bool
     {
         return $this->coverageHtml !== null;
@@ -659,6 +679,10 @@ final class Configuration
      */
     public function coverageHtml(): string
     {
+        if (!$this->hasCoverageHtml()) {
+            throw new CodeCoverageReportNotConfiguredException;
+        }
+
         return $this->coverageHtml;
     }
 
@@ -672,6 +696,9 @@ final class Configuration
         return $this->coverageHtmlHighLowerBound;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coveragePhp
+     */
     public function hasCoveragePhp(): bool
     {
         return $this->coveragePhp !== null;
@@ -682,9 +709,16 @@ final class Configuration
      */
     public function coveragePhp(): string
     {
+        if (!$this->hasCoveragePhp()) {
+            throw new CodeCoverageReportNotConfiguredException;
+        }
+
         return $this->coveragePhp;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageText
+     */
     public function hasCoverageText(): bool
     {
         return $this->coverageText !== null;
@@ -695,6 +729,10 @@ final class Configuration
      */
     public function coverageText(): string
     {
+        if (!$this->hasCoverageText()) {
+            throw new CodeCoverageReportNotConfiguredException;
+        }
+
         return $this->coverageText;
     }
 
@@ -708,6 +746,9 @@ final class Configuration
         return $this->coverageTextShowOnlySummary;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageXml
+     */
     public function hasCoverageXml(): bool
     {
         return $this->coverageXml !== null;
@@ -718,6 +759,10 @@ final class Configuration
      */
     public function coverageXml(): string
     {
+        if (!$this->hasCoverageXml()) {
+            throw new CodeCoverageReportNotConfiguredException;
+        }
+
         return $this->coverageXml;
     }
 
@@ -779,7 +824,7 @@ final class Configuration
      */
     public function pharExtensionDirectory(): string
     {
-        if ($this->pharExtensionDirectory === null) {
+        if (!$this->hasPharExtensionDirectory()) {
             throw new NoPharExtensionDirectoryException;
         }
 

@@ -292,6 +292,9 @@ final class Configuration
         $this->testdoxPrinter                    = $printerTestDox;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->argument
+     */
     public function hasArgument(): bool
     {
         return $this->argument !== null;
@@ -302,13 +305,16 @@ final class Configuration
      */
     public function argument(): string
     {
-        if ($this->argument === null) {
+        if (!$this->hasArgument()) {
             throw new Exception;
         }
 
         return $this->argument;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->atLeastVersion
+     */
     public function hasAtLeastVersion(): bool
     {
         return $this->atLeastVersion !== null;
@@ -319,13 +325,16 @@ final class Configuration
      */
     public function atLeastVersion(): string
     {
-        if ($this->atLeastVersion === null) {
+        if (!$this->hasAtLeastVersion()) {
             throw new Exception;
         }
 
         return $this->atLeastVersion;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->backupGlobals
+     */
     public function hasBackupGlobals(): bool
     {
         return $this->backupGlobals !== null;
@@ -336,13 +345,16 @@ final class Configuration
      */
     public function backupGlobals(): bool
     {
-        if ($this->backupGlobals === null) {
+        if (!$this->hasBackupGlobals()) {
             throw new Exception;
         }
 
         return $this->backupGlobals;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->backupStaticProperties
+     */
     public function hasBackupStaticProperties(): bool
     {
         return $this->backupStaticProperties !== null;
@@ -353,13 +365,16 @@ final class Configuration
      */
     public function backupStaticProperties(): bool
     {
-        if ($this->backupStaticProperties === null) {
+        if (!$this->hasBackupStaticProperties()) {
             throw new Exception;
         }
 
         return $this->backupStaticProperties;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->beStrictAboutChangesToGlobalState
+     */
     public function hasBeStrictAboutChangesToGlobalState(): bool
     {
         return $this->beStrictAboutChangesToGlobalState !== null;
@@ -370,13 +385,16 @@ final class Configuration
      */
     public function beStrictAboutChangesToGlobalState(): bool
     {
-        if ($this->beStrictAboutChangesToGlobalState === null) {
+        if (!$this->hasBeStrictAboutChangesToGlobalState()) {
             throw new Exception;
         }
 
         return $this->beStrictAboutChangesToGlobalState;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->bootstrap
+     */
     public function hasBootstrap(): bool
     {
         return $this->bootstrap !== null;
@@ -387,13 +405,16 @@ final class Configuration
      */
     public function bootstrap(): string
     {
-        if ($this->bootstrap === null) {
+        if (!$this->hasBootstrap()) {
             throw new Exception;
         }
 
         return $this->bootstrap;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->cacheDirectory
+     */
     public function hasCacheDirectory(): bool
     {
         return $this->cacheDirectory !== null;
@@ -404,13 +425,16 @@ final class Configuration
      */
     public function cacheDirectory(): string
     {
-        if ($this->cacheDirectory === null) {
+        if (!$this->hasCacheDirectory()) {
             throw new Exception;
         }
 
         return $this->cacheDirectory;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->cacheResult
+     */
     public function hasCacheResult(): bool
     {
         return $this->cacheResult !== null;
@@ -421,13 +445,16 @@ final class Configuration
      */
     public function cacheResult(): bool
     {
-        if ($this->cacheResult === null) {
+        if (!$this->hasCacheResult()) {
             throw new Exception;
         }
 
         return $this->cacheResult;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->cacheResultFile
+     */
     public function hasCacheResultFile(): bool
     {
         return $this->cacheResultFile !== null;
@@ -438,13 +465,16 @@ final class Configuration
      */
     public function cacheResultFile(): string
     {
-        if ($this->cacheResultFile === null) {
+        if (!$this->hasCacheResultFile()) {
             throw new Exception;
         }
 
         return $this->cacheResultFile;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->checkVersion
+     */
     public function hasCheckVersion(): bool
     {
         return $this->checkVersion !== null;
@@ -455,13 +485,16 @@ final class Configuration
      */
     public function checkVersion(): bool
     {
-        if ($this->checkVersion === null) {
+        if (!$this->hasCheckVersion()) {
             throw new Exception;
         }
 
         return $this->checkVersion;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->colors
+     */
     public function hasColors(): bool
     {
         return $this->colors !== null;
@@ -472,13 +505,16 @@ final class Configuration
      */
     public function colors(): string
     {
-        if ($this->colors === null) {
+        if (!$this->hasColors()) {
             throw new Exception;
         }
 
         return $this->colors;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->columns
+     */
     public function hasColumns(): bool
     {
         return $this->columns !== null;
@@ -489,13 +525,16 @@ final class Configuration
      */
     public function columns(): int|string
     {
-        if ($this->columns === null) {
+        if (!$this->hasColumns()) {
             throw new Exception;
         }
 
         return $this->columns;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->configuration
+     */
     public function hasConfiguration(): bool
     {
         return $this->configuration !== null;
@@ -506,13 +545,16 @@ final class Configuration
      */
     public function configuration(): string
     {
-        if ($this->configuration === null) {
+        if (!$this->hasConfiguration()) {
             throw new Exception;
         }
 
         return $this->configuration;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageFilter
+     */
     public function hasCoverageFilter(): bool
     {
         return $this->coverageFilter !== null;
@@ -523,13 +565,16 @@ final class Configuration
      */
     public function coverageFilter(): array
     {
-        if ($this->coverageFilter === null) {
+        if (!$this->hasCoverageFilter()) {
             throw new Exception;
         }
 
         return $this->coverageFilter;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageClover
+     */
     public function hasCoverageClover(): bool
     {
         return $this->coverageClover !== null;
@@ -540,13 +585,16 @@ final class Configuration
      */
     public function coverageClover(): string
     {
-        if ($this->coverageClover === null) {
+        if (!$this->hasCoverageClover()) {
             throw new Exception;
         }
 
         return $this->coverageClover;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageCobertura
+     */
     public function hasCoverageCobertura(): bool
     {
         return $this->coverageCobertura !== null;
@@ -557,13 +605,16 @@ final class Configuration
      */
     public function coverageCobertura(): string
     {
-        if ($this->coverageCobertura === null) {
+        if (!$this->hasCoverageCobertura()) {
             throw new Exception;
         }
 
         return $this->coverageCobertura;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageCrap4J
+     */
     public function hasCoverageCrap4J(): bool
     {
         return $this->coverageCrap4J !== null;
@@ -574,13 +625,16 @@ final class Configuration
      */
     public function coverageCrap4J(): string
     {
-        if ($this->coverageCrap4J === null) {
+        if (!$this->hasCoverageCrap4J()) {
             throw new Exception;
         }
 
         return $this->coverageCrap4J;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageHtml
+     */
     public function hasCoverageHtml(): bool
     {
         return $this->coverageHtml !== null;
@@ -591,13 +645,16 @@ final class Configuration
      */
     public function coverageHtml(): string
     {
-        if ($this->coverageHtml === null) {
+        if (!$this->hasCoverageHtml()) {
             throw new Exception;
         }
 
         return $this->coverageHtml;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coveragePhp
+     */
     public function hasCoveragePhp(): bool
     {
         return $this->coveragePhp !== null;
@@ -608,13 +665,16 @@ final class Configuration
      */
     public function coveragePhp(): string
     {
-        if ($this->coveragePhp === null) {
+        if (!$this->hasCoveragePhp()) {
             throw new Exception;
         }
 
         return $this->coveragePhp;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageText
+     */
     public function hasCoverageText(): bool
     {
         return $this->coverageText !== null;
@@ -625,13 +685,16 @@ final class Configuration
      */
     public function coverageText(): string
     {
-        if ($this->coverageText === null) {
+        if (!$this->hasCoverageText()) {
             throw new Exception;
         }
 
         return $this->coverageText;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageTextShowUncoveredFiles
+     */
     public function hasCoverageTextShowUncoveredFiles(): bool
     {
         return $this->coverageTextShowUncoveredFiles !== null;
@@ -642,13 +705,16 @@ final class Configuration
      */
     public function coverageTextShowUncoveredFiles(): bool
     {
-        if ($this->coverageTextShowUncoveredFiles === null) {
+        if (!$this->hasCoverageTextShowUncoveredFiles()) {
             throw new Exception;
         }
 
         return $this->coverageTextShowUncoveredFiles;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageTextShowOnlySummary
+     */
     public function hasCoverageTextShowOnlySummary(): bool
     {
         return $this->coverageTextShowOnlySummary !== null;
@@ -659,13 +725,16 @@ final class Configuration
      */
     public function coverageTextShowOnlySummary(): bool
     {
-        if ($this->coverageTextShowOnlySummary === null) {
+        if (!$this->hasCoverageTextShowOnlySummary()) {
             throw new Exception;
         }
 
         return $this->coverageTextShowOnlySummary;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageXml
+     */
     public function hasCoverageXml(): bool
     {
         return $this->coverageXml !== null;
@@ -676,13 +745,16 @@ final class Configuration
      */
     public function coverageXml(): string
     {
-        if ($this->coverageXml === null) {
+        if (!$this->hasCoverageXml()) {
             throw new Exception;
         }
 
         return $this->coverageXml;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->pathCoverage
+     */
     public function hasPathCoverage(): bool
     {
         return $this->pathCoverage !== null;
@@ -693,13 +765,16 @@ final class Configuration
      */
     public function pathCoverage(): bool
     {
-        if ($this->pathCoverage === null) {
+        if (!$this->hasPathCoverage()) {
             throw new Exception;
         }
 
         return $this->pathCoverage;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->coverageCacheDirectory
+     */
     public function hasCoverageCacheDirectory(): bool
     {
         return $this->coverageCacheDirectory !== null;
@@ -710,13 +785,16 @@ final class Configuration
      */
     public function coverageCacheDirectory(): string
     {
-        if ($this->coverageCacheDirectory === null) {
+        if (!$this->hasCoverageCacheDirectory()) {
             throw new Exception;
         }
 
         return $this->coverageCacheDirectory;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->warmCoverageCache
+     */
     public function hasWarmCoverageCache(): bool
     {
         return $this->warmCoverageCache !== null;
@@ -727,13 +805,16 @@ final class Configuration
      */
     public function warmCoverageCache(): bool
     {
-        if ($this->warmCoverageCache === null) {
+        if (!$this->hasWarmCoverageCache()) {
             throw new Exception;
         }
 
         return $this->warmCoverageCache;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->debug
+     */
     public function hasDebug(): bool
     {
         return $this->debug !== null;
@@ -744,13 +825,16 @@ final class Configuration
      */
     public function debug(): bool
     {
-        if ($this->debug === null) {
+        if (!$this->hasDebug()) {
             throw new Exception;
         }
 
         return $this->debug;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->defaultTimeLimit
+     */
     public function hasDefaultTimeLimit(): bool
     {
         return $this->defaultTimeLimit !== null;
@@ -761,13 +845,16 @@ final class Configuration
      */
     public function defaultTimeLimit(): int
     {
-        if ($this->defaultTimeLimit === null) {
+        if (!$this->hasDefaultTimeLimit()) {
             throw new Exception;
         }
 
         return $this->defaultTimeLimit;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->disableCodeCoverageIgnore
+     */
     public function hasDisableCodeCoverageIgnore(): bool
     {
         return $this->disableCodeCoverageIgnore !== null;
@@ -778,13 +865,16 @@ final class Configuration
      */
     public function disableCodeCoverageIgnore(): bool
     {
-        if ($this->disableCodeCoverageIgnore === null) {
+        if (!$this->hasDisableCodeCoverageIgnore()) {
             throw new Exception;
         }
 
         return $this->disableCodeCoverageIgnore;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->disallowTestOutput
+     */
     public function hasDisallowTestOutput(): bool
     {
         return $this->disallowTestOutput !== null;
@@ -795,13 +885,16 @@ final class Configuration
      */
     public function disallowTestOutput(): bool
     {
-        if ($this->disallowTestOutput === null) {
+        if (!$this->hasDisallowTestOutput()) {
             throw new Exception;
         }
 
         return $this->disallowTestOutput;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->enforceTimeLimit
+     */
     public function hasEnforceTimeLimit(): bool
     {
         return $this->enforceTimeLimit !== null;
@@ -812,13 +905,16 @@ final class Configuration
      */
     public function enforceTimeLimit(): bool
     {
-        if ($this->enforceTimeLimit === null) {
+        if (!$this->hasEnforceTimeLimit()) {
             throw new Exception;
         }
 
         return $this->enforceTimeLimit;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->excludeGroups
+     */
     public function hasExcludeGroups(): bool
     {
         return $this->excludeGroups !== null;
@@ -829,13 +925,16 @@ final class Configuration
      */
     public function excludeGroups(): array
     {
-        if ($this->excludeGroups === null) {
+        if (!$this->hasExcludeGroups()) {
             throw new Exception;
         }
 
         return $this->excludeGroups;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->executionOrder
+     */
     public function hasExecutionOrder(): bool
     {
         return $this->executionOrder !== null;
@@ -846,13 +945,16 @@ final class Configuration
      */
     public function executionOrder(): int
     {
-        if ($this->executionOrder === null) {
+        if (!$this->hasExecutionOrder()) {
             throw new Exception;
         }
 
         return $this->executionOrder;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->executionOrderDefects
+     */
     public function hasExecutionOrderDefects(): bool
     {
         return $this->executionOrderDefects !== null;
@@ -863,13 +965,16 @@ final class Configuration
      */
     public function executionOrderDefects(): int
     {
-        if ($this->executionOrderDefects === null) {
+        if (!$this->hasExecutionOrderDefects()) {
             throw new Exception;
         }
 
         return $this->executionOrderDefects;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->failOnEmptyTestSuite
+     */
     public function hasFailOnEmptyTestSuite(): bool
     {
         return $this->failOnEmptyTestSuite !== null;
@@ -880,13 +985,16 @@ final class Configuration
      */
     public function failOnEmptyTestSuite(): bool
     {
-        if ($this->failOnEmptyTestSuite === null) {
+        if (!$this->hasFailOnEmptyTestSuite()) {
             throw new Exception;
         }
 
         return $this->failOnEmptyTestSuite;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->failOnIncomplete
+     */
     public function hasFailOnIncomplete(): bool
     {
         return $this->failOnIncomplete !== null;
@@ -897,13 +1005,16 @@ final class Configuration
      */
     public function failOnIncomplete(): bool
     {
-        if ($this->failOnIncomplete === null) {
+        if (!$this->hasFailOnIncomplete()) {
             throw new Exception;
         }
 
         return $this->failOnIncomplete;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->failOnRisky
+     */
     public function hasFailOnRisky(): bool
     {
         return $this->failOnRisky !== null;
@@ -914,13 +1025,16 @@ final class Configuration
      */
     public function failOnRisky(): bool
     {
-        if ($this->failOnRisky === null) {
+        if (!$this->hasFailOnRisky()) {
             throw new Exception;
         }
 
         return $this->failOnRisky;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->failOnSkipped
+     */
     public function hasFailOnSkipped(): bool
     {
         return $this->failOnSkipped !== null;
@@ -931,13 +1045,16 @@ final class Configuration
      */
     public function failOnSkipped(): bool
     {
-        if ($this->failOnSkipped === null) {
+        if (!$this->hasFailOnSkipped()) {
             throw new Exception;
         }
 
         return $this->failOnSkipped;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->failOnWarning
+     */
     public function hasFailOnWarning(): bool
     {
         return $this->failOnWarning !== null;
@@ -948,13 +1065,16 @@ final class Configuration
      */
     public function failOnWarning(): bool
     {
-        if ($this->failOnWarning === null) {
+        if (!$this->hasFailOnWarning()) {
             throw new Exception;
         }
 
         return $this->failOnWarning;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->filter
+     */
     public function hasFilter(): bool
     {
         return $this->filter !== null;
@@ -965,13 +1085,16 @@ final class Configuration
      */
     public function filter(): string
     {
-        if ($this->filter === null) {
+        if (!$this->hasFilter()) {
             throw new Exception;
         }
 
         return $this->filter;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->generateConfiguration
+     */
     public function hasGenerateConfiguration(): bool
     {
         return $this->generateConfiguration !== null;
@@ -982,13 +1105,16 @@ final class Configuration
      */
     public function generateConfiguration(): bool
     {
-        if ($this->generateConfiguration === null) {
+        if (!$this->hasGenerateConfiguration()) {
             throw new Exception;
         }
 
         return $this->generateConfiguration;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->migrateConfiguration
+     */
     public function hasMigrateConfiguration(): bool
     {
         return $this->migrateConfiguration !== null;
@@ -999,13 +1125,16 @@ final class Configuration
      */
     public function migrateConfiguration(): bool
     {
-        if ($this->migrateConfiguration === null) {
+        if (!$this->hasMigrateConfiguration()) {
             throw new Exception;
         }
 
         return $this->migrateConfiguration;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->groups
+     */
     public function hasGroups(): bool
     {
         return $this->groups !== null;
@@ -1016,13 +1145,16 @@ final class Configuration
      */
     public function groups(): array
     {
-        if ($this->groups === null) {
+        if (!$this->hasGroups()) {
             throw new Exception;
         }
 
         return $this->groups;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testsCovering
+     */
     public function hasTestsCovering(): bool
     {
         return $this->testsCovering !== null;
@@ -1033,13 +1165,16 @@ final class Configuration
      */
     public function testsCovering(): array
     {
-        if ($this->testsCovering === null) {
+        if (!$this->hasTestsCovering()) {
             throw new Exception;
         }
 
         return $this->testsCovering;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testsUsing
+     */
     public function hasTestsUsing(): bool
     {
         return $this->testsUsing !== null;
@@ -1050,13 +1185,16 @@ final class Configuration
      */
     public function testsUsing(): array
     {
-        if ($this->testsUsing === null) {
+        if (!$this->hasTestsUsing()) {
             throw new Exception;
         }
 
         return $this->testsUsing;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->help
+     */
     public function hasHelp(): bool
     {
         return $this->help !== null;
@@ -1067,13 +1205,16 @@ final class Configuration
      */
     public function help(): bool
     {
-        if ($this->help === null) {
+        if (!$this->hasHelp()) {
             throw new Exception;
         }
 
         return $this->help;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->includePath
+     */
     public function hasIncludePath(): bool
     {
         return $this->includePath !== null;
@@ -1084,13 +1225,16 @@ final class Configuration
      */
     public function includePath(): string
     {
-        if ($this->includePath === null) {
+        if (!$this->hasIncludePath()) {
             throw new Exception;
         }
 
         return $this->includePath;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->iniSettings
+     */
     public function hasIniSettings(): bool
     {
         return $this->iniSettings !== null;
@@ -1101,13 +1245,16 @@ final class Configuration
      */
     public function iniSettings(): array
     {
-        if ($this->iniSettings === null) {
+        if (!$this->hasIniSettings()) {
             throw new Exception;
         }
 
         return $this->iniSettings;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->junitLogfile
+     */
     public function hasJunitLogfile(): bool
     {
         return $this->junitLogfile !== null;
@@ -1118,13 +1265,16 @@ final class Configuration
      */
     public function junitLogfile(): string
     {
-        if ($this->junitLogfile === null) {
+        if (!$this->hasJunitLogfile()) {
             throw new Exception;
         }
 
         return $this->junitLogfile;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->listGroups
+     */
     public function hasListGroups(): bool
     {
         return $this->listGroups !== null;
@@ -1135,13 +1285,16 @@ final class Configuration
      */
     public function listGroups(): bool
     {
-        if ($this->listGroups === null) {
+        if (!$this->hasListGroups()) {
             throw new Exception;
         }
 
         return $this->listGroups;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->listSuites
+     */
     public function hasListSuites(): bool
     {
         return $this->listSuites !== null;
@@ -1152,13 +1305,16 @@ final class Configuration
      */
     public function listSuites(): bool
     {
-        if ($this->listSuites === null) {
+        if (!$this->hasListSuites()) {
             throw new Exception;
         }
 
         return $this->listSuites;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->listTests
+     */
     public function hasListTests(): bool
     {
         return $this->listTests !== null;
@@ -1169,13 +1325,16 @@ final class Configuration
      */
     public function listTests(): bool
     {
-        if ($this->listTests === null) {
+        if (!$this->hasListTests()) {
             throw new Exception;
         }
 
         return $this->listTests;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->listTestsXml
+     */
     public function hasListTestsXml(): bool
     {
         return $this->listTestsXml !== null;
@@ -1186,13 +1345,16 @@ final class Configuration
      */
     public function listTestsXml(): string
     {
-        if ($this->listTestsXml === null) {
+        if (!$this->hasListTestsXml()) {
             throw new Exception;
         }
 
         return $this->listTestsXml;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->noCoverage
+     */
     public function hasNoCoverage(): bool
     {
         return $this->noCoverage !== null;
@@ -1203,13 +1365,16 @@ final class Configuration
      */
     public function noCoverage(): bool
     {
-        if ($this->noCoverage === null) {
+        if (!$this->hasNoCoverage()) {
             throw new Exception;
         }
 
         return $this->noCoverage;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->noExtensions
+     */
     public function hasNoExtensions(): bool
     {
         return $this->noExtensions !== null;
@@ -1220,13 +1385,16 @@ final class Configuration
      */
     public function noExtensions(): bool
     {
-        if ($this->noExtensions === null) {
+        if (!$this->hasNoExtensions()) {
             throw new Exception;
         }
 
         return $this->noExtensions;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->extensions
+     */
     public function hasExtensions(): bool
     {
         return $this->extensions !== null;
@@ -1237,13 +1405,16 @@ final class Configuration
      */
     public function extensions(): array
     {
-        if ($this->extensions === null) {
+        if (!$this->hasExtensions()) {
             throw new Exception;
         }
 
         return $this->extensions;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->unavailableExtensions
+     */
     public function hasUnavailableExtensions(): bool
     {
         return $this->unavailableExtensions !== null;
@@ -1254,13 +1425,16 @@ final class Configuration
      */
     public function unavailableExtensions(): array
     {
-        if ($this->unavailableExtensions === null) {
+        if (!$this->hasUnavailableExtensions()) {
             throw new Exception;
         }
 
         return $this->unavailableExtensions;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->noInteraction
+     */
     public function hasNoInteraction(): bool
     {
         return $this->noInteraction !== null;
@@ -1271,7 +1445,7 @@ final class Configuration
      */
     public function noInteraction(): bool
     {
-        if ($this->noInteraction === null) {
+        if (!$this->hasNoInteraction()) {
             throw new Exception;
         }
 
@@ -1295,6 +1469,9 @@ final class Configuration
         return $this->noOutput;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->noLogging
+     */
     public function hasNoLogging(): bool
     {
         return $this->noLogging !== null;
@@ -1305,13 +1482,16 @@ final class Configuration
      */
     public function noLogging(): bool
     {
-        if ($this->noLogging === null) {
+        if (!$this->hasNoLogging()) {
             throw new Exception;
         }
 
         return $this->noLogging;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->processIsolation
+     */
     public function hasProcessIsolation(): bool
     {
         return $this->processIsolation !== null;
@@ -1322,13 +1502,16 @@ final class Configuration
      */
     public function processIsolation(): bool
     {
-        if ($this->processIsolation === null) {
+        if (!$this->hasProcessIsolation()) {
             throw new Exception;
         }
 
         return $this->processIsolation;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->randomOrderSeed
+     */
     public function hasRandomOrderSeed(): bool
     {
         return $this->randomOrderSeed !== null;
@@ -1339,13 +1522,16 @@ final class Configuration
      */
     public function randomOrderSeed(): int
     {
-        if ($this->randomOrderSeed === null) {
+        if (!$this->hasRandomOrderSeed()) {
             throw new Exception;
         }
 
         return $this->randomOrderSeed;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->repeat
+     */
     public function hasRepeat(): bool
     {
         return $this->repeat !== null;
@@ -1356,13 +1542,16 @@ final class Configuration
      */
     public function repeat(): int
     {
-        if ($this->repeat === null) {
+        if (!$this->hasRepeat()) {
             throw new Exception;
         }
 
         return $this->repeat;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->reportUselessTests
+     */
     public function hasReportUselessTests(): bool
     {
         return $this->reportUselessTests !== null;
@@ -1373,13 +1562,16 @@ final class Configuration
      */
     public function reportUselessTests(): bool
     {
-        if ($this->reportUselessTests === null) {
+        if (!$this->hasReportUselessTests()) {
             throw new Exception;
         }
 
         return $this->reportUselessTests;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->resolveDependencies
+     */
     public function hasResolveDependencies(): bool
     {
         return $this->resolveDependencies !== null;
@@ -1390,13 +1582,16 @@ final class Configuration
      */
     public function resolveDependencies(): bool
     {
-        if ($this->resolveDependencies === null) {
+        if (!$this->hasResolveDependencies()) {
             throw new Exception;
         }
 
         return $this->resolveDependencies;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->reverseList
+     */
     public function hasReverseList(): bool
     {
         return $this->reverseList !== null;
@@ -1407,13 +1602,16 @@ final class Configuration
      */
     public function reverseList(): bool
     {
-        if ($this->reverseList === null) {
+        if (!$this->hasReverseList()) {
             throw new Exception;
         }
 
         return $this->reverseList;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->stderr
+     */
     public function hasStderr(): bool
     {
         return $this->stderr !== null;
@@ -1424,13 +1622,16 @@ final class Configuration
      */
     public function stderr(): bool
     {
-        if ($this->stderr === null) {
+        if (!$this->hasStderr()) {
             throw new Exception;
         }
 
         return $this->stderr;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->strictCoverage
+     */
     public function hasStrictCoverage(): bool
     {
         return $this->strictCoverage !== null;
@@ -1441,13 +1642,16 @@ final class Configuration
      */
     public function strictCoverage(): bool
     {
-        if ($this->strictCoverage === null) {
+        if (!$this->hasStrictCoverage()) {
             throw new Exception;
         }
 
         return $this->strictCoverage;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->stopOnDefect
+     */
     public function hasStopOnDefect(): bool
     {
         return $this->stopOnDefect !== null;
@@ -1458,13 +1662,16 @@ final class Configuration
      */
     public function stopOnDefect(): bool
     {
-        if ($this->stopOnDefect === null) {
+        if (!$this->hasStopOnDefect()) {
             throw new Exception;
         }
 
         return $this->stopOnDefect;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->stopOnError
+     */
     public function hasStopOnError(): bool
     {
         return $this->stopOnError !== null;
@@ -1475,13 +1682,16 @@ final class Configuration
      */
     public function stopOnError(): bool
     {
-        if ($this->stopOnError === null) {
+        if (!$this->hasStopOnError()) {
             throw new Exception;
         }
 
         return $this->stopOnError;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->stopOnFailure
+     */
     public function hasStopOnFailure(): bool
     {
         return $this->stopOnFailure !== null;
@@ -1492,13 +1702,16 @@ final class Configuration
      */
     public function stopOnFailure(): bool
     {
-        if ($this->stopOnFailure === null) {
+        if (!$this->hasStopOnFailure()) {
             throw new Exception;
         }
 
         return $this->stopOnFailure;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->stopOnIncomplete
+     */
     public function hasStopOnIncomplete(): bool
     {
         return $this->stopOnIncomplete !== null;
@@ -1509,13 +1722,16 @@ final class Configuration
      */
     public function stopOnIncomplete(): bool
     {
-        if ($this->stopOnIncomplete === null) {
+        if (!$this->hasStopOnIncomplete()) {
             throw new Exception;
         }
 
         return $this->stopOnIncomplete;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->stopOnRisky
+     */
     public function hasStopOnRisky(): bool
     {
         return $this->stopOnRisky !== null;
@@ -1526,13 +1742,16 @@ final class Configuration
      */
     public function stopOnRisky(): bool
     {
-        if ($this->stopOnRisky === null) {
+        if (!$this->hasStopOnRisky()) {
             throw new Exception;
         }
 
         return $this->stopOnRisky;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->stopOnSkipped
+     */
     public function hasStopOnSkipped(): bool
     {
         return $this->stopOnSkipped !== null;
@@ -1543,13 +1762,16 @@ final class Configuration
      */
     public function stopOnSkipped(): bool
     {
-        if ($this->stopOnSkipped === null) {
+        if (!$this->hasStopOnSkipped()) {
             throw new Exception;
         }
 
         return $this->stopOnSkipped;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->stopOnWarning
+     */
     public function hasStopOnWarning(): bool
     {
         return $this->stopOnWarning !== null;
@@ -1560,13 +1782,16 @@ final class Configuration
      */
     public function stopOnWarning(): bool
     {
-        if ($this->stopOnWarning === null) {
+        if (!$this->hasStopOnWarning()) {
             throw new Exception;
         }
 
         return $this->stopOnWarning;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->teamcityLogfile
+     */
     public function hasTeamcityLogfile(): bool
     {
         return $this->teamcityLogfile !== null;
@@ -1577,13 +1802,16 @@ final class Configuration
      */
     public function teamcityLogfile(): string
     {
-        if ($this->teamcityLogfile === null) {
+        if (!$this->hasTeamcityLogfile()) {
             throw new Exception;
         }
 
         return $this->teamcityLogfile;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->teamcityPrinter
+     */
     public function hasTeamCityPrinter(): bool
     {
         return $this->teamCityPrinter !== null;
@@ -1594,13 +1822,16 @@ final class Configuration
      */
     public function teamCityPrinter(): bool
     {
-        if ($this->teamCityPrinter === null) {
+        if (!$this->hasTeamCityPrinter()) {
             throw new Exception;
         }
 
         return $this->teamCityPrinter;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testdoxExcludeGroups
+     */
     public function hasTestdoxExcludeGroups(): bool
     {
         return $this->testdoxExcludeGroups !== null;
@@ -1611,13 +1842,16 @@ final class Configuration
      */
     public function testdoxExcludeGroups(): array
     {
-        if ($this->testdoxExcludeGroups === null) {
+        if (!$this->hasTestdoxExcludeGroups()) {
             throw new Exception;
         }
 
         return $this->testdoxExcludeGroups;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testdoxGroups
+     */
     public function hasTestdoxGroups(): bool
     {
         return $this->testdoxGroups !== null;
@@ -1628,13 +1862,16 @@ final class Configuration
      */
     public function testdoxGroups(): array
     {
-        if ($this->testdoxGroups === null) {
+        if (!$this->hasTestdoxGroups()) {
             throw new Exception;
         }
 
         return $this->testdoxGroups;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testdoxHtmlFile
+     */
     public function hasTestdoxHtmlFile(): bool
     {
         return $this->testdoxHtmlFile !== null;
@@ -1645,13 +1882,16 @@ final class Configuration
      */
     public function testdoxHtmlFile(): string
     {
-        if ($this->testdoxHtmlFile === null) {
+        if (!$this->hasTestdoxHtmlFile()) {
             throw new Exception;
         }
 
         return $this->testdoxHtmlFile;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testdoxTextFile
+     */
     public function hasTestdoxTextFile(): bool
     {
         return $this->testdoxTextFile !== null;
@@ -1662,13 +1902,16 @@ final class Configuration
      */
     public function testdoxTextFile(): string
     {
-        if ($this->testdoxTextFile === null) {
+        if (!$this->hasTestdoxTextFile()) {
             throw new Exception;
         }
 
         return $this->testdoxTextFile;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testdoxXmlFile
+     */
     public function hasTestdoxXmlFile(): bool
     {
         return $this->testdoxXmlFile !== null;
@@ -1679,13 +1922,16 @@ final class Configuration
      */
     public function testdoxXmlFile(): string
     {
-        if ($this->testdoxXmlFile === null) {
+        if (!$this->hasTestdoxXmlFile()) {
             throw new Exception;
         }
 
         return $this->testdoxXmlFile;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testdoxPrinter
+     */
     public function hasTestDoxPrinter(): bool
     {
         return $this->testdoxPrinter !== null;
@@ -1696,13 +1942,16 @@ final class Configuration
      */
     public function testdoxPrinter(): bool
     {
-        if ($this->testdoxPrinter === null) {
+        if (!$this->hasTestdoxPrinter()) {
             throw new Exception;
         }
 
         return $this->testdoxPrinter;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testSuffixes
+     */
     public function hasTestSuffixes(): bool
     {
         return $this->testSuffixes !== null;
@@ -1713,18 +1962,36 @@ final class Configuration
      */
     public function testSuffixes(): array
     {
-        if ($this->testSuffixes === null) {
+        if (!$this->hasTestSuffixes()) {
             throw new Exception;
         }
 
         return $this->testSuffixes;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->testSuite
+     */
     public function hasTestSuite(): bool
     {
         return $this->testSuite !== null;
     }
 
+    /**
+     * @throws Exception
+     */
+    public function testSuite(): string
+    {
+        if (!$this->hasTestSuite()) {
+            throw new Exception;
+        }
+
+        return $this->testSuite;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->excludedTestSuite
+     */
     public function hasExcludedTestSuite(): bool
     {
         return $this->excludeTestSuite !== null;
@@ -1733,27 +2000,18 @@ final class Configuration
     /**
      * @throws Exception
      */
-    public function testSuite(): string
-    {
-        if ($this->testSuite === null) {
-            throw new Exception;
-        }
-
-        return $this->testSuite;
-    }
-
-    /**
-     * @throws Exception
-     */
     public function excludedTestSuite(): string
     {
-        if ($this->excludeTestSuite === null) {
+        if (!$this->hasExcludedTestSuite()) {
             throw new Exception;
         }
 
         return $this->excludeTestSuite;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->unrecognizedOrderBy
+     */
     public function hasUnrecognizedOrderBy(): bool
     {
         return $this->unrecognizedOrderBy !== null;
@@ -1764,13 +2022,16 @@ final class Configuration
      */
     public function unrecognizedOrderBy(): string
     {
-        if ($this->unrecognizedOrderBy === null) {
+        if (!$this->hasUnrecognizedOrderBy()) {
             throw new Exception;
         }
 
         return $this->unrecognizedOrderBy;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->useDefaultConfiguration
+     */
     public function hasUseDefaultConfiguration(): bool
     {
         return $this->useDefaultConfiguration !== null;
@@ -1781,13 +2042,16 @@ final class Configuration
      */
     public function useDefaultConfiguration(): bool
     {
-        if ($this->useDefaultConfiguration === null) {
+        if (!$this->hasUseDefaultConfiguration()) {
             throw new Exception;
         }
 
         return $this->useDefaultConfiguration;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->verbose
+     */
     public function hasVerbose(): bool
     {
         return $this->verbose !== null;
@@ -1798,13 +2062,16 @@ final class Configuration
      */
     public function verbose(): bool
     {
-        if ($this->verbose === null) {
+        if (!$this->hasVerbose()) {
             throw new Exception;
         }
 
         return $this->verbose;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->version
+     */
     public function hasVersion(): bool
     {
         return $this->version !== null;
@@ -1815,13 +2082,16 @@ final class Configuration
      */
     public function version(): bool
     {
-        if ($this->version === null) {
+        if (!$this->hasVersion()) {
             throw new Exception;
         }
 
         return $this->version;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->plainTextTrace
+     */
     public function hasPlainTextTrace(): bool
     {
         return $this->plainTextTrace !== null;
@@ -1832,7 +2102,7 @@ final class Configuration
      */
     public function plainTextTrace(): string
     {
-        if ($this->plainTextTrace === null) {
+        if (!$this->hasPlainTextTrace()) {
             throw new Exception;
         }
 
