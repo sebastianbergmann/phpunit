@@ -13,7 +13,7 @@ use function sprintf;
 use RuntimeException;
 
 /**
- * @internal This interface is not covered by the backward compatibility promise for PHPUnit
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestDirectoryNotFoundException extends RuntimeException implements Exception
 {
