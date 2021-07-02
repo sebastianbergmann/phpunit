@@ -173,6 +173,18 @@ final class Configuration
 
     private bool $resolveDependencies;
 
+    private ?string $logfileText;
+
+    private ?string $logfileTeamcity;
+
+    private ?string $logfileJunit;
+
+    private ?string $logfileTestdoxHtml;
+
+    private ?string $logfileTestdoxText;
+
+    private ?string $logfileTestdoxXml;
+
     /**
      * @psalm-var list<string>
      */
@@ -607,6 +619,49 @@ final class Configuration
             $colors = true;
         }
 
+        $logfileText        = null;
+        $logfileTeamcity    = null;
+        $logfileJunit       = null;
+        $logfileTestdoxHtml = null;
+        $logfileTestdoxText = null;
+        $logfileTestdoxXml  = null;
+
+        if (!($cliConfiguration->hasNoLogging() && $cliConfiguration->noLogging())) {
+            if ($xmlConfiguration->logging()->hasText()) {
+                $logfileText = $xmlConfiguration->logging()->text()->target()->path();
+            }
+
+            if ($cliConfiguration->hasTeamcityLogfile()) {
+                $logfileTeamcity = $cliConfiguration->teamcityLogfile();
+            } elseif ($xmlConfiguration->logging()->hasTeamCity()) {
+                $logfileTeamcity = $xmlConfiguration->logging()->teamCity()->target()->path();
+            }
+
+            if ($cliConfiguration->hasJunitLogfile()) {
+                $logfileJunit = $cliConfiguration->junitLogfile();
+            } elseif ($xmlConfiguration->logging()->hasJunit()) {
+                $logfileJunit = $xmlConfiguration->logging()->junit()->target()->path();
+            }
+
+            if ($cliConfiguration->hasTestdoxHtmlFile()) {
+                $logfileTestdoxHtml = $cliConfiguration->testdoxHtmlFile();
+            } elseif ($xmlConfiguration->logging()->hasTestDoxHtml()) {
+                $logfileTestdoxHtml = $xmlConfiguration->logging()->testDoxHtml()->target()->path();
+            }
+
+            if ($cliConfiguration->hasTestdoxTextFile()) {
+                $logfileTestdoxText = $cliConfiguration->testdoxTextFile();
+            } elseif ($xmlConfiguration->logging()->hasTestDoxText()) {
+                $logfileTestdoxText = $xmlConfiguration->logging()->testDoxText()->target()->path();
+            }
+
+            if ($cliConfiguration->hasTestdoxXmlFile()) {
+                $logfileTestdoxXml = $cliConfiguration->testdoxXmlFile();
+            } elseif ($xmlConfiguration->logging()->hasTestDoxXml()) {
+                $logfileTestdoxXml = $xmlConfiguration->logging()->testDoxXml()->target()->path();
+            }
+        }
+
         self::$instance = new self(
             $testSuite,
             $configurationFile,
@@ -673,13 +728,19 @@ final class Configuration
             $noInteraction,
             $executionOrder,
             $resolveDependencies,
+            $logfileText,
+            $logfileTeamcity,
+            $logfileJunit,
+            $logfileTestdoxHtml,
+            $logfileTestdoxText,
+            $logfileTestdoxXml,
             $warnings
         );
 
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, bool $resolveDependencies, array $warnings)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, array $warnings)
     {
         $this->testSuite                                       = $testSuite;
         $this->configurationFile                               = $configurationFile;
@@ -746,6 +807,12 @@ final class Configuration
         $this->noInteraction                                   = $noInteraction;
         $this->executionOrder                                  = $executionOrder;
         $this->resolveDependencies                             = $resolveDependencies;
+        $this->logfileText                                     = $logfileText;
+        $this->logfileTeamcity                                 = $logfileTeamcity;
+        $this->logfileJunit                                    = $logfileJunit;
+        $this->logfileTestdoxHtml                              = $logfileTestdoxHtml;
+        $this->logfileTestdoxText                              = $logfileTestdoxText;
+        $this->logfileTestdoxXml                               = $logfileTestdoxXml;
         $this->warnings                                        = $warnings;
     }
 
@@ -1277,6 +1344,126 @@ final class Configuration
     public function resolveDependencies(): bool
     {
         return $this->resolveDependencies;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->logfileText
+     */
+    public function hasLogfileText(): bool
+    {
+        return $this->logfileText !== null;
+    }
+
+    /**
+     * @throws LoggingNotConfiguredException
+     */
+    public function logfileText(): string
+    {
+        if (!$this->hasLogfileText()) {
+            throw new LoggingNotConfiguredException;
+        }
+
+        return $this->logfileText;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->logfileTeamcity
+     */
+    public function hasLogfileTeamcity(): bool
+    {
+        return $this->logfileTeamcity !== null;
+    }
+
+    /**
+     * @throws LoggingNotConfiguredException
+     */
+    public function logfileTeamcity(): string
+    {
+        if (!$this->hasLogfileTeamcity()) {
+            throw new LoggingNotConfiguredException;
+        }
+
+        return $this->logfileTeamcity;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->logfileJunit
+     */
+    public function hasLogfileJunit(): bool
+    {
+        return $this->logfileJunit !== null;
+    }
+
+    /**
+     * @throws LoggingNotConfiguredException
+     */
+    public function logfileJunit(): string
+    {
+        if (!$this->hasLogfileJunit()) {
+            throw new LoggingNotConfiguredException;
+        }
+
+        return $this->logfileJunit;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->logfileTestdoxHtml
+     */
+    public function hasLogfileTestdoxHtml(): bool
+    {
+        return $this->logfileTestdoxHtml !== null;
+    }
+
+    /**
+     * @throws LoggingNotConfiguredException
+     */
+    public function logfileTestdoxHtml(): string
+    {
+        if (!$this->hasLogfileTestdoxHtml()) {
+            throw new LoggingNotConfiguredException;
+        }
+
+        return $this->logfileTestdoxHtml;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->logfileTestdoxText
+     */
+    public function hasLogfileTestdoxText(): bool
+    {
+        return $this->logfileTestdoxText !== null;
+    }
+
+    /**
+     * @throws LoggingNotConfiguredException
+     */
+    public function logfileTestdoxText(): string
+    {
+        if (!$this->hasLogfileTestdoxText()) {
+            throw new LoggingNotConfiguredException;
+        }
+
+        return $this->logfileTestdoxText;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->logfileTestdoxXml
+     */
+    public function hasLogfileTestdoxXml(): bool
+    {
+        return $this->logfileTestdoxXml !== null;
+    }
+
+    /**
+     * @throws LoggingNotConfiguredException
+     */
+    public function logfileTestdoxXml(): string
+    {
+        if (!$this->hasLogfileTestdoxXml()) {
+            throw new LoggingNotConfiguredException;
+        }
+
+        return $this->logfileTestdoxXml;
     }
 
     public function hasWarnings(): bool

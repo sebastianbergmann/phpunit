@@ -875,7 +875,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="74">
+    <MissingThrowsDocblock occurrences="79">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -922,6 +922,7 @@
       <code>html</code>
       <code>html</code>
       <code>html</code>
+      <code>junitLogfile</code>
       <code>map</code>
       <code>new TestSuite</code>
       <code>new TestSuite($path)</code>
@@ -942,8 +943,12 @@
       <code>stopOnSkipped</code>
       <code>stopOnWarning</code>
       <code>strictCoverage</code>
+      <code>teamcityLogfile</code>
       <code>testSuffixes</code>
       <code>testSuite</code>
+      <code>testdoxHtmlFile</code>
+      <code>testdoxTextFile</code>
+      <code>testdoxXmlFile</code>
       <code>text</code>
       <code>text</code>
       <code>text</code>
