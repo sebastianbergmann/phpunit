@@ -233,13 +233,13 @@ final class TestRunner
             $this->printer->setShowProgressAnimation(!$this->configuration->noInteraction());
         }
 
-        if (isset($arguments['plainTextTrace'])) {
-            if (is_file($arguments['plainTextTrace'])) {
-                unlink($arguments['plainTextTrace']);
+        if ($this->configuration->hasPlainTextTrace()) {
+            if (is_file($this->configuration->plainTextTrace())) {
+                unlink($this->configuration->plainTextTrace());
             }
 
             Event\Facade::registerTracer(
-                new PlainTextTracer($arguments['plainTextTrace'])
+                new PlainTextTracer($this->configuration->plainTextTrace())
             );
         }
 

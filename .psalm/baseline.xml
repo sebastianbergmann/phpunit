@@ -1011,7 +1011,7 @@
       <code>$this-&gt;configuration-&gt;logfileTestdoxHtml()</code>
       <code>$this-&gt;configuration-&gt;logfileTestdoxText()</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="24">
+    <MissingThrowsDocblock occurrences="27">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>coverageCacheDirectory</code>
@@ -1031,6 +1031,9 @@
       <code>logfileTestdoxXml</code>
       <code>logfileText</code>
       <code>pharExtensionDirectory</code>
+      <code>plainTextTrace</code>
+      <code>plainTextTrace</code>
+      <code>plainTextTrace</code>
       <code>reorderTestsInSuite</code>
       <code>run</code>
       <code>stop</code>
