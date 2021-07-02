@@ -20,7 +20,6 @@ use function extension_loaded;
 use function htmlspecialchars;
 use function is_array;
 use function is_file;
-use function is_int;
 use function mt_srand;
 use function range;
 use function sprintf;
@@ -168,11 +167,11 @@ final class TestRunner
             unset($sorter);
         }
 
-        if (is_int($arguments['repeat']) && $arguments['repeat'] > 0) {
+        if ($this->configuration->hasRepeat()) {
             $_suite = new TestSuite;
 
             /* @noinspection PhpUnusedLocalVariableInspection */
-            foreach (range(1, $arguments['repeat']) as $step) {
+            foreach (range(1, $this->configuration->repeat()) as $step) {
                 $_suite->addTest($suite);
             }
 
@@ -725,7 +724,6 @@ final class TestRunner
         $arguments['excludeGroups']        = $arguments['excludeGroups'] ?? [];
         $arguments['groups']               = $arguments['groups'] ?? [];
         $arguments['randomOrderSeed']      = $arguments['randomOrderSeed'] ?? time();
-        $arguments['repeat']               = $arguments['repeat'] ?? false;
         $arguments['testdoxExcludeGroups'] = $arguments['testdoxExcludeGroups'] ?? [];
         $arguments['testdoxGroups']        = $arguments['testdoxGroups'] ?? [];
     }

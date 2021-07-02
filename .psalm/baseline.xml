@@ -875,7 +875,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="81">
+    <MissingThrowsDocblock occurrences="82">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -933,6 +933,7 @@
       <code>php</code>
       <code>plainTextTrace</code>
       <code>processIsolation</code>
+      <code>repeat</code>
       <code>reportUselessTests</code>
       <code>resolveDependencies</code>
       <code>reverseList</code>

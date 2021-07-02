@@ -60,10 +60,6 @@ final class Mapper
             $result['unavailableExtensions'] = $arguments->unavailableExtensions();
         }
 
-        if ($arguments->hasRepeat()) {
-            $result['repeat'] = $arguments->repeat();
-        }
-
         if ($arguments->hasTestdoxGroups()) {
             $result['testdoxGroups'] = $arguments->testdoxGroups();
         }
