@@ -875,7 +875,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="82">
+    <MissingThrowsDocblock occurrences="84">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -952,6 +952,8 @@
       <code>testdoxHtmlFile</code>
       <code>testdoxTextFile</code>
       <code>testdoxXmlFile</code>
+      <code>testsCovering</code>
+      <code>testsUsing</code>
       <code>text</code>
       <code>text</code>
       <code>text</code>

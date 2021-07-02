@@ -193,6 +193,10 @@ final class Configuration
 
     private ?string $plainTextTrace;
 
+    private ?array $testsCovering;
+
+    private ?array $testsUsing;
+
     /**
      * @psalm-var class-string
      */
@@ -710,6 +714,18 @@ final class Configuration
             $repeat = $cliConfiguration->repeat();
         }
 
+        $testsCovering = null;
+
+        if ($cliConfiguration->hasTestsCovering()) {
+            $testsCovering = $cliConfiguration->testsCovering();
+        }
+
+        $testsUsing = null;
+
+        if ($cliConfiguration->hasTestsUsing()) {
+            $testsUsing = $cliConfiguration->testsUsing();
+        }
+
         self::$instance = new self(
             $testSuite,
             $configurationFile,
@@ -786,6 +802,8 @@ final class Configuration
             $plainTextTrace,
             $printerClassName,
             $repeat,
+            $testsCovering,
+            $testsUsing,
             $warnings
         );
 
@@ -795,7 +813,7 @@ final class Configuration
     /**
      * @psalm-param class-string $printerClassName
      */
-    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, int $repeat, array $warnings)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, int $repeat, ?array $testsCovering, ?array $testsUsing, array $warnings)
     {
         $this->testSuite                                       = $testSuite;
         $this->configurationFile                               = $configurationFile;
@@ -872,6 +890,8 @@ final class Configuration
         $this->plainTextTrace                                  = $plainTextTrace;
         $this->printerClassName                                = $printerClassName;
         $this->repeat                                          = $repeat;
+        $this->testsCovering                                   = $testsCovering;
+        $this->testsUsing                                      = $testsUsing;
         $this->warnings                                        = $warnings;
     }
 
@@ -1566,6 +1586,50 @@ final class Configuration
     public function repeat(): int
     {
         return $this->repeat;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->testsCovering
+     */
+    public function hasTestsCovering(): bool
+    {
+        return $this->testsCovering !== null && !empty($this->testsCovering);
+    }
+
+    /**
+     * @psalm-return list<string>
+     *
+     * @throws FilterNotConfiguredException
+     */
+    public function testsCovering(): array
+    {
+        if (!$this->hasTestsCovering()) {
+            throw new FilterNotConfiguredException();
+        }
+
+        return $this->testsCovering;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->testsUsing
+     */
+    public function hasTestsUsing(): bool
+    {
+        return $this->testsUsing !== null && !empty($this->testsUsing);
+    }
+
+    /**
+     * @psalm-return list<string>
+     *
+     * @throws FilterNotConfiguredException
+     */
+    public function testsUsing(): array
+    {
+        if (!$this->hasTestsUsing()) {
+            throw new FilterNotConfiguredException();
+        }
+
+        return $this->testsUsing;
     }
 
     public function hasWarnings(): bool
