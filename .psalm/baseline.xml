@@ -988,8 +988,7 @@
       <code>new TestListenerAdapter</code>
       <code>private array $extensions = [];</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="10">
-      <code>addListener</code>
+    <DeprecatedMethod occurrences="9">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>

@@ -237,10 +237,6 @@ final class TestRunner
             Version::getVersionString() . "\n"
         );
 
-        foreach ($arguments['listeners'] as $listener) {
-            $result->addListener($listener);
-        }
-
         $result->addListener($this->printer);
 
         $coverageFilterFromConfigurationFile = false;
@@ -667,8 +663,7 @@ final class TestRunner
             $arguments['warnings'] = [];
         }
 
-        $arguments['filter']    = $arguments['filter'] ?? false;
-        $arguments['listeners'] = $arguments['listeners'] ?? [];
+        $arguments['filter'] = $arguments['filter'] ?? false;
 
         if (isset($arguments['configurationObject'])) {
             (new PhpHandler)->handle($arguments['configurationObject']->php());
