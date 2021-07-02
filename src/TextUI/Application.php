@@ -137,8 +137,6 @@ final class Application
 
         assert(isset($arguments) && $arguments instanceof CliConfiguration);
 
-        Event\Facade::emitter()->testRunnerCliConfigurationParsed($arguments);
-
         if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
             $this->execute(new GenerateConfigurationCommand);
         }
@@ -197,8 +195,6 @@ final class Application
 
             $this->arguments['configuration']       = $configurationFile;
             $this->arguments['configurationObject'] = $configurationObject;
-
-            Event\Facade::emitter()->testRunnerXmlConfigurationParsed($configurationObject);
         }
 
         if ($arguments->hasMigrateConfiguration() && $arguments->migrateConfiguration()) {
@@ -228,7 +224,7 @@ final class Application
             exit(self::EXCEPTION_EXIT);
         }
 
-        Event\Facade::emitter()->testRunnerConfigurationCombined($configuration);
+        Event\Facade::emitter()->testRunnerConfigured($configuration);
 
         if ($arguments->hasWarmCoverageCache() && $arguments->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand);
