@@ -214,17 +214,7 @@ final class TestRunner
         $result->stopOnWarning($this->configuration->stopOnWarning());
         $result->registerMockObjectsFromTestArgumentsRecursively($this->configuration->registerMockObjectsFromTestArgumentsRecursively());
 
-        $printerClassName = DefaultResultPrinter::class;
-
-        if (isset($arguments['teamCityPrinter']) && $arguments['teamCityPrinter'] === true) {
-            $printerClassName = TeamCityLogger::class;
-        } elseif (isset($arguments['testdoxPrinter']) && $arguments['testdoxPrinter'] === true) {
-            $printerClassName = CliTestDoxPrinter::class;
-        } elseif (isset($arguments['noOutput']) && $arguments['noOutput'] === true) {
-            $printerClassName = VoidPrinter::class;
-        }
-
-        $this->printer = $this->createPrinter($printerClassName);
+        $this->printer = $this->createPrinter();
 
         if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
             assert($this->printer instanceof CliTestDoxPrinter);
@@ -820,11 +810,10 @@ final class TestRunner
         $this->messagePrinted = true;
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    private function createPrinter(string $className): ResultPrinter
+    private function createPrinter(): ResultPrinter
     {
+        $className = $this->configuration->printerClassName();
+
         $object = new $className(
             $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : null,
             $this->configuration->verbose(),

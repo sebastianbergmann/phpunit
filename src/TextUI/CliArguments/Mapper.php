@@ -88,14 +88,6 @@ final class Mapper
             $result['randomOrderSeed'] = $arguments->randomOrderSeed();
         }
 
-        if ($arguments->hasTeamCityPrinter()) {
-            $result['teamCityPrinter'] = $arguments->teamCityPrinter();
-        }
-
-        if ($arguments->hasTestDoxPrinter()) {
-            $result['testdoxPrinter'] = $arguments->testdoxPrinter();
-        }
-
         return $result;
     }
 }

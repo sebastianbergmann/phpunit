@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI;
 
+use PHPUnit\Logging\VoidLogger;
 use const DIRECTORY_SEPARATOR;
 use function assert;
 use function count;
@@ -686,6 +687,8 @@ final class Configuration
             $printerClassName = TeamCityLogger::class;
         } elseif ($cliConfiguration->hasTestDoxPrinter() && $cliConfiguration->testdoxPrinter()) {
             $printerClassName = CliTestDoxPrinter::class;
+        } elseif ($cliConfiguration->hasNoOutput() && $cliConfiguration->noOutput()) {
+            $printerClassName = VoidLogger::class;
         }
 
         self::$instance = new self(
