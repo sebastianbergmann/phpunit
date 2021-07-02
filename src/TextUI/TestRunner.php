@@ -47,6 +47,8 @@ use PHPUnit\Runner\TestHook;
 use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
+use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
@@ -93,7 +95,7 @@ final class TestRunner
         }
 
         $this->codeCoverageFilter = $filter;
-        $this->configuration      = Configuration::get();
+        $this->configuration      = Registry::get();
     }
 
     /**

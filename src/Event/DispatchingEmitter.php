@@ -14,7 +14,7 @@ use PHPUnit\Event\TestSuite\Info;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
-use PHPUnit\TextUI\Configuration;
+use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 

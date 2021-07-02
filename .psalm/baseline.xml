@@ -837,19 +837,6 @@
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>
   </file>
-  <file src="src/TextUI/CliArguments/Builder.php">
-    <MissingThrowsDocblock occurrences="1"/>
-  </file>
-  <file src="src/TextUI/CliArguments/Configuration.php">
-    <InvalidNullableReturnType occurrences="2">
-      <code>bool</code>
-      <code>string</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="2">
-      <code>$this-&gt;excludeTestSuite</code>
-      <code>$this-&gt;teamCityPrinter</code>
-    </NullableReturnStatement>
-  </file>
   <file src="src/TextUI/Command/Commands/ListTestsAsTextCommand.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$this-&gt;suite-&gt;getIterator()</code>
@@ -866,14 +853,32 @@
       <code>stop</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/TextUI/Configuration.php">
+  <file src="src/TextUI/Configuration/Cli/Builder.php">
+    <MissingThrowsDocblock occurrences="1"/>
+  </file>
+  <file src="src/TextUI/Configuration/Cli/Configuration.php">
+    <InvalidNullableReturnType occurrences="2">
+      <code>bool</code>
+      <code>string</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="2">
+      <code>$this-&gt;excludeTestSuite</code>
+      <code>$this-&gt;teamCityPrinter</code>
+    </NullableReturnStatement>
+  </file>
+  <file src="src/TextUI/Configuration/Configuration.php">
+    <MissingThrowsDocblock occurrences="1">
+      <code>throw new FilterNotConfiguredException;</code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="src/TextUI/Configuration/Registry.php">
     <DeprecatedMethod occurrences="4">
       <code>cacheDirectory</code>
       <code>cacheResultFile</code>
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="92">
+    <MissingThrowsDocblock occurrences="91">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -963,7 +968,6 @@
       <code>text</code>
       <code>text</code>
       <code>throw new BootstrapException($t);</code>
-      <code>throw new FilterNotConfiguredException;</code>
       <code>verbose</code>
       <code>xml</code>
     </MissingThrowsDocblock>
@@ -973,6 +977,243 @@
     <UnresolvableInclude occurrences="1">
       <code>include $filename</code>
     </UnresolvableInclude>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/CodeCoverage/CodeCoverage.php">
+    <DeprecatedMethod occurrences="1">
+      <code>hasCacheDirectory</code>
+    </DeprecatedMethod>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/CodeCoverage/Filter/DirectoryCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;directories</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Filesystem/DirectoryCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;directories</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Filesystem/FileCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;files</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Group/GroupCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;groups</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Loader.php">
+    <RedundantCast occurrences="31">
+      <code>(string) $argument-&gt;textContent</code>
+      <code>(string) $const-&gt;getAttribute('name')</code>
+      <code>(string) $const-&gt;getAttribute('value')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('group')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('phpVersion')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('phpVersionOperator')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
+      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
+      <code>(string) $directoryNode-&gt;textContent</code>
+      <code>(string) $directoryNode-&gt;textContent</code>
+      <code>(string) $document-&gt;documentElement-&gt;getAttribute('columns')</code>
+      <code>(string) $element-&gt;getAttribute($attribute)</code>
+      <code>(string) $element-&gt;getAttribute($attribute)</code>
+      <code>(string) $element-&gt;getAttribute($attribute)</code>
+      <code>(string) $element-&gt;getAttribute('class')</code>
+      <code>(string) $element-&gt;getAttribute('file')</code>
+      <code>(string) $element-&gt;getAttribute('name')</code>
+      <code>(string) $excludeNode-&gt;textContent</code>
+      <code>(string) $file-&gt;textContent</code>
+      <code>(string) $fileNode-&gt;getAttribute('phpVersion')</code>
+      <code>(string) $fileNode-&gt;getAttribute('phpVersionOperator')</code>
+      <code>(string) $fileNode-&gt;textContent</code>
+      <code>(string) $group-&gt;textContent</code>
+      <code>(string) $group-&gt;textContent</code>
+      <code>(string) $includePath-&gt;textContent</code>
+      <code>(string) $ini-&gt;getAttribute('name')</code>
+      <code>(string) $ini-&gt;getAttribute('value')</code>
+      <code>(string) $var-&gt;getAttribute('name')</code>
+      <code>(string) $var-&gt;getAttribute('value')</code>
+    </RedundantCast>
+    <RedundantConditionGivenDocblockType occurrences="2">
+      <code>assert($directoryNode instanceof DOMElement)</code>
+      <code>assert($fileNode instanceof DOMElement)</code>
+    </RedundantConditionGivenDocblockType>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Logging/Logging.php">
+    <MissingThrowsDocblock occurrences="6">
+      <code>throw new Exception('Logger "JUnit XML" is not configured');</code>
+      <code>throw new Exception('Logger "Team City" is not configured');</code>
+      <code>throw new Exception('Logger "TestDox HTML" is not configured');</code>
+      <code>throw new Exception('Logger "TestDox Text" is not configured');</code>
+      <code>throw new Exception('Logger "TestDox XML" is not configured');</code>
+      <code>throw new Exception('Logger "Text" is not configured');</code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageCloverToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageCrap4jToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageHtmlToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoveragePhpToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageTextToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageXmlToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/LogToReportMigration.php">
+    <PossiblyNullReference occurrences="1">
+      <code>removeChild</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/RemoveEmptyFilter.php">
+    <PossiblyNullReference occurrences="2">
+      <code>removeChild</code>
+      <code>removeChild</code>
+    </PossiblyNullReference>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/PHP/Constant.php">
+    <MissingReturnType occurrences="1">
+      <code>value</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/PHP/ConstantCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;constants</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/PHP/IniSettingCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;iniSettings</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/PHP/Variable.php">
+    <MissingParamType occurrences="1">
+      <code>$value</code>
+    </MissingParamType>
+    <MissingReturnType occurrences="1">
+      <code>value</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/PHP/VariableCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;variables</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/PHPUnit/ExtensionCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;extensions</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/PHPUnit/PHPUnit.php">
+    <DeprecatedMethod occurrences="1">
+      <code>hasCacheResultFile</code>
+    </DeprecatedMethod>
+    <MissingReturnType occurrences="1">
+      <code>columns</code>
+    </MissingReturnType>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/TestSuite/TestDirectoryCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;directories</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/TestSuite/TestFileCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;files</code>
+    </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/TestSuite/TestSuiteCollectionIterator.php">
+    <InvalidNullableReturnType occurrences="1">
+      <code>int</code>
+    </InvalidNullableReturnType>
+    <NullableReturnStatement occurrences="1">
+      <code>$this-&gt;position</code>
+    </NullableReturnStatement>
+    <PossiblyNullArrayOffset occurrences="1">
+      <code>$this-&gt;testSuites</code>
+    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/DefaultResultPrinter.php">
     <MissingThrowsDocblock occurrences="2">
@@ -1070,243 +1311,6 @@
     <RedundantCondition occurrences="1">
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
     </RedundantCondition>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
-    <DeprecatedMethod occurrences="1">
-      <code>hasCacheDirectory</code>
-    </DeprecatedMethod>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/CodeCoverage/Filter/DirectoryCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;directories</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Filesystem/DirectoryCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;directories</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Filesystem/FileCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;files</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Group/GroupCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;groups</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Loader.php">
-    <RedundantCast occurrences="31">
-      <code>(string) $argument-&gt;textContent</code>
-      <code>(string) $const-&gt;getAttribute('name')</code>
-      <code>(string) $const-&gt;getAttribute('value')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('group')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('phpVersion')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('phpVersionOperator')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
-      <code>(string) $directoryNode-&gt;textContent</code>
-      <code>(string) $directoryNode-&gt;textContent</code>
-      <code>(string) $document-&gt;documentElement-&gt;getAttribute('columns')</code>
-      <code>(string) $element-&gt;getAttribute($attribute)</code>
-      <code>(string) $element-&gt;getAttribute($attribute)</code>
-      <code>(string) $element-&gt;getAttribute($attribute)</code>
-      <code>(string) $element-&gt;getAttribute('class')</code>
-      <code>(string) $element-&gt;getAttribute('file')</code>
-      <code>(string) $element-&gt;getAttribute('name')</code>
-      <code>(string) $excludeNode-&gt;textContent</code>
-      <code>(string) $file-&gt;textContent</code>
-      <code>(string) $fileNode-&gt;getAttribute('phpVersion')</code>
-      <code>(string) $fileNode-&gt;getAttribute('phpVersionOperator')</code>
-      <code>(string) $fileNode-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $includePath-&gt;textContent</code>
-      <code>(string) $ini-&gt;getAttribute('name')</code>
-      <code>(string) $ini-&gt;getAttribute('value')</code>
-      <code>(string) $var-&gt;getAttribute('name')</code>
-      <code>(string) $var-&gt;getAttribute('value')</code>
-    </RedundantCast>
-    <RedundantConditionGivenDocblockType occurrences="2">
-      <code>assert($directoryNode instanceof DOMElement)</code>
-      <code>assert($fileNode instanceof DOMElement)</code>
-    </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Logging/Logging.php">
-    <MissingThrowsDocblock occurrences="6">
-      <code>throw new Exception('Logger "JUnit XML" is not configured');</code>
-      <code>throw new Exception('Logger "Team City" is not configured');</code>
-      <code>throw new Exception('Logger "TestDox HTML" is not configured');</code>
-      <code>throw new Exception('Logger "TestDox Text" is not configured');</code>
-      <code>throw new Exception('Logger "TestDox XML" is not configured');</code>
-      <code>throw new Exception('Logger "Text" is not configured');</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageCloverToReport.php">
-    <PossiblyNullReference occurrences="1">
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageCrap4jToReport.php">
-    <PossiblyNullReference occurrences="1">
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageHtmlToReport.php">
-    <PossiblyNullReference occurrences="1">
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoveragePhpToReport.php">
-    <PossiblyNullReference occurrences="1">
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageTextToReport.php">
-    <PossiblyNullReference occurrences="1">
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/CoverageXmlToReport.php">
-    <PossiblyNullReference occurrences="1">
-      <code>createElement</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/LogToReportMigration.php">
-    <PossiblyNullReference occurrences="1">
-      <code>removeChild</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Migration/Migrations/RemoveEmptyFilter.php">
-    <PossiblyNullReference occurrences="2">
-      <code>removeChild</code>
-      <code>removeChild</code>
-    </PossiblyNullReference>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/PHP/Constant.php">
-    <MissingReturnType occurrences="1">
-      <code>value</code>
-    </MissingReturnType>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/PHP/ConstantCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;constants</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/PHP/IniSettingCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;iniSettings</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/PHP/Variable.php">
-    <MissingParamType occurrences="1">
-      <code>$value</code>
-    </MissingParamType>
-    <MissingReturnType occurrences="1">
-      <code>value</code>
-    </MissingReturnType>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/PHP/VariableCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;variables</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/PHPUnit/ExtensionCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;extensions</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/PHPUnit/PHPUnit.php">
-    <DeprecatedMethod occurrences="1">
-      <code>hasCacheResultFile</code>
-    </DeprecatedMethod>
-    <MissingReturnType occurrences="1">
-      <code>columns</code>
-    </MissingReturnType>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/TestSuite/TestDirectoryCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;directories</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/TestSuite/TestFileCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;files</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/TestSuite/TestSuiteCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;testSuites</code>
-    </PossiblyNullArrayOffset>
   </file>
   <file src="src/Util/Color.php">
     <MissingClosureParamType occurrences="2">

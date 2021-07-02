@@ -37,6 +37,7 @@ use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
@@ -97,11 +98,11 @@ final class Application
 
         $runner = new TestRunner;
 
-        if (!Configuration::get()->hasTestSuite()) {
+        if (!Registry::get()->hasTestSuite()) {
             $this->execute(new ShowHelpCommand(false));
         }
 
-        $suite = Configuration::get()->testSuite();
+        $suite = Registry::get()->testSuite();
 
         Event\Facade::emitter()->testSuiteLoaded($suite);
 
@@ -212,7 +213,7 @@ final class Application
         }
 
         try {
-            $configuration = Configuration::init(
+            $configuration = Registry::init(
                 $arguments,
                 $configurationObject ?? DefaultConfiguration::create()
             );
@@ -345,7 +346,7 @@ final class Application
             $returnCode = self::SUCCESS_EXIT;
         }
 
-        $configuration = Configuration::get();
+        $configuration = Registry::get();
 
         if ($configuration->failOnEmptyTestSuite() && count($result) === 0) {
             $returnCode = self::FAILURE_EXIT;

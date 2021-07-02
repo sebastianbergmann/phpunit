@@ -10,7 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use function sprintf;
-use PHPUnit\TextUI\Configuration;
+use PHPUnit\TextUI\Configuration\Registry;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\Timer\Timer;
 
@@ -21,14 +21,16 @@ final class WarmCodeCoverageCacheCommand implements Command
 {
     public function execute(): Result
     {
-        if (!Configuration::get()->hasCoverageCacheDirectory()) {
+        $configuration = Registry::get();
+
+        if (!$configuration->hasCoverageCacheDirectory()) {
             return Result::from(
                 'Cache for static analysis has not been configured' . PHP_EOL,
                 false
             );
         }
 
-        $filter = Configuration::get()->codeCoverageFilter();
+        $filter = $configuration->codeCoverageFilter();
 
         if ($filter->isEmpty()) {
             return Result::from(
@@ -41,9 +43,9 @@ final class WarmCodeCoverageCacheCommand implements Command
         $timer->start();
 
         (new CacheWarmer)->warmCache(
-            Configuration::get()->coverageCacheDirectory(),
-            !Configuration::get()->disableCodeCoverageIgnore(),
-            Configuration::get()->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
+            $configuration->coverageCacheDirectory(),
+            !$configuration->disableCodeCoverageIgnore(),
+            $configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
             $filter
         );
 

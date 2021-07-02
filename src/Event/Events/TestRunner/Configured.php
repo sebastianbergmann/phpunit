@@ -12,7 +12,7 @@ namespace PHPUnit\Event\TestRunner;
 use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
-use PHPUnit\TextUI\Configuration;
+use PHPUnit\TextUI\Configuration\Configuration;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit

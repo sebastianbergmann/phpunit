@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI;
+namespace PHPUnit\TextUI\XmlConfiguration;
 
 use const PHP_VERSION;
 use function explode;
@@ -18,7 +18,9 @@ use function str_contains;
 use function version_compare;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
-use PHPUnit\TextUI\XmlConfiguration\TestSuiteCollection;
+use PHPUnit\TextUI\RuntimeException;
+use PHPUnit\TextUI\TestDirectoryNotFoundException;
+use PHPUnit\TextUI\TestFileNotFoundException;
 use SebastianBergmann\FileIterator\Facade;
 
 /**
