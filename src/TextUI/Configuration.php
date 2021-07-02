@@ -185,6 +185,8 @@ final class Configuration
 
     private ?string $logfileTestdoxXml;
 
+    private ?string $plainTextTrace;
+
     /**
      * @psalm-var list<string>
      */
@@ -665,6 +667,12 @@ final class Configuration
             $logfileTestdoxXml = $xmlConfiguration->logging()->testDoxXml()->target()->path();
         }
 
+        $plainTextTrace = null;
+
+        if ($cliConfiguration->hasPlainTextTrace()) {
+            $plainTextTrace = $cliConfiguration->plainTextTrace();
+        }
+
         self::$instance = new self(
             $testSuite,
             $configurationFile,
@@ -737,13 +745,14 @@ final class Configuration
             $logfileTestdoxHtml,
             $logfileTestdoxText,
             $logfileTestdoxXml,
+            $plainTextTrace,
             $warnings
         );
 
         return self::$instance;
     }
 
-    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, array $warnings)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, array $warnings)
     {
         $this->testSuite                                       = $testSuite;
         $this->configurationFile                               = $configurationFile;
@@ -816,6 +825,7 @@ final class Configuration
         $this->logfileTestdoxHtml                              = $logfileTestdoxHtml;
         $this->logfileTestdoxText                              = $logfileTestdoxText;
         $this->logfileTestdoxXml                               = $logfileTestdoxXml;
+        $this->plainTextTrace                                  = $plainTextTrace;
         $this->warnings                                        = $warnings;
     }
 
@@ -1467,6 +1477,26 @@ final class Configuration
         }
 
         return $this->logfileTestdoxXml;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->plainTextTrace
+     */
+    public function hasPlainTextTrace(): bool
+    {
+        return $this->plainTextTrace !== null;
+    }
+
+    /**
+     * @throws LoggingNotConfiguredException
+     */
+    public function plainTextTrace(): string
+    {
+        if (!$this->hasPlainTextTrace()) {
+            throw new LoggingNotConfiguredException;
+        }
+
+        return $this->plainTextTrace;
     }
 
     public function hasWarnings(): bool
