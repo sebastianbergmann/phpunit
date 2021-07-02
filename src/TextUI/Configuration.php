@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI;
 
 use PHPUnit\Logging\VoidLogger;
+use PHPUnit\Runner\TestSuiteSorter;
 use const DIRECTORY_SEPARATOR;
 use function assert;
 use function count;
@@ -173,6 +174,8 @@ final class Configuration
     private bool $noInteraction;
 
     private int $executionOrder;
+
+    private int $executionOrderDefects;
 
     private bool $resolveDependencies;
 
@@ -608,6 +611,14 @@ final class Configuration
             $executionOrder = $xmlConfiguration->phpunit()->executionOrder();
         }
 
+        $executionOrderDefects = TestSuiteSorter::ORDER_DEFAULT;
+
+        if ($cliConfiguration->hasExecutionOrderDefects()) {
+            $executionOrderDefects = $cliConfiguration->executionOrderDefects();
+        } elseif ($xmlConfiguration->phpunit()->defectsFirst()) {
+            $executionOrderDefects = TestSuiteSorter::ORDER_DEFECTS_FIRST;
+        }
+
         if ($cliConfiguration->hasResolveDependencies()) {
             $resolveDependencies = $cliConfiguration->resolveDependencies();
         } else {
@@ -756,6 +767,7 @@ final class Configuration
             $registerMockObjectsFromTestArgumentsRecursively,
             $noInteraction,
             $executionOrder,
+            $executionOrderDefects,
             $resolveDependencies,
             $logfileText,
             $logfileTeamcity,
@@ -774,7 +786,7 @@ final class Configuration
     /**
      * @psalm-param class-string $printerClassName
      */
-    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, array $warnings)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, array $warnings)
     {
         $this->testSuite                                       = $testSuite;
         $this->configurationFile                               = $configurationFile;
@@ -840,6 +852,7 @@ final class Configuration
         $this->registerMockObjectsFromTestArgumentsRecursively = $registerMockObjectsFromTestArgumentsRecursively;
         $this->noInteraction                                   = $noInteraction;
         $this->executionOrder                                  = $executionOrder;
+        $this->executionOrderDefects                           = $executionOrderDefects;
         $this->resolveDependencies                             = $resolveDependencies;
         $this->logfileText                                     = $logfileText;
         $this->logfileTeamcity                                 = $logfileTeamcity;
@@ -1375,6 +1388,11 @@ final class Configuration
     public function executionOrder(): int
     {
         return $this->executionOrder;
+    }
+
+    public function executionOrderDefects(): int
+    {
+        return $this->executionOrderDefects;
     }
 
     public function resolveDependencies(): bool

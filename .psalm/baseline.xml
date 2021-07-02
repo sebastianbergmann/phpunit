@@ -875,7 +875,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="80">
+    <MissingThrowsDocblock occurrences="81">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
@@ -913,6 +913,7 @@
       <code>disallowTestOutput</code>
       <code>enforceTimeLimit</code>
       <code>executionOrder</code>
+      <code>executionOrderDefects</code>
       <code>extensionsDirectory</code>
       <code>failOnEmptyTestSuite</code>
       <code>failOnIncomplete</code>
