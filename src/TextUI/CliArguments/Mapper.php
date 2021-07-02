@@ -52,10 +52,6 @@ final class Mapper
             $result['includePath'] = $arguments->includePath();
         }
 
-        if ($arguments->hasExecutionOrderDefects()) {
-            $result['executionOrderDefects'] = $arguments->executionOrderDefects();
-        }
-
         if ($arguments->hasExtensions()) {
             $result['extensions'] = $arguments->extensions();
         }

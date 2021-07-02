@@ -35,7 +35,6 @@ use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Logging\TestDox\HtmlResultPrinter;
 use PHPUnit\Logging\TestDox\TextResultPrinter;
 use PHPUnit\Logging\TestDox\XmlResultPrinter;
-use PHPUnit\Logging\VoidPrinter;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\CodeCoverage;
@@ -143,7 +142,7 @@ final class TestRunner
         }
 
         if ($this->configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
-            $arguments['executionOrderDefects'] !== TestSuiteSorter::ORDER_DEFAULT ||
+            $this->configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
             $this->configuration->resolveDependencies()) {
             $cache = $cache ?? new NullTestResultCache;
 
@@ -155,12 +154,12 @@ final class TestRunner
                 $suite,
                 $this->configuration->executionOrder(),
                 $this->configuration->resolveDependencies(),
-                $arguments['executionOrderDefects']
+                $this->configuration->executionOrderDefects()
             );
 
             Event\Facade::emitter()->testSuiteSorted(
                 $this->configuration->executionOrder(),
-                $arguments['executionOrderDefects'],
+                $this->configuration->executionOrderDefects(),
                 $this->configuration->resolveDependencies()
             );
 
@@ -675,12 +674,6 @@ final class TestRunner
         if (isset($arguments['configurationObject'])) {
             (new PhpHandler)->handle($arguments['configurationObject']->php());
 
-            $phpunitConfiguration = $arguments['configurationObject']->phpunit();
-
-            if (!isset($arguments['executionOrderDefects'])) {
-                $arguments['executionOrderDefects'] = $phpunitConfiguration->defectsFirst() ? TestSuiteSorter::ORDER_DEFECTS_FIRST : TestSuiteSorter::ORDER_DEFAULT;
-            }
-
             $groupCliArgs = [];
 
             if (!empty($arguments['groups'])) {
@@ -729,13 +722,12 @@ final class TestRunner
 
         unset($extensionHandler);
 
-        $arguments['excludeGroups']         = $arguments['excludeGroups'] ?? [];
-        $arguments['executionOrderDefects'] = $arguments['executionOrderDefects'] ?? TestSuiteSorter::ORDER_DEFAULT;
-        $arguments['groups']                = $arguments['groups'] ?? [];
-        $arguments['randomOrderSeed']       = $arguments['randomOrderSeed'] ?? time();
-        $arguments['repeat']                = $arguments['repeat'] ?? false;
-        $arguments['testdoxExcludeGroups']  = $arguments['testdoxExcludeGroups'] ?? [];
-        $arguments['testdoxGroups']         = $arguments['testdoxGroups'] ?? [];
+        $arguments['excludeGroups']        = $arguments['excludeGroups'] ?? [];
+        $arguments['groups']               = $arguments['groups'] ?? [];
+        $arguments['randomOrderSeed']      = $arguments['randomOrderSeed'] ?? time();
+        $arguments['repeat']               = $arguments['repeat'] ?? false;
+        $arguments['testdoxExcludeGroups'] = $arguments['testdoxExcludeGroups'] ?? [];
+        $arguments['testdoxGroups']        = $arguments['testdoxGroups'] ?? [];
     }
 
     private function processSuiteFilters(TestSuite $suite, array $arguments): void

@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TextUI;
 
-use PHPUnit\Logging\VoidLogger;
-use PHPUnit\Runner\TestSuiteSorter;
 use const DIRECTORY_SEPARATOR;
 use function assert;
 use function count;
@@ -26,7 +24,9 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\TeamCityLogger;
 use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
+use PHPUnit\Logging\VoidLogger;
 use PHPUnit\Runner\TestSuiteLoader;
+use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
