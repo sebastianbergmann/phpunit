@@ -52,14 +52,6 @@ final class Mapper
             $result['includePath'] = $arguments->includePath();
         }
 
-        if ($arguments->hasJunitLogfile()) {
-            $result['junitLogfile'] = $arguments->junitLogfile();
-        }
-
-        if ($arguments->hasTeamcityLogfile()) {
-            $result['teamcityLogfile'] = $arguments->teamcityLogfile();
-        }
-
         if ($arguments->hasExecutionOrderDefects()) {
             $result['executionOrderDefects'] = $arguments->executionOrderDefects();
         }
@@ -84,24 +76,8 @@ final class Mapper
             $result['testdoxExcludeGroups'] = $arguments->testdoxExcludeGroups();
         }
 
-        if ($arguments->hasTestdoxHtmlFile()) {
-            $result['testdoxHTMLFile'] = $arguments->testdoxHtmlFile();
-        }
-
-        if ($arguments->hasTestdoxTextFile()) {
-            $result['testdoxTextFile'] = $arguments->testdoxTextFile();
-        }
-
-        if ($arguments->hasTestdoxXmlFile()) {
-            $result['testdoxXMLFile'] = $arguments->testdoxXmlFile();
-        }
-
         if ($arguments->hasNoOutput()) {
             $result['noOutput'] = $arguments->noOutput();
-        }
-
-        if ($arguments->hasNoLogging()) {
-            $result['noLogging'] = $arguments->noLogging();
         }
 
         if ($arguments->hasCoverageFilter()) {

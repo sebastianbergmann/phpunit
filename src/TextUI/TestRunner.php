@@ -258,44 +258,53 @@ final class TestRunner
         $coverageFilterFromConfigurationFile = false;
         $coverageFilterFromOption            = false;
 
-        if (isset($arguments['testdoxHTMLFile'])) {
+        if ($this->configuration->hasLogfileText()) {
+            $result->addListener(
+                new DefaultResultPrinter(
+                    $this->configuration->logfileText(),
+                    true
+                )
+            );
+        }
+
+        if ($this->configuration->hasLogfileTestdoxHtml()) {
             $result->addListener(
                 new HtmlResultPrinter(
-                    $arguments['testdoxHTMLFile'],
+                    $this->configuration->logfileTestdoxHtml(),
                     $arguments['testdoxGroups'],
                     $arguments['testdoxExcludeGroups']
                 )
             );
         }
 
-        if (isset($arguments['testdoxTextFile'])) {
+        if ($this->configuration->hasLogfileTestdoxText()) {
             $result->addListener(
                 new TextResultPrinter(
-                    $arguments['testdoxTextFile'],
+                    $this->configuration->logfileTestdoxText(),
                     $arguments['testdoxGroups'],
                     $arguments['testdoxExcludeGroups']
                 )
             );
         }
 
-        if (isset($arguments['testdoxXMLFile'])) {
+        if ($this->configuration->hasLogfileTestdoxXml()) {
             $result->addListener(
                 new XmlResultPrinter(
-                    $arguments['testdoxXMLFile']
+                    $this->configuration->logfileTestdoxXml()
                 )
             );
         }
 
-        if (isset($arguments['teamcityLogfile'])) {
+        if ($this->configuration->hasLogfileTeamcity()) {
             $result->addListener(
-                new TeamCityLogger($arguments['teamcityLogfile'])
+                new TeamCityLogger($this->configuration->logfileTeamcity())
             );
         }
 
-        if (isset($arguments['junitLogfile'])) {
+        if ($this->configuration->hasLogfileJunit()) {
             $result->addListener(
                 new JunitXmlLogger(
-                    $arguments['junitLogfile'],
+                    $this->configuration->logfileJunit(),
                     $this->configuration->reportUselessTests()
                 )
             );
@@ -707,37 +716,6 @@ final class TestRunner
                     'Extension "%s" is not available',
                     $extension
                 );
-            }
-
-            $loggingConfiguration = $arguments['configurationObject']->logging();
-
-            if (!isset($arguments['noLogging'])) {
-                if ($loggingConfiguration->hasText()) {
-                    $arguments['listeners'][] = new DefaultResultPrinter(
-                        $loggingConfiguration->text()->target()->path(),
-                        true
-                    );
-                }
-
-                if (!isset($arguments['teamcityLogfile']) && $loggingConfiguration->hasTeamCity()) {
-                    $arguments['teamcityLogfile'] = $loggingConfiguration->teamCity()->target()->path();
-                }
-
-                if (!isset($arguments['junitLogfile']) && $loggingConfiguration->hasJunit()) {
-                    $arguments['junitLogfile'] = $loggingConfiguration->junit()->target()->path();
-                }
-
-                if (!isset($arguments['testdoxHTMLFile']) && $loggingConfiguration->hasTestDoxHtml()) {
-                    $arguments['testdoxHTMLFile'] = $loggingConfiguration->testDoxHtml()->target()->path();
-                }
-
-                if (!isset($arguments['testdoxTextFile']) && $loggingConfiguration->hasTestDoxText()) {
-                    $arguments['testdoxTextFile'] = $loggingConfiguration->testDoxText()->target()->path();
-                }
-
-                if (!isset($arguments['testdoxXMLFile']) && $loggingConfiguration->hasTestDoxXml()) {
-                    $arguments['testdoxXMLFile'] = $loggingConfiguration->testDoxXml()->target()->path();
-                }
             }
 
             $testdoxGroupConfiguration = $arguments['configurationObject']->testdoxGroups();
