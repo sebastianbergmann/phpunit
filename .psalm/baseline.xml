@@ -1020,8 +1020,10 @@
       <code>$this-&gt;configuration-&gt;logfileTestdoxHtml()</code>
       <code>$this-&gt;configuration-&gt;logfileTestdoxText()</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="32">
+    <MissingThrowsDocblock occurrences="35">
       <code>bootstrap</code>
+      <code>configurationFile</code>
+      <code>configurationFile</code>
       <code>configurationFile</code>
       <code>coverageCacheDirectory</code>
       <code>coverageClover</code>
@@ -1052,6 +1054,7 @@
       <code>stop</code>
       <code>testsCovering</code>
       <code>testsUsing</code>
+      <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
     <PossiblyNullArgument occurrences="3">
       <code>$this-&gt;codeCoverageFilter</code>
@@ -1067,12 +1070,6 @@
     <RedundantCondition occurrences="1">
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
     </RedundantCondition>
-    <UndefinedMethod occurrences="4">
-      <code>filename</code>
-      <code>filename</code>
-      <code>hasValidationErrors</code>
-      <code>validationErrors</code>
-    </UndefinedMethod>
   </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/CodeCoverage.php">
     <DeprecatedMethod occurrences="1">

@@ -392,12 +392,10 @@ final class TestRunner
                 $this->writeMessage('Runtime', $runtime);
             }
 
-            if (isset($arguments['configurationObject'])) {
-                assert($arguments['configurationObject'] instanceof XmlConfiguration);
-
+            if ($this->configuration->hasConfigurationFile()) {
                 $this->writeMessage(
                     'Configuration',
-                    $arguments['configurationObject']->filename()
+                    $this->configuration->configurationFile()
                 );
             }
 
@@ -437,22 +435,18 @@ final class TestRunner
             $this->writeMessage('Warning', $warning);
         }
 
-        if (isset($arguments['configurationObject'])) {
-            assert($arguments['configurationObject'] instanceof XmlConfiguration);
+        if ($this->configuration->hasXmlValidationErrors()) {
+            if ((new SchemaDetector)->detect($this->configuration->configurationFile())->detected()) {
+                $this->writeMessage('Warning', 'Your XML configuration validates against a deprecated schema.');
+                $this->writeMessage('Suggestion', 'Migrate your XML configuration using "--migrate-configuration"!');
+            } else {
+                $this->write(
+                    "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
+                );
 
-            if ($arguments['configurationObject']->hasValidationErrors()) {
-                if ((new SchemaDetector)->detect($arguments['configurationObject']->filename())->detected()) {
-                    $this->writeMessage('Warning', 'Your XML configuration validates against a deprecated schema.');
-                    $this->writeMessage('Suggestion', 'Migrate your XML configuration using "--migrate-configuration"!');
-                } else {
-                    $this->write(
-                        "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
-                    );
+                $this->write($this->configuration->xmlValidationErrors());
 
-                    $this->write($arguments['configurationObject']->validationErrors());
-
-                    $this->write("\n  Test results may not be as expected.\n\n");
-                }
+                $this->write("\n  Test results may not be as expected.\n\n");
             }
         }
 
