@@ -14,12 +14,14 @@ use function assert;
 use function count;
 use function defined;
 use function dirname;
+use function implode;
 use function is_dir;
 use function is_file;
 use function is_int;
 use function is_readable;
 use function realpath;
 use function substr;
+use function time;
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\TeamCityLogger;
@@ -203,6 +205,20 @@ final class Configuration
     private string $printerClassName;
 
     private int $repeat;
+
+    private ?string $filter;
+
+    private ?array $groups;
+
+    private ?array $excludeGroups;
+
+    private ?array $testdoxGroups;
+
+    private ?array $testdoxExcludeGroups;
+
+    private ?string $includePath;
+
+    private int $randomOrderSeed;
 
     /**
      * @psalm-var list<string>
@@ -726,6 +742,56 @@ final class Configuration
             $testsUsing = $cliConfiguration->testsUsing();
         }
 
+        $filter = null;
+
+        if ($cliConfiguration->hasFilter()) {
+            $filter = $cliConfiguration->filter();
+        }
+
+        if ($cliConfiguration->hasGroups()) {
+            $groups = $cliConfiguration->groups();
+        } else {
+            $groups = $xmlConfiguration->groups()->include()->asArrayOfStrings();
+        }
+
+        if ($cliConfiguration->hasExcludeGroups()) {
+            $excludeGroups = $cliConfiguration->excludeGroups();
+        } else {
+            $excludeGroups = $xmlConfiguration->groups()->exclude()->asArrayOfStrings();
+        }
+
+        if ($cliConfiguration->hasTestdoxGroups()) {
+            $testdoxGroups = $cliConfiguration->testdoxGroups();
+        } else {
+            $testdoxGroups = $xmlConfiguration->testdoxGroups()->include()->asArrayOfStrings();
+        }
+
+        if ($cliConfiguration->hasTestdoxExcludeGroups()) {
+            $testdoxExcludeGroups = $cliConfiguration->testdoxExcludeGroups();
+        } else {
+            $testdoxExcludeGroups = $xmlConfiguration->testdoxGroups()->exclude()->asArrayOfStrings();
+        }
+
+        $includePath = null;
+
+        if ($cliConfiguration->hasIncludePath()) {
+            $includePath = $cliConfiguration->includePath();
+        } elseif (!$xmlConfiguration->php()->includePaths()->isEmpty()) {
+            $includePathsAsStrings = [];
+
+            foreach ($xmlConfiguration->php()->includePaths() as $includePath) {
+                $includePathsAsStrings[] = $includePath->path();
+            }
+
+            $includePath = implode(PATH_SEPARATOR, $includePathsAsStrings);
+        }
+
+        if ($cliConfiguration->hasRandomOrderSeed()) {
+            $randomOrderSeed = $cliConfiguration->randomOrderSeed();
+        } else {
+            $randomOrderSeed = time();
+        }
+
         self::$instance = new self(
             $testSuite,
             $configurationFile,
@@ -804,6 +870,13 @@ final class Configuration
             $repeat,
             $testsCovering,
             $testsUsing,
+            $filter,
+            $groups,
+            $excludeGroups,
+            $testdoxGroups,
+            $testdoxExcludeGroups,
+            $includePath,
+            $randomOrderSeed,
             $warnings
         );
 
@@ -813,7 +886,7 @@ final class Configuration
     /**
      * @psalm-param class-string $printerClassName
      */
-    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, int $repeat, ?array $testsCovering, ?array $testsUsing, array $warnings)
+    private function __construct(?TestSuite $testSuite, ?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, int $repeat, ?array $testsCovering, ?array $testsUsing, ?string $filter, ?array $groups, ?array $excludeGroups, ?array $testdoxGroups, ?array $testdoxExcludeGroups, ?string $includePath, int $randomOrderSeed, array $warnings)
     {
         $this->testSuite                                       = $testSuite;
         $this->configurationFile                               = $configurationFile;
@@ -892,6 +965,13 @@ final class Configuration
         $this->repeat                                          = $repeat;
         $this->testsCovering                                   = $testsCovering;
         $this->testsUsing                                      = $testsUsing;
+        $this->filter                                          = $filter;
+        $this->groups                                          = $groups;
+        $this->excludeGroups                                   = $excludeGroups;
+        $this->testdoxGroups                                   = $testdoxGroups;
+        $this->testdoxExcludeGroups                            = $testdoxExcludeGroups;
+        $this->includePath                                     = $includePath;
+        $this->randomOrderSeed                                 = $randomOrderSeed;
         $this->warnings                                        = $warnings;
     }
 
@@ -1630,6 +1710,131 @@ final class Configuration
         }
 
         return $this->testsUsing;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->filter
+     */
+    public function hasFilter(): bool
+    {
+        return $this->filter !== null;
+    }
+
+    /**
+     * @throws FilterNotConfiguredException
+     */
+    public function filter(): string
+    {
+        if (!$this->hasFilter()) {
+            throw new FilterNotConfiguredException;
+        }
+
+        return $this->filter;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->groups
+     */
+    public function hasGroups(): bool
+    {
+        return $this->groups !== null && !empty($this->groups);
+    }
+
+    /**
+     * @throws FilterNotConfiguredException
+     */
+    public function groups(): array
+    {
+        if (!$this->hasGroups()) {
+            throw new FilterNotConfiguredException;
+        }
+
+        return $this->groups;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->excludeGroups
+     */
+    public function hasExcludeGroups(): bool
+    {
+        return $this->excludeGroups !== null && !empty($this->excludeGroups);
+    }
+
+    /**
+     * @throws FilterNotConfiguredException
+     */
+    public function excludeGroups(): array
+    {
+        if (!$this->hasExcludeGroups()) {
+            throw new FilterNotConfiguredException;
+        }
+
+        return $this->excludeGroups;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->testdoxGroups
+     */
+    public function hasTestdoxGroups(): bool
+    {
+        return $this->testdoxGroups !== null && !empty($this->testdoxGroups);
+    }
+
+    /**
+     * @throws FilterNotConfiguredException
+     */
+    public function testdoxGroups(): array
+    {
+        if (!$this->hasTestdoxGroups()) {
+            throw new FilterNotConfiguredException;
+        }
+
+        return $this->testdoxGroups;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->testdoxExcludeGroups
+     */
+    public function hasTestdoxExcludeGroups(): bool
+    {
+        return $this->testdoxExcludeGroups !== null && !empty($this->testdoxExcludeGroups);
+    }
+
+    /**
+     * @throws FilterNotConfiguredException
+     */
+    public function testdoxExcludeGroups(): array
+    {
+        if (!$this->hasTestdoxExcludeGroups()) {
+            throw new FilterNotConfiguredException;
+        }
+
+        return $this->testdoxExcludeGroups;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->includePath
+     */
+    public function hasIncludePath(): bool
+    {
+        return $this->includePath !== null;
+    }
+
+    /**
+     * @throws IncludePathNotConfiguredException
+     */
+    public function includePath(): string
+    {
+        if (!$this->hasIncludePath()) {
+            throw new FilterNotConfiguredException;
+        }
+
+        return $this->includePath;
+    }
+
+    public function randomOrderSeed(): int
+    {
+        return $this->randomOrderSeed;
     }
 
     public function hasWarnings(): bool
