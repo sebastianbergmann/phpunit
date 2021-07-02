@@ -619,47 +619,50 @@ final class Configuration
             $colors = true;
         }
 
-        $logfileText        = null;
-        $logfileTeamcity    = null;
-        $logfileJunit       = null;
-        $logfileTestdoxHtml = null;
-        $logfileTestdoxText = null;
-        $logfileTestdoxXml  = null;
+        $logfileText                 = null;
+        $logfileTeamcity             = null;
+        $logfileJunit                = null;
+        $logfileTestdoxHtml          = null;
+        $logfileTestdoxText          = null;
+        $logfileTestdoxXml           = null;
+        $loggingFromXmlConfiguration = true;
 
-        if (!($cliConfiguration->hasNoLogging() && $cliConfiguration->noLogging())) {
-            if ($xmlConfiguration->logging()->hasText()) {
-                $logfileText = $xmlConfiguration->logging()->text()->target()->path();
-            }
+        if ($cliConfiguration->hasNoLogging() && $cliConfiguration->noLogging()) {
+            $loggingFromXmlConfiguration = false;
+        }
 
-            if ($cliConfiguration->hasTeamcityLogfile()) {
-                $logfileTeamcity = $cliConfiguration->teamcityLogfile();
-            } elseif ($xmlConfiguration->logging()->hasTeamCity()) {
-                $logfileTeamcity = $xmlConfiguration->logging()->teamCity()->target()->path();
-            }
+        if ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasText()) {
+            $logfileText = $xmlConfiguration->logging()->text()->target()->path();
+        }
 
-            if ($cliConfiguration->hasJunitLogfile()) {
-                $logfileJunit = $cliConfiguration->junitLogfile();
-            } elseif ($xmlConfiguration->logging()->hasJunit()) {
-                $logfileJunit = $xmlConfiguration->logging()->junit()->target()->path();
-            }
+        if ($cliConfiguration->hasTeamcityLogfile()) {
+            $logfileTeamcity = $cliConfiguration->teamcityLogfile();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTeamCity()) {
+            $logfileTeamcity = $xmlConfiguration->logging()->teamCity()->target()->path();
+        }
 
-            if ($cliConfiguration->hasTestdoxHtmlFile()) {
-                $logfileTestdoxHtml = $cliConfiguration->testdoxHtmlFile();
-            } elseif ($xmlConfiguration->logging()->hasTestDoxHtml()) {
-                $logfileTestdoxHtml = $xmlConfiguration->logging()->testDoxHtml()->target()->path();
-            }
+        if ($cliConfiguration->hasJunitLogfile()) {
+            $logfileJunit = $cliConfiguration->junitLogfile();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasJunit()) {
+            $logfileJunit = $xmlConfiguration->logging()->junit()->target()->path();
+        }
 
-            if ($cliConfiguration->hasTestdoxTextFile()) {
-                $logfileTestdoxText = $cliConfiguration->testdoxTextFile();
-            } elseif ($xmlConfiguration->logging()->hasTestDoxText()) {
-                $logfileTestdoxText = $xmlConfiguration->logging()->testDoxText()->target()->path();
-            }
+        if ($cliConfiguration->hasTestdoxHtmlFile()) {
+            $logfileTestdoxHtml = $cliConfiguration->testdoxHtmlFile();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTestDoxHtml()) {
+            $logfileTestdoxHtml = $xmlConfiguration->logging()->testDoxHtml()->target()->path();
+        }
 
-            if ($cliConfiguration->hasTestdoxXmlFile()) {
-                $logfileTestdoxXml = $cliConfiguration->testdoxXmlFile();
-            } elseif ($xmlConfiguration->logging()->hasTestDoxXml()) {
-                $logfileTestdoxXml = $xmlConfiguration->logging()->testDoxXml()->target()->path();
-            }
+        if ($cliConfiguration->hasTestdoxTextFile()) {
+            $logfileTestdoxText = $cliConfiguration->testdoxTextFile();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTestDoxText()) {
+            $logfileTestdoxText = $xmlConfiguration->logging()->testDoxText()->target()->path();
+        }
+
+        if ($cliConfiguration->hasTestdoxXmlFile()) {
+            $logfileTestdoxXml = $cliConfiguration->testdoxXmlFile();
+        } elseif ($loggingFromXmlConfiguration && $xmlConfiguration->logging()->hasTestDoxXml()) {
+            $logfileTestdoxXml = $xmlConfiguration->logging()->testDoxXml()->target()->path();
         }
 
         self::$instance = new self(
