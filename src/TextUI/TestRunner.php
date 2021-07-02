@@ -728,8 +728,8 @@ final class TestRunner
         if (!$arguments['filter'] &&
             empty($arguments['groups']) &&
             empty($arguments['excludeGroups']) &&
-            empty($arguments['testsCovering']) &&
-            empty($arguments['testsUsing'])) {
+            !$this->configuration->hasTestsCovering() &&
+            !$this->configuration->hasTestsUsing()) {
             return;
         }
 
@@ -747,24 +747,24 @@ final class TestRunner
             );
         }
 
-        if (!empty($arguments['testsCovering'])) {
+        if ($this->configuration->hasTestsCovering()) {
             $filterFactory->addIncludeGroupFilter(
                 array_map(
                     static function (string $name): string {
                         return '__phpunit_covers_' . $name;
                     },
-                    $arguments['testsCovering']
+                    $this->configuration->testsCovering()
                 )
             );
         }
 
-        if (!empty($arguments['testsUsing'])) {
+        if ($this->configuration->hasTestsUsing()) {
             $filterFactory->addIncludeGroupFilter(
                 array_map(
                     static function (string $name): string {
                         return '__phpunit_uses_' . $name;
                     },
-                    $arguments['testsUsing']
+                    $this->configuration->testsUsing()
                 )
             );
         }

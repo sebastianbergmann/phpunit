@@ -40,14 +40,6 @@ final class Mapper
             $result['excludeGroups'] = $arguments->excludeGroups();
         }
 
-        if ($arguments->hasTestsCovering()) {
-            $result['testsCovering'] = $arguments->testsCovering();
-        }
-
-        if ($arguments->hasTestsUsing()) {
-            $result['testsUsing'] = $arguments->testsUsing();
-        }
-
         if ($arguments->hasIncludePath()) {
             $result['includePath'] = $arguments->includePath();
         }
