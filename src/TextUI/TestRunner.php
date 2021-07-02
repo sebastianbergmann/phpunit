@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI;
 use const PHP_EOL;
 use const PHP_SAPI;
 use const PHP_VERSION;
-use function array_diff;
 use function array_map;
 use function array_merge;
 use function assert;
@@ -23,7 +22,6 @@ use function is_file;
 use function mt_srand;
 use function range;
 use function sprintf;
-use function time;
 use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
@@ -131,7 +129,7 @@ final class TestRunner
         $suite->setBeStrictAboutChangesToGlobalState($this->configuration->beStrictAboutChangesToGlobalState());
 
         if ($this->configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
-            mt_srand($arguments['randomOrderSeed']);
+            mt_srand($this->configuration->randomOrderSeed());
         }
 
         if ($this->configuration->cacheResult()) {
@@ -255,8 +253,8 @@ final class TestRunner
             $result->addListener(
                 new HtmlResultPrinter(
                     $this->configuration->logfileTestdoxHtml(),
-                    $arguments['testdoxGroups'],
-                    $arguments['testdoxExcludeGroups']
+                    $this->configuration->testdoxGroups(),
+                    $this->configuration->testdoxExcludeGroups()
                 )
             );
         }
@@ -265,8 +263,8 @@ final class TestRunner
             $result->addListener(
                 new TextResultPrinter(
                     $this->configuration->logfileTestdoxText(),
-                    $arguments['testdoxGroups'],
-                    $arguments['testdoxExcludeGroups']
+                    $this->configuration->testdoxGroups(),
+                    $this->configuration->testdoxExcludeGroups()
                 )
             );
         }
@@ -423,7 +421,7 @@ final class TestRunner
         if ($this->configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
             $this->writeMessage(
                 'Random Seed',
-                (string) $arguments['randomOrderSeed']
+                (string) $this->configuration->randomOrderSeed()
             );
         }
 
@@ -473,7 +471,7 @@ final class TestRunner
         $result->setTimeoutForLargeTests($this->configuration->timeoutForLargeTests());
         $result->forceCoversAnnotation($this->configuration->forceCoversAnnotation());
 
-        $this->processSuiteFilters($suite, $arguments);
+        $this->processSuiteFilters($suite);
         $suite->setRunTestInSeparateProcess($this->configuration->processIsolation());
 
         foreach ($this->extensions as $extension) {
@@ -663,26 +661,8 @@ final class TestRunner
             $arguments['warnings'] = [];
         }
 
-        $arguments['filter'] = $arguments['filter'] ?? false;
-
         if (isset($arguments['configurationObject'])) {
             (new PhpHandler)->handle($arguments['configurationObject']->php());
-
-            $groupCliArgs = [];
-
-            if (!empty($arguments['groups'])) {
-                $groupCliArgs = $arguments['groups'];
-            }
-
-            $groupConfiguration = $arguments['configurationObject']->groups();
-
-            if (!isset($arguments['groups']) && $groupConfiguration->hasInclude()) {
-                $arguments['groups'] = $groupConfiguration->include()->asArrayOfStrings();
-            }
-
-            if (!isset($arguments['excludeGroups']) && $groupConfiguration->hasExclude()) {
-                $arguments['excludeGroups'] = array_diff($groupConfiguration->exclude()->asArrayOfStrings(), $groupCliArgs);
-            }
 
             foreach ($arguments['configurationObject']->extensions() as $extension) {
                 (new ExtensionHandler)->registerExtension($extension, $this);
@@ -695,16 +675,6 @@ final class TestRunner
                 );
             }
 
-            $testdoxGroupConfiguration = $arguments['configurationObject']->testdoxGroups();
-
-            if (!isset($arguments['testdoxGroups']) && $testdoxGroupConfiguration->hasInclude()) {
-                $arguments['testdoxGroups'] = $testdoxGroupConfiguration->include()->asArrayOfStrings();
-            }
-
-            if (!isset($arguments['testdoxExcludeGroups']) && $testdoxGroupConfiguration->hasExclude()) {
-                $arguments['testdoxExcludeGroups'] = $testdoxGroupConfiguration->exclude()->asArrayOfStrings();
-            }
-
             $arguments['warnings'] = array_merge($arguments['warnings'], $this->configuration->warnings());
         }
 
@@ -715,19 +685,13 @@ final class TestRunner
         }
 
         unset($extensionHandler);
-
-        $arguments['excludeGroups']        = $arguments['excludeGroups'] ?? [];
-        $arguments['groups']               = $arguments['groups'] ?? [];
-        $arguments['randomOrderSeed']      = $arguments['randomOrderSeed'] ?? time();
-        $arguments['testdoxExcludeGroups'] = $arguments['testdoxExcludeGroups'] ?? [];
-        $arguments['testdoxGroups']        = $arguments['testdoxGroups'] ?? [];
     }
 
-    private function processSuiteFilters(TestSuite $suite, array $arguments): void
+    private function processSuiteFilters(TestSuite $suite): void
     {
-        if (!$arguments['filter'] &&
-            empty($arguments['groups']) &&
-            empty($arguments['excludeGroups']) &&
+        if (!$this->configuration->hasFilter() &&
+            !$this->configuration->hasGroups() &&
+            !$this->configuration->hasExcludeGroups() &&
             !$this->configuration->hasTestsCovering() &&
             !$this->configuration->hasTestsUsing()) {
             return;
@@ -735,15 +699,15 @@ final class TestRunner
 
         $filterFactory = new Factory;
 
-        if (!empty($arguments['excludeGroups'])) {
+        if ($this->configuration->hasExcludeGroups()) {
             $filterFactory->addExcludeGroupFilter(
-                $arguments['excludeGroups']
+                $this->configuration->excludeGroups()
             );
         }
 
-        if (!empty($arguments['groups'])) {
+        if ($this->configuration->hasGroups()) {
             $filterFactory->addIncludeGroupFilter(
-                $arguments['groups']
+                $this->configuration->groups()
             );
         }
 
@@ -769,9 +733,9 @@ final class TestRunner
             );
         }
 
-        if ($arguments['filter']) {
+        if ($this->configuration->hasFilter()) {
             $filterFactory->addNameFilter(
-                $arguments['filter']
+                $this->configuration->filter()
             );
         }
 

@@ -21,28 +21,8 @@ final class Mapper
     {
         $result = [
             'extensions'            => [],
-            'listGroups'            => false,
-            'listSuites'            => false,
-            'listTests'             => false,
-            'listTestsXml'          => false,
             'unavailableExtensions' => [],
         ];
-
-        if ($arguments->hasFilter()) {
-            $result['filter'] = $arguments->filter();
-        }
-
-        if ($arguments->hasGroups()) {
-            $result['groups'] = $arguments->groups();
-        }
-
-        if ($arguments->hasExcludeGroups()) {
-            $result['excludeGroups'] = $arguments->excludeGroups();
-        }
-
-        if ($arguments->hasIncludePath()) {
-            $result['includePath'] = $arguments->includePath();
-        }
 
         if ($arguments->hasExtensions()) {
             $result['extensions'] = $arguments->extensions();
@@ -52,24 +32,12 @@ final class Mapper
             $result['unavailableExtensions'] = $arguments->unavailableExtensions();
         }
 
-        if ($arguments->hasTestdoxGroups()) {
-            $result['testdoxGroups'] = $arguments->testdoxGroups();
-        }
-
-        if ($arguments->hasTestdoxExcludeGroups()) {
-            $result['testdoxExcludeGroups'] = $arguments->testdoxExcludeGroups();
-        }
-
         if ($arguments->hasNoOutput()) {
             $result['noOutput'] = $arguments->noOutput();
         }
 
         if ($arguments->hasCoverageFilter()) {
             $result['coverageFilter'] = $arguments->coverageFilter();
-        }
-
-        if ($arguments->hasRandomOrderSeed()) {
-            $result['randomOrderSeed'] = $arguments->randomOrderSeed();
         }
 
         return $result;
