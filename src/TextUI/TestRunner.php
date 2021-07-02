@@ -224,7 +224,7 @@ final class TestRunner
             $printerClassName = VoidPrinter::class;
         }
 
-        $this->printer = $this->createPrinter($printerClassName, $arguments);
+        $this->printer = $this->createPrinter($printerClassName);
 
         if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
             assert($this->printer instanceof CliTestDoxPrinter);
@@ -823,7 +823,7 @@ final class TestRunner
     /**
      * @psalm-param class-string $className
      */
-    private function createPrinter(string $className, array $arguments): ResultPrinter
+    private function createPrinter(string $className): ResultPrinter
     {
         $object = new $className(
             $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : null,
