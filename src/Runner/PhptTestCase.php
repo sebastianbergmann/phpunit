@@ -350,10 +350,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 $sectionContent = preg_replace('/\r\n/', "\n", trim($sections[$sectionName]));
                 $expected       = $sectionName === 'EXPECTREGEX' ? "/{$sectionContent}/" : $sectionContent;
 
-                if ($expected === '') {
-                    throw new Exception('No PHPT expectation found');
-                }
-
                 Assert::$sectionAssertion($expected, $actual);
 
                 return;
