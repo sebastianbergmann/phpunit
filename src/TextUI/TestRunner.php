@@ -38,7 +38,7 @@ use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Logging\TestDox\HtmlResultPrinter;
 use PHPUnit\Logging\TestDox\TextResultPrinter;
 use PHPUnit\Logging\TestDox\XmlResultPrinter;
-use PHPUnit\Logging\VoidLogger;
+use PHPUnit\Logging\VoidPrinter;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\CodeCoverage;
@@ -269,7 +269,7 @@ final class TestRunner
         } elseif (isset($arguments['testdoxPrinter']) && $arguments['testdoxPrinter'] === true) {
             $printerClassName = CliTestDoxPrinter::class;
         } elseif (isset($arguments['noOutput']) && $arguments['noOutput'] === true) {
-            $printerClassName = VoidLogger::class;
+            $printerClassName = VoidPrinter::class;
         }
 
         $this->printer = $this->createPrinter($printerClassName, $arguments);
