@@ -15,6 +15,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * `@excludeStaticPropertyFromBackup className propertyName` annotation for excluding a static property from the backup/restore of static properties in user-defined classes
 * `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute for excluding a static property from the backup/restore of static properties in user-defined classes
 * `--trace-text <file>` option that controls streaming of event information in text format to a file
+* `--no-output` option to disable the output
 
 ### Changed
 
