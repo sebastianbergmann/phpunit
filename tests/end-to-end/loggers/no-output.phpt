@@ -1,5 +1,5 @@
 --TEST--
-phpunit --teamcity ../../_files/BankAccountTest.php
+phpunit --no-output ../../_files/BankAccountTest.php
 --FILE--
 <?php declare(strict_types=1);
 
