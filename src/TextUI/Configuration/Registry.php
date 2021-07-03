@@ -26,6 +26,7 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\TeamCityLogger;
 use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
+use PHPUnit\Logging\VoidPrinter;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\BootstrapException;
@@ -548,6 +549,8 @@ final class Registry
             $printerClassName = TeamCityLogger::class;
         } elseif ($cliConfiguration->hasTestDoxPrinter() && $cliConfiguration->testdoxPrinter()) {
             $printerClassName = CliTestDoxPrinter::class;
+        } elseif ($cliConfiguration->hasNoOutput() && $cliConfiguration->noOutput()) {
+            $printerClassName = VoidPrinter::class;
         }
 
         $repeat = 0;
