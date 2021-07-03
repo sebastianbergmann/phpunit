@@ -240,6 +240,19 @@
       <code>Assert::attributeEqualTo(...\func_get_args())</code>
       <code>Assert::contains(...\func_get_args())</code>
     </DeprecatedMethod>
+    <InternalMethod occurrences="12">
+      <code>new ConsecutiveCallsStub($args)</code>
+      <code>new ExceptionStub($exception)</code>
+      <code>new InvokedAtIndexMatcher($index)</code>
+      <code>new InvokedAtMostCountMatcher($allowedInvocations)</code>
+      <code>new InvokedCountMatcher($count)</code>
+      <code>new InvokedCountMatcher(0)</code>
+      <code>new InvokedCountMatcher(1)</code>
+      <code>new ReturnArgumentStub($argumentIndex)</code>
+      <code>new ReturnCallbackStub($callback)</code>
+      <code>new ReturnStub($value)</code>
+      <code>new ReturnValueMapStub($valueMap)</code>
+    </InternalMethod>
     <MissingParamType occurrences="96">
       <code>$actual</code>
       <code>$actual</code>
@@ -746,12 +759,7 @@
       <code>new Text_Template($filename)</code>
       <code>self::getMethodParametersForCall($method)</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="1">
-      <code>allowsNull</code>
-    </PossiblyNullReference>
-    <UndefinedMethod occurrences="3">
-      <code>getName</code>
-      <code>getName</code>
+    <UndefinedMethod occurrences="1">
       <code>getName</code>
     </UndefinedMethod>
   </file>
