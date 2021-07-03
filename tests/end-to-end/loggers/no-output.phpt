@@ -9,5 +9,5 @@ $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/BankAccountTest.php');
 
 require __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECT--
