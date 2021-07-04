@@ -307,11 +307,12 @@ abstract class AbstractPhpProcess
             }
 
             if ($childResult !== false) {
-                if (!empty($childResult['output'])) {
-                    $output = $childResult['output'];
-                }
 
                 /* @var TestCase $test */
+
+                if (!empty($childResult['output'])) {
+                    $test->setOutput($childResult['output']);
+                }
 
                 $test->setResult($childResult['testResult']);
                 $test->addToAssertionCount($childResult['numAssertions']);
@@ -374,10 +375,6 @@ abstract class AbstractPhpProcess
         }
 
         $result->endTest($test, $time);
-
-        if (!empty($output)) {
-            print $output;
-        }
     }
 
     /**
