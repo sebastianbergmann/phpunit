@@ -13,7 +13,6 @@ use const PHP_EOL;
 use const PHP_SAPI;
 use const PHP_VERSION;
 use function array_map;
-use function array_merge;
 use function assert;
 use function extension_loaded;
 use function htmlspecialchars;
@@ -35,7 +34,6 @@ use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\DefaultTestResultCache;
-use PHPUnit\Runner\Extension\ExtensionHandler;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Hook;
@@ -49,7 +47,6 @@ use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -94,15 +91,13 @@ final class TestRunner
      * @throws \PHPUnit\Util\Exception
      * @throws Exception
      */
-    public function run(TestSuite $suite, array &$arguments = [], array $warnings = []): TestResult
+    public function run(TestSuite $suite): TestResult
     {
         if ($this->configuration->hasConfigurationFile()) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $this->configuration->configurationFile();
         }
 
-        $this->handleConfiguration($arguments);
-
-        $warnings = array_merge($warnings, $arguments['warnings']);
+        $warnings = $this->configuration->warnings();
 
         if ($this->configuration->loadPharExtensions() &&
             $this->configuration->hasPharExtensionDirectory() &&
@@ -595,42 +590,6 @@ final class TestRunner
         } else {
             print $buffer;
         }
-    }
-
-    /**
-     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
-     * @throws Exception
-     */
-    private function handleConfiguration(array &$arguments): void
-    {
-        if (!isset($arguments['warnings'])) {
-            $arguments['warnings'] = [];
-        }
-
-        if (isset($arguments['configurationObject'])) {
-            (new PhpHandler)->handle($arguments['configurationObject']->php());
-
-            foreach ($arguments['configurationObject']->extensions() as $extension) {
-                (new ExtensionHandler)->registerExtension($extension, $this);
-            }
-
-            foreach ($arguments['unavailableExtensions'] as $extension) {
-                $arguments['warnings'][] = sprintf(
-                    'Extension "%s" is not available',
-                    $extension
-                );
-            }
-
-            $arguments['warnings'] = array_merge($arguments['warnings'], $this->configuration->warnings());
-        }
-
-        $extensionHandler = new ExtensionHandler;
-
-        foreach ($arguments['extensions'] as $extension) {
-            $extensionHandler->registerExtension($extension, $this);
-        }
-
-        unset($extensionHandler);
     }
 
     private function processSuiteFilters(TestSuite $suite): void

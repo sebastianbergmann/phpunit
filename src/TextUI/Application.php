@@ -23,11 +23,11 @@ use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\Extension\ExtensionHandler;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
-use PHPUnit\TextUI\CliArguments\Mapper;
 use PHPUnit\TextUI\Command\AtLeastVersionCommand;
 use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
 use PHPUnit\TextUI\Command\ListGroupsCommand;
@@ -41,6 +41,7 @@ use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
+use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
@@ -60,19 +61,11 @@ final class Application
     /**
      * @psalm-var array<string,mixed>
      */
-    private array $arguments = [];
-
-    /**
-     * @psalm-var array<string,mixed>
-     */
     private array $longOptions = [];
 
     private bool $versionStringPrinted = false;
 
-    /**
-     * @psalm-var list<string>
-     */
-    private array $warnings = [];
+    private ?XmlConfiguration $xmlConfiguration = null;
 
     /**
      * @throws Exception
@@ -99,16 +92,20 @@ final class Application
 
         $suite = $this->handleArguments($argv);
 
-        $runner = new TestRunner;
-
         if ($suite->isEmpty()) {
             $this->execute(new ShowHelpCommand(false));
         }
 
         Event\Facade::emitter()->testSuiteLoaded($suite);
 
+        $runner = new TestRunner;
+
+        foreach ($this->xmlConfiguration->extensions() as $extension) {
+            (new ExtensionHandler)->registerExtension($extension, $runner);
+        }
+
         try {
-            $result = $runner->run($suite, $this->arguments, $this->warnings);
+            $result = $runner->run($suite);
 
             $returnCode = $this->returnCode($result);
         } catch (Throwable $t) {
@@ -183,19 +180,16 @@ final class Application
             );
         }
 
-        $this->arguments   = (new Mapper)->mapToLegacyArray($arguments);
         $configurationFile = $this->configurationFilePath($arguments);
 
         if ($configurationFile) {
             try {
-                $configurationObject = (new Loader)->load($configurationFile);
+                $this->xmlConfiguration = (new Loader)->load($configurationFile);
             } catch (Throwable $e) {
                 print $e->getMessage() . PHP_EOL;
 
                 exit(self::FAILURE_EXIT);
             }
-
-            $this->arguments['configurationObject'] = $configurationObject;
         }
 
         if ($arguments->hasMigrateConfiguration() && $arguments->migrateConfiguration()) {
@@ -208,20 +202,20 @@ final class Application
             $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
         }
 
-        $configurationObject = $configurationObject ?? DefaultConfiguration::create();
+        $this->xmlConfiguration = $this->xmlConfiguration ?? DefaultConfiguration::create();
 
-        (new PhpHandler)->handle($configurationObject->php());
+        (new PhpHandler)->handle($this->xmlConfiguration->php());
 
         try {
             $configuration = Registry::init(
                 $arguments,
-                $configurationObject
+                $this->xmlConfiguration
             );
 
-            $testSuite = (new TestSuiteBuilder)->build($arguments, $configurationObject);
+            $testSuite = (new TestSuiteBuilder)->build($arguments, $this->xmlConfiguration);
 
             if ($configuration->hasCoverageReport()) {
-                CodeCoverageFilterRegistry::init($arguments, $configurationObject);
+                CodeCoverageFilterRegistry::init($arguments, $this->xmlConfiguration);
             }
         } catch (Exception $e) {
             $this->printVersionString();
@@ -242,7 +236,7 @@ final class Application
         }
 
         if ($arguments->hasListSuites() && $arguments->listSuites()) {
-            $this->execute(new ListTestSuitesCommand($configurationObject->testSuite()));
+            $this->execute(new ListTestSuitesCommand($this->xmlConfiguration->testSuite()));
         }
 
         if ($arguments->hasListTests() && $arguments->listTests()) {

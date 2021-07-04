@@ -818,7 +818,7 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="10">
+    <MissingThrowsDocblock occurrences="9">
       <code>atLeastVersion</code>
       <code>configuration</code>
       <code>configuration</code>
@@ -826,10 +826,12 @@
       <code>includePath</code>
       <code>iniSettings</code>
       <code>listTestsXml</code>
-      <code>mapToLegacyArray</code>
       <code>unrecognizedOrderBy</code>
       <code>useDefaultConfiguration</code>
     </MissingThrowsDocblock>
+    <PossiblyNullReference occurrences="1">
+      <code>extensions</code>
+    </PossiblyNullReference>
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>

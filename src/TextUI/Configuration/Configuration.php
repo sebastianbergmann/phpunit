@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use function count;
 use PHPUnit\TextUI\CodeCoverageReportNotConfiguredException;
 use PHPUnit\TextUI\FilterNotConfiguredException;
 use PHPUnit\TextUI\IncludePathNotConfiguredException;
@@ -1124,11 +1123,6 @@ final class Configuration
         }
 
         return $this->xmlValidationErrors;
-    }
-
-    public function hasWarnings(): bool
-    {
-        return count($this->warnings) > 0;
     }
 
     /**
