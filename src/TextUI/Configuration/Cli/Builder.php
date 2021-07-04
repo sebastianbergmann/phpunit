@@ -11,12 +11,10 @@ namespace PHPUnit\TextUI\CliArguments;
 
 use function array_map;
 use function array_merge;
-use function class_exists;
 use function explode;
 use function is_numeric;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\DefaultResultPrinter;
-use PHPUnit\TextUI\XmlConfiguration\Extension;
 use SebastianBergmann\CliParser\Exception as CliParserException;
 use SebastianBergmann\CliParser\Parser as CliParser;
 
@@ -52,7 +50,6 @@ final class Builder
         'default-time-limit=',
         'enforce-time-limit',
         'exclude-group=',
-        'extensions=',
         'filter=',
         'generate-configuration',
         'globals-backup',
@@ -168,8 +165,6 @@ final class Builder
         $excludeGroups                     = null;
         $executionOrder                    = null;
         $executionOrderDefects             = null;
-        $extensions                        = [];
-        $unavailableExtensions             = [];
         $failOnEmptyTestSuite              = null;
         $failOnIncomplete                  = null;
         $failOnRisky                       = null;
@@ -609,19 +604,6 @@ final class Builder
 
                     break;
 
-                case '--extensions':
-                    foreach (explode(',', $option[1]) as $extensionClass) {
-                        if (!class_exists($extensionClass)) {
-                            $unavailableExtensions[] = $extensionClass;
-
-                            continue;
-                        }
-
-                        $extensions[] = new Extension($extensionClass, '', []);
-                    }
-
-                    break;
-
                 case '--no-extensions':
                     $noExtensions = true;
 
@@ -759,14 +741,6 @@ final class Builder
             }
         }
 
-        if (empty($extensions)) {
-            $extensions = null;
-        }
-
-        if (empty($unavailableExtensions)) {
-            $unavailableExtensions = null;
-        }
-
         if (empty($iniSettings)) {
             $iniSettings = null;
         }
@@ -809,8 +783,6 @@ final class Builder
             $excludeGroups,
             $executionOrder,
             $executionOrderDefects,
-            $extensions,
-            $unavailableExtensions,
             $failOnEmptyTestSuite,
             $failOnIncomplete,
             $failOnRisky,

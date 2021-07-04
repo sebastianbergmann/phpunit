@@ -19,19 +19,9 @@ final class Mapper
      */
     public function mapToLegacyArray(Configuration $arguments): array
     {
-        $result = [
+        return [
             'extensions'            => [],
             'unavailableExtensions' => [],
         ];
-
-        if ($arguments->hasExtensions()) {
-            $result['extensions'] = $arguments->extensions();
-        }
-
-        if ($arguments->hasUnavailableExtensions()) {
-            $result['unavailableExtensions'] = $arguments->unavailableExtensions();
-        }
-
-        return $result;
     }
 }
