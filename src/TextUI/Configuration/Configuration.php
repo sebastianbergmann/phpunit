@@ -9,17 +9,6 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use PHPUnit\TextUI\CodeCoverageReportNotConfiguredException;
-use PHPUnit\TextUI\FilterNotConfiguredException;
-use PHPUnit\TextUI\IncludePathNotConfiguredException;
-use PHPUnit\TextUI\LoggingNotConfiguredException;
-use PHPUnit\TextUI\NoBootstrapException;
-use PHPUnit\TextUI\NoCacheDirectoryException;
-use PHPUnit\TextUI\NoConfigurationFileException;
-use PHPUnit\TextUI\NoCoverageCacheDirectoryException;
-use PHPUnit\TextUI\NoPharExtensionDirectoryException;
-use PHPUnit\TextUI\NoValidationErrorsException;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
