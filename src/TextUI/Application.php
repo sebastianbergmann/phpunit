@@ -194,7 +194,6 @@ final class Application
                 exit(self::FAILURE_EXIT);
             }
 
-            $this->arguments['configuration']       = $configurationFile;
             $this->arguments['configurationObject'] = $configurationObject;
         }
 
