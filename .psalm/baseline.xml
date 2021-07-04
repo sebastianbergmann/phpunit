@@ -849,6 +849,9 @@
       <code>coverageCacheDirectory</code>
       <code>stop</code>
     </MissingThrowsDocblock>
+    <UndefinedMethod occurrences="1">
+      <code>codeCoverageFilter</code>
+    </UndefinedMethod>
   </file>
   <file src="src/TextUI/Configuration/Cli/Builder.php">
     <MissingThrowsDocblock occurrences="1"/>
@@ -863,6 +866,11 @@
       <code>$this-&gt;teamCityPrinter</code>
     </NullableReturnStatement>
   </file>
+  <file src="src/TextUI/Configuration/CodeCoverageFilterRegistry.php">
+    <MissingThrowsDocblock occurrences="1">
+      <code>coverageFilter</code>
+    </MissingThrowsDocblock>
+  </file>
   <file src="src/TextUI/Configuration/Configuration.php">
     <MissingThrowsDocblock occurrences="1">
       <code>throw new FilterNotConfiguredException;</code>
@@ -875,7 +883,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="80">
+    <MissingThrowsDocblock occurrences="79">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -896,7 +904,6 @@
       <code>coverageClover</code>
       <code>coverageCobertura</code>
       <code>coverageCrap4J</code>
-      <code>coverageFilter</code>
       <code>coverageHtml</code>
       <code>coveragePhp</code>
       <code>coverageText</code>
@@ -1299,13 +1306,7 @@
       <code>testsUsing</code>
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
-    <PossiblyNullArgument occurrences="3">
-      <code>$this-&gt;codeCoverageFilter</code>
-      <code>$this-&gt;codeCoverageFilter</code>
-      <code>$this-&gt;codeCoverageFilter</code>
-    </PossiblyNullArgument>
-    <PossiblyNullReference occurrences="4">
-      <code>includeDirectory</code>
+    <PossiblyNullReference occurrences="3">
       <code>write</code>
       <code>write</code>
       <code>write</code>

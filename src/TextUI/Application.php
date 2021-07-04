@@ -38,6 +38,7 @@ use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
+use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
@@ -218,6 +219,10 @@ final class Application
             );
 
             $testSuite = (new TestSuiteBuilder)->build($arguments, $configurationObject);
+
+            if ($configuration->hasCoverageReport()) {
+                CodeCoverageFilterRegistry::init($arguments, $configurationObject);
+            }
         } catch (Exception $e) {
             $this->printVersionString();
 

@@ -20,7 +20,6 @@ use PHPUnit\TextUI\NoConfigurationFileException;
 use PHPUnit\TextUI\NoCoverageCacheDirectoryException;
 use PHPUnit\TextUI\NoPharExtensionDirectoryException;
 use PHPUnit\TextUI\NoValidationErrorsException;
-use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -64,8 +63,6 @@ final class Configuration
     private ?string $coverageXml;
 
     private string $testResultCacheFile;
-
-    private CodeCoverageFilter $codeCoverageFilter;
 
     private bool $ignoreDeprecatedCodeUnitsFromCodeCoverage;
 
@@ -198,6 +195,8 @@ final class Configuration
 
     private ?string $xmlValidationErrors;
 
+    private bool $includeUncoveredFiles;
+
     /**
      * @psalm-var list<string>
      */
@@ -206,7 +205,7 @@ final class Configuration
     /**
      * @psalm-param class-string $printerClassName
      */
-    public function __construct(?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, CodeCoverageFilter $codeCoverageFilter, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, int $repeat, ?array $testsCovering, ?array $testsUsing, ?string $filter, ?array $groups, ?array $excludeGroups, array $testdoxGroups, array $testdoxExcludeGroups, ?string $includePath, int $randomOrderSeed, ?string $xmlValidationErrors, array $warnings)
+    public function __construct(?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $debug, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, int $repeat, ?array $testsCovering, ?array $testsUsing, ?string $filter, ?array $groups, ?array $excludeGroups, array $testdoxGroups, array $testdoxExcludeGroups, ?string $includePath, int $randomOrderSeed, bool $includeUncoveredFiles, ?string $xmlValidationErrors, array $warnings)
     {
         $this->configurationFile                               = $configurationFile;
         $this->bootstrap                                       = $bootstrap;
@@ -214,7 +213,6 @@ final class Configuration
         $this->cacheDirectory                                  = $cacheDirectory;
         $this->coverageCacheDirectory                          = $coverageCacheDirectory;
         $this->testResultCacheFile                             = $testResultCacheFile;
-        $this->codeCoverageFilter                              = $codeCoverageFilter;
         $this->coverageClover                                  = $coverageClover;
         $this->coverageCobertura                               = $coverageCobertura;
         $this->coverageCrap4j                                  = $coverageCrap4j;
@@ -291,6 +289,7 @@ final class Configuration
         $this->testdoxExcludeGroups                            = $testdoxExcludeGroups;
         $this->includePath                                     = $includePath;
         $this->randomOrderSeed                                 = $randomOrderSeed;
+        $this->includeUncoveredFiles                           = $includeUncoveredFiles;
         $this->xmlValidationErrors                             = $xmlValidationErrors;
         $this->warnings                                        = $warnings;
     }
@@ -383,11 +382,6 @@ final class Configuration
     public function testResultCacheFile(): string
     {
         return $this->testResultCacheFile;
-    }
-
-    public function codeCoverageFilter(): CodeCoverageFilter
-    {
-        return $this->codeCoverageFilter;
     }
 
     public function ignoreDeprecatedCodeUnitsFromCodeCoverage(): bool
@@ -1105,6 +1099,11 @@ final class Configuration
     public function randomOrderSeed(): int
     {
         return $this->randomOrderSeed;
+    }
+
+    public function includeUncoveredFiles(): bool
+    {
+        return $this->includeUncoveredFiles;
     }
 
     /**

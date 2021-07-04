@@ -17,7 +17,6 @@ use function array_merge;
 use function assert;
 use function extension_loaded;
 use function htmlspecialchars;
-use function is_array;
 use function is_file;
 use function mt_srand;
 use function range;
@@ -47,15 +46,13 @@ use PHPUnit\Runner\TestHook;
 use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
+use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
-use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
-use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
 use SebastianBergmann\CodeCoverage\Report\Cobertura as CoberturaReport;
 use SebastianBergmann\CodeCoverage\Report\Crap4j as Crap4jReport;
@@ -75,8 +72,6 @@ final class TestRunner
 {
     private Configuration $configuration;
 
-    private ?CodeCoverageFilter $codeCoverageFilter;
-
     private ?ResultPrinter $printer = null;
 
     private bool $messagePrinted = false;
@@ -88,14 +83,9 @@ final class TestRunner
 
     private ?Timer $timer = null;
 
-    public function __construct(CodeCoverageFilter $filter = null)
+    public function __construct()
     {
-        if ($filter === null) {
-            $filter = new CodeCoverageFilter;
-        }
-
-        $this->codeCoverageFilter = $filter;
-        $this->configuration      = Registry::get();
+        $this->configuration = Registry::get();
     }
 
     /**
@@ -239,9 +229,6 @@ final class TestRunner
 
         $result->addListener($this->printer);
 
-        $coverageFilterFromConfigurationFile = false;
-        $coverageFilterFromOption            = false;
-
         if ($this->configuration->hasLogfileText()) {
             $result->addListener(
                 new DefaultResultPrinter(
@@ -295,42 +282,11 @@ final class TestRunner
         }
 
         if ($this->configuration->hasCoverageReport()) {
-            if (isset($arguments['coverageFilter'])) {
-                if (!is_array($arguments['coverageFilter'])) {
-                    $coverageFilterDirectories = [$arguments['coverageFilter']];
-                } else {
-                    $coverageFilterDirectories = $arguments['coverageFilter'];
-                }
-
-                foreach ($coverageFilterDirectories as $coverageFilterDirectory) {
-                    $this->codeCoverageFilter->includeDirectory($coverageFilterDirectory);
-                }
-
-                $coverageFilterFromOption = true;
-            }
-
-            if (isset($arguments['configurationObject'])) {
-                assert($arguments['configurationObject'] instanceof XmlConfiguration);
-
-                $codeCoverageConfiguration = $arguments['configurationObject']->codeCoverage();
-
-                if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-                    $coverageFilterFromConfigurationFile = true;
-
-                    (new FilterMapper)->map(
-                        $this->codeCoverageFilter,
-                        $codeCoverageConfiguration
-                    );
-                }
-            }
-        }
-
-        if ($this->configuration->hasCoverageReport()) {
             try {
                 if ($this->configuration->pathCoverage()) {
-                    CodeCoverage::activate($this->codeCoverageFilter, true);
+                    CodeCoverage::activate(CodeCoverageFilterRegistry::get(), true);
                 } else {
-                    CodeCoverage::activate($this->codeCoverageFilter, false);
+                    CodeCoverage::activate(CodeCoverageFilterRegistry::get(), false);
                 }
 
                 if ($this->configuration->hasCoverageCacheDirectory()) {
@@ -355,20 +311,14 @@ final class TestRunner
                     CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
                 }
 
-                if (isset($arguments['configurationObject'])) {
-                    $codeCoverageConfiguration = $arguments['configurationObject']->codeCoverage();
-
-                    if ($codeCoverageConfiguration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-                        if ($codeCoverageConfiguration->includeUncoveredFiles()) {
-                            CodeCoverage::instance()->includeUncoveredFiles();
-                        } else {
-                            CodeCoverage::instance()->excludeUncoveredFiles();
-                        }
-                    }
+                if ($this->configuration->includeUncoveredFiles()) {
+                    CodeCoverage::instance()->includeUncoveredFiles();
+                } else {
+                    CodeCoverage::instance()->excludeUncoveredFiles();
                 }
 
-                if ($this->codeCoverageFilter->isEmpty()) {
-                    if (!$coverageFilterFromConfigurationFile && !$coverageFilterFromOption) {
+                if (CodeCoverageFilterRegistry::get()->isEmpty()) {
+                    if (!CodeCoverageFilterRegistry::configured()) {
                         $warnings[] = 'No filter is configured, code coverage will not be processed';
                     } else {
                         $warnings[] = 'Incorrect filter configuration, code coverage will not be processed';

@@ -32,10 +32,6 @@ final class Mapper
             $result['unavailableExtensions'] = $arguments->unavailableExtensions();
         }
 
-        if ($arguments->hasCoverageFilter()) {
-            $result['coverageFilter'] = $arguments->coverageFilter();
-        }
-
         return $result;
     }
 }

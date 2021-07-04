@@ -29,11 +29,9 @@ use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\InvalidBootstrapException;
 use PHPUnit\TextUI\TestFileNotFoundException;
-use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
 use PHPUnit\Util\Filesystem;
-use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\Environment\Console;
 use Throwable;
 
@@ -125,21 +123,6 @@ final class Registry
                     $testResultCacheFile = '.phpunit.result.cache';
                 }
             }
-        }
-
-        $codeCoverageFilter = new CodeCoverageFilter;
-
-        if ($cliConfiguration->hasCoverageFilter()) {
-            foreach ($cliConfiguration->coverageFilter() as $directory) {
-                $codeCoverageFilter->includeDirectory($directory);
-            }
-        }
-
-        if ($xmlConfiguration->codeCoverage()->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-            (new FilterMapper)->map(
-                $codeCoverageFilter,
-                $xmlConfiguration->codeCoverage()
-            );
         }
 
         if ($cliConfiguration->hasDisableCodeCoverageIgnore()) {
@@ -595,6 +578,8 @@ final class Registry
             $xmlValidationErrors = $xmlConfiguration->validationErrors();
         }
 
+        $includeUncoveredFiles = $xmlConfiguration->codeCoverage()->includeUncoveredFiles();
+
         self::$instance = new Configuration(
             $configurationFile,
             $bootstrap,
@@ -602,7 +587,6 @@ final class Registry
             $cacheDirectory,
             $coverageCacheDirectory,
             $testResultCacheFile,
-            $codeCoverageFilter,
             $coverageClover,
             $coverageCobertura,
             $coverageCrap4j,
@@ -679,6 +663,7 @@ final class Registry
             $testdoxExcludeGroups,
             $includePath,
             $randomOrderSeed,
+            $includeUncoveredFiles,
             $xmlValidationErrors,
             $warnings
         );
