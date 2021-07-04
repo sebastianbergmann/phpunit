@@ -22,6 +22,7 @@ use function realpath;
 use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
@@ -38,6 +39,7 @@ use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
@@ -94,15 +96,13 @@ final class Application
     {
         Event\Facade::emitter()->testRunnerStarted();
 
-        $this->handleArguments($argv);
+        $suite = $this->handleArguments($argv);
 
         $runner = new TestRunner;
 
-        if (!Registry::get()->hasTestSuite()) {
+        if ($suite->isEmpty()) {
             $this->execute(new ShowHelpCommand(false));
         }
-
-        $suite = Registry::get()->testSuite();
 
         Event\Facade::emitter()->testSuiteLoaded($suite);
 
@@ -128,7 +128,7 @@ final class Application
     /**
      * @throws Exception
      */
-    private function handleArguments(array $argv): void
+    private function handleArguments(array $argv): TestSuite
     {
         try {
             $arguments = (new Builder)->fromParameters($argv, array_keys($this->longOptions));
@@ -208,15 +208,17 @@ final class Application
             $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
         }
 
-        if (isset($configurationObject)) {
-            (new PhpHandler)->handle($configurationObject->php());
-        }
+        $configurationObject = $configurationObject ?? DefaultConfiguration::create();
+
+        (new PhpHandler)->handle($configurationObject->php());
 
         try {
             $configuration = Registry::init(
                 $arguments,
-                $configurationObject ?? DefaultConfiguration::create()
+                $configurationObject
             );
+
+            $testSuite = (new TestSuiteBuilder)->build($arguments, $configurationObject);
         } catch (Exception $e) {
             $this->printVersionString();
 
@@ -232,7 +234,7 @@ final class Application
         }
 
         if ($arguments->hasListGroups() && $arguments->listGroups()) {
-            $this->execute(new ListGroupsCommand($configuration->testSuite()));
+            $this->execute(new ListGroupsCommand($testSuite));
         }
 
         if ($arguments->hasListSuites() && $arguments->listSuites()) {
@@ -240,17 +242,19 @@ final class Application
         }
 
         if ($arguments->hasListTests() && $arguments->listTests()) {
-            $this->execute(new ListTestsAsTextCommand($configuration->testSuite()));
+            $this->execute(new ListTestsAsTextCommand($testSuite));
         }
 
         if ($arguments->hasListTestsXml() && $arguments->listTestsXml()) {
             $this->execute(
                 new ListTestsAsXmlCommand(
                     $arguments->listTestsXml(),
-                    $configuration->testSuite()
+                    $testSuite
                 )
             );
         }
+
+        return $testSuite;
     }
 
     private function printVersionString(): void

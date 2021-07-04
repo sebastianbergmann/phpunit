@@ -15,19 +15,14 @@ use function assert;
 use function defined;
 use function dirname;
 use function implode;
-use function is_dir;
-use function is_file;
 use function is_int;
 use function is_readable;
 use function realpath;
-use function substr;
 use function time;
 use PHPUnit\Event\Facade;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\TeamCityLogger;
 use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Logging\VoidPrinter;
-use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\BootstrapException;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
@@ -37,11 +32,9 @@ use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
-use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
 use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CodeCoverage\Filter as CodeCoverageFilter;
 use SebastianBergmann\Environment\Console;
-use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 use Throwable;
 
 /**
@@ -86,33 +79,6 @@ final class Registry
 
         if ($bootstrap !== null) {
             self::handleBootstrap($bootstrap);
-        }
-
-        if ($cliConfiguration->hasArgument()) {
-            $argument = realpath($cliConfiguration->argument());
-
-            if (!$argument) {
-                throw new TestFileNotFoundException($cliConfiguration->argument());
-            }
-
-            $testSuite = self::testSuiteFromPath(
-                $argument,
-                self::testSuffixes($cliConfiguration)
-            );
-        } else {
-            $includeTestSuite = '';
-
-            if ($cliConfiguration->hasTestSuite()) {
-                $includeTestSuite = $cliConfiguration->testSuite();
-            } elseif ($xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
-                $includeTestSuite = $xmlConfiguration->phpunit()->defaultTestSuite();
-            }
-
-            $testSuite = (new TestSuiteMapper)->map(
-                $xmlConfiguration->testSuite(),
-                $includeTestSuite,
-                $cliConfiguration->hasExcludedTestSuite() ? $cliConfiguration->excludedTestSuite() : ''
-            );
         }
 
         if ($cliConfiguration->hasCacheResult()) {
@@ -630,7 +596,6 @@ final class Registry
         }
 
         self::$instance = new Configuration(
-            $testSuite,
             $configurationFile,
             $bootstrap,
             $cacheResult,
@@ -719,49 +684,6 @@ final class Registry
         );
 
         return self::$instance;
-    }
-
-    /**
-     * @psalm-param list<string> $suffixes
-     */
-    private static function testSuiteFromPath(string $path, array $suffixes): TestSuite
-    {
-        if (is_dir($path)) {
-            $files = (new FileIteratorFacade)->getFilesAsArray($path, $suffixes);
-
-            $suite = new TestSuite($path);
-            $suite->addTestFiles($files);
-
-            return $suite;
-        }
-
-        if (is_file($path) && substr($path, -5, 5) === '.phpt') {
-            $suite = new TestSuite;
-            $suite->addTestFile($path);
-
-            return $suite;
-        }
-
-        try {
-            $testClass = (new TestSuiteLoader)->load($path);
-        } catch (\PHPUnit\Exception $e) {
-            print $e->getMessage() . PHP_EOL;
-
-            exit(1);
-        }
-
-        return new TestSuite($testClass);
-    }
-
-    private static function testSuffixes(CliConfiguration $cliConfiguration): array
-    {
-        $testSuffixes = ['Test.php', '.phpt'];
-
-        if ($cliConfiguration->hasTestSuffixes()) {
-            $testSuffixes = $cliConfiguration->testSuffixes();
-        }
-
-        return $testSuffixes;
     }
 
     /**

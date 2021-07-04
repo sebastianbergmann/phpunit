@@ -830,9 +830,6 @@
       <code>unrecognizedOrderBy</code>
       <code>useDefaultConfiguration</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="1">
-      <code>testSuite</code>
-    </PossiblyNullReference>
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>
@@ -878,11 +875,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="91">
-      <code>addTestFile</code>
-      <code>addTestFiles</code>
-      <code>argument</code>
-      <code>argument</code>
+    <MissingThrowsDocblock occurrences="80">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -910,7 +903,6 @@
       <code>coverageXml</code>
       <code>crap4j</code>
       <code>crap4j</code>
-      <code>defaultTestSuite</code>
       <code>defaultTimeLimit</code>
       <code>disableCodeCoverageIgnore</code>
       <code>disallowTestOutput</code>
@@ -931,10 +923,6 @@
       <code>html</code>
       <code>includePath</code>
       <code>junitLogfile</code>
-      <code>map</code>
-      <code>new TestSuite</code>
-      <code>new TestSuite($path)</code>
-      <code>new TestSuite($testClass)</code>
       <code>noInteraction</code>
       <code>pathCoverage</code>
       <code>php</code>
@@ -955,8 +943,6 @@
       <code>stopOnWarning</code>
       <code>strictCoverage</code>
       <code>teamcityLogfile</code>
-      <code>testSuffixes</code>
-      <code>testSuite</code>
       <code>testdoxExcludeGroups</code>
       <code>testdoxGroups</code>
       <code>testdoxHtmlFile</code>
@@ -977,6 +963,22 @@
     <UnresolvableInclude occurrences="1">
       <code>include $filename</code>
     </UnresolvableInclude>
+  </file>
+  <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
+    <MissingThrowsDocblock occurrences="12">
+      <code>addTestFile</code>
+      <code>addTestFiles</code>
+      <code>argument</code>
+      <code>argument</code>
+      <code>defaultTestSuite</code>
+      <code>map</code>
+      <code>new TestSuite</code>
+      <code>new TestSuite($path)</code>
+      <code>new TestSuite($testClass)</code>
+      <code>testSuffixes</code>
+      <code>testSuite</code>
+      <code>throw new TestFileNotFoundException($cliConfiguration-&gt;argument());</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Xml/CodeCoverage/CodeCoverage.php">
     <DeprecatedMethod occurrences="1">
