@@ -15,7 +15,6 @@ use Error;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
-use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\Printer;
 use Throwable;
 
@@ -190,13 +189,7 @@ final class TestResult implements Countable
                 $test->markAsRisky();
 
                 Event\Facade::emitter()->testPassedButRisky(
-                    new Event\Code\Test(
-                        $test::class,
-                        $test->getName(false),
-                        $test->getName(),
-                        $test->getDataSetAsStringWithData(),
-                        (MetadataRegistry::parser())->forClassAndMethod($test::class, $test->getName(false))
-                    ),
+                    $test->testValueObjectForEvents(),
                     Event\Code\Throwable::from($e)
                 );
             }
