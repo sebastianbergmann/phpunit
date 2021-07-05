@@ -333,6 +333,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function __construct(string $name)
     {
         $this->setName($name);
+
+        $this->status = TestStatus::unknown();
     }
 
     /**
@@ -504,7 +506,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     public function status(): TestStatus
     {
-        return $this->status ?? TestStatus::unknown();
+        return $this->status;
     }
 
     public function markAsRisky(): void
