@@ -11,7 +11,6 @@ namespace PHPUnit\TextUI\Configuration;
 
 use function assert;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
-use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 
 /**
@@ -31,9 +30,6 @@ final class Registry
         return self::$instance;
     }
 
-    /**
-     * @throws TestFileNotFoundException
-     */
     public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
         self::$instance = (new Merger)->merge($cliConfiguration, $xmlConfiguration);

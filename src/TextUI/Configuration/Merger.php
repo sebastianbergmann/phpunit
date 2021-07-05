@@ -24,7 +24,6 @@ use PHPUnit\Logging\VoidPrinter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\DefaultResultPrinter;
-use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
 use PHPUnit\Util\Filesystem;
@@ -35,9 +34,6 @@ use SebastianBergmann\Environment\Console;
  */
 final class Merger
 {
-    /**
-     * @throws TestFileNotFoundException
-     */
     public function merge(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
         $warnings = [];
