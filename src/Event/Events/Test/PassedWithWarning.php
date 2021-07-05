@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\Throwable;
@@ -53,11 +54,11 @@ final class PassedWithWarning implements Event
         $message = $this->throwable->message();
 
         if (!empty($message)) {
-            $message = ' ' . $message;
+            $message = PHP_EOL . $message;
         }
 
         return sprintf(
-            '%s Test Skipped (%s::%s%s)',
+            '%s Test Passed With Warning (%s::%s)%s',
             $this->telemetryInfo()->asString(),
             $this->test->className(),
             $this->test->methodNameWithDataSet(),

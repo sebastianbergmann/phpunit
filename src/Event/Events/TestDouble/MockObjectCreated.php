@@ -47,15 +47,12 @@ final class MockObjectCreated implements Event
         return $this->className;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Mock Object Created (%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->className
         );
     }
 }

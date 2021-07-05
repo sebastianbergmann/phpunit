@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
@@ -47,15 +48,20 @@ final class SkippedByDataProvider implements Event
         return $this->message;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
+        $message = $this->message;
+
+        if (!empty($message)) {
+            $message = PHP_EOL . $message;
+        }
+
         return sprintf(
-            '%s %s todo',
+            '%s Test Skipped By Data Provider (%s::%s)%s',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->testMethod->className(),
+            $this->testMethod->methodName(),
+            $message
         );
     }
 }

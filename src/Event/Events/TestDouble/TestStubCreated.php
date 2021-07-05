@@ -47,15 +47,12 @@ final class TestStubCreated implements Event
         return $this->className;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Test Stub Created (%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->className
         );
     }
 }

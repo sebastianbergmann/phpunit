@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\Throwable;
@@ -48,15 +49,20 @@ final class PassedButRisky implements Event
         return $this->throwable;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
+        $message = $this->throwable->message();
+
+        if (!empty($message)) {
+            $message = PHP_EOL . $message;
+        }
+
         return sprintf(
-            '%s %s todo',
+            '%s Test Passed But Risky (%s::%s)%s',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->test->className(),
+            $this->test->methodNameWithDataSet(),
+            $message
         );
     }
 }

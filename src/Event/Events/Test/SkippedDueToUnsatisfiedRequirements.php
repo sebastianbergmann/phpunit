@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
@@ -53,15 +54,20 @@ final class SkippedDueToUnsatisfiedRequirements implements Event
         return $this->missingRequirements;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
+        $message = PHP_EOL;
+
+        foreach ($this->missingRequirements as $missingRequirement) {
+            $message .= $missingRequirement . PHP_EOL;
+        }
+
         return sprintf(
-            '%s %s todo',
+            '%s Test Skipped Due To Unsatisfied Requirements (%s::%s)%s',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->testMethod->className(),
+            $this->testMethod->methodName(),
+            $message
         );
     }
 }

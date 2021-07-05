@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
@@ -47,15 +48,13 @@ final class OutputPrinted implements Event
         return $this->output;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Test Printed Output%s%s',
             $this->telemetryInfo()->asString(),
-            self::class
+            PHP_EOL,
+            $this->output
         );
     }
 }

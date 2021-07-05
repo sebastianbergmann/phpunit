@@ -22,18 +22,18 @@ final class ModifiedTest extends AbstractEventTestCase
         $telemetryInfo  = self::createTelemetryInfo();
         $snapshotBefore = new Snapshot;
         $snapshotAfter  = new Snapshot;
-        $message        = 'Hmm, who would have thought?';
+        $diff           = 'Hmm, who would have thought?';
 
         $event = new Modified(
             $telemetryInfo,
             $snapshotBefore,
             $snapshotAfter,
-            $message
+            $diff
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($snapshotBefore, $event->snapshotBefore());
         $this->assertSame($snapshotAfter, $event->snapshotAfter());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($diff, $event->diff());
     }
 }

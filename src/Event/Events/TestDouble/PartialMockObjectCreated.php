@@ -61,15 +61,12 @@ final class PartialMockObjectCreated implements Event
         return $this->methodNames;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Partial Mock Object Created (%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->className
         );
     }
 }

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Event;
@@ -62,15 +63,19 @@ final class PostConditionFinished implements Event
         return $this->calledMethods;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
-        return sprintf(
-            '%s %s todo',
-            $this->telemetryInfo()->asString(),
-            self::class
-        );
+        $buffer = '';
+
+        foreach ($this->calledMethods as $calledMethod) {
+            $buffer .= sprintf(
+                '%s Post Condition Method Finished (%s::%s)' . PHP_EOL,
+                $this->telemetryInfo()->asString(),
+                $calledMethod->className(),
+                $calledMethod->methodName()
+            );
+        }
+
+        return $buffer;
     }
 }

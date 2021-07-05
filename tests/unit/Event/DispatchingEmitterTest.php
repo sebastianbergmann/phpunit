@@ -266,7 +266,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $snapshotBefore = new Snapshot;
         $snapshotAfter  = new Snapshot;
-        $message        = 'Hmm, who would have thought?';
+        $diff           = 'Hmm, who would have thought?';
 
         $subscriber = new class extends RecordingSubscriber implements GlobalState\ModifiedSubscriber {
             public function notify(GlobalState\Modified $event): void
@@ -291,7 +291,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $emitter->globalStateModified(
             $snapshotBefore,
             $snapshotAfter,
-            $message
+            $diff
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -302,7 +302,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame($snapshotBefore, $event->snapshotBefore());
         $this->assertSame($snapshotAfter, $event->snapshotAfter());
-        $this->assertSame($message, $event->message());
+        $this->assertSame($diff, $event->diff());
     }
 
     public function testGlobalStateRestoredDispatchesGlobalStateRestoredEvent(): void

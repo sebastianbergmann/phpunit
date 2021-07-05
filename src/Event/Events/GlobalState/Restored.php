@@ -39,15 +39,11 @@ final class Restored implements Event
         return $this->snapshot;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
-            $this->telemetryInfo()->asString(),
-            self::class
+            '%s Global State Restored',
+            $this->telemetryInfo()->asString()
         );
     }
 }

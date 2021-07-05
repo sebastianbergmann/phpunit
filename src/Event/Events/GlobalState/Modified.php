@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\GlobalState;
 
+use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
@@ -25,14 +26,14 @@ final class Modified implements Event
 
     private Snapshot $snapshotAfter;
 
-    private string $message;
+    private string $diff;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $message)
+    public function __construct(Telemetry\Info $telemetryInfo, Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $diff)
     {
         $this->telemetryInfo  = $telemetryInfo;
         $this->snapshotBefore = $snapshotBefore;
         $this->snapshotAfter  = $snapshotAfter;
-        $this->message        = $message;
+        $this->diff           = $diff;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -50,20 +51,18 @@ final class Modified implements Event
         return $this->snapshotAfter;
     }
 
-    public function message(): string
+    public function diff(): string
     {
-        return $this->message;
+        return $this->diff;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Global State Modified%s%s',
             $this->telemetryInfo()->asString(),
-            self::class
+            PHP_EOL,
+            $this->diff
         );
     }
 }

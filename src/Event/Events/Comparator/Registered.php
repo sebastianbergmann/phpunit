@@ -47,15 +47,12 @@ final class Registered implements Event
         return $this->className;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Comparator Registered (%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->className
         );
     }
 }

@@ -43,7 +43,7 @@ interface Emitter
 
     public function globalStateCaptured(Snapshot $snapshot): void;
 
-    public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $message): void;
+    public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $diff): void;
 
     public function globalStateRestored(Snapshot $snapshot): void;
 

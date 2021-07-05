@@ -55,15 +55,12 @@ final class TestProxyCreated implements Event
         return $this->constructorArguments;
     }
 
-    /**
-     * @todo
-     */
     public function asString(): string
     {
         return sprintf(
-            '%s %s todo',
+            '%s Test Proxy Created (%s)',
             $this->telemetryInfo()->asString(),
-            self::class
+            $this->className
         );
     }
 }

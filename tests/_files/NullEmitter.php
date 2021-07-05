@@ -55,7 +55,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $message): void
+    public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $diff): void
     {
     }
 
