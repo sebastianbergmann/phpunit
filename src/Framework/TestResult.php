@@ -270,6 +270,12 @@ final class TestResult implements Countable
         }
 
         if (!$this->lastTestFailed && $test instanceof TestCase) {
+            if ($test->status()->isSuccess()) {
+                Event\Facade::emitter()->testPassed(
+                    $test->testValueObjectForEvents()
+                );
+            }
+
             $class = $test::class;
             $key   = $class . '::' . $test->getName();
             $size  = TestSize::unknown();
