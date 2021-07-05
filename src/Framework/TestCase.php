@@ -1298,6 +1298,35 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function testValueObjectForEvents(): Event\Code\Test
+    {
+        if ($this->testValueObjectForEvents !== null) {
+            return $this->testValueObjectForEvents;
+        }
+
+        $metadata = MetadataCollection::fromArray([]);
+
+        if (!$this instanceof ErrorTestCase &&
+            !$this instanceof IncompleteTestCase &&
+            !$this instanceof SkippedTestCase &&
+            !$this instanceof WarningTestCase) {
+            $metadata = (MetadataRegistry::parser())->forClassAndMethod(static::class, $this->name);
+        }
+
+        $this->testValueObjectForEvents = new Event\Code\Test(
+            static::class,
+            $this->getName(false),
+            $this->getName(),
+            $this->getDataSetAsStringWithData(),
+            $metadata,
+        );
+
+        return $this->testValueObjectForEvents;
+    }
+
+    /**
      * Override to run the test and assert its state.
      *
      * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
@@ -2270,32 +2299,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     ->disableArgumentCloning()
                     ->disallowMockingUnknownTypes()
                     ->getMock();
-    }
-
-    private function testValueObjectForEvents(): Event\Code\Test
-    {
-        if ($this->testValueObjectForEvents !== null) {
-            return $this->testValueObjectForEvents;
-        }
-
-        $metadata = MetadataCollection::fromArray([]);
-
-        if (!$this instanceof ErrorTestCase &&
-            !$this instanceof IncompleteTestCase &&
-            !$this instanceof SkippedTestCase &&
-            !$this instanceof WarningTestCase) {
-            $metadata = (MetadataRegistry::parser())->forClassAndMethod(static::class, $this->name);
-        }
-
-        $this->testValueObjectForEvents = new Event\Code\Test(
-            static::class,
-            $this->getName(false),
-            $this->getName(),
-            $this->getDataSetAsStringWithData(),
-            $metadata,
-        );
-
-        return $this->testValueObjectForEvents;
     }
 
     private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
