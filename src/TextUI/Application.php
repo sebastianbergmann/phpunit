@@ -21,6 +21,7 @@ use function is_file;
 use function realpath;
 use function sprintf;
 use PHPUnit\Event;
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\ExtensionHandler;
@@ -212,6 +213,10 @@ final class Application
                 $this->xmlConfiguration
             );
 
+            if ($configuration->hasBootstrap()) {
+                $this->handleBootstrap($configuration->bootstrap());
+            }
+
             $testSuite = (new TestSuiteBuilder)->build($arguments, $this->xmlConfiguration);
 
             if ($configuration->hasCoverageReport()) {
@@ -377,5 +382,20 @@ final class Application
         }
 
         return $returnCode;
+    }
+
+    private function handleBootstrap(string $filename): void
+    {
+        if (!is_readable($filename)) {
+            throw new InvalidBootstrapException($filename);
+        }
+
+        try {
+            include $filename;
+        } catch (Throwable $t) {
+            throw new BootstrapException($t);
+        }
+
+        Facade::emitter()->bootstrapFinished($filename);
     }
 }

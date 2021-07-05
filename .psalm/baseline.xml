@@ -818,7 +818,7 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="9">
+    <MissingThrowsDocblock occurrences="11">
       <code>atLeastVersion</code>
       <code>configuration</code>
       <code>configuration</code>
@@ -826,6 +826,8 @@
       <code>includePath</code>
       <code>iniSettings</code>
       <code>listTestsXml</code>
+      <code>throw new BootstrapException($t);</code>
+      <code>throw new InvalidBootstrapException($filename);</code>
       <code>unrecognizedOrderBy</code>
       <code>useDefaultConfiguration</code>
     </MissingThrowsDocblock>
@@ -835,6 +837,9 @@
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
     </RedundantCondition>
+    <UnresolvableInclude occurrences="1">
+      <code>include $filename</code>
+    </UnresolvableInclude>
   </file>
   <file src="src/TextUI/Command/Commands/ListTestsAsTextCommand.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -878,14 +883,14 @@
       <code>throw new FilterNotConfiguredException;</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/TextUI/Configuration/Registry.php">
+  <file src="src/TextUI/Configuration/Merger.php">
     <DeprecatedMethod occurrences="4">
       <code>cacheDirectory</code>
       <code>cacheResultFile</code>
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="79">
+    <MissingThrowsDocblock occurrences="77">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -942,7 +947,6 @@
       <code>reportUselessTests</code>
       <code>resolveDependencies</code>
       <code>reverseList</code>
-      <code>self::handleBootstrap($bootstrap)</code>
       <code>stopOnDefect</code>
       <code>stopOnError</code>
       <code>stopOnFailure</code>
@@ -962,16 +966,12 @@
       <code>text</code>
       <code>text</code>
       <code>text</code>
-      <code>throw new BootstrapException($t);</code>
       <code>verbose</code>
       <code>xml</code>
     </MissingThrowsDocblock>
     <RedundantCondition occurrences="1">
       <code>assert($xmlConfiguration instanceof LoadedFromFileConfiguration)</code>
     </RedundantCondition>
-    <UnresolvableInclude occurrences="1">
-      <code>include $filename</code>
-    </UnresolvableInclude>
   </file>
   <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
     <MissingThrowsDocblock occurrences="12">
