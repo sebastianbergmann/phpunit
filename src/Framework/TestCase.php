@@ -193,7 +193,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private ?TestResult $result = null;
 
-    private ?TestStatus $status = null;
+    private TestStatus $status;
 
     private int $numberOfAssertionsPerformed = 0;
 
