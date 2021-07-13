@@ -94,7 +94,7 @@ final class MockMethod
             $modifier,
             self::getMethodParametersForDeclaration($method),
             self::getMethodParametersForCall($method),
-            (new ReflectionMapper)->fromMethodReturnType($method),
+            (new ReflectionMapper)->fromReturnType($method),
             $reference,
             $callOriginalMethod,
             $method->isStatic(),
