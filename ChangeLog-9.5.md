@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 ### Fixed
 
 * [#4720](https://github.com/sebastianbergmann/phpunit/issues/4720): PHPUnit does not verify its own PHP extension requirements
+* [#4735](https://github.com/sebastianbergmann/phpunit/issues/4735): Automated return value generation does not work for stubbed methods that return `*|false`
 
 ## [9.5.6] - 2021-06-23
 
