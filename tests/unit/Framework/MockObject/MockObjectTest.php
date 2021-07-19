@@ -1183,6 +1183,16 @@ final class MockObjectTest extends TestCase
     /**
      * @requires PHP 8
      */
+    public function testReturnValueCanBeAutomaticallyGeneratedForMethodThatReturnsIntOrFalse(): void
+    {
+        $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
+
+        $this->assertFalse($i->returnsIntOrFalse());
+    }
+
+    /**
+     * @requires PHP 8
+     */
     public function testMethodThatReturnsBoolCanBeStubbed(): void
     {
         $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
