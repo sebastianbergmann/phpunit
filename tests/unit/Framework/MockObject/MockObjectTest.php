@@ -21,6 +21,7 @@ use PHPUnit\TestFixture\ClassWithStaticMethod;
 use PHPUnit\TestFixture\ClassWithStaticReturnTypes;
 use PHPUnit\TestFixture\ClassWithUnionReturnTypes;
 use PHPUnit\TestFixture\ExampleTrait;
+use PHPUnit\TestFixture\InterfaceWithMethodReturningIntersection;
 use PHPUnit\TestFixture\InterfaceWithMethodsThatDeclareBooleanReturnTypes;
 use PHPUnit\TestFixture\InterfaceWithStaticMethod;
 use PHPUnit\TestFixture\MethodCallback;
@@ -1200,6 +1201,18 @@ final class MockObjectTest extends TestCase
         $i->method('returnsBool')->willReturn(false);
 
         $this->assertFalse($i->returnsBool());
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testReturnValueCannotBeAutomaticallyGeneratedForMethodThatReturnsIntersection(): void
+    {
+        $stub = $this->createStub(InterfaceWithMethodReturningIntersection::class);
+
+        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+
+        $stub->method();
     }
 
     private function resetMockObjects(): void

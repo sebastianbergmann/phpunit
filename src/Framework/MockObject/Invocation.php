@@ -110,6 +110,16 @@ final class Invocation implements SelfDescribing
             }
         }
 
+        if (str_contains($returnType, '&')) {
+            throw new RuntimeException(
+                sprintf(
+                    'Return value for %s::%s() cannot be generated because the declared return type is an intersection, please configure a return value for this method',
+                    $this->className,
+                    $this->methodName
+                )
+            );
+        }
+
         switch (strtolower($returnType)) {
             case '':
             case 'mixed':
