@@ -44,7 +44,6 @@ use Doctrine\Instantiator\Instantiator;
 use Exception;
 use Iterator;
 use IteratorAggregate;
-use PHPUnit\Framework\InvalidArgumentException;
 use ReflectionClass;
 use ReflectionMethod;
 use SebastianBergmann\Template\Template;
@@ -81,7 +80,6 @@ final class Generator
     /**
      * Returns a mock object for the specified class.
      *
-     * @throws \PHPUnit\Framework\InvalidArgumentException
      * @throws ClassAlreadyExistsException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
@@ -93,10 +91,6 @@ final class Generator
      */
     public function getMock(string $type, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject
     {
-        if (!is_array($methods) && null !== $methods) {
-            throw InvalidArgumentException::create(2, 'array');
-        }
-
         if ($type === 'Traversable' || $type === '\\Traversable') {
             $type = 'Iterator';
         }

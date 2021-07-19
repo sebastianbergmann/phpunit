@@ -325,9 +325,6 @@
     <MissingReturnType occurrences="1">
       <code>getObject</code>
     </MissingReturnType>
-    <TypeDoesNotContainType occurrences="1">
-      <code>!is_array($methods) &amp;&amp; null !== $methods</code>
-    </TypeDoesNotContainType>
   </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingReturnType occurrences="1">
