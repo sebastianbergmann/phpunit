@@ -46,7 +46,6 @@ use Iterator;
 use IteratorAggregate;
 use ReflectionClass;
 use ReflectionMethod;
-use SebastianBergmann\Template\Template;
 use SoapClient;
 use SoapFault;
 use Throwable;
