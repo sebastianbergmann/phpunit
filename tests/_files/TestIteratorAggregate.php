@@ -10,6 +10,7 @@
 namespace PHPUnit\TestFixture;
 
 use IteratorAggregate;
+use ReturnTypeWillChange;
 use Traversable;
 
 class TestIteratorAggregate implements IteratorAggregate
@@ -21,7 +22,7 @@ class TestIteratorAggregate implements IteratorAggregate
         $this->traversable = $traversable;
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function getIterator()
     {
         return $this->traversable;

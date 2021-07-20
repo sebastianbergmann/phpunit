@@ -11,6 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use function count;
 use Iterator;
+use ReturnTypeWillChange;
 
 class TestIterator implements Iterator
 {
@@ -28,19 +29,19 @@ class TestIterator implements Iterator
         $this->position = 0;
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function valid()
     {
         return $this->position < count($this->array);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         return $this->position;
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         return $this->array[$this->position];

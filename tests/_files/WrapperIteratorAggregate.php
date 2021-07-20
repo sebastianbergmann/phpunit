@@ -12,6 +12,7 @@ namespace PHPUnit\TestFixture;
 use function assert;
 use function is_array;
 use IteratorAggregate;
+use ReturnTypeWillChange;
 use Traversable;
 
 class WrapperIteratorAggregate implements IteratorAggregate
@@ -27,7 +28,7 @@ class WrapperIteratorAggregate implements IteratorAggregate
         $this->baseCollection = $baseCollection;
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function getIterator()
     {
         foreach ($this->baseCollection as $k => $v) {
