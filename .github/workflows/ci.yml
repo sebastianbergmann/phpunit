@@ -113,22 +113,6 @@ jobs:
           ini-values: ${{ env.PHP_INI_VALUES }}
           tools: none
 
-      - name: Determine composer cache directory on Linux
-        if: matrix.os == 'ubuntu-latest'
-        run: echo "COMPOSER_CACHE_DIR=$(./tools/composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Determine composer cache directory on Windows
-        if: matrix.os == 'windows-latest'
-        run: ECHO "COMPOSER_CACHE_DIR=~\AppData\Local\Composer" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
-
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
         run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
@@ -169,17 +153,6 @@ jobs:
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter, :apcu, :imagick
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
-
-      - name: Determine composer cache directory
-        run: echo "COMPOSER_CACHE_DIR=$(./tools/composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
@@ -222,17 +195,6 @@ jobs:
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter, :apcu, :imagick
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
-
-      - name: Determine composer cache directory
-        run: echo "COMPOSER_CACHE_DIR=$(tools/composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
 
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
