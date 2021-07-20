@@ -89,43 +89,16 @@ final class Generator
      */
     public function getMock(string $type, ?array $methods = [], array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, bool $cloneArguments = true, bool $callOriginalMethods = false, object $proxyTarget = null, bool $allowMockingUnknownTypes = true, bool $returnValueGeneration = true): MockObject
     {
-        if ($type === 'Traversable' || $type === '\\Traversable') {
-            $type = 'Iterator';
+        if ($type === Traversable::class) {
+            $type = Iterator::class;
         }
 
-        if (!$allowMockingUnknownTypes && !class_exists($type, $callAutoload) && !interface_exists($type, $callAutoload)) {
-            throw new UnknownTypeException($type);
+        if (!$allowMockingUnknownTypes) {
+            $this->ensureKnownType($type, $callAutoload);
         }
 
-        if (null !== $methods) {
-            foreach ($methods as $method) {
-                if (!preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', (string) $method)) {
-                    throw new InvalidMethodNameException((string) $method);
-                }
-            }
-
-            if ($methods !== array_unique($methods)) {
-                throw new DuplicateMethodException($methods);
-            }
-        }
-
-        if ($mockClassName !== '' && class_exists($mockClassName, false)) {
-            try {
-                $reflector = new ReflectionClass($mockClassName);
-                // @codeCoverageIgnoreStart
-            } catch (\ReflectionException $e) {
-                throw new ReflectionException(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-            // @codeCoverageIgnoreEnd
-
-            if (!$reflector->implementsInterface(MockObject::class)) {
-                throw new ClassAlreadyExistsException($mockClassName);
-            }
-        }
+        $this->ensureValidMethods($methods);
+        $this->ensureMockedClassDoesNotAlreadyExist($mockClassName);
 
         if (!$callOriginalConstructor && $callOriginalMethods) {
             throw new OriginalConstructorInvocationRequiredException;
@@ -964,5 +937,59 @@ final class Generator
     private function isMethodNameExcluded(string $name): bool
     {
         return isset(self::EXCLUDED_METHOD_NAMES[$name]);
+    }
+
+    /**
+     * @throws UnknownTypeException
+     */
+    private function ensureKnownType(string $type, bool $callAutoload): void
+    {
+        if (!class_exists($type, $callAutoload) && !interface_exists($type, $callAutoload)) {
+            throw new UnknownTypeException($type);
+        }
+    }
+
+    /**
+     * @throws DuplicateMethodException
+     * @throws InvalidMethodNameException
+     */
+    private function ensureValidMethods(?array $methods): void
+    {
+        if (null !== $methods) {
+            foreach ($methods as $method) {
+                if (!preg_match('~[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*~', (string) $method)) {
+                    throw new InvalidMethodNameException((string) $method);
+                }
+            }
+
+            if ($methods !== array_unique($methods)) {
+                throw new DuplicateMethodException($methods);
+            }
+        }
+    }
+
+    /**
+     * @throws ClassAlreadyExistsException
+     * @throws ReflectionException
+     */
+    private function ensureMockedClassDoesNotAlreadyExist(string $mockClassName): void
+    {
+        if ($mockClassName !== '' && class_exists($mockClassName, false)) {
+            try {
+                $reflector = new ReflectionClass($mockClassName);
+                // @codeCoverageIgnoreStart
+            } catch (\ReflectionException $e) {
+                throw new ReflectionException(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
+            // @codeCoverageIgnoreEnd
+
+            if (!$reflector->implementsInterface(MockObject::class)) {
+                throw new ClassAlreadyExistsException($mockClassName);
+            }
+        }
     }
 }
