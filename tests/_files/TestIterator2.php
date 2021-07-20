@@ -14,6 +14,7 @@ use function key;
 use function next;
 use function reset;
 use Iterator;
+use ReturnTypeWillChange;
 
 class TestIterator2 implements Iterator
 {
@@ -24,7 +25,7 @@ class TestIterator2 implements Iterator
         $this->data = $array;
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function current()
     {
         return current($this->data);
@@ -35,13 +36,13 @@ class TestIterator2 implements Iterator
         next($this->data);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function key()
     {
         return key($this->data);
     }
 
-    #[\ReturnTypeWillChange]
+    #[ReturnTypeWillChange]
     public function valid()
     {
         return key($this->data) !== null;
