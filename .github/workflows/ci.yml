@@ -21,6 +21,7 @@ jobs:
         with:
           php-version: 7.4
           coverage: none
+          tools: none
 
       - name: Run friendsofphp/php-cs-fixer
         run: ./tools/php-cs-fixer fix --dry-run --show-progress=dots --using-cache=no --verbose
@@ -39,6 +40,7 @@ jobs:
         with:
           php-version: 7.4
           coverage: none
+          tools: none
 
       - name: Update dependencies with composer
         run: ./tools/composer update --no-interaction --no-ansi --no-progress
@@ -107,6 +109,7 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
 
       - name: Determine composer cache directory on Linux
         if: matrix.os == 'ubuntu-latest'
@@ -163,6 +166,7 @@ jobs:
           coverage: pcov
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+          tools: none
 
       - name: Determine composer cache directory
         run: echo "COMPOSER_CACHE_DIR=$(./tools/composer config cache-dir)" >> $GITHUB_ENV
@@ -215,6 +219,7 @@ jobs:
           coverage: pcov
           extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+          tools: none
 
       - name: Determine composer cache directory
         run: echo "COMPOSER_CACHE_DIR=$(tools/composer config cache-dir)" >> $GITHUB_ENV
