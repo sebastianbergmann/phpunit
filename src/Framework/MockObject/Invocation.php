@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use function array_map;
 use function explode;
 use function implode;
+use function in_array;
 use function is_object;
 use function sprintf;
 use function str_contains;
@@ -23,6 +24,7 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Type;
 use SebastianBergmann\Exporter\Exporter;
 use stdClass;
+use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -97,74 +99,111 @@ final class Invocation implements SelfDescribing
             return null;
         }
 
-        $returnType = $this->returnType;
+        $intersection = false;
+        $union        = false;
 
-        if (str_contains($returnType, '|')) {
-            $types      = explode('|', $returnType);
-            $returnType = $types[0];
+        if (str_contains($this->returnType, '|')) {
+            $types = explode('|', $this->returnType);
+            $union = true;
+        } elseif (str_contains($this->returnType, '&')) {
+            $types        = explode('&', $this->returnType);
+            $intersection = true;
+        } else {
+            $types = [$this->returnType];
+        }
 
-            foreach ($types as $type) {
-                if ($type === 'null') {
-                    return null;
+        $types = array_map('strtolower', $types);
+
+        if (!$intersection) {
+            if (in_array('', $types, true) ||
+                in_array('null', $types, true) ||
+                in_array('mixed', $types, true) ||
+                in_array('void', $types, true)) {
+                return null;
+            }
+
+            if (in_array('false', $types, true) ||
+                in_array('bool', $types, true)) {
+                return false;
+            }
+
+            if (in_array('float', $types, true)) {
+                return 0.0;
+            }
+
+            if (in_array('int', $types, true)) {
+                return 0;
+            }
+
+            if (in_array('string', $types, true)) {
+                return '';
+            }
+
+            if (in_array('array', $types, true)) {
+                return [];
+            }
+
+            if (in_array('static', $types, true)) {
+                try {
+                    return (new Instantiator)->instantiate($this->object::class);
+                } catch (Throwable $t) {
+                    throw new RuntimeException(
+                        $t->getMessage(),
+                        (int) $t->getCode(),
+                        $t
+                    );
                 }
             }
-        }
 
-        if (str_contains($returnType, '&')) {
-            throw new RuntimeException(
-                sprintf(
-                    'Return value for %s::%s() cannot be generated because the declared return type is an intersection, please configure a return value for this method',
-                    $this->className,
-                    $this->methodName
-                )
-            );
-        }
-
-        switch (strtolower($returnType)) {
-            case '':
-            case 'mixed':
-            case 'void':
-                return null;
-
-            case 'string':
-                return '';
-
-            case 'float':
-                return 0.0;
-
-            case 'int':
-                return 0;
-
-            case 'bool':
-            case 'false':
-                return false;
-
-            case 'array':
-                return [];
-
-            case 'static':
-                return (new Instantiator)->instantiate($this->object::class);
-
-            case 'object':
+            if (in_array('object', $types, true)) {
                 return new stdClass;
+            }
 
-            case 'callable':
-            case 'closure':
+            if (in_array('callable', $types, true) ||
+                in_array('closure', $types, true)) {
                 return static function (): void {
                 };
+            }
 
-            case 'traversable':
-            case 'generator':
-            case 'iterable':
+            if (in_array('traversable', $types, true) ||
+                in_array('generator', $types, true) ||
+                in_array('iterable', $types, true)) {
                 $generator = static function (): \Generator {
                     yield from [];
                 };
 
                 return $generator();
+            }
 
-            default:
-                return (new Generator)->getMock($this->returnType, [], [], '', false);
+            if (!$union) {
+                try {
+                    return (new Generator)->getMock($this->returnType, [], [], '', false);
+                } catch (Throwable $t) {
+                    throw new RuntimeException(
+                        $t->getMessage(),
+                        (int) $t->getCode(),
+                        $t
+                    );
+                }
+            }
         }
+
+        $reason = '';
+
+        if ($union) {
+            $reason = ' because the declared return type is a union';
+        } elseif ($intersection) {
+            $reason = ' because the declared return type is an intersection';
+        }
+
+        throw new RuntimeException(
+            sprintf(
+                'Return value for %s::%s() cannot be generated%s, please configure a return value for this method',
+                $this->className,
+                $this->methodName,
+                $reason
+            )
+        );
     }
 
     public function toString(): string
