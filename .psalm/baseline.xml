@@ -326,6 +326,11 @@
       <code>getObject</code>
     </MissingReturnType>
   </file>
+  <file src="src/Framework/MockObject/Invocation.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$types</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingReturnType occurrences="1">
       <code>invoke</code>

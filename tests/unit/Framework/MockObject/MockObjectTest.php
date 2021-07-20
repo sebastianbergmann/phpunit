@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractTrait;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
 use PHPUnit\TestFixture\MockObject\AnInterface;
+use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\ClassThatImplementsSerializable;
 use PHPUnit\TestFixture\MockObject\ClassWithAllPossibleReturnTypes;
 use PHPUnit\TestFixture\MockObject\ClassWithSelfTypeDeclaration;
@@ -23,6 +24,7 @@ use PHPUnit\TestFixture\MockObject\ClassWithStaticReturnTypes;
 use PHPUnit\TestFixture\MockObject\ClassWithUnionReturnTypes;
 use PHPUnit\TestFixture\MockObject\ExampleTrait;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningIntersection;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningIntersectionWithClass;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodsThatDeclareBooleanReturnTypes;
 use PHPUnit\TestFixture\MockObject\InterfaceWithStaticMethod;
 use PHPUnit\TestFixture\MockObject\MethodCallback;
@@ -1206,9 +1208,20 @@ final class MockObjectTest extends TestCase
     /**
      * @requires PHP 8.1
      */
-    public function testReturnValueCannotBeAutomaticallyGeneratedForMethodThatReturnsIntersection(): void
+    public function testReturnValueCanBeAutomaticallyGeneratedForMethodThatReturnsIntersectionOfInterfaces(): void
     {
-        $stub = $this->createStub(InterfaceWithMethodReturningIntersection::class);
+        $result = $this->createStub(InterfaceWithMethodReturningIntersection::class)->method();
+
+        $this->assertInstanceOf(AnInterface::class, $result);
+        $this->assertInstanceOf(AnotherInterface::class, $result);
+    }
+
+    /**
+     * @requires PHP 8.1
+     */
+    public function testReturnValueCannotBeAutomaticallyGeneratedForMethodThatReturnsIntersectionWithClass(): void
+    {
+        $stub = $this->createStub(InterfaceWithMethodReturningIntersectionWithClass::class);
 
         $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
 

@@ -19,7 +19,9 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractTrait;
 use PHPUnit\TestFixture\ExceptionWithThrowable;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
+use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnInterfaceWithReturnType;
+use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\ClassWithVariadicArgumentMethod;
 use PHPUnit\TestFixture\MockObject\FinalClass;
 use PHPUnit\TestFixture\MockObject\InterfaceWithSemiReservedMethodName;
@@ -314,5 +316,24 @@ final class GeneratorTest extends TestCase
 
         /* @noinspection ClassMockingCorrectnessInspection */
         $this->createMock(FinalClass::class);
+    }
+
+    public function testCanDoubleIntersectionOfMultipleInterfaces(): void
+    {
+        $stub = $this->generator->getMockForInterfaces(
+            [
+                AnInterface::class,
+                AnotherInterface::class,
+            ]
+        );
+
+        $this->assertInstanceOf(AnInterface::class, $stub);
+        $this->assertInstanceOf(AnotherInterface::class, $stub);
+
+        $stub->method('doSomething')->willReturn(true);
+        $stub->method('doSomethingElse')->willReturn(false);
+
+        $this->assertTrue($stub->doSomething());
+        $this->assertFalse($stub->doSomethingElse());
     }
 }

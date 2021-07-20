@@ -22,7 +22,8 @@ $finder = PhpCsFixer\Finder::create()
     ->notName('ClassWithStaticReturnTypes.php')
     ->notName('ValueObjectWithEqualsMethodWithUnionReturnType.php')
     ->notName('ValueObjectWithEqualsMethodThatHasUnionParameterType.php')
-    ->notName('InterfaceWithMethodReturningIntersection.php');
+    ->notName('InterfaceWithMethodReturningIntersection.php')
+    ->notName('InterfaceWithMethodReturningIntersectionWithClass.php');
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)

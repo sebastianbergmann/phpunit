@@ -13,6 +13,7 @@ use function array_map;
 use function explode;
 use function implode;
 use function in_array;
+use function interface_exists;
 use function is_object;
 use function sprintf;
 use function str_contains;
@@ -194,6 +195,28 @@ final class Invocation implements SelfDescribing
             $reason = ' because the declared return type is a union';
         } elseif ($intersection) {
             $reason = ' because the declared return type is an intersection';
+
+            $onlyInterfaces = true;
+
+            foreach ($types as $type) {
+                if (!interface_exists($type)) {
+                    $onlyInterfaces = false;
+
+                    break;
+                }
+            }
+
+            if ($onlyInterfaces) {
+                try {
+                    return (new Generator)->getMockForInterfaces($types);
+                } catch (Throwable $t) {
+                    throw new RuntimeException(
+                        $t->getMessage(),
+                        (int) $t->getCode(),
+                        $t
+                    );
+                }
+            }
         }
 
         throw new RuntimeException(

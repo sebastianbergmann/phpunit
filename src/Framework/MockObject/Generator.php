@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use const PHP_EOL;
 use const PREG_OFFSET_CAPTURE;
 use const WSDL_CACHE_NONE;
+use function array_merge;
 use function array_pop;
 use function array_unique;
 use function class_exists;
@@ -125,6 +126,67 @@ final class Generator
             $proxyTarget,
             $returnValueGeneration
         );
+    }
+
+    /**
+     * @psalm-param list<class-string> $interfaces
+     *
+     * @throws RuntimeException
+     * @throws UnknownTypeException
+     */
+    public function getMockForInterfaces(array $interfaces, bool $callAutoload = true): MockObject
+    {
+        if (count($interfaces) < 2) {
+            throw new RuntimeException('At least two interfaces must be specified');
+        }
+
+        foreach ($interfaces as $interface) {
+            if (!interface_exists($interface, $callAutoload)) {
+                throw new UnknownTypeException($interface);
+            }
+        }
+
+        sort($interfaces);
+
+        $methods = [];
+
+        foreach ($interfaces as $interface) {
+            $methods = array_merge($methods, $this->getClassMethods($interface));
+        }
+
+        if (count(array_unique($methods)) < count($methods)) {
+            throw new RuntimeException('Interfaces must not declare the same method');
+        }
+
+        $unqualifiedNames = [];
+
+        foreach ($interfaces as $interface) {
+            $parts              = explode('\\', $interface);
+            $unqualifiedNames[] = array_pop($parts);
+        }
+
+        sort($unqualifiedNames);
+
+        do {
+            $intersectionName = sprintf(
+                'Intersection_%s_%s',
+                implode('_', $unqualifiedNames),
+                substr(md5((string) mt_rand()), 0, 8)
+            );
+        } while (interface_exists($intersectionName, false));
+
+        $template = $this->loadTemplate('intersection.tpl');
+
+        $template->setVar(
+            [
+                'intersection' => $intersectionName,
+                'interfaces'   => implode(', ', $interfaces),
+            ]
+        );
+
+        eval($template->render());
+
+        return $this->getMock($intersectionName);
     }
 
     /**

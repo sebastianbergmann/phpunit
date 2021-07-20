@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-interface InterfaceWithMethodReturningIntersection
+class AClass
 {
-    public function method(): AnInterface&AnotherInterface;
 }
