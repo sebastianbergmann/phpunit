@@ -43,6 +43,7 @@ use Doctrine\Instantiator\Instantiator;
 use Exception;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Framework\InvalidArgumentException;
 use ReflectionClass;
 use ReflectionMethod;
 use SoapClient;
@@ -136,10 +137,10 @@ final class Generator
      * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      *
-     * @throws \PHPUnit\Framework\InvalidArgumentException
      * @throws ClassAlreadyExistsException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
+     * @throws InvalidArgumentException
      * @throws InvalidMethodNameException
      * @throws OriginalConstructorInvocationRequiredException
      * @throws ReflectionException
@@ -197,10 +198,10 @@ final class Generator
      *
      * @psalm-param trait-string $traitName
      *
-     * @throws \PHPUnit\Framework\InvalidArgumentException
      * @throws ClassAlreadyExistsException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
+     * @throws InvalidArgumentException
      * @throws InvalidMethodNameException
      * @throws OriginalConstructorInvocationRequiredException
      * @throws ReflectionException
