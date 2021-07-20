@@ -20,7 +20,7 @@ class DoubleTestCase implements Test
         $this->testCase = $testCase;
     }
 
-    public function count()
+    public function count(): int
     {
         return 2;
     }

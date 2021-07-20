@@ -16,6 +16,7 @@ class TestIterator2 implements Iterator
         $this->data = $array;
     }
 
+    #[ReturnTypeWillChange]
     public function current()
     {
         return \current($this->data);
@@ -26,11 +27,13 @@ class TestIterator2 implements Iterator
         \next($this->data);
     }
 
+    #[ReturnTypeWillChange]
     public function key()
     {
         return \key($this->data);
     }
 
+    #[ReturnTypeWillChange]
     public function valid()
     {
         return \key($this->data) !== null;

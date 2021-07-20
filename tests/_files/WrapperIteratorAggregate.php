@@ -20,6 +20,7 @@ class WrapperIteratorAggregate implements IteratorAggregate
         $this->baseCollection = $baseCollection;
     }
 
+    #[ReturnTypeWillChange]
     public function getIterator()
     {
         foreach ($this->baseCollection as $k => $v) {

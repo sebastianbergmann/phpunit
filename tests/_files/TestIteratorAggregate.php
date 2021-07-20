@@ -16,6 +16,7 @@ class TestIteratorAggregate implements IteratorAggregate
         $this->traversable = $traversable;
     }
 
+    #[ReturnTypeWillChange]
     public function getIterator()
     {
         return $this->traversable;

@@ -25,6 +25,7 @@ class SampleArrayAccess implements ArrayAccess
         }
     }
 
+    #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->container[$offset]);
@@ -35,6 +36,7 @@ class SampleArrayAccess implements ArrayAccess
         unset($this->container[$offset]);
     }
 
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->container[$offset] ?? null;
