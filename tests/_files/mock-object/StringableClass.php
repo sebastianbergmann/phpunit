@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-class ClassWithVariadicArgumentMethod
+class StringableClass
 {
-    public function foo(...$args)
+    public function __toString()
     {
-        return $args;
+        return '12345';
     }
 }

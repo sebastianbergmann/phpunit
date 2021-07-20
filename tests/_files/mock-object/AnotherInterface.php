@@ -7,19 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-final class FinalClass
+interface AnotherInterface
 {
-    private $value;
-
-    public function __construct($value)
-    {
-        $this->value = $value;
-    }
-
-    public function value()
-    {
-        return $this->value;
-    }
+    public function doSomethingElse();
 }

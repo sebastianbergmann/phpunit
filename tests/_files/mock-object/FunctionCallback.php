@@ -7,17 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-class MethodCallbackByReference
+use function func_get_args;
+
+class FunctionCallbackWrapper
 {
-    public function bar(&$a, &$b, $c): void
+    public static function functionCallback()
     {
-        Legacy::bar($a, $b, $c);
-    }
+        $args = func_get_args();
 
-    public function callback(&$a, &$b, $c): void
-    {
-        $b = 1;
+        if ($args == ['foo', 'bar']) {
+            return 'pass';
+        }
     }
 }

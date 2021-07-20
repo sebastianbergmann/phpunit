@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 use ArrayIterator;
 use Exception;
 use Generator;

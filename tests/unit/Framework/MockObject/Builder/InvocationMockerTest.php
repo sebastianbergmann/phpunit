@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\MethodCannotBeConfiguredException;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\ClassWithAllPossibleReturnTypes;
+use PHPUnit\TestFixture\MockObject\ClassWithAllPossibleReturnTypes;
 use PHPUnit\TestFixture\MockObject\ClassWithImplicitProtocol;
 
 /**

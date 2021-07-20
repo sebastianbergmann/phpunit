@@ -20,7 +20,7 @@ PHPUnit %s by Sebastian Bergmann and contributors.
     <group name="default"/>
     <covers target="Foo"/>
     <uses target="Bar"/>
-    <testDouble type="PHPUnit\TestFixture\AnInterface"/>
+    <testDouble type="PHPUnit\TestFixture\MockObject\AnInterface"/>
   </test>
   <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testFailure" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Failure" status="failure" time="%s" size="unknown" exceptionLine="%d" exceptionMessage="Failed asserting that false is true.">
     <group name="default"/>

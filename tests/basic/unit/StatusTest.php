@@ -11,7 +11,7 @@ namespace PHPUnit\SelfTest\Basic;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
-use PHPUnit\TestFixture\AnInterface;
+use PHPUnit\TestFixture\MockObject\AnInterface;
 use RuntimeException;
 
 /**

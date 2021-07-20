@@ -7,11 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-interface InterfaceWithMethodsThatDeclareBooleanReturnTypes
+interface AnInterface
 {
-    public function returnsIntOrFalse(): int | false;
-
-    public function returnsBool(): bool;
+    public function doSomething();
 }

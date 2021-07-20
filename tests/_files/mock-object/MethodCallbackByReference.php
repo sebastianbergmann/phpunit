@@ -7,12 +7,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-trait ExampleTrait
+use PHPUnit\TestFixture\Legacy;
+
+class MethodCallbackByReference
 {
-    public function ohHai()
+    public function bar(&$a, &$b, $c): void
     {
-        return __FUNCTION__;
+        Legacy::bar($a, $b, $c);
+    }
+
+    public function callback(&$a, &$b, $c): void
+    {
+        $b = 1;
     }
 }

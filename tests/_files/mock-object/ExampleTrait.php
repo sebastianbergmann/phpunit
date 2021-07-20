@@ -7,11 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-class ClassWithSelfTypeHint
+trait ExampleTrait
 {
-    public function foo(self $foo): void
+    public function ohHai()
     {
+        return __FUNCTION__;
     }
 }

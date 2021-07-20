@@ -8,19 +8,19 @@
  * file that was distributed with this source code.
  */
 
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-class ClassWithStaticReturnTypes
+class ClassWithUnionReturnTypes
 {
-    public function returnsStatic(): static
+    public function returnsBoolOrInt(): bool|int
     {
     }
 
-    public function returnsStaticOrNull(): ?static
+    public function returnsBoolOrIntOrNull(): bool|int|null
     {
     }
 
-    public function returnsUnionWithStatic(): static|\stdClass
+    public function returnsMixed(): mixed
     {
     }
 }

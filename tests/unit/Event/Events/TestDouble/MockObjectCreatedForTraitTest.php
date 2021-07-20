@@ -20,7 +20,7 @@ final class MockObjectCreatedForTraitTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = self::createTelemetryInfo();
-        $traitName     = TestFixture\ExampleTrait::class;
+        $traitName     = TestFixture\MockObject\ExampleTrait::class;
 
         $event = new MockObjectCreatedForTrait(
             $telemetryInfo,

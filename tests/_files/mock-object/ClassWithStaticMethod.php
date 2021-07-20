@@ -7,18 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-use function func_get_args;
-
-class FunctionCallbackWrapper
+class ClassWithStaticMethod
 {
-    public static function functionCallback()
+    public static function staticMethod(): void
     {
-        $args = func_get_args();
-
-        if ($args == ['foo', 'bar']) {
-            return 'pass';
-        }
     }
 }

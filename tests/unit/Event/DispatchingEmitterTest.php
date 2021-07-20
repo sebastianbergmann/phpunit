@@ -1399,7 +1399,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestMockObjectCreatedForTraitDispatchesTestDoubleMockObjectCreatedForTraitEvent(): void
     {
-        $traitName = TestFixture\ExampleTrait::class;
+        $traitName = TestFixture\MockObject\ExampleTrait::class;
 
         $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedForTraitSubscriber {
             public function notify(TestDouble\MockObjectCreatedForTrait $event): void

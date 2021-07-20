@@ -7,19 +7,20 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
 
-trait TraitWithConstructor
+namespace PHPUnit\TestFixture\MockObject;
+
+class ClassWithStaticReturnTypes
 {
-    private $value;
-
-    public function __construct(string $value)
+    public function returnsStatic(): static
     {
-        $this->value = $value;
     }
 
-    public function value(): string
+    public function returnsStaticOrNull(): ?static
     {
-        return $this->value;
+    }
+
+    public function returnsUnionWithStatic(): static|\stdClass
+    {
     }
 }

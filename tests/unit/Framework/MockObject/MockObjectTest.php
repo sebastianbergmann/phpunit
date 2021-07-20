@@ -13,25 +13,25 @@ use PHPUnit\Framework\MockObject\ReturnValueNotConfiguredException;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractTrait;
-use PHPUnit\TestFixture\AnInterface;
-use PHPUnit\TestFixture\ClassThatImplementsSerializable;
-use PHPUnit\TestFixture\ClassWithAllPossibleReturnTypes;
-use PHPUnit\TestFixture\ClassWithSelfTypeHint;
-use PHPUnit\TestFixture\ClassWithStaticMethod;
-use PHPUnit\TestFixture\ClassWithStaticReturnTypes;
-use PHPUnit\TestFixture\ClassWithUnionReturnTypes;
-use PHPUnit\TestFixture\ExampleTrait;
-use PHPUnit\TestFixture\InterfaceWithMethodReturningIntersection;
-use PHPUnit\TestFixture\InterfaceWithMethodsThatDeclareBooleanReturnTypes;
-use PHPUnit\TestFixture\InterfaceWithStaticMethod;
-use PHPUnit\TestFixture\MethodCallback;
-use PHPUnit\TestFixture\MethodCallbackByReference;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
+use PHPUnit\TestFixture\MockObject\AnInterface;
+use PHPUnit\TestFixture\MockObject\ClassThatImplementsSerializable;
+use PHPUnit\TestFixture\MockObject\ClassWithAllPossibleReturnTypes;
+use PHPUnit\TestFixture\MockObject\ClassWithSelfTypeDeclaration;
+use PHPUnit\TestFixture\MockObject\ClassWithStaticMethod;
+use PHPUnit\TestFixture\MockObject\ClassWithStaticReturnTypes;
+use PHPUnit\TestFixture\MockObject\ClassWithUnionReturnTypes;
+use PHPUnit\TestFixture\MockObject\ExampleTrait;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningIntersection;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodsThatDeclareBooleanReturnTypes;
+use PHPUnit\TestFixture\MockObject\InterfaceWithStaticMethod;
+use PHPUnit\TestFixture\MockObject\MethodCallback;
+use PHPUnit\TestFixture\MockObject\MethodCallbackByReference;
+use PHPUnit\TestFixture\MockObject\StringableClass;
+use PHPUnit\TestFixture\MockObject\TraitWithConstructor;
+use PHPUnit\TestFixture\MockObject\TraversableMockTestInterface;
 use PHPUnit\TestFixture\PartialMockTestClass;
 use PHPUnit\TestFixture\SomeClass;
-use PHPUnit\TestFixture\StringableClass;
-use PHPUnit\TestFixture\TraitWithConstructor;
-use PHPUnit\TestFixture\TraversableMockTestInterface;
 
 /**
  * @small
@@ -287,7 +287,7 @@ final class MockObjectTest extends TestCase
 
         $mock->expects($this->once())
              ->method('doSomething')
-             ->willReturnCallback('PHPUnit\TestFixture\FunctionCallbackWrapper::functionCallback');
+             ->willReturnCallback('PHPUnit\TestFixture\MockObject\FunctionCallbackWrapper::functionCallback');
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
 
@@ -297,7 +297,7 @@ final class MockObjectTest extends TestCase
 
         $mock->expects($this->once())
              ->method('doSomething')
-             ->willReturnCallback('PHPUnit\TestFixture\FunctionCallbackWrapper::functionCallback');
+             ->willReturnCallback('PHPUnit\TestFixture\MockObject\FunctionCallbackWrapper::functionCallback');
 
         $this->assertEquals('pass', $mock->doSomething('foo', 'bar'));
     }
@@ -971,8 +971,8 @@ final class MockObjectTest extends TestCase
     public function testGetMockForClassWithSelfTypeHint(): void
     {
         $this->assertInstanceOf(
-            ClassWithSelfTypeHint::class,
-            $this->getMockBuilder(ClassWithSelfTypeHint::class)->getMock()
+            ClassWithSelfTypeDeclaration::class,
+            $this->getMockBuilder(ClassWithSelfTypeDeclaration::class)->getMock()
         );
     }
 
@@ -1059,7 +1059,7 @@ final class MockObjectTest extends TestCase
             $this->fail('Exception expected');
         } catch (RuntimeException $e) {
             $this->assertSame(
-                'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\StringableClass::__toString()',
+                'Return value inference disabled and no expectation set up for PHPUnit\TestFixture\MockObject\StringableClass::__toString()',
                 $e->getMessage()
             );
         }

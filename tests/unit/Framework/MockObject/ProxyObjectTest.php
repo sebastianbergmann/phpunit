@@ -9,7 +9,7 @@
  */
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\TestProxyFixture;
+use PHPUnit\TestFixture\MockObject\TestProxyFixture;
 
 /**
  * @small

@@ -7,9 +7,19 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-interface AnInterfaceWithReturnType
+trait TraitWithConstructor
 {
-    public function returnAnArray(): array;
+    private $value;
+
+    public function __construct(string $value)
+    {
+        $this->value = $value;
+    }
+
+    public function value(): string
+    {
+        return $this->value;
+    }
 }

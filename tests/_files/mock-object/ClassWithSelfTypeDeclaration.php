@@ -7,19 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TestFixture;
+namespace PHPUnit\TestFixture\MockObject;
 
-/**
- * @theClassAnnotation
- */
-class ParseTestMethodAnnotationsMock
+class ClassWithSelfTypeDeclaration
 {
-    use ParseTestMethodAnnotationsTrait;
-}
-
-/**
- * @theTraitAnnotation
- */
-trait ParseTestMethodAnnotationsTrait
-{
+    public function foo(self $foo): void
+    {
+    }
 }
