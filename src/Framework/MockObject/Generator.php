@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\MockObject;
 use const PHP_EOL;
 use const PREG_OFFSET_CAPTURE;
 use const WSDL_CACHE_NONE;
-use function array_merge;
 use function array_pop;
 use function array_unique;
 use function class_exists;
@@ -360,7 +359,7 @@ final class Generator
             throw new SoapExtensionNotAvailableException;
         }
 
-        $options = array_merge($options, ['cache_wsdl' => WSDL_CACHE_NONE]);
+        $options['cache_wsdl'] = WSDL_CACHE_NONE;
 
         try {
             $client   = new SoapClient($wsdlFile, $options);
