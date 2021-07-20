@@ -12,7 +12,7 @@ use PHPUnit\Framework\TestResult;
 
 class NotReorderableTest implements Test
 {
-    public function count()
+    public function count(): int
     {
         return 1;
     }
