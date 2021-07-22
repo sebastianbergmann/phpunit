@@ -67,9 +67,25 @@ unset($options);
 define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
 define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
-Phar::mapPhar('___PHAR___');
+spl_autoload_register(
+    function($class) {
+        static $classes = null;
 
-___FILELIST___
+        if ($classes === null) {
+            $classes = [
+                ___CLASSLIST___
+            ];
+        }
+
+        if (isset($classes[$class])) {
+            require 'phar://___PHAR___' . $classes[$class];
+        }
+    },
+    ___EXCEPTION___,
+    ___PREPEND___
+);
+
+Phar::mapPhar('___PHAR___');
 
 if ($execute) {
     if (isset($printManifest)) {
