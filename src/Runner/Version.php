@@ -63,7 +63,7 @@ final class Version
     public static function getReleaseChannel(): string
     {
         if (strpos(self::$pharVersion, '-') !== false) {
-            return '-nightly';
+            return '-snapshot';
         }
 
         return '';
