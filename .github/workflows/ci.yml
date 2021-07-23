@@ -249,13 +249,13 @@ jobs:
           java-version: 1.8
 
       - name: Build unscoped PHAR for testing
-        run: ant unscoped-phar-nightly
+        run: ant unscoped-phar-snapshot
 
       - name: Run regular tests with unscoped PHAR
-        run: ./build/artifacts/phpunit-nightly.phar
+        run: ./build/artifacts/phpunit-snapshot.phar
 
       - name: Build scoped PHAR for testing
-        run: ant phar-nightly
+        run: ant phar-snapshot
 
       - name: Run PHAR-specific tests with scoped PHAR
-        run: ./build/artifacts/phpunit-nightly.phar --configuration tests/phar/phpunit.xml --coverage-text
+        run: ./build/artifacts/phpunit-snapshot.phar --configuration tests/phar/phpunit.xml --coverage-text

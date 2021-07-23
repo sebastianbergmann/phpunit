@@ -107,16 +107,16 @@
         </antcall>
     </target>
 
-    <target name="phar-nightly" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (nightly)">
+    <target name="phar-snapshot" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (snapshot)">
         <antcall target="-phar-build">
-            <param name="type" value="nightly"/>
+            <param name="type" value="snapshot"/>
             <param name="scope" value="true"/>
         </antcall>
     </target>
 
-    <target name="unscoped-phar-nightly" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (nightly)">
+    <target name="unscoped-phar-snapshot" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (snapshot)">
         <antcall target="-phar-build">
-            <param name="type" value="nightly"/>
+            <param name="type" value="snapshot"/>
             <param name="scope" value="false"/>
         </antcall>
     </target>
