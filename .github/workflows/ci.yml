@@ -263,3 +263,10 @@ jobs:
 
       - name: Run PHAR-specific tests with scoped PHAR
         run: ./build/artifacts/phpunit-snapshot.phar --configuration tests/phar/phpunit.xml --coverage-text
+
+      - uses: actions/upload-artifact@v2
+        if: ${{ matrix.php-version == 8.0 }}
+        with:
+          name: phpunit-snapshot-phar
+          path: ./build/artifacts/phpunit-snapshot.phar
+          retention-days: 7
