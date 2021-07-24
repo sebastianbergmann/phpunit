@@ -209,14 +209,76 @@ jobs:
       - name: Assert that git tree is clean
         run: git diff || echo "Run 'php build/scripts/generate-global-assert-wrappers.php' to regenerate global assert wrappers!"
 
-  build-and-test-phar:
-    name: Build and test PHAR
+  build-phar:
+    name: Build PHAR
 
     runs-on: ubuntu-latest
 
     env:
+      # Extension list based on https://github.com/theseer/Autoload#requirements
+      PHP_EXTENSIONS: fileinfo, openssl, phar, tokenizer
+      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+
+    strategy:
+      fail-fast: false
+      matrix:
+        php-version:
+          - "7.3"
+          - "7.4"
+          - "8.0"
+
+        experimental:
+          - false
+
+        include:
+          - php-version: "8.1"
+            experimental: true
+
+    continue-on-error: ${{ matrix.experimental }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
+
+      - name: Install java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Build an unscoped PHAR
+        run: ant unscoped-phar-snapshot
+
+      - name: Build a scoped PHAR
+        run: ant phar-snapshot
+
+      - name: Upload scoped PHAR
+        uses: actions/upload-artifact@v2
+        if: ${{ matrix.php-version == 8.0 }}
+        with:
+          name: phpunit-snapshot-phar
+          path: ./build/artifacts/phpunit-snapshot.phar
+          retention-days: 7
+
+  test-phar:
+    name: Test PHAR
+
+    runs-on: ubuntu-latest
+
+    needs:
+      - build-phar
+
+    env:
       PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
+      PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
       fail-fast: false
@@ -240,26 +302,16 @@ jobs:
           ini-values: ${{ env.PHP_INI_VALUES }}
           tools: none
 
-      - name: Install java
-        uses: actions/setup-java@v1
-        with:
-          java-version: 1.8
-
-      - name: Build unscoped PHAR for testing
-        run: ant unscoped-phar-snapshot
-
-      - name: Run regular tests with unscoped PHAR
-        run: ./build/artifacts/phpunit-snapshot.phar
-
-      - name: Build scoped PHAR for testing
-        run: ant phar-snapshot
-
-      - name: Run PHAR-specific tests with scoped PHAR
-        run: ./build/artifacts/phpunit-snapshot.phar --configuration tests/phar/phpunit.xml
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ matrix.php-version == 8.0 }}
+      - name: Download PHAR
+        uses: actions/download-artifact@v2
         with:
           name: phpunit-snapshot-phar
-          path: ./build/artifacts/phpunit-snapshot.phar
-          retention-days: 7
+
+      - name: Run one stand-alone test purely with the PHAR
+        run: php ./phpunit-snapshot.phar --no-configuration ./tests/phar/tests/Issue4399Test
+
+      - name: Install highest dependencies with composer
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+
+      - name: Run regular tests with PHAR
+        run: php ./phpunit-snapshot.phar
