@@ -8,7 +8,7 @@ $_SERVER['argv'][] = \realpath(__DIR__ . '/_files/configuration.custom-printer.x
 $_SERVER['argv'][] = '--verbose';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/IncompleteTest.php');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

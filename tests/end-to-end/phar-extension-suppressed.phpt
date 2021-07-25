@@ -12,7 +12,7 @@ $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/../_files/phpunit-example-extension';
 $_SERVER['argv'][] = '--no-extensions';
 
-require __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 Fatal error: Trait %sPHPUnit\ExampleExtension\TestCaseTrait%s not found in %s

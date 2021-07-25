@@ -9,7 +9,7 @@ $_SERVER['argv'][] = __DIR__.'/../_files/configuration.defaulttestsuite.xml';
 $_SERVER['argv'][] = '--testsuite';
 $_SERVER['argv'][] = 'First';
 
-require __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

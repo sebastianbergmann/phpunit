@@ -7,7 +7,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--verbose';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../_files/phpt-skipif-location-hint-example.phpt');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

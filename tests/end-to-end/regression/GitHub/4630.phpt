@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '--testdox-xml';
 $_SERVER['argv'][] = 'php://stdout';
 $_SERVER['argv'][] = __DIR__ . '/4630/Issue4630Test.php';
 
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

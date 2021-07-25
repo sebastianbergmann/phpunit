@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--cache-result';
 $_SERVER['argv'][] = '--cache-result-file=' . $tmpResultCache;
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

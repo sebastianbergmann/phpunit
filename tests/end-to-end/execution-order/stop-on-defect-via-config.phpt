@@ -7,7 +7,7 @@ $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/configuration_stop_on_defect.xml');
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/StopOnWarningTestSuite.php');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

@@ -10,7 +10,7 @@ $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--no-interaction';
 $_SERVER['argv'][] = realpath(__DIR__ . '/../../unit/Util/ColorTest.php');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '--filter';
 $_SERVER['argv'][] = 'testExpectOutputStringFooActualFoo';
 $_SERVER['argv'][] = __DIR__ . '/../_files/OutputTestCase.php';
 
-require __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

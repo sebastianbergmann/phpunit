@@ -8,7 +8,7 @@ $_SERVER['argv'][] = '--migrate-configuration';
 chdir(sys_get_temp_dir());
 copy(__DIR__ . '/migration-from-85/phpunit-8.5.xml', 'phpunit.xml');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

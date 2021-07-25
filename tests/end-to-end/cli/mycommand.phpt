@@ -8,8 +8,8 @@ $_SERVER['argv'][] = '--my-option=123';
 $_SERVER['argv'][] = '--my-other-option';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/BankAccountTest.php');
 
-require __DIR__ . '/../../bootstrap.php';
-require __DIR__ . '/_files/MyCommand.php';
+require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/_files/MyCommand.php';
 
 MyCommand::main();
 --EXPECTF--

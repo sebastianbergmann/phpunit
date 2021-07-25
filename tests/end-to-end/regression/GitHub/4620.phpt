@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '--bootstrap';
 $_SERVER['argv'][] = __DIR__ . '/4620/bootstrap.php';
 $_SERVER['argv'][] = __DIR__ . '/4620/Issue4620Test.php';
 
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

@@ -4,7 +4,7 @@ Test incorrect testFile is reported
 --no-configuration nonExistingFile.php
 --FILE--
 <?php declare(strict_types=1);
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

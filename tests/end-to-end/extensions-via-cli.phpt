@@ -7,7 +7,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--extensions=\\PHPUnit\\Test\\Extension';
 $_SERVER['argv'][] = __DIR__ . '/../_files/ConcreteTest.php';
 
-require __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

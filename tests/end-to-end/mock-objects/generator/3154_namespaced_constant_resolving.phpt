@@ -23,7 +23,7 @@ class Issue3154
         return $z."sum: ".($i+$j).$v;
     }
 }
-require __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
