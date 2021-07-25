@@ -13,6 +13,8 @@ use const PATH_SEPARATOR;
 use const PHP_EOL;
 use function array_keys;
 use function assert;
+use function defined;
+use function dirname;
 use function getcwd;
 use function ini_get;
 use function ini_set;
@@ -20,8 +22,10 @@ use function is_dir;
 use function is_file;
 use function realpath;
 use function sprintf;
+use function str_starts_with;
 use PHPUnit\Event;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\ExtensionHandler;
@@ -46,6 +50,7 @@ use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
+use ReflectionClass;
 use Throwable;
 
 /**
@@ -394,6 +399,24 @@ final class Application
             include $filename;
         } catch (Throwable $t) {
             throw new BootstrapException($t);
+        }
+
+        if (!defined('__PHPUNIT_PHAR__') || !defined('__PHPUNIT_PHAR_ROOT__')) {
+            return;
+        }
+
+        $testCaseSource = (new ReflectionClass(TestCase::class))->getFileName();
+
+        if (!str_starts_with($testCaseSource, __PHPUNIT_PHAR_ROOT__)) {
+            $this->exitWithErrorMessage(
+                sprintf(
+                    'Mixed installation detected, exiting.' . PHP_EOL . PHP_EOL .
+                    'PHPUnit was invoked from %s.' . PHP_EOL .
+                    'PHPUnit\'s code was loaded from %s.',
+                    __PHPUNIT_PHAR__,
+                    dirname($testCaseSource, 2)
+                )
+            );
         }
 
         Facade::emitter()->bootstrapFinished($filename);
