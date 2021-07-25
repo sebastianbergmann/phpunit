@@ -396,7 +396,7 @@ final class Application
         }
 
         try {
-            include $filename;
+            include_once $filename;
         } catch (Throwable $t) {
             throw new BootstrapException($t);
         }
