@@ -30,6 +30,9 @@
     </coverage>
 
     <php>
+        <ini name="precision" value="14"/>
+        <ini name="serialize_precision" value="14"/>
+
         <const name="PHPUNIT_TESTSUITE" value="true"/>
     </php>
 </phpunit>
