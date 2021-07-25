@@ -32,7 +32,6 @@ use function is_string;
 use function printf;
 use function realpath;
 use function sort;
-
 use function sprintf;
 use function str_replace;
 use function stream_resolve_include_path;
