@@ -584,7 +584,7 @@ class Command
 
         $testCaseSource = (new ReflectionClass(TestCase::class))->getFileName();
 
-        if (strpos($testCaseSource, __PHPUNIT_PHAR_ROOT__) !== 0) {
+        if (strpos($testCaseSource, 'phar://' . __PHPUNIT_PHAR__) !== 0) {
             $this->exitWithErrorMessage(
                 sprintf(
                     'Mixed installation detected, exiting.' . PHP_EOL . PHP_EOL .
