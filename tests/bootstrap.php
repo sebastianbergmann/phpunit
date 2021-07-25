@@ -11,8 +11,6 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
     define('PHPUNIT_COMPOSER_INSTALL', dirname(__DIR__) . '/vendor/autoload.php');
 }
 
-if (!defined('TEST_FILES_PATH')) {
-    define('TEST_FILES_PATH', __DIR__ . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR);
-}
+const TEST_FILES_PATH = __DIR__ . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
 
 require_once PHPUNIT_COMPOSER_INSTALL;
