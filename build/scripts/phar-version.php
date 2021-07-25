@@ -1,7 +1,7 @@
 #!/usr/bin/env php
 <?php declare(strict_types=1);
 
-if (!isset($argv[1]) || !isset($argv[2])) {
+if (!isset($argv[1], $argv[2])) {
     exit(1);
 }
 
