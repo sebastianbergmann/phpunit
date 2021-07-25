@@ -11,7 +11,8 @@ if (!isset($argv[1]) || !isset($argv[2])) {
         'private static $pharVersion;',
         'private static $pharVersion = "' . $argv[1] . '";',
         \file_get_contents(__DIR__ . '/../tmp/phar/phpunit/Runner/Version.php')
-    )
+    ),
+    \LOCK_EX
 );
 
 if ($argv[2] == 'release') {
