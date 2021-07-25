@@ -15,7 +15,7 @@ if (!isset($argv[1]) || !isset($argv[2])) {
     \LOCK_EX
 );
 
-if ($argv[2] == 'release') {
+if ($argv[2] === 'release') {
     print $argv[1];
 } else {
     print $argv[2];
