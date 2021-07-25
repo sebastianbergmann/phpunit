@@ -8,7 +8,7 @@ $_SERVER['argv'][] = __DIR__ . '/2137/Issue2137Test.php';
 $_SERVER['argv'][] = '--filter';
 $_SERVER['argv'][] = 'BrandService';
 
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

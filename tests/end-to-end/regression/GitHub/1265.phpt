@@ -7,7 +7,7 @@ $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/1265/phpunit1265.xml';
 $_SERVER['argv'][] = __DIR__ . '/1265/Issue1265Test.php';
 
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

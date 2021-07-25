@@ -10,7 +10,7 @@ $_SERVER['argv'][] = '--testdox-group';
 $_SERVER['argv'][] = 'one';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/_files/TestDoxGroupTest.php');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

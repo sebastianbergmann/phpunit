@@ -8,7 +8,7 @@ $_SERVER['argv'][] = '--exclude-group';
 $_SERVER['argv'][] = 'balanceIsInitiallyZero';
 $_SERVER['argv'][] = __DIR__ . '/../_files/BankAccountTest.php';
 
-require __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

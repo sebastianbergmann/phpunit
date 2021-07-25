@@ -12,7 +12,7 @@ class Foo
     private function bar($a = GLOBAL_CONSTANT, $b = self::CLASS_CONSTANT_PUBLIC, $c = self::CLASS_CONSTANT_PROTECTED, $d = self::CLASS_CONSTANT_PRIVATE){}
 }
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 $class = new ReflectionClass('Foo');
 $mockMethod = \PHPUnit\Framework\MockObject\MockMethod::fromReflection(

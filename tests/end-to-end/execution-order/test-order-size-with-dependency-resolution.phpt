@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '--verbose';
 $_SERVER['argv'][] = '--order-by=depends,size';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/TestWithDifferentSizes.php');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

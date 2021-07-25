@@ -8,7 +8,7 @@ $_SERVER['argv'][] = '--test-suffix';
 $_SERVER['argv'][] = '.test.php';
 $_SERVER['argv'][] = __DIR__ . '/3889/Issue3889Test.test.php';
 
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

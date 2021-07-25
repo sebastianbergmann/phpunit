@@ -11,7 +11,7 @@ class Foo extends Baz
     public function bar(): parent {}
 }
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 $class = new ReflectionClass('Foo');
 $mockMethod = \PHPUnit\Framework\MockObject\MockMethod::fromReflection(

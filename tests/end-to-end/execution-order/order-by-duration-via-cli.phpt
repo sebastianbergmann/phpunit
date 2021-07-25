@@ -13,7 +13,7 @@ $_SERVER['argv'][] = '--cache-result';
 $_SERVER['argv'][] = '--cache-result-file=' . $tmpResultCache;
 $_SERVER['argv'][] = __DIR__ . '/_files/TestWithDifferentDurations.php';
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 
 unlink($tmpResultCache);

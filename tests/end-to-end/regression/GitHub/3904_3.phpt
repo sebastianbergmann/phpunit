@@ -5,7 +5,7 @@ https://github.com/sebastianbergmann/phpunit/issues/3904
 $_SERVER['argv'][1] = '--no-configuration';
 $_SERVER['argv'][4] = __DIR__ . '/3904/Issue3904_3Test.php';
 
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 try {
     PHPUnit\TextUI\Command::main();
