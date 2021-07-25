@@ -407,7 +407,7 @@ final class Application
 
         $testCaseSource = (new ReflectionClass(TestCase::class))->getFileName();
 
-        if (!str_starts_with($testCaseSource, __PHPUNIT_PHAR_ROOT__)) {
+        if (!str_starts_with($testCaseSource, 'phar://' . __PHPUNIT_PHAR__)) {
             $this->exitWithErrorMessage(
                 sprintf(
                     'Mixed installation detected, exiting.' . PHP_EOL . PHP_EOL .

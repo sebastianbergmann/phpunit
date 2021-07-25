@@ -8,6 +8,6 @@
  * file that was distributed with this source code.
  */
 // PHPUnit_Framework_TestCase itself does not exist. :-)
-require __DIR__ . '/../../../../bootstrap.php';
+require_once __DIR__ . '/../../../../bootstrap.php';
 
 const GITHUB_ISSUE = 797;
