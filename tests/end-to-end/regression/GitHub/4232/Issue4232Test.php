@@ -9,7 +9,7 @@
  */
 namespace Foo\Bar;
 
-require __DIR__ . '/ParentIssue4232Test.php';
+require_once __DIR__ . '/ParentIssue4232Test.php';
 
 final class Issue4232Test extends ParentIssue4232Test
 {

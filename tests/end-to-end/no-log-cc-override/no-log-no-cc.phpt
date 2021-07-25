@@ -10,7 +10,7 @@ $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = 'php://stdout';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/_files/NoLogNoCcTest.php');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Application::main();
 --EXPECTF--

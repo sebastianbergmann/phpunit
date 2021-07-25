@@ -4,7 +4,7 @@ Test fail on missing bootstrap
 --no-configuration --bootstrap nonExistingBootstrap.php
 --FILE--
 <?php declare(strict_types=1);
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

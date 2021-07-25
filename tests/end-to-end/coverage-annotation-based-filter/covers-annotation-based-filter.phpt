@@ -12,7 +12,7 @@ $_SERVER['argv'][] = __DIR__ . '/phpunit.xml';
 $_SERVER['argv'][] = '--covers';
 $_SERVER['argv'][] = 'PHPUnit\TestFixture\AnnotationFilter';
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Application::main();
 --EXPECTF--

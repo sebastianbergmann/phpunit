@@ -7,7 +7,7 @@ $_SERVER['argv'][] = '--configuration';
 $_SERVER['argv'][] = __DIR__ . '/force-covers-annotation/phpunit.xml';
 $_SERVER['argv'][] = __DIR__ . '/force-covers-annotation/tests/Test.php';
 
-require __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

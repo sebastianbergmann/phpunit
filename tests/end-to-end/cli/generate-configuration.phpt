@@ -11,7 +11,7 @@ $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--generate-configuration';
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 chdir(sys_get_temp_dir());
 PHPUnit\TextUI\Application::main();
 --EXPECTF--

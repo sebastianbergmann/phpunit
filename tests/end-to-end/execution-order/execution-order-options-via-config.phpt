@@ -11,7 +11,7 @@ $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/configuration_execution_order_options.xml');
 $_SERVER['argv'][] = \realpath(__DIR__ . '/_files/MultiDependencyTest.php');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Application::main();
 --EXPECTF--

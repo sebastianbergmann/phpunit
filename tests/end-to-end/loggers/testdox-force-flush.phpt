@@ -10,7 +10,7 @@ $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--filter';
 $_SERVER['argv'][] = 'Success';
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Application::main();
 --EXPECTF--

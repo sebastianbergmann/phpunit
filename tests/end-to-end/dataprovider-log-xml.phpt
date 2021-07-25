@@ -8,7 +8,7 @@ $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = 'php://stdout';
 $_SERVER['argv'][] = __DIR__ . '/../_files/DataProviderTest.php';
 
-require __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

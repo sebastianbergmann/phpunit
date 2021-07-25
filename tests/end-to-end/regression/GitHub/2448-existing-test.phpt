@@ -8,7 +8,7 @@ $_SERVER['argv'][] = 'Test.php';
 
 \chdir(__DIR__ . '/2448');
 
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Application::main(false);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

@@ -9,7 +9,7 @@ $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--colors=always';
 $_SERVER['argv'][] = '--verbose';
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Application::main();
 --EXPECTF_EXTERNAL--

@@ -4,7 +4,7 @@ Test CLI flags --enforce-time-limit --default-time-limit
 https://github.com/sebastianbergmann/phpunit/issues/2085
 --SKIPIF--
 <?php declare(strict_types=1);
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 if (!\class_exists(SebastianBergmann\Invoker\Invoker::class)) {
     print "Skip: package phpunit/php-invoker is required for enforcing time limits" . PHP_EOL;
@@ -21,7 +21,7 @@ $_SERVER['argv'][] = '--enforce-time-limit';
 $_SERVER['argv'][] = '--default-time-limit=1';
 $_SERVER['argv'][] = __DIR__ . '/2085/Issue2085Test.php';
 
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

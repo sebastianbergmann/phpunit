@@ -8,7 +8,7 @@ $_SERVER['argv'][] = '--group';
 $_SERVER['argv'][] = 'trueOnly';
 $_SERVER['argv'][] = __DIR__ . '/498/Issue498Test.php';
 
-require __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.

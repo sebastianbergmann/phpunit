@@ -12,7 +12,7 @@ $_SERVER['argv'][] = '--order-by=depends,random';
 $_SERVER['argv'][] = '--random-order-seed=54321';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
