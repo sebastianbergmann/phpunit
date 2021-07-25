@@ -7,7 +7,7 @@ class Foo
     private function bar(\Exception $arg){}
 }
 
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $class = new ReflectionClass('Foo');
 $mockMethod = \PHPUnit\Framework\MockObject\MockMethod::fromReflection(
