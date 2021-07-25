@@ -19,6 +19,16 @@
         <property name="prepare.done" value="true"/>
     </target>
 
+    <target name="generate-autoloader-for-test-fixture" description="Generate autoloader for test fixture">
+        <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
+            <arg value="--output" />
+            <arg path="${basedir}/tests/autoload.php" />
+            <arg path="${basedir}/tests/_files" />
+            <arg path="${basedir}/tests/end-to-end/execution-order/_files" />
+            <arg path="${basedir}/tests/unit" />
+        </exec>
+    </target>
+
     <target name="validate-composer-json" depends="clean" unless="validate-composer-json.done" description="Validate composer.json">
         <exec executable="${basedir}/tools/composer" failonerror="true" taskname="composer">
             <arg value="validate"/>
