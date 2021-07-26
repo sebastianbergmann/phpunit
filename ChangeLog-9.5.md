@@ -4,9 +4,9 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 ## [9.5.8] - 2021-MM-DD
 
-### Changed
+### Fixed
 
-* [#4740](https://github.com/sebastianbergmann/phpunit/issues/4740): The PHPUnit PHAR no longer imports all code units on startup
+* [#4740](https://github.com/sebastianbergmann/phpunit/issues/4740): `phpunit.phar` does not work with PHP 8.1
 
 ## [9.5.7] - 2021-07-19
 

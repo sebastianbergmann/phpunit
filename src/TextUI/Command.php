@@ -16,8 +16,6 @@ use function array_keys;
 use function assert;
 use function class_exists;
 use function copy;
-use function defined;
-use function dirname;
 use function extension_loaded;
 use function fgets;
 use function file_get_contents;
@@ -38,7 +36,6 @@ use function stream_resolve_include_path;
 use function strpos;
 use function trim;
 use function version_compare;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\StandardTestSuiteLoader;
@@ -574,24 +571,6 @@ class Command
                     get_class($t),
                     PHP_EOL,
                     $t->getMessage()
-                )
-            );
-        }
-
-        if (!defined('__PHPUNIT_PHAR__') || !defined('__PHPUNIT_PHAR_ROOT__')) {
-            return;
-        }
-
-        $testCaseSource = (new ReflectionClass(TestCase::class))->getFileName();
-
-        if (strpos($testCaseSource, 'phar://' . __PHPUNIT_PHAR__) !== 0) {
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'Mixed installation detected, exiting.' . PHP_EOL . PHP_EOL .
-                    'PHPUnit was invoked from %s.' . PHP_EOL .
-                    'PHPUnit\'s code was loaded from %s.',
-                    __PHPUNIT_PHAR__,
-                    dirname($testCaseSource, 2)
                 )
             );
         }
