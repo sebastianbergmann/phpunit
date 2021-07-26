@@ -15,8 +15,6 @@ use const STDIN;
 use function array_keys;
 use function assert;
 use function class_exists;
-use function defined;
-use function dirname;
 use function explode;
 use function extension_loaded;
 use function fgets;
@@ -37,7 +35,6 @@ use function sort;
 use function sprintf;
 use function str_replace;
 use function stream_resolve_include_path;
-use function strpos;
 use function strrpos;
 use function substr;
 use function trim;
@@ -48,7 +45,6 @@ use PharIo\Manifest\ManifestLoader;
 use PharIo\Version\Version as PharIoVersion;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\StandardTestSuiteLoader;
@@ -1130,24 +1126,6 @@ class Command
             FileLoader::checkAndLoad($filename);
         } catch (Exception $e) {
             $this->exitWithErrorMessage($e->getMessage());
-        }
-
-        if (!defined('__PHPUNIT_PHAR__') || !defined('__PHPUNIT_PHAR_ROOT__')) {
-            return;
-        }
-
-        $testCaseSource = (new ReflectionClass(TestCase::class))->getFileName();
-
-        if (strpos($testCaseSource, 'phar://' . __PHPUNIT_PHAR__) !== 0) {
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'Mixed installation detected, exiting.' . PHP_EOL . PHP_EOL .
-                    'PHPUnit was invoked from %s.' . PHP_EOL .
-                    'PHPUnit\'s code was loaded from %s.',
-                    __PHPUNIT_PHAR__,
-                    dirname($testCaseSource, 2)
-                )
-            );
         }
     }
 
