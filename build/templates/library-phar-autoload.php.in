@@ -2,25 +2,27 @@
 define('__PHPUNIT_PHAR__', str_replace(DIRECTORY_SEPARATOR, '/', __FILE__));
 define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
+Phar::mapPhar('___PHAR___');
+
 spl_autoload_register(
-    function($class) {
+    function ($class) {
         static $classes = null;
 
         if ($classes === null) {
-            $classes = [
-                ___CLASSLIST___
-            ];
+            $classes = [___CLASSLIST___];
         }
 
         if (isset($classes[$class])) {
-            require 'phar://___PHAR___' . $classes[$class];
+            require_once 'phar://___PHAR___' . $classes[$class];
         }
     },
     ___EXCEPTION___,
     ___PREPEND___
 );
 
-Phar::mapPhar('___PHAR___');
+foreach ([___CLASSLIST___] as $file) {
+    require_once 'phar://___PHAR___' . $file;
+}
 
 require __PHPUNIT_PHAR_ROOT__ . '/phpunit/Framework/Assert/Functions.php';
 

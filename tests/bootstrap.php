@@ -9,25 +9,6 @@
  */
 const TEST_FILES_PATH = __DIR__ . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
 
-if (defined('__PHPUNIT_PHAR__')) {
-    if (!file_exists(__DIR__ . '/autoload.php')) {
-        print __DIR__ . '/autoload.php does not exist' . PHP_EOL;
-
-        exit(1);
-    }
-
-    require_once __DIR__ . '/autoload.php';
-
-    $jsonFile = realpath(__DIR__ . '/../composer.json');
-    $base     = dirname($jsonFile);
-
-    foreach (json_decode(file_get_contents($jsonFile), true)['autoload-dev']['files'] as $file) {
-        require_once $base . DIRECTORY_SEPARATOR . $file;
-    }
-
-    return;
-}
-
 if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
     define('PHPUNIT_COMPOSER_INSTALL', dirname(__DIR__) . '/vendor/autoload.php');
 }
