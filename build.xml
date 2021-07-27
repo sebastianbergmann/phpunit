@@ -100,7 +100,7 @@
         </antcall>
     </target>
 
-    <target name="unscoped-phar" depends="-phar-prepare,-phar-determine-version" description="Create PHAR archive of PHPUnit and all its dependencies">
+    <target name="unscoped-phar" depends="-phar-prepare,-phar-determine-version" description="Create unscoped PHAR archive of PHPUnit and all its dependencies">
         <antcall target="-phar-build">
             <param name="type" value="release"/>
             <param name="scope" value="false"/>
@@ -114,7 +114,7 @@
         </antcall>
     </target>
 
-    <target name="unscoped-phar-snapshot" depends="-phar-prepare" description="Create PHAR archive of PHPUnit and all its dependencies (snapshot)">
+    <target name="unscoped-phar-snapshot" depends="-phar-prepare" description="Create unscoped PHAR archive of PHPUnit and all its dependencies (snapshot)">
         <antcall target="-phar-build">
             <param name="type" value="snapshot"/>
             <param name="scope" value="false"/>
@@ -447,6 +447,37 @@
 
     <target name="-phar-determine-version">
         <exec executable="${basedir}/build/scripts/version.php" outputproperty="version" failonerror="true" />
+    </target>
+
+    <target name="run-regular-tests-with-unscoped-phar" depends="clean,unscoped-phar-snapshot" description="Build unscoped PHAR snapshot and run the regular test suite with it">
+        <exec executable="${basedir}/tools/phpab" taskname="phpab" failonerror="true">
+            <arg value="--output" />
+            <arg path="${basedir}/tests/autoload.php" />
+            <arg path="${basedir}/tests/_files" />
+            <arg path="${basedir}/tests/end-to-end/execution-order/_files" />
+            <arg path="${basedir}/tests/unit" />
+        </exec>
+
+        <delete dir="${basedir}/vendor"/>
+        <delete file="${basedir}/composer.lock"/>
+
+        <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true">
+            <arg value="--testsuite" />
+            <arg value="unit" />
+        </exec>
+
+        <delete file="${basedir}/tests/autoload.php"/>
+    </target>
+
+    <target name="run-phar-specific-tests-with-scoped-phar" depends="clean,phar-snapshot" description="Build scoped PHAR snapshot and run the PHAR-specific tests with it">
+        <delete dir="${basedir}/vendor"/>
+        <delete file="${basedir}/composer.lock"/>
+
+        <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true">
+            <arg value="--configuration" />
+            <arg value="tests/phar/phpunit.xml" />
+            <arg value="--coverage-text" />
+        </exec>
     </target>
 
     <target name="generate-project-documentation" depends="-phploc,-checkstyle,-phpunit">
