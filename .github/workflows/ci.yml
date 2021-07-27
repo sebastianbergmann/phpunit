@@ -245,17 +245,11 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Build unscoped PHAR for testing
-        run: ant unscoped-phar-snapshot
-
       - name: Run regular tests with unscoped PHAR
-        run: ./build/artifacts/phpunit-snapshot.phar
-
-      - name: Build scoped PHAR for testing
-        run: ant phar-snapshot
+        run: ant run-regular-tests-with-unscoped-phar
 
       - name: Run PHAR-specific tests with scoped PHAR
-        run: ./build/artifacts/phpunit-snapshot.phar --configuration tests/phar/phpunit.xml
+        run: ant run-phar-specific-tests-with-scoped-phar
 
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.php-version == 8.0 }}
