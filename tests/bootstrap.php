@@ -9,6 +9,12 @@
  */
 const TEST_FILES_PATH = __DIR__ . DIRECTORY_SEPARATOR . '_files' . DIRECTORY_SEPARATOR;
 
+if (file_exists(__DIR__ . '/../vendor/autoload.php') && file_exists(__DIR__ . '/autoload.php')) {
+    print 'More than one test fixture autoloader is available, exiting.' . \PHP_EOL;
+
+    exit(1);
+}
+
 if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
     if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
         define('PHPUNIT_COMPOSER_INSTALL', dirname(__DIR__) . '/vendor/autoload.php');
