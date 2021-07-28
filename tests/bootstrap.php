@@ -27,7 +27,7 @@ if (file_exists(__DIR__ . '/../vendor/autoload.php')) {
 
 if (file_exists(__DIR__ . '/autoload.php')) {
     if (!defined('__PHPUNIT_PHAR__')) {
-        define('__PHPUNIT_PHAR__', realpath($_SERVER['_']));
+        require_once __DIR__ . '/../build/artifacts/phpunit-snapshot.phar';
     }
 
     require_once __DIR__ . '/autoload.php';

@@ -437,6 +437,7 @@
             <arg value="--output" />
             <arg path="${basedir}/tests/autoload.php" />
             <arg path="${basedir}/tests/_files" />
+            <arg path="${basedir}/tests/end-to-end/_files" />
             <arg path="${basedir}/tests/end-to-end/execution-order/_files" />
             <arg path="${basedir}/tests/unit" />
         </exec>
@@ -444,10 +445,7 @@
         <delete dir="${basedir}/vendor"/>
         <delete file="${basedir}/composer.lock"/>
 
-        <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true">
-            <arg value="--testsuite" />
-            <arg value="unit" />
-        </exec>
+        <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true" />
 
         <delete file="${basedir}/tests/autoload.php"/>
     </target>
