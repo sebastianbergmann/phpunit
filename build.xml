@@ -445,7 +445,10 @@
         <delete dir="${basedir}/vendor"/>
         <delete file="${basedir}/composer.lock"/>
 
-        <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true" />
+        <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true">
+            <arg value="--testsuite" />
+            <arg value="unit" />
+        </exec>
 
         <delete file="${basedir}/tests/autoload.php"/>
     </target>
