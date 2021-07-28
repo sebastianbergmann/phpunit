@@ -454,6 +454,7 @@
             <arg value="--output" />
             <arg path="${basedir}/tests/autoload.php" />
             <arg path="${basedir}/tests/_files" />
+            <arg path="${basedir}/tests/end-to-end/_files" />
             <arg path="${basedir}/tests/end-to-end/execution-order/_files" />
             <arg path="${basedir}/tests/unit" />
         </exec>
