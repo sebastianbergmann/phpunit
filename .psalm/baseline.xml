@@ -672,6 +672,12 @@
     <DeprecatedMethod occurrences="1">
       <code>setMethods</code>
     </DeprecatedMethod>
+    <DeprecatedProperty occurrences="4">
+      <code>$this-&gt;backupGlobalsBlacklist</code>
+      <code>$this-&gt;backupGlobalsBlacklist</code>
+      <code>$this-&gt;backupStaticAttributesBlacklist</code>
+      <code>$this-&gt;backupStaticAttributesBlacklist</code>
+    </DeprecatedProperty>
     <DocblockTypeContradiction occurrences="5">
       <code>$this-&gt;backupStaticAttributes === null</code>
       <code>$this-&gt;mockObjectGenerator === null</code>
@@ -759,7 +765,17 @@
       <code>endTest</code>
       <code>startTest</code>
     </DeprecatedMethod>
-    <DeprecatedProperty occurrences="1">
+    <DeprecatedProperty occurrences="11">
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
       <code>$this-&gt;listeners</code>
     </DeprecatedProperty>
     <InvalidArgument occurrences="1">
@@ -1233,8 +1249,12 @@
       <code>hasTestSuiteLoaderClass</code>
       <code>hasTestSuiteLoaderFile</code>
     </DeprecatedMethod>
-    <DeprecatedProperty occurrences="2">
+    <DeprecatedProperty occurrences="6">
       <code>$this-&gt;testSuiteLoaderClass</code>
+      <code>$this-&gt;testSuiteLoaderClass</code>
+      <code>$this-&gt;testSuiteLoaderClass</code>
+      <code>$this-&gt;testSuiteLoaderFile</code>
+      <code>$this-&gt;testSuiteLoaderFile</code>
       <code>$this-&gt;testSuiteLoaderFile</code>
     </DeprecatedProperty>
     <MissingParamType occurrences="1">
@@ -1308,9 +1328,6 @@
     <MissingParamType occurrences="1">
       <code>$variable</code>
     </MissingParamType>
-    <PossiblyInvalidIterator occurrences="1">
-      <code>$constants['user']</code>
-    </PossiblyInvalidIterator>
   </file>
   <file src="src/Util/Json.php">
     <MissingParamType occurrences="1">
