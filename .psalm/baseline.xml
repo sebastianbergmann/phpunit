@@ -990,7 +990,17 @@
       <code>endTest</code>
       <code>startTest</code>
     </DeprecatedMethod>
-    <DeprecatedProperty occurrences="1">
+    <DeprecatedProperty occurrences="11">
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
+      <code>$this-&gt;listeners</code>
       <code>$this-&gt;listeners</code>
     </DeprecatedProperty>
     <DocblockTypeContradiction occurrences="1">
@@ -1453,9 +1463,6 @@
     <MissingParamType occurrences="1">
       <code>$variable</code>
     </MissingParamType>
-    <PossiblyInvalidIterator occurrences="1">
-      <code>$constants['user']</code>
-    </PossiblyInvalidIterator>
   </file>
   <file src="src/Util/Json.php">
     <MissingParamType occurrences="1">
