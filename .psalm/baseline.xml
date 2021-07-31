@@ -1367,9 +1367,6 @@
     <MissingParamType occurrences="1">
       <code>$variable</code>
     </MissingParamType>
-    <PossiblyInvalidIterator occurrences="1">
-      <code>$constants['user']</code>
-    </PossiblyInvalidIterator>
   </file>
   <file src="src/Util/Json.php">
     <MissingParamType occurrences="1">
