@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use function array_map;
 use function explode;
+use function get_class;
 use function implode;
 use function is_object;
 use function sprintf;
@@ -161,7 +162,7 @@ final class Invocation implements SelfDescribing
 
         if (in_array('static', $types, true)) {
             try {
-                return (new Instantiator)->instantiate($this->object::class);
+                return (new Instantiator)->instantiate(get_class($this->object));
             } catch (Throwable $t) {
                 throw new RuntimeException(
                     $t->getMessage(),
