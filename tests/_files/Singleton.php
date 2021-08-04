@@ -11,7 +11,7 @@ namespace PHPUnit\TestFixture;
 
 class Singleton
 {
-    private static $uniqueInstance = null;
+    private static $uniqueInstance;
 
     public static function getInstance()
     {
