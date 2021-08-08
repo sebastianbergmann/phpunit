@@ -54,5 +54,5 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
         return $this->doAccept(spl_object_hash($test));
     }
 
-    abstract protected function doAccept(string $hash);
+    abstract protected function doAccept(string $hash): bool;
 }

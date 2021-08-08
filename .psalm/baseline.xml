@@ -161,10 +161,6 @@
       <code>Assert::classHasStaticAttribute(...func_get_args())</code>
       <code>Assert::objectHasAttribute(...func_get_args())</code>
     </DeprecatedMethod>
-    <MissingParamType occurrences="2">
-      <code>$callback</code>
-      <code>$value</code>
-    </MissingParamType>
     <MissingThrowsDocblock occurrences="1">
       <code>Assert::logicalAnd(...func_get_args())</code>
     </MissingThrowsDocblock>
@@ -185,9 +181,6 @@
     </TooManyArguments>
   </file>
   <file src="src/Framework/Constraint/Cardinality/Count.php">
-    <MissingParamType occurrences="1">
-      <code>$other</code>
-    </MissingParamType>
     <MissingThrowsDocblock occurrences="1">
       <code>getCountOf</code>
     </MissingThrowsDocblock>
@@ -196,11 +189,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>getCountOf</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Constraint/Constraint.php">
-    <MissingParamType occurrences="1">
-      <code>$other</code>
-    </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Exception/Exception.php">
     <MissingThrowsDocblock occurrences="1">
@@ -232,9 +220,6 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/String/StringMatchesFormatDescription.php">
-    <MissingParamType occurrences="1">
-      <code>$other</code>
-    </MissingParamType>
     <MissingThrowsDocblock occurrences="1">
       <code>new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"))</code>
     </MissingThrowsDocblock>
@@ -243,18 +228,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>throw InvalidArgumentException::create(1, 'non-empty string');</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Constraint/Traversable/TraversableContains.php">
-    <MissingReturnType occurrences="1">
-      <code>value</code>
-    </MissingReturnType>
-    <UndefinedThisPropertyAssignment occurrences="1">
-      <code>$this-&gt;value</code>
-    </UndefinedThisPropertyAssignment>
-    <UndefinedThisPropertyFetch occurrences="2">
-      <code>$this-&gt;value</code>
-      <code>$this-&gt;value</code>
-    </UndefinedThisPropertyFetch>
   </file>
   <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -283,30 +256,14 @@
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Framework/MockObject/Builder/Identity.php">
-    <MissingReturnType occurrences="1">
-      <code>id</code>
-    </MissingReturnType>
-  </file>
   <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
     <MissingParamType occurrences="1">
       <code>$arguments</code>
     </MissingParamType>
   </file>
-  <file src="src/Framework/MockObject/Builder/InvocationStubber.php">
-    <MissingParamType occurrences="2">
-      <code>$nextValues</code>
-      <code>$value</code>
-    </MissingParamType>
-  </file>
   <file src="src/Framework/MockObject/Builder/ParametersMatch.php">
     <MissingParamType occurrences="1">
       <code>$arguments</code>
-    </MissingParamType>
-  </file>
-  <file src="src/Framework/MockObject/ConfigurableMethod.php">
-    <MissingParamType occurrences="1">
-      <code>$value</code>
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
@@ -319,30 +276,23 @@
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
+    <LessSpecificReturnStatement occurrences="1"/>
     <MissingParamType occurrences="1">
       <code>$type</code>
     </MissingParamType>
-    <MissingReturnType occurrences="1">
-      <code>getObject</code>
-    </MissingReturnType>
+    <MoreSpecificReturnType occurrences="1">
+      <code>MockObject</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$types</code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/Framework/MockObject/InvocationHandler.php">
-    <MissingReturnType occurrences="1">
-      <code>invoke</code>
-    </MissingReturnType>
-  </file>
   <file src="src/Framework/MockObject/Matcher.php">
     <InvalidNullableReturnType occurrences="1">
       <code>MethodName</code>
     </InvalidNullableReturnType>
-    <MissingReturnType occurrences="1">
-      <code>invoked</code>
-    </MissingReturnType>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;methodNameRule</code>
     </NullableReturnStatement>
@@ -384,64 +334,15 @@
       <code>ReflectionIntersectionType</code>
     </UndefinedClass>
   </file>
-  <file src="src/Framework/MockObject/MockObject.php">
-    <MissingParamType occurrences="1">
-      <code>$originalObject</code>
-    </MissingParamType>
-  </file>
-  <file src="src/Framework/MockObject/Rule/InvocationOrder.php">
-    <MissingReturnType occurrences="2">
-      <code>invoked</code>
-      <code>invokedDo</code>
-    </MissingReturnType>
-  </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <PropertyNotSetInConstructor occurrences="1">
       <code>$parameterVerificationResult</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/Framework/MockObject/Stub/ConsecutiveCalls.php">
-    <MissingReturnType occurrences="1">
-      <code>invoke</code>
-    </MissingReturnType>
-  </file>
-  <file src="src/Framework/MockObject/Stub/ReturnArgument.php">
-    <MissingReturnType occurrences="1">
-      <code>invoke</code>
-    </MissingReturnType>
-  </file>
   <file src="src/Framework/MockObject/Stub/ReturnCallback.php">
-    <MissingReturnType occurrences="1">
-      <code>invoke</code>
-    </MissingReturnType>
     <PossiblyInvalidOperand occurrences="1">
       <code>$this-&gt;callback</code>
     </PossiblyInvalidOperand>
-  </file>
-  <file src="src/Framework/MockObject/Stub/ReturnReference.php">
-    <MissingReturnType occurrences="1">
-      <code>invoke</code>
-    </MissingReturnType>
-  </file>
-  <file src="src/Framework/MockObject/Stub/ReturnSelf.php">
-    <MissingReturnType occurrences="1">
-      <code>invoke</code>
-    </MissingReturnType>
-  </file>
-  <file src="src/Framework/MockObject/Stub/ReturnStub.php">
-    <MissingReturnType occurrences="1">
-      <code>invoke</code>
-    </MissingReturnType>
-  </file>
-  <file src="src/Framework/MockObject/Stub/ReturnValueMap.php">
-    <MissingReturnType occurrences="1">
-      <code>invoke</code>
-    </MissingReturnType>
-  </file>
-  <file src="src/Framework/MockObject/Stub/Stub.php">
-    <MissingReturnType occurrences="1">
-      <code>invoke</code>
-    </MissingReturnType>
   </file>
   <file src="src/Framework/TestBuilder.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -484,17 +385,10 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
-    <MissingParamType occurrences="5">
+    <MissingParamType occurrences="2">
       <code>$arguments</code>
       <code>$arguments</code>
-      <code>$callback</code>
-      <code>$result</code>
-      <code>$value</code>
     </MissingParamType>
-    <MissingReturnType occurrences="2">
-      <code>result</code>
-      <code>runTest</code>
-    </MissingReturnType>
     <MissingThrowsDocblock occurrences="13">
       <code>endTest</code>
       <code>endTest</code>
@@ -555,10 +449,6 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <DocblockTypeContradiction occurrences="2">
-      <code>is_string($testClass)</code>
-      <code>is_string($testClass) &amp;&amp; class_exists($testClass)</code>
-    </DocblockTypeContradiction>
     <MissingThrowsDocblock occurrences="1"/>
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) $key</code>
@@ -591,9 +481,6 @@
       <code>$actualString === null</code>
       <code>$expectedString === null</code>
     </DocblockTypeContradiction>
-    <MissingParamType occurrences="1">
-      <code>$value</code>
-    </MissingParamType>
     <MissingThrowsDocblock occurrences="2">
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
@@ -744,9 +631,6 @@
       <code>Driver</code>
       <code>\SebastianBergmann\CodeCoverage\CodeCoverage</code>
     </InvalidNullableReturnType>
-    <MissingParamType occurrences="1">
-      <code>$linesToBeCovered</code>
-    </MissingParamType>
     <MissingThrowsDocblock occurrences="2">
       <code>forLineAndPathCoverage</code>
       <code>forLineCoverage</code>
@@ -761,9 +645,6 @@
     </PossiblyNullReference>
   </file>
   <file src="src/Runner/Filter/GroupFilterIterator.php">
-    <MissingReturnType occurrences="1">
-      <code>doAccept</code>
-    </MissingReturnType>
     <UndefinedInterfaceMethod occurrences="1">
       <code>current</code>
     </UndefinedInterfaceMethod>
@@ -1141,11 +1022,6 @@
       <code>removeChild</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/Constant.php">
-    <MissingReturnType occurrences="1">
-      <code>value</code>
-    </MissingReturnType>
-  </file>
   <file src="src/TextUI/Configuration/Xml/PHP/ConstantCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
@@ -1172,9 +1048,6 @@
     <MissingParamType occurrences="1">
       <code>$value</code>
     </MissingParamType>
-    <MissingReturnType occurrences="1">
-      <code>value</code>
-    </MissingReturnType>
   </file>
   <file src="src/TextUI/Configuration/Xml/PHP/VariableCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
@@ -1202,9 +1075,6 @@
     <DeprecatedMethod occurrences="1">
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingReturnType occurrences="1">
-      <code>columns</code>
-    </MissingReturnType>
   </file>
   <file src="src/TextUI/Configuration/Xml/TestSuite/TestDirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
@@ -1342,9 +1212,6 @@
       <code>$errorNumber</code>
       <code>$errorString</code>
     </MissingClosureParamType>
-    <MissingReturnType occurrences="1">
-      <code>invokeIgnoringWarnings</code>
-    </MissingReturnType>
   </file>
   <file src="src/Util/ExcludeList.php">
     <InvalidNullableReturnType occurrences="1">
@@ -1357,21 +1224,6 @@
     <PossiblyNullIterator occurrences="1">
       <code>self::$directories</code>
     </PossiblyNullIterator>
-  </file>
-  <file src="src/Util/Filter.php">
-    <MissingParamType occurrences="1">
-      <code>$prefix</code>
-    </MissingParamType>
-  </file>
-  <file src="src/Util/GlobalState.php">
-    <MissingParamType occurrences="1">
-      <code>$variable</code>
-    </MissingParamType>
-  </file>
-  <file src="src/Util/Json.php">
-    <MissingParamType occurrences="1">
-      <code>$json</code>
-    </MissingParamType>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
@@ -1435,8 +1287,5 @@
     <InvalidStringClass occurrences="1">
       <code>new $className</code>
     </InvalidStringClass>
-    <MissingReturnType occurrences="1">
-      <code>xmlToVariable</code>
-    </MissingReturnType>
   </file>
 </files>

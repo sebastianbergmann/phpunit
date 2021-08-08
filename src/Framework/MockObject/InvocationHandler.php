@@ -98,7 +98,7 @@ final class InvocationHandler
      * @throws Exception
      * @throws RuntimeException
      */
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         $exception      = null;
         $hasReturnValue = false;

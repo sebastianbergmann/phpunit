@@ -14,7 +14,7 @@ namespace PHPUnit\Framework\MockObject;
  */
 trait MockedCloneMethod
 {
-    public function __clone()
+    public function __clone(): void
     {
         $this->__phpunit_invocationMocker = clone $this->__phpunit_getInvocationHandler();
     }

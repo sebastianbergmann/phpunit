@@ -28,8 +28,10 @@ final class Exception implements Stub
 
     /**
      * @throws Throwable
+     *
+     * @psalm-return never-return
      */
-    public function invoke(Invocation $invocation): void
+    public function invoke(Invocation $invocation): mixed
     {
         throw $this->exception;
     }

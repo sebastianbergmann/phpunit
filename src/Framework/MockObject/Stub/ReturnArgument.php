@@ -24,7 +24,7 @@ final class ReturnArgument implements Stub
         $this->argumentIndex = $argumentIndex;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         return $invocation->getParameters()[$this->argumentIndex] ?? null;
     }

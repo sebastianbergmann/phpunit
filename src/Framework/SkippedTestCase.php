@@ -45,8 +45,10 @@ final class SkippedTestCase extends TestCase
 
     /**
      * @throws Exception
+     *
+     * @psalm-return never-return
      */
-    protected function runTest(): void
+    protected function runTest(): mixed
     {
         $this->markTestSkipped($this->message);
     }

@@ -206,7 +206,7 @@ final class PHPUnit
         return $this->cacheResultFile;
     }
 
-    public function columns()
+    public function columns(): int|string
     {
         return $this->columns;
     }

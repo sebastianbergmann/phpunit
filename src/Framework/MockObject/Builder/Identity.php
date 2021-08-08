@@ -19,5 +19,5 @@ interface Identity
      *
      * @note The identifier is unique per mock object.
      */
-    public function id(string $id);
+    public function id(string $id): self;
 }

@@ -319,7 +319,7 @@ final class TeamCityLogger extends DefaultResultPrinter
         return ' ' . str_replace("\n", "\n ", $stackTrace);
     }
 
-    private static function getPrimitiveValueAsString($value): ?string
+    private static function getPrimitiveValueAsString(mixed $value): ?string
     {
         if ($value === null) {
             return 'null';

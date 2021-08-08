@@ -53,7 +53,7 @@ final class Xml
      *
      * @throws \PHPUnit\Util\Exception
      */
-    public static function xmlToVariable(DOMElement $element)
+    public static function xmlToVariable(DOMElement $element): mixed
     {
         $variable = null;
 

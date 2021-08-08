@@ -46,7 +46,7 @@ final class WarningTestCase extends TestCase
      *
      * @psalm-return never-return
      */
-    protected function runTest(): void
+    protected function runTest(): mixed
     {
         throw new Warning($this->message);
     }

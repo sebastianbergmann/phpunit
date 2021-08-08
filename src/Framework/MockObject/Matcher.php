@@ -90,7 +90,7 @@ final class Matcher
      * @throws MethodNameNotConfiguredException
      * @throws RuntimeException
      */
-    public function invoked(Invocation $invocation)
+    public function invoked(Invocation $invocation): mixed
     {
         if ($this->methodNameRule === null) {
             throw new MethodNameNotConfiguredException;

@@ -287,7 +287,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return new InvokedAtMostCountMatcher($allowedInvocations);
     }
 
-    public static function returnValue($value): ReturnStub
+    public static function returnValue(mixed $value): ReturnStub
     {
         return new ReturnStub($value);
     }
@@ -302,7 +302,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return new ReturnArgumentStub($argumentIndex);
     }
 
-    public static function returnCallback($callback): ReturnCallbackStub
+    public static function returnCallback(callable $callback): ReturnCallbackStub
     {
         return new ReturnCallbackStub($callback);
     }
@@ -1138,7 +1138,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function result()
+    public function result(): mixed
     {
         return $this->testResult;
     }
@@ -1146,7 +1146,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function setResult($result): void
+    public function setResult(mixed $result): void
     {
         $this->testResult = $result;
     }
@@ -1331,7 +1331,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws ExpectationFailedException
      * @throws Throwable
      */
-    protected function runTest()
+    protected function runTest(): mixed
     {
         $testArguments = array_merge($this->data, $this->dependencyInput);
 
@@ -1390,7 +1390,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 );
             }
 
-            return;
+            return null;
         }
 
         if ($this->expectedException !== null) {

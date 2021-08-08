@@ -53,7 +53,7 @@ final class StringMatchesFormatDescription extends RegularExpression
         return 'string matches format description';
     }
 
-    protected function additionalFailureDescription($other): string
+    protected function additionalFailureDescription(mixed $other): string
     {
         $from = explode("\n", $this->string);
         $to   = explode("\n", $this->convertNewlines($other));

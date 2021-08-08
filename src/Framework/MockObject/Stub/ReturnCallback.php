@@ -30,7 +30,7 @@ final class ReturnCallback implements Stub
         $this->callback = $callback;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         return call_user_func_array($this->callback, $invocation->getParameters());
     }

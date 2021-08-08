@@ -41,7 +41,7 @@ trait Api
     }
 
     /** @noinspection MagicMethodsValidityInspection */
-    public function __phpunit_setOriginalObject($originalObject): void
+    public function __phpunit_setOriginalObject(object $originalObject): void
     {
         $this->__phpunit_originalObject = $originalObject;
     }

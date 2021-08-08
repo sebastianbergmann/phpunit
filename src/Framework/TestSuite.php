@@ -19,7 +19,6 @@ use function count;
 use function implode;
 use function is_callable;
 use function is_file;
-use function is_object;
 use function is_string;
 use function sprintf;
 use function str_ends_with;
@@ -257,16 +256,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      *
      * @throws Exception
      */
-    public function addTestSuite($testClass): void
+    public function addTestSuite(object|string $testClass): void
     {
-        if (!(is_object($testClass) || (is_string($testClass) && class_exists($testClass)))) {
+        if (is_string($testClass) && !class_exists($testClass)) {
             throw InvalidArgumentException::create(
                 1,
                 'class name or object'
             );
         }
 
-        if (!is_object($testClass)) {
+        if (is_string($testClass)) {
             try {
                 $testClass = new ReflectionClass($testClass);
                 // @codeCoverageIgnoreStart

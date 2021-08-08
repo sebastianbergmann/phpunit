@@ -54,7 +54,7 @@ class Count extends Constraint
     /**
      * @throws Exception
      */
-    protected function getCountOf($other): ?int
+    protected function getCountOf(mixed $other): ?int
     {
         if (is_countable($other)) {
             return count($other);

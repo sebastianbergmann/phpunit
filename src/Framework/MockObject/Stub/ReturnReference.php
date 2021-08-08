@@ -25,7 +25,7 @@ final class ReturnReference implements Stub
         $this->reference = &$reference;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         return $this->reference;
     }

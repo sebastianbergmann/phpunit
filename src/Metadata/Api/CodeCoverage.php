@@ -42,7 +42,7 @@ final class CodeCoverage
      *
      * @throws CodeCoverageException
      */
-    public function linesToBeCovered(string $className, string $methodName): array|bool
+    public function linesToBeCovered(string $className, string $methodName): array|false
     {
         if (!$this->shouldCodeCoverageBeCollectedFor($className, $methodName)) {
             return false;

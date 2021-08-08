@@ -31,7 +31,7 @@ final class ConfigurableMethod
         return $this->name;
     }
 
-    public function mayReturn($value): bool
+    public function mayReturn(mixed $value): bool
     {
         if ($value === null && $this->returnType->allowsNull()) {
             return true;

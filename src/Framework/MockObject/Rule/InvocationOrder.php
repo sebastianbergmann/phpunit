@@ -34,14 +34,16 @@ abstract class InvocationOrder implements SelfDescribing, Verifiable
         return count($this->invocations) > 0;
     }
 
-    final public function invoked(BaseInvocation $invocation)
+    final public function invoked(BaseInvocation $invocation): void
     {
         $this->invocations[] = $invocation;
 
-        return $this->invokedDo($invocation);
+        $this->invokedDo($invocation);
     }
 
     abstract public function matches(BaseInvocation $invocation): bool;
 
-    abstract protected function invokedDo(BaseInvocation $invocation);
+    protected function invokedDo(BaseInvocation $invocation): void
+    {
+    }
 }

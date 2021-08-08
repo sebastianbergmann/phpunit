@@ -17,6 +17,8 @@ use function sprintf;
  */
 abstract class TraversableContains extends Constraint
 {
+    private mixed $value;
+
     public function __construct(mixed $value)
     {
         $this->value = $value;
@@ -49,7 +51,7 @@ abstract class TraversableContains extends Constraint
         );
     }
 
-    protected function value()
+    protected function value(): mixed
     {
         return $this->value;
     }

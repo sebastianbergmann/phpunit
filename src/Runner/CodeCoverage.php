@@ -83,7 +83,7 @@ final class CodeCoverage
     /**
      * @throws Exception
      */
-    public static function stop(bool $append = true, $linesToBeCovered = [], array $linesToBeUsed = []): void
+    public static function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
     {
         self::ensureIsActive();
 

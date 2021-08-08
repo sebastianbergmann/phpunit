@@ -26,7 +26,7 @@ final class ReturnValueMap implements Stub
         $this->valueMap = $valueMap;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         $parameterCount = count($invocation->getParameters());
 
@@ -41,6 +41,8 @@ final class ReturnValueMap implements Stub
                 return $return;
             }
         }
+
+        return null;
     }
 
     public function toString(): string

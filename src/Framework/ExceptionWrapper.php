@@ -28,14 +28,11 @@ use Throwable;
 final class ExceptionWrapper extends Exception
 {
     /**
-     * @var string
+     * @psalm-var class-string
      */
-    protected $className;
+    protected string $className;
 
-    /**
-     * @var null|ExceptionWrapper
-     */
-    protected $previous;
+    protected ?ExceptionWrapper $previous = null;
 
     public function __construct(Throwable $t)
     {
@@ -71,6 +68,9 @@ final class ExceptionWrapper extends Exception
         return $this->previous;
     }
 
+    /**
+     * @psalm-param class-string $className
+     */
     public function setClassName(string $className): void
     {
         $this->className = $className;

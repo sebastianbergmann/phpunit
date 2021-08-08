@@ -164,7 +164,7 @@ final class GlobalState
         return $result;
     }
 
-    private static function exportVariable($variable): string
+    private static function exportVariable(mixed $variable): string
     {
         if (is_scalar($variable) || $variable === null ||
             (is_array($variable) && self::arrayOnlyContainsScalars($variable))) {

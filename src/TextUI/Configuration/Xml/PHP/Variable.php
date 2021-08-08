@@ -33,7 +33,7 @@ final class Variable
         return $this->name;
     }
 
-    public function value()
+    public function value(): mixed
     {
         return $this->value;
     }

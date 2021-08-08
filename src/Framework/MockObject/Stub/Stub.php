@@ -21,5 +21,5 @@ interface Stub extends SelfDescribing
      * Fakes the processing of the invocation $invocation by returning a
      * specific value.
      */
-    public function invoke(Invocation $invocation);
+    public function invoke(Invocation $invocation): mixed;
 }

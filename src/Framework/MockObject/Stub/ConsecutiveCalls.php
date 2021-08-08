@@ -28,7 +28,7 @@ final class ConsecutiveCalls implements Stub
         $this->stack = $stack;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         $this->value = array_shift($this->stack);
 

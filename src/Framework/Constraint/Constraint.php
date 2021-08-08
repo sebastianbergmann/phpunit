@@ -122,7 +122,7 @@ abstract class Constraint implements Countable, SelfDescribing
      * The function can be overridden to provide additional failure
      * information like a diff
      */
-    protected function additionalFailureDescription($other): string
+    protected function additionalFailureDescription(mixed $other): string
     {
         return '';
     }

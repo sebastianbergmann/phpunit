@@ -51,8 +51,4 @@ final class InvokedAtMostCount extends InvocationOrder
     {
         return true;
     }
-
-    protected function invokedDo(BaseInvocation $invocation): void
-    {
-    }
 }

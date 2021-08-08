@@ -19,12 +19,12 @@ interface InvocationStubber
 {
     public function will(Stub $stub): Identity;
 
-    public function willReturn($value, ...$nextValues): self;
+    public function willReturn(mixed $value, mixed ...$nextValues): self;
 
     public function willReturnReference(mixed &$reference): self;
 
     /**
-     * @param array<int, array<int, mixed>> $valueMap
+     * @psalm-param array<int, array<int, mixed>> $valueMap
      */
     public function willReturnMap(array $valueMap): self;
 

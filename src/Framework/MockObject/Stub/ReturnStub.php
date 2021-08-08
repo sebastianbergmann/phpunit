@@ -25,7 +25,7 @@ final class ReturnStub implements Stub
         $this->value = $value;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         return $this->value;
     }
