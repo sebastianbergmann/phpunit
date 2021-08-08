@@ -115,9 +115,7 @@ final class Matcher
         $this->invocationRule->invoked($invocation);
 
         try {
-            if ($this->parametersRule !== null) {
-                $this->parametersRule->apply($invocation);
-            }
+            $this->parametersRule?->apply($invocation);
         } catch (ExpectationFailedException $e) {
             throw new ExpectationFailedException(
                 sprintf(
