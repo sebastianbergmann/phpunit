@@ -38,8 +38,6 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
 
     protected array $tests = [];
 
-    protected int $successful = 0;
-
     protected int $warned = 0;
 
     protected int $failed = 0;
