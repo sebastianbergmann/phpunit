@@ -1131,15 +1131,13 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <InvalidArgument occurrences="8">
+    <InvalidArgument occurrences="6">
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
-      <code>$this-&gt;configuration-&gt;logfileTestdoxHtml()</code>
-      <code>$this-&gt;configuration-&gt;logfileTestdoxText()</code>
     </InvalidArgument>
     <MissingThrowsDocblock occurrences="35">
       <code>bootstrap</code>
@@ -1248,13 +1246,10 @@
     </TypeDoesNotContainNull>
   </file>
   <file src="src/Util/Printer.php">
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$stream</code>
-    </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="2">
+    <PossiblyInvalidArgument occurrences="2">
       <code>$this-&gt;stream</code>
       <code>$this-&gt;stream</code>
-    </RedundantConditionGivenDocblockType>
+    </PossiblyInvalidArgument>
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
     <MissingThrowsDocblock occurrences="1">

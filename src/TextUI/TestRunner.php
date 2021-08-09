@@ -669,7 +669,7 @@ final class TestRunner
         $className = $this->configuration->printerClassName();
 
         $object = new $className(
-            $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : null,
+            $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : 'php://stdout',
             $this->configuration->verbose(),
             $this->configuration->colors(),
             $this->configuration->debug(),

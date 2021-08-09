@@ -87,10 +87,7 @@ final class JunitXmlLogger extends Printer implements TestListener
 
     private ?DOMElement $currentTestCase = null;
 
-    /**
-     * @param null|mixed $out
-     */
-    public function __construct($out = null, bool $reportRiskyTests = false)
+    public function __construct(string $out, bool $reportRiskyTests = false)
     {
         $this->document               = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;

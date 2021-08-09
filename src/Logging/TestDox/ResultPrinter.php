@@ -57,11 +57,9 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
     private array $excludeGroups;
 
     /**
-     * @param resource $out
-     *
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct($out = null, array $groups = [], array $excludeGroups = [])
+    public function __construct(string $out, array $groups = [], array $excludeGroups = [])
     {
         parent::__construct($out);
 

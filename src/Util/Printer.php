@@ -21,8 +21,6 @@ use function fopen;
 use function fsockopen;
 use function fwrite;
 use function htmlspecialchars;
-use function is_resource;
-use function is_string;
 use function sprintf;
 use function str_contains;
 use function str_replace;
@@ -41,23 +39,13 @@ class Printer
 
     private bool $isPhpStream;
 
+    private bool $isOpen;
+
     /**
-     * @param null|resource|string $out
-     *
      * @throws Exception
      */
-    public function __construct($out = null)
+    public function __construct(string $out)
     {
-        if (is_resource($out)) {
-            $this->stream = $out;
-
-            return;
-        }
-
-        if (!is_string($out)) {
-            return;
-        }
-
         if (str_starts_with($out, 'socket://')) {
             $tmp = explode(':', str_replace('socket://', '', $out));
 
@@ -71,6 +59,7 @@ class Printer
             }
 
             $this->stream = fsockopen($tmp[0], (int) $tmp[1]);
+            $this->isOpen = true;
 
             return;
         }
@@ -86,29 +75,26 @@ class Printer
 
         $this->stream      = fopen($out, 'wb');
         $this->isPhpStream = strncmp($out, 'php://', 6) !== 0;
-    }
-
-    public function write(string $buffer): void
-    {
-        if ($this->stream) {
-            assert(is_resource($this->stream));
-
-            fwrite($this->stream, $buffer);
-        } else {
-            if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg') {
-                $buffer = htmlspecialchars($buffer, ENT_COMPAT | ENT_SUBSTITUTE);
-            }
-
-            print $buffer;
-        }
+        $this->isOpen      = true;
     }
 
     public function flush(): void
     {
-        if ($this->stream && $this->isPhpStream) {
-            assert(is_resource($this->stream));
-
+        if ($this->isOpen && $this->isPhpStream) {
             fclose($this->stream);
+
+            $this->isOpen = false;
         }
+    }
+
+    public function write(string $buffer): void
+    {
+        assert($this->isOpen);
+
+        if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' && $this->isPhpStream) {
+            $buffer = htmlspecialchars($buffer, ENT_COMPAT|ENT_SUBSTITUTE);
+        }
+
+        fwrite($this->stream, $buffer);
     }
 }

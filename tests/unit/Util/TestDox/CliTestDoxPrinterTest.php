@@ -33,8 +33,8 @@ final class CliTestDoxPrinterTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->printer        = new TestableCliTestDoxPrinter;
-        $this->verbosePrinter = new TestableCliTestDoxPrinter(null, true);
+        $this->printer        = new TestableCliTestDoxPrinter('php://stdout');
+        $this->verbosePrinter = new TestableCliTestDoxPrinter('php://stdout', true);
     }
 
     protected function tearDown(): void

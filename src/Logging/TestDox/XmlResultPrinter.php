@@ -49,11 +49,9 @@ final class XmlResultPrinter extends Printer implements TestListener
     private ?Throwable $exception = null;
 
     /**
-     * @param resource|string $out
-     *
      * @throws \PHPUnit\Util\Exception
      */
-    public function __construct($out = null)
+    public function __construct(string $out)
     {
         $this->document               = new DOMDocument('1.0', 'UTF-8');
         $this->document->formatOutput = true;

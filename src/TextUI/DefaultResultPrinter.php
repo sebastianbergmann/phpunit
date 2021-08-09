@@ -92,13 +92,9 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
     private Timer $timer;
 
     /**
-     * Constructor.
-     *
-     * @param null|resource|string $out
-     *
      * @throws Exception
      */
-    public function __construct($out = null, bool $verbose = false, bool $colors = false, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
+    public function __construct(string $out, bool $verbose = false, bool $colors = false, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out);
 

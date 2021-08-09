@@ -29,7 +29,7 @@ final class CliTestDoxPrinterColorTest extends TestCase
 
     protected function setUp(): void
     {
-        $this->printer = new TestableCliTestDoxPrinter(null, true, true);
+        $this->printer = new TestableCliTestDoxPrinter('php://stdout', true, true);
     }
 
     protected function tearDown(): void
