@@ -256,16 +256,6 @@
       <code>$t-&gt;getPrevious()</code>
     </PossiblyNullArgument>
   </file>
-  <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
-    <MissingParamType occurrences="1">
-      <code>$arguments</code>
-    </MissingParamType>
-  </file>
-  <file src="src/Framework/MockObject/Builder/ParametersMatch.php">
-    <MissingParamType occurrences="1">
-      <code>$arguments</code>
-    </MissingParamType>
-  </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion occurrences="3">
       <code>$className</code>
@@ -385,10 +375,6 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
-    <MissingParamType occurrences="2">
-      <code>$arguments</code>
-      <code>$arguments</code>
-    </MissingParamType>
     <MissingThrowsDocblock occurrences="13">
       <code>endTest</code>
       <code>endTest</code>

@@ -185,7 +185,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4564
      */
-    public function withConsecutive(...$arguments): self
+    public function withConsecutive(mixed ...$arguments): self
     {
         $this->ensureParametersCanBeConfigured();
 

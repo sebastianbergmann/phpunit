@@ -322,7 +322,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return new ExceptionStub($exception);
     }
 
-    public static function onConsecutiveCalls(...$arguments): ConsecutiveCallsStub
+    public static function onConsecutiveCalls(mixed ...$arguments): ConsecutiveCallsStub
     {
         return new ConsecutiveCallsStub($arguments);
     }
@@ -1462,7 +1462,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws Exception
      */
-    protected function setLocale(...$arguments): void
+    protected function setLocale(mixed ...$arguments): void
     {
         if (count($arguments) < 2) {
             throw new Exception;

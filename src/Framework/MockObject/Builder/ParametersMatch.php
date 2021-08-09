@@ -34,7 +34,7 @@ interface ParametersMatch extends Stub
      * $b->with('smock', new PHPUnit\Framework\Constraint\IsEqual(42));
      * </code>
      */
-    public function with(...$arguments): self;
+    public function with(mixed ...$arguments): self;
 
     /**
      * Sets a rule which allows any kind of parameters.
