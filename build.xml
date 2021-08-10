@@ -343,7 +343,7 @@
             <arg value="--all" />
             <arg value="--phar" />
             <arg value="--hash" />
-            <arg value="SHA-1" />
+            <arg value="SHA-512" />
             <arg value="--output" />
             <arg path="${basedir}/build/artifacts/phpunit-library-${_version}.phar" />
             <arg value="--template" />
@@ -359,7 +359,7 @@
             <arg value="--nolower" />
             <arg value="--phar" />
             <arg value="--hash" />
-            <arg value="SHA-1" />
+            <arg value="SHA-512" />
             <arg value="--output" />
             <arg path="${basedir}/build/artifacts/phpunit-${_version}.phar" />
             <arg value="--template" />
