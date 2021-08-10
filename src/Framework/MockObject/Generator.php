@@ -82,6 +82,7 @@ final class Generator
      * Returns a mock object for the specified class.
      *
      * @throws ClassAlreadyExistsException
+     * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
      * @throws InvalidMethodNameException
@@ -201,6 +202,7 @@ final class Generator
      * @psalm-return MockObject&RealInstanceType
      *
      * @throws ClassAlreadyExistsException
+     * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
      * @throws InvalidArgumentException
@@ -262,6 +264,7 @@ final class Generator
      * @psalm-param trait-string $traitName
      *
      * @throws ClassAlreadyExistsException
+     * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
      * @throws InvalidArgumentException
@@ -345,6 +348,7 @@ final class Generator
     }
 
     /**
+     * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws ReflectionException
      * @throws RuntimeException
@@ -667,6 +671,7 @@ final class Generator
     }
 
     /**
+     * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
      * @throws ReflectionException
      * @throws RuntimeException

@@ -92,7 +92,7 @@ final class Invocation implements SelfDescribing
     }
 
     /**
-     * @throws RuntimeException
+     * @throws Exception
      */
     public function generateReturnValue(): mixed
     {

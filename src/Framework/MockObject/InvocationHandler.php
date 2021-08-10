@@ -95,8 +95,8 @@ final class InvocationHandler
     }
 
     /**
+     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws Exception
-     * @throws RuntimeException
      */
     public function invoke(Invocation $invocation): mixed
     {

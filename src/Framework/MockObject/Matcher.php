@@ -85,6 +85,7 @@ final class Matcher
     }
 
     /**
+     * @throws Exception
      * @throws ExpectationFailedException
      * @throws MatchBuilderNotFoundException
      * @throws MethodNameNotConfiguredException
