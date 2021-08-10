@@ -196,14 +196,14 @@ final class Invocation implements SelfDescribing
             try {
                 return (new Generator)->getMock($this->returnType, [], [], '', false);
             } catch (Throwable $t) {
-                if ($t instanceof Exception) {
-                    throw $t;
-                }
-
                 throw new RuntimeException(
-                    $t->getMessage(),
+                    sprintf(
+                        'Return value for %s::%s() cannot be generated: %s',
+                        $this->className,
+                        $this->methodName,
+                        $t->getMessage(),
+                    ),
                     (int) $t->getCode(),
-                    $t
                 );
             }
         }
