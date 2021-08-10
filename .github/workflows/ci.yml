@@ -228,11 +228,19 @@ jobs:
           - "7.3"
           - "7.4"
           - "8.0"
-          - "8.1"
 
         coverage:
           - pcov
           - xdebug
+
+        experimental:
+          - false
+
+        include:
+          - php-version: "8.1"
+            experimental: true
+
+    continue-on-error: ${{ matrix.experimental }}
 
     steps:
       - name: Checkout
