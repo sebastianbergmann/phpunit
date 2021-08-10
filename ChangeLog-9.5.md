@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 ### Fixed
 
 * [#4750](https://github.com/sebastianbergmann/phpunit/issues/4750): Automatic return value generation leads to invalid (and superfluous) test double code generation when a stubbed method returns `*|false`
+* [#4751](https://github.com/sebastianbergmann/phpunit/issues/4751): Configuration validation fails when using brackets in glob pattern
 
 ## [9.5.8] - 2021-07-31
 
