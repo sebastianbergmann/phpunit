@@ -25,6 +25,7 @@ use function interface_exists;
 use function is_array;
 use function is_object;
 use function md5;
+use function method_exists;
 use function mt_rand;
 use function preg_match;
 use function preg_match_all;
@@ -717,6 +718,10 @@ final class Generator
                 );
             }
             // @codeCoverageIgnoreEnd
+
+            if (method_exists($class, 'isEnum') && $class->isEnum()) {
+                throw new ClassIsEnumerationException($_mockClassName['fullClassName']);
+            }
 
             if ($class->isFinal()) {
                 throw new ClassIsFinalException($_mockClassName['fullClassName']);
