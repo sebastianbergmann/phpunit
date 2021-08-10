@@ -20,7 +20,7 @@ final class CannotUseAddMethodsException extends \PHPUnit\Framework\Exception im
     {
         parent::__construct(
             sprintf(
-                'Trying to set mock method "%s" with addMethods(), but it exists in class "%s". Use onlyMethods() for methods that exist in the class',
+                'Trying to configure method "%s" with addMethods(), but it exists in class "%s". Use onlyMethods() for methods that exist in the class',
                 $methodName,
                 $type
             )
