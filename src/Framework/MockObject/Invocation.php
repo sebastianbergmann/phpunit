@@ -211,9 +211,13 @@ final class Invocation implements SelfDescribing
                     return (new Generator)->getMockForInterfaces($types);
                 } catch (Throwable $t) {
                     throw new RuntimeException(
-                        $t->getMessage(),
+                        sprintf(
+                            'Return value for %s::%s() cannot be generated: %s',
+                            $this->className,
+                            $this->methodName,
+                            $t->getMessage(),
+                        ),
                         (int) $t->getCode(),
-                        $t
                     );
                 }
             }
