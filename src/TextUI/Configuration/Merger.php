@@ -195,63 +195,66 @@ final class Merger
         $coverageTextShowUncoveredFiles = false;
         $coverageTextShowOnlySummary    = false;
         $coverageXml                    = null;
+        $coverageFromXmlConfiguration   = true;
 
-        if (!($cliConfiguration->hasNoCoverage() && $cliConfiguration->noCoverage())) {
-            if ($cliConfiguration->hasCoverageClover()) {
-                $coverageClover = $cliConfiguration->coverageClover();
-            } elseif ($xmlConfiguration->codeCoverage()->hasClover()) {
-                $coverageClover = $xmlConfiguration->codeCoverage()->clover()->target()->path();
-            }
+        if ($cliConfiguration->hasNoCoverage() && $cliConfiguration->noCoverage()) {
+            $coverageFromXmlConfiguration = false;
+        }
 
-            if ($cliConfiguration->hasCoverageCobertura()) {
-                $coverageCobertura = $cliConfiguration->coverageCobertura();
-            } elseif ($xmlConfiguration->codeCoverage()->hasCobertura()) {
-                $coverageCobertura = $xmlConfiguration->codeCoverage()->cobertura()->target()->path();
-            }
+        if ($cliConfiguration->hasCoverageClover()) {
+            $coverageClover = $cliConfiguration->coverageClover();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasClover()) {
+            $coverageClover = $xmlConfiguration->codeCoverage()->clover()->target()->path();
+        }
 
-            if ($xmlConfiguration->codeCoverage()->hasCrap4j()) {
-                $coverageCrap4jThreshold = $xmlConfiguration->codeCoverage()->crap4j()->threshold();
-            }
+        if ($cliConfiguration->hasCoverageCobertura()) {
+            $coverageCobertura = $cliConfiguration->coverageCobertura();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasCobertura()) {
+            $coverageCobertura = $xmlConfiguration->codeCoverage()->cobertura()->target()->path();
+        }
 
-            if ($cliConfiguration->hasCoverageCrap4J()) {
-                $coverageCrap4j = $cliConfiguration->coverageCrap4J();
-            } elseif ($xmlConfiguration->codeCoverage()->hasCrap4j()) {
-                $coverageCrap4j = $xmlConfiguration->codeCoverage()->crap4j()->target()->path();
-            }
+        if ($xmlConfiguration->codeCoverage()->hasCrap4j()) {
+            $coverageCrap4jThreshold = $xmlConfiguration->codeCoverage()->crap4j()->threshold();
+        }
 
-            if ($xmlConfiguration->codeCoverage()->hasHtml()) {
-                $coverageHtmlHighLowerBound = $xmlConfiguration->codeCoverage()->html()->highLowerBound();
-                $coverageHtmlLowUpperBound  = $xmlConfiguration->codeCoverage()->html()->lowUpperBound();
-            }
+        if ($cliConfiguration->hasCoverageCrap4J()) {
+            $coverageCrap4j = $cliConfiguration->coverageCrap4J();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasCrap4j()) {
+            $coverageCrap4j = $xmlConfiguration->codeCoverage()->crap4j()->target()->path();
+        }
 
-            if ($cliConfiguration->hasCoverageHtml()) {
-                $coverageHtml = $cliConfiguration->coverageHtml();
-            } elseif ($xmlConfiguration->codeCoverage()->hasHtml()) {
-                $coverageHtml = $xmlConfiguration->codeCoverage()->html()->target()->path();
-            }
+        if ($xmlConfiguration->codeCoverage()->hasHtml()) {
+            $coverageHtmlHighLowerBound = $xmlConfiguration->codeCoverage()->html()->highLowerBound();
+            $coverageHtmlLowUpperBound  = $xmlConfiguration->codeCoverage()->html()->lowUpperBound();
+        }
 
-            if ($cliConfiguration->hasCoveragePhp()) {
-                $coveragePhp = $cliConfiguration->coveragePhp();
-            } elseif ($xmlConfiguration->codeCoverage()->hasPhp()) {
-                $coveragePhp = $xmlConfiguration->codeCoverage()->php()->target()->path();
-            }
+        if ($cliConfiguration->hasCoverageHtml()) {
+            $coverageHtml = $cliConfiguration->coverageHtml();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasHtml()) {
+            $coverageHtml = $xmlConfiguration->codeCoverage()->html()->target()->path();
+        }
 
-            if ($xmlConfiguration->codeCoverage()->hasText()) {
-                $coverageTextShowUncoveredFiles = $xmlConfiguration->codeCoverage()->text()->showUncoveredFiles();
-                $coverageTextShowOnlySummary    = $xmlConfiguration->codeCoverage()->text()->showOnlySummary();
-            }
+        if ($cliConfiguration->hasCoveragePhp()) {
+            $coveragePhp = $cliConfiguration->coveragePhp();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasPhp()) {
+            $coveragePhp = $xmlConfiguration->codeCoverage()->php()->target()->path();
+        }
 
-            if ($cliConfiguration->hasCoverageText()) {
-                $coverageText = $cliConfiguration->coverageText();
-            } elseif ($xmlConfiguration->codeCoverage()->hasText()) {
-                $coverageText = $xmlConfiguration->codeCoverage()->text()->target()->path();
-            }
+        if ($xmlConfiguration->codeCoverage()->hasText()) {
+            $coverageTextShowUncoveredFiles = $xmlConfiguration->codeCoverage()->text()->showUncoveredFiles();
+            $coverageTextShowOnlySummary    = $xmlConfiguration->codeCoverage()->text()->showOnlySummary();
+        }
 
-            if ($cliConfiguration->hasCoverageXml()) {
-                $coverageXml = $cliConfiguration->coverageXml();
-            } elseif ($xmlConfiguration->codeCoverage()->hasXml()) {
-                $coverageXml = $xmlConfiguration->codeCoverage()->xml()->target()->path();
-            }
+        if ($cliConfiguration->hasCoverageText()) {
+            $coverageText = $cliConfiguration->coverageText();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasText()) {
+            $coverageText = $xmlConfiguration->codeCoverage()->text()->target()->path();
+        }
+
+        if ($cliConfiguration->hasCoverageXml()) {
+            $coverageXml = $cliConfiguration->coverageXml();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasXml()) {
+            $coverageXml = $xmlConfiguration->codeCoverage()->xml()->target()->path();
         }
 
         if ($cliConfiguration->hasBackupGlobals()) {
