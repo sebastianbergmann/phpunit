@@ -23,7 +23,17 @@ final class MergerTest extends TestCase
     {
         $junitLog = uniqid('junit_log_');
         $fromFile = (new Loader)->load(TEST_FILES_PATH . 'configuration_logging.xml');
-        $fromCli  = (new Builder)->fromParameters([
+
+        $this->assertTrue($fromFile->logging()->hasText());
+        $this->assertTrue($fromFile->logging()->hasTeamCity());
+        $this->assertTrue($fromFile->logging()->hasTestDoxHtml());
+        $this->assertTrue($fromFile->logging()->hasTestDoxText());
+        $this->assertTrue($fromFile->logging()->hasTestDoxXml());
+
+        $this->assertTrue($fromFile->logging()->hasJunit());
+        $this->assertNotSame($junitLog, $fromFile->logging()->junit()->target()->path());
+
+        $fromCli = (new Builder)->fromParameters([
             '--no-logging',
             '--log-junit',
             $junitLog,
@@ -45,7 +55,18 @@ final class MergerTest extends TestCase
     {
         $phpCoverage = uniqid('php_coverage_');
         $fromFile    = (new Loader)->load(TEST_FILES_PATH . 'configuration_codecoverage.xml');
-        $fromCli     = (new Builder)->fromParameters([
+
+        $this->assertTrue($fromFile->codeCoverage()->hasClover());
+        $this->assertTrue($fromFile->codeCoverage()->hasCobertura());
+        $this->assertTrue($fromFile->codeCoverage()->hasCrap4j());
+        $this->assertTrue($fromFile->codeCoverage()->hasHtml());
+        $this->assertTrue($fromFile->codeCoverage()->hasText());
+        $this->assertTrue($fromFile->codeCoverage()->hasXml());
+
+        $this->assertTrue($fromFile->codeCoverage()->hasPhp());
+        $this->assertNotSame($phpCoverage, $fromFile->codeCoverage()->php()->target()->path());
+
+        $fromCli = (new Builder)->fromParameters([
             '--no-coverage',
             '--coverage-php',
             $phpCoverage,
