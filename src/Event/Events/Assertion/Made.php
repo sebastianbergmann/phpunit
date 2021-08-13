@@ -65,12 +65,21 @@ final class Made implements Event
 
     public function asString(): string
     {
+        $message = '';
+
+        if (!empty($this->message)) {
+            $message = sprintf(
+                ' - Message: %s',
+                $this->message
+            );
+        }
+
         return sprintf(
-            'Assertion Made (Constraint: %s - Value: %s - Failed: %s - Message: %s)',
+            'Assertion Made (Constraint: %s - Value: %s - Failed: %s%s)',
             $this->constraint()->toString(),
             $this->valueAsString(),
             $this->hasFailed() ? 'true' : 'false',
-            $this->message()
+            $message
         );
     }
 

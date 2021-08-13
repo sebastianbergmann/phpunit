@@ -33,11 +33,11 @@ Event Facade Sealed
 Test Suite Started (PHPUnit\SelfTest\Basic\StatusTest)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
 Mock Object Created (PHPUnit\TestFixture\MockObject\AnInterface)
-Assertion Made (Constraint: is true - Value: true - Failed: false - Message: )
+Assertion Made (Constraint: is true - Value: true - Failed: false)
 Test Passed (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
 Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testFailure)
-Assertion Made (Constraint: is true - Value: false - Failed: true - Message: )
+Assertion Made (Constraint: is true - Value: false - Failed: true)
 Test Failed (PHPUnit\SelfTest\Basic\StatusTest::testFailure)
 Failed asserting that false is true.
 Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testFailure)
