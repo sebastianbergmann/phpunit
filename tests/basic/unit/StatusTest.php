@@ -61,7 +61,7 @@ class StatusTest extends TestCase
 
     public function testSuccessWithMessage(): void
     {
-        $this->assertTrue(true, '"success with custom message"');
+        $this->assertTrue(true, 'success with custom message');
     }
 
     public function testFailureWithMessage(): void
