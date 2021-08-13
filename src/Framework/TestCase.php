@@ -2296,6 +2296,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
     }
 
+    /**
+     * @throws ExpectationFailedException
+     */
     private function performAssertionsOnOutput(): void
     {
         if ($this->outputExpectedRegex !== null) {
