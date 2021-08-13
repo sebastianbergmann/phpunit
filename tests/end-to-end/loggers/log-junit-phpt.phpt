@@ -14,7 +14,12 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-.                                                                   1 / 1 (100%)<?xml version="1.0" encoding="UTF-8"?>
+.                                                                   1 / 1 (100%)
+
+Time: %s, Memory: %s
+
+OK (1 test, 1 assertion)
+<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="%s">
     <testcase name="%send-to-end%ephpt-stderr.phpt" assertions="1" time="%s">
@@ -22,8 +27,3 @@ PHPUnit %s by Sebastian Bergmann and contributors.
     </testcase>
   </testsuite>
 </testsuites>
-
-
-Time: %s, Memory: %s
-
-OK (1 test, 1 assertion)

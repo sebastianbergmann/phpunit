@@ -14,7 +14,20 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-..F.                                                                4 / 4 (100%)<?xml version="1.0" encoding="UTF-8"?>
+..F.                                                                4 / 4 (100%)
+
+Time: %s, Memory: %s
+
+There was 1 failure:
+
+1) PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2 (1, 1, 3)
+Failed asserting that 2 matches expected 3.
+
+%s:%i
+
+FAILURES!
+Tests: 4, Assertions: 4, Failures: 1.
+<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="PHPUnit\TestFixture\DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
     <testsuite name="PHPUnit\TestFixture\DataProviderTest::testAdd" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
@@ -30,16 +43,3 @@ Failed asserting that 2 matches expected 3.
     </testsuite>
   </testsuite>
 </testsuites>
-
-
-Time: %s, Memory: %s
-
-There was 1 failure:
-
-1) PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2 (1, 1, 3)
-Failed asserting that 2 matches expected 3.
-
-%s:%i
-
-FAILURES!
-Tests: 4, Assertions: 4, Failures: 1.

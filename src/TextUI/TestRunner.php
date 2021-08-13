@@ -15,6 +15,7 @@ use const PHP_VERSION;
 use function array_map;
 use function assert;
 use function extension_loaded;
+use function file_put_contents;
 use function htmlspecialchars;
 use function is_file;
 use function mt_srand;
@@ -24,7 +25,7 @@ use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Logging\JunitXmlLogger;
+use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCityLogger;
 use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Logging\TestDox\HtmlResultPrinter;
@@ -219,6 +220,12 @@ final class TestRunner
             );
         }
 
+        if ($this->configuration->hasLogfileJunit()) {
+            $junitXmlLogger = new JunitXmlLogger(
+                $this->configuration->reportUselessTests()
+            );
+        }
+
         Event\Facade::seal();
 
         $this->printer->write(
@@ -267,15 +274,6 @@ final class TestRunner
         if ($this->configuration->hasLogfileTeamcity()) {
             $result->addListener(
                 new TeamCityLogger($this->configuration->logfileTeamcity())
-            );
-        }
-
-        if ($this->configuration->hasLogfileJunit()) {
-            $result->addListener(
-                new JunitXmlLogger(
-                    $this->configuration->logfileJunit(),
-                    $this->configuration->reportUselessTests()
-                )
             );
         }
 
@@ -446,6 +444,13 @@ final class TestRunner
 
         $result->flushListeners();
         $this->printer->printResult($result);
+
+        if (isset($junitXmlLogger)) {
+            file_put_contents(
+                $this->configuration->logfileJunit(),
+                $junitXmlLogger->flush()
+            );
+        }
 
         if (CodeCoverage::isActive()) {
             if ($this->configuration->hasCoverageClover()) {

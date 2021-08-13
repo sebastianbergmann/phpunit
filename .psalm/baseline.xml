@@ -445,24 +445,29 @@
       <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
     </TypeDoesNotContainType>
   </file>
-  <file src="src/Logging/JunitXmlLogger.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$suite-&gt;getName()</code>
-    </ArgumentTypeCoercion>
+  <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
-    <MissingThrowsDocblock occurrences="4">
-      <code>Filter::getFilteredStacktrace($t)</code>
-      <code>parent::__construct($out)</code>
+    <MissingThrowsDocblock occurrences="14">
+      <code>Facade::registerSubscriber(new AssertionMadeSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestAbortedSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestConsideredRiskySubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestErroredSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestFailedSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestFinishedSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestPassedSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestPreparedSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestPrintedOutputSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestSkippedSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this))</code>
+      <code>Facade::registerSubscriber(new TestSuiteStartedSubscriber($this))</code>
+      <code>duration</code>
     </MissingThrowsDocblock>
     <PossiblyNullReference occurrences="1">
       <code>setAttribute</code>
     </PossiblyNullReference>
-    <UndefinedInterfaceMethod occurrences="2">
-      <code>getName</code>
-      <code>getName</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Logging/TeamCityLogger.php">
     <DocblockTypeContradiction occurrences="2">
@@ -1119,8 +1124,7 @@
       <code>new TestListenerAdapter</code>
       <code>private array $extensions = [];</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="9">
-      <code>addListener</code>
+    <DeprecatedMethod occurrences="8">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
