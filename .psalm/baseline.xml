@@ -104,7 +104,7 @@
       <code>new ObjectHasAttribute($attributeName)</code>
       <code>new ObjectHasAttribute($attributeName)</code>
     </DeprecatedClass>
-    <MissingThrowsDocblock occurrences="37">
+    <MissingThrowsDocblock occurrences="36">
       <code>loadFile</code>
       <code>loadFile</code>
       <code>loadFile</code>
@@ -375,10 +375,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="13">
-      <code>endTest</code>
-      <code>endTest</code>
-      <code>endTest</code>
+    <MissingThrowsDocblock occurrences="10">
       <code>generateClassFromWsdl</code>
       <code>getMock</code>
       <code>getMock</code>
@@ -411,7 +408,7 @@
     </RedundantCondition>
   </file>
   <file src="src/Framework/TestRunner.php">
-    <MissingThrowsDocblock occurrences="12">
+    <MissingThrowsDocblock occurrences="11">
       <code>CodeCoverage::instance()</code>
       <code>CodeCoverage::instance()</code>
       <code>CodeCoverage::instance()</code>
@@ -419,7 +416,6 @@
       <code>CodeCoverage::start($test)</code>
       <code>GlobalState::getIncludedFilesAsString()</code>
       <code>cacheDirectory</code>
-      <code>runTestJob</code>
       <code>stop</code>
     </MissingThrowsDocblock>
     <PossiblyUndefinedVariable occurrences="4">
@@ -1139,7 +1135,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="35">
+    <MissingThrowsDocblock occurrences="34">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1167,7 +1163,6 @@
       <code>plainTextTrace</code>
       <code>plainTextTrace</code>
       <code>plainTextTrace</code>
-      <code>reorderTestsInSuite</code>
       <code>run</code>
       <code>stop</code>
       <code>stop</code>
