@@ -1001,17 +1001,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->testValueObjectForEvents = null;
 
-        // Perform assertion on output.
         if (!isset($e)) {
-            try {
-                if ($this->outputExpectedRegex !== null) {
-                    $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
-                } elseif ($this->outputExpectedString !== null) {
-                    $this->assertEquals($this->outputExpectedString, $this->output);
-                }
-            } catch (Throwable $_e) {
-                $e = $_e;
-            }
+            $this->performAssertionsOnOutput();
         }
 
         if (isset($e)) {
@@ -2313,5 +2304,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         return !$reflector->hasMethod($methodName) ||
                $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
+    }
+
+    private function performAssertionsOnOutput(): void
+    {
+        if ($this->outputExpectedRegex !== null) {
+            $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
+        } elseif ($this->outputExpectedString !== null) {
+            $this->assertEquals($this->outputExpectedString, $this->output);
+        }
     }
 }
