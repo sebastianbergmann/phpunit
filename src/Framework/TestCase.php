@@ -893,6 +893,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
+        if ($this->status()->isSuccess()) {
+            Event\Facade::emitter()->testPassed(
+                $this->testValueObjectForEvents()
+            );
+        }
+
         $emitter->testFinished(
             $this->testValueObjectForEvents()
         );
