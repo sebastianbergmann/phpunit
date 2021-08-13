@@ -893,6 +893,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
+        try {
+            $this->stopOutputBuffering();
+        } catch (RiskyTestError $_e) {
+            $e = $e ?? $_e;
+        }
+
+        if (!isset($e)) {
+            $this->performAssertionsOnOutput();
+        }
+
         if ($this->status()->isSuccess()) {
             Event\Facade::emitter()->testPassed(
                 $this->testValueObjectForEvents()
@@ -973,12 +983,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $e = $e ?? $_e;
         }
 
-        try {
-            $this->stopOutputBuffering();
-        } catch (RiskyTestError $_e) {
-            $e = $e ?? $_e;
-        }
-
         if (isset($_e)) {
             if ($_e instanceof RiskyTestError) {
                 $this->status = TestStatus::risky($_e->getMessage());
@@ -1000,10 +1004,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         libxml_clear_errors();
 
         $this->testValueObjectForEvents = null;
-
-        if (!isset($e)) {
-            $this->performAssertionsOnOutput();
-        }
 
         if (isset($e)) {
             $this->onNotSuccessfulTest($e);
