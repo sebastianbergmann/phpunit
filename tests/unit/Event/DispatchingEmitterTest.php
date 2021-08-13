@@ -563,7 +563,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($throwable, $event->throwable());
     }
 
-    public function testTestPassedButRiskyDispatchesTestPassedButRiskyEvent(): void
+    public function testTestConsideredRiskyDispatchesTestConsideredRiskyEvent(): void
     {
         $test = new Code\Test(
             self::class,
@@ -573,16 +573,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
             MetadataCollection::fromArray([])
         );
 
-        $subscriber = new class extends RecordingSubscriber implements Test\PassedButRiskySubscriber {
-            public function notify(Test\PassedButRisky $event): void
+        $subscriber = new class extends RecordingSubscriber implements Test\ConsideredRiskySubscriber {
+            public function notify(Test\ConsideredRisky $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::createDispatcherWithRegisteredSubscriber(
-            Test\PassedButRiskySubscriber::class,
-            Test\PassedButRisky::class,
+            Test\ConsideredRiskySubscriber::class,
+            Test\ConsideredRisky::class,
             $subscriber
         );
 
@@ -595,13 +595,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $throwable = Throwable::from(new Exception('failure'));
 
-        $emitter->testPassedButRisky(
+        $emitter->testConsideredRisky(
             $test,
             $throwable
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Test\PassedButRisky::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(Test\ConsideredRisky::class, $subscriber->lastRecordedEvent());
 
         $event = $subscriber->lastRecordedEvent();
 

@@ -45,7 +45,8 @@ Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
 Test Skipped (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
 Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
-Test Passed But Risky (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
+Test Passed (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
+Test Considered Risky (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
 Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
 This test did not perform any assertions
 
@@ -76,7 +77,9 @@ Test Skipped (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
 skipped with custom message
 Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
-Test Passed But Risky (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
+Test Passed (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
+Test Considered Risky (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
 This test did not perform any assertions
 
 %s/StatusTest.php:87

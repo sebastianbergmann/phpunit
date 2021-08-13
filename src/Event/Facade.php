@@ -153,7 +153,7 @@ final class Facade
             Test\Finished::class,
             Test\OutputPrinted::class,
             Test\Passed::class,
-            Test\PassedButRisky::class,
+            Test\ConsideredRisky::class,
             Test\PassedWithWarning::class,
             Test\PostConditionCalled::class,
             Test\PostConditionFinished::class,

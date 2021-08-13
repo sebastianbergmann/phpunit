@@ -15,9 +15,9 @@ use PHPUnit\Event\Code;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
- * @covers \PHPUnit\Event\Test\PassedButRisky
+ * @covers \PHPUnit\Event\Test\ConsideredRisky
  */
-final class PassedButRiskyTest extends AbstractEventTestCase
+final class ConsideredRiskyTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
@@ -32,7 +32,7 @@ final class PassedButRiskyTest extends AbstractEventTestCase
 
         $throwable = Code\Throwable::from(new Exception('risky'));
 
-        $event = new PassedButRisky(
+        $event = new ConsideredRisky(
             $telemetryInfo,
             $test,
             $throwable

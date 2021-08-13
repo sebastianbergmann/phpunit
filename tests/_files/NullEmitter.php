@@ -87,7 +87,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testPassedButRisky(Code\Test $test, Throwable $throwable): void
+    public function testConsideredRisky(Code\Test $test, Throwable $throwable): void
     {
     }
 

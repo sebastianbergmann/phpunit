@@ -188,7 +188,7 @@ final class TestResult implements Countable
             if ($test instanceof TestCase) {
                 $test->markAsRisky();
 
-                Event\Facade::emitter()->testPassedButRisky(
+                Event\Facade::emitter()->testConsideredRisky(
                     $test->testValueObjectForEvents(),
                     Event\Code\Throwable::from($e)
                 );

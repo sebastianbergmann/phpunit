@@ -59,7 +59,7 @@ interface Emitter
 
     public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void;
 
-    public function testPassedButRisky(Code\Test $test, Throwable $throwable): void;
+    public function testConsideredRisky(Code\Test $test, Throwable $throwable): void;
 
     public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void;
 

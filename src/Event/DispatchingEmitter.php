@@ -219,10 +219,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testPassedButRisky(Code\Test $test, Throwable $throwable): void
+    public function testConsideredRisky(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
-            new Test\PassedButRisky(
+            new Test\ConsideredRisky(
                 $this->telemetryInfo(),
                 $test,
                 $throwable

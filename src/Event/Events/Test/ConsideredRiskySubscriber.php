@@ -14,7 +14,7 @@ use PHPUnit\Event\Subscriber;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-interface PassedButRiskySubscriber extends Subscriber
+interface ConsideredRiskySubscriber extends Subscriber
 {
-    public function notify(PassedButRisky $event): void;
+    public function notify(ConsideredRisky $event): void;
 }

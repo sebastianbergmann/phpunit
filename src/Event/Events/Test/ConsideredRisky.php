@@ -19,7 +19,7 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class PassedButRisky implements Event
+final class ConsideredRisky implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
@@ -58,7 +58,7 @@ final class PassedButRisky implements Event
         }
 
         return sprintf(
-            'Test Passed But Risky (%s::%s)%s',
+            'Test Considered Risky (%s::%s)%s',
             $this->test->className(),
             $this->test->methodNameWithDataSet(),
             $message
