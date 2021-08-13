@@ -176,7 +176,6 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
     /**
      * A test started.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function startTest(Test $test): void
     {

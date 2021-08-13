@@ -42,7 +42,6 @@ final class IsIdentical extends Constraint
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
     public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
@@ -91,7 +90,6 @@ final class IsIdentical extends Constraint
     /**
      * Returns a string representation of the constraint.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function toString(): string
     {
@@ -109,7 +107,6 @@ final class IsIdentical extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function failureDescription(mixed $other): string
     {

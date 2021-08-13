@@ -36,7 +36,6 @@ final class IncompleteTestCase extends TestCase
     /**
      * Returns a string representation of the test case.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function toString(): string
     {

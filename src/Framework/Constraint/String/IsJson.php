@@ -51,7 +51,6 @@ final class IsJson extends Constraint
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function failureDescription(mixed $other): string
     {

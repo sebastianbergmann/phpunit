@@ -137,7 +137,6 @@ final class Matcher
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      * @throws MatchBuilderNotFoundException
      * @throws MethodNameNotConfiguredException
@@ -189,7 +188,6 @@ final class Matcher
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      * @throws MethodNameNotConfiguredException
      */

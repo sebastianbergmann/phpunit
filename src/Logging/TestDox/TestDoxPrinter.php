@@ -93,7 +93,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function endTest(Test $test, float $time): void
     {
@@ -113,7 +112,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addError(Test $test, Throwable $t, float $time): void
     {
@@ -121,7 +119,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
@@ -129,7 +126,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
@@ -137,7 +133,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addIncompleteTest(Test $test, Throwable $t, float $time): void
     {
@@ -145,7 +140,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addRiskyTest(Test $test, Throwable $t, float $time): void
     {
@@ -153,7 +147,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function addSkippedTest(Test $test, Throwable $t, float $time): void
     {
@@ -171,7 +164,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function registerTestResult(Test $test, ?Throwable $t, TestStatus $status, float $time, bool $verbose): void
     {

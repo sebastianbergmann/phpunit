@@ -152,7 +152,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function registerTestResult(Test $test, ?Throwable $t, TestStatus $status, float $time, bool $verbose): void
     {
@@ -164,7 +163,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function formatTestName(Test $test): string
     {

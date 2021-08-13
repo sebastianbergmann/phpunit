@@ -40,7 +40,6 @@ final class TestRunner
 {
     /**
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws CodeCoverageException
      * @throws UnintentionallyCoveredCodeException
      */

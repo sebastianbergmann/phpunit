@@ -67,7 +67,6 @@ final class DataProviderTestSuite extends TestSuite
     /**
      * Returns the size of the each test created using the data provider(s).
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function size(): TestSize
     {

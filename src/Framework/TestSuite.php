@@ -393,7 +393,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      *
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws CodeCoverageException
      * @throws Warning
      */

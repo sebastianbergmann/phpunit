@@ -33,7 +33,6 @@ abstract class Constraint implements Countable, SelfDescribing
      * a boolean value instead: true in case of success, false in case of a
      * failure.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
     public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
@@ -88,7 +87,6 @@ abstract class Constraint implements Countable, SelfDescribing
     /**
      * Throws an exception for the given compared value and test description.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      *
      * @psalm-return never-return
@@ -136,7 +134,6 @@ abstract class Constraint implements Countable, SelfDescribing
      * To provide additional failure information additionalFailureDescription
      * can be used.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     protected function failureDescription(mixed $other): string
     {

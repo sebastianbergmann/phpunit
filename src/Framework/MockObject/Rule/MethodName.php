@@ -41,7 +41,6 @@ final class MethodName
 
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function matches(BaseInvocation $invocation): bool
     {
@@ -50,7 +49,6 @@ final class MethodName
 
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function matchesName(string $methodName): bool
     {

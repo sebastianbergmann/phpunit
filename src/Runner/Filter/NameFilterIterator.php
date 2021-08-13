@@ -47,7 +47,6 @@ final class NameFilterIterator extends RecursiveFilterIterator
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function accept(): bool
     {

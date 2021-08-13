@@ -85,7 +85,6 @@ final class Parameters implements ParametersRule
      * does the rule will get the invoked() method called which should check
      * if an expectation is met.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
     public function verify(): void
@@ -94,7 +93,6 @@ final class Parameters implements ParametersRule
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
     private function doVerify(): bool

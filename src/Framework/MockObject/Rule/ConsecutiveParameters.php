@@ -60,7 +60,6 @@ final class ConsecutiveParameters implements ParametersRule
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
     public function apply(BaseInvocation $invocation): void
@@ -73,7 +72,6 @@ final class ConsecutiveParameters implements ParametersRule
 
     /**
      * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function verify(): void
     {
@@ -85,7 +83,6 @@ final class ConsecutiveParameters implements ParametersRule
     /**
      * Verify a single invocation.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
     private function verifyInvocation(BaseInvocation $invocation, int $callIndex): void
