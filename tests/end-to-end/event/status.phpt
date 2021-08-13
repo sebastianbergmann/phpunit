@@ -19,71 +19,71 @@ print file_get_contents($traceFile);
 unlink($traceFile);
 --EXPECTF--
 %a
-[%s] [%s] Test Runner Started (PHPUnit %s using %s)
-[%s] [%s] Test Runner Configuration Combined
-[%s] [%s] Test Suite Loaded (14 tests)
-[%s] [%s] Test Suite Sorted
-[%s] [%s] Event Facade Sealed
-[%s] [%s] Test Suite Started (PHPUnit\SelfTest\Basic\StatusTest)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
-[%s] [%s] Mock Object Created (PHPUnit\TestFixture\AnInterface)
-[%s] [%s] Assertion Made (Constraint: is true - Value: true - Failed: false - Message: )
-[%s] [%s] Test Passed (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testFailure)
-[%s] [%s] Assertion Made (Constraint: is true - Value: false - Failed: true - Message: )
-[%s] [%s] Test Failed (PHPUnit\SelfTest\Basic\StatusTest::testFailure)
+Test Runner Started (PHPUnit %s using %s)
+Test Runner Configuration Combined
+Test Suite Loaded (14 tests)
+Test Suite Sorted
+Event Facade Sealed
+Test Suite Started (PHPUnit\SelfTest\Basic\StatusTest)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
+Mock Object Created (PHPUnit\TestFixture\MockObject\AnInterface)
+Assertion Made (Constraint: is true - Value: true - Failed: false - Message: )
+Test Passed (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testFailure)
+Assertion Made (Constraint: is true - Value: false - Failed: true - Message: )
+Test Failed (PHPUnit\SelfTest\Basic\StatusTest::testFailure)
 Failed asserting that false is true.
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testFailure)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testError)
-[%s] [%s] Test Errored (PHPUnit\SelfTest\Basic\StatusTest::testError)
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testError)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testIncomplete)
-[%s] [%s] Test Aborted (PHPUnit\SelfTest\Basic\StatusTest::testIncomplete)
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testIncomplete)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
-[%s] [%s] Test Skipped (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
-[%s] [%s] Test Passed But Risky (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testFailure)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testError)
+Test Errored (PHPUnit\SelfTest\Basic\StatusTest::testError)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testError)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testIncomplete)
+Test Aborted (PHPUnit\SelfTest\Basic\StatusTest::testIncomplete)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testIncomplete)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
+Test Skipped (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
+Test Passed But Risky (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
 This test did not perform any assertions
 
 %s/StatusTest.php:53
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testWarning)
-[%s] [%s] Test Passed With Warning (PHPUnit\SelfTest\Basic\StatusTest::testWarning)
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testWarning)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSuccessWithMessage)
-[%s] [%s] Assertion Made (Constraint: is true - Value: true - Failed: false - Message: "success with custom message")
-[%s] [%s] Test Passed (PHPUnit\SelfTest\Basic\StatusTest::testSuccessWithMessage)
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSuccessWithMessage)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage)
-[%s] [%s] Assertion Made (Constraint: is true - Value: false - Failed: true - Message: failure with custom message)
-[%s] [%s] Test Failed (PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testWarning)
+Test Passed With Warning (PHPUnit\SelfTest\Basic\StatusTest::testWarning)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testWarning)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSuccessWithMessage)
+Assertion Made (Constraint: is true - Value: true - Failed: false - Message: "success with custom message")
+Test Passed (PHPUnit\SelfTest\Basic\StatusTest::testSuccessWithMessage)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSuccessWithMessage)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage)
+Assertion Made (Constraint: is true - Value: false - Failed: true - Message: failure with custom message)
+Test Failed (PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage)
 failure with custom message
 Failed asserting that false is true.
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage)
-[%s] [%s] Test Errored (PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage)
+Test Errored (PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage)
 error with custom message
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage)
-[%s] [%s] Test Aborted (PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage)
+Test Aborted (PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage)
 incomplete with custom message
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
-[%s] [%s] Test Skipped (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
+Test Skipped (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
 skipped with custom message
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
-[%s] [%s] Test Passed But Risky (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
+Test Passed But Risky (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
 This test did not perform any assertions
 
 %s/StatusTest.php:87
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
-[%s] [%s] Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
-[%s] [%s] Test Passed With Warning (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
+Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
+Test Passed With Warning (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
 warning with custom message
-[%s] [%s] Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
-[%s] [%s] Test Suite Finished (PHPUnit\SelfTest\Basic\StatusTest)
-[%s] [%s] Test Runner Finished
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
+Test Suite Finished (PHPUnit\SelfTest\Basic\StatusTest)
+Test Runner Finished
