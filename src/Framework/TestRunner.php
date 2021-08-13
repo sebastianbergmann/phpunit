@@ -17,7 +17,7 @@ use function serialize;
 use function sprintf;
 use function var_export;
 use AssertionError;
-use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
@@ -291,6 +291,10 @@ final class TestRunner
         }
 
         $result->endTest($test, $time);
+
+        Event\Facade::emitter()->testFinished(
+            $test->testValueObjectForEvents()
+        );
     }
 
     public function runInSeparateProcess(TestCase $test, TestResult $result, bool $runEntireClass, bool $preserveGlobalState): void

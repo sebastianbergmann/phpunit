@@ -47,10 +47,10 @@ Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSkipped)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
 Test Passed (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
 Test Considered Risky (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
-Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
 This test did not perform any assertions
 
 %s/StatusTest.php:53
+Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testRisky)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testWarning)
 Test Passed With Warning (PHPUnit\SelfTest\Basic\StatusTest::testWarning)
 Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testWarning)
@@ -79,7 +79,6 @@ Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
 Test Passed (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
 Test Considered Risky (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
-Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage)
 This test did not perform any assertions
 
 %s/StatusTest.php:87

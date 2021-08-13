@@ -909,10 +909,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        $emitter->testFinished(
-            $this->testValueObjectForEvents()
-        );
-
         $this->mockObjects = [];
 
         // Tear down the fixture. An exception raised in tearDown() will be
