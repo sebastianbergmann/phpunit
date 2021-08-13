@@ -980,7 +980,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if (isset($_e)) {
-            $this->status = TestStatus::error($_e->getMessage());
+            if ($_e instanceof RiskyTestError) {
+                $this->status = TestStatus::risky($_e->getMessage());
+            } else {
+                $this->status = TestStatus::error($_e->getMessage());
+            }
         }
 
         clearstatcache();
