@@ -65,12 +65,11 @@ final class AfterTestMethodFinished implements Event
 
     public function asString(): string
     {
-        $buffer = '';
+        $buffer = 'After Test Method Finished:' . PHP_EOL;
 
         foreach ($this->calledMethods as $calledMethod) {
             $buffer .= sprintf(
-                '%s After Test Method Finished (%s::%s)' . PHP_EOL,
-                $this->telemetryInfo()->asString(),
+                '- %s::%s' . PHP_EOL,
                 $calledMethod->className(),
                 $calledMethod->methodName()
             );

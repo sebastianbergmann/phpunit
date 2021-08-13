@@ -41,8 +41,7 @@ final class Finished implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Bootstrap Finished (%s)',
-            $this->telemetryInfo()->asString(),
+            'Bootstrap Finished (%s)',
             $this->filename
         );
     }

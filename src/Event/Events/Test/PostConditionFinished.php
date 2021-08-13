@@ -69,8 +69,7 @@ final class PostConditionFinished implements Event
 
         foreach ($this->calledMethods as $calledMethod) {
             $buffer .= sprintf(
-                '%s Post Condition Method Finished (%s::%s)' . PHP_EOL,
-                $this->telemetryInfo()->asString(),
+                'Post Condition Method Finished (%s::%s)' . PHP_EOL,
                 $calledMethod->className(),
                 $calledMethod->methodName()
             );

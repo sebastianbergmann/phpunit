@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\GlobalState;
 
-use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 use SebastianBergmann\GlobalState\Snapshot;
@@ -41,9 +40,6 @@ final class Captured implements Event
 
     public function asString(): string
     {
-        return sprintf(
-            '%s Global State Captured',
-            $this->telemetryInfo()->asString()
-        );
+        return 'Global State Captured';
     }
 }

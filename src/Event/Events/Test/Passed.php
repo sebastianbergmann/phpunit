@@ -42,8 +42,7 @@ final class Passed implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Test Passed (%s::%s)',
-            $this->telemetryInfo()->asString(),
+            'Test Passed (%s::%s)',
             $this->test->className(),
             $this->test->methodNameWithDataSet(),
         );

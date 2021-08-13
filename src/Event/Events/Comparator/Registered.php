@@ -50,8 +50,7 @@ final class Registered implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Comparator Registered (%s)',
-            $this->telemetryInfo()->asString(),
+            'Comparator Registered (%s)',
             $this->className
         );
     }

@@ -49,8 +49,7 @@ final class Loaded implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Extension Loaded (%s %s)',
-            $this->telemetryInfo()->asString(),
+            'Extension Loaded (%s %s)',
             $this->name,
             $this->version
         );

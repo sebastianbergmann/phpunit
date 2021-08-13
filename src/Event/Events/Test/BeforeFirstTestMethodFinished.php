@@ -65,12 +65,11 @@ final class BeforeFirstTestMethodFinished implements Event
 
     public function asString(): string
     {
-        $buffer = '';
+        $buffer = 'Before First Test Method Finished:' . PHP_EOL;
 
         foreach ($this->calledMethods as $calledMethod) {
             $buffer .= sprintf(
-                '%s Before First Test Method Finished (%s::%s)' . PHP_EOL,
-                $this->telemetryInfo()->asString(),
+                '- %s::%s' . PHP_EOL,
                 $calledMethod->className(),
                 $calledMethod->methodName()
             );

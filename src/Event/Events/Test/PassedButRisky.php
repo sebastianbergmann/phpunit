@@ -58,8 +58,7 @@ final class PassedButRisky implements Event
         }
 
         return sprintf(
-            '%s Test Passed But Risky (%s::%s)%s',
-            $this->telemetryInfo()->asString(),
+            'Test Passed But Risky (%s::%s)%s',
             $this->test->className(),
             $this->test->methodNameWithDataSet(),
             $message

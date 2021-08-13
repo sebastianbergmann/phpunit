@@ -59,8 +59,7 @@ final class Modified implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Global State Modified%s%s',
-            $this->telemetryInfo()->asString(),
+            'Global State Modified%s%s',
             PHP_EOL,
             $this->diff
         );

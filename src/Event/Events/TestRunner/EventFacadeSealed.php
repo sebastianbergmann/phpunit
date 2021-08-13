@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\TestRunner;
 
-use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -32,9 +31,6 @@ final class EventFacadeSealed implements Event
 
     public function asString(): string
     {
-        return sprintf(
-            '%s Event Facade Sealed',
-            $this->telemetryInfo()->asString()
-        );
+        return 'Event Facade Sealed';
     }
 }

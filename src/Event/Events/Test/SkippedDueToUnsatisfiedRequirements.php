@@ -63,8 +63,7 @@ final class SkippedDueToUnsatisfiedRequirements implements Event
         }
 
         return sprintf(
-            '%s Test Skipped Due To Unsatisfied Requirements (%s::%s)%s',
-            $this->telemetryInfo()->asString(),
+            'Test Skipped Due To Unsatisfied Requirements (%s::%s)%s',
             $this->testMethod->className(),
             $this->testMethod->methodName(),
             $message

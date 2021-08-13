@@ -59,8 +59,7 @@ final class BeforeTestMethodCalled implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Before Test Method Called (%s::%s)',
-            $this->telemetryInfo()->asString(),
+            'Before Test Method Called (%s::%s)',
             $this->calledMethod->className(),
             $this->calledMethod->methodName()
         );

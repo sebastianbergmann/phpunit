@@ -64,8 +64,7 @@ final class PartialMockObjectCreated implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Partial Mock Object Created (%s)',
-            $this->telemetryInfo()->asString(),
+            'Partial Mock Object Created (%s)',
             $this->className
         );
     }

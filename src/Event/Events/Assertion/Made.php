@@ -66,8 +66,7 @@ final class Made implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Assertion Made (Constraint: %s - Value: %s - Failed: %s - Message: %s)',
-            $this->telemetryInfo()->asString(),
+            'Assertion Made (Constraint: %s - Value: %s - Failed: %s - Message: %s)',
             $this->constraint()->toString(),
             $this->valueAsString(),
             $this->hasFailed() ? 'true' : 'false',

@@ -50,8 +50,7 @@ final class MockObjectCreated implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Mock Object Created (%s)',
-            $this->telemetryInfo()->asString(),
+            'Mock Object Created (%s)',
             $this->className
         );
     }

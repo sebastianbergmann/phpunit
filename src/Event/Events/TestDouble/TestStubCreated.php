@@ -50,8 +50,7 @@ final class TestStubCreated implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Test Stub Created (%s)',
-            $this->telemetryInfo()->asString(),
+            'Test Stub Created (%s)',
             $this->className
         );
     }

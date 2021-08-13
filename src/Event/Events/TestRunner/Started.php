@@ -42,8 +42,7 @@ final class Started implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Test Runner Started (%s)',
-            $this->telemetryInfo()->asString(),
+            'Test Runner Started (%s)',
             $this->runtime->asString()
         );
     }

@@ -42,8 +42,7 @@ final class Prepared implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Test Prepared (%s::%s)',
-            $this->telemetryInfo()->asString(),
+            'Test Prepared (%s::%s)',
             $this->test->className(),
             $this->test->methodNameWithDataSet(),
         );

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\TestRunner;
 
-use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -41,9 +40,6 @@ final class Configured implements Event
 
     public function asString(): string
     {
-        return sprintf(
-            '%s Test Runner Configuration Combined',
-            $this->telemetryInfo()->asString()
-        );
+        return 'Test Runner Configuration Combined';
     }
 }

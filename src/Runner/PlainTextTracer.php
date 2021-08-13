@@ -32,7 +32,7 @@ final class PlainTextTracer implements Tracer
     {
         file_put_contents(
             $this->path,
-            $event->asString() . PHP_EOL,
+            $event->telemetryInfo()->asString() . ' ' . $event->asString() . PHP_EOL,
             FILE_APPEND|LOCK_EX
         );
     }

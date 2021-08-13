@@ -58,8 +58,7 @@ final class PassedWithWarning implements Event
         }
 
         return sprintf(
-            '%s Test Passed With Warning (%s::%s)%s',
-            $this->telemetryInfo()->asString(),
+            'Test Passed With Warning (%s::%s)%s',
             $this->test->className(),
             $this->test->methodNameWithDataSet(),
             $message

@@ -58,8 +58,7 @@ final class TestProxyCreated implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Test Proxy Created (%s)',
-            $this->telemetryInfo()->asString(),
+            'Test Proxy Created (%s)',
             $this->className
         );
     }

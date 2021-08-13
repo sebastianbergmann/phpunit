@@ -50,8 +50,7 @@ final class Started implements Event
         }
 
         return sprintf(
-            '%s Test Suite Started %s',
-            $this->telemetryInfo()->asString(),
+            'Test Suite Started %s',
             $name,
         );
     }

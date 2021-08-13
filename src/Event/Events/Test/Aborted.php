@@ -58,8 +58,7 @@ final class Aborted implements Event
         }
 
         return sprintf(
-            '%s Test Aborted (%s::%s)%s',
-            $this->telemetryInfo()->asString(),
+            'Test Aborted (%s::%s)%s',
             $this->test->className(),
             $this->test->methodNameWithDataSet(),
             $message

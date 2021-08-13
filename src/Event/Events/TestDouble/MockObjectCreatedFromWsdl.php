@@ -103,8 +103,7 @@ final class MockObjectCreatedFromWsdl implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Mock Object Created (%s)',
-            $this->telemetryInfo()->asString(),
+            'Mock Object Created (%s)',
             $this->wsdlFile
         );
     }

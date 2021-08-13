@@ -41,8 +41,7 @@ final class Loaded implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Test Suite Loaded (%d tests)',
-            $this->telemetryInfo()->asString(),
+            'Test Suite Loaded (%d tests)',
             $this->info->count()
         );
     }

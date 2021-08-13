@@ -69,8 +69,7 @@ final class PreConditionFinished implements Event
 
         foreach ($this->calledMethods as $calledMethod) {
             $buffer .= sprintf(
-                '%s Pre Condition Method Finished (%s::%s)' . PHP_EOL,
-                $this->telemetryInfo()->asString(),
+                'Pre Condition Method Finished (%s::%s)' . PHP_EOL,
                 $calledMethod->className(),
                 $calledMethod->methodName()
             );

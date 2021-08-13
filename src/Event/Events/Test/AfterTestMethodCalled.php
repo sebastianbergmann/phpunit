@@ -59,8 +59,7 @@ final class AfterTestMethodCalled implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s After Test Method Called (%s::%s)',
-            $this->telemetryInfo()->asString(),
+            'After Test Method Called (%s::%s)',
             $this->calledMethod->className(),
             $this->calledMethod->methodName()
         );

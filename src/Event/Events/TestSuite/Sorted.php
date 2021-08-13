@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
-use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -56,9 +55,6 @@ final class Sorted implements Event
 
     public function asString(): string
     {
-        return sprintf(
-            '%s Test Suite Sorted',
-            $this->telemetryInfo()->asString()
-        );
+        return 'Test Suite Sorted';
     }
 }

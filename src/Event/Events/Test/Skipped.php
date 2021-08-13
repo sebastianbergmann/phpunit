@@ -58,8 +58,7 @@ final class Skipped implements Event
         }
 
         return sprintf(
-            '%s Test Skipped (%s::%s)%s',
-            $this->telemetryInfo()->asString(),
+            'Test Skipped (%s::%s)%s',
             $this->test->className(),
             $this->test->methodNameWithDataSet(),
             $message

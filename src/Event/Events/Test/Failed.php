@@ -58,8 +58,7 @@ final class Failed implements Event
         }
 
         return sprintf(
-            '%s Test Failed (%s::%s)%s',
-            $this->telemetryInfo()->asString(),
+            'Test Failed (%s::%s)%s',
             $this->test->className(),
             $this->test->methodNameWithDataSet(),
             $message

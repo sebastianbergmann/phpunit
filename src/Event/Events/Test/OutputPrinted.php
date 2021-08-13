@@ -51,8 +51,7 @@ final class OutputPrinted implements Event
     public function asString(): string
     {
         return sprintf(
-            '%s Test Printed Output%s%s',
-            $this->telemetryInfo()->asString(),
+            'Test Printed Output%s%s',
             PHP_EOL,
             $this->output
         );

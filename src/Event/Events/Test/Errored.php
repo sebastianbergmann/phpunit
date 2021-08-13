@@ -58,8 +58,7 @@ final class Errored implements Event
         }
 
         return sprintf(
-            '%s Test Errored (%s::%s)%s',
-            $this->telemetryInfo()->asString(),
+            'Test Errored (%s::%s)%s',
             $this->test->className(),
             $this->test->methodNameWithDataSet(),
             $message
