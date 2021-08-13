@@ -23,17 +23,29 @@ final class PlainTextTracer implements Tracer
 {
     private string $path;
 
-    public function __construct(string $path)
+    private bool $includeTelemetryInfo;
+
+    public function __construct(string $path, bool $includeTelemetryInfo)
     {
-        $this->path = $path;
+        $this->path                 = $path;
+        $this->includeTelemetryInfo = $includeTelemetryInfo;
     }
 
     public function trace(Event $event): void
     {
         file_put_contents(
             $this->path,
-            $event->telemetryInfo()->asString() . ' ' . $event->asString() . PHP_EOL,
+            $this->telemetryInfo($event) . $event->asString() . PHP_EOL,
             FILE_APPEND|LOCK_EX
         );
+    }
+
+    private function telemetryInfo(Event $event): string
+    {
+        if (!$this->includeTelemetryInfo) {
+            return '';
+        }
+
+        return $event->telemetryInfo()->asString() . ' ';
     }
 }

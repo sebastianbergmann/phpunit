@@ -212,7 +212,10 @@ final class TestRunner
             }
 
             Event\Facade::registerTracer(
-                new PlainTextTracer($this->configuration->plainTextTrace())
+                new PlainTextTracer(
+                    $this->configuration->plainTextTrace(),
+                    $this->configuration->verbose()
+                )
             );
         }
 
