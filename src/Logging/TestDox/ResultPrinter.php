@@ -175,7 +175,6 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
 
     /**
      * A test started.
-     *
      */
     public function startTest(Test $test): void
     {

@@ -158,7 +158,6 @@ abstract class AbstractPhpProcess
 
     /**
      * Runs a single test in a separate PHP process.
-     *
      */
     public function runTestJob(string $job, Test $test, TestResult $result): void
     {
@@ -243,7 +242,6 @@ abstract class AbstractPhpProcess
 
     /**
      * Processes the TestResult object from an isolated process.
-     *
      */
     private function processChildResult(Test $test, TestResult $result, string $stdout, string $stderr): void
     {

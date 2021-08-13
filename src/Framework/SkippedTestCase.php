@@ -35,7 +35,6 @@ final class SkippedTestCase extends TestCase
 
     /**
      * Returns a string representation of the test case.
-     *
      */
     public function toString(): string
     {

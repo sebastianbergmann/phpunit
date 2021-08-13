@@ -151,8 +151,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
         return $test::class;
     }
 
-    /**
-     */
     protected function registerTestResult(Test $test, ?Throwable $t, TestStatus $status, float $time, bool $verbose): void
     {
         if (!$status->isSuccess()) {
@@ -162,8 +160,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
         parent::registerTestResult($test, $t, $status, $time, $verbose);
     }
 
-    /**
-     */
     protected function formatTestName(Test $test): string
     {
         if ($test instanceof TestCase) {

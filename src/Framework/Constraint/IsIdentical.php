@@ -89,7 +89,6 @@ final class IsIdentical extends Constraint
 
     /**
      * Returns a string representation of the constraint.
-     *
      */
     public function toString(): string
     {
@@ -106,7 +105,6 @@ final class IsIdentical extends Constraint
      *
      * The beginning of failure messages is "Failed asserting that" in most
      * cases. This method should return the second part of that sentence.
-     *
      */
     protected function failureDescription(mixed $other): string
     {

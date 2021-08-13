@@ -260,8 +260,6 @@ final class TestResult implements Countable
         }
     }
 
-    /**
-     */
     public function endTest(Test $test, float $time): void
     {
         foreach ($this->listeners as $listener) {

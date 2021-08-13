@@ -92,8 +92,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     {
     }
 
-    /**
-     */
     public function endTest(Test $test, float $time): void
     {
         if (!$test instanceof TestCase && !$test instanceof PhptTestCase && !$test instanceof TestSuite) {
@@ -111,43 +109,31 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
         parent::endTest($test, $time);
     }
 
-    /**
-     */
     public function addError(Test $test, Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, TestStatus::error(), $time, true);
     }
 
-    /**
-     */
     public function addWarning(Test $test, Warning $e, float $time): void
     {
         $this->registerTestResult($test, $e, TestStatus::warning(), $time, true);
     }
 
-    /**
-     */
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
         $this->registerTestResult($test, $e, TestStatus::failure(), $time, true);
     }
 
-    /**
-     */
     public function addIncompleteTest(Test $test, Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, TestStatus::incomplete(), $time, false);
     }
 
-    /**
-     */
     public function addRiskyTest(Test $test, Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, TestStatus::risky(), $time, false);
     }
 
-    /**
-     */
     public function addSkippedTest(Test $test, Throwable $t, float $time): void
     {
         $this->registerTestResult($test, $t, TestStatus::skipped(), $time, false);
@@ -163,8 +149,6 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
         $this->flushOutputBuffer(true);
     }
 
-    /**
-     */
     protected function registerTestResult(Test $test, ?Throwable $t, TestStatus $status, float $time, bool $verbose): void
     {
         $testName = $test instanceof Reorderable ? $test->sortId() : $test->getName();

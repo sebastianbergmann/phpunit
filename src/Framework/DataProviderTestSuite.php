@@ -66,7 +66,6 @@ final class DataProviderTestSuite extends TestSuite
 
     /**
      * Returns the size of the each test created using the data provider(s).
-     *
      */
     public function size(): TestSize
     {

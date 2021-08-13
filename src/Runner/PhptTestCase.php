@@ -357,8 +357,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         throw new Exception('No PHPT assertion found');
     }
 
-    /**
-     */
     private function runSkip(array &$sections, TestResult $result, array $settings): bool
     {
         if (!isset($sections['SKIPIF'])) {

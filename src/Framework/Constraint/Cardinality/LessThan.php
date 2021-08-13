@@ -23,7 +23,6 @@ final class LessThan extends Constraint
 
     /**
      * Returns a string representation of the constraint.
-     *
      */
     public function toString(): string
     {

@@ -133,7 +133,6 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * To provide additional failure information additionalFailureDescription
      * can be used.
-     *
      */
     protected function failureDescription(mixed $other): string
     {

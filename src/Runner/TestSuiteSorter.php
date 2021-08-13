@@ -191,8 +191,6 @@ final class TestSuiteSorter
         }
     }
 
-    /**
-     */
     private function addSuiteToDefectSortOrder(TestSuite $suite): void
     {
         $max = 0;
@@ -227,8 +225,7 @@ final class TestSuiteSorter
     {
         usort(
             $tests,
-            /**
-             */
+
             function ($left, $right) {
                 return $this->cmpDefectPriorityAndTime($left, $right);
             }
@@ -241,8 +238,7 @@ final class TestSuiteSorter
     {
         usort(
             $tests,
-            /**
-             */
+
             function ($left, $right) {
                 return $this->cmpDuration($left, $right);
             }
@@ -255,8 +251,7 @@ final class TestSuiteSorter
     {
         usort(
             $tests,
-            /**
-             */
+
             function ($left, $right) {
                 return $this->cmpSize($left, $right);
             }
@@ -271,7 +266,6 @@ final class TestSuiteSorter
      * 1. sort tests by defect weight defined in self::DEFECT_SORT_WEIGHT
      * 2. when tests are equally defective, sort the fastest to the front
      * 3. do not reorder successful tests
-     *
      */
     private function cmpDefectPriorityAndTime(Test $a, Test $b): int
     {
@@ -297,7 +291,6 @@ final class TestSuiteSorter
 
     /**
      * Compares test duration for sorting tests by duration ascending.
-     *
      */
     private function cmpDuration(Test $a, Test $b): int
     {
@@ -357,8 +350,6 @@ final class TestSuiteSorter
         return array_merge($newTestOrder, $tests);
     }
 
-    /**
-     */
     private function calculateTestExecutionOrder(Test $suite): array
     {
         $tests = [];

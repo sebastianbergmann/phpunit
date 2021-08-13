@@ -130,8 +130,6 @@ final class NamePrettifier
         return $result;
     }
 
-    /**
-     */
     public function prettifyTestCase(TestCase $test): string
     {
         $annotationWithPlaceholders = false;
@@ -244,8 +242,6 @@ final class NamePrettifier
         return $buffer;
     }
 
-    /**
-     */
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
     {
         try {
