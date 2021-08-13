@@ -6,6 +6,7 @@ $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--stderr';
 $_SERVER['argv'][] = '--trace-text';
 $_SERVER['argv'][] = $traceFile;
 $_SERVER['argv'][] = __DIR__ . '/../../basic/unit/StatusTest.php';
