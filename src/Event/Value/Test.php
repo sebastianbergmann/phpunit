@@ -28,17 +28,23 @@ final class Test
 
     private string $dataSet;
 
+    private string $file;
+
+    private int $line;
+
     private MetadataCollection $metadata;
 
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName, string $methodNameWithDataSet, string $dataSet, MetadataCollection $metadata)
+    public function __construct(string $className, string $methodName, string $methodNameWithDataSet, string $dataSet, string $file, int $line, MetadataCollection $metadata)
     {
         $this->className             = $className;
         $this->methodName            = $methodName;
         $this->methodNameWithDataSet = $methodNameWithDataSet;
         $this->dataSet               = $dataSet;
+        $this->file                  = $file;
+        $this->line                  = $line;
         $this->metadata              = $metadata;
     }
 
@@ -68,6 +74,16 @@ final class Test
     public function dataSet(): string
     {
         return $this->dataSet;
+    }
+
+    public function file(): string
+    {
+        return $this->file;
+    }
+
+    public function line(): int
+    {
+        return $this->line;
     }
 
     public function metadata(): MetadataCollection

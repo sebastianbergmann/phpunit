@@ -94,6 +94,7 @@ use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
 use ReflectionClass;
 use ReflectionException;
+use ReflectionMethod;
 use ReflectionObject;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
@@ -1304,11 +1305,23 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $metadata = (MetadataRegistry::parser())->forClassAndMethod(static::class, $this->name);
         }
 
+        try {
+            $reflector = new ReflectionMethod(static::class, $this->getName(false));
+
+            $file = $reflector->getFileName();
+            $line = $reflector->getStartLine();
+        } catch (ReflectionException) {
+            $file = 'unknown';
+            $line = 0;
+        }
+
         $this->testValueObjectForEvents = new Event\Code\Test(
             static::class,
             $this->getName(false),
             $this->getName(),
             $this->getDataSetAsStringWithData(),
+            $file,
+            $line,
             $metadata,
         );
 

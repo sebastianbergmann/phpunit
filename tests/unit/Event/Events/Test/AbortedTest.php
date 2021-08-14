@@ -27,6 +27,8 @@ final class AbortedTest extends AbstractEventTestCase
             'foo',
             'foo with data set #123',
             'foo with data set #123 (...)',
+            'unknown',
+            0,
             MetadataCollection::fromArray([])
         );
 
