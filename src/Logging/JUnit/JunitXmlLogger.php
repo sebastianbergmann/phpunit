@@ -40,8 +40,6 @@ final class JunitXmlLogger
 
     private DOMElement $root;
 
-    private bool $reportRiskyTests;
-
     /**
      * @var DOMElement[]
      */
@@ -94,10 +92,8 @@ final class JunitXmlLogger
 
     public function __construct(bool $reportRiskyTests)
     {
-        $this->reportRiskyTests = $reportRiskyTests;
-
+        $this->registerSubscribers($reportRiskyTests);
         $this->createDocument();
-        $this->registerSubscribers();
     }
 
     public function flush(): string
@@ -289,10 +285,6 @@ final class JunitXmlLogger
 
     public function testConsideredRisky(ConsideredRisky $event): void
     {
-        if (!$this->reportRiskyTests) {
-            return;
-        }
-
         $this->handleFault($event->test(), $event->throwable(), 'error');
 
         $this->testSuiteErrors[$this->testSuiteLevel]++;
@@ -303,7 +295,7 @@ final class JunitXmlLogger
         $this->numberOfAssertions += $event->constraint()->count();
     }
 
-    private function registerSubscribers(): void
+    private function registerSubscribers(bool $reportRiskyTests): void
     {
         Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));
         Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
@@ -312,12 +304,15 @@ final class JunitXmlLogger
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new TestPassedSubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
-        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
         Facade::registerSubscriber(new AssertionMadeSubscriber($this));
+
+        if ($reportRiskyTests) {
+            Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
+        }
     }
 
     private function createDocument(): void
