@@ -55,6 +55,11 @@ final class Test
         return $this->methodName;
     }
 
+    public function usesProvidedData(): bool
+    {
+        return !empty($this->dataSet);
+    }
+
     public function methodNameWithDataSet(): string
     {
         return $this->methodNameWithDataSet;
