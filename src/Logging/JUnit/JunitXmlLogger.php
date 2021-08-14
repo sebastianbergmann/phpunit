@@ -29,7 +29,6 @@ use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionMethod;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -189,14 +188,8 @@ final class JunitXmlLogger
         $testCase->setAttribute('name', $event->test()->methodName());
         $testCase->setAttribute('class', $event->test()->className());
         $testCase->setAttribute('classname', str_replace('\\', '.', $event->test()->className()));
-
-        try {
-            $reflector = new ReflectionMethod($event->test()->className(), $event->test()->methodName());
-
-            $testCase->setAttribute('file', $reflector->getFileName());
-            $testCase->setAttribute('line', (string) $reflector->getStartLine());
-        } catch (ReflectionException) {
-        }
+        $testCase->setAttribute('file', $event->test()->file());
+        $testCase->setAttribute('line', (string) $event->test()->line());
 
         $this->currentTestCase    = $testCase;
         $this->numberOfAssertions = 0;
