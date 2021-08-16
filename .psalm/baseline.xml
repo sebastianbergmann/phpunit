@@ -248,6 +248,11 @@
       <code>Filter::getFilteredStacktrace($this)</code>
     </MissingThrowsDocblock>
   </file>
+  <file src="src/Framework/Exception/InvalidArgumentException.php">
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>$stack[1]['class']</code>
+    </PossiblyUndefinedArrayOffset>
+  </file>
   <file src="src/Framework/ExceptionWrapper.php">
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($this)</code>
