@@ -10,6 +10,8 @@
 namespace PHPUnit\Logging\JUnit;
 
 use function assert;
+use function is_int;
+use function sprintf;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Event\Assertion\Made;
@@ -185,11 +187,13 @@ final class JunitXmlLogger
     {
         $testCase = $this->document->createElement('testcase');
 
-        $testCase->setAttribute('name', $event->test()->methodName());
-        $testCase->setAttribute('class', $event->test()->className());
-        $testCase->setAttribute('classname', str_replace('\\', '.', $event->test()->className()));
-        $testCase->setAttribute('file', $event->test()->file());
-        $testCase->setAttribute('line', (string) $event->test()->line());
+        $test = $event->test();
+
+        $testCase->setAttribute('name', $this->name($test));
+        $testCase->setAttribute('class', $test->className());
+        $testCase->setAttribute('classname', str_replace('\\', '.', $test->className()));
+        $testCase->setAttribute('file', $test->file());
+        $testCase->setAttribute('line', (string) $test->line());
 
         $this->currentTestCase    = $testCase;
         $this->numberOfAssertions = 0;
@@ -366,6 +370,29 @@ final class JunitXmlLogger
             $test->className(),
             $test->methodName(),
             $test->dataSet()
+        );
+    }
+
+    private function name(Test $test): string
+    {
+        if (!$test->usesProvidedData()) {
+            return $test->methodName();
+        }
+
+        $dataSetName = $test->dataSetName();
+
+        if (is_int($dataSetName)) {
+            return sprintf(
+                '%s with data set #%d',
+                $test->methodName(),
+                $dataSetName
+            );
+        }
+
+        return sprintf(
+            '%s with data set "%s"',
+            $test->methodName(),
+            $dataSetName
         );
     }
 }
