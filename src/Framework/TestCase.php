@@ -38,6 +38,7 @@ use function ini_set;
 use function is_array;
 use function is_callable;
 use function is_int;
+use function is_numeric;
 use function is_object;
 use function is_string;
 use function libxml_clear_errors;
@@ -1315,10 +1316,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $line = 0;
         }
 
+        $dataSetName = $this->dataName();
+
+        if (is_numeric($dataSetName)) {
+            $dataSetName = (int) $dataSetName;
+        }
+
         $this->testValueObjectForEvents = new Event\Code\Test(
             static::class,
             $this->getName(false),
-            $this->dataName(),
+            $dataSetName,
             $this->getDataSetAsStringWithData(),
             $file,
             $line,
