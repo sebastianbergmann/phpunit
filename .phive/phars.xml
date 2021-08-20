@@ -7,5 +7,4 @@
   <phar name="psalm" version="^4.0" installed="4.9.3" location="./tools/psalm" copy="true"/>
   <phar name="humbug/php-scoper" version="^0.15.0" installed="0.15.0" location="./tools/php-scoper" copy="true"/>
   <phar name="composer" version="^2.0.3" installed="2.1.5" location="./tools/composer" copy="true"/>
-  <phar name="phpbench" version="^1.0.1" installed="1.0.2" location="./tools/phpbench" copy="true"/>
 </phive>
