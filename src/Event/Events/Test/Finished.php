@@ -44,7 +44,7 @@ final class Finished implements Event
         return sprintf(
             'Test Finished (%s::%s)',
             $this->test->className(),
-            $this->test->methodNameWithDataSet(),
+            $this->test->methodName(),
         );
     }
 }

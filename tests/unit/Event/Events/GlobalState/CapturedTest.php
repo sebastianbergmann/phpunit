@@ -19,7 +19,7 @@ final class CapturedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
         $snapshot      = new Snapshot;
 
         $event = new Captured(

@@ -18,7 +18,7 @@ final class SortedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo         = self::createTelemetryInfo();
+        $telemetryInfo         = $this->telemetryInfo();
         $executionOrder        = 9001;
         $executionOrderDefects = 5;
         $resolveDependencies   = true;

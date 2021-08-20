@@ -18,7 +18,7 @@ final class RegisteredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
         $className     = self::class;
 
         $event = new Registered(

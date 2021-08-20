@@ -19,7 +19,7 @@ final class PreConditionCalledTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
         $testClassName = self::class;
         $calledMethod  = new Code\ClassMethod(...array_values(explode(
             '::',

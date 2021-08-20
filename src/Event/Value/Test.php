@@ -24,7 +24,7 @@ final class Test
 
     private string $methodName;
 
-    private string $methodNameWithDataSet;
+    private int|string $dataSetName;
 
     private string $dataSet;
 
@@ -37,15 +37,15 @@ final class Test
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName, string $methodNameWithDataSet, string $dataSet, string $file, int $line, MetadataCollection $metadata)
+    public function __construct(string $className, string $methodName, int|string $dataSetName, string $dataSet, string $file, int $line, MetadataCollection $metadata)
     {
-        $this->className             = $className;
-        $this->methodName            = $methodName;
-        $this->methodNameWithDataSet = $methodNameWithDataSet;
-        $this->dataSet               = $dataSet;
-        $this->file                  = $file;
-        $this->line                  = $line;
-        $this->metadata              = $metadata;
+        $this->className   = $className;
+        $this->methodName  = $methodName;
+        $this->dataSetName = $dataSetName;
+        $this->dataSet     = $dataSet;
+        $this->file        = $file;
+        $this->line        = $line;
+        $this->metadata    = $metadata;
     }
 
     /**
@@ -63,12 +63,12 @@ final class Test
 
     public function usesProvidedData(): bool
     {
-        return !empty($this->dataSet);
+        return $this->dataSetName !== '';
     }
 
-    public function methodNameWithDataSet(): string
+    public function dataSetName(): int|string
     {
-        return $this->methodNameWithDataSet;
+        return $this->dataSetName;
     }
 
     public function dataSet(): string

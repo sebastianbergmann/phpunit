@@ -19,7 +19,7 @@ final class FinishedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValuesWhenCodeCoverageIsNull(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
         $name          = 'foo';
         $result        = new Result(
             5,
@@ -49,7 +49,7 @@ final class FinishedTest extends AbstractEventTestCase
 
     public function testConstructorSetsValuesWhenCodeCoverageIsNotNull(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = self::telemetryInfo();
         $name          = 'foo';
         $result        = new Result(
             5,

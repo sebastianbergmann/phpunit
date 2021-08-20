@@ -19,7 +19,7 @@ final class MadeTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
         $value         = 'Hmm';
         $constraint    = new Constraint\IsEqual('Ok');
         $message       = 'Well, that did not go as planned!';

@@ -1318,7 +1318,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->testValueObjectForEvents = new Event\Code\Test(
             static::class,
             $this->getName(false),
-            $this->getName(),
+            $this->dataName(),
             $this->getDataSetAsStringWithData(),
             $file,
             $line,

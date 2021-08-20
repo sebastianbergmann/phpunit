@@ -60,7 +60,7 @@ final class Skipped implements Event
         return sprintf(
             'Test Skipped (%s::%s)%s',
             $this->test->className(),
-            $this->test->methodNameWithDataSet(),
+            $this->test->methodName(),
             $message
         );
     }

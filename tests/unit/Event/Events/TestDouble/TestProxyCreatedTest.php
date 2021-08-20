@@ -19,7 +19,7 @@ final class TestProxyCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo        = self::createTelemetryInfo();
+        $telemetryInfo        = $this->telemetryInfo();
         $className            = self::class;
         $constructorArguments = [
             'foo',

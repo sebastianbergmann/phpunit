@@ -60,7 +60,7 @@ final class ConsideredRisky implements Event
         return sprintf(
             'Test Considered Risky (%s::%s)%s',
             $this->test->className(),
-            $this->test->methodNameWithDataSet(),
+            $this->test->methodName(),
             $message
         );
     }

@@ -12,7 +12,6 @@ namespace PHPUnit\Event\Test;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
-use PHPUnit\Metadata\MetadataCollection;
 
 /**
  * @covers \PHPUnit\Event\Test\Skipped
@@ -21,16 +20,8 @@ final class SkippedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
-        $test          = new Code\Test(
-            self::class,
-            'foo',
-            'foo with data set #123',
-            'foo with data set #123 (...)',
-            'unknown',
-            0,
-            MetadataCollection::fromArray([])
-        );
+        $telemetryInfo = $this->telemetryInfo();
+        $test          = $this->testValueObject();
 
         $throwable = Code\Throwable::from(new Exception('skipped'));
 

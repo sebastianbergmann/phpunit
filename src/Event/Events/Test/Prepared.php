@@ -44,7 +44,7 @@ final class Prepared implements Event
         return sprintf(
             'Test Prepared (%s::%s)',
             $this->test->className(),
-            $this->test->methodNameWithDataSet(),
+            $this->test->methodName(),
         );
     }
 }

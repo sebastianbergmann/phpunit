@@ -13,10 +13,11 @@ use function hrtime;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\MetadataCollection;
 
 abstract class AbstractEventTestCase extends TestCase
 {
-    final protected static function createTelemetryInfo(): Telemetry\Info
+    final protected function telemetryInfo(): Telemetry\Info
     {
         return new Telemetry\Info(
             new Telemetry\Snapshot(
@@ -28,6 +29,19 @@ abstract class AbstractEventTestCase extends TestCase
             Telemetry\MemoryUsage::fromBytes(2000),
             Duration::fromSecondsAndNanoseconds(234, 567),
             Telemetry\MemoryUsage::fromBytes(3000)
+        );
+    }
+
+    final protected function testValueObject(): Code\Test
+    {
+        return new Code\Test(
+            self::class,
+            'foo',
+            '',
+            '',
+            '',
+            0,
+            MetadataCollection::fromArray([])
         );
     }
 }

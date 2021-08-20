@@ -18,7 +18,7 @@ final class FinishedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
         $filename      = __FILE__;
 
         $event = new Finished(

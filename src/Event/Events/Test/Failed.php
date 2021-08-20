@@ -60,7 +60,7 @@ final class Failed implements Event
         return sprintf(
             'Test Failed (%s::%s)%s',
             $this->test->className(),
-            $this->test->methodNameWithDataSet(),
+            $this->test->methodName(),
             $message
         );
     }

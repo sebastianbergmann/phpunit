@@ -19,7 +19,7 @@ final class MockObjectCreatedFromWsdlTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo     = self::createTelemetryInfo();
+        $telemetryInfo     = $this->telemetryInfo();
         $wsdlFile          = __FILE__;
         $originalClassName = self::class;
         $mockClassName     = stdClass::class;

@@ -19,7 +19,7 @@ final class SkippedDueToUnsatisfiedRequirementsTest extends AbstractEventTestCas
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
         $testMethod    = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__

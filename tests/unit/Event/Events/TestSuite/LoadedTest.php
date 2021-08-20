@@ -18,7 +18,7 @@ final class LoadedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
 
         $info = new Info(
             9001,

@@ -18,7 +18,7 @@ final class EventFacadeSealedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
 
         $event = new EventFacadeSealed($telemetryInfo);
 

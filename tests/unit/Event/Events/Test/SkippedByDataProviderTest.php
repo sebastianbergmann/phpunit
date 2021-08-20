@@ -19,7 +19,7 @@ final class SkippedByDataProviderTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
         $testMethod    = new Code\ClassMethod(...array_values(explode(
             '::',
             __METHOD__

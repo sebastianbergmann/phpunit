@@ -19,7 +19,7 @@ final class PostConditionFinishedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = self::createTelemetryInfo();
+        $telemetryInfo = $this->telemetryInfo();
         $testClassName = self::class;
         $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
             return new Code\ClassMethod(
