@@ -365,11 +365,20 @@ final class JunitXmlLogger
 
     private function testAsString(Test $test): string
     {
-        return sprintf(
-            '%s::%s%s' . \PHP_EOL,
+        $buffer = sprintf(
+            '%s::%s',
             $test->className(),
-            $test->methodName(),
-            $test->dataSet()
+            $this->name($test),
+        );
+
+        if (!$test->usesProvidedData()) {
+            return $buffer . PHP_EOL;
+        }
+
+        return sprintf(
+            '%s (%s)' . PHP_EOL,
+            $buffer,
+            $test->dataSetAsString()
         );
     }
 
