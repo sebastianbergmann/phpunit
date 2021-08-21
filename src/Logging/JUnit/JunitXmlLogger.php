@@ -16,6 +16,7 @@ use DOMDocument;
 use DOMElement;
 use PHPUnit\Event\Assertion\Made;
 use PHPUnit\Event\Code\Test;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry\HRTime;
@@ -189,10 +190,15 @@ final class JunitXmlLogger
         $test = $event->test();
 
         $testCase->setAttribute('name', $this->name($test));
-        $testCase->setAttribute('class', $test->className());
-        $testCase->setAttribute('classname', str_replace('\\', '.', $test->className()));
         $testCase->setAttribute('file', $test->file());
-        $testCase->setAttribute('line', (string) $test->line());
+
+        if ($test->isTestMethod()) {
+            assert($test instanceof TestMethod);
+
+            $testCase->setAttribute('line', (string) $test->line());
+            $testCase->setAttribute('class', $test->className());
+            $testCase->setAttribute('classname', str_replace('\\', '.', $test->className()));
+        }
 
         $this->currentTestCase    = $testCase;
         $this->numberOfAssertions = 0;
