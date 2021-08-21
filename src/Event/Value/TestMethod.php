@@ -15,7 +15,7 @@ use PHPUnit\Metadata\MetadataCollection;
  * @psalm-immutable
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Test
+final class TestMethod
 {
     /**
      * @psalm-var class-string

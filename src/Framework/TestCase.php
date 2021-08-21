@@ -225,7 +225,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private array $customComparators = [];
 
-    private ?Event\Code\Test $testValueObjectForEvents = null;
+    private ?Event\Code\TestMethod $testValueObjectForEvents = null;
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -1291,7 +1291,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function testValueObjectForEvents(): Event\Code\Test
+    public function testValueObjectForEvents(): Event\Code\TestMethod
     {
         if ($this->testValueObjectForEvents !== null) {
             return $this->testValueObjectForEvents;
@@ -1322,7 +1322,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $dataSetName = (int) $dataSetName;
         }
 
-        $this->testValueObjectForEvents = new Event\Code\Test(
+        $this->testValueObjectForEvents = new Event\Code\TestMethod(
             static::class,
             $this->getName(false),
             $dataSetName,

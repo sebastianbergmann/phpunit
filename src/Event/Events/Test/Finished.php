@@ -21,9 +21,9 @@ final class Finished implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private Code\Test $test;
+    private Code\TestMethod $test;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
@@ -34,7 +34,7 @@ final class Finished implements Event
         return $this->telemetryInfo;
     }
 
-    public function test(): Code\Test
+    public function test(): Code\TestMethod
     {
         return $this->test;
     }

@@ -13,9 +13,9 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
- * @covers \PHPUnit\Event\Code\Test
+ * @covers \PHPUnit\Event\Code\TestMethod
  */
-final class TestTest extends TestCase
+final class TestMethodTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
@@ -25,7 +25,7 @@ final class TestTest extends TestCase
         $dataSet               = 'foo with data set #123 (...)';
         $metadata              = MetadataCollection::fromArray([]);
 
-        $test = new Test(
+        $test = new TestMethod(
             $className,
             $methodName,
             $methodNameWithDataSet,

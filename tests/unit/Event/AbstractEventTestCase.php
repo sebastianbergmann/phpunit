@@ -32,9 +32,9 @@ abstract class AbstractEventTestCase extends TestCase
         );
     }
 
-    final protected function testValueObject(): Code\Test
+    final protected function testValueObject(): Code\TestMethod
     {
-        return new Code\Test(
+        return new Code\TestMethod(
             self::class,
             'foo',
             '',

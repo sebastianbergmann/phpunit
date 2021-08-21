@@ -1776,9 +1776,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
     }
 
-    private function testValueObject(): Code\Test
+    private function testValueObject(): Code\TestMethod
     {
-        return new Code\Test(
+        return new Code\TestMethod(
             self::class,
             'foo',
             '',
