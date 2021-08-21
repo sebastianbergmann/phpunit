@@ -13,33 +13,13 @@ namespace PHPUnit\Event\Code;
  * @psalm-immutable
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Test
+final class Phpt extends Test
 {
-    private string $file;
-
-    public function __construct(string $file)
-    {
-        $this->file = $file;
-    }
-
-    public function file(): string
-    {
-        return $this->file;
-    }
-
-    /**
-     * @psalm-assert-if-true TestMethod $this
-     */
-    public function isTestMethod(): bool
-    {
-        return false;
-    }
-
     /**
      * @psalm-assert-if-true Phpt $this
      */
     public function isPhpt(): bool
     {
-        return false;
+        return true;
     }
 }
