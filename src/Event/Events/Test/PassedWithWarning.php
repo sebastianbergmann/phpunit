@@ -58,9 +58,8 @@ final class PassedWithWarning implements Event
         }
 
         return sprintf(
-            'Test Passed With Warning (%s::%s)%s',
-            $this->test->className(),
-            $this->test->methodName(),
+            'Test Passed With Warning (%s)%s',
+            $this->test->name(),
             $message
         );
     }

@@ -58,9 +58,8 @@ final class Aborted implements Event
         }
 
         return sprintf(
-            'Test Aborted (%s::%s)%s',
-            $this->test->className(),
-            $this->test->methodName(),
+            'Test Aborted (%s)%s',
+            $this->test->name(),
             $message
         );
     }

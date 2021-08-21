@@ -58,9 +58,8 @@ final class Errored implements Event
         }
 
         return sprintf(
-            'Test Errored (%s::%s)%s',
-            $this->test->className(),
-            $this->test->methodName(),
+            'Test Errored (%s)%s',
+            $this->test->name(),
             $message
         );
     }

@@ -42,9 +42,8 @@ final class Prepared implements Event
     public function asString(): string
     {
         return sprintf(
-            'Test Prepared (%s::%s)',
-            $this->test->className(),
-            $this->test->methodName(),
+            'Test Prepared (%s)',
+            $this->test->name(),
         );
     }
 }

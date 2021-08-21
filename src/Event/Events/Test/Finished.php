@@ -42,9 +42,8 @@ final class Finished implements Event
     public function asString(): string
     {
         return sprintf(
-            'Test Finished (%s::%s)',
-            $this->test->className(),
-            $this->test->methodName(),
+            'Test Finished (%s)',
+            $this->test->name(),
         );
     }
 }
