@@ -71,7 +71,7 @@ final class Test
         return $this->dataSetName;
     }
 
-    public function dataSet(): string
+    public function dataSetAsString(): string
     {
         return $this->dataSet;
     }

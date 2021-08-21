@@ -1326,7 +1326,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             static::class,
             $this->getName(false),
             $dataSetName,
-            $this->getDataSetAsStringWithData(),
+            (new Exporter)->shortenedRecursiveExport($this->data),
             $file,
             $line,
             $metadata,

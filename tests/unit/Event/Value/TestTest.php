@@ -38,7 +38,7 @@ final class TestTest extends TestCase
         $this->assertSame($className, $test->className());
         $this->assertSame($methodName, $test->methodName());
         $this->assertSame($methodNameWithDataSet, $test->dataSetName());
-        $this->assertSame($dataSet, $test->dataSet());
+        $this->assertSame($dataSet, $test->dataSetAsString());
         $this->assertSame($metadata, $test->metadata());
     }
 }
