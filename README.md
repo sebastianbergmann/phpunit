@@ -6,6 +6,7 @@ PHPUnit is a programmer-oriented testing framework for PHP. It is an instance of
 [![Minimum PHP Version](https://img.shields.io/badge/php-%3E%3D%208.0-8892BF.svg?style=flat-square)](https://php.net/)
 [![CI Status](https://github.com/sebastianbergmann/phpunit/workflows/CI/badge.svg?branch=master&event=push)](https://phpunit.de/build-status.html)
 [![Type Coverage](https://shepherd.dev/github/sebastianbergmann/phpunit/coverage.svg)](https://shepherd.dev/github/sebastianbergmann/phpunit)
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsebastianbergmann%2Fphpunit.svg?type=shield)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsebastianbergmann%2Fphpunit?ref=badge_shield)
 
 ## Installation
 
@@ -41,3 +42,7 @@ A very special thanks to everyone who has contributed to the documentation and h
 * [Brazilian Portuguese](https://github.com/sebastianbergmann/phpunit-documentation-brazilian-portuguese/graphs/contributors)
 * [Simplified Chinese](https://github.com/sebastianbergmann/phpunit-documentation-chinese/graphs/contributors)
 
+
+
+## License
+[![FOSSA Status](https://app.fossa.com/api/projects/git%2Bgithub.com%2Fsebastianbergmann%2Fphpunit.svg?type=large)](https://app.fossa.com/projects/git%2Bgithub.com%2Fsebastianbergmann%2Fphpunit?ref=badge_large)
