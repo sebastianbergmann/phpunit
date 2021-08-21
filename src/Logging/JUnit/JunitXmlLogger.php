@@ -10,6 +10,7 @@
 namespace PHPUnit\Logging\JUnit;
 
 use function assert;
+use function basename;
 use function is_int;
 use function sprintf;
 use DOMDocument;
@@ -365,6 +366,12 @@ final class JunitXmlLogger
 
     private function testAsString(Test $test): string
     {
+        if ($test->isPhpt()) {
+            return basename($test->file());
+        }
+
+        assert($test instanceof TestMethod);
+
         $buffer = sprintf(
             '%s::%s',
             $test->className(),
@@ -384,6 +391,12 @@ final class JunitXmlLogger
 
     private function name(Test $test): string
     {
+        if ($test->isPhpt()) {
+            return basename($test->file());
+        }
+
+        assert($test instanceof TestMethod);
+
         if (!$test->usesProvidedData()) {
             return $test->methodName();
         }
