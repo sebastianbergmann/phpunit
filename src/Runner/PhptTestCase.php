@@ -41,6 +41,10 @@ use function trim;
 use function unlink;
 use function unserialize;
 use function var_export;
+use PHPUnit\Event\Code\Phpt;
+use PHPUnit\Event\Code\Throwable as EventThrowable;
+use PHPUnit\Event\Emitter;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -70,6 +74,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
     private string $output = '';
 
+    private Emitter $emitter;
+
     /**
      * Constructs a test case with the given filename.
      *
@@ -88,6 +94,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $this->filename = $filename;
         $this->phpUtil  = $phpUtil ?: AbstractPhpProcess::factory();
+        $this->emitter  = EventFacade::emitter();
     }
 
     /**
@@ -110,9 +117,15 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         try {
             $sections = $this->parse();
         } catch (Exception $e) {
+            $e = new SkippedTestError($e->getMessage());
+
             $result->startTest($this);
-            $result->addFailure($this, new SkippedTestError($e->getMessage()), 0);
+            $result->addFailure($this, $e, 0);
             $result->endTest($this, 0);
+
+            $this->emitter->testPrepared($this->valueObjectForEvents());
+            $this->emitter->testSkipped($this->valueObjectForEvents(), EventThrowable::from($e));
+            $this->emitter->testFinished($this->valueObjectForEvents());
 
             return;
         }
@@ -122,6 +135,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $settings = $this->parseIniSection($this->settings(CodeCoverage::isActive()));
 
         $result->startTest($this);
+
+        $this->emitter->testPrepared($this->valueObjectForEvents());
 
         if (isset($sections['INI'])) {
             $settings = $this->parseIniSection($sections['INI'], $settings);
@@ -210,17 +225,27 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
 
             $result->addFailure($this, $failure, $time);
+
+            $this->emitter->testFailed($this->valueObjectForEvents(), EventThrowable::from($failure));
         } catch (Throwable $t) {
             $result->addError($this, $t, $time);
+
+            $this->emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($t));
         }
 
         if ($xfail !== false && $result->allCompletelyImplemented()) {
-            $result->addFailure($this, new IncompleteTestError('XFAIL section but test passes'), $time);
+            $e = new IncompleteTestError('XFAIL section but test passes');
+
+            $result->addFailure($this, $e, $time);
+
+            $this->emitter->testAborted($this->valueObjectForEvents(), EventThrowable::from($e));
         }
 
         $this->runClean($sections, CodeCoverage::isActive());
 
         $result->endTest($this, $time);
+
+        $this->emitter->testFinished($this->valueObjectForEvents());
     }
 
     /**
@@ -822,5 +847,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         return $settings;
+    }
+
+    private function valueObjectForEvents(): Phpt
+    {
+        return new Phpt($this->filename);
     }
 }
