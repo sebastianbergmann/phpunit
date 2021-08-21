@@ -24,7 +24,6 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\OutputPrinted;
-use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\TestSuite\Started;
@@ -269,10 +268,6 @@ final class JunitXmlLogger
         $this->testSuiteFailures[$this->testSuiteLevel]++;
     }
 
-    public function testPassed(Passed $event): void
-    {
-    }
-
     public function testPassedWithWarning(PassedWithWarning $event): void
     {
         $this->handleFault($event->test(), $event->throwable(), 'warning');
@@ -299,7 +294,6 @@ final class JunitXmlLogger
         Facade::registerSubscriber(new TestPreparedSubscriber($this));
         Facade::registerSubscriber(new TestPrintedOutputSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPassedSubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
