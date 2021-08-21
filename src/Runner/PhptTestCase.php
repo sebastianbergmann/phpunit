@@ -245,6 +245,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $result->endTest($this, $time);
 
+        if ($this->hasOutput()) {
+            $this->emitter->testOutputPrinted(
+                $this->valueObjectForEvents(),
+                $this->output
+            );
+        }
+
         $this->emitter->testFinished($this->valueObjectForEvents());
     }
 
