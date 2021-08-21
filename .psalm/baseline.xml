@@ -449,14 +449,13 @@
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
-    <MissingThrowsDocblock occurrences="14">
+    <MissingThrowsDocblock occurrences="13">
       <code>Facade::registerSubscriber(new AssertionMadeSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestAbortedSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestConsideredRiskySubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestErroredSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestFailedSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestFinishedSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestPassedSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestPreparedSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestPrintedOutputSubscriber($this))</code>
@@ -468,6 +467,9 @@
     <PossiblyNullReference occurrences="1">
       <code>setAttribute</code>
     </PossiblyNullReference>
+    <RedundantCondition occurrences="1">
+      <code>assert($test instanceof TestMethod)</code>
+    </RedundantCondition>
   </file>
   <file src="src/Logging/TeamCityLogger.php">
     <DocblockTypeContradiction occurrences="2">
