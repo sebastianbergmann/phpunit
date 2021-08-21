@@ -15,7 +15,7 @@ use PHPUnit\Metadata\MetadataCollection;
  * @psalm-immutable
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class TestMethod
+final class TestMethod extends Test
 {
     /**
      * @psalm-var class-string
@@ -28,8 +28,6 @@ final class TestMethod
 
     private string $dataSet;
 
-    private string $file;
-
     private int $line;
 
     private MetadataCollection $metadata;
@@ -39,11 +37,12 @@ final class TestMethod
      */
     public function __construct(string $className, string $methodName, int|string $dataSetName, string $dataSet, string $file, int $line, MetadataCollection $metadata)
     {
+        parent::__construct($file);
+
         $this->className   = $className;
         $this->methodName  = $methodName;
         $this->dataSetName = $dataSetName;
         $this->dataSet     = $dataSet;
-        $this->file        = $file;
         $this->line        = $line;
         $this->metadata    = $metadata;
     }
@@ -76,11 +75,6 @@ final class TestMethod
         return $this->dataSet;
     }
 
-    public function file(): string
-    {
-        return $this->file;
-    }
-
     public function line(): int
     {
         return $this->line;
@@ -89,5 +83,13 @@ final class TestMethod
     public function metadata(): MetadataCollection
     {
         return $this->metadata;
+    }
+
+    /**
+     * @psalm-assert-if-true TestMethod $this
+     */
+    public function isTestMethod(): bool
+    {
+        return true;
     }
 }

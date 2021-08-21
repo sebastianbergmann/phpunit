@@ -23,11 +23,11 @@ final class Failed implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private Code\TestMethod $test;
+    private Code\Test $test;
 
     private Throwable $throwable;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test, Throwable $throwable)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
@@ -39,7 +39,7 @@ final class Failed implements Event
         return $this->telemetryInfo;
     }
 
-    public function test(): Code\TestMethod
+    public function test(): Code\Test
     {
         return $this->test;
     }

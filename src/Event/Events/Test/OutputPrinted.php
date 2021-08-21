@@ -22,11 +22,11 @@ final class OutputPrinted implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private Code\TestMethod $test;
+    private Code\Test $test;
 
     private string $output;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $test, string $output)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, string $output)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
@@ -38,7 +38,7 @@ final class OutputPrinted implements Event
         return $this->telemetryInfo;
     }
 
-    public function test(): Code\TestMethod
+    public function test(): Code\Test
     {
         return $this->test;
     }

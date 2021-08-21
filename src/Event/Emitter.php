@@ -47,29 +47,29 @@ interface Emitter
 
     public function globalStateRestored(Snapshot $snapshot): void;
 
-    public function testErrored(Code\TestMethod $test, Throwable $throwable): void;
+    public function testErrored(Code\Test $test, Throwable $throwable): void;
 
-    public function testFailed(Code\TestMethod $test, Throwable $throwable): void;
+    public function testFailed(Code\Test $test, Throwable $throwable): void;
 
-    public function testFinished(Code\TestMethod $test): void;
+    public function testFinished(Code\Test $test): void;
 
-    public function testOutputPrinted(Code\TestMethod $test, string $output): void;
+    public function testOutputPrinted(Code\Test $test, string $output): void;
 
-    public function testPassed(Code\TestMethod $test): void;
+    public function testPassed(Code\Test $test): void;
 
-    public function testPassedWithWarning(Code\TestMethod $test, Throwable $throwable): void;
+    public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void;
 
-    public function testConsideredRisky(Code\TestMethod $test, Throwable $throwable): void;
+    public function testConsideredRisky(Code\Test $test, Throwable $throwable): void;
 
     public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void;
 
-    public function testAborted(Code\TestMethod $test, Throwable $throwable): void;
+    public function testAborted(Code\Test $test, Throwable $throwable): void;
 
     public function testSkippedDueToUnsatisfiedRequirements(Code\ClassMethod $testMethod, string ...$missingRequirements): void;
 
-    public function testSkipped(Code\TestMethod $test, Throwable $throwable): void;
+    public function testSkipped(Code\Test $test, Throwable $throwable): void;
 
-    public function testPrepared(Code\TestMethod $test): void;
+    public function testPrepared(Code\Test $test): void;
 
     /**
      * @psalm-param class-string $testClassName

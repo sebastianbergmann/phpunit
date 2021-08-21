@@ -155,7 +155,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testErrored(Code\TestMethod $test, Throwable $throwable): void
+    public function testErrored(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\Errored(
@@ -166,7 +166,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testFailed(Code\TestMethod $test, Throwable $throwable): void
+    public function testFailed(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\Failed(
@@ -177,7 +177,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testFinished(Code\TestMethod $test): void
+    public function testFinished(Code\Test $test): void
     {
         $this->dispatcher->dispatch(
             new Test\Finished(
@@ -187,7 +187,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testOutputPrinted(Code\TestMethod $test, string $output): void
+    public function testOutputPrinted(Code\Test $test, string $output): void
     {
         $this->dispatcher->dispatch(
             new Test\OutputPrinted(
@@ -198,7 +198,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testPassed(Code\TestMethod $test): void
+    public function testPassed(Code\Test $test): void
     {
         $this->dispatcher->dispatch(
             new Test\Passed(
@@ -208,7 +208,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testPassedWithWarning(Code\TestMethod $test, Throwable $throwable): void
+    public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\PassedWithWarning(
@@ -219,7 +219,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testConsideredRisky(Code\TestMethod $test, Throwable $throwable): void
+    public function testConsideredRisky(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\ConsideredRisky(
@@ -241,7 +241,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testAborted(Code\TestMethod $test, Throwable $throwable): void
+    public function testAborted(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\Aborted(
@@ -263,7 +263,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSkipped(Code\TestMethod $test, Throwable $throwable): void
+    public function testSkipped(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
             new Test\Skipped(
@@ -274,7 +274,7 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testPrepared(Code\TestMethod $test): void
+    public function testPrepared(Code\Test $test): void
     {
         $this->dispatcher->dispatch(
             new Test\Prepared(
