@@ -13,6 +13,7 @@ use function class_exists;
 use function md5;
 use function method_exists;
 use function microtime;
+use ArrayObject;
 use Countable;
 use Exception;
 use PHPUnit\Framework\TestCase;
@@ -335,5 +336,27 @@ final class GeneratorTest extends TestCase
 
         $this->assertTrue($stub->doSomething());
         $this->assertFalse($stub->doSomethingElse());
+    }
+
+    public function testGetMockSupportsNamespacedMockClassname(): void
+    {
+        $namespacedClassname = 'Some\\Test\\Class_' . random_int(10000, 100000);
+
+        $mock = $this->generator->getMock(ArrayObject::class, [], [], $namespacedClassname);
+
+        $this->assertTrue(class_exists($namespacedClassname));
+        $this->assertEquals($namespacedClassname, get_class($mock));
+    }
+
+    public function testGetMockSupportsNamespacedMockClassnameWhenMockedTypeDoesNotExist(): void
+    {
+        $namespacedClassname = 'Some\\Test\\Class_' . random_int(10000, 100000);
+        $type                = 'Some\\Test\\OtherClass_' . random_int(10000, 100000);
+
+        $mock = $this->generator->getMock($type, [], [], $namespacedClassname);
+
+        $this->assertTrue(class_exists($namespacedClassname));
+        $this->assertTrue(class_exists($type));
+        $this->assertEquals($namespacedClassname, get_class($mock));
     }
 }

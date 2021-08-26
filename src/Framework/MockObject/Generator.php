@@ -686,6 +686,8 @@ final class Generator
         $isInterface          = false;
         $class                = null;
         $mockMethods          = new MockMethodSet;
+        $prologue             = '';
+        $epilogue             = '';
 
         $_mockClassName = $this->generateClassName(
             $type,
@@ -700,15 +702,11 @@ final class Generator
         }
 
         if (!$isClass && !$isInterface) {
-            $prologue = 'class ' . $_mockClassName['originalClassName'] . "\n{\n}\n\n";
-
-            if (!empty($_mockClassName['namespaceName'])) {
-                $prologue = 'namespace ' . $_mockClassName['namespaceName'] .
-                            " {\n\n" . $prologue . "}\n\n" .
-                            "namespace {\n\n";
-
-                $epilogue = "\n\n}";
-            }
+            $prologue = sprintf(
+                "namespace %s {\n\nclass %s\n{\n}\n\n}\n\n",
+                $_mockClassName['namespaceName'],
+                $_mockClassName['originalClassName']
+            );
 
             $mockedCloneMethod = true;
         } else {
@@ -783,6 +781,12 @@ final class Generator
                 );
             }
 
+            if (class_exists($_mockClassName['fullClassName'], $callAutoload)) {
+                $isClass = true;
+            } elseif (interface_exists($_mockClassName['fullClassName'], $callAutoload)) {
+                $isInterface = true;
+            }
+
             // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
             if ($isInterface && $class->implementsInterface(Traversable::class) &&
                 !$class->implementsInterface(Iterator::class) &&
@@ -817,6 +821,20 @@ final class Generator
             } else {
                 $mockedCloneMethod = true;
             }
+        }
+
+        $_mockClassNameDestructured = $this->generateClassName(
+            $mockClassName ?: '\\',
+            '', // Not necessary for the purpose of namespace retrieval
+            'Mock_',
+        );
+
+        $mockClassNamespace = $_mockClassNameDestructured['namespaceName'];
+        $prologue .= 'namespace ' . $mockClassNamespace . ' {' . PHP_EOL . PHP_EOL;
+        $epilogue .= PHP_EOL . PHP_EOL . '}';
+
+        if ($mockClassNamespace) {
+            $_mockClassName['className'] = $_mockClassNameDestructured['originalClassName'];
         }
 
         if ($isClass && $explicitMethods === []) {
@@ -889,8 +907,8 @@ final class Generator
 
         $classTemplate->setVar(
             [
-                'prologue'          => $prologue ?? '',
-                'epilogue'          => $epilogue ?? '',
+                'prologue'          => $prologue,
+                'epilogue'          => $epilogue,
                 'class_declaration' => $this->generateMockClassDeclaration(
                     $_mockClassName,
                     $isInterface,
@@ -903,9 +921,17 @@ final class Generator
             ]
         );
 
+        /** @var class-string $fqClassName */
+        $fqClassName = sprintf(
+            '%s%s',
+            ($mockClassNamespace = $_mockClassNameDestructured['namespaceName']) ?
+                $mockClassNamespace . '\\' : '',
+            $_mockClassName['className']
+        );
+
         return new MockClass(
             $classTemplate->render(),
-            $_mockClassName['className'],
+            $fqClassName,
             $configurable
         );
     }
@@ -947,7 +973,15 @@ final class Generator
         $buffer = 'class ';
 
         $additionalInterfaces[] = MockObject::class;
-        $interfaces             = implode(', ', $additionalInterfaces);
+
+        $additionalInterfaces = array_map(
+            function (string $interfaceName) {
+                return $this->toFQCN($interfaceName);
+            },
+            $additionalInterfaces,
+        );
+
+        $interfaces = implode(', ', $additionalInterfaces);
 
         if ($isInterface) {
             $buffer .= sprintf(
@@ -966,16 +1000,29 @@ final class Generator
                 $buffer .= $mockClassName['originalClassName'];
             }
         } else {
-            $buffer .= sprintf(
-                '%s extends %s%s implements %s',
-                $mockClassName['className'],
+            $extendedClassName = sprintf(
+                '%s%s',
                 !empty($mockClassName['namespaceName']) ? $mockClassName['namespaceName'] . '\\' : '',
-                $mockClassName['originalClassName'],
+                $mockClassName['originalClassName']
+            );
+            $buffer .= sprintf(
+                '%s extends %s implements %s',
+                $mockClassName['className'],
+                $this->toFQCN($extendedClassName),
                 $interfaces
             );
         }
 
         return $buffer;
+    }
+
+    private function toFQCN(string $className): string
+    {
+        if (!str_starts_with($className, '\\')) {
+            $className = '\\' . $className;
+        }
+
+        return $className;
     }
 
     private function canMethodBeDoubled(ReflectionMethod $method): bool
