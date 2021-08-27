@@ -380,7 +380,8 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="10">
+    <MissingThrowsDocblock occurrences="11">
+      <code>Event\TestDataCollection::fromArray($testData)</code>
       <code>generateClassFromWsdl</code>
       <code>getMock</code>
       <code>getMock</code>
