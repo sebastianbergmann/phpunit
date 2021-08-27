@@ -26,7 +26,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 {
     public function testTestRunnerStartedDispatchesTestRunnerStartedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestRunner\StartedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\StartedSubscriber
+        {
             public function notify(TestRunner\Started $event): void
             {
                 $this->record($event);
@@ -54,7 +55,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestRunnerFinishedDispatchesTestRunnerFinishedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestRunner\FinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\FinishedSubscriber
+        {
             public function notify(TestRunner\Finished $event): void
             {
                 $this->record($event);
@@ -87,7 +89,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $message    = 'Well, that did not go as planned!';
         $hasFailed  = true;
 
-        $subscriber = new class extends RecordingSubscriber implements Assertion\MadeSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Assertion\MadeSubscriber
+        {
             public function notify(Assertion\Made $event): void
             {
                 $this->record($event);
@@ -130,7 +133,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $filename = __FILE__;
 
-        $subscriber = new class extends RecordingSubscriber implements Bootstrap\FinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Bootstrap\FinishedSubscriber
+        {
             public function notify(Bootstrap\Finished $event): void
             {
                 $this->record($event);
@@ -165,7 +169,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $className = self::class;
 
-        $subscriber = new class extends RecordingSubscriber implements Comparator\RegisteredSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Comparator\RegisteredSubscriber
+        {
             public function notify(Comparator\Registered $event): void
             {
                 $this->record($event);
@@ -198,7 +203,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testExtensionLoadedDispatchesExtensionLoadedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Extension\LoadedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Extension\LoadedSubscriber
+        {
             public function notify(Extension\Loaded $event): void
             {
                 $this->record($event);
@@ -231,7 +237,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $snapshot = new Snapshot;
 
-        $subscriber = new class extends RecordingSubscriber implements GlobalState\CapturedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements GlobalState\CapturedSubscriber
+        {
             public function notify(GlobalState\Captured $event): void
             {
                 $this->record($event);
@@ -268,7 +275,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $snapshotAfter  = new Snapshot;
         $diff           = 'Hmm, who would have thought?';
 
-        $subscriber = new class extends RecordingSubscriber implements GlobalState\ModifiedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements GlobalState\ModifiedSubscriber
+        {
             public function notify(GlobalState\Modified $event): void
             {
                 $this->record($event);
@@ -309,7 +317,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $snapshot = new Snapshot;
 
-        $subscriber = new class extends RecordingSubscriber implements GlobalState\RestoredSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements GlobalState\RestoredSubscriber
+        {
             public function notify(GlobalState\Restored $event): void
             {
                 $this->record($event);
@@ -344,7 +353,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\ErroredSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\ErroredSubscriber
+        {
             public function notify(Test\Errored $event): void
             {
                 $this->record($event);
@@ -385,7 +395,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\FailedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\FailedSubscriber
+        {
             public function notify(Test\Failed $event): void
             {
                 $this->record($event);
@@ -426,7 +437,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\FinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\FinishedSubscriber
+        {
             public function notify(Test\Finished $event): void
             {
                 $this->record($event);
@@ -461,7 +473,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\PassedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\PassedSubscriber
+        {
             public function notify(Test\Passed $event): void
             {
                 $this->record($event);
@@ -496,7 +509,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\PassedWithWarningSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\PassedWithWarningSubscriber
+        {
             public function notify(Test\PassedWithWarning $event): void
             {
                 $this->record($event);
@@ -537,7 +551,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\ConsideredRiskySubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\ConsideredRiskySubscriber
+        {
             public function notify(Test\ConsideredRisky $event): void
             {
                 $this->record($event);
@@ -581,7 +596,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         )));
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
-        $subscriber = new class extends RecordingSubscriber implements Test\SkippedByDataProviderSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\SkippedByDataProviderSubscriber
+        {
             public function notify(Test\SkippedByDataProvider $event): void
             {
                 $this->record($event);
@@ -620,7 +636,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\AbortedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\AbortedSubscriber
+        {
             public function notify(Test\Aborted $event): void
             {
                 $this->record($event);
@@ -669,7 +686,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'Maecenas aliquam eget nunc sed iaculis.',
         ];
 
-        $subscriber = new class extends RecordingSubscriber implements Test\SkippedDueToUnsatisfiedRequirementsSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\SkippedDueToUnsatisfiedRequirementsSubscriber
+        {
             public function notify(Test\SkippedDueToUnsatisfiedRequirements $event): void
             {
                 $this->record($event);
@@ -708,7 +726,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\SkippedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\SkippedSubscriber
+        {
             public function notify(Test\Skipped $event): void
             {
                 $this->record($event);
@@ -749,7 +768,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\PreparedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\PreparedSubscriber
+        {
             public function notify(Test\Prepared $event): void
             {
                 $this->record($event);
@@ -783,14 +803,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestAfterTestMethodFinishedDispatchesTestAfterTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
+        {
             return new Code\ClassMethod(
                 self::class,
                 $methodName
             );
         }, get_class_methods($this));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\AfterTestMethodFinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\AfterTestMethodFinishedSubscriber
+        {
             public function notify(Test\AfterTestMethodFinished $event): void
             {
                 $this->record($event);
@@ -833,7 +855,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             __METHOD__
         )));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\AfterTestMethodCalledSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\AfterTestMethodCalledSubscriber
+        {
             public function notify(Test\AfterTestMethodCalled $event): void
             {
                 $this->record($event);
@@ -871,14 +894,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestAfterLastTestMethodFinishedDispatchesTestAfterLastTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
+        {
             return new Code\ClassMethod(
                 self::class,
                 $methodName
             );
         }, get_class_methods($this));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodFinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodFinishedSubscriber
+        {
             public function notify(Test\AfterLastTestMethodFinished $event): void
             {
                 $this->record($event);
@@ -921,7 +946,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             __METHOD__
         )));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\BeforeFirstTestMethodCalledSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\BeforeFirstTestMethodCalledSubscriber
+        {
             public function notify(Test\BeforeFirstTestMethodCalled $event): void
             {
                 $this->record($event);
@@ -959,14 +985,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestBeforeFirstTestMethodFinishedDispatchesTestBeforeFirstTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
+        {
             return new Code\ClassMethod(
                 self::class,
                 $methodName
             );
         }, get_class_methods($this));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\BeforeFirstTestMethodFinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\BeforeFirstTestMethodFinishedSubscriber
+        {
             public function notify(Test\BeforeFirstTestMethodFinished $event): void
             {
                 $this->record($event);
@@ -1009,7 +1037,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             __METHOD__
         )));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\BeforeTestMethodCalledSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\BeforeTestMethodCalledSubscriber
+        {
             public function notify(Test\BeforeTestMethodCalled $event): void
             {
                 $this->record($event);
@@ -1052,7 +1081,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             __METHOD__
         )));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\PreConditionCalledSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\PreConditionCalledSubscriber
+        {
             public function notify(Test\PreConditionCalled $event): void
             {
                 $this->record($event);
@@ -1095,7 +1125,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             __METHOD__
         )));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\PostConditionCalledSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\PostConditionCalledSubscriber
+        {
             public function notify(Test\PostConditionCalled $event): void
             {
                 $this->record($event);
@@ -1133,14 +1164,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestPostConditionFinishedDispatchesTestPostConditionFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
+        {
             return new Code\ClassMethod(
                 self::class,
                 $methodName
             );
         }, get_class_methods($this));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\PostConditionFinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\PostConditionFinishedSubscriber
+        {
             public function notify(Test\PostConditionFinished $event): void
             {
                 $this->record($event);
@@ -1178,14 +1211,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestBeforeTestMethodFinishedDispatchesTestBeforeTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
+        {
             return new Code\ClassMethod(
                 self::class,
                 $methodName
             );
         }, get_class_methods($this));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\BeforeTestMethodFinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\BeforeTestMethodFinishedSubscriber
+        {
             public function notify(Test\BeforeTestMethodFinished $event): void
             {
                 $this->record($event);
@@ -1223,14 +1258,16 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestPreConditionFinishedDispatchesTestPreConditionFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod {
+        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
+        {
             return new Code\ClassMethod(
                 self::class,
                 $methodName
             );
         }, get_class_methods($this));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\PreConditionFinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\PreConditionFinishedSubscriber
+        {
             public function notify(Test\PreConditionFinished $event): void
             {
                 $this->record($event);
@@ -1273,7 +1310,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             __METHOD__
         )));
 
-        $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodCalledSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodCalledSubscriber
+        {
             public function notify(Test\AfterLastTestMethodCalled $event): void
             {
                 $this->record($event);
@@ -1312,7 +1350,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $className = self::class;
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedSubscriber
+        {
             public function notify(TestDouble\MockObjectCreated $event): void
             {
                 $this->record($event);
@@ -1347,7 +1386,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $traitName = TestFixture\MockObject\ExampleTrait::class;
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedForTraitSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedForTraitSubscriber
+        {
             public function notify(TestDouble\MockObjectCreatedForTrait $event): void
             {
                 $this->record($event);
@@ -1381,7 +1421,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $className = stdClass::class;
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedForAbstractClassSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedForAbstractClassSubscriber
+        {
             public function notify(TestDouble\MockObjectCreatedForAbstractClass $event): void
             {
                 $this->record($event);
@@ -1428,7 +1469,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'baz' => 9000,
         ];
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedFromWsdlSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedFromWsdlSubscriber
+        {
             public function notify(TestDouble\MockObjectCreatedFromWsdl $event): void
             {
                 $this->record($event);
@@ -1480,7 +1522,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'baz',
         ];
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\PartialMockObjectCreatedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\PartialMockObjectCreatedSubscriber
+        {
             public function notify(TestDouble\PartialMockObjectCreated $event): void
             {
                 $this->record($event);
@@ -1527,7 +1570,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             ],
         ];
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\TestProxyCreatedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\TestProxyCreatedSubscriber
+        {
             public function notify(TestDouble\TestProxyCreated $event): void
             {
                 $this->record($event);
@@ -1566,7 +1610,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $className = self::class;
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\TestStubCreatedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestDouble\TestStubCreatedSubscriber
+        {
             public function notify(TestDouble\TestStubCreated $event): void
             {
                 $this->record($event);
@@ -1599,7 +1644,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSuiteLoadedDispatchesTestSuiteLoadedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestSuite\LoadedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestSuite\LoadedSubscriber
+        {
             public function notify(TestSuite\Loaded $event): void
             {
                 $this->record($event);
@@ -1634,7 +1680,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             new CodeCoverage\Filter()
         );
 
-        $subscriber = new class extends RecordingSubscriber implements TestSuite\FinishedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestSuite\FinishedSubscriber
+        {
             public function notify(TestSuite\Finished $event): void
             {
                 $this->record($event);
@@ -1680,7 +1727,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $executionOrderDefects = 5;
         $resolveDependencies   = true;
 
-        $subscriber = new class extends RecordingSubscriber implements TestSuite\SortedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestSuite\SortedSubscriber
+        {
             public function notify(TestSuite\Sorted $event): void
             {
                 $this->record($event);
@@ -1721,7 +1769,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $name = 'foo';
 
-        $subscriber = new class extends RecordingSubscriber implements TestSuite\StartedSubscriber {
+        $subscriber = new class extends RecordingSubscriber implements TestSuite\StartedSubscriber
+        {
             public function notify(TestSuite\Started $event): void
             {
                 $this->record($event);

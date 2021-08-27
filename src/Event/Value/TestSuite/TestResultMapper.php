@@ -39,7 +39,8 @@ final class TestResultMapper
     {
         return new FailureCollection(
             ...array_map(
-                static function (TestFailure $testFailure): Failure {
+                static function (TestFailure $testFailure): Failure
+                {
                     return new Failure(
                         $testFailure->getTestName(),
                         $testFailure->thrownException()

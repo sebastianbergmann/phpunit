@@ -28,11 +28,13 @@ final class CallbackTest extends ConstraintTestCase
 
     public function testConstraintCallback(): void
     {
-        $closureReflect = static function ($parameter) {
+        $closureReflect = static function ($parameter)
+        {
             return $parameter;
         };
 
-        $closureWithoutParameter = static function () {
+        $closureWithoutParameter = static function ()
+        {
             return true;
         };
 
@@ -56,7 +58,8 @@ final class CallbackTest extends ConstraintTestCase
 
     public function testConstraintCallbackFailure(): void
     {
-        $constraint = new Callback(static function () {
+        $constraint = new Callback(static function ()
+        {
             return false;
         });
 

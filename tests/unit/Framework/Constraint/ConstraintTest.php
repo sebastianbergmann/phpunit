@@ -21,7 +21,8 @@ final class ConstraintTest extends ConstraintTestCase
 {
     public static function getDummyConstraintInstance(): Constraint
     {
-        return new class extends Constraint {
+        return new class extends Constraint
+        {
             final public function toString(): string
             {
                 return 'is ok';

@@ -31,7 +31,8 @@ final class LogicalXorTest extends BinaryOperatorTestCase
     {
         $initial = (bool) array_shift($input);
 
-        return array_reduce($input, static function ($carry, bool $item): bool {
+        return array_reduce($input, static function ($carry, bool $item): bool
+        {
             return $carry xor $item;
         }, $initial);
     }

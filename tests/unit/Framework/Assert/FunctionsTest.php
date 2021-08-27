@@ -54,7 +54,8 @@ final class FunctionsTest extends TestCase
 
         return array_reduce(
             $matches[1],
-            static function (array $functionNames, string $functionName) {
+            static function (array $functionNames, string $functionName)
+            {
                 $functionNames[$functionName] = [$functionName];
 
                 return $functionNames;

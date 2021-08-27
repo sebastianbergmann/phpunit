@@ -78,7 +78,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             8,
         ];
 
-        $constraints = array_map(static function ($count) {
+        $constraints = array_map(static function ($count)
+        {
             return CountConstraint::fromCount($count);
         }, $counts);
 
@@ -144,7 +145,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     {
         $inputs = self::getBooleanTuples(0, 5);
 
-        return array_map(function (array $input) {
+        return array_map(function (array $input)
+        {
             return [$input, $this->evaluateExpectedResult($input)];
         }, $inputs);
     }
@@ -154,7 +156,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
      */
     final public function testEvaluateReturnsCorrectBooleanResult(array $inputs, bool $expected): void
     {
-        $constraints = array_map(static function (bool $input) {
+        $constraints = array_map(static function (bool $input)
+        {
             return BooleanConstraint::fromBool($input);
         }, $inputs);
 
@@ -171,7 +174,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
      */
     final public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(array $inputs, bool $expected): void
     {
-        $constraints = array_map(static function (bool $input) {
+        $constraints = array_map(static function (bool $input)
+        {
             return BooleanConstraint::fromBool($input);
         }, $inputs);
 
@@ -184,7 +188,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         } else {
             $expectedString = self::operatorJoinStrings(
                 array_map(
-                    static function (Constraint $operand) {
+                    static function (Constraint $operand)
+                    {
                         return $operand->toString();
                     },
                     $constraints
@@ -222,7 +227,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
      */
     public function testToStringWithNamedConstraints(string ...$names): void
     {
-        $constraints = array_map(static function (string $name) {
+        $constraints = array_map(static function (string $name)
+        {
             return NamedConstraint::fromName($name);
         }, $names);
 
@@ -571,7 +577,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     {
         $tuples = self::getBinaryTuples($minSize, $maxSize);
 
-        return array_map(static function ($tuple) {
+        return array_map(static function ($tuple)
+        {
             return array_map('boolval', $tuple);
         }, $tuples);
     }

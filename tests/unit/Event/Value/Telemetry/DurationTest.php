@@ -67,7 +67,8 @@ final class DurationTest extends TestCase
 
     public function testAsStringFormatsDurationWithDurationFormatterWhenSpecified(): void
     {
-        $formatter = new class implements DurationFormatter {
+        $formatter = new class implements DurationFormatter
+        {
             public function format(Duration $duration): string
             {
                 return sprintf(

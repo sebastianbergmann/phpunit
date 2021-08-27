@@ -24,7 +24,8 @@ final class VariableExporter
         $warningWasTriggered = false;
 
         set_error_handler(
-            static function (int $errorNumber, string $errorString) use (&$warningWasTriggered): ?bool {
+            static function (int $errorNumber, string $errorString) use (&$warningWasTriggered): ?bool
+            {
                 $warningWasTriggered = true;
 
                 return null;

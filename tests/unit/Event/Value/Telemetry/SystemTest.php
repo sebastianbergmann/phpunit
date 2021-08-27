@@ -21,7 +21,8 @@ final class SystemTest extends TestCase
     {
         $time = HRTime::fromSecondsAndNanoseconds(...hrtime(false));
 
-        $clock = new class($time) implements StopWatch {
+        $clock = new class($time) implements StopWatch
+        {
             /**
              * @var HRTime
              */
@@ -41,7 +42,8 @@ final class SystemTest extends TestCase
         $memoryUsage     = MemoryUsage::fromBytes(2000);
         $peakMemoryUsage = MemoryUsage::fromBytes(3000);
 
-        $memoryMeter = new class($memoryUsage, $peakMemoryUsage) implements MemoryMeter {
+        $memoryMeter = new class($memoryUsage, $peakMemoryUsage) implements MemoryMeter
+        {
             private MemoryUsage $memoryUsage;
 
             private MemoryUsage $peakMemoryUsage;

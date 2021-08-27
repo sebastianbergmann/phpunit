@@ -1085,7 +1085,8 @@ class TestCaseTest extends TestCase
         $this->assertArrayHasKey(DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass', $result->passed());
 
         // Confirm the test depending on the failing TestSuite::class has been warn-skipped
-        $skipped = array_map(static function (TestFailure $t) {
+        $skipped = array_map(static function (TestFailure $t)
+        {
             return $t->getTestName();
         }, $result->skipped());
         $this->assertContains(DependencyOnClassTest::class . '::testThatDependsOnAFailingClass', $skipped);
