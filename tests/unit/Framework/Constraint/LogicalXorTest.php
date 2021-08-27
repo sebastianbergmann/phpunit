@@ -25,7 +25,8 @@ final class LogicalXorTest extends TestCase
         $other = 'Foo';
         $count = 5;
 
-        $constraints = array_map(function () use ($other) {
+        $constraints = array_map(function () use ($other)
+        {
             static $count = 0;
 
             $constraint = $this->getMockBuilder(Constraint::class)->getMock();

@@ -65,7 +65,8 @@ final class NamePrettifierTest extends TestCase
 
     public function testPhpDoxIgnoreDataKeys(): void
     {
-        $test = new class extends TestCase {
+        $test = new class extends TestCase
+        {
             public function __construct()
             {
                 parent::__construct('testAddition', [
@@ -94,7 +95,8 @@ final class NamePrettifierTest extends TestCase
 
     public function testPhpDoxUsesDefaultValue(): void
     {
-        $test = new class extends TestCase {
+        $test = new class extends TestCase
+        {
             public function __construct()
             {
                 parent::__construct('testAddition', []);
@@ -119,7 +121,8 @@ final class NamePrettifierTest extends TestCase
 
     public function testPhpDoxArgumentExporting(): void
     {
-        $test = new class extends TestCase {
+        $test = new class extends TestCase
+        {
             public function __construct()
             {
                 parent::__construct('testExport', [
@@ -152,7 +155,8 @@ final class NamePrettifierTest extends TestCase
 
     public function testPhpDoxReplacesLongerVariablesFirst(): void
     {
-        $test = new class extends TestCase {
+        $test = new class extends TestCase
+        {
             public function __construct()
             {
                 parent::__construct('testFoo', []);

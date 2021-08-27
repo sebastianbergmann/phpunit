@@ -55,7 +55,8 @@ final class LogicalAndTest extends ConstraintTestCase
             8,
         ];
 
-        $constraints = array_map(static function (int $count) {
+        $constraints = array_map(static function (int $count)
+        {
             return CountConstraint::fromCount($count);
         }, $counts);
 
@@ -76,7 +77,8 @@ final class LogicalAndTest extends ConstraintTestCase
             'is rich in unsaturated fats',
         ];
 
-        $constraints = array_map(static function (string $name) {
+        $constraints = array_map(static function (string $name)
+        {
             return NamedConstraint::fromName($name);
         }, $names);
 
@@ -240,7 +242,8 @@ EOF;
     {
         return implode(
             ' and ',
-            array_map(static function (Constraint $constraint) {
+            array_map(static function (Constraint $constraint)
+            {
                 return $constraint->toString();
             }, $constraints)
         );

@@ -145,13 +145,15 @@ final class Invocation implements SelfDescribing
 
             case 'callable':
             case 'closure':
-                return static function (): void {
+                return static function (): void
+                {
                 };
 
             case 'traversable':
             case 'generator':
             case 'iterable':
-                $generator = static function () {
+                $generator = static function ()
+                {
                     yield from [];
                 };
 

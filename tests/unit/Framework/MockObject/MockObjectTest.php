@@ -589,7 +589,8 @@ final class MockObjectTest extends TestCase
              ->method('doSomethingElse')
              ->will(
                  $this->returnCallback(
-                     static function () use (&$actualArguments): void {
+                     static function () use (&$actualArguments): void
+                     {
                          $actualArguments = \func_get_args();
                      }
                  )
@@ -617,7 +618,8 @@ final class MockObjectTest extends TestCase
              ->method('doSomethingElse')
              ->will(
                  $this->returnCallback(
-                     static function () use (&$actualArguments): void {
+                     static function () use (&$actualArguments): void
+                     {
                          $actualArguments = \func_get_args();
                      }
                  )
@@ -846,7 +848,8 @@ final class MockObjectTest extends TestCase
         $foo->expects($this->any())
             ->method('bar')
             ->will($this->returnCallback(
-                static function (&$a, &$b, $c): void {
+                static function (&$a, &$b, $c): void
+                {
                     $b = 1;
                 }
             ));
@@ -1030,7 +1033,8 @@ final class MockObjectTest extends TestCase
         $callCount             = 0;
 
         $mock->expects($this->exactly($expectedNumberOfCalls))->method('bar')
-            ->with($this->callback(static function ($argument) use (&$callCount) {
+            ->with($this->callback(static function ($argument) use (&$callCount)
+            {
                 return $argument === 'call_' . $callCount++;
             }));
 

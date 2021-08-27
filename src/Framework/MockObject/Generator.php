@@ -114,7 +114,8 @@ final class Generator
         if (is_array($type)) {
             $type = array_unique(
                 array_map(
-                    static function ($type) {
+                    static function ($type)
+                    {
                         if ($type === 'Traversable' ||
                             $type === '\\Traversable' ||
                             $type === '\\Iterator') {

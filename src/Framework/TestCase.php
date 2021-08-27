@@ -1708,7 +1708,8 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
 
             $mockedMethodsThatDontExist = array_filter(
                 $methods,
-                static function (string $method) use ($reflection) {
+                static function (string $method) use ($reflection)
+                {
                     return !$reflection->hasMethod($method);
                 }
             );
