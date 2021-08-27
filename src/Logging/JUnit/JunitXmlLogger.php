@@ -213,6 +213,7 @@ final class JunitXmlLogger
 
     public function testFinished(Finished $event): void
     {
+        assert($this->currentTestCase !== null);
         assert($this->time !== null);
 
         $time = $event->telemetryInfo()->time()->duration($this->time)->asFloat();
