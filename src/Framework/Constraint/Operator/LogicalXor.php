@@ -53,7 +53,8 @@ final class LogicalXor extends BinaryOperator
 
         return array_reduce(
             $constraints,
-            static function (bool $matches, Constraint $constraint) use ($other): bool {
+            static function (bool $matches, Constraint $constraint) use ($other): bool
+            {
                 return $matches xor $constraint->evaluate($other, '', true);
             },
             $initial->evaluate($other, '', true)

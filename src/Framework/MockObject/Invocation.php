@@ -178,14 +178,16 @@ final class Invocation implements SelfDescribing
 
         if (in_array('callable', $types, true) ||
             in_array('closure', $types, true)) {
-            return static function (): void {
+            return static function (): void
+            {
             };
         }
 
         if (in_array('traversable', $types, true) ||
             in_array('generator', $types, true) ||
             in_array('iterable', $types, true)) {
-            $generator = static function (): \Generator {
+            $generator = static function (): \Generator
+            {
                 yield from [];
             };
 

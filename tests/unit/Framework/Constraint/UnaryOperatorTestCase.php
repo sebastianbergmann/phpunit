@@ -119,7 +119,8 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
 
     final public function providerUnaryTruthTable()
     {
-        return array_map(function (bool $input): array {
+        return array_map(function (bool $input): array
+        {
             return [$input, $this->evaluateExpectedResult($input)];
         }, [false, true]);
     }

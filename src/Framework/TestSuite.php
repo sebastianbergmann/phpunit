@@ -563,7 +563,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     public function getGroups(): array
     {
         return array_map(
-            static function ($key): string {
+            static function ($key): string
+            {
                 return (string) $key;
             },
             array_keys($this->groups)
