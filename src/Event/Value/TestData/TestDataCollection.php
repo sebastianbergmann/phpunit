@@ -22,6 +22,8 @@ final class TestDataCollection implements Countable, IteratorAggregate
      */
     private array $data;
 
+    private ?DataFromDataProvider $fromDataProvider = null;
+
     /**
      * @psalm-param list<TestData> $data
      */
@@ -32,6 +34,8 @@ final class TestDataCollection implements Countable, IteratorAggregate
 
     private function __construct(TestData ...$data)
     {
+        $this->ensureNoMoreThanOneDataFromDataProvider($data);
+
         $this->data = $data;
     }
 
@@ -48,8 +52,46 @@ final class TestDataCollection implements Countable, IteratorAggregate
         return count($this->data);
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->fromDataProvider
+     */
+    public function hasDataFromDataProvider(): bool
+    {
+        return $this->fromDataProvider !== null;
+    }
+
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
+    public function dataFromDataProvider(): DataFromDataProvider
+    {
+        if (!$this->hasDataFromDataProvider()) {
+            throw new NoDataSetFromDataProviderException;
+        }
+
+        return $this->fromDataProvider;
+    }
+
     public function getIterator(): TestDataCollectionIterator
     {
         return new TestDataCollectionIterator($this);
+    }
+
+    /**
+     * @psalm-param list<TestData> $data
+     *
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
+    private function ensureNoMoreThanOneDataFromDataProvider(array $data): void
+    {
+        foreach ($data as $_data) {
+            if ($_data->isFromDataProvider()) {
+                if ($this->fromDataProvider !== null) {
+                    throw new MoreThanOneDataSetFromDataProviderException;
+                }
+
+                $this->fromDataProvider = $_data;
+            }
+        }
     }
 }
