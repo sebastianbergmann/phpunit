@@ -32,6 +32,7 @@ use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -379,14 +380,16 @@ final class JunitXmlLogger
             $this->name($test),
         );
 
-        if (!$test->usesProvidedData()) {
+        if (!$test->testData()->hasDataFromDataProvider()) {
             return $buffer . PHP_EOL;
         }
+
+        $data = $test->testData()->dataFromDataProvider()->data()->asValue();
 
         return sprintf(
             '%s (%s)' . PHP_EOL,
             $buffer,
-            $test->dataSetAsString()
+            (new Exporter)->shortenedRecursiveExport($data)
         );
     }
 
@@ -398,11 +401,11 @@ final class JunitXmlLogger
 
         assert($test instanceof TestMethod);
 
-        if (!$test->usesProvidedData()) {
+        if (!$test->testData()->hasDataFromDataProvider()) {
             return $test->methodName();
         }
 
-        $dataSetName = $test->dataSetName();
+        $dataSetName = $test->testData()->dataFromDataProvider()->dataSetName();
 
         if (is_int($dataSetName)) {
             return sprintf(
