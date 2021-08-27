@@ -112,7 +112,16 @@ final class Application
         } catch (Throwable $t) {
             $returnCode = self::EXCEPTION_EXIT;
 
-            print $t->getMessage() . PHP_EOL;
+            printf(
+                '%s in %s:%d' . PHP_EOL,
+                $t->getMessage(),
+                $t->getFile(),
+                $t->getLine()
+            );
+
+            if (Registry::get()->debug()) {
+                print PHP_EOL . $t->getTraceAsString() . PHP_EOL;
+            }
         }
 
         Event\Facade::emitter()->testRunnerFinished();
