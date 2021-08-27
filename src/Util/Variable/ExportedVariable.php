@@ -29,9 +29,14 @@ final class ExportedVariable
         $this->warningWasTriggered = $warningWasTriggered;
     }
 
-    public function export(): string
+    public function asVarExportString(): string
     {
         return $this->export;
+    }
+
+    public function asValue(): mixed
+    {
+        return eval('return ' . $this->asVarExportString() . ';');
     }
 
     public function warningWasTriggered(): bool
