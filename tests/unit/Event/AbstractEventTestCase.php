@@ -38,10 +38,9 @@ abstract class AbstractEventTestCase extends TestCase
             self::class,
             'foo',
             '',
-            '',
-            '',
             0,
-            MetadataCollection::fromArray([])
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([])
         );
     }
 }

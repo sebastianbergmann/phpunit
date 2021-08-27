@@ -1782,10 +1782,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
             self::class,
             'foo',
             '',
-            '',
-            '',
             0,
-            MetadataCollection::fromArray([])
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([]),
         );
     }
 }

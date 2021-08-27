@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Code;
 
+use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Metadata\MetadataCollection;
 
 /**
@@ -24,27 +25,24 @@ final class TestMethod extends Test
 
     private string $methodName;
 
-    private int|string $dataSetName;
-
-    private string $dataSet;
-
     private int $line;
 
     private MetadataCollection $metadata;
 
+    private TestDataCollection $testData;
+
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName, int|string $dataSetName, string $dataSet, string $file, int $line, MetadataCollection $metadata)
+    public function __construct(string $className, string $methodName, string $file, int $line, MetadataCollection $metadata, TestDataCollection $testData)
     {
         parent::__construct($file);
 
-        $this->className   = $className;
-        $this->methodName  = $methodName;
-        $this->dataSetName = $dataSetName;
-        $this->dataSet     = $dataSet;
-        $this->line        = $line;
-        $this->metadata    = $metadata;
+        $this->className  = $className;
+        $this->methodName = $methodName;
+        $this->line       = $line;
+        $this->metadata   = $metadata;
+        $this->testData   = $testData;
     }
 
     /**
@@ -60,21 +58,6 @@ final class TestMethod extends Test
         return $this->methodName;
     }
 
-    public function usesProvidedData(): bool
-    {
-        return $this->dataSetName !== '';
-    }
-
-    public function dataSetName(): int|string
-    {
-        return $this->dataSetName;
-    }
-
-    public function dataSetAsString(): string
-    {
-        return $this->dataSet;
-    }
-
     public function line(): int
     {
         return $this->line;
@@ -83,6 +66,11 @@ final class TestMethod extends Test
     public function metadata(): MetadataCollection
     {
         return $this->metadata;
+    }
+
+    public function testData(): TestDataCollection
+    {
+        return $this->testData;
     }
 
     /**

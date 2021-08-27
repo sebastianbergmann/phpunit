@@ -93,6 +93,7 @@ use PHPUnit\Util\Error\Warning as WarningError;
 use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
+use PHPUnit\Util\VariableExporter;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -1320,20 +1321,28 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $line = 0;
         }
 
-        $dataSetName = $this->dataName();
+        $testData = [];
 
-        if (is_numeric($dataSetName)) {
-            $dataSetName = (int) $dataSetName;
+        if ($this->usesDataProvider()) {
+            $dataSetName = $this->dataName();
+
+            if (is_numeric($dataSetName)) {
+                $dataSetName = (int) $dataSetName;
+            }
+
+            $testData[] = Event\DataFromDataProvider::from(
+                $dataSetName,
+                (new VariableExporter)->export($this->data)
+            );
         }
 
         $this->testValueObjectForEvents = new Event\Code\TestMethod(
             static::class,
             $this->getName(false),
-            $dataSetName,
-            (new Exporter)->shortenedRecursiveExport($this->data),
             $file,
             $line,
             $metadata,
+            Event\TestDataCollection::fromArray($testData),
         );
 
         return $this->testValueObjectForEvents;

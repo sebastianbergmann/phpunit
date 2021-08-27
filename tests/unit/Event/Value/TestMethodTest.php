@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Code;
 
+use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 
@@ -19,26 +20,27 @@ final class TestMethodTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $className             = self::class;
-        $methodName            = 'foo';
-        $methodNameWithDataSet = 'foo with data set #123';
-        $dataSet               = 'foo with data set #123 (...)';
-        $metadata              = MetadataCollection::fromArray([]);
+        $className  = 'ExampleTest';
+        $methodName = 'testExample';
+        $file       = 'ExampleTest.php';
+        $line       = 1;
+        $testData   = TestDataCollection::fromArray([]);
+        $metadata   = MetadataCollection::fromArray([]);
 
         $test = new TestMethod(
             $className,
             $methodName,
-            $methodNameWithDataSet,
-            $dataSet,
-            'unknown',
-            0,
-            $metadata
+            $file,
+            $line,
+            $metadata,
+            $testData
         );
 
         $this->assertSame($className, $test->className());
         $this->assertSame($methodName, $test->methodName());
-        $this->assertSame($methodNameWithDataSet, $test->dataSetName());
-        $this->assertSame($dataSet, $test->dataSetAsString());
+        $this->assertSame($file, $test->file());
+        $this->assertSame($line, $test->line());
         $this->assertSame($metadata, $test->metadata());
+        $this->assertSame($testData, $test->testData());
     }
 }
