@@ -1251,6 +1251,9 @@
       <code>$this-&gt;stream</code>
     </PossiblyInvalidArgument>
   </file>
+  <file src="src/Util/Variable/VariableExporter.php">
+    <InvalidArgument occurrences="1"/>
+  </file>
   <file src="src/Util/VersionComparisonOperator.php">
     <MissingThrowsDocblock occurrences="1">
       <code>ensureOperatorIsValid</code>
