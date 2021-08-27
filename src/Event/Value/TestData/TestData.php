@@ -29,11 +29,17 @@ abstract class TestData
         return $this->data;
     }
 
+    /**
+     * @psalm-assert-if-true DataFromDataProvider $this
+     */
     public function isFromDataProvider(): bool
     {
         return false;
     }
 
+    /**
+     * @psalm-assert-if-true DataFromTestDependency $this
+     */
     public function isFromTestDependency(): bool
     {
         return false;

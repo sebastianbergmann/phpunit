@@ -36,6 +36,9 @@ final class DataFromDataProvider extends TestData
         return $this->dataSetName;
     }
 
+    /**
+     * @psalm-assert-if-true DataFromDataProvider $this
+     */
     public function isFromDataProvider(): bool
     {
         return true;

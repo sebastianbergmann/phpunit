@@ -26,12 +26,17 @@ final class TestDataCollection implements Countable, IteratorAggregate
 
     /**
      * @psalm-param list<TestData> $data
+     *
+     * @throws MoreThanOneDataSetFromDataProviderException
      */
     public static function fromArray(array $data): self
     {
         return new self(...$data);
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function __construct(TestData ...$data)
     {
         $this->ensureNoMoreThanOneDataFromDataProvider($data);

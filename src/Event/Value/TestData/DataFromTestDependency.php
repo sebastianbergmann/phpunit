@@ -22,6 +22,9 @@ final class DataFromTestDependency extends TestData
         return new self($data);
     }
 
+    /**
+     * @psalm-assert-if-true DataFromTestDependency $this
+     */
     public function isFromTestDependency(): bool
     {
         return true;
