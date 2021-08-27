@@ -113,15 +113,14 @@ final class Application
             $returnCode = self::EXCEPTION_EXIT;
 
             printf(
-                '%s in %s:%d' . PHP_EOL,
+                '%s in %s:%d%s%s%s',
                 $t->getMessage(),
                 $t->getFile(),
-                $t->getLine()
+                $t->getLine(),
+                PHP_EOL,
+                $t->getTraceAsString(),
+                PHP_EOL
             );
-
-            if (Registry::get()->debug()) {
-                print PHP_EOL . $t->getTraceAsString() . PHP_EOL;
-            }
         }
 
         Event\Facade::emitter()->testRunnerFinished();
