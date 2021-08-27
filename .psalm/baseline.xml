@@ -449,7 +449,7 @@
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
-    <MissingThrowsDocblock occurrences="13">
+    <MissingThrowsDocblock occurrences="15">
       <code>Facade::registerSubscriber(new AssertionMadeSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestAbortedSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestConsideredRiskySubscriber($this))</code>
@@ -462,11 +462,10 @@
       <code>Facade::registerSubscriber(new TestSkippedSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this))</code>
       <code>Facade::registerSubscriber(new TestSuiteStartedSubscriber($this))</code>
+      <code>dataFromDataProvider</code>
+      <code>dataFromDataProvider</code>
       <code>duration</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="1">
-      <code>setAttribute</code>
-    </PossiblyNullReference>
     <RedundantCondition occurrences="1">
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
