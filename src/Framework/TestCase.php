@@ -227,6 +227,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private ?Event\Code\TestMethod $testValueObjectForEvents = null;
 
+    private bool $wasPrepared = false;
+
     /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
@@ -803,6 +805,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->testValueObjectForEvents()
             );
 
+            $this->wasPrepared = true;
+
             $this->testResult = $this->runTest();
 
             if ($this->hasOutput()) {
@@ -1333,6 +1337,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         return $this->testValueObjectForEvents;
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function wasPrepared(): bool
+    {
+        return $this->wasPrepared;
     }
 
     /**

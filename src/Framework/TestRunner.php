@@ -291,9 +291,11 @@ final class TestRunner
 
         $result->endTest($test, $time);
 
-        Event\Facade::emitter()->testFinished(
-            $test->testValueObjectForEvents()
-        );
+        if ($test->wasPrepared()) {
+            Event\Facade::emitter()->testFinished(
+                $test->testValueObjectForEvents()
+            );
+        }
     }
 
     public function runInSeparateProcess(TestCase $test, TestResult $result, bool $runEntireClass, bool $preserveGlobalState): void
