@@ -693,7 +693,7 @@
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <MissingClosureReturnType occurrences="1">
-      <code>static function () {</code>
+      <code>static function ()</code>
     </MissingClosureReturnType>
   </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
