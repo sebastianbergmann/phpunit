@@ -63,7 +63,9 @@ $config->setFinder($finder)
                 'yield',
             ],
         ],
-        'braces' => true,
+        'braces' => [
+            'position_after_anonymous_constructs' => 'next',
+        ],
         'cast_spaces' => true,
         'class_attributes_separation' => [
             'elements' => [
