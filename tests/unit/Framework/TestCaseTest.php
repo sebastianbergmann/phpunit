@@ -718,7 +718,9 @@ class TestCaseTest extends TestCase
         $test   = new IsolationTest('testIsInIsolationReturnsFalse');
         $result = new TestResult;
 
+        Facade::emitter()->suspend();
         $test->run($result);
+        Facade::emitter()->resume();
 
         $this->assertCount(1, $result);
         $this->assertTrue($result->wasSuccessful());
@@ -731,7 +733,9 @@ class TestCaseTest extends TestCase
 
         $result = new TestResult;
 
+        Facade::emitter()->suspend();
         $test->run($result);
+        Facade::emitter()->resume();
 
         $this->assertCount(1, $result);
         $this->assertTrue($result->wasSuccessful());
