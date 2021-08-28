@@ -326,13 +326,6 @@ final class JunitXmlLogger
 
     private function handleFault(Test $test, Throwable $throwable, string $type): void
     {
-        /*
-         * @todo Figure out why this safeguard is required
-         */
-        if ($this->currentTestCase === null) {
-            return;
-        }
-
         $buffer = $this->testAsString($test);
 
         $buffer .= trim(
