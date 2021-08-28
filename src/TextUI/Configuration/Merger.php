@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI\Configuration;
 use const DIRECTORY_SEPARATOR;
 use function array_diff;
 use function assert;
-use function defined;
 use function dirname;
 use function implode;
 use function is_int;
@@ -171,16 +170,6 @@ final class Merger
             $pathCoverage = $cliConfiguration->pathCoverage();
         } else {
             $pathCoverage = $xmlConfiguration->codeCoverage()->pathCoverage();
-        }
-
-        $debug = false;
-
-        if ($cliConfiguration->hasDebug() && $cliConfiguration->debug()) {
-            $debug = true;
-
-            if (!defined('PHPUNIT_TESTSUITE')) {
-                $warnings[] = 'The --debug option is deprecated';
-            }
         }
 
         $coverageClover                 = null;
@@ -590,7 +579,6 @@ final class Merger
             $tooFewColumnsRequested,
             $loadPharExtensions,
             $pharExtensionDirectory,
-            $debug,
             $backupGlobals,
             $backupStaticProperties,
             $beStrictAboutChangesToGlobalState,

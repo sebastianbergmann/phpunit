@@ -70,9 +70,9 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @throws \PHPUnit\Framework\Exception
      */
-    public function __construct(string $out, bool $verbose = false, bool $colors = false, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
+    public function __construct(string $out, bool $verbose = false, bool $colors = false, int|string $numberOfColumns = 80, bool $reverse = false)
     {
-        parent::__construct($out, $verbose, $colors, $debug, $numberOfColumns, $reverse);
+        parent::__construct($out, $verbose, $colors, $numberOfColumns, $reverse);
 
         $this->prettifier = new NamePrettifier($this->colors);
     }

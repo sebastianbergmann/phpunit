@@ -45,7 +45,6 @@ final class Builder
         'coverage-text==',
         'coverage-xml=',
         'path-coverage',
-        'debug',
         'disallow-test-output',
         'default-time-limit=',
         'enforce-time-limit',
@@ -157,7 +156,6 @@ final class Builder
         $coverageTextShowOnlySummary       = null;
         $coverageXml                       = null;
         $pathCoverage                      = null;
-        $debug                             = null;
         $defaultTimeLimit                  = null;
         $disableCodeCoverageIgnore         = null;
         $disallowTestOutput                = null;
@@ -338,11 +336,6 @@ final class Builder
                             $iniSettings[$tmp[0]] = '1';
                         }
                     }
-
-                    break;
-
-                case '--debug':
-                    $debug = true;
 
                     break;
 
@@ -775,7 +768,6 @@ final class Builder
             $pathCoverage,
             $coverageCacheDirectory,
             $warmCoverageCache,
-            $debug,
             $defaultTimeLimit,
             $disableCodeCoverageIgnore,
             $disallowTestOutput,

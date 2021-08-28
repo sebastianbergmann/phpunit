@@ -79,8 +79,6 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
     protected bool $colors = false;
 
-    protected bool $debug = false;
-
     protected bool $verbose = false;
 
     private int $numberOfColumns;
@@ -94,7 +92,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
     /**
      * @throws Exception
      */
-    public function __construct(string $out, bool $verbose = false, bool $colors = false, bool $debug = false, int|string $numberOfColumns = 80, bool $reverse = false)
+    public function __construct(string $out, bool $verbose = false, bool $colors = false, int|string $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out);
 
@@ -110,7 +108,6 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
         $this->numberOfColumns = $numberOfColumns;
         $this->verbose         = $verbose;
-        $this->debug           = $debug;
         $this->reverse         = $reverse;
         $this->colors          = $colors;
 
@@ -213,14 +210,6 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
      */
     public function startTest(Test $test): void
     {
-        if ($this->debug) {
-            $this->write(
-                sprintf(
-                    "Test '%s' started\n",
-                    $this->describe($test)
-                )
-            );
-        }
     }
 
     /**
@@ -228,15 +217,6 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
      */
     public function endTest(Test $test, float $time): void
     {
-        if ($this->debug) {
-            $this->write(
-                sprintf(
-                    "Test '%s' ended\n",
-                    $this->describe($test)
-                )
-            );
-        }
-
         if (!$this->lastTestFailed) {
             $this->writeProgress('.');
         }
@@ -431,10 +411,6 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
     protected function writeProgress(string $progress): void
     {
-        if ($this->debug) {
-            return;
-        }
-
         $this->write($progress);
         $this->column++;
         $this->numTestsRun++;

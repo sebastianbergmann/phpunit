@@ -674,7 +674,6 @@ final class TestRunner
             $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : 'php://stdout',
             $this->configuration->verbose(),
             $this->configuration->colors(),
-            $this->configuration->debug(),
             $this->configuration->columns(),
             $this->configuration->reverseDefectList()
         );
