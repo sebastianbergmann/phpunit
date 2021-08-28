@@ -33,7 +33,9 @@ print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implements PHPUnit\Framework\MockObject\MockObject
+namespace {
+
+class MockClassWithStaticReturnTypes extends \ClassWithStaticReturnTypes implements \PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
@@ -104,4 +106,6 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 
         return $__phpunit_result;
     }
+}
+
 }

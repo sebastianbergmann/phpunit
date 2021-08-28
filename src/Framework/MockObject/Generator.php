@@ -702,9 +702,9 @@ final class Generator
         }
 
         if (!$isClass && !$isInterface) {
-            $prologue = sprintf(
-                "namespace %s {\n\nclass %s\n{\n}\n\n}\n\n",
-                $_mockClassName['namespaceName'],
+            $prologue .= sprintf(
+                "namespace %s{\n\nclass %s\n{\n}\n\n}\n\n",
+                $_mockClassName['namespaceName'] ? $_mockClassName['namespaceName'] . ' ' : '',
                 $_mockClassName['originalClassName']
             );
 
@@ -781,12 +781,6 @@ final class Generator
                 );
             }
 
-            if (class_exists($_mockClassName['fullClassName'], $callAutoload)) {
-                $isClass = true;
-            } elseif (interface_exists($_mockClassName['fullClassName'], $callAutoload)) {
-                $isInterface = true;
-            }
-
             // @see https://github.com/sebastianbergmann/phpunit-mock-objects/issues/103
             if ($isInterface && $class->implementsInterface(Traversable::class) &&
                 !$class->implementsInterface(Iterator::class) &&
@@ -830,7 +824,7 @@ final class Generator
         );
 
         $mockClassNamespace = $_mockClassNameDestructured['namespaceName'];
-        $prologue .= 'namespace ' . $mockClassNamespace . ' {' . PHP_EOL . PHP_EOL;
+        $prologue .= 'namespace ' . ($mockClassNamespace ? $mockClassNamespace . ' ' : '') . '{' . PHP_EOL . PHP_EOL;
         $epilogue .= PHP_EOL . PHP_EOL . '}';
 
         if ($mockClassNamespace) {
@@ -993,11 +987,14 @@ final class Generator
             if (!in_array($mockClassName['originalClassName'], $additionalInterfaces, true)) {
                 $buffer .= ', ';
 
+                $nextInterface = '';
+
                 if (!empty($mockClassName['namespaceName'])) {
-                    $buffer .= $mockClassName['namespaceName'] . '\\';
+                    $nextInterface .= $mockClassName['namespaceName'] . '\\';
                 }
 
-                $buffer .= $mockClassName['originalClassName'];
+                $nextInterface .= $mockClassName['originalClassName'];
+                $buffer .= $this->toFQCN($nextInterface);
             }
         } else {
             $extendedClassName = sprintf(

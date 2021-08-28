@@ -26,7 +26,9 @@ print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
+namespace {
+
+class MockFoo extends \Foo implements \PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
@@ -36,4 +38,6 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
     {
         throw new \PHPUnit\Framework\MockObject\BadMethodCallException('Static method "bar" cannot be invoked on mock object');
     }
+}
+
 }

@@ -39,7 +39,9 @@ print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework\MockObject\MockObject
+namespace {
+
+class Issue3154Mock extends \Is\Namespaced\Issue3154 implements \PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
@@ -66,4 +68,6 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
 
         return $__phpunit_result;
     }
+}
+
 }

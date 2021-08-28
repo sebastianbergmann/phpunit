@@ -1,34 +1,30 @@
---TEST--
-\PHPUnit\Framework\MockObject\Generator::generate('NonExistentClass', [], 'MockFoo', true, true)
 --FILE--
 <?php declare(strict_types=1);
+namespace Bar\Test {
+    class Bar {
+        public function something(Bar $bar) {}
+    }
+}
+
+namespace {
 require_once __DIR__ . '/../../../bootstrap.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
-    'NonExistentClass',
-    [],
-    'MockFoo',
-    true,
-    true
+    Bar::class,
+    null,
+    'Some\\Mock\\Class',
 );
 
 print $mock->getClassCode();
---EXPECTF--
+}
+--EXPECT--
 declare(strict_types=1);
 
-namespace {
+namespace Some\Mock {
 
-class NonExistentClass
-{
-}
-
-}
-
-namespace {
-
-class MockFoo extends \NonExistentClass implements \PHPUnit\Framework\MockObject\MockObject
+class Class extends \Bar implements \PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;

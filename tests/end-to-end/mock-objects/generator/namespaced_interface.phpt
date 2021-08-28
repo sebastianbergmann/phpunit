@@ -25,7 +25,9 @@ print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class MockFoo implements PHPUnit\Framework\MockObject\MockObject, NS\Foo
+namespace {
+
+class MockFoo implements \PHPUnit\Framework\MockObject\MockObject, \NS\Foo
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
@@ -52,4 +54,6 @@ class MockFoo implements PHPUnit\Framework\MockObject\MockObject, NS\Foo
 
         return $__phpunit_result;
     }
+}
+
 }

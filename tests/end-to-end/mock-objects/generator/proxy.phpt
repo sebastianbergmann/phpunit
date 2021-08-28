@@ -25,7 +25,9 @@ print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
+namespace {
+
+class ProxyFoo extends \Foo implements \PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
@@ -74,4 +76,6 @@ class ProxyFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 
         return call_user_func_array(array($this->__phpunit_originalObject, "baz"), $__phpunit_arguments);
     }
+}
+
 }

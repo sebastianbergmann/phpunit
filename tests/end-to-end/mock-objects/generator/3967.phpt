@@ -32,7 +32,9 @@ print $mock->getClassCode();
 --EXPECT--
 declare(strict_types=1);
 
-class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\MockObject
+namespace {
+
+class MockBaz extends Exception implements \Baz, \PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
@@ -59,4 +61,6 @@ class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\Moc
 
         return $__phpunit_result;
     }
+}
+
 }
