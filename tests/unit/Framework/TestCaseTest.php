@@ -1181,8 +1181,9 @@ class TestCaseTest extends TestCase
 
     public function testCanUseDependsToDependOnSuccessfulClass(): void
     {
-        $result = new TestResult();
-        $suite  = new TestSuite();
+        $result = new TestResult;
+        $suite  = new TestSuite;
+
         $suite->addTestSuite(DependencySuccessTest::class);
         $suite->addTestSuite(DependencyFailureTest::class);
         $suite->addTestSuite(DependencyOnClassTest::class);
