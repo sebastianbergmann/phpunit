@@ -26,6 +26,11 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function suspended(): bool
+    {
+        return false;
+    }
+
     public function eventFacadeSealed(): void
     {
     }

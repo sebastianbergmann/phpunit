@@ -51,6 +51,11 @@ final class DispatchingEmitter implements Emitter
         $this->suspended = false;
     }
 
+    public function suspended(): bool
+    {
+        return $this->suspended;
+    }
+
     public function eventFacadeSealed(): void
     {
         if ($this->suspended) {

@@ -25,6 +25,8 @@ interface Emitter
 
     public function resume(): void;
 
+    public function suspended(): bool;
+
     public function eventFacadeSealed(): void;
 
     public function testRunnerStarted(): void;
