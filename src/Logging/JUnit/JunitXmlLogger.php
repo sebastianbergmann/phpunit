@@ -21,6 +21,7 @@ use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\Test\Aborted;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
@@ -28,6 +29,7 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\OutputPrinted;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
@@ -253,12 +255,12 @@ final class JunitXmlLogger
         $this->output             = null;
     }
 
-    public function testAborted(): void
+    public function testAborted(Aborted $event): void
     {
         $this->handleIncompleteOrSkipped();
     }
 
-    public function testSkipped(): void
+    public function testSkipped(Skipped $event): void
     {
         $this->handleIncompleteOrSkipped();
     }
