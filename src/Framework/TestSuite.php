@@ -30,6 +30,7 @@ use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
+use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -409,6 +410,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $result->startTestSuite($this);
 
+        Event\Facade::emitter()->testSuiteStarted($this->getName());
+
         $test = null;
 
         $emitter = Event\Facade::emitter();
@@ -556,6 +559,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         $result->endTestSuite($this);
+
+        Event\Facade::emitter()->testSuiteFinished(
+            $this->getName(),
+            $result,
+            CodeCoverage::isActive() ? CodeCoverage::instance() : null
+        );
     }
 
     public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void

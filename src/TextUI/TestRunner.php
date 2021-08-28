@@ -436,15 +436,7 @@ final class TestRunner
             $this->write(PHP_EOL);
         }
 
-        Event\Facade::emitter()->testSuiteStarted($suite->getName());
-
         $suite->run($result);
-
-        Event\Facade::emitter()->testSuiteFinished(
-            $suite->getName(),
-            $result,
-            CodeCoverage::isActive() ? CodeCoverage::instance() : null
-        );
 
         foreach ($this->extensions as $extension) {
             if ($extension instanceof AfterLastTestHook) {
