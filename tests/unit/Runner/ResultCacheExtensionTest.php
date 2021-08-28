@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
@@ -57,7 +58,10 @@ final class ResultCacheExtensionTest extends TestCase
     public function testError(): void
     {
         $test = new TestError('testOne');
+
+        Facade::emitter()->suspend();
         $test->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue($this->cache->status(TestError::class . '::testOne')->isError());
     }
@@ -65,7 +69,10 @@ final class ResultCacheExtensionTest extends TestCase
     public function testFailure(): void
     {
         $test = new Failure('testOne');
+
+        Facade::emitter()->suspend();
         $test->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue($this->cache->status(Failure::class . '::testOne')->isFailure());
     }
@@ -73,7 +80,10 @@ final class ResultCacheExtensionTest extends TestCase
     public function testSkipped(): void
     {
         $test = new TestSkipped('testOne');
+
+        Facade::emitter()->suspend();
         $test->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue($this->cache->status(TestSkipped::class . '::testOne')->isSkipped());
     }
@@ -81,7 +91,10 @@ final class ResultCacheExtensionTest extends TestCase
     public function testIncomplete(): void
     {
         $test = new TestIncomplete('testOne');
+
+        Facade::emitter()->suspend();
         $test->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue($this->cache->status(TestIncomplete::class . '::testOne')->isIncomplete());
     }
@@ -89,7 +102,10 @@ final class ResultCacheExtensionTest extends TestCase
     public function testPassedTestsOnlyCacheTime(): void
     {
         $test = new Success('testOne');
+
+        Facade::emitter()->suspend();
         $test->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue($this->cache->status(Success::class . '::testOne')->isUnknown());
     }
@@ -97,7 +113,10 @@ final class ResultCacheExtensionTest extends TestCase
     public function testWarning(): void
     {
         $test = new TestWarning('testOne');
+
+        Facade::emitter()->suspend();
         $test->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue($this->cache->status(TestWarning::class . '::testOne')->isWarning());
     }
@@ -105,7 +124,10 @@ final class ResultCacheExtensionTest extends TestCase
     public function testRisky(): void
     {
         $test = new TestRisky('testOne');
+
+        Facade::emitter()->suspend();
         $test->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue($this->cache->status(TestRisky::class . '::testOne')->isRisky());
     }
@@ -114,7 +136,10 @@ final class ResultCacheExtensionTest extends TestCase
     {
         $suite = new TestSuite;
         $suite->addTestSuite(EmptyTestCaseTest::class);
+
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue($this->cache->status('Warning')->isWarning());
     }

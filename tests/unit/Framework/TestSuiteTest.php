@@ -17,6 +17,7 @@ use DependencyFailureTest;
 use DependencyOnClassTest;
 use DependencySuccessTest;
 use MultiDependencyTest;
+use PHPUnit\Event\Facade;
 use PHPUnit\TestFixture\BeforeAndAfterTest;
 use PHPUnit\TestFixture\BeforeClassAndAfterClassTest;
 use PHPUnit\TestFixture\BeforeClassWithOnlyDataProviderTest;
@@ -63,7 +64,10 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite('stdClass');
         $suite->addTestSuite(OneTestCase::class);
+
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertCount(1, $this->result);
     }
@@ -72,7 +76,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(OneTestCase::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertCount(1, $this->result);
     }
@@ -81,7 +87,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(InheritedTestCase::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue($this->result->wasSuccessful());
         $this->assertCount(2, $this->result);
@@ -91,7 +99,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(NoTestCases::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertNotTrue($this->result->wasSuccessful());
         $this->assertEquals(0, $this->result->failureCount());
@@ -117,7 +127,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(OneTestCase::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertEquals(0, $this->result->errorCount());
         $this->assertEquals(0, $this->result->failureCount());
@@ -129,7 +141,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(OverrideTestCase::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertCount(1, $this->result);
     }
@@ -139,7 +153,10 @@ final class TestSuiteTest extends TestCase
         $suite = new TestSuite(BeforeClassAndAfterClassTest::class);
 
         BeforeClassAndAfterClassTest::resetProperties();
+
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertEquals(1, BeforeClassAndAfterClassTest::$beforeClassWasRun, '@beforeClass method was not run once for the whole suite.');
         $this->assertEquals(1, BeforeClassAndAfterClassTest::$afterClassWasRun, '@afterClass method was not run once for the whole suite.');
@@ -150,7 +167,10 @@ final class TestSuiteTest extends TestCase
         $suite = new TestSuite(BeforeClassWithOnlyDataProviderTest::class);
 
         BeforeClassWithOnlyDataProviderTest::resetProperties();
+
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$setUpBeforeClassWasCalled, 'setUpBeforeClass method was not run.');
         $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$beforeClassWasCalled, '@beforeClass method was not run.');
@@ -162,7 +182,9 @@ final class TestSuiteTest extends TestCase
 
         BeforeAndAfterTest::resetProperties();
 
+        Facade::emitter()->suspend();
         $test->run(new TestResult);
+        Facade::emitter()->resume();
 
         $this->assertEquals(2, BeforeAndAfterTest::$beforeWasRun);
         $this->assertEquals(2, BeforeAndAfterTest::$afterWasRun);
@@ -174,7 +196,9 @@ final class TestSuiteTest extends TestCase
 
         PreConditionAndPostConditionTest::resetProperties();
 
+        Facade::emitter()->suspend();
         $test->run(new TestResult);
+        Facade::emitter()->resume();
 
         $this->assertSame(1, PreConditionAndPostConditionTest::$preConditionWasVerified);
         $this->assertSame(1, PreConditionAndPostConditionTest::$postConditionWasVerified);
@@ -187,7 +211,9 @@ final class TestSuiteTest extends TestCase
 
         BeforeAndAfterTest::resetProperties();
 
+        Facade::emitter()->suspend();
         $test->run($result);
+        Facade::emitter()->resume();
 
         $this->assertCount(4, $result->passed());
     }
@@ -196,7 +222,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(DataProviderSkippedTest::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertEquals(3, $this->result->count());
         $this->assertEquals(1, $this->result->skippedCount());
@@ -206,7 +234,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(TestCaseWithExceptionInHook::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertEquals(2, $this->result->count());
         $this->assertEquals(1, $this->result->errorCount());
@@ -217,7 +247,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(DataProviderDependencyTest::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $skipped           = $this->result->skipped();
         $lastSkippedResult = array_pop($skipped);
@@ -230,7 +262,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(DataProviderIncompleteTest::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertEquals(3, $this->result->count());
         $this->assertEquals(1, $this->result->notImplementedCount());
@@ -240,7 +274,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(RequirementsClassBeforeClassHookTest::class);
 
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertEquals(0, $this->result->errorCount());
         $this->assertEquals(1, $this->result->skippedCount());
@@ -259,7 +295,9 @@ final class TestSuiteTest extends TestCase
 
         $result = new TestResult;
 
+        Facade::emitter()->suspend();
         $suite->run($result);
+        Facade::emitter()->resume();
 
         $this->assertCount(2, $result);
     }
@@ -277,7 +315,9 @@ final class TestSuiteTest extends TestCase
 
         $result = new TestResult;
 
+        Facade::emitter()->suspend();
         $suite->run($result);
+        Facade::emitter()->resume();
 
         $this->assertCount(3, $result);
     }
@@ -288,7 +328,10 @@ final class TestSuiteTest extends TestCase
     public function testTearDownAfterClassInTestSuite(): void
     {
         $suite = new TestSuite(ExceptionInTearDownAfterClassTest::class);
+
+        Facade::emitter()->suspend();
         $suite->run($this->result);
+        Facade::emitter()->resume();
 
         $this->assertSame(3, $this->result->count());
         $this->assertCount(1, $this->result->failures());
