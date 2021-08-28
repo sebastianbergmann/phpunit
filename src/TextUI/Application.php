@@ -20,6 +20,7 @@ use function is_dir;
 use function is_file;
 use function realpath;
 use function sprintf;
+use function trim;
 use PHPUnit\Event;
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestResult;
@@ -112,11 +113,23 @@ final class Application
         } catch (Throwable $t) {
             $returnCode = self::EXCEPTION_EXIT;
 
+            $message = $t->getMessage();
+
+            if (empty(trim($message))) {
+                $message = '(no message)';
+            }
+
             printf(
-                '%s in %s:%d%s%s%s',
-                $t->getMessage(),
+                '%s%sAn error occurred inside PHPUnit.%s%sMessage:  %s%sLocation: %s:%d%s%s%s%s',
+                PHP_EOL,
+                PHP_EOL,
+                PHP_EOL,
+                PHP_EOL,
+                $message,
+                PHP_EOL,
                 $t->getFile(),
                 $t->getLine(),
+                PHP_EOL,
                 PHP_EOL,
                 $t->getTraceAsString(),
                 PHP_EOL
