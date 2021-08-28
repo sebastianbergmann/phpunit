@@ -30,6 +30,8 @@ final class DispatchingEmitter implements Emitter
 
     private Telemetry\Snapshot $previousSnapshot;
 
+    private bool $suspended = false;
+
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)
     {
         $this->dispatcher = $dispatcher;
@@ -39,8 +41,22 @@ final class DispatchingEmitter implements Emitter
         $this->previousSnapshot = $system->snapshot();
     }
 
+    public function suspend(): void
+    {
+        $this->suspended = true;
+    }
+
+    public function resume(): void
+    {
+        $this->suspended = false;
+    }
+
     public function eventFacadeSealed(): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestRunner\EventFacadeSealed(
                 $this->telemetryInfo()
@@ -50,6 +66,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testRunnerStarted(): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestRunner\Started(
                 $this->telemetryInfo(),
@@ -60,6 +80,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testRunnerConfigured(Configuration $configuration): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestRunner\Configured(
                 $this->telemetryInfo(),
@@ -70,6 +94,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testRunnerFinished(): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestRunner\Finished($this->telemetryInfo())
         );
@@ -77,6 +105,10 @@ final class DispatchingEmitter implements Emitter
 
     public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Assertion\Made(
                 $this->telemetryInfo(),
@@ -90,6 +122,10 @@ final class DispatchingEmitter implements Emitter
 
     public function bootstrapFinished(string $filename): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Bootstrap\Finished(
                 $this->telemetryInfo(),
@@ -103,6 +139,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function comparatorRegistered(string $className): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Comparator\Registered(
                 $this->telemetryInfo(),
@@ -113,6 +153,10 @@ final class DispatchingEmitter implements Emitter
 
     public function extensionLoaded(string $name, string $version): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Extension\Loaded(
                 $this->telemetryInfo(),
@@ -124,6 +168,10 @@ final class DispatchingEmitter implements Emitter
 
     public function globalStateCaptured(Snapshot $snapshot): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new GlobalState\Captured(
                 $this->telemetryInfo(),
@@ -134,6 +182,10 @@ final class DispatchingEmitter implements Emitter
 
     public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $diff): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new GlobalState\Modified(
                 $this->telemetryInfo(),
@@ -146,6 +198,10 @@ final class DispatchingEmitter implements Emitter
 
     public function globalStateRestored(Snapshot $snapshot): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new GlobalState\Restored(
                 $this->telemetryInfo(),
@@ -156,6 +212,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testErrored(Code\Test $test, Throwable $throwable): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\Errored(
                 $this->telemetryInfo(),
@@ -167,6 +227,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testFailed(Code\Test $test, Throwable $throwable): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\Failed(
                 $this->telemetryInfo(),
@@ -178,6 +242,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testFinished(Code\Test $test): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\Finished(
                 $this->telemetryInfo(),
@@ -188,6 +256,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testOutputPrinted(Code\Test $test, string $output): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\OutputPrinted(
                 $this->telemetryInfo(),
@@ -199,6 +271,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testPassed(Code\Test $test): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\Passed(
                 $this->telemetryInfo(),
@@ -209,6 +285,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\PassedWithWarning(
                 $this->telemetryInfo(),
@@ -220,6 +300,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testConsideredRisky(Code\Test $test, Throwable $throwable): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\ConsideredRisky(
                 $this->telemetryInfo(),
@@ -231,6 +315,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\SkippedByDataProvider(
                 $this->telemetryInfo(),
@@ -242,6 +330,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testAborted(Code\Test $test, Throwable $throwable): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\Aborted(
                 $this->telemetryInfo(),
@@ -253,6 +345,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testSkippedDueToUnsatisfiedRequirements(Code\ClassMethod $testMethod, string ...$missingRequirements): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\SkippedDueToUnsatisfiedRequirements(
                 $this->telemetryInfo(),
@@ -264,6 +360,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testSkipped(Code\Test $test, Throwable $throwable): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\Skipped(
                 $this->telemetryInfo(),
@@ -275,6 +375,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testPrepared(Code\Test $test): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\Prepared(
                 $this->telemetryInfo(),
@@ -288,6 +392,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAfterTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\AfterTestMethodFinished(
                 $this->telemetryInfo(),
@@ -302,6 +410,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAfterLastTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\AfterLastTestMethodFinished(
                 $this->telemetryInfo(),
@@ -316,6 +428,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testBeforeFirstTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\BeforeFirstTestMethodCalled(
                 $this->telemetryInfo(),
@@ -330,6 +446,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testBeforeFirstTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\BeforeFirstTestMethodFinished(
                 $this->telemetryInfo(),
@@ -344,6 +464,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testBeforeTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\BeforeTestMethodCalled(
                 $this->telemetryInfo(),
@@ -358,6 +482,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testBeforeTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\BeforeTestMethodFinished(
                 $this->telemetryInfo(),
@@ -372,6 +500,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testPreConditionCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\PreConditionCalled(
                 $this->telemetryInfo(),
@@ -386,6 +518,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testPreConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\PreConditionFinished(
                 $this->telemetryInfo(),
@@ -400,6 +536,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testPostConditionCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\PostConditionCalled(
                 $this->telemetryInfo(),
@@ -414,6 +554,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testPostConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\PostConditionFinished(
                 $this->telemetryInfo(),
@@ -428,6 +572,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAfterTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\AfterTestMethodCalled(
                 $this->telemetryInfo(),
@@ -442,6 +590,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testAfterLastTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new Test\AfterLastTestMethodCalled(
                 $this->telemetryInfo(),
@@ -456,6 +608,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testMockObjectCreated(string $className): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestDouble\MockObjectCreated(
                 $this->telemetryInfo(),
@@ -469,6 +625,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testMockObjectCreatedForTrait(string $traitName): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestDouble\MockObjectCreatedForTrait(
                 $this->telemetryInfo(),
@@ -482,6 +642,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testMockObjectCreatedForAbstractClass(string $className): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestDouble\MockObjectCreatedForAbstractClass(
                 $this->telemetryInfo(),
@@ -496,6 +660,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testMockObjectCreatedFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestDouble\MockObjectCreatedFromWsdl(
                 $this->telemetryInfo(),
@@ -514,6 +682,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testPartialMockObjectCreated(string $className, string ...$methodNames): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestDouble\PartialMockObjectCreated(
                 $this->telemetryInfo(),
@@ -528,6 +700,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testTestProxyCreated(string $className, array $constructorArguments): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestDouble\TestProxyCreated(
                 $this->telemetryInfo(),
@@ -542,6 +718,10 @@ final class DispatchingEmitter implements Emitter
      */
     public function testTestStubCreated(string $className): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestDouble\TestStubCreated(
                 $this->telemetryInfo(),
@@ -552,6 +732,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testSuiteLoaded(FrameworkTestSuite $testSuite): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestSuite\Loaded(
                 $this->telemetryInfo(),
@@ -562,6 +746,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestSuite\Sorted(
                 $this->telemetryInfo(),
@@ -574,6 +762,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testSuiteStarted(string $name): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestSuite\Started(
                 $this->telemetryInfo(),
@@ -584,6 +776,10 @@ final class DispatchingEmitter implements Emitter
 
     public function testSuiteFinished(string $testSuiteName, TestResult $result): void
     {
+        if ($this->suspended) {
+            return;
+        }
+
         $this->dispatcher->dispatch(
             new TestSuite\Finished(
                 $this->telemetryInfo(),

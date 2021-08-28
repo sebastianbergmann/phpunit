@@ -21,6 +21,10 @@ use SebastianBergmann\GlobalState\Snapshot;
  */
 interface Emitter
 {
+    public function suspend(): void;
+
+    public function resume(): void;
+
     public function eventFacadeSealed(): void;
 
     public function testRunnerStarted(): void;
