@@ -30,7 +30,6 @@ use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
-use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -563,7 +562,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         Event\Facade::emitter()->testSuiteFinished(
             $this->getName(),
             $result,
-            CodeCoverage::isActive() ? CodeCoverage::instance() : null
         );
     }
 

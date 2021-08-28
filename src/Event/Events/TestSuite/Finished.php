@@ -12,7 +12,6 @@ namespace PHPUnit\Event\TestSuite;
 use function sprintf;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -25,14 +24,11 @@ final class Finished implements Event
 
     private Result $result;
 
-    private ?CodeCoverage $codeCoverage;
-
-    public function __construct(Telemetry\Info $telemetryInfo, string $name, Result $result, ?CodeCoverage $codeCoverage)
+    public function __construct(Telemetry\Info $telemetryInfo, string $name, Result $result)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->name          = $name;
         $this->result        = $result;
-        $this->codeCoverage  = $codeCoverage;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -48,11 +44,6 @@ final class Finished implements Event
     public function result(): Result
     {
         return $this->result;
-    }
-
-    public function codeCoverage(): ?CodeCoverage
-    {
-        return $this->codeCoverage;
     }
 
     public function asString(): string

@@ -15,7 +15,6 @@ use PHPUnit\Framework;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestFixture;
 use RecordingSubscriber;
-use SebastianBergmann\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 use stdClass;
 
@@ -1673,12 +1672,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSuiteFinishedDispatchesTestSuiteFinishedEvent(): void
     {
-        $name         = 'foo';
-        $result       = new Framework\TestResult;
-        $codeCoverage = new CodeCoverage\CodeCoverage(
-            $this->createMock(CodeCoverage\Driver\Driver::class),
-            new CodeCoverage\Filter()
-        );
+        $name   = 'foo';
+        $result = new Framework\TestResult;
 
         $subscriber = new class extends RecordingSubscriber implements TestSuite\FinishedSubscriber
         {
@@ -1704,7 +1699,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $emitter->testSuiteFinished(
             $name,
             $result,
-            $codeCoverage
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1718,7 +1712,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $mappedResult = (new TestResultMapper())->map($result);
 
         $this->assertEquals($mappedResult, $event->result());
-        $this->assertSame($codeCoverage, $event->codeCoverage());
     }
 
     public function testTestSuiteSortedDispatchesTestSuiteSortedEvent(): void

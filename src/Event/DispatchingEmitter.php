@@ -15,7 +15,6 @@ use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
 /**
@@ -583,14 +582,13 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSuiteFinished(string $testSuiteName, TestResult $result, ?CodeCoverage $codeCoverage): void
+    public function testSuiteFinished(string $testSuiteName, TestResult $result): void
     {
         $this->dispatcher->dispatch(
             new TestSuite\Finished(
                 $this->telemetryInfo(),
                 $testSuiteName,
                 (new TestResultMapper())->map($result),
-                $codeCoverage
             )
         );
     }

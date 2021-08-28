@@ -14,7 +14,6 @@ use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
-use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\GlobalState\Snapshot;
 
 final class NullEmitter implements Emitter
@@ -205,7 +204,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSuiteFinished(string $testSuiteName, TestResult $result, ?CodeCoverage $codeCoverage): void
+    public function testSuiteFinished(string $testSuiteName, TestResult $result): void
     {
     }
 }
