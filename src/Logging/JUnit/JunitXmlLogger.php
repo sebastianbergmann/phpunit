@@ -189,24 +189,7 @@ final class JunitXmlLogger
 
     public function testPrepared(Prepared $event): void
     {
-        $testCase = $this->document->createElement('testcase');
-
-        $test = $event->test();
-
-        $testCase->setAttribute('name', $this->name($test));
-        $testCase->setAttribute('file', $test->file());
-
-        if ($test->isTestMethod()) {
-            assert($test instanceof TestMethod);
-
-            $testCase->setAttribute('line', (string) $test->line());
-            $testCase->setAttribute('class', $test->className());
-            $testCase->setAttribute('classname', str_replace('\\', '.', $test->className()));
-        }
-
-        $this->currentTestCase    = $testCase;
-        $this->numberOfAssertions = 0;
-        $this->time               = $event->telemetryInfo()->time();
+        $this->createTestCase($event);
     }
 
     public function testPrintedOutput(OutputPrinted $event): void
@@ -257,12 +240,12 @@ final class JunitXmlLogger
 
     public function testAborted(Aborted $event): void
     {
-        $this->handleIncompleteOrSkipped();
+        $this->handleIncompleteOrSkipped($event);
     }
 
     public function testSkipped(Skipped $event): void
     {
-        $this->handleIncompleteOrSkipped();
+        $this->handleIncompleteOrSkipped($event);
     }
 
     public function testErrored(Errored $event): void
@@ -328,6 +311,8 @@ final class JunitXmlLogger
 
     private function handleFault(Test $test, Throwable $throwable, string $type): void
     {
+        assert($this->currentTestCase !== null);
+
         $buffer = $this->testAsString($test);
 
         $buffer .= trim(
@@ -345,14 +330,13 @@ final class JunitXmlLogger
         $this->currentTestCase->appendChild($fault);
     }
 
-    private function handleIncompleteOrSkipped(): void
+    private function handleIncompleteOrSkipped(Aborted|Skipped $event): void
     {
-        /*
-         * @todo Figure out why this safeguard is required
-         */
         if ($this->currentTestCase === null) {
-            return;
+            $this->createTestCase($event);
         }
+
+        assert($this->currentTestCase !== null);
 
         $skipped = $this->document->createElement('skipped');
 
@@ -415,5 +399,27 @@ final class JunitXmlLogger
             $test->methodName(),
             $dataSetName
         );
+    }
+
+    private function createTestCase(Prepared|Aborted|Skipped $event): void
+    {
+        $testCase = $this->document->createElement('testcase');
+
+        $test = $event->test();
+
+        $testCase->setAttribute('name', $this->name($test));
+        $testCase->setAttribute('file', $test->file());
+
+        if ($test->isTestMethod()) {
+            assert($test instanceof TestMethod);
+
+            $testCase->setAttribute('line', (string) $test->line());
+            $testCase->setAttribute('class', $test->className());
+            $testCase->setAttribute('classname', str_replace('\\', '.', $test->className()));
+        }
+
+        $this->currentTestCase    = $testCase;
+        $this->numberOfAssertions = 0;
+        $this->time               = $event->telemetryInfo()->time();
     }
 }
