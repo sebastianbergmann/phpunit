@@ -33,8 +33,8 @@ final class Facade
             self::$emitter = new DispatchingEmitter(
                 self::deferredDispatcher(),
                 new Telemetry\System(
-                    new Telemetry\SystemStopWatch(),
-                    new Telemetry\SystemMemoryMeter()
+                    new Telemetry\SystemStopWatch,
+                    new Telemetry\SystemMemoryMeter
                 )
             );
         }
@@ -53,7 +53,7 @@ final class Facade
             $dispatcher,
             new Telemetry\System(
                 new Telemetry\SystemStopWatchWithOffset($offset),
-                new Telemetry\SystemMemoryMeter()
+                new Telemetry\SystemMemoryMeter
             )
         );
 
