@@ -79,15 +79,15 @@ Tests: 14, Assertions: 4, Errors: 2, Failures: 2, Warnings: 2, Skipped: 2, Incom
   <testsuite name="PHPUnit\SelfTest\Basic\StatusTest" file="%sStatusTest.php" tests="14" assertions="4" errors="4" warnings="2" failures="2" skipped="4" time="%f">
     <testcase name="testSuccess" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f"/>
     <testcase name="testFailure" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f">
-      <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\SelfTest\Basic\StatusTest::testFailure
+      <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\SelfTest\Basic\StatusTest::testFailure%A
 Failed asserting that false is true.
-
+%A
 %sStatusTest.php:%d</failure>
     </testcase>
     <testcase name="testError" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <error type="RuntimeException">PHPUnit\SelfTest\Basic\StatusTest::testError
+      <error type="RuntimeException">PHPUnit\SelfTest\Basic\StatusTest::testError%A
 RuntimeException:%w
-
+%A
 %sStatusTest.php:%d</error>
     </testcase>
     <testcase name="testIncomplete" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
@@ -97,27 +97,27 @@ RuntimeException:%w
       <skipped/>
     </testcase>
     <testcase name="testRisky" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <error type="PHPUnit\Framework\RiskyTestError">PHPUnit\SelfTest\Basic\StatusTest::testRisky
+      <error type="PHPUnit\Framework\RiskyTestError">PHPUnit\SelfTest\Basic\StatusTest::testRisky%A
 This test did not perform any assertions
-
+%A
 %sStatusTest.php:%d</error>
     </testcase>
     <testcase name="testWarning" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <warning type="PHPUnit\Framework\Warning">PHPUnit\SelfTest\Basic\StatusTest::testWarning
+      <warning type="PHPUnit\Framework\Warning">PHPUnit\SelfTest\Basic\StatusTest::testWarning%A
 %sStatusTest.php:%d</warning>
     </testcase>
     <testcase name="testSuccessWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f"/>
     <testcase name="testFailureWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f">
-      <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage
+      <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage%A
 failure with custom message
 Failed asserting that false is true.
-
+%A
 %sStatusTest.php:%d</failure>
     </testcase>
     <testcase name="testErrorWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <error type="RuntimeException">PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
+      <error type="RuntimeException">PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage%A
 RuntimeException: error with custom message
-
+%A
 %sStatusTest.php:%d</error>
     </testcase>
     <testcase name="testIncompleteWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
@@ -127,15 +127,15 @@ RuntimeException: error with custom message
       <skipped/>
     </testcase>
     <testcase name="testRiskyWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <error type="PHPUnit\Framework\RiskyTestError">PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage
+      <error type="PHPUnit\Framework\RiskyTestError">PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage%A
 This test did not perform any assertions
-
+%A
 %sStatusTest.php:%d</error>
     </testcase>
     <testcase name="testWarningWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <warning type="PHPUnit\Framework\Warning">PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage
+      <warning type="PHPUnit\Framework\Warning">PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage%A
 warning with custom message
-
+%A
 %sStatusTest.php:%d</warning>
     </testcase>
   </testsuite>
