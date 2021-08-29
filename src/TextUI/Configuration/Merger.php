@@ -459,14 +459,23 @@ final class Merger
             $plainTextTrace = $cliConfiguration->plainTextTrace();
         }
 
+        $defaultOutput  = true;
+        $teamCityOutput = false;
+        $testDoxOutput  = false;
+
         $printerClassName = DefaultResultPrinter::class;
 
         if ($cliConfiguration->hasTeamCityPrinter() && $cliConfiguration->teamCityPrinter()) {
             $printerClassName = TeamCityLogger::class;
+            $teamCityOutput   = true;
+            $defaultOutput    = false;
         } elseif ($cliConfiguration->hasTestDoxPrinter() && $cliConfiguration->testdoxPrinter()) {
             $printerClassName = CliTestDoxPrinter::class;
+            $testDoxOutput    = true;
+            $defaultOutput    = false;
         } elseif ($cliConfiguration->hasNoOutput() && $cliConfiguration->noOutput()) {
             $printerClassName = VoidPrinter::class;
+            $defaultOutput    = false;
         }
 
         $repeat = 0;
@@ -619,6 +628,9 @@ final class Merger
             $logfileTestdoxXml,
             $plainTextTrace,
             $printerClassName,
+            $defaultOutput,
+            $teamCityOutput,
+            $testDoxOutput,
             $repeat,
             $testsCovering,
             $testsUsing,

@@ -163,6 +163,12 @@ final class Configuration
      */
     private string $printerClassName;
 
+    private bool $defaultOutput;
+
+    private bool $teamCityOutput;
+
+    private bool $testDoxOutput;
+
     private int $repeat;
 
     private ?string $filter;
@@ -191,7 +197,7 @@ final class Configuration
     /**
      * @psalm-param class-string $printerClassName
      */
-    public function __construct(?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, int $repeat, ?array $testsCovering, ?array $testsUsing, ?string $filter, ?array $groups, ?array $excludeGroups, array $testdoxGroups, array $testdoxExcludeGroups, ?string $includePath, int $randomOrderSeed, bool $includeUncoveredFiles, ?string $xmlValidationErrors, array $warnings)
+    public function __construct(?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $verbose, bool $reverseDefectList, bool $forceCoversAnnotation, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $plainTextTrace, string $printerClassName, bool $defaultOutput, bool $teamCityOutput, bool $testDoxOutput, int $repeat, ?array $testsCovering, ?array $testsUsing, ?string $filter, ?array $groups, ?array $excludeGroups, array $testdoxGroups, array $testdoxExcludeGroups, ?string $includePath, int $randomOrderSeed, bool $includeUncoveredFiles, ?string $xmlValidationErrors, array $warnings)
     {
         $this->configurationFile                               = $configurationFile;
         $this->bootstrap                                       = $bootstrap;
@@ -264,6 +270,9 @@ final class Configuration
         $this->logfileTestdoxXml                               = $logfileTestdoxXml;
         $this->plainTextTrace                                  = $plainTextTrace;
         $this->printerClassName                                = $printerClassName;
+        $this->defaultOutput                                   = $defaultOutput;
+        $this->teamCityOutput                                  = $teamCityOutput;
+        $this->testDoxOutput                                   = $testDoxOutput;
         $this->repeat                                          = $repeat;
         $this->testsCovering                                   = $testsCovering;
         $this->testsUsing                                      = $testsUsing;
@@ -930,6 +939,21 @@ final class Configuration
     public function printerClassName(): string
     {
         return $this->printerClassName;
+    }
+
+    public function outputIsDefault(): bool
+    {
+        return $this->defaultOutput;
+    }
+
+    public function outputIsTeamCity(): bool
+    {
+        return $this->teamCityOutput;
+    }
+
+    public function outputIsTestDox(): bool
+    {
+        return $this->testDoxOutput;
     }
 
     public function hasRepeat(): bool
