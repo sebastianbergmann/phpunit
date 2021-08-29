@@ -31,6 +31,7 @@ use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Logging\TestDox\HtmlResultPrinter;
 use PHPUnit\Logging\TestDox\TextResultPrinter;
 use PHPUnit\Logging\TestDox\XmlResultPrinter;
+use PHPUnit\Logging\VoidPrinter;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\CodeCoverage;
@@ -668,7 +669,15 @@ final class TestRunner
 
     private function createPrinter(): ResultPrinter
     {
-        $className = $this->configuration->printerClassName();
+        $className = VoidPrinter::class;
+
+        if ($this->configuration->outputIsDefault()) {
+            $className = DefaultResultPrinter::class;
+        } elseif ($this->configuration->outputIsTeamCity()) {
+            $className = TeamCityLogger::class;
+        } elseif ($this->configuration->outputIsTestDox()) {
+            $className = CliTestDoxPrinter::class;
+        }
 
         $object = new $className(
             $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : 'php://stdout',

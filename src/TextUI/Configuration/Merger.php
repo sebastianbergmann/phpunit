@@ -17,9 +17,6 @@ use function implode;
 use function is_int;
 use function realpath;
 use function time;
-use PHPUnit\Logging\TeamCityLogger;
-use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
-use PHPUnit\Logging\VoidPrinter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\DefaultResultPrinter;
@@ -463,19 +460,14 @@ final class Merger
         $teamCityOutput = false;
         $testDoxOutput  = false;
 
-        $printerClassName = DefaultResultPrinter::class;
-
         if ($cliConfiguration->hasTeamCityPrinter() && $cliConfiguration->teamCityPrinter()) {
-            $printerClassName = TeamCityLogger::class;
-            $teamCityOutput   = true;
-            $defaultOutput    = false;
+            $teamCityOutput = true;
+            $defaultOutput  = false;
         } elseif ($cliConfiguration->hasTestDoxPrinter() && $cliConfiguration->testdoxPrinter()) {
-            $printerClassName = CliTestDoxPrinter::class;
-            $testDoxOutput    = true;
-            $defaultOutput    = false;
+            $testDoxOutput = true;
+            $defaultOutput = false;
         } elseif ($cliConfiguration->hasNoOutput() && $cliConfiguration->noOutput()) {
-            $printerClassName = VoidPrinter::class;
-            $defaultOutput    = false;
+            $defaultOutput = false;
         }
 
         $repeat = 0;
@@ -627,7 +619,6 @@ final class Merger
             $logfileTestdoxText,
             $logfileTestdoxXml,
             $plainTextTrace,
-            $printerClassName,
             $defaultOutput,
             $teamCityOutput,
             $testDoxOutput,
