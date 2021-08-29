@@ -484,30 +484,6 @@
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
   </file>
-  <file src="src/Logging/TeamCityLogger.php">
-    <DocblockTypeContradiction occurrences="2">
-      <code>$actualString === null</code>
-      <code>$expectedString === null</code>
-    </DocblockTypeContradiction>
-    <MissingThrowsDocblock occurrences="2">
-      <code>Filter::getFilteredStacktrace($t)</code>
-    </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="2">
-      <code>$flowId</code>
-      <code>$startedTestName</code>
-    </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="1">
-      <code>$previous-&gt;getPrevious()</code>
-    </RedundantCondition>
-    <UndefinedInterfaceMethod occurrences="6">
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-    </UndefinedInterfaceMethod>
-  </file>
   <file src="src/Logging/TestDox/CliTestDoxPrinter.php">
     <MissingThrowsDocblock occurrences="2">
       <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
@@ -1116,8 +1092,7 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedMethod occurrences="7">
-      <code>addListener</code>
+    <DeprecatedMethod occurrences="6">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
@@ -1136,7 +1111,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="36">
+    <MissingThrowsDocblock occurrences="38">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1161,6 +1136,7 @@
       <code>logfileTestdoxXml</code>
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
+      <code>new TeamCityLogger('php://stdout')</code>
       <code>pharExtensionDirectory</code>
       <code>plainTextTrace</code>
       <code>plainTextTrace</code>

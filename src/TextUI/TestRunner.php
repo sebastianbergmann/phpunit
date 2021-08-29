@@ -26,7 +26,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
-use PHPUnit\Logging\TeamCityLogger;
+use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Logging\TestDox\HtmlResultPrinter;
 use PHPUnit\Logging\TestDox\TextResultPrinter;
@@ -200,6 +200,16 @@ final class TestRunner
             );
         }
 
+        if ($this->configuration->hasLogfileTeamcity()) {
+            $teamCityLogger = new TeamCityLogger(
+                $this->configuration->logfileTeamcity()
+            );
+        }
+
+        if ($this->configuration->outputIsTeamCity()) {
+            $teamCityOutput = new TeamCityLogger('php://stdout');
+        }
+
         Event\Facade::seal();
 
         $this->printer->write(
@@ -242,12 +252,6 @@ final class TestRunner
                 new XmlResultPrinter(
                     $this->configuration->logfileTestdoxXml()
                 )
-            );
-        }
-
-        if ($this->configuration->hasLogfileTeamcity()) {
-            $result->addListener(
-                new TeamCityLogger($this->configuration->logfileTeamcity())
             );
         }
 
@@ -411,6 +415,14 @@ final class TestRunner
                 $this->configuration->logfileJunit(),
                 $junitXmlLogger->flush()
             );
+        }
+
+        if (isset($teamCityLogger)) {
+            $teamCityLogger->flush();
+        }
+
+        if (isset($teamCityOutput)) {
+            $teamCityOutput->flush();
         }
 
         if (CodeCoverage::isActive()) {
@@ -628,8 +640,6 @@ final class TestRunner
 
         if ($this->configuration->outputIsDefault()) {
             $className = DefaultResultPrinter::class;
-        } elseif ($this->configuration->outputIsTeamCity()) {
-            $className = TeamCityLogger::class;
         } elseif ($this->configuration->outputIsTestDox()) {
             $className = CliTestDoxPrinter::class;
         }
