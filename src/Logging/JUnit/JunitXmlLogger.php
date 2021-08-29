@@ -19,6 +19,7 @@ use PHPUnit\Event\Assertion\Made;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\Aborted;
@@ -31,6 +32,7 @@ use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Started;
+use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
@@ -95,6 +97,10 @@ final class JunitXmlLogger
 
     private ?string $output = null;
 
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     public function __construct(bool $reportRiskyTests)
     {
         $this->registerSubscribers($reportRiskyTests);
@@ -281,6 +287,10 @@ final class JunitXmlLogger
         $this->numberOfAssertions += $event->constraint()->count();
     }
 
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     private function registerSubscribers(bool $reportRiskyTests): void
     {
         Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));

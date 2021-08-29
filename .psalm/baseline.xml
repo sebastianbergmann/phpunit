@@ -449,19 +449,7 @@
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
-    <MissingThrowsDocblock occurrences="15">
-      <code>Facade::registerSubscriber(new AssertionMadeSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestAbortedSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestConsideredRiskySubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestErroredSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestFailedSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestFinishedSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestPreparedSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestPrintedOutputSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestSkippedSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this))</code>
-      <code>Facade::registerSubscriber(new TestSuiteStartedSubscriber($this))</code>
+    <MissingThrowsDocblock occurrences="3">
       <code>dataFromDataProvider</code>
       <code>dataFromDataProvider</code>
       <code>duration</code>
@@ -1146,7 +1134,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="34">
+    <MissingThrowsDocblock occurrences="35">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
