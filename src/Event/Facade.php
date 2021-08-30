@@ -62,6 +62,9 @@ final class Facade
         return $dispatcher;
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function forward(EventCollection $events): void
     {
         $dispatcher = self::deferredDispatcher();
@@ -96,6 +99,9 @@ final class Facade
         self::deferredDispatcher()->registerSubscriber($subscriber);
     }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     public static function seal(): void
     {
         self::$deferredDispatcher->flush();
