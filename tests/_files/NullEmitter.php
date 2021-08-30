@@ -200,7 +200,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSuiteStarted(string $name): void
+    public function testSuiteStarted(TestSuite $testSuite): void
     {
     }
 

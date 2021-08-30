@@ -409,7 +409,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $result->startTestSuite($this);
 
-        Event\Facade::emitter()->testSuiteStarted($this->getName());
+        Event\Facade::emitter()->testSuiteStarted($this);
 
         $test = null;
 

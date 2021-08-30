@@ -20,12 +20,12 @@ final class Started implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private string $name;
+    private Info $info;
 
-    public function __construct(Telemetry\Info $telemetryInfo, string $name)
+    public function __construct(Telemetry\Info $telemetryInfo, Info $info)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->name          = $name;
+        $this->info          = $info;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -33,25 +33,23 @@ final class Started implements Event
         return $this->telemetryInfo;
     }
 
-    public function name(): string
+    public function testSuiteInfo(): Info
     {
-        return $this->name;
+        return $this->info;
     }
 
     public function asString(): string
     {
         $name = '';
 
-        if (!empty($this->name)) {
-            $name = sprintf(
-                '(%s)',
-                $this->name
-            );
+        if (!empty($this->info->name())) {
+            $name = $this->info->name() . ', ';
         }
 
         return sprintf(
-            'Test Suite Started %s',
+            'Test Suite Started (%s%d tests)',
             $name,
+            $this->info->count()
         );
     }
 }

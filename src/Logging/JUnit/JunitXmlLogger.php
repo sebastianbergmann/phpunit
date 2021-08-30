@@ -115,11 +115,11 @@ final class JunitXmlLogger
     public function testSuiteStarted(Started $event): void
     {
         $testSuite = $this->document->createElement('testsuite');
-        $testSuite->setAttribute('name', $event->name());
+        $testSuite->setAttribute('name', $event->testSuiteInfo()->name());
 
-        if (class_exists($event->name(), false)) {
+        if (class_exists($event->testSuiteInfo()->name(), false)) {
             try {
-                $class = new ReflectionClass($event->name());
+                $class = new ReflectionClass($event->testSuiteInfo()->name());
 
                 $testSuite->setAttribute('file', $class->getFileName());
             } catch (ReflectionException) {

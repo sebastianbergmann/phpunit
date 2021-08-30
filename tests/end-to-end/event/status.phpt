@@ -30,7 +30,7 @@ Test Runner Configuration Combined
 Test Suite Loaded (14 tests)
 Test Suite Sorted
 Event Facade Sealed
-Test Suite Started (PHPUnit\SelfTest\Basic\StatusTest)
+Test Suite Started (PHPUnit\SelfTest\Basic\StatusTest, 14 tests)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
 Mock Object Created (PHPUnit\TestFixture\MockObject\AnInterface)
 Assertion Made (Constraint: is true - Value: true - Failed: false)
