@@ -413,8 +413,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $test = null;
 
-        $emitter = Event\Facade::emitter();
-
         $methodsCalledBeforeFirstTest = [];
 
         if (class_exists($this->name, false)) {
@@ -435,7 +433,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $beforeClassMethod
                     );
 
-                    $emitter->testBeforeFirstTestMethodCalled(
+                    Event\Facade::emitter()->testBeforeFirstTestMethodCalled(
                         $this->name,
                         $methodCalledBeforeFirstTest
                     );
@@ -484,7 +482,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         if (!empty($methodsCalledBeforeFirstTest)) {
-            $emitter->testBeforeFirstTestMethodFinished(
+            Event\Facade::emitter()->testBeforeFirstTestMethodFinished(
                 $this->name,
                 ...$methodsCalledBeforeFirstTest
             );
@@ -530,7 +528,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $afterClassMethod
                     );
 
-                    $emitter->testAfterLastTestMethodCalled(
+                    Event\Facade::emitter()->testAfterLastTestMethodCalled(
                         $this->name,
                         $methodCalledAfterLastTest
                     );
@@ -551,7 +549,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         if (!empty($methodsCalledAfterLastTest)) {
-            $emitter->testAfterLastTestMethodFinished(
+            Event\Facade::emitter()->testAfterLastTestMethodFinished(
                 $this->name,
                 ...$methodsCalledAfterLastTest
             );
