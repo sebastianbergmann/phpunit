@@ -11,9 +11,6 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
-
-
 ##teamcity[testCount count='14' flowId='%d']
 
 ##teamcity[testSuiteStarted name='PHPUnit\SelfTest\Basic\StatusTest' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest' flowId='%d']
@@ -97,10 +94,3 @@ warning with custom message
 ##teamcity[testFinished name='testWarningWithMessage' duration='%d' flowId='%d']
 
 ##teamcity[testSuiteFinished name='PHPUnit\SelfTest\Basic\StatusTest' flowId='%d']
-
-
-Time: %s Memory: %s
-
-
-ERRORS!
-Tests: 14, Assertions: 4, Errors: 2, Failures: 2, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
