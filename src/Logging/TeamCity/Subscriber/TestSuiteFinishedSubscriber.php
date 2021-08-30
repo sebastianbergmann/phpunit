@@ -19,6 +19,6 @@ final class TestSuiteFinishedSubscriber extends Subscriber implements FinishedSu
 {
     public function notify(Finished $event): void
     {
-        $this->logger()->testSuiteFinished();
+        $this->logger()->testSuiteFinished($event);
     }
 }

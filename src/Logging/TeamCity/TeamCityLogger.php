@@ -41,11 +41,11 @@ final class TeamCityLogger extends Printer
         $this->registerSubscribers();
     }
 
-    public function testSuiteStarted(Started $event): void
+    public function testSuiteStarted(TestSuiteStarted $event): void
     {
     }
 
-    public function testSuiteFinished(): void
+    public function testSuiteFinished(TestSuiteFinished $event): void
     {
     }
 
