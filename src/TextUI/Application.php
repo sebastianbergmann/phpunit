@@ -60,6 +60,8 @@ final class Application
 
     private const EXCEPTION_EXIT = 2;
 
+    private const CRASH_EXIT = 255;
+
     /**
      * @psalm-var array<string,mixed>
      */
@@ -111,8 +113,6 @@ final class Application
 
             $returnCode = $this->returnCode($result);
         } catch (Throwable $t) {
-            $returnCode = self::EXCEPTION_EXIT;
-
             $message = $t->getMessage();
 
             if (empty(trim($message))) {
@@ -134,6 +134,8 @@ final class Application
                 $t->getTraceAsString(),
                 PHP_EOL
             );
+
+            exit(self::CRASH_EXIT);
         }
 
         Event\Facade::emitter()->testRunnerFinished();
