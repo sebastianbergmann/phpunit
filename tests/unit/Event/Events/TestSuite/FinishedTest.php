@@ -19,8 +19,19 @@ final class FinishedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $name          = 'foo';
-        $result        = new Result(
+
+        $info = new Info(
+            9001,
+            'foo',
+            [],
+            [],
+            [],
+            'bar',
+            [],
+            []
+        );
+
+        $result = new Result(
             5,
             new FailureCollection(),
             new FailureCollection(),
@@ -34,12 +45,11 @@ final class FinishedTest extends AbstractEventTestCase
 
         $event = new Finished(
             $telemetryInfo,
-            $name,
+            $info,
             $result,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($name, $event->name());
-        $this->assertSame($result, $event->result());
+        $this->assertSame($info, $event->testSuiteInfo());
     }
 }

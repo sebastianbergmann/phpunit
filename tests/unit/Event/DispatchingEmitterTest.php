@@ -1696,8 +1696,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
+        $testSuite = $this->createStub(Framework\TestSuite::class);
+
+        $testSuite->method('count')->willReturn(1);
+        $testSuite->method('getName')->willReturn('foo');
+
         $emitter->testSuiteFinished(
-            $name,
+            $testSuite,
             $result,
         );
 
@@ -1707,7 +1712,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(TestSuite\Finished::class, $event);
 
-        $this->assertSame($name, $event->name());
+        $this->assertSame(1, $event->testSuiteInfo()->count());
+        $this->assertSame('foo', $event->testSuiteInfo()->name());
 
         $mappedResult = (new TestResultMapper())->map($result);
 

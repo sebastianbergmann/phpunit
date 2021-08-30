@@ -582,12 +582,12 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSuiteFinished(string $testSuiteName, TestResult $result): void
+    public function testSuiteFinished(FrameworkTestSuite $testSuite, TestResult $result): void
     {
         $this->dispatcher->dispatch(
             new TestSuite\Finished(
                 $this->telemetryInfo(),
-                $testSuiteName,
+                Info::fromTestSuite($testSuite),
                 (new TestResultMapper)->map($result),
             )
         );

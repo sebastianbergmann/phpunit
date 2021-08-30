@@ -172,5 +172,5 @@ interface Emitter
 
     public function testSuiteStarted(TestSuite $testSuite): void;
 
-    public function testSuiteFinished(string $testSuiteName, TestResult $result): void;
+    public function testSuiteFinished(TestSuite $testSuite, TestResult $result): void;
 }
