@@ -92,7 +92,7 @@ class Printer
         assert($this->isOpen);
 
         if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' && $this->isPhpStream) {
-            $buffer = htmlspecialchars($buffer, ENT_COMPAT|ENT_SUBSTITUTE);
+            $buffer = htmlspecialchars($buffer, ENT_COMPAT | ENT_SUBSTITUTE);
         }
 
         fwrite($this->stream, $buffer);
