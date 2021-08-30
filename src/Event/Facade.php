@@ -65,6 +65,8 @@ final class Facade
 
     /**
      * @throws NoEmitterToSuspendException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function suspend(): void
     {
@@ -82,6 +84,8 @@ final class Facade
 
     /**
      * @throws NoEmitterToResumeException
+     *
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function resume(): void
     {
