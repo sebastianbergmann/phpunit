@@ -588,7 +588,7 @@ final class DispatchingEmitter implements Emitter
             new TestSuite\Finished(
                 $this->telemetryInfo(),
                 $testSuiteName,
-                (new TestResultMapper())->map($result),
+                (new TestResultMapper)->map($result),
             )
         );
     }
