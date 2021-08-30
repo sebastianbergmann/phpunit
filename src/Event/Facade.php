@@ -25,6 +25,31 @@ final class Facade
     private static bool $sealed = false;
 
     /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
+    public static function registerSubscriber(Subscriber $subscriber): void
+    {
+        if (self::$sealed) {
+            throw new EventFacadeIsSealedException;
+        }
+
+        self::deferredDispatcher()->registerSubscriber($subscriber);
+    }
+
+    /**
+     * @throws EventFacadeIsSealedException
+     */
+    public static function registerTracer(Tracer\Tracer $tracer): void
+    {
+        if (self::$sealed) {
+            throw new EventFacadeIsSealedException;
+        }
+
+        self::deferredDispatcher()->registerTracer($tracer);
+    }
+
+    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function emitter(): Emitter
@@ -72,31 +97,6 @@ final class Facade
         foreach ($events as $event) {
             $dispatcher->dispatch($event);
         }
-    }
-
-    /**
-     * @throws EventFacadeIsSealedException
-     */
-    public static function registerTracer(Tracer\Tracer $tracer): void
-    {
-        if (self::$sealed) {
-            throw new EventFacadeIsSealedException;
-        }
-
-        self::deferredDispatcher()->registerTracer($tracer);
-    }
-
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
-    public static function registerSubscriber(Subscriber $subscriber): void
-    {
-        if (self::$sealed) {
-            throw new EventFacadeIsSealedException;
-        }
-
-        self::deferredDispatcher()->registerSubscriber($subscriber);
     }
 
     /**
