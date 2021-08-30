@@ -295,9 +295,7 @@ abstract class AbstractPhpProcess
                     $output = $childResult['output'];
                 }
 
-                if (!Facade::emitter()->suspended()) {
-                    Facade::forward($childResult['events']);
-                }
+                Facade::forward($childResult['events']);
 
                 assert($test instanceof TestCase);
 

@@ -20,6 +20,8 @@ final class Facade
 
     private static ?Emitter $emitter = null;
 
+    private static ?Emitter $suspended = null;
+
     private static ?DeferredDispatcher $deferredDispatcher = null;
 
     private static bool $sealed = false;
@@ -55,16 +57,40 @@ final class Facade
     public static function emitter(): Emitter
     {
         if (self::$emitter === null) {
-            self::$emitter = new DispatchingEmitter(
-                self::deferredDispatcher(),
-                new Telemetry\System(
-                    new Telemetry\SystemStopWatch,
-                    new Telemetry\SystemMemoryMeter
-                )
-            );
+            self::$emitter = self::createDispatchingEmitter();
         }
 
         return self::$emitter;
+    }
+
+    /**
+     * @throws NoEmitterToSuspendException
+     */
+    public static function suspend(): void
+    {
+        if (self::$emitter === null) {
+            throw new NoEmitterToSuspendException;
+        }
+
+        self::$suspended = self::$emitter;
+
+        self::$emitter = new DispatchingEmitter(
+            new CollectingDispatcher,
+            self::createTelemetrySystem()
+        );
+    }
+
+    /**
+     * @throws NoEmitterToResumeException
+     */
+    public static function resume(): void
+    {
+        if (self::$suspended === null) {
+            throw new NoEmitterToResumeException;
+        }
+
+        self::$emitter   = self::$suspended;
+        self::$suspended = null;
     }
 
     /**
@@ -92,6 +118,10 @@ final class Facade
      */
     public static function forward(EventCollection $events): void
     {
+        if (self::$suspended !== null) {
+            return;
+        }
+
         $dispatcher = self::deferredDispatcher();
 
         foreach ($events as $event) {
@@ -109,6 +139,22 @@ final class Facade
         self::$sealed = true;
 
         self::emitter()->eventFacadeSealed();
+    }
+
+    private static function createDispatchingEmitter(): DispatchingEmitter
+    {
+        return new DispatchingEmitter(
+            self::deferredDispatcher(),
+            self::createTelemetrySystem()
+        );
+    }
+
+    private static function createTelemetrySystem(): Telemetry\System
+    {
+        return new Telemetry\System(
+            new Telemetry\SystemStopWatch,
+            new Telemetry\SystemMemoryMeter
+        );
     }
 
     private static function deferredDispatcher(): DeferredDispatcher

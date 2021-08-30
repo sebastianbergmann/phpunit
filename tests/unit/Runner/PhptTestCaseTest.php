@@ -124,9 +124,9 @@ EOF;
 
         $result = new TestResult;
 
-        Facade::emitter()->suspend();
+        Facade::suspend();
         $this->testCase->run($result);
-        Facade::emitter()->resume();
+        Facade::resume();
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -145,9 +145,9 @@ EOF
 
         $result = new TestResult;
 
-        Facade::emitter()->suspend();
+        Facade::suspend();
         $this->testCase->run($result);
-        Facade::emitter()->resume();
+        Facade::resume();
 
         $this->assertCount(1, $result->skipped());
         $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
@@ -168,9 +168,9 @@ EOF
 
         $result = new TestResult;
 
-        Facade::emitter()->suspend();
+        Facade::suspend();
         $this->testCase->run($result);
-        Facade::emitter()->resume();
+        Facade::resume();
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
@@ -191,9 +191,9 @@ EOF
 
         $result = new TestResult;
 
-        Facade::emitter()->suspend();
+        Facade::suspend();
         $this->testCase->run($result);
-        Facade::emitter()->resume();
+        Facade::resume();
 
         $this->assertCount(1, $result->skipped());
         $skipMessage = $result->skipped()[0]->thrownException()->getMessage();

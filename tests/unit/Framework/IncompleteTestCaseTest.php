@@ -71,9 +71,9 @@ final class IncompleteTestCaseTest extends TestCase
 
         $result = new TestResult;
 
-        Facade::emitter()->suspend();
+        Facade::suspend();
         $testCase->run($result);
-        Facade::emitter()->resume();
+        Facade::resume();
 
         $this->assertTrue($testCase->status()->isIncomplete());
         $this->assertSame(1, $result->notImplementedCount());

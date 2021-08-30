@@ -71,9 +71,9 @@ final class SkippedTestCaseTest extends TestCase
 
         $result = new TestResult;
 
-        Facade::emitter()->suspend();
+        Facade::suspend();
         $testCase->run($result);
-        Facade::emitter()->resume();
+        Facade::resume();
 
         $this->assertTrue($testCase->status()->isSkipped());
         $this->assertSame(1, $result->skippedCount());

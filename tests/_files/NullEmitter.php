@@ -18,19 +18,6 @@ use SebastianBergmann\GlobalState\Snapshot;
 
 final class NullEmitter implements Emitter
 {
-    public function suspend(): void
-    {
-    }
-
-    public function resume(): void
-    {
-    }
-
-    public function suspended(): bool
-    {
-        return false;
-    }
-
     public function eventFacadeSealed(): void
     {
     }
