@@ -60,7 +60,6 @@ final class PharLoader
             }
 
             /**
-             * @noinspection PhpIncludeInspection
              * @psalm-suppress UnresolvableInclude
              */
             require $file;
