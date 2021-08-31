@@ -41,6 +41,12 @@ final class ExtensionHandler
 
         try {
             $reflector = new ReflectionClass($extensionConfiguration->className());
+
+            if (!$extensionConfiguration->hasArguments()) {
+                return $reflector->newInstance();
+            }
+
+            return $reflector->newInstanceArgs($extensionConfiguration->arguments());
         } catch (ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
@@ -48,12 +54,6 @@ final class ExtensionHandler
                 $e
             );
         }
-
-        if (!$extensionConfiguration->hasArguments()) {
-            return $reflector->newInstance();
-        }
-
-        return $reflector->newInstanceArgs($extensionConfiguration->arguments());
     }
 
     /**
