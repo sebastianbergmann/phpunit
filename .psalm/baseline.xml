@@ -68,6 +68,9 @@
       <code>flush</code>
     </PossiblyNullReference>
   </file>
+  <file src="src/Event/Value/Telemetry/HRTime.php">
+    <MissingThrowsDocblock occurrences="1"/>
+  </file>
   <file src="src/Event/Value/Telemetry/SystemStopWatch.php">
     <MissingThrowsDocblock occurrences="1">
       <code>HRTime::fromSecondsAndNanoseconds(...hrtime(false))</code>
@@ -76,6 +79,15 @@
   <file src="src/Event/Value/Telemetry/SystemStopWatchWithOffset.php">
     <MissingThrowsDocblock occurrences="1">
       <code>HRTime::fromSecondsAndNanoseconds(...hrtime(false))</code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="src/Event/Value/Test/TestMethod.php">
+    <ImpureMethodCall occurrences="2">
+      <code>dataFromDataProvider</code>
+      <code>hasDataFromDataProvider</code>
+    </ImpureMethodCall>
+    <MissingThrowsDocblock occurrences="1">
+      <code>dataFromDataProvider</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Event/Value/Throwable.php">
