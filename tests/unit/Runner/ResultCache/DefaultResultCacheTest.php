@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Runner;
+namespace PHPUnit\Runner\ResultCache;
 
 use function sys_get_temp_dir;
 use function tempnam;
@@ -18,20 +18,20 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
 /**
- * @covers \PHPUnit\Runner\DefaultTestResultCache
+ * @covers \PHPUnit\Runner\DefaultResultCache
  * @small
  */
-final class DefaultTestResultCacheTest extends TestCase
+final class DefaultResultCacheTest extends TestCase
 {
     public function testGetTimeForNonExistentTestNameReturnsFloatZero(): void
     {
-        $this->assertSame(0.0, (new DefaultTestResultCache)->time('doesNotExist'));
+        $this->assertSame(0.0, (new DefaultResultCache)->time('doesNotExist'));
     }
 
     public function testReadsCacheFromProvidedFilename(): void
     {
         $cacheFile = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
-        $cache     = new DefaultTestResultCache($cacheFile);
+        $cache     = new DefaultResultCache($cacheFile);
         $cache->load();
 
         $this->assertTrue($cache->status(MultiDependencyTest::class . '::testOne')->isUnknown());
@@ -41,7 +41,7 @@ final class DefaultTestResultCacheTest extends TestCase
     public function testDoesClearCacheBeforeLoad(): void
     {
         $cacheFile = TEST_FILES_PATH . '../end-to-end/execution-order/_files/MultiDependencyTest_result_cache.txt';
-        $cache     = new DefaultTestResultCache($cacheFile);
+        $cache     = new DefaultResultCache($cacheFile);
         $cache->setStatus('someTest', TestStatus::failure());
 
         $this->assertTrue($cache->status(MultiDependencyTest::class . '::testFive')->isUnknown());
@@ -55,13 +55,13 @@ final class DefaultTestResultCacheTest extends TestCase
     public function testCanPersistCacheToFile(): void
     {
         $cacheFile = tempnam(sys_get_temp_dir(), 'phpunit_');
-        $cache     = new DefaultTestResultCache($cacheFile);
+        $cache     = new DefaultResultCache($cacheFile);
         $testName  = 'test' . uniqid('', true);
 
         $cache->setStatus($testName, TestStatus::skipped());
         $cache->persist();
 
-        $cache = new DefaultTestResultCache($cacheFile);
+        $cache = new DefaultResultCache($cacheFile);
         $cache->load();
 
         $this->assertTrue($cache->status($testName)->isSkipped());

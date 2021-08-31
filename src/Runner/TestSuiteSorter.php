@@ -23,6 +23,8 @@ use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\ResultCache\NullResultCache;
+use PHPUnit\Runner\ResultCache\ResultCache;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -86,7 +88,7 @@ final class TestSuiteSorter
      */
     private array $defectSortOrder = [];
 
-    private TestResultCache $cache;
+    private ResultCache $cache;
 
     /**
      * @psalm-var array<string> A list of normalized names of tests before reordering
@@ -98,9 +100,9 @@ final class TestSuiteSorter
      */
     private array $executionOrder = [];
 
-    public function __construct(?TestResultCache $cache = null)
+    public function __construct(?ResultCache $cache = null)
     {
-        $this->cache = $cache ?? new NullTestResultCache;
+        $this->cache = $cache ?? new NullResultCache;
     }
 
     /**

@@ -35,13 +35,13 @@ use PHPUnit\Logging\VoidPrinter;
 use PHPUnit\Runner\AfterLastTestHook;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\CodeCoverage;
-use PHPUnit\Runner\DefaultTestResultCache;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Hook;
-use PHPUnit\Runner\NullTestResultCache;
 use PHPUnit\Runner\PlainTextTracer;
-use PHPUnit\Runner\ResultCacheExtension;
+use PHPUnit\Runner\ResultCache\DefaultResultCache;
+use PHPUnit\Runner\ResultCache\NullResultCache;
+use PHPUnit\Runner\ResultCache\ResultCacheHandler;
 use PHPUnit\Runner\TestHook;
 use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -122,15 +122,15 @@ final class TestRunner
         }
 
         if ($this->configuration->cacheResult()) {
-            $cache = new DefaultTestResultCache($this->configuration->testResultCacheFile());
+            $cache = new DefaultResultCache($this->configuration->testResultCacheFile());
 
-            $this->addExtension(new ResultCacheExtension($cache));
+            new ResultCacheHandler($cache);
         }
 
         if ($this->configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
             $this->configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
             $this->configuration->resolveDependencies()) {
-            $cache = $cache ?? new NullTestResultCache;
+            $cache = $cache ?? new NullResultCache;
 
             $cache->load();
 

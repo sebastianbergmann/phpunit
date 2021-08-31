@@ -15,6 +15,7 @@ use NotReorderableTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\TestFixture\EmptyTestCaseTest;
 use PHPUnit\TestFixture\FailureTest;
 use PHPUnit\TestFixture\Success;
@@ -191,7 +192,7 @@ final class TestSuiteSorterTest extends TestCase
 
         $suite->addTestSuite(MultiDependencyTest::class);
 
-        $cache = new DefaultTestResultCache;
+        $cache = new DefaultResultCache;
 
         foreach ($testTimes as $testName => $time) {
             $cache->setTime(MultiDependencyTest::class . '::' . $testName, $time);
@@ -291,7 +292,7 @@ final class TestSuiteSorterTest extends TestCase
         $suite = new TestSuite;
         $suite->addTestSuite(MultiDependencyTest::class);
 
-        $cache = new DefaultTestResultCache;
+        $cache = new DefaultResultCache;
 
         foreach ($runState as $testName => $data) {
             $cache->setStatus(MultiDependencyTest::class . '::' . $testName, $data['state']);

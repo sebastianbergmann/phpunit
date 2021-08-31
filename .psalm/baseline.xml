@@ -693,10 +693,11 @@
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
   </file>
-  <file src="src/Runner/ResultCacheExtension.php">
-    <DeprecatedInterface occurrences="1">
-      <code>ResultCacheExtension</code>
-    </DeprecatedInterface>
+  <file src="src/Runner/ResultCache/ResultCacheHandler.php">
+    <MissingThrowsDocblock occurrences="2">
+      <code>duration</code>
+      <code>duration</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <UnresolvableInclude occurrences="1">
@@ -1163,7 +1164,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="35">
+    <MissingThrowsDocblock occurrences="36">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1187,6 +1188,7 @@
       <code>logfileTestdoxText</code>
       <code>logfileTestdoxXml</code>
       <code>logfileText</code>
+      <code>new ResultCacheHandler($cache)</code>
       <code>pharExtensionDirectory</code>
       <code>plainTextTrace</code>
       <code>plainTextTrace</code>
