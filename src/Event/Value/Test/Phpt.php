@@ -22,4 +22,9 @@ final class Phpt extends Test
     {
         return true;
     }
+
+    public function id(): string
+    {
+        return $this->file();
+    }
 }

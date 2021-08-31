@@ -57,4 +57,6 @@ abstract class Test
 
         return $this->file();
     }
+
+    abstract public function id(): string;
 }

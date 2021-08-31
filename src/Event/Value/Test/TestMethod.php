@@ -80,4 +80,15 @@ final class TestMethod extends Test
     {
         return true;
     }
+
+    public function id(): string
+    {
+        $buffer = $this->className . '::' . $this->methodName;
+
+        if ($this->testData()->hasDataFromDataProvider()) {
+            $buffer .= '#' . $this->testData->dataFromDataProvider()->dataSetName();
+        }
+
+        return $buffer;
+    }
 }
