@@ -32,18 +32,13 @@ use PHPUnit\Logging\TestDox\HtmlResultPrinter;
 use PHPUnit\Logging\TestDox\TextResultPrinter;
 use PHPUnit\Logging\TestDox\XmlResultPrinter;
 use PHPUnit\Logging\VoidPrinter;
-use PHPUnit\Runner\AfterLastTestHook;
-use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
-use PHPUnit\Runner\Hook;
 use PHPUnit\Runner\PlainTextTracer;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\Runner\ResultCache\NullResultCache;
 use PHPUnit\Runner\ResultCache\ResultCacheHandler;
-use PHPUnit\Runner\TestHook;
-use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
@@ -74,11 +69,6 @@ final class TestRunner
     private ?ResultPrinter $printer = null;
 
     private bool $messagePrinted = false;
-
-    /**
-     * @psalm-var list<Hook>
-     */
-    private array $extensions = [];
 
     private ?Timer $timer = null;
 
@@ -168,23 +158,6 @@ final class TestRunner
         }
 
         $result = new TestResult;
-
-        $listener       = new TestListenerAdapter;
-        $listenerNeeded = false;
-
-        foreach ($this->extensions as $extension) {
-            if ($extension instanceof TestHook) {
-                $listener->add($extension);
-
-                $listenerNeeded = true;
-            }
-        }
-
-        if ($listenerNeeded) {
-            $result->addListener($listener);
-        }
-
-        unset($listener, $listenerNeeded);
 
         $result->convertDeprecationsToExceptions($this->configuration->convertDeprecationsToExceptions());
         $result->convertErrorsToExceptions($this->configuration->convertErrorsToExceptions());
@@ -417,12 +390,6 @@ final class TestRunner
         $this->processSuiteFilters($suite);
         $suite->setRunTestInSeparateProcess($this->configuration->processIsolation());
 
-        foreach ($this->extensions as $extension) {
-            if ($extension instanceof BeforeFirstTestHook) {
-                $extension->executeBeforeFirstTest();
-            }
-        }
-
         $testSuiteWarningsPrinted = false;
 
         foreach ($suite->warnings() as $warning) {
@@ -436,13 +403,6 @@ final class TestRunner
         }
 
         $suite->run($result);
-
-        foreach ($this->extensions as $extension) {
-            if ($extension instanceof AfterLastTestHook) {
-                $extension->executeAfterLastTest();
-            }
-        }
-
         $result->flushListeners();
         $this->printer->printResult($result);
 
@@ -573,11 +533,6 @@ final class TestRunner
         }
 
         return $result;
-    }
-
-    public function addExtension(Hook $extension): void
-    {
-        $this->extensions[] = $extension;
     }
 
     private function write(string $buffer): void

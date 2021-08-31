@@ -668,13 +668,6 @@
       <code>current</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="src/Runner/Hook/TestListenerAdapter.php">
-    <DeprecatedClass occurrences="3">
-      <code>TestHook</code>
-      <code>array</code>
-      <code>private array $hooks = [];</code>
-    </DeprecatedClass>
-  </file>
   <file src="src/Runner/PhptTestCase.php">
     <InternalClass occurrences="2">
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
@@ -1137,14 +1130,7 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedClass occurrences="4">
-      <code>Hook</code>
-      <code>array</code>
-      <code>new TestListenerAdapter</code>
-      <code>private array $extensions = [];</code>
-    </DeprecatedClass>
-    <DeprecatedMethod occurrences="8">
-      <code>addListener</code>
+    <DeprecatedMethod occurrences="7">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>

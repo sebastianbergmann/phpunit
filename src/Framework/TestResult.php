@@ -119,7 +119,7 @@ final class TestResult implements Countable
     private bool $registerMockObjectsFromTestArgumentsRecursively = false;
 
     /**
-     * @deprecated Use the `TestHook` interfaces instead
+     * @deprecated
      *
      * @codeCoverageIgnore
      */
@@ -129,7 +129,7 @@ final class TestResult implements Countable
     }
 
     /**
-     * @deprecated Use the `TestHook` interfaces instead
+     * @deprecated
      *
      * @codeCoverageIgnore
      */

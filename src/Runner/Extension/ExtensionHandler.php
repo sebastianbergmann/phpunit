@@ -12,7 +12,6 @@ namespace PHPUnit\Runner\Extension;
 use function class_exists;
 use function sprintf;
 use PHPUnit\Runner\Exception;
-use PHPUnit\Runner\Hook;
 use PHPUnit\TextUI\TestRunner;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
 use ReflectionClass;
@@ -30,16 +29,7 @@ final class ExtensionHandler
     {
         $extension = $this->createInstance($extensionConfiguration);
 
-        if (!$extension instanceof Hook) {
-            throw new Exception(
-                sprintf(
-                    'Class "%s" does not implement a PHPUnit\Runner\Hook interface',
-                    $extensionConfiguration->className()
-                )
-            );
-        }
-
-        $runner->addExtension($extension);
+        throw new Exception('The loading of extensions is currently not implemented');
     }
 
     /**
