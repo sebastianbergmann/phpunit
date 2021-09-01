@@ -803,7 +803,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             $emitter->testPrepared(
-                $this->testValueObjectForEvents()
+                $this->valueObjectForEvents()
             );
 
             $this->wasPrepared = true;
@@ -812,7 +812,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if ($this->hasOutput()) {
                 $emitter->testOutputPrinted(
-                    $this->testValueObjectForEvents(),
+                    $this->valueObjectForEvents(),
                     $this->output()
                 );
             }
@@ -862,28 +862,28 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->status = TestStatus::incomplete($e->getMessage());
 
             $emitter->testAborted(
-                $this->testValueObjectForEvents(),
+                $this->valueObjectForEvents(),
                 Event\Code\Throwable::from($e)
             );
         } catch (SkippedTest $e) {
             $this->status = TestStatus::skipped($e->getMessage());
 
             $emitter->testSkipped(
-                $this->testValueObjectForEvents(),
+                $this->valueObjectForEvents(),
                 Event\Code\Throwable::from($e)
             );
         } catch (Warning $e) {
             $this->status = TestStatus::warning($e->getMessage());
 
             $emitter->testPassedWithWarning(
-                $this->testValueObjectForEvents(),
+                $this->valueObjectForEvents(),
                 Event\Code\Throwable::from($e)
             );
         } catch (AssertionFailedError $e) {
             $this->status = TestStatus::failure($e->getMessage());
 
             $emitter->testFailed(
-                $this->testValueObjectForEvents(),
+                $this->valueObjectForEvents(),
                 Event\Code\Throwable::from($e)
             );
         } catch (Throwable $_e) {
@@ -891,7 +891,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->status = TestStatus::error($_e->getMessage());
 
             $emitter->testErrored(
-                $this->testValueObjectForEvents(),
+                $this->valueObjectForEvents(),
                 Event\Code\Throwable::from($_e)
             );
         }
@@ -908,7 +908,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if ($this->status()->isSuccess()) {
             Event\Facade::emitter()->testPassed(
-                $this->testValueObjectForEvents()
+                $this->valueObjectForEvents()
             );
         }
 
@@ -1296,7 +1296,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function testValueObjectForEvents(): Event\Code\TestMethod
+    public function valueObjectForEvents(): Event\Code\TestMethod
     {
         if ($this->testValueObjectForEvents !== null) {
             return $this->testValueObjectForEvents;

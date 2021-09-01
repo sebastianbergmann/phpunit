@@ -189,7 +189,7 @@ final class TestResult implements Countable
                 $test->markAsRisky();
 
                 Event\Facade::emitter()->testConsideredRisky(
-                    $test->testValueObjectForEvents(),
+                    $test->valueObjectForEvents(),
                     Event\Code\Throwable::from($e)
                 );
             }

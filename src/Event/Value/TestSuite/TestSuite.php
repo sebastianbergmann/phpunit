@@ -9,8 +9,11 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
+use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Framework\ExecutionOrderDependency;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
+use PHPUnit\Runner\PhptTestCase;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -38,10 +41,7 @@ final class TestSuite
 
     private string $sortId;
 
-    /**
-     * @psalm-var list<class-string>
-     */
-    private array $tests;
+    private TestCollection $tests;
 
     /**
      * @psalm-var list<string>
@@ -65,7 +65,9 @@ final class TestSuite
         $tests = [];
 
         foreach ($testSuite->tests() as $test) {
-            $tests[] = get_class($test);
+            if ($test instanceof TestCase || $test instanceof PhptTestCase) {
+                $tests[] = $test->valueObjectForEvents();
+            }
         }
 
         return new self(
@@ -75,12 +77,12 @@ final class TestSuite
             $testSuite->provides(),
             $testSuite->requires(),
             $testSuite->sortId(),
-            $tests,
+            TestCollection::fromArray($tests),
             $testSuite->warnings()
         );
     }
 
-    public function __construct(int $size, string $name, array $groups, array $provides, array $requires, string $sortId, array $tests, array $warnings)
+    public function __construct(int $size, string $name, array $groups, array $provides, array $requires, string $sortId, TestCollection $tests, array $warnings)
     {
         $this->count    = $size;
         $this->name     = $name;
@@ -131,10 +133,7 @@ final class TestSuite
         return $this->sortId;
     }
 
-    /**
-     * @psalm-return list<class-string>
-     */
-    public function tests(): array
+    public function tests(): TestCollection
     {
         return $this->tests;
     }

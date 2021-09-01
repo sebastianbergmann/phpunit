@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\TestCollection;
 
 /**
  * @covers \PHPUnit\Event\TestSuite\Started
@@ -27,7 +28,7 @@ final class StartedTest extends AbstractEventTestCase
             [],
             [],
             'bar',
-            [],
+            TestCollection::fromArray([]),
             []
         );
 

@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Event\Code\TestCollection;
 
 /**
  * @covers \PHPUnit\Event\TestSuite\Loaded
@@ -27,7 +28,7 @@ final class LoadedTest extends AbstractEventTestCase
             [],
             [],
             'bar',
-            [],
+            TestCollection::fromArray([]),
             []
         );
 

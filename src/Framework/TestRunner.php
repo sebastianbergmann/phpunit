@@ -293,7 +293,7 @@ final class TestRunner
 
         if ($test->wasPrepared()) {
             Event\Facade::emitter()->testFinished(
-                $test->testValueObjectForEvents()
+                $test->valueObjectForEvents()
             );
         }
     }

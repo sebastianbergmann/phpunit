@@ -310,6 +310,14 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     }
 
     /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public function valueObjectForEvents(): Phpt
+    {
+        return new Phpt($this->filename);
+    }
+
+    /**
      * Parse --INI-- section key value pairs and return as array.
      */
     private function parseIniSection(array|string $content, array $ini = []): array
@@ -851,10 +859,5 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         return $settings;
-    }
-
-    private function valueObjectForEvents(): Phpt
-    {
-        return new Phpt($this->filename);
     }
 }
