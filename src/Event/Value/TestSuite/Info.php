@@ -90,16 +90,8 @@ final class Info
         );
     }
 
-    public function __construct(
-        int $size,
-        string $name,
-        array $groups,
-        array $provides,
-        array $requires,
-        string $sortId,
-        array $tests,
-        array $warnings
-    ) {
+    public function __construct(int $size, string $name, array $groups, array $provides, array $requires, string $sortId, array $tests, array $warnings)
+    {
         $this->count    = $size;
         $this->name     = $name;
         $this->groups   = $groups;
