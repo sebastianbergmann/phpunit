@@ -21,15 +21,15 @@ final class LoadedTest extends AbstractEventTestCase
     {
         $telemetryInfo = $this->telemetryInfo();
 
-        $info = new TestSuite(
-            9001,
+        $info = new TestSuiteWithName(
             'foo',
+            9001,
             [],
             [],
             [],
             'bar',
             TestCollection::fromArray([]),
-            []
+            [],
         );
 
         $event = new Loaded(

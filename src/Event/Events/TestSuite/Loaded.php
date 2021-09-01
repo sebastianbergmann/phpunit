@@ -20,12 +20,12 @@ final class Loaded implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private TestSuite $info;
+    private TestSuite $testSuite;
 
-    public function __construct(Telemetry\Info $telemetryInfo, TestSuite $info)
+    public function __construct(Telemetry\Info $telemetryInfo, TestSuite $testSuite)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->info          = $info;
+        $this->testSuite     = $testSuite;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -33,16 +33,16 @@ final class Loaded implements Event
         return $this->telemetryInfo;
     }
 
-    public function testSuiteInfo(): TestSuite
+    public function testSuite(): TestSuite
     {
-        return $this->info;
+        return $this->testSuite;
     }
 
     public function asString(): string
     {
         return sprintf(
             'Test Suite Loaded (%d tests)',
-            $this->info->count()
+            $this->testSuite->count()
         );
     }
 }

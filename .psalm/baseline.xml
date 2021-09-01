@@ -90,6 +90,20 @@
       <code>dataFromDataProvider</code>
     </MissingThrowsDocblock>
   </file>
+  <file src="src/Event/Value/TestSuite/TestSuite.php">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$className</code>
+      <code>$testSuite-&gt;getName()</code>
+      <code>$testSuite-&gt;getName()</code>
+      <code>$testSuite-&gt;getName()</code>
+    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="2"/>
+  </file>
+  <file src="src/Event/Value/TestSuite/TestSuiteForTestMethodWithDataProvider.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$className</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/Event/Value/Throwable.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$t instanceof ExceptionWrapper ? $t-&gt;getClassName() : $t::class</code>
@@ -458,6 +472,9 @@
     </TypeDoesNotContainType>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$event-&gt;testSuite()-&gt;name()</code>
+    </ArgumentTypeCoercion>
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>

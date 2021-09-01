@@ -21,15 +21,15 @@ final class FinishedTest extends AbstractEventTestCase
     {
         $telemetryInfo = $this->telemetryInfo();
 
-        $info = new TestSuite(
-            9001,
+        $info = new TestSuiteWithName(
             'foo',
+            9001,
             [],
             [],
             [],
             'bar',
             TestCollection::fromArray([]),
-            []
+            [],
         );
 
         $result = new Result(
@@ -51,6 +51,6 @@ final class FinishedTest extends AbstractEventTestCase
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($info, $event->testSuiteInfo());
+        $this->assertSame($info, $event->testSuite());
     }
 }

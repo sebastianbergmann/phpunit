@@ -20,14 +20,14 @@ final class Finished implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private TestSuite $info;
+    private TestSuite $testSuite;
 
     private Result $result;
 
-    public function __construct(Telemetry\Info $telemetryInfo, TestSuite $info, Result $result)
+    public function __construct(Telemetry\Info $telemetryInfo, TestSuite $testSuite, Result $result)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->info          = $info;
+        $this->testSuite     = $testSuite;
         $this->result        = $result;
     }
 
@@ -36,9 +36,9 @@ final class Finished implements Event
         return $this->telemetryInfo;
     }
 
-    public function testSuiteInfo(): TestSuite
+    public function testSuite(): TestSuite
     {
-        return $this->info;
+        return $this->testSuite;
     }
 
     public function result(): Result
@@ -50,14 +50,14 @@ final class Finished implements Event
     {
         $name = '';
 
-        if (!empty($this->info->name())) {
-            $name = $this->info->name() . ', ';
+        if (!empty($this->testSuite->name())) {
+            $name = $this->testSuite->name() . ', ';
         }
 
         return sprintf(
             'Test Suite Finished (%s%d tests)',
             $name,
-            $this->info->count()
+            $this->testSuite->count()
         );
     }
 }

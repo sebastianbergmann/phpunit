@@ -1712,8 +1712,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(TestSuite\Finished::class, $event);
 
-        $this->assertSame(1, $event->testSuiteInfo()->count());
-        $this->assertSame('foo', $event->testSuiteInfo()->name());
+        $this->assertSame(1, $event->testSuite()->count());
+        $this->assertSame('foo', $event->testSuite()->name());
 
         $mappedResult = (new TestResultMapper())->map($result);
 
@@ -1800,8 +1800,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertInstanceOf(TestSuite\Started::class, $event);
 
-        $this->assertSame(1, $event->testSuiteInfo()->count());
-        $this->assertSame('foo', $event->testSuiteInfo()->name());
+        $this->assertSame(1, $event->testSuite()->count());
+        $this->assertSame('foo', $event->testSuite()->name());
     }
 
     private function dispatcherWithRegisteredSubscriber(string $subscriberInterface, string $eventClass, Subscriber $subscriber): DirectDispatcher
