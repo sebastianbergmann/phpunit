@@ -23,22 +23,16 @@ final class TestSuite
 
     /**
      * @psalm-var array<string, list<class-string>>
-     *
-     * @var array<string, array<int, string>>
      */
     private array $groups;
 
     /**
      * @psalm-var list<ExecutionOrderDependency>
-     *
-     * @var array<int, ExecutionOrderDependency>
      */
     private array $provides;
 
     /**
      * @psalm-var list<ExecutionOrderDependency>
-     *
-     * @var array<int, ExecutionOrderDependency>
      */
     private array $requires;
 
@@ -46,15 +40,11 @@ final class TestSuite
 
     /**
      * @psalm-var list<class-string>
-     *
-     * @var array<int, string>
      */
     private array $tests;
 
     /**
      * @psalm-var list<string>
-     *
-     * @var array<int, string>
      */
     private array $warnings;
 
@@ -114,8 +104,6 @@ final class TestSuite
 
     /**
      * @psalm-return array<string, list<class-string>>
-     *
-     * @return array<string, array<int, string>>
      */
     public function groups(): array
     {
@@ -124,8 +112,6 @@ final class TestSuite
 
     /**
      * @psalm-return list<ExecutionOrderDependency>
-     *
-     * @return array<int, ExecutionOrderDependency>
      */
     public function provides(): array
     {
@@ -134,8 +120,6 @@ final class TestSuite
 
     /**
      * @psalm-return list<ExecutionOrderDependency>
-     *
-     * @return array<int, ExecutionOrderDependency>
      */
     public function requires(): array
     {
@@ -149,8 +133,6 @@ final class TestSuite
 
     /**
      * @psalm-return list<class-string>
-     *
-     * @return array<int, string>
      */
     public function tests(): array
     {
