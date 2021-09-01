@@ -10,7 +10,7 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\TestSuite\Info;
+use PHPUnit\Event\TestSuite\TestSuite as TestSuiteInfo;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
@@ -555,7 +555,7 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestSuite\Loaded(
                 $this->telemetryInfo(),
-                Info::fromTestSuite($testSuite)
+                TestSuiteInfo::fromTestSuite($testSuite)
             )
         );
     }
@@ -577,7 +577,7 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestSuite\Started(
                 $this->telemetryInfo(),
-                Info::fromTestSuite($testSuite)
+                TestSuiteInfo::fromTestSuite($testSuite)
             )
         );
     }
@@ -587,7 +587,7 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestSuite\Finished(
                 $this->telemetryInfo(),
-                Info::fromTestSuite($testSuite),
+                TestSuiteInfo::fromTestSuite($testSuite),
                 (new TestResultMapper)->map($result),
             )
         );

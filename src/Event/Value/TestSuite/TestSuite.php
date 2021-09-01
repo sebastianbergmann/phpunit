@@ -10,12 +10,12 @@
 namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Framework\ExecutionOrderDependency;
-use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Info
+final class TestSuite
 {
     private int $count;
 
@@ -58,7 +58,7 @@ final class Info
      */
     private array $warnings;
 
-    public static function fromTestSuite(TestSuite $testSuite): self
+    public static function fromTestSuite(FrameworkTestSuite $testSuite): self
     {
         $groups = [];
 

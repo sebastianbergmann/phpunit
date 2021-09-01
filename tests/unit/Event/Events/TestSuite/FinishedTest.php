@@ -20,7 +20,7 @@ final class FinishedTest extends AbstractEventTestCase
     {
         $telemetryInfo = $this->telemetryInfo();
 
-        $info = new Info(
+        $info = new TestSuite(
             9001,
             'foo',
             [],

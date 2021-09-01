@@ -20,9 +20,9 @@ final class Started implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private Info $info;
+    private TestSuite $info;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Info $info)
+    public function __construct(Telemetry\Info $telemetryInfo, TestSuite $info)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->info          = $info;
@@ -33,7 +33,7 @@ final class Started implements Event
         return $this->telemetryInfo;
     }
 
-    public function testSuiteInfo(): Info
+    public function testSuiteInfo(): TestSuite
     {
         return $this->info;
     }
