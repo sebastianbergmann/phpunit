@@ -24,6 +24,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
                 font-variant-ligatures: common-ligatures;
                 font-kerning: normal;
                 margin-left: 2em;
+                background-color: #ffffff;
+                color: #000000;
             }
 
             body > ul > li {
