@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Runner\ResultCache;
 
+use const PHP_EOL;
+use function implode;
 use function round;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\EventFacadeIsSealedException;
@@ -22,6 +24,10 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\Test\SkippedByDataProvider;
+use PHPUnit\Event\Test\SkippedDueToInvalidDependency;
+use PHPUnit\Event\Test\SkippedDueToMissingDependency;
+use PHPUnit\Event\Test\SkippedDueToUnsatisfiedRequirements;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -115,6 +121,48 @@ final class ResultCacheHandler
         );
     }
 
+    public function testSkippedByDataProvider(SkippedByDataProvider $event): void
+    {
+        $this->cache->setStatus(
+            $event->testMethod()->id(),
+            TestStatus::skipped($event->message())
+        );
+
+        $this->cache->setTime($event->testMethod()->id(), $this->duration($event));
+    }
+
+    public function testSkippedDueToMissingDependency(SkippedDueToMissingDependency $event): void
+    {
+        $this->cache->setStatus(
+            $event->testMethod()->id(),
+            TestStatus::skipped($event->message())
+        );
+
+        $this->cache->setTime($event->testMethod()->id(), $this->duration($event));
+    }
+
+    public function testSkippedDueToInvalidDependency(SkippedDueToInvalidDependency $event): void
+    {
+        $this->cache->setStatus(
+            $event->testMethod()->id(),
+            TestStatus::skipped($event->message())
+        );
+
+        $this->cache->setTime($event->testMethod()->id(), $this->duration($event));
+    }
+
+    public function testSkippedDueToUnsatisfiedRequirements(SkippedDueToUnsatisfiedRequirements $event): void
+    {
+        $this->cache->setStatus(
+            $event->testMethod()->id(),
+            TestStatus::skipped(
+                implode(PHP_EOL, $event->missingRequirements())
+            )
+        );
+
+        $this->cache->setTime($event->testMethod()->id(), $this->duration($event));
+    }
+
     public function testFinished(Finished $event): void
     {
         $this->cache->setTime($event->test()->id(), $this->duration($event));
@@ -149,6 +197,10 @@ final class ResultCacheHandler
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
+        Facade::registerSubscriber(new TestSkippedByDataProviderSubscriber($this));
+        Facade::registerSubscriber(new TestSkippedDueToMissingDependencySubscriber($this));
+        Facade::registerSubscriber(new TestSkippedDueToInvalidDependencySubscriber($this));
+        Facade::registerSubscriber(new TestSkippedDueToUnsatisfiedRequirementsSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
     }
 }
