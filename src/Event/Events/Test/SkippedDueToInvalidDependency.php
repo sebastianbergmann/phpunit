@@ -52,7 +52,7 @@ final class SkippedDueToInvalidDependency implements Event
     {
         return sprintf(
             'Test Skipped Due To Invalid Dependency (%s)%s%s',
-            $this->testMethod->name(),
+            $this->testMethod->id(),
             PHP_EOL,
             $this->message
         );

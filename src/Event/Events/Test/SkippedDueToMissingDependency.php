@@ -52,7 +52,7 @@ final class SkippedDueToMissingDependency implements Event
     {
         return sprintf(
             'Test Skipped Due To Missing Dependency (%s)%s%s',
-            $this->testMethod->name(),
+            $this->testMethod->id(),
             PHP_EOL,
             $this->message
         );

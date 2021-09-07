@@ -43,7 +43,7 @@ final class Prepared implements Event
     {
         return sprintf(
             'Test Prepared (%s)',
-            $this->test->name(),
+            $this->test->id(),
         );
     }
 }

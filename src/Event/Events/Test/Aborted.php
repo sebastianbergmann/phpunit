@@ -59,7 +59,7 @@ final class Aborted implements Event
 
         return sprintf(
             'Test Aborted (%s)%s',
-            $this->test->name(),
+            $this->test->id(),
             $message
         );
     }

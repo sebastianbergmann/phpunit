@@ -43,7 +43,7 @@ final class Passed implements Event
     {
         return sprintf(
             'Test Passed (%s)',
-            $this->test->name(),
+            $this->test->id(),
         );
     }
 }

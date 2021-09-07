@@ -59,7 +59,7 @@ final class Failed implements Event
 
         return sprintf(
             'Test Failed (%s)%s',
-            $this->test->name(),
+            $this->test->id(),
             $message
         );
     }
