@@ -9,13 +9,18 @@
  */
 namespace PHPUnit\Event\Code;
 
+use function class_exists;
+use function method_exists;
+use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\SkippedTestCase;
+use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Util\VariableExporter;
 use ReflectionException;
 use ReflectionMethod;
 
@@ -38,29 +43,22 @@ final class TestMethod extends Test
 
     private TestDataCollection $testData;
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function fromName(string $className, string $methodName): self
+    public static function fromTestCase(TestCase $testCase): self
     {
-        $location = self::sourceLocationFor($className, $methodName);
+        $className  = $testCase::class;
+        $methodName = $testCase->getName(false);
+        $testData   = self::dataFor($testCase);
 
-        return new self(
-            $className,
-            $methodName,
-            $location['file'],
-            $location['line'],
-            self::metadataFor($className, $methodName),
-            TestDataCollection::fromArray([]),
-        );
-    }
+        if ($testCase instanceof ErrorTestCase ||
+            $testCase instanceof IncompleteTestCase ||
+            $testCase instanceof SkippedTestCase ||
+            $testCase instanceof WarningTestCase) {
+            $className  = $testCase->className();
+            $methodName = $testCase->methodName();
+        }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public static function fromNameAndData(string $className, string $methodName, TestDataCollection $testData): self
-    {
         $location = self::sourceLocationFor($className, $methodName);
+        $metadata = self::metadataFor($className, $methodName);
 
         return new self(
             $className,
@@ -133,19 +131,37 @@ final class TestMethod extends Test
         return $buffer;
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    private static function metadataFor(string $className, string $methodName): MetadataCollection
+    private static function dataFor(TestCase $testCase): TestDataCollection
     {
-        if ($className === ErrorTestCase::class ||
-            $className === IncompleteTestCase::class ||
-            $className === SkippedTestCase::class ||
-            $className === WarningTestCase::class) {
-            return MetadataCollection::fromArray([]);
+        $testData = [];
+
+        if ($testCase->usesDataProvider()) {
+            $dataSetName = $testCase->dataName();
+
+            if (is_numeric($dataSetName)) {
+                $dataSetName = (int) $dataSetName;
+            }
+
+            $testData[] = DataFromDataProvider::from(
+                $dataSetName,
+                (new VariableExporter)->export($testCase->getProvidedData())
+            );
         }
 
-        return (MetadataRegistry::parser())->forClassAndMethod($className, $methodName);
+        return TestDataCollection::fromArray($testData);
+    }
+
+    private static function metadataFor(string $className, string $methodName): MetadataCollection
+    {
+        if (class_exists($className)) {
+            if (method_exists($className, $methodName)) {
+                return (MetadataRegistry::parser())->forClassAndMethod($className, $methodName);
+            }
+
+            return (MetadataRegistry::parser())->forClass($className);
+        }
+
+        return MetadataCollection::fromArray([]);
     }
 
     /**

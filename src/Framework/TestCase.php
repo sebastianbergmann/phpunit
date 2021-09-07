@@ -38,7 +38,6 @@ use function ini_set;
 use function is_array;
 use function is_callable;
 use function is_int;
-use function is_numeric;
 use function is_object;
 use function is_string;
 use function libxml_clear_errors;
@@ -92,7 +91,6 @@ use PHPUnit\Util\Error\Warning as WarningError;
 use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
-use PHPUnit\Util\VariableExporter;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionObject;
@@ -1300,26 +1298,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return $this->testValueObjectForEvents;
         }
 
-        $testData = [];
-
-        if ($this->usesDataProvider()) {
-            $dataSetName = $this->dataName();
-
-            if (is_numeric($dataSetName)) {
-                $dataSetName = (int) $dataSetName;
-            }
-
-            $testData[] = Event\DataFromDataProvider::from(
-                $dataSetName,
-                (new VariableExporter)->export($this->data)
-            );
-        }
-
-        $this->testValueObjectForEvents = Event\Code\TestMethod::fromNameAndData(
-            static::class,
-            $this->getName(false),
-            Event\TestDataCollection::fromArray($testData)
-        );
+        $this->testValueObjectForEvents = Event\Code\TestMethod::fromTestCase($this);
 
         return $this->testValueObjectForEvents;
     }
