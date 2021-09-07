@@ -55,9 +55,10 @@ final class Finished implements Event
         }
 
         return sprintf(
-            'Test Suite Finished (%s%d tests)',
+            'Test Suite Finished (%s%d test%s)',
             $name,
-            $this->testSuite->count()
+            $this->testSuite->count(),
+            $this->testSuite->count() !== 1 ? 's' : ''
         );
     }
 }

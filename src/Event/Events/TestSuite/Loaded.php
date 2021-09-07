@@ -41,8 +41,9 @@ final class Loaded implements Event
     public function asString(): string
     {
         return sprintf(
-            'Test Suite Loaded (%d tests)',
-            $this->testSuite->count()
+            'Test Suite Loaded (%d test%s)',
+            $this->testSuite->count(),
+            $this->testSuite->count() !== 1 ? 's' : ''
         );
     }
 }

@@ -47,9 +47,10 @@ final class Started implements Event
         }
 
         return sprintf(
-            'Test Suite Started (%s%d tests)',
+            'Test Suite Started (%s%d test%s)',
             $name,
-            $this->testSuite->count()
+            $this->testSuite->count(),
+            $this->testSuite->count() !== 1 ? 's' : ''
         );
     }
 }
