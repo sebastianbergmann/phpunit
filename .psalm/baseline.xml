@@ -485,15 +485,9 @@
     </RedundantCondition>
   </file>
   <file src="src/Logging/TeamCity/TeamCityLogger.php">
-    <MissingThrowsDocblock occurrences="1"/>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$startedTestName</code>
-    </PropertyNotSetInConstructor>
-    <UndefinedMethod occurrences="3">
-      <code>testSuiteInfo</code>
-      <code>testSuiteInfo</code>
-      <code>testSuiteInfo</code>
-    </UndefinedMethod>
+    <MissingThrowsDocblock occurrences="2">
+      <code>duration</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/Logging/TestDox/CliTestDoxPrinter.php">
     <MissingThrowsDocblock occurrences="2">
