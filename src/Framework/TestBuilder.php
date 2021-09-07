@@ -36,6 +36,8 @@ final class TestBuilder
 
         if (!$theClass->isInstantiable()) {
             return new ErrorTestCase(
+                $className,
+                '',
                 sprintf('Cannot instantiate class "%s".', $className)
             );
         }
@@ -69,6 +71,8 @@ final class TestBuilder
             );
         } catch (Throwable $t) {
             $data = new ErrorTestCase(
+                $className,
+                $methodName,
                 sprintf(
                     "The data provider specified for %s::%s is invalid.\n%s",
                     $className,

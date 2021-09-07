@@ -14,18 +14,43 @@ namespace PHPUnit\Framework;
  */
 final class WarningTestCase extends TestCase
 {
+    /**
+     * @psalm-var class-string
+     */
+    private string $className;
+
+    private string $methodName;
+
     private string $message;
 
-    public function __construct(string $message = '')
+    /**
+     * @psalm-param class-string $className
+     */
+    public function __construct(string $className, string $methodName, string $message = '')
     {
-        $this->message = $message;
-
         $this->setBackupGlobals(false);
         $this->setBackupStaticProperties(false);
         $this->setRunClassInSeparateProcess(false);
         $this->setRunTestInSeparateProcess(false);
 
+        $this->className  = $className;
+        $this->methodName = $methodName;
+        $this->message    = $message;
+
         parent::__construct('Warning');
+    }
+
+    /**
+     * @psalm-return class-string
+     */
+    public function className(): string
+    {
+        return $this->className;
+    }
+
+    public function methodName(): string
+    {
+        return $this->methodName;
     }
 
     public function getMessage(): string

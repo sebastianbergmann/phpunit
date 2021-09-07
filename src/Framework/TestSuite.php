@@ -160,6 +160,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             !$constructor->isPublic()) {
             $this->addTest(
                 new WarningTestCase(
+                    $theClass->getName(),
+                    '',
                     sprintf(
                         'Class "%s" has no public constructor.',
                         $theClass->getName()
@@ -189,6 +191,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         if (empty($this->tests)) {
             $this->addTest(
                 new WarningTestCase(
+                    $theClass->getName(),
+                    '',
                     sprintf(
                         'No tests found in class "%s".',
                         $theClass->getName()
