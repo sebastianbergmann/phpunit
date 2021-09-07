@@ -4,6 +4,7 @@ phpunit --log-junit php://stdout ../end-to-end/phpt-stderr.phpt
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = 'php://stdout';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../phpt-stderr.phpt');
@@ -12,13 +13,6 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
-
-.                                                                   1 / 1 (100%)
-
-Time: %s, Memory: %s
-
-OK (1 test, 1 assertion)
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
   <testsuite name="" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="%s">

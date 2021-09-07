@@ -4,16 +4,15 @@ phpunit --teamcity ../../_files/ExceptionStackTest.php
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--teamcity';
+$_SERVER['argv'][] = '--no-output';
+$_SERVER['argv'][] = '--log-teamcity';
+$_SERVER['argv'][] = 'php://stdout';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/ExceptionStackTest.php');
 
 require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
-
-
 ##teamcity[testCount count='2' flowId='%d']
 
 ##teamcity[testSuiteStarted name='PHPUnit\TestFixture\ExceptionStackTest' locationHint='php_qn://%s%etests%e_files%eExceptionStackTest.php::\PHPUnit\TestFixture\ExceptionStackTest' flowId='%d']
@@ -31,10 +30,3 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 ##teamcity[testFinished name='testNestedExceptions' duration='%d' flowId='%d']
 
 ##teamcity[testSuiteFinished name='PHPUnit\TestFixture\ExceptionStackTest' flowId='%d']
-
-
-Time: %s, Memory: %s
-
-
-ERRORS!
-Tests: 2, Assertions: 1, Errors: 2.
