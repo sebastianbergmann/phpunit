@@ -83,7 +83,6 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
-use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Error\Deprecation;
@@ -96,7 +95,6 @@ use PHPUnit\Util\Type;
 use PHPUnit\Util\VariableExporter;
 use ReflectionClass;
 use ReflectionException;
-use ReflectionMethod;
 use ReflectionObject;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
@@ -1302,25 +1300,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return $this->testValueObjectForEvents;
         }
 
-        $metadata = MetadataCollection::fromArray([]);
-
-        if (!$this instanceof ErrorTestCase &&
-            !$this instanceof IncompleteTestCase &&
-            !$this instanceof SkippedTestCase &&
-            !$this instanceof WarningTestCase) {
-            $metadata = (MetadataRegistry::parser())->forClassAndMethod(static::class, $this->name);
-        }
-
-        try {
-            $reflector = new ReflectionMethod(static::class, $this->getName(false));
-
-            $file = $reflector->getFileName();
-            $line = $reflector->getStartLine();
-        } catch (ReflectionException) {
-            $file = 'unknown';
-            $line = 0;
-        }
-
         $testData = [];
 
         if ($this->usesDataProvider()) {
@@ -1336,13 +1315,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        $this->testValueObjectForEvents = new Event\Code\TestMethod(
+        $this->testValueObjectForEvents = Event\Code\TestMethod::fromNameAndData(
             static::class,
             $this->getName(false),
-            $file,
-            $line,
-            $metadata,
-            Event\TestDataCollection::fromArray($testData),
+            Event\TestDataCollection::fromArray($testData)
         );
 
         return $this->testValueObjectForEvents;

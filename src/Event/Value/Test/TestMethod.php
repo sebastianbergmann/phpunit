@@ -10,7 +10,14 @@
 namespace PHPUnit\Event\Code;
 
 use PHPUnit\Event\TestDataCollection;
+use PHPUnit\Framework\ErrorTestCase;
+use PHPUnit\Framework\IncompleteTestCase;
+use PHPUnit\Framework\SkippedTestCase;
+use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use ReflectionException;
+use ReflectionMethod;
 
 /**
  * @psalm-immutable
@@ -30,6 +37,40 @@ final class TestMethod extends Test
     private MetadataCollection $metadata;
 
     private TestDataCollection $testData;
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public static function fromName(string $className, string $methodName): self
+    {
+        $location = self::sourceLocationFor($className, $methodName);
+
+        return new self(
+            $className,
+            $methodName,
+            $location['file'],
+            $location['line'],
+            self::metadataFor($className, $methodName),
+            TestDataCollection::fromArray([]),
+        );
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public static function fromNameAndData(string $className, string $methodName, TestDataCollection $testData): self
+    {
+        $location = self::sourceLocationFor($className, $methodName);
+
+        return new self(
+            $className,
+            $methodName,
+            $location['file'],
+            $location['line'],
+            self::metadataFor($className, $methodName),
+            $testData,
+        );
+    }
 
     /**
      * @psalm-param class-string $className
@@ -90,5 +131,42 @@ final class TestMethod extends Test
         }
 
         return $buffer;
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private static function metadataFor(string $className, string $methodName): MetadataCollection
+    {
+        if ($className === ErrorTestCase::class ||
+            $className === IncompleteTestCase::class ||
+            $className === SkippedTestCase::class ||
+            $className === WarningTestCase::class) {
+            return MetadataCollection::fromArray([]);
+        }
+
+        return (MetadataRegistry::parser())->forClassAndMethod($className, $methodName);
+    }
+
+    /**
+     * @psalm-param class-string $className
+     * @psalm-return array{file: string, line: int}
+     */
+    private static function sourceLocationFor(string $className, string $methodName): array
+    {
+        try {
+            $reflector = new ReflectionMethod($className, $methodName);
+
+            $file = $reflector->getFileName();
+            $line = $reflector->getStartLine();
+        } catch (ReflectionException) {
+            $file = 'unknown';
+            $line = 0;
+        }
+
+        return [
+            'file' => $file,
+            'line' => $line,
+        ];
     }
 }
