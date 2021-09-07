@@ -15,8 +15,12 @@ use function getmypid;
 use function ini_get;
 use function method_exists;
 use function stripos;
+use PHPUnit\Event\Code\Test;
+use PHPUnit\Event\Event;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\InvalidArgumentException;
+use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\Aborted;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
@@ -40,7 +44,9 @@ final class TeamCityLogger extends Printer
 {
     private bool $isSummaryTestCountPrinted = false;
 
-    private string $startedTestName;
+    private ?Test $test = null;
+
+    private ?HRTime $time = null;
 
     private false|int $flowId;
 
@@ -120,39 +126,75 @@ final class TeamCityLogger extends Printer
 
     public function testPrepared(Prepared $event): void
     {
+        $this->test = $event->test();
+        $this->time = $event->telemetryInfo()->time();
     }
 
     public function testAborted(Aborted $event): void
     {
+        if ($this->test === null) {
+            $this->test = $event->test();
+            $this->time = $event->telemetryInfo()->time();
+        }
     }
 
     public function testSkipped(Skipped $event): void
     {
+        if ($this->test === null) {
+            $this->test = $event->test();
+            $this->time = $event->telemetryInfo()->time();
+        }
     }
 
     public function testErrored(Errored $event): void
     {
+        if ($this->test === null) {
+            $this->test = $event->test();
+            $this->time = $event->telemetryInfo()->time();
+        }
     }
 
     public function testFailed(Failed $event): void
     {
+        if ($this->test === null) {
+            $this->test = $event->test();
+            $this->time = $event->telemetryInfo()->time();
+        }
     }
 
     public function testPassedWithWarning(PassedWithWarning $event): void
     {
+        if ($this->test === null) {
+            $this->test = $event->test();
+            $this->time = $event->telemetryInfo()->time();
+        }
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
     {
+        if ($this->test === null) {
+            $this->test = $event->test();
+            $this->time = $event->telemetryInfo()->time();
+        }
     }
 
     public function testFinished(Finished $event): void
     {
+        $this->printEvent(
+            'testFinished',
+            [
+                'name'     => $event->test()->name(),
+                'duration' => $this->duration($event),
+            ]
+        );
+
+        $this->test = null;
+        $this->time = null;
     }
 
     private function printEvent(string $eventName, array $params = []): void
     {
-        $this->write("\n##teamcity[$eventName");
+        $this->write("\n##teamcity[{$eventName}");
 
         if ($this->flowId) {
             $params['flowId'] = $this->flowId;
@@ -161,7 +203,7 @@ final class TeamCityLogger extends Printer
         foreach ($params as $key => $value) {
             $escapedValue = self::escape((string) $value);
 
-            $this->write(" $key='$escapedValue'");
+            $this->write(" {$key}='{$escapedValue}'");
         }
 
         $this->write("]\n");
@@ -183,6 +225,20 @@ final class TeamCityLogger extends Printer
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
+    }
+
+    /**
+     * @throws InvalidArgumentException
+     *
+     * @todo we need to return milliseconds
+     */
+    private function duration(Event $event): float
+    {
+        if ($this->time === null) {
+            return 0.0;
+        }
+
+        return round($event->telemetryInfo()->time()->duration($this->time)->asFloat(), 3);
     }
 
     private static function escape(string $string): string
