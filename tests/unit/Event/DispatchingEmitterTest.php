@@ -677,59 +677,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($throwable, $event->throwable());
     }
 
-    public function testTestSkippedDueToUnsatisfiedRequirementsDispatchesSkippedDueToUnsatisfiedRequirementsEvent(): void
-    {
-        $testMethod = new Code\TestMethod(
-            self::class,
-            'foo',
-            '',
-            0,
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([])
-        );
-
-        $missingRequirements = [
-            'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-            'Nunc felis nulla, euismod vel convallis ac, tincidunt quis ante.',
-            'Maecenas aliquam eget nunc sed iaculis.',
-        ];
-
-        $subscriber = new class extends RecordingSubscriber implements Test\SkippedDueToUnsatisfiedRequirementsSubscriber
-        {
-            public function notify(Test\SkippedDueToUnsatisfiedRequirements $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
-            Test\SkippedDueToUnsatisfiedRequirementsSubscriber::class,
-            Test\SkippedDueToUnsatisfiedRequirements::class,
-            $subscriber
-        );
-
-        $telemetrySystem = self::telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->testSkippedDueToUnsatisfiedRequirements(
-            $testMethod,
-            ...$missingRequirements
-        );
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\SkippedDueToUnsatisfiedRequirements::class, $event);
-
-        $this->assertSame($testMethod, $event->testMethod());
-        $this->assertSame($missingRequirements, $event->missingRequirements());
-    }
-
     public function testTestSkippedDispatchesTestSkippedEvent(): void
     {
         $test = $this->testValueObject();

@@ -27,7 +27,6 @@ use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\SkippedByDataProvider;
 use PHPUnit\Event\Test\SkippedDueToInvalidDependency;
 use PHPUnit\Event\Test\SkippedDueToMissingDependency;
-use PHPUnit\Event\Test\SkippedDueToUnsatisfiedRequirements;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -151,18 +150,6 @@ final class ResultCacheHandler
         $this->cache->setTime($event->testMethod()->id(), $this->duration($event));
     }
 
-    public function testSkippedDueToUnsatisfiedRequirements(SkippedDueToUnsatisfiedRequirements $event): void
-    {
-        $this->cache->setStatus(
-            $event->testMethod()->id(),
-            TestStatus::skipped(
-                implode(PHP_EOL, $event->missingRequirements())
-            )
-        );
-
-        $this->cache->setTime($event->testMethod()->id(), $this->duration($event));
-    }
-
     public function testFinished(Finished $event): void
     {
         $this->cache->setTime($event->test()->id(), $this->duration($event));
@@ -200,7 +187,6 @@ final class ResultCacheHandler
         Facade::registerSubscriber(new TestSkippedByDataProviderSubscriber($this));
         Facade::registerSubscriber(new TestSkippedDueToMissingDependencySubscriber($this));
         Facade::registerSubscriber(new TestSkippedDueToInvalidDependencySubscriber($this));
-        Facade::registerSubscriber(new TestSkippedDueToUnsatisfiedRequirementsSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
     }
 }

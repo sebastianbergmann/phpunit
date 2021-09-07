@@ -106,10 +106,6 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSkippedDueToUnsatisfiedRequirements(Code\TestMethod $test, string ...$missingRequirements): void
-    {
-    }
-
     public function testAborted(Code\Test $test, Throwable $throwable): void
     {
     }

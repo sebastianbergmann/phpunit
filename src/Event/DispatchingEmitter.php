@@ -284,17 +284,6 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSkippedDueToUnsatisfiedRequirements(Code\TestMethod $testMethod, string ...$missingRequirements): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\SkippedDueToUnsatisfiedRequirements(
-                $this->telemetryInfo(),
-                $testMethod,
-                ...$missingRequirements
-            )
-        );
-    }
-
     public function testPrepared(Code\Test $test): void
     {
         $this->dispatcher->dispatch(
