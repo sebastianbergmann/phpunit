@@ -69,11 +69,11 @@ final class TeamCityLogger extends Printer
 
             $this->printEvent(
                 'testCount',
-                ['count' => $event->testSuiteInfo()->count()]
+                ['count' => $event->testSuite()->count()]
             );
         }
 
-        $suiteName = $event->testSuiteInfo()->name();
+        $suiteName = $event->testSuite()->name();
 
         if (empty($suiteName)) {
             return;
@@ -99,7 +99,7 @@ final class TeamCityLogger extends Printer
 
     public function testSuiteFinished(TestSuiteFinished $event): void
     {
-        $suiteName = $event->testSuiteInfo()->name();
+        $suiteName = $event->testSuite()->name();
 
         if (empty($suiteName)) {
             return;
