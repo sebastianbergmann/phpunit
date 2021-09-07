@@ -19,7 +19,7 @@ final class SkippedDueToUnsatisfiedRequirementsTest extends AbstractEventTestCas
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo       = $this->telemetryInfo();
-        $testMethod          = $this->testValueObjectForEvents();
+        $testMethod          = $this->valueObjectForEvents();
         $missingRequirements = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Nunc felis nulla, euismod vel convallis ac, tincidunt quis ante.',

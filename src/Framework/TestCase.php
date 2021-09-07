@@ -1796,7 +1796,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if (!empty($missingRequirements)) {
             Event\Facade::emitter()->testSkippedDueToUnsatisfiedRequirements(
-                $this->testValueObjectForEvents(),
+                $this->valueObjectForEvents(),
                 ...$missingRequirements
             );
 
@@ -1913,7 +1913,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         Event\Facade::emitter()->testSkippedDueToMissingDependency(
-            $this->testValueObjectForEvents(),
+            $this->valueObjectForEvents(),
             $message
         );
 
@@ -1938,7 +1938,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         Event\Facade::emitter()->testSkippedDueToInvalidDependency(
-            $this->testValueObjectForEvents(),
+            $this->valueObjectForEvents(),
             $message
         );
 

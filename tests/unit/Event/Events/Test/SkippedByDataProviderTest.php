@@ -19,7 +19,7 @@ final class SkippedByDataProviderTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $testMethod    = $this->testValueObjectForEvents();
+        $testMethod    = $this->valueObjectForEvents();
         $message       = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $event = new SkippedByDataProvider(
