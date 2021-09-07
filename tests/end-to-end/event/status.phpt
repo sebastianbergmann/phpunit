@@ -11,7 +11,7 @@ $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--stderr';
+$_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--trace-text';
 $_SERVER['argv'][] = $traceFile;
 $_SERVER['argv'][] = __DIR__ . '/../../basic/unit/StatusTest.php';
@@ -24,7 +24,6 @@ print file_get_contents($traceFile);
 
 unlink($traceFile);
 --EXPECTF--
-%a
 Test Runner Started (PHPUnit %s using %s)
 Test Runner Configuration Combined
 Test Suite Loaded (14 tests)
