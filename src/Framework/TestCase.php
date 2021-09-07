@@ -1912,6 +1912,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $dependency->getTarget()
         );
 
+        Event\Facade::emitter()->testSkippedDueToMissingDependency(
+            $this->testValueObjectForEvents(),
+            $message
+        );
+
         $this->status = TestStatus::skipped($message);
 
         $this->result->startTest($this);
@@ -1930,6 +1935,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $message = sprintf(
             'This test depends on "%s" which does not exist.',
             $dependency->getTarget()
+        );
+
+        Event\Facade::emitter()->testSkippedDueToInvalidDependency(
+            $this->testValueObjectForEvents(),
+            $message
         );
 
         $this->status = TestStatus::warning($message);
