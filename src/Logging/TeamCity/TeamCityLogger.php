@@ -152,7 +152,7 @@ final class TeamCityLogger extends Printer
 
     private function printEvent(string $eventName, array $params = []): void
     {
-        $this->write("\n##teamcity[{$eventName}");
+        $this->write("\n##teamcity[$eventName");
 
         if ($this->flowId) {
             $params['flowId'] = $this->flowId;
@@ -161,7 +161,7 @@ final class TeamCityLogger extends Printer
         foreach ($params as $key => $value) {
             $escapedValue = self::escape((string) $value);
 
-            $this->write(" {$key}='{$escapedValue}'");
+            $this->write(" $key='$escapedValue'");
         }
 
         $this->write("]\n");
