@@ -12,8 +12,6 @@ namespace PHPUnit\Framework;
 use function assert;
 use function sprintf;
 use function trim;
-use PHPUnit\Event;
-use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\BackupGlobals;

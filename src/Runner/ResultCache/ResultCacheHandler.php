@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Runner\ResultCache;
 
-use const PHP_EOL;
-use function implode;
 use function round;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\EventFacadeIsSealedException;
