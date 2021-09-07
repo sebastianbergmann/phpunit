@@ -10,7 +10,6 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code;
 
 /**
  * @covers \PHPUnit\Event\Test\SkippedDueToUnsatisfiedRequirements
@@ -19,11 +18,8 @@ final class SkippedDueToUnsatisfiedRequirementsTest extends AbstractEventTestCas
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo = $this->telemetryInfo();
-        $testMethod    = new Code\ClassMethod(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $telemetryInfo       = $this->telemetryInfo();
+        $testMethod          = $this->testValueObjectForEvents();
         $missingRequirements = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Nunc felis nulla, euismod vel convallis ac, tincidunt quis ante.',

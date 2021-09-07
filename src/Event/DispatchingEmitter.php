@@ -229,17 +229,6 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\SkippedByDataProvider(
-                $this->telemetryInfo(),
-                $testMethod,
-                $message
-            )
-        );
-    }
-
     public function testAborted(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
@@ -251,17 +240,6 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSkippedDueToUnsatisfiedRequirements(Code\ClassMethod $testMethod, string ...$missingRequirements): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\SkippedDueToUnsatisfiedRequirements(
-                $this->telemetryInfo(),
-                $testMethod,
-                ...$missingRequirements
-            )
-        );
-    }
-
     public function testSkipped(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
@@ -269,6 +247,28 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $test,
                 $throwable
+            )
+        );
+    }
+
+    public function testSkippedByDataProvider(Code\TestMethod $testMethod, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\SkippedByDataProvider(
+                $this->telemetryInfo(),
+                $testMethod,
+                $message
+            )
+        );
+    }
+
+    public function testSkippedDueToUnsatisfiedRequirements(Code\TestMethod $testMethod, string ...$missingRequirements): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\SkippedDueToUnsatisfiedRequirements(
+                $this->telemetryInfo(),
+                $testMethod,
+                ...$missingRequirements
             )
         );
     }

@@ -90,19 +90,19 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void
+    public function testSkipped(Code\Test $test, Throwable $throwable): void
+    {
+    }
+
+    public function testSkippedByDataProvider(Code\TestMethod $testMethod, string $message): void
+    {
+    }
+
+    public function testSkippedDueToUnsatisfiedRequirements(Code\TestMethod $test, string ...$missingRequirements): void
     {
     }
 
     public function testAborted(Code\Test $test, Throwable $throwable): void
-    {
-    }
-
-    public function testSkippedDueToUnsatisfiedRequirements(Code\ClassMethod $testMethod, string ...$missingRequirements): void
-    {
-    }
-
-    public function testSkipped(Code\Test $test, Throwable $throwable): void
     {
     }
 

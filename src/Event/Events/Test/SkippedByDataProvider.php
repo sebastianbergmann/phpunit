@@ -22,11 +22,11 @@ final class SkippedByDataProvider implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private Code\ClassMethod $testMethod;
+    private Code\TestMethod $testMethod;
 
     private string $message;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\ClassMethod $testMethod, string $message)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $testMethod, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->testMethod    = $testMethod;
@@ -38,7 +38,7 @@ final class SkippedByDataProvider implements Event
         return $this->telemetryInfo;
     }
 
-    public function testMethod(): Code\ClassMethod
+    public function testMethod(): Code\TestMethod
     {
         return $this->testMethod;
     }

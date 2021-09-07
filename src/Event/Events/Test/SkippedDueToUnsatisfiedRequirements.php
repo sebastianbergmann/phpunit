@@ -22,14 +22,14 @@ final class SkippedDueToUnsatisfiedRequirements implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
-    private Code\ClassMethod $testMethod;
+    private Code\TestMethod $testMethod;
 
     /**
      * @psalm-var list<string>
      */
     private array $missingRequirements;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\ClassMethod $testMethod, string ...$missingRequirements)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\TestMethod $testMethod, string ...$missingRequirements)
     {
         $this->telemetryInfo       = $telemetryInfo;
         $this->testMethod          = $testMethod;
@@ -41,7 +41,7 @@ final class SkippedDueToUnsatisfiedRequirements implements Event
         return $this->telemetryInfo;
     }
 
-    public function testMethod(): Code\ClassMethod
+    public function testMethod(): Code\TestMethod
     {
         return $this->testMethod;
     }

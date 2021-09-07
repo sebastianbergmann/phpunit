@@ -589,10 +589,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSkippedByDataProviderDispatchesTestSkippedByDataProviderEvent(): void
     {
-        $testMethod = new Code\ClassMethod(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $testMethod = new Code\TestMethod(
+            self::class,
+            'foo',
+            '',
+            0,
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([])
+        );
         $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
 
         $subscriber = new class extends RecordingSubscriber implements Test\SkippedByDataProviderSubscriber
@@ -675,10 +679,15 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSkippedDueToUnsatisfiedRequirementsDispatchesSkippedDueToUnsatisfiedRequirementsEvent(): void
     {
-        $testMethod = new Code\ClassMethod(...array_values(explode(
-            '::',
-            __METHOD__
-        )));
+        $testMethod = new Code\TestMethod(
+            self::class,
+            'foo',
+            '',
+            0,
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([])
+        );
+
         $missingRequirements = [
             'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
             'Nunc felis nulla, euismod vel convallis ac, tincidunt quis ante.',

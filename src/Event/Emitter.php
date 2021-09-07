@@ -60,13 +60,13 @@ interface Emitter
 
     public function testConsideredRisky(Code\Test $test, Throwable $throwable): void;
 
-    public function testSkippedByDataProvider(Code\ClassMethod $testMethod, string $message): void;
-
     public function testAborted(Code\Test $test, Throwable $throwable): void;
 
-    public function testSkippedDueToUnsatisfiedRequirements(Code\ClassMethod $testMethod, string ...$missingRequirements): void;
-
     public function testSkipped(Code\Test $test, Throwable $throwable): void;
+
+    public function testSkippedByDataProvider(Code\TestMethod $testMethod, string $message): void;
+
+    public function testSkippedDueToUnsatisfiedRequirements(Code\TestMethod $testMethod, string ...$missingRequirements): void;
 
     public function testPrepared(Code\Test $test): void;
 

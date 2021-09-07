@@ -13,6 +13,7 @@ use function assert;
 use function sprintf;
 use function trim;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\BackupGlobals;
@@ -70,10 +71,7 @@ final class TestBuilder
             );
 
             Event\Facade::emitter()->testSkippedByDataProvider(
-                new Event\Code\ClassMethod(
-                    $className,
-                    $methodName
-                ),
+                TestMethod::fromName($className, $methodName),
                 $data->getMessage()
             );
         } catch (Throwable $t) {
