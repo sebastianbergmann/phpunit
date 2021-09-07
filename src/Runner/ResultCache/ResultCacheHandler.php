@@ -147,7 +147,7 @@ final class ResultCacheHandler
     /**
      * @throws InvalidArgumentException
      */
-    public function duration(Event $event): float
+    private function duration(Event $event): float
     {
         if ($this->time === null) {
             return 0.0;
