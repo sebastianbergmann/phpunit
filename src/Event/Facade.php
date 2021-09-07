@@ -216,7 +216,6 @@ final class Facade
             Test\PreConditionCalled::class,
             Test\PreConditionFinished::class,
             Test\Prepared::class,
-            Test\SkippedByDataProvider::class,
             Test\SkippedDueToInvalidDependency::class,
             Test\SkippedDueToMissingDependency::class,
             Test\Skipped::class,

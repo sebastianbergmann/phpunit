@@ -69,11 +69,6 @@ final class TestBuilder
                     $this->throwableToString($e)
                 )
             );
-
-            Event\Facade::emitter()->testSkippedByDataProvider(
-                TestMethod::fromName($className, $methodName),
-                $data->getMessage()
-            );
         } catch (Throwable $t) {
             $data = new ErrorTestCase(
                 sprintf(

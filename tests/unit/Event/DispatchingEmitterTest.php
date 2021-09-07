@@ -587,54 +587,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($throwable, $event->throwable());
     }
 
-    public function testTestSkippedByDataProviderDispatchesTestSkippedByDataProviderEvent(): void
-    {
-        $testMethod = new Code\TestMethod(
-            self::class,
-            'foo',
-            '',
-            0,
-            MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([])
-        );
-        $message = 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.';
-
-        $subscriber = new class extends RecordingSubscriber implements Test\SkippedByDataProviderSubscriber
-        {
-            public function notify(Test\SkippedByDataProvider $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
-            Test\SkippedByDataProviderSubscriber::class,
-            Test\SkippedByDataProvider::class,
-            $subscriber
-        );
-
-        $telemetrySystem = self::telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->testSkippedByDataProvider(
-            $testMethod,
-            $message
-        );
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(Test\SkippedByDataProvider::class, $event);
-
-        $this->assertSame($testMethod, $event->testMethod());
-        $this->assertSame($message, $event->message());
-    }
-
     public function testTestAbortedDispatchesTestAbortedEvent(): void
     {
         $test = $this->testValueObject();

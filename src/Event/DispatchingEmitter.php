@@ -251,17 +251,6 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSkippedByDataProvider(Code\TestMethod $testMethod, string $message): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\SkippedByDataProvider(
-                $this->telemetryInfo(),
-                $testMethod,
-                $message
-            )
-        );
-    }
-
     public function testSkippedDueToInvalidDependency(Code\TestMethod $testMethod, string $message): void
     {
         $this->dispatcher->dispatch(
