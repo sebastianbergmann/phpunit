@@ -18,7 +18,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
 /**
- * @covers \PHPUnit\Runner\DefaultResultCache
+ * @covers \PHPUnit\Runner\ResultCache\DefaultResultCache
  * @small
  */
 final class DefaultResultCacheTest extends TestCase
