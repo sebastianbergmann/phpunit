@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Event\Code;
 
-use function sprintf;
-
 /**
  * @psalm-immutable
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -45,18 +43,7 @@ abstract class Test
         return false;
     }
 
-    public function name(): string
-    {
-        if ($this instanceof TestMethod) {
-            return sprintf(
-                '%s::%s',
-                $this->className(),
-                $this->methodName()
-            );
-        }
-
-        return $this->file();
-    }
-
     abstract public function id(): string;
+
+    abstract public function name(): string;
 }

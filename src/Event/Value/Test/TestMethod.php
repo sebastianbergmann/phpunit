@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Code;
 
 use function class_exists;
+use function is_int;
 use function method_exists;
 use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
@@ -129,6 +130,29 @@ final class TestMethod extends Test
         }
 
         return $buffer;
+    }
+
+    public function name(): string
+    {
+        if (!$this->testData->hasDataFromDataProvider()) {
+            return $this->methodName;
+        }
+
+        $dataSetName = $this->testData->dataFromDataProvider();
+
+        if (is_int($dataSetName)) {
+            $dataSetName = sprintf(
+                ' with data set #%d',
+                $dataSetName
+            );
+        } else {
+            $dataSetName = sprintf(
+                ' with data set "%s"',
+                $dataSetName
+            );
+        }
+
+        return $this->methodName . $dataSetName;
     }
 
     private static function dataFor(TestCase $testCase): TestDataCollection

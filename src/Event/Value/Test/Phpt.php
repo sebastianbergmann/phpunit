@@ -27,4 +27,9 @@ final class Phpt extends Test
     {
         return $this->file();
     }
+
+    public function name(): string
+    {
+        return $this->file();
+    }
 }
