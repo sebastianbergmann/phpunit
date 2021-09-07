@@ -262,6 +262,28 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testSkippedDueToInvalidDependency(Code\TestMethod $testMethod, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\SkippedDueToInvalidDependency(
+                $this->telemetryInfo(),
+                $testMethod,
+                $message
+            )
+        );
+    }
+
+    public function testSkippedDueToMissingDependency(Code\TestMethod $testMethod, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\SkippedDueToMissingDependency(
+                $this->telemetryInfo(),
+                $testMethod,
+                $message
+            )
+        );
+    }
+
     public function testSkippedDueToUnsatisfiedRequirements(Code\TestMethod $testMethod, string ...$missingRequirements): void
     {
         $this->dispatcher->dispatch(

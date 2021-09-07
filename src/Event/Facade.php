@@ -217,6 +217,8 @@ final class Facade
             Test\PreConditionFinished::class,
             Test\Prepared::class,
             Test\SkippedByDataProvider::class,
+            Test\SkippedDueToInvalidDependency::class,
+            Test\SkippedDueToMissingDependency::class,
             Test\SkippedDueToUnsatisfiedRequirements::class,
             Test\Skipped::class,
             TestDouble\MockObjectCreated::class,

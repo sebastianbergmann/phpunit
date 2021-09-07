@@ -66,6 +66,10 @@ interface Emitter
 
     public function testSkippedByDataProvider(Code\TestMethod $testMethod, string $message): void;
 
+    public function testSkippedDueToInvalidDependency(Code\TestMethod $testMethod, string $message): void;
+
+    public function testSkippedDueToMissingDependency(Code\TestMethod $testMethod, string $message): void;
+
     public function testSkippedDueToUnsatisfiedRequirements(Code\TestMethod $testMethod, string ...$missingRequirements): void;
 
     public function testPrepared(Code\Test $test): void;
