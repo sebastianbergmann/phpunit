@@ -82,14 +82,23 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Event/Value/Test/TestMethod.php">
-    <ImpureMethodCall occurrences="2">
+    <ImpureMethodCall occurrences="4">
+      <code>dataFromDataProvider</code>
       <code>dataFromDataProvider</code>
       <code>hasDataFromDataProvider</code>
+      <code>hasDataFromDataProvider</code>
     </ImpureMethodCall>
-    <MissingThrowsDocblock occurrences="2">
+    <InvalidArgument occurrences="1">
+      <code>$dataSetName</code>
+    </InvalidArgument>
+    <MissingThrowsDocblock occurrences="3">
       <code>TestDataCollection::fromArray($testData)</code>
       <code>dataFromDataProvider</code>
+      <code>dataFromDataProvider</code>
     </MissingThrowsDocblock>
+    <TypeDoesNotContainType occurrences="1">
+      <code>is_int($dataSetName)</code>
+    </TypeDoesNotContainType>
   </file>
   <file src="src/Event/Value/TestSuite/TestSuite.php">
     <ArgumentTypeCoercion occurrences="4">
