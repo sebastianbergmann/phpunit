@@ -9,9 +9,7 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Event/DispatchingEmitter.php">
-    <MissingThrowsDocblock occurrences="50">
-      <code>dispatch</code>
-      <code>dispatch</code>
+    <MissingThrowsDocblock occurrences="48">
       <code>dispatch</code>
       <code>dispatch</code>
       <code>dispatch</code>
@@ -89,7 +87,7 @@
       <code>hasDataFromDataProvider</code>
     </ImpureMethodCall>
     <MissingThrowsDocblock occurrences="2">
-      <code>TestDataCollection::fromArray([])</code>
+      <code>TestDataCollection::fromArray($testData)</code>
       <code>dataFromDataProvider</code>
     </MissingThrowsDocblock>
   </file>
@@ -409,8 +407,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="11">
-      <code>Event\TestDataCollection::fromArray($testData)</code>
+    <MissingThrowsDocblock occurrences="10">
       <code>generateClassFromWsdl</code>
       <code>getMock</code>
       <code>getMock</code>
@@ -690,9 +687,7 @@
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Runner/ResultCache/ResultCacheHandler.php">
-    <MissingThrowsDocblock occurrences="6">
-      <code>duration</code>
-      <code>duration</code>
+    <MissingThrowsDocblock occurrences="4">
       <code>duration</code>
       <code>duration</code>
       <code>duration</code>
