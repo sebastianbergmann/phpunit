@@ -664,18 +664,10 @@
       <code>stop</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/Runner/Filter/GroupFilterIterator.php">
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>current</code>
-    </UndefinedInterfaceMethod>
-  </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PossiblyNullArgument occurrences="1">
       <code>$this-&gt;filter</code>
     </PossiblyNullArgument>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>current</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Runner/PhptTestCase.php">
     <InternalClass occurrences="2">
