@@ -59,7 +59,6 @@ final class TestMethod extends Test
         }
 
         $location = self::sourceLocationFor($className, $methodName);
-        $metadata = self::metadataFor($className, $methodName);
 
         return new self(
             $className,
