@@ -1107,9 +1107,6 @@
     <MissingReturnType occurrences="1">
       <code>doAccept</code>
     </MissingReturnType>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>current</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PropertyNotSetInConstructor occurrences="2">
@@ -1119,9 +1116,6 @@
     <RedundantPropertyInitializationCheck occurrences="1">
       <code>$accepted &amp;&amp; isset($this-&gt;filterMax)</code>
     </RedundantPropertyInitializationCheck>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>current</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Runner/Hook/TestListenerAdapter.php">
     <DeprecatedInterface occurrences="1">
