@@ -22,8 +22,6 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
-use PHPUnit\Event\Test\SkippedDueToInvalidDependency;
-use PHPUnit\Event\Test\SkippedDueToMissingDependency;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -113,28 +111,10 @@ final class ResultCacheHandler
     {
         $this->cache->setStatus(
             $event->test()->id(),
-            TestStatus::skipped($event->throwable()->message())
-        );
-    }
-
-    public function testSkippedDueToMissingDependency(SkippedDueToMissingDependency $event): void
-    {
-        $this->cache->setStatus(
-            $event->testMethod()->id(),
             TestStatus::skipped($event->message())
         );
 
-        $this->cache->setTime($event->testMethod()->id(), $this->duration($event));
-    }
-
-    public function testSkippedDueToInvalidDependency(SkippedDueToInvalidDependency $event): void
-    {
-        $this->cache->setStatus(
-            $event->testMethod()->id(),
-            TestStatus::skipped($event->message())
-        );
-
-        $this->cache->setTime($event->testMethod()->id(), $this->duration($event));
+        $this->cache->setTime($event->test()->id(), $this->duration($event));
     }
 
     public function testFinished(Finished $event): void
@@ -171,8 +151,6 @@ final class ResultCacheHandler
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedDueToMissingDependencySubscriber($this));
-        Facade::registerSubscriber(new TestSkippedDueToInvalidDependencySubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
     }
 }

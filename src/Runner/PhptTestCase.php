@@ -121,7 +121,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->endTest($this, 0);
 
             EventFacade::emitter()->testPrepared($this->valueObjectForEvents());
-            EventFacade::emitter()->testSkipped($this->valueObjectForEvents(), EventThrowable::from($e));
+            EventFacade::emitter()->testSkipped($this->valueObjectForEvents(), $e->getMessage());
             EventFacade::emitter()->testFinished($this->valueObjectForEvents());
 
             return;

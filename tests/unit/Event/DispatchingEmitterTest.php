@@ -654,11 +654,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $throwable = Throwable::from(new Exception('skipped'));
+        $message = 'skipped';
 
         $emitter->testSkipped(
             $test,
-            $throwable
+            $message
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -668,7 +668,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\Skipped::class, $event);
 
         $this->assertSame($test, $event->test());
-        $this->assertSame($throwable, $event->throwable());
+        $this->assertSame($message, $event->message());
     }
 
     public function testTestPreparedDispatchesTestPreparedEvent(): void

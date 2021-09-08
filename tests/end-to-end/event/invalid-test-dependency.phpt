@@ -30,7 +30,7 @@ Test Suite Loaded (1 test)
 Test Suite Sorted
 Event Facade Sealed
 Test Suite Started (PHPUnit\TestFixture\InvalidDependencyTest, 1 test)
-Test Skipped Due To Invalid Dependency (PHPUnit\TestFixture\InvalidDependencyTest::testOne)
+Test Skipped (PHPUnit\TestFixture\InvalidDependencyTest::testOne)
 This test depends on "PHPUnit\TestFixture\InvalidDependencyTest::doesNotExist" which does not exist.
 Test Suite Finished (PHPUnit\TestFixture\InvalidDependencyTest, 1 test)
 Test Runner Finished

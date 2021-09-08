@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
-use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code;
 
 /**
  * @covers \PHPUnit\Event\Test\Skipped
@@ -22,17 +20,16 @@ final class SkippedTest extends AbstractEventTestCase
     {
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
-
-        $throwable = Code\Throwable::from(new Exception('skipped'));
+        $message       = 'skipped';
 
         $event = new Skipped(
             $telemetryInfo,
             $test,
-            $throwable
+            $message
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
-        $this->assertSame($throwable, $event->throwable());
+        $this->assertSame($message, $event->message());
     }
 }

@@ -866,7 +866,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $emitter->testSkipped(
                 $this->valueObjectForEvents(),
-                Event\Code\Throwable::from($e)
+                $e->getMessage()
             );
         } catch (Warning $e) {
             $this->status = TestStatus::warning($e->getMessage());
@@ -1886,7 +1886,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $dependency->getTarget()
         );
 
-        Event\Facade::emitter()->testSkippedDueToMissingDependency(
+        Event\Facade::emitter()->testSkipped(
             $this->valueObjectForEvents(),
             $message
         );
@@ -1911,7 +1911,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $dependency->getTarget()
         );
 
-        Event\Facade::emitter()->testSkippedDueToInvalidDependency(
+        Event\Facade::emitter()->testSkipped(
             $this->valueObjectForEvents(),
             $message
         );

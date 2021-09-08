@@ -12,7 +12,6 @@ namespace PHPUnit\Event\Test;
 use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
-use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
@@ -25,13 +24,13 @@ final class Skipped implements Event
 
     private Code\Test $test;
 
-    private Throwable $throwable;
+    private string $message;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
-        $this->throwable     = $throwable;
+        $this->message       = $message;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -44,14 +43,14 @@ final class Skipped implements Event
         return $this->test;
     }
 
-    public function throwable(): Throwable
+    public function message(): string
     {
-        return $this->throwable;
+        return $this->message;
     }
 
     public function asString(): string
     {
-        $message = $this->throwable->message();
+        $message = $this->message;
 
         if (!empty($message)) {
             $message = PHP_EOL . $message;

@@ -90,15 +90,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSkipped(Code\Test $test, Throwable $throwable): void
-    {
-    }
-
-    public function testSkippedDueToInvalidDependency(Code\TestMethod $test, string $message): void
-    {
-    }
-
-    public function testSkippedDueToMissingDependency(Code\TestMethod $test, string $message): void
+    public function testSkipped(Code\Test $test, string $message): void
     {
     }
 

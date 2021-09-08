@@ -240,34 +240,12 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSkipped(Code\Test $test, Throwable $throwable): void
+    public function testSkipped(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(
             new Test\Skipped(
                 $this->telemetryInfo(),
                 $test,
-                $throwable
-            )
-        );
-    }
-
-    public function testSkippedDueToInvalidDependency(Code\TestMethod $testMethod, string $message): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\SkippedDueToInvalidDependency(
-                $this->telemetryInfo(),
-                $testMethod,
-                $message
-            )
-        );
-    }
-
-    public function testSkippedDueToMissingDependency(Code\TestMethod $testMethod, string $message): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\SkippedDueToMissingDependency(
-                $this->telemetryInfo(),
-                $testMethod,
                 $message
             )
         );

@@ -62,11 +62,7 @@ interface Emitter
 
     public function testAborted(Code\Test $test, Throwable $throwable): void;
 
-    public function testSkipped(Code\Test $test, Throwable $throwable): void;
-
-    public function testSkippedDueToInvalidDependency(Code\TestMethod $testMethod, string $message): void;
-
-    public function testSkippedDueToMissingDependency(Code\TestMethod $testMethod, string $message): void;
+    public function testSkipped(Code\Test $test, string $message): void;
 
     public function testPrepared(Code\Test $test): void;
 
