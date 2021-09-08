@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.x-dev@">
-  <file src="src/Event/DirectDispatcher.php">
+  <file src="src/Event/Dispatcher/DirectDispatcher.php">
     <MissingThrowsDocblock occurrences="1">
       <code>map</code>
     </MissingThrowsDocblock>
@@ -8,7 +8,7 @@
       <code>notify</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="src/Event/DispatchingEmitter.php">
+  <file src="src/Event/Emitter/DispatchingEmitter.php">
     <MissingThrowsDocblock occurrences="48">
       <code>dispatch</code>
       <code>dispatch</code>
