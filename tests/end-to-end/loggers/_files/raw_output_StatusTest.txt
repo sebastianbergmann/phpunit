@@ -32,8 +32,6 @@ Configuration: %stests%ebasic%econfiguration.basic.xml
  [33m☢[0m Risky [33m %f [2mms[0m
    [33m┐[0m
    [33m├[0m [33mThis test did not perform any assertions%w[0m
-   [33m├[0m%w
-   [33m├[0m [33m%stests%ebasic%eunit%eStatusTest.php:%d[0m%w
    [33m┴[0m
 
  [33m⚠[0m Warning [33m %f [2mms[0m
@@ -74,8 +72,6 @@ Configuration: %stests%ebasic%econfiguration.basic.xml
  [33m☢[0m Risky with message [33m %f [2mms[0m
    [33m┐[0m
    [33m├[0m [33mThis test did not perform any assertions%w[0m
-   [33m├[0m%w
-   [33m├[0m [33m%stests%ebasic%eunit%eStatusTest.php:%d[0m%w
    [33m┴[0m
 
  [33m⚠[0m Warning with message [33m %f [2mms[0m

@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI;
 use const PHP_EOL;
 use function array_map;
 use function array_reverse;
+use function assert;
 use function count;
 use function floor;
 use function implode;
@@ -25,6 +26,7 @@ use function strlen;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Framework\RiskyTestError;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -35,6 +37,7 @@ use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
+use ReflectionMethod;
 use SebastianBergmann\Environment\Console;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
@@ -292,8 +295,26 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
         $this->write((string) $e);
 
-        while ($e = $e->getPrevious()) {
-            $this->write("\nCaused by\n" . $e);
+        if ($defect->thrownException() instanceof RiskyTestError) {
+            $test = $defect->failedTest();
+
+            assert($test instanceof TestCase);
+
+            $reflector = new ReflectionMethod($test::class, $test->getName(false));
+
+            $this->write(
+                sprintf(
+                    '%s%s:%d%s',
+                    PHP_EOL,
+                    $reflector->getFileName(),
+                    $reflector->getStartLine(),
+                    PHP_EOL
+                )
+            );
+        } else {
+            while ($e = $e->getPrevious()) {
+                $this->write("\nCaused by\n" . $e);
+            }
         }
     }
 

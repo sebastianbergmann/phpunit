@@ -36,10 +36,8 @@ RuntimeException:%w
       <skipped/>
     </testcase>
     <testcase name="testRisky" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <error type="PHPUnit\Framework\RiskyTestError">PHPUnit\SelfTest\Basic\StatusTest::testRisky%A
-This test did not perform any assertions
-%A
-%sStatusTest.php:%d</error>
+      <error type="PHPUnit\Framework\RiskyBecauseNoAssertionsWerePerformedException">PHPUnit\SelfTest\Basic\StatusTest::testRisky%A
+This test did not perform any assertions</error>
     </testcase>
     <testcase name="testWarning" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
       <warning type="PHPUnit\Framework\Warning">PHPUnit\SelfTest\Basic\StatusTest::testWarning%A
@@ -66,10 +64,8 @@ RuntimeException: error with custom message
       <skipped/>
     </testcase>
     <testcase name="testRiskyWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <error type="PHPUnit\Framework\RiskyTestError">PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage%A
-This test did not perform any assertions
-%A
-%sStatusTest.php:%d</error>
+      <error type="PHPUnit\Framework\RiskyBecauseNoAssertionsWerePerformedException">PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage%A
+This test did not perform any assertions</error>
     </testcase>
     <testcase name="testWarningWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
       <warning type="PHPUnit\Framework\Warning">PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage%A

@@ -1959,9 +1959,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 ob_end_clean();
             }
 
-            throw new RiskyTestError(
-                'Test code or tested code did not (only) close its own output buffers'
-            );
+            throw new RiskyDueToOutputBufferingException;
         }
 
         $this->output = ob_get_clean();
@@ -2112,9 +2110,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $exporter->export($after)
             );
 
-            throw new RiskyTestError(
-                $diff
-            );
+            throw new RiskyDueToGlobalStateException($diff);
         }
     }
 

@@ -47,7 +47,7 @@ PHPUnit\TextUI\Application::main();
 
 ##teamcity[testStarted name='testRisky' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testRisky' flowId='%d']
 
-##teamcity[testFailed name='testRisky' message='This test did not perform any assertions|n|n%sStatusTest.php:53' details=' ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testRisky' message='This test did not perform any assertions' details=' ' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testRisky' duration='%d' flowId='%d']
 
@@ -86,7 +86,7 @@ PHPUnit\TextUI\Application::main();
 
 ##teamcity[testStarted name='testRiskyWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage' flowId='%d']
 
-##teamcity[testFailed name='testRiskyWithMessage' message='This test did not perform any assertions|n|n%sStatusTest.php:87' details=' ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testRiskyWithMessage' message='This test did not perform any assertions' details=' ' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testRiskyWithMessage' duration='%d' flowId='%d']
 

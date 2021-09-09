@@ -21,5 +21,7 @@ There was 1 risky test:
 1) Test::testOne
 This test does not have a @covers annotation but is expected to have one
 
+%s:%d
+
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 1, Risky: 1.

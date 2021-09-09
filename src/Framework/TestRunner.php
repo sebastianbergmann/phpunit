@@ -116,9 +116,7 @@ final class TestRunner
         } catch (TimeoutException $e) {
             $result->addFailure(
                 $test,
-                new RiskyTestError(
-                    $e->getMessage()
-                ),
+                new RiskyDueToTimeoutException($_timeout),
                 $_timeout
             );
 
@@ -170,7 +168,7 @@ final class TestRunner
             !$this->hasCoverageMetadata($test::class, $test->getName(false))) {
             $result->addFailure(
                 $test,
-                new MissingCoversAnnotationException(
+                new RiskyDueToMissingCoversAnnotationException(
                     'This test does not have a @covers annotation but is expected to have one'
                 ),
                 $time
@@ -213,7 +211,7 @@ final class TestRunner
                     $linesToBeUsed
                 );
             } catch (UnintentionallyCoveredCodeException $cce) {
-                $unintentionallyCoveredCodeError = new UnintentionallyCoveredCodeError(
+                $unintentionallyCoveredCodeError = new RiskyDueToUnintentionallyCoveredCodeException(
                     'This test executed code that is not listed as code to be covered or used:' .
                     PHP_EOL . $cce->getMessage()
                 );
@@ -245,22 +243,9 @@ final class TestRunner
         } elseif ($result->isStrictAboutTestsThatDoNotTestAnything() &&
             !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
-            $reflected = new ReflectionClass($test);
-            $name      = $test->getName(false);
-
-            if ($name && $reflected->hasMethod($name)) {
-                $reflected = $reflected->getMethod($name);
-            }
-
             $result->addFailure(
                 $test,
-                new RiskyTestError(
-                    sprintf(
-                        "This test did not perform any assertions\n\n%s:%d",
-                        $reflected->getFileName(),
-                        $reflected->getStartLine()
-                    )
-                ),
+                new RiskyBecauseNoAssertionsWerePerformedException,
                 $time
             );
         } elseif ($result->isStrictAboutTestsThatDoNotTestAnything() &&
@@ -268,11 +253,8 @@ final class TestRunner
             $test->numberOfAssertionsPerformed() > 0) {
             $result->addFailure(
                 $test,
-                new RiskyTestError(
-                    sprintf(
-                        'This test is annotated with "@doesNotPerformAssertions" but performed %d assertions',
-                        $test->numberOfAssertionsPerformed()
-                    )
+                new RiskyDueToUnexpectedAssertionsException(
+                    $test->numberOfAssertionsPerformed()
                 ),
                 $time
             );

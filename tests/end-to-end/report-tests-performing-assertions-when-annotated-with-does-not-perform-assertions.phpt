@@ -20,5 +20,7 @@ There was 1 risky test:
 1) PHPUnit\TestFixture\DoesNotPerformAssertionsButPerformingAssertionsTest::testFalseAndTrueAreStillFine
 This test is annotated with "@doesNotPerformAssertions" but performed 2 assertions
 
+%s:%d
+
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 2, Risky: 1.

@@ -33,7 +33,9 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) Issue2085Test::testShouldAbortSlowTestByEnforcingTimeLimit
-Execution aborted after 1 second
+This test was aborted after 1 second
+
+%s:%d
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 1, Risky: 1.

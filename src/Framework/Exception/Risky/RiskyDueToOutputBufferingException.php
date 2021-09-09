@@ -12,6 +12,10 @@ namespace PHPUnit\Framework;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class RiskyTestError extends AssertionFailedError
+final class RiskyDueToOutputBufferingException extends RiskyTestError
 {
+    public function __construct()
+    {
+        parent::__construct('Test code or tested code did not (only) close its own output buffers');
+    }
 }
