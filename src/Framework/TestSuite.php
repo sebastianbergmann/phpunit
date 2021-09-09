@@ -112,13 +112,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function __construct(ReflectionClass|string $theClass = '', string $name = '')
     {
-        if (!is_string($theClass) && !$theClass instanceof ReflectionClass) {
-            throw InvalidArgumentException::create(
-                1,
-                'ReflectionClass object or string'
-            );
-        }
-
         if (!$theClass instanceof ReflectionClass) {
             if (class_exists($theClass, true)) {
                 if ($name === '') {

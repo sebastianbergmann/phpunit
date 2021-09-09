@@ -22,7 +22,6 @@ use function func_get_args;
 use function implode;
 use function interface_exists;
 use function is_bool;
-use function is_object;
 use function preg_match;
 use function preg_split;
 use function str_contains;
@@ -1052,10 +1051,6 @@ abstract class Assert
             throw InvalidArgumentException::create(1, 'valid attribute name');
         }
 
-        if (!is_object($object)) {
-            throw InvalidArgumentException::create(2, 'object');
-        }
-
         (new WarningUtil)->createForTestCaseObjectOnCallStack(
             'assertClassHasAttribute() is deprecated and will be removed in PHPUnit 11.'
         );
@@ -1081,10 +1076,6 @@ abstract class Assert
     {
         if (!self::isValidObjectAttributeName($attributeName)) {
             throw InvalidArgumentException::create(1, 'valid attribute name');
-        }
-
-        if (!is_object($object)) {
-            throw InvalidArgumentException::create(2, 'object');
         }
 
         (new WarningUtil)->createForTestCaseObjectOnCallStack(
