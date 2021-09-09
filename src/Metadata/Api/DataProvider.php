@@ -23,7 +23,6 @@ use function str_replace;
 use function substr;
 use function trim;
 use PHPUnit\Framework\InvalidDataProviderException;
-use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry;
@@ -60,8 +59,8 @@ final class DataProvider
         }
 
         if ($data === []) {
-            throw new SkippedTestError(
-                'Skipped due to empty data set provided by data provider'
+            throw new InvalidDataSetException(
+                'Empty data set provided by data provider'
             );
         }
 
@@ -69,7 +68,7 @@ final class DataProvider
             if (!is_array($value)) {
                 throw new InvalidDataSetException(
                     sprintf(
-                        'Data set %s is invalid.',
+                        'Data set %s is invalid',
                         is_int($key) ? '#' . $key : '"' . $key . '"'
                     )
                 );

@@ -20,7 +20,7 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) Error
-The data provider specified for Issue498Test::shouldBeFalse is invalid.
+The data provider specified for Issue498Test::shouldBeFalse is invalid
 Exception: Can't create the data
 %sIssue498Test.php:%d
 

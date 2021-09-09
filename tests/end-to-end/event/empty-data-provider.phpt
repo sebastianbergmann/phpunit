@@ -32,9 +32,9 @@ Event Facade Sealed
 Test Suite Started (PHPUnit\TestFixture\EmptyDataProviderTest, 1 test)
 Test Suite Started (PHPUnit\TestFixture\EmptyDataProviderTest::testCase, 1 test)
 Test Prepared (PHPUnit\TestFixture\EmptyDataProviderTest::testCase)
-Test Skipped (PHPUnit\TestFixture\EmptyDataProviderTest::testCase)
-Test for PHPUnit\TestFixture\EmptyDataProviderTest::testCase skipped by data provider
-PHPUnit\Framework\SkippedTestError: Skipped due to empty data set provided by data provider
+Test Errored (PHPUnit\TestFixture\EmptyDataProviderTest::testCase)
+The data provider specified for PHPUnit\TestFixture\EmptyDataProviderTest::testCase is invalid
+Empty data set provided by data provider
 
 Test Finished (PHPUnit\TestFixture\EmptyDataProviderTest::testCase)
 Test Suite Finished (PHPUnit\TestFixture\EmptyDataProviderTest::testCase, 1 test)

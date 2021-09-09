@@ -20,8 +20,8 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) Error
-The data provider specified for Issue2137Test::testBrandService is invalid.
-Data set #0 is invalid.
+The data provider specified for Issue2137Test::testBrandService is invalid
+Data set #0 is invalid
 
 ERRORS!
 Tests: 1, Assertions: 0, Errors: 1.

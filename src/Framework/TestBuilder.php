@@ -74,7 +74,7 @@ final class TestBuilder
                 $className,
                 $methodName,
                 sprintf(
-                    "The data provider specified for %s::%s is invalid.\n%s",
+                    "The data provider specified for %s::%s is invalid\n%s",
                     $className,
                     $methodName,
                     $this->throwableToString($t)

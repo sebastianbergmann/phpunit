@@ -580,7 +580,7 @@
     </UndefinedMethod>
   </file>
   <file src="src/Metadata/Api/DataProvider.php">
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock occurrences="1">
       <code>dataProvidedByTestWithAnnotation</code>
     </MissingThrowsDocblock>
     <RedundantCastGivenDocblockType occurrences="1">
