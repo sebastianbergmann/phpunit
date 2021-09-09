@@ -12,6 +12,6 @@ namespace PHPUnit\Framework;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RiskyDueToOutputException extends RiskyTestError
+final class RiskyDueToOutputException extends AssertionFailedError implements RiskyTestError
 {
 }

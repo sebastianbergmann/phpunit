@@ -12,7 +12,7 @@ namespace PHPUnit\Framework;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RiskyBecauseNoAssertionsWerePerformedException extends RiskyTestError
+final class RiskyBecauseNoAssertionsWerePerformedException extends AssertionFailedError implements RiskyTestError
 {
     public function __construct()
     {

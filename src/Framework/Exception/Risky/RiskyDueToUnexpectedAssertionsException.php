@@ -14,7 +14,7 @@ use function sprintf;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RiskyDueToUnexpectedAssertionsException extends RiskyTestError
+final class RiskyDueToUnexpectedAssertionsException extends AssertionFailedError implements RiskyTestError
 {
     public function __construct(int $numberOfAssertions)
     {
