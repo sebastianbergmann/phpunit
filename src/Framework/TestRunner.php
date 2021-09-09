@@ -279,7 +279,7 @@ final class TestRunner
         } elseif ($result->isStrictAboutOutputDuringTests() && $test->hasOutput()) {
             $result->addFailure(
                 $test,
-                new OutputError(
+                new RiskyDueToOutputException(
                     sprintf(
                         'This test printed output: %s',
                         $test->output()
