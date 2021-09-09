@@ -894,7 +894,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         try {
             $this->stopOutputBuffering();
-        } catch (RiskyTestError $_e) {
+        } catch (RiskyTest $_e) {
             $e = $e ?? $_e;
         }
 
@@ -979,7 +979,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if (isset($_e)) {
-            if ($_e instanceof RiskyTestError) {
+            if ($_e instanceof RiskyTest) {
                 $this->status = TestStatus::risky($_e->getMessage());
             } else {
                 $this->status = TestStatus::error($_e->getMessage());
@@ -1950,7 +1950,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws RiskyTestError
+     * @throws RiskyTest
      */
     private function stopOutputBuffering(): void
     {
@@ -1983,7 +1983,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws RiskyTestError
+     * @throws RiskyTest
      */
     private function restoreGlobalState(): void
     {
@@ -1999,7 +1999,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $this->snapshot,
                     $snapshotAfter
                 );
-            } catch (RiskyTestError $rte) {
+            } catch (RiskyTest $rte) {
                 Event\Facade::emitter()->globalStateModified(
                     $this->snapshot,
                     $snapshotAfter,
@@ -2067,7 +2067,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws RiskyTestError
+     * @throws RiskyTest
      */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
     {
@@ -2097,7 +2097,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws RiskyTestError
+     * @throws RiskyTest
      */
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {

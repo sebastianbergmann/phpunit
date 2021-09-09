@@ -124,7 +124,7 @@ final class TestRunner
         } catch (AssertionFailedError $e) {
             $failure = true;
 
-            if ($e instanceof RiskyTestError) {
+            if ($e instanceof RiskyTest) {
                 $risky = true;
             } elseif ($e instanceof IncompleteTestError) {
                 $incomplete = true;

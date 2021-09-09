@@ -180,7 +180,7 @@ final class TestResult implements Countable
 
     public function addFailure(Test $test, AssertionFailedError $e, float $time): void
     {
-        if ($e instanceof RiskyTestError) {
+        if ($e instanceof RiskyTest) {
             $this->recordRisky($test, $e);
 
             $notifyMethod = 'addRiskyTest';

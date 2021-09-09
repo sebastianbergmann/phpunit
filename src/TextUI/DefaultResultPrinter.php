@@ -26,7 +26,7 @@ use function strlen;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
-use PHPUnit\Framework\RiskyTestError;
+use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -295,7 +295,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
         $this->write((string) $e);
 
-        if ($defect->thrownException() instanceof RiskyTestError) {
+        if ($defect->thrownException() instanceof RiskyTest) {
             $test = $defect->failedTest();
 
             assert($test instanceof TestCase);

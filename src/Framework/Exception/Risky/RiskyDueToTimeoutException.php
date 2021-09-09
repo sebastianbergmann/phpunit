@@ -14,7 +14,7 @@ use function sprintf;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RiskyDueToTimeoutException extends AssertionFailedError implements RiskyTestError
+final class RiskyDueToTimeoutException extends AssertionFailedError implements RiskyTest
 {
     public function __construct(int $seconds)
     {
