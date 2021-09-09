@@ -1758,8 +1758,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws SkippedTestError
-     * @throws SyntheticSkippedError
+     * @throws SkippedTest
      * @throws Warning
      */
     private function checkRequirements(): void
@@ -1835,9 +1834,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $passed[$dependencyTarget]['size']->isGreaterThan($this->size())) {
                     $this->result->addFailure(
                         $this,
-                        new SkippedTestError(
-                            'This test depends on a test that is larger than itself.'
-                        ),
+                        new SkippedDueToDependencyOnLargerTestException,
                         0
                     );
 
@@ -1872,7 +1869,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->addFailure(
             $this,
-            new SkippedTestError($message),
+            new SkippedDueToInvalidDependencyException,
             0
         );
 
@@ -1897,7 +1894,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->result->addFailure(
             $this,
-            new SkippedTestError($message),
+            new SkippedDueToMissingDependencyException(
+                $dependency->getTarget()
+            ),
             0
         );
 

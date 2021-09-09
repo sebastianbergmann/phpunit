@@ -38,19 +38,19 @@ There was 1 failure:
 There were 5 skipped tests:
 
 1) DependencyOnClassTest::testThatDependsOnAFailingClass
-This test depends on "DependencyFailureTest::class" to pass.
+This test depends on "DependencyFailureTest::class" to pass
 
 2) DependencyFailureTest::testTwo
-This test depends on "DependencyFailureTest::testOne" to pass.
+This test depends on "DependencyFailureTest::testOne" to pass
 
 3) DependencyFailureTest::testThree
-This test depends on "DependencyFailureTest::testTwo" to pass.
+This test depends on "DependencyFailureTest::testTwo" to pass
 
 4) DependencyFailureTest::testFour
-This test depends on "DependencyFailureTest::testOne" to pass.
+This test depends on "DependencyFailureTest::testOne" to pass
 
 5) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
-This method has an invalid @depends annotation.
+This test has an invalid dependency
 
 FAILURES!
 Tests: 11, Assertions: 5, Failures: 1, Warnings: 1, Skipped: 5.

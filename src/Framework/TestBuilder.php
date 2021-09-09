@@ -58,7 +58,7 @@ final class TestBuilder
                     $this->throwableToString($e)
                 )
             );
-        } catch (SkippedTestError $e) {
+        } catch (SkippedTest $e) {
             $data = new SkippedTestCase(
                 $className,
                 $methodName,

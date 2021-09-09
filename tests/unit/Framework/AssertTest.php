@@ -1230,7 +1230,7 @@ XML;
     {
         try {
             $this->markTestSkipped('skipped');
-        } catch (SkippedTestError $e) {
+        } catch (SkippedTest $e) {
             $this->assertEquals('skipped', $e->getMessage());
 
             return;

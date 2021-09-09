@@ -2317,7 +2317,7 @@ abstract class Assert
     /**
      * Mark the test as skipped.
      *
-     * @throws SkippedTestError
+     * @throws SkippedWithMessageException
      * @throws SyntheticSkippedError
      *
      * @psalm-return never-return
@@ -2331,7 +2331,7 @@ abstract class Assert
             throw new SyntheticSkippedError($hint['message'], 0, $hint['file'], (int) $hint['line'], $trace);
         }
 
-        throw new SkippedTestError($message);
+        throw new SkippedWithMessageException($message);
     }
 
     /**

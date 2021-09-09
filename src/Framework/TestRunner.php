@@ -128,7 +128,7 @@ final class TestRunner
                 $risky = true;
             } elseif ($e instanceof IncompleteTestError) {
                 $incomplete = true;
-            } elseif ($e instanceof SkippedTestError) {
+            } elseif ($e instanceof SkippedTest) {
                 $skipped = true;
             }
         } catch (AssertionError $e) {

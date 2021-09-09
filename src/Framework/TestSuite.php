@@ -464,7 +464,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     } else {
                         $result->addFailure(
                             $test,
-                            new SkippedTestError('Test skipped because of an error in hook method'),
+                            new SkippedDueToErrorInHookMethodException,
                             0
                         );
                     }

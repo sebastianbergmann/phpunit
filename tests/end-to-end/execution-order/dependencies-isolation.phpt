@@ -38,16 +38,16 @@ There was 1 failure:
 There were 4 skipped tests:
 
 1) DependencyFailureTest::testTwo
-This test depends on "DependencyFailureTest::testOne" to pass.
+This test depends on "DependencyFailureTest::testOne" to pass
 
 2) DependencyFailureTest::testThree
-This test depends on "DependencyFailureTest::testTwo" to pass.
+This test depends on "DependencyFailureTest::testTwo" to pass
 
 3) DependencyFailureTest::testFour
-This test depends on "DependencyFailureTest::testOne" to pass.
+This test depends on "DependencyFailureTest::testOne" to pass
 
 4) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
-This method has an invalid @depends annotation.
+This test has an invalid dependency
 
 FAILURES!
 Tests: 9, Assertions: 4, Failures: 1, Warnings: 1, Skipped: 4.
