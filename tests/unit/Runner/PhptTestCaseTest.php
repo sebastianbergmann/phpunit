@@ -118,7 +118,7 @@ EOF;
         $this->testCase->run(new TestResult);
     }
 
-    public function testShouldSkipTestWhenPhptFileIsEmpty(): void
+    public function testWarningIsTriggeredForEmptyPhptFile(): void
     {
         $this->setPhpContent('');
 
@@ -128,11 +128,11 @@ EOF;
         $this->testCase->run($result);
         Facade::resume();
 
-        $this->assertCount(1, $result->skipped());
-        $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
+        $this->assertCount(1, $result->warnings());
+        $this->assertSame('Invalid PHPT file', $result->warnings()[0]->thrownException()->getMessage());
     }
 
-    public function testShouldSkipTestWhenFileSectionIsMissing(): void
+    public function testWarningIsTriggeredWhenFileSectionIsMissing(): void
     {
         $this->setPhpContent(
             <<<'EOF'
@@ -149,11 +149,11 @@ EOF
         $this->testCase->run($result);
         Facade::resume();
 
-        $this->assertCount(1, $result->skipped());
-        $this->assertSame('Invalid PHPT file', $result->skipped()[0]->thrownException()->getMessage());
+        $this->assertCount(1, $result->warnings());
+        $this->assertSame('Invalid PHPT file', $result->warnings()[0]->thrownException()->getMessage());
     }
 
-    public function testShouldSkipTestWhenThereIsNoExpecOrExpectifOrExpecregexSectionInPhptFile(): void
+    public function testWarningIsTriggeredWhenThereIsNoExpectationSection(): void
     {
         $this->setPhpContent(
             <<<EOF
@@ -172,12 +172,12 @@ EOF
         $this->testCase->run($result);
         Facade::resume();
 
-        $this->assertCount(1, $result->skipped());
-        $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
+        $this->assertCount(1, $result->warnings());
+        $skipMessage = $result->warnings()[0]->thrownException()->getMessage();
         $this->assertSame('Invalid PHPT file', $skipMessage);
     }
 
-    public function testShouldSkipTestWhenSectionHeaderIsMalformed(): void
+    public function testWarningIsTriggeredWhenSectionHeaderIsMalformed(): void
     {
         $this->setPhpContent(
             <<<'EOF'
@@ -195,8 +195,8 @@ EOF
         $this->testCase->run($result);
         Facade::resume();
 
-        $this->assertCount(1, $result->skipped());
-        $skipMessage = $result->skipped()[0]->thrownException()->getMessage();
+        $this->assertCount(1, $result->warnings());
+        $skipMessage = $result->warnings()[0]->thrownException()->getMessage();
         $this->assertSame('Invalid PHPT file: empty section header', $skipMessage);
     }
 

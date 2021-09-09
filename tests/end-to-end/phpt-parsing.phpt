@@ -14,14 +14,14 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-S                                                                   1 / 1 (100%)
+W                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 skipped test:
+There was 1 warning:
 
 1) %stests%e_files%ephpt-unsupported-section.phpt
 PHPUnit does not support PHPT GET sections
 
-OK, but incomplete, skipped, or risky tests!
-Tests: 1, Assertions: 1, Skipped: 1.
+WARNINGS!
+Tests: 1, Assertions: 1, Warnings: 1.

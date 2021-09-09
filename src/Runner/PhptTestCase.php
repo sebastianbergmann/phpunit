@@ -52,10 +52,10 @@ use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\PHPTAssertionFailedError;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\Warning;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 use SebastianBergmann\Template\Template;
@@ -114,10 +114,10 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         try {
             $sections = $this->parse();
         } catch (Exception $e) {
-            $e = new SkippedTestError($e->getMessage());
+            $e = new Warning($e->getMessage());
 
             $result->startTest($this);
-            $result->addFailure($this, $e, 0);
+            $result->addWarning($this, $e, 0);
             $result->endTest($this, 0);
 
             EventFacade::emitter()->testPrepared($this->valueObjectForEvents());
