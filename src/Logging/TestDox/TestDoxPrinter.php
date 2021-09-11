@@ -63,6 +63,9 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
      */
     protected array $originalExecutionOrder = [];
 
+    /**
+     * @psalm-var 0|positive-int
+     */
     protected int $spinState = 0;
 
     protected bool $showProgress = true;
