@@ -24,6 +24,7 @@ use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Util\RegularExpression;
 use RecursiveFilterIterator;
 use RecursiveIterator;
+use PHPUnit\Framework\DataProviderTestSuite;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -46,6 +47,14 @@ final class LineFilterIterator extends RecursiveFilterIterator
     {
         $test = $this->getInnerIterator()->current();
 
-        return $test instanceof TestCase && $this->line === $test->line();
+        if ($test instanceof TestSuite) {
+            return true;
+        }
+
+        if ($test instanceof TestCase) {
+            return $this->line === $test->line();
+        }
+
+        return false;
     }
 }

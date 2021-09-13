@@ -90,6 +90,7 @@ final class TestBuilder
         if (isset($data)) {
             $test = $this->buildDataProviderTestSuite(
                 $methodName,
+                $line,
                 $className,
                 $data,
                 $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
@@ -118,7 +119,7 @@ final class TestBuilder
      * @psalm-param class-string $className
      * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>}
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, int $line, string $className, array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
     {
         $dataProviderTestSuite = new DataProviderTestSuite(
             $className . '::' . $methodName
@@ -132,7 +133,7 @@ final class TestBuilder
             $dataProviderTestSuite->addTest($data, $groups);
         } else {
             foreach ($data as $_dataName => $_data) {
-                $_test = new $className($methodName);
+                $_test = new $className($methodName, $line);
 
                 assert($_test instanceof TestCase);
 
