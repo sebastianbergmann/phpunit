@@ -20,7 +20,7 @@ final class TestBuilderTest extends TestCase
 {
     public function testCreateWithEmptyData(): void
     {
-        $test = (new TestBuilder)->build(new ReflectionClass(EmptyDataProviderTest::class), 'testCase');
+        $test = (new TestBuilder)->build(new ReflectionClass(EmptyDataProviderTest::class), 'testCase', 24);
         $this->assertInstanceOf(DataProviderTestSuite::class, $test);
         /* @var DataProviderTestSuite $test */
         $this->assertInstanceOf(SkippedTestCase::class, $test->getGroupDetails()['default'][0]);
@@ -31,7 +31,7 @@ final class TestBuilderTest extends TestCase
      */
     public function testWithAnnotations(string $methodName): void
     {
-        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName, 0);
         $this->assertInstanceOf(TestWithAnnotations::class, $test);
     }
 
@@ -49,7 +49,7 @@ final class TestBuilderTest extends TestCase
      */
     public function testWithAnnotationsAndDataProvider(string $methodName): void
     {
-        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName, 0);
         $this->assertInstanceOf(DataProviderTestSuite::class, $test);
     }
 
