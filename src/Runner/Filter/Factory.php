@@ -46,6 +46,13 @@ final class Factory
         ];
     }
 
+    public function addLineFilter(int $line): void
+    {
+        $this->filters[] = [
+            new ReflectionClass(LineFilterIterator::class), $line,
+        ];
+    }
+
     public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
     {
         foreach ($this->filters as $filter) {

@@ -218,9 +218,13 @@ final class Builder
         $plainTextTrace                    = null;
         $printerTeamCity                   = null;
         $printerTestDox                    = null;
+        $line                              = null;
 
         if (isset($options[1][0])) {
             $argument = $options[1][0];
+            if (false !== strpos($argument, ':')) {
+                [$argument, $line] = explode(':', $argument);
+            }
         }
 
         foreach ($options[0] as $option) {
@@ -830,7 +834,8 @@ final class Builder
             $coverageFilter,
             $plainTextTrace,
             $printerTeamCity,
-            $printerTestDox
+            $printerTestDox,
+            $line ? (int) $line : null
         );
     }
 }

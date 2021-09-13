@@ -548,6 +548,11 @@ final class Merger
 
         $includeUncoveredFiles = $xmlConfiguration->codeCoverage()->includeUncoveredFiles();
 
+        $line = null;
+        if ($cliConfiguration->hasLine()) {
+            $line = $cliConfiguration->line();
+        }
+
         return new Configuration(
             $configurationFile,
             $bootstrap,
@@ -634,7 +639,8 @@ final class Merger
             $randomOrderSeed,
             $includeUncoveredFiles,
             $xmlValidationErrors,
-            $warnings
+            $warnings,
+            $line
         );
     }
 }

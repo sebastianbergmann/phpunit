@@ -161,6 +161,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private string $name;
 
+    private ?int $line;
+
     /**
      * @psalm-var list<string>
      */
@@ -335,9 +337,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public function __construct(string $name)
+    public function __construct(string $name, ?int $line = null)
     {
         $this->setName($name);
+        $this->setLine($line);
 
         $this->status = TestStatus::unknown();
     }
@@ -1021,6 +1024,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
+    public function setLine(?int $line): void
+    {
+        $this->line = $line;
+    }
+
     /**
      * @psalm-param list<ExecutionOrderDependency> $dependencies
      *
@@ -1354,6 +1362,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function wasPrepared(): bool
     {
         return $this->wasPrepared;
+    }
+
+    public function line(): int
+    {
+        return $this->line;
     }
 
     /**

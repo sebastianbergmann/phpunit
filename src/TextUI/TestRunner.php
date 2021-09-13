@@ -599,11 +599,18 @@ final class TestRunner
             !$this->configuration->hasGroups() &&
             !$this->configuration->hasExcludeGroups() &&
             !$this->configuration->hasTestsCovering() &&
-            !$this->configuration->hasTestsUsing()) {
+            !$this->configuration->hasTestsUsing() &&
+            !$this->configuration->hasLine()) {
             return;
         }
 
         $filterFactory = new Factory;
+
+        if ($this->configuration->hasLine()) {
+            $filterFactory->addLineFilter(
+                $this->configuration->line()
+            );
+        }
 
         if ($this->configuration->hasExcludeGroups()) {
             $filterFactory->addExcludeGroupFilter(

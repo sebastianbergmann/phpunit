@@ -31,7 +31,7 @@ use Throwable;
  */
 final class TestBuilder
 {
-    public function build(ReflectionClass $theClass, string $methodName): Test
+    public function build(ReflectionClass $theClass, string $methodName, int $line): Test
     {
         $className = $theClass->getName();
 
@@ -98,7 +98,7 @@ final class TestBuilder
                 $this->backupSettings($className, $methodName)
             );
         } else {
-            $test = new $className($methodName);
+            $test = new $className($methodName, $line);
         }
 
         if ($test instanceof TestCase) {

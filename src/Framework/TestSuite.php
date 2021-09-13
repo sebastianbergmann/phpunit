@@ -722,7 +722,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     {
         $methodName = $method->getName();
 
-        $test = (new TestBuilder)->build($class, $methodName);
+        $test = (new TestBuilder)->build($class, $methodName, $method->getStartLine());
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
