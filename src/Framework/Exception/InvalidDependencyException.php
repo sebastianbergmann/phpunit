@@ -12,10 +12,6 @@ namespace PHPUnit\Framework;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class SkippedDueToInvalidDependencyException extends AssertionFailedError implements SkippedTest
+final class InvalidDependencyException extends AssertionFailedError implements SkippedTest
 {
-    public function __construct()
-    {
-        parent::__construct('This test has an invalid dependency');
-    }
 }

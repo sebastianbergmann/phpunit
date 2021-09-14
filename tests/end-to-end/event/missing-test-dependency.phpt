@@ -36,6 +36,6 @@ Test Failed (PHPUnit\TestFixture\MissingDependencyTest::testOne)
 Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\MissingDependencyTest::testOne)
 Test Skipped (PHPUnit\TestFixture\MissingDependencyTest::testTwo)
-This test depends on "PHPUnit\TestFixture\MissingDependencyTest::testOne" to pass.
+This test depends on "PHPUnit\TestFixture\MissingDependencyTest::testOne" to pass
 Test Suite Finished (PHPUnit\TestFixture\MissingDependencyTest, 2 tests)
 Test Runner Finished

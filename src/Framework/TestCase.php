@@ -1799,7 +1799,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         foreach ($this->dependencies as $dependency) {
             if (!$dependency->isValid()) {
-                $this->markSkippedForNotSpecifyingDependency();
+                $this->markErrorForInvalidDependency();
 
                 return false;
             }
@@ -1820,7 +1820,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             if (!isset($passedKeys[$dependencyTarget])) {
                 if (!$this->isCallableTestMethod($dependencyTarget)) {
-                    $this->markWarningForUncallableDependency($dependency);
+                    $this->markErrorForInvalidDependency($dependency);
                 } else {
                     $this->markSkippedForMissingDependency($dependency);
                 }
@@ -1859,17 +1859,31 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return true;
     }
 
-    private function markSkippedForNotSpecifyingDependency(): void
+    private function markErrorForInvalidDependency(?ExecutionOrderDependency $dependency = null): void
     {
-        $message = 'This method has an invalid @depends annotation.';
+        $message = 'This test has an invalid dependency';
 
-        $this->status = TestStatus::skipped($message);
+        if ($dependency !== null) {
+            $message = sprintf(
+                'This test depends on "%s" which does not exist',
+                $dependency->getTarget()
+            );
+        }
+
+        $exception = new InvalidDependencyException($message);
+
+        Event\Facade::emitter()->testErrored(
+            $this->valueObjectForEvents(),
+            Event\Code\Throwable::from($exception)
+        );
+
+        $this->status = TestStatus::error($message);
 
         $this->result->startTest($this);
 
-        $this->result->addFailure(
+        $this->result->addError(
             $this,
-            new SkippedDueToInvalidDependencyException,
+            $exception,
             0
         );
 
@@ -1879,7 +1893,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
     {
         $message = sprintf(
-            'This test depends on "%s" to pass.',
+            'This test depends on "%s" to pass',
             $dependency->getTarget()
         );
 
@@ -1897,31 +1911,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             new SkippedDueToMissingDependencyException(
                 $dependency->getTarget()
             ),
-            0
-        );
-
-        $this->result->endTest($this, 0);
-    }
-
-    private function markWarningForUncallableDependency(ExecutionOrderDependency $dependency): void
-    {
-        $message = sprintf(
-            'This test depends on "%s" which does not exist.',
-            $dependency->getTarget()
-        );
-
-        Event\Facade::emitter()->testSkipped(
-            $this->valueObjectForEvents(),
-            $message
-        );
-
-        $this->status = TestStatus::warning($message);
-
-        $this->result->startTest($this);
-
-        $this->result->addWarning(
-            $this,
-            new Warning($message),
             0
         );
 

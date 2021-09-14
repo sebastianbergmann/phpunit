@@ -16,14 +16,17 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-...FSSSWS                                                           9 / 9 (100%)
+...FSSSEE                                                           9 / 9 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 warning:
+There were 2 errors:
 
 1) DependencyFailureTest::testHandlesDependsAnnotationForNonexistentTests
-This test depends on "DependencyFailureTest::doesNotExist" which does not exist.
+This test depends on "DependencyFailureTest::doesNotExist" which does not exist
+
+2) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
+This test has an invalid dependency
 
 --
 
@@ -35,7 +38,7 @@ There was 1 failure:
 
 --
 
-There were 4 skipped tests:
+There were 3 skipped tests:
 
 1) DependencyFailureTest::testTwo
 This test depends on "DependencyFailureTest::testOne" to pass
@@ -46,8 +49,5 @@ This test depends on "DependencyFailureTest::testTwo" to pass
 3) DependencyFailureTest::testFour
 This test depends on "DependencyFailureTest::testOne" to pass
 
-4) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
-This test has an invalid dependency
-
-FAILURES!
-Tests: 9, Assertions: 4, Failures: 1, Warnings: 1, Skipped: 4.
+ERRORS!
+Tests: 9, Assertions: 4, Errors: 2, Failures: 1, Skipped: 3.
