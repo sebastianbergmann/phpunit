@@ -14,14 +14,14 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-W                                                                   1 / 1 (100%)
+E                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 warning:
+There was 1 error:
 
 1) %stests%e_files%ephpt-unsupported-section.phpt
-PHPUnit does not support PHPT GET sections
-
-WARNINGS!
-Tests: 1, Assertions: 1, Warnings: 1.
+PHPUnit\Runner\Exception: PHPUnit does not support PHPT GET sections in %s
+%a
+ERRORS!
+Tests: 1, Assertions: 1, Errors: 1.

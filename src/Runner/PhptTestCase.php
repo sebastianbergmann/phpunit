@@ -55,7 +55,6 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\Warning;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 use SebastianBergmann\Template\Template;
@@ -114,14 +113,14 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         try {
             $sections = $this->parse();
         } catch (Exception $e) {
-            $e = new Warning($e->getMessage());
+            $e = new Exception($e->getMessage());
 
             $result->startTest($this);
-            $result->addWarning($this, $e, 0);
+            $result->addError($this, $e, 0);
             $result->endTest($this, 0);
 
             EventFacade::emitter()->testPrepared($this->valueObjectForEvents());
-            EventFacade::emitter()->testSkipped($this->valueObjectForEvents(), $e->getMessage());
+            EventFacade::emitter()->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
             EventFacade::emitter()->testFinished($this->valueObjectForEvents());
 
             return;
