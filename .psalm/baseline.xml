@@ -426,9 +426,8 @@
     <MoreSpecificReturnType occurrences="1">
       <code>list&lt;string&gt;</code>
     </MoreSpecificReturnType>
-    <PossiblyNullReference occurrences="4">
+    <PossiblyNullReference occurrences="3">
       <code>passed</code>
-      <code>startTest</code>
       <code>startTest</code>
       <code>startTest</code>
     </PossiblyNullReference>
