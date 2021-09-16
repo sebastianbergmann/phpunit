@@ -339,7 +339,7 @@ final class Merger
         if ($cliConfiguration->hasStrictCoverage()) {
             $strictCoverage = $cliConfiguration->strictCoverage();
         } else {
-            $strictCoverage = $xmlConfiguration->phpunit()->beStrictAboutCoversAnnotation();
+            $strictCoverage = $xmlConfiguration->phpunit()->beStrictAboutCoverageMetadata();
         }
 
         if ($cliConfiguration->hasDisallowTestOutput()) {
@@ -360,7 +360,7 @@ final class Merger
             $reverseDefectList = $xmlConfiguration->phpunit()->reverseDefectList();
         }
 
-        $forceCoversAnnotation                           = $xmlConfiguration->phpunit()->forceCoversAnnotation();
+        $requireCoverageMetadata                         = $xmlConfiguration->phpunit()->requireCoverageMetadata();
         $registerMockObjectsFromTestArgumentsRecursively = $xmlConfiguration->phpunit()->registerMockObjectsFromTestArgumentsRecursively();
 
         if ($cliConfiguration->hasNoInteraction()) {
@@ -606,7 +606,7 @@ final class Merger
             $disallowTestOutput,
             $verbose,
             $reverseDefectList,
-            $forceCoversAnnotation,
+            $requireCoverageMetadata,
             $registerMockObjectsFromTestArgumentsRecursively,
             $noInteraction,
             $executionOrder,

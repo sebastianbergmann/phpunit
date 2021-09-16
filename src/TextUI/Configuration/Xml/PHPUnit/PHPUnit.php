@@ -41,7 +41,7 @@ final class PHPUnit
 
     private bool $convertWarningsToExceptions;
 
-    private bool $forceCoversAnnotation;
+    private bool $requireCoverageMetadata;
 
     private ?string $bootstrap;
 
@@ -79,7 +79,7 @@ final class PHPUnit
 
     private bool $beStrictAboutTestsThatDoNotTestAnything;
 
-    private bool $beStrictAboutCoversAnnotation;
+    private bool $beStrictAboutCoverageMetadata;
 
     private bool $enforceTimeLimit;
 
@@ -107,7 +107,7 @@ final class PHPUnit
 
     private bool $testdoxPrinter;
 
-    public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $testdoxPrinter)
+    public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $testdoxPrinter)
     {
         $this->cacheDirectory                                  = $cacheDirectory;
         $this->cacheResult                                     = $cacheResult;
@@ -122,7 +122,7 @@ final class PHPUnit
         $this->convertErrorsToExceptions                       = $convertErrorsToExceptions;
         $this->convertNoticesToExceptions                      = $convertNoticesToExceptions;
         $this->convertWarningsToExceptions                     = $convertWarningsToExceptions;
-        $this->forceCoversAnnotation                           = $forceCoversAnnotation;
+        $this->requireCoverageMetadata                         = $requireCoverageMetadata;
         $this->bootstrap                                       = $bootstrap;
         $this->processIsolation                                = $processIsolation;
         $this->failOnEmptyTestSuite                            = $failOnEmptyTestSuite;
@@ -141,7 +141,7 @@ final class PHPUnit
         $this->beStrictAboutChangesToGlobalState               = $beStrictAboutChangesToGlobalState;
         $this->beStrictAboutOutputDuringTests                  = $beStrictAboutOutputDuringTests;
         $this->beStrictAboutTestsThatDoNotTestAnything         = $beStrictAboutTestsThatDoNotTestAnything;
-        $this->beStrictAboutCoversAnnotation                   = $beStrictAboutCoversAnnotation;
+        $this->beStrictAboutCoverageMetadata                   = $beStrictAboutCoverageMetadata;
         $this->enforceTimeLimit                                = $enforceTimeLimit;
         $this->defaultTimeLimit                                = $defaultTimeLimit;
         $this->timeoutForSmallTests                            = $timeoutForSmallTests;
@@ -256,9 +256,9 @@ final class PHPUnit
         return $this->convertWarningsToExceptions;
     }
 
-    public function forceCoversAnnotation(): bool
+    public function requireCoverageMetadata(): bool
     {
-        return $this->forceCoversAnnotation;
+        return $this->requireCoverageMetadata;
     }
 
     /**
@@ -381,9 +381,9 @@ final class PHPUnit
         return $this->beStrictAboutTestsThatDoNotTestAnything;
     }
 
-    public function beStrictAboutCoversAnnotation(): bool
+    public function beStrictAboutCoverageMetadata(): bool
     {
-        return $this->beStrictAboutCoversAnnotation;
+        return $this->beStrictAboutCoverageMetadata;
     }
 
     public function enforceTimeLimit(): bool

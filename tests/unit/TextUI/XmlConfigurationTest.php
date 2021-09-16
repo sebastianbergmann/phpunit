@@ -488,11 +488,11 @@ final class XmlConfigurationTest extends TestCase
         $this->assertTrue($phpunit->convertErrorsToExceptions());
         $this->assertTrue($phpunit->convertNoticesToExceptions());
         $this->assertTrue($phpunit->convertWarningsToExceptions());
-        $this->assertFalse($phpunit->forceCoversAnnotation());
+        $this->assertFalse($phpunit->requireCoverageMetadata());
         $this->assertFalse($phpunit->stopOnFailure());
         $this->assertFalse($phpunit->stopOnWarning());
         $this->assertFalse($phpunit->beStrictAboutTestsThatDoNotTestAnything());
-        $this->assertFalse($phpunit->beStrictAboutCoversAnnotation());
+        $this->assertFalse($phpunit->beStrictAboutCoverageMetadata());
         $this->assertFalse($phpunit->beStrictAboutOutputDuringTests());
         $this->assertSame(123, $phpunit->defaultTimeLimit());
         $this->assertFalse($phpunit->enforceTimeLimit());

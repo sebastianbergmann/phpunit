@@ -19,8 +19,8 @@
   [32m--warm-coverage-cache      [0m Warm static analysis cache
   [32m--coverage-filter [36m<dir>[0m    [0m Include <dir> in code coverage analysis
   [32m--path-coverage            [0m Perform path coverage analysis
-  [32m--disable-coverage-ignore  [0m Disable annotations for ignoring code
-                              coverage
+  [32m--disable-coverage-ignore  [0m Disable attributes and annotations for
+                              ignoring code coverage
   [32m--no-coverage              [0m Ignore code coverage configuration
 
 [33mLogging Options:[0m
@@ -61,12 +61,13 @@
 [33mTest Execution Options:[0m
   [32m--dont-report-useless-tests[0m Do not report tests that do not test
                               anything
-  [32m--strict-coverage          [0m Be strict about @covers annotation usage
+  [32m--strict-coverage          [0m Be strict about code coverage attributes
+                              and annotations
   [32m--strict-global-state      [0m Be strict about changes to global state
   [32m--disallow-test-output     [0m Be strict about output during tests
   [32m--enforce-time-limit       [0m Enforce time limit based on test size
-  [32m--default-time-limit [36m<sec>[0m [0m Timeout in seconds for tests without
-                              @small, @medium or @large
+  [32m--default-time-limit [36m<sec>[0m [0m Timeout in seconds for tests that have no
+                              declared size
 
   [32m--process-isolation        [0m Run each test in a separate PHP process
   [32m--globals-backup           [0m Backup and restore $GLOBALS for each test

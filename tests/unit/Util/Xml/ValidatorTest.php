@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Util\Xml;
 
-use const PHP_EOL;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 
@@ -50,6 +49,9 @@ final class ValidatorTest extends TestCase
         );
 
         $this->assertTrue($result->hasValidationErrors());
-        $this->assertSame(PHP_EOL . '  Line 17:' . PHP_EOL . '  - Element \'filter\': This element is not expected.' . PHP_EOL, $result->asString());
+        $this->assertStringEqualsFile(
+            __DIR__ . '/../../../_files/invalid-configuration.txt',
+            $result->asString()
+        );
     }
 }

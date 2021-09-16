@@ -12,6 +12,12 @@ namespace PHPUnit\Framework;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class RiskyDueToMissingCoversAnnotationException extends AssertionFailedError implements RiskyTest
+final class RiskyDueToMissingCodeCoverageMetadataException extends AssertionFailedError implements RiskyTest
 {
+    public function __construct()
+    {
+        parent::__construct(
+            'This test does not define a code coverage target using an attribute or annotation but is expected to do so'
+        );
+    }
 }

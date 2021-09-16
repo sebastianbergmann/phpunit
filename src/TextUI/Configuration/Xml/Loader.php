@@ -764,6 +764,22 @@ final class Loader
             $backupStaticProperties = $this->getBooleanAttribute($document->documentElement, 'backupStaticAttributes', false);
         }
 
+        $requireCoverageMetadata = false;
+
+        if ($document->documentElement->hasAttribute('requireCoverageMetadata')) {
+            $requireCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'requireCoverageMetadata', false);
+        } elseif ($document->documentElement->hasAttribute('forceCoversAnnotation')) {
+            $requireCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'forceCoversAnnotation', false);
+        }
+
+        $beStrictAboutCoverageMetadata = false;
+
+        if ($document->documentElement->hasAttribute('beStrictAboutCoverageMetadata')) {
+            $beStrictAboutCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoverageMetadata', false);
+        } elseif ($document->documentElement->hasAttribute('forceCoversAnnotation')) {
+            $beStrictAboutCoverageMetadata = $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoversAnnotation', false);
+        }
+
         return new PHPUnit(
             $cacheDirectory,
             $this->getBooleanAttribute($document->documentElement, 'cacheResult', true),
@@ -778,7 +794,7 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'convertErrorsToExceptions', true),
             $this->getBooleanAttribute($document->documentElement, 'convertNoticesToExceptions', true),
             $this->getBooleanAttribute($document->documentElement, 'convertWarningsToExceptions', true),
-            $this->getBooleanAttribute($document->documentElement, 'forceCoversAnnotation', false),
+            $requireCoverageMetadata,
             $bootstrap,
             $this->getBooleanAttribute($document->documentElement, 'processIsolation', false),
             $this->getBooleanAttribute($document->documentElement, 'failOnEmptyTestSuite', false),
@@ -797,7 +813,7 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutChangesToGlobalState', false),
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutOutputDuringTests', false),
             $this->getBooleanAttribute($document->documentElement, 'beStrictAboutTestsThatDoNotTestAnything', true),
-            $this->getBooleanAttribute($document->documentElement, 'beStrictAboutCoversAnnotation', false),
+            $beStrictAboutCoverageMetadata,
             $this->getBooleanAttribute($document->documentElement, 'enforceTimeLimit', false),
             $this->getIntegerAttribute($document->documentElement, 'defaultTimeLimit', 1),
             $this->getIntegerAttribute($document->documentElement, 'timeoutForSmallTests', 1),

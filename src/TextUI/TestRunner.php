@@ -385,7 +385,7 @@ final class TestRunner
         $result->setTimeoutForSmallTests($this->configuration->timeoutForSmallTests());
         $result->setTimeoutForMediumTests($this->configuration->timeoutForMediumTests());
         $result->setTimeoutForLargeTests($this->configuration->timeoutForLargeTests());
-        $result->forceCoversAnnotation($this->configuration->forceCoversAnnotation());
+        $result->requireCoverageMetadata($this->configuration->requireCoverageMetadata());
 
         $this->processSuiteFilters($suite);
         $suite->setRunTestInSeparateProcess($this->configuration->processIsolation());

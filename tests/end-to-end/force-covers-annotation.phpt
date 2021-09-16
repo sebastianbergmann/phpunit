@@ -19,7 +19,7 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) Test::testOne
-This test does not have a @covers annotation but is expected to have one
+This test does not define a code coverage target using an attribute or annotation but is expected to do so
 
 %s:%d
 

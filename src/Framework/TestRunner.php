@@ -164,13 +164,11 @@ final class TestRunner
         }
 
         if (!$error && !$failure && !$warning && !$incomplete && !$skipped && !$risky &&
-            $result->enforcesCoversAnnotation() &&
+            $result->requiresCoverageMetadata() &&
             !$this->hasCoverageMetadata($test::class, $test->getName(false))) {
             $result->addFailure(
                 $test,
-                new RiskyDueToMissingCoversAnnotationException(
-                    'This test does not have a @covers annotation but is expected to have one'
-                ),
+                new RiskyDueToMissingCodeCoverageMetadataException,
                 $time
             );
 

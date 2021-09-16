@@ -96,7 +96,7 @@ final class TestResult implements Countable
 
     private bool $enforceTimeLimit = false;
 
-    private bool $forceCoversAnnotation = false;
+    private bool $requireCoverageMetadata = false;
 
     private int $timeoutForSmallTests = 1;
 
@@ -497,14 +497,14 @@ final class TestResult implements Countable
         return $this->enforceTimeLimit;
     }
 
-    public function forceCoversAnnotation(bool $flag): void
+    public function requireCoverageMetadata(bool $flag): void
     {
-        $this->forceCoversAnnotation = $flag;
+        $this->requireCoverageMetadata = $flag;
     }
 
-    public function enforcesCoversAnnotation(): bool
+    public function requiresCoverageMetadata(): bool
     {
-        return $this->forceCoversAnnotation;
+        return $this->requireCoverageMetadata;
     }
 
     public function stopOnRisky(bool $flag): void

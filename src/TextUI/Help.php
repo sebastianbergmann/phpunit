@@ -45,7 +45,7 @@ final class Help
             ['arg' => '--warm-coverage-cache', 'desc' => 'Warm static analysis cache'],
             ['arg' => '--coverage-filter <dir>', 'desc' => 'Include <dir> in code coverage analysis'],
             ['arg' => '--path-coverage', 'desc' => 'Perform path coverage analysis'],
-            ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable annotations for ignoring code coverage'],
+            ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable attributes and annotations for ignoring code coverage'],
             ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage configuration'],
         ],
 
@@ -76,11 +76,11 @@ final class Help
 
         'Test Execution Options' => [
             ['arg' => '--dont-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
-            ['arg'    => '--strict-coverage', 'desc' => 'Be strict about @covers annotation usage'],
+            ['arg'    => '--strict-coverage', 'desc' => 'Be strict about code coverage attributes and annotations'],
             ['arg'    => '--strict-global-state', 'desc' => 'Be strict about changes to global state'],
             ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
             ['arg'    => '--enforce-time-limit', 'desc' => 'Enforce time limit based on test size'],
-            ['arg'    => '--default-time-limit <sec>', 'desc' => 'Timeout in seconds for tests without @small, @medium or @large'],
+            ['arg'    => '--default-time-limit <sec>', 'desc' => 'Timeout in seconds for tests that have no declared size'],
             ['spacer' => ''],
 
             ['arg'    => '--process-isolation', 'desc' => 'Run each test in a separate PHP process'],

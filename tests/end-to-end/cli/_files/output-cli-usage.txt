@@ -16,7 +16,7 @@ Code Coverage Options:
   --warm-coverage-cache       Warm static analysis cache
   --coverage-filter <dir>     Include <dir> in code coverage analysis
   --path-coverage             Perform path coverage analysis
-  --disable-coverage-ignore   Disable annotations for ignoring code coverage
+  --disable-coverage-ignore   Disable attributes and annotations for ignoring code coverage
   --no-coverage               Ignore code coverage configuration
 
 Logging Options:
@@ -47,11 +47,11 @@ Test Selection Options:
 Test Execution Options:
 
   --dont-report-useless-tests Do not report tests that do not test anything
-  --strict-coverage           Be strict about @covers annotation usage
+  --strict-coverage           Be strict about code coverage attributes and annotations
   --strict-global-state       Be strict about changes to global state
   --disallow-test-output      Be strict about output during tests
   --enforce-time-limit        Enforce time limit based on test size
-  --default-time-limit <sec>  Timeout in seconds for tests without @small, @medium or @large
+  --default-time-limit <sec>  Timeout in seconds for tests that have no declared size
 
   --process-isolation         Run each test in a separate PHP process
   --globals-backup            Backup and restore $GLOBALS for each test
