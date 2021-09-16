@@ -57,8 +57,6 @@ final class TestSuiteSorter
     public const ORDER_DURATION = 4;
 
     /**
-     * Order tests by @size annotation 'small', 'medium', 'large'.
-     *
      * @var int
      */
     public const ORDER_SIZE = 5;
