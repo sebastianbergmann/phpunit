@@ -29,5 +29,6 @@ final class RenameBackupStaticAttributesAttribute implements Migration
         }
 
         $root->setAttribute('backupStaticProperties', $root->getAttribute('backupStaticAttributes'));
+        $root->removeAttribute('backupStaticAttributes');
     }
 }
