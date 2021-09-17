@@ -1803,6 +1803,8 @@ if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringLineEn
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
      * @see Assert::assertStringContainsStringIgnoringLineEndings
      */
     function assertStringContainsStringIgnoringLineEndings(string $needle, string $haystack, string $message = ''): void
@@ -1817,6 +1819,8 @@ if (!function_exists('PHPUnit\Framework\assertStringEqualsStringIgnoringLineEndi
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
      * @see Assert::assertStringEqualsStringIgnoringLineEndings
      */
