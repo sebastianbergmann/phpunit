@@ -7,7 +7,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 ### Added
 
 * [#4502](https://github.com/sebastianbergmann/phpunit/issues/4502): Support PHP 8 attributes for adding metadata to test classes and test methods as well as tested code units
-* [#4641](https://github.com/sebastianbergmann/phpunit/issues/4641): Asertions `PHPUnit\Framework\assertStringEqualIgnoringLineEndings` and `PHPUnit\Framework\assertStringContainsStringIgnoringLineEndings`
+* [#4641](https://github.com/sebastianbergmann/phpunit/issues/4641): `assertStringEqualsStringIgnoringLineEndings()` and `assertStringContainsStringIgnoringLineEndings()`
 * [#4650](https://github.com/sebastianbergmann/phpunit/issues/4650): Support dist file name `phpunit.dist.xml`
 * [#4657](https://github.com/sebastianbergmann/phpunit/pull/4657): Add `--exclude-testsuite` option
 * [#4709](https://github.com/sebastianbergmann/phpunit/issues/4709): Support `never` type in test double code generator

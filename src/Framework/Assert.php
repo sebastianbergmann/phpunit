@@ -25,6 +25,7 @@ use function is_bool;
 use function preg_match;
 use function preg_split;
 use function str_contains;
+use function strtr;
 use ArrayAccess;
 use Countable;
 use Generator;
@@ -1631,22 +1632,22 @@ abstract class Assert
      */
     public static function assertStringContainsStringIgnoringLineEndings(string $needle, string $haystack, string $message = ''): void
     {
-        $needle = self::normalizeLineEndings($needle);
+        $needle   = self::normalizeLineEndings($needle);
         $haystack = self::normalizeLineEndings($haystack);
 
         static::assertThat($haystack, new StringContains($needle, false), $message);
     }
 
     /**
-     * Asserts that two strings equality ignoring line endings.
+     * Asserts that two strings are equal except for line endings.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public static function assertStringEqualIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
+    public static function assertStringEqualsStringIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
     {
         $expected = self::normalizeLineEndings($expected);
-        $actual = self::normalizeLineEndings($actual);
+        $actual   = self::normalizeLineEndings($actual);
 
         static::assertThat($actual, new IsEqual($expected), $message);
     }
@@ -2412,9 +2413,12 @@ abstract class Assert
 
     private static function normalizeLineEndings(string $value): string
     {
-        return strtr($value, [
-            "\r\n" => "\n",
-            "\r" => "\n",
-        ]);
+        return strtr(
+            $value,
+            [
+                "\r\n" => "\n",
+                "\r"   => "\n",
+            ]
+        );
     }
 }

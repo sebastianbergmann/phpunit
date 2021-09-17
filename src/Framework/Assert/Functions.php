@@ -1811,18 +1811,18 @@ if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringLineEn
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringLineEndings')) {
+if (!function_exists('PHPUnit\Framework\assertStringEqualsStringIgnoringLineEndings')) {
     /**
-     * Asserts that two strings equality ignoring line endings.
+     * Asserts that two strings are equal except for line endings.
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      *
-     * @see Assert::assertStringEqualIgnoringLineEndings
+     * @see Assert::assertStringEqualsStringIgnoringLineEndings
      */
-    function assertStringEqualIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
+    function assertStringEqualsStringIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
     {
-        Assert::assertStringEqualIgnoringLineEndings(...func_get_args());
+        Assert::assertStringEqualsStringIgnoringLineEndings(...func_get_args());
     }
 }
 
