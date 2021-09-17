@@ -1747,7 +1747,7 @@ abstract class Assert
      */
     public static function assertStringContainsString(string $needle, string $haystack, string $message = ''): void
     {
-        $constraint = new StringContains($needle, false);
+        $constraint = new StringContains($needle);
 
         static::assertThat($haystack, $constraint, $message);
     }
