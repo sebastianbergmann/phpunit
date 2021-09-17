@@ -58,6 +58,7 @@ final class IsJson extends Constraint
         }
 
         json_decode($other);
+
         $error = (string) JsonMatchesErrorMessageProvider::determineJsonError(
             json_last_error()
         );
