@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function str_ends_with;
+use PHPUnit\Framework\InvalidArgumentException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -20,6 +21,10 @@ final class StringEndsWith extends Constraint
 
     public function __construct(string $suffix)
     {
+        if ($suffix === '') {
+            throw InvalidArgumentException::create(1, 'non-empty string');
+        }
+
         $this->suffix = $suffix;
     }
 
