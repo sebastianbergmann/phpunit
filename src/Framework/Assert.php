@@ -69,6 +69,7 @@ use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
+use PHPUnit\Framework\Constraint\StringEqualsStringIgnoringLineEndings;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
@@ -1646,10 +1647,7 @@ abstract class Assert
      */
     public static function assertStringEqualsStringIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
     {
-        $expected = self::normalizeLineEndings($expected);
-        $actual   = self::normalizeLineEndings($actual);
-
-        static::assertThat($actual, new IsEqual($expected), $message);
+        static::assertThat($actual, new StringEqualsStringIgnoringLineEndings($expected), $message);
     }
 
     /**
@@ -2303,6 +2301,11 @@ abstract class Assert
     public static function stringEndsWith(string $suffix): StringEndsWith
     {
         return new StringEndsWith($suffix);
+    }
+
+    public static function stringEqualsStringIgnoringLineEndings(string $string): StringEqualsStringIgnoringLineEndings
+    {
+        return new StringEqualsStringIgnoringLineEndings($string);
     }
 
     public static function countOf(int $count): Count

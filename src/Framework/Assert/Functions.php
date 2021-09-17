@@ -49,6 +49,7 @@ use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
+use PHPUnit\Framework\Constraint\StringEqualsStringIgnoringLineEndings;
 use PHPUnit\Framework\Constraint\StringMatchesFormatDescription;
 use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
@@ -2535,6 +2536,13 @@ if (!function_exists('PHPUnit\Framework\stringEndsWith')) {
     function stringEndsWith(string $suffix): StringEndsWith
     {
         return Assert::stringEndsWith(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\stringEqualsStringIgnoringLineEndings')) {
+    function stringEqualsStringIgnoringLineEndings(string $string): StringEqualsStringIgnoringLineEndings
+    {
+        return Assert::stringEqualsStringIgnoringLineEndings(...func_get_args());
     }
 }
 
