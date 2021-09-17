@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use function str_replace;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 
@@ -51,7 +52,7 @@ final class ValidatorTest extends TestCase
         $this->assertTrue($result->hasValidationErrors());
         $this->assertStringEqualsFile(
             __DIR__ . '/../../../_files/invalid-configuration.txt',
-            $result->asString()
+            str_replace(PHP_EOL, "\n", $result->asString())
         );
     }
 }
