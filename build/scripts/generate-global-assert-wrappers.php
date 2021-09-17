@@ -182,7 +182,7 @@ if (!function_exists('PHPUnit\Framework\atMost')) {
 }
 
 if (!function_exists('PHPUnit\Framework\returnValue')) {
-    function returnValue($value): ReturnStub
+    function returnValue(mixed $value): ReturnStub
     {
         return new ReturnStub($value);
     }
@@ -203,7 +203,7 @@ if (!function_exists('PHPUnit\Framework\returnArgument')) {
 }
 
 if (!function_exists('PHPUnit\Framework\returnCallback')) {
-    function returnCallback($callback): ReturnCallbackStub
+    function returnCallback(callable $callback): ReturnCallbackStub
     {
         return new ReturnCallbackStub($callback);
     }
@@ -234,9 +234,9 @@ if (!function_exists('PHPUnit\Framework\onConsecutiveCalls')) {
      */
     function onConsecutiveCalls(): ConsecutiveCallsStub
     {
-        $args = \func_get_args();
+        $arguments = \func_get_args();
 
-        return new ConsecutiveCallsStub($args);
+        return new ConsecutiveCallsStub($arguments);
     }
 }
 
