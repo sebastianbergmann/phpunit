@@ -191,8 +191,10 @@
       <code>Assert::classHasStaticAttribute(...func_get_args())</code>
       <code>Assert::objectHasAttribute(...func_get_args())</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="3">
       <code>Assert::logicalAnd(...func_get_args())</code>
+      <code>Assert::stringEndsWith(...func_get_args())</code>
+      <code>Assert::stringStartsWith(...func_get_args())</code>
     </MissingThrowsDocblock>
     <TooManyArguments occurrences="13">
       <code>Assert::anything(...func_get_args())</code>
@@ -252,11 +254,6 @@
   <file src="src/Framework/Constraint/String/StringMatchesFormatDescription.php">
     <MissingThrowsDocblock occurrences="1">
       <code>new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"))</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Constraint/String/StringStartsWith.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>throw InvalidArgumentException::create(1, 'non-empty string');</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Type/IsInstanceOf.php">

@@ -19,6 +19,9 @@ final class StringEndsWith extends Constraint
 {
     private string $suffix;
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __construct(string $suffix)
     {
         if ($suffix === '') {

@@ -1717,7 +1717,10 @@ abstract class Assert
     /**
      * Asserts that a string starts with a given prefix.
      *
+     * @psalm-param non-empty-string $prefix
+     *
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public static function assertStringStartsWith(string $prefix, string $string, string $message = ''): void
     {
@@ -1727,7 +1730,10 @@ abstract class Assert
     /**
      * Asserts that a string starts not with a given prefix.
      *
+     * @psalm-param non-empty-string $prefix
+     *
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public static function assertStringStartsNotWith(string $prefix, string $string, string $message = ''): void
     {
@@ -1783,7 +1789,10 @@ abstract class Assert
     /**
      * Asserts that a string ends with a given suffix.
      *
+     * @psalm-param non-empty-string $suffix
+     *
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public static function assertStringEndsWith(string $suffix, string $string, string $message = ''): void
     {
@@ -1793,7 +1802,10 @@ abstract class Assert
     /**
      * Asserts that a string ends not with a given suffix.
      *
+     * @psalm-param non-empty-string $suffix
+     *
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      */
     public static function assertStringEndsNotWith(string $suffix, string $string, string $message = ''): void
     {
@@ -2288,6 +2300,11 @@ abstract class Assert
         return new StringMatchesFormatDescription($string);
     }
 
+    /**
+     * @psalm-param non-empty-string $prefix
+     *
+     * @throws InvalidArgumentException
+     */
     public static function stringStartsWith(string $prefix): StringStartsWith
     {
         return new StringStartsWith($prefix);
@@ -2298,6 +2315,11 @@ abstract class Assert
         return new StringContains($string, $case);
     }
 
+    /**
+     * @psalm-param non-empty-string $suffix
+     *
+     * @throws InvalidArgumentException
+     */
     public static function stringEndsWith(string $suffix): StringEndsWith
     {
         return new StringEndsWith($suffix);

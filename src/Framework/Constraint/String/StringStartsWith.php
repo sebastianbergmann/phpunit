@@ -19,6 +19,9 @@ final class StringStartsWith extends Constraint
 {
     private string $prefix;
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function __construct(string $prefix)
     {
         if ($prefix === '') {

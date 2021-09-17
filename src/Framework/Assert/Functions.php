@@ -1899,7 +1899,10 @@ if (!function_exists('PHPUnit\Framework\assertStringStartsWith')) {
     /**
      * Asserts that a string starts with a given prefix.
      *
+     * @psalm-param non-empty-string $prefix
+     *
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1915,7 +1918,10 @@ if (!function_exists('PHPUnit\Framework\assertStringStartsNotWith')) {
     /**
      * Asserts that a string starts not with a given prefix.
      *
+     * @psalm-param non-empty-string $prefix
+     *
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1987,7 +1993,10 @@ if (!function_exists('PHPUnit\Framework\assertStringEndsWith')) {
     /**
      * Asserts that a string ends with a given suffix.
      *
+     * @psalm-param non-empty-string $suffix
+     *
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -2003,7 +2012,10 @@ if (!function_exists('PHPUnit\Framework\assertStringEndsNotWith')) {
     /**
      * Asserts that a string ends not with a given suffix.
      *
+     * @psalm-param non-empty-string $suffix
+     *
      * @throws ExpectationFailedException
+     * @throws InvalidArgumentException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
