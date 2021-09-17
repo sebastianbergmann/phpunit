@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function is_string;
 use function mb_stripos;
 use function mb_strtolower;
 use function sprintf;
 use function str_contains;
+use function strtr;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -23,10 +25,13 @@ final class StringContains extends Constraint
 
     private bool $ignoreCase;
 
-    public function __construct(string $string, bool $ignoreCase = false)
+    private bool $ignoreLineEndings;
+
+    public function __construct(string $string, bool $ignoreCase = false, bool $ignoreLineEndings = false)
     {
-        $this->string     = $string;
-        $this->ignoreCase = $ignoreCase;
+        $this->string            = $string;
+        $this->ignoreCase        = $ignoreCase;
+        $this->ignoreLineEndings = $ignoreLineEndings;
     }
 
     /**
@@ -34,10 +39,14 @@ final class StringContains extends Constraint
      */
     public function toString(): string
     {
+        $string = $this->string;
+
         if ($this->ignoreCase) {
             $string = mb_strtolower($this->string, 'UTF-8');
-        } else {
-            $string = $this->string;
+        }
+
+        if ($this->ignoreLineEndings) {
+            $string = $this->normalizeLineEndings($string);
         }
 
         return sprintf(
@@ -54,6 +63,14 @@ final class StringContains extends Constraint
     {
         if ('' === $this->string) {
             return true;
+        }
+
+        if (!is_string($other)) {
+            return false;
+        }
+
+        if ($this->ignoreLineEndings) {
+            $other = $this->normalizeLineEndings($other);
         }
 
         if ($this->ignoreCase) {
@@ -73,5 +90,16 @@ final class StringContains extends Constraint
          * data.
          */
         return str_contains($other, $this->string);
+    }
+
+    private function normalizeLineEndings(string $string): string
+    {
+        return strtr(
+            $string,
+            [
+                "\r\n" => "\n",
+                "\r"   => "\n",
+            ]
+        );
     }
 }

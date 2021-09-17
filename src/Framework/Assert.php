@@ -25,7 +25,6 @@ use function is_bool;
 use function preg_match;
 use function preg_split;
 use function str_contains;
-use function strtr;
 use ArrayAccess;
 use Countable;
 use Generator;
@@ -1633,10 +1632,7 @@ abstract class Assert
      */
     public static function assertStringContainsStringIgnoringLineEndings(string $needle, string $haystack, string $message = ''): void
     {
-        $needle   = self::normalizeLineEndings($needle);
-        $haystack = self::normalizeLineEndings($haystack);
-
-        static::assertThat($haystack, new StringContains($needle, false), $message);
+        static::assertThat($haystack, new StringContains($needle, false, true), $message);
     }
 
     /**
@@ -2434,16 +2430,5 @@ abstract class Assert
     private static function isValidClassAttributeName(string $attributeName): bool
     {
         return (bool) preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
-    }
-
-    private static function normalizeLineEndings(string $value): string
-    {
-        return strtr(
-            $value,
-            [
-                "\r\n" => "\n",
-                "\r"   => "\n",
-            ]
-        );
     }
 }
