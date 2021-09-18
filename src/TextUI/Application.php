@@ -242,7 +242,7 @@ final class Application
 
             $testSuite = (new TestSuiteBuilder)->build($arguments, $this->xmlConfiguration);
 
-            if ($configuration->hasCoverageReport()) {
+            if ($configuration->hasCoverageReport() || $arguments->hasWarmCoverageCache()) {
                 CodeCoverageFilterRegistry::init($arguments, $this->xmlConfiguration);
             }
         } catch (Exception $e) {
