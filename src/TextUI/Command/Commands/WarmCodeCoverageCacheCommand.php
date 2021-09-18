@@ -50,7 +50,7 @@ final class WarmCodeCoverageCacheCommand implements Command
 
         return Result::from(
             sprintf(
-                'Warming cache for static analysis ... done [%s]' . PHP_EOL,
+                'Cache for static analysis warmed [%s]' . PHP_EOL,
                 $timer->stop()->asString()
             )
         );
