@@ -745,9 +745,6 @@
       <code>coverageCacheDirectory</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <UndefinedMethod occurrences="1">
-      <code>codeCoverageFilter</code>
-    </UndefinedMethod>
   </file>
   <file src="src/TextUI/Configuration/Cli/Builder.php">
     <MissingThrowsDocblock occurrences="1"/>
