@@ -209,6 +209,14 @@ abstract class TestSuite
     }
 
     /**
+     * @psalm-assert-if-true TestSuiteWithName $this
+     */
+    public function isWithName(): bool
+    {
+        return false;
+    }
+
+    /**
      * @psalm-assert-if-true TestSuiteForTestClass $this
      */
     public function isForTestClass(): bool

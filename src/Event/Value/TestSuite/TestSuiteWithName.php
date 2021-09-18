@@ -14,4 +14,11 @@ namespace PHPUnit\Event\TestSuite;
  */
 final class TestSuiteWithName extends TestSuite
 {
+    /**
+     * @psalm-assert-if-true TestSuiteWithName $this
+     */
+    public function isWithName(): bool
+    {
+        return true;
+    }
 }
