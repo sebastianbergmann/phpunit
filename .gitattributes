@@ -11,7 +11,6 @@
 /.gitignore             export-ignore
 /.php-cs-fixer.dist.php export-ignore
 /build.xml              export-ignore
-/phpbench.json          export-ignore
 /phpunit.xml            export-ignore
 
 *.php diff=php
