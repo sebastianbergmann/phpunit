@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Command;
 
 use function sprintf;
+use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Registry;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
 use SebastianBergmann\Timer\Timer;
@@ -30,9 +31,7 @@ final class WarmCodeCoverageCacheCommand implements Command
             );
         }
 
-        $filter = $configuration->codeCoverageFilter();
-
-        if ($filter->isEmpty()) {
+        if (!CodeCoverageFilterRegistry::configured()) {
             return Result::from(
                 'Filter for code coverage has not been configured' . PHP_EOL,
                 false
@@ -46,7 +45,7 @@ final class WarmCodeCoverageCacheCommand implements Command
             $configuration->coverageCacheDirectory(),
             !$configuration->disableCodeCoverageIgnore(),
             $configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage(),
-            $filter
+            CodeCoverageFilterRegistry::get()
         );
 
         return Result::from(
