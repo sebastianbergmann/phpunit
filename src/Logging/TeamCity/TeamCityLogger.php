@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\Logging\TeamCity;
 
-use function class_exists;
-use function explode;
+use function assert;
 use function getmypid;
 use function ini_get;
-use function method_exists;
+use function sprintf;
 use function stripos;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Event;
@@ -31,11 +30,11 @@ use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
+use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Util\Exception;
 use PHPUnit\Util\Printer;
-use ReflectionClass;
-use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -65,34 +64,41 @@ final class TeamCityLogger extends Printer
 
     public function testSuiteStarted(TestSuiteStarted $event): void
     {
+        $testSuite = $event->testSuite();
+
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
 
             $this->printEvent(
                 'testCount',
-                ['count' => $event->testSuite()->count()]
+                ['count' => $testSuite->count()]
             );
         }
 
-        $suiteName = $event->testSuite()->name();
-
-        if (empty($suiteName)) {
+        if ($testSuite->isWithName() && $testSuite->name() === '') {
             return;
         }
 
-        $parameters = ['name' => $suiteName];
+        $parameters = ['name' => $testSuite->name()];
 
-        if (class_exists($suiteName, false)) {
-            $fileName                   = self::getFileName($suiteName);
-            $parameters['locationHint'] = "php_qn://{$fileName}::\\{$suiteName}";
+        if ($testSuite->isForTestClass()) {
+            assert($testSuite instanceof TestSuiteForTestClass);
+
+            $parameters['locationHint'] = sprintf(
+                'php_qn://%s::\\%s',
+                $testSuite->file(),
+                $testSuite->name()
+            );
         } else {
-            $split = explode('::', $suiteName);
+            assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
 
-            if (count($split) === 2 && class_exists($split[0]) && method_exists($split[0], $split[1])) {
-                $fileName                   = self::getFileName($split[0]);
-                $parameters['locationHint'] = "php_qn://{$fileName}::\\{$suiteName}";
-                $parameters['name']         = $split[1];
-            }
+            $parameters['locationHint'] = sprintf(
+                'php_qn://%s::\\%s',
+                $testSuite->file(),
+                $testSuite->name()
+            );
+
+            $parameters['name'] = $testSuite->methodName();
         }
 
         $this->printEvent('testSuiteStarted', $parameters);
@@ -100,20 +106,18 @@ final class TeamCityLogger extends Printer
 
     public function testSuiteFinished(TestSuiteFinished $event): void
     {
-        $suiteName = $event->testSuite()->name();
+        $testSuite = $event->testSuite();
 
-        if (empty($suiteName)) {
+        if ($testSuite->isWithName() && $testSuite->name() === '') {
             return;
         }
 
-        $parameters = ['name' => $suiteName];
+        $parameters = ['name' => $testSuite->name()];
 
-        if (!class_exists($suiteName, false)) {
-            $split = explode('::', $suiteName);
+        if ($testSuite->isForTestMethodWithDataProvider()) {
+            assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
 
-            if (\count($split) === 2 && class_exists($split[0]) && method_exists($split[0], $split[1])) {
-                $parameters['name'] = $split[1];
-            }
+            $parameters['name'] = $testSuite->methodName();
         }
 
         $this->printEvent('testSuiteFinished', $parameters);
@@ -187,23 +191,6 @@ final class TeamCityLogger extends Printer
         $this->time = null;
     }
 
-    private function printEvent(string $eventName, array $params = []): void
-    {
-        $this->write("\n##teamcity[{$eventName}");
-
-        if ($this->flowId) {
-            $params['flowId'] = $this->flowId;
-        }
-
-        foreach ($params as $key => $value) {
-            $escapedValue = self::escape((string) $value);
-
-            $this->write(" {$key}='{$escapedValue}'");
-        }
-
-        $this->write("]\n");
-    }
-
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
@@ -231,22 +218,30 @@ final class TeamCityLogger extends Printer
         }
     }
 
-    /**
-     * @psalm-param class-string $className
-     */
-    private static function getFileName(string $className): string
+    private function printEvent(string $eventName, array $params = []): void
     {
-        try {
-            return (new ReflectionClass($className))->getFileName();
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
+        $this->write(
+            sprintf(
+                "\n##teamcity[%s",
+                $eventName
+            )
+        );
+
+        if ($this->flowId) {
+            $params['flowId'] = $this->flowId;
+        }
+
+        foreach ($params as $key => $value) {
+            $this->write(
+                sprintf(
+                    " %s='%s'",
+                    $key,
+                    self::escape((string) $value)
+                )
             );
         }
-        // @codeCoverageIgnoreEnd
+
+        $this->write("]\n");
     }
 
     /**
