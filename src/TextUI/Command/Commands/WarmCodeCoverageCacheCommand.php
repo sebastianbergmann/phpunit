@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TextUI\Command;
 
-use function sprintf;
+use function printf;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Registry;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
@@ -41,6 +41,8 @@ final class WarmCodeCoverageCacheCommand implements Command
         $timer = new Timer;
         $timer->start();
 
+        print 'Warming cache for static analysis ... ';
+
         (new CacheWarmer)->warmCache(
             $configuration->coverageCacheDirectory(),
             !$configuration->disableCodeCoverageIgnore(),
@@ -48,11 +50,12 @@ final class WarmCodeCoverageCacheCommand implements Command
             CodeCoverageFilterRegistry::get()
         );
 
-        return Result::from(
-            sprintf(
-                'Cache for static analysis warmed [%s]' . PHP_EOL,
-                $timer->stop()->asString()
-            )
+        printf(
+            '[%s]%s',
+            $timer->stop()->asString(),
+            \PHP_EOL
         );
+
+        return Result::from();
     }
 }
