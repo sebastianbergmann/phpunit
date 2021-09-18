@@ -60,12 +60,7 @@ final class TeamCityLogger extends Printer
         parent::__construct($out);
 
         $this->registerSubscribers();
-
-        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
-            $this->flowId = getmypid();
-        } else {
-            $this->flowId = false;
-        }
+        $this->setFlowId();
     }
 
     public function testSuiteStarted(TestSuiteStarted $event): void
@@ -227,6 +222,33 @@ final class TeamCityLogger extends Printer
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
     }
 
+    private function setFlowId(): void
+    {
+        if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
+            $this->flowId = getmypid();
+        } else {
+            $this->flowId = false;
+        }
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private static function getFileName(string $className): string
+    {
+        try {
+            return (new ReflectionClass($className))->getFileName();
+            // @codeCoverageIgnoreStart
+        } catch (ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
     /**
      * @throws InvalidArgumentException
      *
@@ -248,23 +270,5 @@ final class TeamCityLogger extends Printer
             ['||', "|'", '|n', '|r', '|]', '|['],
             $string
         );
-    }
-
-    /**
-     * @psalm-param class-string $className
-     */
-    private static function getFileName(string $className): string
-    {
-        try {
-            return (new ReflectionClass($className))->getFileName();
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
     }
 }
