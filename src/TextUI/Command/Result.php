@@ -20,7 +20,7 @@ final class Result
 
     private bool $success;
 
-    public static function from(string $output, bool $success = true): self
+    public static function from(string $output = '', bool $success = true): self
     {
         return new self($output, $success);
     }
