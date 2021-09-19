@@ -246,16 +246,14 @@ final class TeamCityLogger extends Printer
 
     /**
      * @throws InvalidArgumentException
-     *
-     * @todo we need to return milliseconds
      */
-    private function duration(Event $event): float
+    private function duration(Event $event): int
     {
         if ($this->time === null) {
-            return 0.0;
+            return 0;
         }
 
-        return round($event->telemetryInfo()->time()->duration($this->time)->asFloat(), 3);
+        return (int) round($event->telemetryInfo()->time()->duration($this->time)->asFloat() * 1000);
     }
 
     private static function escape(string $string): string
