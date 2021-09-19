@@ -69,7 +69,7 @@ final class TeamCityLogger extends Printer
         if (!$this->isSummaryTestCountPrinted) {
             $this->isSummaryTestCountPrinted = true;
 
-            $this->printEvent(
+            $this->writeMessage(
                 'testCount',
                 ['count' => $testSuite->count()]
             );
@@ -101,7 +101,7 @@ final class TeamCityLogger extends Printer
             $parameters['name'] = $testSuite->methodName();
         }
 
-        $this->printEvent('testSuiteStarted', $parameters);
+        $this->writeMessage('testSuiteStarted', $parameters);
     }
 
     public function testSuiteFinished(TestSuiteFinished $event): void
@@ -120,7 +120,7 @@ final class TeamCityLogger extends Printer
             $parameters['name'] = $testSuite->methodName();
         }
 
-        $this->printEvent('testSuiteFinished', $parameters);
+        $this->writeMessage('testSuiteFinished', $parameters);
     }
 
     public function testPrepared(Prepared $event): void
@@ -179,7 +179,7 @@ final class TeamCityLogger extends Printer
 
     public function testFinished(Finished $event): void
     {
-        $this->printEvent(
+        $this->writeMessage(
             'testFinished',
             [
                 'name'     => $event->test()->name(),
@@ -218,7 +218,7 @@ final class TeamCityLogger extends Printer
         }
     }
 
-    private function printEvent(string $eventName, array $params = []): void
+    private function writeMessage(string $eventName, array $parameters = []): void
     {
         $this->write(
             sprintf(
@@ -228,10 +228,10 @@ final class TeamCityLogger extends Printer
         );
 
         if ($this->flowId) {
-            $params['flowId'] = $this->flowId;
+            $parameters['flowId'] = $this->flowId;
         }
 
-        foreach ($params as $key => $value) {
+        foreach ($parameters as $key => $value) {
             $this->write(
                 sprintf(
                     " %s='%s'",
