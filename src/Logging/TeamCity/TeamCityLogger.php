@@ -15,6 +15,7 @@ use function ini_get;
 use function sprintf;
 use function stripos;
 use PHPUnit\Event\Code\Test;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
@@ -125,7 +126,26 @@ final class TeamCityLogger extends Printer
 
     public function testPrepared(Prepared $event): void
     {
-        $this->test = $event->test();
+        $test = $event->test();
+
+        $parameters = [
+            'name' => $test->name(),
+        ];
+
+        if ($test->isTestMethod()) {
+            assert($test instanceof TestMethod);
+
+            $parameters['locationHint'] = sprintf(
+                'php_qn://%s::\\%s::%s',
+                $test->file(),
+                $test->className(),
+                $test->methodName()
+            );
+        }
+
+        $this->writeMessage('testStarted', $parameters);
+
+        $this->test = $test;
         $this->time = $event->telemetryInfo()->time();
     }
 
