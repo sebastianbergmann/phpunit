@@ -48,7 +48,7 @@ final class TeamCityLogger extends Printer
 
     private ?HRTime $time = null;
 
-    private false|int $flowId;
+    private ?int $flowId;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -233,8 +233,6 @@ final class TeamCityLogger extends Printer
     {
         if (stripos(ini_get('disable_functions'), 'getmypid') === false) {
             $this->flowId = getmypid();
-        } else {
-            $this->flowId = false;
         }
     }
 
@@ -247,7 +245,7 @@ final class TeamCityLogger extends Printer
             )
         );
 
-        if ($this->flowId) {
+        if ($this->flowId !== null) {
             $parameters['flowId'] = $this->flowId;
         }
 
