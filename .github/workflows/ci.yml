@@ -92,6 +92,7 @@ jobs:
           - 7.4
           - 8.0
           - 8.1
+          - 8.2
 
         dependencies:
           - lowest
@@ -231,6 +232,8 @@ jobs:
 
         include:
           - php-version: "8.1"
+            experimental: true
+          - php-version: "8.2"
             experimental: true
 
     continue-on-error: ${{ matrix.experimental }}
