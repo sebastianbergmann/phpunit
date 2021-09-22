@@ -75,6 +75,7 @@ jobs:
         php-version:
           - "8.0"
           - "8.1"
+          - "8.2"
 
         compiler:
           - default
@@ -91,6 +92,11 @@ jobs:
 
           - os: ubuntu-latest
             php-version: "8.1"
+            compiler: jit
+            dependencies: highest
+
+          - os: ubuntu-latest
+            php-version: "8.2"
             compiler: jit
             dependencies: highest
 
@@ -234,6 +240,8 @@ jobs:
 
         include:
           - php-version: "8.1"
+            experimental: true
+          - php-version: "8.2"
             experimental: true
 
     continue-on-error: ${{ matrix.experimental }}
