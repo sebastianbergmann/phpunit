@@ -31,6 +31,7 @@ final class XmlConfigurationGeneratorTest extends TestCase
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
+         convertDeprecationsToExceptions="true"
          failOnRisky="true"
          failOnWarning="true"
          verbose="true">

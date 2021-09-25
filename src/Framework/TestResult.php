@@ -74,7 +74,7 @@ final class TestResult implements Countable
 
     private float $time = 0;
 
-    private bool $convertDeprecationsToExceptions = true;
+    private bool $convertDeprecationsToExceptions = false;
 
     private bool $convertErrorsToExceptions = true;
 

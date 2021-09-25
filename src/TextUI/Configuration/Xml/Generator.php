@@ -29,6 +29,7 @@ final class Generator
          requireCoverageMetadata="true"
          beStrictAboutCoverageMetadata="true"
          beStrictAboutOutputDuringTests="true"
+         convertDeprecationsToExceptions="true"
          failOnRisky="true"
          failOnWarning="true"
          verbose="true">
