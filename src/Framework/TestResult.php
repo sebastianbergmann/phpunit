@@ -109,7 +109,7 @@ final class TestResult implements Countable
     /**
      * @var bool
      */
-    private $convertDeprecationsToExceptions = true;
+    private $convertDeprecationsToExceptions = false;
 
     /**
      * @var bool

@@ -213,7 +213,7 @@
         <xs:attribute name="cacheResultFile" type="xs:anyURI"/>
         <xs:attribute name="colors" type="xs:boolean" default="false"/>
         <xs:attribute name="columns" type="columnsType" default="80"/>
-        <xs:attribute name="convertDeprecationsToExceptions" type="xs:boolean" default="true"/>
+        <xs:attribute name="convertDeprecationsToExceptions" type="xs:boolean" default="false"/>
         <xs:attribute name="convertErrorsToExceptions" type="xs:boolean" default="true"/>
         <xs:attribute name="convertNoticesToExceptions" type="xs:boolean" default="true"/>
         <xs:attribute name="convertWarningsToExceptions" type="xs:boolean" default="true"/>
