@@ -538,7 +538,7 @@ final class Configuration
         if ($root->hasAttribute('convertDeprecationsToExceptions')) {
             $result['convertDeprecationsToExceptions'] = $this->getBoolean(
                 (string) $root->getAttribute('convertDeprecationsToExceptions'),
-                true
+                false
             );
         }
 

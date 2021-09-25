@@ -29,6 +29,7 @@ final class ConfigurationGenerator
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
+         convertDeprecationsToExceptions="true"
          verbose="true">
     <testsuites>
         <testsuite name="default">

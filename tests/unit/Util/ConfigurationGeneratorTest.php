@@ -31,6 +31,7 @@ final class ConfigurationGeneratorTest extends TestCase
          beStrictAboutCoversAnnotation="true"
          beStrictAboutOutputDuringTests="true"
          beStrictAboutTodoAnnotatedTests="true"
+         convertDeprecationsToExceptions="true"
          verbose="true">
     <testsuites>
         <testsuite name="default">
