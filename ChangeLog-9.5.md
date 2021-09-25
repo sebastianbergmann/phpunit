@@ -4,6 +4,11 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 ## [9.5.10] - 2021-MM-DD
 
+### Changed
+
+* PHPUnit no longer converts PHP deprecations to exceptions by default (configure `convertDeprecationsToExceptions="true"` to enable this)
+* The PHPUnit XML configuration file generator now configures `convertDeprecationsToExceptions="true"`
+
 ### Fixed
 
 * [#4772](https://github.com/sebastianbergmann/phpunit/pull/4772): TestDox HTML report not displayed correctly when browser has custom colour settings
