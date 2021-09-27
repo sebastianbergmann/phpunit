@@ -38,7 +38,7 @@ final class Handler
     public static function invokeIgnoringWarnings(callable $callable): mixed
     {
         set_error_handler(
-            static function ($errorNumber, $errorString)
+            static function ($errorNumber)
             {
                 if ($errorNumber === E_WARNING) {
                     return null;
