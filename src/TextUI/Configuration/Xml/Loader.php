@@ -36,6 +36,7 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory as FilterDirectory;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection as FilterDirectoryCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Clover;
+use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Lcov;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Cobertura;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Crap4j;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Html as CodeCoverageHtml;
@@ -359,6 +360,20 @@ final class Loader
             );
         }
 
+        $lcov  = null;
+        $element = $this->element($xpath, 'coverage/report/lcov');
+
+        if ($element) {
+            $lcov = new Lcov(
+                new File(
+                    $this->toAbsolutePath(
+                        $filename,
+                        (string) $this->getStringAttribute($element, 'outputFile')
+                    )
+                )
+            );
+        }
+
         $cobertura = null;
         $element   = $this->element($xpath, 'coverage/report/cobertura');
 
@@ -459,6 +474,7 @@ final class Loader
             $ignoreDeprecatedCodeUnits,
             $disableCodeCoverageIgnore,
             $clover,
+            $lcov,
             $cobertura,
             $crap4j,
             $html,

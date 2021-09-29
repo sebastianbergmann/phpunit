@@ -48,6 +48,7 @@ use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
+use SebastianBergmann\CodeCoverage\Report\Lcov as LcovReport;
 use SebastianBergmann\CodeCoverage\Report\Cobertura as CoberturaReport;
 use SebastianBergmann\CodeCoverage\Report\Crap4j as Crap4jReport;
 use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReport;
@@ -420,6 +421,21 @@ final class TestRunner
                 try {
                     $writer = new CloverReport;
                     $writer->process(CodeCoverage::instance(), $this->configuration->coverageClover());
+
+                    $this->codeCoverageGenerationSucceeded();
+
+                    unset($writer);
+                } catch (CodeCoverageException $e) {
+                    $this->codeCoverageGenerationFailed($e);
+                }
+            }
+
+            if ($this->configuration->hasCoverageLcov()) {
+                $this->codeCoverageGenerationStart('Lcov TXT');
+
+                try {
+                    $writer = new LcovReport;
+                    $writer->process(CodeCoverage::instance(), $this->configuration->coverageLcov());
 
                     $this->codeCoverageGenerationSucceeded();
 

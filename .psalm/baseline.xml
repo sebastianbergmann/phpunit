@@ -789,12 +789,14 @@
       <code>cacheResultFile</code>
       <code>cacheResultFile</code>
       <code>clover</code>
+      <code>lcov</code>
       <code>cobertura</code>
       <code>colors</code>
       <code>colors</code>
       <code>columns</code>
       <code>coverageCacheDirectory</code>
       <code>coverageClover</code>
+      <code>coverageLcov</code>
       <code>coverageCobertura</code>
       <code>coverageCrap4J</code>
       <code>coverageHtml</code>
@@ -978,6 +980,11 @@
       <code>createElement</code>
     </PossiblyNullReference>
   </file>
+  <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageLcovToReport.php">
+    <PossiblyNullReference occurrences="1">
+      <code>createElement</code>
+    </PossiblyNullReference>
+  </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageCrap4jToReport.php">
     <PossiblyNullReference occurrences="1">
       <code>createElement</code>
@@ -1144,6 +1151,7 @@
       <code>configurationFile</code>
       <code>coverageCacheDirectory</code>
       <code>coverageClover</code>
+      <code>coverageLcov</code>
       <code>coverageCobertura</code>
       <code>coverageCrap4j</code>
       <code>coverageHtml</code>

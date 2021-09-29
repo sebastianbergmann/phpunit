@@ -170,6 +170,7 @@ final class Merger
         }
 
         $coverageClover                 = null;
+        $coverageLcov                   = null;
         $coverageCobertura              = null;
         $coverageCrap4j                 = null;
         $coverageCrap4jThreshold        = 30;
@@ -191,6 +192,12 @@ final class Merger
             $coverageClover = $cliConfiguration->coverageClover();
         } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasClover()) {
             $coverageClover = $xmlConfiguration->codeCoverage()->clover()->target()->path();
+        }
+
+        if ($cliConfiguration->hasCoverageLcov()) {
+            $coverageLcov = $cliConfiguration->coverageLcov();
+        } elseif ($coverageFromXmlConfiguration && $xmlConfiguration->codeCoverage()->hasLcov()) {
+            $coverageLcov = $xmlConfiguration->codeCoverage()->lcov()->target()->path();
         }
 
         if ($cliConfiguration->hasCoverageCobertura()) {
@@ -556,6 +563,7 @@ final class Merger
             $coverageCacheDirectory,
             $testResultCacheFile,
             $coverageClover,
+            $coverageLcov,
             $coverageCobertura,
             $coverageCrap4j,
             $coverageCrap4jThreshold,
