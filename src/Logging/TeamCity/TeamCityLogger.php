@@ -14,7 +14,6 @@ use function getmypid;
 use function ini_get;
 use function sprintf;
 use function stripos;
-use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\EventFacadeIsSealedException;
@@ -43,8 +42,6 @@ use PHPUnit\Util\Printer;
 final class TeamCityLogger extends Printer
 {
     private bool $isSummaryTestCountPrinted = false;
-
-    private ?Test $test = null;
 
     private ?HRTime $time = null;
 
@@ -145,54 +142,47 @@ final class TeamCityLogger extends Printer
 
         $this->writeMessage('testStarted', $parameters);
 
-        $this->test = $test;
         $this->time = $event->telemetryInfo()->time();
     }
 
     public function testAborted(Aborted $event): void
     {
-        if ($this->test === null) {
-            $this->test = $event->test();
+        if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
     }
 
     public function testSkipped(Skipped $event): void
     {
-        if ($this->test === null) {
-            $this->test = $event->test();
+        if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
     }
 
     public function testErrored(Errored $event): void
     {
-        if ($this->test === null) {
-            $this->test = $event->test();
+        if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
     }
 
     public function testFailed(Failed $event): void
     {
-        if ($this->test === null) {
-            $this->test = $event->test();
+        if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
     }
 
     public function testPassedWithWarning(PassedWithWarning $event): void
     {
-        if ($this->test === null) {
-            $this->test = $event->test();
+        if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
     {
-        if ($this->test === null) {
-            $this->test = $event->test();
+        if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
     }
@@ -207,7 +197,6 @@ final class TeamCityLogger extends Printer
             ]
         );
 
-        $this->test = null;
         $this->time = null;
     }
 
