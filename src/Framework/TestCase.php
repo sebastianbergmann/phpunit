@@ -127,7 +127,7 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
     protected $backupGlobalsBlacklist = [];
 
     /**
-     * @var bool
+     * @var bool|null
      */
     protected $backupStaticAttributes;
 
