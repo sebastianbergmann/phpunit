@@ -121,11 +121,6 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
     private $iteratorFilter;
 
     /**
-     * @var string[]
-     */
-    private $declaredClasses;
-
-    /**
      * Constructs a new TestSuite:.
      *
      *   - PHPUnit\Framework\TestSuite() constructs an empty TestSuite.
@@ -154,8 +149,6 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
                 'ReflectionClass object or string'
             );
         }
-
-        $this->declaredClasses = get_declared_classes();
 
         if (!$theClass instanceof ReflectionClass) {
             if (class_exists($theClass, true)) {
@@ -379,10 +372,11 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
             return;
         }
 
+        $declaredClasses = get_declared_classes();
         // The given file may contain further stub classes in addition to the
         // test class itself. Figure out the actual test class.
         $filename   = FileLoader::checkAndLoad($filename);
-        $newClasses = array_diff(get_declared_classes(), $this->declaredClasses);
+        $newClasses = array_diff(get_declared_classes(), $declaredClasses);
 
         // The diff is empty in case a parent class (with test methods) is added
         // AFTER a child class that inherited from it. To account for that case,
@@ -393,7 +387,6 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
             // process discovered classes in approximate LIFO order, so as to
             // avoid unnecessary reflection.
             $this->foundClasses    = array_merge($newClasses, $this->foundClasses);
-            $this->declaredClasses = get_declared_classes();
         }
 
         // The test class's name must match the filename, either in full, or as
