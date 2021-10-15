@@ -293,17 +293,19 @@ final class JunitXmlLogger
      */
     private function registerSubscribers(bool $reportRiskyTests): void
     {
-        Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));
-        Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestPrintedOutputSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
-        Facade::registerSubscriber(new TestErroredSubscriber($this));
-        Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestAbortedSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new AssertionMadeSubscriber($this));
+        Facade::registerSubscribers(
+            new TestSuiteStartedSubscriber($this),
+            new TestSuiteFinishedSubscriber($this),
+            new TestPreparedSubscriber($this),
+            new TestPrintedOutputSubscriber($this),
+            new TestFinishedSubscriber($this),
+            new TestPassedWithWarningSubscriber($this),
+            new TestErroredSubscriber($this),
+            new TestFailedSubscriber($this),
+            new TestAbortedSubscriber($this),
+            new TestSkippedSubscriber($this),
+            new AssertionMadeSubscriber($this)
+        );
 
         if ($reportRiskyTests) {
             Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
