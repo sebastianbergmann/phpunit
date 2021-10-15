@@ -208,6 +208,8 @@ final class MockBuilder
      */
     public function setMethods(?array $methods = null): self
     {
+        $this->createWarning('setMethods() and setMethodsExcept() methods are deprecated and will be removed in PHPUnit 10. Refactor your code to use addMethods() and onlyMethods() instead.');
+
         if ($methods === null) {
             $this->methods = $methods;
         } else {
@@ -512,5 +514,25 @@ final class MockBuilder
         $this->returnValueGeneration = false;
 
         return $this;
+    }
+
+    /**
+     * @codeCoverageIgnore
+     */
+    private function createWarning(string $warning): void
+    {
+        foreach (debug_backtrace() as $step) {
+            if (!isset($step['object']) || !$step['object'] instanceof TestCase) {
+                continue;
+            }
+
+            if ($step['function'] === 'createPartialMock') {
+                return;
+            }
+
+            $step['object']->addWarning($warning);
+
+            return;
+        }
     }
 }

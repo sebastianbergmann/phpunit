@@ -60,4 +60,16 @@ final class TestWithDifferentStatuses extends TestCase
 
         $this->assertNull($mock->mockableMethod());
     }
+
+    public function testWithSetMethodsWarning(): void
+    {
+        $mockBuilder = $this->getMockBuilder(Mockable::class);
+        $mockBuilder->setMethods(['mockableMethod', 'anotherMockableMethod']);
+    }
+
+    public function testWithSetMethodsExceptWarning(): void
+    {
+        $mockBuilder = $this->getMockBuilder(Mockable::class);
+        $mockBuilder->setMethodsExcept(['mockableMethod', 'anotherMockableMethod']);
+    }
 }

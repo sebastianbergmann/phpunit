@@ -1317,6 +1317,26 @@ class TestCaseTest extends TestCase
         $this->assertCount(1, $result);
     }
 
+    public function testMockBuilderSetMethodsWarning(): void
+    {
+        $test = new TestWithDifferentStatuses('testWithSetMethodsWarning');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_WARNING, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
+    }
+
+    public function testMockBuilderSetMethodsExceptWarning(): void
+    {
+        $test = new TestWithDifferentStatuses('testWithSetMethodsExceptWarning');
+
+        $test->run();
+
+        $this->assertSame(BaseTestRunner::STATUS_WARNING, $test->getStatus());
+        $this->assertFalse($test->hasFailed());
+    }
+
     /**
      * @return array<string, array>
      */
