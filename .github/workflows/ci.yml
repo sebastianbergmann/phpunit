@@ -23,7 +23,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.0
-          extensions: :apcu, :imagick
+          extensions: none, json, phar, tokenizer
           coverage: none
           tools: none
 
@@ -43,7 +43,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.0
-          extensions: :apcu, :imagick
+          extensions: none, ctype, date, dom, json, libxml, mbstring, pdo_sqlite, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
           coverage: none
           tools: none
 
@@ -62,7 +62,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter, :apcu, :imagick
+      PHP_EXTENSIONS: none, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
       PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
@@ -159,7 +159,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
-          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter, :apcu, :imagick
+          extensions: none, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
@@ -201,7 +201,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
-          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter, :apcu, :imagick
+          extensions: none, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
@@ -224,7 +224,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
+      PHP_EXTENSIONS: none, dom, json, fileinfo, iconv, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
       PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
 
     strategy:
