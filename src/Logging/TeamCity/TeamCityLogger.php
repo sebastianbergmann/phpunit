@@ -150,6 +150,16 @@ final class TeamCityLogger extends Printer
         if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
+
+        $this->writeMessage(
+            'testIgnored',
+            [
+                'name'     => $event->test()->name(),
+                'message'  => $event->throwable()->message(),
+                'details'  => $event->throwable()->stackTrace(),
+                'duration' => $this->duration($event),
+            ]
+        );
     }
 
     public function testSkipped(Skipped $event): void
@@ -157,6 +167,15 @@ final class TeamCityLogger extends Printer
         if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
+
+        $this->writeMessage(
+            'testIgnored',
+            [
+                'name'     => $event->test()->name(),
+                'message'  => $event->message(),
+                'duration' => $this->duration($event),
+            ]
+        );
     }
 
     public function testErrored(Errored $event): void
@@ -164,6 +183,16 @@ final class TeamCityLogger extends Printer
         if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
+
+        $this->writeMessage(
+            'testFailed',
+            [
+                'name'     => $event->test()->name(),
+                'message'  => $event->throwable()->message(),
+                'details'  => $event->throwable()->stackTrace(),
+                'duration' => $this->duration($event),
+            ]
+        );
     }
 
     public function testFailed(Failed $event): void
@@ -171,6 +200,16 @@ final class TeamCityLogger extends Printer
         if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
+
+        $this->writeMessage(
+            'testFailed',
+            [
+                'name'     => $event->test()->name(),
+                'message'  => $event->throwable()->message(),
+                'details'  => $event->throwable()->stackTrace(),
+                'duration' => $this->duration($event),
+            ]
+        );
     }
 
     public function testPassedWithWarning(PassedWithWarning $event): void
@@ -185,6 +224,16 @@ final class TeamCityLogger extends Printer
         if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
+
+        $this->writeMessage(
+            'testFailed',
+            [
+                'name'     => $event->test()->name(),
+                'message'  => $event->throwable()->message(),
+                'details'  => $event->throwable()->stackTrace(),
+                'duration' => $this->duration($event),
+            ]
+        );
     }
 
     public function testFinished(Finished $event): void
