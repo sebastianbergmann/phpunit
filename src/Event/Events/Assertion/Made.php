@@ -69,16 +69,24 @@ final class Made implements Event
 
         if (!empty($this->message)) {
             $message = sprintf(
-                ' - Message: %s',
+                ', Message: %s',
                 $this->message
             );
         }
 
+        if (!$this->hasFailed) {
+            return sprintf(
+                'Assertion Succeeded (Constraint: %s, Value: %s%s)',
+                $this->constraint()->toString(),
+                $this->valueAsString(),
+                $message
+            );
+        }
+
         return sprintf(
-            'Assertion Made (Constraint: %s - Value: %s - Failed: %s%s)',
+            'Assertion Failed (Constraint: %s, Value: %s%s)',
             $this->constraint()->toString(),
             $this->valueAsString(),
-            $this->hasFailed() ? 'true' : 'false',
             $message
         );
     }

@@ -31,7 +31,7 @@ Test Suite Sorted
 Event Facade Sealed
 Test Suite Started (PHPUnit\TestFixture\MissingDependencyTest, 2 tests)
 Test Prepared (PHPUnit\TestFixture\MissingDependencyTest::testOne)
-Assertion Made (Constraint: is true - Value: false - Failed: true)
+Assertion Failed (Constraint: is true, Value: false)
 Test Failed (PHPUnit\TestFixture\MissingDependencyTest::testOne)
 Failed asserting that false is true.
 Test Finished (PHPUnit\TestFixture\MissingDependencyTest::testOne)
