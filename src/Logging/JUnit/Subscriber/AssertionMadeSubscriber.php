@@ -10,12 +10,12 @@
 namespace PHPUnit\Logging\JUnit;
 
 use PHPUnit\Event\Test\AssertionMade;
-use PHPUnit\Event\Test\AssertionMadeSubscriber;
+use PHPUnit\Event\Test\AssertionMadeSubscriber as AssertionMadeSubscriberInterface;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class AssertionAssertionMadeSubscriber extends Subscriber implements AssertionMadeSubscriber
+final class AssertionMadeSubscriber extends Subscriber implements AssertionMadeSubscriberInterface
 {
     public function notify(AssertionMade $event): void
     {

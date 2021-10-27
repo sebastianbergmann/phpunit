@@ -303,7 +303,7 @@ final class JunitXmlLogger
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new AssertionAssertionMadeSubscriber($this));
+        Facade::registerSubscriber(new AssertionMadeSubscriber($this));
 
         if ($reportRiskyTests) {
             Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
