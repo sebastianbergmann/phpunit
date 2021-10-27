@@ -104,7 +104,7 @@ final class DispatchingEmitter implements Emitter
     public function comparatorRegistered(string $className): void
     {
         $this->dispatcher->dispatch(
-            new Comparator\Registered(
+            new Test\ComparatorRegistered(
                 $this->telemetryInfo(),
                 $className
             )

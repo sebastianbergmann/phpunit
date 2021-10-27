@@ -190,7 +190,7 @@ final class Facade
         $defaultEvents = [
             Test\AssertionMade::class,
             TestRunner\BootstrapFinished::class,
-            Comparator\Registered::class,
+            Test\ComparatorRegistered::class,
             TestRunner\ExtensionLoaded::class,
             GlobalState\Captured::class,
             GlobalState\Modified::class,

@@ -7,21 +7,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Comparator;
+namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 
 /**
- * @covers \PHPUnit\Event\Comparator\Registered
+ * @covers \PHPUnit\Event\Test\ComparatorRegistered
  */
-final class RegisteredTest extends AbstractEventTestCase
+final class ComparatorRegisteredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
         $className     = self::class;
 
-        $event = new Registered(
+        $event = new ComparatorRegistered(
             $telemetryInfo,
             $className
         );
