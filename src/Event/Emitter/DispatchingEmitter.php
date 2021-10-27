@@ -114,7 +114,7 @@ final class DispatchingEmitter implements Emitter
     public function extensionLoaded(string $name, string $version): void
     {
         $this->dispatcher->dispatch(
-            new Extension\Loaded(
+            new TestRunner\ExtensionLoaded(
                 $this->telemetryInfo(),
                 $name,
                 $version

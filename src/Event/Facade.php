@@ -191,7 +191,7 @@ final class Facade
             Test\AssertionMade::class,
             TestRunner\BootstrapFinished::class,
             Comparator\Registered::class,
-            Extension\Loaded::class,
+            TestRunner\ExtensionLoaded::class,
             GlobalState\Captured::class,
             GlobalState\Modified::class,
             GlobalState\Restored::class,

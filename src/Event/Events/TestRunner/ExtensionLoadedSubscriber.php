@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Extension;
+namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\Subscriber;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-interface LoadedSubscriber extends Subscriber
+interface ExtensionLoadedSubscriber extends Subscriber
 {
-    public function notify(Loaded $event): void;
+    public function notify(ExtensionLoaded $event): void;
 }

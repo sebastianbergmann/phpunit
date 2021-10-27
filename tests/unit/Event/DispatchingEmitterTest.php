@@ -202,17 +202,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testExtensionLoadedDispatchesExtensionLoadedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements Extension\LoadedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\ExtensionLoadedSubscriber
         {
-            public function notify(Extension\Loaded $event): void
+            public function notify(TestRunner\ExtensionLoaded $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::dispatcherWithRegisteredSubscriber(
-            Extension\LoadedSubscriber::class,
-            Extension\Loaded::class,
+            TestRunner\ExtensionLoadedSubscriber::class,
+            TestRunner\ExtensionLoaded::class,
             $subscriber
         );
 
@@ -229,7 +229,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(Extension\Loaded::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(TestRunner\ExtensionLoaded::class, $subscriber->lastRecordedEvent());
     }
 
     public function testGlobalStateCapturedDispatchesGlobalStateCapturedEvent(): void

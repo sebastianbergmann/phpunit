@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Extension;
+namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
 
 /**
- * @covers \PHPUnit\Event\Extension\Loaded
+ * @covers \PHPUnit\Event\TestRunner\ExtensionLoaded
  */
-final class LoadedTest extends AbstractEventTestCase
+final class ExtensionLoadedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
@@ -22,7 +22,7 @@ final class LoadedTest extends AbstractEventTestCase
         $name          = 'example-extension';
         $version       = '1.2.3';
 
-        $event = new Loaded(
+        $event = new ExtensionLoaded(
             $telemetryInfo,
             $name,
             $version
