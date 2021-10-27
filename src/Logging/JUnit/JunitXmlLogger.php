@@ -15,7 +15,6 @@ use function is_int;
 use function sprintf;
 use DOMDocument;
 use DOMElement;
-use PHPUnit\Event\Assertion\Made;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -23,6 +22,7 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\Aborted;
+use PHPUnit\Event\Test\AssertionMade;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
@@ -282,7 +282,7 @@ final class JunitXmlLogger
         $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
-    public function assertionMade(Made $event): void
+    public function assertionMade(AssertionMade $event): void
     {
         $this->numberOfAssertions += $event->constraint()->count();
     }
@@ -303,7 +303,7 @@ final class JunitXmlLogger
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new AssertionMadeSubscriber($this));
+        Facade::registerSubscriber(new AssertionAssertionMadeSubscriber($this));
 
         if ($reportRiskyTests) {
             Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));

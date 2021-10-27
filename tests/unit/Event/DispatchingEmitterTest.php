@@ -88,17 +88,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $message    = 'Well, that did not go as planned!';
         $hasFailed  = true;
 
-        $subscriber = new class extends RecordingSubscriber implements Assertion\MadeSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\AssertionMadeSubscriber
         {
-            public function notify(Assertion\Made $event): void
+            public function notify(Test\AssertionMade $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::dispatcherWithRegisteredSubscriber(
-            Assertion\MadeSubscriber::class,
-            Assertion\Made::class,
+            Test\AssertionMadeSubscriber::class,
+            Test\AssertionMade::class,
             $subscriber
         );
 
@@ -120,7 +120,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(Assertion\Made::class, $event);
+        $this->assertInstanceOf(Test\AssertionMade::class, $event);
 
         $this->assertSame($value, $event->value());
         $this->assertSame($constraint, $event->constraint());

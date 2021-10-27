@@ -188,7 +188,7 @@ final class Facade
     private static function registerDefaultTypes(TypeMap $typeMap): void
     {
         $defaultEvents = [
-            Assertion\Made::class,
+            Test\AssertionMade::class,
             Bootstrap\Finished::class,
             Comparator\Registered::class,
             Extension\Loaded::class,

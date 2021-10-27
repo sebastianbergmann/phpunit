@@ -78,7 +78,7 @@ final class DispatchingEmitter implements Emitter
     public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
     {
         $this->dispatcher->dispatch(
-            new Assertion\Made(
+            new Test\AssertionMade(
                 $this->telemetryInfo(),
                 $value,
                 $constraint,

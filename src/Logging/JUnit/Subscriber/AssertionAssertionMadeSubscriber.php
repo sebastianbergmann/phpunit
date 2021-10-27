@@ -9,15 +9,15 @@
  */
 namespace PHPUnit\Logging\JUnit;
 
-use PHPUnit\Event\Assertion\Made;
-use PHPUnit\Event\Assertion\MadeSubscriber;
+use PHPUnit\Event\Test\AssertionMade;
+use PHPUnit\Event\Test\AssertionMadeSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class AssertionMadeSubscriber extends Subscriber implements MadeSubscriber
+final class AssertionAssertionMadeSubscriber extends Subscriber implements AssertionMadeSubscriber
 {
-    public function notify(Made $event): void
+    public function notify(AssertionMade $event): void
     {
         $this->logger()->assertionMade($event);
     }
