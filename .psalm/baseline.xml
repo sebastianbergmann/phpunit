@@ -1190,9 +1190,8 @@
   </file>
   <file src="src/Util/Error/Handler.php">
     <InvalidArgument occurrences="1"/>
-    <MissingClosureParamType occurrences="2">
+    <MissingClosureParamType occurrences="1">
       <code>$errorNumber</code>
-      <code>$errorString</code>
     </MissingClosureParamType>
   </file>
   <file src="src/Util/ExcludeList.php">
