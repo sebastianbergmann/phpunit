@@ -7,21 +7,21 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Bootstrap;
+namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
 
 /**
- * @covers \PHPUnit\Event\Bootstrap\Finished
+ * @covers \PHPUnit\Event\TestRunner\BootstrapFinished
  */
-final class FinishedTest extends AbstractEventTestCase
+final class BootstrapFinishedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
         $filename      = __FILE__;
 
-        $event = new Finished(
+        $event = new BootstrapFinished(
             $telemetryInfo,
             $filename
         );

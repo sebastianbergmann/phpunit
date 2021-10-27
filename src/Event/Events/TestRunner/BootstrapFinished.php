@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\Bootstrap;
+namespace PHPUnit\Event\TestRunner;
 
 use function sprintf;
 use PHPUnit\Event\Event;
@@ -16,7 +16,7 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Finished implements Event
+final class BootstrapFinished implements Event
 {
     private Telemetry\Info $telemetryInfo;
 

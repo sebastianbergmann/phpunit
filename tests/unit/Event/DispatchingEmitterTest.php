@@ -132,17 +132,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $filename = __FILE__;
 
-        $subscriber = new class extends RecordingSubscriber implements Bootstrap\FinishedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\BootstrapFinishedSubscriber
         {
-            public function notify(Bootstrap\Finished $event): void
+            public function notify(TestRunner\BootstrapFinished $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = self::dispatcherWithRegisteredSubscriber(
-            Bootstrap\FinishedSubscriber::class,
-            Bootstrap\Finished::class,
+            TestRunner\BootstrapFinishedSubscriber::class,
+            TestRunner\BootstrapFinished::class,
             $subscriber
         );
 
@@ -159,7 +159,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(Bootstrap\Finished::class, $event);
+        $this->assertInstanceOf(TestRunner\BootstrapFinished::class, $event);
 
         $this->assertSame($filename, $event->filename());
     }

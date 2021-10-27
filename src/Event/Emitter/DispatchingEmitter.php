@@ -91,7 +91,7 @@ final class DispatchingEmitter implements Emitter
     public function bootstrapFinished(string $filename): void
     {
         $this->dispatcher->dispatch(
-            new Bootstrap\Finished(
+            new TestRunner\BootstrapFinished(
                 $this->telemetryInfo(),
                 $filename
             )
