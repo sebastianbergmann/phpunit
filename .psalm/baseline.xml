@@ -776,7 +776,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="77">
+    <MissingThrowsDocblock occurrences="76">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -790,7 +790,6 @@
       <code>cacheResultFile</code>
       <code>clover</code>
       <code>cobertura</code>
-      <code>colors</code>
       <code>colors</code>
       <code>columns</code>
       <code>coverageCacheDirectory</code>
@@ -1214,7 +1213,6 @@
       <code>$this-&gt;getException($skipped[0])</code>
       <code>$this-&gt;getException($warnings[0])</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1"/>
     <LessSpecificReturnStatement occurrences="1">
       <code>$exception</code>
     </LessSpecificReturnStatement>
