@@ -35,17 +35,13 @@
       <code>static::readAttribute($haystackClassOrObject, $haystackAttributeName)</code>
       <code>static::readAttribute($haystackClassOrObject, $haystackAttributeName)</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="21">
+    <DocblockTypeContradiction occurrences="17">
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
       <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
       <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
       <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
-      <code>$array instanceof ArrayAccess</code>
-      <code>$array instanceof ArrayAccess</code>
-      <code>$array instanceof ArrayAccess</code>
-      <code>$subset instanceof ArrayAccess</code>
       <code>is_array($array) || $array instanceof ArrayAccess</code>
       <code>is_array($array) || $array instanceof ArrayAccess</code>
       <code>is_array($array) || $array instanceof ArrayAccess</code>
@@ -202,7 +198,8 @@
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>is_object($classOrObject)</code>
     </RedundantConditionGivenDocblockType>
-    <TypeDoesNotContainType occurrences="1">
+    <TypeDoesNotContainType occurrences="2">
+      <code>!$attribute</code>
       <code>!$attribute</code>
     </TypeDoesNotContainType>
   </file>
@@ -703,7 +700,8 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$deferredError</code>
     </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="1">
+    <RedundantConditionGivenDocblockType occurrences="2">
+      <code>$this-&gt;deferredError</code>
       <code>$this-&gt;deferredError</code>
     </RedundantConditionGivenDocblockType>
   </file>
@@ -722,13 +720,14 @@
       <code>$parametersRule</code>
       <code>$stub</code>
     </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="8">
+    <RedundantConditionGivenDocblockType occurrences="9">
       <code>$this-&gt;invocationRule !== null</code>
       <code>$this-&gt;methodNameRule !== null</code>
       <code>$this-&gt;methodNameRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
+      <code>$this-&gt;stub</code>
       <code>$this-&gt;stub</code>
       <code>$this-&gt;stub !== null</code>
     </RedundantConditionGivenDocblockType>
@@ -1547,7 +1546,6 @@
       <code>$this-&gt;getException($failures[0])</code>
       <code>$this-&gt;getException($warnings[0])</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1"/>
     <LessSpecificReturnStatement occurrences="1">
       <code>$exception</code>
     </LessSpecificReturnStatement>
@@ -1607,11 +1605,6 @@
       <code>$out</code>
       <code>$outTarget</code>
     </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="3">
-      <code>$this-&gt;out</code>
-      <code>$this-&gt;out</code>
-      <code>$this-&gt;out</code>
-    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Util/Test.php">
     <InvalidScalarArgument occurrences="1">
@@ -1633,6 +1626,10 @@
     <DeprecatedInterface occurrences="1">
       <code>CliTestDoxPrinter</code>
     </DeprecatedInterface>
+    <InvalidArrayOffset occurrences="2">
+      <code>self::SPINNER_ICONS[$id]</code>
+      <code>self::SPINNER_ICONS[$id]</code>
+    </InvalidArrayOffset>
     <MissingThrowsDocblock occurrences="1">
       <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
