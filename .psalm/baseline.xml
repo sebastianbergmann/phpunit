@@ -11,15 +11,13 @@
       <code>Xml::removeCharacterDataNodes($actualElement)</code>
       <code>Xml::removeCharacterDataNodes($expectedElement)</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="16">
+    <DocblockTypeContradiction occurrences="14">
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
       <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
       <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
       <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
-      <code>$array instanceof ArrayAccess</code>
-      <code>$array instanceof ArrayAccess</code>
       <code>is_array($array) || $array instanceof ArrayAccess</code>
       <code>is_array($array) || $array instanceof ArrayAccess</code>
       <code>is_int($key) || is_string($key)</code>
@@ -500,7 +498,8 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$deferredError</code>
     </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="1">
+    <RedundantConditionGivenDocblockType occurrences="2">
+      <code>$this-&gt;deferredError</code>
       <code>$this-&gt;deferredError</code>
     </RedundantConditionGivenDocblockType>
   </file>
@@ -519,13 +518,14 @@
       <code>$parametersRule</code>
       <code>$stub</code>
     </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="8">
+    <RedundantConditionGivenDocblockType occurrences="9">
       <code>$this-&gt;invocationRule !== null</code>
       <code>$this-&gt;methodNameRule !== null</code>
       <code>$this-&gt;methodNameRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
+      <code>$this-&gt;stub</code>
       <code>$this-&gt;stub</code>
       <code>$this-&gt;stub !== null</code>
     </RedundantConditionGivenDocblockType>
@@ -1402,7 +1402,6 @@
       <code>$this-&gt;getException($failures[0])</code>
       <code>$this-&gt;getException($warnings[0])</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1"/>
     <LessSpecificReturnStatement occurrences="1">
       <code>$exception</code>
     </LessSpecificReturnStatement>
@@ -1449,10 +1448,6 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$stream</code>
     </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="2">
-      <code>$this-&gt;stream</code>
-      <code>$this-&gt;stream</code>
-    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Util/Test.php">
     <MissingReturnType occurrences="1">
@@ -1471,6 +1466,10 @@
     <DeprecatedInterface occurrences="1">
       <code>CliTestDoxPrinter</code>
     </DeprecatedInterface>
+    <InvalidArrayOffset occurrences="2">
+      <code>self::SPINNER_ICONS[$id]</code>
+      <code>self::SPINNER_ICONS[$id]</code>
+    </InvalidArrayOffset>
     <MissingThrowsDocblock occurrences="2">
       <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
       <code>stop</code>
