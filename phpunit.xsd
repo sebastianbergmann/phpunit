@@ -270,6 +270,7 @@
         <xs:sequence>
             <xs:group ref="pathGroup"/>
             <xs:element name="exclude" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:element name="bootstrap" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
