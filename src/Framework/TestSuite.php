@@ -45,6 +45,13 @@ use Throwable;
 class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
     /**
+     * The bootstrap files to load for this TestSuite.
+     * 
+     * @psalm-var list<string>
+     */
+    protected array $bootstraps = [];
+
+    /**
      * Enable or disable the backup and restoration of the $GLOBALS array.
      */
     protected ?bool $backupGlobals = null;
@@ -293,6 +300,17 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
+     * Validates the bootstrap file is a file, and adds it to the bootstraps array
+     * if so.
+     */
+    public function addBootstrap(string $filename): void
+    {
+        if (is_file($filename) && str_ends_with($filename, '.php')){
+            $this->bootstraps[] = $filename;
+        }
+    }
+
+    /**
      * Wraps both <code>addTest()</code> and <code>addTestSuite</code>
      * as well as the separate import statements for the user's convenience.
      *
@@ -405,6 +423,14 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $hookMethods = (new HookMethods)->hookMethods($className);
 
         $result->startTestSuite($this);
+
+        foreach($this->bootstraps as $bootstrap) {
+            if(!is_file($bootstrap)){
+                continue;
+            }
+
+            require_once $bootstrap;
+        }
 
         Event\Facade::emitter()->testSuiteStarted($this);
 

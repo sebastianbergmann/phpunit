@@ -93,6 +93,10 @@ final class TestSuiteMapper
                     $testSuiteEmpty = false;
                 }
 
+                foreach ($testSuiteConfiguration->bootstraps() as $bootstrap) {
+                    $testSuite->addBootstrap($bootstrap->path());
+                }
+
                 if (!$testSuiteEmpty) {
                     $result->addTest($testSuite);
                 }
