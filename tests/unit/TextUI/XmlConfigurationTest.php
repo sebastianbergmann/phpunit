@@ -605,23 +605,23 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/third.php', $second->bootstraps()->asArray()[1]->path());
     }
 
+    /**
+     * Global bootstrap should always be loaded, so it's existance should not impact our individual test-suite bootstraps.
+     */
     public function testConfigurationWithAGlobalBootstrapAndABootstrapPerTestSuiteCanBeLoaded(): void
     {
         $testsuites = $this->configuration('configuration_testsuites_multiple_bootstraps_and_global.xml')->testSuite();
 
         $first = $testsuites->asArray()[0];
         $this->assertSame('first', $first->name());
-        $this->assertCount(2, $first->bootstraps());
-        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/global.php', $first->bootstraps()->asArray()[0]->path());
-        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/first.php', $first->bootstraps()->asArray()[1]->path());
-
+        $this->assertCount(1, $first->bootstraps());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/first.php', $first->bootstraps()->asArray()[0]->path());
 
         $second = $testsuites->asArray()[1];
         $this->assertSame('second', $second->name());
-        $this->assertCount(3, $second->bootstraps());
-        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/global.php', $second->bootstraps()->asArray()[0]->path());
-        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/second.php', $second->bootstraps()->asArray()[1]->path());
-        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/third.php', $second->bootstraps()->asArray()[2]->path());
+        $this->assertCount(2, $second->bootstraps());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/second.php', $second->bootstraps()->asArray()[0]->path());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/third.php', $second->bootstraps()->asArray()[1]->path());
     }
 
     private function configuration(string $filename): Configuration
