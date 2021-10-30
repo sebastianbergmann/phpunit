@@ -570,6 +570,60 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(TEST_FILES_PATH . 'tests/second/_files', $second->exclude()->asArray()[0]->path());
     }
 
+    public function testConfigurationWithABootstrapPerTestSuiteCanBeLoaded(): void
+    {
+        $testsuites = $this->configuration('configuration_testsuites_multiple_bootstraps.xml')->testSuite();
+
+        $first = $testsuites->asArray()[0];
+        $this->assertSame('first', $first->name());
+        $this->assertCount(1, $first->directories());
+        $this->assertSame(TEST_FILES_PATH . 'tests/first', $first->directories()->asArray()[0]->path());
+        $this->assertSame('', $first->directories()->asArray()[0]->prefix());
+        $this->assertSame('Test.php', $first->directories()->asArray()[0]->suffix());
+        $this->assertSame(PHP_VERSION, $first->directories()->asArray()[0]->phpVersion());
+        $this->assertSame('>=', $first->directories()->asArray()[0]->phpVersionOperator()->asString());
+        $this->assertCount(0, $first->files());
+        $this->assertCount(0, $first->exclude());
+        $this->assertCount(1, $first->bootstraps());
+
+
+        $second = $testsuites->asArray()[1];
+        $this->assertSame('second', $second->name());
+        $this->assertSame(TEST_FILES_PATH . 'tests/second', $second->directories()->asArray()[0]->path());
+        $this->assertSame('test', $second->directories()->asArray()[0]->prefix());
+        $this->assertSame('.phpt', $second->directories()->asArray()[0]->suffix());
+        $this->assertSame('1.2.3', $second->directories()->asArray()[0]->phpVersion());
+        $this->assertSame('==', $second->directories()->asArray()[0]->phpVersionOperator()->asString());
+        $this->assertCount(1, $second->files());
+        $this->assertSame(TEST_FILES_PATH . 'tests/file.php', $second->files()->asArray()[0]->path());
+        $this->assertSame('4.5.6', $second->files()->asArray()[0]->phpVersion());
+        $this->assertSame('!=', $second->files()->asArray()[0]->phpVersionOperator()->asString());
+        $this->assertCount(1, $second->exclude());
+        $this->assertSame(TEST_FILES_PATH . 'tests/second/_files', $second->exclude()->asArray()[0]->path());
+        $this->assertCount(2, $second->bootstraps());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/second.php', $second->bootstraps()->asArray()[0]->path());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/third.php', $second->bootstraps()->asArray()[1]->path());
+    }
+
+    public function testConfigurationWithAGlobalBootstrapAndABootstrapPerTestSuiteCanBeLoaded(): void
+    {
+        $testsuites = $this->configuration('configuration_testsuites_multiple_bootstraps_and_global.xml')->testSuite();
+
+        $first = $testsuites->asArray()[0];
+        $this->assertSame('first', $first->name());
+        $this->assertCount(2, $first->bootstraps());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/global.php', $first->bootstraps()->asArray()[0]->path());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/first.php', $first->bootstraps()->asArray()[1]->path());
+
+
+        $second = $testsuites->asArray()[1];
+        $this->assertSame('second', $second->name());
+        $this->assertCount(3, $second->bootstraps());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/global.php', $second->bootstraps()->asArray()[0]->path());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/second.php', $second->bootstraps()->asArray()[1]->path());
+        $this->assertSame(TEST_FILES_PATH . 'tests/bootstraps/third.php', $second->bootstraps()->asArray()[2]->path());
+    }
+
     private function configuration(string $filename): Configuration
     {
         return (new Loader)->load(TEST_FILES_PATH . $filename);

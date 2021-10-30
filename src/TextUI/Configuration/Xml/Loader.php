@@ -62,6 +62,14 @@ use PHPUnit\Util\Xml\Validator;
  */
 final class Loader
 {
+
+    /**
+     * The global bootstrap, if one exists.
+     * 
+     * @var string|null
+     */
+    private ?string $globalBootstrap = null;
+
     /**
      * @throws Exception
      */
@@ -748,6 +756,7 @@ final class Loader
 
         if ($bootstrap !== null) {
             $bootstrap = $this->toAbsolutePath($filename, $bootstrap);
+            $this->globalBootstrap = $bootstrap;
         }
 
         $extensionsDirectory = $this->getStringAttribute($document->documentElement, 'extensionsDirectory');
@@ -951,11 +960,30 @@ final class Loader
                 );
             }
 
+            $bootstraps = [];
+
+            if( ! empty( $this->globalBootstrap ) ) {
+                $bootstraps[] = new File( $this->globalBootstrap );
+            }
+
+            foreach ($element->getElementsByTagName('bootstrap') as $bootstrapNode) {
+                assert($bootstrapNode instanceof DOMElement);
+
+                $bootstrap = (string) $bootstrapNode->textContent;
+
+                if (empty($bootstrap)) {
+                    continue;
+                }
+
+                $bootstraps[] = new File( $this->toAbsolutePath($filename, $bootstrap) );
+            }
+
             $testSuites[] = new TestSuiteConfiguration(
                 (string) $element->getAttribute('name'),
                 TestDirectoryCollection::fromArray($directories),
                 TestFileCollection::fromArray($files),
-                FileCollection::fromArray($exclude)
+                FileCollection::fromArray($exclude),
+                FileCollection::fromArray($bootstraps),
             );
         }
 

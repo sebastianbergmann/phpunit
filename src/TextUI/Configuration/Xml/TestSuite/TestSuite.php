@@ -23,12 +23,13 @@ final class TestSuite
 
     private FileCollection $exclude;
 
-    public function __construct(string $name, TestDirectoryCollection $directories, TestFileCollection $files, FileCollection $exclude)
+    public function __construct(string $name, TestDirectoryCollection $directories, TestFileCollection $files, FileCollection $exclude, FileCollection $bootstraps)
     {
         $this->name        = $name;
         $this->directories = $directories;
         $this->files       = $files;
         $this->exclude     = $exclude;
+        $this->bootstraps  = $bootstraps;
     }
 
     public function name(): string
@@ -49,5 +50,10 @@ final class TestSuite
     public function exclude(): FileCollection
     {
         return $this->exclude;
+    }
+
+    public function bootstraps(): FileCollection
+    {
+        return $this->bootstraps;
     }
 }
