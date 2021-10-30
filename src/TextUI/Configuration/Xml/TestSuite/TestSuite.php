@@ -23,6 +23,8 @@ final class TestSuite
 
     private FileCollection $exclude;
 
+    private FileCollection $bootstraps;
+
     public function __construct(string $name, TestDirectoryCollection $directories, TestFileCollection $files, FileCollection $exclude, FileCollection $bootstraps)
     {
         $this->name        = $name;
