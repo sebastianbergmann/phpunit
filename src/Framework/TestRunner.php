@@ -299,7 +299,7 @@ final class TestRunner
             $iniSettings   = GlobalState::getIniSettingsAsString();
         } else {
             $constants = '';
-            $globals = '';
+            $globals   = '';
 
             if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
                 $globals .= '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";

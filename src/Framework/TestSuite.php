@@ -46,7 +46,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
     /**
      * The bootstrap files to load for this TestSuite.
-     * 
+     *
      * @psalm-var list<string>
      */
     protected array $bootstraps = [];
@@ -305,21 +305,21 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function addBootstrap(string $filename): void
     {
-        if (is_file($filename) && str_ends_with($filename, '.php')){
+        if (is_file($filename) && str_ends_with($filename, '.php')) {
             $this->bootstraps[] = $filename;
         }
     }
 
     public function addBootstraps(array $bootstraps): void
     {
-        foreach( $bootstraps as $filename ){
+        foreach ($bootstraps as $filename) {
             $this->addBootstrap($filename);
         }
     }
 
     public function hasBootstraps(): bool
     {
-        return count( $this->bootstraps ) > 0;
+        return count($this->bootstraps) > 0;
     }
 
     /**
@@ -426,17 +426,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function run(TestResult $result): void
     {
-
-        if( $this->hasBootstraps() ) {
+        if ($this->hasBootstraps()) {
 
             // Preserve TestSuite bootstraps for process isolation.
             $GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS'] = $this->bootstraps;
 
-            foreach($this->bootstraps as $bootstrap) {
-                if(!is_file($bootstrap)){
+            foreach ($this->bootstraps as $bootstrap) {
+                if (!is_file($bootstrap)) {
                     continue;
                 }
-    
+
                 require_once $bootstrap;
             }
         }
@@ -548,7 +547,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $test->setBeStrictAboutChangesToGlobalState($this->beStrictAboutChangesToGlobalState);
                 }
 
-                if (! empty( $this->bootstraps )) {
+                if (!empty($this->bootstraps)) {
                     $test->addBootstraps($this->bootstraps);
                 }
 

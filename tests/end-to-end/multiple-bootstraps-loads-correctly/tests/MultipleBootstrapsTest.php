@@ -13,8 +13,8 @@ class MultipleBootstrapsTest extends TestCase
 {
     public function testMultipleBootstrapsLoadCorrectly(): void
     {
-        $this->assertTrue(defined('PHPUNIT_MULTIPLE_BOOTSTRAPS_GLOBAL'), "Global bootstrap did not load.");
-        $this->assertTrue(defined('PHPUNIT_MULTIPLE_BOOTSTRAPS_UNIT'), "Unit Test Bootstrap did not load.");
+        $this->assertTrue(defined('PHPUNIT_MULTIPLE_BOOTSTRAPS_GLOBAL'), 'Global bootstrap did not load.');
+        $this->assertTrue(defined('PHPUNIT_MULTIPLE_BOOTSTRAPS_UNIT'), 'Unit Test Bootstrap did not load.');
     }
 
     /**
@@ -22,7 +22,7 @@ class MultipleBootstrapsTest extends TestCase
      */
     public function testMultipleBootstrapsLoadCorrectlyInProcessIsolation(): void
     {
-        $this->assertTrue(defined('PHPUNIT_MULTIPLE_BOOTSTRAPS_GLOBAL'), "Global bootstrap did not load.");
-        $this->assertTrue(defined('PHPUNIT_MULTIPLE_BOOTSTRAPS_UNIT'), "Unit Test Bootstrap did not load.");
+        $this->assertTrue(defined('PHPUNIT_MULTIPLE_BOOTSTRAPS_GLOBAL'), 'Global bootstrap did not load.');
+        $this->assertTrue(defined('PHPUNIT_MULTIPLE_BOOTSTRAPS_UNIT'), 'Unit Test Bootstrap did not load.');
     }
 }

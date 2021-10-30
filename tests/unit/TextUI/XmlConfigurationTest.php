@@ -586,7 +586,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertCount(0, $first->exclude());
         $this->assertCount(1, $first->bootstraps());
 
-
         $second = $testsuites->asArray()[1];
         $this->assertSame('second', $second->name());
         $this->assertSame(TEST_FILES_PATH . 'tests/second', $second->directories()->asArray()[0]->path());

@@ -962,7 +962,7 @@ final class Loader
                     continue;
                 }
 
-                $bootstraps[] = new File( $this->toAbsolutePath($filename, $bootstrap) );
+                $bootstraps[] = new File($this->toAbsolutePath($filename, $bootstrap));
             }
 
             $testSuites[] = new TestSuiteConfiguration(
