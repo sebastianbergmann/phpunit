@@ -1,0 +1,2 @@
+<?php
+define('PHPUNIT_MULTIPLE_BOOTSTRAPS_UNIT', true);
