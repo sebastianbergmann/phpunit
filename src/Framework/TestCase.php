@@ -110,6 +110,8 @@ use Throwable;
  */
 abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
+    private array $bootstraps = [];
+
     private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
 
     private ?bool $backupGlobals = null;
@@ -1309,6 +1311,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     public function wasPrepared(): bool
     {
         return $this->wasPrepared;
+    }
+
+    /**
+     * Validates the bootstrap file is a file, and adds it to the bootstraps array
+     * if so.
+     */
+    public function addBootstrap(string $filename): void
+    {
+        if (is_file($filename) && str_ends_with($filename, '.php')){
+            $this->bootstraps[] = $filename;
+        }
+    }
+
+    public function addBootstraps(array $bootstraps): void
+    {
+        foreach( $bootstraps as $filename ){
+            $this->addBootstrap($filename);
+        }
     }
 
     /**
