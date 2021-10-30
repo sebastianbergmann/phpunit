@@ -299,11 +299,14 @@ final class TestRunner
             $iniSettings   = GlobalState::getIniSettingsAsString();
         } else {
             $constants = '';
+            $globals = '';
 
             if (!empty($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
-                $globals = '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
-            } else {
-                $globals = '';
+                $globals .= '$GLOBALS[\'__PHPUNIT_BOOTSTRAP\'] = ' . var_export($GLOBALS['__PHPUNIT_BOOTSTRAP'], true) . ";\n";
+            }
+
+            if (!empty($GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS'])) {
+                $globals .= '$GLOBALS[\'__PHPUNIT_TESTSUITE_BOOTSTRAPS\'] = ' . var_export($GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS'], true) . ";\n";
             }
 
             $includedFiles = '';

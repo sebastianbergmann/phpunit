@@ -310,6 +310,18 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
     }
 
+    public function addBootstraps(array $bootstraps): void
+    {
+        foreach( $bootstraps as $filename ){
+            $this->addBootstrap($filename);
+        }
+    }
+
+    public function hasBootstraps(): bool
+    {
+        return is_array( $this->bootstraps ) && count( $this->bootstraps ) > 0;
+    }
+
     /**
      * Wraps both <code>addTest()</code> and <code>addTestSuite</code>
      * as well as the separate import statements for the user's convenience.
@@ -414,6 +426,21 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function run(TestResult $result): void
     {
+
+        if( $this->hasBootstraps() ) {
+
+            // Preserve TestSuite bootstraps for process isolation.
+            $GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS'] = $this->bootstraps;
+
+            foreach($this->bootstraps as $bootstrap) {
+                if(!is_file($bootstrap)){
+                    continue;
+                }
+    
+                require_once $bootstrap;
+            }
+        }
+        
         if (count($this) === 0) {
             return;
         }
@@ -423,14 +450,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $hookMethods = (new HookMethods)->hookMethods($className);
 
         $result->startTestSuite($this);
-
-        foreach($this->bootstraps as $bootstrap) {
-            if(!is_file($bootstrap)){
-                continue;
-            }
-
-            require_once $bootstrap;
-        }
 
         Event\Facade::emitter()->testSuiteStarted($this);
 
@@ -527,6 +546,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                 if ($this->beStrictAboutChangesToGlobalState !== null) {
                     $test->setBeStrictAboutChangesToGlobalState($this->beStrictAboutChangesToGlobalState);
+                }
+
+                if (! empty( $this->bootstraps )) {
+                    $test->addBootstraps($this->bootstraps);
                 }
 
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
