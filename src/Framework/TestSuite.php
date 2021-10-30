@@ -319,7 +319,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     public function hasBootstraps(): bool
     {
-        return is_array( $this->bootstraps ) && count( $this->bootstraps ) > 0;
+        return count( $this->bootstraps ) > 0;
     }
 
     /**
@@ -440,7 +440,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 require_once $bootstrap;
             }
         }
-        
+
         if (count($this) === 0) {
             return;
         }
