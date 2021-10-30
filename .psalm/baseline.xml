@@ -924,7 +924,7 @@
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
-    <RedundantCast occurrences="31">
+    <RedundantCast occurrences="32">
       <code>(string) $argument-&gt;textContent</code>
       <code>(string) $const-&gt;getAttribute('name')</code>
       <code>(string) $const-&gt;getAttribute('value')</code>
@@ -949,6 +949,7 @@
       <code>(string) $fileNode-&gt;getAttribute('phpVersion')</code>
       <code>(string) $fileNode-&gt;getAttribute('phpVersionOperator')</code>
       <code>(string) $fileNode-&gt;textContent</code>
+      <code>(string) $bootstrapNode-&gt;textContent</code>
       <code>(string) $group-&gt;textContent</code>
       <code>(string) $group-&gt;textContent</code>
       <code>(string) $includePath-&gt;textContent</code>
@@ -957,9 +958,10 @@
       <code>(string) $var-&gt;getAttribute('name')</code>
       <code>(string) $var-&gt;getAttribute('value')</code>
     </RedundantCast>
-    <RedundantConditionGivenDocblockType occurrences="2">
+    <RedundantConditionGivenDocblockType occurrences="3">
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
+      <code>assert($bootstrapNode instanceof DOMElement)</code>
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/TextUI/Configuration/Xml/Logging/Logging.php">
