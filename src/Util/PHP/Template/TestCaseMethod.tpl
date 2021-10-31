@@ -122,10 +122,8 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
     require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
     unset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
 }
-var_dump( $GLOBALS );
-if (isset($GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS'])) {
-    var_dump( $GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS']);
 
+if (isset($GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS'])) {
     foreach($GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS'] as $bootstrap){
         require_once $bootstrap;
     }
