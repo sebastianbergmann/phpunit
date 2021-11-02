@@ -224,6 +224,10 @@ final class TeamCityLogger extends Printer
         if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
         }
+
+        if (!empty($event->throwable()->message())) {
+            $this->write($event->throwable()->message() . "\n");
+        }
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
