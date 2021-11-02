@@ -12,7 +12,7 @@ namespace PHPUnit\Logging\TeamCity;
 use function assert;
 use function getmypid;
 use function ini_get;
-use function is_subclass_of;
+use function is_a;
 use function sprintf;
 use function stripos;
 use PHPUnit\Event\Code\TestMethod;
@@ -35,7 +35,7 @@ use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
-use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Util\Exception;
 use PHPUnit\Util\Printer;
 
@@ -334,7 +334,7 @@ final class TeamCityLogger extends Printer
 
     private function throwableAsString(Throwable $throwable): string
     {
-        if (is_subclass_of($throwable->className(), AssertionFailedError::class)) {
+        if (is_a($throwable->className(), FrameworkException::class, true)) {
             return $throwable->message();
         }
 
