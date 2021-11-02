@@ -171,14 +171,18 @@ final class TeamCityLogger extends Printer
             $this->time = $event->telemetryInfo()->time();
         }
 
-        $this->writeMessage(
-            'testIgnored',
-            [
-                'name'     => $event->test()->name(),
-                'message'  => $event->message(),
-                'duration' => $this->duration($event),
-            ]
-        );
+        $parameters = [
+            'name'    => $event->test()->name(),
+            'message' => $event->message(),
+        ];
+
+        if ($event->hasThrowable()) {
+            $parameters['details'] = $event->throwable()->stackTrace();
+        }
+
+        $parameters['duration'] = $this->duration($event);
+
+        $this->writeMessage('testIgnored', $parameters);
     }
 
     public function testErrored(Errored $event): void
