@@ -12,9 +12,11 @@ namespace PHPUnit\Logging\TeamCity;
 use function assert;
 use function getmypid;
 use function ini_get;
+use function is_subclass_of;
 use function sprintf;
 use function stripos;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
@@ -33,6 +35,7 @@ use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Util\Exception;
 use PHPUnit\Util\Printer;
 
@@ -188,7 +191,7 @@ final class TeamCityLogger extends Printer
             'testFailed',
             [
                 'name'     => $event->test()->name(),
-                'message'  => $event->throwable()->message(),
+                'message'  => $this->throwableAsString($event->throwable()),
                 'details'  => $event->throwable()->stackTrace(),
                 'duration' => $this->duration($event),
             ]
@@ -205,7 +208,7 @@ final class TeamCityLogger extends Printer
             'testFailed',
             [
                 'name'     => $event->test()->name(),
-                'message'  => $event->throwable()->message(),
+                'message'  => $this->throwableAsString($event->throwable()),
                 'details'  => $event->throwable()->stackTrace(),
                 'duration' => $this->duration($event),
             ]
@@ -229,7 +232,7 @@ final class TeamCityLogger extends Printer
             'testFailed',
             [
                 'name'     => $event->test()->name(),
-                'message'  => $event->throwable()->message(),
+                'message'  => $this->throwableAsString($event->throwable()),
                 'details'  => $event->throwable()->stackTrace(),
                 'duration' => $this->duration($event),
             ]
@@ -319,5 +322,20 @@ final class TeamCityLogger extends Printer
             ['||', "|'", '|n', '|r', '|]', '|['],
             $string
         );
+    }
+
+    private function throwableAsString(Throwable $throwable): string
+    {
+        if (is_subclass_of($throwable->className(), AssertionFailedError::class)) {
+            return $throwable->message();
+        }
+
+        $buffer = $throwable->className();
+
+        if (!empty($throwable->message())) {
+            $buffer .= ': ' . $throwable->message();
+        }
+
+        return $buffer;
     }
 }
