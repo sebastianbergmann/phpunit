@@ -292,7 +292,7 @@ final class TeamCityLogger extends Printer
                 sprintf(
                     " %s='%s'",
                     $key,
-                    self::escape((string) $value)
+                    $this->escape((string) $value)
                 )
             );
         }
@@ -312,7 +312,7 @@ final class TeamCityLogger extends Printer
         return (int) round($event->telemetryInfo()->time()->duration($this->time)->asFloat() * 1000);
     }
 
-    private static function escape(string $string): string
+    private function escape(string $string): string
     {
         return str_replace(
             ['|', "'", "\n", "\r", ']', '['],
