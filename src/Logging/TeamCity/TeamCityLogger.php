@@ -349,6 +349,18 @@ final class TeamCityLogger extends Printer
 
     private function details(Throwable $throwable): string
     {
-        return $throwable->stackTrace();
+        $buffer = $throwable->stackTrace();
+
+        while ($throwable->hasPrevious()) {
+            $throwable = $throwable->previous();
+
+            $buffer .= sprintf(
+                "\nCaused by\n%s\n%s",
+                $throwable->description(),
+                $throwable->stackTrace()
+            );
+        }
+
+        return $buffer;
     }
 }
