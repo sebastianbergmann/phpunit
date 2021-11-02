@@ -1,5 +1,5 @@
 --TEST--
-phpunit --teamcity ../../_files/BankAccountTest.php
+phpunit --teamcity ../../basic/unit/StatusTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';

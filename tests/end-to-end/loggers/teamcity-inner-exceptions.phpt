@@ -1,5 +1,5 @@
 --TEST--
-phpunit --teamcity ../../_files/ExceptionStackTest.php
+phpunit --log-teamcity php://stdout ../../_files/ExceptionStackTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
