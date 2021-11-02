@@ -31,7 +31,7 @@ final class Throwable
 
     private string $stackTrace;
 
-    private ?self $previous;
+    private ?Throwable $previous;
 
     public static function from(\Throwable $t): self
     {
