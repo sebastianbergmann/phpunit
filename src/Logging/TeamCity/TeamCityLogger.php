@@ -159,7 +159,7 @@ final class TeamCityLogger extends Printer
             [
                 'name'     => $event->test()->name(),
                 'message'  => $event->throwable()->message(),
-                'details'  => $event->throwable()->stackTrace(),
+                'details'  => $this->details($event->throwable()),
                 'duration' => $this->duration($event),
             ]
         );
@@ -177,7 +177,7 @@ final class TeamCityLogger extends Printer
         ];
 
         if ($event->hasThrowable()) {
-            $parameters['details'] = $event->throwable()->stackTrace();
+            $parameters['details'] = $this->details($event->throwable());
         }
 
         $parameters['duration'] = $this->duration($event);
@@ -196,7 +196,7 @@ final class TeamCityLogger extends Printer
             [
                 'name'     => $event->test()->name(),
                 'message'  => $this->message($event->throwable()),
-                'details'  => $event->throwable()->stackTrace(),
+                'details'  => $this->details($event->throwable()),
                 'duration' => $this->duration($event),
             ]
         );
@@ -213,7 +213,7 @@ final class TeamCityLogger extends Printer
             [
                 'name'     => $event->test()->name(),
                 'message'  => $this->message($event->throwable()),
-                'details'  => $event->throwable()->stackTrace(),
+                'details'  => $this->details($event->throwable()),
                 'duration' => $this->duration($event),
             ]
         );
@@ -241,7 +241,7 @@ final class TeamCityLogger extends Printer
             [
                 'name'     => $event->test()->name(),
                 'message'  => $this->message($event->throwable()),
-                'details'  => $event->throwable()->stackTrace(),
+                'details'  => $this->details($event->throwable()),
                 'duration' => $this->duration($event),
             ]
         );
@@ -345,5 +345,10 @@ final class TeamCityLogger extends Printer
         }
 
         return $buffer;
+    }
+
+    private function details(Throwable $throwable): string
+    {
+        return $throwable->stackTrace();
     }
 }
