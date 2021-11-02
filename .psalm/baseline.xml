@@ -344,17 +344,6 @@
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) var_export($parameter-&gt;getDefaultValue(), true)</code>
     </RedundantCastGivenDocblockType>
-    <RedundantCondition occurrences="1">
-      <code>$type instanceof ReflectionIntersectionType</code>
-    </RedundantCondition>
-    <TypeDoesNotContainType occurrences="1">
-      <code>$type instanceof ReflectionIntersectionType</code>
-    </TypeDoesNotContainType>
-    <UndefinedClass occurrences="3">
-      <code>ReflectionIntersectionType</code>
-      <code>ReflectionIntersectionType</code>
-      <code>ReflectionIntersectionType</code>
-    </UndefinedClass>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <PropertyNotSetInConstructor occurrences="1">
@@ -485,9 +474,23 @@
     </RedundantCondition>
   </file>
   <file src="src/Logging/TeamCity/TeamCityLogger.php">
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock occurrences="7">
       <code>duration</code>
+      <code>duration</code>
+      <code>duration</code>
+      <code>duration</code>
+      <code>duration</code>
+      <code>duration</code>
+      <code>throwable</code>
     </MissingThrowsDocblock>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$flowId</code>
+    </PropertyNotSetInConstructor>
+    <RedundantCondition occurrences="3">
+      <code>assert($test instanceof TestMethod)</code>
+      <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
+      <code>assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)</code>
+    </RedundantCondition>
   </file>
   <file src="src/Logging/TestDox/CliTestDoxPrinter.php">
     <MissingThrowsDocblock occurrences="2">
