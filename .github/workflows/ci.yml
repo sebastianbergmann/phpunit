@@ -40,7 +40,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 7.4
-          extensions: none, ctype, date, dom, json, libxml, mbstring, pdo_sqlite, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
+          extensions: none, ctype, curl, date, dom, json, libxml, mbstring, pdo_sqlite, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
           coverage: none
           tools: none
 
