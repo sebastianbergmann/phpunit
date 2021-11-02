@@ -195,7 +195,7 @@ final class TeamCityLogger extends Printer
             'testFailed',
             [
                 'name'     => $event->test()->name(),
-                'message'  => $this->throwableAsString($event->throwable()),
+                'message'  => $this->message($event->throwable()),
                 'details'  => $event->throwable()->stackTrace(),
                 'duration' => $this->duration($event),
             ]
@@ -212,7 +212,7 @@ final class TeamCityLogger extends Printer
             'testFailed',
             [
                 'name'     => $event->test()->name(),
-                'message'  => $this->throwableAsString($event->throwable()),
+                'message'  => $this->message($event->throwable()),
                 'details'  => $event->throwable()->stackTrace(),
                 'duration' => $this->duration($event),
             ]
@@ -240,7 +240,7 @@ final class TeamCityLogger extends Printer
             'testFailed',
             [
                 'name'     => $event->test()->name(),
-                'message'  => $this->throwableAsString($event->throwable()),
+                'message'  => $this->message($event->throwable()),
                 'details'  => $event->throwable()->stackTrace(),
                 'duration' => $this->duration($event),
             ]
@@ -332,7 +332,7 @@ final class TeamCityLogger extends Printer
         );
     }
 
-    private function throwableAsString(Throwable $throwable): string
+    private function message(Throwable $throwable): string
     {
         if (is_a($throwable->className(), FrameworkException::class, true)) {
             return $throwable->message();
