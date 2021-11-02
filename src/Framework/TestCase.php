@@ -866,6 +866,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $emitter->testSkipped(
                 $this->valueObjectForEvents(),
+                Event\Code\Throwable::from($e),
                 $e->getMessage()
             );
         } catch (Warning $e) {
@@ -1899,6 +1900,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         Event\Facade::emitter()->testSkipped(
             $this->valueObjectForEvents(),
+            null,
             $message
         );
 

@@ -658,6 +658,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $emitter->testSkipped(
             $test,
+            Throwable::from(new Exception),
             $message
         );
 
@@ -669,6 +670,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame($test, $event->test());
         $this->assertSame($message, $event->message());
+        $this->assertTrue($event->hasThrowable());
+        $this->assertSame(Exception::class, $event->throwable()->className());
     }
 
     public function testTestPreparedDispatchesTestPreparedEvent(): void

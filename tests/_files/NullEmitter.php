@@ -90,7 +90,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSkipped(Code\Test $test, string $message): void
+    public function testSkipped(Code\Test $test, ?Throwable $throwable, string $message): void
     {
     }
 

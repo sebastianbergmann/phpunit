@@ -12,7 +12,9 @@ namespace PHPUnit\Event\Test;
 use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
+use PHPUnit\Event\NoThrowableException;
 use PHPUnit\Event\Telemetry;
 
 /**
@@ -24,12 +26,15 @@ final class Skipped implements Event
 
     private Code\Test $test;
 
+    private ?Throwable $throwable;
+
     private string $message;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, string $message)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, ?Throwable $throwable, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
+        $this->throwable     = $throwable;
         $this->message       = $message;
     }
 
@@ -41,6 +46,26 @@ final class Skipped implements Event
     public function test(): Code\Test
     {
         return $this->test;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->throwable
+     */
+    public function hasThrowable(): bool
+    {
+        return $this->throwable !== null;
+    }
+
+    /**
+     * @throws NoThrowableException
+     */
+    public function throwable(): Throwable
+    {
+        if ($this->throwable === null) {
+            throw new NoThrowableException;
+        }
+
+        return $this->throwable;
     }
 
     public function message(): string
