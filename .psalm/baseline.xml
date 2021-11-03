@@ -795,8 +795,7 @@
     <PossiblyInvalidArgument occurrences="1">
       <code>$linesToBeCovered</code>
     </PossiblyInvalidArgument>
-    <PossiblyUndefinedVariable occurrences="6">
-      <code>$_timeout</code>
+    <PossiblyUndefinedVariable occurrences="5">
       <code>$_timeout</code>
       <code>$e</code>
       <code>$e</code>
@@ -807,7 +806,7 @@
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
     </RedundantConditionGivenDocblockType>
-    <UndefinedInterfaceMethod occurrences="16">
+    <UndefinedInterfaceMethod occurrences="13">
       <code>addToAssertionCount</code>
       <code>addToAssertionCount</code>
       <code>doesNotPerformAssertions</code>
@@ -819,9 +818,6 @@
       <code>getNumAssertions</code>
       <code>getNumAssertions</code>
       <code>getNumAssertions</code>
-      <code>getSize</code>
-      <code>getSize</code>
-      <code>getSize</code>
       <code>hasOutput</code>
       <code>runBare</code>
     </UndefinedInterfaceMethod>
