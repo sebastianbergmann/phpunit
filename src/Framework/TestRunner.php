@@ -96,8 +96,7 @@ final class TestRunner
 
             if (!$test instanceof ErrorTestCase &&
                 !$test instanceof WarningTestCase &&
-                $result->enforcesTimeLimit() &&
-                ($result->defaultTimeLimit() || $test->size()->isKnown()) &&
+                $this->shouldTimeLimitBeEnforced($test, $result) &&
                 $invoker->canInvokeWithTimeout()) {
                 $_timeout = $result->defaultTimeLimit();
 
@@ -425,5 +424,30 @@ final class TestRunner
         }
 
         return false;
+    }
+
+    private function shouldTimeLimitBeEnforced(TestCase $test, TestResult $result): bool
+    {
+        if (!$result->enforcesTimeLimit()) {
+            return false;
+        }
+
+        if (!(($result->defaultTimeLimit() || $test->size()->isKnown()))) {
+            return false;
+        }
+
+        if (!extension_loaded('pcntl')) {
+            return false;
+        }
+
+        if (!class_exists(Invoker::class)) {
+            return false;
+        }
+
+        if (extension_loaded('xdebug') && xdebug_is_debugger_active()) {
+            return false;
+        }
+
+        return true;
     }
 }
