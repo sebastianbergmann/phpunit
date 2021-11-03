@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
+use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
 
 /**
@@ -31,6 +32,6 @@ final class DeprecatedPhpFeatureUsedTest extends AbstractEventTestCase
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
         $this->assertSame($message, $event->message());
-        $this->assertSame("Test Used Deprecated PHP Feature (PHPUnit\Event\AbstractEventTestCase::foo)\nmessage", $event->asString());
+        $this->assertSame('Test Used Deprecated PHP Feature (PHPUnit\Event\AbstractEventTestCase::foo)' . PHP_EOL . 'message', $event->asString());
     }
 }
