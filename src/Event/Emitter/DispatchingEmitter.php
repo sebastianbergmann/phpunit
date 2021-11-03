@@ -430,6 +430,28 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testUsedDeprecatedPhpunitFeature(Code\Test $test, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\DeprecatedPhpunitFeatureUsed(
+                $this->telemetryInfo(),
+                $test,
+                $message
+            )
+        );
+    }
+
+    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\DeprecatedPhpFeatureUsed(
+                $this->telemetryInfo(),
+                $test,
+                $message
+            )
+        );
+    }
+
     /**
      * @psalm-param class-string $className
      */

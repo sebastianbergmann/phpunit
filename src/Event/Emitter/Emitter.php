@@ -126,6 +126,10 @@ interface Emitter
      */
     public function testAfterLastTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
 
+    public function testUsedDeprecatedPhpunitFeature(Code\Test $test, string $message): void;
+
+    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message): void;
+
     /**
      * @psalm-param class-string $className
      */

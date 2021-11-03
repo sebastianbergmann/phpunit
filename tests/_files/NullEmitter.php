@@ -150,6 +150,14 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testUsedDeprecatedPhpunitFeature(Code\Test $test, string $message): void
+    {
+    }
+
+    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message): void
+    {
+    }
+
     public function testMockObjectCreated(string $className): void
     {
     }

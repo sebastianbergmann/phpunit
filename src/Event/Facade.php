@@ -217,6 +217,8 @@ final class Facade
             Test\PreConditionFinished::class,
             Test\Prepared::class,
             Test\Skipped::class,
+            Test\DeprecatedPhpunitFeatureUsed::class,
+            Test\DeprecatedPhpFeatureUsed::class,
             TestDouble\MockObjectCreated::class,
             TestDouble\MockObjectCreatedForAbstractClass::class,
             TestDouble\MockObjectCreatedForTrait::class,
