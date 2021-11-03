@@ -17,6 +17,7 @@ use function function_exists;
 use function get_class;
 use function sprintf;
 use function xdebug_get_monitored_functions;
+use function xdebug_is_debugger_active;
 use function xdebug_start_function_monitor;
 use function xdebug_stop_function_monitor;
 use AssertionError;
@@ -676,7 +677,7 @@ final class TestResult implements Countable
         try {
             if (!$test instanceof WarningTestCase &&
                 $this->shouldTimeLimitBeEnforced($size)) {
-                switch ($test->getSize()) {
+                switch ($size) {
                     case TestUtil::SMALL:
                         $_timeout = $this->timeoutForSmallTests;
 
@@ -1244,6 +1245,10 @@ final class TestResult implements Countable
         }
 
         if (!class_exists(Invoker::class)) {
+            return false;
+        }
+
+        if (extension_loaded('xdebug') && xdebug_is_debugger_active()) {
             return false;
         }
 
