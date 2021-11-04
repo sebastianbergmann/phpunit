@@ -14,6 +14,14 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final class Configuration
 {
+    public const COLOR_NEVER = 'never';
+
+    public const COLOR_AUTO = 'auto';
+
+    public const COLOR_ALWAYS = 'always';
+
+    public const COLOR_DEFAULT = self::COLOR_NEVER;
+
     private ?string $configurationFile;
 
     private ?string $bootstrap;

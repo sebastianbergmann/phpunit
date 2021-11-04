@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection as CodeCoverageFilterDirectoryCollection;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
@@ -77,7 +76,7 @@ final class DefaultConfiguration extends Configuration
                 true,
                 null,
                 80,
-                DefaultResultPrinter::COLOR_DEFAULT,
+                \PHPUnit\TextUI\Configuration\Configuration::COLOR_DEFAULT,
                 false,
                 false,
                 false,

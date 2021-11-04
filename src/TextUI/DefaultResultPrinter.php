@@ -48,14 +48,6 @@ use Throwable;
  */
 class DefaultResultPrinter extends Printer implements ResultPrinter
 {
-    public const COLOR_NEVER = 'never';
-
-    public const COLOR_AUTO = 'auto';
-
-    public const COLOR_ALWAYS = 'always';
-
-    public const COLOR_DEFAULT = self::COLOR_NEVER;
-
     protected int $column = 0;
 
     protected ?int $maxColumn = null;

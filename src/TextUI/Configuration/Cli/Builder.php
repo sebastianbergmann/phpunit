@@ -14,7 +14,6 @@ use function array_merge;
 use function explode;
 use function is_numeric;
 use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\DefaultResultPrinter;
 use SebastianBergmann\CliParser\Exception as CliParserException;
 use SebastianBergmann\CliParser\Parser as CliParser;
 
@@ -226,7 +225,7 @@ final class Builder
         foreach ($options[0] as $option) {
             switch ($option[0]) {
                 case '--colors':
-                    $colors = $option[1] ?: DefaultResultPrinter::COLOR_AUTO;
+                    $colors = $option[1] ?: \PHPUnit\TextUI\Configuration\Configuration::COLOR_AUTO;
 
                     break;
 

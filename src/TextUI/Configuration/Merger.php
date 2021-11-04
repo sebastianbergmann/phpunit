@@ -19,7 +19,6 @@ use function realpath;
 use function time;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
-use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
 use PHPUnit\Util\Filesystem;
@@ -393,14 +392,14 @@ final class Merger
         $colorsSupported = (new Console)->hasColorSupport();
 
         if ($cliConfiguration->hasColors()) {
-            if ($cliConfiguration->colors() === DefaultResultPrinter::COLOR_ALWAYS) {
+            if ($cliConfiguration->colors() === Configuration::COLOR_ALWAYS) {
                 $colors = true;
-            } elseif ($colorsSupported && $cliConfiguration->colors() === DefaultResultPrinter::COLOR_AUTO) {
+            } elseif ($colorsSupported && $cliConfiguration->colors() === Configuration::COLOR_AUTO) {
                 $colors = true;
             }
-        } elseif ($xmlConfiguration->phpunit()->colors() === DefaultResultPrinter::COLOR_ALWAYS) {
+        } elseif ($xmlConfiguration->phpunit()->colors() === Configuration::COLOR_ALWAYS) {
             $colors = true;
-        } elseif ($colorsSupported && $xmlConfiguration->phpunit()->colors() === DefaultResultPrinter::COLOR_AUTO) {
+        } elseif ($colorsSupported && $xmlConfiguration->phpunit()->colors() === Configuration::COLOR_AUTO) {
             $colors = true;
         }
 
