@@ -158,6 +158,10 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testUsedDeprecatedFeature(Code\Test $test, string $message): void
+    {
+    }
+
     public function testMockObjectCreated(string $className): void
     {
     }

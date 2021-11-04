@@ -130,6 +130,8 @@ interface Emitter
 
     public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message): void;
 
+    public function testUsedDeprecatedFeature(Code\Test $test, string $message): void;
+
     /**
      * @psalm-param class-string $className
      */
