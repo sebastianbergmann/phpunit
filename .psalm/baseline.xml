@@ -1047,7 +1047,13 @@
       <code>$this-&gt;testSuites</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/TextUI/DefaultResultPrinter.php">
+  <file src="src/TextUI/Help.php">
+    <PossiblyUndefinedArrayOffset occurrences="2">
+      <code>$option['desc']</code>
+      <code>$option['desc']</code>
+    </PossiblyUndefinedArrayOffset>
+  </file>
+  <file src="src/TextUI/ResultPrinter/OldResultPrinter.php">
     <MissingThrowsDocblock occurrences="2">
       <code>parent::__construct($out)</code>
       <code>stop</code>
@@ -1055,12 +1061,6 @@
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$numberOfColumns</code>
     </PossiblyInvalidPropertyAssignmentValue>
-  </file>
-  <file src="src/TextUI/Help.php">
-    <PossiblyUndefinedArrayOffset occurrences="2">
-      <code>$option['desc']</code>
-      <code>$option['desc']</code>
-    </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
     <DeprecatedMethod occurrences="6">
