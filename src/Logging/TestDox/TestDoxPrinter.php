@@ -25,7 +25,7 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\TextUI\OldResultPrinter;
+use PHPUnit\TextUI\ResultPrinter\OldResultPrinter;
 use PHPUnit\Util\Filter;
 use Throwable;
 

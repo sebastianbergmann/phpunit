@@ -19,7 +19,7 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Framework\WarningTestCase;
-use PHPUnit\TextUI\ResultPrinter as ResultPrinterInterface;
+use PHPUnit\TextUI\ResultPrinter\ResultPrinter as ResultPrinterInterface;
 use PHPUnit\Util\Printer;
 use Throwable;
 

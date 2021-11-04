@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI;
+namespace PHPUnit\TextUI\ResultPrinter;
 
 use const PHP_EOL;
 use function array_map;
