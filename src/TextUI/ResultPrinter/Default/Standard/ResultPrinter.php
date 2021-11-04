@@ -18,6 +18,7 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\TextUI\ResultPrinter\ResultPrinter as ResultPrinterInterface;
@@ -28,15 +29,36 @@ use PHPUnit\Util\Printer;
  */
 final class ResultPrinter extends Printer implements ResultPrinterInterface
 {
-    public function __construct(string $out)
+    private int $numberOfColumns;
+
+    private int $numberOfTests = -1;
+
+    private int $numberOfTestsWidth;
+
+    private int $maxColumn;
+
+    public function __construct(string $out, int $numberOfColumns)
     {
         parent::__construct($out);
+
+        $this->numberOfColumns = $numberOfColumns;
 
         $this->registerSubscribers();
     }
 
     public function printResult(TestResult $result): void
     {
+    }
+
+    public function testSuiteStarted(Started $event): void
+    {
+        if ($this->numberOfTests !== -1) {
+            return;
+        }
+
+        $this->numberOfTests      = $event->testSuite()->count();
+        $this->numberOfTestsWidth = strlen((string) $this->numberOfTests);
+        $this->maxColumn          = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numberOfTestsWidth);
     }
 
     public function testAborted(Aborted $event): void
@@ -73,6 +95,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
      */
     private function registerSubscribers(): void
     {
+        Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
