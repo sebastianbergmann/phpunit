@@ -138,10 +138,14 @@ final class Color
     {
         $replaceMap = $visualizeEOL ? self::WHITESPACE_EOL_MAP : self::WHITESPACE_MAP;
 
-        return preg_replace_callback('/\s+/', static function ($matches) use ($replaceMap)
-        {
-            return self::dim(strtr($matches[0], $replaceMap));
-        }, $buffer);
+        return preg_replace_callback(
+            '/\s+/',
+            static function ($matches) use ($replaceMap)
+            {
+                return self::dim(strtr($matches[0], $replaceMap));
+            },
+            $buffer
+        );
     }
 
     private static function optimizeColor(string $buffer): string
