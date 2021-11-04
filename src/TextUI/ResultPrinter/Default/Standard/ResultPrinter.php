@@ -29,7 +29,15 @@ use PHPUnit\Util\Printer;
  */
 final class ResultPrinter extends Printer implements ResultPrinterInterface
 {
+    private bool $colors;
+
+    private bool $verbose;
+
     private int $numberOfColumns;
+
+    private bool $reverse;
+
+    private int $column = 0;
 
     private int $numberOfTests = -1;
 
@@ -37,11 +45,18 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     private int $maxColumn;
 
-    public function __construct(string $out, int $numberOfColumns)
+    private int $numberOfTestsRun = 0;
+
+    private bool $progressWritten = false;
+
+    public function __construct(string $out, bool $verbose, bool $colors, int $numberOfColumns, bool $reverse)
     {
         parent::__construct($out);
 
+        $this->verbose         = $verbose;
+        $this->colors          = $colors;
         $this->numberOfColumns = $numberOfColumns;
+        $this->reverse         = $reverse;
 
         $this->registerSubscribers();
     }
@@ -103,5 +118,40 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
+    }
+
+    private function writeProgress(string $progress): void
+    {
+        if ($this->progressWritten) {
+            return;
+        }
+
+        $this->write($progress);
+
+        $this->progressWritten = true;
+
+        $this->column++;
+        $this->numberOfTestsRun++;
+
+        if ($this->column === $this->maxColumn || $this->numberOfTestsRun === $this->numberOfTests) {
+            if ($this->numberOfTestsRun === $this->numberOfTests) {
+                $this->write(str_repeat(' ', $this->maxColumn - $this->column));
+            }
+
+            $this->write(
+                sprintf(
+                    ' %' . $this->numberOfTestsWidth . 'd / %' .
+                    $this->numberOfTestsWidth . 'd (%3s%%)',
+                    $this->numberOfTestsRun,
+                    $this->numberOfTests,
+                    floor(($this->numberOfTestsRun / $this->numberOfTests) * 100)
+                )
+            );
+
+            if ($this->column === $this->maxColumn) {
+                $this->column = 0;
+                $this->write("\n");
+            }
+        }
     }
 }
