@@ -1053,6 +1053,16 @@
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
+  <file src="src/TextUI/ResultPrinter/Default/Standard/ResultPrinter.php">
+    <MissingThrowsDocblock occurrences="2">
+      <code>parent::__construct($out)</code>
+      <code>registerSubscribers</code>
+    </MissingThrowsDocblock>
+    <PropertyNotSetInConstructor occurrences="2">
+      <code>$maxColumn</code>
+      <code>$numberOfTestsWidth</code>
+    </PropertyNotSetInConstructor>
+  </file>
   <file src="src/TextUI/ResultPrinter/OldResultPrinter.php">
     <MissingThrowsDocblock occurrences="2">
       <code>parent::__construct($out)</code>
