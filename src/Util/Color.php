@@ -97,17 +97,17 @@ final class Color
         return self::optimizeColor(sprintf("\x1b[%sm", implode(';', $styles)) . $buffer . "\x1b[0m");
     }
 
-    public static function colorizePath(string $path, ?string $prevPath = null, bool $colorizeFilename = false): string
+    public static function colorizePath(string $path, ?string $previousPath = null, bool $colorizeFilename = false): string
     {
-        if ($prevPath === null) {
-            $prevPath = '';
+        if ($previousPath === null) {
+            $previousPath = '';
         }
 
-        $path     = explode(DIRECTORY_SEPARATOR, $path);
-        $prevPath = explode(DIRECTORY_SEPARATOR, $prevPath);
+        $path         = explode(DIRECTORY_SEPARATOR, $path);
+        $previousPath = explode(DIRECTORY_SEPARATOR, $previousPath);
 
-        for ($i = 0; $i < min(count($path), count($prevPath)); $i++) {
-            if ($path[$i] == $prevPath[$i]) {
+        for ($i = 0; $i < min(count($path), count($previousPath)); $i++) {
+            if ($path[$i] === $previousPath[$i]) {
                 $path[$i] = self::dim($path[$i]);
             }
         }
