@@ -27,7 +27,6 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\RiskyTest;
-use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
@@ -506,14 +505,5 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
             $first = false;
         }
-    }
-
-    private function describe(Test $test): string
-    {
-        if ($test instanceof SelfDescribing) {
-            return $test->toString();
-        }
-
-        return $test::class;
     }
 }
