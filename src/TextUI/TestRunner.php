@@ -175,8 +175,6 @@ final class TestRunner
         $this->printer = $this->createPrinter();
 
         if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
-            assert($this->printer instanceof CliTestDoxPrinter);
-
             $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
             $this->printer->setShowProgressAnimation(!$this->configuration->noInteraction());
         }
