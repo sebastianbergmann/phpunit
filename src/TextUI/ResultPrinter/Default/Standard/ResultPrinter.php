@@ -39,10 +39,6 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     {
     }
 
-    public function write(string $buffer): void
-    {
-    }
-
     public function testAborted(Aborted $event): void
     {
     }
