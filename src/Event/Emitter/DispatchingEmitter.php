@@ -441,24 +441,28 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message): void
+    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
             new Test\DeprecatedPhpFeatureUsed(
                 $this->telemetryInfo(),
                 $test,
-                $message
+                $message,
+                $file,
+                $line
             )
         );
     }
 
-    public function testUsedDeprecatedFeature(Code\Test $test, string $message): void
+    public function testUsedDeprecatedFeature(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
             new Test\DeprecatedFeatureUsed(
                 $this->telemetryInfo(),
                 $test,
-                $message
+                $message,
+                $file,
+                $line
             )
         );
     }

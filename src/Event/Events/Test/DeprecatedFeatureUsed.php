@@ -25,11 +25,17 @@ final class DeprecatedFeatureUsed implements Event
 
     private string $message;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message)
+    private string $file;
+
+    private int $line;
+
+    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
         $this->message       = $message;
+        $this->file          = $file;
+        $this->line          = $line;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -45,6 +51,16 @@ final class DeprecatedFeatureUsed implements Event
     public function message(): string
     {
         return $this->message;
+    }
+
+    public function file(): string
+    {
+        return $this->file;
+    }
+
+    public function line(): int
+    {
+        return $this->line;
     }
 
     public function asString(): string

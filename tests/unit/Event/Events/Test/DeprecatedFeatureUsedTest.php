@@ -22,16 +22,22 @@ final class DeprecatedFeatureUsedTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
         $message       = 'message';
+        $file          = 'file';
+        $line          = 1;
 
         $event = new DeprecatedFeatureUsed(
             $telemetryInfo,
             $test,
-            $message
+            $message,
+            $file,
+            $line
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
         $this->assertSame($message, $event->message());
+        $this->assertSame($file, $event->file());
+        $this->assertSame($line, $event->line());
         $this->assertSame('Test Used Deprecated Feature (PHPUnit\Event\AbstractEventTestCase::foo)' . PHP_EOL . 'message', $event->asString());
     }
 }

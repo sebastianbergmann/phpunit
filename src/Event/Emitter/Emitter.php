@@ -128,9 +128,9 @@ interface Emitter
 
     public function testUsedDeprecatedPhpunitFeature(Code\Test $test, string $message): void;
 
-    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message): void;
+    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message, string $file, int $line): void;
 
-    public function testUsedDeprecatedFeature(Code\Test $test, string $message): void;
+    public function testUsedDeprecatedFeature(Code\Test $test, string $message, string $file, int $line): void;
 
     /**
      * @psalm-param class-string $className
