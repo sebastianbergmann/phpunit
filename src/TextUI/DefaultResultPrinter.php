@@ -95,7 +95,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
         $maxNumberOfColumns = (new Console)->getNumberOfColumns();
 
-        if ($numberOfColumns === 'max' || ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns)) {
+        if ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns) {
             $numberOfColumns = $maxNumberOfColumns;
         }
 
