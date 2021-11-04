@@ -78,30 +78,39 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     public function testAborted(Aborted $event): void
     {
+        $this->writeProgress('I');
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
     {
+        $this->writeProgress('R');
     }
 
     public function testErrored(Errored $event): void
     {
+        $this->writeProgress('E');
     }
 
     public function testFailed(Failed $event): void
     {
+        $this->writeProgress('F');
     }
 
     public function testFinished(Finished $event): void
     {
+        $this->writeProgress('.');
+
+        $this->progressWritten = false;
     }
 
     public function testPassedWithWarning(PassedWithWarning $event): void
     {
+        $this->writeProgress('W');
     }
 
     public function testSkipped(Skipped $event): void
     {
+        $this->writeProgress('S');
     }
 
     /**
