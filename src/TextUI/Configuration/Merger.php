@@ -395,12 +395,12 @@ final class Merger
         if ($cliConfiguration->hasColors()) {
             if ($cliConfiguration->colors() === DefaultResultPrinter::COLOR_ALWAYS) {
                 $colors = true;
-            } elseif ($cliConfiguration->colors() === DefaultResultPrinter::COLOR_AUTO && $colorsSupported) {
+            } elseif ($colorsSupported && $cliConfiguration->colors() === DefaultResultPrinter::COLOR_AUTO) {
                 $colors = true;
             }
         } elseif ($xmlConfiguration->phpunit()->colors() === DefaultResultPrinter::COLOR_ALWAYS) {
             $colors = true;
-        } elseif ($xmlConfiguration->phpunit()->colors() === DefaultResultPrinter::COLOR_AUTO && $colorsSupported) {
+        } elseif ($colorsSupported && $xmlConfiguration->phpunit()->colors() === DefaultResultPrinter::COLOR_AUTO) {
             $colors = true;
         }
 
