@@ -25,14 +25,14 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\TextUI\DefaultResultPrinter;
+use PHPUnit\TextUI\OldResultPrinter;
 use PHPUnit\Util\Filter;
 use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class TestDoxPrinter extends DefaultResultPrinter
+abstract class TestDoxPrinter extends OldResultPrinter
 {
     protected NamePrettifier $prettifier;
 

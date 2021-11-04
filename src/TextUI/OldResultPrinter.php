@@ -45,7 +45,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class DefaultResultPrinter extends Printer implements ResultPrinter
+class OldResultPrinter extends Printer implements ResultPrinter
 {
     protected int $column          = 0;
     protected ?int $maxColumn      = null;
