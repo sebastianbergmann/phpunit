@@ -11,6 +11,7 @@ namespace PHPUnit\Logging;
 
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Test;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
@@ -20,7 +21,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class VoidPrinter implements ResultPrinter
+final class VoidPrinter implements ResultPrinter, TestListener
 {
     public function addError(Test $test, Throwable $t, float $time): void
     {

@@ -30,6 +30,7 @@ use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
+use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Framework\Warning;
@@ -45,7 +46,7 @@ use Throwable;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class OldResultPrinter extends Printer implements ResultPrinter
+class OldResultPrinter extends Printer implements ResultPrinter, TestListener
 {
     protected int $column          = 0;
     protected ?int $maxColumn      = null;
