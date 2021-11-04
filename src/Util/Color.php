@@ -10,9 +10,7 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
-use function array_keys;
 use function array_map;
-use function array_values;
 use function count;
 use function explode;
 use function implode;
@@ -148,12 +146,18 @@ final class Color
 
     private static function optimizeColor(string $buffer): string
     {
-        $patterns = [
-            "/\e\\[22m\e\\[2m/"                   => '',
-            "/\e\\[([^m]*)m\e\\[([1-9][0-9;]*)m/" => "\e[$1;$2m",
-            "/(\e\\[[^m]*m)+(\e\\[0m)/"           => '$2',
-        ];
-
-        return preg_replace(array_keys($patterns), array_values($patterns), $buffer);
+        return preg_replace(
+            [
+                "/\e\\[22m\e\\[2m/",
+                "/\e\\[([^m]*)m\e\\[([1-9][0-9;]*)m/",
+                "/(\e\\[[^m]*m)+(\e\\[0m)/",
+            ],
+            [
+                '',
+                "\e[$1;$2m",
+                '$2',
+            ],
+            $buffer
+        );
     }
 }
