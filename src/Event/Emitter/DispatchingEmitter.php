@@ -576,6 +576,16 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testSuiteFiltered(FrameworkTestSuite $testSuite): void
+    {
+        $this->dispatcher->dispatch(
+            new TestSuite\Filtered(
+                $this->telemetryInfo(),
+                TestSuiteInfo::fromTestSuite($testSuite)
+            )
+        );
+    }
+
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
         $this->dispatcher->dispatch(

@@ -233,6 +233,7 @@ final class Facade
             TestRunner\Started::class,
             TestSuite\Finished::class,
             TestSuite\Loaded::class,
+            TestSuite\Filtered::class,
             TestSuite\Sorted::class,
             TestSuite\Started::class,
         ];

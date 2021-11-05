@@ -170,6 +170,8 @@ interface Emitter
 
     public function testSuiteLoaded(TestSuite $testSuite): void;
 
+    public function testSuiteFiltered(TestSuite $testSuite): void;
+
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void;
 
     public function testSuiteStarted(TestSuite $testSuite): void;

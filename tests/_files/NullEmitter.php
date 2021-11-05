@@ -200,6 +200,10 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testSuiteFiltered(TestSuite $testSuite): void
+    {
+    }
+
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
     }

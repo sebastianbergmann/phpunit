@@ -565,6 +565,8 @@ final class TestRunner
             !$this->configuration->hasExcludeGroups() &&
             !$this->configuration->hasTestsCovering() &&
             !$this->configuration->hasTestsUsing()) {
+            Event\Facade::emitter()->testSuiteFiltered($suite);
+
             return;
         }
 
@@ -613,6 +615,8 @@ final class TestRunner
         }
 
         $suite->injectFilter($filterFactory);
+
+        Event\Facade::emitter()->testSuiteFiltered($suite);
     }
 
     private function writeMessage(string $type, string $message): void
