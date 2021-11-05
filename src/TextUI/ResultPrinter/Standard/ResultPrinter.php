@@ -16,6 +16,7 @@ use function preg_split;
 use function str_pad;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\AssertionMade;
 use PHPUnit\Event\TestSuite\Filtered;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestResult;
@@ -47,6 +48,8 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private int $numberOfTestsRun = 0;
 
     private bool $progressWritten = false;
+
+    private int $numberOfAssertions = 0;
 
     public function __construct(string $out, bool $verbose, bool $colors, int $numberOfColumns, bool $reverse)
     {
@@ -108,6 +111,11 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->writeProgressWithColor('fg-cyan, bold', 'S');
     }
 
+    public function assertionMade(AssertionMade $event): void
+    {
+        $this->numberOfAssertions += $event->constraint()->count();
+    }
+
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
@@ -122,6 +130,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
+        Facade::registerSubscriber(new AssertionMadeSubscriber($this));
     }
 
     private function writeProgressWithColor(string $color, string $progress): void
