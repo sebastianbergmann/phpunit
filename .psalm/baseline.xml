@@ -1103,6 +1103,9 @@
       <code>parent::__construct($out)</code>
       <code>stop</code>
     </MissingThrowsDocblock>
+    <PossiblyInvalidPropertyAssignmentValue occurrences="1">
+      <code>$numberOfColumns</code>
+    </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/TextUI/Help.php">
     <MissingClosureParamType occurrences="1">
@@ -1175,9 +1178,6 @@
       <code>write</code>
       <code>write</code>
     </PossiblyNullReference>
-    <RedundantCondition occurrences="1">
-      <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
-    </RedundantCondition>
   </file>
   <file src="src/Util/Color.php">
     <MissingClosureParamType occurrences="2">
