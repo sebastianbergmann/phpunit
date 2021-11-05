@@ -9,12 +9,18 @@
  */
 namespace PHPUnit\TextUI\ResultPrinter\Standard;
 
+use const PHP_EOL;
+use function implode;
+use function max;
+use function preg_split;
+use function str_pad;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\TestSuite\Filtered;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\TextUI\ResultPrinter\ResultPrinter as ResultPrinterInterface;
+use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 
 /**
@@ -67,22 +73,22 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     public function testAborted(): void
     {
-        $this->writeProgress('I');
+        $this->writeProgressWithColor('fg-yellow, bold', 'I');
     }
 
     public function testConsideredRisky(): void
     {
-        $this->writeProgress('R');
+        $this->writeProgressWithColor('fg-yellow, bold', 'R');
     }
 
     public function testErrored(): void
     {
-        $this->writeProgress('E');
+        $this->writeProgressWithColor('fg-red, bold', 'E');
     }
 
     public function testFailed(): void
     {
-        $this->writeProgress('F');
+        $this->writeProgressWithColor('bg-red, fg-white', 'F');
     }
 
     public function testFinished(): void
@@ -94,12 +100,12 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     public function testPassedWithWarning(): void
     {
-        $this->writeProgress('W');
+        $this->writeProgressWithColor('fg-yellow, bold', 'W');
     }
 
     public function testSkipped(): void
     {
-        $this->writeProgress('S');
+        $this->writeProgressWithColor('fg-cyan, bold', 'S');
     }
 
     /**
@@ -116,6 +122,13 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
+    }
+
+    private function writeProgressWithColor(string $color, string $progress): void
+    {
+        $progress = $this->colorizeTextBox($color, $progress);
+
+        $this->writeProgress($progress);
     }
 
     private function writeProgress(string $progress): void
@@ -151,5 +164,23 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
                 $this->write("\n");
             }
         }
+    }
+
+    private function colorizeTextBox(string $color, string $buffer): string
+    {
+        if (!$this->colors) {
+            return $buffer;
+        }
+
+        $lines   = preg_split('/\r\n|\r|\n/', $buffer);
+        $padding = max(array_map('\strlen', $lines));
+
+        $styledLines = [];
+
+        foreach ($lines as $line) {
+            $styledLines[] = Color::colorize($color, str_pad($line, $padding));
+        }
+
+        return implode(PHP_EOL, $styledLines);
     }
 }
