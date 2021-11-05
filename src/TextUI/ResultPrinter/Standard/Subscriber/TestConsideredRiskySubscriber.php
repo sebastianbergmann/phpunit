@@ -19,6 +19,6 @@ final class TestConsideredRiskySubscriber extends Subscriber implements Consider
 {
     public function notify(ConsideredRisky $event): void
     {
-        $this->printer()->testConsideredRisky($event);
+        $this->printer()->testConsideredRisky();
     }
 }

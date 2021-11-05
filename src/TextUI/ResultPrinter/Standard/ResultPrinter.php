@@ -11,13 +11,6 @@ namespace PHPUnit\TextUI\ResultPrinter\Standard;
 
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
-use PHPUnit\Event\Test\Aborted;
-use PHPUnit\Event\Test\ConsideredRisky;
-use PHPUnit\Event\Test\Errored;
-use PHPUnit\Event\Test\Failed;
-use PHPUnit\Event\Test\Finished;
-use PHPUnit\Event\Test\PassedWithWarning;
-use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Filtered;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestResult;
@@ -72,39 +65,39 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->maxColumn          = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numberOfTestsWidth);
     }
 
-    public function testAborted(Aborted $event): void
+    public function testAborted(): void
     {
         $this->writeProgress('I');
     }
 
-    public function testConsideredRisky(ConsideredRisky $event): void
+    public function testConsideredRisky(): void
     {
         $this->writeProgress('R');
     }
 
-    public function testErrored(Errored $event): void
+    public function testErrored(): void
     {
         $this->writeProgress('E');
     }
 
-    public function testFailed(Failed $event): void
+    public function testFailed(): void
     {
         $this->writeProgress('F');
     }
 
-    public function testFinished(Finished $event): void
+    public function testFinished(): void
     {
         $this->writeProgress('.');
 
         $this->progressWritten = false;
     }
 
-    public function testPassedWithWarning(PassedWithWarning $event): void
+    public function testPassedWithWarning(): void
     {
         $this->writeProgress('W');
     }
 
-    public function testSkipped(Skipped $event): void
+    public function testSkipped(): void
     {
         $this->writeProgress('S');
     }

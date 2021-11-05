@@ -19,6 +19,6 @@ final class TestFailedSubscriber extends Subscriber implements FailedSubscriber
 {
     public function notify(Failed $event): void
     {
-        $this->printer()->testFailed($event);
+        $this->printer()->testFailed();
     }
 }

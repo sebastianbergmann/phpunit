@@ -19,6 +19,6 @@ final class TestPassedWithWarningSubscriber extends Subscriber implements Passed
 {
     public function notify(PassedWithWarning $event): void
     {
-        $this->printer()->testPassedWithWarning($event);
+        $this->printer()->testPassedWithWarning();
     }
 }

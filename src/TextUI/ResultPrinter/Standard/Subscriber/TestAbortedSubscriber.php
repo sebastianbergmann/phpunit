@@ -19,6 +19,6 @@ final class TestAbortedSubscriber extends Subscriber implements AbortedSubscribe
 {
     public function notify(Aborted $event): void
     {
-        $this->printer()->testAborted($event);
+        $this->printer()->testAborted();
     }
 }
