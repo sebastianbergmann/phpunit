@@ -46,6 +46,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\ResultPrinter\OldResultPrinter;
 use PHPUnit\TextUI\ResultPrinter\ResultPrinter;
+use PHPUnit\TextUI\ResultPrinter\Standard\ResultPrinter as StandardResultPrinter;
 use PHPUnit\TextUI\ResultPrinter\VoidPrinter;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
@@ -650,7 +651,7 @@ final class TestRunner
         $className = VoidPrinter::class;
 
         if ($this->configuration->outputIsDefault()) {
-            $className = OldResultPrinter::class;
+            $className = StandardResultPrinter::class;
         } elseif ($this->configuration->outputIsTestDox()) {
             $className = CliTestDoxPrinter::class;
         }
