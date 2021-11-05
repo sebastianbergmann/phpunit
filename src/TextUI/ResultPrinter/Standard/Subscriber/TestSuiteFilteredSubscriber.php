@@ -9,16 +9,16 @@
  */
 namespace PHPUnit\TextUI\ResultPrinter\Standard;
 
-use PHPUnit\Event\TestSuite\Started;
-use PHPUnit\Event\TestSuite\StartedSubscriber;
+use PHPUnit\Event\TestSuite\Filtered;
+use PHPUnit\Event\TestSuite\FilteredSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestSuiteStartedSubscriber extends Subscriber implements StartedSubscriber
+final class TestSuiteFilteredSubscriber extends Subscriber implements FilteredSubscriber
 {
-    public function notify(Started $event): void
+    public function notify(Filtered $event): void
     {
-        $this->printer()->testSuiteStarted($event);
+        $this->printer()->testSuiteFiltered($event);
     }
 }
