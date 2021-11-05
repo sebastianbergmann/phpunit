@@ -1134,6 +1134,9 @@
       <code>testsUsing</code>
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$this-&gt;configuration-&gt;columns()</code>
+    </PossiblyInvalidArgument>
     <PossiblyNullReference occurrences="3">
       <code>write</code>
       <code>write</code>
