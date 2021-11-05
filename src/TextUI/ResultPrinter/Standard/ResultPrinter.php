@@ -19,10 +19,16 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\AssertionMade;
 use PHPUnit\Event\TestSuite\Filtered;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\Framework\RiskyTest;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\TextUI\ResultPrinter\ResultPrinter as ResultPrinterInterface;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
+use ReflectionMethod;
+use SebastianBergmann\Timer\ResourceUsageFormatter;
+use SebastianBergmann\Timer\Timer;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -49,6 +55,10 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     private bool $progressWritten = false;
 
+    private bool $defectListPrinted = false;
+
+    private Timer $timer;
+
     private int $numberOfAssertions = 0;
 
     public function __construct(string $out, bool $verbose, bool $colors, int $numberOfColumns, bool $reverse)
@@ -61,10 +71,26 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->reverse         = $reverse;
 
         $this->registerSubscribers();
+
+        $this->timer = new Timer;
+
+        $this->timer->start();
     }
 
     public function printResult(TestResult $result): void
     {
+        $this->printHeader($result);
+        $this->printErrors($result);
+        $this->printWarnings($result);
+        $this->printFailures($result);
+        $this->printRisky($result);
+
+        if ($this->verbose) {
+            $this->printIncompletes($result);
+            $this->printSkipped($result);
+        }
+
+        $this->printFooter($result);
     }
 
     public function testSuiteFiltered(Filtered $event): void
@@ -172,6 +198,228 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
                 $this->column = 0;
                 $this->write("\n");
             }
+        }
+    }
+
+    private function printHeader(TestResult $result): void
+    {
+        if (count($result) > 0) {
+            $this->write(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
+        }
+    }
+
+    private function printErrors(TestResult $result): void
+    {
+        $this->printDefects($result->errors(), 'error');
+    }
+
+    private function printWarnings(TestResult $result): void
+    {
+        $this->printDefects($result->warnings(), 'warning');
+    }
+
+    private function printFailures(TestResult $result): void
+    {
+        $this->printDefects($result->failures(), 'failure');
+    }
+
+    private function printRisky(TestResult $result): void
+    {
+        $this->printDefects($result->risky(), 'risky test');
+    }
+
+    private function printIncompletes(TestResult $result): void
+    {
+        $this->printDefects($result->notImplemented(), 'incomplete test');
+    }
+
+    private function printSkipped(TestResult $result): void
+    {
+        $this->printDefects($result->skipped(), 'skipped test');
+    }
+
+    private function printDefects(array $defects, string $type): void
+    {
+        $count = count($defects);
+
+        if ($count == 0) {
+            return;
+        }
+
+        if ($this->defectListPrinted) {
+            $this->write("\n--\n\n");
+        }
+
+        $this->write(
+            sprintf(
+                "There %s %d %s%s:\n",
+                ($count == 1) ? 'was' : 'were',
+                $count,
+                $type,
+                ($count == 1) ? '' : 's'
+            )
+        );
+
+        $i = 1;
+
+        if ($this->reverse) {
+            $defects = array_reverse($defects);
+        }
+
+        foreach ($defects as $defect) {
+            $this->printDefect($defect, $i++);
+        }
+
+        $this->defectListPrinted = true;
+    }
+
+    private function printDefect(TestFailure $defect, int $count): void
+    {
+        $this->printDefectHeader($defect, $count);
+        $this->printDefectTrace($defect);
+    }
+
+    private function printDefectHeader(TestFailure $defect, int $count): void
+    {
+        $this->write(
+            sprintf(
+                "\n%d) %s\n",
+                $count,
+                $defect->getTestName()
+            )
+        );
+    }
+
+    private function printDefectTrace(TestFailure $defect): void
+    {
+        $e = $defect->thrownException();
+
+        $this->write((string) $e);
+
+        if ($defect->thrownException() instanceof RiskyTest) {
+            $test = $defect->failedTest();
+
+            assert($test instanceof TestCase);
+
+            $reflector = new ReflectionMethod($test::class, $test->getName(false));
+
+            $this->write(
+                sprintf(
+                    '%s%s:%d%s',
+                    PHP_EOL,
+                    $reflector->getFileName(),
+                    $reflector->getStartLine(),
+                    PHP_EOL
+                )
+            );
+        } else {
+            while ($e = $e->getPrevious()) {
+                $this->write("\nCaused by\n" . $e);
+            }
+        }
+    }
+
+    private function printFooter(TestResult $result): void
+    {
+        if (count($result) === 0) {
+            $this->writeWithColor(
+                'fg-black, bg-yellow',
+                'No tests executed!'
+            );
+
+            return;
+        }
+
+        if ($result->wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete()) {
+            $this->writeWithColor(
+                'fg-black, bg-green',
+                sprintf(
+                    'OK (%d test%s, %d assertion%s)',
+                    count($result),
+                    (count($result) === 1) ? '' : 's',
+                    $this->numberOfAssertions,
+                    ($this->numberOfAssertions === 1) ? '' : 's'
+                )
+            );
+
+            return;
+        }
+
+        $color = 'fg-black, bg-yellow';
+
+        if ($result->wasSuccessful()) {
+            if ($this->verbose || !$result->allHarmless()) {
+                $this->write("\n");
+            }
+
+            $this->writeWithColor(
+                $color,
+                'OK, but incomplete, skipped, or risky tests!'
+            );
+        } else {
+            $this->write("\n");
+
+            if ($result->errorCount()) {
+                $color = 'fg-white, bg-red';
+
+                $this->writeWithColor(
+                    $color,
+                    'ERRORS!'
+                );
+            } elseif ($result->failureCount()) {
+                $color = 'fg-white, bg-red';
+
+                $this->writeWithColor(
+                    $color,
+                    'FAILURES!'
+                );
+            } elseif ($result->warningCount()) {
+                $color = 'fg-black, bg-yellow';
+
+                $this->writeWithColor(
+                    $color,
+                    'WARNINGS!'
+                );
+            }
+        }
+
+        $this->writeCountString(count($result), 'Tests', $color, true);
+        $this->writeCountString($this->numberOfAssertions, 'Assertions', $color, true);
+        $this->writeCountString($result->errorCount(), 'Errors', $color);
+        $this->writeCountString($result->failureCount(), 'Failures', $color);
+        $this->writeCountString($result->warningCount(), 'Warnings', $color);
+        $this->writeCountString($result->skippedCount(), 'Skipped', $color);
+        $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
+        $this->writeCountString($result->riskyCount(), 'Risky', $color);
+        $this->writeWithColor($color, '.');
+    }
+
+    private function writeCountString(int $count, string $name, string $color, bool $always = false): void
+    {
+        static $first = true;
+
+        if ($always || $count > 0) {
+            $this->writeWithColor(
+                $color,
+                sprintf(
+                    '%s%s: %d',
+                    !$first ? ', ' : '',
+                    $name,
+                    $count
+                ),
+                false
+            );
+
+            $first = false;
+        }
+    }
+
+    private function writeWithColor(string $color, string $buffer, bool $lf = true): void
+    {
+        $this->write($this->colorizeTextBox($color, $buffer));
+
+        if ($lf) {
+            $this->write(PHP_EOL);
         }
     }
 
