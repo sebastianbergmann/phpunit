@@ -54,7 +54,7 @@ final class Configuration
     private bool $failOnSkipped;
     private bool $failOnWarning;
     private bool $outputToStandardErrorStream;
-    private int|string $columns;
+    private int $columns;
     private bool $tooFewColumnsRequested;
     private bool $loadPharExtensions;
     private ?string $pharExtensionDirectory;
@@ -575,7 +575,7 @@ final class Configuration
         return $this->outputToStandardErrorStream;
     }
 
-    public function columns(): int|string
+    public function columns(): int
     {
         return $this->columns;
     }

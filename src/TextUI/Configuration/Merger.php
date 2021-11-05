@@ -139,6 +139,7 @@ final class Merger
             $outputToStandardErrorStream = $xmlConfiguration->phpunit()->stderr();
         }
 
+        $maxNumberOfColumns     = (new Console)->getNumberOfColumns();
         $tooFewColumnsRequested = false;
 
         if ($cliConfiguration->hasColumns()) {
@@ -147,10 +148,20 @@ final class Merger
             $columns = $xmlConfiguration->phpunit()->columns();
         }
 
-        if (is_int($columns) && $columns < 16) {
+        if ($columns === 'max') {
+            $columns = $maxNumberOfColumns;
+        }
+
+        if ($columns < 16) {
             $columns                = 16;
             $tooFewColumnsRequested = true;
         }
+
+        if ($columns > $maxNumberOfColumns) {
+            $columns = $maxNumberOfColumns;
+        }
+
+        assert(is_int($columns));
 
         $loadPharExtensions = true;
 

@@ -16,7 +16,6 @@ use function assert;
 use function count;
 use function floor;
 use function implode;
-use function is_int;
 use function max;
 use function preg_split;
 use function sprintf;
@@ -24,8 +23,6 @@ use function str_pad;
 use function str_repeat;
 use function strlen;
 use PHPUnit\Framework\AssertionFailedError;
-use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -38,7 +35,6 @@ use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 use ReflectionMethod;
-use SebastianBergmann\Environment\Console;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
@@ -62,22 +58,9 @@ class OldResultPrinter extends Printer implements ResultPrinter, TestListener
     private bool $defectListPrinted = false;
     private Timer $timer;
 
-    /**
-     * @throws Exception
-     */
-    public function __construct(string $out, bool $verbose = false, bool $colors = false, int|string $numberOfColumns = 80, bool $reverse = false)
+    public function __construct(string $out, bool $verbose = false, bool $colors = false, int $numberOfColumns = 80, bool $reverse = false)
     {
         parent::__construct($out);
-
-        if (!is_int($numberOfColumns) && $numberOfColumns !== 'max') {
-            throw InvalidArgumentException::create(5, 'integer or "max"');
-        }
-
-        $maxNumberOfColumns = (new Console)->getNumberOfColumns();
-
-        if ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns) {
-            $numberOfColumns = $maxNumberOfColumns;
-        }
 
         $this->numberOfColumns = $numberOfColumns;
         $this->verbose         = $verbose;
