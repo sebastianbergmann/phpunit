@@ -10,9 +10,9 @@
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Emitter;
+use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\GlobalState\Snapshot;
 

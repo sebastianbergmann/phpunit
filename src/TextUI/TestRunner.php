@@ -565,7 +565,9 @@ final class TestRunner
             !$this->configuration->hasExcludeGroups() &&
             !$this->configuration->hasTestsCovering() &&
             !$this->configuration->hasTestsUsing()) {
-            Event\Facade::emitter()->testSuiteFiltered($suite);
+            Event\Facade::emitter()->testSuiteFiltered(
+                Event\TestSuite\TestSuite::fromTestSuite($suite)
+            );
 
             return;
         }
@@ -616,7 +618,9 @@ final class TestRunner
 
         $suite->injectFilter($filterFactory);
 
-        Event\Facade::emitter()->testSuiteFiltered($suite);
+        Event\Facade::emitter()->testSuiteFiltered(
+            Event\TestSuite\TestSuite::fromTestSuite($suite)
+        );
     }
 
     private function writeMessage(string $type, string $message): void

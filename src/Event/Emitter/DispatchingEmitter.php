@@ -10,10 +10,14 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\TestSuite\TestSuite as TestSuiteInfo;
+use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
+use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
+use PHPUnit\Event\TestSuite\Loaded as TestSuiteLoaded;
+use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -566,22 +570,22 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSuiteLoaded(FrameworkTestSuite $testSuite): void
+    public function testSuiteLoaded(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
-            new TestSuite\Loaded(
+            new TestSuiteLoaded(
                 $this->telemetryInfo(),
-                TestSuiteInfo::fromTestSuite($testSuite)
+                $testSuite
             )
         );
     }
 
-    public function testSuiteFiltered(FrameworkTestSuite $testSuite): void
+    public function testSuiteFiltered(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
-            new TestSuite\Filtered(
+            new TestSuiteFiltered(
                 $this->telemetryInfo(),
-                TestSuiteInfo::fromTestSuite($testSuite)
+                $testSuite
             )
         );
     }
@@ -589,7 +593,7 @@ final class DispatchingEmitter implements Emitter
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
         $this->dispatcher->dispatch(
-            new TestSuite\Sorted(
+            new TestSuiteSorted(
                 $this->telemetryInfo(),
                 $executionOrder,
                 $executionOrderDefects,
@@ -598,22 +602,22 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSuiteStarted(FrameworkTestSuite $testSuite): void
+    public function testSuiteStarted(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
-            new TestSuite\Started(
+            new TestSuiteStarted(
                 $this->telemetryInfo(),
-                TestSuiteInfo::fromTestSuite($testSuite)
+                $testSuite
             )
         );
     }
 
-    public function testSuiteFinished(FrameworkTestSuite $testSuite, TestResult $result): void
+    public function testSuiteFinished(TestSuite $testSuite, TestResult $result): void
     {
         $this->dispatcher->dispatch(
-            new TestSuite\Finished(
+            new TestSuiteFinished(
                 $this->telemetryInfo(),
-                TestSuiteInfo::fromTestSuite($testSuite),
+                $testSuite,
                 (new TestResultMapper)->map($result),
             )
         );

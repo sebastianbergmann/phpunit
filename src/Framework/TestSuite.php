@@ -406,7 +406,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $result->startTestSuite($this);
 
-        Event\Facade::emitter()->testSuiteStarted($this);
+        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this);
+
+        Event\Facade::emitter()->testSuiteStarted($testSuiteValueObjectForEvents);
 
         $test = null;
 
@@ -555,8 +557,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $result->endTestSuite($this);
 
         Event\Facade::emitter()->testSuiteFinished(
-            $this,
-            $result,
+            $testSuiteValueObjectForEvents,
+            $result
         );
     }
 

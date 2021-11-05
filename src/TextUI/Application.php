@@ -100,7 +100,7 @@ final class Application
             $this->execute(new ShowHelpCommand(false));
         }
 
-        Event\Facade::emitter()->testSuiteLoaded($suite);
+        Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
 
         $runner = new TestRunner;
 
