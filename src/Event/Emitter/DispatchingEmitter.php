@@ -13,11 +13,11 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Loaded as TestSuiteLoaded;
+use PHPUnit\Event\TestSuite\Result;
 use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
-use PHPUnit\Framework\TestResult;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -612,13 +612,13 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSuiteFinished(TestSuite $testSuite, TestResult $result): void
+    public function testSuiteFinished(TestSuite $testSuite, Result $result): void
     {
         $this->dispatcher->dispatch(
             new TestSuiteFinished(
                 $this->telemetryInfo(),
                 $testSuite,
-                (new TestResultMapper)->map($result),
+                $result,
             )
         );
     }

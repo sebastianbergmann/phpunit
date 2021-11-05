@@ -26,6 +26,7 @@ use function str_starts_with;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
+use PHPUnit\Event\TestResultMapper;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
@@ -558,7 +559,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         Event\Facade::emitter()->testSuiteFinished(
             $testSuiteValueObjectForEvents,
-            $result
+            (new TestResultMapper)->map($result)
         );
     }
 

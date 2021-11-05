@@ -10,9 +10,9 @@
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Emitter;
+use PHPUnit\Event\TestSuite\Result;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
-use PHPUnit\Framework\TestResult;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -212,7 +212,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSuiteFinished(TestSuite $testSuite, TestResult $result): void
+    public function testSuiteFinished(TestSuite $testSuite, Result $result): void
     {
     }
 }

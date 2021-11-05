@@ -1625,7 +1625,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $emitter->testSuiteFinished(
             TestSuite::fromTestSuite($testSuite),
-            $result,
+            (new TestResultMapper)->map($result),
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
