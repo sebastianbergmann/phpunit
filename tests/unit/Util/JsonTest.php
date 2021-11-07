@@ -27,6 +27,7 @@ final class JsonTest extends TestCase
     public function testCanonicalize(string $actual, string $expected, bool $expectError): void
     {
         [$error, $canonicalized] = Json::canonicalize($actual);
+
         $this->assertEquals($expectError, $error);
 
         if (!$expectError) {

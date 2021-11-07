@@ -58,10 +58,12 @@ final class CallbackTest extends ConstraintTestCase
 
     public function testConstraintCallbackFailure(): void
     {
-        $constraint = new Callback(static function ()
-        {
-            return false;
-        });
+        $constraint = new Callback(
+            static function (): bool
+            {
+                return false;
+            }
+        );
 
         $this->expectException(ExpectationFailedException::class);
         $this->expectExceptionMessage('Failed asserting that \'This fails\' is accepted by specified callback.');

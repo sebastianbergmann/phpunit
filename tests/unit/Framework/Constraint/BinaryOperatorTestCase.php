@@ -145,10 +145,13 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     {
         $inputs = self::getBooleanTuples(0, 5);
 
-        return array_map(function (array $input)
-        {
-            return [$input, $this->evaluateExpectedResult($input)];
-        }, $inputs);
+        return array_map(
+            function (array $input)
+            {
+                return [$input, $this->evaluateExpectedResult($input)];
+            },
+            $inputs
+        );
     }
 
     /**
