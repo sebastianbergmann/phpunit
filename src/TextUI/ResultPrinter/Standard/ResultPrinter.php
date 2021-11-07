@@ -16,7 +16,7 @@ use function preg_split;
 use function str_pad;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
-use PHPUnit\Event\Test\AssertionMade;
+use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\OutputPrinted;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -121,11 +121,13 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->writeProgressWithColor('bg-red, fg-white', 'F');
     }
 
-    public function testFinished(): void
+    public function testFinished(Finished $event): void
     {
         $this->writeProgress('.');
 
         $this->progressWritten = false;
+
+        $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
     }
 
     public function testPassedWithWarning(): void
@@ -136,11 +138,6 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     public function testSkipped(): void
     {
         $this->writeProgressWithColor('fg-cyan, bold', 'S');
-    }
-
-    public function assertionMade(AssertionMade $event): void
-    {
-        $this->numberOfAssertions += $event->constraint()->count();
     }
 
     public function testPrintedOutput(OutputPrinted $event): void
@@ -162,7 +159,6 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new AssertionMadeSubscriber($this));
         Facade::registerSubscriber(new TestPrintedOutputSubscriber($this));
     }
 
