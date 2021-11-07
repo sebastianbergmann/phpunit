@@ -302,9 +302,6 @@
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
     <LessSpecificReturnStatement occurrences="1"/>
-    <MissingParamType occurrences="1">
-      <code>$type</code>
-    </MissingParamType>
     <MoreSpecificReturnType occurrences="1">
       <code>MockObject</code>
     </MoreSpecificReturnType>
