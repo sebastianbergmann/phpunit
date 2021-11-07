@@ -1381,12 +1381,8 @@ EOF
 
     /**
      * Removes spaces in front of newlines.
-     *
-     * @param string $string
-     *
-     * @return string
      */
-    private function trimnl($string)
+    private function trimnl(string $string): string
     {
         return preg_replace('/[ ]*\n/', "\n", $string);
     }

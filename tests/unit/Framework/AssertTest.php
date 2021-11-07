@@ -214,7 +214,7 @@ final class AssertTest extends TestCase
         return array_merge($this->equalValues(), $this->sameValues());
     }
 
-    public function notEqualProvider()
+    public function notEqualProvider(): array
     {
         return $this->notEqualValues();
     }
@@ -237,7 +237,7 @@ final class AssertTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertEqualsSucceeds($a, $b): void
+    public function testAssertEqualsSucceeds(mixed $a, mixed $b): void
     {
         $this->assertEquals($a, $b);
     }
@@ -248,7 +248,7 @@ final class AssertTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertEqualsFails($a, $b): void
+    public function testAssertEqualsFails(mixed $a, mixed $b): void
     {
         $this->expectException(AssertionFailedError::class);
 
@@ -261,7 +261,7 @@ final class AssertTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertNotEqualsSucceeds($a, $b): void
+    public function testAssertNotEqualsSucceeds(mixed $a, mixed $b): void
     {
         $this->assertNotEquals($a, $b);
     }
@@ -273,7 +273,7 @@ final class AssertTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertNotEqualsFails($a, $b): void
+    public function testAssertNotEqualsFails(mixed $a, mixed $b): void
     {
         $this->expectException(AssertionFailedError::class);
 
@@ -287,7 +287,7 @@ final class AssertTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertSameSucceeds($a, $b): void
+    public function testAssertSameSucceeds(mixed $a, mixed $b): void
     {
         $this->assertSame($a, $b);
     }
@@ -299,7 +299,7 @@ final class AssertTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertSameFails($a, $b): void
+    public function testAssertSameFails(mixed $a, mixed $b): void
     {
         $this->expectException(AssertionFailedError::class);
 
@@ -313,7 +313,7 @@ final class AssertTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertNotSameSucceeds($a, $b): void
+    public function testAssertNotSameSucceeds(mixed $a, mixed $b): void
     {
         $this->assertNotSame($a, $b);
     }
@@ -325,7 +325,7 @@ final class AssertTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertNotSameFails($a, $b): void
+    public function testAssertNotSameFails(mixed $a, mixed $b): void
     {
         $this->expectException(AssertionFailedError::class);
 
@@ -1377,7 +1377,7 @@ XML;
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertJsonStringEqualsJsonStringErrorRaised($expected, $actual): void
+    public function testAssertJsonStringEqualsJsonStringErrorRaised(string $expected, string $actual): void
     {
         $this->expectException(AssertionFailedError::class);
 
@@ -1400,7 +1400,7 @@ XML;
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testAssertJsonStringNotEqualsJsonStringErrorRaised($expected, $actual): void
+    public function testAssertJsonStringNotEqualsJsonStringErrorRaised(string $expected, string $actual): void
     {
         $this->expectException(AssertionFailedError::class);
 

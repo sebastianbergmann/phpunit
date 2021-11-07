@@ -22,10 +22,7 @@ use PHPUnit\Util\Color;
  */
 final class CliTestDoxPrinterColorTest extends TestCase
 {
-    /**
-     * @var TestableCliTestDoxPrinter
-     */
-    private $printer;
+    private ?TestableCliTestDoxPrinter $printer;
 
     protected function setUp(): void
     {

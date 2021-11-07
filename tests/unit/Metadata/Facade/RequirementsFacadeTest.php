@@ -23,7 +23,7 @@ final class RequirementsFacadeTest extends TestCase
      * @testdox Test::getMissingRequirements() for $test
      * @dataProvider missingRequirementsProvider
      */
-    public function testGetMissingRequirements($test, $result): void
+    public function testGetMissingRequirements(string $test, array $result): void
     {
         $this->assertEquals(
             $result,

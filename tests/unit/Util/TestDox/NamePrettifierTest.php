@@ -18,10 +18,7 @@ use PHPUnit\Logging\TestDox\NamePrettifier;
  */
 final class NamePrettifierTest extends TestCase
 {
-    /**
-     * @var NamePrettifier
-     */
-    private $namePrettifier;
+    private ?NamePrettifier $namePrettifier;
 
     protected function setUp(): void
     {

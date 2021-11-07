@@ -46,10 +46,7 @@ use Throwable;
  */
 final class GeneratorTest extends TestCase
 {
-    /**
-     * @var Generator
-     */
-    private $generator;
+    private ?Generator $generator;
 
     protected function setUp(): void
     {

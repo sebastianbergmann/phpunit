@@ -42,10 +42,7 @@ use PHPUnit\TestFixture\TestWithTest;
  */
 final class TestSuiteTest extends TestCase
 {
-    /**
-     * @var TestResult
-     */
-    private $result;
+    private ?TestResult $result;
 
     protected function setUp(): void
     {

@@ -23,10 +23,7 @@ final class SystemTest extends TestCase
 
         $clock = new class($time) implements StopWatch
         {
-            /**
-             * @var HRTime
-             */
-            private $time;
+            private \PHPUnit\Event\Telemetry\HRTime $time;
 
             public function __construct(HRTime $time)
             {

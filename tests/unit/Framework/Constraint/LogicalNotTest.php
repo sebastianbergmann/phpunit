@@ -24,7 +24,7 @@ final class LogicalNotTest extends UnaryOperatorTestCase
         return 5;
     }
 
-    public function providerToStringWithNativeTransformations()
+    public function providerToStringWithNativeTransformations(): array
     {
         return $this->providerNegate();
     }
@@ -34,7 +34,7 @@ final class LogicalNotTest extends UnaryOperatorTestCase
         return !$input;
     }
 
-    public function providerNegate()
+    public function providerNegate(): array
     {
         return [
             ['ocean contains water', 'ocean does not contain water'],

@@ -33,7 +33,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
     /**
      * Shall return series of two-element arrays [$input, $expected].
      */
-    abstract public function providerToStringWithNativeTransformations();
+    abstract public function providerToStringWithNativeTransformations(): array;
 
     /**
      * Takes a boolean values and returns the expected evaluation result for
@@ -117,7 +117,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $this->assertSame($withIsEqual->toString(), $constraint->toString());
     }
 
-    final public function providerUnaryTruthTable()
+    final public function providerUnaryTruthTable(): array
     {
         return array_map(function (bool $input): array
         {

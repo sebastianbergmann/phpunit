@@ -15,7 +15,7 @@ use function preg_match_all;
 
 final class FunctionsTest extends TestCase
 {
-    private static $globalAssertionFunctions = [];
+    private static array $globalAssertionFunctions = [];
 
     public static function setUpBeforeClass(): void
     {

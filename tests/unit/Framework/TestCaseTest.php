@@ -63,7 +63,7 @@ use TypeError;
  */
 class TestCaseTest extends TestCase
 {
-    protected static $testStatic = 456;
+    protected static int $testStatic = 456;
 
     public static function setUpBeforeClass(): void
     {
@@ -1324,7 +1324,7 @@ class TestCaseTest extends TestCase
     /**
      * @return array<string, array>
      */
-    private function getAutoreferencedArray()
+    private function getAutoreferencedArray(): array
     {
         $recursionData   = [];
         $recursionData[] = &$recursionData;

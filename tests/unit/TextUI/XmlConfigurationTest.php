@@ -89,10 +89,8 @@ final class XmlConfigurationTest extends TestCase
      * @dataProvider configurationRootOptionsProvider
      *
      * @group test-reorder
-     *
-     * @param bool|int|string $expected
      */
-    public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, $expected): void
+    public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, bool|int|string $expected): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . uniqid('', true) . '.xml';
         $xml         = "<phpunit {$optionName}='{$optionValue}'></phpunit>" . PHP_EOL;

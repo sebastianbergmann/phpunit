@@ -141,7 +141,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $this->assertSame("is equal to 'whatever'", $constraint->toString());
     }
 
-    final public function providerConnectiveTruthTable()
+    final public function providerConnectiveTruthTable(): array
     {
         $inputs = self::getBooleanTuples(0, 5);
 

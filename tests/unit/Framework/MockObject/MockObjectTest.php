@@ -470,7 +470,7 @@ final class MockObjectTest extends TestCase
      * @testdox getMock() for Traversable $_dataName
      * @dataProvider traversableProvider
      */
-    public function testGetMockForTraversable($type): void
+    public function testGetMockForTraversable(string $type): void
     {
         $mock = $this->getMockBuilder($type)
                      ->getMock();

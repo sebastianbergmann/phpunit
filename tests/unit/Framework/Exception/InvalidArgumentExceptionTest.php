@@ -17,7 +17,7 @@ final class InvalidArgumentExceptionTest extends TestCase
     /**
      * @dataProvider provider
      */
-    public function testUsesCorrectArticleInErrorMessage(string $expected, $type): void
+    public function testUsesCorrectArticleInErrorMessage(string $expected, string $type): void
     {
         $e = InvalidArgumentException::create(1, $type);
 

@@ -16,24 +16,24 @@ use PHPUnit\Framework\ExpectationFailedException;
  */
 final class CallbackTest extends ConstraintTestCase
 {
-    public static function staticCallbackReturningTrue()
+    public static function staticCallbackReturningTrue(): bool
     {
         return true;
     }
 
-    public function callbackReturningTrue()
+    public function callbackReturningTrue(): bool
     {
         return true;
     }
 
     public function testConstraintCallback(): void
     {
-        $closureReflect = static function ($parameter)
+        $closureReflect = static function (mixed $parameter): mixed
         {
             return $parameter;
         };
 
-        $closureWithoutParameter = static function ()
+        $closureWithoutParameter = static function (): bool
         {
             return true;
         };

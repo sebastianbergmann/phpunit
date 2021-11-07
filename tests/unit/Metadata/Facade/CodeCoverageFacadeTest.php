@@ -43,7 +43,7 @@ final class CodeCoverageFacadeTest extends TestCase
     /**
      * @dataProvider getLinesToBeCoveredProvider
      */
-    public function testGetLinesToBeCovered($test, $lines): void
+    public function testGetLinesToBeCovered(string $test, array|false $lines): void
     {
         switch ($test) {
             case CoverageMethodNothingCoversMethod::class:
@@ -224,7 +224,7 @@ final class CodeCoverageFacadeTest extends TestCase
     /**
      * @dataProvider canSkipCoverageProvider
      */
-    public function testCanSkipCoverage($testCase, $expectedCanSkip): void
+    public function testCanSkipCoverage(string $testCase, bool $expectedCanSkip): void
     {
         $test             = new $testCase('testSomething');
         $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor(get_class($test), $test->getName(false));

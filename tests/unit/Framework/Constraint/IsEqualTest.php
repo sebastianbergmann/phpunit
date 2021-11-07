@@ -54,7 +54,7 @@ EOF
     /**
      * @dataProvider isEqualProvider
      */
-    public function testConstraintIsEqual2($expected, $actual, $message): void
+    public function testConstraintIsEqual2(mixed $expected, mixed $actual, string $message): void
     {
         $constraint = new IsEqual($expected);
 
@@ -326,12 +326,8 @@ EOF
 
     /**
      * Removes spaces in front of newlines.
-     *
-     * @param string $string
-     *
-     * @return string
      */
-    private function trimnl($string)
+    private function trimnl(string $string): string
     {
         return preg_replace('/[ ]*\n/', "\n", $string);
     }

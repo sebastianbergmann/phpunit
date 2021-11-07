@@ -59,7 +59,7 @@ final class JsonMatchesTest extends ConstraintTestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testEvaluate($expected, $jsonOther, $jsonValue): void
+    public function testEvaluate(bool $expected, string $jsonOther, string $jsonValue): void
     {
         $constraint = new JsonMatches($jsonValue);
 
@@ -74,7 +74,7 @@ final class JsonMatchesTest extends ConstraintTestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
-    public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue): void
+    public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch(string $jsonOther, string $jsonValue): void
     {
         $constraint = new JsonMatches($jsonValue);
 
