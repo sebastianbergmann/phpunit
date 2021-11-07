@@ -15,6 +15,7 @@ use const WSDL_CACHE_NONE;
 use function array_merge;
 use function array_pop;
 use function array_unique;
+use function assert;
 use function class_exists;
 use function count;
 use function explode;
@@ -641,6 +642,8 @@ final class Generator
 
         if ($callOriginalMethods) {
             if (!is_object($proxyTarget)) {
+                assert(class_exists($type));
+
                 if (count($arguments) === 0) {
                     $proxyTarget = new $type;
                 } else {
