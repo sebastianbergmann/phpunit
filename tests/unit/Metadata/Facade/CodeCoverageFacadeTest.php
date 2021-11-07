@@ -42,6 +42,7 @@ final class CodeCoverageFacadeTest extends TestCase
 {
     /**
      * @dataProvider getLinesToBeCoveredProvider
+     * @psalm-param class-string $test
      */
     public function testGetLinesToBeCovered(string $test, array|false $lines): void
     {
@@ -223,6 +224,7 @@ final class CodeCoverageFacadeTest extends TestCase
 
     /**
      * @dataProvider canSkipCoverageProvider
+     * @psalm-param class-string $testCase
      */
     public function testCanSkipCoverage(string $testCase, bool $expectedCanSkip): void
     {

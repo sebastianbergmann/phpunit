@@ -469,6 +469,7 @@ final class MockObjectTest extends TestCase
     /**
      * @testdox getMock() for Traversable $_dataName
      * @dataProvider traversableProvider
+     * @psalm-param class-string $type
      */
     public function testGetMockForTraversable(string $type): void
     {

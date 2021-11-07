@@ -75,6 +75,7 @@ EOF
 
     /**
      * @dataProvider resources
+     * @psalm-param closed-resource|resource $resource
      */
     public function testConstraintIsResourceTypeEvaluatesCorrectlyWithResources($resource): void
     {
