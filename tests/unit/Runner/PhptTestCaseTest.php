@@ -54,11 +54,6 @@ EOF;
     /**
      * @var string
      */
-    private $dirname;
-
-    /**
-     * @var string
-     */
     private $filename;
 
     /**
@@ -73,8 +68,8 @@ EOF;
 
     protected function setUp(): void
     {
-        $this->dirname  = sys_get_temp_dir();
-        $this->filename = $this->dirname . '/phpunit.phpt';
+        $this->filename = sys_get_temp_dir() . '/phpunit.phpt';
+
         touch($this->filename);
 
         $this->phpProcess = $this->getMockForAbstractClass(AbstractPhpProcess::class, [], '', false);
