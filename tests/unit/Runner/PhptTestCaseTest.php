@@ -91,7 +91,7 @@ EOF;
 
     public function testAlwaysReportsItDoesNotUseADataprovider(): void
     {
-        $this->assertSame(false, $this->testCase->usesDataProvider());
+        $this->assertFalse($this->testCase->usesDataProvider());
     }
 
     public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord(): void
