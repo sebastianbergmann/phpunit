@@ -33,24 +33,6 @@ EXPECT test
 Hello PHPUnit!
 EOF;
 
-    private const EXPECTF_CONTENT = <<<'EOF'
---TEST--
-EXPECTF test
---FILE--
-<?php echo "Hello PHPUnit!"; ?>
---EXPECTF--
-Hello %s!
-EOF;
-
-    private const EXPECTREGEX_CONTENT = <<<'EOF'
---TEST--
-EXPECTREGEX test
---FILE--
-<?php echo "Hello PHPUnit!"; ?>
---EXPECTREGEX--
-Hello [HPU]{4}[nit]{3}!
-EOF;
-
     /**
      * @var string
      */
