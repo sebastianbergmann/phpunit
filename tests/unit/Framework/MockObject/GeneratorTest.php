@@ -53,6 +53,11 @@ final class GeneratorTest extends TestCase
         $this->generator = new Generator;
     }
 
+    protected function tearDown(): void
+    {
+        $this->generator = null;
+    }
+
     public function testGetMockThrowsExceptionWhenInvalidFunctionNameIsPassedInAsAFunctionToMock(): void
     {
         $this->expectException(InvalidMethodNameException::class);
