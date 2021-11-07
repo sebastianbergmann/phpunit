@@ -50,7 +50,7 @@ interface Emitter
 
     public function testFailed(Code\Test $test, Throwable $throwable): void;
 
-    public function testFinished(Code\Test $test): void;
+    public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
 
     public function testOutputPrinted(Code\Test $test, string $output): void;
 

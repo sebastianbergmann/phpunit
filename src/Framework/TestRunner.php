@@ -272,7 +272,8 @@ final class TestRunner
 
         if ($test->wasPrepared()) {
             Event\Facade::emitter()->testFinished(
-                $test->valueObjectForEvents()
+                $test->valueObjectForEvents(),
+                $test->numberOfAssertionsPerformed()
             );
         }
     }

@@ -121,7 +121,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
             EventFacade::emitter()->testPrepared($this->valueObjectForEvents());
             EventFacade::emitter()->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
-            EventFacade::emitter()->testFinished($this->valueObjectForEvents());
+            EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 0);
 
             return;
         }
@@ -241,7 +241,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $result->endTest($this, $time);
 
-        EventFacade::emitter()->testFinished($this->valueObjectForEvents());
+        EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 1);
     }
 
     /**
