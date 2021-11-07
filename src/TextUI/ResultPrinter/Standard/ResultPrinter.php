@@ -18,7 +18,7 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\AssertionMade;
 use PHPUnit\Event\Test\OutputPrinted;
-use PHPUnit\Event\TestSuite\Filtered;
+use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\TestCase;
@@ -94,7 +94,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->printFooter($result);
     }
 
-    public function testSuiteFiltered(Filtered $event): void
+    public function testRunnerExecutionStarted(ExecutionStarted $event): void
     {
         $this->numberOfTests      = $event->testSuite()->count();
         $this->numberOfTestsWidth = strlen((string) $this->numberOfTests);
@@ -154,7 +154,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
      */
     private function registerSubscribers(): void
     {
-        Facade::registerSubscriber(new TestSuiteFilteredSubscriber($this));
+        Facade::registerSubscriber(new TestRunnerExecutionStartedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
