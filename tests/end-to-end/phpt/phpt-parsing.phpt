@@ -23,4 +23,4 @@ There was 1 error:
 PHPUnit\Runner\Exception: PHPUnit does not support PHPT GET sections in %s
 %a
 ERRORS!
-Tests: 1, Assertions: 1, Errors: 1.
+Tests: 1, Assertions: 0, Errors: 1.
