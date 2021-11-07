@@ -700,6 +700,7 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
+        /* @noinspection PhpUnitAssertCanBeReplacedWithFailInspection */
         $this->assertTrue(false);
     }
 
@@ -720,6 +721,7 @@ XML;
 
         $this->expectException(AssertionFailedError::class);
 
+        /* @noinspection PhpUnitAssertCanBeReplacedWithFailInspection */
         $this->assertFalse(true);
     }
 
