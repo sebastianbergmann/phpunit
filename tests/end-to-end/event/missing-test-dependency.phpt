@@ -29,7 +29,6 @@ Test Runner Configuration Combined
 Test Suite Loaded (2 tests)
 Test Suite Sorted
 Event Facade Sealed
-Test Suite Filtered (2 tests)
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\MissingDependencyTest, 2 tests)
 Test Prepared (PHPUnit\TestFixture\MissingDependencyTest::testOne)

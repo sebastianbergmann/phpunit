@@ -565,10 +565,6 @@ final class TestRunner
             !$this->configuration->hasExcludeGroups() &&
             !$this->configuration->hasTestsCovering() &&
             !$this->configuration->hasTestsUsing()) {
-            Event\Facade::emitter()->testSuiteFiltered(
-                Event\TestSuite\TestSuite::fromTestSuite($suite)
-            );
-
             return;
         }
 

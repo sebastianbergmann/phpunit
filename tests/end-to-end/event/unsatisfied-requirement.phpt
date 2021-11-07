@@ -29,7 +29,6 @@ Test Runner Configuration Combined
 Test Suite Loaded (1 test)
 Test Suite Sorted
 Event Facade Sealed
-Test Suite Filtered (1 test)
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\UnsatisfiedRequirementTest, 1 test)
 Test Skipped (PHPUnit\TestFixture\UnsatisfiedRequirementTest::testOne)
