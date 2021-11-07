@@ -34,6 +34,8 @@ final class DispatchingEmitter implements Emitter
 
     private Telemetry\Snapshot $previousSnapshot;
 
+    private bool $testExecutionStarted = false;
+
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)
     {
         $this->dispatcher = $dispatcher;
@@ -604,6 +606,17 @@ final class DispatchingEmitter implements Emitter
 
     public function testSuiteStarted(TestSuite $testSuite): void
     {
+        if (!$this->testExecutionStarted) {
+            $this->dispatcher->dispatch(
+                new TestRunner\ExecutionStarted(
+                    $this->telemetryInfo(),
+                    $testSuite
+                )
+            );
+
+            $this->testExecutionStarted = true;
+        }
+
         $this->dispatcher->dispatch(
             new TestSuiteStarted(
                 $this->telemetryInfo(),

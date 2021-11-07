@@ -11,6 +11,8 @@ namespace PHPUnit\Event;
 
 use Exception;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\TestRunner\ExecutionStarted;
+use PHPUnit\Event\TestRunner\ExecutionStartedSubscriber;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\FinishedSubscriber as TestSuiteFinishedSubscriber;
 use PHPUnit\Event\TestSuite\Loaded as TestSuiteLoaded;
@@ -1696,10 +1698,19 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = self::dispatcherWithRegisteredSubscribers(
             TestSuiteStartedSubscriber::class,
             TestSuiteStarted::class,
-            $subscriber
+            $subscriber,
+            ExecutionStartedSubscriber::class,
+            ExecutionStarted::class,
+            new class extends RecordingSubscriber implements ExecutionStartedSubscriber
+            {
+                public function notify(ExecutionStarted $event): void
+                {
+                    $this->record($event);
+                }
+            },
         );
 
         $telemetrySystem = self::telemetrySystem();
@@ -1738,6 +1749,28 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $dispatcher = new DirectDispatcher($typeMap);
 
         $dispatcher->registerSubscriber($subscriber);
+
+        return $dispatcher;
+    }
+
+    private function dispatcherWithRegisteredSubscribers(string $subscriberInterfaceOne, string $eventClassOne, Subscriber $subscriberOne, string $subscriberInterfaceTwo, string $eventClassTwo, Subscriber $subscriberTwo): DirectDispatcher
+    {
+        $typeMap = new TypeMap;
+
+        $typeMap->addMapping(
+            $subscriberInterfaceOne,
+            $eventClassOne
+        );
+
+        $typeMap->addMapping(
+            $subscriberInterfaceTwo,
+            $eventClassTwo
+        );
+
+        $dispatcher = new DirectDispatcher($typeMap);
+
+        $dispatcher->registerSubscriber($subscriberOne);
+        $dispatcher->registerSubscriber($subscriberTwo);
 
         return $dispatcher;
     }

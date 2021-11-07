@@ -30,6 +30,7 @@ Test Suite Loaded (14 tests)
 Test Suite Sorted
 Event Facade Sealed
 Test Suite Filtered (14 tests)
+Test Runner Execution Started (14 tests)
 Test Suite Started (PHPUnit\SelfTest\Basic\StatusTest, 14 tests)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
 Mock Object Created (PHPUnit\TestFixture\MockObject\AnInterface)

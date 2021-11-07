@@ -30,6 +30,7 @@ Test Suite Loaded (1 test)
 Test Suite Sorted
 Event Facade Sealed
 Test Suite Filtered (1 test)
+Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\InvalidDependencyTest, 1 test)
 Test Errored (PHPUnit\TestFixture\InvalidDependencyTest::testOne)
 This test depends on "PHPUnit\TestFixture\InvalidDependencyTest::doesNotExist" which does not exist

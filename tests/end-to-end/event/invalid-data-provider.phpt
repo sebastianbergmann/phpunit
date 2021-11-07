@@ -30,6 +30,7 @@ Test Suite Loaded (1 test)
 Test Suite Sorted
 Event Facade Sealed
 Test Suite Filtered (1 test)
+Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\InvalidDataProviderTest, 1 test)
 Test Suite Started (PHPUnit\TestFixture\InvalidDataProviderTest::testOne, 1 test)
 Test Prepared (PHPUnit\TestFixture\InvalidDataProviderTest::testOne)
