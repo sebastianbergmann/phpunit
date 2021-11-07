@@ -647,8 +647,10 @@ final class Generator
                 if (count($arguments) === 0) {
                     $proxyTarget = new $type;
                 } else {
+                    $class = new ReflectionClass($type);
+
                     try {
-                        $class = new ReflectionClass($type);
+                        $proxyTarget = $class->newInstanceArgs($arguments);
                         // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new ReflectionException(
@@ -658,8 +660,6 @@ final class Generator
                         );
                     }
                     // @codeCoverageIgnoreEnd
-
-                    $proxyTarget = $class->newInstanceArgs($arguments);
                 }
             }
 
