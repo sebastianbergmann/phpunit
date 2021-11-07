@@ -15,6 +15,7 @@ use function sys_get_temp_dir;
 use function touch;
 use function unlink;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -33,20 +34,11 @@ EXPECT test
 Hello PHPUnit!
 EOF;
 
-    /**
-     * @var string
-     */
-    private $filename;
+    private string $filename;
 
-    /**
-     * @var PhptTestCase
-     */
-    private $testCase;
+    private ?PhptTestCase $testCase;
 
-    /**
-     * @var AbstractPhpProcess|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $phpProcess;
+    private AbstractPhpProcess|MockObject|null $phpProcess;
 
     protected function setUp(): void
     {
@@ -200,12 +192,7 @@ EOF
         $this->assertSame([], $this->testCase->requires());
     }
 
-    /**
-     * Defines the content of the current PHPT test.
-     *
-     * @param string $content
-     */
-    private function setPhpContent($content): void
+    private function setPhpContent(string $content): void
     {
         file_put_contents($this->filename, $content);
     }
