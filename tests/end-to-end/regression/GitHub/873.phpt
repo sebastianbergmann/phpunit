@@ -1,10 +1,5 @@
 --TEST--
 GH-873: PHPUnit suppresses exceptions thrown outside of test case function
---SKIPIF--
-<?php declare(strict_types=1);
-if (PHP_MAJOR_VERSION < 7) {
-    print 'skip: PHP 7 is required';
-}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
