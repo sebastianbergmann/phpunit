@@ -53,6 +53,7 @@ use function sprintf;
 use function str_contains;
 use function strpos;
 use function substr;
+use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
@@ -748,7 +749,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->valueObjectForEvents(),
                 Event\Code\Throwable::from($e)
             );
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionError|AssertionFailedError $e) {
             $this->status = TestStatus::failure($e->getMessage());
 
             $emitter->testFailed(
