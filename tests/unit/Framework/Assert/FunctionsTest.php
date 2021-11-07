@@ -20,7 +20,7 @@ final class FunctionsTest extends TestCase
     public static function setUpBeforeClass(): void
     {
         preg_match_all(
-            '/function (assert[^ \(]+)/',
+            '/function (assert[^ (]+)/',
             file_get_contents(
                 __DIR__ . '/../../../../src/Framework/Assert/Functions.php'
             ),
@@ -45,7 +45,7 @@ final class FunctionsTest extends TestCase
     public function provideStaticAssertionMethodNames(): array
     {
         preg_match_all(
-            '/public static function (assert[^ \(]+)/',
+            '/public static function (assert[^ (]+)/',
             file_get_contents(
                 __DIR__ . '/../../../../src/Framework/Assert.php'
             ),
