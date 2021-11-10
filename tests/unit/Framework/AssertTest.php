@@ -172,6 +172,27 @@ final class AssertTest extends TestCase
         $this->assertArrayNotHasKey('bar', $array);
     }
 
+    public function testAssertArrayIsList(): void
+    {
+        $this->assertArrayIsList([0, 1, 2]);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayIsList([0 => 0, 2 => 2, 3 => 3]);
+    }
+
+    public function testAssertArrayIsListWithEmptyArray(): void
+    {
+        $this->assertArrayIsList([]);
+    }
+
+    public function testAssertArrayIsListFailsWithStringKeys(): void
+    {
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayIsList(['string' => 0]);
+    }
+
     public function testAssertArrayContainsOnlyIntegers(): void
     {
         $this->assertContainsOnly('integer', [1, 2, 3]);
@@ -944,6 +965,11 @@ XML;
     public function testAssertThatArrayHasKey(): void
     {
         $this->assertThat(['foo' => 'bar'], $this->arrayHasKey('foo'));
+    }
+
+    public function testAssertThatArrayIsList(): void
+    {
+        $this->assertThat([0, 1, 2], $this->arrayIsList());
     }
 
     public function testAssertThatEqualTo(): void
