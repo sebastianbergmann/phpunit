@@ -473,10 +473,113 @@ final class Configuration
     private $xdebugFilterFile;
 
     /**
+     * @var int
+     */
+    private $chunkIndex;
+
+    /**
+     * @var int
+     */
+    private $chunkNumber;
+
+    /**
      * @param null|int|string $columns
      */
-    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticAttributes, ?bool $beStrictAboutChangesToGlobalState, ?bool $beStrictAboutResourceUsageDuringSmallTests, ?string $bootstrap, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?bool $debug, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $disallowTodoAnnotatedTests, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?array $extensions, ?array $unavailableExtensions, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?string $loader, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noLogging, ?string $printer, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, array $unrecognizedOptions, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter, ?string $xdebugFilterFile)
-    {
+    public function __construct(
+        ?string $argument,
+        ?string $atLeastVersion,
+        ?bool $backupGlobals,
+        ?bool $backupStaticAttributes,
+        ?bool $beStrictAboutChangesToGlobalState,
+        ?bool $beStrictAboutResourceUsageDuringSmallTests,
+        ?string $bootstrap,
+        ?bool $cacheResult,
+        ?string $cacheResultFile,
+        ?bool $checkVersion,
+        ?string $colors,
+        mixed $columns,
+        ?string $configuration,
+        ?string $coverageClover,
+        ?string $coverageCobertura,
+        ?string $coverageCrap4J,
+        ?string $coverageHtml,
+        ?string $coveragePhp,
+        ?string $coverageText,
+        ?bool $coverageTextShowUncoveredFiles,
+        ?bool $coverageTextShowOnlySummary,
+        ?string $coverageXml,
+        ?bool $pathCoverage,
+        ?string $coverageCacheDirectory,
+        ?bool $warmCoverageCache,
+        ?bool $debug,
+        ?int $defaultTimeLimit,
+        ?bool $disableCodeCoverageIgnore,
+        ?bool $disallowTestOutput,
+        ?bool $disallowTodoAnnotatedTests,
+        ?bool $enforceTimeLimit,
+        ?array $excludeGroups,
+        ?int $executionOrder,
+        ?int $executionOrderDefects,
+        ?array $extensions,
+        ?array $unavailableExtensions,
+        ?bool $failOnEmptyTestSuite,
+        ?bool $failOnIncomplete,
+        ?bool $failOnRisky,
+        ?bool $failOnSkipped,
+        ?bool $failOnWarning,
+        ?string $filter,
+        ?bool $generateConfiguration,
+        ?bool $migrateConfiguration,
+        ?array $groups,
+        ?array $testsCovering,
+        ?array $testsUsing,
+        ?bool $help,
+        ?string $includePath,
+        ?array $iniSettings,
+        ?string $junitLogfile,
+        ?bool $listGroups,
+        ?bool $listSuites,
+        ?bool $listTests,
+        ?string $listTestsXml,
+        ?string $loader,
+        ?bool $noCoverage,
+        ?bool $noExtensions,
+        ?bool $noInteraction,
+        ?bool $noLogging,
+        ?string $printer,
+        ?bool $processIsolation,
+        ?int $randomOrderSeed,
+        ?int $repeat,
+        ?bool $reportUselessTests,
+        ?bool $resolveDependencies,
+        ?bool $reverseList,
+        ?bool $stderr,
+        ?bool $strictCoverage,
+        ?bool $stopOnDefect,
+        ?bool $stopOnError,
+        ?bool $stopOnFailure,
+        ?bool $stopOnIncomplete,
+        ?bool $stopOnRisky,
+        ?bool $stopOnSkipped,
+        ?bool $stopOnWarning,
+        ?string $teamcityLogfile,
+        ?array $testdoxExcludeGroups,
+        ?array $testdoxGroups,
+        ?string $testdoxHtmlFile,
+        ?string $testdoxTextFile,
+        ?string $testdoxXmlFile,
+        ?array $testSuffixes,
+        ?string $testSuite,
+        array $unrecognizedOptions,
+        ?string $unrecognizedOrderBy,
+        ?bool $useDefaultConfiguration,
+        ?bool $verbose,
+        ?bool $version,
+        ?array $coverageFilter,
+        ?string $xdebugFilterFile,
+        int $chunkIndex,
+        int $chunkNumber
+    ) {
         $this->argument                                   = $argument;
         $this->atLeastVersion                             = $atLeastVersion;
         $this->backupGlobals                              = $backupGlobals;
@@ -568,6 +671,8 @@ final class Configuration
         $this->verbose                                    = $verbose;
         $this->version                                    = $version;
         $this->xdebugFilterFile                           = $xdebugFilterFile;
+        $this->chunkIndex                                 = $chunkIndex;
+        $this->chunkNumber                                = $chunkNumber;
     }
 
     public function hasArgument(): bool
@@ -2103,5 +2208,25 @@ final class Configuration
         }
 
         return $this->xdebugFilterFile;
+    }
+
+    public function hasChunkNum(): bool
+    {
+        return $this->chunkNumber > 0;
+    }
+
+    public function chunkNum(): int
+    {
+        return $this->chunkNumber;
+    }
+
+    public function hasChunkIndex(): bool
+    {
+        return $this->chunkIndex > 0;
+    }
+
+    public function chunkIndex(): int
+    {
+        return $this->chunkIndex;
     }
 }

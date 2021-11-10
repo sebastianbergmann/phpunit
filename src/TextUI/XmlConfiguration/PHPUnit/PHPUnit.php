@@ -274,8 +274,71 @@ final class PHPUnit
      */
     private $conflictBetweenPrinterClassAndTestdox;
 
-    public function __construct(bool $cacheResult, ?string $cacheResultFile, $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $forceCoversAnnotation, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, ?string $testSuiteLoaderClass, ?string $testSuiteLoaderFile, ?string $printerClass, ?string $printerFile, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutResourceUsageDuringSmallTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutTodoAnnotatedTests, bool $beStrictAboutCoversAnnotation, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticAttributes, bool $registerMockObjectsFromTestArgumentsRecursively, bool $conflictBetweenPrinterClassAndTestdox)
-    {
+    /*
+     * @var int
+     */
+    private int $chunkIndex = 0;
+
+    /*
+     * @var int
+     */
+    private int $chunkNumber = 0;
+
+    public function __construct(
+        bool $cacheResult,
+        ?string $cacheResultFile,
+        $columns,
+        string $colors,
+        bool $stderr,
+        bool $noInteraction,
+        bool $verbose,
+        bool $reverseDefectList,
+        bool $convertDeprecationsToExceptions,
+        bool $convertErrorsToExceptions,
+        bool $convertNoticesToExceptions,
+        bool $convertWarningsToExceptions,
+        bool $forceCoversAnnotation,
+        ?string $bootstrap,
+        bool $processIsolation,
+        bool $failOnEmptyTestSuite,
+        bool $failOnIncomplete,
+        bool $failOnRisky,
+        bool $failOnSkipped,
+        bool $failOnWarning,
+        bool $stopOnDefect,
+        bool $stopOnError,
+        bool $stopOnFailure,
+        bool $stopOnWarning,
+        bool $stopOnIncomplete,
+        bool $stopOnRisky,
+        bool $stopOnSkipped,
+        ?string $extensionsDirectory,
+        ?string $testSuiteLoaderClass,
+        ?string $testSuiteLoaderFile,
+        ?string $printerClass,
+        ?string $printerFile,
+        bool $beStrictAboutChangesToGlobalState,
+        bool $beStrictAboutOutputDuringTests,
+        bool $beStrictAboutResourceUsageDuringSmallTests,
+        bool $beStrictAboutTestsThatDoNotTestAnything,
+        bool $beStrictAboutTodoAnnotatedTests,
+        bool $beStrictAboutCoversAnnotation,
+        bool $enforceTimeLimit,
+        int $defaultTimeLimit,
+        int $timeoutForSmallTests,
+        int $timeoutForMediumTests,
+        int $timeoutForLargeTests,
+        ?string $defaultTestSuite,
+        int $executionOrder,
+        bool $resolveDependencies,
+        bool $defectsFirst,
+        bool $backupGlobals,
+        bool $backupStaticAttributes,
+        bool $registerMockObjectsFromTestArgumentsRecursively,
+        bool $conflictBetweenPrinterClassAndTestdox,
+        int $chunkIndex = 0,
+        int $chunkNumber = 0
+    ) {
         $this->cacheResult                                     = $cacheResult;
         $this->cacheResultFile                                 = $cacheResultFile;
         $this->columns                                         = $columns;
@@ -327,6 +390,10 @@ final class PHPUnit
         $this->backupStaticAttributes                          = $backupStaticAttributes;
         $this->registerMockObjectsFromTestArgumentsRecursively = $registerMockObjectsFromTestArgumentsRecursively;
         $this->conflictBetweenPrinterClassAndTestdox           = $conflictBetweenPrinterClassAndTestdox;
+
+        //--- chunks
+        $this->chunkIndex  = $chunkIndex;
+        $this->chunkNumber = $chunkNumber;
     }
 
     public function cacheResult(): bool
@@ -710,5 +777,15 @@ final class PHPUnit
     public function conflictBetweenPrinterClassAndTestdox(): bool
     {
         return $this->conflictBetweenPrinterClassAndTestdox;
+    }
+
+    public function chunkIndex(): int
+    {
+        return $this->chunkIndex;
+    }
+
+    public function chunkNumber(): int
+    {
+        return $this->chunkNumber;
     }
 }

@@ -24,7 +24,7 @@ use SebastianBergmann\FileIterator\Facade;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestSuiteMapper
+class TestSuiteMapper
 {
     /**
      * @throws RuntimeException

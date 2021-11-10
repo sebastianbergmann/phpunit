@@ -377,6 +377,9 @@ final class Generator
             throw new SoapExtensionNotAvailableException;
         }
 
+        /**
+         * @psalm-suppress UndefinedConstant
+         */
         $options = array_merge($options, ['cache_wsdl' => WSDL_CACHE_NONE]);
 
         try {
@@ -384,10 +387,9 @@ final class Generator
             $_methods = array_unique($client->__getFunctions());
             unset($client);
         } catch (SoapFault $e) {
-            throw new RuntimeException(
+            throw new RuntimeException(  // @psalm-suppress InvalidArgument
                 $e->getMessage(),
-                (int) $e->getCode(),
-                $e
+                (int) $e->getCode()
             );
         }
 

@@ -13,9 +13,9 @@ use function assert;
 use function sprintf;
 use FilterIterator;
 use Iterator;
+use IteratorIterator;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Exception;
-use RecursiveFilterIterator;
 use ReflectionClass;
 
 /**
@@ -29,16 +29,19 @@ final class Factory
     private $filters = [];
 
     /**
-     * @param array|string $args
+     * @param ReflectionClass $filter Filter tests
+     * @param array|string    $args
+     *
+     * @psalm-suppress MissingThrowsDocblock Exception
      *
      * @throws Exception
      */
     public function addFilter(ReflectionClass $filter, $args): void
     {
-        if (!$filter->isSubclassOf(RecursiveFilterIterator::class)) {
+        if (!$filter->isSubclassOf(IteratorIterator::class)) {
             throw new Exception(
                 sprintf(
-                    'Class "%s" does not extend RecursiveFilterIterator',
+                    'Class "%s" does not extend IteratorIterator',
                     $filter->name
                 )
             );

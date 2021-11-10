@@ -278,6 +278,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         // @codeCoverageIgnoreEnd
 
         if (!$class->isAbstract()) {
+            // actual tests array
             $this->tests[] = $test;
             $this->clearCaches();
 

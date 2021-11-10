@@ -1077,7 +1077,9 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'backupGlobals', false),
             $this->getBooleanAttribute($document->documentElement, 'backupStaticAttributes', false),
             $this->getBooleanAttribute($document->documentElement, 'registerMockObjectsFromTestArgumentsRecursively', false),
-            $conflictBetweenPrinterClassAndTestdox
+            $conflictBetweenPrinterClassAndTestdox,
+            0,
+            0
         );
     }
 

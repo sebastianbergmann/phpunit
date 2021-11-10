@@ -120,6 +120,8 @@ final class Builder
         'version',
         'whitelist=',
         'dump-xdebug-filter=',
+        'chunk-idx=',
+        'chunk-num=',
     ];
 
     private const SHORT_OPTIONS = 'd:c:hv';
@@ -231,6 +233,8 @@ final class Builder
         $verbose                                    = null;
         $version                                    = null;
         $xdebugFilterFile                           = null;
+        $chunkIndex                                 = 0;
+        $chunkNumber                                = 0;
 
         if (isset($options[1][0])) {
             $argument = $options[1][0];
@@ -769,6 +773,16 @@ final class Builder
 
                     break;
 
+                case '--chunk-idx':
+                    $chunkIndex = (int) $option[1];
+
+                    break;
+
+                case '--chunk-num':
+                    $chunkNumber = (int) $option[1];
+
+                    break;
+
                 default:
                     $unrecognizedOptions[str_replace('--', '', $option[0])] = $option[1];
             }
@@ -881,7 +895,9 @@ final class Builder
             $verbose,
             $version,
             $coverageFilter,
-            $xdebugFilterFile
+            $xdebugFilterFile,
+            $chunkIndex,
+            $chunkNumber
         );
     }
 }

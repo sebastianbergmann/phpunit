@@ -4,7 +4,7 @@
     xmlns="https://getpsalm.org/schema/config"
     xsi:schemaLocation="https://getpsalm.org/schema/config vendor/vimeo/psalm/config.xsd"
     resolveFromConfigFile="false"
-    cacheDirectory=".psalm/cache"
+    cacheDirectory="/tmp/.psalm/cache"
     totallyTyped="false"
     checkForThrowsDocblock="true"
     findUnusedVariablesAndParams="false"

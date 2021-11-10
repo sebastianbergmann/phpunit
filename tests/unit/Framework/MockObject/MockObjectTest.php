@@ -596,11 +596,11 @@ final class MockObjectTest extends TestCase
         $mock->method('doSomethingElse')
              ->will(
                  $this->returnCallback(
-                     static function () use (&$actualArguments): void
-                     {
-                         $actualArguments = \func_get_args();
-                     }
-                 )
+                    static function () use (&$actualArguments): void
+                    {
+                        $actualArguments = \func_get_args();
+                    }
+                )
              );
 
         $mock->doSomethingElse($expectedObject);
@@ -624,11 +624,11 @@ final class MockObjectTest extends TestCase
         $mock->method('doSomethingElse')
              ->will(
                  $this->returnCallback(
-                     static function () use (&$actualArguments): void
-                     {
-                         $actualArguments = \func_get_args();
-                     }
-                 )
+                    static function () use (&$actualArguments): void
+                    {
+                        $actualArguments = \func_get_args();
+                    }
+                )
              );
 
         $mock->doSomethingElse($expectedObject);

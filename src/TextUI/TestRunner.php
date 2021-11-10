@@ -85,7 +85,7 @@ use SebastianBergmann\Timer\Timer;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestRunner extends BaseTestRunner
+class TestRunner extends BaseTestRunner
 {
     public const SUCCESS_EXIT = 0;
 
@@ -1142,6 +1142,8 @@ final class TestRunner extends BaseTestRunner
         $arguments['timeoutForMediumTests']                           = $arguments['timeoutForMediumTests'] ?? 10;
         $arguments['timeoutForSmallTests']                            = $arguments['timeoutForSmallTests'] ?? 1;
         $arguments['verbose']                                         = $arguments['verbose'] ?? false;
+        $arguments['chunkIndex']                                      = $arguments['chunkIndex'] ?? 0;
+        $arguments['chunkNumber']                                     = $arguments['chunkNumber'] ?? 0;
     }
 
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
@@ -1150,11 +1152,21 @@ final class TestRunner extends BaseTestRunner
             empty($arguments['groups']) &&
             empty($arguments['excludeGroups']) &&
             empty($arguments['testsCovering']) &&
-            empty($arguments['testsUsing'])) {
+            empty($arguments['testsUsing']) &&
+            (int) ($arguments['chunkIndex']) < 1 &&
+            (int) ($arguments['chunkNumber']) < 1) {
             return;
         }
 
         $filterFactory = new Factory;
+
+        if ((int) $arguments['chunkNumber'] > 0) {
+            // @psalm-suppress MissingThrowsDocblock
+            $filterFactory->addFilter(
+                new ReflectionClass(ChunkFilterIterator::class),
+                [$arguments['chunkIndex'], $arguments['chunkNumber']]
+            );
+        }
 
         if (!empty($arguments['excludeGroups'])) {
             $filterFactory->addFilter(

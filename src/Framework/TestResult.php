@@ -693,6 +693,7 @@ final class TestResult implements Countable
 
         $timer = new Timer;
         $timer->start();
+        $_timeout = 1000;
 
         try {
             $invoker = new Invoker;
