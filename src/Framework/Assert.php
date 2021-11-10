@@ -30,6 +30,7 @@ use Countable;
 use Generator;
 use PHPUnit\Event;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArrayIsList;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
@@ -111,6 +112,15 @@ abstract class Assert
         );
 
         static::assertThat($array, $constraint, $message);
+    }
+
+    public static function assertArrayIsList(array $array, string $message = ''): void
+    {
+        static::assertThat(
+            $array,
+            new ArrayIsList,
+            $message
+        );
     }
 
     /**
@@ -2168,6 +2178,11 @@ abstract class Assert
     public static function arrayHasKey(int|string $key): ArrayHasKey
     {
         return new ArrayHasKey($key);
+    }
+
+    public static function arrayIsList(): ArrayIsList
+    {
+        return new ArrayIsList;
     }
 
     public static function equalTo(mixed $value): IsEqual
