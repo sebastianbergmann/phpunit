@@ -122,6 +122,9 @@ final class Help
             ['arg' => '--random-order-seed <N>', 'desc' => 'Use a specific random seed <N> for random order'],
             ['arg' => '--cache-result', 'desc' => 'Write test results to cache file'],
             ['arg' => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
+
+            ['arg' => '--chunk-idx <I>', 'desc' => 'Chunk index, 1-N. N is number of chunk'],
+            ['arg' => '--chunk-num <N>', 'desc' => 'Number of chunks (N)'],
         ],
 
         'Configuration Options' => [
