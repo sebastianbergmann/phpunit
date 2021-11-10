@@ -13,8 +13,9 @@ use function ceil;
 use IteratorIterator;
 use PHPUnit\Framework\TestSuite;
 use RecursiveIterator;
+use FilterIterator;
 
-final class ChunkFilterIterator extends IteratorIterator
+final class ChunkFilterIterator extends FilterIterator
 {
     protected int $chunkIndex = 0;
 

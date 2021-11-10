@@ -41,6 +41,7 @@ use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\NameFilterIterator;
+use PHPUnit\Runner\Filter\ChunkFilterIterator;
 use PHPUnit\Runner\Hook;
 use PHPUnit\Runner\NullTestResultCache;
 use PHPUnit\Runner\ResultCacheExtension;
@@ -1146,6 +1147,13 @@ class TestRunner extends BaseTestRunner
         $arguments['chunkNumber']                                     = $arguments['chunkNumber'] ?? 0;
     }
 
+		/**
+		 * @throws Exception
+		 * @psalm-suppress MissingThrowsDocblock
+		 * @param TestSuite $suite
+		 * @param array $arguments
+		 * @return void
+		 */
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
         if (!$arguments['filter'] &&
@@ -1161,7 +1169,6 @@ class TestRunner extends BaseTestRunner
         $filterFactory = new Factory;
 
         if ((int) $arguments['chunkNumber'] > 0) {
-            // @psalm-suppress MissingThrowsDocblock
             $filterFactory->addFilter(
                 new ReflectionClass(ChunkFilterIterator::class),
                 [$arguments['chunkIndex'], $arguments['chunkNumber']]
