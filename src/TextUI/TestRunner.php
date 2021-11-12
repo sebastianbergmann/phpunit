@@ -566,10 +566,14 @@ class TestRunner extends BaseTestRunner
                 );
             }
 
-            if (isset($arguments['chunkIndex']) || isset($arguments['chunkNumber'])) {
+            if (isset($arguments['chunkIndex'], $arguments['chunkNumber'])) {
                 $this->writeMessage(
-                    'Chunks',
-                    sprintf('%d of %d chunks', (int) ($arguments['chunkIndex']), (int) ($arguments['chunkNumber']))
+                    'Chunk Index',
+                    sprintf('%d / %d chunks', (int) $arguments['chunkIndex'], (int) $arguments['chunkNumber'])
+                );
+                $this->writeMessage(
+                    'Current tests',
+                    sprintf('%d / %d total', (int) $arguments['chunkPerPage'], (int) $arguments['totalTests'])
                 );
             }
         }
@@ -1263,7 +1267,8 @@ class TestRunner extends BaseTestRunner
             $arguments['colors'],
             $arguments['debug'],
             $arguments['columns'],
-            $arguments['reverseList']
+            $arguments['reverseList'],
+            $arguments
         );
 
         assert($object instanceof ResultPrinter);

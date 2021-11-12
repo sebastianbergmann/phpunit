@@ -24,7 +24,7 @@ final class TextTestListRenderer
     {
         $buffer = 'Available test(s):';
         $buffer .= PHP_EOL . ' - ';
-				$buffer .= implode(PHP_EOL . ' - ', $suite->getTestNameArray()) . PHP_EOL;
+        $buffer .= implode(PHP_EOL . ' - ', $suite->getTestNameArray()) . PHP_EOL;
 
         return $buffer;
     }

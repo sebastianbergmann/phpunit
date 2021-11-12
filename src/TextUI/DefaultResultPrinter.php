@@ -135,6 +135,11 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
     private $timer;
 
     /**
+     * @var array
+     */
+    private $arguments;
+
+    /**
      * Constructor.
      *
      * @param null|resource|string $out
@@ -142,7 +147,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
      *
      * @throws Exception
      */
-    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false)
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false, array $arguments = [])
     {
         parent::__construct($out);
 
@@ -176,8 +181,9 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         }
 
         $this->timer = new Timer;
-
         $this->timer->start();
+
+        $this->arguments = $arguments;
     }
 
     public function printResult(TestResult $result): void
@@ -256,7 +262,12 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
     public function startTestSuite(TestSuite $suite): void
     {
         if ($this->numTests == -1) {
-            $this->numTests      = count($suite);
+            $this->numTests = count($suite);
+
+            if (isset($this->arguments['chunkPerPage'], $this->arguments['totalTests'])) {
+                $this->numTests = (int) $this->arguments['chunkPerPage'];
+            }
+
             $this->numTestsWidth = strlen((string) $this->numTests);
             $this->maxColumn     = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numTestsWidth);
         }

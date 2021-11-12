@@ -162,11 +162,18 @@ class Command
                 $testNum = count($tests);
 
                 if ($chunkNumber < $testNum) {
-                    $testPerChunk = (int) ceil($testNum / $chunkNumber);
-                    $idxMin       = (int) ($chunkIndex - 1) * $testPerChunk;
+                    $chunkPerPage = (int) ceil($testNum / $chunkNumber);
+                    $idxMax       = min((int) ($chunkIndex * $chunkPerPage) - 1, $testNum - 1);
+                    $idxMin       = max(min($idxMax + $chunkPerPage, $idxMax - $chunkPerPage), 0);
+                    //\PHPUnit\Util\DevTool::print_rdie("$testNum $chunkPerPage $idxMin - $idxMax idx=$chunkIndex");
 
-                    $allows = array_slice($tests, $idxMin, $testPerChunk);
+                    $allows = array_slice($tests, $idxMin, $chunkPerPage);
                     $runner->setAllowTests($allows);
+
+                    $this->arguments['chunkIndex']   = $chunkIndex;
+                    $this->arguments['chunkNumber']  = $chunkNumber;
+                    $this->arguments['chunkPerPage'] = $chunkPerPage;
+                    $this->arguments['totalTests']   = $testNum;
                 }
             }
         }

@@ -932,9 +932,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
         }
 
-				$tests= array_unique(array_filter(array_map('trim', $tests)));
-
-        return $tests;
+        return array_unique(array_filter(array_map('trim', $tests)));
     }
 
     /**
