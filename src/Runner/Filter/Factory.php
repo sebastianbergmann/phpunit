@@ -31,8 +31,6 @@ final class Factory
      * @param ReflectionClass $filter Filter tests
      * @param array|string    $args
      *
-     * @psalm-suppress MissingThrowsDocblock Exception
-     *
      * @throws Exception
      */
     public function addFilter(ReflectionClass $filter, $args): void

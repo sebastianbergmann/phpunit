@@ -22,8 +22,9 @@ final class TextTestListRenderer
      */
     public function render(TestSuite $suite): string
     {
-        $buffer = 'Available test(s):' . PHP_EOL;
-        $buffer .= implode(PHP_EOL . '- ', $suite->getTestNameArray()) . PHP_EOL;
+        $buffer = 'Available test(s):';
+        $buffer .= PHP_EOL . ' - ';
+				$buffer .= implode(PHP_EOL . ' - ', $suite->getTestNameArray()) . PHP_EOL;
 
         return $buffer;
     }

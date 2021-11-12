@@ -95,6 +95,7 @@ final class Generator
      * @throws ClassAlreadyExistsException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
+     * @throws Exception
      * @throws InvalidMethodNameException
      * @throws OriginalConstructorInvocationRequiredException
      * @throws ReflectionException
@@ -377,9 +378,6 @@ final class Generator
             throw new SoapExtensionNotAvailableException;
         }
 
-        /**
-         * @psalm-suppress UndefinedConstant
-         */
         $options = array_merge($options, ['cache_wsdl' => WSDL_CACHE_NONE]);
 
         try {

@@ -115,12 +115,12 @@ final class MockBuilder
      * @throws ClassAlreadyExistsException
      * @throws ClassIsFinalException
      * @throws DuplicateMethodException
+     * @throws Exception
      * @throws InvalidMethodNameException
      * @throws OriginalConstructorInvocationRequiredException
      * @throws ReflectionException
      * @throws RuntimeException
      * @throws UnknownTypeException
-     *
      * @psalm-return MockObject&MockedType
      */
     public function getMock(): MockObject

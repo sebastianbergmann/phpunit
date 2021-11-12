@@ -926,11 +926,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     {
         $tests = [];
 
-        foreach (new RecursiveIteratorIterator($this->getIterator()) as $test) {
+        foreach (new RecursiveIteratorIterator($this) as $test) {
             if ($test instanceof TestCase || $test instanceof PhptTestCase) {
                 $tests[] = $test->getTestName();
             }
         }
+
+				$tests= array_unique(array_filter(array_map('trim', $tests)));
 
         return $tests;
     }

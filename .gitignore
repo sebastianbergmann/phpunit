@@ -52,7 +52,6 @@ nbproject
 !/nbproject
 !/nbproject/*
 nbproject/private/
-build/
 nbbuild/
 dist/
 nbdist/

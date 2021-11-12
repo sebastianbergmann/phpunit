@@ -2190,6 +2190,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->result->endTest($this, 0);
     }
 
+    /**
+     * @throws Exception
+     */
     private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_SKIPPED;
@@ -2210,6 +2213,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->result->endTest($this, 0);
     }
 
+    /**
+     * @throws Exception
+     */
     private function markWarningForUncallableDependency(ExecutionOrderDependency $dependency): void
     {
         $this->status = BaseTestRunner::STATUS_WARNING;
@@ -2232,6 +2238,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * Get the mock object generator, creating it if it doesn't exist.
+     *
+     * @throws Exception
      */
     private function getMockObjectGenerator(): MockGenerator
     {

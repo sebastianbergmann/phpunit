@@ -142,7 +142,6 @@ class TestRunner extends BaseTestRunner
         $this->codeCoverageFilter = $filter;
         $this->loader             = $loader;
         $this->timer              = new Timer;
-        $this->testCounter        = 0;
         $this->allows             = [];
     }
 
@@ -1176,7 +1175,6 @@ class TestRunner extends BaseTestRunner
 
     /**
      * @throws Exception
-     * @psalm-suppress MissingThrowsDocblock
      */
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {

@@ -139,23 +139,35 @@ class Command
 
         unset($this->arguments['test'], $this->arguments['testFile']);
 
-        if ((int) $this->arguments['chunkIndex'] > 0 && (int) $this->arguments['chunkNumber'] > 1) {
+        if (isset($this->arguments['chunkIndex'], $this->arguments['chunkNumber'])) {
             $chunkIndex  = (int) $this->arguments['chunkIndex'];
             $chunkNumber = (int) $this->arguments['chunkNumber'];
+
+            // check chunkNumber inputs
+            if ($chunkNumber < 0) {
+                $chunkNumber = 0;
+            }
+
+            // check chunkIndex inputs
+            if ($chunkIndex < 0) {
+                $chunkIndex = 0;
+            }
 
             if ($chunkIndex > $chunkNumber) {
                 $chunkIndex = $chunkNumber;
             }
 
-            $tests   = $suite->getTestNameArray();
-            $testNum = count($tests);
+            if ($suite !== null) {
+                $tests   = $suite->getTestNameArray();
+                $testNum = count($tests);
 
-            if ($chunkNumber < $testNum) {
-                $testPerChunk = (int) ceil($testNum / $chunkNumber);
-                $idxMin       = (int) ($chunkIndex - 1) * $testPerChunk;
+                if ($chunkNumber < $testNum) {
+                    $testPerChunk = (int) ceil($testNum / $chunkNumber);
+                    $idxMin       = (int) ($chunkIndex - 1) * $testPerChunk;
 
-                $allows = array_slice($tests, $idxMin, $testPerChunk);
-                $runner->setAllowTests($allows);
+                    $allows = array_slice($tests, $idxMin, $testPerChunk);
+                    $runner->setAllowTests($allows);
+                }
             }
         }
 
@@ -178,13 +190,6 @@ class Command
         }
 
         return $return;
-    }
-
-    public function getListTests(TestSuite $suite): array
-    {
-        $renderer = new TextTestListRenderer;
-
-        return $renderer->getList($suite);
     }
 
     /**

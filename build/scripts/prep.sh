@@ -17,8 +17,8 @@ fi
 chmod +x /usr/local/bin/composer
 
 #printf "\n\n --- update composer \n"
-#/usr/local/bin/composer install --no-interaction
-#/usr/local/bin/composer update --no-interaction
+/usr/local/bin/composer install --no-interaction
+/usr/local/bin/composer update --no-interaction
 #
 #printf "\n\n --- execute php-cs-fixer \n"
 #chmod +x $dirroot/tools/php-cs-fixer
