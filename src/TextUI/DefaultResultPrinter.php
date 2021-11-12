@@ -147,7 +147,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
      *
      * @throws Exception
      */
-    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false, array $arguments = [])
+    public function __construct($out = null, bool $verbose = false, string $colors = self::COLOR_DEFAULT, bool $debug = false, $numberOfColumns = 80, bool $reverse = false, array &$arguments = [])
     {
         parent::__construct($out);
 
@@ -183,7 +183,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
         $this->timer = new Timer;
         $this->timer->start();
 
-        $this->arguments = $arguments;
+        $this->arguments = &$arguments;
     }
 
     public function printResult(TestResult $result): void
