@@ -54,6 +54,7 @@ use PHPUnit\Framework\SkippedTestError;
 use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\TextUI\TestRunner;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 use SebastianBergmann\Template\Template;
@@ -79,6 +80,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @var string
      */
     private $output = '';
+
+    /**
+     * @var ?TestRunner
+     */
+    private $runner;
 
     /**
      * Constructs a test case with the given filename.
@@ -116,10 +122,15 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Exception
      */
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result = null, TestRunner $runner = null): TestResult
     {
         if ($result === null) {
-            $result = new TestResult;
+            $result = new TestResult();
+        }
+
+        if ($runner !== null) {
+            $this->runner = $runner;
+            $result->setRunner($this->runner);
         }
 
         try {
@@ -251,6 +262,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return $this->toString();
     }
 
+    public function getTestName(): string
+    {
+        return $this->toString();
+    }
+
     /**
      * Returns a string representation of the test case.
      */
@@ -298,6 +314,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     public function requires(): array
     {
         return [];
+    }
+
+    public function setRunner(TestRunner $runner): void
+    {
+        $this->runner = $runner;
     }
 
     /**

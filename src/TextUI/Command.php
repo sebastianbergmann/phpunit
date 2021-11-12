@@ -139,6 +139,25 @@ class Command
 
         unset($this->arguments['test'], $this->arguments['testFile']);
 
+        $tests  = $this->getListTests($suite);
+				shuffle($tests);
+        $allows = array_slice($tests, 0, 50);
+        $runner->setAllowTests($allows);
+
+        //				$ntests=new \RecursiveIteratorIterator($suite->getIterator());
+        //				$mtests=array();
+        //				foreach ($ntests as $idx=>$test){
+        //					$mtests[]= $test;
+        //					if ($idx > 10) break;
+        //				}
+        //$suite->setTests(iterator_to_array($ntests));
+        //				\PHPUnit\Util\DevTool::print_rdie($allows);
+
+//        $tests=$this->getListTests($suite);
+        //				$tests= array_splice($tests, 0,10);
+//        //\PHPUnit\Util\DevTool::print_rdie($tests);
+        //				$suite->setTests($tests);
+
         try {
             $result = $runner->run($suite, $this->arguments, $this->warnings, $exit);
         } catch (Throwable $t) {
@@ -158,6 +177,13 @@ class Command
         }
 
         return $return;
+    }
+
+    public function getListTests(TestSuite $suite): array
+    {
+        $renderer = new TextTestListRenderer;
+
+        return $renderer->getList($suite);
     }
 
     /**

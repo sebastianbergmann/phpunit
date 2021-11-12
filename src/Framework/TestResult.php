@@ -21,6 +21,7 @@ use function xdebug_stop_function_monitor;
 use AssertionError;
 use Countable;
 use Error;
+use PHPUnit\TextUI\TestRunner;
 use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\ExcludeList;
 use PHPUnit\Util\Printer;
@@ -229,6 +230,11 @@ final class TestResult implements Countable
      * @var bool
      */
     private $registerMockObjectsFromTestArgumentsRecursively = false;
+
+    /**
+     * @var ?TestRunner
+     */
+    private $runner;
 
     /**
      * @deprecated Use the `TestHook` interfaces instead
@@ -636,8 +642,12 @@ final class TestResult implements Countable
      * @throws CodeCoverageException
      * @throws UnintentionallyCoveredCodeException
      */
-    public function run(Test $test): void
+    public function run(Test $test, TestRunner $runner = null): void
     {
+        if ($runner !== null) {
+            $this->runner = $runner;
+        }
+
         Assert::resetCount();
 
         $size = TestUtil::UNKNOWN;
@@ -1265,6 +1275,11 @@ final class TestResult implements Countable
     public function setRegisterMockObjectsFromTestArgumentsRecursively(bool $flag): void
     {
         $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
+    }
+
+    public function setRunner(TestRunner $runner): void
+    {
+        $this->runner = $runner;
     }
 
     private function recordError(Test $test, Throwable $t): void

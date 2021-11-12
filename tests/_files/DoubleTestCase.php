@@ -12,6 +12,7 @@ namespace PHPUnit\TestFixture;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\TextUI\TestRunner;
 
 class DoubleTestCase implements Test
 {
@@ -27,7 +28,7 @@ class DoubleTestCase implements Test
         return 2;
     }
 
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result = null, TestRunner $runner = null): TestResult
     {
         $result->startTest($this);
 

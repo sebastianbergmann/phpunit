@@ -91,6 +91,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\TextUI\TestRunner;
 use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -351,6 +352,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private $doubledTypes = [];
 
     /**
+     * @var ?TestRunner
+     */
+    private $runner;
+
+    /**
+     * @var array
+     */
+    private $allows;
+
+    /**
      * Returns a matcher that matches when the method is executed
      * zero or more times.
      */
@@ -491,6 +502,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->data     = $data;
         $this->dataName = $dataName;
+        $this->allows   = [];
     }
 
     /**
@@ -731,10 +743,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws CodeCoverageException
      * @throws UtilException
      */
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result = null, TestRunner $runner = null): TestResult
     {
         if ($result === null) {
             $result = $this->createResult();
+        }
+
+        if ($runner !== null) {
+            $this->runner = $runner;
+            $result->setRunner($this->runner);
         }
 
         if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
@@ -949,6 +966,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         return $this->name;
+    }
+
+    public function getTestName(): string
+    {
+        $name = sprintf(
+            '%s::%s',
+            static::class,
+            str_replace(' with data set ', '', $this->getName())
+        );
+
+        return $name;
     }
 
     /**
@@ -1502,6 +1530,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return $this->dependencies;
     }
 
+    public function setRunner(TestRunner $runner): void
+    {
+        $this->runner = $runner;
+    }
+
+    public function setAllowTests(array $tests): void
+    {
+        $this->allows = $tests;
+    }
+
+    public function getAllowTests(): array
+    {
+        return $this->allows;
+    }
+
     /**
      * Override to run the test and assert its state.
      *
@@ -1952,7 +1995,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createResult(): TestResult
     {
-        return new TestResult;
+        $testResult = new TestResult();
+
+        if ($this->runner !== null) {
+            $testResult->setRunner($this->runner);
+        }
+
+        return $testResult;
     }
 
     /**
@@ -2568,6 +2617,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-template RealInstanceType of object
      * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws Exception
      */
     private function createMockObject(string $originalClassName): MockObject
     {

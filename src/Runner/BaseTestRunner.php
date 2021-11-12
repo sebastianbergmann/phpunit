@@ -158,4 +158,18 @@ abstract class BaseTestRunner
      * a test suite.
      */
     abstract protected function runFailed(string $message): void;
+
+    /**
+     * Override to handle event after execute TestSuite.
+     */
+    protected function beforeRunTest(): void
+    {
+    }
+
+    /**
+     * Override to handle event after execute TestSuite.
+     */
+    protected function afterRunTest(): void
+    {
+    }
 }

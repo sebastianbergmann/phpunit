@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use Countable;
+use PHPUnit\TextUI\TestRunner;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -19,5 +20,5 @@ interface Test extends Countable
     /**
      * Runs a test and collects its result in a TestResult instance.
      */
-    public function run(TestResult $result = null): TestResult;
+    public function run(TestResult $result = null, TestRunner $runner = null): TestResult;
 }

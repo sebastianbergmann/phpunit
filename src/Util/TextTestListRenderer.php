@@ -51,4 +51,17 @@ final class TextTestListRenderer
 
         return $buffer;
     }
+
+    public function getList(TestSuite $suite): array
+    {
+        $tests = [];
+
+        foreach (new RecursiveIteratorIterator($suite->getIterator()) as $test) {
+            if ($test instanceof TestCase || $test instanceof PhptTestCase) {
+                $tests[] = $test->getTestName();
+            }
+        }
+
+        return $tests;
+    }
 }

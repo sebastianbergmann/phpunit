@@ -113,6 +113,8 @@
                               order
   [32m--cache-result             [0m Write test results to cache file
   [32m--do-not-cache-result      [0m Do not write test results to cache file
+  [32m--chunk-idx [36m<I>[0m            [0m Chunk index, 1-N. N is number of chunk
+  [32m--chunk-num [36m<N>[0m            [0m Number of chunks (N)
 
 [33mConfiguration Options:[0m
   [32m--prepend [36m<file>[0m           [0m A PHP script that is included as early as
@@ -141,4 +143,3 @@
                               and exits
   [32m--check-version            [0m Check whether PHPUnit is the latest
                               version
-

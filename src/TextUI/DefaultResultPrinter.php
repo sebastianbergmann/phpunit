@@ -259,6 +259,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
             $this->numTests      = count($suite);
             $this->numTestsWidth = strlen((string) $this->numTests);
             $this->maxColumn     = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numTestsWidth);
+            //\PHPUnit\Util\DevTool::print_rdie($this->numTests);
         }
     }
 

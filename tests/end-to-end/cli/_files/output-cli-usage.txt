@@ -89,6 +89,8 @@ Test Execution Options:
   --random-order-seed <N>     Use a specific random seed <N> for random order
   --cache-result              Write test results to cache file
   --do-not-cache-result       Do not write test results to cache file
+  --chunk-idx <I>             Chunk index, 1-N. N is number of chunk
+  --chunk-num <N>             Number of chunks (N)
 
 Configuration Options:
 

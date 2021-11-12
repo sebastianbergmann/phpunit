@@ -9,6 +9,7 @@
  */
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\TextUI\TestRunner;
 
 class NotReorderableTest implements Test
 {
@@ -17,9 +18,12 @@ class NotReorderableTest implements Test
         return 1;
     }
 
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result = null, TestRunner $runner = null): TestResult
     {
-        return new TestResult();
+        $testResult = new TestResult();
+        $testResult->setRunner($runner);
+
+        return $testResult;
     }
 
     public function provides(): array

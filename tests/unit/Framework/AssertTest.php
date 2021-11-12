@@ -47,6 +47,7 @@ use stdClass;
 
 /**
  * @small
+ * @group privilege
  */
 final class AssertTest extends TestCase
 {
@@ -552,21 +553,23 @@ XML;
     {
         if (PHP_OS_FAMILY === 'Windows') {
             $this->markTestSkipped('Cannot test this behaviour on Windows');
+        } elseif (function_exists('posix_getuid') && posix_getuid() == 0) {
+            $this->markTestSkipped('root user detected, always can read all');
         }
 
         $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('unreadable_dir_', true);
         mkdir($dirName, octdec('0'));
 
-        $this->assertDirectoryIsNotReadable($dirName);
+        $this->assertDirectoryIsNotReadable($dirName, 'octet 0');
 
         chmod($dirName, octdec('444'));
 
         try {
-            $this->assertDirectoryIsNotReadable($dirName);
+            $this->assertDirectoryIsNotReadable($dirName, 'octet 444');
         } catch (AssertionFailedError $e) {
         }
 
-        rmdir($dirName);
+//        rmdir($dirName);
     }
 
     public function testAssertDirectoryIsWritable(): void
@@ -582,6 +585,8 @@ XML;
     {
         if (PHP_OS_FAMILY === 'Windows') {
             $this->markTestSkipped('Cannot test this behaviour on Windows');
+        } elseif (function_exists('posix_getuid') && posix_getuid() == 0) {
+            $this->markTestSkipped('root user detected, always can write all');
         }
 
         $dirName = sys_get_temp_dir() . DIRECTORY_SEPARATOR . uniqid('not_writable_dir_', true);
@@ -630,6 +635,8 @@ XML;
     {
         if (PHP_OS_FAMILY === 'Windows') {
             $this->markTestSkipped('Cannot test this behaviour on Windows');
+        } elseif (function_exists('posix_getuid') && posix_getuid() == 0) {
+            $this->markTestSkipped('root user detected, always can read all');
         }
 
         $tempFile = tempnam(
@@ -653,6 +660,10 @@ XML;
 
     public function testAssertFileIsNotWritable(): void
     {
+        if (function_exists('posix_getuid') && posix_getuid() == 0) {
+            $this->markTestSkipped('root user detected, always can read all');
+        }
+
         $tempFile = tempnam(sys_get_temp_dir(), 'not_writable');
 
         chmod($tempFile, octdec('0'));

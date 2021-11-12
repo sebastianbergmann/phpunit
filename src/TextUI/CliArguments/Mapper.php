@@ -360,6 +360,14 @@ final class Mapper
             $result['xdebugFilterFile'] = $arguments->xdebugFilterFile();
         }
 
+        if ($arguments->hasChunkNum()) {
+            $result['chunkNumber'] = $arguments->chunkNumber();
+        }
+
+        if ($arguments->hasChunkIdx()) {
+            $result['chunkIndex'] = $arguments->chunkIndex();
+        }
+
         return $result;
     }
 }

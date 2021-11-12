@@ -13,7 +13,6 @@ use function assert;
 use function sprintf;
 use FilterIterator;
 use Iterator;
-use IteratorIterator;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Exception;
 use ReflectionClass;
@@ -38,10 +37,10 @@ final class Factory
      */
     public function addFilter(ReflectionClass $filter, $args): void
     {
-        if (!$filter->isSubclassOf(IteratorIterator::class)) {
+        if (!$filter->isSubclassOf(FilterIterator::class)) {
             throw new Exception(
                 sprintf(
-                    'Class "%s" does not extend IteratorIterator',
+                    'Class "%s" does not extend FilterIterator',
                     $filter->name
                 )
             );
@@ -50,14 +49,14 @@ final class Factory
         $this->filters[] = [$filter, $args];
     }
 
-    public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
+    public function factory(Iterator $iterator, TestSuite $suite): Iterator
     {
         foreach ($this->filters as $filter) {
             [$class, $args] = $filter;
             $iterator       = $class->newInstance($iterator, $args, $suite);
         }
 
-        assert($iterator instanceof FilterIterator);
+        assert($iterator instanceof Iterator);
 
         return $iterator;
     }

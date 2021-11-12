@@ -2215,12 +2215,12 @@ final class Configuration
         return $this->chunkNumber > 0;
     }
 
-    public function chunkNum(): int
+    public function chunkNumber(): int
     {
         return $this->chunkNumber;
     }
 
-    public function hasChunkIndex(): bool
+    public function hasChunkIdx(): bool
     {
         return $this->chunkIndex > 0;
     }

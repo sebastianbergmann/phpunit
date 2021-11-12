@@ -63,7 +63,7 @@ foreach ($class->getMethods() as $method) {
     $constraintMethods .= \sprintf(
         "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n%s\n{\n    return Assert::%s(...\\func_get_args());\n}\n}\n\n",
         \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1])),
-        $method->getName()
+        (string) $method->getName()
     );
 }
 
@@ -87,10 +87,10 @@ foreach ($class->getMethods() as $method) {
     $docComment = \str_replace(
         ['*/', '     *'],
         ["*\n * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit\n * @see Assert::" . $method->getName() . "\n */", ' *'],
-        $method->getDocComment()
+        (string) $method->getDocComment()
     );
 
-    $signature = \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1]));
+    $signature = \str_replace('public static ', '', (string) \trim($lines[$method->getStartLine() - 1]));
     $body      = "{\n    Assert::" . $method->getName() . "(...\\func_get_args());\n}";
 
     $buffer .= "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n";

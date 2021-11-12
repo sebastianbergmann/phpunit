@@ -20,6 +20,7 @@ use function call_user_func;
 use function class_exists;
 use function count;
 use function dirname;
+use function get_class;
 use function get_declared_classes;
 use function implode;
 use function is_bool;
@@ -31,6 +32,7 @@ use function method_exists;
 use function preg_match;
 use function preg_quote;
 use function sprintf;
+use function str_replace;
 use function strpos;
 use function substr;
 use Iterator;
@@ -38,8 +40,10 @@ use IteratorAggregate;
 use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\TextUI\TestRunner;
 use PHPUnit\Util\FileLoader;
 use PHPUnit\Util\Test as TestUtil;
+use RecursiveIteratorIterator;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -138,6 +142,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private $warnings = [];
 
     /**
+     * @var ?TestRunner
+     */
+    private $runner;
+
+    /**
+     * @var array
+     */
+    private $allows;
+
+    /**
      * Constructs a new TestSuite.
      *
      *   - PHPUnit\Framework\TestSuite() constructs an empty TestSuite.
@@ -160,6 +174,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function __construct($theClass = '', string $name = '')
     {
+        $this->allows = [];
+
         if (!is_string($theClass) && !$theClass instanceof ReflectionClass) {
             throw InvalidArgumentException::create(
                 1,
@@ -530,6 +546,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         foreach ($fileNames as $filename) {
             $this->addTestFile((string) $filename);
         }
+        //\PHPUnit\Util\DevTool::print_rr($fileNames);
+                //\PHPUnit\Util\DevTool::print_rr(count($this->tests));
+                //\PHPUnit\Util\DevTool::print_rr($this->name);
     }
 
     /**
@@ -594,10 +613,15 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws Warning
      */
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result = null, TestRunner $runner = null): TestResult
     {
         if ($result === null) {
             $result = $this->createResult();
+        }
+
+        if ($runner !== null) {
+            $this->runner = $runner;
+            $result->setRunner($this->runner);
         }
 
         if (count($this) === 0) {
@@ -664,7 +688,51 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
         }
 
+        $doneTest = 0;
+
+        //$tests= array_map('strval', iterator_to_array($this, false));
+//        				\PHPUnit\Util\DevTool::print_rdie(count($this));
+
+//        foreach (new RecursiveIteratorIterator($this->tests) as $idx=>$test) {
+//            $name = '';
+//
+//            if ($test instanceof TestCase) {
+//                $name = sprintf(
+//                    '%s::%s',
+//                    get_class($test),
+//                    str_replace(' with data set ', '', $test->getName())
+//                );
+//            } elseif ($test instanceof PhptTestCase) {
+//                $name = $test->getName();
+//            } else {
+//                continue;
+//            }
+//
+//            \PHPUnit\Util\DevTool::print_rr(get_class($test) . " --- $idx --- {$name}");
+//            //\PHPUnit\Util\DevTool::print_rr($test->toString());
+//        }
+//        \PHPUnit\Util\DevTool::print_rdie("-----");
+
+        if ($runner !== null && empty($this->allows)) {
+            $this->allows = $runner->getAllowTests();
+        }
+        //\PHPUnit\Util\DevTool::print_rdie($allow_tests);
+        $ccc = count($this->allows);
+
         foreach ($this as $test) {
+            $testName = '==';
+
+            if (!empty($this->allows)) {
+                if ($test instanceof TestCase || $test instanceof PhptTestCase) {
+                    $testName = $test->getTestName();
+                    //\PHPUnit\Util\DevTool::print_rdie($testName);
+                    if (!in_array($testName, $this->allows, true)) {
+                        continue;
+                    }
+                   // print "ccc={$ccc} exec {$testName} \n";
+                }
+            }
+
             if ($result->shouldStop()) {
                 break;
             }
@@ -674,9 +742,20 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $test->setBackupGlobals($this->backupGlobals);
                 $test->setBackupStaticAttributes($this->backupStaticAttributes);
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
+                $test->setAllowTests($this->allows);
             }
 
-            $test->run($result);
+            if ($test instanceof TestSuite) {
+                $test->run($result, $runner);
+            } else {
+                $test->run($result);
+            }
+            //\PHPUnit\Util\DevTool::print_rr(get_class($test));
+
+            if (null !== $this->runner) {
+                //$this->runner->increaseTestCounter();
+                //\PHPUnit\Util\DevTool::print_rr("$testName -- " . $this->runner->getTestCounter());
+            }
         }
 
         if ($this->testCase && class_exists($this->name, false)) {
@@ -867,12 +946,33 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return $this->getName() . '::class';
     }
 
+    public function setRunner(TestRunner $runner): void
+    {
+        $this->runner = $runner;
+    }
+
+    public function setAllowTests(array $tests): void
+    {
+        $this->allows = $tests;
+    }
+
+    public function getAllowTests(): array
+    {
+        return $this->allows;
+    }
+
     /**
      * Creates a default TestResult object.
      */
     protected function createResult(): TestResult
     {
-        return new TestResult;
+        $testResult = new TestResult();
+
+        if ($this->runner !== null) {
+            $testResult->setRunner($this->runner);
+        }
+
+        return $testResult;
     }
 
     /**

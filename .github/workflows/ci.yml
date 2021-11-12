@@ -54,7 +54,7 @@ jobs:
         run: ./tools/psalm --config=.psalm/static-analysis.xml --no-progress --show-info=false
 
       - name: Run vimeo/psalm on internal code
-        run: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
+        run: ./tools/psalm --config=.psalm/config.xml --stats --shepherd --no-progress --show-info=false
 
   tests:
     name: Tests
