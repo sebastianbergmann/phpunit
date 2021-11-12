@@ -151,11 +151,7 @@ class TestRunner extends BaseTestRunner
         $this->arguments          = [];
     }
 
-		protected function outFilenameTail(): string {
-			return $this->arguments['paged']? '.'.$this->arguments['chunkIndex'] : '';
-		}
-
-		/**
+    /**
      * @throws \PHPUnit\Runner\Exception
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      * @throws Exception
@@ -363,10 +359,25 @@ class TestRunner extends BaseTestRunner
         $coverageFilterFromOption            = false;
         $codeCoverageReports                 = 0;
 
+        // append tail into directory and filename using chunk information
+        if ($arguments['paged']) {
+            $logFileTail = $this->outFilenameTail();
+            $keys        = ['testdoxHTMLFile', 'testdoxXMLFile', 'testdoxTextFile', 'teamcityLogfile', 'junitLogfile',
+                'cacheResultFile',
+                'coverageCacheDirectory', 'coverageClover', 'coverageCrap4J', 'coverageHtml', 'coveragePHP',
+                'coverageXml', ];
+
+            foreach ($keys as $akey) {
+                if (isset($arguments[$akey]) && !empty($arguments[$akey])) {
+                    $arguments[$akey] = rtrim($arguments[$akey], '/\\') . $logFileTail;
+                }
+            }
+        }
+
         if (isset($arguments['testdoxHTMLFile'])) {
             $result->addListener(
                 new HtmlResultPrinter(
-                    $arguments['testdoxHTMLFile'] . $this->outFilenameTail(),
+                    $arguments['testdoxHTMLFile'],
                     $arguments['testdoxGroups'],
                     $arguments['testdoxExcludeGroups']
                 )
@@ -376,7 +387,7 @@ class TestRunner extends BaseTestRunner
         if (isset($arguments['testdoxTextFile'])) {
             $result->addListener(
                 new TextResultPrinter(
-                    $arguments['testdoxTextFile'] . $this->outFilenameTail(),
+                    $arguments['testdoxTextFile'],
                     $arguments['testdoxGroups'],
                     $arguments['testdoxExcludeGroups']
                 )
@@ -386,21 +397,21 @@ class TestRunner extends BaseTestRunner
         if (isset($arguments['testdoxXMLFile'])) {
             $result->addListener(
                 new XmlResultPrinter(
-                    $arguments['testdoxXMLFile'] . $this->outFilenameTail(),
+                    $arguments['testdoxXMLFile'],
                 )
             );
         }
 
         if (isset($arguments['teamcityLogfile'])) {
             $result->addListener(
-                new TeamCity($arguments['teamcityLogfile'] . $this->outFilenameTail())
+                new TeamCity($arguments['teamcityLogfile'])
             );
         }
 
         if (isset($arguments['junitLogfile'])) {
             $result->addListener(
                 new JUnit(
-                    $arguments['junitLogfile'] . $this->outFilenameTail(),
+                    $arguments['junitLogfile'],
                     $arguments['reportUselessTests']
                 )
             );
@@ -892,6 +903,11 @@ class TestRunner extends BaseTestRunner
     public function getAllowTests(): array
     {
         return $this->allows;
+    }
+
+    protected function outFilenameTail(): string
+    {
+        return $this->arguments['paged'] ? '.' . $this->arguments['chunkIndex'] : '';
     }
 
     /**

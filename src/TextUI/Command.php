@@ -172,7 +172,7 @@ class Command
                     $this->arguments['chunkNumber']  = $chunkNumber;
                     $this->arguments['chunkPerPage'] = $chunkPerPage;
                     $this->arguments['totalTests']   = $testNum;
-                    $this->arguments['paged']   = true;
+                    $this->arguments['paged']        = true;
                 }
             }
         }
