@@ -32,13 +32,6 @@
         </exclude>
     </coverage>
 
-  <logging>
-		<junit outputFile="tests/phpunit/build/logs/junit.xml"/>
-		<testdoxText outputFile="tests/phpunit/build/logs/testdox.txt"/>
-		<testdoxXml outputFile="tests/phpunit/build/logs/testdox.xml"/>
-		<text outputFile="tests/phpunit/build/logs/phpunit-results.txt"/>
-  </logging>
-
     <php>
         <ini name="precision" value="14"/>
         <ini name="serialize_precision" value="14"/>
