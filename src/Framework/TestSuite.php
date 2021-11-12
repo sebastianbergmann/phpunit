@@ -20,7 +20,6 @@ use function call_user_func;
 use function class_exists;
 use function count;
 use function dirname;
-use function get_class;
 use function get_declared_classes;
 use function implode;
 use function is_bool;
@@ -32,7 +31,6 @@ use function method_exists;
 use function preg_match;
 use function preg_quote;
 use function sprintf;
-use function str_replace;
 use function strpos;
 use function substr;
 use Iterator;
@@ -122,6 +120,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     protected $requiredTests;
 
     /**
+     * @var array
+     */
+    protected $allows;
+
+    /**
      * @var bool
      */
     private $beStrictAboutChangesToGlobalState;
@@ -145,11 +148,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @var ?TestRunner
      */
     private $runner;
-
-    /**
-     * @var array
-     */
-    private $allows;
 
     /**
      * Constructs a new TestSuite.
@@ -546,9 +544,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         foreach ($fileNames as $filename) {
             $this->addTestFile((string) $filename);
         }
-        //\PHPUnit\Util\DevTool::print_rr($fileNames);
-                //\PHPUnit\Util\DevTool::print_rr(count($this->tests));
-                //\PHPUnit\Util\DevTool::print_rr($this->name);
     }
 
     /**
@@ -688,48 +683,20 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             }
         }
 
-        $doneTest = 0;
-
-        //$tests= array_map('strval', iterator_to_array($this, false));
-//        				\PHPUnit\Util\DevTool::print_rdie(count($this));
-
-//        foreach (new RecursiveIteratorIterator($this->tests) as $idx=>$test) {
-//            $name = '';
-//
-//            if ($test instanceof TestCase) {
-//                $name = sprintf(
-//                    '%s::%s',
-//                    get_class($test),
-//                    str_replace(' with data set ', '', $test->getName())
-//                );
-//            } elseif ($test instanceof PhptTestCase) {
-//                $name = $test->getName();
-//            } else {
-//                continue;
-//            }
-//
-//            \PHPUnit\Util\DevTool::print_rr(get_class($test) . " --- $idx --- {$name}");
-//            //\PHPUnit\Util\DevTool::print_rr($test->toString());
-//        }
-//        \PHPUnit\Util\DevTool::print_rdie("-----");
-
+        // preserve aloowable tests
         if ($runner !== null && empty($this->allows)) {
             $this->allows = $runner->getAllowTests();
         }
-        //\PHPUnit\Util\DevTool::print_rdie($allow_tests);
-        $ccc = count($this->allows);
 
         foreach ($this as $test) {
-            $testName = '==';
-
+            // check if test is allowed
             if (!empty($this->allows)) {
                 if ($test instanceof TestCase || $test instanceof PhptTestCase) {
                     $testName = $test->getTestName();
-                    //\PHPUnit\Util\DevTool::print_rdie($testName);
+
                     if (!in_array($testName, $this->allows, true)) {
                         continue;
                     }
-                   // print "ccc={$ccc} exec {$testName} \n";
                 }
             }
 
@@ -745,16 +712,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $test->setAllowTests($this->allows);
             }
 
-            if ($test instanceof TestSuite) {
+            if ($test instanceof self) {
                 $test->run($result, $runner);
             } else {
                 $test->run($result);
-            }
-            //\PHPUnit\Util\DevTool::print_rr(get_class($test));
-
-            if (null !== $this->runner) {
-                //$this->runner->increaseTestCounter();
-                //\PHPUnit\Util\DevTool::print_rr("$testName -- " . $this->runner->getTestCounter());
             }
         }
 
@@ -959,6 +920,19 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     public function getAllowTests(): array
     {
         return $this->allows;
+    }
+
+    public function getTestNameArray(): array
+    {
+        $tests = [];
+
+        foreach (new RecursiveIteratorIterator($this->getIterator()) as $test) {
+            if ($test instanceof TestCase || $test instanceof PhptTestCase) {
+                $tests[] = $test->getTestName();
+            }
+        }
+
+        return $tests;
     }
 
     /**

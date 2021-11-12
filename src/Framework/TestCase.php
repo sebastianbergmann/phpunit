@@ -172,6 +172,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected $providedTests = [];
 
     /**
+     * @var array
+     */
+    protected $allows;
+
+    /**
      * @var bool
      */
     private $runClassInSeparateProcess;
@@ -355,11 +360,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @var ?TestRunner
      */
     private $runner;
-
-    /**
-     * @var array
-     */
-    private $allows;
 
     /**
      * Returns a matcher that matches when the method is executed

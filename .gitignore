@@ -30,3 +30,33 @@
 /tests/end-to-end/*.log
 /tests/end-to-end/*.out
 /tests/end-to-end/*.php
+
+
+# devs
+/*/_dev/*
+*.org
+*.old
+*.bak
+*bak
+
+# vscode
+.vscode/*
+*.code-workspace
+
+# netbeans project
+/nbproject/*/*
+nbproject/*/*
+nbproject/*
+nbproject
+
+!/nbproject
+!/nbproject/*
+nbproject/private/
+build/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# phpunit results
+phpunit-result*

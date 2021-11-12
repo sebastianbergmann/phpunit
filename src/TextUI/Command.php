@@ -139,24 +139,25 @@ class Command
 
         unset($this->arguments['test'], $this->arguments['testFile']);
 
-        $tests  = $this->getListTests($suite);
-				shuffle($tests);
-        $allows = array_slice($tests, 0, 50);
-        $runner->setAllowTests($allows);
+        if ((int) $this->arguments['chunkIndex'] > 0 && (int) $this->arguments['chunkNumber'] > 1) {
+            $chunkIndex  = (int) $this->arguments['chunkIndex'];
+            $chunkNumber = (int) $this->arguments['chunkNumber'];
 
-        //				$ntests=new \RecursiveIteratorIterator($suite->getIterator());
-        //				$mtests=array();
-        //				foreach ($ntests as $idx=>$test){
-        //					$mtests[]= $test;
-        //					if ($idx > 10) break;
-        //				}
-        //$suite->setTests(iterator_to_array($ntests));
-        //				\PHPUnit\Util\DevTool::print_rdie($allows);
+            if ($chunkIndex > $chunkNumber) {
+                $chunkIndex = $chunkNumber;
+            }
 
-//        $tests=$this->getListTests($suite);
-        //				$tests= array_splice($tests, 0,10);
-//        //\PHPUnit\Util\DevTool::print_rdie($tests);
-        //				$suite->setTests($tests);
+            $tests   = $suite->getTestNameArray();
+            $testNum = count($tests);
+
+            if ($chunkNumber < $testNum) {
+                $testPerChunk = (int) ceil($testNum / $chunkNumber);
+                $idxMin       = (int) ($chunkIndex - 1) * $testPerChunk;
+
+                $allows = array_slice($tests, $idxMin, $testPerChunk);
+                $runner->setAllowTests($allows);
+            }
+        }
 
         try {
             $result = $runner->run($suite, $this->arguments, $this->warnings, $exit);

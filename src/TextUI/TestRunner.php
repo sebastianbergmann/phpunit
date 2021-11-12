@@ -37,7 +37,6 @@ use PHPUnit\Runner\BaseTestRunner;
 use PHPUnit\Runner\BeforeFirstTestHook;
 use PHPUnit\Runner\DefaultTestResultCache;
 use PHPUnit\Runner\Extension\ExtensionHandler;
-use PHPUnit\Runner\Filter\ChunkFilterIterator;
 use PHPUnit\Runner\Filter\ExcludeGroupFilterIterator;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\Filter\IncludeGroupFilterIterator;
@@ -55,7 +54,6 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\FilterMapper;
 use PHPUnit\TextUI\XmlConfiguration\Configuration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
-use PHPUnit\Util\DevTool;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
 use PHPUnit\Util\Log\TeamCity;
@@ -100,7 +98,10 @@ class TestRunner extends BaseTestRunner
      */
     private static $versionStringPrinted = false;
 
-    protected int $testCounter = 0;
+    /**
+     * @var array
+     */
+    protected $allows;
 
     /**
      * @var CodeCoverageFilter
@@ -132,11 +133,6 @@ class TestRunner extends BaseTestRunner
      */
     private $timer;
 
-    /**
-     * @var array
-     */
-    private $allows;
-
     public function __construct(TestSuiteLoader $loader = null, CodeCoverageFilter $filter = null)
     {
         if ($filter === null) {
@@ -162,7 +158,6 @@ class TestRunner extends BaseTestRunner
         }
 
         $this->handleConfiguration($arguments);
-        //DevTool::print_rdie($arguments);
 
         $warnings = array_merge($warnings, $arguments['warnings']);
 
@@ -686,38 +681,7 @@ class TestRunner extends BaseTestRunner
             $this->write(PHP_EOL);
         }
 
-        //				$tests=array();
-        //				foreach (new \RecursiveIteratorIterator($suite->getIterator()) as $test) {
-        //					if ($test instanceof TestCase) {
-//                $name = sprintf(
-//                    '%s::%s',
-//                    get_class($test),
-//                    str_replace(' with data set ', '', $test->getName())
-//                );
-        //								$tests[]=$name;
-//            } elseif ($test instanceof PhptTestCase) {
-//                $name = $test->getName();
-        //								$tests[]=$name;
-//            }
-        //				}
-        //				DevTool::print_rdie($tests);
-
-        //				foreach (new \RecursiveIteratorIterator($suite) as $test) {
-//
-        //				}
-
-        $suite->setRunner($this);
-        $this->resetTestCounter();
-
-        if (method_exists($this, 'beforeRunTest')) {
-            $this->beforeRunTest();
-        }
-
         $suite->run($result, $this);
-
-        if (method_exists($this, 'afterRunTest')) {
-            $this->afterRunTest();
-        }
 
         foreach ($this->extensions as $extension) {
             if ($extension instanceof AfterLastTestHook) {
@@ -906,27 +870,6 @@ class TestRunner extends BaseTestRunner
     /**
      * reset global conducted test counter.
      */
-    public function resetTestCounter(): void
-    {
-        $this->testCounter = 0;
-    }
-
-    /**
-     * get global conducted test counter.
-     */
-    public function getTestCounter(): int
-    {
-        return $this->testCounter;
-    }
-
-    /**
-     * increase global conducted test counter.
-     */
-    public function increaseTestCounter(): int
-    {
-        return $this->testCounter++;
-    }
-
     public function setAllowTests(array $tests): void
     {
         $this->allows = $tests;
@@ -1229,8 +1172,6 @@ class TestRunner extends BaseTestRunner
         $arguments['timeoutForMediumTests']                           = $arguments['timeoutForMediumTests'] ?? 10;
         $arguments['timeoutForSmallTests']                            = $arguments['timeoutForSmallTests'] ?? 1;
         $arguments['verbose']                                         = $arguments['verbose'] ?? false;
-        //$arguments['chunkIndex']                                      = $arguments['chunkIndex'] ?? 0;
-        //$arguments['chunkNumber']                                     = $arguments['chunkNumber'] ?? 0;
     }
 
     /**
@@ -1239,26 +1180,15 @@ class TestRunner extends BaseTestRunner
      */
     private function processSuiteFilters(TestSuite $suite, array $arguments): void
     {
-        //Devtool::print_rdie([$arguments['chunkIndex'], $arguments['chunkNumber']]);
-
         if (!$arguments['filter'] &&
             empty($arguments['groups']) &&
             empty($arguments['excludeGroups']) &&
             empty($arguments['testsCovering']) &&
-            empty($arguments['testsUsing']) &&
-            (isset($arguments['chunkIndex']) && (int) $arguments['chunkIndex'] < 1) &&
-            (isset($arguments['chunkNumber']) && (int) $arguments['chunkNumber']) < 1) {
+            empty($arguments['testsUsing'])) {
             return;
         }
 
         $filterFactory = new Factory;
-
-        if (isset($arguments['chunkNumber']) && (int) $arguments['chunkNumber'] > 0) {
-            $filterFactory->addFilter(
-                new ReflectionClass(ChunkFilterIterator::class),
-                [$arguments['chunkIndex'], $arguments['chunkNumber'], $suite]
-            );
-        }
 
         if (!empty($arguments['excludeGroups'])) {
             $filterFactory->addFilter(
