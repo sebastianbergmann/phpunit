@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use function func_get_args;
 use ArrayAccess;
 use Countable;
 use DOMDocument;
@@ -763,8 +764,8 @@ if (!function_exists('PHPUnit\Framework\assertNotIsReadable')) {
     /**
      * Asserts that a file/dir exists and is not readable.
      *
-     * @throws ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
+     * @throws ExpectationFailedException
      *
      * @codeCoverageIgnore
      *
@@ -3025,6 +3026,7 @@ if (!function_exists('PHPUnit\Framework\throwException')) {
 }
 
 if (!function_exists('PHPUnit\Framework\onConsecutiveCalls')) {
+
     function onConsecutiveCalls(): ConsecutiveCallsStub
     {
         $args = func_get_args();
