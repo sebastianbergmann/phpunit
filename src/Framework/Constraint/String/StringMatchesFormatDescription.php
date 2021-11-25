@@ -16,8 +16,7 @@ use function preg_match;
 use function preg_quote;
 use function preg_replace;
 use function strtr;
-use SebastianBergmann\Diff\Differ;
-use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
+use SebastianBergmann\Comparator\ComparisonFailure;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -58,25 +57,34 @@ final class StringMatchesFormatDescription extends RegularExpression
         return 'string matches format description';
     }
 
-    protected function additionalFailureDescription($other): string
+    protected function fail($other, $description, ComparisonFailure $comparisonFailure = null): void
     {
-        $from = explode("\n", $this->string);
-        $to   = explode("\n", $this->convertNewlines($other));
+        if ($comparisonFailure === null) {
+            $from = explode("\n", $this->string);
+            $to   = explode("\n", $this->convertNewlines($other));
 
-        foreach ($from as $index => $line) {
-            if (isset($to[$index]) && $line !== $to[$index]) {
-                $line = $this->createPatternFromFormat($line);
+            foreach ($from as $index => $line) {
+                if (isset($to[$index]) && $line !== $to[$index]) {
+                    $line = $this->createPatternFromFormat($line);
 
-                if (preg_match($line, $to[$index]) > 0) {
-                    $from[$index] = $to[$index];
+                    if (preg_match($line, $to[$index]) > 0) {
+                        $from[$index] = $to[$index];
+                    }
                 }
             }
+
+            $expectedAsString = implode("\n", $from);
+            $actualAsString  = implode("\n", $to);
+
+            $comparisonFailure = new ComparisonFailure(
+                $this->string,
+                $other,
+                $expectedAsString,
+                $actualAsString
+            );
         }
 
-        $this->string = implode("\n", $from);
-        $other        = implode("\n", $to);
-
-        return (new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n")))->diff($this->string, $other);
+        parent::fail($other, $description, $comparisonFailure);
     }
 
     private function createPatternFromFormat(string $string): string

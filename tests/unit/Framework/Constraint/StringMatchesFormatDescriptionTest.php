@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use const DIRECTORY_SEPARATOR;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\TestFailure;
 
 /**
  * @small
@@ -276,7 +277,7 @@ Failed asserting that string matches format description.
  *
 
 EOD;
-            $this->assertEquals($expected, $e->getMessage());
+            $this->assertEquals($expected, TestFailure::exceptionToString($e));
         }
     }
 }

@@ -223,7 +223,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                     $trace[0]['file'],
                     $trace[0]['line'],
                     $trace,
-                    $comparisonFailure ? $diff : ''
+                    $comparisonFailure
                 );
             }
 

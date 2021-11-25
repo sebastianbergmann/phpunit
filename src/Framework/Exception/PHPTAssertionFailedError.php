@@ -9,24 +9,26 @@
  */
 namespace PHPUnit\Framework;
 
+use SebastianBergmann\Comparator\ComparisonFailure;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class PHPTAssertionFailedError extends SyntheticError
+final class PHPTAssertionFailedError extends SyntheticError implements ComparisonFailureContains
 {
     /**
-     * @var string
+     * @var ComparisonFailure|null
      */
-    private $diff;
+    private $comparisonFailure;
 
-    public function __construct(string $message, int $code, string $file, int $line, array $trace, string $diff)
+    public function __construct(string $message, int $code, string $file, int $line, array $trace, ?ComparisonFailure $comparisonFailure)
     {
         parent::__construct($message, $code, $file, $line, $trace);
-        $this->diff = $diff;
+        $this->comparisonFailure = $comparisonFailure;
     }
 
-    public function getDiff(): string
+    public function getComparisonFailure(): ?ComparisonFailure
     {
-        return $this->diff;
+        return $this->comparisonFailure;
     }
 }

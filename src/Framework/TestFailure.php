@@ -43,12 +43,8 @@ final class TestFailure
         if ($e instanceof SelfDescribing) {
             $buffer = $e->toString();
 
-            if ($e instanceof ExpectationFailedException && $e->getComparisonFailure()) {
+            if ($e instanceof ComparisonFailureContains && $e->getComparisonFailure()) {
                 $buffer .= $e->getComparisonFailure()->getDiff();
-            }
-
-            if ($e instanceof PHPTAssertionFailedError) {
-                $buffer .= $e->getDiff();
             }
 
             if (!empty($buffer)) {

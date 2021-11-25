@@ -21,7 +21,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExpectationFailedException extends AssertionFailedError
+final class ExpectationFailedException extends AssertionFailedError implements ComparisonFailureContains
 {
     /**
      * @var ComparisonFailure

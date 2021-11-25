@@ -23,8 +23,8 @@ use function round;
 use function str_replace;
 use function stripos;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\ComparisonFailureContains;
 use PHPUnit\Framework\ExceptionWrapper;
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
@@ -101,7 +101,7 @@ final class TeamCity extends DefaultResultPrinter
             'duration' => self::toMilliseconds($time),
         ];
 
-        if ($e instanceof ExpectationFailedException) {
+        if ($e instanceof ComparisonFailureContains) {
             $comparisonFailure = $e->getComparisonFailure();
 
             if ($comparisonFailure instanceof ComparisonFailure) {
