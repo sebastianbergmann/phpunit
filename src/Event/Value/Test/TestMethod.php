@@ -137,7 +137,7 @@ final class TestMethod extends Test
             return $this->methodName;
         }
 
-        $dataSetName = $this->testData->dataFromDataProvider();
+        $dataSetName = $this->testData->dataFromDataProvider()->dataSetName();
 
         if (is_int($dataSetName)) {
             $dataSetName = sprintf(
