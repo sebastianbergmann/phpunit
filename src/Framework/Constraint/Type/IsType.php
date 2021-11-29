@@ -114,7 +114,6 @@ final class IsType extends Constraint
         'callable'          => true,
         'iterable'          => true,
     ];
-
     private string $type;
 
     /**

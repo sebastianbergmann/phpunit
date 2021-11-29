@@ -41,11 +41,8 @@ use Throwable;
 final class XmlResultPrinter extends Printer implements TestListener
 {
     private DOMDocument $document;
-
     private DOMElement $root;
-
     private NamePrettifier $prettifier;
-
     private ?Throwable $exception = null;
 
     /**

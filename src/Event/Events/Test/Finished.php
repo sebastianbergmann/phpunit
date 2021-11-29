@@ -20,9 +20,7 @@ use PHPUnit\Event\Telemetry;
 final class Finished implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private Code\Test $test;
-
     private int $numberOfAssertionsPerformed;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $numberOfAssertionsPerformed)

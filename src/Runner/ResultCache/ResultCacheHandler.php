@@ -32,9 +32,7 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 final class ResultCacheHandler
 {
     private ResultCache $cache;
-
-    private ?HRTime $time = null;
-
+    private ?HRTime $time  = null;
     private int $testSuite = 0;
 
     /**

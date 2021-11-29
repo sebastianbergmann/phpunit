@@ -21,8 +21,7 @@ final class DataProviderTestSuite extends TestSuite
     /**
      * @psalm-var list<ExecutionOrderDependency>
      */
-    private array $dependencies = [];
-
+    private array $dependencies   = [];
     private ?array $providedTests = null;
 
     /**

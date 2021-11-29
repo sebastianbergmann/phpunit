@@ -44,7 +44,6 @@ use Throwable;
 final class InvocationMocker implements InvocationStubber, MethodNameMatch
 {
     private InvocationHandler $invocationHandler;
-
     private Matcher $matcher;
 
     /**

@@ -31,7 +31,6 @@ final class ExceptionWrapper extends Exception
      * @psalm-var class-string
      */
     protected string $className;
-
     protected ?ExceptionWrapper $previous = null;
 
     public function __construct(Throwable $t)

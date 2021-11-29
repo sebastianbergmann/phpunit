@@ -12,6 +12,5 @@ namespace PHPUnit\TestFixture;
 class ParentClassWithProtectedAttributes extends ParentClassWithPrivateAttributes
 {
     protected static $protectedStaticParentAttribute = 'foo';
-
-    protected $protectedParentAttribute = 'bar';
+    protected $protectedParentAttribute              = 'bar';
 }

@@ -42,7 +42,6 @@ final class SystemTest extends TestCase
         $memoryMeter = new class($memoryUsage, $peakMemoryUsage) implements MemoryMeter
         {
             private MemoryUsage $memoryUsage;
-
             private MemoryUsage $peakMemoryUsage;
 
             public function __construct(MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage)

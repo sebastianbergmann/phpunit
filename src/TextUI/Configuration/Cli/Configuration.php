@@ -16,179 +16,92 @@ namespace PHPUnit\TextUI\CliArguments;
 final class Configuration
 {
     private ?string $argument;
-
     private ?string $atLeastVersion;
-
     private ?bool $backupGlobals;
-
     private ?bool $backupStaticProperties;
-
     private ?bool $beStrictAboutChangesToGlobalState;
-
     private ?string $bootstrap;
-
     private ?string $cacheDirectory;
-
     private ?bool $cacheResult;
-
     private ?string $cacheResultFile;
-
     private ?bool $checkVersion;
-
     private ?string $colors;
-
     private null|int|string $columns;
-
     private ?string $configuration;
-
     private ?array $coverageFilter;
-
     private ?string $coverageClover;
-
     private ?string $coverageCobertura;
-
     private ?string $coverageCrap4J;
-
     private ?string $coverageHtml;
-
     private ?string $coveragePhp;
-
     private ?string $coverageText;
-
     private ?bool $coverageTextShowUncoveredFiles;
-
     private ?bool $coverageTextShowOnlySummary;
-
     private ?string $coverageXml;
-
     private ?bool $pathCoverage;
-
     private ?string $coverageCacheDirectory;
-
     private ?bool $warmCoverageCache;
-
     private ?int $defaultTimeLimit;
-
     private ?bool $disableCodeCoverageIgnore;
-
     private ?bool $disallowTestOutput;
-
     private ?bool $enforceTimeLimit;
-
     private ?array $excludeGroups;
-
     private ?int $executionOrder;
-
     private ?int $executionOrderDefects;
-
     private ?bool $failOnEmptyTestSuite;
-
     private ?bool $failOnIncomplete;
-
     private ?bool $failOnRisky;
-
     private ?bool $failOnSkipped;
-
     private ?bool $failOnWarning;
-
     private ?string $filter;
-
     private ?bool $generateConfiguration;
-
     private ?bool $migrateConfiguration;
-
     private ?array $groups;
-
     private ?array $testsCovering;
-
     private ?array $testsUsing;
-
     private ?bool $help;
-
     private ?string $includePath;
-
     private ?array $iniSettings;
-
     private ?string $junitLogfile;
-
     private ?bool $listGroups;
-
     private ?bool $listSuites;
-
     private ?bool $listTests;
-
     private ?string $listTestsXml;
-
     private ?bool $noCoverage;
-
     private ?bool $noExtensions;
-
     private ?bool $noInteraction;
-
     private ?bool $noOutput;
-
     private ?bool $noLogging;
-
     private ?bool $processIsolation;
-
     private ?int $randomOrderSeed;
-
     private ?int $repeat;
-
     private ?bool $reportUselessTests;
-
     private ?bool $resolveDependencies;
-
     private ?bool $reverseList;
-
     private ?bool $stderr;
-
     private ?bool $strictCoverage;
-
     private ?bool $stopOnDefect;
-
     private ?bool $stopOnError;
-
     private ?bool $stopOnFailure;
-
     private ?bool $stopOnIncomplete;
-
     private ?bool $stopOnRisky;
-
     private ?bool $stopOnSkipped;
-
     private ?bool $stopOnWarning;
-
     private ?string $teamcityLogfile;
-
     private ?bool $teamCityPrinter;
-
     private ?array $testdoxExcludeGroups;
-
     private ?array $testdoxGroups;
-
     private ?string $testdoxHtmlFile;
-
     private ?string $testdoxTextFile;
-
     private ?string $testdoxXmlFile;
-
     private ?bool $testdoxPrinter;
-
     private ?array $testSuffixes;
-
     private ?string $testSuite;
-
     private ?string $excludeTestSuite = null;
-
     private ?string $unrecognizedOrderBy;
-
     private ?bool $useDefaultConfiguration;
-
     private ?bool $verbose;
-
     private ?bool $version;
-
     private ?string $plainTextTrace;
 
     public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noOutput, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter, ?string $plainTextTrace, ?bool $printerTeamCity, ?bool $printerTestDox)

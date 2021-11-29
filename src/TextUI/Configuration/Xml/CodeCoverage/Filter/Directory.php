@@ -16,11 +16,8 @@ namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter;
 final class Directory
 {
     private string $path;
-
     private string $prefix;
-
     private string $suffix;
-
     private string $group;
 
     public function __construct(string $path, string $prefix, string $suffix, string $group)

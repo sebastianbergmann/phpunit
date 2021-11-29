@@ -28,7 +28,6 @@ use ReflectionMethod;
 abstract class TestSuite
 {
     private string $name;
-
     private int $count;
 
     /**
@@ -45,9 +44,7 @@ abstract class TestSuite
      * @psalm-var list<ExecutionOrderDependency>
      */
     private array $requires;
-
     private string $sortId;
-
     private TestCollection $tests;
 
     /**

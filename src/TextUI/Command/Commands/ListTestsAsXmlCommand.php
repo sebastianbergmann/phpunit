@@ -23,7 +23,6 @@ use XMLWriter;
 final class ListTestsAsXmlCommand implements Command
 {
     private string $filename;
-
     private TestSuite $suite;
 
     public function __construct(string $filename, TestSuite $suite)

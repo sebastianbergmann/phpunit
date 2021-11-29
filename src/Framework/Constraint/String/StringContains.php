@@ -22,9 +22,7 @@ use function strtr;
 final class StringContains extends Constraint
 {
     private string $string;
-
     private bool $ignoreCase;
-
     private bool $ignoreLineEndings;
 
     public function __construct(string $string, bool $ignoreCase = false, bool $ignoreLineEndings = false)

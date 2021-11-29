@@ -65,12 +65,9 @@ use SebastianBergmann\Timer\Timer;
 final class TestRunner
 {
     private Configuration $configuration;
-
     private ?ResultPrinter $printer = null;
-
-    private bool $messagePrinted = false;
-
-    private ?Timer $timer = null;
+    private bool $messagePrinted    = false;
+    private ?Timer $timer           = null;
 
     public function __construct()
     {

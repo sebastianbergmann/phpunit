@@ -18,9 +18,7 @@ final class SkippedTestCase extends TestCase
      * @psalm-var class-string
      */
     private string $className;
-
     private string $methodName;
-
     private string $message;
 
     /**

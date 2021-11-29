@@ -33,11 +33,8 @@ EXPECT test
 --EXPECT--
 Hello PHPUnit!
 EOF;
-
     private string $filename;
-
     private ?PhptTestCase $testCase;
-
     private AbstractPhpProcess|MockObject|null $phpProcess;
 
     protected function setUp(): void

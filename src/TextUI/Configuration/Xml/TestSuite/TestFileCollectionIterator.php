@@ -23,7 +23,6 @@ final class TestFileCollectionIterator implements Countable, Iterator
      * @psalm-var list<TestFile>
      */
     private array $files;
-
     private ?int $position = null;
 
     public function __construct(TestFileCollection $files)

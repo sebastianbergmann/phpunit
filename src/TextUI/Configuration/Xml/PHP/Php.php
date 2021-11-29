@@ -16,25 +16,15 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 final class Php
 {
     private DirectoryCollection $includePaths;
-
     private IniSettingCollection $iniSettings;
-
     private ConstantCollection $constants;
-
     private VariableCollection $globalVariables;
-
     private VariableCollection $envVariables;
-
     private VariableCollection $postVariables;
-
     private VariableCollection $getVariables;
-
     private VariableCollection $cookieVariables;
-
     private VariableCollection $serverVariables;
-
     private VariableCollection $filesVariables;
-
     private VariableCollection $requestVariables;
 
     public function __construct(DirectoryCollection $includePaths, IniSettingCollection $iniSettings, ConstantCollection $constants, VariableCollection $globalVariables, VariableCollection $envVariables, VariableCollection $postVariables, VariableCollection $getVariables, VariableCollection $cookieVariables, VariableCollection $serverVariables, VariableCollection $filesVariables, VariableCollection $requestVariables)

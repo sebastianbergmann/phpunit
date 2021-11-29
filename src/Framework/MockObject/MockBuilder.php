@@ -21,33 +21,19 @@ use ReflectionClass;
 final class MockBuilder
 {
     private TestCase $testCase;
-
     private string $type;
-
-    private ?array $methods = [];
-
-    private bool $emptyMethodsArray = false;
-
-    private string $mockClassName = '';
-
-    private array $constructorArgs = [];
-
-    private bool $originalConstructor = true;
-
-    private bool $originalClone = true;
-
-    private bool $autoload = true;
-
-    private bool $cloneArguments = false;
-
-    private bool $callOriginalMethods = false;
-
-    private ?object $proxyTarget = null;
-
+    private ?array $methods                = [];
+    private bool $emptyMethodsArray        = false;
+    private string $mockClassName          = '';
+    private array $constructorArgs         = [];
+    private bool $originalConstructor      = true;
+    private bool $originalClone            = true;
+    private bool $autoload                 = true;
+    private bool $cloneArguments           = false;
+    private bool $callOriginalMethods      = false;
+    private ?object $proxyTarget           = null;
     private bool $allowMockingUnknownTypes = true;
-
-    private bool $returnValueGeneration = true;
-
+    private bool $returnValueGeneration    = true;
     private Generator $generator;
 
     /**

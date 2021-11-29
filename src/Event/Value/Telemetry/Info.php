@@ -16,13 +16,9 @@ namespace PHPUnit\Event\Telemetry;
 final class Info
 {
     private Snapshot $current;
-
     private Duration $durationSinceStart;
-
     private MemoryUsage $memorySinceStart;
-
     private Duration $durationSincePrevious;
-
     private MemoryUsage $memorySincePrevious;
 
     public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious)

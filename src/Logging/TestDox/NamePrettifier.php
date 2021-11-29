@@ -57,7 +57,6 @@ final class NamePrettifier
      * @psalm-var list<string>
      */
     private array $strings = [];
-
     private bool $useColor;
 
     public function __construct(bool $useColor = false)

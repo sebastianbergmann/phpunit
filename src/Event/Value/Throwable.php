@@ -24,13 +24,9 @@ final class Throwable
      * @psalm-var class-string
      */
     private string $className;
-
     private string $message;
-
     private string $description;
-
     private string $stackTrace;
-
     private ?Throwable $previous;
 
     public static function from(\Throwable $t): self

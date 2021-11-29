@@ -15,19 +15,12 @@ namespace PHPUnit\Event\TestSuite;
 final class Result
 {
     private int $count;
-
     private FailureCollection $errors;
-
     private FailureCollection $failures;
-
     private FailureCollection $notImplemented;
-
     private FailureCollection $risky;
-
     private FailureCollection $skipped;
-
     private FailureCollection $warnings;
-
     private array $passed;
 
     /**

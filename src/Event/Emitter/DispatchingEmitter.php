@@ -27,13 +27,9 @@ use SebastianBergmann\GlobalState\Snapshot;
 final class DispatchingEmitter implements Emitter
 {
     private Dispatcher $dispatcher;
-
     private Telemetry\System $system;
-
     private Telemetry\Snapshot $startSnapshot;
-
     private Telemetry\Snapshot $previousSnapshot;
-
     private bool $testExecutionStarted = false;
 
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)

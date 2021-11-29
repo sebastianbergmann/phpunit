@@ -25,7 +25,6 @@ final class PostConditionCalled implements Event
      * @psalm-var class-string
      */
     private string $testClassName;
-
     private Code\ClassMethod $calledMethod;
 
     /**

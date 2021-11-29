@@ -21,7 +21,6 @@ final class DependsExternal
      * @psalm-var class-string
      */
     private string $className;
-
     private string $methodName;
 
     /**

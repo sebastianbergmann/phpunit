@@ -19,7 +19,6 @@ use SebastianBergmann\GlobalState\Snapshot;
 final class Captured implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private Snapshot $snapshot;
 
     public function __construct(Telemetry\Info $telemetryInfo, Snapshot $snapshot)

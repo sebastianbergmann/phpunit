@@ -65,10 +65,8 @@ final class Application
     /**
      * @psalm-var array<string,mixed>
      */
-    private array $longOptions = [];
-
-    private bool $versionStringPrinted = false;
-
+    private array $longOptions                  = [];
+    private bool $versionStringPrinted          = false;
     private ?XmlConfiguration $xmlConfiguration = null;
 
     /**

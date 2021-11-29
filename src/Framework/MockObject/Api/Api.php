@@ -21,11 +21,8 @@ trait Api
      * @psalm-var list<ConfigurableMethod>
      */
     private static array $__phpunit_configurableMethods;
-
     private object $__phpunit_originalObject;
-
-    private bool $__phpunit_returnValueGeneration = true;
-
+    private bool $__phpunit_returnValueGeneration          = true;
     private ?InvocationHandler $__phpunit_invocationMocker = null;
 
     /** @noinspection MagicMethodsValidityInspection */

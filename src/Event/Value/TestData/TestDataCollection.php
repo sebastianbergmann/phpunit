@@ -21,7 +21,6 @@ final class TestDataCollection implements Countable, IteratorAggregate
      * @psalm-var list<TestData>
      */
     private array $data;
-
     private ?DataFromDataProvider $fromDataProvider = null;
 
     /**

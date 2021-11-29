@@ -35,13 +35,9 @@ final class TestMethod extends Test
      * @psalm-var class-string
      */
     private string $className;
-
     private string $methodName;
-
     private int $line;
-
     private MetadataCollection $metadata;
-
     private TestDataCollection $testData;
 
     public static function fromTestCase(TestCase $testCase): self

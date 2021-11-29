@@ -21,7 +21,6 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 final class IsEqualWithDelta extends Constraint
 {
     private mixed $value;
-
     private float $delta;
 
     public function __construct(mixed $value, float $delta)

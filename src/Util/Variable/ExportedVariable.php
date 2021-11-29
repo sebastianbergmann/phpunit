@@ -15,7 +15,6 @@ namespace PHPUnit\Util;
 final class ExportedVariable
 {
     private string $export;
-
     private bool $warningWasTriggered;
 
     public static function from(?string $export, bool $warningWasTriggered): self

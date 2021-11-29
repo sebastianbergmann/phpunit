@@ -16,15 +16,11 @@ use PHPUnit\Event\Telemetry\HRTime;
  */
 final class Facade
 {
-    private static ?TypeMap $typeMap = null;
-
-    private static ?Emitter $emitter = null;
-
-    private static ?Emitter $suspended = null;
-
+    private static ?TypeMap $typeMap                       = null;
+    private static ?Emitter $emitter                       = null;
+    private static ?Emitter $suspended                     = null;
     private static ?DeferredDispatcher $deferredDispatcher = null;
-
-    private static bool $sealed = false;
+    private static bool $sealed                            = false;
 
     /**
      * @throws EventFacadeIsSealedException

@@ -44,7 +44,6 @@ use SebastianBergmann\Exporter\Exporter;
 final class JunitXmlLogger
 {
     private DOMDocument $document;
-
     private DOMElement $root;
 
     /**
@@ -85,17 +84,12 @@ final class JunitXmlLogger
     /**
      * @psalm-var array<int,int>
      */
-    private array $testSuiteTimes = [0];
-
-    private int $testSuiteLevel = 0;
-
+    private array $testSuiteTimes        = [0];
+    private int $testSuiteLevel          = 0;
     private ?DOMElement $currentTestCase = null;
-
-    private int $numberOfAssertions = 0;
-
-    private ?HRTime $time = null;
-
-    private ?string $output = null;
+    private int $numberOfAssertions      = 0;
+    private ?HRTime $time                = null;
+    private ?string $output              = null;
 
     /**
      * @throws EventFacadeIsSealedException

@@ -16,95 +16,50 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 final class PHPUnit
 {
     private ?string $cacheDirectory;
-
     private bool $cacheResult;
-
     private ?string $cacheResultFile;
-
     private int|string $columns;
-
     private string $colors;
-
     private bool $stderr;
-
     private bool $noInteraction;
-
     private bool $verbose;
-
     private bool $reverseDefectList;
-
     private bool $convertDeprecationsToExceptions;
-
     private bool $convertErrorsToExceptions;
-
     private bool $convertNoticesToExceptions;
-
     private bool $convertWarningsToExceptions;
-
     private bool $requireCoverageMetadata;
-
     private ?string $bootstrap;
-
     private bool $processIsolation;
-
     private bool $failOnEmptyTestSuite;
-
     private bool $failOnIncomplete;
-
     private bool $failOnRisky;
-
     private bool $failOnSkipped;
-
     private bool $failOnWarning;
-
     private bool $stopOnDefect;
-
     private bool $stopOnError;
-
     private bool $stopOnFailure;
-
     private bool $stopOnWarning;
-
     private bool $stopOnIncomplete;
-
     private bool $stopOnRisky;
-
     private bool $stopOnSkipped;
-
     private ?string $extensionsDirectory;
-
     private bool $beStrictAboutChangesToGlobalState;
-
     private bool $beStrictAboutOutputDuringTests;
-
     private bool $beStrictAboutTestsThatDoNotTestAnything;
-
     private bool $beStrictAboutCoverageMetadata;
-
     private bool $enforceTimeLimit;
-
     private int $defaultTimeLimit;
-
     private int $timeoutForSmallTests;
-
     private int $timeoutForMediumTests;
-
     private int $timeoutForLargeTests;
-
     private ?string $defaultTestSuite;
-
     private int $executionOrder;
-
     private bool $resolveDependencies;
-
     private bool $defectsFirst;
-
     private bool $backupGlobals;
-
     private bool $backupStaticProperties;
-
     private bool $registerMockObjectsFromTestArgumentsRecursively;
-
     private bool $testdoxPrinter;
 
     public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $testdoxPrinter)

@@ -23,11 +23,8 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 final class IsEqual extends Constraint
 {
     private mixed $value;
-
     private float $delta;
-
     private bool $canonicalize;
-
     private bool $ignoreCase;
 
     public function __construct(mixed $value, float $delta = 0.0, bool $canonicalize = false, bool $ignoreCase = false)

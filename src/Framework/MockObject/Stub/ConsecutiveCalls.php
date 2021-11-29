@@ -20,7 +20,6 @@ use SebastianBergmann\Exporter\Exporter;
 final class ConsecutiveCalls implements Stub
 {
     private array $stack;
-
     private mixed $value;
 
     public function __construct(array $stack)

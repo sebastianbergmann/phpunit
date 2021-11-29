@@ -21,11 +21,8 @@ use SebastianBergmann\GlobalState\Snapshot;
 final class Modified implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private Snapshot $snapshotBefore;
-
     private Snapshot $snapshotAfter;
-
     private string $diff;
 
     public function __construct(Telemetry\Info $telemetryInfo, Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $diff)

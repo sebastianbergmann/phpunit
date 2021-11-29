@@ -31,8 +31,7 @@ final class TestResult implements Countable
     /**
      * @psalm-var list<string>
      */
-    private array $passedTestClasses = [];
-
+    private array $passedTestClasses     = [];
     private bool $currentTestSuiteFailed = false;
 
     /**
@@ -68,54 +67,30 @@ final class TestResult implements Countable
     /**
      * @psalm-var list<TestListener>
      */
-    private array $listeners = [];
-
-    private int $runTests = 0;
-
-    private float $time = 0;
-
-    private bool $convertDeprecationsToExceptions = false;
-
-    private bool $convertErrorsToExceptions = true;
-
-    private bool $convertNoticesToExceptions = true;
-
-    private bool $convertWarningsToExceptions = true;
-
-    private bool $stop = false;
-
-    private bool $stopOnError = false;
-
-    private bool $stopOnFailure = false;
-
-    private bool $stopOnWarning = false;
-
-    private bool $beStrictAboutTestsThatDoNotTestAnything = true;
-
-    private bool $beStrictAboutOutputDuringTests = false;
-
-    private bool $enforceTimeLimit = false;
-
-    private bool $requireCoverageMetadata = false;
-
-    private int $timeoutForSmallTests = 1;
-
-    private int $timeoutForMediumTests = 10;
-
-    private int $timeoutForLargeTests = 60;
-
-    private bool $stopOnRisky = false;
-
-    private bool $stopOnIncomplete = false;
-
-    private bool $stopOnSkipped = false;
-
-    private bool $lastTestFailed = false;
-
-    private int $defaultTimeLimit = 0;
-
-    private bool $stopOnDefect = false;
-
+    private array $listeners                                      = [];
+    private int $runTests                                         = 0;
+    private float $time                                           = 0;
+    private bool $convertDeprecationsToExceptions                 = false;
+    private bool $convertErrorsToExceptions                       = true;
+    private bool $convertNoticesToExceptions                      = true;
+    private bool $convertWarningsToExceptions                     = true;
+    private bool $stop                                            = false;
+    private bool $stopOnError                                     = false;
+    private bool $stopOnFailure                                   = false;
+    private bool $stopOnWarning                                   = false;
+    private bool $beStrictAboutTestsThatDoNotTestAnything         = true;
+    private bool $beStrictAboutOutputDuringTests                  = false;
+    private bool $enforceTimeLimit                                = false;
+    private bool $requireCoverageMetadata                         = false;
+    private int $timeoutForSmallTests                             = 1;
+    private int $timeoutForMediumTests                            = 10;
+    private int $timeoutForLargeTests                             = 60;
+    private bool $stopOnRisky                                     = false;
+    private bool $stopOnIncomplete                                = false;
+    private bool $stopOnSkipped                                   = false;
+    private bool $lastTestFailed                                  = false;
+    private int $defaultTimeLimit                                 = 0;
+    private bool $stopOnDefect                                    = false;
     private bool $registerMockObjectsFromTestArgumentsRecursively = false;
 
     /**
