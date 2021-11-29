@@ -18,7 +18,6 @@ use PHPUnit\TextUI\XmlConfiguration\File;
 final class Crap4j
 {
     private File $target;
-
     private int $threshold;
 
     public function __construct(File $target, int $threshold)

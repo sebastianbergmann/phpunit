@@ -18,7 +18,6 @@ use PHPUnit\Event\InvalidArgumentException;
 final class HRTime
 {
     private int $seconds;
-
     private int $nanoseconds;
 
     /**

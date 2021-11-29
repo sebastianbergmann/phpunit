@@ -15,9 +15,7 @@ namespace PHPUnit\Event;
 final class DeferredDispatcher implements SubscribableDispatcher
 {
     private SubscribableDispatcher $dispatcher;
-
     private EventCollection $events;
-
     private bool $recording = true;
 
     public function __construct(SubscribableDispatcher $dispatcher)

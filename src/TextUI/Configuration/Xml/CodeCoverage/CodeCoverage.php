@@ -29,35 +29,20 @@ use PHPUnit\TextUI\XmlConfiguration\FileCollection;
 final class CodeCoverage
 {
     private ?Directory $cacheDirectory;
-
     private DirectoryCollection $directories;
-
     private FileCollection $files;
-
     private DirectoryCollection $excludeDirectories;
-
     private FileCollection $excludeFiles;
-
     private bool $pathCoverage;
-
     private bool $includeUncoveredFiles;
-
     private bool $ignoreDeprecatedCodeUnits;
-
     private bool $disableCodeCoverageIgnore;
-
     private ?Clover $clover;
-
     private ?Cobertura $cobertura;
-
     private ?Crap4j $crap4j;
-
     private ?Html $html;
-
     private ?Php $php;
-
     private ?Text $text;
-
     private ?Xml $xml;
 
     public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)

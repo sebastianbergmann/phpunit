@@ -32,28 +32,17 @@ abstract class ResultPrinter extends Printer implements ResultPrinterInterface
     /**
      * @psalm-var class-string
      */
-    protected ?string $testClass = null;
-
-    protected ?TestStatus $testStatus = null;
-
-    protected array $tests = [];
-
-    protected int $warned = 0;
-
-    protected int $failed = 0;
-
-    protected int $risky = 0;
-
-    protected int $skipped = 0;
-
-    protected int $incomplete = 0;
-
-    protected ?string $currentTestClassPrettified = null;
-
+    protected ?string $testClass                   = null;
+    protected ?TestStatus $testStatus              = null;
+    protected array $tests                         = [];
+    protected int $warned                          = 0;
+    protected int $failed                          = 0;
+    protected int $risky                           = 0;
+    protected int $skipped                         = 0;
+    protected int $incomplete                      = 0;
+    protected ?string $currentTestClassPrettified  = null;
     protected ?string $currentTestMethodPrettified = null;
-
     private array $groups;
-
     private array $excludeGroups;
 
     /**

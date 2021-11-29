@@ -17,10 +17,8 @@ class SeparateClassRunMethodInNewProcessTest extends PHPUnit\Framework\TestCase
     public const INITIAL_MASTER_PID = 0;
 
     public const INITIAL_PID1 = 1;
-
-    public static $masterPid = self::INITIAL_MASTER_PID;
-
-    public static $pid1 = self::INITIAL_PID1;
+    public static $masterPid  = self::INITIAL_MASTER_PID;
+    public static $pid1       = self::INITIAL_PID1;
 
     public static function setUpBeforeClass(): void
     {

@@ -15,7 +15,6 @@ namespace PHPUnit\Event\Telemetry;
 final class System
 {
     private StopWatch $stopWatch;
-
     private MemoryMeter $memoryMeter;
 
     public function __construct(StopWatch $stopWatch, MemoryMeter $memoryMeter)

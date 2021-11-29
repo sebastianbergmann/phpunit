@@ -22,7 +22,6 @@ use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
 final class CliTestDoxPrinterTest extends TestCase
 {
     private ?TestableCliTestDoxPrinter $printer;
-
     private ?TestableCliTestDoxPrinter $verbosePrinter;
 
     protected function setUp(): void

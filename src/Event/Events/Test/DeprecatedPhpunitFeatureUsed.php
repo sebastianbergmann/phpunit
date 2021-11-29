@@ -20,9 +20,7 @@ use PHPUnit\Event\Telemetry;
 final class DeprecatedPhpunitFeatureUsed implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private Test $test;
-
     private string $message;
 
     public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message)

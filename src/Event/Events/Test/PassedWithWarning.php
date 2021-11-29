@@ -22,9 +22,7 @@ use PHPUnit\Event\Telemetry;
 final class PassedWithWarning implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private Code\Test $test;
-
     private Throwable $throwable;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)

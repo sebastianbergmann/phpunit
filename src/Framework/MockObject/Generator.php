@@ -76,7 +76,6 @@ final class Generator
         '__clone'         => true,
         '__halt_compiler' => true,
     ];
-
     private static array $cache = [];
 
     /**

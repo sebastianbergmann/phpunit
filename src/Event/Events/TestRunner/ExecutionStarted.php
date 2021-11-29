@@ -20,7 +20,6 @@ use PHPUnit\Event\TestSuite\TestSuite;
 final class ExecutionStarted implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private TestSuite $testSuite;
 
     public function __construct(Telemetry\Info $telemetryInfo, TestSuite $testSuite)

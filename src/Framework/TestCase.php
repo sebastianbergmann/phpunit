@@ -111,50 +111,35 @@ use Throwable;
 abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
     private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
-
-    private ?bool $backupGlobals = null;
+    private ?bool $backupGlobals    = null;
 
     /**
      * @psalm-var list<string>
      */
     private array $backupGlobalsExcludeList = [];
-
-    private ?bool $backupStaticProperties = null;
+    private ?bool $backupStaticProperties   = null;
 
     /**
      * @psalm-var array<string,list<class-string>>
      */
     private array $backupStaticPropertiesExcludeList = [];
-
     private ?bool $beStrictAboutChangesToGlobalState = false;
-
-    private ?Snapshot $snapshot = null;
-
-    private ?bool $runClassInSeparateProcess = null;
-
-    private ?bool $runTestInSeparateProcess = null;
-
-    private bool $preserveGlobalState = false;
-
-    private bool $inIsolation = false;
-
-    private ?string $expectedException = null;
-
-    private ?string $expectedExceptionMessage = null;
-
-    private ?string $expectedExceptionMessageRegExp = null;
-
-    private null|int|string $expectedExceptionCode = null;
+    private ?Snapshot $snapshot                      = null;
+    private ?bool $runClassInSeparateProcess         = null;
+    private ?bool $runTestInSeparateProcess          = null;
+    private bool $preserveGlobalState                = false;
+    private bool $inIsolation                        = false;
+    private ?string $expectedException               = null;
+    private ?string $expectedExceptionMessage        = null;
+    private ?string $expectedExceptionMessageRegExp  = null;
+    private null|int|string $expectedExceptionCode   = null;
 
     /**
      * @psalm-var list<ExecutionOrderDependency>
      */
     private array $providedTests = [];
-
-    private array $data = [];
-
+    private array $data          = [];
     private int|string $dataName = '';
-
     private string $name;
 
     /**
@@ -165,17 +150,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<ExecutionOrderDependency>
      */
-    private array $dependencies = [];
-
+    private array $dependencies    = [];
     private array $dependencyInput = [];
 
     /**
      * @psalm-var array<string,string>
      */
-    private array $iniSettings = [];
-
-    private array $locale = [];
-
+    private array $iniSettings                  = [];
+    private array $locale                       = [];
     private ?MockGenerator $mockObjectGenerator = null;
 
     /**
@@ -186,45 +168,31 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<class-string>
      */
-    private array $doubledTypes = [];
-
+    private array $doubledTypes                                   = [];
     private bool $registerMockObjectsFromTestArgumentsRecursively = false;
-
-    private ?TestResult $result = null;
-
+    private ?TestResult $result                                   = null;
     private TestStatus $status;
-
     private int $numberOfAssertionsPerformed = 0;
-
-    private mixed $testResult = null;
-
-    private string $output = '';
-
-    private ?string $outputExpectedRegex = null;
-
-    private ?string $outputExpectedString = null;
-
-    private bool $outputBufferingActive = false;
-
+    private mixed $testResult                = null;
+    private string $output                   = '';
+    private ?string $outputExpectedRegex     = null;
+    private ?string $outputExpectedString    = null;
+    private bool $outputBufferingActive      = false;
     private int $outputBufferingLevel;
-
     private bool $outputRetrievedForAssertion = false;
 
     /**
      * @psalm-var list<string>
      */
-    private array $warnings = [];
-
+    private array $warnings                = [];
     private bool $doesNotPerformAssertions = false;
 
     /**
      * @psalm-var list<Comparator>
      */
-    private array $customComparators = [];
-
+    private array $customComparators                         = [];
     private ?Event\Code\TestMethod $testValueObjectForEvents = null;
-
-    private bool $wasPrepared = false;
+    private bool $wasPrepared                                = false;
 
     /**
      * Returns a matcher that matches when the method is executed

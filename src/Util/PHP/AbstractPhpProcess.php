@@ -44,18 +44,14 @@ use SebastianBergmann\Environment\Runtime;
 abstract class AbstractPhpProcess
 {
     protected Runtime $runtime;
-
     protected bool $stderrRedirection = false;
-
-    protected string $stdin = '';
-
-    protected string $arguments = '';
+    protected string $stdin           = '';
+    protected string $arguments       = '';
 
     /**
      * @psalm-var array<string, string>
      */
-    protected array $env = [];
-
+    protected array $env   = [];
     protected int $timeout = 0;
 
     public static function factory(): self

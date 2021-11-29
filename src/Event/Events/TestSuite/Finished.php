@@ -19,9 +19,7 @@ use PHPUnit\Event\Telemetry;
 final class Finished implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private TestSuite $testSuite;
-
     private Result $result;
 
     public function __construct(Telemetry\Info $telemetryInfo, TestSuite $testSuite, Result $result)

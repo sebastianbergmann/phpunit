@@ -113,7 +113,6 @@ class CliTestDoxPrinter extends TestDoxPrinter
      * @psalm-var list<int>
      */
     private array $nonSuccessfulTestResults = [];
-
     private Timer $timer;
 
     /**

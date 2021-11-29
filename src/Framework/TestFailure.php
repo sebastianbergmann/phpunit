@@ -20,9 +20,7 @@ use Throwable;
 final class TestFailure
 {
     private ?Test $failedTest = null;
-
     private Throwable $thrownException;
-
     private string $testName;
 
     /**

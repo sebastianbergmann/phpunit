@@ -45,9 +45,7 @@ use PHPUnit\Util\Printer;
 final class TeamCityLogger extends Printer
 {
     private bool $isSummaryTestCountPrinted = false;
-
-    private ?HRTime $time = null;
-
+    private ?HRTime $time                   = null;
     private ?int $flowId;
 
     /**

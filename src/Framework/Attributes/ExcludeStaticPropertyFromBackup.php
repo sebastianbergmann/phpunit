@@ -21,7 +21,6 @@ final class ExcludeStaticPropertyFromBackup
      * @psalm-var class-string
      */
     private string $className;
-
     private string $propertyName;
 
     /**

@@ -18,7 +18,6 @@ use PHPUnit\Metadata\Version\Requirement;
 final class RequiresPhpExtension extends Metadata
 {
     private string $extension;
-
     private ?Requirement $versionRequirement;
 
     protected function __construct(int $level, string $extension, ?Requirement $versionRequirement)

@@ -34,9 +34,7 @@ final class InvocationHandler
      * @psalm-var list<ConfigurableMethod>
      */
     private array $configurableMethods;
-
     private bool $returnValueGeneration;
-
     private ?ReturnValueNotConfiguredException $deferredError = null;
 
     /**

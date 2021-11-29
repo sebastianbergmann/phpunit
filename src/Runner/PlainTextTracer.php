@@ -25,7 +25,6 @@ use PHPUnit\Event\Tracer\Tracer;
 final class PlainTextTracer implements Tracer
 {
     private string $path;
-
     private bool $includeTelemetryInfo;
 
     public function __construct(string $path, bool $includeTelemetryInfo)

@@ -16,7 +16,6 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 final class Constant
 {
     private string $name;
-
     private mixed $value;
 
     public function __construct(string $name, mixed $value)

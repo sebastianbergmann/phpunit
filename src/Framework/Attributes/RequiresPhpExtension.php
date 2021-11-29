@@ -18,7 +18,6 @@ use Attribute;
 final class RequiresPhpExtension
 {
     private string $extension;
-
     private ?string $versionRequirement;
 
     public function __construct(string $extension, ?string $versionRequirement = null)

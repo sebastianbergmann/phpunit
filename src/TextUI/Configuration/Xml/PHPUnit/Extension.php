@@ -19,9 +19,7 @@ final class Extension
      * @psalm-var class-string
      */
     private string $className;
-
     private string $sourceFile;
-
     private array $arguments;
 
     /**

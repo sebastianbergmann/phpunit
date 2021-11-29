@@ -20,7 +20,6 @@ abstract class Metadata
     private const CLASS_LEVEL = 0;
 
     private const METHOD_LEVEL = 1;
-
     private int $level;
 
     public static function after(): After

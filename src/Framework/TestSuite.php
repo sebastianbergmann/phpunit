@@ -53,8 +53,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Enable or disable the backup and restoration of static attributes.
      */
-    protected ?bool $backupStaticProperties = null;
-
+    protected ?bool $backupStaticProperties  = null;
     protected bool $runTestInSeparateProcess = false;
 
     /**
@@ -72,20 +71,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * The number of tests in the test suite.
      */
-    protected int $numTests = -1;
-
+    protected int $numTests         = -1;
     protected ?array $requiredTests = null;
 
     /**
      * @psalm-var list<Test>
      */
-    private array $tests = [];
-
-    private ?array $providedTests = null;
-
+    private array $tests                             = [];
+    private ?array $providedTests                    = null;
     private ?bool $beStrictAboutChangesToGlobalState = null;
-
-    private ?Factory $iteratorFilter = null;
+    private ?Factory $iteratorFilter                 = null;
 
     /**
      * @psalm-var array<int,string>

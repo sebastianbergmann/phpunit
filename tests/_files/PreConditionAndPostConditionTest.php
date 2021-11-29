@@ -14,7 +14,6 @@ use PHPUnit\Framework\TestCase;
 final class PreConditionAndPostConditionTest extends TestCase
 {
     public static $preConditionWasVerified;
-
     public static $postConditionWasVerified;
 
     public static function resetProperties(): void

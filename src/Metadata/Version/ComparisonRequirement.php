@@ -20,7 +20,6 @@ use PHPUnit\Util\VersionComparisonOperator;
 final class ComparisonRequirement extends Requirement
 {
     private string $version;
-
     private VersionComparisonOperator $operator;
 
     public function __construct(string $version, VersionComparisonOperator $operator)

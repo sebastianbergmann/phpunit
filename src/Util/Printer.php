@@ -32,9 +32,7 @@ class Printer
      * @psalm-var closed-resource|resource
      */
     private $stream;
-
     private bool $isPhpStream;
-
     private bool $isOpen;
 
     /**

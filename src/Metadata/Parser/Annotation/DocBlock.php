@@ -44,7 +44,6 @@ final class DocBlock
     private const REGEX_REQUIRES_SETTING = '/@requires\s+(?P<name>setting)\s+(?P<setting>([^ ]+?))\s*(?P<value>[\w\.-]+[\w\.]?)?[ \t]*\r?$/m';
 
     private const REGEX_REQUIRES = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^\s<>=!]+))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
-
     private string $docComment;
 
     /**
@@ -63,9 +62,7 @@ final class DocBlock
      * >)
      */
     private ?array $parsedRequirements = null;
-
     private int $startLine;
-
     private string $fileName;
 
     public static function ofClass(ReflectionClass $class): self

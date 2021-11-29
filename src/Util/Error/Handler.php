@@ -30,13 +30,9 @@ use PHPUnit\Util\Exception;
 final class Handler
 {
     private bool $convertDeprecationsToExceptions;
-
     private bool $convertErrorsToExceptions;
-
     private bool $convertNoticesToExceptions;
-
     private bool $convertWarningsToExceptions;
-
     private bool $registered = false;
 
     public static function invokeIgnoringWarnings(callable $callable): mixed

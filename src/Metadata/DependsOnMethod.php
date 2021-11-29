@@ -19,11 +19,8 @@ final class DependsOnMethod extends Metadata
      * @psalm-var class-string
      */
     private string $className;
-
     private string $methodName;
-
     private bool $deepClone;
-
     private bool $shallowClone;
 
     /**

@@ -67,9 +67,7 @@ use Throwable;
 final class PhptTestCase implements Reorderable, SelfDescribing, Test
 {
     private string $filename;
-
     private AbstractPhpProcess $phpUtil;
-
     private string $output = '';
 
     /**

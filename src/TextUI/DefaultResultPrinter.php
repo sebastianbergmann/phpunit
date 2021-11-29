@@ -47,30 +47,18 @@ use Throwable;
  */
 class DefaultResultPrinter extends Printer implements ResultPrinter
 {
-    protected int $column = 0;
-
-    protected ?int $maxColumn = null;
-
+    protected int $column          = 0;
+    protected ?int $maxColumn      = null;
     protected bool $lastTestFailed = false;
-
-    protected int $numAssertions = 0;
-
-    protected int $numTests = -1;
-
-    protected int $numTestsRun = 0;
-
-    protected ?int $numTestsWidth = null;
-
-    protected bool $colors = false;
-
-    protected bool $verbose = false;
-
+    protected int $numAssertions   = 0;
+    protected int $numTests        = -1;
+    protected int $numTestsRun     = 0;
+    protected ?int $numTestsWidth  = null;
+    protected bool $colors         = false;
+    protected bool $verbose        = false;
     private int $numberOfColumns;
-
     private bool $reverse;
-
     private bool $defectListPrinted = false;
-
     private Timer $timer;
 
     /**

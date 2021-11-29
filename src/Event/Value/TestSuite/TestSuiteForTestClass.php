@@ -20,9 +20,7 @@ final class TestSuiteForTestClass extends TestSuite
      * @psalm-var class-string
      */
     private string $className;
-
     private string $file;
-
     private int $line;
 
     /**

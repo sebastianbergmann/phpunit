@@ -23,8 +23,7 @@ use SebastianBergmann\CodeCoverage\Filter;
  */
 final class CodeCoverageFilterRegistry
 {
-    private static ?Filter $filter = null;
-
+    private static ?Filter $filter  = null;
     private static bool $configured = false;
 
     public static function get(): Filter
