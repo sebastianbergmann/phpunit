@@ -73,7 +73,7 @@ $config->setFinder($finder)
             'elements' => [
                 'const' => 'one',
                 'method' => 'one',
-                'property' => 'one'
+                'property' => 'only_if_meta'
             ]
         ],
         'class_definition' => true,
