@@ -35,17 +35,13 @@
       <code>static::readAttribute($haystackClassOrObject, $haystackAttributeName)</code>
       <code>static::readAttribute($haystackClassOrObject, $haystackAttributeName)</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="17">
+    <DocblockTypeContradiction occurrences="13">
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$actual instanceof Countable &amp;&amp; !is_iterable($actual)</code>
       <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
       <code>!$expected instanceof Countable &amp;&amp; !is_iterable($expected)</code>
       <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
       <code>!$haystack instanceof Countable &amp;&amp; !is_iterable($haystack)</code>
-      <code>is_array($array) || $array instanceof ArrayAccess</code>
-      <code>is_array($array) || $array instanceof ArrayAccess</code>
-      <code>is_array($array) || $array instanceof ArrayAccess</code>
-      <code>is_array($subset) || $subset instanceof ArrayAccess</code>
       <code>is_int($key) || is_string($key)</code>
       <code>is_int($key) || is_string($key)</code>
       <code>is_object($object)</code>
@@ -492,9 +488,6 @@
     </RedundantCondition>
   </file>
   <file src="src/Framework/Constraint/LogicalAnd.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>$constraint instanceof Constraint</code>
-    </DocblockTypeContradiction>
     <MissingParamType occurrences="1">
       <code>$other</code>
     </MissingParamType>
@@ -511,9 +504,6 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/Constraint/LogicalOr.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>$constraint instanceof Constraint</code>
-    </DocblockTypeContradiction>
     <MissingParamType occurrences="1">
       <code>$other</code>
     </MissingParamType>
@@ -522,9 +512,6 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/Constraint/LogicalXor.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>$constraint instanceof Constraint</code>
-    </DocblockTypeContradiction>
     <MissingParamType occurrences="1">
       <code>$other</code>
     </MissingParamType>
@@ -784,9 +771,6 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Rule/MethodName.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>$constraint instanceof Constraint</code>
-    </DocblockTypeContradiction>
     <MissingThrowsDocblock occurrences="1">
       <code>evaluate</code>
     </MissingThrowsDocblock>
@@ -890,14 +874,13 @@
     <DeprecatedMethod occurrences="2">
       <code>setMethods</code>
     </DeprecatedMethod>
-    <DocblockTypeContradiction occurrences="9">
+    <DocblockTypeContradiction occurrences="8">
       <code>$this-&gt;backupStaticAttributes === null</code>
       <code>$this-&gt;mockObjectGenerator === null</code>
       <code>$this-&gt;name === null</code>
       <code>$this-&gt;prophet === null</code>
       <code>$this-&gt;runClassInSeparateProcess === null</code>
       <code>$this-&gt;runTestInSeparateProcess === null</code>
-      <code>$this-&gt;snapshot instanceof Snapshot</code>
       <code>''</code>
       <code>is_int($this-&gt;dataName)</code>
     </DocblockTypeContradiction>
