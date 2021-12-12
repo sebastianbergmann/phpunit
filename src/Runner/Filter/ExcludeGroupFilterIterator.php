@@ -16,8 +16,8 @@ use function in_array;
  */
 final class ExcludeGroupFilterIterator extends GroupFilterIterator
 {
-    protected function doAccept(string $hash): bool
+    protected function doAccept(int $id): bool
     {
-        return !in_array($hash, $this->groupTests, true);
+        return !in_array($id, $this->groupTests, true);
     }
 }
