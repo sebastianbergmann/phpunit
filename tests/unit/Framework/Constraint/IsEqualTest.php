@@ -63,7 +63,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 "custom message\n{$message}",
-                $this->trimnl(TestFailure::exceptionToString($e))
+                $this->removeSpacesInFrontOfNewlines(TestFailure::exceptionToString($e))
             );
 
             return;
@@ -324,10 +324,7 @@ EOF
         ];
     }
 
-    /**
-     * Removes spaces in front of newlines.
-     */
-    private function trimnl(string $string): string
+    private function removeSpacesInFrontOfNewlines(string $string): string
     {
         return preg_replace('/[ ]*\n/', "\n", $string);
     }
