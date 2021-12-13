@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function preg_replace;
-use function spl_object_hash;
+use function spl_object_id;
 use DateTime;
 use DateTimeZone;
 use DOMDocument;
@@ -84,8 +84,8 @@ EOF
         $a      = new stdClass;
         $a->foo = 'bar';
         $b      = new stdClass;
-        $ahash  = spl_object_hash($a);
-        $bhash  = spl_object_hash($b);
+        $aid  = spl_object_id($a);
+        $bid  = spl_object_id($b);
 
         $c               = new stdClass;
         $c->foo          = 'bar';
@@ -109,8 +109,8 @@ EOF
         $storage1->attach($b);
         $storage2 = new SplObjectStorage;
         $storage2->attach($b);
-        $storage1hash = spl_object_hash($storage1);
-        $storage2hash = spl_object_hash($storage2);
+        $storage1id = spl_object_id($storage1);
+        $storage2id = spl_object_id($storage2);
 
         $dom1                     = new DOMDocument;
         $dom1->preserveWhiteSpace = false;
@@ -304,17 +304,17 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
--SplObjectStorage Object &{$storage1hash} (
--    '{$ahash}' => Array &0 (
--        'obj' => stdClass Object &{$ahash} (
+-SplObjectStorage Object #$storage1id (
+-    'Object #$aid' => Array &0 (
+-        'obj' => stdClass Object #$aid (
 -            'foo' => 'bar'
 -        )
 -        'inf' => null
 -    )
--    '{$bhash}' => Array &1 (
-+SplObjectStorage Object &{$storage2hash} (
-+    '{$bhash}' => Array &0 (
-         'obj' => stdClass Object &{$bhash} ()
+-    'Object #$bid' => Array &1 (
++SplObjectStorage Object #$storage2id (
++    'Object #$bid' => Array &0 (
+         'obj' => stdClass Object #$bid ()
          'inf' => null
      )
  )
