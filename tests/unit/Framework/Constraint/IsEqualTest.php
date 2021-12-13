@@ -84,8 +84,8 @@ EOF
         $a      = new stdClass;
         $a->foo = 'bar';
         $b      = new stdClass;
-        $aid  = spl_object_id($a);
-        $bid  = spl_object_id($b);
+        $aid    = spl_object_id($a);
+        $bid    = spl_object_id($b);
 
         $c               = new stdClass;
         $c->foo          = 'bar';
@@ -304,17 +304,17 @@ Failed asserting that two objects are equal.
 --- Expected
 +++ Actual
 @@ @@
--SplObjectStorage Object #$storage1id (
--    'Object #$aid' => Array &0 (
--        'obj' => stdClass Object #$aid (
+-SplObjectStorage Object #{$storage1id} (
+-    'Object #{$aid}' => Array &0 (
+-        'obj' => stdClass Object #{$aid} (
 -            'foo' => 'bar'
 -        )
 -        'inf' => null
 -    )
--    'Object #$bid' => Array &1 (
-+SplObjectStorage Object #$storage2id (
-+    'Object #$bid' => Array &0 (
-         'obj' => stdClass Object #$bid ()
+-    'Object #{$bid}' => Array &1 (
++SplObjectStorage Object #{$storage2id} (
++    'Object #{$bid}' => Array &0 (
+         'obj' => stdClass Object #{$bid} ()
          'inf' => null
      )
  )
