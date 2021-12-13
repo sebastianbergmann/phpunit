@@ -26,16 +26,6 @@ class ExceptionInAssertPreConditionsTest extends TestCase
         $this->setUp = true;
     }
 
-    protected function tearDown(): void
-    {
-        $this->tearDown = true;
-    }
-
-    public function testSomething(): void
-    {
-        $this->testSomething = true;
-    }
-
     protected function assertPreConditions(): void
     {
         $this->assertPreConditions = true;
@@ -46,5 +36,15 @@ class ExceptionInAssertPreConditionsTest extends TestCase
     protected function assertPostConditions(): void
     {
         $this->assertPostConditions = true;
+    }
+
+    protected function tearDown(): void
+    {
+        $this->tearDown = true;
+    }
+
+    public function testSomething(): void
+    {
+        $this->testSomething = true;
     }
 }

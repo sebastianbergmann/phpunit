@@ -26,6 +26,16 @@ class TemplateMethodsTest extends TestCase
         print __METHOD__ . "\n";
     }
 
+    protected function assertPreConditions(): void
+    {
+        print __METHOD__ . "\n";
+    }
+
+    protected function assertPostConditions(): void
+    {
+        print __METHOD__ . "\n";
+    }
+
     protected function tearDown(): void
     {
         print __METHOD__ . "\n";
@@ -41,16 +51,6 @@ class TemplateMethodsTest extends TestCase
     {
         print __METHOD__ . "\n";
         $this->assertTrue(false);
-    }
-
-    protected function assertPreConditions(): void
-    {
-        print __METHOD__ . "\n";
-    }
-
-    protected function assertPostConditions(): void
-    {
-        print __METHOD__ . "\n";
     }
 
     protected function onNotSuccessfulTest(Throwable $t): void
