@@ -10,7 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function array_map;
-use function array_values;
 use function count;
 
 /**
@@ -42,7 +41,7 @@ abstract class BinaryOperator extends Operator
             {
                 return $this->checkConstraint($constraint);
             },
-            array_values($constraints)
+            $constraints
         );
     }
 
