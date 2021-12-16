@@ -40,6 +40,8 @@ final class NamePrettifierTest extends TestCase
         $this->assertEquals('Foo (Test\Foo)', $this->namePrettifier->prettifyTestClass('Test\FooTest'));
         $this->assertEquals('Foo (Tests\Foo)', $this->namePrettifier->prettifyTestClass('Tests\FooTest'));
         $this->assertEquals('Unnamed Tests', $this->namePrettifier->prettifyTestClass('TestTest'));
+        $this->assertEquals('Système Testé', $this->namePrettifier->prettifyTestClass('SystèmeTestéTest'));
+        $this->assertEquals('Expression Évaluée', $this->namePrettifier->prettifyTestClass('ExpressionÉvaluéeTest'));
     }
 
     public function testTestNameIsConvertedToASentence(): void
