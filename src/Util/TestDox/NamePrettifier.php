@@ -26,7 +26,6 @@ use function is_numeric;
 use function is_object;
 use function is_scalar;
 use function is_string;
-use function mb_strtolower;
 use function ord;
 use function preg_quote;
 use function preg_replace;
@@ -109,24 +108,7 @@ final class NamePrettifier
             $fullyQualifiedName = $className;
         }
 
-        $result       = '';
-        $wasLowerCase = false;
-
-        foreach (range(0, strlen($className) - 1) as $i) {
-            $isLowerCase = mb_strtolower($className[$i], 'UTF-8') === $className[$i];
-
-            if ($wasLowerCase && !$isLowerCase) {
-                $result .= ' ';
-            }
-
-            $result .= $className[$i];
-
-            if ($isLowerCase) {
-                $wasLowerCase = true;
-            } else {
-                $wasLowerCase = false;
-            }
-        }
+        $result = preg_replace('/(?<=[[:lower:]])(?=[[:upper:]])/u', ' ', $className);
 
         if ($fullyQualifiedName !== $className) {
             return $result . ' (' . $fullyQualifiedName . ')';
