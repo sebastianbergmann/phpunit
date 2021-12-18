@@ -515,9 +515,15 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Logging/TestDox/TestDoxPrinter.php">
+    <InvalidScalarArgument occurrences="1">
+      <code>$numberOfColumns</code>
+    </InvalidScalarArgument>
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
+    <PossiblyInvalidArgument occurrences="1">
+      <code>$numberOfColumns</code>
+    </PossiblyInvalidArgument>
     <UndefinedInterfaceMethod occurrences="1">
       <code>getName</code>
     </UndefinedInterfaceMethod>
@@ -1058,14 +1064,12 @@
       <code>parent::__construct($out)</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidPropertyAssignmentValue occurrences="1">
-      <code>$numberOfColumns</code>
-    </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/TextUI/ResultPrinter/Standard/ResultPrinter.php">
-    <MissingThrowsDocblock occurrences="2">
+    <MissingThrowsDocblock occurrences="3">
       <code>parent::__construct($out)</code>
       <code>registerSubscribers</code>
+      <code>stop</code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor occurrences="3">
       <code>$maxColumn</code>
@@ -1074,8 +1078,7 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedMethod occurrences="6">
-      <code>addListener</code>
+    <DeprecatedMethod occurrences="5">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
@@ -1134,9 +1137,6 @@
       <code>testsUsing</code>
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$this-&gt;configuration-&gt;columns()</code>
-    </PossiblyInvalidArgument>
     <PossiblyNullReference occurrences="3">
       <code>write</code>
       <code>write</code>
