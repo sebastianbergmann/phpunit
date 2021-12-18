@@ -37,29 +37,17 @@ use SebastianBergmann\Timer\Timer;
 final class ResultPrinter extends Printer implements ResultPrinterInterface
 {
     private bool $colors;
-
     private bool $verbose;
-
     private int $numberOfColumns;
-
     private bool $reverse;
-
     private int $column = 0;
-
     private int $numberOfTests;
-
     private int $numberOfTestsWidth;
-
     private int $maxColumn;
-
-    private int $numberOfTestsRun = 0;
-
-    private bool $progressWritten = false;
-
+    private int $numberOfTestsRun   = 0;
+    private bool $progressWritten   = false;
     private bool $defectListPrinted = false;
-
     private Timer $timer;
-
     private int $numberOfAssertions = 0;
 
     public function __construct(string $out, bool $verbose, bool $colors, int $numberOfColumns, bool $reverse)
