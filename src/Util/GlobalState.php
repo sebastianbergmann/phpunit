@@ -67,7 +67,14 @@ final class GlobalState
             $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
         }
 
-        for ($i = count($files) - 1; $i > 0; $i--) {
+        // Do not process bootstrap script
+        array_shift($files);
+        // If bootstrap script was a Composer bin proxy, skip the second entry as well
+        if (substr(strtr($files[0], '\\', '/'), -24) === '/phpunit/phpunit/phpunit') {
+            array_shift($files);
+        }
+
+        for ($i = count($files) - 1; $i >= 0; $i--) {
             $file = $files[$i];
 
             if (!empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) &&
