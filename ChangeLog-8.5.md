@@ -12,6 +12,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 ### Fixed
 
 * [#4840](https://github.com/sebastianbergmann/phpunit/pull/4840): TestDox prettifying for class names does not correctly handle diacritics
+* [#4846](https://github.com/sebastianbergmann/phpunit/pull/4846): Composer proxy script is not ignored
 
 ## [8.5.21] - 2021-09-25
 
