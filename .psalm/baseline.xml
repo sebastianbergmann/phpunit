@@ -488,6 +488,9 @@
     <MissingReturnType occurrences="1">
       <code>getObject</code>
     </MissingReturnType>
+    <PossiblyNullArgument occurrences="1">
+      <code>$client-&gt;__getFunctions()</code>
+    </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingReturnType occurrences="1">
@@ -1008,9 +1011,6 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/Help.php">
-    <MissingClosureParamType occurrences="1">
-      <code>$matches</code>
-    </MissingClosureParamType>
     <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$option['desc']</code>
       <code>$option['desc']</code>
@@ -1285,18 +1285,8 @@
       <code>(string) $matches['value'][$i]</code>
     </RedundantCast>
   </file>
-  <file src="src/Util/Color.php">
-    <MissingClosureParamType occurrences="2">
-      <code>$matches</code>
-      <code>$matches</code>
-    </MissingClosureParamType>
-  </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument occurrences="1"/>
-    <MissingClosureParamType occurrences="2">
-      <code>$errorNumber</code>
-      <code>$errorString</code>
-    </MissingClosureParamType>
     <MissingReturnType occurrences="1">
       <code>invokeIgnoringWarnings</code>
     </MissingReturnType>
