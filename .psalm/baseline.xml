@@ -674,6 +674,9 @@
       <code>throw InvalidArgumentException::create(2, 'array');</code>
       <code>throw new RuntimeException($exception-&gt;getMessage());</code>
     </MissingThrowsDocblock>
+    <PossiblyNullArgument occurrences="1">
+      <code>$client-&gt;__getFunctions()</code>
+    </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <MissingClosureReturnType occurrences="1">
@@ -1125,15 +1128,13 @@
     </PossiblyUndefinedVariable>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
-    <MissingClosureParamType occurrences="9">
-      <code>$carry</code>
+    <MissingClosureParamType occurrences="7">
       <code>$left</code>
       <code>$left</code>
       <code>$left</code>
       <code>$right</code>
       <code>$right</code>
       <code>$right</code>
-      <code>$test</code>
       <code>$test</code>
     </MissingClosureParamType>
     <PossiblyFalseArgument occurrences="1">
@@ -1195,9 +1196,6 @@
     </UnsafeInstantiation>
   </file>
   <file src="src/TextUI/Help.php">
-    <MissingClosureParamType occurrences="1">
-      <code>$matches</code>
-    </MissingClosureParamType>
     <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$option['desc']</code>
       <code>$option['desc']</code>
@@ -1288,12 +1286,6 @@
     <UndefinedClass occurrences="1">
       <code>Invoker</code>
     </UndefinedClass>
-  </file>
-  <file src="src/Util/Color.php">
-    <MissingClosureParamType occurrences="2">
-      <code>$matches</code>
-      <code>$matches</code>
-    </MissingClosureParamType>
   </file>
   <file src="src/Util/Configuration.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -1400,10 +1392,6 @@
   </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument occurrences="1"/>
-    <MissingClosureParamType occurrences="2">
-      <code>$errorNumber</code>
-      <code>$errorString</code>
-    </MissingClosureParamType>
     <MissingReturnType occurrences="1">
       <code>invokeIgnoringWarnings</code>
     </MissingReturnType>
