@@ -301,6 +301,9 @@
     <MoreSpecificReturnType occurrences="1">
       <code>MockObject</code>
     </MoreSpecificReturnType>
+    <PossiblyNullArgument occurrences="1">
+      <code>$client-&gt;__getFunctions()</code>
+    </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -1090,9 +1093,6 @@
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/TextUI/Help.php">
-    <MissingClosureParamType occurrences="1">
-      <code>$matches</code>
-    </MissingClosureParamType>
     <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$option['desc']</code>
       <code>$option['desc']</code>
@@ -1161,17 +1161,8 @@
       <code>write</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/Util/Color.php">
-    <MissingClosureParamType occurrences="2">
-      <code>$matches</code>
-      <code>$matches</code>
-    </MissingClosureParamType>
-  </file>
   <file src="src/Util/Error/Handler.php">
     <InvalidArgument occurrences="1"/>
-    <MissingClosureParamType occurrences="1">
-      <code>$errorNumber</code>
-    </MissingClosureParamType>
   </file>
   <file src="src/Util/ExcludeList.php">
     <InvalidNullableReturnType occurrences="1">
