@@ -148,9 +148,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $this->phpUtil->setTimeout(Registry::get()->timeoutForLargeTests());
         }
 
-        $skip = $this->runSkip($sections, $result, $settings);
-
-        if ($skip) {
+        if ($this->shouldTestBeSkipped($sections, $result, $settings)) {
             return;
         }
 
@@ -385,7 +383,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         throw new Exception('No PHPT assertion found');
     }
 
-    private function runSkip(array &$sections, TestResult $result, array $settings): bool
+    private function shouldTestBeSkipped(array &$sections, TestResult $result, array $settings): bool
     {
         if (!isset($sections['SKIPIF'])) {
             return false;
