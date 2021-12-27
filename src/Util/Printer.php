@@ -18,7 +18,6 @@ use function fopen;
 use function fsockopen;
 use function fwrite;
 use function sprintf;
-use function str_contains;
 use function str_replace;
 use function str_starts_with;
 
@@ -57,7 +56,9 @@ class Printer
             return;
         }
 
-        if (!str_contains($out, 'php://') && !Filesystem::createDirectory(dirname($out))) {
+        $this->isPhpStream = str_starts_with($out, 'php://');
+
+        if (!$this->isPhpStream && !Filesystem::createDirectory(dirname($out))) {
             throw new Exception(
                 sprintf(
                     'Directory "%s" was not created',
@@ -66,9 +67,8 @@ class Printer
             );
         }
 
-        $this->stream      = fopen($out, 'wb');
-        $this->isPhpStream = !str_starts_with($out, 'php://');
-        $this->isOpen      = true;
+        $this->stream = fopen($out, 'wb');
+        $this->isOpen = true;
     }
 
     public function flush(): void
