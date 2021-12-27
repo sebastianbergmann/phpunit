@@ -17,7 +17,6 @@ use function str_pad;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\Finished;
-use PHPUnit\Event\Test\OutputPrinted;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\RiskyTest;
@@ -128,11 +127,6 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->writeProgressWithColor('fg-cyan, bold', 'S');
     }
 
-    public function testPrintedOutput(OutputPrinted $event): void
-    {
-        $this->write($event->output());
-    }
-
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
@@ -147,7 +141,6 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new TestPrintedOutputSubscriber($this));
     }
 
     private function writeProgressWithColor(string $color, string $progress): void
