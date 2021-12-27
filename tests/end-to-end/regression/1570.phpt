@@ -14,16 +14,16 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-R                                                                   1 / 1 (100%)*
+R                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
 There was 1 risky test:
 
 1) PHPUnit\TestFixture\Issue1570Test::testOne
-This test did not perform any assertions
+This test printed output: *
 
 %s:16
 
 OK, but incomplete, skipped, or risky tests!
-Tests: 1, Assertions: 0, Risky: 1.
+Tests: 1, Assertions: 1, Risky: 1.
