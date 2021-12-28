@@ -438,8 +438,7 @@
       <code>cacheDirectory</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <PossiblyUndefinedVariable occurrences="4">
-      <code>$_timeout</code>
+    <PossiblyUndefinedVariable occurrences="3">
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
