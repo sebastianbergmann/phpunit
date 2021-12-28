@@ -38,6 +38,8 @@ use Throwable;
  */
 final class TestRunner
 {
+    private ?bool $timeLimitCanBeEnforced = null;
+
     /**
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws CodeCoverageException
@@ -92,10 +94,8 @@ final class TestRunner
         $timer->start();
 
         try {
-            $invoker = new Invoker;
-
-            if ($this->shouldTimeLimitBeEnforced($test, $result) &&
-                $invoker->canInvokeWithTimeout()) {
+            if ($this->canTimeLimitBeEnforced() &&
+                $this->shouldTimeLimitBeEnforced($test, $result)) {
                 $_timeout = $result->defaultTimeLimit();
 
                 if ($test->size()->isSmall()) {
@@ -106,7 +106,7 @@ final class TestRunner
                     $_timeout = $result->timeoutForLargeTests();
                 }
 
-                $invoker->invoke([$test, 'runBare'], [], $_timeout);
+                (new Invoker)->invoke([$test, 'runBare'], [], $_timeout);
             } else {
                 $test->runBare();
             }
@@ -425,6 +425,23 @@ final class TestRunner
         return false;
     }
 
+    private function canTimeLimitBeEnforced(): bool
+    {
+        if ($this->timeLimitCanBeEnforced !== null) {
+            return $this->timeLimitCanBeEnforced;
+        }
+
+        if (!class_exists(Invoker::class)) {
+            $this->timeLimitCanBeEnforced = false;
+
+            return $this->timeLimitCanBeEnforced;
+        }
+
+        $this->timeLimitCanBeEnforced = (new Invoker)->canInvokeWithTimeout();
+
+        return $this->timeLimitCanBeEnforced;
+    }
+
     private function shouldTimeLimitBeEnforced(TestCase $test, TestResult $result): bool
     {
         if ($test instanceof ErrorTestCase) {
@@ -440,14 +457,6 @@ final class TestRunner
         }
 
         if (!(($result->defaultTimeLimit() || $test->size()->isKnown()))) {
-            return false;
-        }
-
-        if (!extension_loaded('pcntl')) {
-            return false;
-        }
-
-        if (!class_exists(Invoker::class)) {
             return false;
         }
 
