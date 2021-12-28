@@ -94,9 +94,7 @@ final class TestRunner
         try {
             $invoker = new Invoker;
 
-            if (!$test instanceof ErrorTestCase &&
-                !$test instanceof WarningTestCase &&
-                $this->shouldTimeLimitBeEnforced($test, $result) &&
+            if ($this->shouldTimeLimitBeEnforced($test, $result) &&
                 $invoker->canInvokeWithTimeout()) {
                 $_timeout = $result->defaultTimeLimit();
 
@@ -429,6 +427,14 @@ final class TestRunner
 
     private function shouldTimeLimitBeEnforced(TestCase $test, TestResult $result): bool
     {
+        if ($test instanceof ErrorTestCase) {
+            return false;
+        }
+
+        if ($test instanceof WarningTestCase) {
+            return false;
+        }
+
         if (!$result->enforcesTimeLimit()) {
             return false;
         }
