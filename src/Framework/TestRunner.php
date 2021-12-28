@@ -96,28 +96,10 @@ final class TestRunner
         try {
             if ($this->canTimeLimitBeEnforced() &&
                 $this->shouldTimeLimitBeEnforced($test, $result)) {
-                $_timeout = $result->defaultTimeLimit();
-
-                if ($test->size()->isSmall()) {
-                    $_timeout = $result->timeoutForSmallTests();
-                } elseif ($test->size()->isMedium()) {
-                    $_timeout = $result->timeoutForMediumTests();
-                } elseif ($test->size()->isLarge()) {
-                    $_timeout = $result->timeoutForLargeTests();
-                }
-
-                (new Invoker)->invoke([$test, 'runBare'], [], $_timeout);
+                $risky = $this->runTestWithTimeout($test, $result);
             } else {
                 $test->runBare();
             }
-        } catch (TimeoutException $e) {
-            $result->addFailure(
-                $test,
-                new RiskyDueToTimeoutException($_timeout),
-                $_timeout
-            );
-
-            $risky = true;
         } catch (AssertionFailedError $e) {
             $failure = true;
 
@@ -465,5 +447,35 @@ final class TestRunner
         }
 
         return true;
+    }
+
+    /**
+     * @throws Throwable
+     */
+    private function runTestWithTimeout(TestCase $test, TestResult $result): bool
+    {
+        $_timeout = $result->defaultTimeLimit();
+
+        if ($test->size()->isSmall()) {
+            $_timeout = $result->timeoutForSmallTests();
+        } elseif ($test->size()->isMedium()) {
+            $_timeout = $result->timeoutForMediumTests();
+        } elseif ($test->size()->isLarge()) {
+            $_timeout = $result->timeoutForLargeTests();
+        }
+
+        try {
+            (new Invoker)->invoke([$test, 'runBare'], [], $_timeout);
+        } catch (TimeoutException) {
+            $result->addFailure(
+                $test,
+                new RiskyDueToTimeoutException($_timeout),
+                $_timeout
+            );
+
+            return true;
+        }
+
+        return false;
     }
 }
