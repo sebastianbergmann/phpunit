@@ -428,7 +428,7 @@
     </RedundantCondition>
   </file>
   <file src="src/Framework/TestRunner.php">
-    <MissingThrowsDocblock occurrences="11">
+    <MissingThrowsDocblock occurrences="12">
       <code>CodeCoverage::instance()</code>
       <code>CodeCoverage::instance()</code>
       <code>CodeCoverage::instance()</code>
@@ -436,6 +436,7 @@
       <code>CodeCoverage::start($test)</code>
       <code>GlobalState::getIncludedFilesAsString()</code>
       <code>cacheDirectory</code>
+      <code>saveConfigurationForChildProcess</code>
       <code>stop</code>
     </MissingThrowsDocblock>
   </file>

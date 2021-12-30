@@ -15,12 +15,15 @@ use function get_include_path;
 use function hrtime;
 use function serialize;
 use function sprintf;
+use function sys_get_temp_dir;
+use function tempnam;
 use function var_export;
 use AssertionError;
 use PHPUnit\Event;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -344,6 +347,8 @@ final class TestRunner
 
         $offset = hrtime(false);
 
+        $serializedConfiguration = $this->saveConfigurationForChildProcess();
+
         $var = [
             'composerAutoload'                        => $composerAutoload,
             'phar'                                    => $phar,
@@ -369,6 +374,7 @@ final class TestRunner
             'name'                                    => $test->getName(false),
             'offsetSeconds'                           => $offset[0],
             'offsetNanoseconds'                       => $offset[1],
+            'serializedConfiguration'                 => $serializedConfiguration,
         ];
 
         if (!$runEntireClass) {
@@ -379,6 +385,8 @@ final class TestRunner
 
         $php = AbstractPhpProcess::factory();
         $php->runTestJob($template->render(), $test, $result);
+
+        @unlink($serializedConfiguration);
     }
 
     /**
@@ -477,5 +485,23 @@ final class TestRunner
         }
 
         return false;
+    }
+
+    /**
+     * @throws ProcessIsolationException
+     */
+    private function saveConfigurationForChildProcess(): string
+    {
+        $path = tempnam(sys_get_temp_dir(), 'PHPUnit');
+
+        if (!$path) {
+            throw new ProcessIsolationException;
+        }
+
+        if (!Registry::saveTo($path)) {
+            throw new ProcessIsolationException;
+        }
+
+        return $path;
     }
 }

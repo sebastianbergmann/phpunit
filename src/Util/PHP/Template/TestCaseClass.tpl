@@ -1,6 +1,7 @@
 <?php
 use PHPUnit\Event\Facade;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 
@@ -119,5 +120,7 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
     require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
     unset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
 }
+
+Registry::loadFrom('{serializedConfiguration}');
 
 __phpunit_run_isolated_test();
