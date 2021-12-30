@@ -156,19 +156,6 @@ final class TestRunner
 
         $result = new TestResult;
 
-        $result->convertDeprecationsToExceptions($this->configuration->convertDeprecationsToExceptions());
-        $result->convertErrorsToExceptions($this->configuration->convertErrorsToExceptions());
-        $result->convertNoticesToExceptions($this->configuration->convertNoticesToExceptions());
-        $result->convertWarningsToExceptions($this->configuration->convertWarningsToExceptions());
-        $result->stopOnDefect($this->configuration->stopOnDefect());
-        $result->stopOnError($this->configuration->stopOnError());
-        $result->stopOnFailure($this->configuration->stopOnFailure());
-        $result->stopOnIncomplete($this->configuration->stopOnIncomplete());
-        $result->stopOnRisky($this->configuration->stopOnRisky());
-        $result->stopOnSkipped($this->configuration->stopOnSkipped());
-        $result->stopOnWarning($this->configuration->stopOnWarning());
-        $result->registerMockObjectsFromTestArgumentsRecursively($this->configuration->registerMockObjectsFromTestArgumentsRecursively());
-
         $this->printer = $this->createPrinter();
 
         if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
@@ -376,15 +363,6 @@ final class TestRunner
         if ($this->configuration->enforceTimeLimit() && !(new Invoker)->canInvokeWithTimeout()) {
             $this->writeMessage('Error', 'PHP extension pcntl is required for enforcing time limits');
         }
-
-        $result->beStrictAboutTestsThatDoNotTestAnything($this->configuration->reportUselessTests());
-        $result->beStrictAboutOutputDuringTests($this->configuration->disallowTestOutput());
-        $result->enforceTimeLimit($this->configuration->enforceTimeLimit());
-        $result->setDefaultTimeLimit($this->configuration->defaultTimeLimit());
-        $result->setTimeoutForSmallTests($this->configuration->timeoutForSmallTests());
-        $result->setTimeoutForMediumTests($this->configuration->timeoutForMediumTests());
-        $result->setTimeoutForLargeTests($this->configuration->timeoutForLargeTests());
-        $result->requireCoverageMetadata($this->configuration->requireCoverageMetadata());
 
         $this->processSuiteFilters($suite);
         $suite->setRunTestInSeparateProcess($this->configuration->processIsolation());

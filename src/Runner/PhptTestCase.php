@@ -55,6 +55,7 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 use SebastianBergmann\Template\Template;
@@ -143,8 +144,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $this->phpUtil->setUseStderrRedirection(true);
 
-        if ($result->enforcesTimeLimit()) {
-            $this->phpUtil->setTimeout($result->timeoutForLargeTests());
+        if (Registry::get()->enforceTimeLimit()) {
+            $this->phpUtil->setTimeout(Registry::get()->timeoutForLargeTests());
         }
 
         $skip = $this->runSkip($sections, $result, $settings);

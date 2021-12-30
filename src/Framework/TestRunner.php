@@ -23,6 +23,7 @@ use PHPUnit\Event;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\Error\Handler;
 use PHPUnit\Util\GlobalState;
@@ -42,6 +43,12 @@ use Throwable;
 final class TestRunner
 {
     private ?bool $timeLimitCanBeEnforced = null;
+    private Configuration $configuration;
+
+    public function __construct()
+    {
+        $this->configuration = Registry::get();
+    }
 
     /**
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
@@ -52,7 +59,7 @@ final class TestRunner
     {
         Assert::resetCount();
 
-        if ($result->shouldMockObjectsFromTestArgumentsBeRegisteredRecursively()) {
+        if ($this->configuration->registerMockObjectsFromTestArgumentsRecursively()) {
             $test->registerMockObjectsFromTestArgumentsRecursively();
         }
 
@@ -70,15 +77,15 @@ final class TestRunner
 
         $result->startTest($test);
 
-        if ($result->shouldDeprecationsBeConvertedToExceptions() ||
-            $result->shouldErrorsBeConvertedToExceptions() ||
-            $result->shouldNoticeBeConvertedToExceptions() ||
-            $result->shouldWarningsBeConvertedToExceptions()) {
+        if ($this->configuration->convertDeprecationsToExceptions() ||
+            $this->configuration->convertErrorsToExceptions() ||
+            $this->configuration->convertNoticesToExceptions() ||
+            $this->configuration->convertWarningsToExceptions()) {
             $errorHandler = new Handler(
-                $result->shouldDeprecationsBeConvertedToExceptions(),
-                $result->shouldErrorsBeConvertedToExceptions(),
-                $result->shouldNoticeBeConvertedToExceptions(),
-                $result->shouldWarningsBeConvertedToExceptions()
+                $this->configuration->convertDeprecationsToExceptions(),
+                $this->configuration->convertErrorsToExceptions(),
+                $this->configuration->convertNoticesToExceptions(),
+                $this->configuration->convertWarningsToExceptions()
             );
 
             $errorHandler->register();
@@ -140,13 +147,13 @@ final class TestRunner
 
         $test->addToAssertionCount(Assert::getCount());
 
-        if ($result->isStrictAboutTestsThatDoNotTestAnything() &&
+        if ($this->configuration->reportUselessTests() &&
             $test->numberOfAssertionsPerformed() === 0) {
             $risky = true;
         }
 
         if (!$error && !$failure && !$warning && !$incomplete && !$skipped && !$risky &&
-            $result->requiresCoverageMetadata() &&
+            $this->configuration->requireCoverageMetadata() &&
             !$this->hasCoverageMetadata($test::class, $test->getName(false))) {
             $result->addFailure(
                 $test,
@@ -220,7 +227,7 @@ final class TestRunner
                 $unintentionallyCoveredCodeError,
                 $time
             );
-        } elseif ($result->isStrictAboutTestsThatDoNotTestAnything() &&
+        } elseif ($this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
             $result->addFailure(
@@ -228,7 +235,7 @@ final class TestRunner
                 new RiskyBecauseNoAssertionsWerePerformedException,
                 $time
             );
-        } elseif ($result->isStrictAboutTestsThatDoNotTestAnything() &&
+        } elseif ($this->configuration->reportUselessTests() &&
             $test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() > 0) {
             $result->addFailure(
@@ -238,7 +245,7 @@ final class TestRunner
                 ),
                 $time
             );
-        } elseif ($result->isStrictAboutOutputDuringTests() && $test->hasOutput()) {
+        } elseif ($this->configuration->disallowTestOutput() && $test->hasOutput()) {
             $result->addFailure(
                 $test,
                 new RiskyDueToOutputException(
@@ -293,10 +300,7 @@ final class TestRunner
             $iniSettings   = '';
         }
 
-        $coverage                                = CodeCoverage::isActive() ? 'true' : 'false';
-        $isStrictAboutTestsThatDoNotTestAnything = $result->isStrictAboutTestsThatDoNotTestAnything() ? 'true' : 'false';
-        $isStrictAboutOutputDuringTests          = $result->isStrictAboutOutputDuringTests() ? 'true' : 'false';
-        $enforcesTimeLimit                       = $result->enforcesTimeLimit() ? 'true' : 'false';
+        $coverage = CodeCoverage::isActive() ? 'true' : 'false';
 
         if (defined('PHPUNIT_COMPOSER_INSTALL')) {
             $composerAutoload = var_export(PHPUNIT_COMPOSER_INSTALL, true);
@@ -350,31 +354,28 @@ final class TestRunner
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
 
         $var = [
-            'composerAutoload'                        => $composerAutoload,
-            'phar'                                    => $phar,
-            'filename'                                => $class->getFileName(),
-            'className'                               => $class->getName(),
-            'collectCodeCoverageInformation'          => $coverage,
-            'cachesStaticAnalysis'                    => $cachesStaticAnalysis,
-            'codeCoverageCacheDirectory'              => $codeCoverageCacheDirectory,
-            'pathCoverage'                            => $pathCoverage,
-            'data'                                    => $data,
-            'dataName'                                => $dataName,
-            'dependencyInput'                         => $dependencyInput,
-            'constants'                               => $constants,
-            'globals'                                 => $globals,
-            'include_path'                            => $includePath,
-            'included_files'                          => $includedFiles,
-            'iniSettings'                             => $iniSettings,
-            'isStrictAboutTestsThatDoNotTestAnything' => $isStrictAboutTestsThatDoNotTestAnything,
-            'isStrictAboutOutputDuringTests'          => $isStrictAboutOutputDuringTests,
-            'enforcesTimeLimit'                       => $enforcesTimeLimit,
-            'codeCoverageFilter'                      => $codeCoverageFilter,
-            'configurationFilePath'                   => $configurationFilePath,
-            'name'                                    => $test->getName(false),
-            'offsetSeconds'                           => $offset[0],
-            'offsetNanoseconds'                       => $offset[1],
-            'serializedConfiguration'                 => $serializedConfiguration,
+            'composerAutoload'               => $composerAutoload,
+            'phar'                           => $phar,
+            'filename'                       => $class->getFileName(),
+            'className'                      => $class->getName(),
+            'collectCodeCoverageInformation' => $coverage,
+            'cachesStaticAnalysis'           => $cachesStaticAnalysis,
+            'codeCoverageCacheDirectory'     => $codeCoverageCacheDirectory,
+            'pathCoverage'                   => $pathCoverage,
+            'data'                           => $data,
+            'dataName'                       => $dataName,
+            'dependencyInput'                => $dependencyInput,
+            'constants'                      => $constants,
+            'globals'                        => $globals,
+            'include_path'                   => $includePath,
+            'included_files'                 => $includedFiles,
+            'iniSettings'                    => $iniSettings,
+            'codeCoverageFilter'             => $codeCoverageFilter,
+            'configurationFilePath'          => $configurationFilePath,
+            'name'                           => $test->getName(false),
+            'offsetSeconds'                  => $offset[0],
+            'offsetNanoseconds'              => $offset[1],
+            'serializedConfiguration'        => $serializedConfiguration,
         ];
 
         if (!$runEntireClass) {
@@ -442,11 +443,11 @@ final class TestRunner
             return false;
         }
 
-        if (!$result->enforcesTimeLimit()) {
+        if (!$this->configuration->enforceTimeLimit()) {
             return false;
         }
 
-        if (!(($result->defaultTimeLimit() || $test->size()->isKnown()))) {
+        if (!(($this->configuration->defaultTimeLimit() || $test->size()->isKnown()))) {
             return false;
         }
 
@@ -462,14 +463,14 @@ final class TestRunner
      */
     private function runTestWithTimeout(TestCase $test, TestResult $result): bool
     {
-        $_timeout = $result->defaultTimeLimit();
+        $_timeout = $this->configuration->defaultTimeLimit();
 
         if ($test->size()->isSmall()) {
-            $_timeout = $result->timeoutForSmallTests();
+            $_timeout = $this->configuration->timeoutForSmallTests();
         } elseif ($test->size()->isMedium()) {
-            $_timeout = $result->timeoutForMediumTests();
+            $_timeout = $this->configuration->timeoutForMediumTests();
         } elseif ($test->size()->isLarge()) {
-            $_timeout = $result->timeoutForLargeTests();
+            $_timeout = $this->configuration->timeoutForLargeTests();
         }
 
         try {

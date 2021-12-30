@@ -15,6 +15,7 @@ use Error;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\Printer;
 use Throwable;
 
@@ -67,31 +68,31 @@ final class TestResult implements Countable
     /**
      * @psalm-var list<TestListener>
      */
-    private array $listeners                                      = [];
-    private int $runTests                                         = 0;
-    private float $time                                           = 0;
-    private bool $convertDeprecationsToExceptions                 = false;
-    private bool $convertErrorsToExceptions                       = true;
-    private bool $convertNoticesToExceptions                      = true;
-    private bool $convertWarningsToExceptions                     = true;
-    private bool $stop                                            = false;
-    private bool $stopOnError                                     = false;
-    private bool $stopOnFailure                                   = false;
-    private bool $stopOnWarning                                   = false;
-    private bool $beStrictAboutTestsThatDoNotTestAnything         = true;
-    private bool $beStrictAboutOutputDuringTests                  = false;
-    private bool $enforceTimeLimit                                = false;
-    private bool $requireCoverageMetadata                         = false;
-    private int $timeoutForSmallTests                             = 1;
-    private int $timeoutForMediumTests                            = 10;
-    private int $timeoutForLargeTests                             = 60;
-    private bool $stopOnRisky                                     = false;
-    private bool $stopOnIncomplete                                = false;
-    private bool $stopOnSkipped                                   = false;
-    private bool $lastTestFailed                                  = false;
-    private int $defaultTimeLimit                                 = 0;
-    private bool $stopOnDefect                                    = false;
-    private bool $registerMockObjectsFromTestArgumentsRecursively = false;
+    private array $listeners = [];
+    private int $runTests    = 0;
+    private float $time      = 0;
+    private bool $stop       = false;
+    private bool $stopOnError;
+    private bool $stopOnFailure;
+    private bool $stopOnWarning;
+    private bool $stopOnRisky;
+    private bool $stopOnIncomplete;
+    private bool $stopOnSkipped;
+    private bool $stopOnDefect;
+    private bool $lastTestFailed;
+
+    public function __construct()
+    {
+        $configuration = Registry::get();
+
+        $this->stopOnError      = $configuration->stopOnError();
+        $this->stopOnFailure    = $configuration->stopOnFailure();
+        $this->stopOnWarning    = $configuration->stopOnWarning();
+        $this->stopOnRisky      = $configuration->stopOnRisky();
+        $this->stopOnIncomplete = $configuration->stopOnIncomplete();
+        $this->stopOnSkipped    = $configuration->stopOnSkipped();
+        $this->stopOnDefect     = $configuration->stopOnDefect();
+    }
 
     /**
      * @deprecated
@@ -122,7 +123,7 @@ final class TestResult implements Countable
         $this->recordError($test, $t);
 
         if ($this->stopOnError || $this->stopOnFailure) {
-            $this->stop();
+            $this->stop = true;
         }
 
         // @see https://github.com/sebastianbergmann/phpunit/issues/1953
@@ -141,7 +142,7 @@ final class TestResult implements Countable
     public function addWarning(Test $test, Warning $e, float $time): void
     {
         if ($this->stopOnWarning || $this->stopOnDefect) {
-            $this->stop();
+            $this->stop = true;
         }
 
         $this->recordWarning($test, $e);
@@ -170,7 +171,7 @@ final class TestResult implements Countable
             }
 
             if ($this->stopOnRisky || $this->stopOnDefect) {
-                $this->stop();
+                $this->stop = true;
             }
         } elseif ($e instanceof IncompleteTest) {
             $this->recordNotImplemented($test, $e);
@@ -178,7 +179,7 @@ final class TestResult implements Countable
             $notifyMethod = 'addIncompleteTest';
 
             if ($this->stopOnIncomplete) {
-                $this->stop();
+                $this->stop = true;
             }
         } elseif ($e instanceof SkippedTest) {
             $this->recordSkipped($test, $e);
@@ -186,14 +187,14 @@ final class TestResult implements Countable
             $notifyMethod = 'addSkippedTest';
 
             if ($this->stopOnSkipped) {
-                $this->stop();
+                $this->stop = true;
             }
         } else {
             $this->failures[] = new TestFailure($test, $e);
             $notifyMethod     = 'addFailure';
 
             if ($this->stopOnFailure || $this->stopOnDefect) {
-                $this->stop();
+                $this->stop = true;
             }
         }
 
@@ -382,126 +383,6 @@ final class TestResult implements Countable
         return $this->stop;
     }
 
-    public function stop(): void
-    {
-        $this->stop = true;
-    }
-
-    public function convertDeprecationsToExceptions(bool $flag): void
-    {
-        $this->convertDeprecationsToExceptions = $flag;
-    }
-
-    public function shouldDeprecationsBeConvertedToExceptions(): bool
-    {
-        return $this->convertDeprecationsToExceptions;
-    }
-
-    public function convertErrorsToExceptions(bool $flag): void
-    {
-        $this->convertErrorsToExceptions = $flag;
-    }
-
-    public function shouldErrorsBeConvertedToExceptions(): bool
-    {
-        return $this->convertErrorsToExceptions;
-    }
-
-    public function convertNoticesToExceptions(bool $flag): void
-    {
-        $this->convertNoticesToExceptions = $flag;
-    }
-
-    public function shouldNoticeBeConvertedToExceptions(): bool
-    {
-        return $this->convertNoticesToExceptions;
-    }
-
-    public function convertWarningsToExceptions(bool $flag): void
-    {
-        $this->convertWarningsToExceptions = $flag;
-    }
-
-    public function shouldWarningsBeConvertedToExceptions(): bool
-    {
-        return $this->convertWarningsToExceptions;
-    }
-
-    public function stopOnError(bool $flag): void
-    {
-        $this->stopOnError = $flag;
-    }
-
-    public function stopOnFailure(bool $flag): void
-    {
-        $this->stopOnFailure = $flag;
-    }
-
-    public function stopOnWarning(bool $flag): void
-    {
-        $this->stopOnWarning = $flag;
-    }
-
-    public function beStrictAboutTestsThatDoNotTestAnything(bool $flag): void
-    {
-        $this->beStrictAboutTestsThatDoNotTestAnything = $flag;
-    }
-
-    public function isStrictAboutTestsThatDoNotTestAnything(): bool
-    {
-        return $this->beStrictAboutTestsThatDoNotTestAnything;
-    }
-
-    public function beStrictAboutOutputDuringTests(bool $flag): void
-    {
-        $this->beStrictAboutOutputDuringTests = $flag;
-    }
-
-    public function isStrictAboutOutputDuringTests(): bool
-    {
-        return $this->beStrictAboutOutputDuringTests;
-    }
-
-    public function enforceTimeLimit(bool $flag): void
-    {
-        $this->enforceTimeLimit = $flag;
-    }
-
-    public function enforcesTimeLimit(): bool
-    {
-        return $this->enforceTimeLimit;
-    }
-
-    public function requireCoverageMetadata(bool $flag): void
-    {
-        $this->requireCoverageMetadata = $flag;
-    }
-
-    public function requiresCoverageMetadata(): bool
-    {
-        return $this->requireCoverageMetadata;
-    }
-
-    public function stopOnRisky(bool $flag): void
-    {
-        $this->stopOnRisky = $flag;
-    }
-
-    public function stopOnIncomplete(bool $flag): void
-    {
-        $this->stopOnIncomplete = $flag;
-    }
-
-    public function stopOnSkipped(bool $flag): void
-    {
-        $this->stopOnSkipped = $flag;
-    }
-
-    public function stopOnDefect(bool $flag): void
-    {
-        $this->stopOnDefect = $flag;
-    }
-
     public function time(): float
     {
         return $this->time;
@@ -520,56 +401,6 @@ final class TestResult implements Countable
     public function wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete(): bool
     {
         return $this->wasSuccessful() && $this->allHarmless() && $this->allCompletelyImplemented() && $this->noneSkipped();
-    }
-
-    public function setDefaultTimeLimit(int $timeout): void
-    {
-        $this->defaultTimeLimit = $timeout;
-    }
-
-    public function defaultTimeLimit(): int
-    {
-        return $this->defaultTimeLimit;
-    }
-
-    public function setTimeoutForSmallTests(int $timeout): void
-    {
-        $this->timeoutForSmallTests = $timeout;
-    }
-
-    public function timeoutForSmallTests(): int
-    {
-        return $this->timeoutForSmallTests;
-    }
-
-    public function setTimeoutForMediumTests(int $timeout): void
-    {
-        $this->timeoutForMediumTests = $timeout;
-    }
-
-    public function timeoutForMediumTests(): int
-    {
-        return $this->timeoutForMediumTests;
-    }
-
-    public function setTimeoutForLargeTests(int $timeout): void
-    {
-        $this->timeoutForLargeTests = $timeout;
-    }
-
-    public function timeoutForLargeTests(): int
-    {
-        return $this->timeoutForLargeTests;
-    }
-
-    public function registerMockObjectsFromTestArgumentsRecursively(bool $flag): void
-    {
-        $this->registerMockObjectsFromTestArgumentsRecursively = $flag;
-    }
-
-    public function shouldMockObjectsFromTestArgumentsBeRegisteredRecursively(): bool
-    {
-        return $this->registerMockObjectsFromTestArgumentsRecursively;
     }
 
     private function recordError(Test $test, Throwable $t): void

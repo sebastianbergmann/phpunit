@@ -54,10 +54,6 @@ function __phpunit_run_isolated_test()
         }
     }
 
-    $result->beStrictAboutTestsThatDoNotTestAnything({isStrictAboutTestsThatDoNotTestAnything});
-    $result->beStrictAboutOutputDuringTests({isStrictAboutOutputDuringTests});
-    $result->enforceTimeLimit({enforcesTimeLimit});
-
     $test = new {className}('{name}');
     $test->setData('{dataName}', unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
