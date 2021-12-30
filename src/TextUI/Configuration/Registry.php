@@ -10,6 +10,10 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use function assert;
+use function file_get_contents;
+use function file_put_contents;
+use function serialize;
+use function unserialize;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 
@@ -22,6 +26,32 @@ use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 final class Registry
 {
     private static ?Configuration $instance = null;
+
+    public static function saveTo(string $path): bool
+    {
+        $result = file_put_contents(
+            $path,
+            serialize(self::get())
+        );
+
+        if ($result) {
+            return true;
+        }
+
+        return false;
+    }
+
+    public static function loadFrom(string $path): void
+    {
+        self::$instance = unserialize(
+            file_get_contents($path),
+            [
+                'allowed_classes' => [
+                    Configuration::class,
+                ],
+            ]
+        );
+    }
 
     public static function get(): Configuration
     {
