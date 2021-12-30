@@ -2071,14 +2071,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     ->getMock();
     }
 
-    private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
-    {
-        $reflector = new ReflectionObject($this);
-
-        return !$reflector->hasMethod($methodName) ||
-               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
-    }
-
     /**
      * @throws ExpectationFailedException
      */
@@ -2185,5 +2177,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 ...$methodsInvoked
             );
         }
+    }
+
+    private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
+    {
+        $reflector = new ReflectionObject($this);
+
+        return !$reflector->hasMethod($methodName) ||
+               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
     }
 }
