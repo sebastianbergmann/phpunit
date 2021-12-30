@@ -79,7 +79,7 @@ final class TestResult implements Countable
     private bool $stopOnIncomplete;
     private bool $stopOnSkipped;
     private bool $stopOnDefect;
-    private bool $lastTestFailed;
+    private bool $lastTestFailed = false;
 
     public function __construct()
     {
