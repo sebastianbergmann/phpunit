@@ -673,52 +673,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function runBare(): void
     {
-        $this->numberOfAssertionsPerformed = 0;
-
         $this->snapshotGlobalState();
         $this->startOutputBuffering();
         clearstatcache();
-        $currentWorkingDirectory = getcwd();
 
-        $hookMethods = (new HookMethods)->hookMethods(static::class);
-
-        $hasMetRequirements = false;
-
-        $emitter = Event\Facade::emitter();
+        $emitter                           = Event\Facade::emitter();
+        $hookMethods                       = (new HookMethods)->hookMethods(static::class);
+        $hasMetRequirements                = false;
+        $this->numberOfAssertionsPerformed = 0;
+        $currentWorkingDirectory           = getcwd();
 
         try {
             $this->checkRequirements();
             $hasMetRequirements = true;
 
             if ($this->inIsolation) {
-                $methodsCalledBeforeFirstTest = [];
-
-                foreach ($hookMethods['beforeClass'] as $method) {
-                    if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                        continue;
-                    }
-
-                    $this->{$method}();
-
-                    $methodCalledBeforeFirstTest = new Event\Code\ClassMethod(
-                        static::class,
-                        $method
-                    );
-
-                    $emitter->testBeforeFirstTestMethodCalled(
-                        static::class,
-                        $methodCalledBeforeFirstTest
-                    );
-
-                    $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
-                }
-
-                if (!empty($methodsCalledBeforeFirstTest)) {
-                    $emitter->testBeforeFirstTestMethodFinished(
-                        static::class,
-                        ...$methodsCalledBeforeFirstTest
-                    );
-                }
+                $this->invokeBeforeClassHookMethods($hookMethods, $emitter);
             }
 
             if (method_exists(static::class, $this->name) &&
@@ -726,71 +696,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->doesNotPerformAssertions = true;
             }
 
-            $methodsCalledBeforeTest = [];
-
-            foreach ($hookMethods['before'] as $method) {
-                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                    continue;
-                }
-
-                $this->{$method}();
-
-                $methodCallBeforeTest = new Event\Code\ClassMethod(
-                    static::class,
-                    $method
-                );
-
-                $emitter->testBeforeTestMethodCalled(
-                    static::class,
-                    $methodCallBeforeTest
-                );
-
-                $methodsCalledBeforeTest[] = $methodCallBeforeTest;
-            }
-
-            if (!empty($methodsCalledBeforeTest)) {
-                $emitter->testBeforeTestMethodFinished(
-                    static::class,
-                    ...$methodsCalledBeforeTest
-                );
-            }
-
-            $methodsCalledPreCondition = [];
-
-            foreach ($hookMethods['preCondition'] as $method) {
-                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                    continue;
-                }
-
-                $this->{$method}();
-
-                $methodCalledPreCondition = new Event\Code\ClassMethod(
-                    static::class,
-                    $method
-                );
-
-                $emitter->testPreConditionCalled(
-                    static::class,
-                    $methodCalledPreCondition
-                );
-
-                $methodsCalledPreCondition[] = $methodCalledPreCondition;
-            }
-
-            if (!empty($methodsCalledPreCondition)) {
-                $emitter->testPreConditionFinished(
-                    static::class,
-                    ...$methodsCalledPreCondition
-                );
-            }
+            $this->invokeBeforeTestHookMethods($hookMethods, $emitter);
+            $this->invokePreConditionHookMethods($hookMethods, $emitter);
 
             $emitter->testPrepared(
                 $this->valueObjectForEvents()
             );
 
             $this->wasPrepared = true;
-
-            $this->testResult = $this->runTest();
+            $this->testResult  = $this->runTest();
 
             if ($this->hasOutput()) {
                 $emitter->testOutputPrinted(
@@ -800,35 +714,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             $this->verifyMockObjects();
-
-            $methodsCalledPostCondition = [];
-
-            foreach ($hookMethods['postCondition'] as $method) {
-                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                    continue;
-                }
-
-                $this->{$method}();
-
-                $methodCalledPostCondition = new Event\Code\ClassMethod(
-                    static::class,
-                    $method
-                );
-
-                $emitter->testPostConditionCalled(
-                    static::class,
-                    $methodCalledPostCondition
-                );
-
-                $methodsCalledPostCondition[] = $methodCalledPostCondition;
-            }
-
-            if (!empty($methodsCalledPostCondition)) {
-                $emitter->testPostConditionFinished(
-                    static::class,
-                    ...$methodsCalledPostCondition
-                );
-            }
+            $this->invokePostConditionHookMethods($hookMethods, $emitter);
 
             if (!empty($this->warnings)) {
                 throw new Warning(
@@ -901,64 +787,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         // caught and passed on when no exception was raised before.
         try {
             if ($hasMetRequirements) {
-                $methodsCalledAfterTest = [];
-
-                foreach ($hookMethods['after'] as $method) {
-                    if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                        continue;
-                    }
-
-                    $this->{$method}();
-
-                    $methodCalledAfterTest = new Event\Code\ClassMethod(
-                        static::class,
-                        $method
-                    );
-
-                    $emitter->testAfterTestMethodCalled(
-                        static::class,
-                        $methodCalledAfterTest
-                    );
-
-                    $methodsCalledAfterTest[] = $methodCalledAfterTest;
-                }
-
-                if (!empty($methodsCalledAfterTest)) {
-                    $emitter->testAfterTestMethodFinished(
-                        static::class,
-                        ...$methodsCalledAfterTest
-                    );
-                }
+                $this->invokeAfterTestHookMethods($hookMethods, $emitter);
 
                 if ($this->inIsolation) {
-                    $methodsCalledAfterLastTest = [];
-
-                    foreach ($hookMethods['afterClass'] as $method) {
-                        if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                            continue;
-                        }
-
-                        $this->{$method}();
-
-                        $methodCalledAfterLastTest = new Event\Code\ClassMethod(
-                            static::class,
-                            $method
-                        );
-
-                        $emitter->testAfterLastTestMethodCalled(
-                            static::class,
-                            $methodCalledAfterLastTest
-                        );
-
-                        $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
-                    }
-
-                    if (!empty($methodsCalledAfterLastTest)) {
-                        $emitter->testAfterLastTestMethodFinished(
-                            static::class,
-                            ...$methodsCalledAfterLastTest
-                        );
-                    }
+                    $this->invokeAfterClassHookMethods($hookMethods, $emitter);
                 }
             }
         } catch (Throwable $_e) {
@@ -2256,6 +2088,198 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
         } elseif ($this->outputExpectedString !== null) {
             $this->assertEquals($this->outputExpectedString, $this->output);
+        }
+    }
+
+    private function invokeBeforeClassHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $methodsCalledBeforeFirstTest = [];
+
+        foreach ($hookMethods['beforeClass'] as $method) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                continue;
+            }
+
+            $this->{$method}();
+
+            $methodCalledBeforeFirstTest = new Event\Code\ClassMethod(
+                static::class,
+                $method
+            );
+
+            $emitter->testBeforeFirstTestMethodCalled(
+                static::class,
+                $methodCalledBeforeFirstTest
+            );
+
+            $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
+        }
+
+        if (!empty($methodsCalledBeforeFirstTest)) {
+            $emitter->testBeforeFirstTestMethodFinished(
+                static::class,
+                ...$methodsCalledBeforeFirstTest
+            );
+        }
+    }
+
+    private function invokeBeforeTestHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $methodsCalledBeforeTest = [];
+
+        foreach ($hookMethods['before'] as $method) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                continue;
+            }
+
+            $this->{$method}();
+
+            $methodCallBeforeTest = new Event\Code\ClassMethod(
+                static::class,
+                $method
+            );
+
+            $emitter->testBeforeTestMethodCalled(
+                static::class,
+                $methodCallBeforeTest
+            );
+
+            $methodsCalledBeforeTest[] = $methodCallBeforeTest;
+        }
+
+        if (!empty($methodsCalledBeforeTest)) {
+            $emitter->testBeforeTestMethodFinished(
+                static::class,
+                ...$methodsCalledBeforeTest
+            );
+        }
+    }
+
+    private function invokePreConditionHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $methodsCalledPreCondition = [];
+
+        foreach ($hookMethods['preCondition'] as $method) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                continue;
+            }
+
+            $this->{$method}();
+
+            $methodCalledPreCondition = new Event\Code\ClassMethod(
+                static::class,
+                $method
+            );
+
+            $emitter->testPreConditionCalled(
+                static::class,
+                $methodCalledPreCondition
+            );
+
+            $methodsCalledPreCondition[] = $methodCalledPreCondition;
+        }
+
+        if (!empty($methodsCalledPreCondition)) {
+            $emitter->testPreConditionFinished(
+                static::class,
+                ...$methodsCalledPreCondition
+            );
+        }
+    }
+
+    private function invokePostConditionHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $methodsCalledPostCondition = [];
+
+        foreach ($hookMethods['postCondition'] as $method) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                continue;
+            }
+
+            $this->{$method}();
+
+            $methodCalledPostCondition = new Event\Code\ClassMethod(
+                static::class,
+                $method
+            );
+
+            $emitter->testPostConditionCalled(
+                static::class,
+                $methodCalledPostCondition
+            );
+
+            $methodsCalledPostCondition[] = $methodCalledPostCondition;
+        }
+
+        if (!empty($methodsCalledPostCondition)) {
+            $emitter->testPostConditionFinished(
+                static::class,
+                ...$methodsCalledPostCondition
+            );
+        }
+    }
+
+    private function invokeAfterTestHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $methodsCalledAfterTest = [];
+
+        foreach ($hookMethods['after'] as $method) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                continue;
+            }
+
+            $this->{$method}();
+
+            $methodCalledAfterTest = new Event\Code\ClassMethod(
+                static::class,
+                $method
+            );
+
+            $emitter->testAfterTestMethodCalled(
+                static::class,
+                $methodCalledAfterTest
+            );
+
+            $methodsCalledAfterTest[] = $methodCalledAfterTest;
+        }
+
+        if (!empty($methodsCalledAfterTest)) {
+            $emitter->testAfterTestMethodFinished(
+                static::class,
+                ...$methodsCalledAfterTest
+            );
+        }
+    }
+
+    private function invokeAfterClassHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $methodsCalledAfterLastTest = [];
+
+        foreach ($hookMethods['afterClass'] as $method) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
+                continue;
+            }
+
+            $this->{$method}();
+
+            $methodCalledAfterLastTest = new Event\Code\ClassMethod(
+                static::class,
+                $method
+            );
+
+            $emitter->testAfterLastTestMethodCalled(
+                static::class,
+                $methodCalledAfterLastTest
+            );
+
+            $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
+        }
+
+        if (!empty($methodsCalledAfterLastTest)) {
+            $emitter->testAfterLastTestMethodFinished(
+                static::class,
+                ...$methodsCalledAfterLastTest
+            );
         }
     }
 }
