@@ -438,11 +438,6 @@
       <code>cacheDirectory</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <PossiblyUndefinedVariable occurrences="3">
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion occurrences="3">

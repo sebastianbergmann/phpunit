@@ -205,11 +205,11 @@ final class TestRunner
             unset($errorHandler);
         }
 
-        if ($error) {
+        if ($error && isset($e)) {
             $result->addError($test, $e, $time);
-        } elseif ($failure) {
+        } elseif ($failure && isset($e)) {
             $result->addFailure($test, $e, $time);
-        } elseif ($warning) {
+        } elseif ($warning && isset($e)) {
             $result->addWarning($test, $e, $time);
         } elseif (isset($unintentionallyCoveredCodeError)) {
             $result->addFailure(
