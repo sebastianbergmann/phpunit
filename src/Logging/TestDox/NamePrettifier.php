@@ -31,6 +31,7 @@ use function preg_replace;
 use function range;
 use function sprintf;
 use function str_contains;
+use function str_ends_with;
 use function str_replace;
 use function str_starts_with;
 use function strlen;
@@ -81,7 +82,7 @@ final class NamePrettifier
         $parts     = explode('\\', $className);
         $className = array_pop($parts);
 
-        if (substr($className, -1 * strlen('Test')) === 'Test') {
+        if (str_ends_with($className, 'Test')) {
             $className = substr($className, 0, strlen($className) - strlen('Test'));
         }
 
