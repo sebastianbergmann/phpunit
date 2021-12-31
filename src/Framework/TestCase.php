@@ -1585,13 +1585,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $passed     = $this->result->passed();
         $passedKeys = array_keys($passed);
-        $numKeys    = count($passedKeys);
 
-        for ($i = 0; $i < $numKeys; $i++) {
-            $pos = strpos($passedKeys[$i], ' with data set');
+        foreach ($passedKeys as $keyIndex => $keyValue) {
+            $pos = strpos($keyValue, ' with data set');
 
             if ($pos !== false) {
-                $passedKeys[$i] = substr($passedKeys[$i], 0, $pos);
+                $passedKeys[$keyIndex] = substr($keyValue, 0, $pos);
             }
         }
 
