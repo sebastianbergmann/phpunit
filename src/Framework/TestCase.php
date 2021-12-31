@@ -21,7 +21,6 @@ use const PHP_URL_PATH;
 use function array_flip;
 use function array_keys;
 use function array_merge;
-use function array_search;
 use function array_unique;
 use function array_values;
 use function basename;
@@ -1608,7 +1607,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($dependency->targetIsClass()) {
                 $dependencyClassName = $dependency->getTargetClassName();
 
-                if (array_search($dependencyClassName, $this->result->passedClasses(), true) === false) {
+                if (!in_array($dependencyClassName, $this->result->passedClasses(), true)) {
                     $this->markSkippedForMissingDependency($dependency);
 
                     return false;
