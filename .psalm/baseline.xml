@@ -477,28 +477,6 @@
       <code>assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)</code>
     </RedundantCondition>
   </file>
-  <file src="src/Logging/TestDox/CliTestDoxPrinter.php">
-    <MissingThrowsDocblock occurrences="2">
-      <code>\PHPUnit\Util\Filter::getFilteredStacktrace($t)</code>
-      <code>stop</code>
-    </MissingThrowsDocblock>
-    <PossiblyInvalidArrayOffset occurrences="6">
-      <code>$prefix['default']</code>
-      <code>$prefix['diff']</code>
-      <code>$prefix['last']</code>
-      <code>$prefix['message']</code>
-      <code>$prefix['start']</code>
-      <code>$prefix['trace']</code>
-    </PossiblyInvalidArrayOffset>
-    <PossiblyUndefinedArrayOffset occurrences="1">
-      <code>self::STATUS_STYLES[$result['status']-&gt;asString()]['message']</code>
-    </PossiblyUndefinedArrayOffset>
-  </file>
-  <file src="src/Logging/TestDox/HtmlResultPrinter.php">
-    <PossiblyNullArgument occurrences="1">
-      <code>$this-&gt;currentTestClassPrettified</code>
-    </PossiblyNullArgument>
-  </file>
   <file src="src/Logging/TestDox/NamePrettifier.php">
     <InvalidCast occurrences="1">
       <code>$value</code>
@@ -508,35 +486,6 @@
       <code>text</code>
       <code>text</code>
     </UndefinedMethod>
-  </file>
-  <file src="src/Logging/TestDox/ResultPrinter.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>parent::__construct($out)</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/Logging/TestDox/TestDoxPrinter.php">
-    <InvalidScalarArgument occurrences="1">
-      <code>$numberOfColumns</code>
-    </InvalidScalarArgument>
-    <MissingThrowsDocblock occurrences="1">
-      <code>Filter::getFilteredStacktrace($t)</code>
-    </MissingThrowsDocblock>
-    <PossiblyInvalidArgument occurrences="1">
-      <code>$numberOfColumns</code>
-    </PossiblyInvalidArgument>
-    <UndefinedInterfaceMethod occurrences="1">
-      <code>getName</code>
-    </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Logging/TestDox/XmlResultPrinter.php">
-    <RedundantCondition occurrences="6">
-      <code>assert($metadata instanceof Covers)</code>
-      <code>assert($metadata instanceof CoversClass)</code>
-      <code>assert($metadata instanceof CoversFunction)</code>
-      <code>assert($metadata instanceof Uses)</code>
-      <code>assert($metadata instanceof UsesClass)</code>
-      <code>assert($metadata instanceof UsesFunction)</code>
-    </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/CodeCoverage.php">
     <RedundantCondition occurrences="4">
@@ -732,6 +681,9 @@
     <MissingThrowsDocblock occurrences="1">
       <code>throw new FilterNotConfiguredException;</code>
     </MissingThrowsDocblock>
+    <PossiblyInvalidPropertyAssignmentValue occurrences="1">
+      <code>$columns</code>
+    </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/TextUI/Configuration/Merger.php">
     <DeprecatedMethod occurrences="4">
@@ -1059,12 +1011,6 @@
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
-  <file src="src/TextUI/ResultPrinter/OldResultPrinter.php">
-    <MissingThrowsDocblock occurrences="2">
-      <code>parent::__construct($out)</code>
-      <code>stop</code>
-    </MissingThrowsDocblock>
-  </file>
   <file src="src/TextUI/ResultPrinter/Standard/ResultPrinter.php">
     <MissingThrowsDocblock occurrences="3">
       <code>parent::__construct($out)</code>
@@ -1078,13 +1024,6 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedMethod occurrences="5">
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>addListener</code>
-      <code>flushListeners</code>
-    </DeprecatedMethod>
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
@@ -1096,7 +1035,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="43">
+    <MissingThrowsDocblock occurrences="40">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1123,9 +1062,6 @@
       <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
-      <code>logfileTestdoxHtml</code>
-      <code>logfileTestdoxText</code>
-      <code>logfileTestdoxXml</code>
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
       <code>new TeamCityLogger('php://stdout')</code>

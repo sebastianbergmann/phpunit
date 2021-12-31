@@ -23,16 +23,11 @@ use function range;
 use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestListener;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
-use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
-use PHPUnit\Logging\TestDox\HtmlResultPrinter;
-use PHPUnit\Logging\TestDox\TextResultPrinter;
-use PHPUnit\Logging\TestDox\XmlResultPrinter;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
@@ -164,11 +159,6 @@ final class TestRunner
 
         $this->printer = $this->createPrinter();
 
-        if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
-            $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
-            $this->printer->setShowProgressAnimation(!$this->configuration->noInteraction());
-        }
-
         if ($this->configuration->hasLogEventsText()) {
             if (is_file($this->configuration->logEventsText())) {
                 unlink($this->configuration->logEventsText());
@@ -217,10 +207,6 @@ final class TestRunner
             Version::getVersionString() . "\n"
         );
 
-        if ($this->printer instanceof TestListener) {
-            $result->addListener($this->printer);
-        }
-
         if ($this->configuration->hasLogfileText()) {
             $textLogger = new StandardResultPrinter(
                 $this->configuration->logfileText(),
@@ -232,31 +218,15 @@ final class TestRunner
         }
 
         if ($this->configuration->hasLogfileTestdoxHtml()) {
-            $result->addListener(
-                new HtmlResultPrinter(
-                    $this->configuration->logfileTestdoxHtml(),
-                    $this->configuration->testdoxGroups(),
-                    $this->configuration->testdoxExcludeGroups()
-                )
-            );
+            exit('TestDox HTML logging has not been migrated to events yet');
         }
 
         if ($this->configuration->hasLogfileTestdoxText()) {
-            $result->addListener(
-                new TextResultPrinter(
-                    $this->configuration->logfileTestdoxText(),
-                    $this->configuration->testdoxGroups(),
-                    $this->configuration->testdoxExcludeGroups()
-                )
-            );
+            exit('TestDox text logging has not been migrated to events yet');
         }
 
         if ($this->configuration->hasLogfileTestdoxXml()) {
-            $result->addListener(
-                new XmlResultPrinter(
-                    $this->configuration->logfileTestdoxXml()
-                )
-            );
+            exit('TestDox XML logging has not been migrated to events yet');
         }
 
         if ($this->configuration->hasCoverageReport()) {
@@ -400,7 +370,6 @@ final class TestRunner
         }
 
         $suite->run($result);
-        $result->flushListeners();
         $this->printer->printResult($result);
 
         if (isset($junitXmlLogger)) {
@@ -657,7 +626,7 @@ final class TestRunner
         if ($this->configuration->outputIsDefault()) {
             $className = StandardResultPrinter::class;
         } elseif ($this->configuration->outputIsTestDox()) {
-            $className = CliTestDoxPrinter::class;
+            exit('TestDox CLI logging has not been migrated to events yet');
         }
 
         $object = new $className(
