@@ -25,7 +25,6 @@ use function serialize;
 use function sprintf;
 use function str_starts_with;
 use function strtr;
-use function substr;
 use function var_export;
 use Closure;
 
@@ -74,7 +73,7 @@ final class GlobalState
         array_shift($files);
 
         // If bootstrap script was a Composer bin proxy, skip the second entry as well
-        if (substr(strtr($files[0], '\\', '/'), -24) === '/phpunit/phpunit/phpunit') {
+        if (str_ends_with(strtr($files[0], '\\', '/'), '/phpunit/phpunit/phpunit')) {
             array_shift($files);
         }
 
