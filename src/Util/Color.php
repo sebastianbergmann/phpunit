@@ -113,7 +113,7 @@ final class Color
         if ($colorizeFilename) {
             $last        = count($path) - 1;
             $path[$last] = preg_replace_callback(
-                '/([\-_\.]+|phpt$)/',
+                '/([\-_.]+|phpt$)/',
                 static function ($matches)
                 {
                     return self::dim($matches[0]);
