@@ -529,12 +529,10 @@ final class AnnotationParser implements Parser
                     } else {
                         $result[] = Metadata::requiresMethodOnMethod($pieces[0], $pieces[1]);
                     }
+                } elseif ($level === 'class') {
+                    $result[] = Metadata::requiresFunctionOnClass($function);
                 } else {
-                    if ($level === 'class') {
-                        $result[] = Metadata::requiresFunctionOnClass($function);
-                    } else {
-                        $result[] = Metadata::requiresFunctionOnMethod($function);
-                    }
+                    $result[] = Metadata::requiresFunctionOnMethod($function);
                 }
             }
         }
