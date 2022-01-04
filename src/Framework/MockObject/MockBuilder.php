@@ -212,21 +212,23 @@ final class MockBuilder
             return $this;
         }
 
-        try {
-            $reflector = new ReflectionClass($this->type);
-            // @codeCoverageIgnoreStart
-        } catch (\ReflectionException $e) {
-            throw new ReflectionException(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        if (!$this->allowMockingUnknownTypes) {
+            try {
+                $reflector = new ReflectionClass($this->type);
+                // @codeCoverageIgnoreStart
+            } catch (\ReflectionException $e) {
+                throw new ReflectionException(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
+            // @codeCoverageIgnoreEnd
 
-        foreach ($methods as $method) {
-            if ($reflector->hasMethod($method)) {
-                throw new CannotUseAddMethodsException($this->type, $method);
+            foreach ($methods as $method) {
+                if ($reflector->hasMethod($method)) {
+                    throw new CannotUseAddMethodsException($this->type, $method);
+                }
             }
         }
 

@@ -123,6 +123,27 @@ final class MockBuilderTest extends TestCase
         $this->assertNull($mock->mockableMethod());
     }
 
+    public function testAddMethodsWithNonExistingClassName(): void
+    {
+        $this->expectException(\PHPUnit\Framework\MockObject\ReflectionException::class);
+        $this->expectErrorMessage('Class "FooBar" does not exist');
+
+        $this->getMockBuilder('FooBar')
+            ->disallowMockingUnknownTypes()
+            ->addMethods(['mockableMethod'])
+            ->getMock();
+    }
+
+    public function testAddMethodsWithNonExistingClassNameAndAllowMockingUnknownTypes(): void
+    {
+        $mock = $this->getMockBuilder('FooBar')
+            ->allowMockingUnknownTypes()
+            ->addMethods(['mockableMethod'])
+            ->getMock();
+
+        $this->assertNull($mock->mockableMethod());
+    }
+
     public function testByDefaultDoesNotPassArgumentsToTheConstructor(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)->getMock();

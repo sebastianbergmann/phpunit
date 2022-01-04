@@ -36,6 +36,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * The JUnit XML logfile now has both `name` and `file` attributes on `<testcase>` elements for PHPT tests
 * The `forceCoversAnnotation` attribute of the `<phpunit>` element of PHPUnit's XML configuration file has been renamed to `requireCoverageMetadata`
 * The `beStrictAboutCoversAnnotation` attribute of the `<phpunit>` element of PHPUnit's XML configuration file has been renamed to `beStrictAboutCoverageMetadata`
+* [#4852](https://github.com/sebastianbergmann/phpunit/issues/4852): Allow using `addMethods` when `allowMockingUnknownTypes` is true in MockBuilder
 
 ### Removed
 
