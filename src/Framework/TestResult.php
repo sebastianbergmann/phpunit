@@ -755,8 +755,8 @@ final class TestResult implements Countable
                 sprintf(
                     '%s in %s:%s',
                     $e->getMessage(),
-                    $frame['file'],
-                    $frame['line']
+                    $frame['file'] ?? $e->getFile(),
+                    $frame['line'] ?? $e->getLine()
                 )
             );
         } catch (Warning $e) {
