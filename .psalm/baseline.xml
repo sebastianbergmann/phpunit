@@ -447,9 +447,6 @@
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="1"/>
-    <RedundantCastGivenDocblockType occurrences="1">
-      <code>(string) $key</code>
-    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -669,14 +666,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$tests</code>
     </ArgumentTypeCoercion>
-    <MissingClosureParamType occurrences="6">
-      <code>$left</code>
-      <code>$left</code>
-      <code>$left</code>
-      <code>$right</code>
-      <code>$right</code>
-      <code>$right</code>
-    </MissingClosureParamType>
     <RedundantCondition occurrences="4">
       <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
       <code>$orderDefects === self::ORDER_DEFECTS_FIRST &amp;&amp; $this-&gt;cache !== null</code>
