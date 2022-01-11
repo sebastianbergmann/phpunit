@@ -88,7 +88,7 @@ final class TeamCityLogger extends Printer
                 $testSuite->file(),
                 $testSuite->name()
             );
-        } else {
+        } elseif ($testSuite->isForTestMethodWithDataProvider()) {
             assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider);
 
             $parameters['locationHint'] = sprintf(
