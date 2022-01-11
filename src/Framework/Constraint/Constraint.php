@@ -179,7 +179,7 @@ abstract class Constraint implements Countable, SelfDescribing
      * Returns the description of the failure when this constraint appears in
      * context of an $operator expression.
      *
-     * The purpose of this method is to provide meaningful failue description
+     * The purpose of this method is to provide meaningful failure description
      * in context of operators such as LogicalNot. Native PHPUnit constraints
      * are supported out of the box by LogicalNot, but externally developed
      * ones had no way to provide correct messages in this context.
