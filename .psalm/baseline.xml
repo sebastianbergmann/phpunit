@@ -477,7 +477,7 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$flowId</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="3">
+    <RedundantCondition occurrences="4">
       <code>assert($test instanceof TestMethod)</code>
       <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
       <code>assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)</code>
