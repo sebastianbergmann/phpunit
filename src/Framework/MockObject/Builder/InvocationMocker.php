@@ -12,7 +12,6 @@ namespace PHPUnit\Framework\MockObject\Builder;
 use function array_map;
 use function array_merge;
 use function count;
-use function in_array;
 use function is_string;
 use function strtolower;
 use PHPUnit\Framework\Constraint\Constraint;
@@ -50,6 +49,11 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
      * @psalm-var list<ConfigurableMethod>
      */
     private array $configurableMethods;
+
+    /**
+     * @psalm-var ?array<string, int>
+     */
+    private ?array $configurableMethodNames = null;
 
     public function __construct(InvocationHandler $handler, Matcher $matcher, ConfigurableMethod ...$configurableMethods)
     {
@@ -225,16 +229,18 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
             throw new MethodNameAlreadyConfiguredException;
         }
 
-        $configurableMethodNames = array_map(
-            static function (ConfigurableMethod $configurable)
-            {
-                return strtolower($configurable->getName());
-            },
-            $this->configurableMethods
-        );
+        if (is_string($constraint)) {
+            $this->configurableMethodNames ??= array_flip(array_map(
+                static function (ConfigurableMethod $configurable)
+                {
+                    return strtolower($configurable->getName());
+                },
+                $this->configurableMethods
+            ));
 
-        if (is_string($constraint) && !in_array(strtolower($constraint), $configurableMethodNames, true)) {
-            throw new MethodCannotBeConfiguredException($constraint);
+            if (!array_key_exists(strtolower($constraint), $this->configurableMethodNames)) {
+                throw new MethodCannotBeConfiguredException($constraint);
+            }
         }
 
         $this->matcher->setMethodNameRule(new Rule\MethodName($constraint));
