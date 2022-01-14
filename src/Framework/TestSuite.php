@@ -389,7 +389,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         if (is_file($filename) && substr($filename, -5) === '.phpt') {
             $this->addTest(new PhptTestCase($filename));
 
-            $this->declaredClasses = get_declared_classes();
+            $this->declaredClassesPointer = count(get_declared_classes());
 
             return;
         }
