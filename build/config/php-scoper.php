@@ -8,13 +8,7 @@
  * file that was distributed with this source code.
  */
 
-function replace_function(string $prefix, string $content, string $functionName): string {
-    $incorrectUsage = sprintf('\\%s\\%s(', $prefix, $functionName);
-    $correctUsage = sprintf('\\%s(', $functionName);
-
-    return str_replace($incorrectUsage, $correctUsage, $content);
-
-}
+require_once __DIR__.'/scoper_replace_function.php';
 
 return [
     'whitelist' => [
@@ -22,7 +16,7 @@ return [
     ],
     'patchers' => [
         function (string $filePath, string $prefix, string $content): string {
-            return replace_function($prefix, $content, 'xdebug_info');
+            return scoper_replace_function($prefix, $content, 'xdebug_info');
         },
     ]
 ];
