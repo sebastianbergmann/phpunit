@@ -9,6 +9,13 @@
  */
 namespace PHPUnit\Runner;
 
+/**
+ * This interface, as well as the associated mechanism for extending PHPUnit,
+ * will be removed in PHPUnit 10. There is no alternative available in this
+ * version of PHPUnit.
+ *
+ * @see https://github.com/sebastianbergmann/phpunit/issues/4676
+ */
 interface AfterIncompleteTestHook extends TestHook
 {
     public function executeAfterIncompleteTest(string $test, string $message, float $time): void;
