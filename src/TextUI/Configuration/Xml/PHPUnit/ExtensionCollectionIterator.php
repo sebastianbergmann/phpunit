@@ -23,7 +23,6 @@ final class ExtensionCollectionIterator implements Countable, Iterator
      * @psalm-var list<Extension>
      */
     private array $extensions;
-
     private ?int $position = null;
 
     public function __construct(ExtensionCollection $extensions)

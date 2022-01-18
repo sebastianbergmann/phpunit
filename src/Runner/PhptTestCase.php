@@ -55,6 +55,7 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
 use SebastianBergmann\Template\Template;
@@ -67,9 +68,7 @@ use Throwable;
 final class PhptTestCase implements Reorderable, SelfDescribing, Test
 {
     private string $filename;
-
     private AbstractPhpProcess $phpUtil;
-
     private string $output = '';
 
     /**
@@ -121,7 +120,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
             EventFacade::emitter()->testPrepared($this->valueObjectForEvents());
             EventFacade::emitter()->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
-            EventFacade::emitter()->testFinished($this->valueObjectForEvents());
+            EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 0);
 
             return;
         }
@@ -145,8 +144,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $this->phpUtil->setUseStderrRedirection(true);
 
-        if ($result->enforcesTimeLimit()) {
-            $this->phpUtil->setTimeout($result->timeoutForLargeTests());
+        if (Registry::get()->enforceTimeLimit()) {
+            $this->phpUtil->setTimeout(Registry::get()->timeoutForLargeTests());
         }
 
         $skip = $this->runSkip($sections, $result, $settings);
@@ -241,14 +240,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $result->endTest($this, $time);
 
-        if ($this->hasOutput()) {
-            EventFacade::emitter()->testOutputPrinted(
-                $this->valueObjectForEvents(),
-                $this->output
-            );
-        }
-
-        EventFacade::emitter()->testFinished($this->valueObjectForEvents());
+        EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 1);
     }
 
     /**

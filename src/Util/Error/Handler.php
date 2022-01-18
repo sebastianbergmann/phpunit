@@ -16,9 +16,13 @@ use const E_USER_DEPRECATED;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use const E_WARNING;
+use function debug_backtrace;
 use function error_reporting;
 use function restore_error_handler;
 use function set_error_handler;
+use PHPUnit\Event;
+use PHPUnit\Framework\TestCase;
+use PHPUnit\Util\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -26,13 +30,9 @@ use function set_error_handler;
 final class Handler
 {
     private bool $convertDeprecationsToExceptions;
-
     private bool $convertErrorsToExceptions;
-
     private bool $convertNoticesToExceptions;
-
     private bool $convertWarningsToExceptions;
-
     private bool $registered = false;
 
     public static function invokeIgnoringWarnings(callable $callable): mixed
@@ -93,7 +93,27 @@ final class Handler
                 throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
 
             case E_DEPRECATED:
+                Event\Facade::emitter()->testUsedDeprecatedPhpFeature(
+                    $this->testValueObjectForEvents(),
+                    $errorString,
+                    $errorFile,
+                    $errorLine
+                );
+
+                if (!$this->convertDeprecationsToExceptions) {
+                    return false;
+                }
+
+                throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
+
             case E_USER_DEPRECATED:
+                Event\Facade::emitter()->testUsedDeprecatedFeature(
+                    $this->testValueObjectForEvents(),
+                    $errorString,
+                    $errorFile,
+                    $errorLine
+                );
+
                 if (!$this->convertDeprecationsToExceptions) {
                     return false;
                 }
@@ -133,5 +153,25 @@ final class Handler
         }
 
         restore_error_handler();
+    }
+
+    /**
+     * @throws Exception
+     */
+    private function testValueObjectForEvents(): Event\Code\Test
+    {
+        foreach (debug_backtrace() as $frame) {
+            if (!isset($frame['object'])) {
+                continue;
+            }
+
+            if (!$frame['object'] instanceof TestCase) {
+                continue;
+            }
+
+            return $frame['object']->valueObjectForEvents();
+        }
+
+        throw new Exception('Cannot find TestCase object on call stack');
     }
 }

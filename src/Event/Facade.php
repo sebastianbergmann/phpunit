@@ -16,15 +16,11 @@ use PHPUnit\Event\Telemetry\HRTime;
  */
 final class Facade
 {
-    private static ?TypeMap $typeMap = null;
-
-    private static ?Emitter $emitter = null;
-
-    private static ?Emitter $suspended = null;
-
+    private static ?TypeMap $typeMap                       = null;
+    private static ?Emitter $emitter                       = null;
+    private static ?Emitter $suspended                     = null;
     private static ?DeferredDispatcher $deferredDispatcher = null;
-
-    private static bool $sealed = false;
+    private static bool $sealed                            = false;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -217,6 +213,9 @@ final class Facade
             Test\PreConditionFinished::class,
             Test\Prepared::class,
             Test\Skipped::class,
+            Test\DeprecatedPhpunitFeatureUsed::class,
+            Test\DeprecatedPhpFeatureUsed::class,
+            Test\DeprecatedFeatureUsed::class,
             TestDouble\MockObjectCreated::class,
             TestDouble\MockObjectCreatedForAbstractClass::class,
             TestDouble\MockObjectCreatedForTrait::class,
@@ -224,12 +223,14 @@ final class Facade
             TestDouble\PartialMockObjectCreated::class,
             TestDouble\TestProxyCreated::class,
             TestDouble\TestStubCreated::class,
-            TestRunner\EventFacadeSealed::class,
-            TestRunner\Configured::class,
-            TestRunner\Finished::class,
             TestRunner\Started::class,
+            TestRunner\Configured::class,
+            TestRunner\EventFacadeSealed::class,
+            TestRunner\ExecutionStarted::class,
+            TestRunner\Finished::class,
             TestSuite\Finished::class,
             TestSuite\Loaded::class,
+            TestSuite\Filtered::class,
             TestSuite\Sorted::class,
             TestSuite\Started::class,
         ];

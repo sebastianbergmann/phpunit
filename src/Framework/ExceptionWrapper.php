@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function array_keys;
-use function spl_object_hash;
+use function spl_object_id;
 use PHPUnit\Util\Filter;
 use Throwable;
 
@@ -31,7 +31,6 @@ final class ExceptionWrapper extends Exception
      * @psalm-var class-string
      */
     protected string $className;
-
     protected ?ExceptionWrapper $previous = null;
 
     public function __construct(Throwable $t)
@@ -110,7 +109,7 @@ final class ExceptionWrapper extends Exception
     {
         static $originalExceptions;
 
-        $instanceId = spl_object_hash($this);
+        $instanceId = spl_object_id($this);
 
         if ($exceptionToStore) {
             $originalExceptions[$instanceId] = $exceptionToStore;

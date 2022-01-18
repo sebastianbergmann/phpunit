@@ -32,27 +32,16 @@ use SebastianBergmann\Type\UnknownType;
 final class MockMethod
 {
     use TemplateLoader;
-
     private string $className;
-
     private string $methodName;
-
     private bool $cloneArguments;
-
     private string $modifier;
-
     private string $argumentsForDeclaration;
-
     private string $argumentsForCall;
-
     private Type $returnType;
-
     private string $reference;
-
     private bool $callOriginalMethod;
-
     private bool $static;
-
     private ?string $deprecation;
 
     /**

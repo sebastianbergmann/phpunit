@@ -21,7 +21,6 @@ use const PHP_URL_PATH;
 use function array_flip;
 use function array_keys;
 use function array_merge;
-use function array_search;
 use function array_unique;
 use function array_values;
 use function basename;
@@ -111,52 +110,36 @@ use Throwable;
 abstract class TestCase extends Assert implements Reorderable, SelfDescribing, Test
 {
     private const LOCALE_CATEGORIES = [LC_ALL, LC_COLLATE, LC_CTYPE, LC_MONETARY, LC_NUMERIC, LC_TIME];
-
-    private array $bootstraps = [];
-
-    private ?bool $backupGlobals = null;
+    private array $bootstraps       = [];
+    private ?bool $backupGlobals    = null;
 
     /**
      * @psalm-var list<string>
      */
     private array $backupGlobalsExcludeList = [];
-
-    private ?bool $backupStaticProperties = null;
+    private ?bool $backupStaticProperties   = null;
 
     /**
      * @psalm-var array<string,list<class-string>>
      */
     private array $backupStaticPropertiesExcludeList = [];
-
     private ?bool $beStrictAboutChangesToGlobalState = false;
-
-    private ?Snapshot $snapshot = null;
-
-    private ?bool $runClassInSeparateProcess = null;
-
-    private ?bool $runTestInSeparateProcess = null;
-
-    private bool $preserveGlobalState = false;
-
-    private bool $inIsolation = false;
-
-    private ?string $expectedException = null;
-
-    private ?string $expectedExceptionMessage = null;
-
-    private ?string $expectedExceptionMessageRegExp = null;
-
-    private null|int|string $expectedExceptionCode = null;
+    private ?Snapshot $snapshot                      = null;
+    private ?bool $runClassInSeparateProcess         = null;
+    private ?bool $runTestInSeparateProcess          = null;
+    private bool $preserveGlobalState                = false;
+    private bool $inIsolation                        = false;
+    private ?string $expectedException               = null;
+    private ?string $expectedExceptionMessage        = null;
+    private ?string $expectedExceptionMessageRegExp  = null;
+    private null|int|string $expectedExceptionCode   = null;
 
     /**
      * @psalm-var list<ExecutionOrderDependency>
      */
     private array $providedTests = [];
-
-    private array $data = [];
-
+    private array $data          = [];
     private int|string $dataName = '';
-
     private string $name;
 
     /**
@@ -167,17 +150,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<ExecutionOrderDependency>
      */
-    private array $dependencies = [];
-
+    private array $dependencies    = [];
     private array $dependencyInput = [];
 
     /**
      * @psalm-var array<string,string>
      */
-    private array $iniSettings = [];
-
-    private array $locale = [];
-
+    private array $iniSettings                  = [];
+    private array $locale                       = [];
     private ?MockGenerator $mockObjectGenerator = null;
 
     /**
@@ -188,45 +168,31 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<class-string>
      */
-    private array $doubledTypes = [];
-
+    private array $doubledTypes                                   = [];
     private bool $registerMockObjectsFromTestArgumentsRecursively = false;
-
-    private ?TestResult $result = null;
-
+    private ?TestResult $result                                   = null;
     private TestStatus $status;
-
     private int $numberOfAssertionsPerformed = 0;
-
-    private mixed $testResult = null;
-
-    private string $output = '';
-
-    private ?string $outputExpectedRegex = null;
-
-    private ?string $outputExpectedString = null;
-
-    private bool $outputBufferingActive = false;
-
+    private mixed $testResult                = null;
+    private string $output                   = '';
+    private ?string $outputExpectedRegex     = null;
+    private ?string $outputExpectedString    = null;
+    private bool $outputBufferingActive      = false;
     private int $outputBufferingLevel;
-
     private bool $outputRetrievedForAssertion = false;
 
     /**
      * @psalm-var list<string>
      */
-    private array $warnings = [];
-
+    private array $warnings                = [];
     private bool $doesNotPerformAssertions = false;
 
     /**
      * @psalm-var list<Comparator>
      */
-    private array $customComparators = [];
-
+    private array $customComparators                         = [];
     private ?Event\Code\TestMethod $testValueObjectForEvents = null;
-
-    private bool $wasPrepared = false;
+    private bool $wasPrepared                                = false;
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -358,6 +324,24 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * This method is called before each test.
      */
     protected function setUp(): void
+    {
+    }
+
+    /**
+     * Performs assertions shared by all tests of a test case.
+     *
+     * This method is called between setUp() and test.
+     */
+    protected function assertPreConditions(): void
+    {
+    }
+
+    /**
+     * Performs assertions shared by all tests of a test case.
+     *
+     * This method is called between test and tearDown().
+     */
+    protected function assertPostConditions(): void
     {
     }
 
@@ -689,52 +673,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     public function runBare(): void
     {
-        $this->numberOfAssertionsPerformed = 0;
-
         $this->snapshotGlobalState();
         $this->startOutputBuffering();
         clearstatcache();
-        $currentWorkingDirectory = getcwd();
 
-        $hookMethods = (new HookMethods)->hookMethods(static::class);
-
-        $hasMetRequirements = false;
-
-        $emitter = Event\Facade::emitter();
+        $emitter                           = Event\Facade::emitter();
+        $hookMethods                       = (new HookMethods)->hookMethods(static::class);
+        $hasMetRequirements                = false;
+        $this->numberOfAssertionsPerformed = 0;
+        $currentWorkingDirectory           = getcwd();
 
         try {
             $this->checkRequirements();
             $hasMetRequirements = true;
 
             if ($this->inIsolation) {
-                $methodsCalledBeforeFirstTest = [];
-
-                foreach ($hookMethods['beforeClass'] as $method) {
-                    if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                        continue;
-                    }
-
-                    $this->{$method}();
-
-                    $methodCalledBeforeFirstTest = new Event\Code\ClassMethod(
-                        static::class,
-                        $method
-                    );
-
-                    $emitter->testBeforeFirstTestMethodCalled(
-                        static::class,
-                        $methodCalledBeforeFirstTest
-                    );
-
-                    $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
-                }
-
-                if (!empty($methodsCalledBeforeFirstTest)) {
-                    $emitter->testBeforeFirstTestMethodFinished(
-                        static::class,
-                        ...$methodsCalledBeforeFirstTest
-                    );
-                }
+                $this->invokeBeforeClassHookMethods($hookMethods, $emitter);
             }
 
             if (method_exists(static::class, $this->name) &&
@@ -742,71 +696,15 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->doesNotPerformAssertions = true;
             }
 
-            $methodsCalledBeforeTest = [];
-
-            foreach ($hookMethods['before'] as $method) {
-                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                    continue;
-                }
-
-                $this->{$method}();
-
-                $methodCallBeforeTest = new Event\Code\ClassMethod(
-                    static::class,
-                    $method
-                );
-
-                $emitter->testBeforeTestMethodCalled(
-                    static::class,
-                    $methodCallBeforeTest
-                );
-
-                $methodsCalledBeforeTest[] = $methodCallBeforeTest;
-            }
-
-            if (!empty($methodsCalledBeforeTest)) {
-                $emitter->testBeforeTestMethodFinished(
-                    static::class,
-                    ...$methodsCalledBeforeTest
-                );
-            }
-
-            $methodsCalledPreCondition = [];
-
-            foreach ($hookMethods['preCondition'] as $method) {
-                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                    continue;
-                }
-
-                $this->{$method}();
-
-                $methodCalledPreCondition = new Event\Code\ClassMethod(
-                    static::class,
-                    $method
-                );
-
-                $emitter->testPreConditionCalled(
-                    static::class,
-                    $methodCalledPreCondition
-                );
-
-                $methodsCalledPreCondition[] = $methodCalledPreCondition;
-            }
-
-            if (!empty($methodsCalledPreCondition)) {
-                $emitter->testPreConditionFinished(
-                    static::class,
-                    ...$methodsCalledPreCondition
-                );
-            }
+            $this->invokeBeforeTestHookMethods($hookMethods, $emitter);
+            $this->invokePreConditionHookMethods($hookMethods, $emitter);
 
             $emitter->testPrepared(
                 $this->valueObjectForEvents()
             );
 
             $this->wasPrepared = true;
-
-            $this->testResult = $this->runTest();
+            $this->testResult  = $this->runTest();
 
             if ($this->hasOutput()) {
                 $emitter->testOutputPrinted(
@@ -816,35 +714,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             }
 
             $this->verifyMockObjects();
-
-            $methodsCalledPostCondition = [];
-
-            foreach ($hookMethods['postCondition'] as $method) {
-                if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                    continue;
-                }
-
-                $this->{$method}();
-
-                $methodCalledPostCondition = new Event\Code\ClassMethod(
-                    static::class,
-                    $method
-                );
-
-                $emitter->testPostConditionCalled(
-                    static::class,
-                    $methodCalledPostCondition
-                );
-
-                $methodsCalledPostCondition[] = $methodCalledPostCondition;
-            }
-
-            if (!empty($methodsCalledPostCondition)) {
-                $emitter->testPostConditionFinished(
-                    static::class,
-                    ...$methodsCalledPostCondition
-                );
-            }
+            $this->invokePostConditionHookMethods($hookMethods, $emitter);
 
             if (!empty($this->warnings)) {
                 throw new Warning(
@@ -868,6 +738,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $emitter->testSkipped(
                 $this->valueObjectForEvents(),
+                Event\Code\Throwable::from($e),
                 $e->getMessage()
             );
         } catch (Warning $e) {
@@ -916,64 +787,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         // caught and passed on when no exception was raised before.
         try {
             if ($hasMetRequirements) {
-                $methodsCalledAfterTest = [];
-
-                foreach ($hookMethods['after'] as $method) {
-                    if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                        continue;
-                    }
-
-                    $this->{$method}();
-
-                    $methodCalledAfterTest = new Event\Code\ClassMethod(
-                        static::class,
-                        $method
-                    );
-
-                    $emitter->testAfterTestMethodCalled(
-                        static::class,
-                        $methodCalledAfterTest
-                    );
-
-                    $methodsCalledAfterTest[] = $methodCalledAfterTest;
-                }
-
-                if (!empty($methodsCalledAfterTest)) {
-                    $emitter->testAfterTestMethodFinished(
-                        static::class,
-                        ...$methodsCalledAfterTest
-                    );
-                }
+                $this->invokeAfterTestHookMethods($hookMethods, $emitter);
 
                 if ($this->inIsolation) {
-                    $methodsCalledAfterLastTest = [];
-
-                    foreach ($hookMethods['afterClass'] as $method) {
-                        if ($this->methodDoesNotExistOrIsDeclaredInTestCase($method)) {
-                            continue;
-                        }
-
-                        $this->{$method}();
-
-                        $methodCalledAfterLastTest = new Event\Code\ClassMethod(
-                            static::class,
-                            $method
-                        );
-
-                        $emitter->testAfterLastTestMethodCalled(
-                            static::class,
-                            $methodCalledAfterLastTest
-                        );
-
-                        $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
-                    }
-
-                    if (!empty($methodsCalledAfterLastTest)) {
-                        $emitter->testAfterLastTestMethodFinished(
-                            static::class,
-                            ...$methodsCalledAfterLastTest
-                        );
-                    }
+                    $this->invokeAfterClassHookMethods($hookMethods, $emitter);
                 }
             }
         } catch (Throwable $_e) {
@@ -1729,24 +1546,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Performs assertions shared by all tests of a test case.
-     *
-     * This method is called between setUp() and test.
-     */
-    protected function assertPreConditions(): void
-    {
-    }
-
-    /**
-     * Performs assertions shared by all tests of a test case.
-     *
-     * This method is called between test and tearDown().
-     */
-    protected function assertPostConditions(): void
-    {
-    }
-
-    /**
      * This method is called when a test method did not execute successfully.
      *
      * @throws Throwable
@@ -1805,13 +1604,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $passed     = $this->result->passed();
         $passedKeys = array_keys($passed);
-        $numKeys    = count($passedKeys);
 
-        for ($i = 0; $i < $numKeys; $i++) {
-            $pos = strpos($passedKeys[$i], ' with data set');
+        foreach ($passedKeys as $keyIndex => $keyValue) {
+            $pos = strpos($keyValue, ' with data set');
 
             if ($pos !== false) {
-                $passedKeys[$i] = substr($passedKeys[$i], 0, $pos);
+                $passedKeys[$keyIndex] = substr($keyValue, 0, $pos);
             }
         }
 
@@ -1827,7 +1625,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($dependency->targetIsClass()) {
                 $dependencyClassName = $dependency->getTargetClassName();
 
-                if (array_search($dependencyClassName, $this->result->passedClasses(), true) === false) {
+                if (!in_array($dependencyClassName, $this->result->passedClasses(), true)) {
                     $this->markSkippedForMissingDependency($dependency);
 
                     return false;
@@ -1919,6 +1717,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         Event\Facade::emitter()->testSkipped(
             $this->valueObjectForEvents(),
+            null,
             $message
         );
 
@@ -2289,14 +2088,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     ->getMock();
     }
 
-    private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
-    {
-        $reflector = new ReflectionObject($this);
-
-        return !$reflector->hasMethod($methodName) ||
-               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
-    }
-
     /**
      * @throws ExpectationFailedException
      */
@@ -2307,5 +2098,109 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } elseif ($this->outputExpectedString !== null) {
             $this->assertEquals($this->outputExpectedString, $this->output);
         }
+    }
+
+    private function invokeBeforeClassHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $this->invokeHookMethods(
+            $hookMethods['beforeClass'],
+            $emitter,
+            'testBeforeFirstTestMethodCalled',
+            'testBeforeFirstTestMethodFinished'
+        );
+    }
+
+    private function invokeBeforeTestHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $this->invokeHookMethods(
+            $hookMethods['before'],
+            $emitter,
+            'testBeforeTestMethodCalled',
+            'testBeforeTestMethodFinished'
+        );
+    }
+
+    private function invokePreConditionHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $this->invokeHookMethods(
+            $hookMethods['preCondition'],
+            $emitter,
+            'testPreConditionCalled',
+            'testPreConditionFinished'
+        );
+    }
+
+    private function invokePostConditionHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $this->invokeHookMethods(
+            $hookMethods['postCondition'],
+            $emitter,
+            'testPostConditionCalled',
+            'testPostConditionFinished'
+        );
+    }
+
+    private function invokeAfterTestHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $this->invokeHookMethods(
+            $hookMethods['after'],
+            $emitter,
+            'testAfterTestMethodCalled',
+            'testAfterTestMethodFinished'
+        );
+    }
+
+    private function invokeAfterClassHookMethods(array $hookMethods, Event\Emitter $emitter): void
+    {
+        $this->invokeHookMethods(
+            $hookMethods['afterClass'],
+            $emitter,
+            'testAfterLastTestMethodCalled',
+            'testAfterLastTestMethodFinished'
+        );
+    }
+
+    /**
+     * @psalm-param 'testBeforeFirstTestMethodCalled'|'testBeforeTestMethodCalled'|'testPreConditionCalled'|'testPostConditionCalled'|'testAfterTestMethodCalled'|'testAfterLastTestMethodCalled' $calledMethod
+     * @psalm-param 'testBeforeFirstTestMethodFinished'|'testBeforeTestMethodFinished'|'testPreConditionFinished'|'testPostConditionFinished'|'testAfterTestMethodFinished'|'testAfterLastTestMethodFinished' $finishedMethod
+     */
+    private function invokeHookMethods(array $hookMethods, Event\Emitter $emitter, string $calledMethod, string $finishedMethod): void
+    {
+        $methodsInvoked = [];
+
+        foreach ($hookMethods as $methodName) {
+            if ($this->methodDoesNotExistOrIsDeclaredInTestCase($methodName)) {
+                continue;
+            }
+
+            $this->{$methodName}();
+
+            $methodInvoked = new Event\Code\ClassMethod(
+                static::class,
+                $methodName
+            );
+
+            $emitter->{$calledMethod}(
+                static::class,
+                $methodInvoked
+            );
+
+            $methodsInvoked[] = $methodInvoked;
+        }
+
+        if (!empty($methodsInvoked)) {
+            $emitter->{$finishedMethod}(
+                static::class,
+                ...$methodsInvoked
+            );
+        }
+    }
+
+    private function methodDoesNotExistOrIsDeclaredInTestCase(string $methodName): bool
+    {
+        $reflector = new ReflectionObject($this);
+
+        return !$reflector->hasMethod($methodName) ||
+               $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
     }
 }

@@ -10,10 +10,14 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\TestSuite\TestSuite as TestSuiteInfo;
+use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
+use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
+use PHPUnit\Event\TestSuite\Loaded as TestSuiteLoaded;
+use PHPUnit\Event\TestSuite\Result;
+use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
+use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
+use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
-use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -23,12 +27,10 @@ use SebastianBergmann\GlobalState\Snapshot;
 final class DispatchingEmitter implements Emitter
 {
     private Dispatcher $dispatcher;
-
     private Telemetry\System $system;
-
     private Telemetry\Snapshot $startSnapshot;
-
     private Telemetry\Snapshot $previousSnapshot;
+    private bool $testExecutionStarted = false;
 
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)
     {
@@ -176,12 +178,13 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testFinished(Code\Test $test): void
+    public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void
     {
         $this->dispatcher->dispatch(
             new Test\Finished(
                 $this->telemetryInfo(),
-                $test
+                $test,
+                $numberOfAssertionsPerformed
             )
         );
     }
@@ -240,12 +243,13 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSkipped(Code\Test $test, string $message): void
+    public function testSkipped(Code\Test $test, ?Throwable $throwable, string $message): void
     {
         $this->dispatcher->dispatch(
             new Test\Skipped(
                 $this->telemetryInfo(),
                 $test,
+                $throwable,
                 $message
             )
         );
@@ -429,6 +433,43 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testUsedDeprecatedPhpunitFeature(Code\Test $test, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\DeprecatedPhpunitFeatureUsed(
+                $this->telemetryInfo(),
+                $test,
+                $message
+            )
+        );
+    }
+
+    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message, string $file, int $line): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\DeprecatedPhpFeatureUsed(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+                $file,
+                $line
+            )
+        );
+    }
+
+    public function testUsedDeprecatedFeature(Code\Test $test, string $message, string $file, int $line): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\DeprecatedFeatureUsed(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+                $file,
+                $line
+            )
+        );
+    }
+
     /**
      * @psalm-param class-string $className
      */
@@ -528,12 +569,22 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSuiteLoaded(FrameworkTestSuite $testSuite): void
+    public function testSuiteLoaded(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
-            new TestSuite\Loaded(
+            new TestSuiteLoaded(
                 $this->telemetryInfo(),
-                TestSuiteInfo::fromTestSuite($testSuite)
+                $testSuite
+            )
+        );
+    }
+
+    public function testSuiteFiltered(TestSuite $testSuite): void
+    {
+        $this->dispatcher->dispatch(
+            new TestSuiteFiltered(
+                $this->telemetryInfo(),
+                $testSuite
             )
         );
     }
@@ -541,7 +592,7 @@ final class DispatchingEmitter implements Emitter
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
         $this->dispatcher->dispatch(
-            new TestSuite\Sorted(
+            new TestSuiteSorted(
                 $this->telemetryInfo(),
                 $executionOrder,
                 $executionOrderDefects,
@@ -550,23 +601,34 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSuiteStarted(FrameworkTestSuite $testSuite): void
+    public function testSuiteStarted(TestSuite $testSuite): void
     {
+        if (!$this->testExecutionStarted) {
+            $this->dispatcher->dispatch(
+                new TestRunner\ExecutionStarted(
+                    $this->telemetryInfo(),
+                    $testSuite
+                )
+            );
+
+            $this->testExecutionStarted = true;
+        }
+
         $this->dispatcher->dispatch(
-            new TestSuite\Started(
+            new TestSuiteStarted(
                 $this->telemetryInfo(),
-                TestSuiteInfo::fromTestSuite($testSuite)
+                $testSuite
             )
         );
     }
 
-    public function testSuiteFinished(FrameworkTestSuite $testSuite, TestResult $result): void
+    public function testSuiteFinished(TestSuite $testSuite, Result $result): void
     {
         $this->dispatcher->dispatch(
-            new TestSuite\Finished(
+            new TestSuiteFinished(
                 $this->telemetryInfo(),
-                TestSuiteInfo::fromTestSuite($testSuite),
-                (new TestResultMapper)->map($result),
+                $testSuite,
+                $result,
             )
         );
     }

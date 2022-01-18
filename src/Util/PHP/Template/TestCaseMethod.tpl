@@ -2,6 +2,7 @@
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 
@@ -53,10 +54,6 @@ function __phpunit_run_isolated_test()
             CodeCoverage::instance()->cacheStaticAnalysis(unserialize('{codeCoverageCacheDirectory}'));
         }
     }
-
-    $result->beStrictAboutTestsThatDoNotTestAnything({isStrictAboutTestsThatDoNotTestAnything});
-    $result->beStrictAboutOutputDuringTests({isStrictAboutOutputDuringTests});
-    $result->enforceTimeLimit({enforcesTimeLimit});
 
     $test = new {className}('{methodName}');
     \assert($test instanceof TestCase);
@@ -129,5 +126,8 @@ if (isset($GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS'])) {
     }
     unset($GLOBALS['__PHPUNIT_TESTSUITE_BOOTSTRAPS']);
 }
+
+Registry::loadFrom('{serializedConfiguration}');
+
 
 __phpunit_run_isolated_test();

@@ -18,7 +18,6 @@ use Throwable;
 final class Failure
 {
     private string $testName;
-
     private Throwable $throwable;
 
     public function __construct(string $testName, Throwable $throwable)

@@ -15,6 +15,7 @@ use function sys_get_temp_dir;
 use function touch;
 use function unlink;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
@@ -32,49 +33,14 @@ EXPECT test
 --EXPECT--
 Hello PHPUnit!
 EOF;
-
-    private const EXPECTF_CONTENT = <<<'EOF'
---TEST--
-EXPECTF test
---FILE--
-<?php echo "Hello PHPUnit!"; ?>
---EXPECTF--
-Hello %s!
-EOF;
-
-    private const EXPECTREGEX_CONTENT = <<<'EOF'
---TEST--
-EXPECTREGEX test
---FILE--
-<?php echo "Hello PHPUnit!"; ?>
---EXPECTREGEX--
-Hello [HPU]{4}[nit]{3}!
-EOF;
-
-    /**
-     * @var string
-     */
-    private $dirname;
-
-    /**
-     * @var string
-     */
-    private $filename;
-
-    /**
-     * @var PhptTestCase
-     */
-    private $testCase;
-
-    /**
-     * @var AbstractPhpProcess|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $phpProcess;
+    private string $filename;
+    private ?PhptTestCase $testCase;
+    private AbstractPhpProcess|MockObject|null $phpProcess;
 
     protected function setUp(): void
     {
-        $this->dirname  = sys_get_temp_dir();
-        $this->filename = $this->dirname . '/phpunit.phpt';
+        $this->filename = sys_get_temp_dir() . '/phpunit.phpt';
+
         touch($this->filename);
 
         $this->phpProcess = $this->getMockForAbstractClass(AbstractPhpProcess::class, [], '', false);
@@ -96,7 +62,7 @@ EOF;
 
     public function testAlwaysReportsItDoesNotUseADataprovider(): void
     {
-        $this->assertSame(false, $this->testCase->usesDataProvider());
+        $this->assertFalse($this->testCase->usesDataProvider());
     }
 
     public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord(): void
@@ -223,12 +189,7 @@ EOF
         $this->assertSame([], $this->testCase->requires());
     }
 
-    /**
-     * Defines the content of the current PHPT test.
-     *
-     * @param string $content
-     */
-    private function setPhpContent($content): void
+    private function setPhpContent(string $content): void
     {
         file_put_contents($this->filename, $content);
     }

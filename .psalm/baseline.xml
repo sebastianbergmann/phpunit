@@ -9,7 +9,12 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Event/Emitter/DispatchingEmitter.php">
-    <MissingThrowsDocblock occurrences="46">
+    <MissingThrowsDocblock occurrences="51">
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
+      <code>dispatch</code>
       <code>dispatch</code>
       <code>dispatch</code>
       <code>dispatch</code>
@@ -86,17 +91,11 @@
       <code>hasDataFromDataProvider</code>
       <code>hasDataFromDataProvider</code>
     </ImpureMethodCall>
-    <InvalidArgument occurrences="1">
-      <code>$dataSetName</code>
-    </InvalidArgument>
     <MissingThrowsDocblock occurrences="3">
       <code>TestDataCollection::fromArray($testData)</code>
       <code>dataFromDataProvider</code>
       <code>dataFromDataProvider</code>
     </MissingThrowsDocblock>
-    <TypeDoesNotContainType occurrences="1">
-      <code>is_int($dataSetName)</code>
-    </TypeDoesNotContainType>
   </file>
   <file src="src/Event/Value/TestSuite/TestSuite.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -138,7 +137,7 @@
       <code>new ObjectHasAttribute($attributeName)</code>
       <code>new ObjectHasAttribute($attributeName)</code>
     </DeprecatedClass>
-    <MissingThrowsDocblock occurrences="36">
+    <MissingThrowsDocblock occurrences="37">
       <code>loadFile</code>
       <code>loadFile</code>
       <code>loadFile</code>
@@ -299,12 +298,12 @@
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
     <LessSpecificReturnStatement occurrences="1"/>
-    <MissingParamType occurrences="1">
-      <code>$type</code>
-    </MissingParamType>
     <MoreSpecificReturnType occurrences="1">
       <code>MockObject</code>
     </MoreSpecificReturnType>
+    <PossiblyNullArgument occurrences="1">
+      <code>$client-&gt;__getFunctions()</code>
+    </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -344,17 +343,6 @@
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) var_export($parameter-&gt;getDefaultValue(), true)</code>
     </RedundantCastGivenDocblockType>
-    <RedundantCondition occurrences="1">
-      <code>$type instanceof ReflectionIntersectionType</code>
-    </RedundantCondition>
-    <TypeDoesNotContainType occurrences="1">
-      <code>$type instanceof ReflectionIntersectionType</code>
-    </TypeDoesNotContainType>
-    <UndefinedClass occurrences="3">
-      <code>ReflectionIntersectionType</code>
-      <code>ReflectionIntersectionType</code>
-      <code>ReflectionIntersectionType</code>
-    </UndefinedClass>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <PropertyNotSetInConstructor occurrences="1">
@@ -440,7 +428,7 @@
     </RedundantCondition>
   </file>
   <file src="src/Framework/TestRunner.php">
-    <MissingThrowsDocblock occurrences="11">
+    <MissingThrowsDocblock occurrences="12">
       <code>CodeCoverage::instance()</code>
       <code>CodeCoverage::instance()</code>
       <code>CodeCoverage::instance()</code>
@@ -448,14 +436,9 @@
       <code>CodeCoverage::start($test)</code>
       <code>GlobalState::getIncludedFilesAsString()</code>
       <code>cacheDirectory</code>
+      <code>saveConfigurationForChildProcess</code>
       <code>stop</code>
     </MissingThrowsDocblock>
-    <PossiblyUndefinedVariable occurrences="4">
-      <code>$_timeout</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-    </PossiblyUndefinedVariable>
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion occurrences="3">
@@ -464,9 +447,6 @@
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="1"/>
-    <RedundantCastGivenDocblockType occurrences="1">
-      <code>(string) $key</code>
-    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -484,29 +464,24 @@
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
   </file>
-  <file src="src/Logging/TeamCityLogger.php">
-    <DocblockTypeContradiction occurrences="2">
-      <code>$actualString === null</code>
-      <code>$expectedString === null</code>
-    </DocblockTypeContradiction>
-    <MissingThrowsDocblock occurrences="2">
-      <code>Filter::getFilteredStacktrace($t)</code>
+  <file src="src/Logging/TeamCity/TeamCityLogger.php">
+    <MissingThrowsDocblock occurrences="7">
+      <code>duration</code>
+      <code>duration</code>
+      <code>duration</code>
+      <code>duration</code>
+      <code>duration</code>
+      <code>duration</code>
+      <code>throwable</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="2">
+    <PropertyNotSetInConstructor occurrences="1">
       <code>$flowId</code>
-      <code>$startedTestName</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="1">
-      <code>$previous-&gt;getPrevious()</code>
+    <RedundantCondition occurrences="4">
+      <code>assert($test instanceof TestMethod)</code>
+      <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
+      <code>assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)</code>
     </RedundantCondition>
-    <UndefinedInterfaceMethod occurrences="6">
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-      <code>getName</code>
-    </UndefinedInterfaceMethod>
   </file>
   <file src="src/Logging/TestDox/CliTestDoxPrinter.php">
     <MissingThrowsDocblock occurrences="2">
@@ -691,14 +666,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$tests</code>
     </ArgumentTypeCoercion>
-    <MissingClosureParamType occurrences="6">
-      <code>$left</code>
-      <code>$left</code>
-      <code>$left</code>
-      <code>$right</code>
-      <code>$right</code>
-      <code>$right</code>
-    </MissingClosureParamType>
     <RedundantCondition occurrences="4">
       <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
       <code>$orderDefects === self::ORDER_DEFECTS_FIRST &amp;&amp; $this-&gt;cache !== null</code>
@@ -1107,19 +1074,18 @@
       <code>parent::__construct($out)</code>
       <code>stop</code>
     </MissingThrowsDocblock>
+    <PossiblyInvalidPropertyAssignmentValue occurrences="1">
+      <code>$numberOfColumns</code>
+    </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/TextUI/Help.php">
-    <MissingClosureParamType occurrences="1">
-      <code>$matches</code>
-    </MissingClosureParamType>
     <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$option['desc']</code>
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedMethod occurrences="7">
-      <code>addListener</code>
+    <DeprecatedMethod occurrences="6">
       <code>addListener</code>
       <code>addListener</code>
       <code>addListener</code>
@@ -1138,7 +1104,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="36">
+    <MissingThrowsDocblock occurrences="38">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1163,6 +1129,7 @@
       <code>logfileTestdoxXml</code>
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
+      <code>new TeamCityLogger('php://stdout')</code>
       <code>pharExtensionDirectory</code>
       <code>plainTextTrace</code>
       <code>plainTextTrace</code>
@@ -1179,21 +1146,9 @@
       <code>write</code>
       <code>write</code>
     </PossiblyNullReference>
-    <RedundantCondition occurrences="1">
-      <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
-    </RedundantCondition>
-  </file>
-  <file src="src/Util/Color.php">
-    <MissingClosureParamType occurrences="2">
-      <code>$matches</code>
-      <code>$matches</code>
-    </MissingClosureParamType>
   </file>
   <file src="src/Util/Error/Handler.php">
     <InvalidArgument occurrences="1"/>
-    <MissingClosureParamType occurrences="1">
-      <code>$errorNumber</code>
-    </MissingClosureParamType>
   </file>
   <file src="src/Util/ExcludeList.php">
     <InvalidNullableReturnType occurrences="1">

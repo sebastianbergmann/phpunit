@@ -35,13 +35,9 @@ final class TestMethod extends Test
      * @psalm-var class-string
      */
     private string $className;
-
     private string $methodName;
-
     private int $line;
-
     private MetadataCollection $metadata;
-
     private TestDataCollection $testData;
 
     public static function fromTestCase(TestCase $testCase): self
@@ -137,7 +133,7 @@ final class TestMethod extends Test
             return $this->methodName;
         }
 
-        $dataSetName = $this->testData->dataFromDataProvider();
+        $dataSetName = $this->testData->dataFromDataProvider()->dataSetName();
 
         if (is_int($dataSetName)) {
             $dataSetName = sprintf(

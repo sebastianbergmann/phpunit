@@ -26,6 +26,7 @@ use function str_starts_with;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
+use PHPUnit\Event\TestResultMapper;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
@@ -59,8 +60,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Enable or disable the backup and restoration of static attributes.
      */
-    protected ?bool $backupStaticProperties = null;
-
+    protected ?bool $backupStaticProperties  = null;
     protected bool $runTestInSeparateProcess = false;
 
     /**
@@ -78,20 +78,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * The number of tests in the test suite.
      */
-    protected int $numTests = -1;
-
+    protected int $numTests         = -1;
     protected ?array $requiredTests = null;
 
     /**
      * @psalm-var list<Test>
      */
-    private array $tests = [];
-
-    private ?array $providedTests = null;
-
+    private array $tests                             = [];
+    private ?array $providedTests                    = null;
     private ?bool $beStrictAboutChangesToGlobalState = null;
-
-    private ?Factory $iteratorFilter = null;
+    private ?Factory $iteratorFilter                 = null;
 
     /**
      * @psalm-var array<int,string>
@@ -395,10 +391,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     public function getGroups(): array
     {
         return array_map(
-            static function ($key): string
-            {
-                return (string) $key;
-            },
+            'strval',
             array_keys($this->groups)
         );
     }
@@ -450,7 +443,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $result->startTestSuite($this);
 
-        Event\Facade::emitter()->testSuiteStarted($this);
+        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this);
+
+        Event\Facade::emitter()->testSuiteStarted($testSuiteValueObjectForEvents);
 
         $test = null;
 
@@ -603,8 +598,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $result->endTestSuite($this);
 
         Event\Facade::emitter()->testSuiteFinished(
-            $this,
-            $result,
+            $testSuiteValueObjectForEvents,
+            (new TestResultMapper)->map($result)
         );
     }
 

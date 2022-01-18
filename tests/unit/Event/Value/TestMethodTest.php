@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Event\Code;
 
+use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Util\ExportedVariable;
 
 /**
  * @covers \PHPUnit\Event\Code\TestMethod
@@ -42,5 +44,79 @@ final class TestMethodTest extends TestCase
         $this->assertSame($line, $test->line());
         $this->assertSame($metadata, $test->metadata());
         $this->assertSame($testData, $test->testData());
+    }
+
+    public function testNameReturnsNameWhenTestDoesNotHaveDataFromDataProvider(): void
+    {
+        $test = new TestMethod(
+            'ExampleTest',
+            'testExample',
+            'ExampleTest.php',
+            1,
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([])
+        );
+
+        $this->assertSame($test->methodName(), $test->name());
+    }
+
+    public function testNameReturnsNameWhenTestHasDataFromDataProviderAndDataSetNameIsInt(): void
+    {
+        $dataSetName = 9000;
+
+        $test = new TestMethod(
+            'ExampleTest',
+            'testExample',
+            'ExampleTest.php',
+            1,
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([
+                DataFromDataProvider::from(
+                    $dataSetName,
+                    ExportedVariable::from(
+                        'foo',
+                        false
+                    )
+                ),
+            ])
+        );
+
+        $expected = sprintf(
+            '%s with data set #%d',
+            $test->methodName(),
+            $dataSetName
+        );
+
+        $this->assertSame($expected, $test->name());
+    }
+
+    public function testNameReturnsNameWhenTestHasDataFromDataProviderAndDataSetNameIsString(): void
+    {
+        $dataSetName = 'bar-9000';
+
+        $test = new TestMethod(
+            'ExampleTest',
+            'testExample',
+            'ExampleTest.php',
+            1,
+            MetadataCollection::fromArray([]),
+            TestDataCollection::fromArray([
+                DataFromDataProvider::from(
+                    $dataSetName,
+                    ExportedVariable::from(
+                        'foo',
+                        false
+                    )
+                ),
+            ])
+        );
+
+        $expected = sprintf(
+            '%s with data set "%s"',
+            $test->methodName(),
+            $dataSetName
+        );
+
+        $this->assertSame($expected, $test->name());
     }
 }

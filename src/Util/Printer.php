@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\Util;
 
-use const ENT_COMPAT;
-use const ENT_SUBSTITUTE;
-use const PHP_SAPI;
 use function assert;
 use function count;
 use function dirname;
@@ -20,7 +17,6 @@ use function fclose;
 use function fopen;
 use function fsockopen;
 use function fwrite;
-use function htmlspecialchars;
 use function sprintf;
 use function str_contains;
 use function str_replace;
@@ -36,9 +32,7 @@ class Printer
      * @psalm-var closed-resource|resource
      */
     private $stream;
-
     private bool $isPhpStream;
-
     private bool $isOpen;
 
     /**
@@ -90,10 +84,6 @@ class Printer
     public function write(string $buffer): void
     {
         assert($this->isOpen);
-
-        if (PHP_SAPI !== 'cli' && PHP_SAPI !== 'phpdbg' && $this->isPhpStream) {
-            $buffer = htmlspecialchars($buffer, ENT_COMPAT | ENT_SUBSTITUTE);
-        }
 
         fwrite($this->stream, $buffer);
     }

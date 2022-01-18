@@ -19,7 +19,6 @@ use PHPUnit\Event\Telemetry;
 final class MockObjectCreatedFromWsdl implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private string $wsdlFile;
 
     /**
@@ -36,9 +35,7 @@ final class MockObjectCreatedFromWsdl implements Event
      * @psalm-var list<string>
      */
     private array $methods;
-
     private bool $callOriginalConstructor;
-
     private array $options;
 
     /**

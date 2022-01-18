@@ -19,7 +19,6 @@ final class DataProvider extends Metadata
      * @psalm-var class-string
      */
     private string $className;
-
     private string $methodName;
 
     /**

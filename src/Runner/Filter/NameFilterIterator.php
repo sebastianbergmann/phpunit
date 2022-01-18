@@ -31,9 +31,7 @@ use RecursiveIterator;
 final class NameFilterIterator extends RecursiveFilterIterator
 {
     private ?string $filter = null;
-
     private ?int $filterMin = null;
-
     private ?int $filterMax = null;
 
     /**

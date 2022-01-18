@@ -26,7 +26,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
-use PHPUnit\Logging\TeamCityLogger;
+use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 use PHPUnit\Logging\TestDox\HtmlResultPrinter;
 use PHPUnit\Logging\TestDox\TextResultPrinter;
@@ -65,12 +65,9 @@ use SebastianBergmann\Timer\Timer;
 final class TestRunner
 {
     private Configuration $configuration;
-
     private ?ResultPrinter $printer = null;
-
-    private bool $messagePrinted = false;
-
-    private ?Timer $timer = null;
+    private bool $messagePrinted    = false;
+    private ?Timer $timer           = null;
 
     public function __construct()
     {
@@ -159,24 +156,9 @@ final class TestRunner
 
         $result = new TestResult;
 
-        $result->convertDeprecationsToExceptions($this->configuration->convertDeprecationsToExceptions());
-        $result->convertErrorsToExceptions($this->configuration->convertErrorsToExceptions());
-        $result->convertNoticesToExceptions($this->configuration->convertNoticesToExceptions());
-        $result->convertWarningsToExceptions($this->configuration->convertWarningsToExceptions());
-        $result->stopOnDefect($this->configuration->stopOnDefect());
-        $result->stopOnError($this->configuration->stopOnError());
-        $result->stopOnFailure($this->configuration->stopOnFailure());
-        $result->stopOnIncomplete($this->configuration->stopOnIncomplete());
-        $result->stopOnRisky($this->configuration->stopOnRisky());
-        $result->stopOnSkipped($this->configuration->stopOnSkipped());
-        $result->stopOnWarning($this->configuration->stopOnWarning());
-        $result->registerMockObjectsFromTestArgumentsRecursively($this->configuration->registerMockObjectsFromTestArgumentsRecursively());
-
         $this->printer = $this->createPrinter();
 
         if (isset($originalExecutionOrder) && $this->printer instanceof CliTestDoxPrinter) {
-            assert($this->printer instanceof CliTestDoxPrinter);
-
             $this->printer->setOriginalExecutionOrder($originalExecutionOrder);
             $this->printer->setShowProgressAnimation(!$this->configuration->noInteraction());
         }
@@ -198,6 +180,16 @@ final class TestRunner
             $junitXmlLogger = new JunitXmlLogger(
                 $this->configuration->reportUselessTests()
             );
+        }
+
+        if ($this->configuration->hasLogfileTeamcity()) {
+            $teamCityLogger = new TeamCityLogger(
+                $this->configuration->logfileTeamcity()
+            );
+        }
+
+        if ($this->configuration->outputIsTeamCity()) {
+            $teamCityOutput = new TeamCityLogger('php://stdout');
         }
 
         Event\Facade::seal();
@@ -242,12 +234,6 @@ final class TestRunner
                 new XmlResultPrinter(
                     $this->configuration->logfileTestdoxXml()
                 )
-            );
-        }
-
-        if ($this->configuration->hasLogfileTeamcity()) {
-            $result->addListener(
-                new TeamCityLogger($this->configuration->logfileTeamcity())
             );
         }
 
@@ -378,15 +364,6 @@ final class TestRunner
             $this->writeMessage('Error', 'PHP extension pcntl is required for enforcing time limits');
         }
 
-        $result->beStrictAboutTestsThatDoNotTestAnything($this->configuration->reportUselessTests());
-        $result->beStrictAboutOutputDuringTests($this->configuration->disallowTestOutput());
-        $result->enforceTimeLimit($this->configuration->enforceTimeLimit());
-        $result->setDefaultTimeLimit($this->configuration->defaultTimeLimit());
-        $result->setTimeoutForSmallTests($this->configuration->timeoutForSmallTests());
-        $result->setTimeoutForMediumTests($this->configuration->timeoutForMediumTests());
-        $result->setTimeoutForLargeTests($this->configuration->timeoutForLargeTests());
-        $result->requireCoverageMetadata($this->configuration->requireCoverageMetadata());
-
         $this->processSuiteFilters($suite);
         $suite->setRunTestInSeparateProcess($this->configuration->processIsolation());
 
@@ -411,6 +388,14 @@ final class TestRunner
                 $this->configuration->logfileJunit(),
                 $junitXmlLogger->flush()
             );
+        }
+
+        if (isset($teamCityLogger)) {
+            $teamCityLogger->flush();
+        }
+
+        if (isset($teamCityOutput)) {
+            $teamCityOutput->flush();
         }
 
         if (CodeCoverage::isActive()) {
@@ -603,6 +588,10 @@ final class TestRunner
         }
 
         $suite->injectFilter($filterFactory);
+
+        Event\Facade::emitter()->testSuiteFiltered(
+            Event\TestSuite\TestSuite::fromTestSuite($suite)
+        );
     }
 
     private function writeMessage(string $type, string $message): void
@@ -628,8 +617,6 @@ final class TestRunner
 
         if ($this->configuration->outputIsDefault()) {
             $className = DefaultResultPrinter::class;
-        } elseif ($this->configuration->outputIsTeamCity()) {
-            $className = TeamCityLogger::class;
         } elseif ($this->configuration->outputIsTestDox()) {
             $className = CliTestDoxPrinter::class;
         }

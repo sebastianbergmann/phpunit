@@ -16,11 +16,8 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 final class TestSuite
 {
     private string $name;
-
     private TestDirectoryCollection $directories;
-
     private TestFileCollection $files;
-
     private FileCollection $exclude;
 
     private FileCollection $bootstraps;

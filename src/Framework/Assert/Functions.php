@@ -10,9 +10,11 @@
 namespace PHPUnit\Framework;
 
 use function func_get_args;
+use function function_exists;
 use ArrayAccess;
 use Countable;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArrayIsList;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
@@ -100,6 +102,23 @@ if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
     function assertArrayNotHasKey(int|string $key, array|ArrayAccess $array, string $message = ''): void
     {
         Assert::assertArrayNotHasKey(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertArrayIsList')) {
+    /**
+     * Asserts that an array is list.
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertArrayIsList()
+     */
+    function assertArrayIsList(array $array, string $message = ''): void
+    {
+        Assert::assertArrayIsList(...func_get_args());
     }
 }
 
@@ -2380,6 +2399,13 @@ if (!function_exists('PHPUnit\Framework\arrayHasKey')) {
     function arrayHasKey(int|string $key): ArrayHasKey
     {
         return Assert::arrayHasKey(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\arrayIsList')) {
+    function arrayIsList(): ArrayIsList
+    {
+        return Assert::arrayIsList();
     }
 }
 

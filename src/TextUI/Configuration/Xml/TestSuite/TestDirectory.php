@@ -18,13 +18,9 @@ use PHPUnit\Util\VersionComparisonOperator;
 final class TestDirectory
 {
     private string $path;
-
     private string $prefix;
-
     private string $suffix;
-
     private string $phpVersion;
-
     private VersionComparisonOperator $phpVersionOperator;
 
     public function __construct(string $path, string $prefix, string $suffix, string $phpVersion, VersionComparisonOperator $phpVersionOperator)

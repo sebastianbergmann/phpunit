@@ -10,9 +10,9 @@
 use PHPUnit\Event\Code;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Emitter;
+use PHPUnit\Event\TestSuite\Result;
+use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
-use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -70,7 +70,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testFinished(Code\Test $test): void
+    public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void
     {
     }
 
@@ -90,7 +90,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSkipped(Code\Test $test, string $message): void
+    public function testSkipped(Code\Test $test, ?Throwable $throwable, string $message): void
     {
     }
 
@@ -150,6 +150,18 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testUsedDeprecatedPhpunitFeature(Code\Test $test, string $message): void
+    {
+    }
+
+    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message, string $file, int $line): void
+    {
+    }
+
+    public function testUsedDeprecatedFeature(Code\Test $test, string $message, string $file, int $line): void
+    {
+    }
+
     public function testMockObjectCreated(string $className): void
     {
     }
@@ -188,6 +200,10 @@ final class NullEmitter implements Emitter
     {
     }
 
+    public function testSuiteFiltered(TestSuite $testSuite): void
+    {
+    }
+
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
     }
@@ -196,7 +212,7 @@ final class NullEmitter implements Emitter
     {
     }
 
-    public function testSuiteFinished(TestSuite $testSuite, TestResult $result): void
+    public function testSuiteFinished(TestSuite $testSuite, Result $result): void
     {
     }
 }

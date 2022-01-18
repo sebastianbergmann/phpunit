@@ -24,7 +24,6 @@ final class TestProxyCreated implements Event
      * @psalm-var class-string
      */
     private string $className;
-
     private array $constructorArguments;
 
     /**

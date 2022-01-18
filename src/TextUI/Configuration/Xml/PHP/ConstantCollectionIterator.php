@@ -23,7 +23,6 @@ final class ConstantCollectionIterator implements Countable, Iterator
      * @psalm-var list<Constant>
      */
     private array $constants;
-
     private ?int $position = null;
 
     public function __construct(ConstantCollection $constants)

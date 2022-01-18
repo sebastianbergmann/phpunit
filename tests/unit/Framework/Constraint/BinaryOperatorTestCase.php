@@ -141,14 +141,17 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $this->assertSame("is equal to 'whatever'", $constraint->toString());
     }
 
-    final public function providerConnectiveTruthTable()
+    final public function providerConnectiveTruthTable(): array
     {
         $inputs = self::getBooleanTuples(0, 5);
 
-        return array_map(function (array $input)
-        {
-            return [$input, $this->evaluateExpectedResult($input)];
-        }, $inputs);
+        return array_map(
+            function (array $input)
+            {
+                return [$input, $this->evaluateExpectedResult($input)];
+            },
+            $inputs
+        );
     }
 
     /**

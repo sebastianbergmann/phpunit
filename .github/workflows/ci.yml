@@ -22,7 +22,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
+          php-version: 8.1
           extensions: none, json, phar, tokenizer
           coverage: none
           tools: none
@@ -42,8 +42,8 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 8.0
-          extensions: none, ctype, date, dom, json, libxml, mbstring, pdo_sqlite, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
+          php-version: 8.1
+          extensions: none, ctype, curl, date, dom, json, libxml, mbstring, pdo_sqlite, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
           coverage: none
           tools: none
 
@@ -173,7 +173,7 @@ jobs:
         run: php ./phpunit --coverage-clover=coverage.xml
 
       - name: Send code coverage report to Codecov.io
-        uses: codecov/codecov-action@v1
+        uses: codecov/codecov-action@v2
         with:
           token: ${{ secrets.CODECOV_TOKEN }}
 

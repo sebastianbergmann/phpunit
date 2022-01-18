@@ -19,7 +19,6 @@ final class ExcludeStaticPropertyFromBackup extends Metadata
      * @psalm-var class-string
      */
     private string $className;
-
     private string $propertyName;
 
     /**

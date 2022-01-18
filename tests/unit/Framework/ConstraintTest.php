@@ -78,6 +78,31 @@ EOF
         $this->fail();
     }
 
+    public function testConstraintArrayIsNotList(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::arrayIsList()
+        );
+
+        try {
+            $constraint->evaluate([0, 1, 2], 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that an array is not list.
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
     public function testConstraintFileNotExists(): void
     {
         $file = TEST_FILES_PATH . 'ClassWithNonPublicAttributes.php';
@@ -1381,12 +1406,8 @@ EOF
 
     /**
      * Removes spaces in front of newlines.
-     *
-     * @param string $string
-     *
-     * @return string
      */
-    private function trimnl($string)
+    private function trimnl(string $string): string
     {
         return preg_replace('/[ ]*\n/', "\n", $string);
     }

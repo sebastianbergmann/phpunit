@@ -1,5 +1,5 @@
 --TEST--
-phpunit --log-teamcity php://stdout ../../_files/BankAccountTest.php
+phpunit --log-teamcity php://stdout ../../basic/unit/StatusTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
@@ -23,36 +23,35 @@ PHPUnit\TextUI\Application::main();
 
 ##teamcity[testStarted name='testFailure' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testFailure' flowId='%d']
 
-##teamcity[testFailed name='testFailure' message='Failed asserting that false is true.' details=' %sStatusTest.php:35|n ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testFailure' message='Failed asserting that false is true.' details='%sStatusTest.php:35|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testFailure' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testError' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testError' flowId='%d']
 
-##teamcity[testFailed name='testError' message='RuntimeException' details=' %sStatusTest.php:40|n ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testError' message='RuntimeException' details='%sStatusTest.php:40|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testError' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testIncomplete' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testIncomplete' flowId='%d']
 
-##teamcity[testIgnored name='testIncomplete' message='' details=' %sStatusTest.php:45|n ' duration='%d' flowId='%d']
+##teamcity[testIgnored name='testIncomplete' message='' details='%sStatusTest.php:45|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testIncomplete' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testSkipped' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testSkipped' flowId='%d']
 
-##teamcity[testIgnored name='testSkipped' message='' details=' %sStatusTest.php:50|n ' duration='%d' flowId='%d']
+##teamcity[testIgnored name='testSkipped' message='' details='%sStatusTest.php:50|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testSkipped' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testRisky' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testRisky' flowId='%d']
 
-##teamcity[testFailed name='testRisky' message='This test did not perform any assertions' details=' ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testRisky' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testRisky' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testWarning' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testWarning' flowId='%d']
-
 
 ##teamcity[testFinished name='testWarning' duration='%d' flowId='%d']
 
@@ -62,31 +61,31 @@ PHPUnit\TextUI\Application::main();
 
 ##teamcity[testStarted name='testFailureWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage' flowId='%d']
 
-##teamcity[testFailed name='testFailureWithMessage' message='failure with custom message|nFailed asserting that false is true.' details=' %sStatusTest.php:69|n ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testFailureWithMessage' message='failure with custom message|nFailed asserting that false is true.' details='%sStatusTest.php:69|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testFailureWithMessage' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testErrorWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage' flowId='%d']
 
-##teamcity[testFailed name='testErrorWithMessage' message='RuntimeException : error with custom message' details=' %sStatusTest.php:74|n ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testErrorWithMessage' message='RuntimeException: error with custom message' details='%sStatusTest.php:74|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testErrorWithMessage' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testIncompleteWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage' flowId='%d']
 
-##teamcity[testIgnored name='testIncompleteWithMessage' message='incomplete with custom message' details=' %sStatusTest.php:79|n ' duration='%d' flowId='%d']
+##teamcity[testIgnored name='testIncompleteWithMessage' message='incomplete with custom message' details='%sStatusTest.php:79|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testIncompleteWithMessage' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testSkippedWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage' flowId='%d']
 
-##teamcity[testIgnored name='testSkippedWithMessage' message='skipped with custom message' details=' %sStatusTest.php:84|n ' duration='%d' flowId='%d']
+##teamcity[testIgnored name='testSkippedWithMessage' message='skipped with custom message' details='%sStatusTest.php:84|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testSkippedWithMessage' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testRiskyWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage' flowId='%d']
 
-##teamcity[testFailed name='testRiskyWithMessage' message='This test did not perform any assertions' details=' ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testRiskyWithMessage' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testRiskyWithMessage' duration='%d' flowId='%d']
 

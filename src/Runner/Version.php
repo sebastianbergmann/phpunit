@@ -22,8 +22,7 @@ use SebastianBergmann\Version as VersionId;
 final class Version
 {
     private static string $pharVersion = '';
-
-    private static string $version = '';
+    private static string $version     = '';
 
     /**
      * Returns the current version of PHPUnit.

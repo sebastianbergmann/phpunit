@@ -2,6 +2,24 @@
 
 All notable changes of the PHPUnit 9.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.5.12] - 2022-MM-DD
+
+### Fixed
+
+* [#4799](https://github.com/sebastianbergmann/phpunit/pull/4799): Memory leaks in `PHPUnit\Framework\TestSuite` class
+
+## [9.5.11] - 2021-12-25
+
+### Changed
+
+* [#4812](https://github.com/sebastianbergmann/phpunit/issues/4812): Do not enforce time limits when a debugging session through DBGp is active
+* [#4835](https://github.com/sebastianbergmann/phpunit/issues/4835): Support for `$GLOBALS['_composer_autoload_path']` introduced in Composer 2.2
+
+### Fixed
+
+* [#4840](https://github.com/sebastianbergmann/phpunit/pull/4840): TestDox prettifying for class names does not correctly handle diacritics
+* [#4846](https://github.com/sebastianbergmann/phpunit/pull/4846): Composer proxy script is not ignored
+
 ## [9.5.10] - 2021-09-25
 
 ### Changed
@@ -91,6 +109,8 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
 
+[9.5.12]: https://github.com/sebastianbergmann/phpunit/compare/9.5.11...9.5
+[9.5.11]: https://github.com/sebastianbergmann/phpunit/compare/9.5.10...9.5.11
 [9.5.10]: https://github.com/sebastianbergmann/phpunit/compare/9.5.9...9.5.10
 [9.5.9]: https://github.com/sebastianbergmann/phpunit/compare/9.5.8...9.5.9
 [9.5.8]: https://github.com/sebastianbergmann/phpunit/compare/9.5.7...9.5.8

@@ -22,7 +22,6 @@ final class FailureCollectionIterator implements Iterator
      * @psalm-var list<Failure>
      */
     private array $failures;
-
     private int $position = 0;
 
     public function __construct(FailureCollection $failures)

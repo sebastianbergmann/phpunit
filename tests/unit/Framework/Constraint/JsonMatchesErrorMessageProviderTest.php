@@ -69,7 +69,7 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testTranslateTypeToPrefix($expected, $type): void
+    public function testTranslateTypeToPrefix(string $expected, string $type): void
     {
         $this->assertEquals(
             $expected,
@@ -84,7 +84,7 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testDetermineJsonError($expected, $error, $prefix): void
+    public function testDetermineJsonError(?string $expected, int $error, string $prefix): void
     {
         $this->assertEquals(
             $expected,

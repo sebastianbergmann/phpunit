@@ -18,7 +18,6 @@ use Attribute;
 final class RequiresSetting
 {
     private string $setting;
-
     private string $value;
 
     public function __construct(string $setting, string $value)

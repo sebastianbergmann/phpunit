@@ -37,7 +37,7 @@ final class IsTypeTest extends ConstraintTestCase
         } catch (ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
                 <<<'EOF'
-Failed asserting that stdClass Object &%x () is of type "string".
+Failed asserting that stdClass Object #%d () is of type "string".
 
 EOF
                 ,
@@ -60,7 +60,7 @@ EOF
             $this->assertStringMatchesFormat(
                 <<<'EOF'
 custom message
-Failed asserting that stdClass Object &%x () is of type "string".
+Failed asserting that stdClass Object #%d () is of type "string".
 
 EOF
                 ,
@@ -75,6 +75,7 @@ EOF
 
     /**
      * @dataProvider resources
+     * @psalm-param closed-resource|resource $resource
      */
     public function testConstraintIsResourceTypeEvaluatesCorrectlyWithResources($resource): void
     {
@@ -87,7 +88,7 @@ EOF
         }
     }
 
-    public function resources()
+    public function resources(): array
     {
         $fh = fopen(__FILE__, 'r');
         fclose($fh);
@@ -133,12 +134,8 @@ EOF
 
     /**
      * Removes spaces in front of newlines.
-     *
-     * @param string $string
-     *
-     * @return string
      */
-    private function trimnl($string)
+    private function trimnl(string $string): string
     {
         return preg_replace('/[ ]*\n/', "\n", $string);
     }

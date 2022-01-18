@@ -18,9 +18,7 @@ use PHPUnit\TextUI\XmlConfiguration\Directory;
 final class Html
 {
     private Directory $target;
-
     private int $lowUpperBound;
-
     private int $highLowerBound;
 
     public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound)

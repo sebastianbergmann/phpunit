@@ -32,7 +32,7 @@ final class IsJsonTest extends ConstraintTestCase
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testEvaluate($expected, $jsonOther): void
+    public function testEvaluate(bool $expected, string $jsonOther): void
     {
         $constraint = new IsJson;
 

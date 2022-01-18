@@ -20,13 +20,9 @@ use SebastianBergmann\Exporter\Exporter;
 final class AssertionMade implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private mixed $value;
-
     private Constraint\Constraint $constraint;
-
     private string $message;
-
     private bool $hasFailed;
 
     public function __construct(Telemetry\Info $telemetryInfo, mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed)

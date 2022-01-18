@@ -16,9 +16,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 final class Variable
 {
     private string $name;
-
     private mixed $value;
-
     private bool $force;
 
     public function __construct(string $name, $value, bool $force)

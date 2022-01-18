@@ -10,9 +10,9 @@
 namespace PHPUnit\Event;
 
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\TestSuite\Result;
+use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
-use PHPUnit\Framework\TestResult;
-use PHPUnit\Framework\TestSuite;
 use PHPUnit\TextUI\Configuration\Configuration;
 use SebastianBergmann\GlobalState\Snapshot;
 
@@ -50,7 +50,7 @@ interface Emitter
 
     public function testFailed(Code\Test $test, Throwable $throwable): void;
 
-    public function testFinished(Code\Test $test): void;
+    public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
 
     public function testOutputPrinted(Code\Test $test, string $output): void;
 
@@ -62,7 +62,7 @@ interface Emitter
 
     public function testAborted(Code\Test $test, Throwable $throwable): void;
 
-    public function testSkipped(Code\Test $test, string $message): void;
+    public function testSkipped(Code\Test $test, ?Throwable $throwable, string $message): void;
 
     public function testPrepared(Code\Test $test): void;
 
@@ -126,6 +126,12 @@ interface Emitter
      */
     public function testAfterLastTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
 
+    public function testUsedDeprecatedPhpunitFeature(Code\Test $test, string $message): void;
+
+    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message, string $file, int $line): void;
+
+    public function testUsedDeprecatedFeature(Code\Test $test, string $message, string $file, int $line): void;
+
     /**
      * @psalm-param class-string $className
      */
@@ -164,9 +170,11 @@ interface Emitter
 
     public function testSuiteLoaded(TestSuite $testSuite): void;
 
+    public function testSuiteFiltered(TestSuite $testSuite): void;
+
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void;
 
     public function testSuiteStarted(TestSuite $testSuite): void;
 
-    public function testSuiteFinished(TestSuite $testSuite, TestResult $result): void;
+    public function testSuiteFinished(TestSuite $testSuite, Result $result): void;
 }

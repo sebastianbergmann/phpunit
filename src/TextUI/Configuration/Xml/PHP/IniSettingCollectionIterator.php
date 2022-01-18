@@ -23,7 +23,6 @@ final class IniSettingCollectionIterator implements Countable, Iterator
      * @psalm-var list<IniSetting>
      */
     private array $iniSettings;
-
     private ?int $position = null;
 
     public function __construct(IniSettingCollection $iniSettings)

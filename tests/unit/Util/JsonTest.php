@@ -24,9 +24,10 @@ final class JsonTest extends TestCase
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testCanonicalize($actual, $expected, $expectError): void
+    public function testCanonicalize(string $actual, string $expected, bool $expectError): void
     {
         [$error, $canonicalized] = Json::canonicalize($actual);
+
         $this->assertEquals($expectError, $error);
 
         if (!$expectError) {
@@ -52,7 +53,7 @@ final class JsonTest extends TestCase
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
-    public function testPrettify($actual, $expected): void
+    public function testPrettify(string $actual, string $expected): void
     {
         $this->assertEquals($expected, Json::prettify($actual));
     }
@@ -70,7 +71,7 @@ final class JsonTest extends TestCase
      * @covers \PHPUnit\Util\Json::prettify
      * @dataProvider prettifyExceptionProvider
      */
-    public function testPrettifyException($json): void
+    public function testPrettifyException(string $json): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Cannot prettify invalid json');

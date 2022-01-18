@@ -43,7 +43,7 @@ final class RegularExpressionTest extends TestCase
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws Exception
      */
-    public function testValidRegex($pattern, $subject, $return): void
+    public function testValidRegex(string $pattern, string $subject, int $return): void
     {
         $this->assertEquals($return, RegularExpression::safeMatch($pattern, $subject));
     }
@@ -55,7 +55,7 @@ final class RegularExpressionTest extends TestCase
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws Exception
      */
-    public function testInvalidRegex($pattern, $subject): void
+    public function testInvalidRegex(string $pattern, string $subject): void
     {
         $this->assertFalse(RegularExpression::safeMatch($pattern, $subject));
     }

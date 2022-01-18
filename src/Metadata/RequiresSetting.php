@@ -16,7 +16,6 @@ namespace PHPUnit\Metadata;
 final class RequiresSetting extends Metadata
 {
     private string $setting;
-
     private string $value;
 
     protected function __construct(int $level, string $setting, string $value)

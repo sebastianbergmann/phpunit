@@ -20,7 +20,6 @@ use PHPUnit\Event\Telemetry;
 final class Prepared implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private Code\Test $test;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)

@@ -14,174 +14,97 @@ namespace PHPUnit\TextUI\Configuration;
  */
 final class Configuration
 {
+    public const COLOR_NEVER = 'never';
+
+    public const COLOR_AUTO = 'auto';
+
+    public const COLOR_ALWAYS = 'always';
+
+    public const COLOR_DEFAULT = self::COLOR_NEVER;
     private ?string $configurationFile;
-
     private ?string $bootstrap;
-
     private bool $cacheResult;
-
     private ?string $cacheDirectory;
-
     private ?string $coverageCacheDirectory;
-
     private bool $pathCoverage;
-
     private ?string $coverageClover;
-
     private ?string $coverageCobertura;
-
     private ?string $coverageCrap4j;
-
     private int $coverageCrap4jThreshold;
-
     private ?string $coverageHtml;
-
     private int $coverageHtmlLowUpperBound;
-
     private int $coverageHtmlHighLowerBound;
-
     private ?string $coveragePhp;
-
     private ?string $coverageText;
-
     private bool $coverageTextShowUncoveredFiles;
-
     private bool $coverageTextShowOnlySummary;
-
     private ?string $coverageXml;
-
     private string $testResultCacheFile;
-
     private bool $ignoreDeprecatedCodeUnitsFromCodeCoverage;
-
     private bool $disableCodeCoverageIgnore;
-
     private bool $failOnEmptyTestSuite;
-
     private bool $failOnIncomplete;
-
     private bool $failOnRisky;
-
     private bool $failOnSkipped;
-
     private bool $failOnWarning;
-
     private bool $outputToStandardErrorStream;
-
     private int|string $columns;
-
     private bool $tooFewColumnsRequested;
-
     private bool $loadPharExtensions;
-
     private ?string $pharExtensionDirectory;
-
     private bool $backupGlobals;
-
     private bool $backupStaticProperties;
-
     private bool $beStrictAboutChangesToGlobalState;
-
     private bool $colors;
-
     private bool $convertDeprecationsToExceptions;
-
     private bool $convertErrorsToExceptions;
-
     private bool $convertNoticesToExceptions;
-
     private bool $convertWarningsToExceptions;
-
     private bool $processIsolation;
-
     private bool $stopOnDefect;
-
     private bool $stopOnError;
-
     private bool $stopOnFailure;
-
     private bool $stopOnWarning;
-
     private bool $stopOnIncomplete;
-
     private bool $stopOnRisky;
-
     private bool $stopOnSkipped;
-
     private bool $enforceTimeLimit;
-
     private int $defaultTimeLimit;
-
     private int $timeoutForSmallTests;
-
     private int $timeoutForMediumTests;
-
     private int $timeoutForLargeTests;
-
     private bool $reportUselessTests;
-
     private bool $strictCoverage;
-
     private bool $disallowTestOutput;
-
     private bool $verbose;
-
     private bool $reverseDefectList;
-
     private bool $requireCoverageMetadata;
-
     private bool $registerMockObjectsFromTestArgumentsRecursively;
-
     private bool $noInteraction;
-
     private int $executionOrder;
-
     private int $executionOrderDefects;
-
     private bool $resolveDependencies;
-
     private ?string $logfileText;
-
     private ?string $logfileTeamcity;
-
     private ?string $logfileJunit;
-
     private ?string $logfileTestdoxHtml;
-
     private ?string $logfileTestdoxText;
-
     private ?string $logfileTestdoxXml;
-
     private ?string $plainTextTrace;
-
     private ?array $testsCovering;
-
     private ?array $testsUsing;
-
     private bool $defaultOutput;
-
     private bool $teamCityOutput;
-
     private bool $testDoxOutput;
-
     private int $repeat;
-
     private ?string $filter;
-
     private ?array $groups;
-
     private ?array $excludeGroups;
-
     private array $testdoxGroups;
-
     private array $testdoxExcludeGroups;
-
     private ?string $includePath;
-
     private int $randomOrderSeed;
-
     private ?string $xmlValidationErrors;
-
     private bool $includeUncoveredFiles;
 
     /**

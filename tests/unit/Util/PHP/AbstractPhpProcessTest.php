@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -16,10 +17,7 @@ use PHPUnit\Framework\TestCase;
  */
 final class AbstractPhpProcessTest extends TestCase
 {
-    /**
-     * @var AbstractPhpProcess|\PHPUnit\Framework\MockObject\MockObject
-     */
-    private $phpProcess;
+    private AbstractPhpProcess|MockObject|null $phpProcess;
 
     protected function setUp(): void
     {

@@ -27,7 +27,6 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\InvalidArgumentException;
 use PHPUnit\Framework\RiskyTest;
-use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
@@ -48,48 +47,18 @@ use Throwable;
  */
 class DefaultResultPrinter extends Printer implements ResultPrinter
 {
-    public const EVENT_TEST_START = 0;
-
-    public const EVENT_TEST_END = 1;
-
-    public const EVENT_TESTSUITE_START = 2;
-
-    public const EVENT_TESTSUITE_END = 3;
-
-    public const COLOR_NEVER = 'never';
-
-    public const COLOR_AUTO = 'auto';
-
-    public const COLOR_ALWAYS = 'always';
-
-    public const COLOR_DEFAULT = self::COLOR_NEVER;
-
-    private const AVAILABLE_COLORS = [self::COLOR_NEVER, self::COLOR_AUTO, self::COLOR_ALWAYS];
-
-    protected int $column = 0;
-
-    protected ?int $maxColumn = null;
-
+    protected int $column          = 0;
+    protected ?int $maxColumn      = null;
     protected bool $lastTestFailed = false;
-
-    protected int $numAssertions = 0;
-
-    protected int $numTests = -1;
-
-    protected int $numTestsRun = 0;
-
-    protected ?int $numTestsWidth = null;
-
-    protected bool $colors = false;
-
-    protected bool $verbose = false;
-
+    protected int $numAssertions   = 0;
+    protected int $numTests        = -1;
+    protected int $numTestsRun     = 0;
+    protected ?int $numTestsWidth  = null;
+    protected bool $colors         = false;
+    protected bool $verbose        = false;
     private int $numberOfColumns;
-
     private bool $reverse;
-
     private bool $defectListPrinted = false;
-
     private Timer $timer;
 
     /**
@@ -105,7 +74,7 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
         $maxNumberOfColumns = (new Console)->getNumberOfColumns();
 
-        if ($numberOfColumns === 'max' || ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns)) {
+        if ($numberOfColumns !== 80 && $numberOfColumns > $maxNumberOfColumns) {
             $numberOfColumns = $maxNumberOfColumns;
         }
 
@@ -524,14 +493,5 @@ class DefaultResultPrinter extends Printer implements ResultPrinter
 
             $first = false;
         }
-    }
-
-    private function describe(Test $test): string
-    {
-        if ($test instanceof SelfDescribing) {
-            return $test->toString();
-        }
-
-        return $test::class;
     }
 }

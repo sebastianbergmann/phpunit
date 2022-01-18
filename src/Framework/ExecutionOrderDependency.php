@@ -23,12 +23,9 @@ use PHPUnit\Metadata\DependsOnMethod;
  */
 final class ExecutionOrderDependency
 {
-    private string $className = '';
-
+    private string $className  = '';
     private string $methodName = '';
-
     private bool $shallowClone;
-
     private bool $deepClone;
 
     public static function invalid(): self

@@ -26,7 +26,6 @@ use function uniqid;
 use function unlink;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
 use stdClass;
 
@@ -47,28 +46,28 @@ final class XmlConfigurationTest extends TestCase
     {
         $phpunit = $this->configuration('configuration.colors.true.xml')->phpunit();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_AUTO, $phpunit->colors());
+        $this->assertEquals(\PHPUnit\TextUI\Configuration\Configuration::COLOR_AUTO, $phpunit->colors());
     }
 
     public function testShouldReadColorsWhenFalseInConfigurationFile(): void
     {
         $phpunit = $this->configuration('configuration.colors.false.xml')->phpunit();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $phpunit->colors());
+        $this->assertEquals(\PHPUnit\TextUI\Configuration\Configuration::COLOR_NEVER, $phpunit->colors());
     }
 
     public function testShouldReadColorsWhenEmptyInConfigurationFile(): void
     {
         $phpunit = $this->configuration('configuration.colors.empty.xml')->phpunit();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $phpunit->colors());
+        $this->assertEquals(\PHPUnit\TextUI\Configuration\Configuration::COLOR_NEVER, $phpunit->colors());
     }
 
     public function testShouldReadColorsWhenInvalidInConfigurationFile(): void
     {
         $phpunit = $this->configuration('configuration.colors.invalid.xml')->phpunit();
 
-        $this->assertEquals(DefaultResultPrinter::COLOR_NEVER, $phpunit->colors());
+        $this->assertEquals(\PHPUnit\TextUI\Configuration\Configuration::COLOR_NEVER, $phpunit->colors());
     }
 
     public function testInvalidConfigurationGeneratesValidationErrors(): void
@@ -90,10 +89,8 @@ final class XmlConfigurationTest extends TestCase
      * @dataProvider configurationRootOptionsProvider
      *
      * @group test-reorder
-     *
-     * @param bool|int|string $expected
      */
-    public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, $expected): void
+    public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, bool|int|string $expected): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . uniqid('', true) . '.xml';
         $xml         = "<phpunit {$optionName}='{$optionValue}'></phpunit>" . PHP_EOL;

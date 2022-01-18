@@ -26,10 +26,8 @@ final class Parameters implements ParametersRule
     /**
      * @psalm-var list<Constraint>
      */
-    private array $parameters = [];
-
+    private array $parameters           = [];
     private ?BaseInvocation $invocation = null;
-
     private null|bool|ExpectationFailedException $parameterVerificationResult;
 
     /**

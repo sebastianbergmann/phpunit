@@ -21,9 +21,7 @@ use PHPUnit\Event\Telemetry;
 final class OutputPrinted implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private Code\Test $test;
-
     private string $output;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, string $output)

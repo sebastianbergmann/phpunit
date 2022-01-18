@@ -28,16 +28,11 @@ use PHPUnit\Framework\TestFailure;
 final class Matcher
 {
     private InvocationOrder $invocationRule;
-
-    private ?string $afterMatchBuilderId = null;
-
+    private ?string $afterMatchBuilderId     = null;
     private bool $afterMatchBuilderIsInvoked = false;
-
-    private ?MethodName $methodNameRule = null;
-
-    private ?ParametersRule $parametersRule = null;
-
-    private ?Stub $stub = null;
+    private ?MethodName $methodNameRule      = null;
+    private ?ParametersRule $parametersRule  = null;
+    private ?Stub $stub                      = null;
 
     public function __construct(InvocationOrder $rule)
     {

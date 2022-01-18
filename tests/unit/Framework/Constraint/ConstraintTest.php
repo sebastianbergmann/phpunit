@@ -48,7 +48,7 @@ final class ConstraintTest extends ConstraintTestCase
                 parent::fail($other, $description, $comparisonFailure);
             }
 
-            final protected function additionalFailureDescription($other): string
+            final protected function additionalFailureDescription(mixed $other): string
             {
                 return parent::additionalFailureDescription($other);
             }
@@ -63,12 +63,12 @@ final class ConstraintTest extends ConstraintTestCase
                 return parent::toStringInContext($operator, $role);
             }
 
-            final protected function failureDescriptionInContext(Operator $operator, $role, $other): string
+            final protected function failureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
             {
                 return parent::failureDescriptionInContext($operator, $role, $other);
             }
 
-            final public function exposedMatches($other): bool
+            final public function exposedMatches(mixed $other): bool
             {
                 return $this->matches($other);
             }
@@ -83,27 +83,27 @@ final class ConstraintTest extends ConstraintTestCase
                 return $this->exporter();
             }
 
-            final public function exposedFail($other, $description, ComparisonFailure $comparisonFailure = null): void
+            final public function exposedFail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): void
             {
                 $this->fail($other, $description, $comparisonFailure);
             }
 
-            final public function exposedAdditionalFailureDescription($other): string
+            final public function exposedAdditionalFailureDescription(mixed $other): string
             {
                 return $this->additionalFailureDescription($other);
             }
 
-            final public function exposedFailureDescription($other): string
+            final public function exposedFailureDescription(mixed $other): string
             {
                 return $this->failureDescription($other);
             }
 
-            final public function exposedToStringInContext(Operator $operator, $role): string
+            final public function exposedToStringInContext(Operator $operator, mixed $role): string
             {
                 return $this->toStringInContext($operator, $role);
             }
 
-            final public function exposedFailureDescriptionInContext(Operator $operator, $role, $other): string
+            final public function exposedFailureDescriptionInContext(Operator $operator, mixed $role, mixed $other): string
             {
                 return $this->failureDescriptionInContext($operator, $role, $other);
             }

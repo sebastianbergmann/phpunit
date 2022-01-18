@@ -20,10 +20,8 @@ use SebastianBergmann\CodeCoverage\Filter;
 final class CodeCoverage
 {
     private static ?\SebastianBergmann\CodeCoverage\CodeCoverage $instance = null;
-
-    private static ?Driver $driver = null;
-
-    private static bool $collecting = false;
+    private static ?Driver $driver                                         = null;
+    private static bool $collecting                                        = false;
 
     /**
      * @throws Exception

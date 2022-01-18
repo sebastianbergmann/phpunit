@@ -65,10 +65,8 @@ final class Application
     /**
      * @psalm-var array<string,mixed>
      */
-    private array $longOptions = [];
-
-    private bool $versionStringPrinted = false;
-
+    private array $longOptions                  = [];
+    private bool $versionStringPrinted          = false;
     private ?XmlConfiguration $xmlConfiguration = null;
 
     /**
@@ -100,7 +98,7 @@ final class Application
             $this->execute(new ShowHelpCommand(false));
         }
 
-        Event\Facade::emitter()->testSuiteLoaded($suite);
+        Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
 
         $runner = new TestRunner;
 

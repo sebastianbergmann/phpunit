@@ -31,7 +31,6 @@ use DOMNodeList;
 use DOMXPath;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
-use PHPUnit\TextUI\DefaultResultPrinter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory as FilterDirectory;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection as FilterDirectoryCollection;
@@ -247,7 +246,7 @@ final class Loader
         //  - C:/windows
         //  - c:/windows
         if (defined('PHP_WINDOWS_VERSION_BUILD') &&
-            ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]\:[/\\\]#i', substr($path, 0, 3))))) {
+            ($path[0] === '\\' || (strlen($path) >= 3 && preg_match('#^[A-Z]:[/\\\]#i', substr($path, 0, 3))))) {
             return $path;
         }
 
@@ -832,15 +831,15 @@ final class Loader
 
     private function getColors(DOMDocument $document): string
     {
-        $colors = DefaultResultPrinter::COLOR_DEFAULT;
+        $colors = \PHPUnit\TextUI\Configuration\Configuration::COLOR_DEFAULT;
 
         if ($document->documentElement->hasAttribute('colors')) {
             /* only allow boolean for compatibility with previous versions
               'always' only allowed from command line */
             if ($this->getBoolean($document->documentElement->getAttribute('colors'), false)) {
-                $colors = DefaultResultPrinter::COLOR_AUTO;
+                $colors = \PHPUnit\TextUI\Configuration\Configuration::COLOR_AUTO;
             } else {
-                $colors = DefaultResultPrinter::COLOR_NEVER;
+                $colors = \PHPUnit\TextUI\Configuration\Configuration::COLOR_NEVER;
             }
         }
 

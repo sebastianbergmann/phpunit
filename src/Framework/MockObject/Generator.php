@@ -15,6 +15,7 @@ use const WSDL_CACHE_NONE;
 use function array_merge;
 use function array_pop;
 use function array_unique;
+use function assert;
 use function class_exists;
 use function count;
 use function explode;
@@ -75,7 +76,6 @@ final class Generator
         '__clone'         => true,
         '__halt_compiler' => true,
     ];
-
     private static array $cache = [];
 
     /**
@@ -609,7 +609,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function getObject(MockType $mockClass, $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true): object
+    private function getObject(MockType $mockClass, string $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
 
@@ -641,11 +641,15 @@ final class Generator
 
         if ($callOriginalMethods) {
             if (!is_object($proxyTarget)) {
+                assert(class_exists($type));
+
                 if (count($arguments) === 0) {
                     $proxyTarget = new $type;
                 } else {
+                    $class = new ReflectionClass($type);
+
                     try {
-                        $class = new ReflectionClass($type);
+                        $proxyTarget = $class->newInstanceArgs($arguments);
                         // @codeCoverageIgnoreStart
                     } catch (\ReflectionException $e) {
                         throw new ReflectionException(
@@ -655,8 +659,6 @@ final class Generator
                         );
                     }
                     // @codeCoverageIgnoreEnd
-
-                    $proxyTarget = $class->newInstanceArgs($arguments);
                 }
             }
 

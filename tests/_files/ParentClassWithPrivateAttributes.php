@@ -12,6 +12,5 @@ namespace PHPUnit\TestFixture;
 class ParentClassWithPrivateAttributes
 {
     private static $privateStaticParentAttribute = 'foo';
-
-    private $privateParentAttribute = 'bar';
+    private $privateParentAttribute              = 'bar';
 }

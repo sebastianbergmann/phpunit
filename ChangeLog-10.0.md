@@ -9,9 +9,10 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4502](https://github.com/sebastianbergmann/phpunit/issues/4502): Support PHP 8 attributes for adding metadata to test classes and test methods as well as tested code units
 * [#4641](https://github.com/sebastianbergmann/phpunit/issues/4641): `assertStringEqualsStringIgnoringLineEndings()` and `assertStringContainsStringIgnoringLineEndings()`
 * [#4650](https://github.com/sebastianbergmann/phpunit/issues/4650): Support dist file name `phpunit.dist.xml`
-* [#4657](https://github.com/sebastianbergmann/phpunit/pull/4657): Add `--exclude-testsuite` option
+* [#4657](https://github.com/sebastianbergmann/phpunit/pull/4657): `--exclude-testsuite` option
 * [#4709](https://github.com/sebastianbergmann/phpunit/issues/4709): Support `never` type in test double code generator
 * [#4737](https://github.com/sebastianbergmann/phpunit/issues/4737): Support intersection types in test double code generator
+* [#4818](https://github.com/sebastianbergmann/phpunit/pull/4818): `assertArrayIsList`
 * `@excludeGlobalVariableFromBackup variable` annotation for excluding a global variable from the backup/restore of global and super-global variables
 * `#[ExcludeGlobalVariableFromBackup('variable')]` attribute for excluding a global variable from the backup/restore of global and super-global variables
 * `@excludeStaticPropertyFromBackup className propertyName` annotation for excluding a static property from the backup/restore of static properties in user-defined classes

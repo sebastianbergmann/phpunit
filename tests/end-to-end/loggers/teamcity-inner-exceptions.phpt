@@ -1,5 +1,5 @@
 --TEST--
-phpunit --teamcity ../../_files/ExceptionStackTest.php
+phpunit --log-teamcity php://stdout ../../_files/ExceptionStackTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
@@ -19,13 +19,13 @@ PHPUnit\TextUI\Application::main();
 
 ##teamcity[testStarted name='testPrintingChildException' locationHint='php_qn://%s%etests%e_files%eExceptionStackTest.php::\PHPUnit\TestFixture\ExceptionStackTest::testPrintingChildException' flowId='%d']
 
-##teamcity[testFailed name='testPrintingChildException' message='Child exception|nmessage|nFailed asserting that two arrays are equal.|n--- Expected|n+++ Actual|n@@ @@|n Array (|n-    0 => 1|n+    0 => 2|n )|n' details=' %s_files%eExceptionStackTest.php:%d|n |n Caused by|n message|n Failed asserting that two arrays are equal.|n --- Expected|n +++ Actual|n @@ @@|n  Array (|n -    0 => 1|n +    0 => 2|n  )|n |n %s_files%eExceptionStackTest.php:%d|n ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testPrintingChildException' message='Child exception|nmessage|nFailed asserting that two arrays are equal.|n--- Expected|n+++ Actual|n@@ @@|n Array (|n-    0 => 1|n+    0 => 2|n )|n' details='%s%etests%e_files%eExceptionStackTest.php:27|n|nCaused by|nmessage|nFailed asserting that two arrays are equal.|n--- Expected|n+++ Actual|n@@ @@|n Array (|n-    0 => 1|n+    0 => 2|n )|n|n%s%etests%e_files%eExceptionStackTest.php:23|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testPrintingChildException' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testNestedExceptions' locationHint='php_qn://%s%etests%e_files%eExceptionStackTest.php::\PHPUnit\TestFixture\ExceptionStackTest::testNestedExceptions' flowId='%d']
 
-##teamcity[testFailed name='testNestedExceptions' message='Exception : One' details=' %s%etests%e_files%eExceptionStackTest.php:%d|n |n Caused by|n InvalidArgumentException: Two|n |n %s%etests%e_files%eExceptionStackTest.php:%d|n |n Caused by|n Exception: Three|n |n %s%etests%e_files%eExceptionStackTest.php:%d|n ' duration='%d' flowId='%d']
+##teamcity[testFailed name='testNestedExceptions' message='Exception: One' details='%s%etests%e_files%eExceptionStackTest.php:34|n|nCaused by|nInvalidArgumentException: Two|n|n%s%etests%e_files%eExceptionStackTest.php:33|n|nCaused by|nException: Three|n|n%s%etests%e_files%eExceptionStackTest.php:33|n' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testNestedExceptions' duration='%d' flowId='%d']
 

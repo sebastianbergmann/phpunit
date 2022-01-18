@@ -55,8 +55,7 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
      * @psalm-var array<string, int> Lookup table for testname to testResults[index]
      */
     protected array $testNameResultIndex = [];
-
-    protected bool $enableOutputBuffer = false;
+    protected bool $enableOutputBuffer   = false;
 
     /**
      * @psalm-var array<string>
@@ -66,8 +65,7 @@ abstract class TestDoxPrinter extends DefaultResultPrinter
     /**
      * @psalm-var 0|positive-int
      */
-    protected int $spinState = 0;
-
+    protected int $spinState     = 0;
     protected bool $showProgress = true;
 
     /**

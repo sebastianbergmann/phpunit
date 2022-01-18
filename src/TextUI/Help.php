@@ -113,7 +113,6 @@ final class Help
             ['arg'    => '--testdox-group', 'desc' => 'Only include tests from the specified group(s)'],
             ['arg'    => '--testdox-exclude-group', 'desc' => 'Exclude tests from the specified group(s)'],
             ['arg'    => '--no-interaction', 'desc' => 'Disable TestDox progress animation'],
-            ['arg'    => '--printer <printer>', 'desc' => 'TestListener implementation to use'],
             ['spacer' => ''],
 
             ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
@@ -142,11 +141,8 @@ final class Help
         ],
 
     ];
-
     private int $lengthOfLongestOptionName = 0;
-
     private int $columnsAvailableForDescription;
-
     private ?bool $hasColor;
 
     public function __construct(?int $width = null, ?bool $withColor = null)

@@ -23,10 +23,7 @@ final class SystemTest extends TestCase
 
         $clock = new class($time) implements StopWatch
         {
-            /**
-             * @var HRTime
-             */
-            private $time;
+            private \PHPUnit\Event\Telemetry\HRTime $time;
 
             public function __construct(HRTime $time)
             {
@@ -45,7 +42,6 @@ final class SystemTest extends TestCase
         $memoryMeter = new class($memoryUsage, $peakMemoryUsage) implements MemoryMeter
         {
             private MemoryUsage $memoryUsage;
-
             private MemoryUsage $peakMemoryUsage;
 
             public function __construct(MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage)
@@ -65,12 +61,7 @@ final class SystemTest extends TestCase
             }
         };
 
-        $system = new System(
-            $clock,
-            $memoryMeter
-        );
-
-        $snapshot = $system->snapshot();
+        $snapshot = (new System($clock, $memoryMeter))->snapshot();
 
         $this->assertSame($time, $snapshot->time());
         $this->assertSame($memoryUsage, $snapshot->memoryUsage());

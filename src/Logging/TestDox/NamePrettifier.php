@@ -25,13 +25,13 @@ use function is_int;
 use function is_numeric;
 use function is_object;
 use function is_scalar;
-use function mb_strtolower;
 use function ord;
 use function preg_quote;
 use function preg_replace;
 use function range;
 use function sprintf;
 use function str_contains;
+use function str_ends_with;
 use function str_replace;
 use function str_starts_with;
 use function strlen;
@@ -57,7 +57,6 @@ final class NamePrettifier
      * @psalm-var list<string>
      */
     private array $strings = [];
-
     private bool $useColor;
 
     public function __construct(bool $useColor = false)
@@ -83,7 +82,7 @@ final class NamePrettifier
         $parts     = explode('\\', $className);
         $className = array_pop($parts);
 
-        if (substr($className, -1 * strlen('Test')) === 'Test') {
+        if (str_ends_with($className, 'Test')) {
             $className = substr($className, 0, strlen($className) - strlen('Test'));
         }
 
@@ -104,24 +103,7 @@ final class NamePrettifier
             $fullyQualifiedName = $className;
         }
 
-        $result       = '';
-        $wasLowerCase = false;
-
-        foreach (range(0, strlen($className) - 1) as $i) {
-            $isLowerCase = mb_strtolower($className[$i], 'UTF-8') === $className[$i];
-
-            if ($wasLowerCase && !$isLowerCase) {
-                $result .= ' ';
-            }
-
-            $result .= $className[$i];
-
-            if ($isLowerCase) {
-                $wasLowerCase = true;
-            } else {
-                $wasLowerCase = false;
-            }
-        }
+        $result = preg_replace('/(?<=[[:lower:]])(?=[[:upper:]])/u', ' ', $className);
 
         if ($fullyQualifiedName !== $className) {
             return $result . ' (' . $fullyQualifiedName . ')';

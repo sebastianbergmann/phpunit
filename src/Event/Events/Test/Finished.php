@@ -20,13 +20,14 @@ use PHPUnit\Event\Telemetry;
 final class Finished implements Event
 {
     private Telemetry\Info $telemetryInfo;
-
     private Code\Test $test;
+    private int $numberOfAssertionsPerformed;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, int $numberOfAssertionsPerformed)
     {
-        $this->telemetryInfo = $telemetryInfo;
-        $this->test          = $test;
+        $this->telemetryInfo               = $telemetryInfo;
+        $this->test                        = $test;
+        $this->numberOfAssertionsPerformed = $numberOfAssertionsPerformed;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -37,6 +38,11 @@ final class Finished implements Event
     public function test(): Code\Test
     {
         return $this->test;
+    }
+
+    public function numberOfAssertionsPerformed(): int
+    {
+        return $this->numberOfAssertionsPerformed;
     }
 
     public function asString(): string
