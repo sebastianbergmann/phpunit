@@ -46,7 +46,8 @@ foreach (['dom', 'json', 'libxml', 'mbstring', 'tokenizer', 'xml', 'xmlwriter'] 
     die(1);
 }
 
-if (__FILE__ === realpath($_SERVER['SCRIPT_NAME'])) {
+// allowing execution if the file is executed directly or included by a Composer bin proxy (which sets the _composer_bin_dir global)
+if (__FILE__ === realpath($_SERVER['SCRIPT_NAME']) || isset($GLOBALS['_composer_bin_dir'])) {
     $execute = true;
 } else {
     $execute = false;
@@ -99,6 +100,12 @@ if ($execute) {
     unset($execute);
 
     PHPUnit\TextUI\Command::main();
+} else {
+    fwrite(
+        STDERR,
+        'PHPUnit X.Y.Z by Sebastian Bergmann and contributors.' . PHP_EOL .
+        'The PHPUnit PHAR cannot be included as a library.' . PHP_EOL .
+    );
 }
 
 __HALT_COMPILER();
