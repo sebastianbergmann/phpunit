@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 ### Fixed
 
 * [#4799](https://github.com/sebastianbergmann/phpunit/pull/4799): Memory leaks in `PHPUnit\Framework\TestSuite` class
+* [#4857](https://github.com/sebastianbergmann/phpunit/pull/4857): Result of `debug_backtrace()` is not used correctly
 
 ## [9.5.11] - 2021-12-25
 
