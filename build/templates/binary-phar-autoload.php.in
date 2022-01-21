@@ -104,7 +104,7 @@ if ($execute) {
     fwrite(
         STDERR,
         'PHPUnit X.Y.Z by Sebastian Bergmann and contributors.' . PHP_EOL .
-        'The PHPUnit PHAR cannot be included as a library.' . PHP_EOL .
+        'The PHPUnit PHAR cannot be included as a library.' . PHP_EOL
     );
 }
 
