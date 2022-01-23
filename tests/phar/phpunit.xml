@@ -6,7 +6,8 @@
          failOnWarning="true">
     <testsuites>
         <testsuite name="default">
-            <directory>tests</directory>
+            <directory>tests/standard</directory>
+            <directory suffix="phpt">tests/phpt</directory>
         </testsuite>
     </testsuites>
 
