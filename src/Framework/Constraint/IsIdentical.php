@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use const PHP_FLOAT_EPSILON;
 use function abs;
 use function get_class;
 use function is_array;
