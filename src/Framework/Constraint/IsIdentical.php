@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use const PHP_FLOAT_EPSILON;
 use function abs;
 use function is_array;
 use function is_float;
@@ -49,7 +50,7 @@ final class IsIdentical extends Constraint
         if (is_float($this->value) && is_float($other) &&
             !is_infinite($this->value) && !is_infinite($other) &&
             !is_nan($this->value) && !is_nan($other)) {
-            $success = abs($this->value - $other) < 0.0000000001;
+            $success = abs($this->value - $other) < PHP_FLOAT_EPSILON;
         } else {
             $success = $this->value === $other;
         }
