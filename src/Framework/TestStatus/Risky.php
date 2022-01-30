@@ -25,7 +25,7 @@ final class Risky extends Known
 
     public function asInt(): int
     {
-        return 5;
+        return 1;
     }
 
     public function asString(): string

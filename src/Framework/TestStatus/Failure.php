@@ -25,7 +25,7 @@ final class Failure extends Known
 
     public function asInt(): int
     {
-        return 3;
+        return 5;
     }
 
     public function asString(): string

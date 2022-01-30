@@ -25,7 +25,7 @@ final class Warning extends Known
 
     public function asInt(): int
     {
-        return 6;
+        return 2;
     }
 
     public function asString(): string

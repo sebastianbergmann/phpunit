@@ -25,7 +25,7 @@ final class Error extends Known
 
     public function asInt(): int
     {
-        return 4;
+        return 6;
     }
 
     public function asString(): string
