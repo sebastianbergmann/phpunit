@@ -68,14 +68,14 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     public function printResult(TestResult $result): void
     {
         $this->printHeader($result);
-        $this->printErrors($result);
-        $this->printWarnings($result);
-        $this->printFailures($result);
-        $this->printRisky($result);
+        $this->printTestsWithErrors($result);
+        $this->printTestsWithWarnings($result);
+        $this->printTestsWithFailedAssertions($result);
+        $this->printRiskyTests($result);
 
         if ($this->verbose) {
-            $this->printIncompletes($result);
-            $this->printSkipped($result);
+            $this->printIncompleteTests($result);
+            $this->printSkippedTests($result);
         }
 
         $this->printFooter($result);
@@ -192,32 +192,32 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
     }
 
-    private function printErrors(TestResult $result): void
+    private function printTestsWithErrors(TestResult $result): void
     {
         $this->printDefects($result->errors(), 'error');
     }
 
-    private function printWarnings(TestResult $result): void
-    {
-        $this->printDefects($result->warnings(), 'warning');
-    }
-
-    private function printFailures(TestResult $result): void
+    private function printTestsWithFailedAssertions(TestResult $result): void
     {
         $this->printDefects($result->failures(), 'failure');
     }
 
-    private function printRisky(TestResult $result): void
+    private function printTestsWithWarnings(TestResult $result): void
+    {
+        $this->printDefects($result->warnings(), 'warning');
+    }
+
+    private function printRiskyTests(TestResult $result): void
     {
         $this->printDefects($result->risky(), 'risky test');
     }
 
-    private function printIncompletes(TestResult $result): void
+    private function printIncompleteTests(TestResult $result): void
     {
         $this->printDefects($result->notImplemented(), 'incomplete test');
     }
 
-    private function printSkipped(TestResult $result): void
+    private function printSkippedTests(TestResult $result): void
     {
         $this->printDefects($result->skipped(), 'skipped test');
     }
