@@ -23,6 +23,7 @@ use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\TextUI\ResultPrinter\ResultPrinter as ResultPrinterInterface;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
@@ -44,10 +45,10 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private int $numberOfTestsWidth;
     private int $maxColumn;
     private int $numberOfTestsRun   = 0;
-    private bool $progressWritten   = false;
     private bool $defectListPrinted = false;
     private Timer $timer;
     private int $numberOfAssertions = 0;
+    private ?TestStatus $status     = null;
 
     public function __construct(string $out, bool $verbose, bool $colors, int $numberOfColumns, bool $reverse)
     {
@@ -88,43 +89,59 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->maxColumn          = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numberOfTestsWidth);
     }
 
+    public function testSkipped(): void
+    {
+        $this->updateTestStatus(TestStatus::skipped());
+    }
+
     public function testAborted(): void
     {
-        $this->writeProgressWithColor('fg-yellow, bold', 'I');
+        $this->updateTestStatus(TestStatus::incomplete());
     }
 
     public function testConsideredRisky(): void
     {
-        $this->writeProgressWithColor('fg-yellow, bold', 'R');
-    }
-
-    public function testErrored(): void
-    {
-        $this->writeProgressWithColor('fg-red, bold', 'E');
-    }
-
-    public function testFailed(): void
-    {
-        $this->writeProgressWithColor('bg-red, fg-white', 'F');
-    }
-
-    public function testFinished(Finished $event): void
-    {
-        $this->writeProgress('.');
-
-        $this->progressWritten = false;
-
-        $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
+        $this->updateTestStatus(TestStatus::risky());
     }
 
     public function testPassedWithWarning(): void
     {
-        $this->writeProgressWithColor('fg-yellow, bold', 'W');
+        $this->updateTestStatus(TestStatus::warning());
     }
 
-    public function testSkipped(): void
+    public function testFailed(): void
     {
-        $this->writeProgressWithColor('fg-cyan, bold', 'S');
+        $this->updateTestStatus(TestStatus::failure());
+    }
+
+    public function testErrored(): void
+    {
+        $this->updateTestStatus(TestStatus::error());
+    }
+
+    public function testFinished(Finished $event): void
+    {
+        $this->updateTestStatus(TestStatus::success());
+
+        if ($this->status->isSuccess()) {
+            $this->writeProgress('.');
+        } elseif ($this->status->isSkipped()) {
+            $this->writeProgressWithColor('fg-cyan, bold', 'S');
+        } elseif ($this->status->isIncomplete()) {
+            $this->writeProgressWithColor('fg-yellow, bold', 'I');
+        } elseif ($this->status->isRisky()) {
+            $this->writeProgressWithColor('fg-yellow, bold', 'R');
+        } elseif ($this->status->isWarning()) {
+            $this->writeProgressWithColor('fg-yellow, bold', 'W');
+        } elseif ($this->status->isFailure()) {
+            $this->writeProgressWithColor('bg-red, fg-white', 'F');
+        } else {
+            $this->writeProgressWithColor('fg-red, bold', 'E');
+        }
+
+        $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
+
+        $this->status = null;
     }
 
     /**
@@ -143,6 +160,21 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
     }
 
+    private function updateTestStatus(TestStatus $status): void
+    {
+        if ($this->status === null) {
+            $this->status = $status;
+
+            return;
+        }
+
+        if ($this->status->isMoreImportantThan($status)) {
+            return;
+        }
+
+        $this->status = $status;
+    }
+
     private function writeProgressWithColor(string $color, string $progress): void
     {
         $progress = $this->colorizeTextBox($color, $progress);
@@ -152,13 +184,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     private function writeProgress(string $progress): void
     {
-        if ($this->progressWritten) {
-            return;
-        }
-
         $this->write($progress);
-
-        $this->progressWritten = true;
 
         $this->column++;
         $this->numberOfTestsRun++;
