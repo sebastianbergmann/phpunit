@@ -81,7 +81,9 @@ EOF;
              ->with($skipifSection)
              ->willReturn(['stdout' => 'skip: Reason', 'stderr' => '']);
 
+        Facade::suspend();
         $this->testCase->run(new TestResult);
+        Facade::resume();
     }
 
     public function testErrorIsTriggeredForEmptyPhptFile(): void
