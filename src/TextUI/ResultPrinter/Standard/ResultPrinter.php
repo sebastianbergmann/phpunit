@@ -121,9 +121,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     public function testFinished(Finished $event): void
     {
-        $this->updateTestStatus(TestStatus::success());
-
-        if ($this->status->isSuccess()) {
+        if ($this->status === null) {
             $this->printProgress('.');
         } elseif ($this->status->isSkipped()) {
             $this->printProgressWithColor('fg-cyan, bold', 'S');
