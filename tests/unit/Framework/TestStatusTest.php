@@ -173,10 +173,10 @@ final class TestStatusTest extends TestCase
     {
         $this->assertSame(-1, TestStatus::unknown()->asInt());
         $this->assertSame(0, TestStatus::success()->asInt());
-        $this->assertSame(1, TestStatus::risky()->asInt());
-        $this->assertSame(2, TestStatus::warning()->asInt());
-        $this->assertSame(3, TestStatus::skipped()->asInt());
-        $this->assertSame(4, TestStatus::incomplete()->asInt());
+        $this->assertSame(1, TestStatus::skipped()->asInt());
+        $this->assertSame(2, TestStatus::incomplete()->asInt());
+        $this->assertSame(3, TestStatus::risky()->asInt());
+        $this->assertSame(4, TestStatus::warning()->asInt());
         $this->assertSame(5, TestStatus::failure()->asInt());
         $this->assertSame(6, TestStatus::error()->asInt());
     }
@@ -185,10 +185,10 @@ final class TestStatusTest extends TestCase
     {
         $this->assertInstanceOf(Unknown::class, TestStatus::from(-1));
         $this->assertInstanceOf(Success::class, TestStatus::from(0));
-        $this->assertInstanceOf(Risky::class, TestStatus::from(1));
-        $this->assertInstanceOf(Warning::class, TestStatus::from(2));
-        $this->assertInstanceOf(Skipped::class, TestStatus::from(3));
-        $this->assertInstanceOf(Incomplete::class, TestStatus::from(4));
+        $this->assertInstanceOf(Skipped::class, TestStatus::from(1));
+        $this->assertInstanceOf(Incomplete::class, TestStatus::from(2));
+        $this->assertInstanceOf(Risky::class, TestStatus::from(3));
+        $this->assertInstanceOf(Warning::class, TestStatus::from(4));
         $this->assertInstanceOf(Failure::class, TestStatus::from(5));
         $this->assertInstanceOf(Error::class, TestStatus::from(6));
     }
@@ -199,22 +199,10 @@ final class TestStatusTest extends TestCase
         $this->assertFalse(TestStatus::unknown()->isMoreImportantThan(TestStatus::success()));
     }
 
-    public function testRiskyIsMoreImportantThanSuccess(): void
+    public function testSkippedIsMoreImportantThanSuccess(): void
     {
-        $this->assertTrue(TestStatus::risky()->isMoreImportantThan(TestStatus::success()));
-        $this->assertFalse(TestStatus::success()->isMoreImportantThan(TestStatus::risky()));
-    }
-
-    public function testWarningIsMoreImportantThanRisky(): void
-    {
-        $this->assertTrue(TestStatus::warning()->isMoreImportantThan(TestStatus::risky()));
-        $this->assertFalse(TestStatus::risky()->isMoreImportantThan(TestStatus::warning()));
-    }
-
-    public function testSkippedIsMoreImportantThanWarning(): void
-    {
-        $this->assertTrue(TestStatus::skipped()->isMoreImportantThan(TestStatus::warning()));
-        $this->assertFalse(TestStatus::warning()->isMoreImportantThan(TestStatus::skipped()));
+        $this->assertTrue(TestStatus::skipped()->isMoreImportantThan(TestStatus::success()));
+        $this->assertFalse(TestStatus::success()->isMoreImportantThan(TestStatus::skipped()));
     }
 
     public function testIncompleteIsMoreImportantThanSkipped(): void
@@ -223,10 +211,22 @@ final class TestStatusTest extends TestCase
         $this->assertFalse(TestStatus::skipped()->isMoreImportantThan(TestStatus::incomplete()));
     }
 
-    public function testFailureIsMoreImportantThanIncomplete(): void
+    public function testRiskyIsMoreImportantThanIncomplete(): void
     {
-        $this->assertTrue(TestStatus::failure()->isMoreImportantThan(TestStatus::incomplete()));
-        $this->assertFalse(TestStatus::incomplete()->isMoreImportantThan(TestStatus::failure()));
+        $this->assertTrue(TestStatus::risky()->isMoreImportantThan(TestStatus::incomplete()));
+        $this->assertFalse(TestStatus::incomplete()->isMoreImportantThan(TestStatus::risky()));
+    }
+
+    public function testWarningIsMoreImportantThanRisky(): void
+    {
+        $this->assertTrue(TestStatus::warning()->isMoreImportantThan(TestStatus::risky()));
+        $this->assertFalse(TestStatus::risky()->isMoreImportantThan(TestStatus::warning()));
+    }
+
+    public function testFailureIsMoreImportantThanWarning(): void
+    {
+        $this->assertTrue(TestStatus::failure()->isMoreImportantThan(TestStatus::warning()));
+        $this->assertFalse(TestStatus::warning()->isMoreImportantThan(TestStatus::failure()));
     }
 
     public function testErrorIsMoreImportantThanFailure(): void

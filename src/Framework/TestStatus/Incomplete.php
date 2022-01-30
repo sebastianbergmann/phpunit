@@ -25,7 +25,7 @@ final class Incomplete extends Known
 
     public function asInt(): int
     {
-        return 4;
+        return 2;
     }
 
     public function asString(): string

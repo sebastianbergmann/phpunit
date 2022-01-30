@@ -25,7 +25,7 @@ final class Skipped extends Known
 
     public function asInt(): int
     {
-        return 3;
+        return 1;
     }
 
     public function asString(): string

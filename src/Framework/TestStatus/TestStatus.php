@@ -21,10 +21,10 @@ abstract class TestStatus
     {
         return match ($status) {
             0       => self::success(),
-            1       => self::risky(),
-            2       => self::warning(),
-            3       => self::skipped(),
-            4       => self::incomplete(),
+            1       => self::skipped(),
+            2       => self::incomplete(),
+            3       => self::risky(),
+            4       => self::warning(),
             5       => self::failure(),
             6       => self::error(),
             default => self::unknown(),
