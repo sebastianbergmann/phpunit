@@ -124,19 +124,19 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->updateTestStatus(TestStatus::success());
 
         if ($this->status->isSuccess()) {
-            $this->writeProgress('.');
+            $this->printProgress('.');
         } elseif ($this->status->isSkipped()) {
-            $this->writeProgressWithColor('fg-cyan, bold', 'S');
+            $this->printProgressWithColor('fg-cyan, bold', 'S');
         } elseif ($this->status->isIncomplete()) {
-            $this->writeProgressWithColor('fg-yellow, bold', 'I');
+            $this->printProgressWithColor('fg-yellow, bold', 'I');
         } elseif ($this->status->isRisky()) {
-            $this->writeProgressWithColor('fg-yellow, bold', 'R');
+            $this->printProgressWithColor('fg-yellow, bold', 'R');
         } elseif ($this->status->isWarning()) {
-            $this->writeProgressWithColor('fg-yellow, bold', 'W');
+            $this->printProgressWithColor('fg-yellow, bold', 'W');
         } elseif ($this->status->isFailure()) {
-            $this->writeProgressWithColor('bg-red, fg-white', 'F');
+            $this->printProgressWithColor('bg-red, fg-white', 'F');
         } else {
-            $this->writeProgressWithColor('fg-red, bold', 'E');
+            $this->printProgressWithColor('fg-red, bold', 'E');
         }
 
         $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
@@ -175,26 +175,26 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->status = $status;
     }
 
-    private function writeProgressWithColor(string $color, string $progress): void
+    private function printProgressWithColor(string $color, string $progress): void
     {
         $progress = $this->colorizeTextBox($color, $progress);
 
-        $this->writeProgress($progress);
+        $this->printProgress($progress);
     }
 
-    private function writeProgress(string $progress): void
+    private function printProgress(string $progress): void
     {
-        $this->write($progress);
+        $this->print($progress);
 
         $this->column++;
         $this->numberOfTestsRun++;
 
         if ($this->column === $this->maxColumn || $this->numberOfTestsRun === $this->numberOfTests) {
             if ($this->numberOfTestsRun === $this->numberOfTests) {
-                $this->write(str_repeat(' ', $this->maxColumn - $this->column));
+                $this->print(str_repeat(' ', $this->maxColumn - $this->column));
             }
 
-            $this->write(
+            $this->print(
                 sprintf(
                     ' %' . $this->numberOfTestsWidth . 'd / %' .
                     $this->numberOfTestsWidth . 'd (%3s%%)',
@@ -206,7 +206,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
             if ($this->column === $this->maxColumn) {
                 $this->column = 0;
-                $this->write("\n");
+                $this->print("\n");
             }
         }
     }
@@ -214,7 +214,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private function printHeader(TestResult $result): void
     {
         if (count($result) > 0) {
-            $this->write(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
+            $this->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
         }
     }
 
@@ -257,10 +257,10 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
 
         if ($this->defectListPrinted) {
-            $this->write("\n--\n\n");
+            $this->print("\n--\n\n");
         }
 
-        $this->write(
+        $this->print(
             sprintf(
                 "There %s %d %s%s:\n",
                 ($count === 1) ? 'was' : 'were',
@@ -291,7 +291,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     private function printDefectHeader(TestFailure $defect, int $count): void
     {
-        $this->write(
+        $this->print(
             sprintf(
                 "\n%d) %s\n",
                 $count,
@@ -304,7 +304,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     {
         $e = $defect->thrownException();
 
-        $this->write((string) $e);
+        $this->print((string) $e);
 
         if ($defect->thrownException() instanceof RiskyTest) {
             $test = $defect->failedTest();
@@ -314,7 +314,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
             /** @noinspection PhpUnhandledExceptionInspection */
             $reflector = new ReflectionMethod($test::class, $test->getName(false));
 
-            $this->write(
+            $this->print(
                 sprintf(
                     '%s%s:%d%s',
                     PHP_EOL,
@@ -325,7 +325,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
             );
         } else {
             while ($e = $e->getPrevious()) {
-                $this->write("\nCaused by\n" . $e);
+                $this->print("\nCaused by\n" . $e);
             }
         }
     }
@@ -333,7 +333,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private function printFooter(TestResult $result): void
     {
         if (count($result) === 0) {
-            $this->writeWithColor(
+            $this->printWithColor(
                 'fg-black, bg-yellow',
                 'No tests executed!'
             );
@@ -342,7 +342,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
 
         if ($result->wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete()) {
-            $this->writeWithColor(
+            $this->printWithColor(
                 'fg-black, bg-green',
                 sprintf(
                     'OK (%d test%s, %d assertion%s)',
@@ -360,55 +360,55 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
         if ($result->wasSuccessful()) {
             if ($this->verbose || !$result->allHarmless()) {
-                $this->write("\n");
+                $this->print("\n");
             }
 
-            $this->writeWithColor(
+            $this->printWithColor(
                 $color,
                 'OK, but incomplete, skipped, or risky tests!'
             );
         } else {
-            $this->write("\n");
+            $this->print("\n");
 
             if ($result->errorCount()) {
                 $color = 'fg-white, bg-red';
 
-                $this->writeWithColor(
+                $this->printWithColor(
                     $color,
                     'ERRORS!'
                 );
             } elseif ($result->failureCount()) {
                 $color = 'fg-white, bg-red';
 
-                $this->writeWithColor(
+                $this->printWithColor(
                     $color,
                     'FAILURES!'
                 );
             } elseif ($result->warningCount()) {
-                $this->writeWithColor(
+                $this->printWithColor(
                     $color,
                     'WARNINGS!'
                 );
             }
         }
 
-        $this->writeCountString(count($result), 'Tests', $color, true);
-        $this->writeCountString($this->numberOfAssertions, 'Assertions', $color, true);
-        $this->writeCountString($result->errorCount(), 'Errors', $color);
-        $this->writeCountString($result->failureCount(), 'Failures', $color);
-        $this->writeCountString($result->warningCount(), 'Warnings', $color);
-        $this->writeCountString($result->skippedCount(), 'Skipped', $color);
-        $this->writeCountString($result->notImplementedCount(), 'Incomplete', $color);
-        $this->writeCountString($result->riskyCount(), 'Risky', $color);
-        $this->writeWithColor($color, '.');
+        $this->printCountString(count($result), 'Tests', $color, true);
+        $this->printCountString($this->numberOfAssertions, 'Assertions', $color, true);
+        $this->printCountString($result->errorCount(), 'Errors', $color);
+        $this->printCountString($result->failureCount(), 'Failures', $color);
+        $this->printCountString($result->warningCount(), 'Warnings', $color);
+        $this->printCountString($result->skippedCount(), 'Skipped', $color);
+        $this->printCountString($result->notImplementedCount(), 'Incomplete', $color);
+        $this->printCountString($result->riskyCount(), 'Risky', $color);
+        $this->printWithColor($color, '.');
     }
 
-    private function writeCountString(int $count, string $name, string $color, bool $always = false): void
+    private function printCountString(int $count, string $name, string $color, bool $always = false): void
     {
         static $first = true;
 
         if ($always || $count > 0) {
-            $this->writeWithColor(
+            $this->printWithColor(
                 $color,
                 sprintf(
                     '%s%s: %d',
@@ -423,12 +423,12 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
     }
 
-    private function writeWithColor(string $color, string $buffer, bool $lf = true): void
+    private function printWithColor(string $color, string $buffer, bool $lf = true): void
     {
-        $this->write($this->colorizeTextBox($color, $buffer));
+        $this->print($this->colorizeTextBox($color, $buffer));
 
         if ($lf) {
-            $this->write(PHP_EOL);
+            $this->print(PHP_EOL);
         }
     }
 

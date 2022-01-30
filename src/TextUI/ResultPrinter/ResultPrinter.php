@@ -18,5 +18,5 @@ interface ResultPrinter
 {
     public function printResult(TestResult $result): void;
 
-    public function write(string $buffer): void;
+    public function print(string $buffer): void;
 }

@@ -224,7 +224,7 @@ final class TeamCityLogger extends Printer
         }
 
         if (!empty($event->throwable()->message())) {
-            $this->write($event->throwable()->message() . "\n");
+            $this->print($event->throwable()->message() . "\n");
         }
     }
 
@@ -285,7 +285,7 @@ final class TeamCityLogger extends Printer
 
     private function writeMessage(string $eventName, array $parameters = []): void
     {
-        $this->write(
+        $this->print(
             sprintf(
                 "\n##teamcity[%s",
                 $eventName
@@ -297,7 +297,7 @@ final class TeamCityLogger extends Printer
         }
 
         foreach ($parameters as $key => $value) {
-            $this->write(
+            $this->print(
                 sprintf(
                     " %s='%s'",
                     $key,
@@ -306,7 +306,7 @@ final class TeamCityLogger extends Printer
             );
         }
 
-        $this->write("]\n");
+        $this->print("]\n");
     }
 
     /**

@@ -20,7 +20,7 @@ final class VoidPrinter implements ResultPrinter
     {
     }
 
-    public function write(string $buffer): void
+    public function print(string $buffer): void
     {
     }
 }
