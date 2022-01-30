@@ -311,6 +311,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
             assert($test instanceof TestCase);
 
+            /** @noinspection PhpUnhandledExceptionInspection */
             $reflector = new ReflectionMethod($test::class, $test->getName(false));
 
             $this->write(
