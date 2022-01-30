@@ -385,8 +385,6 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
                     'FAILURES!'
                 );
             } elseif ($result->warningCount()) {
-                $color = 'fg-black, bg-yellow';
-
                 $this->writeWithColor(
                     $color,
                     'WARNINGS!'
