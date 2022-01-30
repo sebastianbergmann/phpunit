@@ -168,4 +168,28 @@ final class TestStatusTest extends TestCase
         $this->assertSame('skipped', $status->asString());
         $this->assertSame('message', $status->message());
     }
+
+    public function testCanBeRepresentedAsIntegerValue(): void
+    {
+        $this->assertSame(-1, TestStatus::unknown()->asInt());
+        $this->assertSame(0, TestStatus::success()->asInt());
+        $this->assertSame(1, TestStatus::risky()->asInt());
+        $this->assertSame(2, TestStatus::warning()->asInt());
+        $this->assertSame(3, TestStatus::skipped()->asInt());
+        $this->assertSame(4, TestStatus::incomplete()->asInt());
+        $this->assertSame(5, TestStatus::failure()->asInt());
+        $this->assertSame(6, TestStatus::error()->asInt());
+    }
+
+    public function testCanBeCreatedFromIntegerValue(): void
+    {
+        $this->assertInstanceOf(Unknown::class, TestStatus::from(-1));
+        $this->assertInstanceOf(Success::class, TestStatus::from(0));
+        $this->assertInstanceOf(Risky::class, TestStatus::from(1));
+        $this->assertInstanceOf(Warning::class, TestStatus::from(2));
+        $this->assertInstanceOf(Skipped::class, TestStatus::from(3));
+        $this->assertInstanceOf(Incomplete::class, TestStatus::from(4));
+        $this->assertInstanceOf(Failure::class, TestStatus::from(5));
+        $this->assertInstanceOf(Error::class, TestStatus::from(6));
+    }
 }
