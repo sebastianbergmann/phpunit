@@ -192,4 +192,46 @@ final class TestStatusTest extends TestCase
         $this->assertInstanceOf(Failure::class, TestStatus::from(5));
         $this->assertInstanceOf(Error::class, TestStatus::from(6));
     }
+
+    public function testSuccessIsMoreImportantThanUnknown(): void
+    {
+        $this->assertTrue(TestStatus::success()->isMoreImportantThan(TestStatus::unknown()));
+        $this->assertFalse(TestStatus::unknown()->isMoreImportantThan(TestStatus::success()));
+    }
+
+    public function testRiskyIsMoreImportantThanSuccess(): void
+    {
+        $this->assertTrue(TestStatus::risky()->isMoreImportantThan(TestStatus::success()));
+        $this->assertFalse(TestStatus::success()->isMoreImportantThan(TestStatus::risky()));
+    }
+
+    public function testWarningIsMoreImportantThanRisky(): void
+    {
+        $this->assertTrue(TestStatus::warning()->isMoreImportantThan(TestStatus::risky()));
+        $this->assertFalse(TestStatus::risky()->isMoreImportantThan(TestStatus::warning()));
+    }
+
+    public function testSkippedIsMoreImportantThanWarning(): void
+    {
+        $this->assertTrue(TestStatus::skipped()->isMoreImportantThan(TestStatus::warning()));
+        $this->assertFalse(TestStatus::warning()->isMoreImportantThan(TestStatus::skipped()));
+    }
+
+    public function testIncompleteIsMoreImportantThanSkipped(): void
+    {
+        $this->assertTrue(TestStatus::incomplete()->isMoreImportantThan(TestStatus::skipped()));
+        $this->assertFalse(TestStatus::skipped()->isMoreImportantThan(TestStatus::incomplete()));
+    }
+
+    public function testFailureIsMoreImportantThanIncomplete(): void
+    {
+        $this->assertTrue(TestStatus::failure()->isMoreImportantThan(TestStatus::incomplete()));
+        $this->assertFalse(TestStatus::incomplete()->isMoreImportantThan(TestStatus::failure()));
+    }
+
+    public function testErrorIsMoreImportantThanFailure(): void
+    {
+        $this->assertTrue(TestStatus::error()->isMoreImportantThan(TestStatus::failure()));
+        $this->assertFalse(TestStatus::failure()->isMoreImportantThan(TestStatus::error()));
+    }
 }

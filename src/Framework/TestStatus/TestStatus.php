@@ -153,6 +153,11 @@ abstract class TestStatus
         return $this->message;
     }
 
+    public function isMoreImportantThan(self $other): bool
+    {
+        return $this->asInt() > $other->asInt();
+    }
+
     abstract public function asInt(): int;
 
     abstract public function asString(): string;
