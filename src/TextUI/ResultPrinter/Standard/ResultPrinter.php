@@ -226,7 +226,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     {
         $count = count($defects);
 
-        if ($count == 0) {
+        if ($count === 0) {
             return;
         }
 
@@ -237,10 +237,10 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->write(
             sprintf(
                 "There %s %d %s%s:\n",
-                ($count == 1) ? 'was' : 'were',
+                ($count === 1) ? 'was' : 'were',
                 $count,
                 $type,
-                ($count == 1) ? '' : 's'
+                ($count === 1) ? '' : 's'
             )
         );
 
