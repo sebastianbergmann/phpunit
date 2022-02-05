@@ -55,18 +55,9 @@ final class LogicalNot extends UnaryOperator
             return '/\\b' . preg_quote($s, '/') . '/';
         }, $positives);
 
-        if (count($matches) > 0) {
-            $nonInput = $matches[2];
-
-            $negatedString = preg_replace(
-                '/' . preg_quote($nonInput, '/') . '/',
-                preg_replace(
-                    $positives,
-                    $negatives,
-                    $nonInput
-                ),
-                $string
-            );
+        if (count($matches) === 4) {
+            $negatedNonInput = preg_replace($positives, $negatives, $matches[2]);
+            $negatedString   = $matches[1] . $negatedNonInput . $matches[3];
         } else {
             $negatedString = preg_replace(
                 $positives,
