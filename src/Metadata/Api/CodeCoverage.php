@@ -64,7 +64,7 @@ final class CodeCoverage
             $classShortcut = $metadataForClass->isCoversDefaultClass()->asArray()[0]->className();
         }
 
-        $codeUnits = CodeUnitCollection::fromArray([]);
+        $codeUnits = CodeUnitCollection::fromList();
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
@@ -151,7 +151,7 @@ final class CodeCoverage
             $classShortcut = $metadataForClass->isUsesDefaultClass()->asArray()[0]->className();
         }
 
-        $codeUnits = CodeUnitCollection::fromArray([]);
+        $codeUnits = CodeUnitCollection::fromList();
         $mapper    = new Mapper;
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
