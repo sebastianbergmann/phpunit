@@ -1820,7 +1820,6 @@ if (!function_exists('PHPUnit\Framework\assertNotSameSize')) {
 
 if (!function_exists('PHPUnit\Framework\assertStringContainsStringIgnoringLineEndings')) {
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1837,7 +1836,6 @@ if (!function_exists('PHPUnit\Framework\assertStringEqualsStringIgnoringLineEndi
     /**
      * Asserts that two strings are equal except for line endings.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit

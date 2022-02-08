@@ -1924,7 +1924,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
-     * @throws \SebastianBergmann\ObjectReflector\InvalidArgumentException
      */
     private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = []): void
     {

@@ -1637,7 +1637,6 @@ abstract class Assert
     }
 
     /**
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
     public static function assertStringContainsStringIgnoringLineEndings(string $needle, string $haystack, string $message = ''): void
@@ -1648,7 +1647,6 @@ abstract class Assert
     /**
      * Asserts that two strings are equal except for line endings.
      *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
      */
     public static function assertStringEqualsStringIgnoringLineEndings(string $expected, string $actual, string $message = ''): void
