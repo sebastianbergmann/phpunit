@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 10.0 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [10.0.0] - 2021-MM-DD
+## [10.0.0] - 2022-MM-DD
 
 ### Added
 
