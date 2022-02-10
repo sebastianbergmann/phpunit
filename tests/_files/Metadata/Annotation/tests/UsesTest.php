@@ -18,4 +18,10 @@ use PHPUnit\Framework\TestCase;
  */
 final class UsesTest extends TestCase
 {
+    /**
+     * @uses Foo::bar
+     */
+    public function testOne(): void
+    {
+    }
 }

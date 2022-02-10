@@ -363,6 +363,16 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
+    public function test_Parses_covers_annotation_on_method(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(CoversTest::class, 'testTwo')->isCovers();
+
+        $this->assertCount(1, $metadata);
+
+        $this->assertTrue($metadata->asArray()[0]->isCovers());
+        $this->assertSame('Foo::bar', $metadata->asArray()[0]->target());
+    }
+
     public function test_Parses_coversNothing_annotation_on_method(): void
     {
         $metadata = (new AnnotationParser)->forMethod(CoversTest::class, 'testOne')->isCoversNothing();
@@ -371,13 +381,23 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCoversNothing());
     }
 
-    public function test_Parses_dataProvider_annotation_on_method(): void
+    public function test_Parses_dataProvider_annotation_on_method_for_method_in_same_class(): void
     {
         $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDataProvider')->isDataProvider();
 
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isDataProvider());
         $this->assertSame(SmallTest::class, $metadata->asArray()[0]->className());
+        $this->assertSame('provider', $metadata->asArray()[0]->methodName());
+    }
+
+    public function test_Parses_dataProvider_annotation_on_method_for_method_of_other_class(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(SmallTest::class, 'testWithDataProviderExternal')->isDataProvider();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isDataProvider());
+        $this->assertSame('\\' . SmallTest::class, $metadata->asArray()[0]->className());
         $this->assertSame('provider', $metadata->asArray()[0]->methodName());
     }
 
@@ -715,5 +735,25 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(2, $metadata);
         $this->assertTrue($metadata->asArray()[1]->isGroup());
         $this->assertSame('another-ticket', $metadata->asArray()[1]->groupName());
+    }
+
+    public function test_Parses_uses_annotation_on_method(): void
+    {
+        $metadata = (new AnnotationParser)->forMethod(UsesTest::class, 'testOne')->isUses();
+
+        $this->assertCount(1, $metadata);
+
+        $this->assertTrue($metadata->asArray()[0]->isUses());
+        $this->assertSame('Foo::bar', $metadata->asArray()[0]->target());
+    }
+
+    public function test_Merges_class_level_and_method_level_annotations(): void
+    {
+        $metadata = (new AnnotationParser)->forClassAndMethod(SmallTest::class, 'testWithDataProvider');
+
+        $this->assertCount(2, $metadata);
+
+        $this->assertTrue($metadata->asArray()[0]->isGroup());
+        $this->assertTrue($metadata->asArray()[1]->isDataProvider());
     }
 }

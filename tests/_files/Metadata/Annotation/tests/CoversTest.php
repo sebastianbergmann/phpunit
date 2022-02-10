@@ -25,4 +25,11 @@ final class CoversTest extends TestCase
     public function testOne(): void
     {
     }
+
+    /**
+     * @covers Foo::bar
+     */
+    public function testTwo(): void
+    {
+    }
 }
