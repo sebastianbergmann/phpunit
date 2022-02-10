@@ -1090,9 +1090,6 @@ final class MockObjectTest extends TestCase
         $this->assertInstanceOf(stdClass::class, $stub->methodWithObjectReturnTypeDeclaration());
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testUnionReturnTypeIsDoubledCorrectly(): void
     {
         /** @var ClassWithUnionReturnTypes|MockObject $stub */
@@ -1101,9 +1098,6 @@ final class MockObjectTest extends TestCase
         $this->assertFalse($stub->returnsBoolOrInt());
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testNullableUnionReturnTypeIsDoubledCorrectly(): void
     {
         /** @var ClassWithUnionReturnTypes|MockObject $stub */
@@ -1112,9 +1106,6 @@ final class MockObjectTest extends TestCase
         $this->assertNull($stub->returnsBoolOrIntOrNull());
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testMixedReturnTypeIsDoubledCorrectly(): void
     {
         /** @var ClassWithUnionReturnTypes|MockObject $stub */
@@ -1123,9 +1114,6 @@ final class MockObjectTest extends TestCase
         $this->assertNull($stub->returnsMixed());
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testStaticReturnTypeIsDoubledCorrectly(): void
     {
         /** @var ClassWithStaticReturnTypes|Stub $stub */
@@ -1134,9 +1122,6 @@ final class MockObjectTest extends TestCase
         $this->assertInstanceOf(ClassWithStaticReturnTypes::class, $stub->returnsStatic());
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testUnionReturnTypeWithStaticIsDoubledCorrectly(): void
     {
         /** @var ClassWithStaticReturnTypes|Stub $stub */
@@ -1145,9 +1130,6 @@ final class MockObjectTest extends TestCase
         $this->assertInstanceOf(ClassWithStaticReturnTypes::class, $stub->returnsUnionWithStatic());
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testNullableStaticReturnTypeIsDoubledCorrectly(): void
     {
         /** @var ClassWithStaticReturnTypes|Stub $stub */
@@ -1170,9 +1152,6 @@ final class MockObjectTest extends TestCase
         $this->assertSame('value', $object->value());
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testMethodThatReturnsIntOrFalseCanBeStubbed(): void
     {
         $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
@@ -1188,9 +1167,6 @@ final class MockObjectTest extends TestCase
         $this->assertSame(1, $i->returnsIntOrFalse());
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testReturnValueCanBeAutomaticallyGeneratedForMethodThatReturnsIntOrFalse(): void
     {
         $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);
@@ -1198,9 +1174,6 @@ final class MockObjectTest extends TestCase
         $this->assertFalse($i->returnsIntOrFalse());
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testMethodThatReturnsBoolCanBeStubbed(): void
     {
         $i = $this->createStub(InterfaceWithMethodsThatDeclareBooleanReturnTypes::class);

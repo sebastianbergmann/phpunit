@@ -65,9 +65,6 @@ final class ObjectEqualsTest extends TestCase
         (new ObjectEquals(new ValueObjectWithEqualsMethodWithoutReturnType(1)))->evaluate(new ValueObjectWithEqualsMethodWithoutReturnType(1));
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testRejectsActualObjectWhenTheSpecifiedMethodExistsButIsDeclaredToReturnUnion(): void
     {
         $this->expectException(ComparisonMethodDoesNotDeclareBoolReturnTypeException::class);
@@ -116,9 +113,6 @@ final class ObjectEqualsTest extends TestCase
         (new ObjectEquals(new ValueObjectWithEqualsMethodThatDoesNotDeclareParameterType(1)))->evaluate(new ValueObjectWithEqualsMethodThatDoesNotDeclareParameterType(1));
     }
 
-    /**
-     * @requires PHP 8
-     */
     public function testRejectsActualObjectWhenTheSpecifiedMethodHasUnionParameterType(): void
     {
         $this->expectException(ComparisonMethodDoesNotDeclareParameterTypeException::class);
