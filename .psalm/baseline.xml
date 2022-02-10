@@ -1144,18 +1144,6 @@
   <file src="src/Util/Error/Handler.php">
     <InvalidArgument occurrences="1"/>
   </file>
-  <file src="src/Util/ExcludeList.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>list&lt;string&gt;</code>
-    </InvalidNullableReturnType>
-    <MissingThrowsDocblock occurrences="1"/>
-    <NullableReturnStatement occurrences="1">
-      <code>self::$directories</code>
-    </NullableReturnStatement>
-    <PossiblyNullIterator occurrences="1">
-      <code>self::$directories</code>
-    </PossiblyNullIterator>
-  </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
       <code>$this-&gt;getException($failures[0])</code>
