@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- *
- * @covers \PHPUnit\Util\Xml\Loader
- */
+#[CoversClass(Loader::class)]
+#[Small]
 final class LoaderTest extends TestCase
 {
     public function testCannotLoadXmlFromEmptyString(): void

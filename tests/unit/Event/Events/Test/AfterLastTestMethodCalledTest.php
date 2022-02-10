@@ -11,10 +11,9 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\Test\AfterLastTestMethodCalled
- */
+#[CoversClass(AfterLastTestMethodCalled::class)]
 final class AfterLastTestMethodCalledTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

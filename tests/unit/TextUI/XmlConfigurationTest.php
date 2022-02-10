@@ -24,14 +24,16 @@ use function putenv;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
 use stdClass;
 
-/**
- * @medium
- */
+#[Medium]
 final class XmlConfigurationTest extends TestCase
 {
     public function testExceptionIsThrownForNotExistingConfigurationFile(): void
@@ -84,12 +86,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertEquals(80, $phpunit->columns());
     }
 
-    /**
-     * @testdox Parse XML configuration root attribute $optionName = $optionValue
-     * @dataProvider configurationRootOptionsProvider
-     *
-     * @group test-reorder
-     */
+    #[DataProvider('configurationRootOptionsProvider')]
     public function testShouldParseXmlConfigurationRootAttributes(string $optionName, string $optionValue, bool|int|string $expected): void
     {
         $tmpFilename = sys_get_temp_dir() . DIRECTORY_SEPARATOR . 'phpunit.' . $optionName . uniqid('', true) . '.xml';
@@ -313,9 +310,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(TEST_FILES_PATH . 'logfile.txt', $logging->text()->target()->path());
     }
 
-    /**
-     * @testdox PHP configuration is read correctly
-     */
     public function testPHPConfigurationIsReadCorrectly(): void
     {
         $php = $this->configuration('configuration.xml')->php();
@@ -367,10 +361,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertFalse($php->envVariables()->asArray()[2]->force());
     }
 
-    /**
-     * @testdox PHP configuration is handled correctly
-     * @backupGlobals enabled
-     */
+    #[BackupGlobals(true)]
     public function testPHPConfigurationIsHandledCorrectly(): void
     {
         $savedIniHighlightKeyword = ini_get('highlight.keyword');
@@ -395,12 +386,8 @@ final class XmlConfigurationTest extends TestCase
         ini_set('highlight.keyword', $savedIniHighlightKeyword);
     }
 
-    /**
-     * @testdox handlePHPConfiguration() does not overwrite existing $ENV[] variables
-     * @backupGlobals enabled
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/1181
-     */
+    #[BackupGlobals(true)]
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/1181')]
     public function testHandlePHPConfigurationDoesNotOverwriteExistingEnvArrayVariables(): void
     {
         $_ENV['foo'] = false;
@@ -411,28 +398,8 @@ final class XmlConfigurationTest extends TestCase
         $this->assertEquals('forced', getenv('foo_force'));
     }
 
-    /**
-     * @testdox handlePHPConfiguration() does force overwritten existing $ENV[] variables
-     * @backupGlobals enabled
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/2353
-     */
-    public function testHandlePHPConfigurationDoesForceOverwrittenExistingEnvArrayVariables(): void
-    {
-        $_ENV['foo_force'] = false;
-
-        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
-
-        $this->assertEquals('forced', $_ENV['foo_force']);
-        $this->assertEquals('forced', getenv('foo_force'));
-    }
-
-    /**
-     * @testdox handlePHPConfiguration() does not overwrite variables from putenv()
-     * @backupGlobals enabled
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/1181
-     */
+    #[BackupGlobals(true)]
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/1181')]
     public function testHandlePHPConfigurationDoesNotOverwriteVariablesFromPutEnv(): void
     {
         $backupFoo = getenv('foo');
@@ -451,12 +418,8 @@ final class XmlConfigurationTest extends TestCase
         }
     }
 
-    /**
-     * @testdox handlePHPConfiguration() does overwrite variables from putenv() when forced
-     * @backupGlobals enabled
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/1181
-     */
+    #[BackupGlobals(true)]
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/1181')]
     public function testHandlePHPConfigurationDoesOverwriteVariablesFromPutEnvWhenForced(): void
     {
         putenv('foo_force=putenv');
@@ -467,9 +430,18 @@ final class XmlConfigurationTest extends TestCase
         $this->assertEquals('forced', getenv('foo_force'));
     }
 
-    /**
-     * @testdox PHPUnit configuration is read correctly
-     */
+    #[BackupGlobals(true)]
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/2353')]
+    public function testHandlePHPConfigurationDoesForceOverwrittenExistingEnvArrayVariables(): void
+    {
+        $_ENV['foo_force'] = false;
+
+        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
+
+        $this->assertEquals('forced', $_ENV['foo_force']);
+        $this->assertEquals('forced', getenv('foo_force'));
+    }
+
     public function testPHPUnitConfigurationIsReadCorrectly(): void
     {
         $phpunit = $this->configuration('configuration.xml')->phpunit();

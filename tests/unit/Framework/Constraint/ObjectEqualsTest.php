@@ -10,6 +10,8 @@
 namespace PHPUnit\Framework\Constraint;
 
 use PHPUnit\Framework\ActualValueIsNotAnObjectException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ComparisonMethodDoesNotAcceptParameterTypeException;
 use PHPUnit\Framework\ComparisonMethodDoesNotDeclareBoolReturnTypeException;
 use PHPUnit\Framework\ComparisonMethodDoesNotDeclareExactlyOneParameterException;
@@ -29,11 +31,8 @@ use PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithUnionReturnT
 use PHPUnit\TestFixture\ObjectEquals\ValueObjectWithEqualsMethodWithVoidReturnType;
 use PHPUnit\TestFixture\ObjectEquals\ValueObjectWithoutEqualsMethod;
 
-/**
- * @covers \PHPUnit\Framework\Constraint\ObjectEquals
- *
- * @small
- */
+#[CoversClass(ObjectEquals::class)]
+#[Small]
 final class ObjectEqualsTest extends TestCase
 {
     public function testAcceptsActualObjectWhenMethodSaysTheyAreEqual(): void

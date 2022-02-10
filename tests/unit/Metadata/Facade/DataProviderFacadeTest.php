@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\DataProvider;
@@ -16,9 +17,7 @@ use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 
-/**
- * @small
- */
+#[Small]
 final class DataProviderFacadeTest extends TestCase
 {
     /**

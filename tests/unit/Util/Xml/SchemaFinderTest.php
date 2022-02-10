@@ -9,14 +9,13 @@
  */
 namespace PHPUnit\Util\Xml;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 
-/**
- * @small
- *
- * @covers \PHPUnit\Util\Xml\SchemaFinder
- */
+#[CoversClass(SchemaFinder::class)]
+#[Small]
 final class SchemaFinderTest extends TestCase
 {
     public function testFindsExistingSchemaForComposerInstallation(): void

@@ -9,18 +9,17 @@
  */
 namespace PHPUnit\Framework\TestSize;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Framework\TestSize\Known
- * @covers \PHPUnit\Framework\TestSize\Large
- * @covers \PHPUnit\Framework\TestSize\Medium
- * @covers \PHPUnit\Framework\TestSize\Small
- * @covers \PHPUnit\Framework\TestSize\TestSize
- * @covers \PHPUnit\Framework\TestSize\Unknown
- *
- * @small
- */
+#[CoversClass(Known::class)]
+#[CoversClass(Large::class)]
+#[CoversClass(Medium::class)]
+#[CoversClass(Small::class)]
+#[CoversClass(TestSize::class)]
+#[CoversClass(Unknown::class)]
+#[\PHPUnit\Framework\Attributes\Small]
 final class TestSizeTest extends TestCase
 {
     public function testCanBeUnknown(): void
@@ -75,9 +74,7 @@ final class TestSizeTest extends TestCase
         $this->assertSame('large', $status->asString());
     }
 
-    /**
-     * @dataProvider comparisonProvider
-     */
+    #[DataProvider('comparisonProvider')]
     public function testTwoKnownSizesCanBeCompared(bool $expected, Known $a, Known $b): void
     {
         $this->assertSame($expected, $a->isGreaterThan($b));

@@ -10,6 +10,44 @@
 namespace PHPUnit\Metadata;
 
 use function assert;
+use PHPUnit\Framework\Attributes\After;
+use PHPUnit\Framework\Attributes\AfterClass;
+use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\BackupStaticProperties;
+use PHPUnit\Framework\Attributes\Before;
+use PHPUnit\Framework\Attributes\BeforeClass;
+use PHPUnit\Framework\Attributes\CodeCoverageIgnore;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\CoversFunction;
+use PHPUnit\Framework\Attributes\CoversNothing;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DataProviderExternal;
+use PHPUnit\Framework\Attributes\Depends;
+use PHPUnit\Framework\Attributes\DependsExternal;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Large;
+use PHPUnit\Framework\Attributes\Medium;
+use PHPUnit\Framework\Attributes\PostCondition;
+use PHPUnit\Framework\Attributes\PreCondition;
+use PHPUnit\Framework\Attributes\PreserveGlobalState;
+use PHPUnit\Framework\Attributes\RequiresFunction;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystem;
+use PHPUnit\Framework\Attributes\RequiresOperatingSystemFamily;
+use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
+use PHPUnit\Framework\Attributes\RequiresPhpunit;
+use PHPUnit\Framework\Attributes\RunClassInSeparateProcess;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Test;
+use PHPUnit\Framework\Attributes\TestDox;
+use PHPUnit\Framework\Attributes\TestWith;
+use PHPUnit\Framework\Attributes\TestWithJson;
+use PHPUnit\Framework\Attributes\Ticket;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\Attributes\UsesFunction;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\AttributeParser;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
@@ -37,54 +75,49 @@ use PHPUnit\TestFixture\Metadata\Attribute\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Attribute\TestWithTest;
 use PHPUnit\TestFixture\Metadata\Attribute\UsesTest;
 
-/**
- * @covers \PHPUnit\Framework\Attributes\After
- * @covers \PHPUnit\Framework\Attributes\AfterClass
- * @covers \PHPUnit\Framework\Attributes\BackupGlobals
- * @covers \PHPUnit\Framework\Attributes\BackupStaticProperties
- * @covers \PHPUnit\Framework\Attributes\Before
- * @covers \PHPUnit\Framework\Attributes\BeforeClass
- * @covers \PHPUnit\Framework\Attributes\CodeCoverageIgnore
- * @covers \PHPUnit\Framework\Attributes\CoversClass
- * @covers \PHPUnit\Framework\Attributes\CoversFunction
- * @covers \PHPUnit\Framework\Attributes\CoversNothing
- * @covers \PHPUnit\Framework\Attributes\DataProvider
- * @covers \PHPUnit\Framework\Attributes\DataProviderExternal
- * @covers \PHPUnit\Framework\Attributes\Depends
- * @covers \PHPUnit\Framework\Attributes\DependsExternal
- * @covers \PHPUnit\Framework\Attributes\DoesNotPerformAssertions
- * @covers \PHPUnit\Framework\Attributes\Group
- * @covers \PHPUnit\Framework\Attributes\Large
- * @covers \PHPUnit\Framework\Attributes\Medium
- * @covers \PHPUnit\Framework\Attributes\PostCondition
- * @covers \PHPUnit\Framework\Attributes\PreCondition
- * @covers \PHPUnit\Framework\Attributes\PreserveGlobalState
- * @covers \PHPUnit\Framework\Attributes\RequiresFunction
- * @covers \PHPUnit\Framework\Attributes\RequiresOperatingSystem
- * @covers \PHPUnit\Framework\Attributes\RequiresOperatingSystemFamily
- * @covers \PHPUnit\Framework\Attributes\RequiresPhp
- * @covers \PHPUnit\Framework\Attributes\RequiresPhpExtension
- * @covers \PHPUnit\Framework\Attributes\RequiresPhpunit
- * @covers \PHPUnit\Framework\Attributes\RunClassInSeparateProcess
- * @covers \PHPUnit\Framework\Attributes\RunInSeparateProcess
- * @covers \PHPUnit\Framework\Attributes\RunTestsInSeparateProcesses
- * @covers \PHPUnit\Framework\Attributes\Small
- * @covers \PHPUnit\Framework\Attributes\Test
- * @covers \PHPUnit\Framework\Attributes\TestDox
- * @covers \PHPUnit\Framework\Attributes\TestWith
- * @covers \PHPUnit\Framework\Attributes\TestWithJson
- * @covers \PHPUnit\Framework\Attributes\Ticket
- * @covers \PHPUnit\Framework\Attributes\UsesClass
- * @covers \PHPUnit\Framework\Attributes\UsesFunction
- * @covers \PHPUnit\Metadata\Parser\AttributeParser
- *
- * @small
- */
+#[CoversClass(After::class)]
+#[CoversClass(AfterClass::class)]
+#[CoversClass(BackupGlobals::class)]
+#[CoversClass(BackupStaticProperties::class)]
+#[CoversClass(Before::class)]
+#[CoversClass(BeforeClass::class)]
+#[CoversClass(CodeCoverageIgnore::class)]
+#[CoversClass(CoversClass::class)]
+#[CoversClass(CoversFunction::class)]
+#[CoversClass(CoversNothing::class)]
+#[CoversClass(DataProvider::class)]
+#[CoversClass(DataProviderExternal::class)]
+#[CoversClass(Depends::class)]
+#[CoversClass(DependsExternal::class)]
+#[CoversClass(DoesNotPerformAssertions::class)]
+#[CoversClass(Group::class)]
+#[CoversClass(Large::class)]
+#[CoversClass(Medium::class)]
+#[CoversClass(PostCondition::class)]
+#[CoversClass(PreCondition::class)]
+#[CoversClass(PreserveGlobalState::class)]
+#[CoversClass(RequiresFunction::class)]
+#[CoversClass(RequiresOperatingSystem::class)]
+#[CoversClass(RequiresOperatingSystemFamily::class)]
+#[CoversClass(RequiresPhp::class)]
+#[CoversClass(RequiresPhpExtension::class)]
+#[CoversClass(RequiresPhpunit::class)]
+#[CoversClass(RunClassInSeparateProcess::class)]
+#[CoversClass(RunInSeparateProcess::class)]
+#[CoversClass(RunTestsInSeparateProcesses::class)]
+#[CoversClass(Small::class)]
+#[CoversClass(Test::class)]
+#[CoversClass(TestDox::class)]
+#[CoversClass(TestWith::class)]
+#[CoversClass(TestWithJson::class)]
+#[CoversClass(Ticket::class)]
+#[CoversClass(UsesClass::class)]
+#[CoversClass(UsesFunction::class)]
+#[CoversClass(AttributeParser::class)]
+#[Small]
 final class AttributeParserTest extends TestCase
 {
-    /**
-     * @testdox Parses #[BackupGlobals] attribute on class
-     */
+    #[TestDox('Parses #[BackupGlobals] attribute on class')]
     public function test_parses_BackupGlobals_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(BackupGlobalsTest::class)->isBackupGlobals();
@@ -94,9 +127,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses #[BackupStaticProperties] attribute on class
-     */
+    #[TestDox('Parses #[BackupStaticProperties] attribute on class')]
     public function test_parses_BackupStaticProperties_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(BackupStaticPropertiesTest::class)->isBackupStaticProperties();
@@ -106,9 +137,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses #[CodeCoverageIgnore] attribute on class
-     */
+    #[TestDox('Parses #[CodeCoverageIgnore] attribute on class')]
     public function test_parses_CodeCoverageIgnore_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(Example::class)->isCodeCoverageIgnore();
@@ -117,9 +146,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
-    /**
-     * @testdox Parses #[CoversClass] attribute on class
-     */
+    #[TestDox('Parses #[CoversClass] attribute on class')]
     public function test_parses_CoversClass_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(CoversTest::class)->isCoversClass();
@@ -129,9 +156,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
     }
 
-    /**
-     * @testdox Parses #[CoversFunction] attribute on class
-     */
+    #[TestDox('Parses #[CoversFunction] attribute on class')]
     public function test_parses_CoversFunction_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(CoversTest::class)->isCoversFunction();
@@ -141,9 +166,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('f', $metadata->asArray()[0]->functionName());
     }
 
-    /**
-     * @testdox Parses #[CoversNothing] attribute on class
-     */
+    #[TestDox('Parses #[CoversNothing] attribute on class')]
     public function test_parses_CoversNothing_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(CoversTest::class)->isCoversNothing();
@@ -152,9 +175,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCoversNothing());
     }
 
-    /**
-     * @testdox Parses #[DoesNotPerformAssertions] attribute on class
-     */
+    #[TestDox('Parses #[DoesNotPerformAssertions] attribute on class')]
     public function test_parses_DoesNotPerformAssertions_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(DoesNotPerformAssertionsTest::class)->isDoesNotPerformAssertions();
@@ -163,9 +184,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
     }
 
-    /**
-     * @testdox Parses #[ExcludeGlobalVariableFromBackup] attribute on class
-     */
+    #[TestDox('Parses #[ExcludeGlobalVariableFromBackup] attribute on class')]
     public function test_parses_ExcludeGlobalVariableFromBackup_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(BackupGlobalsTest::class)->isExcludeGlobalVariableFromBackup();
@@ -175,9 +194,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('foo', $metadata->asArray()[0]->globalVariableName());
     }
 
-    /**
-     * @testdox Parses #[ExcludeStaticPropertyFromBackup] attribute on class
-     */
+    #[TestDox('Parses #[ExcludeStaticPropertyFromBackup] attribute on class')]
     public function test_parses_ExcludeStaticPropertyFromBackup_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(BackupStaticPropertiesTest::class)->isExcludeStaticPropertyFromBackup();
@@ -188,9 +205,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('propertyName', $metadata->asArray()[0]->propertyName());
     }
 
-    /**
-     * @testdox Parses #[Group] attribute on class
-     */
+    #[TestDox('Parses #[Group] attribute on class')]
     public function test_parses_Group_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(GroupTest::class)->isGroup();
@@ -200,9 +215,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('group', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses #[Large] attribute on class
-     */
+    #[TestDox('Parses #[Large] attribute on class')]
     public function test_parses_Large_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(LargeTest::class)->isGroup();
@@ -212,9 +225,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('large', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses #[Medium] attribute on class
-     */
+    #[TestDox('Parses #[Medium] attribute on class')]
     public function test_parses_Medium_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(MediumTest::class)->isGroup();
@@ -224,9 +235,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('medium', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses #[PreserveGlobalState] attribute on class
-     */
+    #[TestDox('Parses #[PreserveGlobalState] attribute on class')]
     public function test_parses_PreserveGlobalState_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(PreserveGlobalStateTest::class)->isPreserveGlobalState();
@@ -236,9 +245,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses #[RequiresFunction] attribute on class
-     */
+    #[TestDox('Parses #[RequiresFunction] attribute on class')]
     public function test_parses_RequiresFunction_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(RequiresFunctionTest::class)->isRequiresFunction();
@@ -248,9 +255,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('f', $metadata->asArray()[0]->functionName());
     }
 
-    /**
-     * @testdox Parses #[RequiresOperatingSystem] attribute on class
-     */
+    #[TestDox('Parses #[RequiresOperatingSystem] attribute on class')]
     public function test_parses_RequiresOperatingSystem_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(RequiresOperatingSystemTest::class)->isRequiresOperatingSystem();
@@ -260,9 +265,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystem());
     }
 
-    /**
-     * @testdox Parses #[RequiresOperatingSystemFamily] attribute on class
-     */
+    #[TestDox('Parses #[RequiresOperatingSystemFamily] attribute on class')]
     public function test_parses_RequiresOperatingSystemFamily_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(RequiresOperatingSystemFamilyTest::class)->isRequiresOperatingSystemFamily();
@@ -272,9 +275,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
     }
 
-    /**
-     * @testdox Parses #[RequiresPhp] attribute on class
-     */
+    #[TestDox('Parses #[RequiresPhp] attribute on class')]
     public function test_parses_RequiresPhp_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(RequiresPhpTest::class)->isRequiresPhp();
@@ -285,7 +286,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhp());
 
-        assert($requirement instanceof RequiresPhp);
+        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhp);
 
         $versionRequirement = $requirement->versionRequirement();
 
@@ -294,9 +295,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('8.0.0', $versionRequirement->asString());
     }
 
-    /**
-     * @testdox Parses #[RequiresPhpExtension] attribute on class
-     */
+    #[TestDox('Parses #[RequiresPhpExtension] attribute on class')]
     public function test_parses_RequiresPhpExtension_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(RequiresPhpExtensionTest::class)->isRequiresPhpExtension();
@@ -307,9 +306,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->hasVersionRequirement());
     }
 
-    /**
-     * @testdox Parses #[RequiresPhpunit] attribute on class
-     */
+    #[TestDox('Parses #[RequiresPhpunit] attribute on class')]
     public function test_parses_RequiresPhpunit_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(RequiresPhpunitTest::class)->isRequiresPhpunit();
@@ -320,7 +317,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhpunit());
 
-        assert($requirement instanceof RequiresPhpunit);
+        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhpunit);
 
         $versionRequirement = $requirement->versionRequirement();
 
@@ -329,9 +326,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('>= 10.0.0', $versionRequirement->asString());
     }
 
-    /**
-     * @testdox Parses #[RunClassInSeparateProcess] attribute on class
-     */
+    #[TestDox('Parses #[RunClassInSeparateProcess] attribute on class')]
     public function test_parses_RunClassInSeparateProcess_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(ProcessIsolationTest::class)->isRunClassInSeparateProcess();
@@ -340,9 +335,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRunClassInSeparateProcess());
     }
 
-    /**
-     * @testdox Parses #[RunTestsInSeparateProcesses] attribute on class
-     */
+    #[TestDox('Parses #[RunTestsInSeparateProcesses] attribute on class')]
     public function test_parses_RunTestsInSeparateProcesses_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(ProcessIsolationTest::class)->isRunTestsInSeparateProcesses();
@@ -351,9 +344,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRunTestsInSeparateProcesses());
     }
 
-    /**
-     * @testdox Parses #[Small] attribute on class
-     */
+    #[TestDox('Parses #[Small] attribute on class')]
     public function test_parses_Small_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(SmallTest::class)->isGroup();
@@ -363,9 +354,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('small', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses #[TestDox] attribute on class
-     */
+    #[TestDox('Parses #[TestDox] attribute on class')]
     public function test_parses_TestDox_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(TestDoxTest::class)->isTestDox();
@@ -375,9 +364,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('text', $metadata->asArray()[0]->text());
     }
 
-    /**
-     * @testdox Parses #[Ticket] attribute on class
-     */
+    #[TestDox('Parses #[Ticket] attribute on class')]
     public function test_parses_Ticket_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(GroupTest::class)->isGroup();
@@ -387,9 +374,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('ticket', $metadata->asArray()[1]->groupName());
     }
 
-    /**
-     * @testdox Parses #[UsesClass] attribute on class
-     */
+    #[TestDox('Parses #[UsesClass] attribute on class')]
     public function test_parses_UsesClass_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(UsesTest::class)->isUsesClass();
@@ -399,9 +384,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame(Example::class, $metadata->asArray()[0]->className());
     }
 
-    /**
-     * @testdox Parses #[UsesFunction] attribute on class
-     */
+    #[TestDox('Parses #[UsesFunction] attribute on class')]
     public function test_parses_UsesFunction_attribute_on_class(): void
     {
         $metadata = (new AttributeParser)->forClass(UsesTest::class)->isUsesFunction();
@@ -411,9 +394,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('f', $metadata->asArray()[0]->functionName());
     }
 
-    /**
-     * @testdox Parses #[After] attribute on method
-     */
+    #[TestDox('Parses #[After] attribute on class')]
     public function test_parses_After_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'afterTest')->isAfter();
@@ -422,9 +403,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isAfter());
     }
 
-    /**
-     * @testdox Parses #[AfterClass] attribute on method
-     */
+    #[TestDox('Parses #[AfterClass] attribute on class')]
     public function test_parses_AfterClass_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'afterTests')->isAfterClass();
@@ -433,9 +412,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isAfterClass());
     }
 
-    /**
-     * @testdox Parses #[BackupGlobals] attribute on method
-     */
+    #[TestDox('Parses #[BackupGlobals] attribute on method')]
     public function test_parses_BackupGlobals_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(BackupGlobalsTest::class, 'testOne')->isBackupGlobals();
@@ -445,9 +422,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses #[BackupStaticProperties] attribute on method
-     */
+    #[TestDox('Parses #[BackupStaticProperties] attribute on method')]
     public function test_parses_BackupStaticProperties_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(BackupStaticPropertiesTest::class, 'testOne')->isBackupStaticProperties();
@@ -457,9 +432,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses #[Before] attribute on method
-     */
+    #[TestDox('Parses #[Before] attribute on method')]
     public function test_parses_Before_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'beforeTest')->isBefore();
@@ -468,9 +441,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isBefore());
     }
 
-    /**
-     * @testdox Parses #[BeforeClass] attribute on method
-     */
+    #[TestDox('Parses #[BeforeClass] attribute on method')]
     public function test_parses_BeforeClass_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'beforeTests')->isBeforeClass();
@@ -479,9 +450,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isBeforeClass());
     }
 
-    /**
-     * @testdox Parses #[CodeCoverageIgnore] attribute on method
-     */
+    #[TestDox('Parses #[CodeCoverageIgnore] attribute on method')]
     public function test_parses_CodeCoverageIgnore_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(Example::class, 'method')->isCodeCoverageIgnore();
@@ -490,9 +459,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCodeCoverageIgnore());
     }
 
-    /**
-     * @testdox Parses #[CoversNothing] attribute on method
-     */
+    #[TestDox('Parses #[CoversNothing] attribute on method')]
     public function test_parses_CoversNothing_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(CoversTest::class, 'testOne')->isCoversNothing();
@@ -501,9 +468,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isCoversNothing());
     }
 
-    /**
-     * @testdox Parses #[DataProvider] attribute on method
-     */
+    #[TestDox('Parses #[DataProvider] attribute on method')]
     public function test_parses_DataProvider_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'testWithDataProvider')->isDataProvider();
@@ -514,9 +479,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('provider', $metadata->asArray()[0]->methodName());
     }
 
-    /**
-     * @testdox Parses #[DataProviderExternal] attribute on method
-     */
+    #[TestDox('Parses #[DataProviderExternal] attribute on method')]
     public function test_parses_DataProviderExternal_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'testWithDataProviderExternal')->isDataProvider();
@@ -527,9 +490,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('provider', $metadata->asArray()[0]->methodName());
     }
 
-    /**
-     * @testdox Parses #[Depends] attribute on method
-     */
+    #[TestDox('Parses #[Depends] attribute on method')]
     public function test_parses_Depends_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testOne')->isDependsOnMethod();
@@ -546,9 +507,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($depends->shallowClone());
     }
 
-    /**
-     * @testdox Parses #[DependsUsingDeepClone] attribute on method
-     */
+    #[TestDox('Parses #[DependsUsingDeepClone] attribute on method')]
     public function test_parses_DependsUsingDeepClone_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testTwo')->isDependsOnMethod();
@@ -565,9 +524,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($depends->shallowClone());
     }
 
-    /**
-     * @testdox Parses #[DependsUsingShallowClone] attribute on method
-     */
+    #[TestDox('Parses #[DependsUsingShallowClone] attribute on method')]
     public function test_parses_DependsUsingShallowClone_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testThree')->isDependsOnMethod();
@@ -584,9 +541,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($depends->shallowClone());
     }
 
-    /**
-     * @testdox Parses #[DependsExternal] attribute on method
-     */
+    #[TestDox('Parses #[DependsExternal] attribute on method')]
     public function test_parses_DependsExternal_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testFour')->isDependsOnMethod();
@@ -603,9 +558,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($depends->shallowClone());
     }
 
-    /**
-     * @testdox Parses #[DependsExternalUsingDeepClone] attribute on method
-     */
+    #[TestDox('Parses #[DependsExternalUsingDeepClone] attribute on method')]
     public function test_parses_DependsExternalUsingDeepClone_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testFive')->isDependsOnMethod();
@@ -622,9 +575,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($depends->shallowClone());
     }
 
-    /**
-     * @testdox Parses #[DependsExternalUsingShallowClone] attribute on method
-     */
+    #[TestDox('Parses #[DependsExternalUsingShallowClone] attribute on method')]
     public function test_parses_DependsExternalUsingShallowClone_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testSix')->isDependsOnMethod();
@@ -641,9 +592,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($depends->shallowClone());
     }
 
-    /**
-     * @testdox Parses #[DependsOnClass] attribute on method
-     */
+    #[TestDox('Parses #[DependsOnClass] attribute on method')]
     public function test_parses_DependsOnClass_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testSeven')->isDependsOnClass();
@@ -659,9 +608,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($depends->shallowClone());
     }
 
-    /**
-     * @testdox Parses #[DependsOnClassUsingDeepClone] attribute on method
-     */
+    #[TestDox('Parses #[DependsOnClassUsingDeepClone] attribute on method')]
     public function test_parses_DependsOnClassUsingDeepClone_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testEight')->isDependsOnClass();
@@ -677,9 +624,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($depends->shallowClone());
     }
 
-    /**
-     * @testdox Parses #[DependsOnClassUsingShallowClone] attribute on method
-     */
+    #[TestDox('Parses #[DependsOnClassUsingShallowClone] attribute on method')]
     public function test_parses_DependsOnClassUsingShallowClone_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DependencyTest::class, 'testNine')->isDependsOnClass();
@@ -695,9 +640,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($depends->shallowClone());
     }
 
-    /**
-     * @testdox Parses #[DoesNotPerformAssertions] attribute on method
-     */
+    #[TestDox('Parses #[DoesNotPerformAssertions] attribute on method')]
     public function test_parses_DoesNotPerformAssertions_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(DoesNotPerformAssertionsTest::class, 'testOne')->isDoesNotPerformAssertions();
@@ -706,9 +649,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
     }
 
-    /**
-     * @testdox Parses #[ExcludeGlobalVariableFromBackup] attribute on method
-     */
+    #[TestDox('Parses #[ExcludeGlobalVariableFromBackup] attribute on method')]
     public function test_parses_ExcludeGlobalVariableFromBackup_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(BackupGlobalsTest::class, 'testOne')->isExcludeGlobalVariableFromBackup();
@@ -718,9 +659,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('bar', $metadata->asArray()[0]->globalVariableName());
     }
 
-    /**
-     * @testdox Parses #[ExcludeStaticPropertyFromBackup] attribute on method
-     */
+    #[TestDox('Parses #[ExcludeStaticPropertyFromBackup] attribute on method')]
     public function test_parses_ExcludeStaticPropertyFromBackup_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(BackupStaticPropertiesTest::class, 'testOne')->isExcludeStaticPropertyFromBackup();
@@ -731,9 +670,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('propertyName', $metadata->asArray()[0]->propertyName());
     }
 
-    /**
-     * @testdox Parses #[Group] attribute on method
-     */
+    #[TestDox('Parses #[Group] attribute on method')]
     public function test_parses_Group_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(GroupTest::class, 'testOne')->isGroup();
@@ -743,9 +680,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('another-group', $metadata->asArray()[0]->groupName());
     }
 
-    /**
-     * @testdox Parses #[PostCondition] attribute on method
-     */
+    #[TestDox('Parses #[PostCondition] attribute on method')]
     public function test_parses_PostCondition_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'postCondition')->isPostCondition();
@@ -754,9 +689,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isPostCondition());
     }
 
-    /**
-     * @testdox Parses #[PreCondition] attribute on method
-     */
+    #[TestDox('Parses #[PreCondition] attribute on method')]
     public function test_parses_PreCondition_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'preCondition')->isPreCondition();
@@ -765,9 +698,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isPreCondition());
     }
 
-    /**
-     * @testdox Parses #[PreserveGlobalState] attribute on method
-     */
+    #[TestDox('Parses #[PreserveGlobalState] attribute on method')]
     public function test_parses_PreserveGlobalState_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(PreserveGlobalStateTest::class, 'testOne')->isPreserveGlobalState();
@@ -777,9 +708,7 @@ final class AttributeParserTest extends TestCase
         $this->assertFalse($metadata->asArray()[0]->enabled());
     }
 
-    /**
-     * @testdox Parses #[RequiresFunction] attribute on method
-     */
+    #[TestDox('Parses #[RequiresFunction] attribute on method')]
     public function test_parses_RequiresFunction_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(RequiresFunctionTest::class, 'testOne')->isRequiresFunction();
@@ -789,9 +718,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('g', $metadata->asArray()[0]->functionName());
     }
 
-    /**
-     * @testdox Parses #[RequiresOperatingSystem] attribute on method
-     */
+    #[TestDox('Parses #[RequiresOperatingSystem] attribute on method')]
     public function test_parses_RequiresOperatingSystem_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forClass(RequiresOperatingSystemTest::class)->isRequiresOperatingSystem();
@@ -801,9 +728,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystem());
     }
 
-    /**
-     * @testdox Parses #[RequiresOperatingSystemFamily] attribute on method
-     */
+    #[TestDox('Parses #[RequiresOperatingSystemFamily] attribute on method')]
     public function test_parses_RequiresOperatingSystemFamily_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(RequiresOperatingSystemFamilyTest::class, 'testOne')->isRequiresOperatingSystemFamily();
@@ -813,9 +738,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
     }
 
-    /**
-     * @testdox Parses #[RequiresPhp] attribute on method
-     */
+    #[TestDox('Parses #[RequiresPhp] attribute on method')]
     public function test_parses_RequiresPhp_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(RequiresPhpTest::class, 'testOne')->isRequiresPhp();
@@ -826,7 +749,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhp());
 
-        assert($requirement instanceof RequiresPhp);
+        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhp);
 
         $versionRequirement = $requirement->versionRequirement();
 
@@ -835,9 +758,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('^8.0', $versionRequirement->asString());
     }
 
-    /**
-     * @testdox Parses #[RequiresPhpExtension] attribute on method
-     */
+    #[TestDox('Parses #[RequiresPhpExtension] attribute on method')]
     public function test_parses_RequiresPhpExtension_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(RequiresPhpExtensionTest::class, 'testOne')->isRequiresPhpExtension();
@@ -848,7 +769,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhpExtension());
 
-        assert($requirement instanceof RequiresPhpExtension);
+        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhpExtension);
 
         $this->assertSame('bar', $requirement->extension());
         $this->assertTrue($requirement->hasVersionRequirement());
@@ -867,7 +788,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhpExtension());
 
-        assert($requirement instanceof RequiresPhpExtension);
+        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhpExtension);
 
         $this->assertSame('baz', $requirement->extension());
         $this->assertTrue($requirement->hasVersionRequirement());
@@ -879,9 +800,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('^1.0', $versionRequirement->asString());
     }
 
-    /**
-     * @testdox Parses #[RequiresPhpunit] attribute on method
-     */
+    #[TestDox('Parses #[RequiresPhpunit] attribute on method')]
     public function test_parses_RequiresPhpunit_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(RequiresPhpunitTest::class, 'testOne')->isRequiresPhpunit();
@@ -892,7 +811,7 @@ final class AttributeParserTest extends TestCase
 
         $this->assertTrue($requirement->isRequiresPhpunit());
 
-        assert($requirement instanceof RequiresPhpunit);
+        assert($requirement instanceof \PHPUnit\Metadata\RequiresPhpunit);
 
         $versionRequirement = $requirement->versionRequirement();
 
@@ -901,9 +820,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('^10.0', $versionRequirement->asString());
     }
 
-    /**
-     * @testdox Parses #[RunInSeparateProcess] attribute on method
-     */
+    #[TestDox('Parses #[RunInSeparateProcess] attribute on method')]
     public function test_parses_RunInSeparateProcess_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(ProcessIsolationTest::class, 'testOne')->isRunInSeparateProcess();
@@ -912,9 +829,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isRunInSeparateProcess());
     }
 
-    /**
-     * @testdox Parses #[Test] attribute on method
-     */
+    #[TestDox('Parses #[Test] attribute on method')]
     public function test_parses_Test_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(SmallTest::class, 'one')->isTest();
@@ -923,9 +838,7 @@ final class AttributeParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isTest());
     }
 
-    /**
-     * @testdox Parses #[TestDox] attribute on method
-     */
+    #[TestDox('Parses #[TestDox] attribute on method')]
     public function test_parses_TestDox_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(TestDoxTest::class, 'testOne')->isTestDox();
@@ -935,9 +848,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame('text', $metadata->asArray()[0]->text());
     }
 
-    /**
-     * @testdox Parses #[TestWith] attribute on method
-     */
+    #[TestDox('Parses #[TestWith] attribute on method')]
     public function test_parses_TestWith_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(TestWithTest::class, 'testOne')->isTestWith();
@@ -947,9 +858,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
     }
 
-    /**
-     * @testdox Parses #[TestWithJson] attribute on method
-     */
+    #[TestDox('Parses #[TestWithJson] attribute on method')]
     public function test_parses_TestWithJson_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(TestWithTest::class, 'testTwo')->isTestWith();
@@ -959,9 +868,7 @@ final class AttributeParserTest extends TestCase
         $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
     }
 
-    /**
-     * @testdox Parses #[Ticket] attribute on method
-     */
+    #[TestDox('Parses #[Ticket] attribute on method')]
     public function test_parses_Ticket_attribute_on_method(): void
     {
         $metadata = (new AttributeParser)->forMethod(GroupTest::class, 'testOne')->isGroup();

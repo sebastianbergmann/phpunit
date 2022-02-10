@@ -9,14 +9,13 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 final class MigrationTest extends TestCase
 {
-    /**
-     * @testdox Can migrate PHPUnit 9.2 configuration
-     */
+    #[TestDox('Can migrate PHPUnit 9.2 configuration')]
     public function testCanMigratePhpUnit92Configuration(): void
     {
         $this->assertEquals(
@@ -29,9 +28,7 @@ final class MigrationTest extends TestCase
         );
     }
 
-    /**
-     * @testdox Can migrate PHPUnit 9.5 configuration
-     */
+    #[TestDox('Can migrate PHPUnit 9.5 configuration')]
     public function testCanMigratePhpUnit95Configuration(): void
     {
         $this->assertEquals(

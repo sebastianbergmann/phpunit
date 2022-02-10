@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use function array_map;
 use function sprintf;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestFixture\BooleanConstraint;
 use PHPUnit\TestFixture\CountConstraint;
@@ -128,9 +129,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         );
     }
 
-    /**
-     * @dataProvider providerUnaryTruthTable
-     */
+    #[DataProvider('providerUnaryTruthTable')]
     final public function testEvaluateReturnsCorrectBooleanResult(bool $input, bool $expected): void
     {
         $operand = BooleanConstraint::fromBool($input);
@@ -143,9 +142,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $this->assertSame($expected, $constraint->evaluate(null, '', true), $message);
     }
 
-    /**
-     * @dataProvider providerUnaryTruthTable
-     */
+    #[DataProvider('providerUnaryTruthTable')]
     final public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(bool $input, bool $expected): void
     {
         $operand = BooleanConstraint::fromBool($input);
@@ -167,9 +164,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $constraint->evaluate('the following expression is true');
     }
 
-    /**
-     * @dataProvider providerToStringWithNativeTransformations
-     */
+    #[DataProvider('providerToStringWithNativeTransformations')]
     final public function testToStringWithNativeTransformations(string $input, string $expected): void
     {
         $operand = NamedConstraint::fromName($input);
@@ -386,9 +381,7 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $this->assertSame($expected, $operator->toString());
     }
 
-    /**
-     * @dataProvider providerToStringWithNativeTransformations
-     */
+    #[DataProvider('providerToStringWithNativeTransformations')]
     public function testFailureDescriptionWithNativeTransformations(string $input, string $expected): void
     {
         $operand = NamedConstraint::fromName($input);

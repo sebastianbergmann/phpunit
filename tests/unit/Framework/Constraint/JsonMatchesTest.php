@@ -11,13 +11,13 @@ namespace PHPUnit\Framework\Constraint;
 
 use function json_encode;
 use function sprintf;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Util\Json;
 
-/**
- * @small
- */
+#[Small]
 final class JsonMatchesTest extends ConstraintTestCase
 {
     public static function evaluateDataprovider(): array
@@ -53,12 +53,7 @@ final class JsonMatchesTest extends ConstraintTestCase
         ];
     }
 
-    /**
-     * @dataProvider evaluateDataprovider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('evaluateDataprovider')]
     public function testEvaluate(bool $expected, string $jsonOther, string $jsonValue): void
     {
         $constraint = new JsonMatches($jsonValue);
@@ -66,14 +61,7 @@ final class JsonMatchesTest extends ConstraintTestCase
         $this->assertEquals($expected, $constraint->evaluate($jsonOther, '', true));
     }
 
-    /**
-     * @dataProvider evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider
-     *
-     * @throws \PHPUnit\Framework\AssertionFailedError
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider')]
     public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch(string $jsonOther, string $jsonValue): void
     {
         $constraint = new JsonMatches($jsonValue);

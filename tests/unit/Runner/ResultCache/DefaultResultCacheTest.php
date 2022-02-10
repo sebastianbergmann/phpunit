@@ -14,13 +14,13 @@ use function tempnam;
 use function uniqid;
 use function unlink;
 use MultiDependencyTest;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
-/**
- * @covers \PHPUnit\Runner\ResultCache\DefaultResultCache
- * @small
- */
+#[CoversClass(DefaultResultCache::class)]
+#[Small]
 final class DefaultResultCacheTest extends TestCase
 {
     public function testGetTimeForNonExistentTestNameReturnsFloatZero(): void

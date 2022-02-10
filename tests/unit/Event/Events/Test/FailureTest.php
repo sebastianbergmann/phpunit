@@ -10,11 +10,10 @@
 namespace PHPUnit\Event\Test;
 
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Test\Failure
- */
+#[CoversClass(Failure::class)]
 final class FailureTest extends TestCase
 {
     public function testConstructorSetsValues(): void

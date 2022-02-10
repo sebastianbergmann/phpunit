@@ -9,12 +9,11 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\Type\UnknownType;
 
-/**
- * @small
- */
+#[Small]
 final class MockMethodTest extends TestCase
 {
     public function testGetNameReturnsMethodName(): void

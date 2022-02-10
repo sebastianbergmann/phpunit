@@ -15,14 +15,13 @@ use function sys_get_temp_dir;
 use function touch;
 use function unlink;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 
-/**
- * @medium
- */
+#[Medium]
 final class PhptTestCaseTest extends TestCase
 {
     private const EXPECT_CONTENT = <<<'EOF'
@@ -166,25 +165,16 @@ EOF
         $this->assertSame('Invalid PHPT file: empty section header', $result->errors()[0]->thrownException()->getMessage());
     }
 
-    /**
-     * @testdox PHPT tests return their filename as test name
-     */
     public function testPHPTReturnsFilenameAsTestName(): void
     {
         $this->assertSame($this->filename, $this->testCase->getName());
     }
 
-    /**
-     * @testdox PHPT tests return their filename as unique sortId
-     */
     public function testPHPTReturnsFilenameAsSortId(): void
     {
         $this->assertSame($this->filename, $this->testCase->sortId());
     }
 
-    /**
-     * @testdox PHPT tests do not affect dependency resolution
-     */
     public function testPHPTDoesNotAffectDependencyResolution(): void
     {
         $this->assertSame([], $this->testCase->provides());

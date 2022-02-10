@@ -12,14 +12,14 @@ namespace PHPUnit\Util\TestDox;
 use const PHP_EOL;
 use function implode;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
 use PHPUnit\Util\Color;
 
-/**
- * @group testdox
- * @small
- */
+#[Group('testdox')]
+#[Small]
 final class CliTestDoxPrinterColorTest extends TestCase
 {
     private ?TestableCliTestDoxPrinter $printer;

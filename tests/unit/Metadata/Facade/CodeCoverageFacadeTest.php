@@ -12,6 +12,8 @@ namespace PHPUnit\Metadata;
 use function array_merge;
 use function get_class;
 use function range;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\CodeCoverage;
 use PHPUnit\TestFixture\CoverageClassNothingTest;
@@ -35,15 +37,13 @@ use PHPUnit\TestFixture\NamespaceCoverageCoversClassTest;
 use PHPUnit\TestFixture\NamespaceCoverageMethodTest;
 use PHPUnit\TestFixture\Test3194;
 
-/**
- * @small
- */
+#[Small]
 final class CodeCoverageFacadeTest extends TestCase
 {
     /**
-     * @dataProvider getLinesToBeCoveredProvider
      * @psalm-param class-string $test
      */
+    #[DataProvider('getLinesToBeCoveredProvider')]
     public function testGetLinesToBeCovered(string $test, array|false $lines): void
     {
         switch ($test) {
@@ -223,9 +223,9 @@ final class CodeCoverageFacadeTest extends TestCase
     }
 
     /**
-     * @dataProvider canSkipCoverageProvider
      * @psalm-param class-string $testCase
      */
+    #[DataProvider('canSkipCoverageProvider')]
     public function testCanSkipCoverage(string $testCase, bool $expectedCanSkip): void
     {
         $test             = new $testCase('testSomething');

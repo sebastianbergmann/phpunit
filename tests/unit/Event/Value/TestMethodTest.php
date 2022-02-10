@@ -11,13 +11,12 @@ namespace PHPUnit\Event\Code;
 
 use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Util\ExportedVariable;
 
-/**
- * @covers \PHPUnit\Event\Code\TestMethod
- */
+#[CoversClass(TestMethod::class)]
 final class TestMethodTest extends TestCase
 {
     public function testConstructorSetsValues(): void

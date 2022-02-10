@@ -10,11 +10,10 @@
 namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\Runtime\Extensions;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Runtime\Extensions
- */
+#[CoversClass(Extensions::class)]
 final class ExtensionsTest extends TestCase
 {
     public function testLoadedReturnsFalseWhenExtensionIsNotLoaded(): void

@@ -9,20 +9,16 @@
  */
 namespace PHPUnit\Metadata;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\TestFixture\RequirementsTest;
-use PHPUnit\Util\Test;
 
-/**
- * @small
- */
+#[Small]
 final class RequirementsFacadeTest extends TestCase
 {
-    /**
-     * @testdox Test::getMissingRequirements() for $test
-     * @dataProvider missingRequirementsProvider
-     */
+    #[DataProvider('missingRequirementsProvider')]
     public function testGetMissingRequirements(string $test, array $result): void
     {
         $this->assertEquals(

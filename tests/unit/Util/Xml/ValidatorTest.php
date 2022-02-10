@@ -10,15 +10,14 @@
 namespace PHPUnit\Util\Xml;
 
 use function file_get_contents;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 
-/**
- * @small
- *
- * @covers \PHPUnit\Util\Xml\ValidationResult
- * @covers \PHPUnit\Util\Xml\Validator
- */
+#[CoversClass(Validator::class)]
+#[CoversClass(ValidationResult::class)]
+#[Small]
 final class ValidatorTest extends TestCase
 {
     public function testValidatesValidXmlFile(): void

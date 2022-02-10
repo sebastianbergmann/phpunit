@@ -10,21 +10,21 @@
 namespace PHPUnit\Metadata;
 
 use PharIo\Version\VersionConstraintParser;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
 use PHPUnit\Metadata\Version\Requirement;
 use PHPUnit\Util\VersionComparisonOperator;
 
-/**
- * @covers \PHPUnit\Metadata\Version\ComparisonRequirement
- * @covers \PHPUnit\Metadata\Version\ConstraintRequirement
- * @covers \PHPUnit\Metadata\Version\Requirement
- *
- * @uses \PHPUnit\Util\VersionComparisonOperator
- *
- * @small
- */
+#[CoversClass(ComparisonRequirement::class)]
+#[CoversClass(ConstraintRequirement::class)]
+#[CoversClass(Requirement::class)]
+#[UsesClass(VersionComparisonOperator::class)]
+#[Small]
 final class RequirementTest extends TestCase
 {
     public function testCanBeCreatedFromStringWithVersionConstraint(): void
@@ -35,9 +35,7 @@ final class RequirementTest extends TestCase
         $this->assertSame('^1.0', $requirement->asString());
     }
 
-    /**
-     * @dataProvider constraintProvider
-     */
+    #[DataProvider('constraintProvider')]
     public function testVersionRequirementCanBeCheckedUsingVersionConstraint(bool $expected, string $version, ConstraintRequirement $requirement): void
     {
         $this->assertSame($expected, $requirement->isSatisfiedBy($version));
@@ -51,9 +49,7 @@ final class RequirementTest extends TestCase
         $this->assertSame('>= 1.0', $requirement->asString());
     }
 
-    /**
-     * @dataProvider comparisonProvider
-     */
+    #[DataProvider('comparisonProvider')]
     public function testVersionRequirementCanBeCheckedUsingSimpleComparison(bool $expected, string $version, ComparisonRequirement $requirement): void
     {
         $this->assertSame($expected, $requirement->isSatisfiedBy($version));

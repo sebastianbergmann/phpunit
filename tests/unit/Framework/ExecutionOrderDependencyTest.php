@@ -7,12 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Framework\ExecutionOrderDependency
- */
+#[CoversClass(ExecutionOrderDependency::class)]
 class ExecutionOrderDependencyTest extends TestCase
 {
     public static function createFromParametersProvider(): array
@@ -49,10 +49,7 @@ class ExecutionOrderDependencyTest extends TestCase
         $this->assertSame('ClassDependency', $dependency->getTargetClassName());
     }
 
-    /**
-     * @testdox Create valid dependency from [$className, $methodName]
-     * @dataProvider createFromParametersProvider
-     */
+    #[DataProvider('createFromParametersProvider')]
     public function testCreateDependencyFromParameters(
         string $className,
         ?string $methodName,
@@ -74,10 +71,7 @@ class ExecutionOrderDependencyTest extends TestCase
         );
     }
 
-    /**
-     * @testdox Create valid dependency with clone option $option
-     * @dataProvider createWithCloneOptionProvider
-     */
+    #[DataProvider('createWithCloneOptionProvider')]
     public function testCreateDependencyWithCloneOption(bool $deepClone, bool $shallowClone, bool $expectedShallowClone, bool $expectedDeepClone): void
     {
         $dependency = new ExecutionOrderDependency('ClassName', 'methodName', $deepClone, $shallowClone);

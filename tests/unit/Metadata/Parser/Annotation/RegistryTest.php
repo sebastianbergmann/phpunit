@@ -9,37 +9,43 @@
  */
 namespace PHPUnit\Metadata\Annotation;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Metadata\Annotation\Parser\DocBlock;
 use PHPUnit\Metadata\Annotation\Parser\Registry;
+use PHPUnit\TestFixture\Metadata\Annotation\CoversTest;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 use PHPUnit\Util\Exception;
 use ThisClassDoesNotExist;
 
-/**
- * @small
- *
- * @covers \PHPUnit\Metadata\Annotation\Parser\Registry
- *
- * @uses   \PHPUnit\Metadata\Annotation\Parser\DocBlock
- */
+#[CoversClass(Registry::class)]
+#[UsesClass(DocBlock::class)]
+#[Small]
 final class RegistryTest extends TestCase
 {
     public function testRegistryLookupWithExistingClassAnnotation(): void
     {
-        $annotation = Registry::getInstance()->forClassName(self::class);
+        $annotation = Registry::getInstance()->forClassName(CoversTest::class);
 
         $this->assertSame(
             [
-                'small'  => [''],
-                'covers' => ['\PHPUnit\Metadata\Annotation\Parser\Registry'],
-                'uses'   => ['\PHPUnit\Metadata\Annotation\Parser\DocBlock'],
+                'covers' => [
+                    '::\PHPUnit\TestFixture\Metadata\Annotation\f()',
+                    '\PHPUnit\TestFixture\Metadata\Annotation\Example',
+                ],
+                'coversNothing'      => [''],
+                'coversDefaultClass' => [
+                    '\PHPUnit\TestFixture\Metadata\Annotation\Example',
+                ],
             ],
             $annotation->symbolAnnotations()
         );
 
         $this->assertSame(
             $annotation,
-            Registry::getInstance()->forClassName(self::class),
+            Registry::getInstance()->forClassName(CoversTest::class),
             'Registry memoizes retrieved DocBlock instances'
         );
     }

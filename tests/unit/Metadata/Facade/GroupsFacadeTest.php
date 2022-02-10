@@ -9,19 +9,16 @@
  */
 namespace PHPUnit\Metadata;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 
-/**
- * @small
- */
+#[Small]
 final class GroupsFacadeTest extends TestCase
 {
-    /**
-     * @testdox Parse @ticket for $class::$method
-     * @dataProvider getGroupsProvider
-     */
+    #[DataProvider('getGroupsProvider')]
     public function testGetGroupsFromTicketAnnotations(string $class, string $method, array $groups): void
     {
         $this->assertSame($groups, (new Groups)->groups($class, $method));

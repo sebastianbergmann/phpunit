@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class IsIdenticalTest extends ConstraintTestCase
 {
     public function testConstraintIsIdentical(): void

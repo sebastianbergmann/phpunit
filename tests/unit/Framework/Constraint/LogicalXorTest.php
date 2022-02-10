@@ -11,10 +11,9 @@ namespace PHPUnit\Framework\Constraint;
 
 use function array_reduce;
 use function array_shift;
+use PHPUnit\Framework\Attributes\Small;
 
-/**
- * @small
- */
+#[Small]
 final class LogicalXorTest extends BinaryOperatorTestCase
 {
     public static function getOperatorName(): string

@@ -11,10 +11,9 @@ namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Runtime\Runtime;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\TestRunner\Started
- */
+#[CoversClass(Started::class)]
 final class StartedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

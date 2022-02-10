@@ -10,10 +10,9 @@
 namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\TestSuite\Sorted
- */
+#[CoversClass(Sorted::class)]
 final class SortedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

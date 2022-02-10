@@ -9,12 +9,11 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\Small;
 use SplObjectStorage;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class TraversableContainsIdenticalTest extends ConstraintTestCase
 {
     public function testArrayContainsFloat(): void

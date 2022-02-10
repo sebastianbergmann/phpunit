@@ -11,11 +11,12 @@ namespace PHPUnit\Framework\Constraint;
 
 use function ini_set;
 use Exception;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- */
+#[Small]
 final class ExceptionMessageRegExpTest extends TestCase
 {
     public function testRegexMessage(): void
@@ -34,10 +35,8 @@ final class ExceptionMessageRegExpTest extends TestCase
         throw new Exception('A polymorphic exception message');
     }
 
-    /**
-     * @runInSeparateProcess
-     * @requires extension xdebug
-     */
+    #[RunInSeparateProcess]
+    #[RequiresPhpExtension('xdebug')]
     public function testMessageXdebugScreamCompatibility(): void
     {
         ini_set('xdebug.scream', '1');

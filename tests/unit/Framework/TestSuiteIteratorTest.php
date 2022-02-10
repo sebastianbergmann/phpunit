@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\Success;
 
-/**
- * @small
- */
+#[Small]
 final class TestSuiteIteratorTest extends TestCase
 {
     public function testKeyForEmptyTestSuiteInitiallyReturnsZero(): void

@@ -10,13 +10,12 @@
 namespace PHPUnit\Framework\Constraint;
 
 use ArrayObject;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\TestFixture\TestIterator;
 
-/**
- * @small
- */
+#[Small]
 final class SameSizeTest extends ConstraintTestCase
 {
     public function testConstraintSameSizeWithAnArray(): void

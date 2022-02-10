@@ -10,10 +10,9 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\Test\ComparatorRegistered
- */
+#[CoversClass(ComparatorRegistered::class)]
 final class ComparatorRegisteredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

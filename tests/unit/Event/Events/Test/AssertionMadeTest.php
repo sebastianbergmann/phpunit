@@ -10,11 +10,10 @@
 namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Constraint;
 
-/**
- * @covers \PHPUnit\Event\Test\AssertionMade
- */
+#[CoversClass(AssertionMade::class)]
 final class AssertionMadeTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

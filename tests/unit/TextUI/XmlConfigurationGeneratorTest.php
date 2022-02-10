@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- * @covers \PHPUnit\TextUI\XmlConfiguration\Generator
- */
+#[CoversClass(Generator::class)]
+#[Small]
 final class XmlConfigurationGeneratorTest extends TestCase
 {
     public function testGeneratesConfigurationCorrectly(): void

@@ -10,11 +10,10 @@
 namespace PHPUnit\Framework\Constraint;
 
 use const DIRECTORY_SEPARATOR;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 
-/**
- * @small
- */
+#[Small]
 final class StringMatchesFormatDescriptionTest extends ConstraintTestCase
 {
     public function testConstraintStringMatchesDirectorySeparator(): void

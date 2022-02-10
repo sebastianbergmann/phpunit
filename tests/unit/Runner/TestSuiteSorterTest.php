@@ -12,6 +12,8 @@ namespace PHPUnit\Runner;
 use function mt_srand;
 use MultiDependencyTest;
 use NotReorderableTest;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
@@ -21,11 +23,7 @@ use PHPUnit\TestFixture\FailureTest;
 use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestWithDifferentSizes;
 
-/**
- * @testdox Reordering test execution
- * @group test-reorder
- * @small
- */
+#[Small]
 final class TestSuiteSorterTest extends TestCase
 {
     /**
@@ -65,10 +63,7 @@ final class TestSuiteSorterTest extends TestCase
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, -1);
     }
 
-    /**
-     * @testdox Empty TestSuite not affected (order=$order, resolve=$resolveDependencies, defects=$orderDefects)
-     * @dataProvider suiteSorterOptionPermutationsProvider
-     */
+    #[DataProvider('suiteSorterOptionPermutationsProvider')]
     public function testShouldNotAffectEmptyTestSuite(int $order, bool $resolveDependencies, int $orderDefects): void
     {
         $sorter = new TestSuiteSorter;
@@ -81,9 +76,7 @@ final class TestSuiteSorterTest extends TestCase
         $this->assertEmpty($sorter->getExecutionOrder());
     }
 
-    /**
-     * @dataProvider commonSorterOptionsProvider
-     */
+    #[DataProvider('commonSorterOptionsProvider')]
     public function testBasicExecutionOrderOptions(int $order, bool $resolveDependencies, array $expectedOrder): void
     {
         $suite = new TestSuite;
@@ -136,9 +129,7 @@ final class TestSuiteSorterTest extends TestCase
         $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
     }
 
-    /**
-     * @dataProvider orderDurationWithoutCacheProvider
-     */
+    #[DataProvider('orderDurationWithoutCacheProvider')]
     public function testOrderDurationWithoutCache(bool $resolveDependencies, array $expected): void
     {
         $suite = new TestSuite;
@@ -183,9 +174,7 @@ final class TestSuiteSorterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider orderDurationWithCacheProvider
-     */
+    #[DataProvider('orderDurationWithCacheProvider')]
     public function testOrderDurationWithCache(bool $resolveDependencies, array $testTimes, array $expected): void
     {
         $suite = new TestSuite;
@@ -284,9 +273,7 @@ final class TestSuiteSorterTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider defectsSorterOptionsProvider
-     */
+    #[DataProvider('defectsSorterOptionsProvider')]
     public function testSuiteSorterDefectsOptions(int $order, bool $resolveDependencies, array $runState, array $expected): void
     {
         $suite = new TestSuite;

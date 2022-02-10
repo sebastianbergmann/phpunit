@@ -10,10 +10,9 @@
 namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\TestRunner\EventFacadeSealed
- */
+#[CoversClass(EventFacadeSealed::class)]
 final class EventFacadeSealedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

@@ -18,6 +18,7 @@ use function decbin;
 use function implode;
 use function sprintf;
 use function str_split;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\TestFixture\BooleanConstraint;
 use PHPUnit\TestFixture\CountConstraint;
@@ -154,9 +155,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         );
     }
 
-    /**
-     * @dataProvider providerConnectiveTruthTable
-     */
+    #[DataProvider('providerConnectiveTruthTable')]
     final public function testEvaluateReturnsCorrectBooleanResult(array $inputs, bool $expected): void
     {
         $constraints = array_map(static function (bool $input)
@@ -172,9 +171,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $this->assertSame($expected, $constraint->evaluate(null, '', true), $message);
     }
 
-    /**
-     * @dataProvider providerConnectiveTruthTable
-     */
+    #[DataProvider('providerConnectiveTruthTable')]
     final public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(array $inputs, bool $expected): void
     {
         $constraints = array_map(static function (bool $input)
@@ -225,9 +222,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerToStringWithNamedConstraints
-     */
+    #[DataProvider('providerToStringWithNamedConstraints')]
     public function testToStringWithNamedConstraints(string ...$names): void
     {
         $constraints = array_map(static function (string $name)

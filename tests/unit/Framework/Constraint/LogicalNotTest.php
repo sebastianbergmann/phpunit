@@ -9,9 +9,10 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-/**
- * @small
- */
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
+
+#[Small]
 final class LogicalNotTest extends UnaryOperatorTestCase
 {
     public static function getOperatorName(): string
@@ -64,9 +65,7 @@ final class LogicalNotTest extends UnaryOperatorTestCase
         ];
     }
 
-    /**
-     * @dataProvider providerNegate
-     */
+    #[DataProvider('providerNegate')]
     public function testNegate(string $input, string $expected): void
     {
         $this->assertSame($expected, LogicalNot::negate($input));

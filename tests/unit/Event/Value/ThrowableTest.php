@@ -11,12 +11,11 @@ namespace PHPUnit\Event\Code;
 
 use Exception;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Util\Filter;
 
-/**
- * @covers \PHPUnit\Event\Code\Throwable
- */
+#[CoversClass(Throwable::class)]
 final class ThrowableTest extends TestCase
 {
     public function testCanBeCreatedForThrowableWithoutPrevious(): void

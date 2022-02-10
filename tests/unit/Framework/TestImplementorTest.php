@@ -11,12 +11,11 @@ namespace PHPUnit\Framework;
 
 use function count;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\DoubleTestCase;
 use PHPUnit\TestFixture\Success;
 
-/**
- * @small
- */
+#[Small]
 final class TestImplementorTest extends TestCase
 {
     public function testSuccessfulRun(): void

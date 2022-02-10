@@ -11,11 +11,10 @@ namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\Runtime\Extensions;
 use PHPUnit\Event\Runtime\PHP;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Runtime\PHP
- */
+#[CoversClass(PHP::class)]
 final class PHPTest extends TestCase
 {
     public function testDefaults(): void

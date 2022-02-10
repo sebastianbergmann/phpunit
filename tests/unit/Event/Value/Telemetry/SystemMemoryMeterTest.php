@@ -11,11 +11,10 @@ namespace PHPUnit\Event\Telemetry;
 
 use function memory_get_peak_usage;
 use function memory_get_usage;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Telemetry\SystemMemoryMeter
- */
+#[CoversClass(SystemMemoryMeter::class)]
 final class SystemMemoryMeterTest extends TestCase
 {
     public function testMemoryUsageReturnsMemoryUsage(): void

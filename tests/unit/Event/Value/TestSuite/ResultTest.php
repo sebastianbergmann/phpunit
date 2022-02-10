@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\TestSuite\Result
- */
+#[CoversClass(Result::class)]
 final class ResultTest extends TestCase
 {
     public function testConstructorSetsValues(): void

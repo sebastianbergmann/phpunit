@@ -11,10 +11,9 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\Test\BeforeTestMethodFinished
- */
+#[CoversClass(BeforeTestMethodFinished::class)]
 final class BeforeTestMethodFinishedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

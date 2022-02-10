@@ -14,14 +14,14 @@ use function spl_object_id;
 use DateTime;
 use DateTimeZone;
 use DOMDocument;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use SplObjectStorage;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class IsEqualTest extends ConstraintTestCase
 {
     public function testConstraintIsEqual(): void
@@ -51,9 +51,7 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @dataProvider isEqualProvider
-     */
+    #[DataProvider('isEqualProvider')]
     public function testConstraintIsEqual2(mixed $expected, mixed $actual, string $message): void
     {
         $constraint = new IsEqual($expected);

@@ -32,6 +32,9 @@ use ArrayIterator;
 use ArrayObject;
 use DateTime;
 use DateTimeZone;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\Author;
 use PHPUnit\TestFixture\Book;
 use PHPUnit\TestFixture\ClassWithToString;
@@ -44,9 +47,7 @@ use PHPUnit\Util\Xml\Loader as XmlLoader;
 use SplObjectStorage;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class AssertTest extends TestCase
 {
     public static function validInvalidJsonDataprovider(): array
@@ -252,23 +253,13 @@ final class AssertTest extends TestCase
         return array_merge($this->notEqualValues(), $this->equalValues());
     }
 
-    /**
-     * @dataProvider equalProvider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('equalProvider')]
     public function testAssertEqualsSucceeds(mixed $a, mixed $b): void
     {
         $this->assertEquals($a, $b);
     }
 
-    /**
-     * @dataProvider notEqualProvider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('notEqualProvider')]
     public function testAssertEqualsFails(mixed $a, mixed $b): void
     {
         $this->expectException(AssertionFailedError::class);
@@ -276,24 +267,13 @@ final class AssertTest extends TestCase
         $this->assertEquals($a, $b);
     }
 
-    /**
-     * @dataProvider notEqualProvider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('notEqualProvider')]
     public function testAssertNotEqualsSucceeds(mixed $a, mixed $b): void
     {
         $this->assertNotEquals($a, $b);
     }
 
-    /**
-     * @testdox assertNotEquals($a, $b) with delta $delta, canoicalize $canonicalize, ignoreCase $ignoreCase
-     * @dataProvider equalProvider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('equalProvider')]
     public function testAssertNotEqualsFails(mixed $a, mixed $b): void
     {
         $this->expectException(AssertionFailedError::class);
@@ -301,25 +281,13 @@ final class AssertTest extends TestCase
         $this->assertNotEquals($a, $b);
     }
 
-    /**
-     * @testdox assertNotSame($a, $b) fails
-     * @dataProvider sameProvider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('sameProvider')]
     public function testAssertSameSucceeds(mixed $a, mixed $b): void
     {
         $this->assertSame($a, $b);
     }
 
-    /**
-     * @testdox assertNotSame($a, $b)
-     * @dataProvider notSameProvider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('notSameProvider')]
     public function testAssertSameFails(mixed $a, mixed $b): void
     {
         $this->expectException(AssertionFailedError::class);
@@ -327,25 +295,13 @@ final class AssertTest extends TestCase
         $this->assertSame($a, $b);
     }
 
-    /**
-     * @testdox assertSame($a, $b) fails
-     * @dataProvider notSameProvider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('notSameProvider')]
     public function testAssertNotSameSucceeds(mixed $a, mixed $b): void
     {
         $this->assertNotSame($a, $b);
     }
 
-    /**
-     * @testdox assertSame($a, $b)
-     * @dataProvider sameProvider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('sameProvider')]
     public function testAssertNotSameFails(mixed $a, mixed $b): void
     {
         $this->expectException(AssertionFailedError::class);
@@ -422,9 +378,6 @@ final class AssertTest extends TestCase
         $this->assertXmlStringEqualsXmlString('<foo/>', '<bar/>');
     }
 
-    /**
-     * @ticket 1860
-     */
     public function testAssertXmlStringEqualsXmlString2(): void
     {
         $this->expectException(XmlException::class);
@@ -432,9 +385,6 @@ final class AssertTest extends TestCase
         $this->assertXmlStringEqualsXmlString('<a></b>', '<c></d>');
     }
 
-    /**
-     * @ticket 1860
-     */
     public function testAssertXmlStringEqualsXmlString3(): void
     {
         $expected = <<<'XML'
@@ -722,6 +672,7 @@ XML;
         $this->expectException(AssertionFailedError::class);
 
         /* @noinspection PhpUnitAssertCanBeReplacedWithFailInspection */
+        /* @noinspection PhpUnitAssertTrueWithIncompatibleTypeArgumentInspection */
         $this->assertTrue(false);
     }
 
@@ -877,9 +828,7 @@ XML;
         $this->assertLessThanOrEqual(1, 2);
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testAssertThatAnything(): void
     {
         $this->assertThat('anything', $this->anything());
@@ -900,9 +849,7 @@ XML;
         $this->assertThat('{}', $this->isJson());
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testAssertThatAnythingAndAnything(): void
     {
         $this->assertThat(
@@ -914,9 +861,7 @@ XML;
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testAssertThatAnythingOrAnything(): void
     {
         $this->assertThat(
@@ -928,9 +873,7 @@ XML;
         );
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testAssertThatAnythingXorNotAnything(): void
     {
         $this->assertThat(
@@ -1202,9 +1145,7 @@ XML;
         $this->assertStringEndsNotWith('suffix', 'foosuffix');
     }
 
-    /**
-     * @dataProvider assertStringContainsStringIgnoringLineEndingsProvider
-     */
+    #[DataProvider('assertStringContainsStringIgnoringLineEndingsProvider')]
     public function testAssertStringContainsStringIgnoringLineEndings(string $needle, string $haystack): void
     {
         $this->assertStringContainsStringIgnoringLineEndings($needle, $haystack);
@@ -1225,9 +1166,7 @@ XML;
         $this->assertStringContainsStringIgnoringLineEndings("b\nc", "\r\nc\r\n");
     }
 
-    /**
-     * @dataProvider assertStringEqualsStringIgnoringLineEndingsProvider
-     */
+    #[DataProvider('assertStringEqualsStringIgnoringLineEndingsProvider')]
     public function testAssertStringEqualsStringIgnoringLineEndings(string $expected, string $actual): void
     {
         $this->assertStringEqualsStringIgnoringLineEndings($expected, $actual);
@@ -1248,9 +1187,7 @@ XML;
         ];
     }
 
-    /**
-     * @dataProvider assertStringEqualsStringIgnoringLineEndingsProviderNegative
-     */
+    #[DataProvider('assertStringEqualsStringIgnoringLineEndingsProviderNegative')]
     public function testAssertStringEqualsStringIgnoringLineEndingsNegative(string $expected, string $actual): void
     {
         $this->expectException(ExpectationFailedException::class);
@@ -1377,17 +1314,11 @@ XML;
         $this->assertNotSameSize([1, 2], [3, 4]);
     }
 
-    /**
-     * @testdox Assert JSON
-     */
     public function testAssertJson(): void
     {
         $this->assertJson('{}');
     }
 
-    /**
-     * @testdox Assert JSON string equals JSON string
-     */
     public function testAssertJsonStringEqualsJsonString(): void
     {
         $expected = '{"Mascott" : "Tux"}';
@@ -1397,12 +1328,7 @@ XML;
         $this->assertJsonStringEqualsJsonString($expected, $actual, $message);
     }
 
-    /**
-     * @dataProvider validInvalidJsonDataprovider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('validInvalidJsonDataprovider')]
     public function testAssertJsonStringEqualsJsonStringErrorRaised(string $expected, string $actual): void
     {
         $this->expectException(AssertionFailedError::class);
@@ -1419,13 +1345,7 @@ XML;
         $this->assertJsonStringNotEqualsJsonString($expected, $actual, $message);
     }
 
-    /**
-     * @testdox Assert JSON string equals equals JSON string raised $_dataName
-     * @dataProvider validInvalidJsonDataprovider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
+    #[DataProvider('validInvalidJsonDataprovider')]
     public function testAssertJsonStringNotEqualsJsonStringErrorRaised(string $expected, string $actual): void
     {
         $this->expectException(AssertionFailedError::class);

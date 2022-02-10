@@ -18,6 +18,7 @@ use DependencyOnClassTest;
 use DependencySuccessTest;
 use MultiDependencyTest;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\BeforeAndAfterTest;
 use PHPUnit\TestFixture\BeforeClassAndAfterClassTest;
 use PHPUnit\TestFixture\BeforeClassWithOnlyDataProviderTest;
@@ -37,9 +38,7 @@ use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestCaseWithExceptionInHook;
 use PHPUnit\TestFixture\TestWithTest;
 
-/**
- * @small
- */
+#[Small]
 final class TestSuiteTest extends TestCase
 {
     private ?TestResult $result;
@@ -54,9 +53,6 @@ final class TestSuiteTest extends TestCase
         $this->result = null;
     }
 
-    /**
-     * @testdox TestSuite can be created with name of existing non-TestCase class
-     */
     public function testSuiteNameCanBeSameAsExistingNonTestClassName(): void
     {
         $suite = new TestSuite('stdClass');
@@ -319,9 +315,6 @@ final class TestSuiteTest extends TestCase
         $this->assertCount(3, $result);
     }
 
-    /**
-     * @testdox Handles exceptions in tearDownAfterClass()
-     */
     public function testTearDownAfterClassInTestSuite(): void
     {
         $suite = new TestSuite(ExceptionInTearDownAfterClassTest::class);

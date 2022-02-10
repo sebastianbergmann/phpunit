@@ -10,10 +10,9 @@
 namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\TestRunner\ExtensionLoaded
- */
+#[CoversClass(ExtensionLoaded::class)]
 final class ExtensionLoadedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

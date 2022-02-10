@@ -9,12 +9,10 @@
  */
 namespace PHPUnit\Runner\ResultCache;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @group test-reorder
- * @small
- */
+#[Small]
 final class NullTestResultCacheTest extends TestCase
 {
     public function testHasWorkingStubs(): void

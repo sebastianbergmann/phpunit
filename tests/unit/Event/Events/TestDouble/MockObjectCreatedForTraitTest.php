@@ -10,11 +10,10 @@
 namespace PHPUnit\Event\TestDouble;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\TestFixture;
 
-/**
- * @covers \PHPUnit\Event\TestDouble\MockObjectCreatedForTrait
- */
+#[CoversClass(MockObjectCreatedForTrait::class)]
 final class MockObjectCreatedForTraitTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

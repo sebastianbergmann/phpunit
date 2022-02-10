@@ -11,14 +11,14 @@ namespace PHPUnit\Util\TestDox;
 
 use Exception;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
 
-/**
- * @group testdox
- * @small
- */
+#[Group('testdox')]
+#[Small]
 final class CliTestDoxPrinterTest extends TestCase
 {
     private ?TestableCliTestDoxPrinter $printer;

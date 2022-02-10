@@ -11,12 +11,12 @@ namespace PHPUnit\Framework\Constraint;
 
 use ArrayObject;
 use EmptyIterator;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-/**
- * @small
- */
+#[Small]
 final class IsEmptyTest extends ConstraintTestCase
 {
     public function testConstraintIsEmpty(): void
@@ -70,9 +70,7 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @ticket https://github.com/sebastianbergmann/phpunit/issues/3743
-     */
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/3743')]
     public function test_EmptyIterator_is_handled_correctly(): void
     {
         $constraint = new IsEmpty;

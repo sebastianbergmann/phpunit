@@ -15,6 +15,14 @@ use function method_exists;
 use function microtime;
 use Countable;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
+use PHPUnit\Framework\MockObject\Rule\MethodName;
+use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\AbstractTrait;
 use PHPUnit\TestFixture\ExceptionWithThrowable;
@@ -30,20 +38,16 @@ use RuntimeException;
 use stdClass;
 use Throwable;
 
-/**
- * @covers \PHPUnit\Framework\MockObject\Generator
- *
- * @uses \PHPUnit\Framework\MockObject\Builder\InvocationMocker
- * @uses \PHPUnit\Framework\MockObject\Invocation
- * @uses \PHPUnit\Framework\MockObject\InvocationHandler
- * @uses \PHPUnit\Framework\MockObject\Matcher
- * @uses \PHPUnit\Framework\MockObject\Rule\InvocationOrder
- * @uses \PHPUnit\Framework\MockObject\Rule\InvokedCount
- * @uses \PHPUnit\Framework\MockObject\Rule\MethodName
- * @uses \PHPUnit\Framework\MockObject\Stub\ReturnStub
- *
- * @small
- */
+#[CoversClass(Generator::class)]
+#[UsesClass(InvocationMocker::class)]
+#[UsesClass(Invocation::class)]
+#[UsesClass(InvocationHandler::class)]
+#[UsesClass(Matcher::class)]
+#[UsesClass(InvocationOrder::class)]
+#[UsesClass(InvokedCount::class)]
+#[UsesClass(MethodName::class)]
+#[UsesClass(ReturnStub::class)]
+#[Small]
 final class GeneratorTest extends TestCase
 {
     private ?Generator $generator;

@@ -9,12 +9,11 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- */
+#[Small]
 final class LogicalExpressionsTest extends TestCase
 {
     public function testLogicalNotOfDegenerateLogicalAnd(): void

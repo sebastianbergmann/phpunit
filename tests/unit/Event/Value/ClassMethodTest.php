@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\Event\Code;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Code\ClassMethod
- */
+#[CoversClass(ClassMethod::class)]
 final class ClassMethodTest extends TestCase
 {
     public function testConstructorSetsValues(): void

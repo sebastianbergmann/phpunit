@@ -7,15 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\MockObject\CannotUseAddMethodsException;
 use PHPUnit\Framework\MockObject\CannotUseOnlyMethodsException;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Mockable;
 
-/**
- * @small
- */
+#[Small]
 final class MockBuilderTest extends TestCase
 {
     public function testMockBuilderRequiresClassName(): void

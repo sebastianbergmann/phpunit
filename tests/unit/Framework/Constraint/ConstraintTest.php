@@ -9,14 +9,13 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class ConstraintTest extends ConstraintTestCase
 {
     public static function getDummyConstraintInstance(): Constraint

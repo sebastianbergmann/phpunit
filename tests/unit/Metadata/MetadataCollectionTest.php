@@ -9,56 +9,55 @@
  */
 namespace PHPUnit\Metadata;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Util\VersionComparisonOperator;
 
-/**
- * @covers \PHPUnit\Metadata\MetadataCollection
- * @covers \PHPUnit\Metadata\MetadataCollectionIterator
- *
- * @uses \PHPUnit\Metadata\After
- * @uses \PHPUnit\Metadata\AfterClass
- * @uses \PHPUnit\Metadata\BackupGlobals
- * @uses \PHPUnit\Metadata\BackupStaticProperties
- * @uses \PHPUnit\Metadata\Before
- * @uses \PHPUnit\Metadata\BeforeClass
- * @uses \PHPUnit\Metadata\CodeCoverageIgnore
- * @uses \PHPUnit\Metadata\Covers
- * @uses \PHPUnit\Metadata\CoversClass
- * @uses \PHPUnit\Metadata\CoversDefaultClass
- * @uses \PHPUnit\Metadata\CoversFunction
- * @uses \PHPUnit\Metadata\CoversNothing
- * @uses \PHPUnit\Metadata\DataProvider
- * @uses \PHPUnit\Metadata\DependsOnClass
- * @uses \PHPUnit\Metadata\DependsOnMethod
- * @uses \PHPUnit\Metadata\DoesNotPerformAssertions
- * @uses \PHPUnit\Metadata\Group
- * @uses \PHPUnit\Metadata\Metadata
- * @uses \PHPUnit\Metadata\PostCondition
- * @uses \PHPUnit\Metadata\PreCondition
- * @uses \PHPUnit\Metadata\PreserveGlobalState
- * @uses \PHPUnit\Metadata\RequiresFunction
- * @uses \PHPUnit\Metadata\RequiresMethod
- * @uses \PHPUnit\Metadata\RequiresOperatingSystem
- * @uses \PHPUnit\Metadata\RequiresOperatingSystemFamily
- * @uses \PHPUnit\Metadata\RequiresPhp
- * @uses \PHPUnit\Metadata\RequiresPhpExtension
- * @uses \PHPUnit\Metadata\RequiresPhpunit
- * @uses \PHPUnit\Metadata\RequiresSetting
- * @uses \PHPUnit\Metadata\RunClassInSeparateProcess
- * @uses \PHPUnit\Metadata\RunInSeparateProcess
- * @uses \PHPUnit\Metadata\RunTestsInSeparateProcesses
- * @uses \PHPUnit\Metadata\Test
- * @uses \PHPUnit\Metadata\TestDox
- * @uses \PHPUnit\Metadata\TestWith
- * @uses \PHPUnit\Metadata\Uses
- * @uses \PHPUnit\Metadata\UsesClass
- * @uses \PHPUnit\Metadata\UsesDefaultClass
- * @uses \PHPUnit\Metadata\UsesFunction
- *
- * @small
- */
+#[CoversClass(MetadataCollection::class)]
+#[CoversClass(MetadataCollectionIterator::class)]
+#[UsesClass(After::class)]
+#[UsesClass(AfterClass::class)]
+#[UsesClass(BackupGlobals::class)]
+#[UsesClass(BackupStaticProperties::class)]
+#[UsesClass(Before::class)]
+#[UsesClass(BeforeClass::class)]
+#[UsesClass(CodeCoverageIgnore::class)]
+#[UsesClass(Covers::class)]
+#[UsesClass(\PHPUnit\Metadata\CoversClass::class)]
+#[UsesClass(CoversDefaultClass::class)]
+#[UsesClass(CoversFunction::class)]
+#[UsesClass(CoversNothing::class)]
+#[UsesClass(DataProvider::class)]
+#[UsesClass(DependsOnClass::class)]
+#[UsesClass(DependsOnMethod::class)]
+#[UsesClass(DoesNotPerformAssertions::class)]
+#[UsesClass(Group::class)]
+#[UsesClass(Metadata::class)]
+#[UsesClass(PostCondition::class)]
+#[UsesClass(PreCondition::class)]
+#[UsesClass(PreserveGlobalState::class)]
+#[UsesClass(RequiresFunction::class)]
+#[UsesClass(RequiresMethod::class)]
+#[UsesClass(RequiresOperatingSystem::class)]
+#[UsesClass(RequiresOperatingSystemFamily::class)]
+#[UsesClass(RequiresPhp::class)]
+#[UsesClass(RequiresPhpExtension::class)]
+#[UsesClass(RequiresPhpunit::class)]
+#[UsesClass(RequiresSetting::class)]
+#[UsesClass(RunClassInSeparateProcess::class)]
+#[UsesClass(RunInSeparateProcess::class)]
+#[UsesClass(RunTestsInSeparateProcesses::class)]
+#[UsesClass(Test::class)]
+#[UsesClass(TestDox::class)]
+#[UsesClass(TestWith::class)]
+#[UsesClass(Uses::class)]
+#[UsesClass(\PHPUnit\Metadata\UsesClass::class)]
+#[UsesClass(UsesDefaultClass::class)]
+#[UsesClass(UsesFunction::class)]
+#[Small]
 final class MetadataCollectionTest extends TestCase
 {
     public function testCanBeEmpty(): void

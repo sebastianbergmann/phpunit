@@ -9,16 +9,14 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Telemetry\MemoryUsage
- */
+#[CoversClass(MemoryUsage::class)]
 final class MemoryUsageTest extends TestCase
 {
-    /**
-     * @dataProvider provideValidBytes
-     */
+    #[DataProvider('provideValidBytes')]
     public function testFromBytesReturnsMemoryUsage(int $bytes): void
     {
         $memoryUsage = MemoryUsage::fromBytes($bytes);

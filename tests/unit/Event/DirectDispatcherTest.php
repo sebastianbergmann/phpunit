@@ -12,13 +12,12 @@ namespace PHPUnit\Event;
 use DummyEvent;
 use DummySubscriber;
 use NullSubscriber;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use RuntimeException;
 use SpyingDummySubscriber;
 
-/**
- * @covers \PHPUnit\Event\DirectDispatcher
- */
+#[CoversClass(DirectDispatcher::class)]
 final class DirectDispatcherTest extends TestCase
 {
     public function testRegisterRejectsUnknownSubscriber(): void

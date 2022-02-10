@@ -11,10 +11,9 @@ namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\TestCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\TestSuite\Loaded
- */
+#[CoversClass(Loaded::class)]
 final class LoadedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

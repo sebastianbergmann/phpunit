@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Util;
 
-use Exception;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- */
+#[Small]
 final class RegularExpressionTest extends TestCase
 {
     public function validRegexpProvider(): array
@@ -36,25 +36,15 @@ final class RegularExpressionTest extends TestCase
         ];
     }
 
-    /**
-     * @testdox Valid regex $pattern on $subject returns $return
-     * @dataProvider validRegexpProvider
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws Exception
-     */
+    #[DataProvider('validRegexpProvider')]
+    #[TestDox('Valid regex $pattern on $subject returns $return')]
     public function testValidRegex(string $pattern, string $subject, int $return): void
     {
         $this->assertEquals($return, RegularExpression::safeMatch($pattern, $subject));
     }
 
-    /**
-     * @testdox Invalid regex $pattern on $subject
-     * @dataProvider invalidRegexpProvider
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws Exception
-     */
+    #[DataProvider('invalidRegexpProvider')]
+    #[TestDox('Invalid regex $pattern on $subject')]
     public function testInvalidRegex(string $pattern, string $subject): void
     {
         $this->assertFalse(RegularExpression::safeMatch($pattern, $subject));

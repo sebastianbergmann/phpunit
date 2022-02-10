@@ -11,10 +11,9 @@ namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code\TestCollection;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\TestSuite\Filtered
- */
+#[CoversClass(Filtered::class)]
 final class FilteredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

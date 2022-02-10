@@ -9,12 +9,11 @@
  */
 namespace PHPUnit\Util\PHP;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- */
+#[Small]
 final class AbstractPhpProcessTest extends TestCase
 {
     private AbstractPhpProcess|MockObject|null $phpProcess;

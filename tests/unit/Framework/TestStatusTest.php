@@ -9,22 +9,21 @@
  */
 namespace PHPUnit\Framework\TestStatus;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Framework\TestStatus\Error
- * @covers \PHPUnit\Framework\TestStatus\Failure
- * @covers \PHPUnit\Framework\TestStatus\Incomplete
- * @covers \PHPUnit\Framework\TestStatus\Known
- * @covers \PHPUnit\Framework\TestStatus\Risky
- * @covers \PHPUnit\Framework\TestStatus\Skipped
- * @covers \PHPUnit\Framework\TestStatus\Success
- * @covers \PHPUnit\Framework\TestStatus\TestStatus
- * @covers \PHPUnit\Framework\TestStatus\Unknown
- * @covers \PHPUnit\Framework\TestStatus\Warning
- *
- * @small
- */
+#[CoversClass(Error::class)]
+#[CoversClass(Failure::class)]
+#[CoversClass(Incomplete::class)]
+#[CoversClass(Known::class)]
+#[CoversClass(Risky::class)]
+#[CoversClass(Skipped::class)]
+#[CoversClass(Success::class)]
+#[CoversClass(TestStatus::class)]
+#[CoversClass(Unknown::class)]
+#[CoversClass(Warning::class)]
+#[Small]
 final class TestStatusTest extends TestCase
 {
     public function testCanBeUnknown(): void

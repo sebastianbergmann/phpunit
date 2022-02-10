@@ -8,6 +8,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\IncompatibleReturnValueException;
@@ -20,10 +22,8 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\MockObject\ClassWithAllPossibleReturnTypes;
 use PHPUnit\TestFixture\MockObject\ClassWithImplicitProtocol;
 
-/**
- * @covers \PHPUnit\Framework\MockObject\Builder\InvocationMocker
- * @small
- */
+#[CoversClass(InvocationMocker::class)]
+#[Small]
 final class InvocationMockerTest extends TestCase
 {
     public function testWillReturnWithOneValue(): void

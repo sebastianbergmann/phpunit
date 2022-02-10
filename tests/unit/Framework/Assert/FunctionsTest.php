@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use function array_reduce;
 use function file_get_contents;
 use function preg_match_all;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class FunctionsTest extends TestCase
 {
@@ -30,9 +31,7 @@ final class FunctionsTest extends TestCase
         self::$globalAssertionFunctions = $matches[1];
     }
 
-    /**
-     * @dataProvider provideStaticAssertionMethodNames
-     */
+    #[DataProvider('provideStaticAssertionMethodNames')]
     public function testGlobalFunctionsFileContainsAllStaticAssertions(string $methodName): void
     {
         Assert::assertContains(

@@ -10,11 +10,10 @@
 namespace PHPUnit\Event\TestDouble;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 
-/**
- * @covers \PHPUnit\Event\TestDouble\MockObjectCreatedFromWsdl
- */
+#[CoversClass(MockObjectCreatedFromWsdl::class)]
 final class MockObjectCreatedFromWsdlTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

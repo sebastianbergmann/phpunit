@@ -10,11 +10,10 @@
 namespace PHPUnit\Event\Telemetry;
 
 use function hrtime;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Telemetry\System
- */
+#[CoversClass(System::class)]
 final class SystemTest extends TestCase
 {
     public function testSnapshotReturnsSnapshot(): void

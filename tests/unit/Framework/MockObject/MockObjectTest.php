@@ -7,6 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
+use PHPUnit\Framework\Attributes\RequiresPhp;
+use PHPUnit\Framework\Attributes\RequiresPhpExtension;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\ReturnValueNotConfiguredException;
@@ -35,9 +40,7 @@ use PHPUnit\TestFixture\MockObject\TraversableMockTestInterface;
 use PHPUnit\TestFixture\PartialMockTestClass;
 use PHPUnit\TestFixture\SomeClass;
 
-/**
- * @small
- */
+#[Small]
 final class MockObjectTest extends TestCase
 {
     public function testMockedMethodIsNeverCalled(): void
@@ -59,9 +62,7 @@ final class MockObjectTest extends TestCase
              ->with('someArg');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testMockedMethodIsNotCalledWhenExpectsAnyWithParameter(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
@@ -71,9 +72,7 @@ final class MockObjectTest extends TestCase
              ->with('someArg');
     }
 
-    /**
-     * @doesNotPerformAssertions
-     */
+    #[DoesNotPerformAssertions]
     public function testMockedMethodIsNotCalledWhenMethodSpecifiedDirectlyWithParameter(): void
     {
         $mock = $this->getMockBuilder(SomeClass::class)
@@ -454,9 +453,6 @@ final class MockObjectTest extends TestCase
         $this->assertNotEquals(\get_class($mock1), \get_class($mock2));
     }
 
-    /**
-     * @testdox getMock() for abstract class
-     */
     public function testGetMockForAbstractClass(): void
     {
         $mock = $this->getMockBuilder(AbstractMockTestClass::class)
@@ -467,10 +463,9 @@ final class MockObjectTest extends TestCase
     }
 
     /**
-     * @testdox getMock() for Traversable $_dataName
-     * @dataProvider traversableProvider
      * @psalm-param class-string $type
      */
+    #[DataProvider('traversableProvider')]
     public function testGetMockForTraversable(string $type): void
     {
         $mock = $this->getMockBuilder($type)
@@ -479,9 +474,6 @@ final class MockObjectTest extends TestCase
         $this->assertInstanceOf(Traversable::class, $mock);
     }
 
-    /**
-     * @testdox getMockForTrait()
-     */
     public function testGetMockForTrait(): void
     {
         $mock = $this->getMockForTrait(AbstractTrait::class);
@@ -888,9 +880,7 @@ final class MockObjectTest extends TestCase
         $this->assertNull($foo->bar($a, $b, $c));
     }
 
-    /**
-     * @requires extension soap
-     */
+    #[RequiresPhpExtension('soap')]
     public function testCreateMockFromWsdl(): void
     {
         $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl', 'WsdlMock');
@@ -901,9 +891,7 @@ final class MockObjectTest extends TestCase
         );
     }
 
-    /**
-     * @requires extension soap
-     */
+    #[RequiresPhpExtension('soap')]
     public function testCreateNamespacedMockFromWsdl(): void
     {
         $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl', 'My\\Space\\WsdlMock');
@@ -914,9 +902,7 @@ final class MockObjectTest extends TestCase
         );
     }
 
-    /**
-     * @requires extension soap
-     */
+    #[RequiresPhpExtension('soap')]
     public function testCreateTwoMocksOfOneWsdlFile(): void
     {
         $a = $this->getMockFromWsdl(TEST_FILES_PATH . 'GoogleSearch.wsdl');
@@ -926,11 +912,7 @@ final class MockObjectTest extends TestCase
         $this->assertEquals(\get_class($a), \get_class($b));
     }
 
-    /**
-     * @see      https://github.com/sebastianbergmann/phpunit/issues/2573
-     * @ticket   2573
-     * @requires extension soap
-     */
+    #[RequiresPhpExtension('soap')]
     public function testCreateMockOfWsdlFileWithSpecialChars(): void
     {
         $mock = $this->getMockFromWsdl(TEST_FILES_PATH . 'Go ogle-Sea.rch.wsdl');
@@ -938,10 +920,6 @@ final class MockObjectTest extends TestCase
         $this->assertStringStartsWith('Mock_GoogleSearch_', \get_class($mock));
     }
 
-    /**
-     * @see    https://github.com/sebastianbergmann/phpunit-mock-objects/issues/156
-     * @ticket 156
-     */
     public function testInterfaceWithStaticMethodCanBeStubbed(): void
     {
         $this->assertInstanceOf(
@@ -959,11 +937,7 @@ final class MockObjectTest extends TestCase
         $mock->staticMethod();
     }
 
-    /**
-     * @see    https://github.com/sebastianbergmann/phpunit-mock-objects/issues/171
-     * @ticket 171
-     * @requires PHP < 8.1
-     */
+    #[RequiresPhp('< 8.1')]
     public function testStubForClassThatImplementsSerializableCanBeCreatedWithoutInvokingTheConstructor(): void
     {
         $this->assertInstanceOf(
@@ -1183,9 +1157,7 @@ final class MockObjectTest extends TestCase
         $this->assertFalse($i->returnsBool());
     }
 
-    /**
-     * @requires PHP 8.1
-     */
+    #[RequiresPhp('< 8.1')]
     public function testReturnValueCanBeAutomaticallyGeneratedForMethodThatReturnsIntersectionOfInterfaces(): void
     {
         $result = $this->createStub(InterfaceWithMethodReturningIntersection::class)->method();
@@ -1194,9 +1166,7 @@ final class MockObjectTest extends TestCase
         $this->assertInstanceOf(AnotherInterface::class, $result);
     }
 
-    /**
-     * @requires PHP 8.1
-     */
+    #[RequiresPhp('< 8.1')]
     public function testReturnValueCannotBeAutomaticallyGeneratedForMethodThatReturnsIntersectionWithClass(): void
     {
         $stub = $this->createStub(InterfaceWithMethodReturningIntersectionWithClass::class);

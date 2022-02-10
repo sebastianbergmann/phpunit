@@ -10,11 +10,11 @@
 namespace PHPUnit\Event\Telemetry;
 
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Telemetry\HRTime
- */
+#[CoversClass(HRTime::class)]
 final class HRTimeTest extends TestCase
 {
     public function testFromSecondsAndNanosecondsRejectsNegativeSeconds(): void
@@ -64,9 +64,7 @@ final class HRTimeTest extends TestCase
         $this->assertSame($nanoseconds, $time->nanoseconds());
     }
 
-    /**
-     * @dataProvider provideStartGreaterThanEnd
-     */
+    #[DataProvider('provideStartGreaterThanEnd')]
     public function testDurationRejectsStartGreaterThanEnd(
         int $startSeconds,
         int $startNanoseconds,
@@ -116,9 +114,7 @@ final class HRTimeTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideStartEndAndDuration
-     */
+    #[DataProvider('provideStartEndAndDuration')]
     public function testDurationReturnsDifferenceBetweenEndAndStart(
         int $startSeconds,
         int $startNanoseconds,

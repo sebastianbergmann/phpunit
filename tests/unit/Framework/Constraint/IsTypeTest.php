@@ -14,13 +14,13 @@ use function fopen;
 use function is_resource;
 use function preg_replace;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class IsTypeTest extends ConstraintTestCase
 {
     public function testConstraintIsType(): void
@@ -73,10 +73,7 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @dataProvider resources
-     * @psalm-param closed-resource|resource $resource
-     */
+    #[DataProvider('resources')]
     public function testConstraintIsResourceTypeEvaluatesCorrectlyWithResources($resource): void
     {
         $constraint = Assert::isType('resource');

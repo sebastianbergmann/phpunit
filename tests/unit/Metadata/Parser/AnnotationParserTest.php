@@ -10,6 +10,9 @@
 namespace PHPUnit\Metadata;
 
 use function assert;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\AnnotationParser;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
@@ -35,11 +38,8 @@ use PHPUnit\TestFixture\Metadata\Annotation\SmallTest;
 use PHPUnit\TestFixture\Metadata\Annotation\TestDoxTest;
 use PHPUnit\TestFixture\Metadata\Annotation\UsesTest;
 
-/**
- * @covers \PHPUnit\Metadata\Parser\AnnotationParser
- *
- * @small
- */
+#[CoversClass(AnnotationParser::class)]
+#[Small]
 final class AnnotationParserTest extends TestCase
 {
     public function test_Parses_backupGlobals_annotation_on_class(): void
@@ -612,9 +612,7 @@ final class AnnotationParserTest extends TestCase
         return [['testOne'], ['testTwo']];
     }
 
-    /**
-     * @dataProvider provideRequiresPhpTestMethods
-     */
+    #[DataProvider('provideRequiresPhpTestMethods')]
     public function test_Parses_requiresPhp_annotation_on_method(string $method): void
     {
         $metadata = (new AnnotationParser)->forMethod(RequiresPhpTest::class, $method)->isRequiresPhp();

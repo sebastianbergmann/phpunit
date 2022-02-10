@@ -9,13 +9,13 @@
  */
 namespace PHPUnit\Util\TestDox;
 
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Logging\TestDox\NamePrettifier;
 
-/**
- * @group testdox
- * @small
- */
+#[Group('testdox')]
+#[Small]
 final class NamePrettifierTest extends TestCase
 {
     private ?NamePrettifier $namePrettifier;
@@ -54,9 +54,6 @@ final class NamePrettifierTest extends TestCase
         $this->assertEquals('', $this->namePrettifier->prettifyTestMethod('test'));
     }
 
-    /**
-     * @ticket 224
-     */
     public function testTestNameIsNotGroupedWhenNotInSequence(): void
     {
         $this->assertEquals('Sets redirect header on 301', $this->namePrettifier->prettifyTestMethod('testSetsRedirectHeaderOn301'));

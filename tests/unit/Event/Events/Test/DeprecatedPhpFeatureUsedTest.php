@@ -11,10 +11,9 @@ namespace PHPUnit\Event\Test;
 
 use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\Test\DeprecatedPhpFeatureUsed
- */
+#[CoversClass(DeprecatedPhpFeatureUsed::class)]
 final class DeprecatedPhpFeatureUsedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

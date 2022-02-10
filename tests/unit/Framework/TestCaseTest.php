@@ -25,6 +25,7 @@ use DependencyOnClassTest;
 use DependencySuccessTest;
 use InvalidArgumentException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\TestFixture\ChangeCurrentWorkingDirectoryTest;
@@ -42,7 +43,6 @@ use PHPUnit\TestFixture\Mockable;
 use PHPUnit\TestFixture\NoArgTestCaseTest;
 use PHPUnit\TestFixture\OutputTestCase;
 use PHPUnit\TestFixture\RequirementsTest;
-use PHPUnit\TestFixture\Singleton;
 use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestAutoreferenced;
 use PHPUnit\TestFixture\TestError;
@@ -57,10 +57,8 @@ use PHPUnit\TestFixture\WasRun;
 use RuntimeException;
 use TypeError;
 
-/**
- * @excludeGlobalVariableFromBackup i
- * @excludeGlobalVariableFromBackup singleton
- */
+#[ExcludeGlobalVariableFromBackup('i')]
+#[ExcludeGlobalVariableFromBackup('singleton')]
 class TestCaseTest extends TestCase
 {
     protected static int $testStatic = 456;
@@ -93,9 +91,6 @@ class TestCaseTest extends TestCase
         );
     }
 
-    /**
-     * @testdox TestCase::toSring()
-     */
     public function testCaseToString(): void
     {
         $this->assertEquals(
@@ -104,9 +99,6 @@ class TestCaseTest extends TestCase
         );
     }
 
-    /**
-     * @testdox TestCase has sensible defaults for execution reordering
-     */
     public function testCaseDefaultExecutionOrderDependencies(): void
     {
         $this->assertInstanceOf(Reorderable::class, $this);

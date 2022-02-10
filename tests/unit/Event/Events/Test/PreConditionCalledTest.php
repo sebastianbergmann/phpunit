@@ -11,10 +11,9 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\Test\PreConditionCalled
- */
+#[CoversClass(PreConditionCalled::class)]
 final class PreConditionCalledTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

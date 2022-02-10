@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\Util;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- */
+#[Small]
 final class GlobalStateTest extends TestCase
 {
     public function testIncludedFilesAsStringSkipsVfsProtocols(): void

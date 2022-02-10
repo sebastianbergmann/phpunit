@@ -23,15 +23,14 @@ use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\StartedSubscriber as TestSuiteStartedSubscriber;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestFixture;
 use RecordingSubscriber;
 use SebastianBergmann\GlobalState\Snapshot;
 use stdClass;
 
-/**
- * @covers \PHPUnit\Event\DispatchingEmitter
- */
+#[CoversClass(DispatchingEmitter::class)]
 final class DispatchingEmitterTest extends Framework\TestCase
 {
     public function testTestRunnerStartedDispatchesTestRunnerStartedEvent(): void

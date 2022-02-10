@@ -12,6 +12,8 @@ namespace PHPUnit\Framework\Constraint;
 use EmptyIterator;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\TestFixture\TestGeneratorMaker;
@@ -20,9 +22,7 @@ use PHPUnit\TestFixture\TestIterator2;
 use PHPUnit\TestFixture\TestIteratorAggregate;
 use PHPUnit\TestFixture\TestIteratorAggregate2;
 
-/**
- * @small
- */
+#[Small]
 final class CountTest extends ConstraintTestCase
 {
     public function testCount(): void
@@ -167,9 +167,7 @@ EOF
         }
     }
 
-    /**
-     * @ticket https://github.com/sebastianbergmann/phpunit/issues/3743
-     */
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/3743')]
     public function test_EmptyIterator_is_handled_correctly(): void
     {
         $constraint = new Count(0);

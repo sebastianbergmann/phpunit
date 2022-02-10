@@ -11,11 +11,11 @@ namespace PHPUnit\Event\Telemetry;
 
 use function sprintf;
 use InvalidArgumentException;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Telemetry\Duration
- */
+#[CoversClass(Duration::class)]
 final class DurationTest extends TestCase
 {
     public function testFromSecondsAndNanosecondsRejectsNegativeSeconds(): void
@@ -89,9 +89,7 @@ final class DurationTest extends TestCase
         $this->assertSame($formatter->format($duration), $formatted);
     }
 
-    /**
-     * @dataProvider provideDurationAndStringRepresentation
-     */
+    #[DataProvider('provideDurationAndStringRepresentation')]
     public function testAsStringFormatsDurationWhenDurationFormatterIsNotSpecified(int $seconds, int $nanoseconds, string $formatted): void
     {
         $duration = Duration::fromSecondsAndNanoseconds(

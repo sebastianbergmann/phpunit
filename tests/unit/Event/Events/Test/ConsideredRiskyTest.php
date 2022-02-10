@@ -12,10 +12,9 @@ namespace PHPUnit\Event\Test;
 use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
+use PHPUnit\Framework\Attributes\CoversClass;
 
-/**
- * @covers \PHPUnit\Event\Test\ConsideredRisky
- */
+#[CoversClass(ConsideredRisky::class)]
 final class ConsideredRiskyTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

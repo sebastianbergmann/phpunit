@@ -10,11 +10,10 @@
 namespace PHPUnit\Event\TestRunner;
 
 use PHPUnit\Event\Runtime\OperatingSystem;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @covers \PHPUnit\Event\Runtime\OperatingSystem
- */
+#[CoversClass(OperatingSystem::class)]
 final class OperatingSystemTest extends TestCase
 {
     public function testDefaults(): void

@@ -10,11 +10,10 @@
 namespace PHPUnit\Event\TestDouble;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 
-/**
- * @covers \PHPUnit\Event\TestDouble\TestProxyCreated
- */
+#[CoversClass(TestProxyCreated::class)]
 final class TestProxyCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void

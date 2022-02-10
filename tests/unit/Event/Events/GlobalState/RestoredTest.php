@@ -10,11 +10,10 @@
 namespace PHPUnit\Event\GlobalState;
 
 use PHPUnit\Event\AbstractEventTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
 use SebastianBergmann\GlobalState\Snapshot;
 
-/**
- * @covers \PHPUnit\Event\GlobalState\Restored
- */
+#[CoversClass(Restored::class)]
 final class RestoredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
