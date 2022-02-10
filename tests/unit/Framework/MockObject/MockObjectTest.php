@@ -1101,9 +1101,6 @@ final class MockObjectTest extends TestCase
         $this->assertNull($stub->methodWithVoidReturnTypeDeclaration());
     }
 
-    /**
-     * @requires PHP 7.2
-     */
     public function testObjectReturnTypeIsMockedCorrectly(): void
     {
         /** @var ClassWithAllPossibleReturnTypes|MockObject $stub */
