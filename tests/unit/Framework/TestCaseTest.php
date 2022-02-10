@@ -875,9 +875,6 @@ class TestCaseTest extends TestCase
         $this->assertSame($expectedCwd, getcwd());
     }
 
-    /**
-     * @requires PHP 7
-     */
     public function testTypeErrorCanBeExpected(): void
     {
         $o = new ClassWithScalarTypeDeclarations;
