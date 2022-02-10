@@ -1157,7 +1157,7 @@ final class MockObjectTest extends TestCase
         $this->assertFalse($i->returnsBool());
     }
 
-    #[RequiresPhp('< 8.1')]
+    #[RequiresPhp('8.1')]
     public function testReturnValueCanBeAutomaticallyGeneratedForMethodThatReturnsIntersectionOfInterfaces(): void
     {
         $result = $this->createStub(InterfaceWithMethodReturningIntersection::class)->method();
@@ -1166,7 +1166,7 @@ final class MockObjectTest extends TestCase
         $this->assertInstanceOf(AnotherInterface::class, $result);
     }
 
-    #[RequiresPhp('< 8.1')]
+    #[RequiresPhp('8.1')]
     public function testReturnValueCannotBeAutomaticallyGeneratedForMethodThatReturnsIntersectionWithClass(): void
     {
         $stub = $this->createStub(InterfaceWithMethodReturningIntersectionWithClass::class);
