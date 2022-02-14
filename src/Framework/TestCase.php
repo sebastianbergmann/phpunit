@@ -1879,7 +1879,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->compareGlobalStateSnapshotPart(
                 $before->staticProperties(),
                 $after->staticProperties(),
-                "--- Static attributes before the test\n+++ Static attributes after the test\n"
+                "--- Static properties before the test\n+++ Static properties after the test\n"
             );
         }
     }
