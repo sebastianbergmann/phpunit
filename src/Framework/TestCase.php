@@ -1805,7 +1805,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if ($this->backupStaticProperties) {
-            $restorer->restoreStaticAttributes($this->snapshot);
+            $restorer->restoreStaticProperties($this->snapshot);
         }
 
         $this->snapshot = null;
@@ -1831,11 +1831,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $excludeList->addClassNamePrefix('SebastianBergmann\Template');
             $excludeList->addClassNamePrefix('SebastianBergmann\Timer');
             $excludeList->addClassNamePrefix('Doctrine\Instantiator');
-            $excludeList->addStaticAttribute(ComparatorFactory::class, 'instance');
+            $excludeList->addStaticProperty(ComparatorFactory::class, 'instance');
 
             foreach ($this->backupStaticPropertiesExcludeList as $class => $attributes) {
                 foreach ($attributes as $attribute) {
-                    $excludeList->addStaticAttribute($class, $attribute);
+                    $excludeList->addStaticProperty($class, $attribute);
                 }
             }
         }
@@ -1877,8 +1877,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if ($this->backupStaticProperties) {
             $this->compareGlobalStateSnapshotPart(
-                $before->staticAttributes(),
-                $after->staticAttributes(),
+                $before->staticProperties(),
+                $after->staticProperties(),
                 "--- Static attributes before the test\n+++ Static attributes after the test\n"
             );
         }
