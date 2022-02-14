@@ -1833,9 +1833,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $excludeList->addClassNamePrefix('Doctrine\Instantiator');
             $excludeList->addStaticProperty(ComparatorFactory::class, 'instance');
 
-            foreach ($this->backupStaticPropertiesExcludeList as $class => $attributes) {
-                foreach ($attributes as $attribute) {
-                    $excludeList->addStaticProperty($class, $attribute);
+            foreach ($this->backupStaticPropertiesExcludeList as $class => $properties) {
+                foreach ($properties as $property) {
+                    $excludeList->addStaticProperty($class, $property);
                 }
             }
         }
