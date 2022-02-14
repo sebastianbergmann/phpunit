@@ -45,32 +45,15 @@ use Throwable;
  */
 class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
-    /**
-     * Enable or disable the backup and restoration of the $GLOBALS array.
-     */
-    protected ?bool $backupGlobals = null;
-
-    /**
-     * Enable or disable the backup and restoration of static attributes.
-     */
+    protected ?bool $backupGlobals           = null;
     protected ?bool $backupStaticProperties  = null;
     protected bool $runTestInSeparateProcess = false;
+    protected string $name                   = '';
 
     /**
-     * The name of the test suite.
-     */
-    protected string $name = '';
-
-    /**
-     * The test groups of the test suite.
-     *
      * @psalm-var array<string,list<Test>>
      */
-    protected array $groups = [];
-
-    /**
-     * The number of tests in the test suite.
-     */
+    protected array $groups         = [];
     protected int $numTests         = -1;
     protected ?array $requiredTests = null;
 
