@@ -9,8 +9,11 @@
  */
 
 return [
-    'whitelist' => [
-        'PHPUnit\*',
-        'Prophecy\*',
+    'exclude-namespaces' => [
+        'PHPUnit',
+        'Prophecy'
+    ],
+    'expose-constants' => [
+        '/^__PHPUNIT_.+$/'
     ],
 ];
