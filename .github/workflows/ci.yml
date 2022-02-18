@@ -230,21 +230,12 @@ jobs:
       matrix:
         php-version:
           - "8.0"
+          - "8.1"
+          - "8.2"
 
         coverage:
           - pcov
           - xdebug
-
-        experimental:
-          - false
-
-        include:
-          - php-version: "8.1"
-            experimental: true
-          - php-version: "8.2"
-            experimental: true
-
-    continue-on-error: ${{ matrix.experimental }}
 
     steps:
       - name: Checkout
@@ -271,7 +262,7 @@ jobs:
         run: ant run-phar-specific-tests-with-scoped-phar
 
       - uses: actions/upload-artifact@v2
-        if: ${{ matrix.php-version == 8.0 }}
+        if: ${{ matrix.php-version == 8.1 }}
         with:
           name: phpunit-snapshot-phar
           path: ./build/artifacts/phpunit-snapshot.phar
