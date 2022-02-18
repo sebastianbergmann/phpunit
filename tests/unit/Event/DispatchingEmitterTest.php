@@ -43,13 +43,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestRunner\StartedSubscriber::class,
             TestRunner\Started::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -72,13 +72,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestRunner\FinishedSubscriber::class,
             TestRunner\Finished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -106,13 +106,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AssertionMadeSubscriber::class,
             Test\AssertionMade::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -150,13 +150,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestRunner\BootstrapFinishedSubscriber::class,
             TestRunner\BootstrapFinished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -186,13 +186,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\ComparatorRegisteredSubscriber::class,
             Test\ComparatorRegistered::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -220,13 +220,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestRunner\ExtensionLoadedSubscriber::class,
             TestRunner\ExtensionLoaded::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -254,13 +254,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             GlobalState\CapturedSubscriber::class,
             GlobalState\Captured::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -292,13 +292,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             GlobalState\ModifiedSubscriber::class,
             GlobalState\Modified::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -334,13 +334,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             GlobalState\RestoredSubscriber::class,
             GlobalState\Restored::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -370,13 +370,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\ErroredSubscriber::class,
             Test\Errored::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -412,13 +412,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\FailedSubscriber::class,
             Test\Failed::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -454,13 +454,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\FinishedSubscriber::class,
             Test\Finished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -491,13 +491,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PassedSubscriber::class,
             Test\Passed::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -527,13 +527,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PassedWithWarningSubscriber::class,
             Test\PassedWithWarning::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -569,13 +569,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\ConsideredRiskySubscriber::class,
             Test\ConsideredRisky::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -610,13 +610,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AbortedSubscriber::class,
             Test\Aborted::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -652,13 +652,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\SkippedSubscriber::class,
             Test\Skipped::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -697,13 +697,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PreparedSubscriber::class,
             Test\Prepared::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -740,13 +740,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AfterTestMethodFinishedSubscriber::class,
             Test\AfterTestMethodFinished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -784,13 +784,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AfterTestMethodCalledSubscriber::class,
             Test\AfterTestMethodCalled::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -831,13 +831,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AfterLastTestMethodFinishedSubscriber::class,
             Test\AfterLastTestMethodFinished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -875,13 +875,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\BeforeFirstTestMethodCalledSubscriber::class,
             Test\BeforeFirstTestMethodCalled::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -922,13 +922,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\BeforeFirstTestMethodFinishedSubscriber::class,
             Test\BeforeFirstTestMethodFinished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -966,13 +966,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\BeforeTestMethodCalledSubscriber::class,
             Test\BeforeTestMethodCalled::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1010,13 +1010,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PreConditionCalledSubscriber::class,
             Test\PreConditionCalled::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1054,13 +1054,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PostConditionCalledSubscriber::class,
             Test\PostConditionCalled::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1101,13 +1101,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PostConditionFinishedSubscriber::class,
             Test\PostConditionFinished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1148,13 +1148,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\BeforeTestMethodFinishedSubscriber::class,
             Test\BeforeTestMethodFinished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1195,13 +1195,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\PreConditionFinishedSubscriber::class,
             Test\PreConditionFinished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1239,13 +1239,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             Test\AfterLastTestMethodCalledSubscriber::class,
             Test\AfterLastTestMethodCalled::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1279,13 +1279,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestDouble\MockObjectCreatedSubscriber::class,
             TestDouble\MockObjectCreated::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1315,13 +1315,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestDouble\MockObjectCreatedForTraitSubscriber::class,
             TestDouble\MockObjectCreatedForTrait::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1350,13 +1350,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestDouble\MockObjectCreatedForAbstractClassSubscriber::class,
             TestDouble\MockObjectCreatedForAbstractClass::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1398,13 +1398,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestDouble\MockObjectCreatedFromWsdlSubscriber::class,
             TestDouble\MockObjectCreatedFromWsdl::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1451,13 +1451,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestDouble\PartialMockObjectCreatedSubscriber::class,
             TestDouble\PartialMockObjectCreated::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1499,13 +1499,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestDouble\TestProxyCreatedSubscriber::class,
             TestDouble\TestProxyCreated::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1539,13 +1539,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestDouble\TestStubCreatedSubscriber::class,
             TestDouble\TestStubCreated::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1573,13 +1573,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestSuiteLoadedSubscriber::class,
             TestSuiteLoaded::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1607,13 +1607,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestSuiteFinishedSubscriber::class,
             TestSuiteFinished::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1658,13 +1658,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscriber(
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
             TestSuiteSortedSubscriber::class,
             TestSuiteSorted::class,
             $subscriber
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
@@ -1698,7 +1698,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             }
         };
 
-        $dispatcher = self::dispatcherWithRegisteredSubscribers(
+        $dispatcher = $this->dispatcherWithRegisteredSubscribers(
             TestSuiteStartedSubscriber::class,
             TestSuiteStarted::class,
             $subscriber,
@@ -1713,7 +1713,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             },
         );
 
-        $telemetrySystem = self::telemetrySystem();
+        $telemetrySystem = $this->telemetrySystem();
 
         $emitter = new DispatchingEmitter(
             $dispatcher,
