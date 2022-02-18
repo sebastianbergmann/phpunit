@@ -26,11 +26,11 @@ unlink($traceFile);
 --EXPECTF--
 Test Runner Started (PHPUnit %s using %s)
 Test Runner Configuration Combined
-Test Suite Loaded (14 tests)
+Test Suite Loaded (15 tests)
 Test Suite Sorted
 Event Facade Sealed
-Test Runner Execution Started (14 tests)
-Test Suite Started (PHPUnit\SelfTest\Basic\StatusTest, 14 tests)
+Test Runner Execution Started (15 tests)
+Test Suite Started (PHPUnit\SelfTest\Basic\StatusTest, 15 tests)
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSuccess)
 Mock Object Created (PHPUnit\TestFixture\MockObject\AnInterface)
 Assertion Succeeded (Constraint: is true, Value: true)
@@ -76,6 +76,8 @@ Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage)
 Test Aborted (PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage)
 incomplete with custom message
 Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage)
+Test Skipped (PHPUnit\SelfTest\Basic\StatusTest::testSkippedByMetadata)
+PHP > 9000 is required.
 Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
 Test Skipped (PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage)
 skipped with custom message
@@ -89,5 +91,5 @@ Test Prepared (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
 Test Passed With Warning (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
 warning with custom message
 Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
-Test Suite Finished (PHPUnit\SelfTest\Basic\StatusTest, 14 tests)
+Test Suite Finished (PHPUnit\SelfTest\Basic\StatusTest, 15 tests)
 Test Runner Finished

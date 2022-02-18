@@ -49,6 +49,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private Timer $timer;
     private int $numberOfAssertions = 0;
     private ?TestStatus $status     = null;
+    private bool $prepared          = false;
 
     public function __construct(string $out, bool $verbose, bool $colors, int $numberOfColumns, bool $reverse)
     {
@@ -89,9 +90,18 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->maxColumn          = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numberOfTestsWidth);
     }
 
+    public function testPrepared(): void
+    {
+        $this->prepared = true;
+    }
+
     public function testSkipped(): void
     {
-        $this->updateTestStatus(TestStatus::skipped());
+        if (!$this->prepared) {
+            $this->printProgressWithColor('fg-cyan, bold', 'S');
+        } else {
+            $this->updateTestStatus(TestStatus::skipped());
+        }
     }
 
     public function testAborted(): void
@@ -139,7 +149,8 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
         $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
 
-        $this->status = null;
+        $this->status   = null;
+        $this->prepared = false;
     }
 
     /**
@@ -149,6 +160,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private function registerSubscribers(): void
     {
         Facade::registerSubscriber(new TestRunnerExecutionStartedSubscriber($this));
+        Facade::registerSubscriber(new TestPreparedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));

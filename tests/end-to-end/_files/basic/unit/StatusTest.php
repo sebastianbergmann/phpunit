@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\SelfTest\Basic;
 
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
 use PHPUnit\TestFixture\MockObject\AnInterface;
@@ -77,6 +78,11 @@ class StatusTest extends TestCase
     public function testIncompleteWithMessage(): void
     {
         $this->markTestIncomplete('incomplete with custom message');
+    }
+
+    #[RequiresPhp('> 9000')]
+    public function testSkippedByMetadata(): void
+    {
     }
 
     public function testSkippedWithMessage(): void
