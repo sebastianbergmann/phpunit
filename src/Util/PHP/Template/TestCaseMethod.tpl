@@ -38,9 +38,7 @@ function __phpunit_run_isolated_test()
         )
     );
 
-    if (!class_exists('{className}')) {
-        require_once '{filename}';
-    }
+    require_once '{filename}';
 
     $result = new PHPUnit\Framework\TestResult;
 
