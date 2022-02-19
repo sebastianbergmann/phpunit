@@ -7,9 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Runner;
+
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Runner\BaseTestRunner;
-use PHPUnit\Runner\NullTestResultCache;
 
 /**
  * @group test-reorder
