@@ -7,9 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\Framework\MockObject;
+
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\InvalidParameterGroupException;
 use PHPUnit\Framework\TestCase;
+use stdClass;
 
 /**
  * @small

@@ -7,8 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\MockObject\MockObject;
+namespace PHPUnit\Framework\MockObject;
+
+use function assert;
 use PHPUnit\Framework\TestCase;
+use TestProxyFixture;
 
 /**
  * @small
@@ -22,8 +25,8 @@ final class ProxyObjectTest extends TestCase
         $proxy->expects($this->once())
               ->method('returnString');
 
-        \assert($proxy instanceof MockObject);
-        \assert($proxy instanceof TestProxyFixture);
+        assert($proxy instanceof MockObject);
+        assert($proxy instanceof TestProxyFixture);
 
         $this->assertSame('result', $proxy->returnString());
     }
@@ -35,8 +38,8 @@ final class ProxyObjectTest extends TestCase
         $proxy->expects($this->once())
               ->method('returnTypedString');
 
-        \assert($proxy instanceof MockObject);
-        \assert($proxy instanceof TestProxyFixture);
+        assert($proxy instanceof MockObject);
+        assert($proxy instanceof TestProxyFixture);
 
         $this->assertSame('result', $proxy->returnTypedString());
     }
@@ -48,8 +51,8 @@ final class ProxyObjectTest extends TestCase
         $proxy->expects($this->once())
               ->method('returnObject');
 
-        \assert($proxy instanceof MockObject);
-        \assert($proxy instanceof TestProxyFixture);
+        assert($proxy instanceof MockObject);
+        assert($proxy instanceof TestProxyFixture);
 
         $this->assertSame('bar', $proxy->returnObject()->foo);
     }
@@ -61,8 +64,8 @@ final class ProxyObjectTest extends TestCase
         $proxy->expects($this->once())
               ->method('returnTypedObject');
 
-        \assert($proxy instanceof MockObject);
-        \assert($proxy instanceof TestProxyFixture);
+        assert($proxy instanceof MockObject);
+        assert($proxy instanceof TestProxyFixture);
 
         $this->assertSame('bar', $proxy->returnTypedObject()->foo);
     }
@@ -74,8 +77,8 @@ final class ProxyObjectTest extends TestCase
         $proxy->expects($this->once())
               ->method('returnObjectOfFinalClass');
 
-        \assert($proxy instanceof MockObject);
-        \assert($proxy instanceof TestProxyFixture);
+        assert($proxy instanceof MockObject);
+        assert($proxy instanceof TestProxyFixture);
 
         $this->assertSame('value', $proxy->returnObjectOfFinalClass()->value());
     }
@@ -87,8 +90,8 @@ final class ProxyObjectTest extends TestCase
         $proxy->expects($this->once())
               ->method('returnTypedObjectOfFinalClass');
 
-        \assert($proxy instanceof MockObject);
-        \assert($proxy instanceof TestProxyFixture);
+        assert($proxy instanceof MockObject);
+        assert($proxy instanceof TestProxyFixture);
 
         $this->assertSame('value', $proxy->returnTypedObjectOfFinalClass()->value());
     }
