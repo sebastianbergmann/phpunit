@@ -255,11 +255,8 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Run regular test suite with unscoped PHAR
-        run: ant run-regular-tests-with-unscoped-phar
-
-      - name: Run PHAR-specific end-to-end tests with scoped PHAR
-        run: ant run-phar-specific-tests-with-scoped-phar
+      - name: Run PHAR-specific end-to-end tests
+        run: ant run-phar-specific-tests
 
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.php-version == 8.1 }}
