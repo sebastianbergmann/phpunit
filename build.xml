@@ -376,10 +376,14 @@
         <exec executable="${basedir}/build/scripts/version.php" outputproperty="version" failonerror="true" />
     </target>
 
-    <target name="run-phar-specific-tests" depends="clean,phar-snapshot" description="Build snapshot PHAR and run the PHAR-specific tests with it">
+    <target name="build-phar-and-run-phar-specific-tests" depends="clean,phar-snapshot" description="Build PHAR and run the PHAR-specific tests with it">
         <delete dir="${basedir}/vendor"/>
         <delete file="${basedir}/composer.lock"/>
 
+        <antcall target="run-phar-specific-tests"/>
+    </target>
+
+    <target name="run-phar-specific-tests" description="Run the PHAR-specific tests with it (expects build/artifacts/phpunit-snapshot.phar to exist)">
         <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true">
             <arg value="--configuration" />
             <arg value="tests/phar/phpunit.xml" />
