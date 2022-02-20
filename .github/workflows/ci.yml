@@ -297,7 +297,7 @@ jobs:
           name: phpunit-snapshot-phar
           path: ./build/artifacts/
 
-      - name: Make PHAR exexutable
+      - name: Make PHAR executable
         run: chmod +x ./build/artifacts/phpunit-snapshot.phar
 
       - name: Run PHAR-specific tests
