@@ -258,8 +258,8 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Run PHAR-specific end-to-end tests
-        run: ant run-phar-specific-tests
+      - name: Build PHAR and run the PHAR-specific tests with it
+        run: ant build-phar-and-run-phar-specific-tests
 
       - uses: actions/upload-artifact@v2
         if: ${{ matrix.php-version == 8.1 }}
