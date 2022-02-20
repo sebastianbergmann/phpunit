@@ -76,7 +76,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      PHP_EXTENSIONS: none, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, curl, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
       PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
@@ -151,7 +151,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
-          extensions: none, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+          extensions: none, curl, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
@@ -193,7 +193,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
-          extensions: none, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+          extensions: none, curl, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
@@ -216,7 +216,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PHP_EXTENSIONS: none, dom, json, fileinfo, iconv, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, curl, dom, json, fileinfo, iconv, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
       PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
 
     strategy:
