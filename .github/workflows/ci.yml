@@ -62,7 +62,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      PHP_EXTENSIONS: none, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, curl, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
       PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
@@ -159,7 +159,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
-          extensions: none, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+          extensions: none, curl, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
@@ -201,7 +201,7 @@ jobs:
         with:
           php-version: ${{ matrix.php-version }}
           coverage: pcov
-          extensions: none, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+          extensions: none, curl, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
@@ -218,8 +218,8 @@ jobs:
       - name: Assert that git tree is clean
         run: git diff || echo "Run 'php build/scripts/generate-global-assert-wrappers.php' to regenerate global assert wrappers!"
 
-  build-and-test-phar:
-    name: Build and test PHAR
+  build-phar:
+    name: Build PHAR
 
     runs-on: ubuntu-latest
 
@@ -228,9 +228,55 @@ jobs:
       PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
 
     strategy:
+      matrix:
+        php-version:
+          - "8.1"
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          coverage: none
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
+
+      - name: Install java
+        uses: actions/setup-java@v1
+        with:
+          java-version: 1.8
+
+      - name: Build PHAR
+        run: ant phar-snapshot
+
+      - name: Upload PHAR
+        uses: actions/upload-artifact@v2
+        with:
+          name: phpunit-snapshot-phar
+          path: ./build/artifacts/phpunit-snapshot.phar
+          retention-days: 7
+
+  test-phar:
+    name: Test PHAR
+
+    needs:
+      - build-phar
+
+    runs-on: ubuntu-latest
+
+    env:
+      PHP_EXTENSIONS: none, curl, dom, json, fileinfo, iconv, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
+
+    strategy:
       fail-fast: false
       matrix:
         php-version:
+          - "7.3"
           - "7.4"
           - "8.0"
           - "8.1"
@@ -258,12 +304,14 @@ jobs:
         with:
           java-version: 1.8
 
-      - name: Build PHAR and run the PHAR-specific tests with it
-        run: ant build-phar-and-run-phar-specific-tests
-
-      - uses: actions/upload-artifact@v2
-        if: ${{ matrix.php-version == 8.1 }}
+      - name: Download PHAR
+        uses: actions/download-artifact@v2
         with:
           name: phpunit-snapshot-phar
-          path: ./build/artifacts/phpunit-snapshot.phar
-          retention-days: 7
+          path: ./build/artifacts/
+
+      - name: Make PHAR executable
+        run: chmod +x ./build/artifacts/phpunit-snapshot.phar
+
+      - name: Run PHAR-specific tests
+        run: ant run-phar-specific-tests
