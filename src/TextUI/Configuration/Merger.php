@@ -211,6 +211,11 @@ final class Merger
         if ($xmlConfiguration->codeCoverage()->hasHtml()) {
             $coverageHtmlHighLowerBound = $xmlConfiguration->codeCoverage()->html()->highLowerBound();
             $coverageHtmlLowUpperBound  = $xmlConfiguration->codeCoverage()->html()->lowUpperBound();
+
+            if ($coverageHtmlLowUpperBound > $coverageHtmlHighLowerBound) {
+                $coverageHtmlLowUpperBound  = 50;
+                $coverageHtmlHighLowerBound = 90;
+            }
         }
 
         if ($cliConfiguration->hasCoverageHtml()) {

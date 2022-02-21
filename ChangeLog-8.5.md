@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 * [#4874](https://github.com/sebastianbergmann/phpunit/pull/4874): `PHP_FLOAT_EPSILON` is now used instead of hardcoded `0.0000000001` in `PHPUnit\Framework\Constraint\IsIdentical`
 
+### Fixed
+
+* When the HTML code coverage report's configured low upper bound is larger than the high lower bound then the default values are used instead
+
 ## [8.5.23] - 2022-01-21
 
 ### Fixed
