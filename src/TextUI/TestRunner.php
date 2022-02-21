@@ -91,11 +91,6 @@ final class TestRunner extends BaseTestRunner
     public const EXCEPTION_EXIT = 2;
 
     /**
-     * @var bool
-     */
-    private static $versionStringPrinted = false;
-
-    /**
      * @var CodeCoverageFilter
      */
     private $codeCoverageFilter;
@@ -326,8 +321,6 @@ final class TestRunner extends BaseTestRunner
         $this->printer->write(
             Version::getVersionString() . "\n"
         );
-
-        self::$versionStringPrinted = true;
 
         if ($arguments['verbose']) {
             $this->writeMessage('Runtime', $this->runtime->getNameWithVersionAndCodeCoverageDriver());
