@@ -15,6 +15,8 @@ use RecursiveIterator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @implements RecursiveIterator<int, Test>
  */
 final class TestSuiteIterator implements RecursiveIterator
 {
