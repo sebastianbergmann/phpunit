@@ -21,7 +21,7 @@ use ReflectionClass;
 final class Factory
 {
     /**
-     * @psalm-var array<int,array{0: \ReflectionClass, 1: array|string}>
+     * @psalm-var array<int,array{0: \ReflectionClass<FilterIterator>, 1: array|string}>
      */
     private array $filters = [];
 
@@ -46,6 +46,9 @@ final class Factory
         ];
     }
 
+    /**
+     * @return FilterIterator<int, Test>
+     */
     public function factory(Iterator $iterator, TestSuite $suite): FilterIterator
     {
         foreach ($this->filters as $filter) {
