@@ -57,7 +57,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
-use SebastianBergmann\CodeCoverage\RawCodeCoverageData;
+use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Timer\Timer;
 use Throwable;
