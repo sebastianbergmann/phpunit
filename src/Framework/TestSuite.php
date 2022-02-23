@@ -603,6 +603,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * Returns an iterator for this test suite.
+     *
+     * @return Iterator<int, Test>
      */
     public function getIterator(): Iterator
     {
