@@ -13,6 +13,7 @@ use function assert;
 use FilterIterator;
 use Iterator;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Framework\Test;
 use ReflectionClass;
 
 /**
