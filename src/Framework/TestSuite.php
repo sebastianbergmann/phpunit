@@ -513,6 +513,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $message = "Exception in {$this->name}::{$afterClassMethod}" . PHP_EOL . $t->getMessage();
                     $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());
 
+                    if ($test === null) {
+                        throw new \RuntimeException('test should never be null at this point');
+                    }
+
                     $placeholderTest = clone $test;
                     $placeholderTest->setName($afterClassMethod);
 
