@@ -38,6 +38,7 @@ use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
+use RuntimeException;
 use Throwable;
 
 /**
@@ -514,7 +515,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());
 
                     if ($test === null) {
-                        throw new \RuntimeException('test should never be null at this point');
+                        throw new RuntimeException('test should never be null at this point');
                     }
 
                     $placeholderTest = clone $test;
