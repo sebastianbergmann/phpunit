@@ -74,7 +74,7 @@
   [32m--static-backup            [0m Backup and restore static properties for
                               each test
 
-  [32m--colors [36m<flag>[0m            [0m Use colors in output ("never", "auto" or
+  [32m--colors=[36m<flag>[0m            [0m Use colors in output ("never", "auto" or
                               "always")
   [32m--columns [36m<n>[0m              [0m Number of columns to use for progress
                               output
