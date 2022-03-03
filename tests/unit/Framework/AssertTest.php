@@ -1507,6 +1507,13 @@ XML;
         $this->assertNotEqualsCanonicalizing([3, 2, 1], [2, 3, 4]);
     }
 
+    public function testAssociativeArraysCanBeComparedForEqualityWithCanonicalization(): void
+    {
+        $this->assertEqualsCanonicalizing(['a' => 2, 'b' => 3], ['b' => 3, 'a' => 2]);
+
+        $this->assertNotEqualsCanonicalizing(['aa' => 2, 'b' => 3], ['a' => 2, 'b' => 3]);
+    }
+
     public function testArrayTypeCanBeAsserted(): void
     {
         $this->assertIsArray([]);
