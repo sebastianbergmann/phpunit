@@ -14,7 +14,7 @@ try {
 }
 ?>
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 .                                                                   1 / 1 (100%)
 

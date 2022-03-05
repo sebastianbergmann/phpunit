@@ -9,7 +9,7 @@ $_SERVER['argv'][3] = __DIR__ . '/../../_files/DummyFooTest.php';
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Warning:       Invocation with class name is deprecated
 

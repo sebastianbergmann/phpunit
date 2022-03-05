@@ -53,6 +53,7 @@ use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
+use PHPUnit\Util\Color;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
@@ -318,7 +319,18 @@ final class TestRunner extends BaseTestRunner
             $this->printer->setShowProgressAnimation(!$arguments['noInteraction']);
         }
 
-        $this->write(Version::getVersionString() . "\n");
+        if ($arguments['colors'] !== ResultPrinter::COLOR_NEVER) {
+            $this->write(
+                'PHPUnit ' .
+                Version::id() .
+                ' ' .
+                Color::colorize('fg-cyan', '#StandWith') .
+                Color::colorize('fg-yellow', 'Ukraine') .
+                "\n"
+            );
+        } else {
+            $this->write(Version::getVersionString() . "\n");
+        }
 
         if ($arguments['verbose']) {
             $this->writeMessage('Runtime', $this->runtime->getNameWithVersionAndCodeCoverageDriver());

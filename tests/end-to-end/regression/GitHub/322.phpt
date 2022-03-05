@@ -13,7 +13,7 @@ $_SERVER['argv'][] = __DIR__ . '/322/Issue322Test.php';
 require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Test 'Issue322Test::testOne' started
 Test 'Issue322Test::testOne' ended

@@ -20,7 +20,7 @@ print file_get_contents($target);
 
 unlink($target);
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 .SS..                                                               5 / 5 (100%)
 

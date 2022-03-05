@@ -10,7 +10,7 @@ $_SERVER['argv'][] = \realpath(__DIR__ . '/../_files/RequirementsTest.php');
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 RRRRRRRRSSSSSRRRRSSSSRSSSSSSSRRSSSSSSSRRSSSSSSSSSSSSSSSSSSSWWS    62 / 62 (100%)
 
