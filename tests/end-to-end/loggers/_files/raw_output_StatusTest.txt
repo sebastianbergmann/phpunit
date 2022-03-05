@@ -1,4 +1,4 @@
-PHPUnit %s Sebastian Bergmann and contributors.
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 Configuration: %stests%ebasic%econfiguration.basic.xml
