@@ -318,9 +318,7 @@ final class TestRunner extends BaseTestRunner
             $this->printer->setShowProgressAnimation(!$arguments['noInteraction']);
         }
 
-        $this->printer->write(
-            Version::getVersionString() . "\n"
-        );
+        $this->write(Version::getVersionString() . "\n");
 
         if ($arguments['verbose']) {
             $this->writeMessage('Runtime', $this->runtime->getNameWithVersionAndCodeCoverageDriver());
@@ -605,7 +603,7 @@ final class TestRunner extends BaseTestRunner
             exit(self::SUCCESS_EXIT);
         }
 
-        $this->printer->write("\n");
+        $this->write("\n");
 
         if (isset($codeCoverage)) {
             $result->setCodeCoverage($codeCoverage);
@@ -1357,7 +1355,7 @@ final class TestRunner extends BaseTestRunner
 
     private function codeCoverageGenerationStart(string $format): void
     {
-        $this->printer->write(
+        $this->write(
             sprintf(
                 "\nGenerating code coverage report in %s format ... ",
                 $format
@@ -1369,7 +1367,7 @@ final class TestRunner extends BaseTestRunner
 
     private function codeCoverageGenerationSucceeded(): void
     {
-        $this->printer->write(
+        $this->write(
             sprintf(
                 "done [%s]\n",
                 Timer::secondsToTimeString(Timer::stop())
@@ -1379,7 +1377,7 @@ final class TestRunner extends BaseTestRunner
 
     private function codeCoverageGenerationFailed(\Exception $e): void
     {
-        $this->printer->write(
+        $this->write(
             sprintf(
                 "failed [%s]\n%s\n",
                 Timer::secondsToTimeString(Timer::stop()),
