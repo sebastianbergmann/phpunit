@@ -11,7 +11,7 @@ $_SERVER['argv'][] = '--debug';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Test 'PHPUnit\SelfTest\Basic\StatusTest::testSuccess' started
 Test 'PHPUnit\SelfTest\Basic\StatusTest::testSuccess' ended

@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 .                                                                   1 / 1 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <testsuites>

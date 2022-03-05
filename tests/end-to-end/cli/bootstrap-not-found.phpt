@@ -7,6 +7,6 @@ Test fail on missing bootstrap
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Cannot open file "nonExistingBootstrap.php".

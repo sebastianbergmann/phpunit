@@ -1,4 +1,4 @@
-PHPUnit %s Sebastian Bergmann and contributors.
+PHPUnit %s [36m#StandWith[0m[33mUkraine[0m
 
 Runtime:       %s
 Configuration: %stests%ebasic%econfiguration.basic.xml

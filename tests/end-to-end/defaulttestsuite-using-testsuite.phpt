@@ -12,7 +12,7 @@ $_SERVER['argv'][] = 'First';
 require_once __DIR__ . '/../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Dummy Foo (PHPUnit\TestFixture\DummyFoo)
  ✔ Foo equals foo

@@ -9,7 +9,7 @@ $_SERVER['argv'][] = __DIR__ . '/2725/BeforeAfterClassPidTest.php';
 require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 ..                                                                  2 / 2 (100%)
 

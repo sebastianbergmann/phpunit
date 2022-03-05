@@ -14,7 +14,7 @@ require_once __DIR__ . '/_files/MyCommand.php';
 MyCommand::main();
 --EXPECTF--
 MyCommand::myHandler 123
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 ...                                                                 3 / 3 (100%)
 

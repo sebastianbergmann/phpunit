@@ -11,7 +11,7 @@ $_SERVER['argv'][] = 'BrandService';
 require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 E                                                                   1 / 1 (100%)
 

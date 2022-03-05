@@ -12,7 +12,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Bank Account (PHPUnit\TestFixture\BankAccount)
 ...                                                                 3 / 3 (100%) [x] Balance is initially zero

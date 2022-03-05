@@ -17,7 +17,7 @@ $_SERVER['argv'][] = \dirname(\dirname(\dirname(__DIR__))) . '/../_files/Datapro
 require_once __DIR__ . '/../../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Test 'DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' started
 Test 'DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' ended

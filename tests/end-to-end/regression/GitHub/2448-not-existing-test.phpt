@@ -9,7 +9,7 @@ $_SERVER['argv'][] = 'Test.php';
 require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main(false);
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Cannot open file "Test.php".
 --CLEAN--

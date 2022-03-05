@@ -14,7 +14,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Basic ANSI color highlighting support
  ✔ Colorize with no color

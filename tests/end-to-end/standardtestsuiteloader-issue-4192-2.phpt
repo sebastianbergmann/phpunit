@@ -9,7 +9,7 @@ $cmd->run([
     realpath(__DIR__.'/../_files/ConcreteTest.php')
 ], false);
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s [36m#StandWith[0m[33mUkraine[0m
 
 Runtime:       PHP %s
 Configuration: %s

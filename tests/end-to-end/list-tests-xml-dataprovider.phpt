@@ -15,7 +15,7 @@ PHPUnit\TextUI\Command::main(false);
 
 print file_get_contents($target);
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Wrote list of tests that would have been run to %s
 <?xml version="1.0"?>

@@ -17,7 +17,7 @@ $_SERVER['argv'][] = '--cache-result-file=' . $tmpResultCache;
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
+PHPUnit %s #StandWithUkraine
 
 Test 'TestWithDifferentDurations::testTwo' started
 Test 'TestWithDifferentDurations::testTwo' ended
