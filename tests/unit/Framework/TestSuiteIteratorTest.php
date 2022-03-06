@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
-use EmptyTestCaseTest;
+use PHPUnit\TestFixture\EmptyTestCaseTest;
 
 /**
  * @small

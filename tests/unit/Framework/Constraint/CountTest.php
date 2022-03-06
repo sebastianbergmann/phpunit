@@ -15,11 +15,11 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
-use TestGeneratorMaker;
-use TestIterator;
-use TestIterator2;
-use TestIteratorAggregate;
-use TestIteratorAggregate2;
+use PHPUnit\TestFixture\TestGeneratorMaker;
+use PHPUnit\TestFixture\TestIterator;
+use PHPUnit\TestFixture\TestIterator2;
+use PHPUnit\TestFixture\TestIteratorAggregate;
+use PHPUnit\TestFixture\TestIteratorAggregate2;
 use Traversable;
 
 /**

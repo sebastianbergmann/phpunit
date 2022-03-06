@@ -13,15 +13,15 @@ use function array_map;
 use function array_sum;
 use function implode;
 use function sprintf;
-use CountConstraint;
-use FalsyConstraint;
 use Generator;
-use NamedConstraint;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
+use PHPUnit\TestFixture\CountConstraint;
+use PHPUnit\TestFixture\FalsyConstraint;
+use PHPUnit\TestFixture\NamedConstraint;
+use PHPUnit\TestFixture\TruthyConstraint;
 use stdClass;
-use TruthyConstraint;
 
 /**
  * @small

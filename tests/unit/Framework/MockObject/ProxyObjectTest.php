@@ -11,7 +11,7 @@ namespace PHPUnit\Framework\MockObject;
 
 use function assert;
 use PHPUnit\Framework\TestCase;
-use TestProxyFixture;
+use PHPUnit\TestFixture\TestProxyFixture;
 
 /**
  * @small

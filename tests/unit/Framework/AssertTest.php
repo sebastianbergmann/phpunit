@@ -26,19 +26,19 @@ use function tempnam;
 use function unlink;
 use ArrayIterator;
 use ArrayObject;
-use Author;
-use Book;
-use ClassWithNonPublicAttributes;
-use ClassWithToString;
 use DateTime;
 use DateTimeZone;
 use DOMDocument;
+use PHPUnit\TestFixture\Author;
+use PHPUnit\TestFixture\Book;
+use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
+use PHPUnit\TestFixture\ClassWithToString;
+use PHPUnit\TestFixture\SampleArrayAccess;
+use PHPUnit\TestFixture\SampleClass;
+use PHPUnit\TestFixture\Struct;
 use PHPUnit\Util\Xml;
-use SampleArrayAccess;
-use SampleClass;
 use SplObjectStorage;
 use stdClass;
-use Struct;
 
 /**
  * @small

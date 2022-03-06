@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 class ClassWithAllPossibleReturnTypes
 {
     public function methodWithNoReturnTypeDeclaration()
@@ -42,23 +44,23 @@ class ClassWithAllPossibleReturnTypes
         return ['string'];
     }
 
-    public function methodWithTraversableReturnTypeDeclaration(): Traversable
+    public function methodWithTraversableReturnTypeDeclaration(): \Traversable
     {
-        return new ArrayIterator(['string']);
+        return new \ArrayIterator(['string']);
     }
 
-    public function methodWithGeneratorReturnTypeDeclaration(): Generator
+    public function methodWithGeneratorReturnTypeDeclaration(): \Generator
     {
         yield 1;
     }
 
     public function methodWithObjectReturnTypeDeclaration(): object
     {
-        return new Exception;
+        return new \Exception;
     }
 
-    public function methodWithClassReturnTypeDeclaration(): stdClass
+    public function methodWithClassReturnTypeDeclaration(): \stdClass
     {
-        return new stdClass;
+        return new \stdClass;
     }
 }

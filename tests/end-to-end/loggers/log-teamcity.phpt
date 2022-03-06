@@ -17,21 +17,21 @@ PHPUnit %s #StandWithUkraine
 
 ##teamcity[testCount count='3' flowId='%d']
 
-##teamcity[testSuiteStarted name='BankAccountTest' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\BankAccountTest' flowId='%d']
+##teamcity[testSuiteStarted name='PHPUnit\TestFixture\BankAccountTest' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\PHPUnit\TestFixture\BankAccountTest' flowId='%d']
 
-##teamcity[testStarted name='testBalanceIsInitiallyZero' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\BankAccountTest::testBalanceIsInitiallyZero' flowId='%d']
+##teamcity[testStarted name='testBalanceIsInitiallyZero' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\PHPUnit\TestFixture\BankAccountTest::testBalanceIsInitiallyZero' flowId='%d']
 .
 ##teamcity[testFinished name='testBalanceIsInitiallyZero' duration='%s' flowId='%d']
 
-##teamcity[testStarted name='testBalanceCannotBecomeNegative' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\BankAccountTest::testBalanceCannotBecomeNegative' flowId='%d']
+##teamcity[testStarted name='testBalanceCannotBecomeNegative' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\PHPUnit\TestFixture\BankAccountTest::testBalanceCannotBecomeNegative' flowId='%d']
 .
 ##teamcity[testFinished name='testBalanceCannotBecomeNegative' duration='%s' flowId='%d']
 
-##teamcity[testStarted name='testBalanceCannotBecomeNegative2' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\BankAccountTest::testBalanceCannotBecomeNegative2' flowId='%d']
+##teamcity[testStarted name='testBalanceCannotBecomeNegative2' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\PHPUnit\TestFixture\BankAccountTest::testBalanceCannotBecomeNegative2' flowId='%d']
 .                                                                 3 / 3 (100%)
 ##teamcity[testFinished name='testBalanceCannotBecomeNegative2' duration='%s' flowId='%d']
 
-##teamcity[testSuiteFinished name='BankAccountTest' flowId='%d']
+##teamcity[testSuiteFinished name='PHPUnit\TestFixture\BankAccountTest' flowId='%d']
 
 
 Time: %s, Memory: %s

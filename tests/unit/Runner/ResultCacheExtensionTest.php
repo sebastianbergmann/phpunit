@@ -9,18 +9,18 @@
  */
 namespace PHPUnit\Runner;
 
-use EmptyTestCaseTest;
-use Failure;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestCaseTest;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
-use Success;
-use TestError;
-use TestIncomplete;
-use TestRisky;
-use TestSkipped;
-use TestWarning;
+use PHPUnit\TestFixture\EmptyTestCaseTest;
+use PHPUnit\TestFixture\Failure;
+use PHPUnit\TestFixture\Success;
+use PHPUnit\TestFixture\TestError;
+use PHPUnit\TestFixture\TestIncomplete;
+use PHPUnit\TestFixture\TestRisky;
+use PHPUnit\TestFixture\TestSkipped;
+use PHPUnit\TestFixture\TestWarning;
 
 /**
  * @group test-reorder

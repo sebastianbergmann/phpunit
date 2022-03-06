@@ -14,7 +14,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s #StandWithUkraine
 
-Bank Account
+Bank Account (PHPUnit\TestFixture\BankAccount)
 ...                                                                 3 / 3 (100%) [x] Balance is initially zero
  [x] Balance cannot become negative
  [x] Balance cannot become negative

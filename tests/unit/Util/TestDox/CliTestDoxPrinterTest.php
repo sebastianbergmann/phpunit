@@ -13,6 +13,7 @@ use Exception;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
+use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
 
 /**
  * @group testdox

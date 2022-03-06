@@ -8,6 +8,7 @@
  * file that was distributed with this source code.
  */
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\TestFixture\NoTestCases;
 
 class StopOnWarningTestSuite
 {

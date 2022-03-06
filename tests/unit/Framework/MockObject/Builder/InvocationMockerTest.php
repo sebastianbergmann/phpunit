@@ -10,13 +10,13 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use ClassWithAllPossibleReturnTypes;
-use Foo;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\ClassWithAllPossibleReturnTypes;
+use PHPUnit\TestFixture\Foo;
 use PHPUnit\TestFixture\MockObject\ClassWithImplicitProtocol;
 use stdClass;
 
@@ -142,7 +142,11 @@ final class InvocationMockerTest extends TestCase
         $invocationMocker = $mock->method('methodWithClassReturnTypeDeclaration');
 
         $this->expectException(IncompatibleReturnValueException::class);
-        $this->expectExceptionMessage('Method methodWithClassReturnTypeDeclaration may not return value of type Foo, its return declaration is ": stdClass"');
+        $this->expectExceptionMessage(sprintf(
+            'Method methodWithClassReturnTypeDeclaration may not return value of type %s, its return declaration is ": %s"',
+            Foo::class,
+            stdClass::class
+        ));
         $invocationMocker->willReturn(new Foo);
     }
 
