@@ -17,7 +17,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -37,7 +37,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
@@ -108,7 +108,7 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Override PHP ini values for JIT compiler
         if: matrix.compiler == 'jit'
@@ -152,7 +152,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -194,7 +194,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -234,7 +234,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -254,7 +254,7 @@ jobs:
         run: ant phar-snapshot
 
       - name: Upload PHAR
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: phpunit-snapshot-phar
           path: ./build/artifacts/phpunit-snapshot.phar
@@ -288,7 +288,7 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -305,7 +305,7 @@ jobs:
           java-version: 1.8
 
       - name: Download PHAR
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: phpunit-snapshot-phar
           path: ./build/artifacts/
