@@ -12,7 +12,7 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s #StandWithUkraine
 
-Dummy Bar
+Dummy Bar (PHPUnit\TestFixture\DummyBar)
  ✔ Bar equals bar
 
 Time: %s, Memory: %s

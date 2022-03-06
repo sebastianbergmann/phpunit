@@ -10,8 +10,8 @@
 namespace PHPUnit\Framework\MockObject;
 
 use ACustomClassName;
-use Mockable;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\Mockable;
 
 /**
  * @small

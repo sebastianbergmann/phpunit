@@ -11,15 +11,15 @@ namespace PHPUnit\Framework;
 
 use function preg_replace;
 use ArrayObject;
-use ClassWithNonPublicAttributes;
 use Countable;
-use DummyException;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\TraversableContains;
+use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
+use PHPUnit\TestFixture\DummyException;
+use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\Util\Filter;
 use stdClass;
-use TestIterator;
 
 /**
  * @small

@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Runner\Filter;
 
-use BankAccountTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\TestFixture\BankAccountTest;
 
 /**
  * @small

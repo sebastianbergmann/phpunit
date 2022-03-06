@@ -22,7 +22,7 @@ PHPUnit %s #StandWithUkraine
 Wrote list of tests that would have been run to %s
 <?xml version="1.0"?>
 <tests>
- <testCaseClass name="DataProviderTest">
+ <testCaseClass name="PHPUnit\TestFixture\DataProviderTest">
   <testCaseMethod name="testAdd" groups="default" dataSet="#0"/>
   <testCaseMethod name="testAdd" groups="default" dataSet="#1"/>
   <testCaseMethod name="testAdd" groups="default" dataSet="#2"/>

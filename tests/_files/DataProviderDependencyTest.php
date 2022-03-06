@@ -7,7 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class DataProviderDependencyTest extends PHPUnit\Framework\TestCase
+namespace PHPUnit\TestFixture;
+
+use PHPUnit\Framework\TestCase;
+
+class DataProviderDependencyTest extends TestCase
 {
     public function testReference(): void
     {

@@ -7,6 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use function array_key_exists;
+use ArrayAccess;
+use ArrayIterator;
+use IteratorAggregate;
+use ReturnTypeWillChange;
+
 class ArrayAccessible implements ArrayAccess, IteratorAggregate
 {
     private $array;
@@ -19,7 +27,7 @@ class ArrayAccessible implements ArrayAccess, IteratorAggregate
     #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
-        return \array_key_exists($offset, $this->array);
+        return array_key_exists($offset, $this->array);
     }
 
     #[ReturnTypeWillChange]

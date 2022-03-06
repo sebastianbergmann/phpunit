@@ -7,13 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use function chdir;
 use PHPUnit\Framework\TestCase;
 
 class ChangeCurrentWorkingDirectoryTest extends TestCase
 {
     public function testSomethingThatChangesTheCwd(): void
     {
-        \chdir('../');
+        chdir('../');
         $this->assertTrue(true);
     }
 }

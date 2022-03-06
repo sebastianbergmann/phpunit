@@ -10,9 +10,9 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function sprintf;
-use ArrayAccessible;
 use ArrayObject;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\TestFixture\ArrayAccessible;
 use Traversable;
 
 /**

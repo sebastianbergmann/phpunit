@@ -17,10 +17,10 @@ Time: %s, Memory: %s
 
 There were 2 failures:
 
-1) SeparateProcessesTest::testFoo
+1) PHPUnit\TestFixture\SeparateProcessesTest::testFoo
 Test was run in child process and ended unexpectedly
 
-2) SeparateProcessesTest::testBar
+2) PHPUnit\TestFixture\SeparateProcessesTest::testBar
 Test was run in child process and ended unexpectedly
 
 FAILURES!

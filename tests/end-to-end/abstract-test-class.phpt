@@ -21,7 +21,7 @@ Time: %s, Memory: %s
 There was 1 warning:
 
 1) Warning
-Cannot instantiate class "AbstractTest".
+Cannot instantiate class "PHPUnit\TestFixture\AbstractTest".
 
 WARNINGS!
 Tests: 1, Assertions: 0, Warnings: 1.

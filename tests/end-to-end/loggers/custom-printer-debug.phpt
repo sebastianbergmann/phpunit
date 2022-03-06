@@ -14,12 +14,12 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s #StandWithUkraine
 
-Test 'BankAccountTest::testBalanceIsInitiallyZero' started
-Test 'BankAccountTest::testBalanceIsInitiallyZero' ended
-Test 'BankAccountTest::testBalanceCannotBecomeNegative' started
-Test 'BankAccountTest::testBalanceCannotBecomeNegative' ended
-Test 'BankAccountTest::testBalanceCannotBecomeNegative2' started
-Test 'BankAccountTest::testBalanceCannotBecomeNegative2' ended
+Test 'PHPUnit\TestFixture\BankAccountTest::testBalanceIsInitiallyZero' started
+Test 'PHPUnit\TestFixture\BankAccountTest::testBalanceIsInitiallyZero' ended
+Test 'PHPUnit\TestFixture\BankAccountTest::testBalanceCannotBecomeNegative' started
+Test 'PHPUnit\TestFixture\BankAccountTest::testBalanceCannotBecomeNegative' ended
+Test 'PHPUnit\TestFixture\BankAccountTest::testBalanceCannotBecomeNegative2' started
+Test 'PHPUnit\TestFixture\BankAccountTest::testBalanceCannotBecomeNegative2' ended
 
 
 Time: %s, Memory: %s

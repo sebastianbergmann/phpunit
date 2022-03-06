@@ -9,15 +9,15 @@
  */
 namespace PHPUnit\SelfTest\Basic;
 
-use AnInterface;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
+use PHPUnit\TestFixture\AnInterface;
 use RuntimeException;
 
 /**
  * @covers Foo
  *
- * @uses Bar
+ * @uses \PHPUnit\TestFixture\Bar
  *
  * @testdox Test result status with and without message
  */

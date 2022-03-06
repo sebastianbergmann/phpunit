@@ -7,10 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 use PHPUnit\Framework\TestCase;
 
 /**
- * @coversDefaultClass \Foo\CoveredClass
+ * @coversDefaultClass \PHPUnit\TestFixture\CoveredClass
  */
 class NamespaceCoverageCoversClassPublicTest extends TestCase
 {
@@ -19,7 +21,7 @@ class NamespaceCoverageCoversClassPublicTest extends TestCase
      */
     public function testSomething(): void
     {
-        $o = new Foo\CoveredClass;
+        $o = new CoveredClass;
         $o->publicMethod();
     }
 }

@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use ClassWithNonPublicAttributes;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
+use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use stdClass;
 
 /**

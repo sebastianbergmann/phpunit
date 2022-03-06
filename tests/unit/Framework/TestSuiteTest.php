@@ -12,23 +12,22 @@ namespace PHPUnit\Framework;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_pop;
-use BeforeAndAfterTest;
-use BeforeClassAndAfterClassTest;
-use BeforeClassWithOnlyDataProviderTest;
-use DataProviderDependencyTest;
-use DataProviderIncompleteTest;
-use DataProviderSkippedTest;
-use ExceptionInTearDownAfterClassTest;
-use InheritedTestCase;
-use NoTestCases;
-use NotPublicTestCase;
-use NotVoidTestCase;
-use OneTestCase;
-use OverrideTestCase;
-use RequirementsClassBeforeClassHookTest;
-use stdClass;
-use TestCaseWithExceptionInHook;
-use TestWithTest;
+use PHPUnit\TestFixture\BeforeAndAfterTest;
+use PHPUnit\TestFixture\BeforeClassAndAfterClassTest;
+use PHPUnit\TestFixture\BeforeClassWithOnlyDataProviderTest;
+use PHPUnit\TestFixture\DataProviderDependencyTest;
+use PHPUnit\TestFixture\DataProviderIncompleteTest;
+use PHPUnit\TestFixture\DataProviderSkippedTest;
+use PHPUnit\TestFixture\ExceptionInTearDownAfterClassTest;
+use PHPUnit\TestFixture\InheritedTestCase;
+use PHPUnit\TestFixture\NoTestCases;
+use PHPUnit\TestFixture\NotPublicTestCase;
+use PHPUnit\TestFixture\NotVoidTestCase;
+use PHPUnit\TestFixture\OneTestCase;
+use PHPUnit\TestFixture\OverrideTestCase;
+use PHPUnit\TestFixture\RequirementsClassBeforeClassHookTest;
+use PHPUnit\TestFixture\TestCaseWithExceptionInHook;
+use PHPUnit\TestFixture\TestWithTest;
 
 /**
  * @small
@@ -202,7 +201,7 @@ final class TestSuiteTest extends TestCase
         $lastSkippedResult = array_pop($skipped);
         $message           = $lastSkippedResult->thrownException()->getMessage();
 
-        $this->assertStringContainsString('Test for DataProviderDependencyTest::testDependency skipped by data provider', $message);
+        $this->assertStringContainsString('Test for PHPUnit\TestFixture\DataProviderDependencyTest::testDependency skipped by data provider', $message);
     }
 
     public function testIncompleteTestDataProvider(): void
@@ -255,7 +254,7 @@ final class TestSuiteTest extends TestCase
         $failure = $this->result->failures()[0];
 
         $this->assertSame(
-            'Exception in ExceptionInTearDownAfterClassTest::tearDownAfterClass' . PHP_EOL .
+            'Exception in PHPUnit\TestFixture\ExceptionInTearDownAfterClassTest::tearDownAfterClass' . PHP_EOL .
             'throw Exception in tearDownAfterClass()',
             $failure->thrownException()->getMessage()
         );

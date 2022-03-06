@@ -7,7 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class NumericGroupAnnotationTest extends \PHPUnit\Framework\TestCase
+namespace PHPUnit\TestFixture;
+
+use PHPUnit\Framework\TestCase;
+
+class NumericGroupAnnotationTest extends TestCase
 {
     /**
      * @testdox Empty test for @ticket numeric annotation values

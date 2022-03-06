@@ -7,6 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use function sprintf;
 use PHPUnit\Framework\Constraint\Constraint;
 
 final class CountConstraint extends Constraint
@@ -32,7 +35,7 @@ final class CountConstraint extends Constraint
 
     public function toString(): string
     {
-        return \sprintf(
+        return sprintf(
             'is accepted by %s',
             self::class
         );

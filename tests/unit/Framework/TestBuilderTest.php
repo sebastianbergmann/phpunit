@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\Framework;
 
-use EmptyDataProviderTest;
-use ModifiedConstructorTestCase;
+use PHPUnit\TestFixture\EmptyDataProviderTest;
+use PHPUnit\TestFixture\ModifiedConstructorTestCase;
+use PHPUnit\TestFixture\TestWithAnnotations;
 use ReflectionClass;
-use TestWithAnnotations;
 
 /**
  * @covers \PHPUnit\Framework\TestBuilder

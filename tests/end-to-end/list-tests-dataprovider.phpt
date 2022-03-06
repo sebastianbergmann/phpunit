@@ -13,7 +13,7 @@ PHPUnit\TextUI\Command::main();
 PHPUnit %s #StandWithUkraine
 
 Available test(s):
- - DataProviderTest::testAdd#0
- - DataProviderTest::testAdd#1
- - DataProviderTest::testAdd#2
- - DataProviderTest::testAdd#3
+ - PHPUnit\TestFixture\DataProviderTest::testAdd#0
+ - PHPUnit\TestFixture\DataProviderTest::testAdd#1
+ - PHPUnit\TestFixture\DataProviderTest::testAdd#2
+ - PHPUnit\TestFixture\DataProviderTest::testAdd#3
