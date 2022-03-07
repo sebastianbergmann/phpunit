@@ -395,7 +395,13 @@ EOF
 
         $this->assertTrue($constraint->evaluate($b, '', true));
         $this->assertFalse($constraint->evaluate($a, '', true));
-        $this->assertEquals('is not identical to an object of class "stdClass"', $constraint->toString());
+        $this->assertEquals(
+            sprintf(
+                'is not identical to an object of class "%s"',
+                stdClass::class
+            ),
+            $constraint->toString()
+        );
         $this->assertCount(1, $constraint);
 
         try {
@@ -474,23 +480,39 @@ EOF
 
         $this->assertFalse($constraint->evaluate(new stdClass, '', true));
         $this->assertTrue($constraint->evaluate(new \Exception, '', true));
-        $this->assertEquals('is instance of class "Exception"', $constraint->toString());
+        $this->assertEquals(
+            sprintf(
+                'is instance of class "%s"',
+                \Exception::class
+            ),
+            $constraint->toString()
+        );
         $this->assertCount(1, $constraint);
 
         $interfaceConstraint = Assert::isInstanceOf(Countable::class);
         $this->assertFalse($interfaceConstraint->evaluate(new stdClass, '', true));
         $this->assertTrue($interfaceConstraint->evaluate(new ArrayObject, '', true));
-        $this->assertEquals('is instance of interface "Countable"', $interfaceConstraint->toString());
+        $this->assertEquals(
+            sprintf(
+                'is instance of interface "%s"',
+                Countable::class
+            ),
+            $interfaceConstraint->toString()
+        );
 
         try {
             $constraint->evaluate(new stdClass);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
-Failed asserting that stdClass Object () is an instance of class "Exception".
+                sprintf(
+                    <<<'EOF'
+Failed asserting that %s Object () is an instance of class "%s".
 
 EOF
-                ,
+                    ,
+                    stdClass::class,
+                    \Exception::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -508,12 +530,16 @@ EOF
             $constraint->evaluate(new stdClass, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
+                sprintf(
+                    <<<'EOF'
 custom message
-Failed asserting that stdClass Object () is an instance of class "Exception".
+Failed asserting that %s Object () is an instance of class "%s".
 
 EOF
-                ,
+                    ,
+                    stdClass::class,
+                    \Exception::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -531,18 +557,28 @@ EOF
 
         $this->assertFalse($constraint->evaluate(new stdClass, '', true));
         $this->assertTrue($constraint->evaluate(new Exception, '', true));
-        $this->assertEquals('is not instance of class "stdClass"', $constraint->toString());
+        $this->assertEquals(
+            sprintf(
+                'is not instance of class "%s"',
+                stdClass::class
+            ),
+            $constraint->toString()
+        );
         $this->assertCount(1, $constraint);
 
         try {
             $constraint->evaluate(new stdClass);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
-Failed asserting that stdClass Object () is not an instance of class "stdClass".
+                sprintf(
+                    <<<'EOF'
+Failed asserting that %s Object () is not an instance of class "%s".
 
 EOF
-                ,
+                    ,
+                    stdClass::class,
+                    stdClass::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -562,12 +598,16 @@ EOF
             $constraint->evaluate(new stdClass, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
+                sprintf(
+                    <<<'EOF'
 custom message
-Failed asserting that stdClass Object () is not an instance of class "stdClass".
+Failed asserting that %s Object () is not an instance of class "%s".
 
 EOF
-                ,
+                    ,
+                    stdClass::class,
+                    stdClass::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -858,11 +898,14 @@ EOF
             $constraint->evaluate(ClassWithNonPublicAttributes::class);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
-Failed asserting that class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
+                sprintf(
+                    <<<'EOF'
+Failed asserting that class "%s" does not have attribute "privateAttribute".
 
 EOF
-                ,
+                    ,
+                    ClassWithNonPublicAttributes::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -882,12 +925,15 @@ EOF
             $constraint->evaluate(ClassWithNonPublicAttributes::class, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
+                sprintf(
+                    <<<'EOF'
 custom message
-Failed asserting that class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
+Failed asserting that class "%s" does not have attribute "privateAttribute".
 
 EOF
-                ,
+                    ,
+                    ClassWithNonPublicAttributes::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -912,11 +958,14 @@ EOF
             $constraint->evaluate(ClassWithNonPublicAttributes::class);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
-Failed asserting that class "ClassWithNonPublicAttributes" does not have static attribute "privateStaticAttribute".
+                sprintf(
+                    <<<'EOF'
+Failed asserting that class "%s" does not have static attribute "privateStaticAttribute".
 
 EOF
-                ,
+                    ,
+                    ClassWithNonPublicAttributes::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -936,12 +985,15 @@ EOF
             $constraint->evaluate(ClassWithNonPublicAttributes::class, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
+                sprintf(
+                    <<<'EOF'
 custom message
-Failed asserting that class "ClassWithNonPublicAttributes" does not have static attribute "privateStaticAttribute".
+Failed asserting that class "%s" does not have static attribute "privateStaticAttribute".
 
 EOF
-                ,
+                    ,
+                    ClassWithNonPublicAttributes::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -966,11 +1018,14 @@ EOF
             $constraint->evaluate(new ClassWithNonPublicAttributes);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
-Failed asserting that object of class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
+                sprintf(
+                    <<<'EOF'
+Failed asserting that object of class "%s" does not have attribute "privateAttribute".
 
 EOF
-                ,
+                    ,
+                    ClassWithNonPublicAttributes::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -990,12 +1045,15 @@ EOF
             $constraint->evaluate(new ClassWithNonPublicAttributes, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
+                sprintf(
+                    <<<'EOF'
 custom message
-Failed asserting that object of class "ClassWithNonPublicAttributes" does not have attribute "privateAttribute".
+Failed asserting that object of class "%s" does not have attribute "privateAttribute".
 
 EOF
-                ,
+                    ,
+                    ClassWithNonPublicAttributes::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -1419,12 +1477,15 @@ EOF
             $constraint->evaluate($exception);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<EOF
-Failed asserting that exception of type "DummyException" matches expected exception "FoobarException". Message was: "Test" at
+                sprintf(
+                    <<<EOF
+Failed asserting that exception of type "%s" matches expected exception "FoobarException". Message was: "Test" at
 {$stackTrace}.
 
 EOF
-                ,
+                    ,
+                    DummyException::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 

@@ -24,6 +24,7 @@ use function uniqid;
 use function unlink;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Runner\StandardTestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\ResultPrinter;
 use PHPUnit\Util\TestDox\CliTestDoxPrinter;
@@ -509,8 +510,8 @@ final class ConfigurationTest extends TestCase
                 'defaultTimeLimit'                           => 123,
                 'enforceTimeLimit'                           => false,
                 'extensionsDirectory'                        => '/tmp',
-                'printerClass'                               => 'PHPUnit\TextUI\ResultPrinter',
-                'testSuiteLoaderClass'                       => 'PHPUnit\Runner\StandardTestSuiteLoader',
+                'printerClass'                               => ResultPrinter::class,
+                'testSuiteLoaderClass'                       => StandardTestSuiteLoader::class,
                 'defaultTestSuite'                           => 'My Test Suite',
                 'verbose'                                    => false,
                 'timeoutForSmallTests'                       => 1,

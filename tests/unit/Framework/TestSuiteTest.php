@@ -26,6 +26,7 @@ use NotVoidTestCase;
 use OneTestCase;
 use OverrideTestCase;
 use RequirementsClassBeforeClassHookTest;
+use stdClass;
 use TestCaseWithExceptionInHook;
 use TestWithTest;
 
@@ -54,7 +55,7 @@ final class TestSuiteTest extends TestCase
      */
     public function testSuiteNameCanBeSameAsExistingNonTestClassName(): void
     {
-        $suite = new TestSuite('stdClass');
+        $suite = new TestSuite(stdClass::class);
         $suite->addTestSuite(OneTestCase::class);
         $suite->run($this->result);
 
