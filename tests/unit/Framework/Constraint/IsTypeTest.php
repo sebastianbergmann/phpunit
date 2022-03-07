@@ -36,11 +36,14 @@ final class IsTypeTest extends ConstraintTestCase
             $constraint->evaluate(new stdClass);
         } catch (ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
-                <<<'EOF'
-Failed asserting that stdClass Object #%d () is of type "string".
+                sprintf(
+                    <<<'EOF'
+Failed asserting that %s Object #%%d () is of type "string".
 
 EOF
-                ,
+                    ,
+                    stdClass::class
+                ),
                 $this->trimnl(TestFailure::exceptionToString($e))
             );
 
@@ -58,12 +61,15 @@ EOF
             $constraint->evaluate(new stdClass, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
-                <<<'EOF'
+                sprintf(
+                    <<<'EOF'
 custom message
-Failed asserting that stdClass Object #%d () is of type "string".
+Failed asserting that %s Object #%%d () is of type "string".
 
 EOF
                 ,
+                    stdClass::class
+                ),
                 $this->trimnl(TestFailure::exceptionToString($e))
             );
 

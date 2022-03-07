@@ -126,7 +126,10 @@ final class InvocationMockerTest extends TestCase
         $invocationMocker = $mock->method('methodWithClassReturnTypeDeclaration');
 
         $this->expectException(IncompatibleReturnValueException::class);
-        $this->expectExceptionMessage('Method methodWithClassReturnTypeDeclaration may not return value of type Foo, its declared return type is "stdClass"');
+        $this->expectExceptionMessage(sprintf(
+            'Method methodWithClassReturnTypeDeclaration may not return value of type Foo, its declared return type is "%s"',
+            stdClass::class
+        ));
         $invocationMocker->willReturn(new Foo);
     }
 
