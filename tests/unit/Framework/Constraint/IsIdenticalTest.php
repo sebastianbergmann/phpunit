@@ -27,7 +27,13 @@ final class IsIdenticalTest extends ConstraintTestCase
 
         $this->assertFalse($constraint->evaluate($b, '', true));
         $this->assertTrue($constraint->evaluate($a, '', true));
-        $this->assertEquals('is identical to an object of class "stdClass"', $constraint->toString());
+        $this->assertEquals(
+            sprintf(
+                'is identical to an object of class "%s"',
+                stdClass::class
+            ),
+            $constraint->toString()
+        );
         $this->assertCount(1, $constraint);
 
         try {
