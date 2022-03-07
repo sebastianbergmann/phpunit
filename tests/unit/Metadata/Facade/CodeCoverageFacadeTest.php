@@ -44,47 +44,8 @@ final class CodeCoverageFacadeTest extends TestCase
      * @psalm-param class-string $test
      */
     #[DataProvider('getLinesToBeCoveredProvider')]
-    public function testGetLinesToBeCovered(string $test, array|false $lines): void
+    public function testGetLinesToBeCovered(string $test, array|false $expected): void
     {
-        switch ($test) {
-            case CoverageMethodNothingCoversMethod::class:
-            case CoverageClassNothingTest::class:
-            case CoverageMethodNothingTest::class:
-                $expected = false;
-
-                break;
-
-            case CoverageCoversOverridesCoversNothingTest::class:
-                $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
-
-                break;
-
-            case CoverageNoneTest::class:
-                $expected = [];
-
-                break;
-
-            case CoverageFunctionTest::class:
-                $expected = [
-                    TEST_FILES_PATH . 'CoveredFunction.php' => $lines,
-                ];
-
-                break;
-
-            case NamespaceCoverageClassTest::class:
-            case NamespaceCoverageMethodTest::class:
-            case NamespaceCoverageCoversClassTest::class:
-            case NamespaceCoverageCoversClassPublicTest::class:
-                $expected = [
-                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines,
-                ];
-
-                break;
-
-            default:
-                $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
-        }
-
         $this->assertEqualsCanonicalizing(
             $expected,
             (new CodeCoverage)->linesToBeCovered(
@@ -160,35 +121,52 @@ final class CodeCoverageFacadeTest extends TestCase
             ],
             [
                 CoverageClassTest::class,
-                range(29, 46),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(29, 46),
+                ],
             ],
             [
                 CoverageMethodTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                ],
             ],
             [
                 CoverageMethodOneLineAnnotationTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                ],
             ],
             [
                 CoverageFunctionTest::class,
-                range(10, 12),
+                [
+                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
+                ],
             ],
             [
                 NamespaceCoverageClassTest::class,
-                range(29, 46),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(29, 46),
+                ],
             ],
             [
                 NamespaceCoverageMethodTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(31, 35),
+                ],
             ],
             [
                 NamespaceCoverageCoversClassTest::class,
-                array_merge(range(43, 45), range(37, 41), range(31, 35), range(24, 26), range(19, 22), range(14, 17)),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(43, 45), range(37, 41), range(31, 35), range(24, 26), range(19, 22), range(14, 17)),
+                ],
             ],
             [
                 NamespaceCoverageCoversClassPublicTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(31, 35),
+                ],
+
             ],
             [
                 CoverageClassNothingTest::class,
@@ -200,7 +178,9 @@ final class CodeCoverageFacadeTest extends TestCase
             ],
             [
                 CoverageCoversOverridesCoversNothingTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                ],
             ],
             [
                 CoverageMethodNothingCoversMethod::class,
