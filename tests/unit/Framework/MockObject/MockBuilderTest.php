@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use ACustomClassname;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Mockable;
@@ -44,7 +45,10 @@ final class MockBuilderTest extends TestCase
     public function testOnlyMethodsWithNonExistentMethodNames(): void
     {
         $this->expectException(CannotUseOnlyMethodsException::class);
-        $this->expectExceptionMessage('Trying to configure method "mockableMethodWithCrazyName" with onlyMethods(), but it does not exist in class "PHPUnit\TestFixture\Mockable". Use addMethods() for methods that do not exist in the class');
+        $this->expectExceptionMessage(sprintf(
+            'Trying to configure method "mockableMethodWithCrazyName" with onlyMethods(), but it does not exist in class "%s". Use addMethods() for methods that do not exist in the class',
+            Mockable::class
+        ));
 
         $this->getMockBuilder(Mockable::class)
              ->onlyMethods(['mockableMethodWithCrazyName'])
@@ -73,7 +77,10 @@ final class MockBuilderTest extends TestCase
     public function testAddMethodsWithExistentMethodNames(): void
     {
         $this->expectException(CannotUseAddMethodsException::class);
-        $this->expectExceptionMessage('Trying to configure method "mockableMethod" with addMethods(), but it exists in class "PHPUnit\TestFixture\Mockable". Use onlyMethods() for methods that exist in the class');
+        $this->expectExceptionMessage(sprintf(
+            'Trying to configure method "mockableMethod" with addMethods(), but it exists in class "%s". Use onlyMethods() for methods that exist in the class',
+            Mockable::class
+        ));
 
         $this->getMockBuilder(Mockable::class)
              ->addMethods(['mockableMethod'])
@@ -131,7 +138,7 @@ final class MockBuilderTest extends TestCase
     public function testMockClassNameCanBeSpecified(): void
     {
         $mock = $this->getMockBuilder(Mockable::class)
-                     ->setMockClassName('ACustomClassName')
+                     ->setMockClassName(ACustomClassName::class)
                      ->getMock();
 
         $this->assertInstanceOf('ACustomClassName', $mock);

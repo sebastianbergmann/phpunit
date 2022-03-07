@@ -94,7 +94,10 @@ class TestCaseTest extends TestCase
     public function testCaseToString(): void
     {
         $this->assertEquals(
-            'PHPUnit\Framework\TestCaseTest::testCaseToString',
+            sprintf(
+                '%s::testCaseToString',
+                self::class
+            ),
             $this->toString()
         );
     }
