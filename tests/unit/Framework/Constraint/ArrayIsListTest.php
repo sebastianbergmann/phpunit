@@ -18,14 +18,14 @@ final class ArrayIsListTest extends ConstraintTestCase
 {
     public function testConstraintArrayIsListWhenEmpty(): void
     {
-        $constraint = new ArrayIsList();
+        $constraint = new ArrayIsList;
 
         $this->assertTrue($constraint->evaluate([], '', true));
     }
 
     public function testConstraintArrayIsNotList(): void
     {
-        $constraint = new ArrayIsList();
+        $constraint = new ArrayIsList;
 
         $this->assertFalse($constraint->evaluate([1 => 1], '', true));
         $this->assertEquals('is list', $constraint->toString());
@@ -51,7 +51,7 @@ EOF
 
     public function testConstraintArrayIsNotListWithFilteredArray(): void
     {
-        $constraint = new ArrayIsList();
+        $constraint = new ArrayIsList;
 
         $this->assertFalse($constraint->evaluate([0 => 0, 1 => 1, 3 => 3], '', true));
         $this->assertEquals('is list', $constraint->toString());
@@ -77,7 +77,7 @@ EOF
 
     public function testConstraintArrayIsNotListWithCustomMessage(): void
     {
-        $constraint = new ArrayIsList();
+        $constraint = new ArrayIsList;
 
         try {
             $constraint->evaluate([1 => 1], 'custom message');
@@ -100,7 +100,7 @@ EOF
 
     public function testConstraintArrayIsNotListWhenNotArray(): void
     {
-        $constraint = new ArrayIsList();
+        $constraint = new ArrayIsList;
 
         try {
             $constraint->evaluate('not array');

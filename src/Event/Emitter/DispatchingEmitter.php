@@ -55,7 +55,7 @@ final class DispatchingEmitter implements Emitter
         $this->dispatcher->dispatch(
             new TestRunner\Started(
                 $this->telemetryInfo(),
-                new Runtime\Runtime()
+                new Runtime\Runtime
             )
         );
     }

@@ -16,6 +16,6 @@ final class NoLogNoCcTest extends TestCase
 {
     public function testSuccess(): void
     {
-        $this->assertTrue((new NoLogNoCc())->getTrue());
+        $this->assertTrue((new NoLogNoCc)->getTrue());
     }
 }

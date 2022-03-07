@@ -24,7 +24,7 @@ final class DirectDispatcherTest extends TestCase
     {
         $subscriber = new NullSubscriber;
 
-        $dispatcher = new DirectDispatcher(new TypeMap());
+        $dispatcher = new DirectDispatcher(new TypeMap);
 
         $this->expectException(RuntimeException::class);
 
@@ -35,7 +35,7 @@ final class DirectDispatcherTest extends TestCase
     {
         $event = new DummyEvent;
 
-        $dispatcher = new DirectDispatcher(new TypeMap());
+        $dispatcher = new DirectDispatcher(new TypeMap);
 
         $this->expectException(RuntimeException::class);
 
