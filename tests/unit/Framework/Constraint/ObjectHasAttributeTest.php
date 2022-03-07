@@ -32,11 +32,14 @@ final class ObjectHasAttributeTest extends ConstraintTestCase
             $constraint->evaluate(new stdClass);
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
-Failed asserting that object of class "stdClass" has attribute "privateAttribute".
+                sprintf(
+                    <<<'EOF'
+Failed asserting that object of class "%s" has attribute "privateAttribute".
 
 EOF
-                ,
+                    ,
+                    stdClass::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 
@@ -54,12 +57,15 @@ EOF
             $constraint->evaluate(new stdClass, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
-                <<<'EOF'
+                sprintf(
+                    <<<'EOF'
 custom message
-Failed asserting that object of class "stdClass" has attribute "privateAttribute".
+Failed asserting that object of class "%s" has attribute "privateAttribute".
 
 EOF
-                ,
+                    ,
+                    stdClass::class
+                ),
                 TestFailure::exceptionToString($e)
             );
 

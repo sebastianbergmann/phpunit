@@ -13,9 +13,42 @@ use function array_merge;
 use function preg_match;
 use function range;
 use function realpath;
+use CoverageClassExtendedTest;
+use CoverageClassNothingTest;
+use CoverageClassTest;
+use CoverageCoversOverridesCoversNothingTest;
+use CoverageFunctionParenthesesTest;
+use CoverageFunctionParenthesesWhitespaceTest;
+use CoverageFunctionTest;
+use CoverageMethodNothingCoversMethod;
+use CoverageMethodNothingTest;
+use CoverageMethodOneLineAnnotationTest;
+use CoverageMethodParenthesesTest;
+use CoverageMethodParenthesesWhitespaceTest;
+use CoverageMethodTest;
 use CoverageNamespacedFunctionTest;
+use CoverageNoneTest;
+use CoverageNotPrivateTest;
+use CoverageNotProtectedTest;
+use CoverageNotPublicTest;
+use CoveragePrivateTest;
+use CoverageProtectedTest;
+use CoveragePublicTest;
+use CoverageTwoDefaultClassAnnotations;
 use DuplicateKeyDataProviderTest;
 use MultipleDataProviderTest;
+use NamespaceCoverageClassExtendedTest;
+use NamespaceCoverageClassTest;
+use NamespaceCoverageCoversClassPublicTest;
+use NamespaceCoverageCoversClassTest;
+use NamespaceCoverageMethodTest;
+use NamespaceCoverageNotPrivateTest;
+use NamespaceCoverageNotProtectedTest;
+use NamespaceCoverageNotPublicTest;
+use NamespaceCoveragePrivateTest;
+use NamespaceCoverageProtectedTest;
+use NamespaceCoveragePublicTest;
+use NotExistingCoveredElementTest;
 use ParseTestMethodAnnotationsMock;
 use PharIo\Version\VersionConstraint;
 use PHPUnit\Framework\CodeCoverageException;
@@ -28,6 +61,7 @@ use ReflectionMethod;
 use RequirementsClassDocBlockTest;
 use RequirementsTest;
 use Test3194;
+use VariousDocblockDefinedDataProvider;
 use VariousIterableDataProviderTest;
 
 /**
@@ -1024,7 +1058,7 @@ final class TestClassTest extends TestCase
     public function testTestWithEmptyAnnotation(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'anotherAnnotation'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1034,7 +1068,7 @@ final class TestClassTest extends TestCase
     public function testTestWithSimpleCase(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWith1'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1044,7 +1078,7 @@ final class TestClassTest extends TestCase
     public function testTestWithMultiLineMultiParameterCase(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWith1234'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1054,7 +1088,7 @@ final class TestClassTest extends TestCase
     public function testTestWithVariousTypes(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWithABTrueNull'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1064,7 +1098,7 @@ final class TestClassTest extends TestCase
     public function testTestWithAnnotationAfter(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWith12AndAnotherAnnotation'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1074,7 +1108,7 @@ final class TestClassTest extends TestCase
     public function testTestWithSimpleTextAfter(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWith12AndBlahBlah'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1084,7 +1118,7 @@ final class TestClassTest extends TestCase
     public function testTestWithCharacterEscape(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWithEscapedString'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1094,7 +1128,7 @@ final class TestClassTest extends TestCase
     public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed(): void
     {
         $docBlock = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWithMalformedValue'
         ), VariousDocblockDefinedDataProvider::class);
 
@@ -1107,7 +1141,7 @@ final class TestClassTest extends TestCase
     public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed(): void
     {
         $docBlock = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWithWellFormedAndMalformedValue'
         ), VariousDocblockDefinedDataProvider::class);
 
@@ -1175,7 +1209,7 @@ final class TestClassTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         Test::getLinesToBeCovered(
-            'NotExistingCoveredElementTest',
+            NotExistingCoveredElementTest::class,
             'testOne'
         );
     }
@@ -1185,7 +1219,7 @@ final class TestClassTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         Test::getLinesToBeCovered(
-            'NotExistingCoveredElementTest',
+            NotExistingCoveredElementTest::class,
             'testTwo'
         );
     }
@@ -1195,7 +1229,7 @@ final class TestClassTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         Test::getLinesToBeCovered(
-            'NotExistingCoveredElementTest',
+            NotExistingCoveredElementTest::class,
             'testThree'
         );
     }
@@ -1205,7 +1239,7 @@ final class TestClassTest extends TestCase
         $this->assertSame(
             [],
             Test::getLinesToBeCovered(
-                'NotExistingCoveredElementTest',
+                NotExistingCoveredElementTest::class,
                 'methodDoesNotExist'
             )
         );
@@ -1216,7 +1250,7 @@ final class TestClassTest extends TestCase
         $this->expectException(CodeCoverageException::class);
 
         Test::getLinesToBeCovered(
-            'CoverageTwoDefaultClassAnnotations',
+            CoverageTwoDefaultClassAnnotations::class,
             'testSomething'
         );
     }
@@ -1226,7 +1260,7 @@ final class TestClassTest extends TestCase
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
             Test::getLinesToBeCovered(
-                'CoverageFunctionParenthesesTest',
+                CoverageFunctionParenthesesTest::class,
                 'testSomething'
             )
         );
@@ -1237,7 +1271,7 @@ final class TestClassTest extends TestCase
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
             Test::getLinesToBeCovered(
-                'CoverageFunctionParenthesesWhitespaceTest',
+                CoverageFunctionParenthesesWhitespaceTest::class,
                 'testSomething'
             )
         );
@@ -1248,7 +1282,7 @@ final class TestClassTest extends TestCase
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => range(29, 33)],
             Test::getLinesToBeCovered(
-                'CoverageMethodParenthesesTest',
+                CoverageMethodParenthesesTest::class,
                 'testSomething'
             )
         );
@@ -1259,7 +1293,7 @@ final class TestClassTest extends TestCase
         $this->assertSame(
             [TEST_FILES_PATH . 'CoveredClass.php' => range(29, 33)],
             Test::getLinesToBeCovered(
-                'CoverageMethodParenthesesWhitespaceTest',
+                CoverageMethodParenthesesWhitespaceTest::class,
                 'testSomething'
             )
         );
@@ -1282,164 +1316,158 @@ final class TestClassTest extends TestCase
     {
         return [
             [
-                'CoverageNoneTest',
+                CoverageNoneTest::class,
                 [],
             ],
             [
-                'CoverageClassExtendedTest',
+                CoverageClassExtendedTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(27, 44), range(10, 25)),
                 ],
             ],
             [
-                'CoverageClassTest',
+                CoverageClassTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(27, 44),
                 ],
             ],
             [
-                'CoverageMethodTest',
+                CoverageMethodTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(29, 33),
                 ],
             ],
             [
-                'CoverageMethodOneLineAnnotationTest',
+                CoverageMethodOneLineAnnotationTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(29, 33),
                 ],
-
             ],
             [
-                'CoverageNotPrivateTest',
+                CoverageNotPrivateTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(29, 33), range(35, 39)),
                 ],
-
             ],
             [
-                'CoverageNotProtectedTest',
+                CoverageNotProtectedTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(29, 33), range(41, 43)),
                 ],
-
             ],
             [
-                'CoverageNotPublicTest',
+                CoverageNotPublicTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(35, 39), range(41, 43)),
                 ],
-
             ],
             [
-                'CoveragePrivateTest',
+                CoveragePrivateTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(41, 43),
                 ],
-
             ],
             [
-                'CoverageProtectedTest',
+                CoverageProtectedTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(35, 39),
                 ],
 
             ],
             [
-                'CoveragePublicTest',
+                CoveragePublicTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(29, 33),
                 ],
-
             ],
             [
-                'CoverageFunctionTest',
+                CoverageFunctionTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
                 ],
             ],
             [
-                'NamespaceCoverageClassExtendedTest',
+                NamespaceCoverageClassExtendedTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(29, 46), range(12, 27)),
                 ],
             ],
             [
-                'NamespaceCoverageClassTest',
+                NamespaceCoverageClassTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(29, 46),
                 ],
             ],
             [
-                'NamespaceCoverageMethodTest',
+                NamespaceCoverageMethodTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(31, 35),
                 ],
             ],
             [
-                'NamespaceCoverageNotPrivateTest',
+                NamespaceCoverageNotPrivateTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(31, 35), range(37, 41)),
                 ],
             ],
             [
-                'NamespaceCoverageNotProtectedTest',
+                NamespaceCoverageNotProtectedTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(31, 35), range(43, 45)),
                 ],
             ],
             [
-                'NamespaceCoverageNotPublicTest',
+                NamespaceCoverageNotPublicTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(37, 41), range(43, 45)),
                 ],
             ],
             [
-                'NamespaceCoveragePrivateTest',
+                NamespaceCoveragePrivateTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(43, 45),
                 ],
             ],
             [
-                'NamespaceCoverageProtectedTest',
+                NamespaceCoverageProtectedTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(37, 41),
                 ],
             ],
             [
-                'NamespaceCoveragePublicTest',
+                NamespaceCoveragePublicTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(31, 35),
                 ],
             ],
             [
-                'NamespaceCoverageCoversClassTest',
+                NamespaceCoverageCoversClassTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(43, 45), range(37, 41), range(31, 35), range(24, 26), range(19, 22), range(14, 17)),
                 ],
             ],
             [
-                'NamespaceCoverageCoversClassPublicTest',
+                NamespaceCoverageCoversClassPublicTest::class,
                 [
                     TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(31, 35),
                 ],
             ],
             [
-                'CoverageClassNothingTest',
+                CoverageClassNothingTest::class,
                 false,
             ],
             [
-                'CoverageMethodNothingTest',
+                CoverageMethodNothingTest::class,
                 false,
             ],
             [
-                'CoverageCoversOverridesCoversNothingTest',
+                CoverageCoversOverridesCoversNothingTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(29, 33),
                 ],
             ],
             [
-                'CoverageMethodNothingCoversMethod',
+                CoverageMethodNothingCoversMethod::class,
                 false,
             ],
         ];
