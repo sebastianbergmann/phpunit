@@ -1376,35 +1376,30 @@ final class TestClassTest extends TestCase
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
                 ],
-
             ],
             [
                 CoverageNotPrivateTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(31, 35), range(37, 41)),
                 ],
-
             ],
             [
                 CoverageNotProtectedTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(31, 35), range(43, 45)),
                 ],
-
             ],
             [
                 CoverageNotPublicTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(37, 41), range(43, 45)),
                 ],
-
             ],
             [
                 CoveragePrivateTest::class,
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(43, 45),
                 ],
-
             ],
             [
                 CoverageProtectedTest::class,
@@ -1418,7 +1413,6 @@ final class TestClassTest extends TestCase
                 [
                     TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
                 ],
-
             ],
             [
                 CoverageFunctionTest::class,

@@ -100,7 +100,10 @@ class TestCaseTest extends TestCase
     public function testCaseToString(): void
     {
         $this->assertEquals(
-            'PHPUnit\Framework\TestCaseTest::testCaseToString',
+            sprintf(
+                '%s::testCaseToString',
+                self::class
+            ),
             $this->toString()
         );
     }
@@ -1130,7 +1133,10 @@ class TestCaseTest extends TestCase
         $testCase = new TestWithDifferentNames($name);
 
         $this->expectException(Exception::class);
-        $this->expectExceptionMessage('PHPUnit\Framework\TestCase::$name must be a non-blank string.');
+        $this->expectExceptionMessage(sprintf(
+            '%s::$name must be a non-blank string.',
+            TestCase::class
+        ));
 
         $testCase->runBare();
     }

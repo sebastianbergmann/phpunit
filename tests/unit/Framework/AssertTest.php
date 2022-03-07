@@ -221,20 +221,20 @@ final class AssertTest extends TestCase
 
     public function testAssertArrayContainsOnlyStdClass(): void
     {
-        $this->assertContainsOnly('StdClass', [new stdClass]);
+        $this->assertContainsOnly(stdClass::class, [new stdClass]);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertContainsOnly('StdClass', ['StdClass']);
+        $this->assertContainsOnly(stdClass::class, [stdClass::class]);
     }
 
     public function testAssertArrayNotContainsOnlyStdClass(): void
     {
-        $this->assertNotContainsOnly('StdClass', ['StdClass']);
+        $this->assertNotContainsOnly(stdClass::class, [stdClass::class]);
 
         $this->expectException(AssertionFailedError::class);
 
-        $this->assertNotContainsOnly('StdClass', [new stdClass]);
+        $this->assertNotContainsOnly(stdClass::class, [new stdClass]);
     }
 
     public function equalProvider(): array
@@ -964,7 +964,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertClassHasAttribute('attribute', 'ClassThatDoesNotExist');
+        $this->assertClassHasAttribute('attribute', ClassThatDoesNotExist::class);
     }
 
     public function testAssertClassNotHasAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
@@ -978,7 +978,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertClassNotHasAttribute('attribute', 'ClassThatDoesNotExist');
+        $this->assertClassNotHasAttribute('attribute', ClassThatDoesNotExist::class);
     }
 
     public function testAssertClassHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
@@ -992,7 +992,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertClassHasStaticAttribute('attribute', 'ClassThatDoesNotExist');
+        $this->assertClassHasStaticAttribute('attribute', ClassThatDoesNotExist::class);
     }
 
     public function testAssertClassNotHasStaticAttributeThrowsExceptionIfAttributeNameIsNotValid(): void
@@ -1006,7 +1006,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertClassNotHasStaticAttribute('attribute', 'ClassThatDoesNotExist');
+        $this->assertClassNotHasStaticAttribute('attribute', ClassThatDoesNotExist::class);
     }
 
     public function testAssertObjectHasAttributeThrowsException2(): void
@@ -1292,7 +1292,7 @@ XML;
 
     public function testAssertThatIsInstanceOf(): void
     {
-        $this->assertThat(new stdClass, $this->isInstanceOf('StdClass'));
+        $this->assertThat(new stdClass, $this->isInstanceOf(stdClass::class));
     }
 
     public function testAssertThatIsType(): void
@@ -1799,7 +1799,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertInstanceOf('ClassThatDoesNotExist', new stdClass);
+        $this->assertInstanceOf(ClassThatDoesNotExist::class, new stdClass);
     }
 
     public function testAssertInstanceOf(): void
@@ -1815,7 +1815,7 @@ XML;
     {
         $this->expectException(Exception::class);
 
-        $this->assertNotInstanceOf('ClassThatDoesNotExist', new stdClass);
+        $this->assertNotInstanceOf(ClassThatDoesNotExist::class, new stdClass);
     }
 
     public function testAssertNotInstanceOf(): void
