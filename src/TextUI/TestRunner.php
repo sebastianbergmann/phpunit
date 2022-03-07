@@ -324,8 +324,8 @@ final class TestRunner extends BaseTestRunner
                 'PHPUnit ' .
                 Version::id() .
                 ' ' .
-                Color::colorize('fg-cyan', '#StandWith') .
-                Color::colorize('fg-yellow', 'Ukraine') .
+                Color::colorize('bg-blue', '#StandWith') .
+                Color::colorize('bg-yellow', 'Ukraine') .
                 "\n"
             );
         } else {
