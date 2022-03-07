@@ -1,4 +1,4 @@
-PHPUnit %s [36m#StandWith[0m[33mUkraine[0m
+PHPUnit %s [44m#StandWith[0m[43mUkraine[0m
 
 Runtime:       %s
 

@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s [36m#StandWith[0m[33mUkraine[0m
+PHPUnit %s [44m#StandWith[0m[43mUkraine[0m
 
 ...                                                                 3 / 3 (100%)
 

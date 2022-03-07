@@ -9,7 +9,7 @@ $cmd->run([
     (new \ReflectionClass(\ConcreteTest::class))->getFileName()
 ], false);
 --EXPECTF--
-PHPUnit %s [36m#StandWith[0m[33mUkraine[0m
+PHPUnit %s [44m#StandWith[0m[43mUkraine[0m
 
 Runtime:       PHP %s
 Configuration: %s
