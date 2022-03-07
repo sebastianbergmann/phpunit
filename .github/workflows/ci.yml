@@ -252,6 +252,9 @@ jobs:
       - name: Build PHAR
         run: ant phar-snapshot
 
+      - name: Check whether PHAR is scoped
+        run: cat build/artifacts/phpunit-snapshot.phar | grep -q PHPUnit\\\\DeepCopy\\\\Exception\\\\CloneException || (echo "phpunit-snapshot.phar is not scoped." && false)
+
       - name: Upload PHAR
         uses: actions/upload-artifact@v3
         with:
