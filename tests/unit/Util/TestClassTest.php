@@ -1227,54 +1227,8 @@ final class TestClassTest extends TestCase
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws CodeCoverageException
      */
-    public function testGetLinesToBeCovered($test, $lines): void
+    public function testGetLinesToBeCovered($test, $expected): void
     {
-        switch ($test) {
-            case CoverageMethodNothingCoversMethod::class:
-            case CoverageClassNothingTest::class:
-            case CoverageMethodNothingTest::class:
-                $expected = false;
-
-                break;
-
-            case CoverageCoversOverridesCoversNothingTest::class:
-                $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
-
-                break;
-
-            case CoverageNoneTest::class:
-                $expected = [];
-
-                break;
-
-            case CoverageFunctionTest::class:
-                $expected = [
-                    TEST_FILES_PATH . 'CoveredFunction.php' => $lines,
-                ];
-
-                break;
-
-            case NamespaceCoverageClassExtendedTest::class:
-            case NamespaceCoverageClassTest::class:
-            case NamespaceCoverageMethodTest::class:
-            case NamespaceCoverageNotPrivateTest::class:
-            case NamespaceCoverageNotProtectedTest::class:
-            case NamespaceCoverageNotPublicTest::class:
-            case NamespaceCoveragePrivateTest::class:
-            case NamespaceCoverageProtectedTest::class:
-            case NamespaceCoveragePublicTest::class:
-            case NamespaceCoverageCoversClassTest::class:
-            case NamespaceCoverageCoversClassPublicTest::class:
-                $expected = [
-                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => $lines,
-                ];
-
-                break;
-
-            default:
-                $expected = [TEST_FILES_PATH . 'CoveredClass.php' => $lines];
-        }
-
         $this->assertEqualsCanonicalizing(
             $expected,
             Test::getLinesToBeCovered(
@@ -1401,91 +1355,142 @@ final class TestClassTest extends TestCase
             ],
             [
                 CoverageClassExtendedTest::class,
-                array_merge(range(29, 46), range(12, 27)),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(29, 46), range(12, 27)),
+                ],
             ],
             [
                 CoverageClassTest::class,
-                range(29, 46),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(29, 46),
+                ],
             ],
             [
                 CoverageMethodTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                ],
             ],
             [
                 CoverageMethodOneLineAnnotationTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                ],
+
             ],
             [
                 CoverageNotPrivateTest::class,
-                array_merge(range(31, 35), range(37, 41)),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(31, 35), range(37, 41)),
+                ],
+
             ],
             [
                 CoverageNotProtectedTest::class,
-                array_merge(range(31, 35), range(43, 45)),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(31, 35), range(43, 45)),
+                ],
+
             ],
             [
                 CoverageNotPublicTest::class,
-                array_merge(range(37, 41), range(43, 45)),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => array_merge(range(37, 41), range(43, 45)),
+                ],
+
             ],
             [
                 CoveragePrivateTest::class,
-                range(43, 45),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(43, 45),
+                ],
+
             ],
             [
                 CoverageProtectedTest::class,
-                range(37, 41),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(37, 41),
+                ],
+
             ],
             [
                 CoveragePublicTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                ],
+
             ],
             [
                 CoverageFunctionTest::class,
-                range(10, 12),
+                [
+                    TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12),
+                ],
             ],
             [
                 NamespaceCoverageClassExtendedTest::class,
-                array_merge(range(29, 46), range(12, 27)),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(29, 46), range(12, 27)),
+                ],
             ],
             [
                 NamespaceCoverageClassTest::class,
-                range(29, 46),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(29, 46),
+                ],
             ],
             [
                 NamespaceCoverageMethodTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(31, 35),
+                ],
             ],
             [
                 NamespaceCoverageNotPrivateTest::class,
-                array_merge(range(31, 35), range(37, 41)),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(31, 35), range(37, 41)),
+                ],
             ],
             [
                 NamespaceCoverageNotProtectedTest::class,
-                array_merge(range(31, 35), range(43, 45)),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(31, 35), range(43, 45)),
+                ],
             ],
             [
                 NamespaceCoverageNotPublicTest::class,
-                array_merge(range(37, 41), range(43, 45)),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(37, 41), range(43, 45)),
+                ],
             ],
             [
                 NamespaceCoveragePrivateTest::class,
-                range(43, 45),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(43, 45),
+                ],
             ],
             [
                 NamespaceCoverageProtectedTest::class,
-                range(37, 41),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(37, 41),
+                ],
             ],
             [
                 NamespaceCoveragePublicTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(31, 35),
+                ],
             ],
             [
                 NamespaceCoverageCoversClassTest::class,
-                array_merge(range(43, 45), range(37, 41), range(31, 35), range(24, 26), range(19, 22), range(14, 17)),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => array_merge(range(43, 45), range(37, 41), range(31, 35), range(24, 26), range(19, 22), range(14, 17)),
+                ],
             ],
             [
                 NamespaceCoverageCoversClassPublicTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'NamespaceCoveredClass.php' => range(31, 35),
+                ],
             ],
             [
                 CoverageClassNothingTest::class,
@@ -1497,7 +1502,9 @@ final class TestClassTest extends TestCase
             ],
             [
                 CoverageCoversOverridesCoversNothingTest::class,
-                range(31, 35),
+                [
+                    TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35),
+                ],
             ],
             [
                 CoverageMethodNothingCoversMethod::class,
