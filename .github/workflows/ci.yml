@@ -244,9 +244,10 @@ jobs:
           tools: none
 
       - name: Install java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 1.8
+          distribution: zulu
+          java-version: 11
 
       - name: Build PHAR
         run: ant phar-snapshot
@@ -296,9 +297,10 @@ jobs:
           tools: none
 
       - name: Install java
-        uses: actions/setup-java@v1
+        uses: actions/setup-java@v3
         with:
-          java-version: 1.8
+          distribution: zulu
+          java-version: 11
 
       - name: Download PHAR
         uses: actions/download-artifact@v3
