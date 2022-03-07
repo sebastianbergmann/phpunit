@@ -28,6 +28,7 @@ use ReflectionMethod;
 use RequirementsClassDocBlockTest;
 use RequirementsTest;
 use Test3194;
+use VariousDocblockDefinedDataProvider;
 use VariousIterableDataProviderTest;
 
 /**
@@ -1024,7 +1025,7 @@ final class TestClassTest extends TestCase
     public function testTestWithEmptyAnnotation(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'anotherAnnotation'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1034,7 +1035,7 @@ final class TestClassTest extends TestCase
     public function testTestWithSimpleCase(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWith1'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1044,7 +1045,7 @@ final class TestClassTest extends TestCase
     public function testTestWithMultiLineMultiParameterCase(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWith1234'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1054,7 +1055,7 @@ final class TestClassTest extends TestCase
     public function testTestWithVariousTypes(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWithABTrueNull'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1064,7 +1065,7 @@ final class TestClassTest extends TestCase
     public function testTestWithAnnotationAfter(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWith12AndAnotherAnnotation'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1074,7 +1075,7 @@ final class TestClassTest extends TestCase
     public function testTestWithSimpleTextAfter(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWith12AndBlahBlah'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1084,7 +1085,7 @@ final class TestClassTest extends TestCase
     public function testTestWithCharacterEscape(): void
     {
         $result = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWithEscapedString'
         ), VariousDocblockDefinedDataProvider::class)->getProvidedData();
 
@@ -1094,7 +1095,7 @@ final class TestClassTest extends TestCase
     public function testTestWithThrowsProperExceptionIfDatasetCannotBeParsed(): void
     {
         $docBlock = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWithMalformedValue'
         ), VariousDocblockDefinedDataProvider::class);
 
@@ -1107,7 +1108,7 @@ final class TestClassTest extends TestCase
     public function testTestWithThrowsProperExceptionIfMultiLineDatasetCannotBeParsed(): void
     {
         $docBlock = DocBlock::ofMethod(new ReflectionMethod(
-            \VariousDocblockDefinedDataProvider::class,
+            VariousDocblockDefinedDataProvider::class,
             'testWithWellFormedAndMalformedValue'
         ), VariousDocblockDefinedDataProvider::class);
 
