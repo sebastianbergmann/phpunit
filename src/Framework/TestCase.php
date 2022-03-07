@@ -96,6 +96,7 @@ use ReflectionObject;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
+use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 use SebastianBergmann\Exporter\Exporter;
 use SebastianBergmann\GlobalState\ExcludeList as GlobalStateExcludeList;
 use SebastianBergmann\GlobalState\Restorer;
@@ -1890,7 +1891,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
         if ($before != $after) {
-            $differ   = new Differ($header);
+            $differ   = new Differ(new UnifiedDiffOutputBuilder($header));
             $exporter = new Exporter;
 
             $diff = $differ->diff(
