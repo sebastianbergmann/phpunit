@@ -12,16 +12,16 @@ namespace PHPUnit\Framework;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_pop;
-use DataProviderDependencyTest;
-use DependencyFailureTest;
-use DependencyOnClassTest;
-use DependencySuccessTest;
 use MultiDependencyTest;
 use PHPUnit\TestFixture\BeforeAndAfterTest;
 use PHPUnit\TestFixture\BeforeClassAndAfterClassTest;
 use PHPUnit\TestFixture\BeforeClassWithOnlyDataProviderTest;
+use PHPUnit\TestFixture\DataProviderDependencyTest;
 use PHPUnit\TestFixture\DataProviderIncompleteTest;
 use PHPUnit\TestFixture\DataProviderSkippedTest;
+use PHPUnit\TestFixture\DependencyFailureTest;
+use PHPUnit\TestFixture\DependencyOnClassTest;
+use PHPUnit\TestFixture\DependencySuccessTest;
 use PHPUnit\TestFixture\DoubleTestCase;
 use PHPUnit\TestFixture\ExceptionInTearDownAfterClassTest;
 use PHPUnit\TestFixture\InheritedTestCase;
@@ -219,7 +219,13 @@ final class TestSuiteTest extends TestCase
         $lastSkippedResult = array_pop($skipped);
         $message           = $lastSkippedResult->thrownException()->getMessage();
 
-        $this->assertStringContainsString('Test for DataProviderDependencyTest::testDependency skipped by data provider', $message);
+        $this->assertStringContainsString(
+            sprintf(
+                'Test for %s::testDependency skipped by data provider',
+                DataProviderDependencyTest::class,
+            ),
+            $message
+        );
     }
 
     public function testIncompleteTestDataProvider(): void

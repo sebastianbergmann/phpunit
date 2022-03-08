@@ -11,27 +11,27 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit\Test\Extension::tellAmountOfInjectedArguments: %d
-PHPUnit\Test\Extension::executeBeforeFirstTest
-PHPUnit\Test\Extension::executeBeforeTest: PHPUnit\Test\HookTest::testSuccess
-PHPUnit\Test\Extension::executeAfterSuccessfulTest: PHPUnit\Test\HookTest::testSuccess
-PHPUnit\Test\Extension::executeAfterTest: PHPUnit\Test\HookTest::testSuccess
-PHPUnit\Test\Extension::executeBeforeTest: PHPUnit\Test\HookTest::testFailure
-PHPUnit\Test\Extension::executeAfterTestFailure: PHPUnit\Test\HookTest::testFailure: Failed asserting that false is true.
-PHPUnit\Test\Extension::executeAfterTest: PHPUnit\Test\HookTest::testFailure
-PHPUnit\Test\Extension::executeBeforeTest: PHPUnit\Test\HookTest::testError
-PHPUnit\Test\Extension::executeAfterTestError: PHPUnit\Test\HookTest::testError: message
-PHPUnit\Test\Extension::executeAfterTest: PHPUnit\Test\HookTest::testError
-PHPUnit\Test\Extension::executeBeforeTest: PHPUnit\Test\HookTest::testIncomplete
-PHPUnit\Test\Extension::executeAfterIncompleteTest: PHPUnit\Test\HookTest::testIncomplete: message
-PHPUnit\Test\Extension::executeAfterTest: PHPUnit\Test\HookTest::testIncomplete
-PHPUnit\Test\Extension::executeBeforeTest: PHPUnit\Test\HookTest::testRisky
-PHPUnit\Test\Extension::executeAfterRiskyTest: PHPUnit\Test\HookTest::testRisky: message
-PHPUnit\Test\Extension::executeAfterTest: PHPUnit\Test\HookTest::testRisky
-PHPUnit\Test\Extension::executeBeforeTest: PHPUnit\Test\HookTest::testSkipped
-PHPUnit\Test\Extension::executeAfterSkippedTest: PHPUnit\Test\HookTest::testSkipped: message
-PHPUnit\Test\Extension::executeAfterTest: PHPUnit\Test\HookTest::testSkipped
-PHPUnit\Test\Extension::executeBeforeTest: PHPUnit\Test\HookTest::testWarning
-PHPUnit\Test\Extension::executeAfterTestWarning: PHPUnit\Test\HookTest::testWarning: message
-PHPUnit\Test\Extension::executeAfterTest: PHPUnit\Test\HookTest::testWarning
-PHPUnit\Test\Extension::executeAfterLastTest
+PHPUnit\TestFixture\Extension::tellAmountOfInjectedArguments: %d
+PHPUnit\TestFixture\Extension::executeBeforeFirstTest
+PHPUnit\TestFixture\Extension::executeBeforeTest: PHPUnit\TestFixture\HookTest::testSuccess
+PHPUnit\TestFixture\Extension::executeAfterSuccessfulTest: PHPUnit\TestFixture\HookTest::testSuccess
+PHPUnit\TestFixture\Extension::executeAfterTest: PHPUnit\TestFixture\HookTest::testSuccess
+PHPUnit\TestFixture\Extension::executeBeforeTest: PHPUnit\TestFixture\HookTest::testFailure
+PHPUnit\TestFixture\Extension::executeAfterTestFailure: PHPUnit\TestFixture\HookTest::testFailure: Failed asserting that false is true.
+PHPUnit\TestFixture\Extension::executeAfterTest: PHPUnit\TestFixture\HookTest::testFailure
+PHPUnit\TestFixture\Extension::executeBeforeTest: PHPUnit\TestFixture\HookTest::testError
+PHPUnit\TestFixture\Extension::executeAfterTestError: PHPUnit\TestFixture\HookTest::testError: message
+PHPUnit\TestFixture\Extension::executeAfterTest: PHPUnit\TestFixture\HookTest::testError
+PHPUnit\TestFixture\Extension::executeBeforeTest: PHPUnit\TestFixture\HookTest::testIncomplete
+PHPUnit\TestFixture\Extension::executeAfterIncompleteTest: PHPUnit\TestFixture\HookTest::testIncomplete: message
+PHPUnit\TestFixture\Extension::executeAfterTest: PHPUnit\TestFixture\HookTest::testIncomplete
+PHPUnit\TestFixture\Extension::executeBeforeTest: PHPUnit\TestFixture\HookTest::testRisky
+PHPUnit\TestFixture\Extension::executeAfterRiskyTest: PHPUnit\TestFixture\HookTest::testRisky: message
+PHPUnit\TestFixture\Extension::executeAfterTest: PHPUnit\TestFixture\HookTest::testRisky
+PHPUnit\TestFixture\Extension::executeBeforeTest: PHPUnit\TestFixture\HookTest::testSkipped
+PHPUnit\TestFixture\Extension::executeAfterSkippedTest: PHPUnit\TestFixture\HookTest::testSkipped: message
+PHPUnit\TestFixture\Extension::executeAfterTest: PHPUnit\TestFixture\HookTest::testSkipped
+PHPUnit\TestFixture\Extension::executeBeforeTest: PHPUnit\TestFixture\HookTest::testWarning
+PHPUnit\TestFixture\Extension::executeAfterTestWarning: PHPUnit\TestFixture\HookTest::testWarning: message
+PHPUnit\TestFixture\Extension::executeAfterTest: PHPUnit\TestFixture\HookTest::testWarning
+PHPUnit\TestFixture\Extension::executeAfterLastTest
