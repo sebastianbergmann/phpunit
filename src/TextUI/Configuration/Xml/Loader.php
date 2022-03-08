@@ -581,6 +581,15 @@ final class Loader
         return $element->getAttribute($attribute);
     }
 
+    private function getStringAttributeWithDefault(DOMElement $element, string $attribute, string $default): string
+    {
+        if (!$element->hasAttribute($attribute)) {
+            return $default;
+        }
+
+        return $element->getAttribute($attribute);
+    }
+
     private function getInteger(string $value, int $default): int
     {
         if (is_numeric($value)) {
