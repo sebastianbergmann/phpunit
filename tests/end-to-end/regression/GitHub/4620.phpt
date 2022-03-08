@@ -1,5 +1,6 @@
 --TEST--
-GH-4620 GH-4877
+https://github.com/sebastianbergmann/phpunit/issues/4620
+https://github.com/sebastianbergmann/phpunit/issues/4877
 --FILE--
 <?php declare(strict_types=1);
 
