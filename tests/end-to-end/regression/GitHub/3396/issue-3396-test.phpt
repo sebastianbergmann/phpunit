@@ -19,34 +19,34 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s #StandWithUkraine
 
-Test 'DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' started
-Test 'DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' ended
-Test 'DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+2=3" (1, 2, 3)' started
-Test 'DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+2=3" (1, 2, 3)' ended
-Test 'DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "2+1=3" (2, 1, 3)' started
-Test 'DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "2+1=3" (2, 1, 3)' ended
-Test 'DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' started
-Test 'DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' ended
-Test 'DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+2=3" (1, 2, 3)' started
-Test 'DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+2=3" (1, 2, 3)' ended
-Test 'DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "2+1=3" (2, 1, 3)' started
-Test 'DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "2+1=3" (2, 1, 3)' ended
-Test 'DataproviderExecutionOrderTest::testFirstTestThatAlwaysWorks' started
-Test 'DataproviderExecutionOrderTest::testFirstTestThatAlwaysWorks' ended
-Test 'DataproviderExecutionOrderTest::testTestInTheMiddleThatAlwaysWorks' started
-Test 'DataproviderExecutionOrderTest::testTestInTheMiddleThatAlwaysWorks' ended
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testFirstTestThatAlwaysWorks' started
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testFirstTestThatAlwaysWorks' ended
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+2=3" (1, 2, 3)' started
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+2=3" (1, 2, 3)' ended
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "2+1=3" (2, 1, 3)' started
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "2+1=3" (2, 1, 3)' ended
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' started
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' ended
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testTestInTheMiddleThatAlwaysWorks' started
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testTestInTheMiddleThatAlwaysWorks' ended
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+2=3" (1, 2, 3)' started
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+2=3" (1, 2, 3)' ended
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "2+1=3" (2, 1, 3)' started
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "2+1=3" (2, 1, 3)' ended
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' started
+Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)' ended
 
 
 Time: %s, Memory: %s
 
 There were 2 failures:
 
-1) DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)
+1) PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)
 Failed asserting that 2 is identical to 3.
 
 %s%etests%e_files%eDataproviderExecutionOrderTest.php:%d
 
-2) DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)
+2) PHPUnit\TestFixture\DataproviderExecutionOrderTest::testAddMoreNumbersWithADataprovider with data set "1+1=3" (1, 1, 3)
 Failed asserting that 2 is identical to 3.
 
 %s%etests%e_files%eDataproviderExecutionOrderTest.php:%d

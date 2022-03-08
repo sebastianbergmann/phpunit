@@ -22,14 +22,14 @@ Time: %s, Memory: %s
 
 There was 1 warning:
 
-1) DependencyFailureTest::testHandlesDependsAnnotationForNonexistentTests
-This test depends on "DependencyFailureTest::doesNotExist" which does not exist.
+1) PHPUnit\TestFixture\DependencyFailureTest::testHandlesDependsAnnotationForNonexistentTests
+This test depends on "PHPUnit\TestFixture\DependencyFailureTest::doesNotExist" which does not exist.
 
 --
 
 There was 1 failure:
 
-1) DependencyFailureTest::testOne
+1) PHPUnit\TestFixture\DependencyFailureTest::testOne
 
 %s:%i
 
@@ -37,16 +37,16 @@ There was 1 failure:
 
 There were 4 skipped tests:
 
-1) DependencyFailureTest::testTwo
-This test depends on "DependencyFailureTest::testOne" to pass.
+1) PHPUnit\TestFixture\DependencyFailureTest::testTwo
+This test depends on "PHPUnit\TestFixture\DependencyFailureTest::testOne" to pass.
 
-2) DependencyFailureTest::testThree
-This test depends on "DependencyFailureTest::testTwo" to pass.
+2) PHPUnit\TestFixture\DependencyFailureTest::testThree
+This test depends on "PHPUnit\TestFixture\DependencyFailureTest::testTwo" to pass.
 
-3) DependencyFailureTest::testFour
-This test depends on "DependencyFailureTest::testOne" to pass.
+3) PHPUnit\TestFixture\DependencyFailureTest::testFour
+This test depends on "PHPUnit\TestFixture\DependencyFailureTest::testOne" to pass.
 
-4) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
+4) PHPUnit\TestFixture\DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
 This method has an invalid @depends annotation.
 
 FAILURES!
