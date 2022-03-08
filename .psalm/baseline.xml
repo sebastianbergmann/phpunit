@@ -734,7 +734,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="81">
+    <MissingThrowsDocblock occurrences="84">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -760,6 +760,7 @@
       <code>coverageXml</code>
       <code>crap4j</code>
       <code>crap4j</code>
+      <code>customCssFile</code>
       <code>defaultTimeLimit</code>
       <code>disableCodeCoverageIgnore</code>
       <code>disallowTestOutput</code>
@@ -775,6 +776,8 @@
       <code>failOnWarning</code>
       <code>filter</code>
       <code>groups</code>
+      <code>html</code>
+      <code>html</code>
       <code>html</code>
       <code>html</code>
       <code>html</code>
@@ -1077,7 +1080,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="38">
+    <MissingThrowsDocblock occurrences="39">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1087,6 +1090,7 @@
       <code>coverageCobertura</code>
       <code>coverageCrap4j</code>
       <code>coverageHtml</code>
+      <code>coverageHtmlCustomCssFile</code>
       <code>coveragePhp</code>
       <code>coverageText</code>
       <code>coverageText</code>

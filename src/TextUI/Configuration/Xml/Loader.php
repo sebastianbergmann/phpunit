@@ -410,6 +410,7 @@ final class Loader
                 $this->getStringAttributeWithDefault($element, 'colorSuccessHigh', $defaultColors->successHigh()),
                 $this->getStringAttributeWithDefault($element, 'colorWarning', $defaultColors->warning()),
                 $this->getStringAttributeWithDefault($element, 'colorDanger', $defaultColors->danger()),
+                $this->getStringAttribute($element, 'customCssFile')
             );
         }
 

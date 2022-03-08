@@ -51,6 +51,7 @@ use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
 use SebastianBergmann\CodeCoverage\Report\Cobertura as CoberturaReport;
 use SebastianBergmann\CodeCoverage\Report\Crap4j as Crap4jReport;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
+use SebastianBergmann\CodeCoverage\Report\Html\CustomCssFile;
 use SebastianBergmann\CodeCoverage\Report\Html\Facade as HtmlReport;
 use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
@@ -450,6 +451,12 @@ final class TestRunner
                 $this->codeCoverageGenerationStart('HTML');
 
                 try {
+                    $customCssFile = CustomCssFile::default();
+
+                    if ($this->configuration->hasCoverageHtmlCustomCssFile()) {
+                        $customCssFile = CustomCssFile::from($this->configuration->coverageHtmlCustomCssFile());
+                    }
+
                     $writer = new HtmlReport(
                         sprintf(
                             ' and <a href="https://phpunit.de/">PHPUnit %s</a>',
@@ -465,7 +472,8 @@ final class TestRunner
                         Thresholds::from(
                             $this->configuration->coverageHtmlLowUpperBound(),
                             $this->configuration->coverageHtmlHighLowerBound()
-                        )
+                        ),
+                        $customCssFile
                     );
 
                     $writer->process(CodeCoverage::instance(), $this->configuration->coverageHtml());

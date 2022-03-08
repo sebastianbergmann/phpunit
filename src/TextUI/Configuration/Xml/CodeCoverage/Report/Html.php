@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report;
 
+use PHPUnit\TextUI\Configuration\NoCustomCssFileException;
 use PHPUnit\TextUI\XmlConfiguration\Directory;
 
 /**
@@ -25,8 +26,9 @@ final class Html
     private string $colorSuccessHigh;
     private string $colorWarning;
     private string $colorDanger;
+    private ?string $customCssFile;
 
-    public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessMedium, string $colorSuccessHigh, string $colorWarning, string $colorDanger)
+    public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessMedium, string $colorSuccessHigh, string $colorWarning, string $colorDanger, ?string $customCssFile)
     {
         $this->target             = $target;
         $this->lowUpperBound      = $lowUpperBound;
@@ -36,6 +38,7 @@ final class Html
         $this->colorSuccessHigh   = $colorSuccessHigh;
         $this->colorWarning       = $colorWarning;
         $this->colorDanger        = $colorDanger;
+        $this->customCssFile      = $customCssFile;
     }
 
     public function target(): Directory
@@ -76,5 +79,25 @@ final class Html
     public function colorDanger(): string
     {
         return $this->colorDanger;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->customCssFile
+     */
+    public function hasCustomCssFile(): bool
+    {
+        return $this->customCssFile !== null;
+    }
+
+    /**
+     * @throws NoCustomCssFileException
+     */
+    public function customCssFile(): string
+    {
+        if (!$this->hasCustomCssFile()) {
+            throw new NoCustomCssFileException;
+        }
+
+        return $this->customCssFile;
     }
 }

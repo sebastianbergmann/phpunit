@@ -185,6 +185,7 @@ final class Merger
         $coverageHtmlColorSuccessHigh   = $defaultColors->successHigh();
         $coverageHtmlColorWarning       = $defaultColors->warning();
         $coverageHtmlColorDanger        = $defaultColors->danger();
+        $coverageHtmlCustomCssFile      = null;
         $coveragePhp                    = null;
         $coverageText                   = null;
         $coverageTextShowUncoveredFiles = false;
@@ -232,6 +233,10 @@ final class Merger
             $coverageHtmlColorSuccessHigh   = $xmlConfiguration->codeCoverage()->html()->colorSuccessHigh();
             $coverageHtmlColorWarning       = $xmlConfiguration->codeCoverage()->html()->colorWarning();
             $coverageHtmlColorDanger        = $xmlConfiguration->codeCoverage()->html()->colorDanger();
+
+            if ($xmlConfiguration->codeCoverage()->html()->hasCustomCssFile()) {
+                $coverageHtmlCustomCssFile = $xmlConfiguration->codeCoverage()->html()->customCssFile();
+            }
         }
 
         if ($cliConfiguration->hasCoverageHtml()) {
@@ -587,6 +592,7 @@ final class Merger
             $coverageHtmlColorSuccessHigh,
             $coverageHtmlColorWarning,
             $coverageHtmlColorDanger,
+            $coverageHtmlCustomCssFile,
             $coveragePhp,
             $coverageText,
             $coverageTextShowUncoveredFiles,

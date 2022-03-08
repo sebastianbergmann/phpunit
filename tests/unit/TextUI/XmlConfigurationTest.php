@@ -203,6 +203,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame($defaultColors->successHigh(), $codeCoverage->html()->colorSuccessHigh());
         $this->assertSame($defaultColors->warning(), $codeCoverage->html()->colorWarning());
         $this->assertSame($defaultColors->danger(), $codeCoverage->html()->colorDanger());
+        $this->assertFalse($codeCoverage->html()->hasCustomCssFile());
 
         $this->assertTrue($codeCoverage->hasPhp());
         $this->assertSame(TEST_FILES_PATH . 'coverage.php', $codeCoverage->php()->target()->path());
