@@ -572,10 +572,10 @@ final class Loader
         );
     }
 
-    private function getStringAttribute(DOMElement $element, string $attribute, ?string $default = null): ?string
+    private function getStringAttribute(DOMElement $element, string $attribute): ?string
     {
         if (!$element->hasAttribute($attribute)) {
-            return $default ?? null;
+            return null;
         }
 
         return $element->getAttribute($attribute);
