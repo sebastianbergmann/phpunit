@@ -214,14 +214,14 @@ final class Loader
     private function getElementConfigurationParameters(string $filename, DOMElement $element): Extension
     {
         /** @psalm-var class-string $class */
-        $class     = (string) $element->getAttribute('class');
+        $class     = $element->getAttribute('class');
         $file      = '';
         $arguments = $this->getConfigurationArguments($filename, $element->childNodes);
 
         if ($element->getAttribute('file')) {
             $file = $this->toAbsolutePath(
                 $filename,
-                (string) $element->getAttribute('file'),
+                $element->getAttribute('file'),
                 true
             );
         }
@@ -555,7 +555,7 @@ final class Loader
         }
 
         return (bool) $this->getBoolean(
-            (string) $element->getAttribute($attribute),
+            $element->getAttribute($attribute),
             false
         );
     }
@@ -567,7 +567,7 @@ final class Loader
         }
 
         return $this->getInteger(
-            (string) $element->getAttribute($attribute),
+            $element->getAttribute($attribute),
             $default
         );
     }
@@ -578,7 +578,7 @@ final class Loader
             return $default ?? null;
         }
 
-        return (string) $element->getAttribute($attribute);
+        return $element->getAttribute($attribute);
     }
 
     private function getInteger(string $value, int $default): int
@@ -608,8 +608,8 @@ final class Loader
             assert($ini instanceof DOMElement);
 
             $iniSettings[] = new IniSetting(
-                (string) $ini->getAttribute('name'),
-                (string) $ini->getAttribute('value')
+                $ini->getAttribute('name'),
+                $ini->getAttribute('value')
             );
         }
 
@@ -618,10 +618,10 @@ final class Loader
         foreach ($xpath->query('php/const') as $const) {
             assert($const instanceof DOMElement);
 
-            $value = (string) $const->getAttribute('value');
+            $value = $const->getAttribute('value');
 
             $constants[] = new Constant(
-                (string) $const->getAttribute('name'),
+                $const->getAttribute('name'),
                 $this->getBoolean($value, $value)
             );
         }
@@ -641,8 +641,8 @@ final class Loader
             foreach ($xpath->query('php/' . $array) as $var) {
                 assert($var instanceof DOMElement);
 
-                $name     = (string) $var->getAttribute('name');
-                $value    = (string) $var->getAttribute('value');
+                $name     = $var->getAttribute('name');
+                $value    = $var->getAttribute('value');
                 $force    = false;
                 $verbatim = false;
 
@@ -890,25 +890,25 @@ final class Loader
                 $prefix = '';
 
                 if ($directoryNode->hasAttribute('prefix')) {
-                    $prefix = (string) $directoryNode->getAttribute('prefix');
+                    $prefix = $directoryNode->getAttribute('prefix');
                 }
 
                 $suffix = 'Test.php';
 
                 if ($directoryNode->hasAttribute('suffix')) {
-                    $suffix = (string) $directoryNode->getAttribute('suffix');
+                    $suffix = $directoryNode->getAttribute('suffix');
                 }
 
                 $phpVersion = PHP_VERSION;
 
                 if ($directoryNode->hasAttribute('phpVersion')) {
-                    $phpVersion = (string) $directoryNode->getAttribute('phpVersion');
+                    $phpVersion = $directoryNode->getAttribute('phpVersion');
                 }
 
                 $phpVersionOperator = new VersionComparisonOperator('>=');
 
                 if ($directoryNode->hasAttribute('phpVersionOperator')) {
-                    $phpVersionOperator = new VersionComparisonOperator((string) $directoryNode->getAttribute('phpVersionOperator'));
+                    $phpVersionOperator = new VersionComparisonOperator($directoryNode->getAttribute('phpVersionOperator'));
                 }
 
                 $directories[] = new TestDirectory(
@@ -934,13 +934,13 @@ final class Loader
                 $phpVersion = PHP_VERSION;
 
                 if ($fileNode->hasAttribute('phpVersion')) {
-                    $phpVersion = (string) $fileNode->getAttribute('phpVersion');
+                    $phpVersion = $fileNode->getAttribute('phpVersion');
                 }
 
                 $phpVersionOperator = new VersionComparisonOperator('>=');
 
                 if ($fileNode->hasAttribute('phpVersionOperator')) {
-                    $phpVersionOperator = new VersionComparisonOperator((string) $fileNode->getAttribute('phpVersionOperator'));
+                    $phpVersionOperator = new VersionComparisonOperator($fileNode->getAttribute('phpVersionOperator'));
                 }
 
                 $files[] = new TestFile(
@@ -951,7 +951,7 @@ final class Loader
             }
 
             $testSuites[] = new TestSuiteConfiguration(
-                (string) $element->getAttribute('name'),
+                $element->getAttribute('name'),
                 TestDirectoryCollection::fromArray($directories),
                 TestFileCollection::fromArray($files),
                 FileCollection::fromArray($exclude)
