@@ -1070,7 +1070,7 @@ final class TestCaseTest extends TestCase
 
     public function testGetNameReturnsEmptyStringAsDefault(): void
     {
-        $testCase = new TestWithDifferentNames();
+        $testCase = new TestWithDifferentNames;
 
         $this->assertSame('', $testCase->getName());
     }
@@ -1099,7 +1099,7 @@ final class TestCaseTest extends TestCase
 
     public function testHasFailedReturnsFalseWhenTestHasNotRunYet(): void
     {
-        $test = new TestWithDifferentStatuses();
+        $test = new TestWithDifferentStatuses;
 
         $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $test->getStatus());
         $this->assertFalse($test->hasFailed());

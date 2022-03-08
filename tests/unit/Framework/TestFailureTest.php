@@ -38,7 +38,7 @@ final class TestFailureTest extends TestCase
 
     public function testToStringForNonSelfDescribing(): void
     {
-        $test      = new NotSelfDescribingTest();
+        $test      = new NotSelfDescribingTest;
         $exception = new Exception('message');
         $failure   = new TestFailure($test, $exception);
 

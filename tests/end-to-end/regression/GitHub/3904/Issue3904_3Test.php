@@ -21,6 +21,6 @@ final class Issue3904_3TestSuiteLoader
 {
     public static function suite()
     {
-        return new Issue3904Test();
+        return new Issue3904Test;
     }
 }
