@@ -23,6 +23,7 @@ use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
 use PHPUnit\Util\Filesystem;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
+use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\Environment\Console;
 
 /**
@@ -169,15 +170,16 @@ final class Merger
             $pathCoverage = $xmlConfiguration->codeCoverage()->pathCoverage();
         }
 
-        $defaultColors = Colors::default();
+        $defaultColors     = Colors::default();
+        $defaultThresholds = Thresholds::default();
 
         $coverageClover                 = null;
         $coverageCobertura              = null;
         $coverageCrap4j                 = null;
         $coverageCrap4jThreshold        = 30;
         $coverageHtml                   = null;
-        $coverageHtmlLowUpperBound      = 50;
-        $coverageHtmlHighLowerBound     = 90;
+        $coverageHtmlLowUpperBound      = $defaultThresholds->lowUpperBound();
+        $coverageHtmlHighLowerBound     = $defaultThresholds->highLowerBound();
         $coverageHtmlColorSuccessLow    = $defaultColors->successLow();
         $coverageHtmlColorSuccessMedium = $defaultColors->successMedium();
         $coverageHtmlColorSuccessHigh   = $defaultColors->successHigh();
@@ -221,8 +223,8 @@ final class Merger
             $coverageHtmlLowUpperBound  = $xmlConfiguration->codeCoverage()->html()->lowUpperBound();
 
             if ($coverageHtmlLowUpperBound > $coverageHtmlHighLowerBound) {
-                $coverageHtmlLowUpperBound  = 50;
-                $coverageHtmlHighLowerBound = 90;
+                $coverageHtmlLowUpperBound  = $defaultThresholds->lowUpperBound();
+                $coverageHtmlHighLowerBound = $defaultThresholds->highLowerBound();
             }
 
             $coverageHtmlColorSuccessLow    = $xmlConfiguration->codeCoverage()->html()->colorSuccessLow();

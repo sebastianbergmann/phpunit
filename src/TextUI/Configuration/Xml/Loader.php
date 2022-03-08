@@ -56,6 +56,7 @@ use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
 use PHPUnit\Util\Xml\Validator;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
+use SebastianBergmann\CodeCoverage\Report\Thresholds;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -392,7 +393,8 @@ final class Loader
         $element = $this->element($xpath, 'coverage/report/html');
 
         if ($element) {
-            $defaultColors = Colors::default();
+            $defaultColors     = Colors::default();
+            $defaultThresholds = Thresholds::default();
 
             $html = new CodeCoverageHtml(
                 new Directory(
@@ -401,8 +403,8 @@ final class Loader
                         (string) $this->getStringAttribute($element, 'outputDirectory')
                     )
                 ),
-                $this->getIntegerAttribute($element, 'lowUpperBound', 50),
-                $this->getIntegerAttribute($element, 'highLowerBound', 90),
+                $this->getIntegerAttribute($element, 'lowUpperBound', $defaultThresholds->lowUpperBound()),
+                $this->getIntegerAttribute($element, 'highLowerBound', $defaultThresholds->highLowerBound()),
                 $this->getStringAttributeWithDefault($element, 'colorSuccessLow', $defaultColors->successLow()),
                 $this->getStringAttributeWithDefault($element, 'colorSuccessMedium', $defaultColors->successMedium()),
                 $this->getStringAttributeWithDefault($element, 'colorSuccessHigh', $defaultColors->successHigh()),
