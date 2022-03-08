@@ -250,11 +250,6 @@
       <code>evaluate</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Framework/Constraint/String/StringMatchesFormatDescription.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>new Differ(new UnifiedDiffOutputBuilder("--- Expected\n+++ Actual\n"))</code>
-    </MissingThrowsDocblock>
-  </file>
   <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$this-&gt;className</code>
@@ -379,9 +374,6 @@
       <code>$this-&gt;expectedException</code>
       <code>$this-&gt;size()</code>
     </ArgumentTypeCoercion>
-    <InvalidArgument occurrences="1">
-      <code>$header</code>
-    </InvalidArgument>
     <InvalidReturnStatement occurrences="1">
       <code>$mockObject</code>
     </InvalidReturnStatement>
@@ -391,7 +383,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="11">
+    <MissingThrowsDocblock occurrences="10">
       <code>generateClassFromWsdl</code>
       <code>getMock</code>
       <code>getMock</code>
@@ -400,7 +392,6 @@
       <code>getMockForAbstractClass</code>
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
-      <code>new Differ($header)</code>
       <code>onlyMethods</code>
       <code>restoreGlobalState</code>
     </MissingThrowsDocblock>
@@ -743,7 +734,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="76">
+    <MissingThrowsDocblock occurrences="81">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -784,6 +775,11 @@
       <code>failOnWarning</code>
       <code>filter</code>
       <code>groups</code>
+      <code>html</code>
+      <code>html</code>
+      <code>html</code>
+      <code>html</code>
+      <code>html</code>
       <code>html</code>
       <code>html</code>
       <code>html</code>
@@ -891,38 +887,17 @@
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
-    <RedundantCast occurrences="31">
+    <RedundantCast occurrences="10">
       <code>(string) $argument-&gt;textContent</code>
-      <code>(string) $const-&gt;getAttribute('name')</code>
-      <code>(string) $const-&gt;getAttribute('value')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('group')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('phpVersion')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('phpVersionOperator')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('prefix')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
-      <code>(string) $directoryNode-&gt;getAttribute('suffix')</code>
       <code>(string) $directoryNode-&gt;textContent</code>
       <code>(string) $directoryNode-&gt;textContent</code>
       <code>(string) $document-&gt;documentElement-&gt;getAttribute('columns')</code>
-      <code>(string) $element-&gt;getAttribute($attribute)</code>
-      <code>(string) $element-&gt;getAttribute($attribute)</code>
-      <code>(string) $element-&gt;getAttribute($attribute)</code>
-      <code>(string) $element-&gt;getAttribute('class')</code>
-      <code>(string) $element-&gt;getAttribute('file')</code>
-      <code>(string) $element-&gt;getAttribute('name')</code>
       <code>(string) $excludeNode-&gt;textContent</code>
       <code>(string) $file-&gt;textContent</code>
-      <code>(string) $fileNode-&gt;getAttribute('phpVersion')</code>
-      <code>(string) $fileNode-&gt;getAttribute('phpVersionOperator')</code>
       <code>(string) $fileNode-&gt;textContent</code>
       <code>(string) $group-&gt;textContent</code>
       <code>(string) $group-&gt;textContent</code>
       <code>(string) $includePath-&gt;textContent</code>
-      <code>(string) $ini-&gt;getAttribute('name')</code>
-      <code>(string) $ini-&gt;getAttribute('value')</code>
-      <code>(string) $var-&gt;getAttribute('name')</code>
-      <code>(string) $var-&gt;getAttribute('value')</code>
     </RedundantCast>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
