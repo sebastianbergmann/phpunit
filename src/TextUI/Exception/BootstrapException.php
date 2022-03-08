@@ -28,10 +28,12 @@ final class BootstrapException extends RuntimeException implements Exception
 
         parent::__construct(
             sprintf(
-                'Error in bootstrap script: %s:%s%s',
+                'Error in bootstrap script: %s:%s%s%s%s',
                 $t::class,
                 PHP_EOL,
-                $t->getMessage()
+                $t->getMessage(),
+                PHP_EOL,
+                $t->getTraceAsString()
             )
         );
     }

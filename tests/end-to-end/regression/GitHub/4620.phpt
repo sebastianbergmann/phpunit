@@ -1,5 +1,6 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/4620
+https://github.com/sebastianbergmann/phpunit/issues/4877
 --FILE--
 <?php declare(strict_types=1);
 
@@ -17,3 +18,4 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Error in bootstrap script: PHPUnit\TestFixture\MyException:
 Big boom. Big bada boom.
+%a
