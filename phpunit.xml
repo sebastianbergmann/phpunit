@@ -26,7 +26,6 @@
 
         <exclude>
             <file>src/Framework/Assert/Functions.php</file>
-            <file>src/Util/PHP/eval-stdin.php</file>
         </exclude>
     </coverage>
 
