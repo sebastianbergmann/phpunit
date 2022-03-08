@@ -141,7 +141,7 @@ final class InvocationMockerTest extends TestCase
 
         $this->expectException(IncompatibleReturnValueException::class);
         $this->expectExceptionMessage('Method methodWithClassReturnTypeDeclaration may not return value of type Foo, its declared return type is "stdClass"');
-        $invocationMocker->willReturn(new Foo());
+        $invocationMocker->willReturn(new Foo);
     }
 
     public function testWillReturnAllowsMatchersForMultipleMethodsWithDifferentReturnTypes(): void
@@ -150,7 +150,7 @@ final class InvocationMockerTest extends TestCase
         $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
             ->getMock();
 
-        $invocationMocker = $mock->method(new \PHPUnit\Framework\Constraint\IsAnything());
+        $invocationMocker = $mock->method(new \PHPUnit\Framework\Constraint\IsAnything);
         $invocationMocker->willReturn(true, 1);
 
         $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());
@@ -247,7 +247,7 @@ final class InvocationMockerTest extends TestCase
              ->willReturn(new ReturnStub('foo'));
 
         $mock->method('bar')
-             ->willReturn(new ReturnSelf());
+             ->willReturn(new ReturnSelf);
 
         $this->assertSame('foo', $mock->foo());
         $this->assertSame($mock, $mock->bar());

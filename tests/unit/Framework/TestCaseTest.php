@@ -1084,8 +1084,8 @@ class TestCaseTest extends TestCase
 
     public function testCanUseDependsToDependOnSuccessfulClass(): void
     {
-        $result = new TestResult();
-        $suite  = new TestSuite();
+        $result = new TestResult;
+        $suite  = new TestSuite;
         $suite->addTestSuite(DependencySuccessTest::class);
         $suite->addTestSuite(DependencyFailureTest::class);
         $suite->addTestSuite(DependencyOnClassTest::class);
@@ -1117,7 +1117,7 @@ class TestCaseTest extends TestCase
 
     public function testGetNameReturnsEmptyStringAsDefault(): void
     {
-        $testCase = new TestWithDifferentNames();
+        $testCase = new TestWithDifferentNames;
 
         $this->assertSame('', $testCase->getName());
     }
@@ -1146,7 +1146,7 @@ class TestCaseTest extends TestCase
 
     public function testHasFailedReturnsFalseWhenTestHasNotRunYet(): void
     {
-        $test = new TestWithDifferentStatuses();
+        $test = new TestWithDifferentStatuses;
 
         $this->assertSame(BaseTestRunner::STATUS_UNKNOWN, $test->getStatus());
         $this->assertFalse($test->hasFailed());

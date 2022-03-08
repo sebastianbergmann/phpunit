@@ -21,7 +21,7 @@ final class TestWithDifferentStatuses extends TestCase
 
     public function testThatErrors(): void
     {
-        throw new Exception();
+        throw new Exception;
     }
 
     public function testThatPasses(): void

@@ -23,7 +23,7 @@ final class ValidatorTest extends TestCase
 {
     public function testValidatesValidXmlFile(): void
     {
-        $result = (new Validator())->validate(
+        $result = (new Validator)->validate(
             (new Loader)->loadFile(
                 __DIR__ . '/../../../../phpunit.xml',
                 false,
@@ -39,7 +39,7 @@ final class ValidatorTest extends TestCase
 
     public function testDoesNotValidateInvalidXmlFile(): void
     {
-        $result = (new Validator())->validate(
+        $result = (new Validator)->validate(
             (new Loader)->loadFile(
                 __DIR__ . '/../../../end-to-end/migration/possibility-to-migrate-from-92-is-detected/phpunit.xml',
                 false,
