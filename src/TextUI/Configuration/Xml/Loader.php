@@ -495,9 +495,9 @@ final class Loader
 
             $directories[] = new FilterDirectory(
                 $this->toAbsolutePath($filename, $directoryPath),
-                $directoryNode->hasAttribute('prefix') ? (string) $directoryNode->getAttribute('prefix') : '',
-                $directoryNode->hasAttribute('suffix') ? (string) $directoryNode->getAttribute('suffix') : '.php',
-                $directoryNode->hasAttribute('group') ? (string) $directoryNode->getAttribute('group') : 'DEFAULT'
+                $directoryNode->hasAttribute('prefix') ? $directoryNode->getAttribute('prefix') : '',
+                $directoryNode->hasAttribute('suffix') ? $directoryNode->getAttribute('suffix') : '.php',
+                $directoryNode->hasAttribute('group') ? $directoryNode->getAttribute('group') : 'DEFAULT'
             );
         }
 
