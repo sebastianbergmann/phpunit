@@ -9,8 +9,6 @@
  */
 use PHPUnit\Framework\TestSuite;
 
-require_once 'ChildSuite.php';
-
 class ParentSuite
 {
     public static function suite()

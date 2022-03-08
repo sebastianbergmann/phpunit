@@ -9,10 +9,6 @@
  */
 use PHPUnit\Framework\TestSuite;
 
-require_once 'OneTest.php';
-
-require_once 'TwoTest.php';
-
 class ChildSuite
 {
     public static function suite()
