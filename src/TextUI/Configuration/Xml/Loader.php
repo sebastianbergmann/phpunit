@@ -92,7 +92,7 @@ final class Loader
             $filename,
             (new Validator)->validate($document, $xsdFilename),
             $this->extensions($filename, $xpath),
-            $this->codeCoverage($filename, $xpath, $document),
+            $this->codeCoverage($filename, $xpath),
             $this->groups($xpath),
             $this->testdoxGroups($xpath),
             $this->logging($filename, $xpath),
@@ -300,7 +300,7 @@ final class Loader
         return $arguments;
     }
 
-    private function codeCoverage(string $filename, DOMXPath $xpath, DOMDocument $document): CodeCoverage
+    private function codeCoverage(string $filename, DOMXPath $xpath): CodeCoverage
     {
         $cacheDirectory            = null;
         $pathCoverage              = false;
