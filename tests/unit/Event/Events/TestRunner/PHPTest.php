@@ -28,6 +28,6 @@ final class PHPTest extends TestCase
         $this->assertSame(PHP_RELEASE_VERSION, $php->patch());
         $this->assertSame(PHP_EXTRA_VERSION, $php->extra());
         $this->assertSame(PHP_VERSION_ID, $php->id());
-        $this->assertEquals(new Extensions(), $php->extensions());
+        $this->assertEquals(new Extensions, $php->extensions());
     }
 }

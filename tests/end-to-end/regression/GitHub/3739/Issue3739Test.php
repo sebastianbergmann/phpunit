@@ -29,11 +29,11 @@ final class Issue3739Test extends TestCase
 {
     public function testWithErrorSuppression(): void
     {
-        $this->assertFalse((new Issue3739())->unlinkFileThatDoesNotExistWithErrorSuppression());
+        $this->assertFalse((new Issue3739)->unlinkFileThatDoesNotExistWithErrorSuppression());
     }
 
     public function testWithoutErrorSuppression(): void
     {
-        $this->assertFalse((new Issue3739())->unlinkFileThatDoesNotExistWithoutErrorSuppression());
+        $this->assertFalse((new Issue3739)->unlinkFileThatDoesNotExistWithoutErrorSuppression());
     }
 }

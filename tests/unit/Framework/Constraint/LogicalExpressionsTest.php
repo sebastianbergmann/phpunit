@@ -20,7 +20,7 @@ final class LogicalExpressionsTest extends TestCase
     {
         $constraint = new LogicalNot(
             LogicalAnd::fromConstraints(
-                new IsNull(),
+                new IsNull,
             )
         );
 
@@ -69,7 +69,7 @@ final class LogicalExpressionsTest extends TestCase
     {
         $constraint = new LogicalNot(
             LogicalOr::fromConstraints(
-                new IsNull(),
+                new IsNull,
             )
         );
 
@@ -90,7 +90,7 @@ final class LogicalExpressionsTest extends TestCase
     {
         $constraint = new LogicalNot(
             LogicalOr::fromConstraints(
-                new IsNull(),
+                new IsNull,
                 new IsType('int'),
                 new IsType('array')
             )
@@ -117,7 +117,7 @@ final class LogicalExpressionsTest extends TestCase
     {
         $constraint = new LogicalNot(
             LogicalXor::fromConstraints(
-                new IsNull(),
+                new IsNull,
             )
         );
 

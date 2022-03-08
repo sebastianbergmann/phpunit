@@ -888,7 +888,7 @@ final class Configuration
     public function testsCovering(): array
     {
         if (!$this->hasTestsCovering()) {
-            throw new FilterNotConfiguredException();
+            throw new FilterNotConfiguredException;
         }
 
         return $this->testsCovering;
@@ -910,7 +910,7 @@ final class Configuration
     public function testsUsing(): array
     {
         if (!$this->hasTestsUsing()) {
-            throw new FilterNotConfiguredException();
+            throw new FilterNotConfiguredException;
         }
 
         return $this->testsUsing;

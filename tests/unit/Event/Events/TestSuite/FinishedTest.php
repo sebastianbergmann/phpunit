@@ -33,12 +33,12 @@ final class FinishedTest extends AbstractEventTestCase
 
         $result = new Result(
             5,
-            new FailureCollection(),
-            new FailureCollection(),
-            new FailureCollection(),
-            new FailureCollection(),
-            new FailureCollection(),
-            new FailureCollection(),
+            new FailureCollection,
+            new FailureCollection,
+            new FailureCollection,
+            new FailureCollection,
+            new FailureCollection,
+            new FailureCollection,
             [],
             []
         );

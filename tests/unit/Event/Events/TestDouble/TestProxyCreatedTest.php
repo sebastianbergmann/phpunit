@@ -22,7 +22,7 @@ final class TestProxyCreatedTest extends AbstractEventTestCase
         $className            = self::class;
         $constructorArguments = [
             'foo',
-            new stdClass(),
+            new stdClass,
             [
                 'bar',
                 'baz',

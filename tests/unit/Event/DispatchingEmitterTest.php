@@ -1484,7 +1484,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $className            = self::class;
         $constructorArguments = [
             'foo',
-            new stdClass(),
+            new stdClass,
             [
                 'bar',
                 'baz',
@@ -1639,7 +1639,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(1, $event->testSuite()->count());
         $this->assertSame('foo', $event->testSuite()->name());
 
-        $mappedResult = (new TestResultMapper())->map($result);
+        $mappedResult = (new TestResultMapper)->map($result);
 
         $this->assertEquals($mappedResult, $event->result());
     }
@@ -1778,8 +1778,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
     private function telemetrySystem(): Telemetry\System
     {
         return new Telemetry\System(
-            new Telemetry\SystemStopWatch(),
-            new Telemetry\SystemMemoryMeter()
+            new Telemetry\SystemStopWatch,
+            new Telemetry\SystemMemoryMeter
         );
     }
 

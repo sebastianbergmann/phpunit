@@ -132,7 +132,10 @@ $config->setFinder($finder)
         'native_function_casing' => false,
         'native_function_invocation' => false,
         'native_function_type_declaration_casing' => true,
-        'new_with_braces' => false,
+        'new_with_braces' => [
+            'named_class' => false,
+            'anonymous_class' => false,
+        ],
         'no_alias_functions' => true,
         'no_alias_language_construct_call' => true,
         'no_alternative_syntax' => true,
