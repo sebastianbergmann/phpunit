@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4709](https://github.com/sebastianbergmann/phpunit/issues/4709): Support `never` type in test double code generator
 * [#4737](https://github.com/sebastianbergmann/phpunit/issues/4737): Support intersection types in test double code generator
 * [#4818](https://github.com/sebastianbergmann/phpunit/pull/4818): `assertArrayIsList`
+* [#4892](https://github.com/sebastianbergmann/phpunit/issues/4892): Make colors used in HTML code coverage report configurable
 * `@excludeGlobalVariableFromBackup variable` annotation for excluding a global variable from the backup/restore of global and super-global variables
 * `#[ExcludeGlobalVariableFromBackup('variable')]` attribute for excluding a global variable from the backup/restore of global and super-global variables
 * `@excludeStaticPropertyFromBackup className propertyName` annotation for excluding a static property from the backup/restore of static properties in user-defined classes

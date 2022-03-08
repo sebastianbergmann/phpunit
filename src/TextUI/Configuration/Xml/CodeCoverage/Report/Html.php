@@ -20,12 +20,22 @@ final class Html
     private Directory $target;
     private int $lowUpperBound;
     private int $highLowerBound;
+    private string $colorSuccessLow;
+    private string $colorSuccessMedium;
+    private string $colorSuccessHigh;
+    private string $colorWarning;
+    private string $colorDanger;
 
-    public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound)
+    public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessMedium, string $colorSuccessHigh, string $colorWarning, string $colorDanger)
     {
-        $this->target         = $target;
-        $this->lowUpperBound  = $lowUpperBound;
-        $this->highLowerBound = $highLowerBound;
+        $this->target             = $target;
+        $this->lowUpperBound      = $lowUpperBound;
+        $this->highLowerBound     = $highLowerBound;
+        $this->colorSuccessLow    = $colorSuccessLow;
+        $this->colorSuccessMedium = $colorSuccessMedium;
+        $this->colorSuccessHigh   = $colorSuccessHigh;
+        $this->colorWarning       = $colorWarning;
+        $this->colorDanger        = $colorDanger;
     }
 
     public function target(): Directory
@@ -41,5 +51,30 @@ final class Html
     public function highLowerBound(): int
     {
         return $this->highLowerBound;
+    }
+
+    public function colorSuccessLow(): string
+    {
+        return $this->colorSuccessLow;
+    }
+
+    public function colorSuccessMedium(): string
+    {
+        return $this->colorSuccessMedium;
+    }
+
+    public function colorSuccessHigh(): string
+    {
+        return $this->colorSuccessHigh;
+    }
+
+    public function colorWarning(): string
+    {
+        return $this->colorWarning;
+    }
+
+    public function colorDanger(): string
+    {
+        return $this->colorDanger;
     }
 }

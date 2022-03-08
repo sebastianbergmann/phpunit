@@ -55,6 +55,7 @@ use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
 use PHPUnit\Util\Xml\Validator;
+use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -391,6 +392,8 @@ final class Loader
         $element = $this->element($xpath, 'coverage/report/html');
 
         if ($element) {
+            $defaultColors = Colors::default();
+
             $html = new CodeCoverageHtml(
                 new Directory(
                     $this->toAbsolutePath(
@@ -399,7 +402,12 @@ final class Loader
                     )
                 ),
                 $this->getIntegerAttribute($element, 'lowUpperBound', 50),
-                $this->getIntegerAttribute($element, 'highLowerBound', 90)
+                $this->getIntegerAttribute($element, 'highLowerBound', 90),
+                $this->getStringAttributeWithDefault($element, 'colorSuccessLow', $defaultColors->successLow()),
+                $this->getStringAttributeWithDefault($element, 'colorSuccessMedium', $defaultColors->successMedium()),
+                $this->getStringAttributeWithDefault($element, 'colorSuccessHigh', $defaultColors->successHigh()),
+                $this->getStringAttributeWithDefault($element, 'colorWarning', $defaultColors->warning()),
+                $this->getStringAttributeWithDefault($element, 'colorDanger', $defaultColors->danger()),
             );
         }
 

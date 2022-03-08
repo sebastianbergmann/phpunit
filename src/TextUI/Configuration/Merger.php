@@ -22,6 +22,7 @@ use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
 use PHPUnit\Util\Filesystem;
+use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\Environment\Console;
 
 /**
@@ -168,6 +169,8 @@ final class Merger
             $pathCoverage = $xmlConfiguration->codeCoverage()->pathCoverage();
         }
 
+        $defaultColors = Colors::default();
+
         $coverageClover                 = null;
         $coverageCobertura              = null;
         $coverageCrap4j                 = null;
@@ -175,6 +178,11 @@ final class Merger
         $coverageHtml                   = null;
         $coverageHtmlLowUpperBound      = 50;
         $coverageHtmlHighLowerBound     = 90;
+        $coverageHtmlColorSuccessLow    = $defaultColors->successLow();
+        $coverageHtmlColorSuccessMedium = $defaultColors->successMedium();
+        $coverageHtmlColorSuccessHigh   = $defaultColors->successHigh();
+        $coverageHtmlColorWarning       = $defaultColors->warning();
+        $coverageHtmlColorDanger        = $defaultColors->danger();
         $coveragePhp                    = null;
         $coverageText                   = null;
         $coverageTextShowUncoveredFiles = false;
@@ -216,6 +224,12 @@ final class Merger
                 $coverageHtmlLowUpperBound  = 50;
                 $coverageHtmlHighLowerBound = 90;
             }
+
+            $coverageHtmlColorSuccessLow    = $xmlConfiguration->codeCoverage()->html()->colorSuccessLow();
+            $coverageHtmlColorSuccessMedium = $xmlConfiguration->codeCoverage()->html()->colorSuccessMedium();
+            $coverageHtmlColorSuccessHigh   = $xmlConfiguration->codeCoverage()->html()->colorSuccessHigh();
+            $coverageHtmlColorWarning       = $xmlConfiguration->codeCoverage()->html()->colorWarning();
+            $coverageHtmlColorDanger        = $xmlConfiguration->codeCoverage()->html()->colorDanger();
         }
 
         if ($cliConfiguration->hasCoverageHtml()) {
@@ -566,6 +580,11 @@ final class Merger
             $coverageHtml,
             $coverageHtmlLowUpperBound,
             $coverageHtmlHighLowerBound,
+            $coverageHtmlColorSuccessLow,
+            $coverageHtmlColorSuccessMedium,
+            $coverageHtmlColorSuccessHigh,
+            $coverageHtmlColorWarning,
+            $coverageHtmlColorDanger,
             $coveragePhp,
             $coverageText,
             $coverageTextShowUncoveredFiles,

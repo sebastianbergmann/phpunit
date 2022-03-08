@@ -31,6 +31,7 @@ use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
+use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use stdClass;
 
 #[Medium]
@@ -189,10 +190,17 @@ final class XmlConfigurationTest extends TestCase
         $this->assertTrue($codeCoverage->hasCrap4j());
         $this->assertSame(TEST_FILES_PATH . 'crap4j.xml', $codeCoverage->crap4j()->target()->path());
 
+        $defaultColors = Colors::default();
+
         $this->assertTrue($codeCoverage->hasHtml());
         $this->assertSame(TEST_FILES_PATH . 'coverage', $codeCoverage->html()->target()->path());
         $this->assertSame(50, $codeCoverage->html()->lowUpperBound());
         $this->assertSame(90, $codeCoverage->html()->highLowerBound());
+        $this->assertSame($defaultColors->successLow(), $codeCoverage->html()->colorSuccessLow());
+        $this->assertSame($defaultColors->successMedium(), $codeCoverage->html()->colorSuccessMedium());
+        $this->assertSame($defaultColors->successHigh(), $codeCoverage->html()->colorSuccessHigh());
+        $this->assertSame($defaultColors->warning(), $codeCoverage->html()->colorWarning());
+        $this->assertSame($defaultColors->danger(), $codeCoverage->html()->colorDanger());
 
         $this->assertTrue($codeCoverage->hasPhp());
         $this->assertSame(TEST_FILES_PATH . 'coverage.php', $codeCoverage->php()->target()->path());

@@ -455,7 +455,13 @@ final class TestRunner
                             ' and <a href="https://phpunit.de/">PHPUnit %s</a>',
                             Version::id()
                         ),
-                        Colors::default(),
+                        Colors::from(
+                            $this->configuration->coverageHtmlColorSuccessLow(),
+                            $this->configuration->coverageHtmlColorSuccessMedium(),
+                            $this->configuration->coverageHtmlColorSuccessHigh(),
+                            $this->configuration->coverageHtmlColorWarning(),
+                            $this->configuration->coverageHtmlColorDanger(),
+                        ),
                         Thresholds::from(
                             $this->configuration->coverageHtmlLowUpperBound(),
                             $this->configuration->coverageHtmlHighLowerBound()
