@@ -18,7 +18,7 @@ Time: %s, Memory: %s
 
 There was 1 risky test:
 
-1) Test::testOne
+1) PHPUnit\TestFixture\Test::testOne
 This test does not define a code coverage target using an attribute or annotation but is expected to do so
 
 %s:%d

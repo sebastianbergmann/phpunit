@@ -18,7 +18,7 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) Issue3739\Issue3739Test::testWithoutErrorSuppression
+1) PHPUnit\TestFixture\Issue3739Test::testWithoutErrorSuppression
 unlink(%sDOES_NOT_EXIST): No such file or directory
 
 %sIssue3739Test.php:%d

@@ -18,7 +18,7 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) Issue2731Test::testOne
+1) PHPUnit\TestFixture\Issue2731Test::testOne
 Failed asserting that exception message is empty but is 'message'.
 
 FAILURES!

@@ -13,11 +13,11 @@ use function sys_get_temp_dir;
 use function tempnam;
 use function uniqid;
 use function unlink;
-use MultiDependencyTest;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\TestFixture\MultiDependencyTest;
 
 #[CoversClass(DefaultResultCache::class)]
 #[Small]

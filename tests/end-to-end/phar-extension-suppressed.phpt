@@ -26,7 +26,7 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) ExtensionTest::testOne
+1) PHPUnit\TestFixture\TestExtension\ExtensionTest::testOne
 Error: Class %sPHPUnit\TestFixture\TestExtension\Test%s not found
 
 %sExtensionTest.php:%d

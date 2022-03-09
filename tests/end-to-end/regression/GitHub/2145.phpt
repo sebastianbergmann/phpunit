@@ -18,7 +18,7 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) Issue2145Test::testOne
+1) PHPUnit\TestFixture\Issue2145Test::testOne
 Exception in %s%eIssue2145Test.php:%d
 %A
 ERRORS!

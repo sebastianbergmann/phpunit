@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TestFixture;
 
-use CoveredClass;
 use PHPUnit\Framework\TestCase;
 
 class CoverageMethodTest extends TestCase

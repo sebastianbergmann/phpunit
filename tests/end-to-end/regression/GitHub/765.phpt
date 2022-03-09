@@ -18,7 +18,7 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) Error
-The data provider specified for Issue765Test::testDependent is invalid
+The data provider specified for PHPUnit\TestFixture\Issue765Test::testDependent is invalid
 Exception: <no message>
 %sIssue765Test.php:%d
 

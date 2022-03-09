@@ -17,7 +17,7 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) Test::testOne
+1) PHPUnit\TestFixture\Test::testOne
 Error: Class %sC%s not found
 
 %sTest.php:%d

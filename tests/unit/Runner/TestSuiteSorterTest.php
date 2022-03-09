@@ -10,8 +10,6 @@
 namespace PHPUnit\Runner;
 
 use function mt_srand;
-use MultiDependencyTest;
-use NotReorderableTest;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -20,6 +18,8 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\TestFixture\EmptyTestCaseTest;
 use PHPUnit\TestFixture\FailureTest;
+use PHPUnit\TestFixture\MultiDependencyTest;
+use PHPUnit\TestFixture\NotReorderableTest;
 use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestWithDifferentSizes;
 

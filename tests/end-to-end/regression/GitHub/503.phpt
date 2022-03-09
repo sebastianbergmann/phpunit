@@ -17,7 +17,7 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) Issue503Test::testCompareDifferentLineEndings
+1) PHPUnit\TestFixture\Issue503Test::testCompareDifferentLineEndings
 Failed asserting that two strings are identical.
 --- Expected
 +++ Actual

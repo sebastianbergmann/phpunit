@@ -17,7 +17,7 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) Issue1437Test::testFailure
+1) PHPUnit\TestFixture\Issue1437Test::testFailure
 Failed asserting that false is true.
 
 %sIssue1437Test.php:%i

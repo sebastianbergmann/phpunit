@@ -7,7 +7,12 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-class Issue2137Test extends PHPUnit\Framework\TestCase
+namespace PHPUnit\TestFixture;
+
+use PHPUnit\Framework\TestCase;
+use stdClass;
+
+class Issue2137Test extends TestCase
 {
     /**
      * @dataProvider provideBrandService
@@ -32,9 +37,9 @@ class Issue2137Test extends PHPUnit\Framework\TestCase
     /**
      * @dataProvider provideBrandService
      *
+     * @throws \Exception
      * @throws \PHPUnit\Framework\ExpectationFailedException
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws Exception
      */
     public function testSomethingElseInvalid($provided, $expected): void
     {

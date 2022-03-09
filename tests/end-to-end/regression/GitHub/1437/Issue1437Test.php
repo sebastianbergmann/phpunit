@@ -7,13 +7,16 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use function ob_start;
 use PHPUnit\Framework\TestCase;
 
 class Issue1437Test extends TestCase
 {
     public function testFailure(): void
     {
-        \ob_start();
+        ob_start();
         $this->assertTrue(false);
     }
 }
