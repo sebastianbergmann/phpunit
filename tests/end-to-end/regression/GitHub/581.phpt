@@ -17,7 +17,7 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) Issue581Test::testExportingObjectsDoesNotBreakWindowsLineFeeds
+1) PHPUnit\TestFixture\Issue581Test::testExportingObjectsDoesNotBreakWindowsLineFeeds
 Failed asserting that two objects are equal.
 --- Expected
 +++ Actual

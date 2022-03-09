@@ -9,13 +9,13 @@
  */
 namespace PHPUnit\Event;
 
-use DummyEvent;
-use DummySubscriber;
-use NullSubscriber;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\DummyEvent;
+use PHPUnit\TestFixture\DummySubscriber;
+use PHPUnit\TestFixture\NullSubscriber;
+use PHPUnit\TestFixture\SpyingDummySubscriber;
 use RuntimeException;
-use SpyingDummySubscriber;
 
 #[CoversClass(DirectDispatcher::class)]
 final class DirectDispatcherTest extends TestCase

@@ -26,7 +26,7 @@ use PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestFixture;
-use RecordingSubscriber;
+use PHPUnit\TestFixture\RecordingSubscriber;
 use SebastianBergmann\GlobalState\Snapshot;
 use stdClass;
 

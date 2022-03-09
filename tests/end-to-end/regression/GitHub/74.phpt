@@ -18,8 +18,8 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) Issue74Test::testCreateAndThrowNewExceptionInProcessIsolation
-NewException: Testing GH-74
+1) PHPUnit\TestFixture\Issue74Test::testCreateAndThrowNewExceptionInProcessIsolation
+PHPUnit\TestFixture\NewException: Testing GH-74
 
 %sIssue74Test.php:%d
 

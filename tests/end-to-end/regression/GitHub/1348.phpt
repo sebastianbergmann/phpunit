@@ -25,7 +25,7 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) Issue1348Test::testSTDERR
+1) PHPUnit\TestFixture\Issue1348Test::testSTDERR
 PHPUnit\Framework\Exception: STDERR works as usual.
 
 ERRORS!

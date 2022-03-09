@@ -7,6 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use function sleep;
 use PHPUnit\Framework\TestCase;
 
 class Issue2085Test extends TestCase
@@ -14,7 +17,7 @@ class Issue2085Test extends TestCase
     public function testShouldAbortSlowTestByEnforcingTimeLimit(): void
     {
         $this->assertTrue(true);
-        \sleep(2);
+        sleep(2);
         $this->assertTrue(true);
     }
 }

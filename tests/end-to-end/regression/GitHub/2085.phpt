@@ -32,7 +32,7 @@ Time: %s, Memory: %s
 
 There was 1 risky test:
 
-1) Issue2085Test::testShouldAbortSlowTestByEnforcingTimeLimit
+1) PHPUnit\TestFixture\Issue2085Test::testShouldAbortSlowTestByEnforcingTimeLimit
 This test was aborted after 1 second
 
 %s:%d

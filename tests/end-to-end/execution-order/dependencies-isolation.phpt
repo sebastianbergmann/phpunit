@@ -22,17 +22,17 @@ Time: %s, Memory: %s
 
 There were 2 errors:
 
-1) DependencyFailureTest::testHandlesDependsAnnotationForNonexistentTests
-This test depends on "DependencyFailureTest::doesNotExist" which does not exist
+1) PHPUnit\TestFixture\DependencyFailureTest::testHandlesDependsAnnotationForNonexistentTests
+This test depends on "PHPUnit\TestFixture\DependencyFailureTest::doesNotExist" which does not exist
 
-2) DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
+2) PHPUnit\TestFixture\DependencyFailureTest::testHandlesDependsAnnotationWithNoMethodSpecified
 This test has an invalid dependency
 
 --
 
 There was 1 failure:
 
-1) DependencyFailureTest::testOne
+1) PHPUnit\TestFixture\DependencyFailureTest::testOne
 
 %s:%i
 
@@ -40,14 +40,14 @@ There was 1 failure:
 
 There were 3 skipped tests:
 
-1) DependencyFailureTest::testTwo
-This test depends on "DependencyFailureTest::testOne" to pass
+1) PHPUnit\TestFixture\DependencyFailureTest::testTwo
+This test depends on "PHPUnit\TestFixture\DependencyFailureTest::testOne" to pass
 
-2) DependencyFailureTest::testThree
-This test depends on "DependencyFailureTest::testTwo" to pass
+2) PHPUnit\TestFixture\DependencyFailureTest::testThree
+This test depends on "PHPUnit\TestFixture\DependencyFailureTest::testTwo" to pass
 
-3) DependencyFailureTest::testFour
-This test depends on "DependencyFailureTest::testOne" to pass
+3) PHPUnit\TestFixture\DependencyFailureTest::testFour
+This test depends on "PHPUnit\TestFixture\DependencyFailureTest::testOne" to pass
 
 ERRORS!
 Tests: 9, Assertions: 4, Errors: 2, Failures: 1, Skipped: 3.
