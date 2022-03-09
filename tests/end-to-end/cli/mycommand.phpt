@@ -10,9 +10,9 @@ $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/BankAccountTest.php');
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-MyCommand::main();
+PHPUnit\TestFixture\MyCommand::main();
 --EXPECTF--
-MyCommand::myHandler 123
+PHPUnit\TestFixture\MyCommand::myHandler 123
 PHPUnit %s #StandWithUkraine
 
 ...                                                                 3 / 3 (100%)
