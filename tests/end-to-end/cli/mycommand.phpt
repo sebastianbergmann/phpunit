@@ -9,7 +9,6 @@ $_SERVER['argv'][] = '--my-other-option';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/BankAccountTest.php');
 
 require_once __DIR__ . '/../../bootstrap.php';
-require_once __DIR__ . '/_files/MyCommand.php';
 
 MyCommand::main();
 --EXPECTF--
