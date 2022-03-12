@@ -331,8 +331,12 @@
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
     <InvalidArgument occurrences="1"/>
+    <PossiblyFalseOperand occurrences="1">
+      <code>strpos($parameterAsString, '&lt;optional&gt; ')</code>
+    </PossiblyFalseOperand>
+    <RedundantCast occurrences="1"/>
     <RedundantCastGivenDocblockType occurrences="1">
-      <code>(string) var_export($parameter-&gt;getDefaultValue(), true)</code>
+      <code>(string) var_export($defaultValue, true)</code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
