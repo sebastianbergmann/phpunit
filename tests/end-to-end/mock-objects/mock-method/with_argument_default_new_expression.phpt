@@ -1,5 +1,10 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/4929
+--SKIPIF--
+<?php declare(strict_types=1);
+if (version_compare('8.1.0', PHP_VERSION, '>')) {
+    print 'skip: PHP 8.1 is required.';
+}
 --FILE--
 <?php declare(strict_types=1);
 class Foo
