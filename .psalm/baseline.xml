@@ -424,11 +424,6 @@
       <code>$comparisonFailure</code>
     </PossiblyNullPropertyAssignmentValue>
   </file>
-  <file src="src/Framework/Exception/InvalidArgumentException.php">
-    <PossiblyUndefinedArrayOffset occurrences="1">
-      <code>$stack[1]['class']</code>
-    </PossiblyUndefinedArrayOffset>
-  </file>
   <file src="src/Framework/ExceptionWrapper.php">
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($this)</code>
@@ -556,8 +551,12 @@
     </PossiblyInvalidPropertyAssignmentValue>
   </file>
   <file src="src/Framework/MockObject/MockMethod.php">
+    <PossiblyFalseOperand occurrences="1">
+      <code>strpos($parameterAsString, '&lt;optional&gt; ')</code>
+    </PossiblyFalseOperand>
+    <RedundantCast occurrences="1"/>
     <RedundantCastGivenDocblockType occurrences="1">
-      <code>(string) var_export($parameter-&gt;getDefaultValue(), true)</code>
+      <code>(string) var_export($defaultValue, true)</code>
     </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/MockObject.php">
@@ -761,11 +760,6 @@
       <code>TestListener[]</code>
       <code>private $listeners = [];</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="3">
-      <code>addWarning</code>
-      <code>endTest</code>
-      <code>startTest</code>
-    </DeprecatedMethod>
     <DeprecatedProperty occurrences="11">
       <code>$this-&gt;listeners</code>
       <code>$this-&gt;listeners</code>
