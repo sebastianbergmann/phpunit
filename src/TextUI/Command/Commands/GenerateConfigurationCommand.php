@@ -23,20 +23,20 @@ final class GenerateConfigurationCommand implements Command
 {
     public function execute(): Result
     {
-        $buffer = 'Generating phpunit.xml in ' . getcwd() . PHP_EOL . PHP_EOL;
-        $buffer .= 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
+        print 'Generating phpunit.xml in ' . getcwd() . PHP_EOL . PHP_EOL;
+        print 'Bootstrap script (relative to path shown above; default: vendor/autoload.php): ';
 
         $bootstrapScript = $this->read();
 
-        $buffer .= 'Tests directory (relative to path shown above; default: tests): ';
+        print 'Tests directory (relative to path shown above; default: tests): ';
 
         $testsDirectory = $this->read();
 
-        $buffer .= 'Source directory (relative to path shown above; default: src): ';
+        print 'Source directory (relative to path shown above; default: src): ';
 
         $src = $this->read();
 
-        $buffer .= 'Cache directory (relative to path shown above; default: .phpunit.cache): ';
+        print 'Cache directory (relative to path shown above; default: .phpunit.cache): ';
 
         $cacheDirectory = $this->read();
 
@@ -70,10 +70,10 @@ final class GenerateConfigurationCommand implements Command
         );
 
         /* @noinspection MissingDirectorySeparatorInspection */
-        $buffer .= PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . '.' . PHP_EOL;
-        $buffer .= 'Make sure to exclude the ' . $cacheDirectory . ' directory from version control.' . PHP_EOL;
+        print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . '.' . PHP_EOL;
+        print 'Make sure to exclude the ' . $cacheDirectory . ' directory from version control.' . PHP_EOL;
 
-        return Result::from($buffer);
+        return Result::from();
     }
 
     private function read(): string
