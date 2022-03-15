@@ -16,12 +16,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/fail')
     ->in(__DIR__ . '/tests/unit')
     ->in(__DIR__ . '/tests/_files')
-    ->notName('*.phpt')
-    ->notName('ClassWithAllPossibleReturnTypes.php')
-    ->notName('ClassWithUnionReturnTypes.php')
-    ->notName('ClassWithStaticReturnTypes.php')
-    ->notName('ValueObjectWithEqualsMethodWithUnionReturnType.php')
-    ->notName('ValueObjectWithEqualsMethodThatHasUnionParameterType.php');
+    ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)
