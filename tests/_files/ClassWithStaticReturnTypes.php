@@ -7,8 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 namespace PHPUnit\TestFixture;
+
+use stdClass;
 
 class ClassWithStaticReturnTypes
 {
@@ -20,7 +21,7 @@ class ClassWithStaticReturnTypes
     {
     }
 
-    public function returnsUnionWithStatic(): static|\stdClass
+    public function returnsUnionWithStatic(): static|stdClass
     {
     }
 }
