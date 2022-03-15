@@ -38,15 +38,4 @@ final class MockMethodTest extends TestCase
         );
         $this->assertEquals('methodName', $method->getName());
     }
-
-    /**
-     * @requires PHP < 7.4
-     */
-    public function testFailWhenReturnTypeIsParentButThereIsNoParentClass(): void
-    {
-        $class = new ReflectionClass(ClassWithoutParentButParentReturnType::class);
-
-        $this->expectException(RuntimeException::class);
-        MockMethod::fromReflection($class->getMethod('foo'), false, false);
-    }
 }
