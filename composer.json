@@ -46,7 +46,7 @@
         "sebastian/exporter": "^5.0",
         "sebastian/global-state": "^6.0",
         "sebastian/object-enumerator": "^5.0",
-        "sebastian/type": "^3.0",
+        "sebastian/type": "^4.0",
         "sebastian/version": "^4.0"
     },
     "require-dev": {
