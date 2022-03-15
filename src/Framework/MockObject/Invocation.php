@@ -121,100 +121,141 @@ final class Invocation implements SelfDescribing
             return null;
         }
 
-        $union = false;
+        $intersection = false;
+        $union        = false;
 
         if (strpos($this->returnType, '|') !== false) {
             $types = explode('|', $this->returnType);
             $union = true;
+        } elseif (strpos($this->returnType, '&') !== false) {
+            $types        = explode('&', $this->returnType);
+            $intersection = true;
         } else {
             $types = [$this->returnType];
         }
 
         $types = array_map('strtolower', $types);
 
-        if (in_array('', $types, true) ||
-            in_array('null', $types, true) ||
-            in_array('mixed', $types, true) ||
-            in_array('void', $types, true)) {
-            return null;
-        }
+        if (!$intersection) {
+            if (in_array('', $types, true) ||
+                in_array('null', $types, true) ||
+                in_array('mixed', $types, true) ||
+                in_array('void', $types, true)) {
+                return null;
+            }
 
-        if (in_array('false', $types, true) ||
-            in_array('bool', $types, true)) {
-            return false;
-        }
+            if (in_array('false', $types, true) ||
+                in_array('bool', $types, true)) {
+                return false;
+            }
 
-        if (in_array('float', $types, true)) {
-            return 0.0;
-        }
+            if (in_array('float', $types, true)) {
+                return 0.0;
+            }
 
-        if (in_array('int', $types, true)) {
-            return 0;
-        }
+            if (in_array('int', $types, true)) {
+                return 0;
+            }
 
-        if (in_array('string', $types, true)) {
-            return '';
-        }
+            if (in_array('string', $types, true)) {
+                return '';
+            }
 
-        if (in_array('array', $types, true)) {
-            return [];
-        }
+            if (in_array('array', $types, true)) {
+                return [];
+            }
 
-        if (in_array('static', $types, true)) {
-            try {
-                return (new Instantiator)->instantiate(get_class($this->object));
-            } catch (Throwable $t) {
-                throw new RuntimeException(
-                    $t->getMessage(),
-                    (int) $t->getCode(),
-                    $t
-                );
+            if (in_array('static', $types, true)) {
+                try {
+                    return (new Instantiator)->instantiate(get_class($this->object));
+                } catch (Throwable $t) {
+                    throw new RuntimeException(
+                        $t->getMessage(),
+                        (int) $t->getCode(),
+                        $t
+                    );
+                }
+            }
+
+            if (in_array('object', $types, true)) {
+                return new stdClass;
+            }
+
+            if (in_array('callable', $types, true) ||
+                in_array('closure', $types, true)) {
+                return static function (): void
+                {
+                };
+            }
+
+            if (in_array('traversable', $types, true) ||
+                in_array('generator', $types, true) ||
+                in_array('iterable', $types, true)) {
+                $generator = static function (): \Generator
+                {
+                    yield from [];
+                };
+
+                return $generator();
+            }
+
+            if (!$union) {
+                try {
+                    return (new Generator)->getMock($this->returnType, [], [], '', false);
+                } catch (Throwable $t) {
+                    if ($t instanceof Exception) {
+                        throw $t;
+                    }
+
+                    throw new RuntimeException(
+                        $t->getMessage(),
+                        (int) $t->getCode(),
+                        $t
+                    );
+                }
             }
         }
 
-        if (in_array('object', $types, true)) {
-            return new stdClass;
-        }
+        $reason = '';
 
-        if (in_array('callable', $types, true) ||
-            in_array('closure', $types, true)) {
-            return static function (): void
-            {
-            };
-        }
+        if ($union) {
+            $reason = ' because the declared return type is a union';
+        } elseif ($intersection) {
+            $reason = ' because the declared return type is an intersection';
 
-        if (in_array('traversable', $types, true) ||
-            in_array('generator', $types, true) ||
-            in_array('iterable', $types, true)) {
-            $generator = static function (): \Generator
-            {
-                yield from [];
-            };
+            $onlyInterfaces = true;
 
-            return $generator();
-        }
+            foreach ($types as $type) {
+                if (!interface_exists($type)) {
+                    $onlyInterfaces = false;
 
-        if (!$union) {
-            try {
-                return (new Generator)->getMock($this->returnType, [], [], '', false);
-            } catch (Throwable $t) {
-                throw new RuntimeException(
-                    sprintf(
-                        'Return value for %s::%s() cannot be generated: %s',
-                        $this->className,
-                        $this->methodName,
-                        $t->getMessage(),
-                    ),
-                    (int) $t->getCode(),
-                );
+                    break;
+                }
+            }
+
+            if ($onlyInterfaces) {
+                try {
+                    return (new Generator)->getMockForInterfaces($types);
+                } catch (Throwable $t) {
+                    throw new RuntimeException(
+                        sprintf(
+                            'Return value for %s::%s() cannot be generated: %s',
+                            $this->className,
+                            $this->methodName,
+                            $t->getMessage(),
+                        ),
+                        (int) $t->getCode(),
+                    );
+                }
             }
         }
 
         throw new RuntimeException(
             sprintf(
-                'Return value for %s::%s() cannot be generated because the declared return type is a union, please configure a return value for this method',
+                'Return value for %s::%s() cannot be generated%s, please configure a return value for this method',
                 $this->className,
-                $this->methodName
+                $this->methodName,
+                $reason
             )
         );
     }

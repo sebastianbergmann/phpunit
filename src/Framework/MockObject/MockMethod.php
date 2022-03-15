@@ -23,6 +23,7 @@ use function substr;
 use function substr_count;
 use function trim;
 use function var_export;
+use ReflectionIntersectionType;
 use ReflectionMethod;
 use ReflectionNamedType;
 use ReflectionParameter;
@@ -32,7 +33,6 @@ use SebastianBergmann\Template\Template;
 use SebastianBergmann\Type\ReflectionMapper;
 use SebastianBergmann\Type\Type;
 use SebastianBergmann\Type\UnknownType;
-use SebastianBergmann\Type\VoidType;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -309,7 +309,7 @@ final class MockMethod
             }
 
             if ($type !== null) {
-                if ($typeName !== 'mixed' && $parameter->allowsNull() && !$type instanceof ReflectionUnionType) {
+                if ($typeName !== 'mixed' && $parameter->allowsNull() && !$type instanceof ReflectionIntersectionType && !$type instanceof ReflectionUnionType) {
                     $nullable = '?';
                 }
 
@@ -322,6 +322,8 @@ final class MockMethod
                         $type,
                         $method->getDeclaringClass()->getName()
                     );
+                } elseif ($type instanceof ReflectionIntersectionType) {
+                    $typeDeclaration = self::intersectionTypeAsString($type);
                 }
             }
 
@@ -417,5 +419,16 @@ final class MockMethod
         }
 
         return implode('|', $types) . ' ';
+    }
+
+    private static function intersectionTypeAsString(ReflectionIntersectionType $intersection): string
+    {
+        $types = [];
+
+        foreach ($intersection->getTypes() as $type) {
+            $types[] = $type;
+        }
+
+        return implode('&', $types) . ' ';
     }
 }

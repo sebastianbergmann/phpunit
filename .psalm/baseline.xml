@@ -487,6 +487,14 @@
       <code>$client-&gt;__getFunctions()</code>
     </PossiblyNullArgument>
   </file>
+  <file src="src/Framework/MockObject/Invocation.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$types</code>
+    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="1">
+      <code>throw $t;</code>
+    </MissingThrowsDocblock>
+  </file>
   <file src="src/Framework/MockObject/InvocationHandler.php">
     <MissingReturnType occurrences="1">
       <code>invoke</code>

@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 ### Fixed
 
 * [#4929](https://github.com/sebastianbergmann/phpunit/issues/4929): Test Double code generator does not handle new expressions inside parameter default values
+* [#4932](https://github.com/sebastianbergmann/phpunit/issues/4932): Backport support for intersection types from PHPUnit 10 to PHPUnit 9.5
 * [#4933](https://github.com/sebastianbergmann/phpunit/issues/4933): Backport support for `never` type from PHPUnit 10 to PHPUnit 9.5
 
 ## [9.5.18] - 2022-03-08
