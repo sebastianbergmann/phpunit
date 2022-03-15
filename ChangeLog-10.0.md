@@ -10,8 +10,6 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4641](https://github.com/sebastianbergmann/phpunit/issues/4641): `assertStringEqualsStringIgnoringLineEndings()` and `assertStringContainsStringIgnoringLineEndings()`
 * [#4650](https://github.com/sebastianbergmann/phpunit/issues/4650): Support dist file name `phpunit.dist.xml`
 * [#4657](https://github.com/sebastianbergmann/phpunit/pull/4657): `--exclude-testsuite` option
-* [#4709](https://github.com/sebastianbergmann/phpunit/issues/4709): Support `never` type in test double code generator
-* [#4737](https://github.com/sebastianbergmann/phpunit/issues/4737): Support intersection types in test double code generator
 * [#4818](https://github.com/sebastianbergmann/phpunit/pull/4818): `assertArrayIsList()`
 * [#4892](https://github.com/sebastianbergmann/phpunit/issues/4892): Make colors used in HTML code coverage report configurable
 * [#4893](https://github.com/sebastianbergmann/phpunit/issues/4893): Make path to custom.css for HTML code coverage report configurable

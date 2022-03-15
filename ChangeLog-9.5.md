@@ -2,11 +2,13 @@
 
 All notable changes of the PHPUnit 9.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [9.5.19] - 2022-MM-DD
+## [9.5.19] - 2022-03-15
 
 ### Fixed
 
 * [#4929](https://github.com/sebastianbergmann/phpunit/issues/4929): Test Double code generator does not handle new expressions inside parameter default values
+* [#4932](https://github.com/sebastianbergmann/phpunit/issues/4932): Backport support for intersection types from PHPUnit 10 to PHPUnit 9.5
+* [#4933](https://github.com/sebastianbergmann/phpunit/issues/4933): Backport support for `never` type from PHPUnit 10 to PHPUnit 9.5
 
 ## [9.5.18] - 2022-03-08
 
@@ -148,7 +150,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
 
-[9.5.19]: https://github.com/sebastianbergmann/phpunit/compare/9.5.18...9.5
+[9.5.19]: https://github.com/sebastianbergmann/phpunit/compare/9.5.18...9.5.19
 [9.5.18]: https://github.com/sebastianbergmann/phpunit/compare/9.5.17...9.5.18
 [9.5.17]: https://github.com/sebastianbergmann/phpunit/compare/9.5.16...9.5.17
 [9.5.16]: https://github.com/sebastianbergmann/phpunit/compare/dc738383c519243b0a967f63943a848d3fd861aa...9.5.16
