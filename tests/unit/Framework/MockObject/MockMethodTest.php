@@ -10,9 +10,6 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\MockObject\ClassWithoutParentButParentReturnType;
-use ReflectionClass;
-use RuntimeException;
 use SebastianBergmann\Type\UnknownType;
 
 /**
