@@ -19,6 +19,7 @@
     "support": {
         "issues": "https://github.com/sebastianbergmann/phpunit/issues"
     },
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=7.3",
@@ -47,7 +48,7 @@
         "sebastian/global-state": "^5.0.1",
         "sebastian/object-enumerator": "^4.0.3",
         "sebastian/resource-operations": "^3.0.3",
-        "sebastian/type": "^2.3.4",
+        "sebastian/type": "^3.0",
         "sebastian/version": "^3.0.2"
     },
     "require-dev": {
