@@ -6,6 +6,9 @@ on:
 
 name: CI
 
+env:
+  COMPOSER_ROOT_VERSION: "8.5-dev"
+
 jobs:
   coding-guidelines:
     name: Coding Guidelines
@@ -19,7 +22,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.1
           extensions: none, json, phar, tokenizer
           coverage: none
           tools: none
@@ -39,7 +42,7 @@ jobs:
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.1
           extensions: none, ctype, curl, date, dom, json, libxml, mbstring, pdo_sqlite, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
           coverage: none
           tools: none
@@ -52,23 +55,6 @@ jobs:
 
       - name: Run vimeo/psalm on internal code
         run: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
-
-  lint-xml-configuration:
-    name: Lint XML Configuration
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Build Docker image
-        uses: ./.docker/lint-xml-configuration
-
-      - name: Lint XML configuration files
-        uses: ./.docker/lint-xml-configuration
-        with:
-          args: bash ./build/scripts/lint-xml-configuration
 
   tests:
     name: Tests
@@ -87,16 +73,35 @@ jobs:
           - windows-latest
 
         php-version:
-          - 7.2
-          - 7.3
-          - 7.4
-          - 8.0
-          - 8.1
-          - 8.2
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+          - "8.1"
+          - "8.2"
+
+        compiler:
+          - default
 
         dependencies:
           - lowest
           - highest
+
+        include:
+          - os: ubuntu-latest
+            php-version: "8.0"
+            compiler: jit
+            dependencies: highest
+
+          - os: ubuntu-latest
+            php-version: "8.1"
+            compiler: jit
+            dependencies: highest
+
+          - os: ubuntu-latest
+            php-version: "8.2"
+            compiler: jit
+            dependencies: highest
 
     steps:
       - name: Configure git to avoid issues with line endings
@@ -105,6 +110,10 @@ jobs:
 
       - name: Checkout
         uses: actions/checkout@v3
+
+      - name: Override PHP ini values for JIT compiler
+        if: matrix.compiler == 'jit'
+        run: echo "PHP_INI_VALUES::assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit=1255, opcache.jit_buffer_size=32M" >> $GITHUB_ENV
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -137,7 +146,7 @@ jobs:
       fail-fast: false
       matrix:
         php-version:
-          - 8.0
+          - 8.1
 
         dependencies:
           - highest
@@ -279,6 +288,10 @@ jobs:
           - "8.1"
           - "8.2"
 
+        coverage:
+          - pcov
+          - xdebug
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -287,7 +300,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: none
+          coverage: ${{ matrix.coverage }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
           tools: none

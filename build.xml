@@ -418,6 +418,7 @@
         <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true">
             <arg value="--configuration" />
             <arg value="tests/phar/phpunit.xml" />
+            <arg value="--coverage-text" />
         </exec>
     </target>
 
