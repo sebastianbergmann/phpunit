@@ -422,6 +422,20 @@
         </exec>
     </target>
 
+    <target name="build-phar-and-run-phar-specific-tests-without-code-coverage" depends="clean,phar-snapshot" description="Build PHAR and run the PHAR-specific tests with it without code coverage">
+        <delete dir="${basedir}/vendor"/>
+        <delete file="${basedir}/composer.lock"/>
+
+        <antcall target="run-phar-specific-tests-without-code-coverage"/>
+    </target>
+
+    <target name="run-phar-specific-tests-without-code-coverage" description="Run the PHAR-specific tests with it (expects build/artifacts/phpunit-snapshot.phar to exist) without code coverage">
+        <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true">
+            <arg value="--configuration" />
+            <arg value="tests/phar/phpunit.xml" />
+        </exec>
+    </target>
+
     <target name="generate-project-documentation" depends="-phploc,-checkstyle,-phpunit">
         <exec executable="${basedir}/tools/phpdox" dir="${basedir}/build/config" taskname="phpdox"/>
     </target>
