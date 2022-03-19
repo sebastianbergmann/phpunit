@@ -10,34 +10,17 @@
             <directory>tests/unit</directory>
         </testsuite>
 
-        <testsuite name="end-to-end/cli">
+        <testsuite name="end-to-end">
             <directory suffix=".phpt">tests/end-to-end/cli</directory>
-        </testsuite>
-
-        <testsuite name="end-to-end/execution-order">
             <directory suffix=".phpt">tests/end-to-end/execution-order</directory>
-            <exclude>tests/end-to-end/execution-order/_files</exclude>
-        </testsuite>
-
-        <testsuite name="end-to-end/logging">
-            <directory suffix=".phpt">tests/end-to-end/logging</directory>
-            <exclude>tests/end-to-end/logging/_files</exclude>
-        </testsuite>
-
-        <testsuite name="end-to-end/mock-objects">
-            <directory suffix=".phpt">tests/end-to-end/mock-objects</directory>
-        </testsuite>
-
-        <testsuite name="end-to-end/phpt">
-            <directory suffix=".phpt">tests/end-to-end/phpt</directory>
-        </testsuite>
-
-        <testsuite name="end-to-end/generic">
             <directory suffix=".phpt">tests/end-to-end/generic</directory>
-        </testsuite>
-
-        <testsuite name="end-to-end/regression">
+            <directory suffix=".phpt">tests/end-to-end/logging</directory>
+            <directory suffix=".phpt">tests/end-to-end/mock-objects</directory>
+            <directory suffix=".phpt">tests/end-to-end/phpt</directory>
             <directory suffix=".phpt">tests/end-to-end/regression</directory>
+
+            <exclude>tests/end-to-end/execution-order/_files</exclude>
+            <exclude>tests/end-to-end/logging/_files</exclude>
         </testsuite>
     </testsuites>
 
