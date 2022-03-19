@@ -10,4 +10,4 @@ $help = new PHPUnit\TextUI\Help(72, true);
 
 print $help->generate();
 --EXPECTF_EXTERNAL--
-_files/output-cli-help-color.txt
+../_files/output-cli-help-color.txt
