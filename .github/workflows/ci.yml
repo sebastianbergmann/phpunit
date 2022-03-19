@@ -74,10 +74,10 @@ jobs:
           tools: none
 
       - name: Install dependencies with composer
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Generate global assert wrappers
-        run: php build/scripts/generate-global-assert-wrappers.php
+        run: ./build/scripts/generate-global-assert-wrappers.php
 
       - name: Assert that git tree is clean
         run: git diff || echo "Run 'php build/scripts/generate-global-assert-wrappers.php' to regenerate global assert wrappers!"
@@ -151,11 +151,11 @@ jobs:
 
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
 
       - name: Install highest dependencies with composer
         if: matrix.dependencies == 'highest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
         run: ./phpunit --testsuite unit
@@ -232,11 +232,11 @@ jobs:
 
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
 
       - name: Install highest dependencies with composer
         if: matrix.dependencies == 'highest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
         run: ./phpunit --testsuite end-to-end
@@ -263,10 +263,10 @@ jobs:
           tools: none
 
       - name: Install dependencies with composer
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Collect code coverage with phpunit
-        run: php ./phpunit --coverage-clover=coverage.xml
+        run: ./phpunit --coverage-clover=coverage.xml
 
       - name: Send code coverage report to Codecov.io
         uses: codecov/codecov-action@v2
