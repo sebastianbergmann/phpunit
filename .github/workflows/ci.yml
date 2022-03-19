@@ -56,32 +56,6 @@ jobs:
       - name: Run vimeo/psalm on internal code
         run: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
-  test-generated-code:
-    name: Test generated code
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v3
-
-      - name: Install PHP with extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 8.1
-          extensions: none, curl, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
-          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
-          tools: none
-
-      - name: Install dependencies with composer
-        run: ./tools/composer update --no-ansi --no-interaction --no-progress
-
-      - name: Generate global assert wrappers
-        run: ./build/scripts/generate-global-assert-wrappers.php
-
-      - name: Assert that git tree is clean
-        run: git diff || echo "Run 'php build/scripts/generate-global-assert-wrappers.php' to regenerate global assert wrappers!"
-
   unit-tests:
     name: Unit Tests
 
