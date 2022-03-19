@@ -73,7 +73,7 @@ jobs:
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
-      - name: Install highest dependencies with composer
+      - name: Install dependencies with composer
         run: php ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Generate global assert wrappers
@@ -262,7 +262,7 @@ jobs:
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
-      - name: Install highest dependencies with composer
+      - name: Install dependencies with composer
         run: php ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Collect code coverage with phpunit
