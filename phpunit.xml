@@ -19,9 +19,9 @@
             <exclude>tests/end-to-end/execution-order/_files</exclude>
         </testsuite>
 
-        <testsuite name="end-to-end/loggers">
-            <directory suffix=".phpt">tests/end-to-end/loggers</directory>
-            <exclude>tests/end-to-end/loggers/_files</exclude>
+        <testsuite name="end-to-end/logging">
+            <directory suffix=".phpt">tests/end-to-end/logging</directory>
+            <exclude>tests/end-to-end/logging/_files</exclude>
         </testsuite>
 
         <testsuite name="end-to-end/mock-objects">
