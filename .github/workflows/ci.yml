@@ -266,14 +266,6 @@ jobs:
 
     runs-on: ubuntu-latest
 
-    strategy:
-      matrix:
-        php-version:
-          - 7.2
-
-        dependencies:
-          - highest
-
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -281,15 +273,10 @@ jobs:
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
-          php-version: ${{ matrix.php-version }}
-          coverage: pcov
+          php-version: 8.1
           extensions: none, curl, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
-
-      - name: Install lowest dependencies with composer
-        if: matrix.dependencies == 'lowest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
 
       - name: Install highest dependencies with composer
         run: php ./tools/composer update --no-ansi --no-interaction --no-progress
