@@ -4,11 +4,11 @@ phpunit -c _files/phpunit.xml --no-logging --log-junit php://stdout _files/NoLog
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = \realpath(__DIR__ . '/_files/phpunit.xml');
+$_SERVER['argv'][] = __DIR__ . '/../_files/no-log-cc-override/phpunit.xml';
 $_SERVER['argv'][] = '--no-logging';
 $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = 'php://stdout';
-$_SERVER['argv'][] = \realpath(__DIR__ . '/_files/NoLogNoCcTest.php');
+$_SERVER['argv'][] = __DIR__ . '/../_files/no-log-cc-override/NoLogNoCcTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
