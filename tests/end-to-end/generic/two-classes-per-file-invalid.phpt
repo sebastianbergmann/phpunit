@@ -4,9 +4,9 @@ phpunit --version
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = __DIR__ . '/../_files/OneClassPerFile/failing/';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/OneClassPerFile/failing/';
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 ?>

@@ -1,13 +1,15 @@
 --TEST--
-phpunit ../../_files/ExternalProphecyIntegrationTest.php
+phpunit --version
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = __DIR__ . '/../_files/ExternalProphecyIntegrationTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/OneClassPerFile/TwoClassesValid.php';
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
+
 PHPUnit\TextUI\Command::main();
+?>
 --EXPECTF--
 PHPUnit %s #StandWithUkraine
 
@@ -15,4 +17,4 @@ PHPUnit %s #StandWithUkraine
 
 Time: %s, Memory: %s
 
-OK (1 test, 2 assertions)
+OK (1 test, 1 assertion)

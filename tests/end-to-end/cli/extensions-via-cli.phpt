@@ -5,9 +5,9 @@ phpunit --extensions=...
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--extensions=\\PHPUnit\\TestFixture\\Extension';
-$_SERVER['argv'][] = __DIR__ . '/../_files/ConcreteTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../../_files/ConcreteTest.php';
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--

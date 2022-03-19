@@ -5,8 +5,8 @@ phpunit --covers 'PHPUnit\TestFixture\AnnotationFilter'
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--debug';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/phpunit.xml';
-$_SERVER['argv'][] = '--uses';
+$_SERVER['argv'][] = __DIR__ . '/../_files/coverage-annotation-based-filter/phpunit.xml';
+$_SERVER['argv'][] = '--covers';
 $_SERVER['argv'][] = 'PHPUnit\TestFixture\AnnotationFilter';
 
 require_once __DIR__ . '/../../bootstrap.php';
@@ -15,8 +15,8 @@ PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s #StandWithUkraine
 
-Test 'PHPUnit\TestFixture\AnnotationFilterTest::testTwo' started
-Test 'PHPUnit\TestFixture\AnnotationFilterTest::testTwo' ended
+Test 'PHPUnit\TestFixture\AnnotationFilterTest::testOne' started
+Test 'PHPUnit\TestFixture\AnnotationFilterTest::testOne' ended
 
 
 Time: %s, Memory: %s

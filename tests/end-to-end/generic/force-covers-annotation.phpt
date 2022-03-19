@@ -4,10 +4,10 @@ phpunit ../../_files/BankAccountTest.php
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--configuration';
-$_SERVER['argv'][] = __DIR__ . '/force-covers-annotation/phpunit.xml';
-$_SERVER['argv'][] = __DIR__ . '/force-covers-annotation/tests/Test.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/force-covers-annotation/phpunit.xml';
+$_SERVER['argv'][] = __DIR__ . '/../_files/force-covers-annotation/tests/Test.php';
 
-require_once __DIR__ . '/../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s #StandWithUkraine
