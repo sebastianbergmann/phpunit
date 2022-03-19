@@ -56,8 +56,8 @@ jobs:
       - name: Run vimeo/psalm on internal code
         run: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
-  tests:
-    name: Tests
+  unit-tests:
+    name: Unit Tests
 
     runs-on: ${{ matrix.os }}
 
@@ -131,14 +131,95 @@ jobs:
         if: matrix.dependencies == 'highest'
         run: php ./tools/composer update --no-ansi --no-interaction --no-progress
 
-      - name: Run sanity check
-        run: bash ./build/scripts/sanity-check
+      - name: Run tests with phpunit
+        run: ./phpunit --testsuite unit
+
+  end-to-end-tests:
+    name: End-to-End Tests
+
+    needs:
+      - unit-tests
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      PHP_EXTENSIONS: none, curl, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+        php-version:
+          - "7.2"
+          - "7.3"
+          - "7.4"
+          - "8.0"
+          - "8.1"
+          - "8.2"
+
+        compiler:
+          - default
+
+        dependencies:
+          - lowest
+          - highest
+
+        include:
+          - os: ubuntu-latest
+            php-version: "8.0"
+            compiler: jit
+            dependencies: highest
+
+          - os: ubuntu-latest
+            php-version: "8.1"
+            compiler: jit
+            dependencies: highest
+
+          - os: ubuntu-latest
+            php-version: "8.2"
+            compiler: jit
+            dependencies: highest
+
+    steps:
+      - name: Configure git to avoid issues with line endings
+        if: matrix.os == 'windows-latest'
+        run: git config --global core.autocrlf false
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Override PHP ini values for JIT compiler
+        if: matrix.compiler == 'jit'
+        run: echo "PHP_INI_VALUES::assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit=1255, opcache.jit_buffer_size=32M" >> $GITHUB_ENV
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
+
+      - name: Install lowest dependencies with composer
+        if: matrix.dependencies == 'lowest'
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+
+      - name: Install highest dependencies with composer
+        if: matrix.dependencies == 'highest'
+        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
-        run: php ./phpunit
+        run: ./phpunit --testsuite end-to-end
 
   code-coverage:
     name: Code Coverage
+
+    needs:
+      - end-to-end-tests
 
     runs-on: ubuntu-latest
 
@@ -221,6 +302,9 @@ jobs:
 
   build-phar:
     name: Build PHAR
+
+    needs:
+      - end-to-end-tests
 
     runs-on: ubuntu-latest
 
