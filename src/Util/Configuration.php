@@ -33,7 +33,6 @@ use function libxml_use_internal_errors;
 use function preg_match;
 use function putenv;
 use function realpath;
-use function sort;
 use function sprintf;
 use function stream_resolve_include_path;
 use function strlen;
@@ -923,8 +922,6 @@ final class Configuration
             /* @var DOMElement $node */
             $names[] = $node->getAttribute('name');
         }
-
-        sort($names);
 
         return $names;
     }
