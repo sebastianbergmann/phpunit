@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--trace-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = __DIR__ . '/../../basic/unit/StatusTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../_files/basic/unit/StatusTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 

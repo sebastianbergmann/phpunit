@@ -7,7 +7,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-junit';
 $_SERVER['argv'][] = 'php://stdout';
-$_SERVER['argv'][] = \realpath(__DIR__ . '/../../basic/unit/StatusTest.php');
+$_SERVER['argv'][] = __DIR__ . '/../_files/basic/unit/StatusTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
