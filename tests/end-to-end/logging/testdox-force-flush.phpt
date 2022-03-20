@@ -4,7 +4,7 @@ phpunit --testdox --colors=never -c tests/basic/configuration.basic.xml --filter
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '-c';
-$_SERVER['argv'][] = realpath(__DIR__ . '/../../basic/configuration.basic.xml');
+$_SERVER['argv'][] = __DIR__ . '/../_files/basic/configuration.basic.xml';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--colors=never';
 $_SERVER['argv'][] = '--filter';
