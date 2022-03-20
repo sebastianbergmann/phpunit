@@ -1,59 +1,19 @@
-# PHPUnit self-tests
+# PHPUnit's Own Test Suite
 
-This document contains the notes of projects contributors about testing the PHPUnit core and its integration with the most important dependencies. 
+## Test Suite Structure
 
-## Quick start
+This is the top-level directory structure of the `tests` directory:
 
-There are two main ways to self-test PHPUnit. The first is to test _everything_ using the default configuration. Here's how to do that with pretty colors in a human-readable format: 
+* `tests/unit` holds tests that are "regular" PHPUnit tests (implemented using `PHPUnit\Framework\TestCase`)
+* `tests/end-to-end` holds tests in the [PHPT](https://qa.php.net/phpt_details.php) format
+* `tests/end-to-end/phar` holds PHAR-specific tests that are not part of the regular `end-to-end` tests
+* `tests/static-analysis` holds test fixture that is used for static analysis of PHPUnit's API using Psalm
+* `tests/_files` holds test fixture that is used by tests in `tests/unit` and/or `tests/end-to-end`
 
-```
-cd /path/to/phpunit
-./phpunit --testdox --colors=always --verbose
-```
+## Running the Test Suite
 
-If you want to do a very quick check health-check of most basic use cases you can use the `basic` test collection:
-
-```
-./phpunit --testdox --colors=always --verbose -c tests/basic/configuration.basic.xml
-```
-
-The `basic` suite of tests puts the core system through its paces and covers most of the basic use cases of PHPUnit including happy flows and common exceptions. 
-
-## Running the PHPUnit self-tests in PhpStorm
-
-First, please configure PhpStorm in the settings:
-
-Languages & Frameworks > PHP > Test Frameworks:
-- PHPUnit library:
-  - [x] Path to phpunit.phar: `phpunit` (relative to your local copy of PHPUnit)
-- Test Runner:
-  - [x] Default configuration file: `phpunit.xml` (relative to your local copy of PHPUnit)
-
-Note: These configuration steps are current as of PhpStorm 2019.2.
-In later versions, some settings might have been renamed or
-been moved around.
-
-Now you can execute all tests or only some tests as needed.
-Please note that there are some subfolders within the `tests/`
-folder that must not be included in the test scope. This breaks
-running tests by folders for the end-to-end tests and the complete
-test suite.
-
-- To run all tests, please select "Defined in the configuration file"
-  as test scope.
-- To run the unit tests, please select the `tests/unit/` folder
-  as test scope.
-- You can also select individual files or folders from the unit or
-  end-to-end tests as test scope.
-
-## Structure of the self-test collection
-
-Note: this section will change often while `tests/` is being refactored.
-
-- `configuration.xml`: the global configuration file which defines the internal `unit` and `end-to-end` tests suites
-- `tests/`
-  - `_files`: specialized helper files; input/output samples
-  - `basic/`: fast tests covering all basics
-    - `configuration.basic.xml`: configuration file tailored for the `basic` suite
-  - `end-to-end/`: run PHPUnit as a separate process and observe its behaviour via console messages and the filesystem
-  - `unit/`: unit tests for individual smallest components and integration tests of common use cases
+* `./phpunit` will run all tests from `tests/unit` and `tests/end-to-end` (except the PHAR-specific tests)
+* `./phpunit --testsuite unit` will run all tests from `tests/unit`
+* `./phpunit --testsuite end-to-end` will run all tests from `tests/end-to-end` (except the PHAR-specific tests)
+* `ant phar-snapshot run-phar-specific-tests` will build a PHAR and run the PHAR-specific tests
+* `./tools/psalm --config=.psalm/static-analysis.xml` will run the static analysis of PHPUnit's API using Psalm

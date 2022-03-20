@@ -6,7 +6,7 @@ require_once(__DIR__ . '/../../bootstrap.php');
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '-c';
-$_SERVER['argv'][] = \realpath(__DIR__ . '/../../basic/configuration.basic.xml');
+$_SERVER['argv'][] = __DIR__ . '/../_files/basic/configuration.basic.xml';
 $_SERVER['argv'][] = '--debug';
 
 PHPUnit\TextUI\Command::main();
@@ -62,28 +62,28 @@ Time: %s, Memory: %s
 There were 5 errors:
 
 1) PHPUnit\SelfTest\Basic\SetUpBeforeClassTest::testOne
-Exception: forcing an Exception in setUpBeforeClass() in %stests%ebasic%eunit%eSetUpBeforeClassTest.php:%d
+Exception: forcing an Exception in setUpBeforeClass() in %stests%eend-to-end%e_files%ebasic%eunit%eSetUpBeforeClassTest.php:%d
 Stack trace:
 %a
 2) PHPUnit\SelfTest\Basic\SetUpTest::testOneWithSetUpException
 RuntimeException: throw exception in setUp
 
-%stests%ebasic%eunit%eSetUpTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eSetUpTest.php:%d
 
 3) PHPUnit\SelfTest\Basic\SetUpTest::testTwoWithSetUpException
 RuntimeException: throw exception in setUp
 
-%stests%ebasic%eunit%eSetUpTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eSetUpTest.php:%d
 
 4) PHPUnit\SelfTest\Basic\StatusTest::testError
 RuntimeException:%w
 
-%stests%ebasic%eunit%eStatusTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d
 
 5) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
 RuntimeException: error with custom message
 
-%stests%ebasic%eunit%eStatusTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d
 
 --
 
@@ -91,12 +91,12 @@ There were 2 warnings:
 
 1) PHPUnit\SelfTest\Basic\StatusTest::testWarning
 
-%stests%ebasic%eunit%eStatusTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d
 
 2) PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage
 warning with custom message
 
-%stests%ebasic%eunit%eStatusTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d
 
 --
 
@@ -105,19 +105,19 @@ There were 3 failures:
 1) PHPUnit\SelfTest\Basic\StatusTest::testFailure
 Failed asserting that false is true.
 
-%stests%ebasic%eunit%eStatusTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d
 
 2) PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage
 failure with custom message
 Failed asserting that false is true.
 
-%stests%ebasic%eunit%eStatusTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d
 
 3) PHPUnit\SelfTest\Basic\TearDownAfterClassTest::tearDownAfterClass
 Exception in PHPUnit\SelfTest\Basic\TearDownAfterClassTest::tearDownAfterClass
 forcing an Exception in tearDownAfterClass()
 
-%stests%ebasic%eunit%eTearDownAfterClassTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eTearDownAfterClassTest.php:%d
 
 --
 
@@ -126,12 +126,12 @@ There were 2 risky tests:
 1) PHPUnit\SelfTest\Basic\StatusTest::testRisky
 This test did not perform any assertions
 
-%stests%ebasic%eunit%eStatusTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d
 
 2) PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage
 This test did not perform any assertions
 
-%stests%ebasic%eunit%eStatusTest.php:%d
+%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d
 
 ERRORS!
 Tests: 21, Assertions: 7, Errors: 5, Failures: 3, Warnings: 2, Skipped: 3, Incomplete: 2, Risky: 2.

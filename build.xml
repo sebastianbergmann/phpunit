@@ -417,7 +417,7 @@
     <target name="run-phar-specific-tests" description="Run the PHAR-specific tests with it (expects build/artifacts/phpunit-snapshot.phar to exist)">
         <exec executable="${basedir}/build/artifacts/phpunit-snapshot.phar" taskname="phpunit" failonerror="true">
             <arg value="--configuration" />
-            <arg value="tests/phar/phpunit.xml" />
+            <arg value="tests/end-to-end/phar/phpunit.xml" />
             <arg value="--coverage-text" />
         </exec>
     </target>
