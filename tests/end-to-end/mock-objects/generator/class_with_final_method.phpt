@@ -29,5 +29,5 @@ class MockFoo extends ClassWithFinalMethod implements PHPUnit\Framework\MockObje
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithoutReturnType;
 }

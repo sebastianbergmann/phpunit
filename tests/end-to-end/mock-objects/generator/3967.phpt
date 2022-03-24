@@ -36,7 +36,7 @@ class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\Moc
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\UnmockedCloneMethod;
+    use \PHPUnit\Framework\MockObject\UnmockedCloneMethodWithoutReturnType;
 
     public function foo(): string
     {

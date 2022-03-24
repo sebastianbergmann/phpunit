@@ -29,7 +29,7 @@ class MockFoo extends ClassWithMethodWithTypehintedVariadicArguments implements 
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithoutReturnType;
 
     public function methodWithTypehintedVariadicArguments($a, string ...$parameters)
     {

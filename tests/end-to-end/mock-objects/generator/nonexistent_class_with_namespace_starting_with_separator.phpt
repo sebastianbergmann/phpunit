@@ -32,7 +32,7 @@ class MockFoo extends NS\Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithoutReturnType;
 }
 
 }
