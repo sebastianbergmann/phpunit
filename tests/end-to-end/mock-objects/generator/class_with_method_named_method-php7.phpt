@@ -1,19 +1,17 @@
 --TEST--
-https://github.com/sebastianbergmann/phpunit/issues/3967
+\PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
 --SKIPIF--
 <?php declare(strict_types=1);
-if ((new ReflectionMethod(Exception::class, '__clone'))->isFinal()) {
-    print 'skip: PHP >= 8.1 required';
+if (PHP_MAJOR_VERSION >= 8) {
+    print 'skip: PHP 7 is required.';
 }
 --FILE--
 <?php declare(strict_types=1);
-interface Bar extends \Throwable
+class Foo
 {
-    public function foo(): string;
-}
-
-interface Baz extends Bar
-{
+    public function method()
+    {
+    }
 }
 
 require_once __DIR__ . '/../../../bootstrap.php';
@@ -21,24 +19,23 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
-    'Baz',
+    'Foo',
     [],
-    'MockBaz',
+    'MockFoo',
     true,
     true
 );
 
 print $mock->getClassCode();
---EXPECT--
+--EXPECTF--
 declare(strict_types=1);
 
-class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\MockObject
+class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
-    use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\UnmockedCloneMethodWithVoidReturnType;
+    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithoutReturnType;
 
-    public function foo(): string
+    public function method()
     {
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
@@ -53,7 +50,7 @@ class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\Moc
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Bar', 'foo', $__phpunit_arguments, 'string', $this, true
+                'Foo', 'method', $__phpunit_arguments, '', $this, true
             )
         );
 

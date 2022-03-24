@@ -1,44 +1,33 @@
 --TEST--
-https://github.com/sebastianbergmann/phpunit/issues/3967
+https://github.com/sebastianbergmann/phpunit/issues/4139
 --SKIPIF--
 <?php declare(strict_types=1);
-if ((new ReflectionMethod(Exception::class, '__clone'))->isFinal()) {
-    print 'skip: PHP >= 8.1 required';
+if (PHP_MAJOR_VERSION < 8) {
+    print 'skip: PHP 8 is required.';
 }
 --FILE--
 <?php declare(strict_types=1);
-interface Bar extends \Throwable
+interface InterfaceWithConstructor
 {
-    public function foo(): string;
+    public function __construct();
 }
-
-interface Baz extends Bar
-{
-}
-
 require_once __DIR__ . '/../../../bootstrap.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
-$mock = $generator->generate(
-    'Baz',
-    [],
-    'MockBaz',
-    true,
-    true
-);
+$mock = $generator->generate(InterfaceWithConstructor::class);
 
 print $mock->getClassCode();
---EXPECT--
+--EXPECTF--
 declare(strict_types=1);
 
-class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\MockObject
+class %s implements PHPUnit\Framework\MockObject\MockObject, InterfaceWithConstructor
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\UnmockedCloneMethodWithVoidReturnType;
+    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithVoidReturnType;
 
-    public function foo(): string
+    public function __construct()
     {
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
@@ -53,7 +42,7 @@ class MockBaz extends Exception implements Baz, PHPUnit\Framework\MockObject\Moc
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Bar', 'foo', $__phpunit_arguments, 'string', $this, true
+                'InterfaceWithConstructor', '__construct', $__phpunit_arguments, '', $this, true
             )
         );
 
