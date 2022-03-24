@@ -42,7 +42,7 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithVoidReturnType;
 
     public function returnsStatic(): static
     {
