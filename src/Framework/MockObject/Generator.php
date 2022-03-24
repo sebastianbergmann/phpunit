@@ -882,11 +882,19 @@ final class Generator
         $cloneTrait = '';
 
         if ($mockedCloneMethod) {
-            $cloneTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\MockedCloneMethod;';
+            if (PHP_MAJOR_VERSION >= 8) {
+                $cloneTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithVoidReturnType;';
+            } else {
+                $cloneTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithoutReturnType;';
+            }
         }
 
         if ($unmockedCloneMethod) {
-            $cloneTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\UnmockedCloneMethod;';
+            if (PHP_MAJOR_VERSION >= 8) {
+                $cloneTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\UnmockedCloneMethodWithVoidReturnType;';
+            } else {
+                $cloneTrait = PHP_EOL . '    use \PHPUnit\Framework\MockObject\UnmockedCloneMethodWithoutReturnType;';
+            }
         }
 
         $classTemplate->setVar(

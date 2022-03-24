@@ -32,7 +32,7 @@ class MockFoo implements PHPUnit\Framework\MockObject\MockObject, Foo
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithVoidReturnType;
 
     public function bar(string $baz): never
     {
