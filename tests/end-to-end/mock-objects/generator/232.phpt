@@ -1,11 +1,45 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
+--SKIPIF--
+<?php declare(strict_types=1);
+if (PHP_MAJOR_VERSION < 8) {
+    print 'skip: PHP 8 is required.';
+}
 --FILE--
 <?php declare(strict_types=1);
+trait BaseTrait
+{
+    protected function hello()
+    {
+        return 'hello';
+    }
+}
+
+trait ChildTrait
+{
+    use BaseTrait
+    {
+        hello as private hi;
+    }
+
+    protected function hello()
+    {
+        return 'hi';
+    }
+
+    protected function world()
+    {
+        return $this->hi();
+    }
+}
+
 class Foo
 {
-    public function bar(): bool|int
+    use ChildTrait;
+
+    public function speak()
     {
+        return $this->world();
     }
 }
 
@@ -14,7 +48,7 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
-    Foo::class,
+    'Foo',
     [],
     'MockFoo',
     true,
@@ -31,7 +65,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
-    public function bar(): bool|int
+    public function speak()
     {
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
@@ -46,7 +80,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, 'bool|int', $this, true
+                'Foo', 'speak', $__phpunit_arguments, '', $this, true
             )
         );
 

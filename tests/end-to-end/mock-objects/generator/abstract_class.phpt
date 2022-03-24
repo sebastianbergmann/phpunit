@@ -1,20 +1,21 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
+--SKIPIF--
+<?php declare(strict_types=1);
+if (PHP_MAJOR_VERSION < 8) {
+    print 'skip: PHP 8 is required.';
+}
 --FILE--
 <?php declare(strict_types=1);
-class ClassWithStaticReturnTypes
+abstract class Foo
 {
-    public function returnsStatic(): static
+    public function one()
     {
     }
 
-    public function returnsStaticOrNull(): ?static
-    {
-    }
+    abstract public function two();
 
-    public function returnsUnionWithStatic(): static|\stdClass
-    {
-    }
+    abstract protected function three();
 }
 
 require_once __DIR__ . '/../../../bootstrap.php';
@@ -22,9 +23,9 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
-    'ClassWithStaticReturnTypes',
+    'Foo',
     [],
-    'MockClassWithStaticReturnTypes',
+    'MockFoo',
     true,
     true
 );
@@ -33,13 +34,13 @@ print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implements PHPUnit\Framework\MockObject\MockObject
+class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
-    public function returnsStatic(): static
+    public function one()
     {
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
@@ -54,14 +55,14 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'ClassWithStaticReturnTypes', 'returnsStatic', $__phpunit_arguments, 'static', $this, true
+                'Foo', 'one', $__phpunit_arguments, '', $this, true
             )
         );
 
         return $__phpunit_result;
     }
 
-    public function returnsStaticOrNull(): ?static
+    public function two()
     {
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
@@ -76,14 +77,14 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'ClassWithStaticReturnTypes', 'returnsStaticOrNull', $__phpunit_arguments, '?static', $this, true
+                'Foo', 'two', $__phpunit_arguments, '', $this, true
             )
         );
 
         return $__phpunit_result;
     }
 
-    public function returnsUnionWithStatic(): static|stdClass
+    protected function three()
     {
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
@@ -98,7 +99,7 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'ClassWithStaticReturnTypes', 'returnsUnionWithStatic', $__phpunit_arguments, 'static|stdClass', $this, true
+                'Foo', 'three', $__phpunit_arguments, '', $this, true
             )
         );
 

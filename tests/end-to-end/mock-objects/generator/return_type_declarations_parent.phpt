@@ -1,10 +1,20 @@
 --TEST--
-\PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
+\PHPUnit\Framework\MockObject\Generator::generate('Bar', [], 'MockBar', true, true)
+--SKIPIF--
+<?php declare(strict_types=1);
+if (PHP_MAJOR_VERSION < 8) {
+    print 'skip: PHP 8 is required.';
+}
 --FILE--
 <?php declare(strict_types=1);
-class Foo
+abstract class Foo
 {
-    public function bar(): bool|int
+    abstract public function baz();
+}
+
+class Bar extends Foo
+{
+    public function baz(): parent
     {
     }
 }
@@ -14,9 +24,9 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
-    Foo::class,
+    'Bar',
     [],
-    'MockFoo',
+    'MockBar',
     true,
     true
 );
@@ -25,13 +35,13 @@ print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
+class MockBar extends Bar implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
-    public function bar(): bool|int
+    public function baz(): Foo
     {
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
@@ -46,7 +56,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, 'bool|int', $this, true
+                'Bar', 'baz', $__phpunit_arguments, 'Foo', $this, true
             )
         );
 

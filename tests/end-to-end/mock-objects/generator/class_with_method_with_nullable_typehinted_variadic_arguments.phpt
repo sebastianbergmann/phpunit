@@ -1,33 +1,25 @@
 --TEST--
-\PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
+\PHPUnit\Framework\MockObject\Generator::generate('ClassWithMethodWithVariadicArguments', [], 'MockFoo', true, true)
 --SKIPIF--
 <?php declare(strict_types=1);
-if (version_compare('8.1.0-dev', PHP_VERSION, '>')) {
-    print 'skip: PHP 8.1 is required.';
+if (PHP_MAJOR_VERSION < 8) {
+    print 'skip: PHP 8 is required.';
 }
 --FILE--
 <?php declare(strict_types=1);
-interface AnInterface
+class ClassWithMethodWithNullableTypehintedVariadicArguments
 {
-}
-
-interface AnotherInterface
-{
-}
-
-class Foo
-{
-    public function bar(AnInterface&AnotherInterface $baz)
+    public function methodWithNullableTypehintedVariadicArguments($a, ?string ...$parameters)
     {
     }
 }
 
-require_once __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
-    Foo::class,
+    'ClassWithMethodWithNullableTypehintedVariadicArguments',
     [],
     'MockFoo',
     true,
@@ -38,15 +30,15 @@ print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
+class MockFoo extends ClassWithMethodWithNullableTypehintedVariadicArguments implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
-    public function bar(AnInterface&AnotherInterface $baz)
+    public function methodWithNullableTypehintedVariadicArguments($a, ?string ...$parameters)
     {
-        $__phpunit_arguments = [$baz];
+        $__phpunit_arguments = [$a];
         $__phpunit_count     = func_num_args();
 
         if ($__phpunit_count > 1) {
@@ -59,7 +51,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, '', $this, true
+                'ClassWithMethodWithNullableTypehintedVariadicArguments', 'methodWithNullableTypehintedVariadicArguments', $__phpunit_arguments, '', $this, true
             )
         );
 

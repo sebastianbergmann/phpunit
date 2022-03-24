@@ -1,10 +1,19 @@
 --TEST--
-\PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
+\PHPUnit\Framework\MockObject\Generator::generate('ClassWithDeprecatedMethod', [], 'MockFoo', TRUE, TRUE)
+--SKIPIF--
+<?php declare(strict_types=1);
+if (PHP_MAJOR_VERSION < 8) {
+    print 'skip: PHP 8 is required.';
+}
 --FILE--
 <?php declare(strict_types=1);
-class Foo
+class ClassWithDeprecatedMethod
 {
-    public function bar(): bool|int
+    /**
+     * @deprecated this method
+     *             is deprecated
+     */
+    public function deprecatedMethod()
     {
     }
 }
@@ -14,25 +23,27 @@ require_once __DIR__ . '/../../../bootstrap.php';
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(
-    Foo::class,
-    [],
-    'MockFoo',
-    true,
-    true
+  'ClassWithDeprecatedMethod',
+  [],
+  'MockFoo',
+  TRUE,
+  TRUE
 );
 
 print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
-class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
+class MockFoo extends ClassWithDeprecatedMethod implements PHPUnit\Framework\MockObject\MockObject
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethod;
 
-    public function bar(): bool|int
+    public function deprecatedMethod()
     {
+        @trigger_error('The ClassWithDeprecatedMethod::deprecatedMethod method is deprecated (this method is deprecated).', E_USER_DEPRECATED);
+
         $__phpunit_arguments = [];
         $__phpunit_count     = func_num_args();
 
@@ -46,7 +57,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, 'bool|int', $this, true
+                'ClassWithDeprecatedMethod', 'deprecatedMethod', $__phpunit_arguments, '', $this, true
             )
         );
 
