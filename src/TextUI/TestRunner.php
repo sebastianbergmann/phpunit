@@ -329,11 +329,7 @@ final class TestRunner extends BaseTestRunner
         if ($arguments['colors'] !== DefaultResultPrinter::COLOR_NEVER) {
             $this->write(
                 'PHPUnit ' .
-                Version::id() .
-                ' ' .
-                Color::colorize('bg-blue', '#StandWith') .
-                Color::colorize('bg-yellow', 'Ukraine') .
-                "\n"
+                Version::id()
             );
         } else {
             $this->write(Version::getVersionString() . "\n");
