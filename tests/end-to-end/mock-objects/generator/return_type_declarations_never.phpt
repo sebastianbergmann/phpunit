@@ -1,10 +1,5 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
---SKIPIF--
-<?php declare(strict_types=1);
-if (version_compare('8.1.0-dev', PHP_VERSION, '>')) {
-    print 'skip: PHP 8.1 is required.';
-}
 --FILE--
 <?php declare(strict_types=1);
 interface Foo

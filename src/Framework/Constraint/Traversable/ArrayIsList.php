@@ -35,26 +35,7 @@ final class ArrayIsList extends Constraint
             return false;
         }
 
-        if (function_exists('array_is_list')) {
-            return array_is_list($other);
-        }
-
-        // @todo Remove this code once we require PHP >= 8.1
-        if ($other === []) {
-            return true;
-        }
-
-        $expectedKey = 0;
-
-        foreach ($other as $key => $value) {
-            if ($key !== $expectedKey) {
-                return false;
-            }
-
-            $expectedKey++;
-        }
-
-        return true;
+        return array_is_list($other);
     }
 
     /**

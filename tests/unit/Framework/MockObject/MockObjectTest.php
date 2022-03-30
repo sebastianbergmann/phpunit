@@ -16,7 +16,6 @@ use function get_parent_class;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
-use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\RequiresPhpExtension;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -26,7 +25,6 @@ use PHPUnit\TestFixture\Foo;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
-use PHPUnit\TestFixture\MockObject\ClassThatImplementsSerializable;
 use PHPUnit\TestFixture\MockObject\ClassWithAllPossibleReturnTypes;
 use PHPUnit\TestFixture\MockObject\ClassWithSelfTypeDeclaration;
 use PHPUnit\TestFixture\MockObject\ClassWithStaticMethod;
@@ -978,17 +976,6 @@ EOF
         $mock->staticMethod();
     }
 
-    #[RequiresPhp('< 8.1')]
-    public function testStubForClassThatImplementsSerializableCanBeCreatedWithoutInvokingTheConstructor(): void
-    {
-        $this->assertInstanceOf(
-            ClassThatImplementsSerializable::class,
-            $this->getMockBuilder(ClassThatImplementsSerializable::class)
-                 ->disableOriginalConstructor()
-                 ->getMock()
-        );
-    }
-
     public function testGetMockForClassWithSelfTypeHint(): void
     {
         $this->assertInstanceOf(
@@ -1203,7 +1190,6 @@ EOF
         $this->assertFalse($i->returnsBool());
     }
 
-    #[RequiresPhp('8.1')]
     public function testReturnValueCanBeAutomaticallyGeneratedForMethodThatReturnsIntersectionOfInterfaces(): void
     {
         $result = $this->createStub(InterfaceWithMethodReturningIntersection::class)->method();
@@ -1212,7 +1198,6 @@ EOF
         $this->assertInstanceOf(AnotherInterface::class, $result);
     }
 
-    #[RequiresPhp('8.1')]
     public function testReturnValueCannotBeAutomaticallyGeneratedForMethodThatReturnsIntersectionWithClass(): void
     {
         $stub = $this->createStub(InterfaceWithMethodReturningIntersectionWithClass::class);

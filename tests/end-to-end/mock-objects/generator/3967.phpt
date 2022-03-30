@@ -1,10 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/3967
---SKIPIF--
-<?php declare(strict_types=1);
-if ((new ReflectionMethod(Exception::class, '__clone'))->isFinal()) {
-    print 'skip: PHP >= 8.1 required';
-}
 --FILE--
 <?php declare(strict_types=1);
 interface Bar extends \Throwable
