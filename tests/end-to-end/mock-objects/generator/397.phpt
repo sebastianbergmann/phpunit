@@ -1,10 +1,5 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit-mock-objects/issues/397
---SKIPIF--
-<?php declare(strict_types=1);
-if (PHP_MAJOR_VERSION < 8) {
-    print 'skip: PHP 8 is required.';
-}
 --FILE--
 <?php declare(strict_types=1);
 class C
