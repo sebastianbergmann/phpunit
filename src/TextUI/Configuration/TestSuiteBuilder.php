@@ -12,7 +12,7 @@ namespace PHPUnit\TextUI\Configuration;
 use function is_dir;
 use function is_file;
 use function realpath;
-use function substr;
+use function str_ends_with;
 use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -82,7 +82,7 @@ final class TestSuiteBuilder
             return $suite;
         }
 
-        if (is_file($path) && substr($path, -5, 5) === '.phpt') {
+        if (is_file($path) && str_ends_with($path, '.phpt')) {
             $suite = new TestSuite;
             $suite->addTestFile($path);
 
