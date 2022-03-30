@@ -166,7 +166,7 @@ final class DataProvider
 
         $docComment = str_replace("\r\n", "\n", $docComment);
         $docComment = preg_replace('/' . '\n' . '\s*' . '\*' . '\s?' . '/', "\n", $docComment);
-        $docComment = (string) substr($docComment, 0, -1);
+        $docComment = substr($docComment, 0, -1);
         $docComment = rtrim($docComment, "\n");
 
         if (!preg_match('/@testWith\s+/', $docComment, $matches, PREG_OFFSET_CAPTURE)) {

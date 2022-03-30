@@ -312,7 +312,7 @@ final class MockMethod
 
             $parameterAsString = $parameter->__toString();
 
-            return (string) explode(
+            return explode(
                 ' = ',
                 substr(
                     substr(

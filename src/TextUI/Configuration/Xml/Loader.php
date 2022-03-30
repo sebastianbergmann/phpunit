@@ -871,7 +871,7 @@ final class Loader
         $columns = 80;
 
         if ($document->documentElement->hasAttribute('columns')) {
-            $columns = (string) $document->documentElement->getAttribute('columns');
+            $columns = $document->documentElement->getAttribute('columns');
 
             if ($columns !== 'max') {
                 $columns = $this->getInteger($columns, 80);
