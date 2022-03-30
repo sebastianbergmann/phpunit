@@ -79,7 +79,7 @@ final class TestRunner
 
     /**
      * @throws \PHPUnit\Runner\Exception
-     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws XmlConfiguration\Exception
      * @throws \PHPUnit\Util\Exception
      * @throws Exception
      */

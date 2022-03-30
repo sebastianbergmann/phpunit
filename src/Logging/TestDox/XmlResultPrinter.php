@@ -140,7 +140,7 @@ final class XmlResultPrinter extends Printer implements TestListener
     /**
      * A test ended.
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     public function endTest(Test $test, float $time): void
     {

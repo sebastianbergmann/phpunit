@@ -51,7 +51,7 @@ final class Xml
     /**
      * "Convert" a DOMElement object into a PHP variable.
      *
-     * @throws \PHPUnit\Util\Exception
+     * @throws Exception
      */
     public static function xmlToVariable(DOMElement $element): mixed
     {

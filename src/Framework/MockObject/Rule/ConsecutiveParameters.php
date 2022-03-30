@@ -70,7 +70,7 @@ final class ConsecutiveParameters implements ParametersRule
     }
 
     /**
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws ExpectationFailedException
      */
     public function verify(): void
     {
