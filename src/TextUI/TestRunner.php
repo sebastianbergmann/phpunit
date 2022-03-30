@@ -79,9 +79,9 @@ final class TestRunner
 
     /**
      * @throws \PHPUnit\Runner\Exception
-     * @throws XmlConfiguration\Exception
      * @throws \PHPUnit\Util\Exception
      * @throws Exception
+     * @throws XmlConfiguration\Exception
      */
     public function run(TestSuite $suite): TestResult
     {
