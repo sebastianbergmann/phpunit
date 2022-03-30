@@ -21,7 +21,6 @@ use function sprintf;
 use function str_contains;
 use function str_replace;
 use function str_starts_with;
-use function strncmp;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -68,7 +67,7 @@ class Printer
         }
 
         $this->stream      = fopen($out, 'wb');
-        $this->isPhpStream = strncmp($out, 'php://', 6) !== 0;
+        $this->isPhpStream = !str_starts_with($out, 'php://');
         $this->isOpen      = true;
     }
 
