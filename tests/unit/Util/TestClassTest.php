@@ -1548,8 +1548,9 @@ final class TestClassTest extends TestCase
             [CoverageClassTest::class, false],
             [CoverageClassWithoutAnnotationsTest::class, false],
             [CoverageCoversOverridesCoversNothingTest::class, false],
-            [CoverageClassNothingTest::class, true],
-            [CoverageMethodNothingTest::class, true],
+            // @see https://github.com/sebastianbergmann/phpunit/issues/4947#issuecomment-1084480950
+            // [CoverageClassNothingTest::class, true],
+            // [CoverageMethodNothingTest::class, true],
         ];
     }
 
