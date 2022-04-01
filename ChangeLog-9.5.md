@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 ### Fixed
 
 * [#4938](https://github.com/sebastianbergmann/phpunit/issues/4938): Test Double code generator does not handle `void` return type declaration on `__clone()` methods
+* [#4947](https://github.com/sebastianbergmann/phpunit/issues/4947): Test annotated with `@coversNothing` may lead to files missing from code coverage report
 
 ## [9.5.19] - 2022-03-15
 
