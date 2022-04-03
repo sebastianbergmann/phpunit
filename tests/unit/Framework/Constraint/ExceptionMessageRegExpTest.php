@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function ini_set;
 use Exception;
 use PHPUnit\Framework\TestCase;
 
