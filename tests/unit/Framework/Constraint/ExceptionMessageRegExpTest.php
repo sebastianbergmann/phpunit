@@ -10,8 +10,6 @@
 namespace PHPUnit\Framework\Constraint;
 
 use Exception;
-use PHPUnit\Framework\Attributes\RequiresPhpExtension;
-use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
