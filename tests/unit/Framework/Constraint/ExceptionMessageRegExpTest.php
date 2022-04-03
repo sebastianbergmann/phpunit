@@ -35,18 +35,6 @@ final class ExceptionMessageRegExpTest extends TestCase
         throw new Exception('A polymorphic exception message');
     }
 
-    #[RunInSeparateProcess]
-    #[RequiresPhpExtension('xdebug')]
-    public function testMessageXdebugScreamCompatibility(): void
-    {
-        ini_set('xdebug.scream', '1');
-
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessageMatches('#Screaming preg_match#');
-
-        throw new Exception('Screaming preg_match');
-    }
-
     public function testRegExMessageCanBeExportedAsString(): void
     {
         $exceptionMessageReExp = new ExceptionMessageRegularExpression('/^a poly[a-z]+ [a-zA-Z0-9_]+ me(s){2}age$/i');
