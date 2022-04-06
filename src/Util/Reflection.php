@@ -35,6 +35,9 @@ final class Reflection
         return $this->filterMethods($class, null);
     }
 
+    /**
+     * @psalm-return list<ReflectionMethod>
+     */
     private function filterMethods(ReflectionClass $class, ?int $filter): array
     {
         $methods = [];
