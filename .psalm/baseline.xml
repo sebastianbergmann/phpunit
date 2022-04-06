@@ -1430,6 +1430,11 @@
       <code>$stream</code>
     </PropertyNotSetInConstructor>
   </file>
+  <file src="src/Util/Reflection.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$filter</code>
+    </PossiblyNullArgument>
+  </file>
   <file src="src/Util/Test.php">
     <MissingReturnType occurrences="1">
       <code>sanitizeVersionNumber</code>
