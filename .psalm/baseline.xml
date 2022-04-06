@@ -334,7 +334,6 @@
     <PossiblyFalseOperand occurrences="1">
       <code>strpos($parameterAsString, '&lt;optional&gt; ')</code>
     </PossiblyFalseOperand>
-    <RedundantCast occurrences="1"/>
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(string) var_export($defaultValue, true)</code>
     </RedundantCastGivenDocblockType>
@@ -549,9 +548,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>dataProvidedByTestWithAnnotation</code>
     </MissingThrowsDocblock>
-    <RedundantCastGivenDocblockType occurrences="1">
-      <code>(string) substr($docComment, 0, -1)</code>
-    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Metadata/Api/Dependencies.php">
     <RedundantCondition occurrences="2">
@@ -894,11 +890,10 @@
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
-    <RedundantCast occurrences="10">
+    <RedundantCast occurrences="9">
       <code>(string) $argument-&gt;textContent</code>
       <code>(string) $directoryNode-&gt;textContent</code>
       <code>(string) $directoryNode-&gt;textContent</code>
-      <code>(string) $document-&gt;documentElement-&gt;getAttribute('columns')</code>
       <code>(string) $excludeNode-&gt;textContent</code>
       <code>(string) $file-&gt;textContent</code>
       <code>(string) $fileNode-&gt;textContent</code>
@@ -1171,6 +1166,11 @@
       <code>$this-&gt;stream</code>
       <code>$this-&gt;stream</code>
     </PossiblyInvalidArgument>
+  </file>
+  <file src="src/Util/Reflection.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$filter</code>
+    </PossiblyNullArgument>
   </file>
   <file src="src/Util/Variable/VariableExporter.php">
     <InvalidArgument occurrences="1"/>

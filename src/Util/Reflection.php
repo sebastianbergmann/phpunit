@@ -22,11 +22,24 @@ final class Reflection
     /**
      * @psalm-return list<ReflectionMethod>
      */
+    public function publicMethodsInTestClass(ReflectionClass $class): array
+    {
+        return $this->filterMethods($class, ReflectionMethod::IS_PUBLIC);
+    }
+
+    /**
+     * @psalm-return list<ReflectionMethod>
+     */
     public function methodsInTestClass(ReflectionClass $class): array
+    {
+        return $this->filterMethods($class, null);
+    }
+
+    private function filterMethods(ReflectionClass $class, ?int $filter): array
     {
         $methods = [];
 
-        foreach ($class->getMethods() as $method) {
+        foreach ($class->getMethods($filter) as $method) {
             if ($method->getDeclaringClass()->getName() === TestCase::class) {
                 continue;
             }
