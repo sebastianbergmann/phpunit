@@ -11,9 +11,8 @@ namespace PHPUnit\Metadata\Api;
 
 use function array_unshift;
 use function class_exists;
-use PHPUnit\Framework\Assert;
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\Registry;
+use PHPUnit\Util\Reflection;
 use ReflectionClass;
 use ReflectionException;
 
@@ -40,15 +39,7 @@ final class HookMethods
         self::$hookMethods[$className] = self::emptyHookMethodsArray();
 
         try {
-            foreach ((new ReflectionClass($className))->getMethods() as $method) {
-                if ($method->getDeclaringClass()->getName() === Assert::class) {
-                    continue;
-                }
-
-                if ($method->getDeclaringClass()->getName() === TestCase::class) {
-                    continue;
-                }
-
+            foreach ((new Reflection)->methodsInTestClass(new ReflectionClass($className)) as $method) {
                 $metadata = Registry::parser()->forMethod($className, $method->getName());
 
                 if ($method->isStatic()) {

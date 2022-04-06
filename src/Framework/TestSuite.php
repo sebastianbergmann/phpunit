@@ -34,6 +34,7 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
+use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
@@ -144,7 +145,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return;
         }
 
-        foreach ($theClass->getMethods(ReflectionMethod::IS_PUBLIC) as $method) {
+        foreach ((new Reflection)->methodsInTestClass($theClass) as $method) {
             if ($method->getDeclaringClass()->getName() === Assert::class) {
                 continue;
             }
