@@ -586,11 +586,6 @@
       <code>$comparisonFailure</code>
     </PossiblyNullPropertyAssignmentValue>
   </file>
-  <file src="src/Framework/Exception/InvalidArgumentException.php">
-    <PossiblyUndefinedArrayOffset occurrences="1">
-      <code>$stack[1]['class']</code>
-    </PossiblyUndefinedArrayOffset>
-  </file>
   <file src="src/Framework/ExceptionWrapper.php">
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($this)</code>
@@ -975,11 +970,6 @@
       <code>TestListener[]</code>
       <code>private $listeners = [];</code>
     </DeprecatedClass>
-    <DeprecatedMethod occurrences="3">
-      <code>addWarning</code>
-      <code>endTest</code>
-      <code>startTest</code>
-    </DeprecatedMethod>
     <DeprecatedProperty occurrences="11">
       <code>$this-&gt;listeners</code>
       <code>$this-&gt;listeners</code>
@@ -1572,6 +1562,11 @@
       <code>$out</code>
       <code>$outTarget</code>
     </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Util/Reflection.php">
+    <PossiblyNullArgument occurrences="1">
+      <code>$filter</code>
+    </PossiblyNullArgument>
   </file>
   <file src="src/Util/Test.php">
     <InvalidScalarArgument occurrences="1">
