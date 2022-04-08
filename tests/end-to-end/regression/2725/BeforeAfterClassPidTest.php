@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Issue2725;
+namespace PHPUnit\TestFixture\Issue2725;
 
 use function getmypid;
 use PHPUnit\Framework\TestCase;

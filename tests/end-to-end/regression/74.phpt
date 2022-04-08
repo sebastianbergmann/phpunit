@@ -8,9 +8,9 @@ $_SERVER['argv'][] = '--process-isolation';
 $_SERVER['argv'][] = __DIR__ . '/74/Issue74Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 E                                                                   1 / 1 (100%)
 
@@ -18,8 +18,8 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) Issue74Test::testCreateAndThrowNewExceptionInProcessIsolation
-NewException: Testing GH-74
+1) PHPUnit\TestFixture\Issue74Test::testCreateAndThrowNewExceptionInProcessIsolation
+PHPUnit\TestFixture\NewException: Testing GH-74
 
 %sIssue74Test.php:%d
 

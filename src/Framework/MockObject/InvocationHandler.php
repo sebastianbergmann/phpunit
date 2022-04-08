@@ -9,10 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
-use function sprintf;
 use function strtolower;
 use Exception;
-use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use Throwable;
@@ -23,30 +21,25 @@ use Throwable;
 final class InvocationHandler
 {
     /**
-     * @var Matcher[]
+     * @psalm-var list<Matcher>
      */
-    private $matchers = [];
+    private array $matchers = [];
 
     /**
-     * @var Matcher[]
+     * @psalm-var array<string,Matcher>
      */
-    private $matcherMap = [];
+    private array $matcherMap = [];
 
     /**
-     * @var ConfigurableMethod[]
+     * @psalm-var list<ConfigurableMethod>
      */
-    private $configurableMethods;
+    private array $configurableMethods;
+    private bool $returnValueGeneration;
+    private ?ReturnValueNotConfiguredException $deferredError = null;
 
     /**
-     * @var bool
+     * @psalm-param list<ConfigurableMethod> $configurableMethods
      */
-    private $returnValueGeneration;
-
-    /**
-     * @var Throwable
-     */
-    private $deferredError;
-
     public function __construct(array $configurableMethods, bool $returnValueGeneration)
     {
         $this->configurableMethods   = $configurableMethods;
@@ -66,33 +59,22 @@ final class InvocationHandler
 
     /**
      * Looks up the match builder with identification $id and returns it.
-     *
-     * @param string $id The identification of the match builder
      */
     public function lookupMatcher(string $id): ?Matcher
     {
-        if (isset($this->matcherMap[$id])) {
-            return $this->matcherMap[$id];
-        }
-
-        return null;
+        return $this->matcherMap[$id] ?? null;
     }
 
     /**
      * Registers a matcher with the identification $id. The matcher can later be
      * looked up using lookupMatcher() to figure out if it has been invoked.
      *
-     * @param string  $id      The identification of the matcher
-     * @param Matcher $matcher The builder which is being registered
-     *
-     * @throws RuntimeException
+     * @throws MatcherAlreadyRegisteredException
      */
     public function registerMatcher(string $id, Matcher $matcher): void
     {
         if (isset($this->matcherMap[$id])) {
-            throw new RuntimeException(
-                'Matcher with id <' . $id . '> is already registered.'
-            );
+            throw new MatcherAlreadyRegisteredException($id);
         }
 
         $this->matcherMap[$id] = $matcher;
@@ -111,11 +93,10 @@ final class InvocationHandler
     }
 
     /**
+     * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws Exception
-     *
-     * @return mixed|void
      */
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         $exception      = null;
         $hasReturnValue = false;
@@ -145,13 +126,7 @@ final class InvocationHandler
         }
 
         if (!$this->returnValueGeneration) {
-            $exception = new ExpectationFailedException(
-                sprintf(
-                    'Return value inference disabled and no expectation set up for %s::%s()',
-                    $invocation->getClassName(),
-                    $invocation->getMethodName()
-                )
-            );
+            $exception = new ReturnValueNotConfiguredException($invocation);
 
             if (strtolower($invocation->getMethodName()) === '__tostring') {
                 $this->deferredError = $exception;
@@ -177,7 +152,7 @@ final class InvocationHandler
     }
 
     /**
-     * @throws \PHPUnit\Framework\ExpectationFailedException
+     * @throws Throwable
      */
     public function verify(): void
     {

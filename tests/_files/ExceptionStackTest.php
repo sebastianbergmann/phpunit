@@ -11,6 +11,7 @@ namespace PHPUnit\TestFixture;
 
 use Exception;
 use InvalidArgumentException;
+use PHPUnit;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
@@ -23,7 +24,7 @@ class ExceptionStackTest extends TestCase
         } catch (ExpectationFailedException $e) {
             $message = $e->getMessage() . $e->getComparisonFailure()->getDiff();
 
-            throw new \PHPUnit\Framework\Exception("Child exception\n{$message}", 101, $e);
+            throw new PHPUnit\Framework\Exception("Child exception\n{$message}", 101, $e);
         }
     }
 

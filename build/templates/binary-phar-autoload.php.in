@@ -15,12 +15,12 @@ if (!version_compare(PHP_VERSION, PHP_VERSION, '=')) {
     die(1);
 }
 
-if (version_compare('7.2.0', PHP_VERSION, '>')) {
+if (version_compare('8.1.0', PHP_VERSION, '>')) {
     fwrite(
         STDERR,
         sprintf(
             'PHPUnit X.Y.Z by Sebastian Bergmann and contributors.' . PHP_EOL . PHP_EOL .
-            'This version of PHPUnit requires PHP >= 7.2.' . PHP_EOL .
+            'This version of PHPUnit requires PHP >= 8.1.' . PHP_EOL .
             'You are using PHP %s (%s).' . PHP_EOL,
             PHP_VERSION,
             PHP_BINARY
@@ -52,11 +52,7 @@ if (__FILE__ === realpath($_SERVER['SCRIPT_NAME'])) {
     $execute = false;
 }
 
-$options = getopt('', array('prepend:', 'manifest'));
-
-if (isset($options['prepend'])) {
-    require $options['prepend'];
-}
+$options = getopt('', array('manifest'));
 
 if (isset($options['manifest'])) {
     $printManifest = true;
@@ -89,6 +85,8 @@ foreach ([___CLASSLIST___] as $file) {
     require_once 'phar://___PHAR___' . $file;
 }
 
+require __PHPUNIT_PHAR_ROOT__ . '/phpunit/Framework/Assert/Functions.php';
+
 if ($execute) {
     if (isset($printManifest)) {
         print file_get_contents(__PHPUNIT_PHAR_ROOT__ . '/manifest.txt');
@@ -98,7 +96,7 @@ if ($execute) {
 
     unset($execute);
 
-    PHPUnit\TextUI\Command::main();
+    PHPUnit\TextUI\Application::main();
 }
 
 __HALT_COMPILER();

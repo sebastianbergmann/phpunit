@@ -12,7 +12,6 @@ namespace PHPUnit\TestFixture;
 class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
 {
     public static $setUpBeforeClassWasCalled;
-
     public static $beforeClassWasCalled;
 
     public static function resetProperties(): void

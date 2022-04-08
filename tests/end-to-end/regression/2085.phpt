@@ -22,9 +22,9 @@ $_SERVER['argv'][] = '--default-time-limit=1';
 $_SERVER['argv'][] = __DIR__ . '/2085/Issue2085Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 R                                                                   1 / 1 (100%)
 
@@ -32,8 +32,10 @@ Time: %s, Memory: %s
 
 There was 1 risky test:
 
-1) Issue2085Test::testShouldAbortSlowTestByEnforcingTimeLimit
-Execution aborted after 1 second
+1) PHPUnit\TestFixture\Issue2085Test::testShouldAbortSlowTestByEnforcingTimeLimit
+This test was aborted after 1 second
+
+%s:%d
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 1, Risky: 1.

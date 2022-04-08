@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 final class TestCaseWithExceptionInHook extends TestCase

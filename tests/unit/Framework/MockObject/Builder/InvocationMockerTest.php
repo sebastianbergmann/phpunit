@@ -10,31 +10,30 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\ClassWithAllPossibleReturnTypes;
 use PHPUnit\TestFixture\Foo;
+use PHPUnit\TestFixture\MockObject\ClassWithAllPossibleReturnTypes;
 use PHPUnit\TestFixture\MockObject\ClassWithImplicitProtocol;
 use stdClass;
 
-/**
- * @covers \PHPUnit\Framework\MockObject\Builder\InvocationMocker
- * @small
- */
+#[CoversClass(InvocationMocker::class)]
+#[Small]
 final class InvocationMockerTest extends TestCase
 {
     public function testWillReturnWithOneValue(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
 
-        $mock->expects($this->any())
-            ->method('foo')
-            ->willReturn(1);
+        $mock->method('foo')
+             ->willReturn(1);
 
         $this->assertEquals(1, $mock->foo());
     }
@@ -42,27 +41,11 @@ final class InvocationMockerTest extends TestCase
     public function testWillReturnWithMultipleValues(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
 
-        $mock->expects($this->any())
-            ->method('foo')
-            ->willReturn(1, 2, 3);
-
-        $this->assertEquals(1, $mock->foo());
-        $this->assertEquals(2, $mock->foo());
-        $this->assertEquals(3, $mock->foo());
-    }
-
-    public function testWillReturnOnConsecutiveCalls(): void
-    {
-        $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo'])
-            ->getMock();
-
-        $mock->expects($this->any())
-            ->method('foo')
-            ->willReturnOnConsecutiveCalls(1, 2, 3);
+        $mock->method('foo')
+             ->willReturn(1, 2, 3);
 
         $this->assertEquals(1, $mock->foo());
         $this->assertEquals(2, $mock->foo());
@@ -72,12 +55,11 @@ final class InvocationMockerTest extends TestCase
     public function testWillReturnByReference(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo'])
+            ->addMethods(['foo'])
             ->getMock();
 
-        $mock->expects($this->any())
-            ->method('foo')
-            ->willReturnReference($value);
+        $mock->method('foo')
+             ->willReturnReference($value);
 
         $this->assertNull($mock->foo());
         $value = 'foo';
@@ -89,12 +71,14 @@ final class InvocationMockerTest extends TestCase
     public function testWillFailWhenTryingToPerformExpectationUnconfigurableMethod(): void
     {
         $matcherCollection = new InvocationHandler([], false);
-        $invocationMocker  = new InvocationMocker(
+
+        $invocationMocker = new InvocationMocker(
             $matcherCollection,
             new Matcher($this->any())
         );
 
-        $this->expectException(RuntimeException::class);
+        $this->expectException(MethodCannotBeConfiguredException::class);
+
         $invocationMocker->method('someMethod');
     }
 
@@ -106,7 +90,7 @@ final class InvocationMockerTest extends TestCase
         $invocationMocker = $mock->method('methodWithBoolReturnTypeDeclaration');
 
         $this->expectException(IncompatibleReturnValueException::class);
-        $this->expectExceptionMessage('Method methodWithBoolReturnTypeDeclaration may not return value of type integer, its return declaration is ": bool"');
+        $this->expectExceptionMessage('Method methodWithBoolReturnTypeDeclaration may not return value of type int, its declared return type is "bool"');
         $invocationMocker->willReturn(1);
     }
 
@@ -118,7 +102,7 @@ final class InvocationMockerTest extends TestCase
         $invocationMocker = $mock->method(new IsEqual('methodWithBoolReturnTypeDeclaration'));
 
         $this->expectException(IncompatibleReturnValueException::class);
-        $this->expectExceptionMessage('Method methodWithBoolReturnTypeDeclaration may not return value of type integer, its return declaration is ": bool"');
+        $this->expectExceptionMessage('Method methodWithBoolReturnTypeDeclaration may not return value of type int, its declared return type is "bool"');
         $invocationMocker->willReturn(1);
     }
 
@@ -130,7 +114,7 @@ final class InvocationMockerTest extends TestCase
         $invocationMocker = $mock->method('methodWithBoolReturnTypeDeclaration');
 
         $this->expectException(IncompatibleReturnValueException::class);
-        $this->expectExceptionMessage('Method methodWithBoolReturnTypeDeclaration may not return value of type integer, its return declaration is ": bool"');
+        $this->expectExceptionMessage('Method methodWithBoolReturnTypeDeclaration may not return value of type int, its declared return type is "bool"');
         $invocationMocker->willReturn(true, 1);
     }
 
@@ -143,7 +127,7 @@ final class InvocationMockerTest extends TestCase
 
         $this->expectException(IncompatibleReturnValueException::class);
         $this->expectExceptionMessage(sprintf(
-            'Method methodWithClassReturnTypeDeclaration may not return value of type %s, its return declaration is ": %s"',
+            'Method methodWithClassReturnTypeDeclaration may not return value of type %s, its declared return type is "%s"',
             Foo::class,
             stdClass::class
         ));
@@ -168,9 +152,8 @@ final class InvocationMockerTest extends TestCase
         $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
             ->getMock();
 
-        $mock->expects($this->any())
-            ->method('methodWithBoolReturnTypeDeclaration')
-            ->willReturn(true);
+        $mock->method('methodWithBoolReturnTypeDeclaration')
+             ->willReturn(true);
 
         $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());
     }
@@ -180,9 +163,8 @@ final class InvocationMockerTest extends TestCase
         $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
             ->getMock();
 
-        $mock->expects($this->any())
-            ->method('methodWithBoolReturnTypeDeclaration')
-            ->willReturn(true);
+        $mock->method('methodWithBoolReturnTypeDeclaration')
+             ->willReturn(true);
 
         $this->assertEquals(true, $mock->methodwithboolreturntypedeclaration());
     }
@@ -192,9 +174,8 @@ final class InvocationMockerTest extends TestCase
         $mock = $this->getMockBuilder(ClassWithAllPossibleReturnTypes::class)
             ->getMock();
 
-        $mock->expects($this->any())
-            ->method('methodwithboolreturntypedeclaration')
-            ->willReturn(true);
+        $mock->method('methodwithboolreturntypedeclaration')
+             ->willReturn(true);
 
         $this->assertEquals(true, $mock->methodWithBoolReturnTypeDeclaration());
     }
@@ -209,7 +190,7 @@ final class InvocationMockerTest extends TestCase
         $method = $out->method('methodWithVoidReturnTypeDeclaration');
 
         $this->expectException(IncompatibleReturnValueException::class);
-        $this->expectExceptionMessage('Method methodWithVoidReturnTypeDeclaration may not return value of type boolean, its return declaration is ": void"');
+        $this->expectExceptionMessage('Method methodWithVoidReturnTypeDeclaration may not return value of type bool, its declared return type is "void"');
         $method->willReturn(true);
     }
 
@@ -249,16 +230,14 @@ final class InvocationMockerTest extends TestCase
     public function testWillReturnAlreadyInstantiatedStubs(): void
     {
         $mock = $this->getMockBuilder(stdClass::class)
-            ->setMethods(['foo', 'bar'])
+            ->addMethods(['foo', 'bar'])
             ->getMock();
 
-        $mock->expects($this->any())
-            ->method('foo')
-            ->willReturn(new ReturnStub('foo'));
+        $mock->method('foo')
+             ->willReturn(new ReturnStub('foo'));
 
-        $mock->expects($this->any())
-            ->method('bar')
-            ->willReturn(new ReturnSelf);
+        $mock->method('bar')
+             ->willReturn(new ReturnSelf);
 
         $this->assertSame('foo', $mock->foo());
         $this->assertSame($mock, $mock->bar());

@@ -10,79 +10,66 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @testdox Basic ANSI color highlighting support
- * @small
- */
+#[CoversClass(Color::class)]
+#[Small]
+#[TestDox('Basic ANSI color highlighting support')]
 final class ColorTest extends TestCase
 {
-    /**
-     * @testdox Colorize with $_dataName
-     * @dataProvider colorizeProvider
-     */
+    #[TestDox('Colorize with $_dataName')]
+    #[DataProvider('colorizeProvider')]
     public function testColorize(string $color, string $buffer, string $expected): void
     {
         $this->assertSame($expected, Color::colorize($color, $buffer));
     }
 
-    /**
-     * @testdox Colorize path $path after $prevPath
-     * @dataProvider colorizePathProvider
-     */
+    #[TestDox('Colorize path $path after $prevPath')]
+    #[DataProvider('colorizePathProvider')]
     public function testColorizePath(?string $prevPath, string $path, bool $colorizeFilename, string $expected): void
     {
         $this->assertSame($expected, Color::colorizePath($path, $prevPath, $colorizeFilename));
     }
 
-    /**
-     * @testdox dim($m) and colorize('dim',$m) return different ANSI codes
-     */
+    #[TestDox('dim($m) and colorize(\'dim\',$m) return different ANSI codes')]
     public function testDimAndColorizeDimAreDifferent(): void
     {
         $buffer = 'some string';
         $this->assertNotSame(Color::dim($buffer), Color::colorize('dim', $buffer));
     }
 
-    /**
-     * @testdox Visualize all whitespace characters in $actual
-     * @dataProvider whitespacedStringProvider
-     */
+    #[DataProvider('whitespacedStringProvider')]
+    #[TestDox('Visualize all whitespace characters in $actual')]
     public function testVisibleWhitespace(string $actual, string $expected): void
     {
         $this->assertSame($expected, Color::visualizeWhitespace($actual, true));
     }
 
-    /**
-     * @testdox Visualize whitespace but ignore EOL
-     */
-    public function testVisibleWhitespaceWithoutEOL(): void
+    #[TestDox('Visualize whitespace but ignore EOL')]
+    public function testVisualizeWhitespaceButIgnoreEol(): void
     {
         $string = "line1\nline2\n";
         $this->assertSame($string, Color::visualizeWhitespace($string, false));
     }
 
-    /**
-     * @dataProvider unnamedDataSetProvider
-     */
+    #[DataProvider('unnamedDataSetProvider')]
     public function testPrettifyUnnamedDataprovider(int $value): void
     {
         $this->assertSame($value, $value);
     }
 
-    /**
-     * @dataProvider namedDataSetProvider
-     */
+    #[DataProvider('namedDataSetProvider')]
     public function testPrettifyNamedDataprovider(int $value): void
     {
         $this->assertSame($value, $value);
     }
 
-    /**
-     * @testdox TestDox shows name of data set $_dataName with value $value
-     * @dataProvider namedDataSetProvider
-     */
+    #[DataProvider('namedDataSetProvider')]
+    #[TestDox('TestDox shows name of data set $_dataName with value $value')]
     public function testTestdoxDatanameAsParameter(int $value): void
     {
         $this->assertSame($value, $value);

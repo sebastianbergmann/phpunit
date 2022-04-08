@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phpunit>
+    <coverage cacheDirectory="/tmp/cache"
+              pathCoverage="true"
+              includeUncoveredFiles="true"
+              processUncoveredFiles="true"
+              ignoreDeprecatedCodeUnits="true"
+              disableCodeCoverageIgnore="true">
+        <include>
+            <directory suffix=".php">/path/to/files</directory>
+            <file>/path/to/file</file>
+            <file>
+                /path/to/file
+            </file>
+        </include>
+
+        <exclude>
+            <directory suffix=".php">/path/to/files</directory>
+            <file>/path/to/file</file>
+        </exclude>
+
+        <report>
+            <clover outputFile="clover.xml"/>
+            <cobertura outputFile="cobertura.xml"/>
+            <crap4j outputFile="crap4j.xml" threshold="30"/>
+            <html outputDirectory="coverage" lowUpperBound="50" highLowerBound="90"/>
+            <php outputFile="coverage.php"/>
+            <text outputFile="coverage.txt" showUncoveredFiles="false" showOnlySummary="true"/>
+            <xml outputDirectory="coverage"/>
+        </report>
+    </coverage>
+</phpunit>

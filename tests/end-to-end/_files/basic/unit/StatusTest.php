@@ -11,13 +11,13 @@ namespace PHPUnit\SelfTest\Basic;
 
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\Warning;
-use PHPUnit\TestFixture\AnInterface;
+use PHPUnit\TestFixture\MockObject\AnInterface;
 use RuntimeException;
 
 /**
  * @covers Foo
  *
- * @uses \PHPUnit\TestFixture\Bar
+ * @uses Bar
  *
  * @testdox Test result status with and without message
  */
@@ -61,7 +61,7 @@ class StatusTest extends TestCase
 
     public function testSuccessWithMessage(): void
     {
-        $this->assertTrue(true, '"success with custom message"');
+        $this->assertTrue(true, 'success with custom message');
     }
 
     public function testFailureWithMessage(): void

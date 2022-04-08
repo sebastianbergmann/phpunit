@@ -7,14 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 return [
     'exclude-namespaces' => [
         'PHPUnit',
-        'Prophecy'
-    ],
-    'expose-classes' => [
-        '/^PHP_Token.*$/'
     ],
     'expose-constants' => [
         '/^__PHPUNIT_.+$/'

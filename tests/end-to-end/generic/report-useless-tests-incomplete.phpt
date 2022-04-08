@@ -7,9 +7,9 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/IncompleteTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 I                                                                   1 / 1 (100%)
 

@@ -12,13 +12,12 @@ namespace PHPUnit\Framework\Constraint;
 use function preg_replace;
 use function sprintf;
 use Countable;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
-/**
- * @small
- */
+#[Small]
 abstract class ConstraintTestCase extends TestCase
 {
     final public function testIsCountable(): void

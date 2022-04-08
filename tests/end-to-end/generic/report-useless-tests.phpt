@@ -7,9 +7,9 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/NothingTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 R                                                                   1 / 1 (100%)
 
@@ -20,7 +20,7 @@ There was 1 risky test:
 1) PHPUnit\TestFixture\NothingTest::testNothing
 This test did not perform any assertions
 
-%s:16
+%s:%d
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 0, Risky: 1.

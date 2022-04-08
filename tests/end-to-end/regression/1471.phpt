@@ -7,9 +7,9 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/1471/Issue1471Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 F                                                                   1 / 1 (100%)
 
@@ -17,7 +17,7 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) Issue1471Test::testFailure
+1) PHPUnit\TestFixture\Issue1471Test::testFailure
 Failed asserting that false is true.
 
 %s%eIssue1471Test.php:%d

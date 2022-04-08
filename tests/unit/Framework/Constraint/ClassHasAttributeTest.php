@@ -9,14 +9,13 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class ClassHasAttributeTest extends ConstraintTestCase
 {
     public function testConstraintClassHasAttribute(): void

@@ -9,11 +9,10 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\TestFixture\EmptyTestCaseTest;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\TestFixture\Success;
 
-/**
- * @small
- */
+#[Small]
 final class TestSuiteIteratorTest extends TestCase
 {
     public function testKeyForEmptyTestSuiteInitiallyReturnsZero(): void
@@ -48,7 +47,7 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testCurrentForNonEmptyTestSuiteInitiallyReturnsFirstTest(): void
     {
-        $test      = new EmptyTestCaseTest;
+        $test      = new Success('testOne');
         $testSuite = new TestSuite;
         $testSuite->addTest($test);
         $subject = new TestSuiteIterator($testSuite);
@@ -69,7 +68,7 @@ final class TestSuiteIteratorTest extends TestCase
     public function testRewindResetsCurrentToFirstElement(): void
     {
         $testSuite = new TestSuite;
-        $test      = new EmptyTestCaseTest;
+        $test      = new Success('testOne');
         $testSuite->addTest($test);
         $subject = new TestSuiteIterator($testSuite);
         $subject->next();
@@ -118,7 +117,7 @@ final class TestSuiteIteratorTest extends TestCase
     public function testGetChildrenReturnsNewInstanceWithCurrentTestSuite(): void
     {
         $childSuite = new TestSuite;
-        $test       = new EmptyTestCaseTest;
+        $test       = new Success('testOne');
         $childSuite->addTest($test);
 
         $testSuite = new TestSuite;
@@ -160,7 +159,7 @@ final class TestSuiteIteratorTest extends TestCase
     {
         $suite = new TestSuite;
 
-        $suite->addTest(new EmptyTestCaseTest);
+        $suite->addTest(new Success('testOne'));
 
         return $suite;
     }

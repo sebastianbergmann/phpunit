@@ -9,9 +9,9 @@ $_SERVER['argv'][] = '--colors=always';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s [44m#StandWith[0m[43mUkraine[0m
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 ...                                                                 3 / 3 (100%)
 

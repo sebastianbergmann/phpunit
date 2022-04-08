@@ -12,15 +12,16 @@ namespace PHPUnit\Framework;
 use function array_reduce;
 use function file_get_contents;
 use function preg_match_all;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 final class FunctionsTest extends TestCase
 {
-    private static $globalAssertionFunctions = [];
+    private static array $globalAssertionFunctions = [];
 
     public static function setUpBeforeClass(): void
     {
         preg_match_all(
-            '/function (assert[^ \(]+)/',
+            '/function (assert[^ (]+)/',
             file_get_contents(
                 __DIR__ . '/../../../../src/Framework/Assert/Functions.php'
             ),
@@ -30,9 +31,7 @@ final class FunctionsTest extends TestCase
         self::$globalAssertionFunctions = $matches[1];
     }
 
-    /**
-     * @dataProvider provideStaticAssertionMethodNames
-     */
+    #[DataProvider('provideStaticAssertionMethodNames')]
     public function testGlobalFunctionsFileContainsAllStaticAssertions(string $methodName): void
     {
         Assert::assertContains(
@@ -45,7 +44,7 @@ final class FunctionsTest extends TestCase
     public function provideStaticAssertionMethodNames(): array
     {
         preg_match_all(
-            '/public static function (assert[^ \(]+)/',
+            '/public static function (assert[^ (]+)/',
             file_get_contents(
                 __DIR__ . '/../../../../src/Framework/Assert.php'
             ),

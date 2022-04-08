@@ -10,12 +10,11 @@
 namespace PHPUnit\Framework\MockObject;
 
 use function assert;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\TestProxyFixture;
+use PHPUnit\TestFixture\MockObject\TestProxyFixture;
 
-/**
- * @small
- */
+#[Small]
 final class ProxyObjectTest extends TestCase
 {
     public function testProxyingWorksForMethodThatReturnsUndeclaredScalarValue(): void

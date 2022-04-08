@@ -19,17 +19,14 @@ use PHPUnit\Framework\MockObject\Invocation;
  */
 final class ReturnValueMap implements Stub
 {
-    /**
-     * @var array
-     */
-    private $valueMap;
+    private array $valueMap;
 
     public function __construct(array $valueMap)
     {
         $this->valueMap = $valueMap;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         $parameterCount = count($invocation->getParameters());
 
@@ -44,6 +41,8 @@ final class ReturnValueMap implements Stub
                 return $return;
             }
         }
+
+        return null;
     }
 
     public function toString(): string

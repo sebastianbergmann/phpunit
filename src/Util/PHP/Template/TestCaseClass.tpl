@@ -1,5 +1,9 @@
 <?php
-use SebastianBergmann\CodeCoverage\CodeCoverage;
+use PHPUnit\Event\Facade;
+use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\XmlConfiguration\Loader;
+use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 
 if (!defined('STDOUT')) {
     // php://stdout does not obey output buffering. Any output would break
@@ -26,28 +30,30 @@ if ($composerAutoload) {
 
 function __phpunit_run_isolated_test()
 {
-    if (!class_exists('{className}')) {
-        require_once '{filename}';
-    }
+    $dispatcher = Facade::initForIsolation(
+        PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
+            {offsetSeconds},
+            {offsetNanoseconds}
+        )
+    );
+
+    require_once '{filename}';
 
     $result = new PHPUnit\Framework\TestResult;
 
     if ({collectCodeCoverageInformation}) {
-        $result->setCodeCoverage(
-            new CodeCoverage(
-                null,
-                unserialize('{codeCoverageFilter}')
-            )
+        CodeCoverage::activate(
+            unserialize('{codeCoverageFilter}'),
+            {pathCoverage}
         );
+
+        if ({cachesStaticAnalysis}) {
+            CodeCoverage::instance()->cacheStaticAnalysis(unserialize('{codeCoverageCacheDirectory}'));
+        }
     }
 
-    $result->beStrictAboutTestsThatDoNotTestAnything({isStrictAboutTestsThatDoNotTestAnything});
-    $result->beStrictAboutOutputDuringTests({isStrictAboutOutputDuringTests});
-    $result->enforceTimeLimit({enforcesTimeLimit});
-    $result->beStrictAboutTodoAnnotatedTests({isStrictAboutTodoAnnotatedTests});
-    $result->beStrictAboutResourceUsageDuringSmallTests({isStrictAboutResourceUsageDuringSmallTests});
-
-    $test = new {className}('{name}', unserialize('{data}'), '{dataName}');
+    $test = new {className}('{name}');
+    $test->setData('{dataName}', unserialize('{data}'));
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(TRUE);
 
@@ -55,7 +61,7 @@ function __phpunit_run_isolated_test()
     $test->run($result);
     $output = '';
     if (!$test->hasExpectationOnOutput()) {
-        $output = $test->getActualOutput();
+        $output = $test->output();
     }
 
     ini_set('xdebug.scream', '0');
@@ -71,10 +77,12 @@ function __phpunit_run_isolated_test()
 
     print serialize(
       [
-        'testResult'    => $test->getResult(),
-        'numAssertions' => $test->getNumAssertions(),
+        'testResult'    => $test->result(),
+        'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
+        'numAssertions' => $test->numberOfAssertionsPerformed(),
         'result'        => $result,
-        'output'        => $output
+        'output'        => $output,
+        'events'        => $dispatcher->flush()
       ]
     );
 }
@@ -82,8 +90,10 @@ function __phpunit_run_isolated_test()
 $configurationFilePath = '{configurationFilePath}';
 
 if ('' !== $configurationFilePath) {
-    $configuration = PHPUnit\Util\Configuration::getInstance($configurationFilePath);
-    $configuration->handlePHPConfiguration();
+    $configuration = (new Loader)->load($configurationFilePath);
+
+    (new PhpHandler)->handle($configuration->php());
+
     unset($configuration);
 }
 
@@ -104,5 +114,7 @@ if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
     require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
     unset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
 }
+
+Registry::loadFrom('{serializedConfiguration}');
 
 __phpunit_run_isolated_test();

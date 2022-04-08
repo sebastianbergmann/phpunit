@@ -29,7 +29,7 @@ final class Json
     /**
      * Prettify json string.
      *
-     * @throws \PHPUnit\Framework\Exception
+     * @throws Exception
      */
     public static function prettify(string $json): string
     {
@@ -73,7 +73,7 @@ final class Json
      * Sort all array keys to ensure both the expected and actual values have
      * their keys in the same order.
      */
-    private static function recursiveSort(&$json): void
+    private static function recursiveSort(mixed &$json): void
     {
         if (!is_array($json)) {
             // If the object is not empty, change it to an associative array
@@ -91,7 +91,7 @@ final class Json
 
         ksort($json);
 
-        foreach ($json as $key => &$value) {
+        foreach ($json as &$value) {
             self::recursiveSort($value);
         }
     }

@@ -7,12 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @preserveGlobalState enabled
+ */
 class Issue797Test extends TestCase
 {
-    protected $preserveGlobalState = false;
-
     public function testBootstrapPhpIsExecutedInIsolation(): void
     {
         $this->assertEquals(GITHUB_ISSUE, 797);

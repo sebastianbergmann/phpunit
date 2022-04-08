@@ -16,24 +16,18 @@ class SyntheticError extends AssertionFailedError
 {
     /**
      * The synthetic file.
-     *
-     * @var string
      */
-    protected $syntheticFile = '';
+    protected string $syntheticFile = '';
 
     /**
      * The synthetic line number.
-     *
-     * @var int
      */
-    protected $syntheticLine = 0;
+    protected int $syntheticLine = 0;
 
     /**
      * The synthetic trace.
-     *
-     * @var array
      */
-    protected $syntheticTrace = [];
+    protected array $syntheticTrace = [];
 
     public function __construct(string $message, int $code, string $file, int $line, array $trace)
     {

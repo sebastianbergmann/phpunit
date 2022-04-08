@@ -7,20 +7,20 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = __DIR__ . '/765/Issue765Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
-.W                                                                  2 / 2 (100%)
+.E                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 warning:
+There was 1 error:
 
-1) Warning
-The data provider specified for Issue765Test::testDependent is invalid.
+1) Error
+The data provider specified for PHPUnit\TestFixture\Issue765Test::testDependent is invalid
 Exception: <no message>
 %sIssue765Test.php:%d
 
-WARNINGS!
-Tests: 2, Assertions: 1, Warnings: 1.
+ERRORS!
+Tests: 2, Assertions: 1, Errors: 1.

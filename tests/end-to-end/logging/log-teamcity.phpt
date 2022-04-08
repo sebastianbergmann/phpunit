@@ -1,39 +1,97 @@
 --TEST--
-phpunit --log-teamcity php://stdout ../../_files/BankAccountTest.php
+phpunit --log-teamcity php://stdout ../../basic/unit/StatusTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-teamcity';
 $_SERVER['argv'][] = 'php://stdout';
-$_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/BankAccountTest.php');
+$_SERVER['argv'][] = __DIR__ . '/../_files/basic/unit/StatusTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+##teamcity[testCount count='14' flowId='%d']
 
+##teamcity[testSuiteStarted name='PHPUnit\SelfTest\Basic\StatusTest' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest' flowId='%d']
 
-##teamcity[testCount count='3' flowId='%d']
+##teamcity[testStarted name='testSuccess' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testSuccess' flowId='%d']
 
-##teamcity[testSuiteStarted name='PHPUnit\TestFixture\BankAccountTest' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\PHPUnit\TestFixture\BankAccountTest' flowId='%d']
+##teamcity[testFinished name='testSuccess' duration='%d' flowId='%d']
 
-##teamcity[testStarted name='testBalanceIsInitiallyZero' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\PHPUnit\TestFixture\BankAccountTest::testBalanceIsInitiallyZero' flowId='%d']
-.
-##teamcity[testFinished name='testBalanceIsInitiallyZero' duration='%s' flowId='%d']
+##teamcity[testStarted name='testFailure' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testFailure' flowId='%d']
 
-##teamcity[testStarted name='testBalanceCannotBecomeNegative' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\PHPUnit\TestFixture\BankAccountTest::testBalanceCannotBecomeNegative' flowId='%d']
-.
-##teamcity[testFinished name='testBalanceCannotBecomeNegative' duration='%s' flowId='%d']
+##teamcity[testFailed name='testFailure' message='Failed asserting that false is true.' details='%sStatusTest.php:35|n' duration='%d' flowId='%d']
 
-##teamcity[testStarted name='testBalanceCannotBecomeNegative2' locationHint='php_qn://%s%etests%e_files%eBankAccountTest.php::\PHPUnit\TestFixture\BankAccountTest::testBalanceCannotBecomeNegative2' flowId='%d']
-.                                                                 3 / 3 (100%)
-##teamcity[testFinished name='testBalanceCannotBecomeNegative2' duration='%s' flowId='%d']
+##teamcity[testFinished name='testFailure' duration='%d' flowId='%d']
 
-##teamcity[testSuiteFinished name='PHPUnit\TestFixture\BankAccountTest' flowId='%d']
+##teamcity[testStarted name='testError' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testError' flowId='%d']
 
+##teamcity[testFailed name='testError' message='RuntimeException' details='%sStatusTest.php:40|n' duration='%d' flowId='%d']
 
-Time: %s, Memory: %s
+##teamcity[testFinished name='testError' duration='%d' flowId='%d']
 
-OK (3 tests, 3 assertions)
+##teamcity[testStarted name='testIncomplete' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testIncomplete' flowId='%d']
+
+##teamcity[testIgnored name='testIncomplete' message='' details='%sStatusTest.php:45|n' duration='%d' flowId='%d']
+
+##teamcity[testFinished name='testIncomplete' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testSkipped' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testSkipped' flowId='%d']
+
+##teamcity[testIgnored name='testSkipped' message='' details='%sStatusTest.php:50|n' duration='%d' flowId='%d']
+
+##teamcity[testFinished name='testSkipped' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testRisky' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testRisky' flowId='%d']
+
+##teamcity[testFailed name='testRisky' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
+
+##teamcity[testFinished name='testRisky' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testWarning' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testWarning' flowId='%d']
+
+##teamcity[testFinished name='testWarning' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testSuccessWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testSuccessWithMessage' flowId='%d']
+
+##teamcity[testFinished name='testSuccessWithMessage' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testFailureWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage' flowId='%d']
+
+##teamcity[testFailed name='testFailureWithMessage' message='failure with custom message|nFailed asserting that false is true.' details='%sStatusTest.php:69|n' duration='%d' flowId='%d']
+
+##teamcity[testFinished name='testFailureWithMessage' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testErrorWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage' flowId='%d']
+
+##teamcity[testFailed name='testErrorWithMessage' message='RuntimeException: error with custom message' details='%sStatusTest.php:74|n' duration='%d' flowId='%d']
+
+##teamcity[testFinished name='testErrorWithMessage' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testIncompleteWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testIncompleteWithMessage' flowId='%d']
+
+##teamcity[testIgnored name='testIncompleteWithMessage' message='incomplete with custom message' details='%sStatusTest.php:79|n' duration='%d' flowId='%d']
+
+##teamcity[testFinished name='testIncompleteWithMessage' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testSkippedWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage' flowId='%d']
+
+##teamcity[testIgnored name='testSkippedWithMessage' message='skipped with custom message' details='%sStatusTest.php:84|n' duration='%d' flowId='%d']
+
+##teamcity[testFinished name='testSkippedWithMessage' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testRiskyWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage' flowId='%d']
+
+##teamcity[testFailed name='testRiskyWithMessage' message='This test did not perform any assertions' details='' duration='%d' flowId='%d']
+
+##teamcity[testFinished name='testRiskyWithMessage' duration='%d' flowId='%d']
+
+##teamcity[testStarted name='testWarningWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage' flowId='%d']
+warning with custom message
+
+##teamcity[testFinished name='testWarningWithMessage' duration='%d' flowId='%d']
+
+##teamcity[testSuiteFinished name='PHPUnit\SelfTest\Basic\StatusTest' flowId='%d']

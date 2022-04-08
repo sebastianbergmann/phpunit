@@ -7,11 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace Issue2972;
+namespace PHPUnit\TestFixture;
 
 use PHPUnit\Framework\TestCase;
 
-class Issue2972Test extends TestCase
+class unconventiallyNamedIssue2972Test extends TestCase
 {
     public function testHello(): void
     {

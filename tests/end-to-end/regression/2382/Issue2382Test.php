@@ -7,6 +7,9 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use Exception;
 use PHPUnit\Framework\TestCase;
 
 class Issue2382Test extends TestCase
@@ -16,14 +19,14 @@ class Issue2382Test extends TestCase
      */
     public function testOne($test): void
     {
-        $this->assertInstanceOf(\Exception::class, $test);
+        $this->assertInstanceOf(Exception::class, $test);
     }
 
     public function dataProvider()
     {
         return [
             [
-                $this->getMockBuilder(\Exception::class)->getMock(),
+                $this->getMockBuilder(Exception::class)->getMock(),
             ],
         ];
     }

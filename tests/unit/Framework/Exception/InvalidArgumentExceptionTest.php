@@ -9,15 +9,14 @@
  */
 namespace PHPUnit\Framework;
 
-/**
- * @small
- */
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
+
+#[Small]
 final class InvalidArgumentExceptionTest extends TestCase
 {
-    /**
-     * @dataProvider provider
-     */
-    public function testUsesCorrectArticleInErrorMessage(string $expected, $type): void
+    #[DataProvider('provider')]
+    public function testUsesCorrectArticleInErrorMessage(string $expected, string $type): void
     {
         $e = InvalidArgumentException::create(1, $type);
 

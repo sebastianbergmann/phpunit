@@ -10,9 +10,9 @@ $_SERVER['argv'][] = 'DataProviderFilterTest#1-3';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderFilterTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 ...                                                                 3 / 3 (100%)
 

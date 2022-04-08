@@ -9,14 +9,13 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use ReflectionException;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class IsInstanceOfTest extends ConstraintTestCase
 {
     public function testConstraintInstanceOf(): void

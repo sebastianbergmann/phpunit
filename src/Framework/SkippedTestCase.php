@@ -15,30 +15,40 @@ namespace PHPUnit\Framework;
 final class SkippedTestCase extends TestCase
 {
     /**
-     * @var bool
+     * @psalm-var class-string
      */
-    protected $backupGlobals = false;
+    private string $className;
+    private string $methodName;
+    private string $message;
 
     /**
-     * @var bool
+     * @psalm-param class-string $className
      */
-    protected $backupStaticAttributes = false;
-
-    /**
-     * @var bool
-     */
-    protected $runTestInSeparateProcess = false;
-
-    /**
-     * @var string
-     */
-    private $message;
-
     public function __construct(string $className, string $methodName, string $message = '')
     {
         parent::__construct($className . '::' . $methodName);
 
-        $this->message = $message;
+        $this->setBackupGlobals(false);
+        $this->setBackupStaticProperties(false);
+        $this->setRunClassInSeparateProcess(false);
+        $this->setRunTestInSeparateProcess(false);
+
+        $this->className  = $className;
+        $this->methodName = $methodName;
+        $this->message    = $message;
+    }
+
+    /**
+     * @psalm-return class-string
+     */
+    public function className(): string
+    {
+        return $this->className;
+    }
+
+    public function methodName(): string
+    {
+        return $this->methodName;
     }
 
     public function getMessage(): string
@@ -48,8 +58,6 @@ final class SkippedTestCase extends TestCase
 
     /**
      * Returns a string representation of the test case.
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function toString(): string
     {
@@ -58,8 +66,10 @@ final class SkippedTestCase extends TestCase
 
     /**
      * @throws Exception
+     *
+     * @psalm-return never-return
      */
-    protected function runTest(): void
+    protected function runTest(): mixed
     {
         $this->markTestSkipped($this->message);
     }

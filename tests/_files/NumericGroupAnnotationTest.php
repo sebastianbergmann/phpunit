@@ -9,9 +9,10 @@
  */
 namespace PHPUnit\TestFixture;
 
-use PHPUnit\Framework\TestCase;
-
-class NumericGroupAnnotationTest extends TestCase
+/**
+ * @ticket t123456
+ */
+class NumericGroupAnnotationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @testdox Empty test for @ticket numeric annotation values

@@ -14,12 +14,7 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/_files')
     ->in(__DIR__ . '/tests/end-to-end')
     ->in(__DIR__ . '/tests/unit')
-    ->notName('*.phpt')
-    ->notName('ClassWithAllPossibleReturnTypes.php')
-    ->notName('ClassWithUnionReturnTypes.php')
-    ->notName('ClassWithStaticReturnTypes.php')
-    ->notName('ValueObjectWithEqualsMethodWithUnionReturnType.php')
-    ->notName('ValueObjectWithEqualsMethodThatHasUnionParameterType.php');
+    ->notName('*.phpt');
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)
@@ -69,7 +64,7 @@ $config->setFinder($finder)
             'elements' => [
                 'const' => 'one',
                 'method' => 'one',
-                'property' => 'one'
+                'property' => 'only_if_meta'
             ]
         ],
         'class_definition' => true,
@@ -294,6 +289,9 @@ $config->setFinder($finder)
             ]
         ],
         'trim_array_spaces' => true,
+        'types_spaces' => [
+            'space' => 'none',
+        ],
         'unary_operator_spaces' => true,
         'visibility_required' => [
             'elements' => [

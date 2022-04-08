@@ -12,32 +12,36 @@ namespace PHPUnit\Framework;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_pop;
+use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\BeforeAndAfterTest;
 use PHPUnit\TestFixture\BeforeClassAndAfterClassTest;
 use PHPUnit\TestFixture\BeforeClassWithOnlyDataProviderTest;
 use PHPUnit\TestFixture\DataProviderDependencyTest;
 use PHPUnit\TestFixture\DataProviderIncompleteTest;
 use PHPUnit\TestFixture\DataProviderSkippedTest;
+use PHPUnit\TestFixture\DependencyFailureTest;
+use PHPUnit\TestFixture\DependencyOnClassTest;
+use PHPUnit\TestFixture\DependencySuccessTest;
+use PHPUnit\TestFixture\DoubleTestCase;
 use PHPUnit\TestFixture\ExceptionInTearDownAfterClassTest;
 use PHPUnit\TestFixture\InheritedTestCase;
+use PHPUnit\TestFixture\MultiDependencyTest;
 use PHPUnit\TestFixture\NoTestCases;
 use PHPUnit\TestFixture\NotPublicTestCase;
 use PHPUnit\TestFixture\NotVoidTestCase;
 use PHPUnit\TestFixture\OneTestCase;
 use PHPUnit\TestFixture\OverrideTestCase;
+use PHPUnit\TestFixture\PreConditionAndPostConditionTest;
 use PHPUnit\TestFixture\RequirementsClassBeforeClassHookTest;
+use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestCaseWithExceptionInHook;
 use PHPUnit\TestFixture\TestWithTest;
 
-/**
- * @small
- */
+#[Small]
 final class TestSuiteTest extends TestCase
 {
-    /**
-     * @var TestResult
-     */
-    private $result;
+    private ?TestResult $result;
 
     protected function setUp(): void
     {
@@ -49,14 +53,14 @@ final class TestSuiteTest extends TestCase
         $this->result = null;
     }
 
-    /**
-     * @testdox TestSuite can be created with name of existing non-TestCase class
-     */
     public function testSuiteNameCanBeSameAsExistingNonTestClassName(): void
     {
         $suite = new TestSuite(stdClass::class);
         $suite->addTestSuite(OneTestCase::class);
+
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertCount(1, $this->result);
     }
@@ -65,7 +69,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(OneTestCase::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertCount(1, $this->result);
     }
@@ -74,7 +80,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(InheritedTestCase::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertTrue($this->result->wasSuccessful());
         $this->assertCount(2, $this->result);
@@ -84,7 +92,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(NoTestCases::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertNotTrue($this->result->wasSuccessful());
         $this->assertEquals(0, $this->result->failureCount());
@@ -110,7 +120,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(OneTestCase::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertEquals(0, $this->result->errorCount());
         $this->assertEquals(0, $this->result->failureCount());
@@ -122,7 +134,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(OverrideTestCase::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertCount(1, $this->result);
     }
@@ -132,7 +146,10 @@ final class TestSuiteTest extends TestCase
         $suite = new TestSuite(BeforeClassAndAfterClassTest::class);
 
         BeforeClassAndAfterClassTest::resetProperties();
+
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertEquals(1, BeforeClassAndAfterClassTest::$beforeClassWasRun, '@beforeClass method was not run once for the whole suite.');
         $this->assertEquals(1, BeforeClassAndAfterClassTest::$afterClassWasRun, '@afterClass method was not run once for the whole suite.');
@@ -143,29 +160,53 @@ final class TestSuiteTest extends TestCase
         $suite = new TestSuite(BeforeClassWithOnlyDataProviderTest::class);
 
         BeforeClassWithOnlyDataProviderTest::resetProperties();
+
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$setUpBeforeClassWasCalled, 'setUpBeforeClass method was not run.');
         $this->assertTrue(BeforeClassWithOnlyDataProviderTest::$beforeClassWasCalled, '@beforeClass method was not run.');
     }
 
-    public function testBeforeAnnotation(): void
+    public function testBeforeAndAfterAnnotations(): void
     {
         $test = new TestSuite(BeforeAndAfterTest::class);
 
         BeforeAndAfterTest::resetProperties();
-        $test->run();
+
+        Facade::suspend();
+        $test->run(new TestResult);
+        Facade::resume();
 
         $this->assertEquals(2, BeforeAndAfterTest::$beforeWasRun);
         $this->assertEquals(2, BeforeAndAfterTest::$afterWasRun);
     }
 
+    public function testPreConditionAndPostConditionAnnotations(): void
+    {
+        $test = new TestSuite(PreConditionAndPostConditionTest::class);
+
+        PreConditionAndPostConditionTest::resetProperties();
+
+        Facade::suspend();
+        $test->run(new TestResult);
+        Facade::resume();
+
+        $this->assertSame(1, PreConditionAndPostConditionTest::$preConditionWasVerified);
+        $this->assertSame(1, PreConditionAndPostConditionTest::$postConditionWasVerified);
+    }
+
     public function testTestWithAnnotation(): void
     {
-        $test = new TestSuite(TestWithTest::class);
+        $test   = new TestSuite(TestWithTest::class);
+        $result = new TestResult;
 
         BeforeAndAfterTest::resetProperties();
-        $result = $test->run();
+
+        Facade::suspend();
+        $test->run($result);
+        Facade::resume();
 
         $this->assertCount(4, $result->passed());
     }
@@ -174,7 +215,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(DataProviderSkippedTest::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertEquals(3, $this->result->count());
         $this->assertEquals(1, $this->result->skippedCount());
@@ -184,7 +227,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(TestCaseWithExceptionInHook::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertEquals(2, $this->result->count());
         $this->assertEquals(1, $this->result->errorCount());
@@ -195,20 +240,30 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(DataProviderDependencyTest::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $skipped           = $this->result->skipped();
         $lastSkippedResult = array_pop($skipped);
         $message           = $lastSkippedResult->thrownException()->getMessage();
 
-        $this->assertStringContainsString('Test for PHPUnit\TestFixture\DataProviderDependencyTest::testDependency skipped by data provider', $message);
+        $this->assertStringContainsString(
+            sprintf(
+                'Test for %s::testDependency skipped by data provider',
+                DataProviderDependencyTest::class
+            ),
+            $message
+        );
     }
 
     public function testIncompleteTestDataProvider(): void
     {
         $suite = new TestSuite(DataProviderIncompleteTest::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertEquals(3, $this->result->count());
         $this->assertEquals(1, $this->result->notImplementedCount());
@@ -218,7 +273,9 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite(RequirementsClassBeforeClassHookTest::class);
 
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertEquals(0, $this->result->errorCount());
         $this->assertEquals(1, $this->result->skippedCount());
@@ -235,18 +292,42 @@ final class TestSuiteTest extends TestCase
         $suite->addTestFile($dir . 'InheritanceA.php');
         $suite->addTestFile($dir . 'InheritanceB.php');
 
-        $result = $suite->run();
+        $result = new TestResult;
+
+        Facade::suspend();
+        $suite->run($result);
+        Facade::resume();
 
         $this->assertCount(2, $result);
     }
 
-    /**
-     * @testdox Handles exceptions in tearDownAfterClass()
-     */
+    public function testCorrectlyLoadSameNameClasses(): void
+    {
+        $suite = new TestSuite(
+            'CorrectlyLoadSameNameClasses'
+        );
+
+        $dir = TEST_FILES_PATH . DIRECTORY_SEPARATOR . 'SameClassNames' . DIRECTORY_SEPARATOR;
+
+        $suite->addTestFile($dir . 'NamespaceOne' . DIRECTORY_SEPARATOR . 'MyTest.php');
+        $suite->addTestFile($dir . 'NamespaceTwo' . DIRECTORY_SEPARATOR . 'MyTest.php');
+
+        $result = new TestResult;
+
+        Facade::suspend();
+        $suite->run($result);
+        Facade::resume();
+
+        $this->assertCount(3, $result);
+    }
+
     public function testTearDownAfterClassInTestSuite(): void
     {
         $suite = new TestSuite(ExceptionInTearDownAfterClassTest::class);
+
+        Facade::suspend();
         $suite->run($this->result);
+        Facade::resume();
 
         $this->assertSame(3, $this->result->count());
         $this->assertCount(1, $this->result->failures());
@@ -258,5 +339,89 @@ final class TestSuiteTest extends TestCase
             'throw Exception in tearDownAfterClass()',
             $failure->thrownException()->getMessage()
         );
+    }
+
+    public function testNormalizeProvidedDependencies(): void
+    {
+        $suite = new TestSuite(MultiDependencyTest::class);
+
+        $this->assertEquals([
+            MultiDependencyTest::class . '::class',
+            MultiDependencyTest::class . '::testOne',
+            MultiDependencyTest::class . '::testTwo',
+            MultiDependencyTest::class . '::testThree',
+            MultiDependencyTest::class . '::testFour',
+            MultiDependencyTest::class . '::testFive',
+        ], $suite->provides());
+    }
+
+    public function testNormalizeRequiredDependencies(): void
+    {
+        $suite = new TestSuite(MultiDependencyTest::class);
+
+        $this->assertSame([], $suite->requires());
+    }
+
+    public function testDetectMissingDependenciesBetweenTestSuites(): void
+    {
+        $suite = new TestSuite(DependencyOnClassTest::class);
+
+        $this->assertEquals([
+            DependencyOnClassTest::class . '::class',
+            DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass',
+            DependencyOnClassTest::class . '::testThatDependsOnAFailingClass',
+        ], $suite->provides(), 'Provided test names incorrect');
+
+        $this->assertEquals([
+            DependencySuccessTest::class . '::class',
+            DependencyFailureTest::class . '::class',
+        ], $suite->requires(), 'Required test names incorrect');
+    }
+
+    public function testResolveDependenciesBetweenTestSuites(): void
+    {
+        $suite = new TestSuite(DependencyOnClassTest::class);
+        $suite->addTestSuite(DependencyFailureTest::class);
+        $suite->addTestSuite(DependencySuccessTest::class);
+
+        $this->assertEquals([
+            DependencyOnClassTest::class . '::class',
+            DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass',
+            DependencyOnClassTest::class . '::testThatDependsOnAFailingClass',
+            DependencyFailureTest::class . '::class',
+            DependencyFailureTest::class . '::testOne',
+            DependencyFailureTest::class . '::testTwo',
+            DependencyFailureTest::class . '::testThree',
+            DependencyFailureTest::class . '::testFour',
+            DependencyFailureTest::class . '::testHandlesDependsAnnotationForNonexistentTests',
+            DependencyFailureTest::class . '::testHandlesDependsAnnotationWithNoMethodSpecified',
+            DependencySuccessTest::class . '::class',
+            DependencySuccessTest::class . '::testOne',
+            DependencySuccessTest::class . '::testTwo',
+            DependencySuccessTest::class . '::testThree',
+        ], $suite->provides(), 'Provided test names incorrect');
+
+        $this->assertEquals([
+            DependencyFailureTest::class . '::doesNotExist',
+        ], $suite->requires(), 'Required test names incorrect');
+    }
+
+    public function testResolverOnlyUsesSuitesAndCases(): void
+    {
+        $suite = new TestSuite('SomeName');
+        $suite->addTest(new DoubleTestCase(new Success('testOne')));
+        $suite->addTestSuite(new TestSuite(DependencyOnClassTest::class));
+
+        $this->assertEquals([
+            'SomeName::class',
+            DependencyOnClassTest::class . '::class',
+            DependencyOnClassTest::class . '::testThatDependsOnASuccessfulClass',
+            DependencyOnClassTest::class . '::testThatDependsOnAFailingClass',
+        ], $suite->provides(), 'Provided test names incorrect');
+
+        $this->assertEquals([
+            DependencySuccessTest::class . '::class',
+            DependencyFailureTest::class . '::class',
+        ], $suite->requires(), 'Required test names incorrect');
     }
 }

@@ -16,15 +16,8 @@ use SebastianBergmann\Type\Type;
  */
 final class ConfigurableMethod
 {
-    /**
-     * @var string
-     */
-    private $name;
-
-    /**
-     * @var Type
-     */
-    private $returnType;
+    private string $name;
+    private Type $returnType;
 
     public function __construct(string $name, Type $returnType)
     {
@@ -37,7 +30,7 @@ final class ConfigurableMethod
         return $this->name;
     }
 
-    public function mayReturn($value): bool
+    public function mayReturn(mixed $value): bool
     {
         if ($value === null && $this->returnType->allowsNull()) {
             return true;
@@ -48,6 +41,6 @@ final class ConfigurableMethod
 
     public function getReturnTypeDeclaration(): string
     {
-        return $this->returnType->getReturnTypeDeclaration();
+        return $this->returnType->asString();
     }
 }

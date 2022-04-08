@@ -36,6 +36,7 @@ final class TestWithDifferentSizes extends TestCase
     }
 
     /**
+     * @depends testWithSizeLarge
      * @small
      */
     public function testWithSizeSmall(): void

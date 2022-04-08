@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
@@ -17,9 +18,7 @@ use PHPUnit\Framework\MockObject\Rule\ParametersRule;
 use PHPUnit\Framework\TestCase;
 use stdClass;
 
-/**
- * @covers \PHPUnit\Framework\MockObject\Matcher
- */
+#[CoversClass(Matcher::class)]
 class MatcherTest extends TestCase
 {
     public function testParameterRuleIsAppliedToInvocation(): void

@@ -12,18 +12,16 @@ namespace PHPUnit\Framework;
 use function preg_replace;
 use ArrayObject;
 use Countable;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\SameSize;
-use PHPUnit\Framework\Constraint\TraversableContains;
 use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use PHPUnit\TestFixture\DummyException;
 use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\Util\Filter;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class ConstraintTest extends TestCase
 {
     public function testConstraintArrayNotHasKey(): void
@@ -67,6 +65,31 @@ EOF
                 <<<'EOF'
 custom message
 Failed asserting that an array does not have the key 0.
+
+EOF
+                ,
+                TestFailure::exceptionToString($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintArrayIsNotList(): void
+    {
+        $constraint = Assert::logicalNot(
+            Assert::arrayIsList()
+        );
+
+        try {
+            $constraint->evaluate([0, 1, 2], 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+custom message
+Failed asserting that an array is not list.
 
 EOF
                 ,
@@ -1063,9 +1086,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @testdox Constraint PCRE not match
-     */
     public function testConstraintPCRENotMatch(): void
     {
         $constraint = Assert::logicalNot(
@@ -1095,9 +1115,6 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @testdox Constraint PCRE not match with custom message
-     */
     public function testConstraintPCRENotMatch2(): void
     {
         $constraint = Assert::logicalNot(
@@ -1319,60 +1336,6 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintArrayNotContains(): void
-    {
-        $constraint = Assert::logicalNot(
-            new TraversableContains('foo')
-        );
-
-        $this->assertTrue($constraint->evaluate(['bar'], '', true));
-        $this->assertFalse($constraint->evaluate(['foo'], '', true));
-        $this->assertEquals("does not contain 'foo'", $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate(['foo']);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<'EOF'
-Failed asserting that an array does not contain 'foo'.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintArrayNotContains2(): void
-    {
-        $constraint = Assert::logicalNot(
-            new TraversableContains('foo')
-        );
-
-        try {
-            $constraint->evaluate(['foo'], 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<'EOF'
-custom message
-Failed asserting that an array does not contain 'foo'.
-
-EOF
-                ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
     public function testConstraintCountWithAnArray(): void
     {
         $constraint = new Count(5);
@@ -1497,12 +1460,8 @@ EOF
 
     /**
      * Removes spaces in front of newlines.
-     *
-     * @param string $string
-     *
-     * @return string
      */
-    private function trimnl($string)
+    private function trimnl(string $string): string
     {
         return preg_replace('/[ ]*\n/', "\n", $string);
     }

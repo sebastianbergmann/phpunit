@@ -9,14 +9,15 @@ $_SERVER['argv'][] = 'Test.php';
 \chdir(__DIR__ . '/2448');
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main(false);
-
-@unlink(__DIR__ . '/2448/.phpunit.result.cache');
+PHPUnit\TextUI\Application::main(false);
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 .                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
 OK (1 test, 1 assertion)
+--CLEAN--
+<?php declare(strict_types=1);
+unlink(__DIR__ . '/2448/.phpunit.result.cache');

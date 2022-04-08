@@ -3,7 +3,6 @@
 <phpunit backupGlobals="true"
          backupStaticAttributes="false"
          bootstrap="/path/to/bootstrap.php"
-         cacheTokens="false"
          columns="80"
          colors="false"
          stderr="false"
@@ -17,18 +16,14 @@
          failOnWarning="false"
          failOnRisky="false"
          extensionsDirectory="/tmp"
-         printerClass="PHPUnit\TextUI\ResultPrinter"
-         testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader"
+         printerClass="PHPUnit\TextUI\DefaultResultPrinter"
          defaultTestSuite="My Test Suite"
          beStrictAboutChangesToGlobalState="false"
          beStrictAboutOutputDuringTests="false"
-         beStrictAboutResourceUsageDuringSmallTests="false"
          beStrictAboutTestsThatDoNotTestAnything="false"
-         beStrictAboutTodoAnnotatedTests="false"
          beStrictAboutCoversAnnotation="false"
          defaultTimeLimit="123"
          enforceTimeLimit="false"
-         ignoreDeprecatedCodeUnitsFromCodeCoverage="false"
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"
@@ -50,15 +45,11 @@
 
 
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-      href="configuration.xml"
+      href="configuration_codecoverage.xml"
       parse="xml"
-      xpointer="xpointer(/phpunit/filter)" />
+      xpointer="xpointer(/phpunit/coverage)" />
   <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-      href="configuration.xml"
-      parse="xml"
-      xpointer="xpointer(/phpunit/listeners)" />
-  <xi:include xmlns:xi="http://www.w3.org/2001/XInclude"
-      href="configuration.xml"
+      href="configuration_logging.xml"
       parse="xml"
       xpointer="xpointer(/phpunit/logging)" />
 

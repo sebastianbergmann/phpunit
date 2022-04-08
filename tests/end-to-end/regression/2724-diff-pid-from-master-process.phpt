@@ -10,9 +10,9 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 \file_put_contents(__DIR__ . '/2724/parent_process_id.txt', \getmypid());
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 .                                                                   1 / 1 (100%)
 

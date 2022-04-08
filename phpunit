@@ -24,11 +24,11 @@ if (!version_compare(PHP_VERSION, PHP_VERSION, '=')) {
     die(1);
 }
 
-if (version_compare('7.2.0', PHP_VERSION, '>')) {
+if (version_compare('8.1.0', PHP_VERSION, '>')) {
     fwrite(
         STDERR,
         sprintf(
-            'This version of PHPUnit requires PHP >= 7.2.' . PHP_EOL .
+            'This version of PHPUnit requires PHP >= 8.1.' . PHP_EOL .
             'You are using PHP %s (%s).' . PHP_EOL,
             PHP_VERSION,
             PHP_BINARY
@@ -85,14 +85,6 @@ if (!defined('PHPUNIT_COMPOSER_INSTALL')) {
     die(1);
 }
 
-$options = getopt('', array('prepend:'));
-
-if (isset($options['prepend'])) {
-    require $options['prepend'];
-}
-
-unset($options);
-
 require PHPUNIT_COMPOSER_INSTALL;
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();

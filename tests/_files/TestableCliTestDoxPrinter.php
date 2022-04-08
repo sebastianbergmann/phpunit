@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\TestFixture;
 
-use PHPUnit\Util\TestDox\CliTestDoxPrinter;
+use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
 
 class TestableCliTestDoxPrinter extends CliTestDoxPrinter
 {

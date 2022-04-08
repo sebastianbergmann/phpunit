@@ -1,4 +1,4 @@
-PHPUnit %s [44m#StandWith[0m[43mUkraine[0m
+PHPUnit %s Sebastian Bergmann and contributors.
 
 Runtime:       %s
 Configuration: %sconfiguration.basic.xml
@@ -13,7 +13,7 @@ Configuration: %sconfiguration.basic.xml
 
  [36m↩[0m Two [36m %f [2mms[0m
    [36m┐[0m
-   [36m├[0m [36mTest skipped because of an error in hook method[0m
+   [36m├[0m [36mThis test was skipped due to an error in a hook method[0m
    [36m┴[0m
 
 [4mSet Up (PHPUnit\SelfTest\Basic\SetUp)[0m
@@ -60,8 +60,6 @@ Configuration: %sconfiguration.basic.xml
  [33m☢[0m Risky [33m %f [2mms[0m
    [33m┐[0m
    [33m├[0m [33mThis test did not perform any assertions%w[0m
-   [33m├[0m%w
-   [33m├[0m [33m%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d[0m%w
    [33m┴[0m
 
  [33m⚠[0m Warning [33m %f [2mms[0m
@@ -102,8 +100,6 @@ Configuration: %sconfiguration.basic.xml
  [33m☢[0m Risky with message [33m %f [2mms[0m
    [33m┐[0m
    [33m├[0m [33mThis test did not perform any assertions%w[0m
-   [33m├[0m%w
-   [33m├[0m [33m%stests%eend-to-end%e_files%ebasic%eunit%eStatusTest.php:%d[0m%w
    [33m┴[0m
 
  [33m⚠[0m Warning with message [33m %f [2mms[0m

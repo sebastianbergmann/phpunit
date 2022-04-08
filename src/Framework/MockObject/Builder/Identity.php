@@ -18,8 +18,6 @@ interface Identity
      * Sets the identification of the expectation to $id.
      *
      * @note The identifier is unique per mock object.
-     *
-     * @param string $id unique identification of expectation
      */
-    public function id($id);
+    public function id(string $id): self;
 }

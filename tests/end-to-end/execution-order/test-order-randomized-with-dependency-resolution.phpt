@@ -11,12 +11,12 @@ $_SERVER['argv'][] = \realpath(__DIR__ . '/../execution-order/_files/MultiDepend
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
-Random seed:   %d
+Random Seed:   %d
 
 .....                                                               5 / 5 (100%)
 

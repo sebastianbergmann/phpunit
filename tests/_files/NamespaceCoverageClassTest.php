@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class NamespaceCoverageClassTest extends TestCase
 {
     /**
-     * @covers PHPUnit\TestFixture\CoveredClass
+     * @covers \PHPUnit\TestFixture\CoveredClass
      */
     public function testSomething(): void
     {

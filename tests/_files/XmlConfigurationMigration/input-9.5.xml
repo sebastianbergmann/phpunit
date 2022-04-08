@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.5/phpunit.xsd"
+         cacheResultFile=".phpunit.cache/test-results"
+         testSuiteLoaderClass="Foo"
+         testSuiteLoaderFile="Foo.php"
+         beStrictAboutResourceUsageDuringSmallTests="true"
+         beStrictAboutTodoAnnotatedTests="true"
+         printerFile="foo"
+         printerClass="bar">
+
+    <coverage cacheDirectory=".phpunit.cache/code-coverage"
+              processUncoveredFiles="true">
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+    </coverage>
+
+    <listeners>
+        <listener class="MyListener" file="/optional/path/to/MyListener.php">
+            <arguments>
+                <array>
+                    <element key="0">
+                        <string>Sebastian</string>
+                    </element>
+                </array>
+                <integer>22</integer>
+                <string>April</string>
+                <double>19.78</double>
+                <null/>
+                <object class="stdClass"/>
+                <file>MyTestFile.php</file>
+                <directory>MyRelativePath</directory>
+                <boolean>true</boolean>
+            </arguments>
+        </listener>
+        <listener class="IncludePathListener" file="ConfigurationTest.php"/>
+        <listener class="CompactArgumentsListener" file="/CompactArgumentsListener.php">
+            <arguments>
+                <integer>42</integer>
+                <boolean>false</boolean>
+            </arguments>
+        </listener>
+    </listeners>
+
+</phpunit>

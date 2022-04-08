@@ -9,16 +9,18 @@
  */
 namespace PHPUnit\TestFixture;
 
+use CoveredClass;
 use PHPUnit\Framework\TestCase;
 
 class NamespaceCoverageMethodTest extends TestCase
 {
     /**
-     * @covers PHPUnit\TestFixture\CoveredClass::publicMethod
+     * @covers \PHPUnit\TestFixture\CoveredClass::publicMethod
      */
     public function testSomething(): void
     {
         $o = new CoveredClass;
+
         $o->publicMethod();
     }
 }

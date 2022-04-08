@@ -9,15 +9,6 @@
  */
 namespace PHPUnit\TestFixture;
 
-use RuntimeException;
-
-class BankAccountException extends RuntimeException
-{
-}
-
-/**
- * A bank account.
- */
 class BankAccount
 {
     /**

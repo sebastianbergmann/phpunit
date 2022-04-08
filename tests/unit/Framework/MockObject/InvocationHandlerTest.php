@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\MockObject;
 
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\StringableClass;
+use PHPUnit\TestFixture\MockObject\StringableClass;
 use RuntimeException;
 
 class InvocationHandlerTest extends TestCase

@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestCase;
 class CoverageNamespacedFunctionTest extends TestCase
 {
     /**
-     * @covers PHPUnit\TestFixture\func()
+     * @covers \PHPUnit\TestFixture\func()
      */
     public function testFunc(): void
     {

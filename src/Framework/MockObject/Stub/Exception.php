@@ -19,7 +19,7 @@ use Throwable;
  */
 final class Exception implements Stub
 {
-    private $exception;
+    private Throwable $exception;
 
     public function __construct(Throwable $exception)
     {
@@ -28,8 +28,10 @@ final class Exception implements Stub
 
     /**
      * @throws Throwable
+     *
+     * @psalm-return never-return
      */
-    public function invoke(Invocation $invocation): void
+    public function invoke(Invocation $invocation): mixed
     {
         throw $this->exception;
     }

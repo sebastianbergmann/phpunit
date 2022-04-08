@@ -11,13 +11,13 @@ namespace PHPUnit\Framework\Constraint;
 
 use function json_encode;
 use function sprintf;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Util\Json;
 
-/**
- * @small
- */
+#[Small]
 final class JsonMatchesTest extends ConstraintTestCase
 {
     public static function evaluateDataprovider(): array
@@ -53,28 +53,16 @@ final class JsonMatchesTest extends ConstraintTestCase
         ];
     }
 
-    /**
-     * @dataProvider evaluateDataprovider
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
-    public function testEvaluate($expected, $jsonOther, $jsonValue): void
+    #[DataProvider('evaluateDataprovider')]
+    public function testEvaluate(bool $expected, string $jsonOther, string $jsonValue): void
     {
         $constraint = new JsonMatches($jsonValue);
 
         $this->assertEquals($expected, $constraint->evaluate($jsonOther, '', true));
     }
 
-    /**
-     * @dataProvider evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider
-     *
-     * @throws \PHPUnit\Framework\AssertionFailedError
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     * @throws ExpectationFailedException
-     */
-    public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch($jsonOther, $jsonValue): void
+    #[DataProvider('evaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatchDataprovider')]
+    public function testEvaluateThrowsExpectationFailedExceptionWhenJsonIsValidButDoesNotMatch(string $jsonOther, string $jsonValue): void
     {
         $constraint = new JsonMatches($jsonValue);
 
@@ -84,8 +72,12 @@ final class JsonMatchesTest extends ConstraintTestCase
         } catch (ExpectationFailedException $expectedException) {
             $comparisonFailure = $expectedException->getComparisonFailure();
             $this->assertNotNull($comparisonFailure);
-            $this->assertSame(Json::prettify($jsonOther), $comparisonFailure->getActualAsString());
-            $this->assertSame(Json::prettify($jsonValue), $comparisonFailure->getExpectedAsString());
+
+            [$error, $jsonOtherCanonicalized] = Json::canonicalize($jsonOther);
+            [$error, $jsonValueCanonicalized] = Json::canonicalize($jsonValue);
+
+            $this->assertSame(Json::prettify($jsonOtherCanonicalized), $comparisonFailure->getActualAsString());
+            $this->assertSame(Json::prettify($jsonValueCanonicalized), $comparisonFailure->getExpectedAsString());
             $this->assertSame('Failed asserting that two json values are equal.', $comparisonFailure->getMessage());
         }
     }

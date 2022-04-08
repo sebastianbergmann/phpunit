@@ -28,7 +28,7 @@ final class CountConstraint extends Constraint
         return $instance;
     }
 
-    public function matches($other): bool
+    public function matches(mixed $other): bool
     {
         return true;
     }

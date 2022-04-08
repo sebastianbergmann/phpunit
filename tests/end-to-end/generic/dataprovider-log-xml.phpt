@@ -9,28 +9,11 @@ $_SERVER['argv'][] = 'php://stdout';
 $_SERVER['argv'][] = __DIR__ . '/../../_files/DataProviderTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
-..F.                                                                4 / 4 (100%)<?xml version="1.0" encoding="UTF-8"?>
-<testsuites>
-  <testsuite name="PHPUnit\TestFixture\DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
-    <testsuite name="PHPUnit\TestFixture\DataProviderTest::testAdd" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
-      <testcase name="testAdd with data set #0" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
-      <testcase name="testAdd with data set #1" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
-      <testcase name="testAdd with data set #2" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f">
-        <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2 (1, 1, 3)
-Failed asserting that 2 matches expected 3.
-
-%s:%i
-</failure>
-      </testcase>
-      <testcase name="testAdd with data set #3" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" file="%sDataProviderTest.php" line="%d" assertions="1" time="%f"/>
-    </testsuite>
-  </testsuite>
-</testsuites>
-
+..F.                                                                4 / 4 (100%)
 
 Time: %s, Memory: %s
 
@@ -43,3 +26,19 @@ Failed asserting that 2 matches expected 3.
 
 FAILURES!
 Tests: 4, Assertions: 4, Failures: 1.
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuites>
+  <testsuite name="PHPUnit\TestFixture\DataProviderTest" file="%sDataProviderTest.php" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
+    <testsuite name="PHPUnit\TestFixture\DataProviderTest::testAdd" tests="4" assertions="4" errors="0" warnings="0" failures="1" skipped="0" time="%f">
+      <testcase name="testAdd with data set #0" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%f"/>
+      <testcase name="testAdd with data set #1" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%f"/>
+      <testcase name="testAdd with data set #2" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%f">
+        <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2 (1, 1, 3)%A
+Failed asserting that 2 matches expected 3.
+%A
+%s:%i</failure>
+      </testcase>
+      <testcase name="testAdd with data set #3" file="%sDataProviderTest.php" line="%d" class="PHPUnit\TestFixture\DataProviderTest" classname="PHPUnit.TestFixture.DataProviderTest" assertions="1" time="%f"/>
+    </testsuite>
+  </testsuite>
+</testsuites>

@@ -15,69 +15,63 @@ use function method_exists;
 use function microtime;
 use Countable;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\UsesClass;
+use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
+use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
+use PHPUnit\Framework\MockObject\Rule\InvokedCount;
+use PHPUnit\Framework\MockObject\Rule\MethodName;
+use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\TestFixture\AbstractMockTestClass;
 use PHPUnit\TestFixture\AbstractTrait;
-use PHPUnit\TestFixture\AnInterface;
-use PHPUnit\TestFixture\AnInterfaceWithReturnType;
-use PHPUnit\TestFixture\ClassWithVariadicArgumentMethod;
 use PHPUnit\TestFixture\ExceptionWithThrowable;
-use PHPUnit\TestFixture\FinalClass;
-use PHPUnit\TestFixture\InterfaceWithSemiReservedMethodName;
+use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
+use PHPUnit\TestFixture\MockObject\AnInterface;
+use PHPUnit\TestFixture\MockObject\AnInterfaceWithReturnType;
+use PHPUnit\TestFixture\MockObject\AnotherInterface;
+use PHPUnit\TestFixture\MockObject\ClassWithVariadicArgumentMethod;
+use PHPUnit\TestFixture\MockObject\FinalClass;
+use PHPUnit\TestFixture\MockObject\InterfaceWithSemiReservedMethodName;
 use PHPUnit\TestFixture\SingletonClass;
+use RuntimeException;
 use stdClass;
 use Throwable;
 
-/**
- * @covers \PHPUnit\Framework\MockObject\Generator
- *
- * @uses \PHPUnit\Framework\MockObject\Builder\InvocationMocker
- * @uses \PHPUnit\Framework\MockObject\Invocation
- * @uses \PHPUnit\Framework\MockObject\InvocationHandler
- * @uses \PHPUnit\Framework\MockObject\Matcher
- * @uses \PHPUnit\Framework\MockObject\Rule\InvocationOrder
- * @uses \PHPUnit\Framework\MockObject\Rule\InvokedCount
- * @uses \PHPUnit\Framework\MockObject\Rule\MethodName
- * @uses \PHPUnit\Framework\MockObject\Stub\ReturnStub
- *
- * @small
- */
+#[CoversClass(Generator::class)]
+#[UsesClass(InvocationMocker::class)]
+#[UsesClass(Invocation::class)]
+#[UsesClass(InvocationHandler::class)]
+#[UsesClass(Matcher::class)]
+#[UsesClass(InvocationOrder::class)]
+#[UsesClass(InvokedCount::class)]
+#[UsesClass(MethodName::class)]
+#[UsesClass(ReturnStub::class)]
+#[Small]
 final class GeneratorTest extends TestCase
 {
-    /**
-     * @var Generator
-     */
-    private $generator;
+    private ?Generator $generator;
 
     protected function setUp(): void
     {
         $this->generator = new Generator;
     }
 
+    protected function tearDown(): void
+    {
+        $this->generator = null;
+    }
+
     public function testGetMockThrowsExceptionWhenInvalidFunctionNameIsPassedInAsAFunctionToMock(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(InvalidMethodNameException::class);
 
         $this->generator->getMock(stdClass::class, [0]);
     }
 
-    public function testGetMockThrowsExceptionWithInvalidClassArgumentType(): void
-    {
-        $this->expectException(\PHPUnit\Framework\InvalidArgumentException::class);
-
-        $this->generator->getMock(false);
-    }
-
-    public function testGetMockThrowsExceptionWithInvalidMethods(): void
-    {
-        $this->expectException(\PHPUnit\Framework\InvalidArgumentException::class);
-
-        $this->generator->getMock(stdClass::class, false);
-    }
-
     public function testGetMockThrowsExceptionWithNonExistingClass(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(UnknownTypeException::class);
 
         $this->assertFalse(class_exists('Tux'));
 
@@ -86,16 +80,16 @@ final class GeneratorTest extends TestCase
 
     public function testGetMockThrowsExceptionWithNonExistingClasses(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(UnknownTypeException::class);
 
         $this->assertFalse(class_exists('Tux'));
 
-        $this->generator->getMock(['Tux', false], [], [], '', true, true, false, true, false, null, false);
+        $this->generator->getMock('Tux', [], [], '', true, true, false, true, false, null, false);
     }
 
     public function testGetMockThrowsExceptionWithExistingClassAsMockName(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(ClassAlreadyExistsException::class);
 
         $this->generator->getMock(stdClass::class, [], [], RuntimeException::class);
     }
@@ -109,7 +103,7 @@ final class GeneratorTest extends TestCase
 
     public function testGetMockGeneratorThrowsException(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(DuplicateMethodException::class);
         $this->expectExceptionMessage('duplicates: "foo, bar, foo" (duplicate: "foo")');
 
         $this->generator->getMock(stdClass::class, ['foo', 'bar', 'foo']);
@@ -157,8 +151,7 @@ final class GeneratorTest extends TestCase
     {
         $mock = $this->generator->getMockForAbstractClass(AbstractMockTestClass::class);
 
-        $mock->expects($this->any())
-             ->method('doSomething')
+        $mock->method('doSomething')
              ->willReturn('testing');
 
         $this->assertEquals('testing', $mock->doSomething());
@@ -167,7 +160,7 @@ final class GeneratorTest extends TestCase
 
     public function testGetMockForAbstractClassAbstractClassDoesNotExist(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(UnknownClassException::class);
 
         $this->generator->getMockForAbstractClass('Tux');
     }
@@ -199,21 +192,21 @@ final class GeneratorTest extends TestCase
 
     public function testGetMockForTraitWithNonExistantTrait(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(UnknownTraitException::class);
 
         $mock = $this->generator->getMockForTrait('Tux');
     }
 
     public function testGetObjectForTraitWithNonExistantTrait(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(UnknownTraitException::class);
 
         $mock = $this->generator->getObjectForTrait('Tux');
     }
 
     public function testGetMockClassMethodsForNonExistantClass(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(ReflectionException::class);
 
         $mock = $this->generator->mockClassMethods('Tux', true, true);
     }
@@ -227,17 +220,16 @@ final class GeneratorTest extends TestCase
 
     public function testExceptionIsRaisedForMutuallyExclusiveOptions(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(OriginalConstructorInvocationRequiredException::class);
 
         $this->generator->getMock(stdClass::class, [], [], '', false, true, true, true, true);
     }
 
     public function testCanImplementInterfacesThatHaveMethodsWithReturnTypes(): void
     {
-        $stub = $this->generator->getMock([AnInterfaceWithReturnType::class, AnInterface::class]);
+        $stub = $this->generator->getMock(AnInterfaceWithReturnType::class);
 
         $this->assertInstanceOf(AnInterfaceWithReturnType::class, $stub);
-        $this->assertInstanceOf(AnInterface::class, $stub);
         $this->assertInstanceOf(MockObject::class, $stub);
     }
 
@@ -319,15 +311,35 @@ final class GeneratorTest extends TestCase
 
     public function testGetClassMethodsWithNonExistingClass(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(ReflectionException::class);
 
         $this->generator->getClassMethods('Tux');
     }
 
     public function testCannotMockFinalClass(): void
     {
-        $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
+        $this->expectException(ClassIsFinalException::class);
 
-        $mock = $this->createMock(FinalClass::class);
+        /* @noinspection ClassMockingCorrectnessInspection */
+        $this->createMock(FinalClass::class);
+    }
+
+    public function testCanDoubleIntersectionOfMultipleInterfaces(): void
+    {
+        $stub = $this->generator->getMockForInterfaces(
+            [
+                AnInterface::class,
+                AnotherInterface::class,
+            ]
+        );
+
+        $this->assertInstanceOf(AnInterface::class, $stub);
+        $this->assertInstanceOf(AnotherInterface::class, $stub);
+
+        $stub->method('doSomething')->willReturn(true);
+        $stub->method('doSomethingElse')->willReturn(false);
+
+        $this->assertTrue($stub->doSomething());
+        $this->assertFalse($stub->doSomethingElse());
     }
 }

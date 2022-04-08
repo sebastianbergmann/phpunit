@@ -7,8 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use function defined;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @preserveGlobalState enabled
+ */
 class Issue2158Test extends TestCase
 {
     /**
@@ -28,6 +34,6 @@ class Issue2158Test extends TestCase
      */
     public function testSomethingElse(): void
     {
-        $this->assertTrue(\defined('TEST_CONSTANT'));
+        $this->assertTrue(defined('TEST_CONSTANT'));
     }
 }

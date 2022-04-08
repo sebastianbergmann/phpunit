@@ -9,10 +9,9 @@
  */
 namespace PHPUnit\Framework;
 
-use function get_class;
 use function sprintf;
 use function trim;
-use PHPUnit\Framework\Error\Error;
+use PHPUnit\Util\Error\Error;
 use Throwable;
 
 /**
@@ -20,20 +19,9 @@ use Throwable;
  */
 final class TestFailure
 {
-    /**
-     * @var null|Test
-     */
-    private $failedTest;
-
-    /**
-     * @var Throwable
-     */
-    private $thrownException;
-
-    /**
-     * @var string
-     */
-    private $testName;
+    private ?Test $failedTest = null;
+    private Throwable $thrownException;
+    private string $testName;
 
     /**
      * Returns a description for an exception.
@@ -66,21 +54,15 @@ final class TestFailure
             return $e->getClassName() . ': ' . $e->getMessage() . "\n";
         }
 
-        return get_class($e) . ': ' . $e->getMessage() . "\n";
+        return $e::class . ': ' . $e->getMessage() . "\n";
     }
 
     /**
      * Constructs a TestFailure with the given test and exception.
-     *
-     * @param Throwable $t
      */
-    public function __construct(Test $failedTest, $t)
+    public function __construct(Test $failedTest, Throwable $t)
     {
-        if ($failedTest instanceof SelfDescribing) {
-            $this->testName = $failedTest->toString();
-        } else {
-            $this->testName = get_class($failedTest);
-        }
+        $this->testName = $this->describe($failedTest);
 
         if (!$failedTest instanceof TestCase || !$failedTest->isInIsolation()) {
             $this->failedTest = $failedTest;
@@ -153,5 +135,14 @@ final class TestFailure
     public function isFailure(): bool
     {
         return $this->thrownException() instanceof AssertionFailedError;
+    }
+
+    private function describe(Test $test): string
+    {
+        if ($test instanceof SelfDescribing) {
+            return $test->toString();
+        }
+
+        return $test::class;
     }
 }

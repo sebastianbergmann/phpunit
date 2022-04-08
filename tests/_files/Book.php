@@ -9,9 +9,6 @@
  */
 namespace PHPUnit\TestFixture;
 
-/**
- * A book.
- */
 class Book
 {
     // the order of properties is important for testing the cycle!

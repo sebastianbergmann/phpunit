@@ -14,13 +14,13 @@ use function fopen;
 use function is_resource;
 use function preg_replace;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class IsTypeTest extends ConstraintTestCase
 {
     public function testConstraintIsType(): void
@@ -36,11 +36,14 @@ final class IsTypeTest extends ConstraintTestCase
             $constraint->evaluate(new stdClass);
         } catch (ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
-                <<<'EOF'
-Failed asserting that stdClass Object &%x () is of type "string".
+                sprintf(
+                    <<<'EOF'
+Failed asserting that %s Object #%%d () is of type "string".
 
 EOF
-                ,
+                    ,
+                    stdClass::class
+                ),
                 $this->trimnl(TestFailure::exceptionToString($e))
             );
 
@@ -58,12 +61,15 @@ EOF
             $constraint->evaluate(new stdClass, 'custom message');
         } catch (ExpectationFailedException $e) {
             $this->assertStringMatchesFormat(
-                <<<'EOF'
+                sprintf(
+                    <<<'EOF'
 custom message
-Failed asserting that stdClass Object &%x () is of type "string".
+Failed asserting that %s Object #%%d () is of type "string".
 
 EOF
                 ,
+                    stdClass::class
+                ),
                 $this->trimnl(TestFailure::exceptionToString($e))
             );
 
@@ -73,9 +79,7 @@ EOF
         $this->fail();
     }
 
-    /**
-     * @dataProvider resources
-     */
+    #[DataProvider('resources')]
     public function testConstraintIsResourceTypeEvaluatesCorrectlyWithResources($resource): void
     {
         $constraint = Assert::isType('resource');
@@ -87,7 +91,7 @@ EOF
         }
     }
 
-    public function resources()
+    public function resources(): array
     {
         $fh = fopen(__FILE__, 'r');
         fclose($fh);
@@ -133,12 +137,8 @@ EOF
 
     /**
      * Removes spaces in front of newlines.
-     *
-     * @param string $string
-     *
-     * @return string
      */
-    private function trimnl($string)
+    private function trimnl(string $string): string
     {
         return preg_replace('/[ ]*\n/', "\n", $string);
     }

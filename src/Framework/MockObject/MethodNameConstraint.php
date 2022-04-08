@@ -19,10 +19,7 @@ use PHPUnit\Framework\Constraint\Constraint;
  */
 final class MethodNameConstraint extends Constraint
 {
-    /**
-     * @var string
-     */
-    private $methodName;
+    private string $methodName;
 
     public function __construct(string $methodName)
     {
@@ -37,7 +34,7 @@ final class MethodNameConstraint extends Constraint
         );
     }
 
-    protected function matches($other): bool
+    protected function matches(mixed $other): bool
     {
         if (!is_string($other)) {
             return false;

@@ -8,20 +8,20 @@ $_SERVER['argv'][] = '--verbose';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/phpt-unsupported-section.phpt');
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-S                                                                   1 / 1 (100%)
+E                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 skipped test:
+There was 1 error:
 
 1) %stests%e_files%ephpt-unsupported-section.phpt
-PHPUnit does not support PHPT GET sections
-
-OK, but incomplete, skipped, or risky tests!
-Tests: 1, Assertions: 1, Skipped: 1.
+PHPUnit\Runner\Exception: PHPUnit does not support PHPT GET sections in %s
+%a
+ERRORS!
+Tests: 1, Assertions: 1, Errors: 1.

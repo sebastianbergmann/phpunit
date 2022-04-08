@@ -9,237 +9,30 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function array_map;
-use function array_sum;
-use function implode;
-use Generator;
-use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\TestFixture\CountConstraint;
-use PHPUnit\TestFixture\FalsyConstraint;
-use PHPUnit\TestFixture\NamedConstraint;
-use PHPUnit\TestFixture\TruthyConstraint;
-use stdClass;
+use function array_reduce;
+use function array_shift;
+use PHPUnit\Framework\Attributes\Small;
 
-/**
- * @small
- */
-final class LogicalOrTest extends ConstraintTestCase
+#[Small]
+final class LogicalOrTest extends BinaryOperatorTestCase
 {
-    public function testSetConstraintsDecoratesNonConstraintWithIsEqual(): void
+    public static function getOperatorName(): string
     {
-        $constraints = [
-            new stdClass,
-        ];
-
-        $constraint = new LogicalOr;
-
-        $constraint->setConstraints($constraints);
-
-        $this->assertTrue($constraint->evaluate(new stdClass, '', true));
+        return 'or';
     }
 
-    public function testCountReturnsCountOfComposedConstraints(): void
+    public static function getOperatorPrecedence(): int
     {
-        $counts = [
-            3,
-            5,
-            8,
-        ];
+        return 24;
+    }
 
-        $constraints = array_map(static function (int $count)
+    public function evaluateExpectedResult(array $input): bool
+    {
+        $initial = (bool) array_shift($input);
+
+        return array_reduce($input, static function ($carry, bool $item): bool
         {
-            return CountConstraint::fromCount($count);
-        }, $counts);
-
-        $constraint = new LogicalOr;
-
-        $constraint->setConstraints($constraints);
-
-        $expected = array_sum($counts);
-
-        $this->assertSame($expected, $constraint->count());
-    }
-
-    public function testToStringReturnsImplodedStringRepresentationOfComposedConstraintsGluedWithOr(): void
-    {
-        $names = [
-            'is healthy',
-            'is rich in amino acids',
-            'is rich in unsaturated fats',
-        ];
-
-        $constraints = array_map(static function (string $name)
-        {
-            return NamedConstraint::fromName($name);
-        }, $names);
-
-        $constraint = new LogicalOr;
-
-        $constraint->setConstraints($constraints);
-
-        $expected = implode(' or ', $names);
-
-        $this->assertSame($expected, $constraint->toString());
-    }
-
-    /**
-     * @dataProvider providerFailingConstraints
-     *
-     * @param Constraint[] $constraints
-     */
-    public function testEvaluateReturnsFalseIfAllOfTheComposedConstraintsEvaluateToFalse(array $constraints): void
-    {
-        $constraint = new LogicalOr;
-
-        $constraint->setConstraints($constraints);
-
-        $this->assertFalse($constraint->evaluate('whatever', '', true));
-    }
-
-    /**
-     * @dataProvider providerSucceedingConstraints
-     *
-     * @param Constraint[] $constraints
-     */
-    public function testEvaluateReturnsTrueIfAnyOfTheComposedConstraintsEvaluateToTrue(array $constraints): void
-    {
-        $constraint = LogicalOr::fromConstraints(...$constraints);
-
-        $this->assertTrue($constraint->evaluate('whatever', '', true));
-    }
-
-    /**
-     * @dataProvider providerFailingConstraints
-     *
-     * @param Constraint[] $constraints
-     */
-    public function testEvaluateThrowsExceptionIfAllOfTheComposedConstraintsEvaluateToFalse(array $constraints): void
-    {
-        $other = 'whatever';
-
-        $constraint = new LogicalOr;
-
-        $constraint->setConstraints($constraints);
-
-        try {
-            $constraint->evaluate($other);
-        } catch (ExpectationFailedException $exception) {
-            $toString = $this->stringify($constraints);
-
-            $expectedDescription = <<<EOF
-Failed asserting that '{$other}' {$toString}.
-
-EOF;
-
-            $this->assertEquals($expectedDescription, TestFailure::exceptionToString($exception));
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    /**
-     * @dataProvider providerFailingConstraints
-     *
-     * @param Constraint[] $constraints
-     */
-    public function testEvaluateThrowsExceptionWithCustomMessageIfAllOfTheComposedConstraintsEvaluateToFalse(array $constraints): void
-    {
-        $other             = 'whatever';
-        $customDescription = 'Not very happy about the results at this point in time, I have to admit!';
-
-        $constraint = new LogicalOr;
-
-        $constraint->setConstraints($constraints);
-
-        try {
-            $constraint->evaluate(
-                $other,
-                $customDescription
-            );
-        } catch (ExpectationFailedException $exception) {
-            $toString = $this->stringify($constraints);
-
-            $expectedDescription = <<<EOF
-{$customDescription}
-Failed asserting that '{$other}' {$toString}.
-
-EOF;
-
-            $this->assertEquals($expectedDescription, TestFailure::exceptionToString($exception));
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    /**
-     * @dataProvider providerSucceedingConstraints
-     *
-     * @param Constraint[] $constraints
-     */
-    public function testEvaluateReturnsNothingIfAnyOfTheComposedConstraintsEvaluateToTrue(array $constraints): void
-    {
-        $constraint = new LogicalOr;
-
-        $constraint->setConstraints($constraints);
-
-        $this->assertNull($constraint->evaluate('whatever'));
-    }
-
-    public function providerFailingConstraints(): Generator
-    {
-        $values = [
-            'single' => [
-                new FalsyConstraint,
-                new FalsyConstraint,
-                new FalsyConstraint,
-            ],
-            'multiple' => [
-                new FalsyConstraint,
-                new FalsyConstraint,
-                new FalsyConstraint,
-            ],
-        ];
-
-        foreach ($values as $key => $constraints) {
-            yield $key => [
-                $constraints,
-            ];
-        }
-    }
-
-    public function providerSucceedingConstraints(): Generator
-    {
-        $values = [
-            'single' => [
-                new TruthyConstraint,
-            ],
-            'multiple' => [
-                new FalsyConstraint,
-                new TruthyConstraint,
-                new FalsyConstraint,
-            ],
-        ];
-
-        foreach ($values as $key => $constraints) {
-            yield $key => [
-                $constraints,
-            ];
-        }
-    }
-
-    private function stringify(array $constraints): string
-    {
-        return implode(
-            ' or ',
-            array_map(static function (Constraint $constraint)
-            {
-                return $constraint->toString();
-            }, $constraints)
-        );
+            return $carry || $item;
+        }, $initial);
     }
 }

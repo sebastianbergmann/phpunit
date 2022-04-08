@@ -20,13 +20,14 @@ use function restore_error_handler;
 use function set_error_handler;
 use function sprintf;
 use function str_replace;
-use function strpos;
+use function str_starts_with;
 use function strrpos;
 use function substr;
 use function trim;
 use function unserialize;
 use __PHP_Incomplete_Class;
 use ErrorException;
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
@@ -34,6 +35,7 @@ use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult;
+use PHPUnit\Runner\CodeCoverage;
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -41,35 +43,16 @@ use SebastianBergmann\Environment\Runtime;
  */
 abstract class AbstractPhpProcess
 {
-    /**
-     * @var Runtime
-     */
-    protected $runtime;
+    protected Runtime $runtime;
+    protected bool $stderrRedirection = false;
+    protected string $stdin           = '';
+    protected string $arguments       = '';
 
     /**
-     * @var bool
+     * @psalm-var array<string, string>
      */
-    protected $stderrRedirection = false;
-
-    /**
-     * @var string
-     */
-    protected $stdin = '';
-
-    /**
-     * @var string
-     */
-    protected $args = '';
-
-    /**
-     * @var array<string, string>
-     */
-    protected $env = [];
-
-    /**
-     * @var int
-     */
-    protected $timeout = 0;
+    protected array $env   = [];
+    protected int $timeout = 0;
 
     public static function factory(): self
     {
@@ -122,9 +105,9 @@ abstract class AbstractPhpProcess
     /**
      * Sets the string of arguments to pass to the php job.
      */
-    public function setArgs(string $args): void
+    public function setArgs(string $arguments): void
     {
-        $this->args = $args;
+        $this->arguments = $arguments;
     }
 
     /**
@@ -132,13 +115,13 @@ abstract class AbstractPhpProcess
      */
     public function getArgs(): string
     {
-        return $this->args;
+        return $this->arguments;
     }
 
     /**
      * Sets the array of environment variables to start the child process with.
      *
-     * @param array<string, string> $env
+     * @psalm-param array<string, string> $env
      */
     public function setEnv(array $env): void
     {
@@ -171,8 +154,6 @@ abstract class AbstractPhpProcess
 
     /**
      * Runs a single test in a separate PHP process.
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     public function runTestJob(string $job, Test $test, TestResult $result): void
     {
@@ -225,11 +206,11 @@ abstract class AbstractPhpProcess
             $command .= ' ' . escapeshellarg($file);
         }
 
-        if ($this->args) {
+        if ($this->arguments) {
             if (!$file) {
                 $command .= ' --';
             }
-            $command .= ' ' . $this->args;
+            $command .= ' ' . $this->arguments;
         }
 
         if ($this->stderrRedirection) {
@@ -257,8 +238,6 @@ abstract class AbstractPhpProcess
 
     /**
      * Processes the TestResult object from an isolated process.
-     *
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      */
     private function processChildResult(Test $test, TestResult $result, string $stdout, string $stderr): void
     {
@@ -282,7 +261,7 @@ abstract class AbstractPhpProcess
             );
 
             try {
-                if (strpos($stdout, "#!/usr/bin/env php\n") === 0) {
+                if (str_starts_with($stdout, "#!/usr/bin/env php\n")) {
                     $stdout = substr($stdout, 19);
                 }
 
@@ -314,40 +293,43 @@ abstract class AbstractPhpProcess
                     $test->setOutput($childResult['output']);
                 }
 
+                Facade::forward($childResult['events']);
+
+                assert($test instanceof TestCase);
+
                 $test->setResult($childResult['testResult']);
                 $test->addToAssertionCount($childResult['numAssertions']);
 
-                $childResult = $childResult['result'];
-                assert($childResult instanceof TestResult);
-
-                if ($result->getCollectCodeCoverageInformation()) {
-                    $result->getCodeCoverage()->merge(
-                        $childResult->getCodeCoverage()
+                if (CodeCoverage::isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
+                    CodeCoverage::instance()->merge(
+                        $childResult['codeCoverage']
                     );
                 }
 
-                $time           = $childResult->time();
-                $notImplemented = $childResult->notImplemented();
-                $risky          = $childResult->risky();
-                $skipped        = $childResult->skipped();
-                $errors         = $childResult->errors();
-                $warnings       = $childResult->warnings();
-                $failures       = $childResult->failures();
+                assert($childResult['result'] instanceof TestResult);
+
+                $time           = $childResult['result']->time();
+                $notImplemented = $childResult['result']->notImplemented();
+                $risky          = $childResult['result']->risky();
+                $skipped        = $childResult['result']->skipped();
+                $errors         = $childResult['result']->errors();
+                $warnings       = $childResult['result']->warnings();
+                $failures       = $childResult['result']->failures();
 
                 if (!empty($notImplemented)) {
-                    $result->addError(
+                    $result->addFailure(
                         $test,
                         $this->getException($notImplemented[0]),
                         $time
                     );
                 } elseif (!empty($risky)) {
-                    $result->addError(
+                    $result->addFailure(
                         $test,
                         $this->getException($risky[0]),
                         $time
                     );
                 } elseif (!empty($skipped)) {
-                    $result->addError(
+                    $result->addFailure(
                         $test,
                         $this->getException($skipped[0]),
                         $time

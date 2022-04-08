@@ -43,8 +43,4 @@ final class InvokedAtLeastOnce extends InvocationOrder
     {
         return true;
     }
-
-    protected function invokedDo(BaseInvocation $invocation): void
-    {
-    }
 }

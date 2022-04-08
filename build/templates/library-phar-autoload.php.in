@@ -24,4 +24,6 @@ foreach ([___CLASSLIST___] as $file) {
     require_once 'phar://___PHAR___' . $file;
 }
 
+require __PHPUNIT_PHAR_ROOT__ . '/phpunit/Framework/Assert/Functions.php';
+
 __HALT_COMPILER();

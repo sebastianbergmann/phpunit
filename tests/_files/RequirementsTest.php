@@ -100,7 +100,7 @@ class RequirementsTest extends TestCase
 
     /**
      * @requires PHP 99-dev
-     * @requires PHPUnit 9-dev
+     * @requires PHPUnit 99-dev
      * @requires OS DOESNOTEXIST
      * @requires function testFuncOne
      * @requires function testFunc2
@@ -460,20 +460,6 @@ class RequirementsTest extends TestCase
      * @requires   PHPUnit    ~5.6.22 || ~7.0.17
      */
     public function testVersionConstraintRegexpIgnoresWhitespace(): void
-    {
-    }
-
-    /**
-     * @requires   PHP ~^12345
-     */
-    public function testVersionConstraintInvalidPhpConstraint(): void
-    {
-    }
-
-    /**
-     * @requires   PHPUnit ~^12345
-     */
-    public function testVersionConstraintInvalidPhpUnitConstraint(): void
     {
     }
 

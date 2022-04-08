@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/9.2/phpunit.xsd"
+         cacheTokens="true"
+         disableCodeCoverageIgnore="true"
+         ignoreDeprecatedCodeUnitsFromCodeCoverage="true">
+    <!-- ... -->
+
+    <filter>
+        <whitelist addUncoveredFilesFromWhitelist="true"
+                   processUncoveredFilesFromWhitelist="true">
+            <directory suffix=".php">src</directory>
+
+            <exclude>
+                <directory suffix=".php">src/generated</directory>
+                <file>src/autoload.php</file>
+            </exclude>
+        </whitelist>
+    </filter>
+
+    <logging>
+        <log type="coverage-html" target="html-coverage" lowUpperBound="50" highLowerBound="90"/>
+        <log type="coverage-clover" target="clover.xml"/>
+        <log type="coverage-crap4j" threshold="50" target="crap4j.xml"/>
+        <log type="coverage-text" showUncoveredFiles="false" showOnlySummary="true" target="coverage.txt"/>
+        <log type="junit" target="junit.xml"/>
+        <log type="teamcity" target="teamcity.txt"/>
+        <log type="testdox-html" target="testdox.html"/>
+        <log type="testdox-text" target="testdox.txt"/>
+        <log type="testdox-xml" target="testdox.xml"/>
+        <log type="plain" target="logfile.txt"/>
+    </logging>
+</phpunit>

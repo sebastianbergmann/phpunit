@@ -2,7 +2,6 @@
 <phpunit backupGlobals="true"
          backupStaticAttributes="false"
          bootstrap="/path/to/bootstrap.php"
-         cacheTokens="false"
          columns="80"
          colors="false"
          stderr="false"
@@ -13,21 +12,19 @@
          forceCoversAnnotation="false"
          stopOnFailure="false"
          stopOnWarning="false"
-         failOnWarning="false"
+         failOnIncomplete="false"
          failOnRisky="false"
+         failOnSkipped="false"
+         failOnWarning="false"
          extensionsDirectory="/tmp"
-         printerClass="PHPUnit\TextUI\ResultPrinter"
-         testSuiteLoaderClass="PHPUnit\Runner\StandardTestSuiteLoader"
+         printerClass="PHPUnit\TextUI\DefaultResultPrinter"
          defaultTestSuite="My Test Suite"
          beStrictAboutChangesToGlobalState="false"
          beStrictAboutOutputDuringTests="false"
-         beStrictAboutResourceUsageDuringSmallTests="false"
          beStrictAboutTestsThatDoNotTestAnything="false"
-         beStrictAboutTodoAnnotatedTests="false"
          beStrictAboutCoversAnnotation="false"
          defaultTimeLimit="123"
          enforceTimeLimit="false"
-         ignoreDeprecatedCodeUnitsFromCodeCoverage="false"
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"
@@ -59,48 +56,6 @@
         </exclude>
     </testdoxGroups>
 
-    <filter>
-        <whitelist addUncoveredFilesFromWhitelist="true"
-                   processUncoveredFilesFromWhitelist="false">
-            <directory suffix=".php">/path/to/files</directory>
-            <file>/path/to/file</file>
-            <file>
-                /path/to/file
-            </file>
-            <exclude>
-                <directory suffix=".php">/path/to/files</directory>
-                <file>/path/to/file</file>
-            </exclude>
-        </whitelist>
-    </filter>
-
-    <listeners>
-        <listener class="MyListener" file="/optional/path/to/MyListener.php">
-            <arguments>
-                <array>
-                    <element key="0">
-                        <string>Sebastian</string>
-                    </element>
-                </array>
-                <integer>22</integer>
-                <string>April</string>
-                <double>19.78</double>
-                <null/>
-                <object class="stdClass"/>
-                <file>MyTestFile.php</file>
-                <directory>MyRelativePath</directory>
-                <boolean>true</boolean>
-            </arguments>
-        </listener>
-        <listener class="IncludePathListener" file="ConfigurationTest.php"/>
-        <listener class="CompactArgumentsListener" file="/CompactArgumentsListener.php">
-            <arguments>
-                <integer>42</integer>
-                <boolean>false</boolean>
-            </arguments>
-        </listener>
-    </listeners>
-
     <extensions>
         <extension class="MyExtension" file="/optional/path/to/MyExtension.php">
             <arguments>
@@ -126,26 +81,11 @@
         </extension>
     </extensions>
 
-    <logging>
-        <log type="coverage-html" target="/tmp/report" lowUpperBound="50" highLowerBound="90"/>
-        <log type="coverage-clover" target="/tmp/clover.xml"/>
-        <log type="coverage-crap4j" threshold="50" target="/tmp/crap4j.xml"/>
-        <log type="coverage-text" showUncoveredFiles="true" showOnlySummary="true" target="/tmp/coverage.txt"/>
-        <log type="json" target="/tmp/logfile.json"/>
-        <log type="plain" target="/tmp/logfile.txt"/>
-        <log type="tap" target="/tmp/logfile.tap"/>
-        <log type="junit" target="/tmp/logfile.xml"/>
-        <log type="testdox-html" target="/tmp/testdox.html"/>
-        <log type="testdox-text" target="/tmp/testdox.txt"/>
-        <log type="testdox-xml" target="/tmp/testdox.xml"/>
-    </logging>
-
     <php>
         <includePath>.</includePath>
         <includePath>/path/to/lib</includePath>
         <ini name="foo" value="bar"/>
         <ini name="highlight.keyword" value="#123456"/>
-        <ini name="highlight.string" value="TEST_FILES_PATH"/>
         <const name="FOO" value="false"/>
         <const name="BAR" value="true"/>
         <var name="foo" value="false"/>

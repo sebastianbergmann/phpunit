@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\ExpectationFailedException;
 
 /**
- * Constraint that accepts any input value.
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class IsAnything extends Constraint
 {
@@ -28,7 +28,7 @@ final class IsAnything extends Constraint
      *
      * @throws ExpectationFailedException
      */
-    public function evaluate($other, string $description = '', bool $returnResult = false)
+    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
     {
         return $returnResult ? true : null;
     }

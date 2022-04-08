@@ -7,8 +7,11 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = 'Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main(false);
-
-@unlink(__DIR__ . '/2448/.phpunit.result.cache');
+PHPUnit\TextUI\Application::main(false);
 --EXPECTF--
-Cannot open file "Test.php".
+PHPUnit %s by Sebastian Bergmann and contributors.
+
+Test file "Test.php" not found
+--CLEAN--
+<?php declare(strict_types=1);
+unlink(__DIR__ . '/2448/.phpunit.result.cache');

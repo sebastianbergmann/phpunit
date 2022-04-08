@@ -8,9 +8,9 @@ $_SERVER['argv'][] = '--stop-on-error';
 $_SERVER['argv'][] = __DIR__ . '/2145/Issue2145Test.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 E
 
@@ -18,7 +18,7 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) Issue2145Test::testOne
+1) PHPUnit\TestFixture\Issue2145Test::testOne
 Exception in %s%eIssue2145Test.php:%d
 %A
 ERRORS!
