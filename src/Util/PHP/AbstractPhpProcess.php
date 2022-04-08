@@ -309,7 +309,7 @@ abstract class AbstractPhpProcess
 
             if ($childResult !== false) {
                 if (!empty($childResult['output'])) {
-                    $output = $childResult['output'];
+                    $test->setOutput($childResult['output']);
                 }
 
                 /* @var TestCase $test */
@@ -375,10 +375,6 @@ abstract class AbstractPhpProcess
         }
 
         $result->endTest($test, $time);
-
-        if (!empty($output)) {
-            print $output;
-        }
     }
 
     /**
