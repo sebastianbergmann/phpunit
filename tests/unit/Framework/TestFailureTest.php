@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\Framework;
 
-use NotSelfDescribingTest;
-use PHPUnit\Framework\Error\Error;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\TestFixture\NotSelfDescribingTest;
+use PHPUnit\Util\Error\Error;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
-/**
- * @small
- */
+#[Small]
 final class TestFailureTest extends TestCase
 {
     public function testToString(): void
@@ -38,11 +37,11 @@ final class TestFailureTest extends TestCase
 
     public function testToStringForNonSelfDescribing(): void
     {
-        $test      = new NotSelfDescribingTest();
+        $test      = new NotSelfDescribingTest;
         $exception = new Exception('message');
         $failure   = new TestFailure($test, $exception);
 
-        $this->assertEquals('NotSelfDescribingTest: message', $failure->toString());
+        $this->assertEquals('PHPUnit\TestFixture\NotSelfDescribingTest: message', $failure->toString());
     }
 
     public function testgetExceptionAsString(): void

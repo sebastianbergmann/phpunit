@@ -7,11 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 use PHPUnit\Framework\TestCase;
 
-class TestIncomplete extends TestCase
+final class TestIncomplete extends TestCase
 {
-    protected function runTest(): void
+    public function testOne(): void
     {
         $this->markTestIncomplete('Incomplete test');
     }

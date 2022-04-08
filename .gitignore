@@ -11,6 +11,7 @@
 # Build artifacts and temporary files
 /build/artifacts
 /build/tmp
+/tests/autoload.php
 
 # PHP-CS-Fixer
 /.php-cs-fixer.php

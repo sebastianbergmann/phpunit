@@ -7,9 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\TestCase;
+namespace PHPUnit\TestFixture;
 
-use PHPUnit\Runner\BaseTestRunner;
+use Exception;
+use PHPUnit\Framework\TestCase;
 
 class ExceptionInTestDetectedInTeardown extends TestCase
 {
@@ -17,7 +18,7 @@ class ExceptionInTestDetectedInTeardown extends TestCase
 
     protected function tearDown(): void
     {
-        if (BaseTestRunner::STATUS_ERROR == $this->getStatus()) {
+        if ($this->status()->isError()) {
             $this->exceptionDetected = true;
         }
     }

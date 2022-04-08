@@ -7,6 +7,11 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use ArrayAccess;
+use ReturnTypeWillChange;
+
 class SampleArrayAccess implements ArrayAccess
 {
     private $container;
@@ -25,6 +30,7 @@ class SampleArrayAccess implements ArrayAccess
         }
     }
 
+    #[ReturnTypeWillChange]
     public function offsetExists($offset)
     {
         return isset($this->container[$offset]);
@@ -35,6 +41,7 @@ class SampleArrayAccess implements ArrayAccess
         unset($this->container[$offset]);
     }
 
+    #[ReturnTypeWillChange]
     public function offsetGet($offset)
     {
         return $this->container[$offset] ?? null;

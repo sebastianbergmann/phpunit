@@ -20,8 +20,6 @@ interface Stub extends SelfDescribing
     /**
      * Fakes the processing of the invocation $invocation by returning a
      * specific value.
-     *
-     * @param Invocation $invocation The invocation which was mocked and matched by the current method and argument matchers
      */
-    public function invoke(Invocation $invocation);
+    public function invoke(Invocation $invocation): mixed;
 }

@@ -19,22 +19,15 @@ use SebastianBergmann\Exporter\Exporter;
  */
 final class ConsecutiveCalls implements Stub
 {
-    /**
-     * @var array
-     */
-    private $stack;
-
-    /**
-     * @var mixed
-     */
-    private $value;
+    private array $stack;
+    private mixed $value;
 
     public function __construct(array $stack)
     {
         $this->stack = $stack;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
         $this->value = array_shift($this->stack);
 

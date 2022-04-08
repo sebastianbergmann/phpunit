@@ -9,33 +9,24 @@
  */
 namespace PHPUnit\Framework;
 
-use EmptyDataProviderTest;
-use ModifiedConstructorTestCase;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\TestFixture\EmptyDataProviderTest;
+use PHPUnit\TestFixture\TestWithAnnotations;
 use ReflectionClass;
-use TestWithAnnotations;
 
-/**
- * @covers \PHPUnit\Framework\TestBuilder
- */
+#[CoversClass(TestBuilder::class)]
 final class TestBuilderTest extends TestCase
 {
-    public function testCreateTestForTestClassWithModifiedConstructor(): void
-    {
-        $test = (new TestBuilder)->build(new ReflectionClass(ModifiedConstructorTestCase::class), 'testCase');
-        $this->assertInstanceOf(ModifiedConstructorTestCase::class, $test);
-    }
-
     public function testCreateWithEmptyData(): void
     {
         $test = (new TestBuilder)->build(new ReflectionClass(EmptyDataProviderTest::class), 'testCase');
         $this->assertInstanceOf(DataProviderTestSuite::class, $test);
         /* @var DataProviderTestSuite $test */
-        $this->assertInstanceOf(SkippedTestCase::class, $test->getGroupDetails()['default'][0]);
+        $this->assertInstanceOf(ErrorTestCase::class, $test->getGroupDetails()['default'][0]);
     }
 
-    /**
-     * @dataProvider provideWithAnnotations
-     */
+    #[DataProvider('provideWithAnnotations')]
     public function testWithAnnotations(string $methodName): void
     {
         $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
@@ -51,9 +42,7 @@ final class TestBuilderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider provideWithAnnotationsAndDataProvider
-     */
+    #[DataProvider('provideWithAnnotationsAndDataProvider')]
     public function testWithAnnotationsAndDataProvider(string $methodName): void
     {
         $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);

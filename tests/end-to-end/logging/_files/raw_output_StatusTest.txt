@@ -1,0 +1,127 @@
+PHPUnit %s Sebastian Bergmann and contributors.
+
+Runtime:       %s
+Configuration: %sconfiguration.basic.xml
+
+[4mSet Up Before Class (PHPUnit\SelfTest\Basic\SetUpBeforeClass)[0m
+ [33m✘[0m One [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mException: forcing an Exception in setUpBeforeClass()[0m
+   [33m│[0m
+   [33m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpBeforeClassTest.php[2m:[22m[34m32[0m
+   [33m┴[0m
+
+ [36m↩[0m Two [36m %f [2mms[0m
+   [36m┐[0m
+   [36m├[0m [36mThis test was skipped due to an error in a hook method[0m
+   [36m┴[0m
+
+[4mSet Up (PHPUnit\SelfTest\Basic\SetUp)[0m
+ [33m✘[0m One with set up exception [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mRuntimeException: throw exception in setUp[0m
+   [33m│[0m
+   [33m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpTest.php[2m:[22m[34m30[0m
+   [33m┴[0m
+
+ [33m✘[0m Two with set up exception [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mRuntimeException: throw exception in setUp[0m
+   [33m│[0m
+   [33m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mSetUpTest.php[2m:[22m[34m30[0m
+   [33m┴[0m
+
+[4mTest result status with and without message[0m
+ [32m✔[0m Success [32m %f [2mms[0m
+ [31m✘[0m Failure [31m %f [2mms[0m
+   [31m┐[0m
+   [31m├[0m [41;37mFailed asserting that false is true.[0m
+   [31m│[0m
+   [31m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [31m┴[0m
+
+ [33m✘[0m Error [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mRuntimeException:[0m
+   [33m│[0m
+   [33m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
+
+ [33m∅[0m Incomplete [33m %f [2mms[0m
+   [33m┐[0m
+   [33m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
+
+ [36m↩[0m Skipped [36m %f [2mms[0m
+   [36m┐[0m
+   [36m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [36m┴[0m
+
+ [33m☢[0m Risky [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [33mThis test did not perform any assertions%w[0m
+   [33m┴[0m
+
+ [33m⚠[0m Warning [33m %f [2mms[0m
+   [33m┐[0m
+   [33m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
+
+ [32m✔[0m Success with message [32m %f [2mms[0m
+ [31m✘[0m Failure with message [31m %f [2mms[0m
+   [31m┐[0m
+   [31m├[0m [41;37mfailure with custom message%w[0m
+   [31m├[0m [41;37mFailed asserting that false is true.[0m
+   [31m│[0m
+   [31m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [31m┴[0m
+
+ [33m✘[0m Error with message [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [43;30mRuntimeException: error with custom message[0m
+   [33m│[0m
+   [33m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
+
+ [33m∅[0m Incomplete with message [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [33mincomplete with custom message[0m
+   [33m│[0m
+   [33m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
+
+ [36m↩[0m Skipped with message [36m %f [2mms[0m
+   [36m┐[0m
+   [36m├[0m [36mskipped with custom message[0m
+   [36m│[0m
+   [36m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [36m┴[0m
+
+ [33m☢[0m Risky with message [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [33mThis test did not perform any assertions%w[0m
+   [33m┴[0m
+
+ [33m⚠[0m Warning with message [33m %f [2mms[0m
+   [33m┐[0m
+   [33m├[0m [33mwarning with custom message[0m
+   [33m│[0m
+   [33m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mStatusTest.php[2m:[22m[34m%d[0m
+   [33m┴[0m
+
+[4mTear Down After Class (PHPUnit\SelfTest\Basic\TearDownAfterClass)[0m
+ [32m✔[0m One [32m %f [2mms[0m
+ [32m✔[0m Two [32m %f [2mms[0m
+ [31m✘[0m Tear down after class [31m 0 [2mms[0m
+   [31m┐[0m
+   [31m├[0m [41;37mException in PHPUnit\SelfTest\Basic\TearDownAfterClassTest::tearDownAfterClass[0m
+   [31m├[0m [41;37mforcing an Exception in tearDownAfterClass()                                  [0m
+   [31m│[0m
+   [31m╵[0m %stests[2m%e[22mend-to-end[2m%e[22m_files[2m%e[22mbasic[2m%e[22munit[2m%e[22mTearDownAfterClassTest.php[2m:[22m[34m%d[0m
+   [31m┴[0m
+
+Time: %s, Memory: %s
+
+
+[37;41mERRORS![0m
+[37;41mTests: 21[0m[37;41m, Assertions: 7[0m[37;41m, Errors: 5[0m[37;41m, Failures: 3[0m[37;41m, Warnings: 2[0m[37;41m, Skipped: 3[0m[37;41m, Incomplete: 2[0m[37;41m, Risky: 2[0m[37;41m.[0m

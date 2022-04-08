@@ -7,7 +7,7 @@ interface Foo
     public function bar(string $baz): void;
 }
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
@@ -44,7 +44,7 @@ class MockFoo implements PHPUnit\Framework\MockObject\MockObject, Foo
 
         $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, ': void', $this, true
+                'Foo', 'bar', $__phpunit_arguments, 'void', $this, true
             )
         );
     }

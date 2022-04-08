@@ -1,14 +1,45 @@
 #!/usr/bin/env php
 <?php
-if (version_compare('7.2.0', PHP_VERSION, '>')) {
+if (!version_compare(PHP_VERSION, PHP_VERSION, '=')) {
+    fwrite(
+        STDERR,
+        sprintf(
+            '%s declares an invalid value for PHP_VERSION.' . PHP_EOL .
+            'This breaks fundamental functionality such as version_compare().' . PHP_EOL .
+            'Please use a different PHP interpreter.' . PHP_EOL,
+
+            PHP_BINARY
+        )
+    );
+
+    die(1);
+}
+
+if (version_compare('8.1.0', PHP_VERSION, '>')) {
     fwrite(
         STDERR,
         sprintf(
             'PHPUnit X.Y.Z by Sebastian Bergmann and contributors.' . PHP_EOL . PHP_EOL .
-            'This version of PHPUnit requires PHP >= 7.2.' . PHP_EOL .
+            'This version of PHPUnit requires PHP >= 8.1.' . PHP_EOL .
             'You are using PHP %s (%s).' . PHP_EOL,
             PHP_VERSION,
             PHP_BINARY
+        )
+    );
+
+    die(1);
+}
+
+foreach (['dom', 'json', 'libxml', 'mbstring', 'tokenizer', 'xml', 'xmlwriter'] as $extension) {
+    if (extension_loaded($extension)) {
+        continue;
+    }
+
+    fwrite(
+        STDERR,
+        sprintf(
+            'PHPUnit requires the "%s" extension.' . PHP_EOL,
+            $extension
         )
     );
 
@@ -21,11 +52,7 @@ if (__FILE__ === realpath($_SERVER['SCRIPT_NAME'])) {
     $execute = false;
 }
 
-$options = getopt('', array('prepend:', 'manifest'));
-
-if (isset($options['prepend'])) {
-    require $options['prepend'];
-}
+$options = getopt('', array('manifest'));
 
 if (isset($options['manifest'])) {
     $printManifest = true;
@@ -38,7 +65,27 @@ define('__PHPUNIT_PHAR_ROOT__', 'phar://___PHAR___');
 
 Phar::mapPhar('___PHAR___');
 
-___FILELIST___
+spl_autoload_register(
+    function ($class) {
+        static $classes = null;
+
+        if ($classes === null) {
+            $classes = [___CLASSLIST___];
+        }
+
+        if (isset($classes[$class])) {
+            require_once 'phar://___PHAR___' . $classes[$class];
+        }
+    },
+    ___EXCEPTION___,
+    ___PREPEND___
+);
+
+foreach ([___CLASSLIST___] as $file) {
+    require_once 'phar://___PHAR___' . $file;
+}
+
+require __PHPUNIT_PHAR_ROOT__ . '/phpunit/Framework/Assert/Functions.php';
 
 if ($execute) {
     if (isset($printManifest)) {
@@ -49,7 +96,7 @@ if ($execute) {
 
     unset($execute);
 
-    PHPUnit\TextUI\Command::main();
+    PHPUnit\TextUI\Application::main();
 }
 
 __HALT_COMPILER();

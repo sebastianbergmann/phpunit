@@ -10,9 +10,7 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
-use function array_keys;
 use function array_map;
-use function array_values;
 use function count;
 use function explode;
 use function implode;
@@ -29,7 +27,7 @@ use function trim;
 final class Color
 {
     /**
-     * @var array<string,string>
+     * @psalm-var array<string,string>
      */
     private const WHITESPACE_MAP = [
         ' '  => '·',
@@ -37,7 +35,7 @@ final class Color
     ];
 
     /**
-     * @var array<string,string>
+     * @psalm-var array<string,string>
      */
     private const WHITESPACE_EOL_MAP = [
         ' '  => '·',
@@ -47,9 +45,9 @@ final class Color
     ];
 
     /**
-     * @var array<string,string>
+     * @psalm-var array<string,string>
      */
-    private static $ansiCodes = [
+    private static array $ansiCodes = [
         'reset'      => '0',
         'bold'       => '1',
         'dim'        => '2',
@@ -97,17 +95,17 @@ final class Color
         return self::optimizeColor(sprintf("\x1b[%sm", implode(';', $styles)) . $buffer . "\x1b[0m");
     }
 
-    public static function colorizePath(string $path, ?string $prevPath = null, bool $colorizeFilename = false): string
+    public static function colorizePath(string $path, ?string $previousPath = null, bool $colorizeFilename = false): string
     {
-        if ($prevPath === null) {
-            $prevPath = '';
+        if ($previousPath === null) {
+            $previousPath = '';
         }
 
-        $path     = explode(DIRECTORY_SEPARATOR, $path);
-        $prevPath = explode(DIRECTORY_SEPARATOR, $prevPath);
+        $path         = explode(DIRECTORY_SEPARATOR, $path);
+        $previousPath = explode(DIRECTORY_SEPARATOR, $previousPath);
 
-        for ($i = 0; $i < min(count($path), count($prevPath)); $i++) {
-            if ($path[$i] == $prevPath[$i]) {
+        for ($i = 0; $i < min(count($path), count($previousPath)); $i++) {
+            if ($path[$i] === $previousPath[$i]) {
                 $path[$i] = self::dim($path[$i]);
             }
         }
@@ -115,8 +113,9 @@ final class Color
         if ($colorizeFilename) {
             $last        = count($path) - 1;
             $path[$last] = preg_replace_callback(
-                '/([\-_\.]+|phpt$)/',
-                static function ($matches) {
+                '/([\-_.]+|phpt$)/',
+                static function ($matches)
+                {
                     return self::dim($matches[0]);
                 },
                 $path[$last]
@@ -139,19 +138,30 @@ final class Color
     {
         $replaceMap = $visualizeEOL ? self::WHITESPACE_EOL_MAP : self::WHITESPACE_MAP;
 
-        return preg_replace_callback('/\s+/', static function ($matches) use ($replaceMap) {
-            return self::dim(strtr($matches[0], $replaceMap));
-        }, $buffer);
+        return preg_replace_callback(
+            '/\s+/',
+            static function ($matches) use ($replaceMap)
+            {
+                return self::dim(strtr($matches[0], $replaceMap));
+            },
+            $buffer
+        );
     }
 
     private static function optimizeColor(string $buffer): string
     {
-        $patterns = [
-            "/\e\\[22m\e\\[2m/"                   => '',
-            "/\e\\[([^m]*)m\e\\[([1-9][0-9;]*)m/" => "\e[$1;$2m",
-            "/(\e\\[[^m]*m)+(\e\\[0m)/"           => '$2',
-        ];
-
-        return preg_replace(array_keys($patterns), array_values($patterns), $buffer);
+        return preg_replace(
+            [
+                "/\e\\[22m\e\\[2m/",
+                "/\e\\[([^m]*)m\e\\[([1-9][0-9;]*)m/",
+                "/(\e\\[[^m]*m)+(\e\\[0m)/",
+            ],
+            [
+                '',
+                "\e[$1;$2m",
+                '$2',
+            ],
+            $buffer
+        );
     }
 }

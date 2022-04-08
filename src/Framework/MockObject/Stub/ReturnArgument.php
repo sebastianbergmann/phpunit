@@ -17,21 +17,16 @@ use PHPUnit\Framework\MockObject\Invocation;
  */
 final class ReturnArgument implements Stub
 {
-    /**
-     * @var int
-     */
-    private $argumentIndex;
+    private int $argumentIndex;
 
-    public function __construct($argumentIndex)
+    public function __construct(int $argumentIndex)
     {
         $this->argumentIndex = $argumentIndex;
     }
 
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): mixed
     {
-        if (isset($invocation->getParameters()[$this->argumentIndex])) {
-            return $invocation->getParameters()[$this->argumentIndex];
-        }
+        return $invocation->getParameters()[$this->argumentIndex] ?? null;
     }
 
     public function toString(): string

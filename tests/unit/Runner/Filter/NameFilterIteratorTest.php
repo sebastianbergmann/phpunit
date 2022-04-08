@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\Runner\Filter;
 
-use BankAccountTest;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\TestFixture\BankAccountTest;
 
-/**
- * @small
- */
+#[Small]
 final class NameFilterIteratorTest extends TestCase
 {
     public function testCaseSensitiveMatch(): void

@@ -20,7 +20,7 @@ final class ReturnSelf implements Stub
     /**
      * @throws RuntimeException
      */
-    public function invoke(Invocation $invocation)
+    public function invoke(Invocation $invocation): object
     {
         return $invocation->getObject();
     }

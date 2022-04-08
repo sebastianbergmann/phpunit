@@ -23,7 +23,7 @@ class Issue3154
         return $z."sum: ".($i+$j).$v;
     }
 }
-require __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
@@ -60,7 +60,7 @@ class Issue3154Mock extends Is\Namespaced\Issue3154 implements PHPUnit\Framework
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Is\Namespaced\Issue3154', 'a', $__phpunit_arguments, ': string', $this, true
+                'Is\Namespaced\Issue3154', 'a', $__phpunit_arguments, 'string', $this, true
             )
         );
 

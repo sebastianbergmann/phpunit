@@ -9,22 +9,20 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use DatePeriod;
 use EmptyIterator;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
-use TestGeneratorMaker;
-use TestIterator;
-use TestIterator2;
-use TestIteratorAggregate;
-use TestIteratorAggregate2;
-use Traversable;
+use PHPUnit\TestFixture\TestGeneratorMaker;
+use PHPUnit\TestFixture\TestIterator;
+use PHPUnit\TestFixture\TestIterator2;
+use PHPUnit\TestFixture\TestIteratorAggregate;
+use PHPUnit\TestFixture\TestIteratorAggregate2;
 
-/**
- * @small
- */
+#[Small]
 final class CountTest extends ConstraintTestCase
 {
     public function testCount(): void
@@ -144,26 +142,6 @@ final class CountTest extends ConstraintTestCase
         $this->assertEquals(null, $generator->current());
     }
 
-    /**
-     * Since PHP8, Traversable cannot be implemented directly.
-     *
-     * @requires PHP < 8.0
-     */
-    public function testCountTraversable(): void
-    {
-        $countConstraint = new Count(5);
-
-        // DatePeriod is used as an object that is Traversable but does not
-        // implement Iterator or IteratorAggregate. The following ISO 8601
-        // recurring time interval will yield five total DateTime objects.
-        $datePeriod = new DatePeriod('R4/2017-05-01T00:00:00Z/P1D');
-
-        $this->assertInstanceOf(Traversable::class, $datePeriod);
-        $this->assertNotInstanceOf(Iterator::class, $datePeriod);
-        $this->assertNotInstanceOf(IteratorAggregate::class, $datePeriod);
-        $this->assertTrue($countConstraint->evaluate($datePeriod, '', true));
-    }
-
     public function testCountCanBeExportedToString(): void
     {
         $countConstraint = new Count(1);
@@ -189,9 +167,7 @@ EOF
         }
     }
 
-    /**
-     * @ticket https://github.com/sebastianbergmann/phpunit/issues/3743
-     */
+    #[Ticket('https://github.com/sebastianbergmann/phpunit/issues/3743')]
     public function test_EmptyIterator_is_handled_correctly(): void
     {
         $constraint = new Count(0);

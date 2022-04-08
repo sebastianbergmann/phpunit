@@ -15,11 +15,11 @@ use const JSON_ERROR_NONE;
 use const JSON_ERROR_STATE_MISMATCH;
 use const JSON_ERROR_SYNTAX;
 use const JSON_ERROR_UTF8;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- */
+#[Small]
 final class JsonMatchesErrorMessageProviderTest extends TestCase
 {
     public static function determineJsonErrorDataprovider(): array
@@ -63,13 +63,8 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider translateTypeToPrefixDataprovider
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testTranslateTypeToPrefix($expected, $type): void
+    #[DataProvider('translateTypeToPrefixDataprovider')]
+    public function testTranslateTypeToPrefix(string $expected, string $type): void
     {
         $this->assertEquals(
             $expected,
@@ -77,19 +72,13 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
         );
     }
 
-    /**
-     * @testdox Determine JSON error $_dataName
-     * @dataProvider determineJsonErrorDataprovider
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testDetermineJsonError($expected, $error, $prefix): void
+    #[DataProvider('determineJsonErrorDataprovider')]
+    public function testDetermineJsonError(?string $expected, int $error, string $prefix): void
     {
         $this->assertEquals(
             $expected,
             JsonMatchesErrorMessageProvider::determineJsonError(
-                (string) $error,
+                $error,
                 $prefix
             )
         );

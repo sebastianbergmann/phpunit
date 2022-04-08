@@ -7,7 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 use PHPUnit\Framework\TestCase;
+use Throwable;
 
 class TemplateMethodsTest extends TestCase
 {
@@ -22,6 +25,16 @@ class TemplateMethodsTest extends TestCase
     }
 
     protected function setUp(): void
+    {
+        print __METHOD__ . "\n";
+    }
+
+    protected function assertPreConditions(): void
+    {
+        print __METHOD__ . "\n";
+    }
+
+    protected function assertPostConditions(): void
     {
         print __METHOD__ . "\n";
     }
@@ -41,16 +54,6 @@ class TemplateMethodsTest extends TestCase
     {
         print __METHOD__ . "\n";
         $this->assertTrue(false);
-    }
-
-    protected function assertPreConditions(): void
-    {
-        print __METHOD__ . "\n";
-    }
-
-    protected function assertPostConditions(): void
-    {
-        print __METHOD__ . "\n";
     }
 
     protected function onNotSuccessfulTest(Throwable $t): void

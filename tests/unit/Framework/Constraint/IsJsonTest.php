@@ -9,12 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-/**
- * @small
- */
+#[Small]
 final class IsJsonTest extends ConstraintTestCase
 {
     public static function evaluateDataprovider(): array
@@ -25,14 +25,8 @@ final class IsJsonTest extends ConstraintTestCase
         ];
     }
 
-    /**
-     * @testdox Evaluate $_dataName
-     * @dataProvider evaluateDataprovider
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testEvaluate($expected, $jsonOther): void
+    #[DataProvider('evaluateDataprovider')]
+    public function testEvaluate(bool $expected, string $jsonOther): void
     {
         $constraint = new IsJson;
 

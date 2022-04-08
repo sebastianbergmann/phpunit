@@ -15,7 +15,7 @@ use function in_array;
 use function is_file;
 use function realpath;
 use function sprintf;
-use function strpos;
+use function str_starts_with;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\SyntheticError;
 use Throwable;
@@ -57,11 +57,11 @@ final class Filter
             );
         }
 
-        $prefix    = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
-        $blacklist = new Blacklist;
+        $prefix      = defined('__PHPUNIT_PHAR_ROOT__') ? __PHPUNIT_PHAR_ROOT__ : false;
+        $excludeList = new ExcludeList;
 
         foreach ($eTrace as $frame) {
-            if (self::shouldPrintFrame($frame, $prefix, $blacklist)) {
+            if (self::shouldPrintFrame($frame, $prefix, $excludeList)) {
                 $filteredStacktrace .= sprintf(
                     "%s:%s\n",
                     $frame['file'],
@@ -73,14 +73,14 @@ final class Filter
         return $filteredStacktrace;
     }
 
-    private static function shouldPrintFrame($frame, $prefix, Blacklist $blacklist): bool
+    private static function shouldPrintFrame(array $frame, string|false $prefix, ExcludeList $excludeList): bool
     {
         if (!isset($frame['file'])) {
             return false;
         }
 
         $file              = $frame['file'];
-        $fileIsNotPrefixed = $prefix === false || strpos($file, $prefix) !== 0;
+        $fileIsNotPrefixed = $prefix === false || !str_starts_with($file, $prefix);
 
         // @see https://github.com/sebastianbergmann/phpunit/issues/4033
         if (isset($GLOBALS['_SERVER']['SCRIPT_NAME'])) {
@@ -90,16 +90,16 @@ final class Filter
         }
 
         return is_file($file) &&
-               self::fileIsBlacklisted($file, $blacklist) &&
+               self::fileIsExcluded($file, $excludeList) &&
                $fileIsNotPrefixed &&
                $file !== $script;
     }
 
-    private static function fileIsBlacklisted($file, Blacklist $blacklist): bool
+    private static function fileIsExcluded(string $file, ExcludeList $excludeList): bool
     {
-        return (empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) ||
-                !in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'], true)) &&
-               !$blacklist->isBlacklisted($file);
+        return (empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) ||
+                !in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) &&
+                !$excludeList->isExcluded($file);
     }
 
     private static function frameExists(array $trace, string $file, int $line): bool

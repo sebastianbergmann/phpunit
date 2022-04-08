@@ -14,10 +14,12 @@ use PHPUnit\Framework\MockObject\Rule\InvocationOrder;
 
 /**
  * @method BuilderInvocationMocker method($constraint)
+ *
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface MockObject extends Stub
 {
-    public function __phpunit_setOriginalObject($originalObject): void;
+    public function __phpunit_setOriginalObject(object $originalObject): void;
 
     public function __phpunit_verify(bool $unsetInvocationMocker = true): void;
 

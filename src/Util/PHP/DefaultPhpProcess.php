@@ -33,10 +33,7 @@ use PHPUnit\Framework\Exception;
  */
 class DefaultPhpProcess extends AbstractPhpProcess
 {
-    /**
-     * @var string
-     */
-    protected $tempFile;
+    private ?string $tempFile = null;
 
     /**
      * Runs a single job (PHP code) using a separate PHP process.
@@ -214,6 +211,9 @@ class DefaultPhpProcess extends AbstractPhpProcess
         return ['stdout' => $stdout, 'stderr' => $stderr];
     }
 
+    /**
+     * @param resource $pipe
+     */
     protected function process($pipe, string $job): void
     {
         fwrite($pipe, $job);

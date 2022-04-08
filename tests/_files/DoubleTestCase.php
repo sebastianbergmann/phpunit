@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
@@ -20,12 +22,12 @@ class DoubleTestCase implements Test
         $this->testCase = $testCase;
     }
 
-    public function count()
+    public function count(): int
     {
         return 2;
     }
 
-    public function run(TestResult $result = null): TestResult
+    public function run(TestResult $result): void
     {
         $result->startTest($this);
 
@@ -33,7 +35,5 @@ class DoubleTestCase implements Test
         $this->testCase->runBare();
 
         $result->endTest($this, 0);
-
-        return $result;
     }
 }

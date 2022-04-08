@@ -9,13 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use stdClass;
 
-/**
- * @small
- */
+#[Small]
 final class IsIdenticalTest extends ConstraintTestCase
 {
     public function testConstraintIsIdentical(): void
@@ -27,7 +26,13 @@ final class IsIdenticalTest extends ConstraintTestCase
 
         $this->assertFalse($constraint->evaluate($b, '', true));
         $this->assertTrue($constraint->evaluate($a, '', true));
-        $this->assertEquals('is identical to an object of class "stdClass"', $constraint->toString());
+        $this->assertEquals(
+            sprintf(
+                'is identical to an object of class "%s"',
+                stdClass::class
+            ),
+            $constraint->toString()
+        );
         $this->assertCount(1, $constraint);
 
         try {

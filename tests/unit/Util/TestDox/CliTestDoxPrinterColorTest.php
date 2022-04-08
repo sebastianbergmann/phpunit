@@ -12,23 +12,21 @@ namespace PHPUnit\Util\TestDox;
 use const PHP_EOL;
 use function implode;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\Attributes\Group;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
 use PHPUnit\Util\Color;
 
-/**
- * @group testdox
- * @small
- */
+#[Group('testdox')]
+#[Small]
 final class CliTestDoxPrinterColorTest extends TestCase
 {
-    /**
-     * @var TestableCliTestDoxPrinter
-     */
-    private $printer;
+    private ?TestableCliTestDoxPrinter $printer;
 
     protected function setUp(): void
     {
-        $this->printer = new TestableCliTestDoxPrinter(null, true, \PHPUnit\TextUI\ResultPrinter::COLOR_ALWAYS);
+        $this->printer = new TestableCliTestDoxPrinter('php://stdout', true, true);
     }
 
     protected function tearDown(): void

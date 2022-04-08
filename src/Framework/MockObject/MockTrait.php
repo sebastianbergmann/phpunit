@@ -16,22 +16,25 @@ use function class_exists;
  */
 final class MockTrait implements MockType
 {
-    /**
-     * @var string
-     */
-    private $classCode;
+    private string $classCode;
 
     /**
-     * @var string
+     * @psalm-var class-string
      */
-    private $mockName;
+    private string $mockName;
 
+    /**
+     * @psalm-param class-string $mockName
+     */
     public function __construct(string $classCode, string $mockName)
     {
         $this->classCode = $classCode;
         $this->mockName  = $mockName;
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public function generate(): string
     {
         if (!class_exists($this->mockName, false)) {

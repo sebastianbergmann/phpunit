@@ -7,9 +7,9 @@ $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/configuration_stop_on_incomplete.xml');
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/StopOnErrorTestSuite.php');
 
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 

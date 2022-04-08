@@ -7,6 +7,8 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 use PHPUnit\Framework\TestCase;
 
 trait T3194
@@ -28,7 +30,7 @@ final class C3194
 }
 
 /**
- * @covers C3194
+ * @covers \PHPUnit\TestFixture\C3194
  */
 final class Test3194 extends TestCase
 {

@@ -15,30 +15,40 @@ namespace PHPUnit\Framework;
 final class WarningTestCase extends TestCase
 {
     /**
-     * @var bool
+     * @psalm-var class-string
      */
-    protected $backupGlobals = false;
+    private string $className;
+    private string $methodName;
+    private string $message;
 
     /**
-     * @var bool
+     * @psalm-param class-string $className
      */
-    protected $backupStaticAttributes = false;
-
-    /**
-     * @var bool
-     */
-    protected $runTestInSeparateProcess = false;
-
-    /**
-     * @var string
-     */
-    private $message;
-
-    public function __construct(string $message = '')
+    public function __construct(string $className, string $methodName, string $message = '')
     {
-        $this->message = $message;
+        $this->setBackupGlobals(false);
+        $this->setBackupStaticProperties(false);
+        $this->setRunClassInSeparateProcess(false);
+        $this->setRunTestInSeparateProcess(false);
+
+        $this->className  = $className;
+        $this->methodName = $methodName;
+        $this->message    = $message;
 
         parent::__construct('Warning');
+    }
+
+    /**
+     * @psalm-return class-string
+     */
+    public function className(): string
+    {
+        return $this->className;
+    }
+
+    public function methodName(): string
+    {
+        return $this->methodName;
     }
 
     public function getMessage(): string
@@ -59,7 +69,7 @@ final class WarningTestCase extends TestCase
      *
      * @psalm-return never-return
      */
-    protected function runTest(): void
+    protected function runTest(): mixed
     {
         throw new Warning($this->message);
     }

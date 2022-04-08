@@ -7,7 +7,7 @@ class Foo
     public function bar(): string{}
 }
 
-require __DIR__ . '/../../../../vendor/autoload.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 
 $class = new ReflectionClass('Foo');
 $mockMethod = \PHPUnit\Framework\MockObject\MockMethod::fromReflection(
@@ -36,7 +36,7 @@ public function bar(): string
 
         $__phpunit_result = $this->__phpunit_getInvocationHandler()->invoke(
             new \PHPUnit\Framework\MockObject\Invocation(
-                'Foo', 'bar', $__phpunit_arguments, ': string', $this, false
+                'Foo', 'bar', $__phpunit_arguments, 'string', $this, false
             )
         );
 

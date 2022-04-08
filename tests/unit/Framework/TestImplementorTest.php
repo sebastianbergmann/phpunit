@@ -10,20 +10,23 @@
 namespace PHPUnit\Framework;
 
 use function count;
-use DoubleTestCase;
-use Success;
+use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\TestFixture\DoubleTestCase;
+use PHPUnit\TestFixture\Success;
 
-/**
- * @small
- */
+#[Small]
 final class TestImplementorTest extends TestCase
 {
     public function testSuccessfulRun(): void
     {
         $result = new TestResult;
 
-        $test = new DoubleTestCase(new Success);
+        $test = new DoubleTestCase(new Success('testOne'));
+
+        Facade::suspend();
         $test->run($result);
+        Facade::resume();
 
         $this->assertCount(count($test), $result);
         $this->assertEquals(0, $result->errorCount());

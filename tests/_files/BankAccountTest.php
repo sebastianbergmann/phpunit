@@ -7,11 +7,10 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
 use PHPUnit\Framework\TestCase;
 
-/**
- * Tests for the BankAccount class.
- */
 class BankAccountTest extends TestCase
 {
     protected $ba;
@@ -25,6 +24,7 @@ class BankAccountTest extends TestCase
      * @covers BankAccount::getBalance
      * @group balanceIsInitiallyZero
      * @group specification
+     * @group 1234
      */
     public function testBalanceIsInitiallyZero(): void
     {

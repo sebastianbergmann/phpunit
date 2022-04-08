@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<phar xmlns="https://phar.io/xml/manifest/1.0">
+    <contains name="phpunit/phpunit-test-extension" version="1.0.0" type="extension">
+        <extension for="phpunit/phpunit" compatible="^10.0"/>
+    </contains>
+
+    <requires>
+        <php version="^7.4"/>
+    </requires>
+
+    <copyright>
+        <author name="Sebastian Bergmann" email="sebastian@phpunit.de"/>
+        <license type="BSD-3-Clause" url="https://github.com/sebastianbergmann/phpunit/blob/master/LICENSE"/>
+    </copyright>
+</phar>

@@ -2,30 +2,51 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="phpunit.xsd"
          bootstrap="tests/bootstrap.php"
+         convertDeprecationsToExceptions="true"
          colors="true"
-         verbose="true">
+         verbose="true"
+         cacheDirectory=".phpunit.cache"
+         failOnRisky="true"
+         failOnWarning="true">
     <testsuites>
         <testsuite name="unit">
             <directory>tests/unit</directory>
         </testsuite>
 
         <testsuite name="end-to-end">
-            <directory suffix=".phpt">tests/end-to-end</directory>
-            <exclude>tests/end-to-end/_files</exclude>
+            <directory suffix=".phpt">tests/end-to-end/cli</directory>
+            <directory suffix=".phpt">tests/end-to-end/event</directory>
+            <directory suffix=".phpt">tests/end-to-end/execution-order</directory>
+            <directory suffix=".phpt">tests/end-to-end/generic</directory>
+            <directory suffix=".phpt">tests/end-to-end/logging</directory>
+            <directory suffix=".phpt">tests/end-to-end/migration</directory>
+            <directory suffix=".phpt">tests/end-to-end/mock-objects</directory>
+            <directory suffix=".phpt">tests/end-to-end/phpt</directory>
+            <directory suffix=".phpt">tests/end-to-end/regression</directory>
+            <directory suffix=".phpt">tests/end-to-end/risky-tests</directory>
+
+            <exclude>tests/end-to-end/event/_files</exclude>
+            <exclude>tests/end-to-end/execution-order/_files</exclude>
+            <exclude>tests/end-to-end/logging/_files</exclude>
+            <exclude>tests/end-to-end/migration/_files</exclude>
+            <exclude>tests/end-to-end/risky-tests/_files</exclude>
         </testsuite>
     </testsuites>
 
-    <filter>
-        <whitelist processUncoveredFilesFromWhitelist="true">
+    <coverage ignoreDeprecatedCodeUnits="true">
+        <include>
             <directory suffix=".php">src</directory>
-            <exclude>
-                <file>src/Framework/Assert/Functions.php</file>
-                <file>src/Util/PHP/eval-stdin.php</file>
-            </exclude>
-        </whitelist>
-    </filter>
+        </include>
+
+        <exclude>
+            <file>src/Framework/Assert/Functions.php</file>
+        </exclude>
+    </coverage>
 
     <php>
+        <ini name="precision" value="14"/>
+        <ini name="serialize_precision" value="14"/>
+
         <const name="PHPUNIT_TESTSUITE" value="true"/>
     </php>
 </phpunit>

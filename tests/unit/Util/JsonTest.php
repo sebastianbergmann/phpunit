@@ -9,24 +9,23 @@
  */
 namespace PHPUnit\Util;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
-/**
- * @small
- */
+#[CoversClass(Json::class)]
+#[Small]
 final class JsonTest extends TestCase
 {
-    /**
-     * @testdox Canonicalize $actual
-     * @dataProvider canonicalizeProvider
-     *
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testCanonicalize($actual, $expected, $expectError): void
+    #[DataProvider('canonicalizeProvider')]
+    #[TestDox('Canonicalize $actual')]
+    public function testCanonicalize(string $actual, string $expected, bool $expectError): void
     {
         [$error, $canonicalized] = Json::canonicalize($actual);
+
         $this->assertEquals($expectError, $error);
 
         if (!$expectError) {
@@ -43,15 +42,9 @@ final class JsonTest extends TestCase
         ];
     }
 
-    /**
-     * @testdox Prettify $actual to $expected
-     * @dataProvider prettifyProvider
-     *
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\Framework\ExpectationFailedException
-     * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
-     */
-    public function testPrettify($actual, $expected): void
+    #[DataProvider('prettifyProvider')]
+    #[TestDox('Prettify $actual to $expected')]
+    public function testPrettify(string $actual, string $expected): void
     {
         $this->assertEquals($expected, Json::prettify($actual));
     }
@@ -65,10 +58,8 @@ final class JsonTest extends TestCase
         ];
     }
 
-    /**
-     * @dataProvider prettifyExceptionProvider
-     */
-    public function testPrettifyException($json): void
+    #[DataProvider('prettifyExceptionProvider')]
+    public function testPrettifyException(string $json): void
     {
         $this->expectException(Exception::class);
         $this->expectExceptionMessage('Cannot prettify invalid json');

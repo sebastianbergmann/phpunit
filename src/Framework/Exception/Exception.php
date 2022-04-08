@@ -39,10 +39,7 @@ use Throwable;
  */
 class Exception extends RuntimeException implements \PHPUnit\Exception
 {
-    /**
-     * @var array
-     */
-    protected $serializableTrace;
+    protected array $serializableTrace;
 
     public function __construct($message = '', $code = 0, Throwable $previous = null)
     {

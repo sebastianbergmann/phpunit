@@ -4,10 +4,10 @@ phpunit --help
 --no-configuration --help
 --FILE--
 <?php declare(strict_types=1);
-require __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../bootstrap.php';
 
 $help = new PHPUnit\TextUI\Help(72, true);
 
-$help->writeToConsole();
+print $help->generate();
 --EXPECTF_EXTERNAL--
-_files/output-cli-help-color.txt
+../_files/output-cli-help-color.txt

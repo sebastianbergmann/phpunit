@@ -12,15 +12,13 @@ namespace PHPUnit\Framework;
 use function print_r;
 use BadFunctionCallException;
 use Exception;
+use PHPUnit\Framework\Attributes\RunInSeparateProcess;
+use PHPUnit\Framework\Attributes\Small;
 
-/**
- * @small
- */
+#[Small]
 final class ExceptionWrapperTest extends TestCase
 {
-    /**
-     * @runInSeparateProcess
-     */
+    #[RunInSeparateProcess]
     public function testGetOriginalException(): void
     {
         $e       = new BadFunctionCallException('custom class exception');
@@ -29,9 +27,7 @@ final class ExceptionWrapperTest extends TestCase
         $this->assertInstanceOf(BadFunctionCallException::class, $wrapper->getOriginalException());
     }
 
-    /**
-     * @runInSeparateProcess
-     */
+    #[RunInSeparateProcess]
     public function testGetOriginalExceptionWithPrevious(): void
     {
         $e       = new BadFunctionCallException('custom class exception', 0, new Exception('previous'));
@@ -40,9 +36,7 @@ final class ExceptionWrapperTest extends TestCase
         $this->assertInstanceOf(BadFunctionCallException::class, $wrapper->getOriginalException());
     }
 
-    /**
-     * @runInSeparateProcess
-     */
+    #[RunInSeparateProcess]
     public function testNoOriginalExceptionInStacktrace(): void
     {
         $e       = new BadFunctionCallException('custom class exception');

@@ -7,6 +7,15 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
+namespace PHPUnit\TestFixture;
+
+use function current;
+use function key;
+use function next;
+use function reset;
+use Iterator;
+use ReturnTypeWillChange;
+
 class TestIterator2 implements Iterator
 {
     protected $data;
@@ -16,28 +25,31 @@ class TestIterator2 implements Iterator
         $this->data = $array;
     }
 
+    #[ReturnTypeWillChange]
     public function current()
     {
-        return \current($this->data);
+        return current($this->data);
     }
 
     public function next(): void
     {
-        \next($this->data);
+        next($this->data);
     }
 
+    #[ReturnTypeWillChange]
     public function key()
     {
-        return \key($this->data);
+        return key($this->data);
     }
 
+    #[ReturnTypeWillChange]
     public function valid()
     {
-        return \key($this->data) !== null;
+        return key($this->data) !== null;
     }
 
     public function rewind(): void
     {
-        \reset($this->data);
+        reset($this->data);
     }
 }

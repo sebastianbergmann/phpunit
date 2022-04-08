@@ -10,7 +10,8 @@
 namespace PHPUnit\Util;
 
 use function array_keys;
-use function count;
+use function array_reverse;
+use function array_shift;
 use function defined;
 use function get_defined_constants;
 use function get_included_files;
@@ -22,7 +23,8 @@ use function is_scalar;
 use function preg_match;
 use function serialize;
 use function sprintf;
-use function strpos;
+use function str_starts_with;
+use function strtr;
 use function var_export;
 use Closure;
 
@@ -32,7 +34,7 @@ use Closure;
 final class GlobalState
 {
     /**
-     * @var string[]
+     * @psalm-var list<string>
      */
     private const SUPER_GLOBAL_ARRAYS = [
         '_ENV',
@@ -53,29 +55,35 @@ final class GlobalState
     }
 
     /**
-     * @param string[] $files
+     * @psalm-param list<string> $files
      *
      * @throws Exception
      */
     public static function processIncludedFilesAsString(array $files): string
     {
-        $blacklist = new Blacklist;
-        $prefix    = false;
-        $result    = '';
+        $excludeList = new ExcludeList;
+        $prefix      = false;
+        $result      = '';
 
         if (defined('__PHPUNIT_PHAR__')) {
             $prefix = 'phar://' . __PHPUNIT_PHAR__ . '/';
         }
 
-        for ($i = count($files) - 1; $i > 0; $i--) {
-            $file = $files[$i];
+        // Do not process bootstrap script
+        array_shift($files);
 
-            if (!empty($GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST']) &&
-                in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_BLACKLIST'], true)) {
+        // If bootstrap script was a Composer bin proxy, skip the second entry as well
+        if (str_ends_with(strtr($files[0], '\\', '/'), '/phpunit/phpunit/phpunit')) {
+            array_shift($files);
+        }
+
+        foreach (array_reverse($files) as $file) {
+            if (!empty($GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST']) &&
+                in_array($file, $GLOBALS['__PHPUNIT_ISOLATION_EXCLUDE_LIST'], true)) {
                 continue;
             }
 
-            if ($prefix !== false && strpos($file, $prefix) === 0) {
+            if ($prefix !== false && str_starts_with($file, $prefix)) {
                 continue;
             }
 
@@ -84,7 +92,7 @@ final class GlobalState
                 continue;
             }
 
-            if (!$blacklist->isBlacklisted($file) && is_file($file)) {
+            if (!$excludeList->isExcluded($file) && is_file($file)) {
                 $result = 'require_once \'' . $file . "';\n" . $result;
             }
         }
@@ -147,11 +155,11 @@ final class GlobalState
             }
         }
 
-        $blacklist   = self::SUPER_GLOBAL_ARRAYS;
-        $blacklist[] = 'GLOBALS';
+        $excludeList   = self::SUPER_GLOBAL_ARRAYS;
+        $excludeList[] = 'GLOBALS';
 
         foreach (array_keys($GLOBALS) as $key) {
-            if (!$GLOBALS[$key] instanceof Closure && !in_array($key, $blacklist, true)) {
+            if (!$GLOBALS[$key] instanceof Closure && !in_array($key, $excludeList, true)) {
                 $result .= sprintf(
                     '$GLOBALS[\'%s\'] = %s;' . "\n",
                     $key,
@@ -163,7 +171,7 @@ final class GlobalState
         return $result;
     }
 
-    private static function exportVariable($variable): string
+    private static function exportVariable(mixed $variable): string
     {
         if (is_scalar($variable) || $variable === null ||
             (is_array($variable) && self::arrayOnlyContainsScalars($variable))) {

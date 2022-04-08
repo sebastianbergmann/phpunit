@@ -10,19 +10,18 @@
 namespace PHPUnit\Util;
 
 use function preg_match;
+use PHPUnit\Util\Error\Handler;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class RegularExpression
 {
-    /**
-     * @return false|int
-     */
-    public static function safeMatch(string $pattern, string $subject)
+    public static function safeMatch(string $pattern, string $subject): false|int
     {
-        return ErrorHandler::invokeIgnoringWarnings(
-            static function () use ($pattern, $subject) {
+        return Handler::invokeIgnoringWarnings(
+            static function () use ($pattern, $subject)
+            {
                 return preg_match($pattern, $subject);
             }
         );

@@ -6,6 +6,9 @@ on:
 
 name: CI
 
+env:
+  COMPOSER_ROOT_VERSION: "10.0-dev"
+
 jobs:
   coding-guidelines:
     name: Coding Guidelines
@@ -14,13 +17,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.1
+          extensions: none, iconv, json, phar, tokenizer
           coverage: none
+          tools: none
 
       - name: Run friendsofphp/php-cs-fixer
         run: ./tools/php-cs-fixer fix --dry-run --show-progress=dots --using-cache=no --verbose
@@ -32,13 +37,15 @@ jobs:
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP
         uses: shivammathur/setup-php@v2
         with:
-          php-version: 7.4
+          php-version: 8.1
+          extensions: none, ctype, curl, date, dom, json, libxml, mbstring, pdo_sqlite, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
           coverage: none
+          tools: none
 
       - name: Update dependencies with composer
         run: ./tools/composer update --no-interaction --no-ansi --no-progress
@@ -49,55 +56,14 @@ jobs:
       - name: Run vimeo/psalm on internal code
         run: ./tools/psalm --config=.psalm/config.xml --no-progress --shepherd --show-info=false --stats
 
-  backward-compatibility:
-    name: Backward Compatibility
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-        with:
-          fetch-depth: 0
-
-      - name: Fetch tags
-        run: git fetch --depth=1 origin +refs/tags/*:refs/tags/*
-
-      - name: Install PHP with extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: 7.4
-          coverage: none
-          extensions: intl
-
-      - name: Run roave/backward-compatibility-check
-        run: ./tools/roave-backward-compatibility-check --from=8.5.7
-
-  lint-xml-configuration:
-    name: Lint XML Configuration
-
-    runs-on: ubuntu-latest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Build Docker image
-        uses: ./.docker/lint-xml-configuration
-
-      - name: Lint XML configuration files
-        uses: ./.docker/lint-xml-configuration
-        with:
-          args: bash ./build/scripts/lint-xml-configuration
-
-  tests:
-    name: Tests
+  unit-tests:
+    name: Unit Tests
 
     runs-on: ${{ matrix.os }}
 
     env:
-      PHP_EXTENSIONS: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-      PHP_INI_VALUES: assert.exception=1, zend.assertions=1
+      PHP_EXTENSIONS: none, curl, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: memory_limit=-1, assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
       fail-fast: false
@@ -107,15 +73,26 @@ jobs:
           - windows-latest
 
         php-version:
-          - 7.2
-          - 7.3
-          - 7.4
-          - 8.0
-          - 8.1
+          - "8.1"
+          - "8.2"
+
+        compiler:
+          - default
 
         dependencies:
           - lowest
           - highest
+
+        include:
+          - os: ubuntu-latest
+            php-version: "8.1"
+            compiler: jit
+            dependencies: highest
+
+          - os: ubuntu-latest
+            php-version: "8.2"
+            compiler: jit
+            dependencies: highest
 
     steps:
       - name: Configure git to avoid issues with line endings
@@ -123,7 +100,11 @@ jobs:
         run: git config --global core.autocrlf false
 
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
+
+      - name: Override PHP ini values for JIT compiler
+        if: matrix.compiler == 'jit'
+        run: echo "PHP_INI_VALUES::assert.exception=1, memory_limit=-1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit=1255, opcache.jit_buffer_size=32M" >> $GITHUB_ENV
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
@@ -131,135 +112,217 @@ jobs:
           php-version: ${{ matrix.php-version }}
           extensions: ${{ env.PHP_EXTENSIONS }}
           ini-values: ${{ env.PHP_INI_VALUES }}
-
-      - name: Determine composer cache directory on Linux
-        if: matrix.os == 'ubuntu-latest'
-        run: echo "COMPOSER_CACHE_DIR=$(./tools/composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Determine composer cache directory on Windows
-        if: matrix.os == 'windows-latest'
-        run: ECHO "COMPOSER_CACHE_DIR=~\AppData\Local\Composer" | Out-File -FilePath $env:GITHUB_ENV -Encoding utf8 -Append
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
+          tools: none
 
       - name: Install lowest dependencies with composer
         if: matrix.dependencies == 'lowest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
 
       - name: Install highest dependencies with composer
         if: matrix.dependencies == 'highest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
-
-      - name: Run sanity check
-        run: bash ./build/scripts/sanity-check
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress
 
       - name: Run tests with phpunit
-        run: php ./phpunit
+        run: ./phpunit --testsuite unit
+
+  end-to-end-tests:
+    name: End-to-End Tests
+
+    needs:
+      - unit-tests
+
+    runs-on: ${{ matrix.os }}
+
+    env:
+      PHP_EXTENSIONS: none, curl, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+
+    strategy:
+      fail-fast: false
+      matrix:
+        os:
+          - ubuntu-latest
+          - windows-latest
+
+        php-version:
+          - "8.1"
+          - "8.2"
+
+        compiler:
+          - default
+
+        dependencies:
+          - lowest
+          - highest
+
+        include:
+          - os: ubuntu-latest
+            php-version: "8.1"
+            compiler: jit
+            dependencies: highest
+
+          - os: ubuntu-latest
+            php-version: "8.2"
+            compiler: jit
+            dependencies: highest
+
+    steps:
+      - name: Configure git to avoid issues with line endings
+        if: matrix.os == 'windows-latest'
+        run: git config --global core.autocrlf false
+
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Override PHP ini values for JIT compiler
+        if: matrix.compiler == 'jit'
+        run: echo "PHP_INI_VALUES::assert.exception=1, zend.assertions=1, opcache.enable=1, opcache.enable_cli=1, opcache.optimization_level=-1, opcache.jit=1255, opcache.jit_buffer_size=32M" >> $GITHUB_ENV
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: ${{ matrix.php-version }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
+
+      - name: Install lowest dependencies with composer
+        if: matrix.dependencies == 'lowest'
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
+
+      - name: Install highest dependencies with composer
+        if: matrix.dependencies == 'highest'
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress
+
+      - name: Run tests with phpunit
+        run: ./phpunit --testsuite end-to-end
 
   code-coverage:
     name: Code Coverage
 
+    needs:
+      - end-to-end-tests
+
     runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          coverage: pcov
+          extensions: none, curl, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+          ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
+          tools: none
+
+      - name: Install dependencies with composer
+        run: ./tools/composer update --no-ansi --no-interaction --no-progress
+
+      - name: Collect code coverage with phpunit
+        run: ./phpunit --coverage-clover=coverage.xml
+
+      - name: Send code coverage report to Codecov.io
+        uses: codecov/codecov-action@v2
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }}
+
+  build-phar:
+    name: Build PHAR
+
+    needs:
+      - end-to-end-tests
+
+    runs-on: ubuntu-latest
+
+    env:
+      PHP_EXTENSIONS: none, dom, json, fileinfo, iconv, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Install PHP with extensions
+        uses: shivammathur/setup-php@v2
+        with:
+          php-version: 8.1
+          coverage: none
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
+
+      - name: Install java
+        uses: actions/setup-java@v3
+        with:
+          distribution: zulu
+          java-version: 11
+
+      - name: Build PHAR
+        run: ant phar-snapshot
+
+      - name: Check whether PHAR is scoped
+        run: cat build/artifacts/phpunit-snapshot.phar | grep -q PHPUnit\\\\DeepCopy\\\\Exception\\\\CloneException || (echo "phpunit-snapshot.phar is not scoped." && false)
+
+      - name: Upload PHAR
+        uses: actions/upload-artifact@v3
+        with:
+          name: phpunit-snapshot-phar
+          path: ./build/artifacts/phpunit-snapshot.phar
+          retention-days: 7
+
+  test-phar:
+    name: Test PHAR
+
+    needs:
+      - build-phar
+
+    runs-on: ubuntu-latest
+
+    env:
+      PHP_EXTENSIONS: none, curl, dom, json, fileinfo, iconv, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
 
     strategy:
       fail-fast: false
       matrix:
         php-version:
-          - 8.0
+          - "8.1"
+          - "8.2"
 
-        dependencies:
-          - highest
+        coverage:
+          - pcov
+          - xdebug
 
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Install PHP with extensions
         uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php-version }}
-          coverage: pcov
-          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-          ini-values: assert.exception=1, zend.assertions=1
+          coverage: ${{ matrix.coverage }}
+          extensions: ${{ env.PHP_EXTENSIONS }}
+          ini-values: ${{ env.PHP_INI_VALUES }}
+          tools: none
 
-      - name: Determine composer cache directory
-        run: echo "COMPOSER_CACHE_DIR=$(./tools/composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
+      - name: Install java
+        uses: actions/setup-java@v3
         with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
+          distribution: zulu
+          java-version: 11
 
-      - name: Install lowest dependencies with composer
-        if: matrix.dependencies == 'lowest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
-
-      - name: Install highest dependencies with composer
-        if: matrix.dependencies == 'highest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
-
-      - name: Collect code coverage with phpunit
-        run: php ./phpunit --coverage-clover=coverage.xml
-
-      - name: Send code coverage report to Codecov.io
-        uses: codecov/codecov-action@v1
+      - name: Download PHAR
+        uses: actions/download-artifact@v3
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
+          name: phpunit-snapshot-phar
+          path: ./build/artifacts/
 
-  test-generated-code:
-    name: Test generated code
+      - name: Make PHAR executable
+        run: chmod +x ./build/artifacts/phpunit-snapshot.phar
 
-    runs-on: ubuntu-latest
-
-    strategy:
-      matrix:
-        php-version:
-          - 7.2
-
-        dependencies:
-          - highest
-
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-
-      - name: Install PHP with extensions
-        uses: shivammathur/setup-php@v2
-        with:
-          php-version: ${{ matrix.php-version }}
-          coverage: pcov
-          extensions: dom, json, libxml, mbstring, pdo_sqlite, soap, xml, xmlwriter
-          ini-values: assert.exception=1, zend.assertions=1
-
-      - name: Determine composer cache directory
-        run: echo "COMPOSER_CACHE_DIR=$(tools/composer config cache-dir)" >> $GITHUB_ENV
-
-      - name: Cache dependencies installed with composer
-        uses: actions/cache@v2
-        with:
-          path: ${{ env.COMPOSER_CACHE_DIR }}
-          key: php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-${{ hashFiles('**/composer.json') }}
-          restore-keys: |
-            php${{ matrix.php-version }}-composer-${{ matrix.dependencies }}-
-
-      - name: Install lowest dependencies with composer
-        if: matrix.dependencies == 'lowest'
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress --prefer-lowest
-
-      - name: Install highest dependencies with composer
-        run: php ./tools/composer update --no-ansi --no-interaction --no-progress
-
-      - name: Generate global assert wrappers
-        run: php build/scripts/generate-global-assert-wrappers.php
-
-      - name: Assert that git tree is clean
-        run: git diff || echo "Run 'php build/scripts/generate-global-assert-wrappers.php' to regenerate global assert wrappers!"
+      - name: Run PHAR-specific tests
+        run: ant run-phar-specific-tests
