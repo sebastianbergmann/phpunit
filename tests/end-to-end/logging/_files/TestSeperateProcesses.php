@@ -7,7 +7,6 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -15,21 +14,19 @@ use PHPUnit\Framework\TestCase;
  */
 final class TestSeperateProcesses extends TestCase
 {
-
     protected function setUp(): void
     {
-        print("setUp output;");
+        print 'setUp output;';
     }
 
     protected function tearDown(): void
     {
-        print("tearDown output;");
+        print 'tearDown output;';
     }
 
     public function testStdout(): void
     {
-        print("test output;");
+        print 'test output;';
         $this->assertTrue(false);
     }
-
 }

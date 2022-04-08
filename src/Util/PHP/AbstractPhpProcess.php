@@ -308,11 +308,11 @@ abstract class AbstractPhpProcess
             }
 
             if ($childResult !== false) {
+                /** @var TestCase $test */
+
                 if (!empty($childResult['output'])) {
                     $test->setOutput($childResult['output']);
                 }
-
-                /* @var TestCase $test */
 
                 $test->setResult($childResult['testResult']);
                 $test->addToAssertionCount($childResult['numAssertions']);
