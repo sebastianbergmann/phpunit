@@ -1,5 +1,8 @@
 --TEST--
 https://github.com/sebastianbergmann/phpunit/issues/4630
+--XFAIL--
+TestDox logging has not been migrated to events yet.
+See https://github.com/sebastianbergmann/phpunit/issues/4702 for details.
 --FILE--
 <?php declare(strict_types=1);
 

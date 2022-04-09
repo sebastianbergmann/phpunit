@@ -1,5 +1,8 @@
 --TEST--
 phpunit --testdox-text php://stdout --testdox-group one ../../_files/TestDoxGroupTest.php
+--XFAIL--
+TestDox logging has not been migrated to events yet.
+See https://github.com/sebastianbergmann/phpunit/issues/4702 for details.
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
