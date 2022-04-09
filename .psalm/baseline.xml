@@ -1073,11 +1073,6 @@
       <code>testsUsing</code>
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="3">
-      <code>write</code>
-      <code>write</code>
-      <code>write</code>
-    </PossiblyNullReference>
   </file>
   <file src="src/Util/Error/Handler.php">
     <InvalidArgument occurrences="1"/>
