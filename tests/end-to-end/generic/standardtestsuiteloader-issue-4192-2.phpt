@@ -2,17 +2,15 @@
 phpunit ../../_files/ConcreteTest.php
 --FILE--
 <?php declare(strict_types=1);
-require_once __DIR__.'/../../bootstrap.php';
-$cmd = new \PHPUnit\TextUI\Application();
-$cmd->run([
-    'phpunit',
-    realpath(__DIR__.'/../../_files/ConcreteTest.php')
-], false);
+$_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = realpath(__DIR__ . '/../../_files/ConcreteTest.php');
+
+require_once __DIR__ . '/../../bootstrap.php';
+
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
-
-Runtime:       PHP %s
-Configuration: %s
 
 ..                                                                  2 / 2 (100%)
 
