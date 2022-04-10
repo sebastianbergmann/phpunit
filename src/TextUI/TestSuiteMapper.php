@@ -45,15 +45,15 @@ final class TestSuiteMapper
                 $testSuite      = new TestSuiteObject($testSuiteConfiguration->name());
                 $testSuiteEmpty = true;
 
+                $exclude = [];
+
+                foreach ($testSuiteConfiguration->exclude()->asArray() as $file) {
+                    $exclude[] = $file->path();
+                }
+
                 foreach ($testSuiteConfiguration->directories() as $directory) {
                     if (!version_compare(PHP_VERSION, $directory->phpVersion(), $directory->phpVersionOperator()->asString())) {
                         continue;
-                    }
-
-                    $exclude = [];
-
-                    foreach ($testSuiteConfiguration->exclude()->asArray() as $file) {
-                        $exclude[] = $file->path();
                     }
 
                     $files = (new Facade)->getFilesAsArray(
