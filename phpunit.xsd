@@ -279,8 +279,10 @@
     </xs:complexType>
     <xs:complexType name="testSuiteType">
         <xs:sequence>
-            <xs:group ref="pathGroup"/>
-            <xs:element name="exclude" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+            <xs:choice minOccurs="0" maxOccurs="unbounded">
+                <xs:group ref="pathGroup"/>
+                <xs:element name="exclude" type="xs:string"/>
+            </xs:choice>
         </xs:sequence>
         <xs:attribute name="name" type="xs:string" use="required"/>
     </xs:complexType>
