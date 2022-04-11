@@ -287,15 +287,13 @@ abstract class AbstractPhpProcess
             }
 
             if ($childResult !== false) {
-                /** @var TestCase $test */
+                assert($test instanceof TestCase);
 
                 if (!empty($childResult['output'])) {
                     $test->setOutput($childResult['output']);
                 }
 
                 Facade::forward($childResult['events']);
-
-                assert($test instanceof TestCase);
 
                 $test->setResult($childResult['testResult']);
                 $test->addToAssertionCount($childResult['numAssertions']);
