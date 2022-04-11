@@ -117,4 +117,22 @@ class MatcherTest extends TestCase
 
         $matcher->invoked($invocation);
     }
+
+    public function testAtMostNotFailsWithoutInvocation(): void
+    {
+        $invocationMatcher = $this->createStub(InvocationOrder::class);
+        $invocation        = new Invocation('Foo', 'bar', [], 'void', new stdClass);
+
+        $stub = $this->createMock(Stub\Stub::class);
+        $stub->expects($this->atMost(1))
+             ->method('invoke')
+             ->with($invocation);
+
+        $parameterRule = $this->createStub(ParametersRule::class);
+
+        $matcher = new Matcher($invocationMatcher);
+        $matcher->setMethodNameRule(new MethodName('bar'));
+        $matcher->setParametersRule($parameterRule);
+        $matcher->setStub($stub);
+    }
 }
