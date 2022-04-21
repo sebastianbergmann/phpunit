@@ -37,7 +37,8 @@ use SebastianBergmann\Timer\Timer;
 final class ResultPrinter extends Printer implements ResultPrinterInterface
 {
     private bool $colors;
-    private bool $verbose;
+    private bool $displayDetailsOnIncompleteTests;
+    private bool $displayDetailsOnSkippedTests;
     private int $numberOfColumns;
     private bool $reverse;
     private int $column = 0;
@@ -51,14 +52,15 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private ?TestStatus $status     = null;
     private bool $prepared          = false;
 
-    public function __construct(string $out, bool $verbose, bool $colors, int $numberOfColumns, bool $reverse)
+    public function __construct(string $out, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colors, int $numberOfColumns, bool $reverse)
     {
         parent::__construct($out);
 
-        $this->verbose         = $verbose;
-        $this->colors          = $colors;
-        $this->numberOfColumns = $numberOfColumns;
-        $this->reverse         = $reverse;
+        $this->displayDetailsOnIncompleteTests = $displayDetailsOnIncompleteTests;
+        $this->displayDetailsOnSkippedTests    = $displayDetailsOnSkippedTests;
+        $this->colors                          = $colors;
+        $this->numberOfColumns                 = $numberOfColumns;
+        $this->reverse                         = $reverse;
 
         $this->registerSubscribers();
 
@@ -75,8 +77,11 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->printTestsWithFailedAssertions($result);
         $this->printRiskyTests($result);
 
-        if ($this->verbose) {
+        if ($this->displayDetailsOnIncompleteTests) {
             $this->printIncompleteTests($result);
+        }
+
+        if ($this->displayDetailsOnSkippedTests) {
             $this->printSkippedTests($result);
         }
 
@@ -369,7 +374,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $color = 'fg-black, bg-yellow';
 
         if ($result->wasSuccessful()) {
-            if ($this->verbose || !$result->allHarmless()) {
+            if ($this->displayDetailsOnIncompleteTests || $this->displayDetailsOnSkippedTests || !$result->allHarmless()) {
                 $this->print("\n");
             }
 

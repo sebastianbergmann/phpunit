@@ -629,7 +629,8 @@ final class TestRunner
 
         $object = new $className(
             $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : 'php://stdout',
-            $this->configuration->verbose(),
+            $this->configuration->displayDetailsOnIncompleteTests(),
+            $this->configuration->displayDetailsOnSkippedTests(),
             $this->configuration->colors(),
             $this->configuration->columns(),
             $this->configuration->reverseDefectList()
