@@ -487,10 +487,16 @@ final class Merger
             $logfileTestdoxXml = $xmlConfiguration->logging()->testDoxXml()->target()->path();
         }
 
-        $plainTextTrace = null;
+        $logEventsText = null;
 
-        if ($cliConfiguration->hasPlainTextTrace()) {
-            $plainTextTrace = $cliConfiguration->plainTextTrace();
+        if ($cliConfiguration->hasLogEventsText()) {
+            $logEventsText = $cliConfiguration->logEventsText();
+        }
+
+        $logEventsVerboseText = null;
+
+        if ($cliConfiguration->hasLogEventsVerboseText()) {
+            $logEventsVerboseText = $cliConfiguration->logEventsVerboseText();
         }
 
         $defaultOutput  = true;
@@ -663,7 +669,8 @@ final class Merger
             $logfileTestdoxHtml,
             $logfileTestdoxText,
             $logfileTestdoxXml,
-            $plainTextTrace,
+            $logEventsText,
+            $logEventsVerboseText,
             $defaultOutput,
             $teamCityOutput,
             $testDoxOutput,

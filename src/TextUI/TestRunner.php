@@ -166,15 +166,28 @@ final class TestRunner
             $this->printer->setShowProgressAnimation(!$this->configuration->noInteraction());
         }
 
-        if ($this->configuration->hasPlainTextTrace()) {
-            if (is_file($this->configuration->plainTextTrace())) {
-                unlink($this->configuration->plainTextTrace());
+        if ($this->configuration->hasLogEventsText()) {
+            if (is_file($this->configuration->logEventsText())) {
+                unlink($this->configuration->logEventsText());
             }
 
             Event\Facade::registerTracer(
                 new EventLogger(
-                    $this->configuration->plainTextTrace(),
-                    $this->configuration->verbose()
+                    $this->configuration->logEventsText(),
+                    false
+                )
+            );
+        }
+
+        if ($this->configuration->hasLogEventsVerboseText()) {
+            if (is_file($this->configuration->logEventsVerboseText())) {
+                unlink($this->configuration->logEventsVerboseText());
+            }
+
+            Event\Facade::registerTracer(
+                new EventLogger(
+                    $this->configuration->logEventsVerboseText(),
+                    true
                 )
             );
         }

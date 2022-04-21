@@ -108,7 +108,8 @@ final class Builder
         'test-suffix=',
         'testsuite=',
         'exclude-testsuite=',
-        'trace-text=',
+        'log-events-text=',
+        'log-events-verbose-text=',
         'verbose',
         'version',
     ];
@@ -218,7 +219,8 @@ final class Builder
         $useDefaultConfiguration           = null;
         $verbose                           = null;
         $version                           = null;
-        $plainTextTrace                    = null;
+        $logEventsText                     = null;
+        $logEventsVerboseText              = null;
         $printerTeamCity                   = null;
         $printerTestDox                    = null;
 
@@ -740,8 +742,13 @@ final class Builder
 
                     break;
 
-                case '--trace-text':
-                    $plainTextTrace = $option[1];
+                case '--log-events-text':
+                    $logEventsText = $option[1];
+
+                    break;
+
+                case '--log-events-verbose-text':
+                    $logEventsVerboseText = $option[1];
 
                     break;
             }
@@ -843,7 +850,8 @@ final class Builder
             $displaySkipped,
             $version,
             $coverageFilter,
-            $plainTextTrace,
+            $logEventsText,
+            $logEventsVerboseText,
             $printerTeamCity,
             $printerTestDox
         );
