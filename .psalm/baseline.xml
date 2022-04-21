@@ -1027,13 +1027,15 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <InvalidArgument occurrences="6">
+    <InvalidArgument occurrences="8">
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
+      <code>80</code>
+      <code>false</code>
     </InvalidArgument>
     <MissingThrowsDocblock occurrences="40">
       <code>bootstrap</code>
@@ -1073,6 +1075,7 @@
       <code>testsUsing</code>
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
+    <TooFewArguments occurrences="1"/>
   </file>
   <file src="src/Util/Error/Handler.php">
     <InvalidArgument occurrences="1"/>
