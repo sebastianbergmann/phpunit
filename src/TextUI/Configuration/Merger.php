@@ -379,6 +379,18 @@ final class Merger
             $verbose = $xmlConfiguration->phpunit()->verbose();
         }
 
+        if ($cliConfiguration->hasDisplayDetailsOnIncompleteTests()) {
+            $displayDetailsOnIncompleteTests = $cliConfiguration->displayDetailsOnIncompleteTests();
+        } else {
+            $displayDetailsOnIncompleteTests = $xmlConfiguration->phpunit()->displayDetailsOnIncompleteTests();
+        }
+
+        if ($cliConfiguration->hasDisplayDetailsOnSkippedTests()) {
+            $displayDetailsOnSkippedTests = $cliConfiguration->displayDetailsOnSkippedTests();
+        } else {
+            $displayDetailsOnSkippedTests = $xmlConfiguration->phpunit()->displayDetailsOnSkippedTests();
+        }
+
         if ($cliConfiguration->hasReverseList()) {
             $reverseDefectList = $cliConfiguration->reverseList();
         } else {
@@ -636,6 +648,8 @@ final class Merger
             $strictCoverage,
             $disallowTestOutput,
             $verbose,
+            $displayDetailsOnIncompleteTests,
+            $displayDetailsOnSkippedTests,
             $reverseDefectList,
             $requireCoverageMetadata,
             $registerMockObjectsFromTestArgumentsRecursively,

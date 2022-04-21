@@ -45,6 +45,8 @@ final class Builder
         'coverage-xml=',
         'path-coverage',
         'disallow-test-output',
+        'display-incomplete',
+        'display-skipped',
         'default-time-limit=',
         'enforce-time-limit',
         'exclude-group=',
@@ -158,6 +160,8 @@ final class Builder
         $defaultTimeLimit                  = null;
         $disableCodeCoverageIgnore         = null;
         $disallowTestOutput                = null;
+        $displayIncomplete                 = null;
+        $displaySkipped                    = null;
         $enforceTimeLimit                  = null;
         $excludeGroups                     = null;
         $executionOrder                    = null;
@@ -672,6 +676,16 @@ final class Builder
 
                     break;
 
+                case '--display-incomplete':
+                    $displayIncomplete = true;
+
+                    break;
+
+                case '--display-skipped':
+                    $displaySkipped = true;
+
+                    break;
+
                 case '--default-time-limit':
                     $defaultTimeLimit = (int) $option[1];
 
@@ -825,6 +839,8 @@ final class Builder
             $unrecognizedOrderBy,
             $useDefaultConfiguration,
             $verbose,
+            $displayIncomplete,
+            $displaySkipped,
             $version,
             $coverageFilter,
             $plainTextTrace,

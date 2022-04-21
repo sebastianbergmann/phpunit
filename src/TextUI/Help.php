@@ -108,6 +108,8 @@ final class Help
             ['arg'    => '--stderr', 'desc' => 'Write to STDERR instead of STDOUT'],
             ['spacer' => ''],
 
+            ['arg'    => '--display-incomplete', 'desc' => 'Display details for incomplete tests'],
+            ['arg'    => '--display-skipped', 'desc' => 'Display details for skipped tests'],
             ['arg'    => '--reverse-list', 'desc' => 'Print defects in reverse order'],
             ['arg'    => '-v|--verbose', 'desc' => 'Output more verbose information'],
             ['spacer' => ''],

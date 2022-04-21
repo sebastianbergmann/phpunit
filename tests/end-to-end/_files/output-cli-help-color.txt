@@ -78,6 +78,8 @@
   [32m--columns max              [0m Use maximum number of columns for progress output
   [32m--stderr                   [0m Write to STDERR instead of STDOUT
 
+  [32m--display-incomplete       [0m Display details for incomplete tests
+  [32m--display-skipped          [0m Display details for skipped tests
   [32m--reverse-list             [0m Print defects in reverse order
   [32m-v|--verbose               [0m Output more verbose information
 

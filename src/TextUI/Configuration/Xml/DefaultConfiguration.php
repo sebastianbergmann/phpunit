@@ -81,6 +81,8 @@ final class DefaultConfiguration extends Configuration
                 false,
                 false,
                 false,
+                false,
+                false,
                 true,
                 true,
                 true,
