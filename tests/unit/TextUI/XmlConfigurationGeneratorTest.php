@@ -33,8 +33,7 @@ final class XmlConfigurationGeneratorTest extends TestCase
          beStrictAboutOutputDuringTests="true"
          convertDeprecationsToExceptions="true"
          failOnRisky="true"
-         failOnWarning="true"
-         verbose="true">
+         failOnWarning="true">
     <testsuites>
         <testsuite name="default">
             <directory>tests</directory>

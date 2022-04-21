@@ -31,8 +31,7 @@ final class Generator
          beStrictAboutOutputDuringTests="true"
          convertDeprecationsToExceptions="true"
          failOnRisky="true"
-         failOnWarning="true"
-         verbose="true">
+         failOnWarning="true">
     <testsuites>
         <testsuite name="default">
             <directory>{tests_directory}</directory>
