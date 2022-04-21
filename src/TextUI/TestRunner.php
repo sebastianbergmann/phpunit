@@ -25,6 +25,7 @@ use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
@@ -35,7 +36,6 @@ use PHPUnit\Logging\VoidPrinter;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
-use PHPUnit\Runner\PlainTextTracer;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\Runner\ResultCache\NullResultCache;
 use PHPUnit\Runner\ResultCache\ResultCacheHandler;
@@ -172,7 +172,7 @@ final class TestRunner
             }
 
             Event\Facade::registerTracer(
-                new PlainTextTracer(
+                new EventLogger(
                     $this->configuration->plainTextTrace(),
                     $this->configuration->verbose()
                 )
