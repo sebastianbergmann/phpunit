@@ -217,6 +217,10 @@ final class Help
         foreach (self::HELP_TEXT as $section => $options) {
             $buffer .= Color::colorize('fg-yellow', "{$section}:") . PHP_EOL;
 
+            if ($section !== 'Usage') {
+                $buffer .= PHP_EOL;
+            }
+
             foreach ($options as $option) {
                 if (isset($option['spacer'])) {
                     $buffer .= PHP_EOL;
