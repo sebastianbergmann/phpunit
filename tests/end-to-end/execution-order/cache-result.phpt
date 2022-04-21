@@ -19,6 +19,8 @@ print file_get_contents($target);
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+
 .SS..                                                               5 / 5 (100%)
 
 Time: %s, Memory: %s

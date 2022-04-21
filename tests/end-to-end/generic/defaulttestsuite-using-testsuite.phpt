@@ -14,6 +14,9 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+Configuration: %s
+
 Dummy Foo (PHPUnit\TestFixture\DummyFoo)
  ✔ Foo equals foo
 

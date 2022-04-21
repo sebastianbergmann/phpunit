@@ -4,7 +4,6 @@ PHPT EXPECT comparison returns correct code location hint
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--verbose';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../_files/phpt-expect-location-hint-example.phpt');
 
 require_once __DIR__ . '/../../bootstrap.php';

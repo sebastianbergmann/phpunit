@@ -290,40 +290,38 @@ final class TestRunner
             }
         }
 
-        if ($this->configuration->verbose()) {
-            if (PHP_SAPI === 'phpdbg') {
-                $this->writeMessage('Runtime', 'PHPDBG ' . PHP_VERSION);
-            } else {
-                $runtime = 'PHP ' . PHP_VERSION;
+        if (PHP_SAPI === 'phpdbg') {
+            $this->writeMessage('Runtime', 'PHPDBG ' . PHP_VERSION);
+        } else {
+            $runtime = 'PHP ' . PHP_VERSION;
 
-                if (CodeCoverage::isActive()) {
-                    $runtime .= ' with ' . CodeCoverage::driver()->nameAndVersion();
-                }
-
-                $this->writeMessage('Runtime', $runtime);
+            if (CodeCoverage::isActive()) {
+                $runtime .= ' with ' . CodeCoverage::driver()->nameAndVersion();
             }
 
-            if ($this->configuration->hasConfigurationFile()) {
+            $this->writeMessage('Runtime', $runtime);
+        }
+
+        if ($this->configuration->hasConfigurationFile()) {
+            $this->writeMessage(
+                'Configuration',
+                $this->configuration->configurationFile()
+            );
+        }
+
+        if (isset($pharExtensions)) {
+            foreach ($pharExtensions['loadedExtensions'] as $extension) {
                 $this->writeMessage(
-                    'Configuration',
-                    $this->configuration->configurationFile()
+                    'Extension',
+                    $extension
                 );
             }
 
-            if (isset($pharExtensions)) {
-                foreach ($pharExtensions['loadedExtensions'] as $extension) {
-                    $this->writeMessage(
-                        'Extension',
-                        $extension
-                    );
-                }
-
-                foreach ($pharExtensions['notLoadedExtensions'] as $extension) {
-                    $this->writeMessage(
-                        'Extension',
-                        $extension
-                    );
-                }
+            foreach ($pharExtensions['notLoadedExtensions'] as $extension) {
+                $this->writeMessage(
+                    'Extension',
+                    $extension
+                );
             }
         }
 

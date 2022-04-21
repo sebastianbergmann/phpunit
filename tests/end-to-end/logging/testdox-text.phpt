@@ -14,6 +14,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+
 Bank Account (PHPUnit\TestFixture\BankAccount)
 ...                                                                 3 / 3 (100%) [x] Balance is initially zero
  [x] Balance cannot become negative

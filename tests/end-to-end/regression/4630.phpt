@@ -15,6 +15,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+
 W                                                                   1 / 1 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <tests/>
 

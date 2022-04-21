@@ -18,6 +18,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+
 Dataprovider Execution Order (PHPUnit\TestFixture\DataproviderExecutionOrder)
  ✔ First test that always works
  ✔ Add numbers with a dataprovider with data set "1+2=3"

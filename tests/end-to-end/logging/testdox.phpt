@@ -16,6 +16,9 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+Configuration: %s
+
 Basic ANSI color highlighting support
  ✔ Colorize with no color
  ✔ Colorize with one color

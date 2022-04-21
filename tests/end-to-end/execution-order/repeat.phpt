@@ -14,6 +14,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+
 .........                                                           9 / 9 (100%)
 
 Time: %s, Memory: %s

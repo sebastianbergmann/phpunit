@@ -17,6 +17,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+
 .
 STDOUT does not break test result
 E                                                                  2 / 2 (100%)

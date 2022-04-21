@@ -45,6 +45,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
         </style>
     </head>
     <body>
+Runtime: %s
+
 
         <h2 id="PHPUnit\TestFixture\BankAccountTest">Bank Account (PHPUnit\TestFixture\BankAccount)</h2>
         <ul>
