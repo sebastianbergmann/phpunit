@@ -25,6 +25,7 @@ use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
+use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\CliTestDoxPrinter;
@@ -35,7 +36,6 @@ use PHPUnit\Logging\VoidPrinter;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
-use PHPUnit\Runner\PlainTextTracer;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
 use PHPUnit\Runner\ResultCache\NullResultCache;
 use PHPUnit\Runner\ResultCache\ResultCacheHandler;
@@ -166,15 +166,28 @@ final class TestRunner
             $this->printer->setShowProgressAnimation(!$this->configuration->noInteraction());
         }
 
-        if ($this->configuration->hasPlainTextTrace()) {
-            if (is_file($this->configuration->plainTextTrace())) {
-                unlink($this->configuration->plainTextTrace());
+        if ($this->configuration->hasLogEventsText()) {
+            if (is_file($this->configuration->logEventsText())) {
+                unlink($this->configuration->logEventsText());
             }
 
             Event\Facade::registerTracer(
-                new PlainTextTracer(
-                    $this->configuration->plainTextTrace(),
-                    $this->configuration->verbose()
+                new EventLogger(
+                    $this->configuration->logEventsText(),
+                    false
+                )
+            );
+        }
+
+        if ($this->configuration->hasLogEventsVerboseText()) {
+            if (is_file($this->configuration->logEventsVerboseText())) {
+                unlink($this->configuration->logEventsVerboseText());
+            }
+
+            Event\Facade::registerTracer(
+                new EventLogger(
+                    $this->configuration->logEventsVerboseText(),
+                    true
                 )
             );
         }
@@ -290,40 +303,38 @@ final class TestRunner
             }
         }
 
-        if ($this->configuration->verbose()) {
-            if (PHP_SAPI === 'phpdbg') {
-                $this->writeMessage('Runtime', 'PHPDBG ' . PHP_VERSION);
-            } else {
-                $runtime = 'PHP ' . PHP_VERSION;
+        if (PHP_SAPI === 'phpdbg') {
+            $this->writeMessage('Runtime', 'PHPDBG ' . PHP_VERSION);
+        } else {
+            $runtime = 'PHP ' . PHP_VERSION;
 
-                if (CodeCoverage::isActive()) {
-                    $runtime .= ' with ' . CodeCoverage::driver()->nameAndVersion();
-                }
-
-                $this->writeMessage('Runtime', $runtime);
+            if (CodeCoverage::isActive()) {
+                $runtime .= ' with ' . CodeCoverage::driver()->nameAndVersion();
             }
 
-            if ($this->configuration->hasConfigurationFile()) {
+            $this->writeMessage('Runtime', $runtime);
+        }
+
+        if ($this->configuration->hasConfigurationFile()) {
+            $this->writeMessage(
+                'Configuration',
+                $this->configuration->configurationFile()
+            );
+        }
+
+        if (isset($pharExtensions)) {
+            foreach ($pharExtensions['loadedExtensions'] as $extension) {
                 $this->writeMessage(
-                    'Configuration',
-                    $this->configuration->configurationFile()
+                    'Extension',
+                    $extension
                 );
             }
 
-            if (isset($pharExtensions)) {
-                foreach ($pharExtensions['loadedExtensions'] as $extension) {
-                    $this->writeMessage(
-                        'Extension',
-                        $extension
-                    );
-                }
-
-                foreach ($pharExtensions['notLoadedExtensions'] as $extension) {
-                    $this->writeMessage(
-                        'Extension',
-                        $extension
-                    );
-                }
+            foreach ($pharExtensions['notLoadedExtensions'] as $extension) {
+                $this->writeMessage(
+                    'Extension',
+                    $extension
+                );
             }
         }
 

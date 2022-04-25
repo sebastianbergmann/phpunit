@@ -34,32 +34,19 @@ final class Help
             ['text' => 'phpunit [options] <directory>'],
         ],
 
-        'Code Coverage Options' => [
-            ['arg' => '--coverage-clover <file>', 'desc' => 'Generate code coverage report in Clover XML format'],
-            ['arg' => '--coverage-cobertura <file>', 'desc' => 'Generate code coverage report in Cobertura XML format'],
-            ['arg' => '--coverage-crap4j <file>', 'desc' => 'Generate code coverage report in Crap4J XML format'],
-            ['arg' => '--coverage-html <dir>', 'desc' => 'Generate code coverage report in HTML format'],
-            ['arg' => '--coverage-php <file>', 'desc' => 'Export PHP_CodeCoverage object to file'],
-            ['arg' => '--coverage-text=<file>', 'desc' => 'Generate code coverage report in text format [default: standard output]'],
-            ['arg' => '--coverage-xml <dir>', 'desc' => 'Generate code coverage report in PHPUnit XML format'],
-            ['arg' => '--warm-coverage-cache', 'desc' => 'Warm static analysis cache'],
-            ['arg' => '--coverage-filter <dir>', 'desc' => 'Include <dir> in code coverage analysis'],
-            ['arg' => '--path-coverage', 'desc' => 'Perform path coverage analysis'],
-            ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable attributes and annotations for ignoring code coverage'],
-            ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage configuration'],
+        'Configuration' => [
+            ['arg' => '--bootstrap <file>', 'desc' => 'A PHP script that is included before the tests run'],
+            ['arg' => '-c|--configuration <file>', 'desc' => 'Read configuration from XML file'],
+            ['arg' => '--no-configuration', 'desc' => 'Ignore default configuration file (phpunit.xml)'],
+            ['arg' => '--no-extensions', 'desc' => 'Do not load PHPUnit extensions'],
+            ['arg' => '--include-path <path(s)>', 'desc' => 'Prepend PHP\'s include_path with given path(s)'],
+            ['arg' => '-d <key[=value]>', 'desc' => 'Sets a php.ini value'],
+            ['arg' => '--cache-directory <dir>', 'desc' => 'Specify cache directory'],
+            ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
+            ['arg' => '--migrate-configuration', 'desc' => 'Migrate configuration file to current format'],
         ],
 
-        'Logging Options' => [
-            ['arg' => '--log-junit <file>', 'desc' => 'Log test execution in JUnit XML format to file'],
-            ['arg' => '--log-teamcity <file>', 'desc' => 'Log test execution in TeamCity format to file'],
-            ['arg' => '--testdox-html <file>', 'desc' => 'Write agile documentation in HTML format to file'],
-            ['arg' => '--testdox-text <file>', 'desc' => 'Write agile documentation in Text format to file'],
-            ['arg' => '--testdox-xml <file>', 'desc' => 'Write agile documentation in XML format to file'],
-            ['arg' => '--reverse-list', 'desc' => 'Print defects in reverse order'],
-            ['arg' => '--no-logging', 'desc' => 'Ignore logging configuration'],
-        ],
-
-        'Test Selection Options' => [
+        'Selection' => [
             ['arg' => '--list-suites', 'desc' => 'List available test suites'],
             ['arg' => '--testsuite <name>', 'desc' => 'Only run tests from the specified test suite(s)'],
             ['arg' => '--exclude-testsuite <name>', 'desc' => 'Exclude tests from the specified test suite(s)'],
@@ -74,24 +61,20 @@ final class Help
             ['arg' => '--test-suffix <suffixes>', 'desc' => 'Only search for test in files with specified suffix(es). Default: Test.php,.phpt'],
         ],
 
-        'Test Execution Options' => [
-            ['arg' => '--dont-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
+        'Execution' => [
+            ['arg' => '--process-isolation', 'desc' => 'Run each test in a separate PHP process'],
+            ['arg'    => '--globals-backup', 'desc' => 'Backup and restore $GLOBALS for each test'],
+            ['arg'    => '--static-backup', 'desc' => 'Backup and restore static properties for each test'],
+            ['spacer' => ''],
+
             ['arg'    => '--strict-coverage', 'desc' => 'Be strict about code coverage attributes and annotations'],
             ['arg'    => '--strict-global-state', 'desc' => 'Be strict about changes to global state'],
             ['arg'    => '--disallow-test-output', 'desc' => 'Be strict about output during tests'],
             ['arg'    => '--enforce-time-limit', 'desc' => 'Enforce time limit based on test size'],
             ['arg'    => '--default-time-limit <sec>', 'desc' => 'Timeout in seconds for tests that have no declared size'],
+            ['arg'    => '--dont-report-useless-tests', 'desc' => 'Do not report tests that do not test anything'],
             ['spacer' => ''],
 
-            ['arg'    => '--process-isolation', 'desc' => 'Run each test in a separate PHP process'],
-            ['arg'    => '--globals-backup', 'desc' => 'Backup and restore $GLOBALS for each test'],
-            ['arg'    => '--static-backup', 'desc' => 'Backup and restore static properties for each test'],
-            ['spacer' => ''],
-
-            ['arg'    => '--colors <flag>', 'desc' => 'Use colors in output ("never", "auto" or "always")'],
-            ['arg'    => '--columns <n>', 'desc' => 'Number of columns to use for progress output'],
-            ['arg'    => '--columns max', 'desc' => 'Use maximum number of columns for progress output'],
-            ['arg'    => '--stderr', 'desc' => 'Write to STDERR instead of STDOUT'],
             ['arg'    => '--stop-on-defect', 'desc' => 'Stop execution upon first not-passed test'],
             ['arg'    => '--stop-on-error', 'desc' => 'Stop execution upon first error'],
             ['arg'    => '--stop-on-failure', 'desc' => 'Stop execution upon first error or failure'],
@@ -99,41 +82,72 @@ final class Help
             ['arg'    => '--stop-on-risky', 'desc' => 'Stop execution upon first risky test'],
             ['arg'    => '--stop-on-skipped', 'desc' => 'Stop execution upon first skipped test'],
             ['arg'    => '--stop-on-incomplete', 'desc' => 'Stop execution upon first incomplete test'],
+            ['spacer' => ''],
+
             ['arg'    => '--fail-on-incomplete', 'desc' => 'Treat incomplete tests as failures'],
             ['arg'    => '--fail-on-risky', 'desc' => 'Treat risky tests as failures'],
             ['arg'    => '--fail-on-skipped', 'desc' => 'Treat skipped tests as failures'],
             ['arg'    => '--fail-on-warning', 'desc' => 'Treat tests with warnings as failures'],
-            ['arg'    => '-v|--verbose', 'desc' => 'Output more verbose information'],
-            ['arg'    => '--trace-text <file>', 'desc' => 'Stream events as plain text to file'],
             ['spacer' => ''],
 
             ['arg'    => '--repeat <times>', 'desc' => 'Runs the test(s) repeatedly'],
-            ['arg'    => '--teamcity', 'desc' => 'Report test execution progress in TeamCity format'],
-            ['arg'    => '--testdox', 'desc' => 'Report test execution progress in TestDox format'],
-            ['arg'    => '--testdox-group', 'desc' => 'Only include tests from the specified group(s)'],
-            ['arg'    => '--testdox-exclude-group', 'desc' => 'Exclude tests from the specified group(s)'],
-            ['arg'    => '--no-interaction', 'desc' => 'Disable TestDox progress animation'],
+            ['spacer' => ''],
+
+            ['arg'    => '--cache-result', 'desc' => 'Write test results to cache file'],
+            ['arg'    => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
             ['spacer' => ''],
 
             ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
             ['arg' => '--random-order-seed <N>', 'desc' => 'Use a specific random seed <N> for random order'],
-            ['arg' => '--cache-result', 'desc' => 'Write test results to cache file'],
-            ['arg' => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
         ],
 
-        'Configuration Options' => [
-            ['arg' => '--bootstrap <file>', 'desc' => 'A PHP script that is included before the tests run'],
-            ['arg' => '-c|--configuration <file>', 'desc' => 'Read configuration from XML file'],
-            ['arg' => '--no-configuration', 'desc' => 'Ignore default configuration file (phpunit.xml)'],
-            ['arg' => '--no-extensions', 'desc' => 'Do not load PHPUnit extensions'],
-            ['arg' => '--include-path <path(s)>', 'desc' => 'Prepend PHP\'s include_path with given path(s)'],
-            ['arg' => '-d <key[=value]>', 'desc' => 'Sets a php.ini value'],
-            ['arg' => '--cache-directory <dir>', 'desc' => 'Specify cache directory'],
-            ['arg' => '--generate-configuration', 'desc' => 'Generate configuration file with suggested settings'],
-            ['arg' => '--migrate-configuration', 'desc' => 'Migrate configuration file to current format'],
+        'Reporting' => [
+            ['arg' => '--colors <flag>', 'desc' => 'Use colors in output ("never", "auto" or "always")'],
+            ['arg'    => '--columns <n>', 'desc' => 'Number of columns to use for progress output'],
+            ['arg'    => '--columns max', 'desc' => 'Use maximum number of columns for progress output'],
+            ['arg'    => '--stderr', 'desc' => 'Write to STDERR instead of STDOUT'],
+            ['spacer' => ''],
+
+            ['arg'    => '--display-incomplete', 'desc' => 'Display details for incomplete tests'],
+            ['arg'    => '--display-skipped', 'desc' => 'Display details for skipped tests'],
+            ['arg'    => '--reverse-list', 'desc' => 'Print defects in reverse order'],
+            ['arg'    => '-v|--verbose', 'desc' => 'Output more verbose information'],
+            ['spacer' => ''],
+
+            ['arg' => '--teamcity', 'desc' => 'Report test execution progress in TeamCity format'],
+            ['arg' => '--testdox', 'desc' => 'Report test execution progress in TestDox format'],
+            ['arg' => '--testdox-group', 'desc' => 'Only include tests from the specified group(s)'],
+            ['arg' => '--testdox-exclude-group', 'desc' => 'Exclude tests from the specified group(s)'],
+            ['arg' => '--no-interaction', 'desc' => 'Disable TestDox progress animation'],
         ],
 
-        'Miscellaneous Options' => [
+        'Logging' => [
+            ['arg' => '--log-junit <file>', 'desc' => 'Log test execution in JUnit XML format to file'],
+            ['arg' => '--log-teamcity <file>', 'desc' => 'Log test execution in TeamCity format to file'],
+            ['arg' => '--testdox-html <file>', 'desc' => 'Write agile documentation in HTML format to file'],
+            ['arg' => '--testdox-text <file>', 'desc' => 'Write agile documentation in Text format to file'],
+            ['arg' => '--testdox-xml <file>', 'desc' => 'Write agile documentation in XML format to file'],
+            ['arg' => '--log-events-text <file>', 'desc' => 'Stream events as plain text to file'],
+            ['arg' => '--log-events-verbose-text <file>', 'desc' => 'Stream events as plain text to file (with telemetry information)'],
+            ['arg' => '--no-logging', 'desc' => 'Ignore logging configuration'],
+        ],
+
+        'Code Coverage' => [
+            ['arg' => '--coverage-clover <file>', 'desc' => 'Generate code coverage report in Clover XML format'],
+            ['arg' => '--coverage-cobertura <file>', 'desc' => 'Generate code coverage report in Cobertura XML format'],
+            ['arg' => '--coverage-crap4j <file>', 'desc' => 'Generate code coverage report in Crap4J XML format'],
+            ['arg' => '--coverage-html <dir>', 'desc' => 'Generate code coverage report in HTML format'],
+            ['arg' => '--coverage-php <file>', 'desc' => 'Export PHP_CodeCoverage object to file'],
+            ['arg' => '--coverage-text=<file>', 'desc' => 'Generate code coverage report in text format [default: standard output]'],
+            ['arg' => '--coverage-xml <dir>', 'desc' => 'Generate code coverage report in PHPUnit XML format'],
+            ['arg' => '--warm-coverage-cache', 'desc' => 'Warm static analysis cache'],
+            ['arg' => '--coverage-filter <dir>', 'desc' => 'Include <dir> in code coverage analysis'],
+            ['arg' => '--path-coverage', 'desc' => 'Perform path coverage analysis'],
+            ['arg' => '--disable-coverage-ignore', 'desc' => 'Disable attributes and annotations for ignoring code coverage'],
+            ['arg' => '--no-coverage', 'desc' => 'Ignore code coverage configuration'],
+        ],
+
+        'Miscellaneous' => [
             ['arg' => '-h|--help', 'desc' => 'Prints this usage information'],
             ['arg' => '--version', 'desc' => 'Prints the version and exits'],
             ['arg' => '--atleast-version <min>', 'desc' => 'Checks that version is greater than min and exits'],
@@ -216,6 +230,10 @@ final class Help
 
         foreach (self::HELP_TEXT as $section => $options) {
             $buffer .= Color::colorize('fg-yellow', "{$section}:") . PHP_EOL;
+
+            if ($section !== 'Usage') {
+                $buffer .= PHP_EOL;
+            }
 
             foreach ($options as $option) {
                 if (isset($option['spacer'])) {

@@ -14,6 +14,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+
 ...                                                                 3 / 3 (100%)<?xml version="1.0" encoding="UTF-8"?>
 <tests>
   <test className="PHPUnit\TestFixture\BankAccountTest" methodName="testBalanceIsInitiallyZero" prettifiedClassName="Bank Account (PHPUnit\TestFixture\BankAccount)" prettifiedMethodName="Balance is initially zero" status="success" time="%s" size="unknown" given="a fresh bank account" givenStartLine="31" when="I ask it for its balance" whenStartLine="34" then="I should get 0" thenStartLine="37">

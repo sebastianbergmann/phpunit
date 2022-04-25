@@ -16,6 +16,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+
 Issue4632 (PHPUnit\TestFixture\Issue4632)
  ✘ One
    │

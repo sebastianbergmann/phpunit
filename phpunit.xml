@@ -4,7 +4,6 @@
          bootstrap="tests/bootstrap.php"
          convertDeprecationsToExceptions="true"
          colors="true"
-         verbose="true"
          cacheDirectory=".phpunit.cache"
          failOnRisky="true"
          failOnWarning="true">

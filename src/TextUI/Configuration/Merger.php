@@ -379,6 +379,18 @@ final class Merger
             $verbose = $xmlConfiguration->phpunit()->verbose();
         }
 
+        if ($cliConfiguration->hasDisplayDetailsOnIncompleteTests()) {
+            $displayDetailsOnIncompleteTests = $cliConfiguration->displayDetailsOnIncompleteTests();
+        } else {
+            $displayDetailsOnIncompleteTests = $xmlConfiguration->phpunit()->displayDetailsOnIncompleteTests();
+        }
+
+        if ($cliConfiguration->hasDisplayDetailsOnSkippedTests()) {
+            $displayDetailsOnSkippedTests = $cliConfiguration->displayDetailsOnSkippedTests();
+        } else {
+            $displayDetailsOnSkippedTests = $xmlConfiguration->phpunit()->displayDetailsOnSkippedTests();
+        }
+
         if ($cliConfiguration->hasReverseList()) {
             $reverseDefectList = $cliConfiguration->reverseList();
         } else {
@@ -475,10 +487,16 @@ final class Merger
             $logfileTestdoxXml = $xmlConfiguration->logging()->testDoxXml()->target()->path();
         }
 
-        $plainTextTrace = null;
+        $logEventsText = null;
 
-        if ($cliConfiguration->hasPlainTextTrace()) {
-            $plainTextTrace = $cliConfiguration->plainTextTrace();
+        if ($cliConfiguration->hasLogEventsText()) {
+            $logEventsText = $cliConfiguration->logEventsText();
+        }
+
+        $logEventsVerboseText = null;
+
+        if ($cliConfiguration->hasLogEventsVerboseText()) {
+            $logEventsVerboseText = $cliConfiguration->logEventsVerboseText();
         }
 
         $defaultOutput  = true;
@@ -636,6 +654,8 @@ final class Merger
             $strictCoverage,
             $disallowTestOutput,
             $verbose,
+            $displayDetailsOnIncompleteTests,
+            $displayDetailsOnSkippedTests,
             $reverseDefectList,
             $requireCoverageMetadata,
             $registerMockObjectsFromTestArgumentsRecursively,
@@ -649,7 +669,8 @@ final class Merger
             $logfileTestdoxHtml,
             $logfileTestdoxText,
             $logfileTestdoxXml,
-            $plainTextTrace,
+            $logEventsText,
+            $logEventsVerboseText,
             $defaultOutput,
             $teamCityOutput,
             $testDoxOutput,

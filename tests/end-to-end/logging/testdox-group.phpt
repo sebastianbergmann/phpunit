@@ -16,6 +16,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+
 Dox Group (PHPUnit\TestFixture\DoxGroup)
 ..                                                                  2 / 2 (100%) [x] One
 

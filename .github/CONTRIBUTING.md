@@ -16,7 +16,7 @@ Please note that this project is released with a [Contributor Code of Conduct](C
 
 ## Any contributions you make will be under the BSD-3-Clause License
 
-When you submit code changes, your submissions are understood to be under the same [BSD-3-Clause License](https://github.com/sebastianbergmann/phpunit/blob/master/LICENSE) that covers the project. By contributing to this project, you agree that your contributions will be licensed under its BSD-3-Clause License.
+When you submit code changes, your submissions are understood to be under the same [BSD-3-Clause License](https://github.com/sebastianbergmann/phpunit/blob/main/LICENSE) that covers the project. By contributing to this project, you agree that your contributions will be licensed under its BSD-3-Clause License.
 
 
 ## Write bug reports with detail, background, and sample code
@@ -50,7 +50,7 @@ Please use the most specific issue tracker to search for existing tickets and to
 ## Workflow for Pull Requests
 
 1. Fork the repository.
-2. Create your branch from `master` if you plan to implement new functionality or change existing code significantly; create your branch from the oldest branch that is affected by the bug if you plan to fix a bug.
+2. Create your branch from `main` if you plan to implement new functionality or change existing code significantly; create your branch from the oldest branch that is affected by the bug if you plan to fix a bug.
 3. Implement your change and add tests for it.
 4. Ensure the test suite passes.
 5. Ensure the code complies with our coding guidelines (see below).
@@ -60,7 +60,7 @@ Please make sure you have [set up your user name and email address](https://git-
 
 We encourage you to [sign your Git commits with your GPG key](https://docs.github.com/en/github/authenticating-to-github/signing-commits).
 
-Pull requests for bug fixes must be made for the oldest branch that is [supported](https://phpunit.de/supported-versions.html). Pull requests for new features must be based on the `master` branch.
+Pull requests for bug fixes must be made for the oldest branch that is [supported](https://phpunit.de/supported-versions.html). Pull requests for new features must be based on the `main` branch.
 
 We are trying to keep backwards compatibility breaks in PHPUnit to an absolute minimum. Please take this into account when proposing changes.
 

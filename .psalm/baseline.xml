@@ -734,7 +734,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="84">
+    <MissingThrowsDocblock occurrences="87">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -764,6 +764,8 @@
       <code>defaultTimeLimit</code>
       <code>disableCodeCoverageIgnore</code>
       <code>disallowTestOutput</code>
+      <code>displayDetailsOnIncompleteTests</code>
+      <code>displayDetailsOnSkippedTests</code>
       <code>enforceTimeLimit</code>
       <code>excludeGroups</code>
       <code>executionOrder</code>
@@ -788,10 +790,11 @@
       <code>html</code>
       <code>includePath</code>
       <code>junitLogfile</code>
+      <code>logEventsText</code>
+      <code>logEventsVerboseText</code>
       <code>noInteraction</code>
       <code>pathCoverage</code>
       <code>php</code>
-      <code>plainTextTrace</code>
       <code>processIsolation</code>
       <code>randomOrderSeed</code>
       <code>repeat</code>
@@ -1079,7 +1082,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="39">
+    <MissingThrowsDocblock occurrences="43">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1098,6 +1101,12 @@
       <code>excludeGroups</code>
       <code>filter</code>
       <code>groups</code>
+      <code>logEventsText</code>
+      <code>logEventsText</code>
+      <code>logEventsText</code>
+      <code>logEventsVerboseText</code>
+      <code>logEventsVerboseText</code>
+      <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
       <code>logfileTestdoxHtml</code>
@@ -1107,9 +1116,6 @@
       <code>new ResultCacheHandler($cache)</code>
       <code>new TeamCityLogger('php://stdout')</code>
       <code>pharExtensionDirectory</code>
-      <code>plainTextTrace</code>
-      <code>plainTextTrace</code>
-      <code>plainTextTrace</code>
       <code>run</code>
       <code>stop</code>
       <code>stop</code>

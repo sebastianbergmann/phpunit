@@ -101,10 +101,13 @@ final class Configuration
     private ?string $unrecognizedOrderBy;
     private ?bool $useDefaultConfiguration;
     private ?bool $verbose;
+    private ?bool $displayDetailsOnIncompleteTests;
+    private ?bool $displayDetailsOnSkippedTests;
     private ?bool $version;
-    private ?string $plainTextTrace;
+    private ?string $logEventsText;
+    private ?string $logEventsVerboseText;
 
-    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noOutput, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $version, ?array $coverageFilter, ?string $plainTextTrace, ?bool $printerTeamCity, ?bool $printerTestDox)
+    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noInteraction, ?bool $noOutput, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?array $testdoxExcludeGroups, ?array $testdoxGroups, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $verbose, ?bool $displayDetailsOnIncompleteTests, ?bool $displayDetailsOnSkippedTests, ?bool $version, ?array $coverageFilter, ?string $logEventsText, ?string $logEventsVerboseText, ?bool $printerTeamCity, ?bool $printerTestDox)
     {
         $this->argument                          = $argument;
         $this->atLeastVersion                    = $atLeastVersion;
@@ -190,8 +193,11 @@ final class Configuration
         $this->unrecognizedOrderBy               = $unrecognizedOrderBy;
         $this->useDefaultConfiguration           = $useDefaultConfiguration;
         $this->verbose                           = $verbose;
+        $this->displayDetailsOnIncompleteTests   = $displayDetailsOnIncompleteTests;
+        $this->displayDetailsOnSkippedTests      = $displayDetailsOnSkippedTests;
         $this->version                           = $version;
-        $this->plainTextTrace                    = $plainTextTrace;
+        $this->logEventsText                     = $logEventsText;
+        $this->logEventsVerboseText              = $logEventsVerboseText;
         $this->teamCityPrinter                   = $printerTeamCity;
         $this->testdoxPrinter                    = $printerTestDox;
     }
@@ -1914,6 +1920,46 @@ final class Configuration
     }
 
     /**
+     * @psalm-assert-if-true !null $this->displayDetailsOnIncompleteTests
+     */
+    public function hasDisplayDetailsOnIncompleteTests(): bool
+    {
+        return $this->displayDetailsOnIncompleteTests !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function displayDetailsOnIncompleteTests(): bool
+    {
+        if (!$this->hasDisplayDetailsOnIncompleteTests()) {
+            throw new Exception;
+        }
+
+        return $this->displayDetailsOnIncompleteTests;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->displayDetailsOnSkippedTests
+     */
+    public function hasDisplayDetailsOnSkippedTests(): bool
+    {
+        return $this->displayDetailsOnSkippedTests !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function displayDetailsOnSkippedTests(): bool
+    {
+        if (!$this->hasDisplayDetailsOnSkippedTests()) {
+            throw new Exception;
+        }
+
+        return $this->displayDetailsOnSkippedTests;
+    }
+
+    /**
      * @psalm-assert-if-true !null $this->version
      */
     public function hasVersion(): bool
@@ -1934,22 +1980,42 @@ final class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->plainTextTrace
+     * @psalm-assert-if-true !null $this->logEventsText
      */
-    public function hasPlainTextTrace(): bool
+    public function hasLogEventsText(): bool
     {
-        return $this->plainTextTrace !== null;
+        return $this->logEventsText !== null;
     }
 
     /**
      * @throws Exception
      */
-    public function plainTextTrace(): string
+    public function logEventsText(): string
     {
-        if (!$this->hasPlainTextTrace()) {
+        if (!$this->hasLogEventsText()) {
             throw new Exception;
         }
 
-        return $this->plainTextTrace;
+        return $this->logEventsText;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->logEventsVerboseText
+     */
+    public function hasLogEventsVerboseText(): bool
+    {
+        return $this->logEventsVerboseText !== null;
+    }
+
+    /**
+     * @throws Exception
+     */
+    public function logEventsVerboseText(): string
+    {
+        if (!$this->hasLogEventsVerboseText()) {
+            throw new Exception;
+        }
+
+        return $this->logEventsVerboseText;
     }
 }

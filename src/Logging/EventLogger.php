@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Runner;
+namespace PHPUnit\Logging;
 
 use const FILE_APPEND;
 use const LOCK_EX;
@@ -22,7 +22,7 @@ use PHPUnit\Event\Tracer\Tracer;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class PlainTextTracer implements Tracer
+final class EventLogger implements Tracer
 {
     private string $path;
     private bool $includeTelemetryInfo;

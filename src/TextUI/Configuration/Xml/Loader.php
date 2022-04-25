@@ -808,6 +808,8 @@ final class Loader
             $this->getBooleanAttribute($document->documentElement, 'stderr', false),
             $this->getBooleanAttribute($document->documentElement, 'noInteraction', false),
             $this->getBooleanAttribute($document->documentElement, 'verbose', false),
+            $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnIncompleteTests', false),
+            $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnSkippedTests', false),
             $this->getBooleanAttribute($document->documentElement, 'reverseDefectList', false),
             $this->getBooleanAttribute($document->documentElement, 'convertDeprecationsToExceptions', false),
             $this->getBooleanAttribute($document->documentElement, 'convertErrorsToExceptions', true),

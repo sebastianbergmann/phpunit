@@ -12,6 +12,9 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime: %s
+Configuration: %s
+
 Dummy Bar (PHPUnit\TestFixture\DummyBar)
  ✔ Bar equals bar
 

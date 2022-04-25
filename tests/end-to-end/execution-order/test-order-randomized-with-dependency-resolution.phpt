@@ -4,7 +4,6 @@ phpunit --order-by=depends,random ../_files/MultiDependencyTest.php
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
-$_SERVER['argv'][] = '--verbose';
 $_SERVER['argv'][] = '--resolve-dependencies';     // keep coverage for legacy CLI option
 $_SERVER['argv'][] = '--order-by=depends,random';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../execution-order/_files/MultiDependencyTest.php');
