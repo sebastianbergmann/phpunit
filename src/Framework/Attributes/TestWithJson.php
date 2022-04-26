@@ -23,13 +23,15 @@ final readonly class TestWithJson
      * @psalm-var non-empty-string
      */
     private string $json;
+    private ?string $name;
 
     /**
      * @psalm-param non-empty-string $json
      */
-    public function __construct(string $json)
+    public function __construct(string $json, ?string $name = null)
     {
         $this->json = $json;
+        $this->name = $name;
     }
 
     /**
@@ -38,5 +40,10 @@ final readonly class TestWithJson
     public function json(): string
     {
         return $this->json;
+    }
+
+    public function name(): ?string
+    {
+        return $this->name;
     }
 }

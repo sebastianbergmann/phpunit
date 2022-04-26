@@ -15,6 +15,7 @@ use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
+use PHPUnit\TestFixture\TestWithAttributeDataProviderTest;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 
 #[CoversClass(DataProvider::class)]
@@ -161,5 +162,26 @@ final class DataProviderTest extends TestCase
 
         /* @noinspection UnusedFunctionResultInspection */
         (new DataProvider)->providedData(DuplicateKeyDataProviderTest::class, 'test');
+    }
+
+    public function testTestWithAttribute(): void
+    {
+        $dataSets = (new DataProvider)->providedData(TestWithAttributeDataProviderTest::class, 'testWithAttribute');
+
+        $this->assertSame([
+            'foo' => ['a', 'b'],
+            'bar' => ['c', 'd'],
+            0     => ['e', 'f'],
+            1     => ['g', 'h'],
+        ], $dataSets);
+    }
+
+    public function testTestWithAttributeWithDuplicateKey(): void
+    {
+        $this->expectException(InvalidDataProviderException::class);
+        $this->expectExceptionMessage('The key "foo" has already been defined by a previous TestWith attribute');
+
+        /* @noinspection UnusedFunctionResultInspection */
+        (new DataProvider)->providedData(TestWithAttributeDataProviderTest::class, 'testWithDuplicateName');
     }
 }

@@ -605,14 +605,17 @@ final readonly class AttributeParser implements Parser
                 case TestWith::class:
                     assert($attributeInstance instanceof TestWith);
 
-                    $result[] = Metadata::testWith($attributeInstance->data());
+                    $result[] = Metadata::testWith($attributeInstance->data(), $attributeInstance->name());
 
                     break;
 
                 case TestWithJson::class:
                     assert($attributeInstance instanceof TestWithJson);
 
-                    $result[] = Metadata::testWith(json_decode($attributeInstance->json(), true, 512, JSON_THROW_ON_ERROR));
+                    $result[] = Metadata::testWith(
+                        json_decode($attributeInstance->json(), true, 512, JSON_THROW_ON_ERROR),
+                        $attributeInstance->name(),
+                    );
 
                     break;
 
