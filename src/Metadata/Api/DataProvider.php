@@ -201,7 +201,20 @@ final readonly class DataProvider
         foreach ($testWith as $_testWith) {
             assert($_testWith instanceof TestWith);
 
-            $result[] = $_testWith->data();
+            $key = $_testWith->name();
+
+            if (null === $key) {
+                $result[] = $_testWith->data();
+            } elseif (array_key_exists($key, $result)) {
+                throw new InvalidDataProviderException(
+                    sprintf(
+                        'The key "%s" has already been defined by a previous TestWith attribute',
+                        $key,
+                    ),
+                );
+            } else {
+                $result[$key] = $_testWith->data();
+            }
         }
 
         return $result;

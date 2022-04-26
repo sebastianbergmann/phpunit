@@ -863,6 +863,18 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestWith());
         $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+        $this->assertNull($metadata->asArray()[0]->name());
+    }
+
+    #[TestDox('Parses #[TestWith] attribute with name on method')]
+    public function test_parses_TestWith_attribute_with_name_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(TestWithTest::class, 'testOneWithName')->isTestWith();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTestWith());
+        $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+        $this->assertSame('Name1', $metadata->asArray()[0]->name());
     }
 
     #[TestDox('Parses #[TestWithJson] attribute on method')]
@@ -873,6 +885,18 @@ abstract class AttributeParserTestCase extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isTestWith());
         $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+        $this->assertNull($metadata->asArray()[0]->name());
+    }
+
+    #[TestDox('Parses #[TestWithJson] attribute with name on method')]
+    public function test_parses_TestWithJson_attribute_with_name_on_method(): void
+    {
+        $metadata = $this->parser()->forMethod(TestWithTest::class, 'testTwoWithName')->isTestWith();
+
+        $this->assertCount(1, $metadata);
+        $this->assertTrue($metadata->asArray()[0]->isTestWith());
+        $this->assertSame([1, 2, 3], $metadata->asArray()[0]->data());
+        $this->assertSame('Name2', $metadata->asArray()[0]->name());
     }
 
     #[TestDox('Parses #[Ticket] attribute on method')]
