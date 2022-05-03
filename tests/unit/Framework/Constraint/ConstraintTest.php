@@ -42,7 +42,7 @@ final class ConstraintTest extends ConstraintTestCase
                 return parent::reduce();
             }
 
-            final protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): void
+            final protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): never
             {
                 parent::fail($other, $description, $comparisonFailure);
             }

@@ -2353,10 +2353,8 @@ abstract class Assert
      * Fails a test with the given message.
      *
      * @throws AssertionFailedError
-     *
-     * @psalm-return never-return
      */
-    final public static function fail(string $message = ''): void
+    final public static function fail(string $message = ''): never
     {
         self::$count++;
 
@@ -2367,10 +2365,8 @@ abstract class Assert
      * Mark the test as incomplete.
      *
      * @throws IncompleteTestError
-     *
-     * @psalm-return never-return
      */
-    final public static function markTestIncomplete(string $message = ''): void
+    final public static function markTestIncomplete(string $message = ''): never
     {
         throw new IncompleteTestError($message);
     }
@@ -2380,10 +2376,8 @@ abstract class Assert
      *
      * @throws SkippedWithMessageException
      * @throws SyntheticSkippedError
-     *
-     * @psalm-return never-return
      */
-    final public static function markTestSkipped(string $message = ''): void
+    final public static function markTestSkipped(string $message = ''): never
     {
         if ($hint = self::detectLocationHint($message)) {
             $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);

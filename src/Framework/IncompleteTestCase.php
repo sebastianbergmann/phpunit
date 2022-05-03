@@ -66,10 +66,8 @@ final class IncompleteTestCase extends TestCase
 
     /**
      * @throws Exception
-     *
-     * @psalm-return never-return
      */
-    protected function runTest(): mixed
+    protected function runTest(): never
     {
         $this->markTestIncomplete($this->message);
     }

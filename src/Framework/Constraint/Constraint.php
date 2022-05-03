@@ -88,10 +88,8 @@ abstract class Constraint implements Countable, SelfDescribing
      * Throws an exception for the given compared value and test description.
      *
      * @throws ExpectationFailedException
-     *
-     * @psalm-return never-return
      */
-    protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): void
+    protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): never
     {
         $failureDescription = sprintf(
             'Failed asserting that %s.',

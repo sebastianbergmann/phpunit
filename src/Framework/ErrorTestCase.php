@@ -67,10 +67,8 @@ final class ErrorTestCase extends TestCase
 
     /**
      * @throws Exception
-     *
-     * @psalm-return never-return
      */
-    protected function runTest(): mixed
+    protected function runTest(): never
     {
         throw new Error($this->message);
     }
