@@ -503,9 +503,6 @@
       <code>$value</code>
     </InvalidCast>
     <MissingThrowsDocblock occurrences="1"/>
-    <RedundantCast occurrences="1">
-      <code>(string) $test-&gt;dataName()</code>
-    </RedundantCast>
     <UndefinedMethod occurrences="2">
       <code>text</code>
       <code>text</code>

@@ -160,7 +160,7 @@ final class NamePrettifier
         if (is_int($test->dataName())) {
             $data = Color::dim(' with data set ') . Color::colorize('fg-cyan', (string) $test->dataName());
         } else {
-            $data = Color::dim(' with ') . Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $test->dataName()));
+            $data = Color::dim(' with ') . Color::colorize('fg-cyan', Color::visualizeWhitespace($test->dataName()));
         }
 
         return $data;
