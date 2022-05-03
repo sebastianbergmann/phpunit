@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use const PHP_EOL;
+use function assert;
 use function defined;
 use function get_include_path;
 use function hrtime;
@@ -125,6 +126,9 @@ final class TestRunner
 
             $failure = true;
             $frame   = $e->getTrace()[0];
+
+            assert(isset($frame['file']));
+            assert(isset($frame['line']));
 
             $e = new AssertionFailedError(
                 sprintf(
