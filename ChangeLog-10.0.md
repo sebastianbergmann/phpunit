@@ -38,6 +38,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * The JUnit XML logfile now has both `name` and `file` attributes on `<testcase>` elements for PHPT tests
 * The `forceCoversAnnotation` attribute of the `<phpunit>` element of PHPUnit's XML configuration file has been renamed to `requireCoverageMetadata`
 * The `beStrictAboutCoversAnnotation` attribute of the `<phpunit>` element of PHPUnit's XML configuration file has been renamed to `beStrictAboutCoverageMetadata`
+* The public methods of `PHPUnit\Framework\Assert` and `PHPUnit\Framework\TestCase` are now `final`
 
 ### Removed
 
