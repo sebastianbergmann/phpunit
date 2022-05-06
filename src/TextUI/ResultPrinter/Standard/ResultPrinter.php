@@ -103,7 +103,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     public function testSkipped(): void
     {
         if (!$this->prepared) {
-            $this->printProgressWithColor('fg-cyan, bold', 'S');
+            $this->printProgressForSkipped();
         } else {
             $this->updateTestStatus(TestStatus::skipped());
         }
@@ -137,19 +137,19 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     public function testFinished(Finished $event): void
     {
         if ($this->status === null) {
-            $this->printProgress('.');
+            $this->printProgressForSuccess();
         } elseif ($this->status->isSkipped()) {
-            $this->printProgressWithColor('fg-cyan, bold', 'S');
+            $this->printProgressForSkipped();
         } elseif ($this->status->isIncomplete()) {
-            $this->printProgressWithColor('fg-yellow, bold', 'I');
+            $this->printProgressForIncomplete();
         } elseif ($this->status->isRisky()) {
-            $this->printProgressWithColor('fg-yellow, bold', 'R');
+            $this->printProgressForRisky();
         } elseif ($this->status->isWarning()) {
-            $this->printProgressWithColor('fg-yellow, bold', 'W');
+            $this->printProgressForWarning();
         } elseif ($this->status->isFailure()) {
-            $this->printProgressWithColor('bg-red, fg-white', 'F');
+            $this->printProgressForFailure();
         } else {
-            $this->printProgressWithColor('fg-red, bold', 'E');
+            $this->printProgressForError();
         }
 
         $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
@@ -188,6 +188,41 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
 
         $this->status = $status;
+    }
+
+    private function printProgressForSuccess(): void
+    {
+        $this->printProgress('.');
+    }
+
+    private function printProgressForSkipped(): void
+    {
+        $this->printProgressWithColor('fg-cyan, bold', 'S');
+    }
+
+    private function printProgressForIncomplete(): void
+    {
+        $this->printProgressWithColor('fg-yellow, bold', 'I');
+    }
+
+    private function printProgressForRisky(): void
+    {
+        $this->printProgressWithColor('fg-yellow, bold', 'R');
+    }
+
+    private function printProgressForWarning(): void
+    {
+        $this->printProgressWithColor('fg-yellow, bold', 'W');
+    }
+
+    private function printProgressForFailure(): void
+    {
+        $this->printProgressWithColor('bg-red, fg-white', 'F');
+    }
+
+    private function printProgressForError(): void
+    {
+        $this->printProgressWithColor('fg-red, bold', 'E');
     }
 
     private function printProgressWithColor(string $color, string $progress): void
