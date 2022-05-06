@@ -13,6 +13,7 @@ use const PHP_EOL;
 use function array_keys;
 use function array_map;
 use function array_unique;
+use function assert;
 use function call_user_func;
 use function class_exists;
 use function count;
@@ -402,8 +403,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $this->markTestSuiteSkipped(implode(PHP_EOL, $missingRequirements));
                     }
 
-                    call_user_func([$this->name, $beforeClassMethod]);
-
                     $methodCalledBeforeFirstTest = new Event\Code\ClassMethod(
                         $this->name,
                         $beforeClassMethod
@@ -415,6 +414,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     );
 
                     $methodsCalledBeforeFirstTest[] = $methodCalledBeforeFirstTest;
+
+                    call_user_func([$this->name, $beforeClassMethod]);
                 }
             } catch (SkippedTestSuiteError $error) {
                 foreach ($this->tests() as $test) {
@@ -427,6 +428,21 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                 return;
             } catch (Throwable $t) {
+                assert(isset($methodCalledBeforeFirstTest));
+
+                $emitter->testBeforeFirstTestMethodErrored(
+                    $this->name,
+                    $methodCalledBeforeFirstTest,
+                    Event\Code\Throwable::from($t)
+                );
+
+                if (!empty($methodsCalledBeforeFirstTest)) {
+                    $emitter->testBeforeFirstTestMethodFinished(
+                        $this->name,
+                        ...$methodsCalledBeforeFirstTest
+                    );
+                }
+
                 $errorAdded = false;
 
                 foreach ($this->tests() as $test) {
