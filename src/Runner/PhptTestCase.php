@@ -416,6 +416,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 $message
             );
 
+            EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 0);
+
             return true;
         }
 

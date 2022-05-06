@@ -34,5 +34,6 @@ Test Suite Started (1 test)
 Test Prepared (%s/phpt-skipif-location-hint-example.phpt)
 Test Skipped (%s/phpt-skipif-location-hint-example.phpt)
 something terrible happened
+Test Finished (%s/phpt-skipif-location-hint-example.phpt)
 Test Suite Finished (1 test)
 Test Runner Finished
