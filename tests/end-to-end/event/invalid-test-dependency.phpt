@@ -30,10 +30,10 @@ Test Suite Loaded (2 tests)
 Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (2 tests)
-Test Suite Started (PHPUnit\TestFixture\InvalidDependencyTest, 2 tests)
-Test Errored (PHPUnit\TestFixture\InvalidDependencyTest::testOne)
-This test depends on "PHPUnit\TestFixture\InvalidDependencyTest::doesNotExist" which does not exist
-Test Errored (PHPUnit\TestFixture\InvalidDependencyTest::testTwo)
+Test Suite Started (PHPUnit\TestFixture\Event\InvalidDependencyTest, 2 tests)
+Test Errored (PHPUnit\TestFixture\Event\InvalidDependencyTest::testOne)
+This test depends on "PHPUnit\TestFixture\Event\InvalidDependencyTest::doesNotExist" which does not exist
+Test Errored (PHPUnit\TestFixture\Event\InvalidDependencyTest::testTwo)
 This test depends on "DoesNotExist" which does not exist
-Test Suite Finished (PHPUnit\TestFixture\InvalidDependencyTest, 2 tests)
+Test Suite Finished (PHPUnit\TestFixture\Event\InvalidDependencyTest, 2 tests)
 Test Runner Finished

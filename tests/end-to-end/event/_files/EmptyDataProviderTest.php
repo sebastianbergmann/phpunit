@@ -11,18 +11,17 @@ namespace PHPUnit\TestFixture\Event;
 
 use PHPUnit\Framework\TestCase;
 
-final class MissingDependencyTest extends TestCase
+final class EmptyDataProviderTest extends TestCase
 {
-    public function testOne(): void
+    public static function providerMethod(): array
     {
-        $this->assertTrue(false);
+        return [];
     }
 
     /**
-     * @depends testOne
+     * @dataProvider providerMethod
      */
-    public function testTwo(): void
+    public function testCase(): void
     {
-        $this->assertTrue(true);
     }
 }

@@ -30,13 +30,13 @@ Test Suite Loaded (2 tests)
 Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (2 tests)
-Test Suite Started (PHPUnit\TestFixture\MissingDependencyTest, 2 tests)
-Test Prepared (PHPUnit\TestFixture\MissingDependencyTest::testOne)
+Test Suite Started (PHPUnit\TestFixture\Event\MissingDependencyTest, 2 tests)
+Test Prepared (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
 Assertion Failed (Constraint: is true, Value: false)
-Test Failed (PHPUnit\TestFixture\MissingDependencyTest::testOne)
+Test Failed (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
 Failed asserting that false is true.
-Test Finished (PHPUnit\TestFixture\MissingDependencyTest::testOne)
-Test Skipped (PHPUnit\TestFixture\MissingDependencyTest::testTwo)
-This test depends on "PHPUnit\TestFixture\MissingDependencyTest::testOne" to pass
-Test Suite Finished (PHPUnit\TestFixture\MissingDependencyTest, 2 tests)
+Test Finished (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
+Test Skipped (PHPUnit\TestFixture\Event\MissingDependencyTest::testTwo)
+This test depends on "PHPUnit\TestFixture\Event\MissingDependencyTest::testOne" to pass
+Test Suite Finished (PHPUnit\TestFixture\Event\MissingDependencyTest, 2 tests)
 Test Runner Finished

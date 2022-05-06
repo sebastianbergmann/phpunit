@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = __DIR__ . '/../../_files/EmptyDataProviderTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/EmptyDataProviderTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -30,14 +30,14 @@ Test Suite Loaded (1 test)
 Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\EmptyDataProviderTest, 1 test)
-Test Suite Started (PHPUnit\TestFixture\EmptyDataProviderTest::testCase, 1 test)
-Test Prepared (PHPUnit\TestFixture\EmptyDataProviderTest::testCase)
-Test Errored (PHPUnit\TestFixture\EmptyDataProviderTest::testCase)
-The data provider specified for PHPUnit\TestFixture\EmptyDataProviderTest::testCase is invalid
+Test Suite Started (PHPUnit\TestFixture\Event\EmptyDataProviderTest, 1 test)
+Test Suite Started (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase, 1 test)
+Test Prepared (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
+Test Errored (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
+The data provider specified for PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase is invalid
 Empty data set provided by data provider
 
-Test Finished (PHPUnit\TestFixture\EmptyDataProviderTest::testCase)
-Test Suite Finished (PHPUnit\TestFixture\EmptyDataProviderTest::testCase, 1 test)
-Test Suite Finished (PHPUnit\TestFixture\EmptyDataProviderTest, 1 test)
+Test Finished (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
+Test Suite Finished (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase, 1 test)
+Test Suite Finished (PHPUnit\TestFixture\Event\EmptyDataProviderTest, 1 test)
 Test Runner Finished

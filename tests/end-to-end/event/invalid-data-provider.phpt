@@ -30,14 +30,14 @@ Test Suite Loaded (1 test)
 Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\InvalidDataProviderTest, 1 test)
-Test Suite Started (PHPUnit\TestFixture\InvalidDataProviderTest::testOne, 1 test)
-Test Prepared (PHPUnit\TestFixture\InvalidDataProviderTest::testOne)
-Test Errored (PHPUnit\TestFixture\InvalidDataProviderTest::testOne)
-The data provider specified for PHPUnit\TestFixture\InvalidDataProviderTest::testOne is invalid
+Test Suite Started (PHPUnit\TestFixture\Event\InvalidDataProviderTest, 1 test)
+Test Suite Started (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne, 1 test)
+Test Prepared (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne)
+Test Errored (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne)
+The data provider specified for PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne is invalid
 Data set #0 is invalid
 
-Test Finished (PHPUnit\TestFixture\InvalidDataProviderTest::testOne)
-Test Suite Finished (PHPUnit\TestFixture\InvalidDataProviderTest::testOne, 1 test)
-Test Suite Finished (PHPUnit\TestFixture\InvalidDataProviderTest, 1 test)
+Test Finished (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne)
+Test Suite Finished (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne, 1 test)
+Test Suite Finished (PHPUnit\TestFixture\Event\InvalidDataProviderTest, 1 test)
 Test Runner Finished
