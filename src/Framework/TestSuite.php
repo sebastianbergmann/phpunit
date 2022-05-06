@@ -383,13 +383,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $result->startTestSuite($this);
 
+        $emitter                       = Event\Facade::emitter();
         $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this);
 
-        Event\Facade::emitter()->testSuiteStarted($testSuiteValueObjectForEvents);
-
-        $test = null;
+        $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
         $methodsCalledBeforeFirstTest = [];
+        $test                         = null;
 
         if (class_exists($this->name, false)) {
             try {
@@ -409,7 +409,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $beforeClassMethod
                     );
 
-                    Event\Facade::emitter()->testBeforeFirstTestMethodCalled(
+                    $emitter->testBeforeFirstTestMethodCalled(
                         $this->name,
                         $methodCalledBeforeFirstTest
                     );
@@ -458,7 +458,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         if (!empty($methodsCalledBeforeFirstTest)) {
-            Event\Facade::emitter()->testBeforeFirstTestMethodFinished(
+            $emitter->testBeforeFirstTestMethodFinished(
                 $this->name,
                 ...$methodsCalledBeforeFirstTest
             );
@@ -504,7 +504,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $afterClassMethod
                     );
 
-                    Event\Facade::emitter()->testAfterLastTestMethodCalled(
+                    $emitter->testAfterLastTestMethodCalled(
                         $this->name,
                         $methodCalledAfterLastTest
                     );
@@ -525,7 +525,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         if (!empty($methodsCalledAfterLastTest)) {
-            Event\Facade::emitter()->testAfterLastTestMethodFinished(
+            $emitter->testAfterLastTestMethodFinished(
                 $this->name,
                 ...$methodsCalledAfterLastTest
             );
@@ -533,7 +533,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $result->endTestSuite($this);
 
-        Event\Facade::emitter()->testSuiteFinished(
+        $emitter->testSuiteFinished(
             $testSuiteValueObjectForEvents,
             (new TestResultMapper)->map($result)
         );
