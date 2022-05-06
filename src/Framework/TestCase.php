@@ -2080,10 +2080,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private function performAssertionsOnOutput(): void
     {
-        if ($this->outputExpectedRegex !== null) {
-            $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
-        } elseif ($this->outputExpectedString !== null) {
-            $this->assertEquals($this->outputExpectedString, $this->output);
+        try {
+            if ($this->outputExpectedRegex !== null) {
+                $this->assertMatchesRegularExpression($this->outputExpectedRegex, $this->output);
+            } elseif ($this->outputExpectedString !== null) {
+                $this->assertEquals($this->outputExpectedString, $this->output);
+            }
+        } catch (ExpectationFailedException $e) {
+            $this->status = TestStatus::failure($e->getMessage());
+
+            Event\Facade::emitter()->testFailed(
+                $this->valueObjectForEvents(),
+                Event\Code\Throwable::from($e)
+            );
+
+            throw $e;
         }
     }
 
