@@ -1607,6 +1607,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             if ($dependency->targetIsClass()) {
                 $dependencyClassName = $dependency->getTargetClassName();
 
+                if (!class_exists($dependencyClassName)) {
+                    $this->markErrorForInvalidDependency($dependency);
+
+                    return false;
+                }
+
                 if (!in_array($dependencyClassName, $this->result->passedClasses(), true)) {
                     $this->markSkippedForMissingDependency($dependency);
 
@@ -1666,7 +1672,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if ($dependency !== null) {
             $message = sprintf(
                 'This test depends on "%s" which does not exist',
-                $dependency->getTarget()
+                $dependency->targetIsClass() ? $dependency->getTargetClassName() : $dependency->getTarget()
             );
         }
 

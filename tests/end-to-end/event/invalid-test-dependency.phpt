@@ -26,12 +26,14 @@ unlink($traceFile);
 --EXPECTF--
 Test Runner Started (PHPUnit %s using %s)
 Test Runner Configuration Combined
-Test Suite Loaded (1 test)
+Test Suite Loaded (2 tests)
 Test Suite Sorted
 Event Facade Sealed
-Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\InvalidDependencyTest, 1 test)
+Test Runner Execution Started (2 tests)
+Test Suite Started (PHPUnit\TestFixture\InvalidDependencyTest, 2 tests)
 Test Errored (PHPUnit\TestFixture\InvalidDependencyTest::testOne)
 This test depends on "PHPUnit\TestFixture\InvalidDependencyTest::doesNotExist" which does not exist
-Test Suite Finished (PHPUnit\TestFixture\InvalidDependencyTest, 1 test)
+Test Errored (PHPUnit\TestFixture\InvalidDependencyTest::testTwo)
+This test depends on "DoesNotExist" which does not exist
+Test Suite Finished (PHPUnit\TestFixture\InvalidDependencyTest, 2 tests)
 Test Runner Finished

@@ -20,4 +20,12 @@ final class InvalidDependencyTest extends TestCase
     {
         $this->assertTrue(true);
     }
+
+    /**
+     * @depends DoesNotExist::class
+     */
+    public function testTwo(): void
+    {
+        $this->assertTrue(true);
+    }
 }
