@@ -310,6 +310,21 @@ final class DispatchingEmitter implements Emitter
     /**
      * @psalm-param class-string $testClassName
      */
+    public function testBeforeFirstTestMethodErrored(string $testClassName, Code\ClassMethod $calledMethod, Throwable $throwable): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\BeforeFirstTestMethodErrored(
+                $this->telemetryInfo(),
+                $testClassName,
+                $calledMethod,
+                $throwable
+            )
+        );
+    }
+
+    /**
+     * @psalm-param class-string $testClassName
+     */
     public function testBeforeFirstTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
         $this->dispatcher->dispatch(

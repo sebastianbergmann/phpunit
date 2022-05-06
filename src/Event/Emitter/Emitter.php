@@ -84,6 +84,11 @@ interface Emitter
     /**
      * @psalm-param class-string $testClassName
      */
+    public function testBeforeFirstTestMethodErrored(string $testClassName, Code\ClassMethod $calledMethod, Throwable $throwable): void;
+
+    /**
+     * @psalm-param class-string $testClassName
+     */
     public function testBeforeFirstTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
 
     /**

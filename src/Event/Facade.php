@@ -197,6 +197,7 @@ final class Facade
             Test\AfterTestMethodCalled::class,
             Test\AfterTestMethodFinished::class,
             Test\BeforeFirstTestMethodCalled::class,
+            Test\BeforeFirstTestMethodErrored::class,
             Test\BeforeFirstTestMethodFinished::class,
             Test\BeforeTestMethodCalled::class,
             Test\BeforeTestMethodFinished::class,
