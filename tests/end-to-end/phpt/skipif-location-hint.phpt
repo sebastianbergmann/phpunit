@@ -27,4 +27,4 @@ something terrible happened
 %stests%eend-to-end%e_files%ephpt-skipif-location-hint-example.phpt:8
 
 OK, but incomplete, skipped, or risky tests!
-Tests: 1, Assertions: 1, Skipped: 1.
+Tests: 1, Assertions: 0, Skipped: 1.
