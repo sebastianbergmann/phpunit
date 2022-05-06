@@ -3,6 +3,7 @@ phpunit -c ../../_files/configuration.depends-on-class.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--display-skipped';
 $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/configuration.depends-on-class.xml');
 
