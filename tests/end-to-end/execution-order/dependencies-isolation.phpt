@@ -1,12 +1,11 @@
 --TEST--
-phpunit --process-isolation --verbose ../../_files/dependencies
+phpunit --process-isolation --display-skipped ../../_files/dependencies
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--display-skipped';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--process-isolation';
-$_SERVER['argv'][] = '--verbose';
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/dependencies');
 
 require_once __DIR__ . '/../../bootstrap.php';
