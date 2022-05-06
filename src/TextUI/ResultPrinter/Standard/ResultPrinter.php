@@ -95,6 +95,12 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->maxColumn          = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numberOfTestsWidth);
     }
 
+    public function beforeTestClassMethodErrored(): void
+    {
+        $this->printProgressForError();
+        $this->updateTestStatus(TestStatus::error());
+    }
+
     public function testPrepared(): void
     {
         $this->prepared = true;
@@ -173,6 +179,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
+        Facade::registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
     }
 
     private function updateTestStatus(TestStatus $status): void
