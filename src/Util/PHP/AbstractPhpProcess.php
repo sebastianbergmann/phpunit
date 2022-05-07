@@ -27,6 +27,8 @@ use function trim;
 use function unserialize;
 use __PHP_Incomplete_Class;
 use ErrorException;
+use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
@@ -269,10 +271,19 @@ abstract class AbstractPhpProcess
                 restore_error_handler();
 
                 if ($childResult === false) {
+                    $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
+
                     $result->addError(
                         $test,
-                        new AssertionFailedError('Test was run in child process and ended unexpectedly'),
+                        $exception,
                         $time
+                    );
+
+                    assert($test instanceof TestCase);
+
+                    Facade::emitter()->testErrored(
+                        TestMethod::fromTestCase($test),
+                        Throwable::from($exception)
                     );
                 }
             } catch (ErrorException $e) {
