@@ -110,7 +110,6 @@ final class Builder
         'exclude-testsuite=',
         'log-events-text=',
         'log-events-verbose-text=',
-        'verbose',
         'version',
     ];
 
@@ -217,7 +216,6 @@ final class Builder
         $excludeTestSuite                  = null;
         $unrecognizedOrderBy               = null;
         $useDefaultConfiguration           = null;
-        $verbose                           = null;
         $version                           = null;
         $logEventsText                     = null;
         $logEventsVerboseText              = null;
@@ -637,12 +635,6 @@ final class Builder
 
                     break;
 
-                case 'v':
-                case '--verbose':
-                    $verbose = true;
-
-                    break;
-
                 case '--atleast-version':
                     $atLeastVersion = $option[1];
 
@@ -845,7 +837,6 @@ final class Builder
             $excludeTestSuite,
             $unrecognizedOrderBy,
             $useDefaultConfiguration,
-            $verbose,
             $displayIncomplete,
             $displaySkipped,
             $version,

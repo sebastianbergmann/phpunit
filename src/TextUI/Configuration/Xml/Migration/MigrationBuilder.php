@@ -51,6 +51,7 @@ final class MigrationBuilder
             RemoveBeStrictAboutResourceUsageDuringSmallTestsAttribute::class,
             RemoveBeStrictAboutTodoAnnotatedTestsAttribute::class,
             RemovePrinterAttributes::class,
+            RemoveVerboseAttribute::class,
             RenameForceCoversAnnotationAttribute::class,
             RenameBeStrictAboutCoversAnnotationAttribute::class,
         ],

@@ -478,7 +478,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertFalse($phpunit->enforceTimeLimit());
         $this->assertSame('/tmp', $phpunit->extensionsDirectory());
         $this->assertSame('My Test Suite', $phpunit->defaultTestSuite());
-        $this->assertFalse($phpunit->verbose());
         $this->assertSame(1, $phpunit->timeoutForSmallTests());
         $this->assertSame(10, $phpunit->timeoutForMediumTests());
         $this->assertSame(60, $phpunit->timeoutForLargeTests());

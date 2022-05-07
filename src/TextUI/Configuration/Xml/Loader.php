@@ -807,7 +807,6 @@ final class Loader
             $this->getColors($document),
             $this->getBooleanAttribute($document->documentElement, 'stderr', false),
             $this->getBooleanAttribute($document->documentElement, 'noInteraction', false),
-            $this->getBooleanAttribute($document->documentElement, 'verbose', false),
             $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnIncompleteTests', false),
             $this->getBooleanAttribute($document->documentElement, 'displayDetailsOnSkippedTests', false),
             $this->getBooleanAttribute($document->documentElement, 'reverseDefectList', false),

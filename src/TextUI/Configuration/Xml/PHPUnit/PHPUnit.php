@@ -22,7 +22,6 @@ final class PHPUnit
     private string $colors;
     private bool $stderr;
     private bool $noInteraction;
-    private bool $verbose;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
     private bool $reverseDefectList;
@@ -64,7 +63,7 @@ final class PHPUnit
     private bool $registerMockObjectsFromTestArgumentsRecursively;
     private bool $testdoxPrinter;
 
-    public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $noInteraction, bool $verbose, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $testdoxPrinter)
+    public function __construct(?string $cacheDirectory, bool $cacheResult, ?string $cacheResultFile, int|string $columns, string $colors, bool $stderr, bool $noInteraction, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $reverseDefectList, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $requireCoverageMetadata, ?string $bootstrap, bool $processIsolation, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, ?string $extensionsDirectory, bool $beStrictAboutChangesToGlobalState, bool $beStrictAboutOutputDuringTests, bool $beStrictAboutTestsThatDoNotTestAnything, bool $beStrictAboutCoverageMetadata, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, ?string $defaultTestSuite, int $executionOrder, bool $resolveDependencies, bool $defectsFirst, bool $backupGlobals, bool $backupStaticProperties, bool $registerMockObjectsFromTestArgumentsRecursively, bool $testdoxPrinter)
     {
         $this->cacheDirectory                                  = $cacheDirectory;
         $this->cacheResult                                     = $cacheResult;
@@ -73,7 +72,6 @@ final class PHPUnit
         $this->colors                                          = $colors;
         $this->stderr                                          = $stderr;
         $this->noInteraction                                   = $noInteraction;
-        $this->verbose                                         = $verbose;
         $this->displayDetailsOnIncompleteTests                 = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests                    = $displayDetailsOnSkippedTests;
         $this->reverseDefectList                               = $reverseDefectList;
@@ -183,11 +181,6 @@ final class PHPUnit
     public function noInteraction(): bool
     {
         return $this->noInteraction;
-    }
-
-    public function verbose(): bool
-    {
-        return $this->verbose;
     }
 
     public function displayDetailsOnIncompleteTests(): bool

@@ -1,5 +1,4 @@
-<phpunit verbose="true"
-    resolveDependencies="true">
+<phpunit resolveDependencies="true">
     <testsuites>
         <testsuite name="dependsOnClassAndFailure">
             <file>../../tests/_files/DependencyOnClassTest.php</file>

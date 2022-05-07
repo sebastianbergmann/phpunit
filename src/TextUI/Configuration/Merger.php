@@ -384,12 +384,6 @@ final class Merger
             $disallowTestOutput = $xmlConfiguration->phpunit()->beStrictAboutOutputDuringTests();
         }
 
-        if ($cliConfiguration->hasVerbose()) {
-            $verbose = $cliConfiguration->verbose();
-        } else {
-            $verbose = $xmlConfiguration->phpunit()->verbose();
-        }
-
         if ($cliConfiguration->hasDisplayDetailsOnIncompleteTests()) {
             $displayDetailsOnIncompleteTests = $cliConfiguration->displayDetailsOnIncompleteTests();
         } else {
@@ -664,7 +658,6 @@ final class Merger
             $reportUselessTests,
             $strictCoverage,
             $disallowTestOutput,
-            $verbose,
             $displayDetailsOnIncompleteTests,
             $displayDetailsOnSkippedTests,
             $reverseDefectList,

@@ -692,7 +692,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="87">
+    <MissingThrowsDocblock occurrences="86">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -778,7 +778,6 @@
       <code>text</code>
       <code>text</code>
       <code>text</code>
-      <code>verbose</code>
       <code>xml</code>
     </MissingThrowsDocblock>
     <RedundantCondition occurrences="1">
