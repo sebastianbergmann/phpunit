@@ -13,9 +13,11 @@ use const PHP_EOL;
 use function implode;
 use function max;
 use function preg_split;
+use function str_contains;
 use function str_pad;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -135,8 +137,17 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->updateTestStatus(TestStatus::failure());
     }
 
-    public function testErrored(): void
+    public function testErrored(Errored $event): void
     {
+        /*
+         * @todo Eliminate this special case
+         */
+        if (str_contains($event->asString(), 'Test was run in child process and ended unexpectedly')) {
+            $this->updateTestStatus(TestStatus::error());
+
+            return;
+        }
+
         if (!$this->prepared) {
             $this->printProgressForError();
         } else {
