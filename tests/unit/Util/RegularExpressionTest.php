@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\Util;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(RegularExpression::class)]
 #[Small]
 final class RegularExpressionTest extends TestCase
 {

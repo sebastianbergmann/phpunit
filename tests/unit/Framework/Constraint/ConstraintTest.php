@@ -9,12 +9,14 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use SebastianBergmann\Comparator\ComparisonFailure;
 use SebastianBergmann\Exporter\Exporter;
 use stdClass;
 
+#[CoversClass(Constraint::class)]
 #[Small]
 final class ConstraintTest extends ConstraintTestCase
 {

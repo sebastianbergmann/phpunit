@@ -10,10 +10,12 @@
 namespace PHPUnit\Framework\MockObject;
 
 use ACustomClassname;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Mockable;
 
+#[CoversClass(MockBuilder::class)]
 #[Small]
 final class MockBuilderTest extends TestCase
 {

@@ -13,6 +13,7 @@ use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_pop;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\BeforeAndAfterTest;
 use PHPUnit\TestFixture\BeforeClassAndAfterClassTest;
@@ -38,6 +39,7 @@ use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestCaseWithExceptionInHook;
 use PHPUnit\TestFixture\TestWithTest;
 
+#[CoversClass(TestSuite::class)]
 #[Small]
 final class TestSuiteTest extends TestCase
 {

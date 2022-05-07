@@ -436,7 +436,7 @@ Failed asserting that two variables don't reference the same object.
 
 EOF
                 ,
-                $this->trimnl(TestFailure::exceptionToString($e))
+                $this->trimNewlines(TestFailure::exceptionToString($e))
             );
 
             return;
@@ -488,7 +488,7 @@ Failed asserting that two strings are not identical.
 
 EOF
                 ,
-                $this->trimnl(TestFailure::exceptionToString($e))
+                $this->trimNewlines(TestFailure::exceptionToString($e))
             );
 
             return;
@@ -1458,10 +1458,7 @@ EOF
         $this->fail();
     }
 
-    /**
-     * Removes spaces in front of newlines.
-     */
-    private function trimnl(string $string): string
+    private function trimNewlines(string $string): string
     {
         return preg_replace('/[ ]*\n/', "\n", $string);
     }

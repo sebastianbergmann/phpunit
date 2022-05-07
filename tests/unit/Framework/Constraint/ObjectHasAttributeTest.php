@@ -9,12 +9,14 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use stdClass;
 
+#[CoversClass(ObjectHasAttribute::class)]
 #[Small]
 final class ObjectHasAttributeTest extends ConstraintTestCase
 {

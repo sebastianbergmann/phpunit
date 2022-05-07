@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\Success;
 
+#[CoversClass(TestSuiteIterator::class)]
 #[Small]
 final class TestSuiteIteratorTest extends TestCase
 {

@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Runner\ResultCache;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(NullResultCache::class)]
 #[Small]
 final class NullTestResultCacheTest extends TestCase
 {

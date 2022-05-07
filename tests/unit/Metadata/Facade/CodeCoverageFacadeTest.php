@@ -37,6 +37,7 @@ use PHPUnit\TestFixture\NamespaceCoverageCoversClassTest;
 use PHPUnit\TestFixture\NamespaceCoverageMethodTest;
 use PHPUnit\TestFixture\Test3194;
 
+#[\PHPUnit\Framework\Attributes\CoversClass(CodeCoverage::class)]
 #[Small]
 final class CodeCoverageFacadeTest extends TestCase
 {

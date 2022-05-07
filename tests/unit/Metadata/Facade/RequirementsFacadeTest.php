@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\TestFixture\RequirementsTest;
 
+#[\PHPUnit\Framework\Attributes\CoversClass(Requirements::class)]
 #[Small]
 final class RequirementsFacadeTest extends TestCase
 {

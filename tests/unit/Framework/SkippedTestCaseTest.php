@@ -12,7 +12,9 @@ namespace PHPUnit\Framework;
 use function array_shift;
 use function sprintf;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Attributes\CoversClass;
 
+#[CoversClass(SkippedTestCase::class)]
 final class SkippedTestCaseTest extends TestCase
 {
     public function testDefaults(): void

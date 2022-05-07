@@ -15,10 +15,12 @@ use const JSON_ERROR_NONE;
 use const JSON_ERROR_STATE_MISMATCH;
 use const JSON_ERROR_SYNTAX;
 use const JSON_ERROR_UTF8;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(JsonMatchesErrorMessageProvider::class)]
 #[Small]
 final class JsonMatchesErrorMessageProviderTest extends TestCase
 {

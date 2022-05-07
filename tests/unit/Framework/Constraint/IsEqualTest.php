@@ -14,6 +14,7 @@ use function spl_object_id;
 use DateTime;
 use DateTimeZone;
 use DOMDocument;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -21,6 +22,7 @@ use PHPUnit\Framework\TestFailure;
 use SplObjectStorage;
 use stdClass;
 
+#[CoversClass(IsEqual::class)]
 #[Small]
 final class IsEqualTest extends ConstraintTestCase
 {

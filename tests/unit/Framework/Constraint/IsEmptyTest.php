@@ -11,11 +11,13 @@ namespace PHPUnit\Framework\Constraint;
 
 use ArrayObject;
 use EmptyIterator;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
+#[CoversClass(IsEmpty::class)]
 #[Small]
 final class IsEmptyTest extends ConstraintTestCase
 {

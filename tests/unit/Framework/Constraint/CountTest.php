@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use EmptyIterator;
 use Iterator;
 use IteratorAggregate;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
@@ -22,6 +23,7 @@ use PHPUnit\TestFixture\TestIterator2;
 use PHPUnit\TestFixture\TestIteratorAggregate;
 use PHPUnit\TestFixture\TestIteratorAggregate2;
 
+#[CoversClass(Count::class)]
 #[Small]
 final class CountTest extends ConstraintTestCase
 {

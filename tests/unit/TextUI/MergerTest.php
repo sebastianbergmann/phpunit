@@ -10,11 +10,13 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function uniqid;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\Configuration\Merger;
 
+#[CoversClass(Merger::class)]
 #[Medium]
 final class MergerTest extends TestCase
 {

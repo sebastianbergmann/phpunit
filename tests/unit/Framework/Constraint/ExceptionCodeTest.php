@@ -10,11 +10,15 @@
 namespace PHPUnit\Framework\Constraint;
 
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 
-class ExceptionCodeTest extends TestCase
+#[CoversClass(ExceptionCode::class)]
+#[Small]
+final class ExceptionCodeTest extends TestCase
 {
     public function testExceptionCodeCanEvaluateExceptions(): void
     {

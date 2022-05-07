@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 
+#[CoversClass(LogicalNot::class)]
 #[Small]
 final class LogicalNotTest extends UnaryOperatorTestCase
 {

@@ -14,12 +14,14 @@ use function fopen;
 use function is_resource;
 use function preg_replace;
 use PHPUnit\Framework\Assert;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use stdClass;
 
+#[CoversClass(IsType::class)]
 #[Small]
 final class IsTypeTest extends ConstraintTestCase
 {

@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use SplObjectStorage;
 use stdClass;
 
+#[CoversClass(TraversableContainsEqual::class)]
 #[Small]
 final class TraversableContainsEqualTest extends ConstraintTestCase
 {

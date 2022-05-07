@@ -12,8 +12,10 @@ namespace PHPUnit\Framework;
 use function array_reduce;
 use function file_get_contents;
 use function preg_match_all;
+use PHPUnit\Framework\Attributes\CoversNothing;
 use PHPUnit\Framework\Attributes\DataProvider;
 
+#[CoversNothing]
 final class FunctionsTest extends TestCase
 {
     private static array $globalAssertionFunctions = [];

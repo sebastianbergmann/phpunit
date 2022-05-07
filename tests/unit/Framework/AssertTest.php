@@ -32,6 +32,7 @@ use ArrayIterator;
 use ArrayObject;
 use DateTime;
 use DateTimeZone;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;
 use PHPUnit\Framework\Attributes\Small;
@@ -47,6 +48,7 @@ use PHPUnit\Util\Xml\Loader as XmlLoader;
 use SplObjectStorage;
 use stdClass;
 
+#[CoversClass(Assert::class)]
 #[Small]
 final class AssertTest extends TestCase
 {

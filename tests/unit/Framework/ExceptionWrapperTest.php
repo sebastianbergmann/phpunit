@@ -12,9 +12,11 @@ namespace PHPUnit\Framework;
 use function print_r;
 use BadFunctionCallException;
 use Exception;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\RunInSeparateProcess;
 use PHPUnit\Framework\Attributes\Small;
 
+#[CoversClass(ExceptionWrapper::class)]
 #[Small]
 final class ExceptionWrapperTest extends TestCase
 {

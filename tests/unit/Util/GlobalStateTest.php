@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\Util;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(GlobalState::class)]
 #[Small]
 final class GlobalStateTest extends TestCase
 {

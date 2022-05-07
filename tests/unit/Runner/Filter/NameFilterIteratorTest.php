@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\Runner\Filter;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\TestFixture\BankAccountTest;
 
+#[CoversClass(NameFilterIterator::class)]
 #[Small]
 final class NameFilterIteratorTest extends TestCase
 {

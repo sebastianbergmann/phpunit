@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner;
 
 use function mt_srand;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -23,6 +24,7 @@ use PHPUnit\TestFixture\NotReorderableTest;
 use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestWithDifferentSizes;
 
+#[CoversClass(TestSuiteSorter::class)]
 #[Small]
 final class TestSuiteSorterTest extends TestCase
 {

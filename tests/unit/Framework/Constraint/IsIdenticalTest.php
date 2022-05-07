@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 use stdClass;
 
+#[CoversClass(IsIdentical::class)]
 #[Small]
 final class IsIdenticalTest extends ConstraintTestCase
 {

@@ -9,11 +9,13 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\NotSelfDescribingTest;
 use PHPUnit\Util\Error\Error;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
+#[CoversClass(TestFailure::class)]
 #[Small]
 final class TestFailureTest extends TestCase
 {

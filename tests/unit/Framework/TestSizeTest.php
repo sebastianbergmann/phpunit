@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\TestSize;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Known::class)]
@@ -19,7 +20,7 @@ use PHPUnit\Framework\TestCase;
 #[CoversClass(Small::class)]
 #[CoversClass(TestSize::class)]
 #[CoversClass(Unknown::class)]
-#[\PHPUnit\Framework\Attributes\Small]
+#[Small]
 final class TestSizeTest extends TestCase
 {
     public function testCanBeUnknown(): void

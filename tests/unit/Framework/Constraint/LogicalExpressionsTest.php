@@ -9,10 +9,15 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(LogicalAnd::class)]
+#[CoversClass(LogicalOr::class)]
+#[CoversClass(LogicalXor::class)]
+#[CoversClass(LogicalNot::class)]
 #[Small]
 final class LogicalExpressionsTest extends TestCase
 {

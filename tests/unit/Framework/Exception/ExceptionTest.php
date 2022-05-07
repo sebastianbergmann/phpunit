@@ -9,7 +9,12 @@
  */
 namespace PHPUnit\Framework;
 
-class ExceptionTest extends TestCase
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
+
+#[CoversClass(Exception::class)]
+#[Small]
+final class ExceptionTest extends TestCase
 {
     public function testExceptionSleep(): void
     {

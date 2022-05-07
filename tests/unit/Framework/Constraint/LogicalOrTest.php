@@ -11,8 +11,10 @@ namespace PHPUnit\Framework\Constraint;
 
 use function array_reduce;
 use function array_shift;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 
+#[CoversClass(LogicalOr::class)]
 #[Small]
 final class LogicalOrTest extends BinaryOperatorTestCase
 {

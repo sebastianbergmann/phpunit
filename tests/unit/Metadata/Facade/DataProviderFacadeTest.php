@@ -17,6 +17,7 @@ use PHPUnit\TestFixture\DuplicateKeyDataProviderTest;
 use PHPUnit\TestFixture\MultipleDataProviderTest;
 use PHPUnit\TestFixture\VariousIterableDataProviderTest;
 
+#[\PHPUnit\Framework\Attributes\CoversClass(DataProvider::class)]
 #[Small]
 final class DataProviderFacadeTest extends TestCase
 {

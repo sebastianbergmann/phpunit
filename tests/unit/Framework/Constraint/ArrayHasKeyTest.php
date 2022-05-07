@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
+#[CoversClass(ArrayHasKey::class)]
 #[Small]
 final class ArrayHasKeyTest extends ConstraintTestCase
 {

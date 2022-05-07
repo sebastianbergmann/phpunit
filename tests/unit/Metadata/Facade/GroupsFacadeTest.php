@@ -15,6 +15,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 
+#[\PHPUnit\Framework\Attributes\CoversClass(Groups::class)]
 #[Small]
 final class GroupsFacadeTest extends TestCase
 {

@@ -9,9 +9,13 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
-class ExceptionTest extends TestCase
+#[CoversClass(Exception::class)]
+#[Small]
+final class ExceptionTest extends TestCase
 {
     public function testExceptionCanBeExportedAsString(): void
     {

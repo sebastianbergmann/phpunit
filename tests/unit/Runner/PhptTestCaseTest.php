@@ -15,12 +15,14 @@ use function sys_get_temp_dir;
 use function touch;
 use function unlink;
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 
+#[CoversClass(PhptTestCase::class)]
 #[Medium]
 final class PhptTestCaseTest extends TestCase
 {
