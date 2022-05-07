@@ -137,7 +137,11 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     public function testErrored(): void
     {
-        $this->updateTestStatus(TestStatus::error());
+        if (!$this->prepared) {
+            $this->printProgressForError();
+        } else {
+            $this->updateTestStatus(TestStatus::error());
+        }
     }
 
     public function testFinished(Finished $event): void
