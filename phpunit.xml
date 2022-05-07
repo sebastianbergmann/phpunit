@@ -2,11 +2,11 @@
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="phpunit.xsd"
          bootstrap="tests/bootstrap.php"
-         convertDeprecationsToExceptions="true"
-         colors="true"
          cacheDirectory=".phpunit.cache"
+         convertDeprecationsToExceptions="true"
          failOnRisky="true"
-         failOnWarning="true">
+         failOnWarning="true"
+         colors="true">
     <testsuites>
         <testsuite name="unit">
             <directory>tests/unit</directory>
