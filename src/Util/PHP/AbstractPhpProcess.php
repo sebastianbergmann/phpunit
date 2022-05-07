@@ -269,7 +269,7 @@ abstract class AbstractPhpProcess
                 restore_error_handler();
 
                 if ($childResult === false) {
-                    $result->addFailure(
+                    $result->addError(
                         $test,
                         new AssertionFailedError('Test was run in child process and ended unexpectedly'),
                         $time

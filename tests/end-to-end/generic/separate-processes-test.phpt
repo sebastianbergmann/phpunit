@@ -13,11 +13,11 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-FF                                                                  2 / 2 (100%)
+EE                                                                  2 / 2 (100%)
 
 Time: %s, Memory: %s
 
-There were 2 failures:
+There were 2 errors:
 
 1) PHPUnit\TestFixture\SeparateProcessesTest::testFoo
 Test was run in child process and ended unexpectedly
@@ -25,5 +25,5 @@ Test was run in child process and ended unexpectedly
 2) PHPUnit\TestFixture\SeparateProcessesTest::testBar
 Test was run in child process and ended unexpectedly
 
-FAILURES!
-Tests: 2, Assertions: 0, Failures: 2.
+ERRORS!
+Tests: 2, Assertions: 0, Errors: 2.
