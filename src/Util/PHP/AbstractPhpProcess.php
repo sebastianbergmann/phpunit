@@ -285,6 +285,11 @@ abstract class AbstractPhpProcess
                         TestMethod::fromTestCase($test),
                         Throwable::from($exception)
                     );
+
+                    Facade::emitter()->testFinished(
+                        TestMethod::fromTestCase($test),
+                        0
+                    );
                 }
             } catch (ErrorException $e) {
                 restore_error_handler();

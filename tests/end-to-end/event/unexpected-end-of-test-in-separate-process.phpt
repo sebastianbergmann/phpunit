@@ -33,5 +33,6 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\SeparateProcessesTest, 1 test)
 Test Errored (PHPUnit\TestFixture\Event\SeparateProcessesTest::testOne)
 Test was run in child process and ended unexpectedly
+Test Finished (PHPUnit\TestFixture\Event\SeparateProcessesTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\SeparateProcessesTest, 1 test)
 Test Runner Finished
