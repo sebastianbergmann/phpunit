@@ -246,127 +246,149 @@ abstract class AbstractPhpProcess
         $time = 0;
 
         if (!empty($stderr)) {
+            $exception = new Exception(trim($stderr));
+
             $result->addError(
                 $test,
-                new Exception(trim($stderr)),
+                $exception,
                 $time
             );
-        } else {
-            set_error_handler(
-                /**
-                 * @throws ErrorException
-                 */
-                static function ($errno, $errstr, $errfile, $errline): void
-                {
-                    throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
-                }
+
+            $result->endTest($test, $time);
+
+            assert($test instanceof TestCase);
+
+            Facade::emitter()->testErrored(
+                TestMethod::fromTestCase($test),
+                Throwable::from($exception)
             );
 
-            try {
-                if (str_starts_with($stdout, "#!/usr/bin/env php\n")) {
-                    $stdout = substr($stdout, 19);
-                }
+            return;
+        }
 
-                $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
-                restore_error_handler();
+        set_error_handler(
+            /**
+             * @throws ErrorException
+             */
+            static function ($errno, $errstr, $errfile, $errline): void
+            {
+                throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
+            }
+        );
 
-                if ($childResult === false) {
-                    $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
+        try {
+            if (str_starts_with($stdout, "#!/usr/bin/env php\n")) {
+                $stdout = substr($stdout, 19);
+            }
 
-                    $result->addError(
-                        $test,
-                        $exception,
-                        $time
-                    );
+            $childResult = unserialize(str_replace("#!/usr/bin/env php\n", '', $stdout));
+            restore_error_handler();
 
-                    assert($test instanceof TestCase);
-
-                    Facade::emitter()->testErrored(
-                        TestMethod::fromTestCase($test),
-                        Throwable::from($exception)
-                    );
-
-                    Facade::emitter()->testFinished(
-                        TestMethod::fromTestCase($test),
-                        0
-                    );
-                }
-            } catch (ErrorException $e) {
-                restore_error_handler();
-                $childResult = false;
+            if ($childResult === false) {
+                $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
 
                 $result->addError(
                     $test,
-                    new Exception(trim($stdout), 0, $e),
+                    $exception,
                     $time
                 );
-            }
-
-            if ($childResult !== false) {
-                if (!empty($childResult['output'])) {
-                    $output = $childResult['output'];
-                }
-
-                Facade::forward($childResult['events']);
 
                 assert($test instanceof TestCase);
 
-                $test->setResult($childResult['testResult']);
-                $test->addToAssertionCount($childResult['numAssertions']);
+                Facade::emitter()->testErrored(
+                    TestMethod::fromTestCase($test),
+                    Throwable::from($exception)
+                );
 
-                if (CodeCoverage::isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
-                    CodeCoverage::instance()->merge(
-                        $childResult['codeCoverage']
-                    );
-                }
+                Facade::emitter()->testFinished(
+                    TestMethod::fromTestCase($test),
+                    0
+                );
+            }
+        } catch (ErrorException $e) {
+            restore_error_handler();
+            $childResult = false;
 
-                assert($childResult['result'] instanceof TestResult);
+            $exception = new Exception(trim($stdout), 0, $e);
 
-                $time           = $childResult['result']->time();
-                $notImplemented = $childResult['result']->notImplemented();
-                $risky          = $childResult['result']->risky();
-                $skipped        = $childResult['result']->skipped();
-                $errors         = $childResult['result']->errors();
-                $warnings       = $childResult['result']->warnings();
-                $failures       = $childResult['result']->failures();
+            $result->addError(
+                $test,
+                $exception,
+                $time
+            );
 
-                if (!empty($notImplemented)) {
-                    $result->addFailure(
-                        $test,
-                        $this->getException($notImplemented[0]),
-                        $time
-                    );
-                } elseif (!empty($risky)) {
-                    $result->addFailure(
-                        $test,
-                        $this->getException($risky[0]),
-                        $time
-                    );
-                } elseif (!empty($skipped)) {
-                    $result->addFailure(
-                        $test,
-                        $this->getException($skipped[0]),
-                        $time
-                    );
-                } elseif (!empty($errors)) {
-                    $result->addError(
-                        $test,
-                        $this->getException($errors[0]),
-                        $time
-                    );
-                } elseif (!empty($warnings)) {
-                    $result->addWarning(
-                        $test,
-                        $this->getException($warnings[0]),
-                        $time
-                    );
-                } elseif (!empty($failures)) {
-                    $result->addFailure(
-                        $test,
-                        $this->getException($failures[0]),
-                        $time
-                    );
-                }
+            assert($test instanceof TestCase);
+
+            Facade::emitter()->testErrored(
+                TestMethod::fromTestCase($test),
+                Throwable::from($exception)
+            );
+        }
+
+        if ($childResult !== false) {
+            if (!empty($childResult['output'])) {
+                $output = $childResult['output'];
+            }
+
+            Facade::forward($childResult['events']);
+
+            assert($test instanceof TestCase);
+
+            $test->setResult($childResult['testResult']);
+            $test->addToAssertionCount($childResult['numAssertions']);
+
+            if (CodeCoverage::isActive() && $childResult['codeCoverage'] instanceof \SebastianBergmann\CodeCoverage\CodeCoverage) {
+                CodeCoverage::instance()->merge(
+                    $childResult['codeCoverage']
+                );
+            }
+
+            assert($childResult['result'] instanceof TestResult);
+
+            $time           = $childResult['result']->time();
+            $notImplemented = $childResult['result']->notImplemented();
+            $risky          = $childResult['result']->risky();
+            $skipped        = $childResult['result']->skipped();
+            $errors         = $childResult['result']->errors();
+            $warnings       = $childResult['result']->warnings();
+            $failures       = $childResult['result']->failures();
+
+            if (!empty($notImplemented)) {
+                $result->addFailure(
+                    $test,
+                    $this->getException($notImplemented[0]),
+                    $time
+                );
+            } elseif (!empty($risky)) {
+                $result->addFailure(
+                    $test,
+                    $this->getException($risky[0]),
+                    $time
+                );
+            } elseif (!empty($skipped)) {
+                $result->addFailure(
+                    $test,
+                    $this->getException($skipped[0]),
+                    $time
+                );
+            } elseif (!empty($errors)) {
+                $result->addError(
+                    $test,
+                    $this->getException($errors[0]),
+                    $time
+                );
+            } elseif (!empty($warnings)) {
+                $result->addWarning(
+                    $test,
+                    $this->getException($warnings[0]),
+                    $time
+                );
+            } elseif (!empty($failures)) {
+                $result->addFailure(
+                    $test,
+                    $this->getException($failures[0]),
+                    $time
+                );
             }
         }
 
