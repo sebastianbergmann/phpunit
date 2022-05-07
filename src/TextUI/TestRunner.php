@@ -13,7 +13,6 @@ use const PHP_EOL;
 use const PHP_SAPI;
 use const PHP_VERSION;
 use function array_map;
-use function assert;
 use function extension_loaded;
 use function file_put_contents;
 use function htmlspecialchars;
@@ -619,26 +618,22 @@ final class TestRunner
 
     private function createPrinter(): ResultPrinter
     {
-        $className = VoidPrinter::class;
-
-        if ($this->configuration->outputIsDefault()) {
-            $className = StandardResultPrinter::class;
-        } elseif ($this->configuration->outputIsTestDox()) {
+        if ($this->configuration->outputIsTestDox()) {
             exit('TestDox CLI logging has not been migrated to events yet');
         }
 
-        $object = new $className(
-            $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : 'php://stdout',
-            $this->configuration->displayDetailsOnIncompleteTests(),
-            $this->configuration->displayDetailsOnSkippedTests(),
-            $this->configuration->colors(),
-            $this->configuration->columns(),
-            $this->configuration->reverseDefectList()
-        );
+        if ($this->configuration->outputIsDefault()) {
+            return new StandardResultPrinter(
+                $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : 'php://stdout',
+                $this->configuration->displayDetailsOnIncompleteTests(),
+                $this->configuration->displayDetailsOnSkippedTests(),
+                $this->configuration->colors(),
+                $this->configuration->columns(),
+                $this->configuration->reverseDefectList()
+            );
+        }
 
-        assert($object instanceof ResultPrinter);
-
-        return $object;
+        return new VoidPrinter;
     }
 
     private function codeCoverageGenerationStart(string $format): void
