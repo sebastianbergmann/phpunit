@@ -208,6 +208,7 @@ final class TestRunner
             $textLogger = new StandardResultPrinter(
                 $this->configuration->logfileText(),
                 true,
+                true,
                 false,
                 80,
                 false
