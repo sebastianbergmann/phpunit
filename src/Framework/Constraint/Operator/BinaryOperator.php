@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use function array_map;
 use function count;
 
 /**
@@ -20,21 +19,9 @@ abstract class BinaryOperator extends Operator
     /**
      * @psalm-var list<Constraint>
      */
-    private array $constraints = [];
+    private array $constraints;
 
-    public static function fromConstraints(Constraint ...$constraints): self
-    {
-        $constraint = new static;
-
-        $constraint->constraints = $constraints;
-
-        return $constraint;
-    }
-
-    /**
-     * @psalm-param list<mixed> $constraints
-     */
-    public function setConstraints(array $constraints): void
+    protected function __construct(mixed ...$constraints)
     {
         $this->constraints = array_map(
             function ($constraint): Constraint
@@ -90,7 +77,7 @@ abstract class BinaryOperator extends Operator
     }
 
     /**
-     * Returns the nested constraints.
+     * @psalm-return list<constraint>
      */
     final protected function constraints(): array
     {

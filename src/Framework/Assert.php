@@ -2066,24 +2066,14 @@ abstract class Assert
     /**
      * @throws Exception
      */
-    final public static function logicalAnd(): LogicalAnd
+    final public static function logicalAnd(mixed ...$constraints): LogicalAnd
     {
-        $constraints = func_get_args();
-
-        $constraint = new LogicalAnd;
-        $constraint->setConstraints($constraints);
-
-        return $constraint;
+        return LogicalAnd::fromConstraints(...$constraints);
     }
 
-    final public static function logicalOr(): LogicalOr
+    final public static function logicalOr(mixed ...$constraints): LogicalOr
     {
-        $constraints = func_get_args();
-
-        $constraint = new LogicalOr;
-        $constraint->setConstraints($constraints);
-
-        return $constraint;
+        return LogicalOr::fromConstraints(...$constraints);
     }
 
     final public static function logicalNot(Constraint $constraint): LogicalNot
@@ -2091,14 +2081,9 @@ abstract class Assert
         return new LogicalNot($constraint);
     }
 
-    final public static function logicalXor(): LogicalXor
+    final public static function logicalXor(mixed ...$constraints): LogicalXor
     {
-        $constraints = func_get_args();
-
-        $constraint = new LogicalXor;
-        $constraint->setConstraints($constraints);
-
-        return $constraint;
+        return LogicalXor::fromConstraints(...$constraints);
     }
 
     final public static function anything(): IsAnything

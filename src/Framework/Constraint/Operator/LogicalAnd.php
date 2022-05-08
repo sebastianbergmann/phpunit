@@ -14,6 +14,11 @@ namespace PHPUnit\Framework\Constraint;
  */
 final class LogicalAnd extends BinaryOperator
 {
+    public static function fromConstraints(mixed ...$constraints): self
+    {
+        return new self(...$constraints);
+    }
+
     /**
      * Returns the name of this operator.
      */

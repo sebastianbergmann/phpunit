@@ -60,14 +60,14 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     final public function testOperatorName(): void
     {
         $className  = $this->className();
-        $constraint = new $className;
+        $constraint = $className::fromConstraints();
         $this->assertSame($this->getOperatorName(), $constraint->operator());
     }
 
     final public function testOperatorPrecedence(): void
     {
         $className  = $this->className();
-        $constraint = new $className;
+        $constraint = $className::fromConstraints();
         $this->assertSame($this->getOperatorPrecedence(), $constraint->precedence());
     }
 
@@ -84,11 +84,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             return CountConstraint::fromCount($count);
         }, $counts);
 
-        $className = $this->className();
-
-        $constraint = new $className;
-
-        $constraint->setConstraints($constraints);
+        $className  = $this->className();
+        $constraint = $className::fromConstraints(...$constraints);
 
         $expected = array_sum($counts);
 
@@ -103,11 +100,8 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             CountConstraint::fromCount(8),
         ];
 
-        $className = $this->className();
-
-        $constraint = new $className;
-
-        $constraint->setConstraints($constraints);
+        $className  = $this->className();
+        $constraint = $className::fromConstraints(...$constraints);
 
         $expected = count($constraints);
 
@@ -133,9 +127,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     {
         $className = $this->className();
 
-        $constraint = new $className;
-
-        $constraint->setConstraints(['whatever']);
+        $constraint = $className::fromConstraints('whatever');
 
         $this->assertTrue($constraint->evaluate('whatever', '', true));
 

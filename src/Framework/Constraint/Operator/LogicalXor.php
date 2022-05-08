@@ -17,6 +17,11 @@ use function array_shift;
  */
 final class LogicalXor extends BinaryOperator
 {
+    public static function fromConstraints(mixed ...$constraints): self
+    {
+        return new self(...$constraints);
+    }
+
     /**
      * Returns the name of this operator.
      */
