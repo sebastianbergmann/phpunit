@@ -77,7 +77,7 @@ abstract class BinaryOperator extends Operator
     }
 
     /**
-     * @psalm-return list<constraint>
+     * @psalm-return list<Constraint>
      */
     final protected function constraints(): array
     {
