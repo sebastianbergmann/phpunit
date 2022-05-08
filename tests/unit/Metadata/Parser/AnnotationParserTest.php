@@ -107,25 +107,6 @@ final class AnnotationParserTest extends TestCase
         $this->assertTrue($metadata->asArray()[0]->isDoesNotPerformAssertions());
     }
 
-    public function test_Parses_excludeGlobalVariableFromBackup_annotation_on_class(): void
-    {
-        $metadata = (new AnnotationParser)->forClass(BackupGlobalsTest::class)->isExcludeGlobalVariableFromBackup();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isExcludeGlobalVariableFromBackup());
-        $this->assertSame('foo', $metadata->asArray()[0]->globalVariableName());
-    }
-
-    public function test_Parses_excludeStaticPropertyFromBackup_annotation_on_class(): void
-    {
-        $metadata = (new AnnotationParser)->forClass(BackupStaticPropertiesTest::class)->isExcludeStaticPropertyFromBackup();
-
-        $this->assertCount(1, $metadata);
-        $this->assertTrue($metadata->asArray()[0]->isExcludeStaticPropertyFromBackup());
-        $this->assertSame('className', $metadata->asArray()[0]->className());
-        $this->assertSame('propertyName', $metadata->asArray()[0]->propertyName());
-    }
-
     public function test_Parses_group_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(GroupTest::class)->isGroup();

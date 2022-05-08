@@ -83,29 +83,6 @@ final class AnnotationParser implements Parser
 
                     break;
 
-                case 'excludeGlobalVariableFromBackup':
-                    foreach ($values as $value) {
-                        $result[] = Metadata::excludeGlobalVariableFromBackupOnClass($value);
-                    }
-
-                    break;
-
-                case 'excludeStaticPropertyFromBackup':
-                    foreach ($values as $value) {
-                        $tmp = explode(' ', $value);
-
-                        if (count($tmp) !== 2) {
-                            continue;
-                        }
-
-                        $result[] = Metadata::excludeStaticPropertyFromBackupOnClass(
-                            trim($tmp[0]),
-                            trim($tmp[1])
-                        );
-                    }
-
-                    break;
-
                 case 'group':
                 case 'ticket':
                     foreach ($values as $value) {
