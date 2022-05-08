@@ -78,8 +78,8 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `beStrictAboutTodoAnnotatedTests` attribute on the `<phpunit>` XML configuration element and the `--disallow-todo-tests` option as well as the feature they used to control
 * Removed the `processUncoveredFiles` attribute on the `<coverage>` XML configuration element
 * Removed the `PHPUnit\Framework\TestCase::getMockClass()` method
-* Removed the `PHPUnit\Framework\TestCase::$backupGlobalsExcludeList` property, use the `@excludeGlobalVariableFromBackup variable` annotation or the `#[ExcludeGlobalVariableFromBackup('variable')]` attribute instead for excluding a global variable from the backup/restore of global and super-global variables
-* Removed the `PHPUnit\Framework\TestCase::$backupStaticAttributesExcludeList` property, use the `@excludeStaticPropertyFromBackup className propertyName` annotation or the `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute instead for excluding a static property from the backup/restore of static properties in user-defined classes
+* Removed the `PHPUnit\Framework\TestCase::$backupGlobalsExcludeList` property, use the `#[ExcludeGlobalVariableFromBackup('variable')]` attribute instead for excluding a global variable from the backup/restore of global and super-global variables
+* Removed the `PHPUnit\Framework\TestCase::$backupStaticAttributesExcludeList` property, use the `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute instead for excluding a static property from the backup/restore of static properties in user-defined classes
 * Removed the `PHPUnit\Framework\TestCase::$preserveGlobalState` property, use the `@preserveGlobalState enabled` annotation or the `#[PreserveGlobalState(true)]` attribute instead for enabling the preservation of global state when running tests in isolation
 * Removed the `--debug` option
 * Removed the `--extensions` option
