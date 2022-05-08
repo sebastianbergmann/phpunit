@@ -241,15 +241,15 @@
       <code>ClassHasAttribute</code>
     </DeprecatedClass>
   </file>
-  <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
-    <UnsafeInstantiation occurrences="1">
-      <code>new static</code>
-    </UnsafeInstantiation>
-  </file>
   <file src="src/Framework/Constraint/Operator/LogicalNot.php">
     <MissingThrowsDocblock occurrences="1">
       <code>evaluate</code>
     </MissingThrowsDocblock>
+  </file>
+  <file src="src/Framework/Constraint/Operator/LogicalXor.php">
+    <InvalidArgument occurrences="1">
+      <code>bool</code>
+    </InvalidArgument>
   </file>
   <file src="src/Framework/Constraint/Type/IsInstanceOf.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -544,14 +544,13 @@
     </RedundantCast>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
-    <ArgumentTypeCoercion occurrences="8">
+    <ArgumentTypeCoercion occurrences="7">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$pieces[0]</code>
       <code>$pieces[0]</code>
       <code>explode('::', $value)</code>
-      <code>trim($tmp[0])</code>
       <code>trim($tmp[0])</code>
     </ArgumentTypeCoercion>
   </file>
@@ -1026,15 +1025,13 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <InvalidArgument occurrences="8">
+    <InvalidArgument occurrences="6">
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
       <code>$e</code>
-      <code>80</code>
-      <code>false</code>
     </InvalidArgument>
     <MissingThrowsDocblock occurrences="40">
       <code>bootstrap</code>
@@ -1074,7 +1071,6 @@
       <code>testsUsing</code>
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
-    <TooFewArguments occurrences="1"/>
   </file>
   <file src="src/Util/Error/Handler.php">
     <InvalidArgument occurrences="1"/>
