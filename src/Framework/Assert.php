@@ -18,7 +18,6 @@ use function count;
 use function debug_backtrace;
 use function explode;
 use function file_get_contents;
-use function func_get_args;
 use function implode;
 use function interface_exists;
 use function is_bool;
