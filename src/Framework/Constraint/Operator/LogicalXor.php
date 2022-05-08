@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\Constraint;
 
 use function array_reduce;
 use function array_shift;
+use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -43,6 +44,8 @@ final class LogicalXor extends BinaryOperator
     /**
      * Evaluates the constraint for parameter $other. Returns true if the
      * constraint is met, false otherwise.
+     *
+     * @throws ExpectationFailedException
      */
     public function matches(mixed $other): bool
     {
