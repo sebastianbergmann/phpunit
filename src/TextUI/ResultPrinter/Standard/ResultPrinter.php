@@ -17,8 +17,14 @@ use function str_contains;
 use function str_pad;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Test\Aborted;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
+use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
+use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
+use PHPUnit\Event\Test\PassedWithWarning;
+use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\RiskyTest;
@@ -53,6 +59,36 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private int $numberOfAssertions = 0;
     private ?TestStatus $status     = null;
     private bool $prepared          = false;
+
+    /**
+     * @psalm-var list<Skipped>
+     */
+    private array $skippedTests = [];
+
+    /**
+     * @psalm-var list<Aborted>
+     */
+    private array $incompleteTests = [];
+
+    /**
+     * @psalm-var array<string,list<ConsideredRisky>>
+     */
+    private array $riskyTests = [];
+
+    /**
+     * @psalm-var array<string,list<PassedWithWarning>>
+     */
+    private array $testsWithWarnings = [];
+
+    /**
+     * @psalm-var list<Failed>
+     */
+    private array $failedTests = [];
+
+    /**
+     * @psalm-var list<Errored>
+     */
+    private array $erroredTests = [];
 
     public function __construct(string $out, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colors, int $numberOfColumns, bool $reverse)
     {
@@ -97,8 +133,10 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->maxColumn          = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numberOfTestsWidth);
     }
 
-    public function beforeTestClassMethodErrored(): void
+    public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
     {
+        $this->erroredTests[] = $event;
+
         $this->printProgressForError();
         $this->updateTestStatus(TestStatus::error());
     }
@@ -108,8 +146,10 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->prepared = true;
     }
 
-    public function testSkipped(): void
+    public function testSkipped(Skipped $event): void
     {
+        $this->skippedTests[] = $event;
+
         if (!$this->prepared) {
             $this->printProgressForSkipped();
         } else {
@@ -117,28 +157,46 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
     }
 
-    public function testAborted(): void
+    public function testAborted(Aborted $event): void
     {
+        $this->incompleteTests[] = $event;
+
         $this->updateTestStatus(TestStatus::incomplete());
     }
 
-    public function testConsideredRisky(): void
+    public function testConsideredRisky(ConsideredRisky $event): void
     {
+        if (!isset($this->riskyTests[$event->test()->id()])) {
+            $this->riskyTests[$event->test()->id()] = [];
+        }
+
+        $this->riskyTests[$event->test()->id()][] = $event;
+
         $this->updateTestStatus(TestStatus::risky());
     }
 
-    public function testPassedWithWarning(): void
+    public function testPassedWithWarning(PassedWithWarning $event): void
     {
+        if (!isset($this->testsWithWarnings[$event->test()->id()])) {
+            $this->testsWithWarnings[$event->test()->id()] = [];
+        }
+
+        $this->testsWithWarnings[$event->test()->id()][] = $event;
+
         $this->updateTestStatus(TestStatus::warning());
     }
 
-    public function testFailed(): void
+    public function testFailed(Failed $event): void
     {
+        $this->failedTests[] = $event;
+
         $this->updateTestStatus(TestStatus::failure());
     }
 
     public function testErrored(Errored $event): void
     {
+        $this->erroredTests[] = $event;
+
         /*
          * @todo Eliminate this special case
          */

@@ -19,6 +19,6 @@ final class TestSkippedSubscriber extends Subscriber implements SkippedSubscribe
 {
     public function notify(Skipped $event): void
     {
-        $this->printer()->testSkipped();
+        $this->printer()->testSkipped($event);
     }
 }

@@ -19,6 +19,6 @@ final class BeforeTestClassMethodErroredSubscriber extends Subscriber implements
 {
     public function notify(BeforeFirstTestMethodErrored $event): void
     {
-        $this->printer()->beforeTestClassMethodErrored();
+        $this->printer()->beforeTestClassMethodErrored($event);
     }
 }
