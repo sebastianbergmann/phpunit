@@ -14,7 +14,7 @@ use PHPUnit\Framework\TestResult;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class VoidPrinter implements ResultPrinter
+final class NullPrinter implements ResultPrinter
 {
     public function printResult(TestResult $result): void
     {

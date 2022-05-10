@@ -38,9 +38,9 @@ use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\ResultPrinter\NullPrinter;
 use PHPUnit\TextUI\ResultPrinter\ResultPrinter;
 use PHPUnit\TextUI\ResultPrinter\Standard\ResultPrinter as StandardResultPrinter;
-use PHPUnit\TextUI\ResultPrinter\VoidPrinter;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -634,7 +634,7 @@ final class TestRunner
             );
         }
 
-        return new VoidPrinter;
+        return new NullPrinter;
     }
 
     private function codeCoverageGenerationStart(string $format): void
