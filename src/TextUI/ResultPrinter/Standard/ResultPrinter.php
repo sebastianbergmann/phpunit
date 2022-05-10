@@ -123,7 +123,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
             $this->printSkippedTests($result);
         }
 
-        $this->printFooter($result);
+        $this->printFooter();
     }
 
     public function testRunnerExecutionStarted(ExecutionStarted $event): void
@@ -460,9 +460,9 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
     }
 
-    private function printFooter(TestResult $result): void
+    private function printFooter(): void
     {
-        if (count($result) === 0) {
+        if ($this->numberOfTestsRun === 0) {
             $this->printWithColor(
                 'fg-black, bg-yellow',
                 'No tests executed!'
@@ -471,15 +471,15 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
             return;
         }
 
-        if ($result->wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete()) {
+        if ($this->wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete()) {
             $this->printWithColor(
                 'fg-black, bg-green',
                 sprintf(
                     'OK (%d test%s, %d assertion%s)',
-                    count($result),
-                    (count($result) === 1) ? '' : 's',
+                    $this->numberOfTestsRun,
+                    $this->numberOfTestsRun === 1 ? '' : 's',
                     $this->numberOfAssertions,
-                    ($this->numberOfAssertions === 1) ? '' : 's'
+                    $this->numberOfAssertions === 1 ? '' : 's'
                 )
             );
 
@@ -488,8 +488,8 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
         $color = 'fg-black, bg-yellow';
 
-        if ($result->wasSuccessful()) {
-            if ($this->displayDetailsOnIncompleteTests || $this->displayDetailsOnSkippedTests || !$result->allHarmless()) {
+        if ($this->wasSuccessful()) {
+            if ($this->displayDetailsOnIncompleteTests || $this->displayDetailsOnSkippedTests || !$this->noneRisky()) {
                 $this->print("\n");
             }
 
@@ -500,21 +500,21 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         } else {
             $this->print("\n");
 
-            if ($result->errorCount()) {
+            if (!empty($this->erroredTests)) {
                 $color = 'fg-white, bg-red';
 
                 $this->printWithColor(
                     $color,
                     'ERRORS!'
                 );
-            } elseif ($result->failureCount()) {
+            } elseif (!empty($this->failedTests)) {
                 $color = 'fg-white, bg-red';
 
                 $this->printWithColor(
                     $color,
                     'FAILURES!'
                 );
-            } elseif ($result->warningCount()) {
+            } elseif (!empty($this->testsWithWarnings)) {
                 $this->printWithColor(
                     $color,
                     'WARNINGS!'
@@ -522,14 +522,14 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
             }
         }
 
-        $this->printCountString(count($result), 'Tests', $color, true);
+        $this->printCountString($this->numberOfTestsRun, 'Tests', $color, true);
         $this->printCountString($this->numberOfAssertions, 'Assertions', $color, true);
-        $this->printCountString($result->errorCount(), 'Errors', $color);
-        $this->printCountString($result->failureCount(), 'Failures', $color);
-        $this->printCountString($result->warningCount(), 'Warnings', $color);
-        $this->printCountString($result->skippedCount(), 'Skipped', $color);
-        $this->printCountString($result->notImplementedCount(), 'Incomplete', $color);
-        $this->printCountString($result->riskyCount(), 'Risky', $color);
+        $this->printCountString(count($this->erroredTests), 'Errors', $color);
+        $this->printCountString(count($this->failedTests), 'Failures', $color);
+        $this->printCountString(count($this->testsWithWarnings), 'Warnings', $color);
+        $this->printCountString(count($this->skippedTests), 'Skipped', $color);
+        $this->printCountString(count($this->incompleteTests), 'Incomplete', $color);
+        $this->printCountString(count($this->riskyTests), 'Risky', $color);
         $this->printWithColor($color, '.');
     }
 
@@ -578,5 +578,35 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
 
         return implode(PHP_EOL, $styledLines);
+    }
+
+    private function wasSuccessful(): bool
+    {
+        return $this->wasSuccessfulIgnoringWarnings() && empty($this->testsWithWarnings);
+    }
+
+    private function wasSuccessfulIgnoringWarnings(): bool
+    {
+        return empty($this->erroredTests) && empty($this->failedTests);
+    }
+
+    private function wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete(): bool
+    {
+        return $this->wasSuccessful() && $this->noneRisky() && $this->noneAborted() && $this->noneSkipped();
+    }
+
+    private function noneSkipped(): bool
+    {
+        return empty($this->skippedTests);
+    }
+
+    private function noneAborted(): bool
+    {
+        return empty($this->incompleteTests);
+    }
+
+    private function noneRisky(): bool
+    {
+        return empty($this->riskyTests);
     }
 }
