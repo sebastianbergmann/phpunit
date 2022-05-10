@@ -109,7 +109,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     public function printResult(TestResult $result): void
     {
-        $this->printHeader($result);
+        $this->printHeader();
         $this->printTestsWithErrors($result);
         $this->printTestsWithWarnings($result);
         $this->printTestsWithFailedAssertions($result);
@@ -341,9 +341,9 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
     }
 
-    private function printHeader(TestResult $result): void
+    private function printHeader(): void
     {
-        if (count($result) > 0) {
+        if ($this->numberOfTestsRun > 0) {
             $this->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
         }
     }
