@@ -86,7 +86,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private array $failedTests = [];
 
     /**
-     * @psalm-var list<Errored>
+     * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
      */
     private array $erroredTests = [];
 
