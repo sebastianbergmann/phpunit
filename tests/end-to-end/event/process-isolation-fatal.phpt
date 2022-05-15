@@ -37,4 +37,5 @@ Test Errored (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Call to undefined function PHPUnit\TestFixture\Event\doesNotExist()
 Test Finished (PHPUnit\TestFixture\Event\FatalTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\FatalTest, 1 test)
+Test Runner Execution Finished
 Test Runner Finished

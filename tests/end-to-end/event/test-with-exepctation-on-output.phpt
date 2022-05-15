@@ -46,4 +46,5 @@ Test Failed (PHPUnit\TestFixture\Issue445Test::testNotMatchingOutput)
 Failed asserting that two strings are equal.
 Test Finished (PHPUnit\TestFixture\Issue445Test::testNotMatchingOutput)
 Test Suite Finished (PHPUnit\TestFixture\Issue445Test, 3 tests)
+Test Runner Execution Finished
 Test Runner Finished

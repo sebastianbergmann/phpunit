@@ -33,4 +33,5 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\ExceptionInSetUpTest, 1 test)
 Test Errored (PHPUnit\TestFixture\Event\ExceptionInSetUpTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\ExceptionInSetUpTest, 1 test)
+Test Runner Execution Finished
 Test Runner Finished

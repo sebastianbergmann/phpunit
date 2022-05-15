@@ -36,4 +36,5 @@ This test depends on "PHPUnit\TestFixture\Event\InvalidDependencyTest::doesNotEx
 Test Errored (PHPUnit\TestFixture\Event\InvalidDependencyTest::testTwo)
 This test depends on "DoesNotExist" which does not exist
 Test Suite Finished (PHPUnit\TestFixture\Event\InvalidDependencyTest, 2 tests)
+Test Runner Execution Finished
 Test Runner Finished

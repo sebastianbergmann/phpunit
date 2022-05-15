@@ -228,6 +228,7 @@ final class Facade
             TestRunner\Configured::class,
             TestRunner\EventFacadeSealed::class,
             TestRunner\ExecutionStarted::class,
+            TestRunner\ExecutionFinished::class,
             TestRunner\Finished::class,
             TestSuite\Finished::class,
             TestSuite\Loaded::class,

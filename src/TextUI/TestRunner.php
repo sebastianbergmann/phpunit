@@ -372,6 +372,9 @@ final class TestRunner
         );
 
         $suite->run($result);
+
+        Event\Facade::emitter()->testExecutionFinished();
+
         $this->printer->printResult($result);
 
         if (isset($junitXmlLogger)) {

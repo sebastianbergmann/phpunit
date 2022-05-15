@@ -34,4 +34,5 @@ Test Suite Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest, 1 test
 Test Skipped (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest::testOne)
 PHP >= 100 is required.
 Test Suite Finished (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest, 1 test)
+Test Runner Execution Finished
 Test Runner Finished

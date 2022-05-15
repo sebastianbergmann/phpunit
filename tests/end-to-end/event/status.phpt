@@ -92,4 +92,5 @@ Test Passed With Warning (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMess
 warning with custom message
 Test Finished (PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage)
 Test Suite Finished (PHPUnit\SelfTest\Basic\StatusTest, 15 tests)
+Test Runner Execution Finished
 Test Runner Finished

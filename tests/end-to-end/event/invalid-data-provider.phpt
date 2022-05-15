@@ -40,4 +40,5 @@ Data set #0 is invalid
 Test Finished (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne, 1 test)
 Test Suite Finished (PHPUnit\TestFixture\Event\InvalidDataProviderTest, 1 test)
+Test Runner Execution Finished
 Test Runner Finished

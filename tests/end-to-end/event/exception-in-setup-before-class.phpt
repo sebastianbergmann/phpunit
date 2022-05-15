@@ -36,4 +36,5 @@ Before First Test Method Errored (PHPUnit\TestFixture\Event\ExceptionInSetUpBefo
 Before First Test Method Finished:
 - PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest::setUpBeforeClass
 
+Test Runner Execution Finished
 Test Runner Finished

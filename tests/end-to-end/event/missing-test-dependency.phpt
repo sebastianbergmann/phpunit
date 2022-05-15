@@ -39,4 +39,5 @@ Test Finished (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
 Test Skipped (PHPUnit\TestFixture\Event\MissingDependencyTest::testTwo)
 This test depends on "PHPUnit\TestFixture\Event\MissingDependencyTest::testOne" to pass
 Test Suite Finished (PHPUnit\TestFixture\Event\MissingDependencyTest, 2 tests)
+Test Runner Execution Finished
 Test Runner Finished

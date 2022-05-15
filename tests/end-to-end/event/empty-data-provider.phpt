@@ -40,4 +40,5 @@ Empty data set provided by data provider
 Test Finished (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
 Test Suite Finished (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase, 1 test)
 Test Suite Finished (PHPUnit\TestFixture\Event\EmptyDataProviderTest, 1 test)
+Test Runner Execution Finished
 Test Runner Finished
