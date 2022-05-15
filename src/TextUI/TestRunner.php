@@ -367,6 +367,10 @@ final class TestRunner
             $this->write(PHP_EOL);
         }
 
+        Event\Facade::emitter()->testExecutionStarted(
+            Event\TestSuite\TestSuite::fromTestSuite($suite)
+        );
+
         $suite->run($result);
         $this->printer->printResult($result);
 

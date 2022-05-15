@@ -27,6 +27,8 @@ interface Emitter
 
     public function testRunnerConfigured(Configuration $configuration): void;
 
+    public function testExecutionStarted(TestSuite $testSuite): void;
+
     public function testRunnerFinished(): void;
 
     public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void;
