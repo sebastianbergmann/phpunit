@@ -10,7 +10,6 @@
 namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(Loaded::class)]
@@ -19,22 +18,9 @@ final class LoadedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
+        $testSuite     = $this->testSuiteValueObject();
 
-        $info = new TestSuiteWithName(
-            'foo',
-            9001,
-            [],
-            [],
-            [],
-            'bar',
-            TestCollection::fromArray([]),
-            [],
-        );
-
-        $event = new Loaded(
-            $telemetryInfo,
-            $info
-        );
+        $event = new Loaded($telemetryInfo, $testSuite);
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
     }

@@ -10,7 +10,6 @@
 namespace PHPUnit\Event\TestSuite;
 
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(Finished::class)]
@@ -19,17 +18,7 @@ final class FinishedTest extends AbstractEventTestCase
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-
-        $info = new TestSuiteWithName(
-            'foo',
-            9001,
-            [],
-            [],
-            [],
-            'bar',
-            TestCollection::fromArray([]),
-            [],
-        );
+        $testSuite     = $this->testSuiteValueObject();
 
         $result = new Result(
             5,
@@ -45,11 +34,11 @@ final class FinishedTest extends AbstractEventTestCase
 
         $event = new Finished(
             $telemetryInfo,
-            $info,
+            $testSuite,
             $result,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
-        $this->assertSame($info, $event->testSuite());
+        $this->assertSame($testSuite, $event->testSuite());
     }
 }

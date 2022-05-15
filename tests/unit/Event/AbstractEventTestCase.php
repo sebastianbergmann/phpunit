@@ -10,8 +10,10 @@
 namespace PHPUnit\Event;
 
 use function hrtime;
+use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 
@@ -41,6 +43,20 @@ abstract class AbstractEventTestCase extends TestCase
             0,
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
+        );
+    }
+
+    final protected function testSuiteValueObject(): TestSuiteWithName
+    {
+        return new TestSuiteWithName(
+            'foo',
+            9001,
+            [],
+            [],
+            [],
+            'bar',
+            TestCollection::fromArray([]),
+            [],
         );
     }
 }
