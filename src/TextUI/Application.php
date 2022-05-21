@@ -228,21 +228,19 @@ final class Application
 
         (new PhpHandler)->handle($this->xmlConfiguration->php());
 
-        try {
-            $configuration = Registry::init(
-                $arguments,
-                $this->xmlConfiguration
-            );
+        $configuration = Registry::init(
+            $arguments,
+            $this->xmlConfiguration
+        );
 
+        Event\Facade::emitter()->testRunnerConfigured($configuration);
+
+        try {
             if ($configuration->hasBootstrap()) {
                 $this->handleBootstrap($configuration->bootstrap());
             }
 
             $testSuite = (new TestSuiteBuilder)->build($arguments, $this->xmlConfiguration);
-
-            if ($configuration->hasCoverageReport() || $arguments->hasWarmCoverageCache()) {
-                CodeCoverageFilterRegistry::init($arguments, $this->xmlConfiguration);
-            }
         } catch (Exception $e) {
             $this->printVersionString();
 
@@ -251,7 +249,9 @@ final class Application
             exit(self::EXCEPTION_EXIT);
         }
 
-        Event\Facade::emitter()->testRunnerConfigured($configuration);
+        if ($configuration->hasCoverageReport() || $arguments->hasWarmCoverageCache()) {
+            CodeCoverageFilterRegistry::init($arguments, $this->xmlConfiguration);
+        }
 
         if ($arguments->hasWarmCoverageCache() && $arguments->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand);
