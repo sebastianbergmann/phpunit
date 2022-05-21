@@ -25,7 +25,7 @@ print file_get_contents($traceFile);
 unlink($traceFile);
 --EXPECTF--
 Test Runner Started (PHPUnit %s using %s)
-Test Runner Configuration Combined
+Test Runner Configured
 Test Suite Loaded (2 tests)
 Test Suite Sorted
 Event Facade Sealed

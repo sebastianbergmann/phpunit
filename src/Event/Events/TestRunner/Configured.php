@@ -39,6 +39,6 @@ final class Configured implements Event
 
     public function asString(): string
     {
-        return 'Test Runner Configuration Combined';
+        return 'Test Runner Configured';
     }
 }
