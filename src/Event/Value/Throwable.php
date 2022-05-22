@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Code;
 
+use const PHP_EOL;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\ExceptionWrapper;
 use PHPUnit\Framework\TestFailure;
@@ -56,6 +57,15 @@ final class Throwable
         $this->description = $description;
         $this->stackTrace  = $stackTrace;
         $this->previous    = $previous;
+    }
+
+    public function asString(): string
+    {
+        if (empty($this->stackTrace())) {
+            return $this->description();
+        }
+
+        return $this->description() . PHP_EOL . $this->stackTrace();
     }
 
     /**
