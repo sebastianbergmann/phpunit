@@ -49,9 +49,6 @@
         "sebastian/type": "^4.0",
         "sebastian/version": "^4.0"
     },
-    "require-dev": {
-        "ext-PDO": "*"
-    },
     "config": {
         "platform": {
             "php": "8.1.0"
