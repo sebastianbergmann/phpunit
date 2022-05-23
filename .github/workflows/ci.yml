@@ -43,7 +43,7 @@ jobs:
         uses: shivammathur/setup-php@v2
         with:
           php-version: 8.1
-          extensions: none, ctype, curl, date, dom, json, libxml, mbstring, pdo_sqlite, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
+          extensions: none, ctype, curl, date, dom, json, libxml, mbstring, phar, simplexml, soap, tokenizer, xml, xmlwriter, zlib
           coverage: none
           tools: none
 
@@ -62,7 +62,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      PHP_EXTENSIONS: none, curl, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
       PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
@@ -142,7 +142,7 @@ jobs:
     runs-on: ${{ matrix.os }}
 
     env:
-      PHP_EXTENSIONS: none, curl, dom, json, libxml, mbstring, openssl, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, curl, dom, json, libxml, mbstring, openssl, phar, soap, tokenizer, xml, xmlwriter
       PHP_INI_VALUES: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
 
     strategy:
@@ -230,7 +230,7 @@ jobs:
         with:
           php-version: 8.1
           coverage: pcov
-          extensions: none, curl, dom, json, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+          extensions: none, curl, dom, json, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
           ini-values: assert.exception=1, zend.assertions=1, error_reporting=-1, log_errors_max_len=0, display_errors=On
           tools: none
 
@@ -254,7 +254,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PHP_EXTENSIONS: none, dom, json, fileinfo, iconv, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, dom, json, fileinfo, iconv, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
       PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
 
     steps:
@@ -298,7 +298,7 @@ jobs:
     runs-on: ubuntu-latest
 
     env:
-      PHP_EXTENSIONS: none, curl, dom, json, fileinfo, iconv, libxml, mbstring, pdo_sqlite, phar, soap, tokenizer, xml, xmlwriter
+      PHP_EXTENSIONS: none, curl, dom, json, fileinfo, iconv, libxml, mbstring, phar, soap, tokenizer, xml, xmlwriter
       PHP_INI_VALUES: assert.exception=1, phar.readonly=0, zend.assertions=1
 
     strategy:
