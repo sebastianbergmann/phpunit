@@ -30,6 +30,24 @@ jobs:
       - name: Run friendsofphp/php-cs-fixer
         run: ./tools/php-cs-fixer fix --dry-run --show-progress=dots --using-cache=no --verbose
 
+  supported-php-version-matrix:
+    name: Supported PHP Version Matrix
+
+    runs-on: ubuntu-latest
+
+    outputs:
+      php-version: ${{ steps.supported-php-version-matrix.outputs.version }}
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Determine supported PHP version matrix
+        id: supported-php-version-matrix
+        uses: WyriHaximus/github-action-composer-php-versions-in-range@v1
+        with:
+          upcomingReleases: true
+
   type-checker:
     name: Type Checker
 
@@ -59,6 +77,9 @@ jobs:
   unit-tests:
     name: Unit Tests
 
+    needs:
+      - supported-php-version-matrix
+
     runs-on: ${{ matrix.os }}
 
     env:
@@ -72,13 +93,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
 
-        php-version:
-          - "7.2"
-          - "7.3"
-          - "7.4"
-          - "8.0"
-          - "8.1"
-          - "8.2"
+        php-version: ${{ fromJson(needs.supported-php-version-matrix.outputs.php-version) }}
 
         compiler:
           - default
@@ -138,6 +153,7 @@ jobs:
     name: End-to-End Tests
 
     needs:
+      - supported-php-version-matrix
       - unit-tests
 
     runs-on: ${{ matrix.os }}
@@ -153,13 +169,7 @@ jobs:
           - ubuntu-latest
           - windows-latest
 
-        php-version:
-          - "7.2"
-          - "7.3"
-          - "7.4"
-          - "8.0"
-          - "8.1"
-          - "8.2"
+        php-version: ${{ fromJson(needs.supported-php-version-matrix.outputs.php-version) }}
 
         compiler:
           - default
@@ -296,6 +306,7 @@ jobs:
 
     needs:
       - build-phar
+      - supported-php-version-matrix
 
     runs-on: ubuntu-latest
 
@@ -306,10 +317,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version:
-          - "7.2"
-          - "7.3"
-          - "7.4"
+        php-version: ${{ fromJson(needs.supported-php-version-matrix.outputs.php-version) }}
 
         coverage:
           - pcov
@@ -361,10 +369,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        php-version:
-          - "8.0"
-          - "8.1"
-          - "8.2"
+        php-version: ${{ fromJson(needs.supported-php-version-matrix.outputs.php-version) }}
 
     steps:
       - name: Checkout
