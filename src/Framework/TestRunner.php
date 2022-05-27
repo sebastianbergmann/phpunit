@@ -106,7 +106,7 @@ final class TestRunner
 
         try {
             if ($this->canTimeLimitBeEnforced() &&
-                $this->shouldTimeLimitBeEnforced($test, $result)) {
+                $this->shouldTimeLimitBeEnforced($test)) {
                 $risky = $this->runTestWithTimeout($test, $result);
             } else {
                 $test->runBare();
@@ -437,7 +437,7 @@ final class TestRunner
         return $this->timeLimitCanBeEnforced;
     }
 
-    private function shouldTimeLimitBeEnforced(TestCase $test, TestResult $result): bool
+    private function shouldTimeLimitBeEnforced(TestCase $test): bool
     {
         if ($test instanceof ErrorTestCase) {
             return false;
