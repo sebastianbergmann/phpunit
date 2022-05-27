@@ -13,7 +13,6 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Loaded as TestSuiteLoaded;
-use PHPUnit\Event\TestSuite\Result;
 use PHPUnit\Event\TestSuite\Sorted as TestSuiteSorted;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
@@ -642,13 +641,12 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testSuiteFinished(TestSuite $testSuite, Result $result): void
+    public function testSuiteFinished(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
             new TestSuiteFinished(
                 $this->telemetryInfo(),
                 $testSuite,
-                $result,
             )
         );
     }

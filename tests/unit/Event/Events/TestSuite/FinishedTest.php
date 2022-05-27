@@ -20,22 +20,9 @@ final class FinishedTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $testSuite     = $this->testSuiteValueObject();
 
-        $result = new Result(
-            5,
-            new FailureCollection,
-            new FailureCollection,
-            new FailureCollection,
-            new FailureCollection,
-            new FailureCollection,
-            new FailureCollection,
-            [],
-            []
-        );
-
         $event = new Finished(
             $telemetryInfo,
             $testSuite,
-            $result,
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());

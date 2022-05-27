@@ -1596,9 +1596,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestSuiteFinishedDispatchesTestSuiteFinishedEvent(): void
     {
-        $name   = 'foo';
-        $result = new Framework\TestResult;
-
         $subscriber = new class extends RecordingSubscriber implements TestSuiteFinishedSubscriber
         {
             public function notify(TestSuiteFinished $event): void
@@ -1627,7 +1624,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $emitter->testSuiteFinished(
             TestSuite::fromTestSuite($testSuite),
-            (new TestResultMapper)->map($result),
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1638,10 +1634,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame(1, $event->testSuite()->count());
         $this->assertSame('foo', $event->testSuite()->name());
-
-        $mappedResult = (new TestResultMapper)->map($result);
-
-        $this->assertEquals($mappedResult, $event->result());
     }
 
     public function testTestSuiteSortedDispatchesTestSuiteSortedEvent(): void

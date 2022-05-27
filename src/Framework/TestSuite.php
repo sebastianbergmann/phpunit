@@ -27,7 +27,6 @@ use function str_starts_with;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
-use PHPUnit\Event\TestResultMapper;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
@@ -549,10 +548,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         $result->endTestSuite($this);
 
-        $emitter->testSuiteFinished(
-            $testSuiteValueObjectForEvents,
-            (new TestResultMapper)->map($result)
-        );
+        $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
     }
 
     public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void
