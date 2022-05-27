@@ -419,6 +419,9 @@
     </RedundantCondition>
   </file>
   <file src="src/Framework/TestRunner.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$unintentionallyCoveredCodeError</code>
+    </ArgumentTypeCoercion>
     <InvalidScalarArgument occurrences="1">
       <code>$var</code>
     </InvalidScalarArgument>
@@ -1078,9 +1081,9 @@
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
+      <code>$riskyException</code>
       <code>$this-&gt;getException($failures[0])</code>
       <code>$this-&gt;getException($notImplemented[0])</code>
-      <code>$this-&gt;getException($risky[0])</code>
       <code>$this-&gt;getException($skipped[0])</code>
       <code>$this-&gt;getException($warnings[0])</code>
     </ArgumentTypeCoercion>

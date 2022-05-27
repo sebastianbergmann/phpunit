@@ -1809,6 +1809,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $snapshotAfter,
                     $rte->getMessage()
                 );
+
+                Event\Facade::emitter()->testConsideredRisky(
+                    $this->valueObjectForEvents(),
+                    Event\Code\Throwable::from($rte)
+                );
             }
         }
 
