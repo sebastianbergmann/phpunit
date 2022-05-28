@@ -23,7 +23,6 @@ use function sprintf;
 use function trim;
 use PHPUnit\Event;
 use PHPUnit\Event\Facade;
-use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\ExtensionHandler;
 use PHPUnit\Runner\Version;
@@ -43,6 +42,7 @@ use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
+use PHPUnit\TextUI\TestResult\TestResult;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
@@ -376,29 +376,29 @@ final class Application
 
         $configuration = Registry::get();
 
-        if ($configuration->failOnEmptyTestSuite() && count($result) === 0) {
+        if ($configuration->failOnEmptyTestSuite() && $result->numberOfTests() === 0) {
             $returnCode = self::FAILURE_EXIT;
         }
 
         if ($result->wasSuccessfulIgnoringWarnings()) {
-            if ($configuration->failOnRisky() && !$result->allHarmless()) {
+            if ($configuration->failOnRisky() && !$result->hasRiskyTests()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnWarning() && $result->warningCount() > 0) {
+            if ($configuration->failOnWarning() && $result->hasTestsWithWarnings()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnIncomplete() && $result->notImplementedCount() > 0) {
+            if ($configuration->failOnIncomplete() && $result->hasIncompleteTests()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnSkipped() && $result->skippedCount() > 0) {
+            if ($configuration->failOnSkipped() && $result->hasSkippedTests()) {
                 $returnCode = self::FAILURE_EXIT;
             }
         }
 
-        if ($result->errorCount() > 0) {
+        if ($result->hasErroredTests()) {
             $returnCode = self::EXCEPTION_EXIT;
         }
 

@@ -22,7 +22,6 @@ use function range;
 use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
@@ -41,6 +40,8 @@ use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\ResultPrinter\NullPrinter;
 use PHPUnit\TextUI\ResultPrinter\ResultPrinter;
 use PHPUnit\TextUI\ResultPrinter\Standard\ResultPrinter as StandardResultPrinter;
+use PHPUnit\TextUI\TestResult\Collector as TestResultCollector;
+use PHPUnit\TextUI\TestResult\TestResult;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -154,9 +155,11 @@ final class TestRunner
             unset($_suite);
         }
 
-        $result = new TestResult;
+        $result = new \PHPUnit\Framework\TestResult;
 
         $this->printer = $this->createPrinter();
+
+        $resultCollector = new TestResultCollector;
 
         if ($this->configuration->hasLogEventsText()) {
             if (is_file($this->configuration->logEventsText())) {
@@ -375,6 +378,8 @@ final class TestRunner
 
         Event\Facade::emitter()->testExecutionFinished();
 
+        $testResult = $resultCollector->result();
+
         $this->printer->printResult($result);
 
         if (isset($junitXmlLogger)) {
@@ -530,7 +535,7 @@ final class TestRunner
             }
         }
 
-        return $result;
+        return $testResult;
     }
 
     private function write(string $buffer): void

@@ -1037,7 +1037,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="40">
+    <MissingThrowsDocblock occurrences="41">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1067,6 +1067,7 @@
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
       <code>new TeamCityLogger('php://stdout')</code>
+      <code>new TestResultCollector</code>
       <code>pharExtensionDirectory</code>
       <code>run</code>
       <code>stop</code>
