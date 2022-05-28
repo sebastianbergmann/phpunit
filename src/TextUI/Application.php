@@ -381,7 +381,7 @@ final class Application
         }
 
         if ($result->wasSuccessfulIgnoringWarnings()) {
-            if ($configuration->failOnRisky() && !$result->hasRiskyTests()) {
+            if ($configuration->failOnRisky() && $result->hasRiskyTests()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
