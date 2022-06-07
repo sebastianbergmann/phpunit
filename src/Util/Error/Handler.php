@@ -31,35 +31,11 @@ final class Handler
 {
     private static ?self $instance = null;
     private bool $enabled          = false;
+    private bool $ignoreWarnings   = false;
 
-    public static function activate(): void
+    public static function instance(): self
     {
-        self::instance()->enable();
-    }
-
-    public static function deactivate(): void
-    {
-        self::instance()->enable();
-    }
-
-    public static function invokeIgnoringWarnings(callable $callable): mixed
-    {
-        set_error_handler(
-            static function ($errorNumber)
-            {
-                if ($errorNumber === E_WARNING) {
-                    return null;
-                }
-
-                return false;
-            }
-        );
-
-        $result = $callable();
-
-        restore_error_handler();
-
-        return $result;
+        return self::$instance ?? self::$instance = new self;
     }
 
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
@@ -96,6 +72,10 @@ final class Handler
                 throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
 
             case E_WARNING:
+                if ($this->ignoreWarnings) {
+                    return true;
+                }
+
                 Event\Facade::emitter()->testTriggeredPhpWarning(
                     $this->testValueObjectForEvents(),
                     $errorString,
@@ -181,6 +161,23 @@ final class Handler
         }
 
         restore_error_handler();
+
+        $this->enabled = false;
+    }
+
+    public function isDisabled(): bool
+    {
+        return !$this->enabled;
+    }
+
+    public function ignoreWarnings(): void
+    {
+        $this->ignoreWarnings = true;
+    }
+
+    public function doNotIgnoreWarnings(): void
+    {
+        $this->ignoreWarnings = false;
     }
 
     /**
@@ -201,10 +198,5 @@ final class Handler
         }
 
         throw new Exception('Cannot find TestCase object on call stack');
-    }
-
-    private static function instance(): self
-    {
-        return self::$instance ?? self::$instance = new self;
     }
 }

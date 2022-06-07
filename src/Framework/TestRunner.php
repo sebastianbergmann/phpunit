@@ -78,7 +78,7 @@ final class TestRunner
 
         $result->startTest($test);
 
-        ErrorHandler::activate();
+        ErrorHandler::instance()->enable();
 
         $collectCodeCoverage = CodeCoverage::isActive() &&
                                !$test instanceof ErrorTestCase &&
@@ -208,7 +208,7 @@ final class TestRunner
             }
         }
 
-        ErrorHandler::deactivate();
+        ErrorHandler::instance()->disable();
 
         if ($error && isset($e)) {
             $result->addError($test, $e, $time);

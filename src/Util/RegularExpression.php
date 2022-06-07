@@ -10,7 +10,7 @@
 namespace PHPUnit\Util;
 
 use function preg_match;
-use PHPUnit\Util\Error\Handler;
+use PHPUnit\Util\Error\Handler as ErrorHandler;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -19,11 +19,24 @@ final class RegularExpression
 {
     public static function safeMatch(string $pattern, string $subject): false|int
     {
-        return Handler::invokeIgnoringWarnings(
-            static function () use ($pattern, $subject)
-            {
-                return preg_match($pattern, $subject);
-            }
-        );
+        $errorHandlerWasDisabled = false;
+
+        if (ErrorHandler::instance()->isDisabled()) {
+            ErrorHandler::instance()->enable();
+
+            $errorHandlerWasDisabled = true;
+        }
+
+        ErrorHandler::instance()->ignoreWarnings();
+
+        $result = preg_match($pattern, $subject);
+
+        ErrorHandler::instance()->doNotIgnoreWarnings();
+
+        if ($errorHandlerWasDisabled) {
+            ErrorHandler::instance()->disable();
+        }
+
+        return $result;
     }
 }
