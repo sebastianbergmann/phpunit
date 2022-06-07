@@ -29,7 +29,18 @@ use PHPUnit\Util\Exception;
  */
 final class Handler
 {
-    private bool $registered = false;
+    private static ?self $instance = null;
+    private bool $enabled          = false;
+
+    public static function activate(): void
+    {
+        self::instance()->enable();
+    }
+
+    public static function deactivate(): void
+    {
+        self::instance()->enable();
+    }
 
     public static function invokeIgnoringWarnings(callable $callable): mixed
     {
@@ -129,9 +140,9 @@ final class Handler
         }
     }
 
-    public function register(): void
+    public function enable(): void
     {
-        if ($this->registered) {
+        if ($this->enabled) {
             return;
         }
 
@@ -143,12 +154,12 @@ final class Handler
             return;
         }
 
-        $this->registered = true;
+        $this->enabled = true;
     }
 
-    public function unregister(): void
+    public function disable(): void
     {
-        if (!$this->registered) {
+        if (!$this->enabled) {
             return;
         }
 
@@ -173,5 +184,10 @@ final class Handler
         }
 
         throw new Exception('Cannot find TestCase object on call stack');
+    }
+
+    private static function instance(): self
+    {
+        return self::$instance ?? self::$instance = new self;
     }
 }

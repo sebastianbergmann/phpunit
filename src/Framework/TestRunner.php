@@ -26,7 +26,7 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\Util\Error\Handler;
+use PHPUnit\Util\Error\Handler as ErrorHandler;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use ReflectionClass;
@@ -78,9 +78,7 @@ final class TestRunner
 
         $result->startTest($test);
 
-        $errorHandler = new Handler;
-
-        $errorHandler->register();
+        ErrorHandler::activate();
 
         $collectCodeCoverage = CodeCoverage::isActive() &&
                                !$test instanceof ErrorTestCase &&
@@ -210,9 +208,7 @@ final class TestRunner
             }
         }
 
-        $errorHandler->unregister();
-
-        unset($errorHandler);
+        ErrorHandler::deactivate();
 
         if ($error && isset($e)) {
             $result->addError($test, $e, $time);
