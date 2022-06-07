@@ -14,7 +14,8 @@ $finder = PhpCsFixer\Finder::create()
     ->in(__DIR__ . '/tests/_files')
     ->in(__DIR__ . '/tests/end-to-end')
     ->in(__DIR__ . '/tests/unit')
-    ->notName('*.phpt');
+    ->notName('*.phpt')
+    ->notName('DeprecatedPhpFeatureTest.php');
 
 $config = new PhpCsFixer\Config;
 $config->setFinder($finder)
