@@ -76,9 +76,22 @@ final class Handler
 
         switch ($errorNumber) {
             case E_NOTICE:
-            case E_USER_NOTICE:
             case E_STRICT:
-                Event\Facade::emitter()->testUsedDeprecatedPhpFeature(
+                Event\Facade::emitter()->testTriggeredPhpNotice(
+                    $this->testValueObjectForEvents(),
+                    $errorString,
+                    $errorFile,
+                    $errorLine
+                );
+
+                if (!$this->convertNoticesToExceptions) {
+                    return false;
+                }
+
+                throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
+
+            case E_USER_NOTICE:
+                Event\Facade::emitter()->testTriggeredNotice(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
@@ -92,7 +105,27 @@ final class Handler
                 throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
 
             case E_WARNING:
+                Event\Facade::emitter()->testTriggeredPhpWarning(
+                    $this->testValueObjectForEvents(),
+                    $errorString,
+                    $errorFile,
+                    $errorLine
+                );
+
+                if (!$this->convertWarningsToExceptions) {
+                    return false;
+                }
+
+                throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+
             case E_USER_WARNING:
+                Event\Facade::emitter()->testTriggeredWarning(
+                    $this->testValueObjectForEvents(),
+                    $errorString,
+                    $errorFile,
+                    $errorLine
+                );
+
                 if (!$this->convertWarningsToExceptions) {
                     return false;
                 }
