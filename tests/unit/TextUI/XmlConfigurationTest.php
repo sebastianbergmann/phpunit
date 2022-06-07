@@ -464,10 +464,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(80, $phpunit->columns());
         $this->assertSame('never', $phpunit->colors());
         $this->assertFalse($phpunit->stderr());
-        $this->assertTrue($phpunit->convertDeprecationsToExceptions());
-        $this->assertTrue($phpunit->convertErrorsToExceptions());
-        $this->assertTrue($phpunit->convertNoticesToExceptions());
-        $this->assertTrue($phpunit->convertWarningsToExceptions());
         $this->assertFalse($phpunit->requireCoverageMetadata());
         $this->assertFalse($phpunit->stopOnFailure());
         $this->assertFalse($phpunit->stopOnWarning());

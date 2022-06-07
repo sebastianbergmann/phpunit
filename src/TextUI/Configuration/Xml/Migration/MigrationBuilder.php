@@ -54,6 +54,7 @@ final class MigrationBuilder
             RemoveVerboseAttribute::class,
             RenameForceCoversAnnotationAttribute::class,
             RenameBeStrictAboutCoversAnnotationAttribute::class,
+            RemoveConversionToExceptionsAttributes::class,
         ],
     ];
 

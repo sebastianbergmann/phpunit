@@ -78,19 +78,9 @@ final class TestRunner
 
         $result->startTest($test);
 
-        if ($this->configuration->convertDeprecationsToExceptions() ||
-            $this->configuration->convertErrorsToExceptions() ||
-            $this->configuration->convertNoticesToExceptions() ||
-            $this->configuration->convertWarningsToExceptions()) {
-            $errorHandler = new Handler(
-                $this->configuration->convertDeprecationsToExceptions(),
-                $this->configuration->convertErrorsToExceptions(),
-                $this->configuration->convertNoticesToExceptions(),
-                $this->configuration->convertWarningsToExceptions()
-            );
+        $errorHandler = new Handler(true, true, true, true);
 
-            $errorHandler->register();
-        }
+        $errorHandler->register();
 
         $collectCodeCoverage = CodeCoverage::isActive() &&
                                !$test instanceof ErrorTestCase &&
@@ -220,11 +210,9 @@ final class TestRunner
             }
         }
 
-        if (isset($errorHandler)) {
-            $errorHandler->unregister();
+        $errorHandler->unregister();
 
-            unset($errorHandler);
-        }
+        unset($errorHandler);
 
         if ($error && isset($e)) {
             $result->addError($test, $e, $time);

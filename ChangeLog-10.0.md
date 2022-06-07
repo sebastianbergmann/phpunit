@@ -76,6 +76,10 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `groups` attribute on the `<test>` element in the TestDox XML report
 * Removed the `beStrictAboutResourceUsageDuringSmallTests` attribute on the `<phpunit>` XML configuration element and the `--disallow-resource-usage` option as well as the feature they used to control
 * Removed the `beStrictAboutTodoAnnotatedTests` attribute on the `<phpunit>` XML configuration element and the `--disallow-todo-tests` option as well as the feature they used to control
+* Removed the `convertDeprecationsToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
+* Removed the `convertErrorsToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
+* Removed the `convertNoticesToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
+* Removed the `convertWarningsToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
 * Removed the `processUncoveredFiles` attribute on the `<coverage>` XML configuration element
 * Removed the `PHPUnit\Framework\TestCase::getMockClass()` method
 * Removed the `PHPUnit\Framework\TestCase::$backupGlobalsExcludeList` property, use the `#[ExcludeGlobalVariableFromBackup('variable')]` attribute instead for excluding a global variable from the backup/restore of global and super-global variables

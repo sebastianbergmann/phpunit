@@ -297,11 +297,6 @@ final class Merger
             $beStrictAboutChangesToGlobalState = $xmlConfiguration->phpunit()->beStrictAboutChangesToGlobalState();
         }
 
-        $convertDeprecationsToExceptions = $xmlConfiguration->phpunit()->convertDeprecationsToExceptions();
-        $convertErrorsToExceptions       = $xmlConfiguration->phpunit()->convertErrorsToExceptions();
-        $convertNoticesToExceptions      = $xmlConfiguration->phpunit()->convertNoticesToExceptions();
-        $convertWarningsToExceptions     = $xmlConfiguration->phpunit()->convertWarningsToExceptions();
-
         if ($cliConfiguration->hasProcessIsolation()) {
             $processIsolation = $cliConfiguration->processIsolation();
         } else {
@@ -638,10 +633,6 @@ final class Merger
             $backupStaticProperties,
             $beStrictAboutChangesToGlobalState,
             $colors,
-            $convertDeprecationsToExceptions,
-            $convertErrorsToExceptions,
-            $convertNoticesToExceptions,
-            $convertWarningsToExceptions,
             $processIsolation,
             $stopOnDefect,
             $stopOnError,

@@ -62,10 +62,6 @@ final class Configuration
     private bool $backupStaticProperties;
     private bool $beStrictAboutChangesToGlobalState;
     private bool $colors;
-    private bool $convertDeprecationsToExceptions;
-    private bool $convertErrorsToExceptions;
-    private bool $convertNoticesToExceptions;
-    private bool $convertWarningsToExceptions;
     private bool $processIsolation;
     private bool $stopOnDefect;
     private bool $stopOnError;
@@ -120,7 +116,7 @@ final class Configuration
      */
     private array $warnings;
 
-    public function __construct(?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, string $coverageHtmlColorSuccessLow, string $coverageHtmlColorSuccessMedium, string $coverageHtmlColorSuccessHigh, string $coverageHtmlColorWarning, string $coverageHtmlColorDanger, ?string $coverageHtmlCustomCssFile, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $reverseDefectList, bool $requireCoverageMetadata, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $logEventsText, ?string $logEventsVerboseText, bool $defaultOutput, bool $teamCityOutput, bool $testDoxOutput, int $repeat, ?array $testsCovering, ?array $testsUsing, ?string $filter, ?array $groups, ?array $excludeGroups, array $testdoxGroups, array $testdoxExcludeGroups, ?string $includePath, int $randomOrderSeed, bool $includeUncoveredFiles, ?string $xmlValidationErrors, array $warnings)
+    public function __construct(?string $configurationFile, ?string $bootstrap, bool $cacheResult, ?string $cacheDirectory, ?string $coverageCacheDirectory, string $testResultCacheFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4j, int $coverageCrap4jThreshold, ?string $coverageHtml, int $coverageHtmlLowUpperBound, int $coverageHtmlHighLowerBound, string $coverageHtmlColorSuccessLow, string $coverageHtmlColorSuccessMedium, string $coverageHtmlColorSuccessHigh, string $coverageHtmlColorWarning, string $coverageHtmlColorDanger, ?string $coverageHtmlCustomCssFile, ?string $coveragePhp, ?string $coverageText, bool $coverageTextShowUncoveredFiles, bool $coverageTextShowOnlySummary, ?string $coverageXml, bool $pathCoverage, bool $ignoreDeprecatedCodeUnitsFromCodeCoverage, bool $disableCodeCoverageIgnore, bool $failOnEmptyTestSuite, bool $failOnIncomplete, bool $failOnRisky, bool $failOnSkipped, bool $failOnWarning, bool $outputToStandardErrorStream, int|string $columns, bool $tooFewColumnsRequested, bool $loadPharExtensions, ?string $pharExtensionDirectory, bool $backupGlobals, bool $backupStaticProperties, bool $beStrictAboutChangesToGlobalState, bool $colors, bool $processIsolation, bool $stopOnDefect, bool $stopOnError, bool $stopOnFailure, bool $stopOnWarning, bool $stopOnIncomplete, bool $stopOnRisky, bool $stopOnSkipped, bool $enforceTimeLimit, int $defaultTimeLimit, int $timeoutForSmallTests, int $timeoutForMediumTests, int $timeoutForLargeTests, bool $reportUselessTests, bool $strictCoverage, bool $disallowTestOutput, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $reverseDefectList, bool $requireCoverageMetadata, bool $registerMockObjectsFromTestArgumentsRecursively, bool $noInteraction, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies, ?string $logfileText, ?string $logfileTeamcity, ?string $logfileJunit, ?string $logfileTestdoxHtml, ?string $logfileTestdoxText, ?string $logfileTestdoxXml, ?string $logEventsText, ?string $logEventsVerboseText, bool $defaultOutput, bool $teamCityOutput, bool $testDoxOutput, int $repeat, ?array $testsCovering, ?array $testsUsing, ?string $filter, ?array $groups, ?array $excludeGroups, array $testdoxGroups, array $testdoxExcludeGroups, ?string $includePath, int $randomOrderSeed, bool $includeUncoveredFiles, ?string $xmlValidationErrors, array $warnings)
     {
         $this->configurationFile                               = $configurationFile;
         $this->bootstrap                                       = $bootstrap;
@@ -163,10 +159,6 @@ final class Configuration
         $this->backupStaticProperties                          = $backupStaticProperties;
         $this->beStrictAboutChangesToGlobalState               = $beStrictAboutChangesToGlobalState;
         $this->colors                                          = $colors;
-        $this->convertDeprecationsToExceptions                 = $convertDeprecationsToExceptions;
-        $this->convertErrorsToExceptions                       = $convertErrorsToExceptions;
-        $this->convertNoticesToExceptions                      = $convertNoticesToExceptions;
-        $this->convertWarningsToExceptions                     = $convertWarningsToExceptions;
         $this->processIsolation                                = $processIsolation;
         $this->stopOnDefect                                    = $stopOnDefect;
         $this->stopOnError                                     = $stopOnError;
@@ -626,26 +618,6 @@ final class Configuration
     public function colors(): bool
     {
         return $this->colors;
-    }
-
-    public function convertDeprecationsToExceptions(): bool
-    {
-        return $this->convertDeprecationsToExceptions;
-    }
-
-    public function convertErrorsToExceptions(): bool
-    {
-        return $this->convertErrorsToExceptions;
-    }
-
-    public function convertNoticesToExceptions(): bool
-    {
-        return $this->convertNoticesToExceptions;
-    }
-
-    public function convertWarningsToExceptions(): bool
-    {
-        return $this->convertWarningsToExceptions;
     }
 
     public function processIsolation(): bool
