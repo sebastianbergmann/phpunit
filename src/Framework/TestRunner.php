@@ -78,7 +78,7 @@ final class TestRunner
 
         $result->startTest($test);
 
-        $errorHandler = new Handler(true, true, true, true);
+        $errorHandler = new Handler;
 
         $errorHandler->register();
 

@@ -29,10 +29,6 @@ use PHPUnit\Util\Exception;
  */
 final class Handler
 {
-    private bool $convertDeprecationsToExceptions;
-    private bool $convertErrorsToExceptions;
-    private bool $convertNoticesToExceptions;
-    private bool $convertWarningsToExceptions;
     private bool $registered = false;
 
     public static function invokeIgnoringWarnings(callable $callable): mixed
@@ -53,14 +49,6 @@ final class Handler
         restore_error_handler();
 
         return $result;
-    }
-
-    public function __construct(bool $convertDeprecationsToExceptions, bool $convertErrorsToExceptions, bool $convertNoticesToExceptions, bool $convertWarningsToExceptions)
-    {
-        $this->convertDeprecationsToExceptions = $convertDeprecationsToExceptions;
-        $this->convertErrorsToExceptions       = $convertErrorsToExceptions;
-        $this->convertNoticesToExceptions      = $convertNoticesToExceptions;
-        $this->convertWarningsToExceptions     = $convertWarningsToExceptions;
     }
 
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
@@ -84,10 +72,6 @@ final class Handler
                     $errorLine
                 );
 
-                if (!$this->convertNoticesToExceptions) {
-                    return false;
-                }
-
                 throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
 
             case E_USER_NOTICE:
@@ -97,10 +81,6 @@ final class Handler
                     $errorFile,
                     $errorLine
                 );
-
-                if (!$this->convertNoticesToExceptions) {
-                    return false;
-                }
 
                 throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
 
@@ -112,10 +92,6 @@ final class Handler
                     $errorLine
                 );
 
-                if (!$this->convertWarningsToExceptions) {
-                    return false;
-                }
-
                 throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
 
             case E_USER_WARNING:
@@ -125,10 +101,6 @@ final class Handler
                     $errorFile,
                     $errorLine
                 );
-
-                if (!$this->convertWarningsToExceptions) {
-                    return false;
-                }
 
                 throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
 
@@ -140,10 +112,6 @@ final class Handler
                     $errorLine
                 );
 
-                if (!$this->convertDeprecationsToExceptions) {
-                    return false;
-                }
-
                 throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
 
             case E_USER_DEPRECATED:
@@ -154,17 +122,9 @@ final class Handler
                     $errorLine
                 );
 
-                if (!$this->convertDeprecationsToExceptions) {
-                    return false;
-                }
-
                 throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
 
             default:
-                if (!$this->convertErrorsToExceptions) {
-                    return false;
-                }
-
                 throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
         }
     }
