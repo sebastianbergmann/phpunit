@@ -500,6 +500,69 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\NoticeTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+                $file,
+                $line
+            )
+        );
+    }
+
+    public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PhpNoticeTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+                $file,
+                $line
+            )
+        );
+    }
+
+    public function testTriggeredWarning(Code\Test $test, string $message, string $file, int $line): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\WarningTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+                $file,
+                $line
+            )
+        );
+    }
+
+    public function testTriggeredPhpWarning(Code\Test $test, string $message, string $file, int $line): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PhpWarningTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+                $file,
+                $line
+            )
+        );
+    }
+
+    public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PhpunitWarningTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+            )
+        );
+    }
+
     /**
      * @psalm-param class-string $className
      */

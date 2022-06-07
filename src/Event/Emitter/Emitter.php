@@ -140,6 +140,16 @@ interface Emitter
 
     public function testUsedDeprecatedFeature(Code\Test $test, string $message, string $file, int $line): void;
 
+    public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line): void;
+
+    public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line): void;
+
+    public function testTriggeredWarning(Code\Test $test, string $message, string $file, int $line): void;
+
+    public function testTriggeredPhpWarning(Code\Test $test, string $message, string $file, int $line): void;
+
+    public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void;
+
     /**
      * @psalm-param class-string $className
      */

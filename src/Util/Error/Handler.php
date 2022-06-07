@@ -78,6 +78,13 @@ final class Handler
             case E_NOTICE:
             case E_USER_NOTICE:
             case E_STRICT:
+                Event\Facade::emitter()->testUsedDeprecatedPhpFeature(
+                    $this->testValueObjectForEvents(),
+                    $errorString,
+                    $errorFile,
+                    $errorLine
+                );
+
                 if (!$this->convertNoticesToExceptions) {
                     return false;
                 }
