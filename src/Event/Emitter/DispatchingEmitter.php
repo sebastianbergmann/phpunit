@@ -500,6 +500,32 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testTriggeredError(Code\Test $test, string $message, string $file, int $line): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\ErrorTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+                $file,
+                $line
+            )
+        );
+    }
+
+    public function testTriggeredPhpError(Code\Test $test, string $message, string $file, int $line): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PhpErrorTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+                $file,
+                $line
+            )
+        );
+    }
+
     public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
