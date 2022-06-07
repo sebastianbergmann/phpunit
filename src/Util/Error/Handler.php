@@ -29,15 +29,26 @@ use PHPUnit\Util\Exception;
  */
 final class Handler
 {
-    private static ?self $instance = null;
-    private bool $enabled          = false;
-    private bool $ignoreWarnings   = false;
+    private static ?self $instance                = null;
+    private bool $enabled                         = false;
+    private bool $convertDeprecationsToExceptions = false;
+    private bool $convertErrorsToExceptions       = false;
+    private bool $convertNoticesToExceptions      = false;
+    private bool $convertWarningsToExceptions     = false;
+    private bool $ignoreWarnings                  = false;
 
     public static function instance(): self
     {
         return self::$instance ?? self::$instance = new self;
     }
 
+    /**
+     * @throws Deprecation
+     * @throws Error
+     * @throws Exception
+     * @throws Notice
+     * @throws Warning
+     */
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
         /*
@@ -59,7 +70,11 @@ final class Handler
                     $errorLine
                 );
 
-                throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
+                if ($this->convertNoticesToExceptions) {
+                    throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
+                }
+
+                return true;
 
             case E_USER_NOTICE:
                 Event\Facade::emitter()->testTriggeredNotice(
@@ -69,7 +84,11 @@ final class Handler
                     $errorLine
                 );
 
-                throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
+                if ($this->convertNoticesToExceptions) {
+                    throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
+                }
+
+                break;
 
             case E_WARNING:
                 if ($this->ignoreWarnings) {
@@ -83,7 +102,11 @@ final class Handler
                     $errorLine
                 );
 
-                throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+                if ($this->convertWarningsToExceptions) {
+                    throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+                }
+
+                break;
 
             case E_USER_WARNING:
                 Event\Facade::emitter()->testTriggeredWarning(
@@ -93,7 +116,11 @@ final class Handler
                     $errorLine
                 );
 
-                throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+                if ($this->convertWarningsToExceptions) {
+                    throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+                }
+
+                break;
 
             case E_DEPRECATED:
                 Event\Facade::emitter()->testUsedDeprecatedPhpFeature(
@@ -103,7 +130,11 @@ final class Handler
                     $errorLine
                 );
 
-                throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
+                if ($this->convertDeprecationsToExceptions) {
+                    throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
+                }
+
+                break;
 
             case E_USER_DEPRECATED:
                 Event\Facade::emitter()->testUsedDeprecatedFeature(
@@ -113,7 +144,11 @@ final class Handler
                     $errorLine
                 );
 
-                throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
+                if ($this->convertDeprecationsToExceptions) {
+                    throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
+                }
+
+                break;
 
             case E_USER_ERROR:
                 Event\Facade::emitter()->testTriggeredError(
@@ -123,7 +158,11 @@ final class Handler
                     $errorLine
                 );
 
-                throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
+                if ($this->convertErrorsToExceptions) {
+                    throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
+                }
+
+                break;
 
             default:
                 Event\Facade::emitter()->testTriggeredPhpError(
@@ -133,8 +172,12 @@ final class Handler
                     $errorLine
                 );
 
-                throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
+                if ($this->convertErrorsToExceptions) {
+                    throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
+                }
         }
+
+        return true;
     }
 
     public function enable(): void
@@ -168,6 +211,46 @@ final class Handler
     public function isDisabled(): bool
     {
         return !$this->enabled;
+    }
+
+    public function convertDeprecationsToExceptions(): void
+    {
+        $this->convertDeprecationsToExceptions = true;
+    }
+
+    public function doNotConvertDeprecationsToExceptions(): void
+    {
+        $this->convertDeprecationsToExceptions = false;
+    }
+
+    public function convertErrorsToExceptions(): void
+    {
+        $this->convertErrorsToExceptions = true;
+    }
+
+    public function doNotConvertErrorsToExceptions(): void
+    {
+        $this->convertErrorsToExceptions = false;
+    }
+
+    public function convertNoticesToExceptions(): void
+    {
+        $this->convertNoticesToExceptions = true;
+    }
+
+    public function doNotConvertNoticesToExceptions(): void
+    {
+        $this->convertNoticesToExceptions = false;
+    }
+
+    public function convertWarningsToExceptions(): void
+    {
+        $this->convertWarningsToExceptions = true;
+    }
+
+    public function doNotConvertWarningsToExceptions(): void
+    {
+        $this->convertWarningsToExceptions = false;
     }
 
     public function ignoreWarnings(): void

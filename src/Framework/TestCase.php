@@ -86,6 +86,7 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Util\Error\Deprecation;
 use PHPUnit\Util\Error\Error;
+use PHPUnit\Util\Error\Handler as ErrorHandler;
 use PHPUnit\Util\Error\Notice;
 use PHPUnit\Util\Error\Warning as WarningError;
 use PHPUnit\Util\Exception as UtilException;
@@ -434,61 +435,85 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectDeprecation(): void
     {
+        ErrorHandler::instance()->convertDeprecationsToExceptions();
+
         $this->expectedException = Deprecation::class;
     }
 
     final public function expectDeprecationMessage(string $message): void
     {
+        ErrorHandler::instance()->convertDeprecationsToExceptions();
+
         $this->expectExceptionMessage($message);
     }
 
     final public function expectDeprecationMessageMatches(string $regularExpression): void
     {
+        ErrorHandler::instance()->convertDeprecationsToExceptions();
+
         $this->expectExceptionMessageMatches($regularExpression);
     }
 
     final public function expectNotice(): void
     {
+        ErrorHandler::instance()->convertNoticesToExceptions();
+
         $this->expectedException = Notice::class;
     }
 
     final public function expectNoticeMessage(string $message): void
     {
+        ErrorHandler::instance()->convertNoticesToExceptions();
+
         $this->expectExceptionMessage($message);
     }
 
     final public function expectNoticeMessageMatches(string $regularExpression): void
     {
+        ErrorHandler::instance()->convertNoticesToExceptions();
+
         $this->expectExceptionMessageMatches($regularExpression);
     }
 
     final public function expectWarning(): void
     {
+        ErrorHandler::instance()->convertWarningsToExceptions();
+
         $this->expectedException = WarningError::class;
     }
 
     final public function expectWarningMessage(string $message): void
     {
+        ErrorHandler::instance()->convertWarningsToExceptions();
+
         $this->expectExceptionMessage($message);
     }
 
     final public function expectWarningMessageMatches(string $regularExpression): void
     {
+        ErrorHandler::instance()->convertWarningsToExceptions();
+
         $this->expectExceptionMessageMatches($regularExpression);
     }
 
     final public function expectError(): void
     {
+        ErrorHandler::instance()->convertErrorsToExceptions();
+
         $this->expectedException = Error::class;
     }
 
     final public function expectErrorMessage(string $message): void
     {
+        ErrorHandler::instance()->convertErrorsToExceptions();
+
         $this->expectExceptionMessage($message);
     }
 
     final public function expectErrorMessageMatches(string $regularExpression): void
     {
+        ErrorHandler::instance()->convertErrorsToExceptions();
+
         $this->expectExceptionMessageMatches($regularExpression);
     }
 
@@ -813,6 +838,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->status = TestStatus::error($_e->getMessage());
             }
         }
+
+        ErrorHandler::instance()->doNotConvertDeprecationsToExceptions();
+        ErrorHandler::instance()->doNotConvertErrorsToExceptions();
+        ErrorHandler::instance()->doNotConvertNoticesToExceptions();
+        ErrorHandler::instance()->doNotConvertWarningsToExceptions();
 
         clearstatcache();
 

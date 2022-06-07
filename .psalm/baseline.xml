@@ -1084,9 +1084,6 @@
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Util/Error/Handler.php">
-    <InvalidArgument occurrences="1"/>
-  </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
       <code>$riskyException</code>
