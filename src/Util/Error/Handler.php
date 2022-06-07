@@ -135,7 +135,24 @@ final class Handler
 
                 throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
 
+            case E_USER_ERROR:
+                Event\Facade::emitter()->testTriggeredError(
+                    $this->testValueObjectForEvents(),
+                    $errorString,
+                    $errorFile,
+                    $errorLine
+                );
+
+                throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
+
             default:
+                Event\Facade::emitter()->testTriggeredPhpError(
+                    $this->testValueObjectForEvents(),
+                    $errorString,
+                    $errorFile,
+                    $errorLine
+                );
+
                 throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
         }
     }
