@@ -23,10 +23,12 @@ abstract class TestStatus
             0       => self::success(),
             1       => self::skipped(),
             2       => self::incomplete(),
-            3       => self::risky(),
-            4       => self::warning(),
-            5       => self::failure(),
-            6       => self::error(),
+            3       => self::notice(),
+            4       => self::deprecation(),
+            5       => self::risky(),
+            6       => self::warning(),
+            7       => self::failure(),
+            8       => self::error(),
             default => self::unknown(),
         };
     }
@@ -49,6 +51,16 @@ abstract class TestStatus
     public static function incomplete(string $message = ''): self
     {
         return new Incomplete($message);
+    }
+
+    public static function notice(string $message = ''): self
+    {
+        return new Notice($message);
+    }
+
+    public static function deprecation(string $message = ''): self
+    {
+        return new Deprecation($message);
     }
 
     public static function failure(string $message = ''): self
@@ -112,6 +124,22 @@ abstract class TestStatus
      * @psalm-assert-if-true Incomplete $this
      */
     public function isIncomplete(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true Notice $this
+     */
+    public function isNotice(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @psalm-assert-if-true Deprecation $this
+     */
+    public function isDeprecation(): bool
     {
         return false;
     }

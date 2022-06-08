@@ -13,23 +13,23 @@ namespace PHPUnit\Framework\TestStatus;
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  * @psalm-immutable
  */
-final class Error extends Known
+final class Notice extends Known
 {
     /**
-     * @psalm-assert-if-true Error $this
+     * @psalm-assert-if-true Notice $this
      */
-    public function isError(): bool
+    public function isNotice(): bool
     {
         return true;
     }
 
     public function asInt(): int
     {
-        return 8;
+        return 3;
     }
 
     public function asString(): string
     {
-        return 'error';
+        return 'notice';
     }
 }
