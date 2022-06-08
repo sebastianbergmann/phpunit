@@ -12,28 +12,25 @@ namespace Issue3739;
 use function unlink;
 use PHPUnit\Framework\TestCase;
 
-class Issue3739
-{
-    public function unlinkFileThatDoesNotExistWithErrorSuppression(): bool
-    {
-        return @unlink(__DIR__ . '/DOES_NOT_EXIST');
-    }
-
-    public function unlinkFileThatDoesNotExistWithoutErrorSuppression(): bool
-    {
-        return unlink(__DIR__ . '/DOES_NOT_EXIST');
-    }
-}
-
 final class Issue3739Test extends TestCase
 {
     public function testWithErrorSuppression(): void
     {
-        $this->assertFalse((new Issue3739)->unlinkFileThatDoesNotExistWithErrorSuppression());
+        $this->assertFalse($this->unlinkFileThatDoesNotExistWithErrorSuppression());
     }
 
     public function testWithoutErrorSuppression(): void
     {
-        $this->assertFalse((new Issue3739)->unlinkFileThatDoesNotExistWithoutErrorSuppression());
+        $this->assertFalse($this->unlinkFileThatDoesNotExistWithoutErrorSuppression());
+    }
+
+    private function unlinkFileThatDoesNotExistWithErrorSuppression(): bool
+    {
+        return @unlink(__DIR__ . '/DOES_NOT_EXIST');
+    }
+
+    private function unlinkFileThatDoesNotExistWithoutErrorSuppression(): bool
+    {
+        return unlink(__DIR__ . '/DOES_NOT_EXIST');
     }
 }
