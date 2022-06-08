@@ -1021,8 +1021,7 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/ResultPrinter/Standard/ResultPrinter.php">
-    <MissingThrowsDocblock occurrences="3">
-      <code>parent::__construct($out)</code>
+    <MissingThrowsDocblock occurrences="2">
       <code>registerSubscribers</code>
       <code>stop</code>
     </MissingThrowsDocblock>
@@ -1073,7 +1072,6 @@
       <code>logfileTeamcity</code>
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
-      <code>new TeamCityLogger('php://stdout')</code>
       <code>new TestResultCollector</code>
       <code>pharExtensionDirectory</code>
       <code>run</code>
@@ -1083,6 +1081,9 @@
       <code>testsUsing</code>
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
+    <PossiblyNullReference occurrences="1">
+      <code>print</code>
+    </PossiblyNullReference>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <ArgumentTypeCoercion occurrences="5">
@@ -1119,7 +1120,12 @@
       <code>[]</code>
     </TypeDoesNotContainNull>
   </file>
-  <file src="src/Util/Printer.php">
+  <file src="src/Util/Printer/DefaultPrinter.php">
+    <MissingThrowsDocblock occurrences="3">
+      <code>new self($out)</code>
+      <code>new self('php://stderr')</code>
+      <code>new self('php://stdout')</code>
+    </MissingThrowsDocblock>
     <PossiblyInvalidArgument occurrences="2">
       <code>$this-&gt;stream</code>
       <code>$this-&gt;stream</code>

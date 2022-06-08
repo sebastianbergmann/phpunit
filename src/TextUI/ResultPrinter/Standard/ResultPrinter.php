@@ -42,8 +42,9 @@ use SebastianBergmann\Timer\Timer;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ResultPrinter extends Printer implements ResultPrinterInterface
+final class ResultPrinter implements ResultPrinterInterface
 {
+    private Printer $printer;
     private bool $colors;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
@@ -90,9 +91,9 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
      */
     private array $erroredTests = [];
 
-    public function __construct(string $out, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colors, int $numberOfColumns, bool $reverse)
+    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colors, int $numberOfColumns, bool $reverse)
     {
-        parent::__construct($out);
+        $this->printer = $printer;
 
         $this->displayDetailsOnIncompleteTests = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests    = $displayDetailsOnSkippedTests;
@@ -241,6 +242,11 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         $this->prepared = false;
     }
 
+    public function flush(): void
+    {
+        $this->printer->flush();
+    }
+
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
@@ -319,17 +325,17 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     private function printProgress(string $progress): void
     {
-        $this->print($progress);
+        $this->printer->print($progress);
 
         $this->column++;
         $this->numberOfTestsRun++;
 
         if ($this->column === $this->maxColumn || $this->numberOfTestsRun === $this->numberOfTests) {
             if ($this->numberOfTestsRun === $this->numberOfTests) {
-                $this->print(str_repeat(' ', $this->maxColumn - $this->column));
+                $this->printer->print(str_repeat(' ', $this->maxColumn - $this->column));
             }
 
-            $this->print(
+            $this->printer->print(
                 sprintf(
                     ' %' . $this->numberOfTestsWidth . 'd / %' .
                     $this->numberOfTestsWidth . 'd (%3s%%)',
@@ -341,7 +347,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
             if ($this->column === $this->maxColumn) {
                 $this->column = 0;
-                $this->print("\n");
+                $this->printer->print("\n");
             }
         }
     }
@@ -349,7 +355,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     private function printHeader(): void
     {
         if ($this->numberOfTestsRun > 0) {
-            $this->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
+            $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
         }
     }
 
@@ -392,10 +398,10 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
         }
 
         if ($this->defectListPrinted) {
-            $this->print("\n--\n\n");
+            $this->printer->print("\n--\n\n");
         }
 
-        $this->print(
+        $this->printer->print(
             sprintf(
                 "There %s %d %s%s:\n",
                 ($count === 1) ? 'was' : 'were',
@@ -426,7 +432,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     private function printDefectHeader(TestFailure $defect, int $count): void
     {
-        $this->print(
+        $this->printer->print(
             sprintf(
                 "\n%d) %s\n",
                 $count,
@@ -439,7 +445,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
     {
         $e = $defect->thrownException();
 
-        $this->print((string) $e);
+        $this->printer->print((string) $e);
 
         if ($defect->thrownException() instanceof RiskyTest) {
             $test = $defect->failedTest();
@@ -449,7 +455,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
             /** @noinspection PhpUnhandledExceptionInspection */
             $reflector = new ReflectionMethod($test::class, $test->getName(false));
 
-            $this->print(
+            $this->printer->print(
                 sprintf(
                     '%s%s:%d%s',
                     PHP_EOL,
@@ -460,7 +466,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
             );
         } else {
             while ($e = $e->getPrevious()) {
-                $this->print("\nCaused by\n" . $e);
+                $this->printer->print("\nCaused by\n" . $e);
             }
         }
     }
@@ -495,7 +501,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
         if ($this->wasSuccessful()) {
             if ($this->displayDetailsOnIncompleteTests || $this->displayDetailsOnSkippedTests || !$this->noneRisky()) {
-                $this->print("\n");
+                $this->printer->print("\n");
             }
 
             $this->printWithColor(
@@ -503,7 +509,7 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
                 'OK, but incomplete, skipped, or risky tests!'
             );
         } else {
-            $this->print("\n");
+            $this->printer->print("\n");
 
             if (!empty($this->erroredTests)) {
                 $color = 'fg-white, bg-red';
@@ -560,10 +566,10 @@ final class ResultPrinter extends Printer implements ResultPrinterInterface
 
     private function printWithColor(string $color, string $buffer, bool $lf = true): void
     {
-        $this->print($this->colorizeTextBox($color, $buffer));
+        $this->printer->print($this->colorizeTextBox($color, $buffer));
 
         if ($lf) {
-            $this->print(PHP_EOL);
+            $this->printer->print(PHP_EOL);
         }
     }
 

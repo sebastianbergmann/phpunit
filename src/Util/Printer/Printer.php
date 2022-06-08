@@ -7,14 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ResultPrinter;
-
-use PHPUnit\Framework\TestResult;
+namespace PHPUnit\Util;
 
 /**
  * @internal This interface is not covered by the backward compatibility promise for PHPUnit
  */
-interface ResultPrinter
+interface Printer
 {
-    public function printResult(TestResult $result): void;
+    public function print(string $buffer): void;
+
+    public function flush(): void;
 }

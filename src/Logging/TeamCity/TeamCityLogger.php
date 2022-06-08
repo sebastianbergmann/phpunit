@@ -42,8 +42,9 @@ use PHPUnit\Util\Printer;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TeamCityLogger extends Printer
+final class TeamCityLogger
 {
+    private Printer $printer;
     private bool $isSummaryTestCountPrinted = false;
     private ?HRTime $time                   = null;
     private ?int $flowId;
@@ -53,9 +54,9 @@ final class TeamCityLogger extends Printer
      * @throws Exception
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(string $out)
+    public function __construct(Printer $printer)
     {
-        parent::__construct($out);
+        $this->printer = $printer;
 
         $this->registerSubscribers();
         $this->setFlowId();
@@ -224,7 +225,7 @@ final class TeamCityLogger extends Printer
         }
 
         if (!empty($event->throwable()->message())) {
-            $this->print($event->throwable()->message() . "\n");
+            $this->printer->print($event->throwable()->message() . "\n");
         }
     }
 
@@ -258,6 +259,11 @@ final class TeamCityLogger extends Printer
         $this->time = null;
     }
 
+    public function flush(): void
+    {
+        $this->printer->flush();
+    }
+
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
@@ -285,7 +291,7 @@ final class TeamCityLogger extends Printer
 
     private function writeMessage(string $eventName, array $parameters = []): void
     {
-        $this->print(
+        $this->printer->print(
             sprintf(
                 "\n##teamcity[%s",
                 $eventName
@@ -297,7 +303,7 @@ final class TeamCityLogger extends Printer
         }
 
         foreach ($parameters as $key => $value) {
-            $this->print(
+            $this->printer->print(
                 sprintf(
                     " %s='%s'",
                     $key,
@@ -306,7 +312,7 @@ final class TeamCityLogger extends Printer
             );
         }
 
-        $this->print("]\n");
+        $this->printer->print("]\n");
     }
 
     /**

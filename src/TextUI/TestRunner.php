@@ -38,10 +38,10 @@ use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\ResultPrinter\NullPrinter;
-use PHPUnit\TextUI\ResultPrinter\ResultPrinter;
 use PHPUnit\TextUI\ResultPrinter\Standard\ResultPrinter as StandardResultPrinter;
 use PHPUnit\TextUI\TestResult\Collector as TestResultCollector;
 use PHPUnit\TextUI\TestResult\TestResult;
+use PHPUnit\Util\DefaultPrinter;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -66,9 +66,9 @@ use SebastianBergmann\Timer\Timer;
 final class TestRunner
 {
     private Configuration $configuration;
-    private ?ResultPrinter $printer = null;
-    private bool $messagePrinted    = false;
-    private ?Timer $timer           = null;
+    private ?Printer $printer    = null;
+    private bool $messagePrinted = false;
+    private ?Timer $timer        = null;
 
     public function __construct()
     {
@@ -157,7 +157,29 @@ final class TestRunner
 
         $result = new \PHPUnit\Framework\TestResult;
 
-        $this->printer = $this->createPrinter();
+        if ($this->configuration->outputIsTestDox()) {
+            exit('TestDox CLI logging has not been migrated to events yet');
+        }
+
+        if ($this->configuration->outputIsDefault()) {
+            if ($this->configuration->outputToStandardErrorStream()) {
+                $this->printer = DefaultPrinter::standardError();
+            } else {
+                $this->printer = DefaultPrinter::standardOutput();
+            }
+
+            $resultPrinter = new StandardResultPrinter(
+                $this->printer,
+                $this->configuration->displayDetailsOnIncompleteTests(),
+                $this->configuration->displayDetailsOnSkippedTests(),
+                $this->configuration->colors(),
+                $this->configuration->columns(),
+                $this->configuration->reverseDefectList()
+            );
+        } else {
+            $this->printer = new \PHPUnit\Util\NullPrinter;
+            $resultPrinter = new NullPrinter;
+        }
 
         $resultCollector = new TestResultCollector;
 
@@ -195,12 +217,16 @@ final class TestRunner
 
         if ($this->configuration->hasLogfileTeamcity()) {
             $teamCityLogger = new TeamCityLogger(
-                $this->configuration->logfileTeamcity()
+                DefaultPrinter::from(
+                    $this->configuration->logfileTeamcity()
+                )
             );
         }
 
         if ($this->configuration->outputIsTeamCity()) {
-            $teamCityOutput = new TeamCityLogger('php://stdout');
+            $teamCityOutput = new TeamCityLogger(
+                DefaultPrinter::standardOutput()
+            );
         }
 
         Event\Facade::seal();
@@ -209,7 +235,7 @@ final class TestRunner
 
         if ($this->configuration->hasLogfileText()) {
             $textLogger = new StandardResultPrinter(
-                $this->configuration->logfileText(),
+                DefaultPrinter::from($this->configuration->logfileText()),
                 true,
                 true,
                 false,
@@ -380,7 +406,7 @@ final class TestRunner
 
         $testResult = $resultCollector->result();
 
-        $this->printer->printResult($result);
+        $resultPrinter->printResult($result);
 
         if (isset($junitXmlLogger)) {
             file_put_contents(
@@ -505,7 +531,7 @@ final class TestRunner
                 if ($this->configuration->coverageText() === 'php://stdout') {
                     $outputStream = $this->printer;
                 } else {
-                    $outputStream = new Printer($this->configuration->coverageText());
+                    $outputStream = DefaultPrinter::from($this->configuration->coverageText());
                 }
 
                 $processor = new TextReport(
@@ -544,11 +570,7 @@ final class TestRunner
             $buffer = htmlspecialchars($buffer);
         }
 
-        if ($this->printer !== null) {
-            $this->printer->print($buffer);
-        } else {
-            print $buffer;
-        }
+        $this->printer->print($buffer);
     }
 
     private function processSuiteFilters(TestSuite $suite): void
@@ -627,26 +649,6 @@ final class TestRunner
         );
 
         $this->messagePrinted = true;
-    }
-
-    private function createPrinter(): ResultPrinter
-    {
-        if ($this->configuration->outputIsTestDox()) {
-            exit('TestDox CLI logging has not been migrated to events yet');
-        }
-
-        if ($this->configuration->outputIsDefault()) {
-            return new StandardResultPrinter(
-                $this->configuration->outputToStandardErrorStream() ? 'php://stderr' : 'php://stdout',
-                $this->configuration->displayDetailsOnIncompleteTests(),
-                $this->configuration->displayDetailsOnSkippedTests(),
-                $this->configuration->colors(),
-                $this->configuration->columns(),
-                $this->configuration->reverseDefectList()
-            );
-        }
-
-        return new NullPrinter;
     }
 
     private function codeCoverageGenerationStart(string $format): void

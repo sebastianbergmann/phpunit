@@ -19,8 +19,4 @@ final class NullPrinter implements ResultPrinter
     public function printResult(TestResult $result): void
     {
     }
-
-    public function print(string $buffer): void
-    {
-    }
 }

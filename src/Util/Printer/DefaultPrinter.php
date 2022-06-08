@@ -24,7 +24,7 @@ use function str_starts_with;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class Printer
+final class DefaultPrinter implements Printer
 {
     /**
      * @psalm-var closed-resource|resource
@@ -33,10 +33,25 @@ class Printer
     private bool $isPhpStream;
     private bool $isOpen;
 
+    public static function from(string $out): self
+    {
+        return new self($out);
+    }
+
+    public static function standardOutput(): self
+    {
+        return new self('php://stdout');
+    }
+
+    public static function standardError(): self
+    {
+        return new self('php://stderr');
+    }
+
     /**
      * @throws Exception
      */
-    public function __construct(string $out)
+    private function __construct(string $out)
     {
         if (str_starts_with($out, 'socket://')) {
             $tmp = explode(':', str_replace('socket://', '', $out));
@@ -71,6 +86,13 @@ class Printer
         $this->isOpen = true;
     }
 
+    public function print(string $buffer): void
+    {
+        assert($this->isOpen);
+
+        fwrite($this->stream, $buffer);
+    }
+
     public function flush(): void
     {
         if ($this->isOpen && $this->isPhpStream) {
@@ -78,12 +100,5 @@ class Printer
 
             $this->isOpen = false;
         }
-    }
-
-    public function print(string $buffer): void
-    {
-        assert($this->isOpen);
-
-        fwrite($this->stream, $buffer);
     }
 }
