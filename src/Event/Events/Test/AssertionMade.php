@@ -70,17 +70,15 @@ final class AssertionMade implements Event
             );
         }
 
-        if (!$this->hasFailed) {
-            return sprintf(
-                'Assertion Succeeded (Constraint: %s, Value: %s%s)',
-                $this->constraint->toString(),
-                $this->valueAsString(),
-                $message
-            );
+        $status = 'Succeeded';
+
+        if ($this->hasFailed) {
+            $status = 'Failed';
         }
 
         return sprintf(
-            'Assertion Failed (Constraint: %s, Value: %s%s)',
+            'Assertion %s (Constraint: %s, Value: %s%s)',
+            $status,
             $this->constraint->toString(),
             $this->valueAsString(),
             $message
