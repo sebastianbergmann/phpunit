@@ -12,11 +12,13 @@ namespace PHPUnit\TextUI\TestResult;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\Aborted;
+use PHPUnit\Event\Test\AssertionMade;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\PassedWithWarning;
+use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -26,7 +28,9 @@ use PHPUnit\Event\UnknownSubscriberTypeException;
  */
 final class Collector
 {
-    private int $numberOfTests = 0;
+    private int $numberOfTests      = 0;
+    private int $numberOfTestsRun   = 0;
+    private int $numberOfAssertions = 0;
 
     /**
      * @psalm-var list<Skipped>
@@ -72,12 +76,16 @@ final class Collector
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
+        Facade::registerSubscriber(new AssertionMadeSubscriber($this));
+        Facade::registerSubscriber(new TestPreparationStartedSubscriber($this));
     }
 
     public function result(): TestResult
     {
         return new TestResult(
             $this->numberOfTests,
+            $this->numberOfTestsRun,
+            $this->numberOfAssertions,
             $this->erroredTests,
             $this->failedTests,
             $this->testsWithWarnings,
@@ -133,5 +141,15 @@ final class Collector
     public function testErrored(Errored $event): void
     {
         $this->erroredTests[] = $event;
+    }
+
+    public function assertionMade(AssertionMade $event): void
+    {
+        $this->numberOfAssertions += $event->count();
+    }
+
+    public function testPreparationStarted(PreparationStarted $event): void
+    {
+        $this->numberOfTestsRun++;
     }
 }

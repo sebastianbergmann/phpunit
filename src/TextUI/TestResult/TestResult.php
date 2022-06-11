@@ -24,6 +24,8 @@ use PHPUnit\Event\Test\Skipped;
 final class TestResult
 {
     private int $numberOfTests;
+    private int $numberOfTestsRun;
+    private int $numberOfAssertions;
 
     /**
      * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
@@ -63,20 +65,32 @@ final class TestResult
      * @psalm-param list<Skipped> $skippedTests
      * @psalm-param list<Aborted> $incompleteTests
      */
-    public function __construct(int $numberOfTests, array $erroredTests, array $failedTests, array $testsWithWarnings, array $riskyTests, array $skippedTests, array $incompleteTests)
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $erroredTests, array $failedTests, array $testsWithWarnings, array $riskyTests, array $skippedTests, array $incompleteTests)
     {
-        $this->numberOfTests     = $numberOfTests;
-        $this->erroredTests      = $erroredTests;
-        $this->failedTests       = $failedTests;
-        $this->testsWithWarnings = $testsWithWarnings;
-        $this->riskyTests        = $riskyTests;
-        $this->skippedTests      = $skippedTests;
-        $this->incompleteTests   = $incompleteTests;
+        $this->numberOfTests      = $numberOfTests;
+        $this->numberOfTestsRun   = $numberOfTestsRun;
+        $this->numberOfAssertions = $numberOfAssertions;
+        $this->erroredTests       = $erroredTests;
+        $this->failedTests        = $failedTests;
+        $this->testsWithWarnings  = $testsWithWarnings;
+        $this->riskyTests         = $riskyTests;
+        $this->skippedTests       = $skippedTests;
+        $this->incompleteTests    = $incompleteTests;
     }
 
     public function numberOfTests(): int
     {
         return $this->numberOfTests;
+    }
+
+    public function numberOfTestsRun(): int
+    {
+        return $this->numberOfTestsRun;
+    }
+
+    public function numberOfAssertions(): int
+    {
+        return $this->numberOfAssertions;
     }
 
     public function hasErroredTests(): bool
