@@ -37,6 +37,7 @@ use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\TextUI\ProgressPrinter\ProgressPrinter;
 use PHPUnit\TextUI\ResultPrinter\NullPrinter;
 use PHPUnit\TextUI\ResultPrinter\Standard\ResultPrinter as StandardResultPrinter;
 use PHPUnit\TextUI\TestResult\Collector as TestResultCollector;
@@ -168,12 +169,17 @@ final class TestRunner
                 $this->printer = DefaultPrinter::standardOutput();
             }
 
+            new ProgressPrinter(
+                $this->printer,
+                $this->configuration->colors(),
+                $this->configuration->columns()
+            );
+
             $resultPrinter = new StandardResultPrinter(
                 $this->printer,
                 $this->configuration->displayDetailsOnIncompleteTests(),
                 $this->configuration->displayDetailsOnSkippedTests(),
                 $this->configuration->colors(),
-                $this->configuration->columns(),
                 $this->configuration->reverseDefectList()
             );
         } else {
@@ -239,7 +245,6 @@ final class TestRunner
                 true,
                 true,
                 false,
-                80,
                 false
             );
         }

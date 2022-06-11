@@ -1021,15 +1021,29 @@
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
-  <file src="src/TextUI/ResultPrinter/Standard/ResultPrinter.php">
-    <MissingThrowsDocblock occurrences="2">
+  <file src="src/TextUI/ProgressPrinter/ProgressPrinter.php">
+    <MissingThrowsDocblock occurrences="1">
       <code>registerSubscribers</code>
-      <code>stop</code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor occurrences="3">
       <code>$maxColumn</code>
       <code>$numberOfTests</code>
       <code>$numberOfTestsWidth</code>
+    </PropertyNotSetInConstructor>
+    <UndefinedThisPropertyAssignment occurrences="1">
+      <code>$this-&gt;failedTests</code>
+    </UndefinedThisPropertyAssignment>
+    <UndefinedThisPropertyFetch occurrences="1">
+      <code>$this-&gt;failedTests</code>
+    </UndefinedThisPropertyFetch>
+  </file>
+  <file src="src/TextUI/ResultPrinter/Standard/ResultPrinter.php">
+    <MissingThrowsDocblock occurrences="2">
+      <code>registerSubscribers</code>
+      <code>resourceUsageSinceStartOfRequest</code>
+    </MissingThrowsDocblock>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$numberOfTests</code>
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/TestRunner.php">

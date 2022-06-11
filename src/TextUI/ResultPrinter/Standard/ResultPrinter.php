@@ -25,7 +25,6 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Skipped;
-use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\TestCase;
@@ -37,7 +36,6 @@ use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 use ReflectionMethod;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
-use SebastianBergmann\Timer\Timer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -48,15 +46,9 @@ final class ResultPrinter implements ResultPrinterInterface
     private bool $colors;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
-    private int $numberOfColumns;
     private bool $reverse;
-    private int $column = 0;
-    private int $numberOfTests;
-    private int $numberOfTestsWidth;
-    private int $maxColumn;
     private int $numberOfTestsRun   = 0;
     private bool $defectListPrinted = false;
-    private Timer $timer;
     private int $numberOfAssertions = 0;
     private ?TestStatus $status     = null;
     private bool $prepared          = false;
@@ -91,21 +83,16 @@ final class ResultPrinter implements ResultPrinterInterface
      */
     private array $erroredTests = [];
 
-    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colors, int $numberOfColumns, bool $reverse)
+    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colors, bool $reverse)
     {
         $this->printer = $printer;
 
         $this->displayDetailsOnIncompleteTests = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests    = $displayDetailsOnSkippedTests;
         $this->colors                          = $colors;
-        $this->numberOfColumns                 = $numberOfColumns;
         $this->reverse                         = $reverse;
 
         $this->registerSubscribers();
-
-        $this->timer = new Timer;
-
-        $this->timer->start();
     }
 
     public function printResult(TestResult $result): void
@@ -127,22 +114,11 @@ final class ResultPrinter implements ResultPrinterInterface
         $this->printFooter();
     }
 
-    public function testRunnerExecutionStarted(ExecutionStarted $event): void
-    {
-        $this->numberOfTests      = $event->testSuite()->count();
-        $this->numberOfTestsWidth = strlen((string) $this->numberOfTests);
-        $this->maxColumn          = $this->numberOfColumns - strlen('  /  (XXX%)') - (2 * $this->numberOfTestsWidth);
-    }
-
-    public function testRunnerExecutionFinished(): void
-    {
-    }
-
     public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
     {
         $this->erroredTests[] = $event;
 
-        $this->printProgressForError();
+        $this->numberOfTestsRun++;
         $this->updateTestStatus(TestStatus::error());
     }
 
@@ -156,7 +132,7 @@ final class ResultPrinter implements ResultPrinterInterface
         $this->skippedTests[] = $event;
 
         if (!$this->prepared) {
-            $this->printProgressForSkipped();
+            $this->numberOfTestsRun++;
         } else {
             $this->updateTestStatus(TestStatus::skipped());
         }
@@ -212,7 +188,7 @@ final class ResultPrinter implements ResultPrinterInterface
         }
 
         if (!$this->prepared) {
-            $this->printProgressForError();
+            $this->numberOfTestsRun++;
         } else {
             $this->updateTestStatus(TestStatus::error());
         }
@@ -221,19 +197,19 @@ final class ResultPrinter implements ResultPrinterInterface
     public function testFinished(Finished $event): void
     {
         if ($this->status === null) {
-            $this->printProgressForSuccess();
+            $this->numberOfTestsRun++;
         } elseif ($this->status->isSkipped()) {
-            $this->printProgressForSkipped();
+            $this->numberOfTestsRun++;
         } elseif ($this->status->isIncomplete()) {
-            $this->printProgressForIncomplete();
+            $this->numberOfTestsRun++;
         } elseif ($this->status->isRisky()) {
-            $this->printProgressForRisky();
+            $this->numberOfTestsRun++;
         } elseif ($this->status->isWarning()) {
-            $this->printProgressForWarning();
+            $this->numberOfTestsRun++;
         } elseif ($this->status->isFailure()) {
-            $this->printProgressForFailure();
+            $this->numberOfTestsRun++;
         } else {
-            $this->printProgressForError();
+            $this->numberOfTestsRun++;
         }
 
         $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
@@ -253,8 +229,6 @@ final class ResultPrinter implements ResultPrinterInterface
      */
     private function registerSubscribers(): void
     {
-        Facade::registerSubscriber(new TestRunnerExecutionStartedSubscriber($this));
-        Facade::registerSubscriber(new TestRunnerExecutionFinishedSubscriber($this));
         Facade::registerSubscriber(new TestPreparedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
@@ -281,81 +255,10 @@ final class ResultPrinter implements ResultPrinterInterface
         $this->status = $status;
     }
 
-    private function printProgressForSuccess(): void
-    {
-        $this->printProgress('.');
-    }
-
-    private function printProgressForSkipped(): void
-    {
-        $this->printProgressWithColor('fg-cyan, bold', 'S');
-    }
-
-    private function printProgressForIncomplete(): void
-    {
-        $this->printProgressWithColor('fg-yellow, bold', 'I');
-    }
-
-    private function printProgressForRisky(): void
-    {
-        $this->printProgressWithColor('fg-yellow, bold', 'R');
-    }
-
-    private function printProgressForWarning(): void
-    {
-        $this->printProgressWithColor('fg-yellow, bold', 'W');
-    }
-
-    private function printProgressForFailure(): void
-    {
-        $this->printProgressWithColor('bg-red, fg-white', 'F');
-    }
-
-    private function printProgressForError(): void
-    {
-        $this->printProgressWithColor('fg-red, bold', 'E');
-    }
-
-    private function printProgressWithColor(string $color, string $progress): void
-    {
-        $progress = $this->colorizeTextBox($color, $progress);
-
-        $this->printProgress($progress);
-    }
-
-    private function printProgress(string $progress): void
-    {
-        $this->printer->print($progress);
-
-        $this->column++;
-        $this->numberOfTestsRun++;
-
-        if ($this->column === $this->maxColumn || $this->numberOfTestsRun === $this->numberOfTests) {
-            if ($this->numberOfTestsRun === $this->numberOfTests) {
-                $this->printer->print(str_repeat(' ', $this->maxColumn - $this->column));
-            }
-
-            $this->printer->print(
-                sprintf(
-                    ' %' . $this->numberOfTestsWidth . 'd / %' .
-                    $this->numberOfTestsWidth . 'd (%3s%%)',
-                    $this->numberOfTestsRun,
-                    $this->numberOfTests,
-                    floor(($this->numberOfTestsRun / $this->numberOfTests) * 100)
-                )
-            );
-
-            if ($this->column === $this->maxColumn) {
-                $this->column = 0;
-                $this->printer->print("\n");
-            }
-        }
-    }
-
     private function printHeader(): void
     {
         if ($this->numberOfTestsRun > 0) {
-            $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsage($this->timer->stop()) . PHP_EOL . PHP_EOL);
+            $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
         }
     }
 
