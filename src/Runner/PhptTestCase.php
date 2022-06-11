@@ -109,6 +109,12 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      */
     public function run(TestResult $result): void
     {
+        $emitter = EventFacade::emitter();
+
+        $emitter->testPreparationStarted(
+            $this->valueObjectForEvents()
+        );
+
         try {
             $sections = $this->parse();
         } catch (Exception $e) {
@@ -118,9 +124,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->addError($this, $e, 0);
             $result->endTest($this, 0);
 
-            EventFacade::emitter()->testPrepared($this->valueObjectForEvents());
-            EventFacade::emitter()->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
-            EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 0);
+            $emitter->testPrepared($this->valueObjectForEvents());
+            $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
+            $emitter->testFinished($this->valueObjectForEvents(), 0);
 
             return;
         }
@@ -131,7 +137,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $result->startTest($this);
 
-        EventFacade::emitter()->testPrepared($this->valueObjectForEvents());
+        $emitter->testPrepared($this->valueObjectForEvents());
 
         if (isset($sections['INI'])) {
             $settings = $this->parseIniSection($sections['INI'], $settings);
@@ -220,14 +226,14 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->addFailure($this, $failure, $time);
 
             if ($failure instanceof IncompleteTestError) {
-                EventFacade::emitter()->testAborted($this->valueObjectForEvents(), EventThrowable::from($failure));
+                $emitter->testAborted($this->valueObjectForEvents(), EventThrowable::from($failure));
             } else {
-                EventFacade::emitter()->testFailed($this->valueObjectForEvents(), EventThrowable::from($failure));
+                $emitter->testFailed($this->valueObjectForEvents(), EventThrowable::from($failure));
             }
         } catch (Throwable $t) {
             $result->addError($this, $t, $time);
 
-            EventFacade::emitter()->testErrored($this->valueObjectForEvents(), EventThrowable::from($t));
+            $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($t));
         }
 
         if ($xfail !== false && $result->allCompletelyImplemented()) {
@@ -235,14 +241,14 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
             $result->addFailure($this, $e, $time);
 
-            EventFacade::emitter()->testAborted($this->valueObjectForEvents(), EventThrowable::from($e));
+            $emitter->testAborted($this->valueObjectForEvents(), EventThrowable::from($e));
         }
 
         $this->runClean($sections, CodeCoverage::isActive());
 
         $result->endTest($this, $time);
 
-        EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 1);
+        $emitter->testFinished($this->valueObjectForEvents(), 1);
     }
 
     /**

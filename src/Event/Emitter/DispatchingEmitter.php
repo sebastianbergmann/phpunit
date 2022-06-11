@@ -270,6 +270,16 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testPreparationStarted(Code\Test $test): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PreparationStarted(
+                $this->telemetryInfo(),
+                $test
+            )
+        );
+    }
+
     public function testPrepared(Code\Test $test): void
     {
         $this->dispatcher->dispatch(

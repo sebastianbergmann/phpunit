@@ -31,6 +31,7 @@ Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (1 test)
 Test Suite Started (1 test)
+Test Preparation Started (%s/phpt-skipif-location-hint-example.phpt)
 Test Prepared (%s/phpt-skipif-location-hint-example.phpt)
 Test Skipped (%s/phpt-skipif-location-hint-example.phpt)
 something terrible happened

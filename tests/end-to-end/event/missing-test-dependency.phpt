@@ -31,6 +31,7 @@ Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (2 tests)
 Test Suite Started (PHPUnit\TestFixture\Event\MissingDependencyTest, 2 tests)
+Test Preparation Started (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)
 Assertion Failed (Constraint: is true, Value: false)
 Test Failed (PHPUnit\TestFixture\Event\MissingDependencyTest::testOne)

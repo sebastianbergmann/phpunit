@@ -32,6 +32,7 @@ Event Facade Sealed
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\EmptyDataProviderTest, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
 Test Prepared (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
 Test Errored (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
 The data provider specified for PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase is invalid

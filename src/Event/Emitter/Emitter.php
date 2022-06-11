@@ -67,6 +67,8 @@ interface Emitter
 
     public function testSkipped(Code\Test $test, ?Throwable $throwable, string $message): void;
 
+    public function testPreparationStarted(Code\Test $test): void;
+
     public function testPrepared(Code\Test $test): void;
 
     /**

@@ -37,6 +37,7 @@ Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 Test Used Deprecated PHP Feature (PHPUnit\TestFixture\Event\DeprecatedPhpFeatureTest::testDeprecatedPhpFeature)
 defined(): Passing null to parameter #1 ($constant_name) of type string is deprecated

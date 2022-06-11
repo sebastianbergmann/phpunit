@@ -31,6 +31,7 @@ Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest::testOne)
 Test Skipped (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest::testOne)
 PHP >= 100 is required.
 Test Suite Finished (PHPUnit\TestFixture\Event\UnsatisfiedRequirementTest, 1 test)

@@ -32,6 +32,7 @@ Event Facade Sealed
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\InvalidDataProviderTest, 1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne)
 Test Prepared (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne)
 Test Errored (PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne)
 The data provider specified for PHPUnit\TestFixture\Event\InvalidDataProviderTest::testOne is invalid

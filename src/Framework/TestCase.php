@@ -700,11 +700,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function runBare(): void
     {
+        $emitter = Event\Facade::emitter();
+
+        $emitter->testPreparationStarted(
+            $this->valueObjectForEvents()
+        );
+
         $this->snapshotGlobalState();
         $this->startOutputBuffering();
         clearstatcache();
 
-        $emitter                           = Event\Facade::emitter();
         $hookMethods                       = (new HookMethods)->hookMethods(static::class);
         $hasMetRequirements                = false;
         $this->numberOfAssertionsPerformed = 0;

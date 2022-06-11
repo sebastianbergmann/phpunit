@@ -220,6 +220,7 @@ final class Facade
             Test\PostConditionFinished::class,
             Test\PreConditionCalled::class,
             Test\PreConditionFinished::class,
+            Test\PreparationStarted::class,
             Test\Prepared::class,
             Test\Skipped::class,
             Test\WarningTriggered::class,

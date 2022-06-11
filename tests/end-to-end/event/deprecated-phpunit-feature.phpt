@@ -31,6 +31,7 @@ Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest::testDeprecatedPhpunitFeature)
 Test Prepared (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest::testDeprecatedPhpunitFeature)
 Test Used Deprecated PHPUnit Feature (PHPUnit\TestFixture\Event\DeprecatedPhpunitFeatureTest::testDeprecatedPhpunitFeature)
 message
