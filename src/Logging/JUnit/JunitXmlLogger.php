@@ -278,7 +278,7 @@ final class JunitXmlLogger
 
     public function assertionMade(AssertionMade $event): void
     {
-        $this->numberOfAssertions += $event->constraint()->count();
+        $this->numberOfAssertions += $event->count();
     }
 
     /**

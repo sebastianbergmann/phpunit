@@ -44,9 +44,9 @@ final class AssertionMade implements Event
         return $this->value;
     }
 
-    public function constraint(): Constraint\Constraint
+    public function count(): int
     {
-        return $this->constraint;
+        return $this->constraint->count();
     }
 
     public function message(): string
@@ -73,7 +73,7 @@ final class AssertionMade implements Event
         if (!$this->hasFailed) {
             return sprintf(
                 'Assertion Succeeded (Constraint: %s, Value: %s%s)',
-                $this->constraint()->toString(),
+                $this->constraint->toString(),
                 $this->valueAsString(),
                 $message
             );
@@ -81,7 +81,7 @@ final class AssertionMade implements Event
 
         return sprintf(
             'Assertion Failed (Constraint: %s, Value: %s%s)',
-            $this->constraint()->toString(),
+            $this->constraint->toString(),
             $this->valueAsString(),
             $message
         );

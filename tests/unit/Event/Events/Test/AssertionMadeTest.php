@@ -34,7 +34,7 @@ final class AssertionMadeTest extends AbstractEventTestCase
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($value, $event->value());
-        $this->assertSame($constraint, $event->constraint());
+        $this->assertSame(1, $event->count());
         $this->assertSame($message, $event->message());
         $this->assertSame($hasFailed, $event->hasFailed());
     }
