@@ -1037,7 +1037,7 @@
       <code>$this-&gt;failedTests</code>
     </UndefinedThisPropertyFetch>
   </file>
-  <file src="src/TextUI/ResultPrinter/ResultPrinter.php">
+  <file src="src/TextUI/ResultPrinter.php">
     <MissingThrowsDocblock occurrences="1">
       <code>resourceUsageSinceStartOfRequest</code>
     </MissingThrowsDocblock>

@@ -39,7 +39,6 @@ use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\ProgressPrinter\ProgressPrinter;
-use PHPUnit\TextUI\ResultPrinter\ResultPrinter;
 use PHPUnit\TextUI\TestResult\Collector as TestResultCollector;
 use PHPUnit\TextUI\TestResult\TestResult;
 use PHPUnit\Util\DefaultPrinter;
