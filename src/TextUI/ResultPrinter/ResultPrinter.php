@@ -49,7 +49,6 @@ final class ResultPrinter
     private bool $reverse;
     private int $numberOfTestsRun   = 0;
     private bool $defectListPrinted = false;
-    private int $numberOfAssertions = 0;
     private ?TestStatus $status     = null;
     private bool $prepared          = false;
 
@@ -211,8 +210,6 @@ final class ResultPrinter
         } else {
             $this->numberOfTestsRun++;
         }
-
-        $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
 
         $this->status   = null;
         $this->prepared = false;
@@ -392,8 +389,8 @@ final class ResultPrinter
                     'OK (%d test%s, %d assertion%s)',
                     $this->numberOfTestsRun,
                     $this->numberOfTestsRun === 1 ? '' : 's',
-                    $this->numberOfAssertions,
-                    $this->numberOfAssertions === 1 ? '' : 's'
+                    $result->numberOfAssertions(),
+                    $result->numberOfAssertions() === 1 ? '' : 's'
                 )
             );
 
@@ -437,7 +434,7 @@ final class ResultPrinter
         }
 
         $this->printCountString($this->numberOfTestsRun, 'Tests', $color, true);
-        $this->printCountString($this->numberOfAssertions, 'Assertions', $color, true);
+        $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
         $this->printCountString(count($this->erroredTests), 'Errors', $color);
         $this->printCountString(count($this->failedTests), 'Failures', $color);
         $this->printCountString(count($this->testsWithWarnings), 'Warnings', $color);

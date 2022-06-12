@@ -9,16 +9,16 @@
  */
 namespace PHPUnit\TextUI\TestResult;
 
-use PHPUnit\Event\Test\AssertionMade;
-use PHPUnit\Event\Test\AssertionMadeSubscriber as AssertionMadeSubscriberInterface;
+use PHPUnit\Event\Test\Finished;
+use PHPUnit\Event\Test\FinishedSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class AssertionMadeSubscriber extends Subscriber implements AssertionMadeSubscriberInterface
+final class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
-    public function notify(AssertionMade $event): void
+    public function notify(Finished $event): void
     {
-        $this->collector()->assertionMade($event);
+        $this->collector()->testFinished($event);
     }
 }

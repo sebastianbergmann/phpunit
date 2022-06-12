@@ -12,11 +12,11 @@ namespace PHPUnit\TextUI\TestResult;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\Aborted;
-use PHPUnit\Event\Test\AssertionMade;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
+use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Skipped;
@@ -76,7 +76,7 @@ final class Collector
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new AssertionMadeSubscriber($this));
+        Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new TestPreparationStartedSubscriber($this));
     }
 
@@ -143,9 +143,9 @@ final class Collector
         $this->erroredTests[] = $event;
     }
 
-    public function assertionMade(AssertionMade $event): void
+    public function testFinished(Finished $event): void
     {
-        $this->numberOfAssertions += $event->count();
+        $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
     }
 
     public function testPreparationStarted(PreparationStarted $event): void
