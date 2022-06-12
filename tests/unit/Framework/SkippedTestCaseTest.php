@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
-use function array_shift;
 use function sprintf;
-use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(SkippedTestCase::class)]
@@ -57,40 +55,5 @@ final class SkippedTestCaseTest extends TestCase
         );
 
         $this->assertSame($message, $testCase->getMessage());
-    }
-
-    public function testRunMarksTestAsSkipped(): void
-    {
-        $className  = 'Foo';
-        $methodName = 'testThatBars';
-        $message    = 'Somehow skipped, right?';
-
-        $testCase = new SkippedTestCase(
-            $className,
-            $methodName,
-            $message
-        );
-
-        $result = new TestResult;
-
-        Facade::suspend();
-        $testCase->run($result);
-        Facade::resume();
-
-        $this->assertTrue($testCase->status()->isSkipped());
-        $this->assertSame(1, $result->skippedCount());
-
-        $failures = $result->skipped();
-
-        $failure = array_shift($failures);
-
-        $name = sprintf(
-            '%s::%s',
-            $className,
-            $methodName
-        );
-
-        $this->assertSame($name, $failure->getTestName());
-        $this->assertSame($message, $failure->exceptionMessage());
     }
 }
