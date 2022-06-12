@@ -311,21 +311,6 @@ final class TestResult implements Countable
         return $this->time;
     }
 
-    public function wasSuccessful(): bool
-    {
-        return $this->wasSuccessfulIgnoringWarnings() && empty($this->warnings);
-    }
-
-    public function wasSuccessfulIgnoringWarnings(): bool
-    {
-        return empty($this->errors) && empty($this->failures);
-    }
-
-    public function wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete(): bool
-    {
-        return $this->wasSuccessful() && $this->allHarmless() && $this->allCompletelyImplemented() && $this->noneSkipped();
-    }
-
     private function recordError(Test $test, Throwable $t): void
     {
         $this->errors[] = new TestFailure($test, $t);
