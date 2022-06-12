@@ -93,43 +93,78 @@ final class TestResult
         return $this->numberOfAssertions;
     }
 
+    public function numberOfErroredTests(): int
+    {
+        return count($this->erroredTests);
+    }
+
     public function hasErroredTests(): bool
     {
-        return count($this->erroredTests) > 0;
+        return $this->numberOfErroredTests() > 0;
+    }
+
+    public function numberOfFailedTests(): int
+    {
+        return count($this->failedTests);
     }
 
     public function hasFailedTests(): bool
     {
-        return count($this->failedTests) > 0;
+        return $this->numberOfFailedTests() > 0;
+    }
+
+    public function numberOfTestsWithWarnings(): int
+    {
+        return count($this->testsWithWarnings);
     }
 
     public function hasTestsWithWarnings(): bool
     {
-        return count($this->testsWithWarnings) > 0;
+        return $this->numberOfTestsWithWarnings() > 0;
+    }
+
+    public function numberOfRiskyTests(): int
+    {
+        return count($this->riskyTests);
     }
 
     public function hasRiskyTests(): bool
     {
-        return count($this->riskyTests) > 0;
+        return $this->numberOfRiskyTests() > 0;
+    }
+
+    public function numberOfSkippedTests(): int
+    {
+        return count($this->skippedTests);
     }
 
     public function hasSkippedTests(): bool
     {
-        return count($this->skippedTests) > 0;
+        return $this->numberOfSkippedTests() > 0;
+    }
+
+    public function numberOfIncompleteTests(): int
+    {
+        return count($this->incompleteTests);
     }
 
     public function hasIncompleteTests(): bool
     {
-        return count($this->incompleteTests) > 0;
+        return $this->numberOfIncompleteTests() > 0;
     }
 
     public function wasSuccessful(): bool
     {
-        return $this->wasSuccessfulIgnoringWarnings() && empty($this->testsWithWarnings);
+        return $this->wasSuccessfulIgnoringWarnings() && !$this->hasTestsWithWarnings();
     }
 
     public function wasSuccessfulIgnoringWarnings(): bool
     {
-        return empty($this->erroredTests) && empty($this->failedTests);
+        return !$this->hasErroredTests() && !$this->hasFailedTests();
+    }
+
+    public function wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete(): bool
+    {
+        return $this->wasSuccessful() && !$this->hasRiskyTests() && !$this->hasIncompleteTests() && !$this->hasSkippedTests();
     }
 }
