@@ -381,7 +381,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $className   = $this->name;
         $hookMethods = (new HookMethods)->hookMethods($className);
 
-        $result->startTestSuite($this);
+        $result->startTestSuite();
 
         $emitter                       = Event\Facade::emitter();
         $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this);

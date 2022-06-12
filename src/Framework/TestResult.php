@@ -145,7 +145,7 @@ final class TestResult implements Countable
         $this->time += $time;
     }
 
-    public function startTestSuite(TestSuite $suite): void
+    public function startTestSuite(): void
     {
         $this->currentTestSuiteFailed = false;
     }
