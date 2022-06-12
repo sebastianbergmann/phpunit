@@ -30,7 +30,6 @@ use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult as LegacyTestResult;
-use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\TextUI\TestResult\TestResult;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
@@ -49,7 +48,6 @@ final class ResultPrinter
     private bool $reverse;
     private int $numberOfTestsRun   = 0;
     private bool $defectListPrinted = false;
-    private ?TestStatus $status     = null;
     private bool $prepared          = false;
 
     /**
@@ -118,7 +116,6 @@ final class ResultPrinter
         $this->erroredTests[] = $event;
 
         $this->numberOfTestsRun++;
-        $this->updateTestStatus(TestStatus::error());
     }
 
     public function testPrepared(): void
@@ -132,16 +129,12 @@ final class ResultPrinter
 
         if (!$this->prepared) {
             $this->numberOfTestsRun++;
-        } else {
-            $this->updateTestStatus(TestStatus::skipped());
         }
     }
 
     public function testAborted(Aborted $event): void
     {
         $this->incompleteTests[] = $event;
-
-        $this->updateTestStatus(TestStatus::incomplete());
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
@@ -151,8 +144,6 @@ final class ResultPrinter
         }
 
         $this->riskyTests[$event->test()->id()][] = $event;
-
-        $this->updateTestStatus(TestStatus::risky());
     }
 
     public function testPassedWithWarning(PassedWithWarning $event): void
@@ -162,15 +153,11 @@ final class ResultPrinter
         }
 
         $this->testsWithWarnings[$event->test()->id()][] = $event;
-
-        $this->updateTestStatus(TestStatus::warning());
     }
 
     public function testFailed(Failed $event): void
     {
         $this->failedTests[] = $event;
-
-        $this->updateTestStatus(TestStatus::failure());
     }
 
     public function testErrored(Errored $event): void
@@ -181,37 +168,18 @@ final class ResultPrinter
          * @todo Eliminate this special case
          */
         if (str_contains($event->asString(), 'Test was run in child process and ended unexpectedly')) {
-            $this->updateTestStatus(TestStatus::error());
-
             return;
         }
 
         if (!$this->prepared) {
             $this->numberOfTestsRun++;
-        } else {
-            $this->updateTestStatus(TestStatus::error());
         }
     }
 
     public function testFinished(Finished $event): void
     {
-        if ($this->status === null) {
-            $this->numberOfTestsRun++;
-        } elseif ($this->status->isSkipped()) {
-            $this->numberOfTestsRun++;
-        } elseif ($this->status->isIncomplete()) {
-            $this->numberOfTestsRun++;
-        } elseif ($this->status->isRisky()) {
-            $this->numberOfTestsRun++;
-        } elseif ($this->status->isWarning()) {
-            $this->numberOfTestsRun++;
-        } elseif ($this->status->isFailure()) {
-            $this->numberOfTestsRun++;
-        } else {
-            $this->numberOfTestsRun++;
-        }
+        $this->numberOfTestsRun++;
 
-        $this->status   = null;
         $this->prepared = false;
     }
 
@@ -235,21 +203,6 @@ final class ResultPrinter
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
         Facade::registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
-    }
-
-    private function updateTestStatus(TestStatus $status): void
-    {
-        if ($this->status === null) {
-            $this->status = $status;
-
-            return;
-        }
-
-        if ($this->status->isMoreImportantThan($status)) {
-            return;
-        }
-
-        $this->status = $status;
     }
 
     private function printHeader(TestResult $result): void
