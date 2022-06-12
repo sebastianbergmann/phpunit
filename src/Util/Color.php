@@ -10,14 +10,18 @@
 namespace PHPUnit\Util;
 
 use const DIRECTORY_SEPARATOR;
+use const PHP_EOL;
 use function array_map;
 use function count;
 use function explode;
 use function implode;
+use function max;
 use function min;
 use function preg_replace;
 use function preg_replace_callback;
+use function preg_split;
 use function sprintf;
+use function str_pad;
 use function strtr;
 use function trim;
 
@@ -93,6 +97,20 @@ final class Color
         }
 
         return self::optimizeColor(sprintf("\x1b[%sm", implode(';', $styles)) . $buffer . "\x1b[0m");
+    }
+
+    public static function colorizeTextBox(string $color, string $buffer): string
+    {
+        $lines   = preg_split('/\r\n|\r|\n/', $buffer);
+        $padding = max(array_map('\strlen', $lines));
+
+        $styledLines = [];
+
+        foreach ($lines as $line) {
+            $styledLines[] = self::colorize($color, str_pad($line, $padding));
+        }
+
+        return implode(PHP_EOL, $styledLines);
     }
 
     public static function colorizePath(string $path, ?string $previousPath = null, bool $colorizeFilename = false): string

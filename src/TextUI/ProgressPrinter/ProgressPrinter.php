@@ -9,12 +9,7 @@
  */
 namespace PHPUnit\TextUI\ProgressPrinter;
 
-use const PHP_EOL;
-use function implode;
-use function max;
-use function preg_split;
 use function str_contains;
-use function str_pad;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\Errored;
@@ -219,7 +214,9 @@ final class ProgressPrinter
 
     private function printProgressWithColor(string $color, string $progress): void
     {
-        $progress = $this->colorizeTextBox($color, $progress);
+        if ($this->colors) {
+            $progress = Color::colorizeTextBox($color, $progress);
+        }
 
         $this->printProgress($progress);
     }
@@ -251,23 +248,5 @@ final class ProgressPrinter
                 $this->printer->print("\n");
             }
         }
-    }
-
-    private function colorizeTextBox(string $color, string $buffer): string
-    {
-        if (!$this->colors) {
-            return $buffer;
-        }
-
-        $lines   = preg_split('/\r\n|\r|\n/', $buffer);
-        $padding = max(array_map('\strlen', $lines));
-
-        $styledLines = [];
-
-        foreach ($lines as $line) {
-            $styledLines[] = Color::colorize($color, str_pad($line, $padding));
-        }
-
-        return implode(PHP_EOL, $styledLines);
     }
 }

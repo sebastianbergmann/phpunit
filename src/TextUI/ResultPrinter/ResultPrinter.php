@@ -10,10 +10,6 @@
 namespace PHPUnit\TextUI\ResultPrinter;
 
 use const PHP_EOL;
-use function implode;
-use function max;
-use function preg_split;
-use function str_pad;
 use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
@@ -284,28 +280,14 @@ final class ResultPrinter
 
     private function printWithColor(string $color, string $buffer, bool $lf = true): void
     {
-        $this->printer->print($this->colorizeTextBox($color, $buffer));
+        if ($this->colors) {
+            $buffer = Color::colorizeTextBox($color, $buffer);
+        }
+
+        $this->printer->print($buffer);
 
         if ($lf) {
             $this->printer->print(PHP_EOL);
         }
-    }
-
-    private function colorizeTextBox(string $color, string $buffer): string
-    {
-        if (!$this->colors) {
-            return $buffer;
-        }
-
-        $lines   = preg_split('/\r\n|\r|\n/', $buffer);
-        $padding = max(array_map('\strlen', $lines));
-
-        $styledLines = [];
-
-        foreach ($lines as $line) {
-            $styledLines[] = Color::colorize($color, str_pad($line, $padding));
-        }
-
-        return implode(PHP_EOL, $styledLines);
     }
 }
