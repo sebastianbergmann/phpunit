@@ -1038,8 +1038,7 @@
     </UndefinedThisPropertyFetch>
   </file>
   <file src="src/TextUI/ResultPrinter/ResultPrinter.php">
-    <MissingThrowsDocblock occurrences="2">
-      <code>registerSubscribers</code>
+    <MissingThrowsDocblock occurrences="1">
       <code>resourceUsageSinceStartOfRequest</code>
     </MissingThrowsDocblock>
   </file>

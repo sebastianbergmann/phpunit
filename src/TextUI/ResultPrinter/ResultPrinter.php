@@ -14,16 +14,6 @@ use function implode;
 use function max;
 use function preg_split;
 use function str_pad;
-use PHPUnit\Event\EventFacadeIsSealedException;
-use PHPUnit\Event\Facade;
-use PHPUnit\Event\Test\Aborted;
-use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
-use PHPUnit\Event\Test\ConsideredRisky;
-use PHPUnit\Event\Test\Errored;
-use PHPUnit\Event\Test\Failed;
-use PHPUnit\Event\Test\PassedWithWarning;
-use PHPUnit\Event\Test\Skipped;
-use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
@@ -46,36 +36,6 @@ final class ResultPrinter
     private bool $reverse;
     private bool $defectListPrinted = false;
 
-    /**
-     * @psalm-var list<Skipped>
-     */
-    private array $skippedTests = [];
-
-    /**
-     * @psalm-var list<Aborted>
-     */
-    private array $incompleteTests = [];
-
-    /**
-     * @psalm-var array<string,list<ConsideredRisky>>
-     */
-    private array $riskyTests = [];
-
-    /**
-     * @psalm-var array<string,list<PassedWithWarning>>
-     */
-    private array $testsWithWarnings = [];
-
-    /**
-     * @psalm-var list<Failed>
-     */
-    private array $failedTests = [];
-
-    /**
-     * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
-     */
-    private array $erroredTests = [];
-
     public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colors, bool $reverse)
     {
         $this->printer = $printer;
@@ -84,8 +44,6 @@ final class ResultPrinter
         $this->displayDetailsOnSkippedTests    = $displayDetailsOnSkippedTests;
         $this->colors                          = $colors;
         $this->reverse                         = $reverse;
-
-        $this->registerSubscribers();
     }
 
     public function printResult(TestResult $result, LegacyTestResult $legacyResult): void
@@ -107,67 +65,9 @@ final class ResultPrinter
         $this->printFooter($result);
     }
 
-    public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
-    {
-        $this->erroredTests[] = $event;
-    }
-
-    public function testSkipped(Skipped $event): void
-    {
-        $this->skippedTests[] = $event;
-    }
-
-    public function testAborted(Aborted $event): void
-    {
-        $this->incompleteTests[] = $event;
-    }
-
-    public function testConsideredRisky(ConsideredRisky $event): void
-    {
-        if (!isset($this->riskyTests[$event->test()->id()])) {
-            $this->riskyTests[$event->test()->id()] = [];
-        }
-
-        $this->riskyTests[$event->test()->id()][] = $event;
-    }
-
-    public function testPassedWithWarning(PassedWithWarning $event): void
-    {
-        if (!isset($this->testsWithWarnings[$event->test()->id()])) {
-            $this->testsWithWarnings[$event->test()->id()] = [];
-        }
-
-        $this->testsWithWarnings[$event->test()->id()][] = $event;
-    }
-
-    public function testFailed(Failed $event): void
-    {
-        $this->failedTests[] = $event;
-    }
-
-    public function testErrored(Errored $event): void
-    {
-        $this->erroredTests[] = $event;
-    }
-
     public function flush(): void
     {
         $this->printer->flush();
-    }
-
-    /**
-     * @throws EventFacadeIsSealedException
-     * @throws UnknownSubscriberTypeException
-     */
-    private function registerSubscribers(): void
-    {
-        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
-        Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
-        Facade::registerSubscriber(new TestErroredSubscriber($this));
-        Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestAbortedSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
     }
 
     private function printHeader(TestResult $result): void
@@ -300,7 +200,7 @@ final class ResultPrinter
             return;
         }
 
-        if ($this->wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete()) {
+        if ($result->wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete()) {
             $this->printWithColor(
                 'fg-black, bg-green',
                 sprintf(
@@ -317,8 +217,8 @@ final class ResultPrinter
 
         $color = 'fg-black, bg-yellow';
 
-        if ($this->wasSuccessful()) {
-            if ($this->displayDetailsOnIncompleteTests || $this->displayDetailsOnSkippedTests || !$this->noneRisky()) {
+        if ($result->wasSuccessful()) {
+            if ($this->displayDetailsOnIncompleteTests || $this->displayDetailsOnSkippedTests || $result->hasRiskyTests()) {
                 $this->printer->print("\n");
             }
 
@@ -329,21 +229,21 @@ final class ResultPrinter
         } else {
             $this->printer->print("\n");
 
-            if (!empty($this->erroredTests)) {
+            if ($result->hasErroredTests()) {
                 $color = 'fg-white, bg-red';
 
                 $this->printWithColor(
                     $color,
                     'ERRORS!'
                 );
-            } elseif (!empty($this->failedTests)) {
+            } elseif ($result->hasFailedTests()) {
                 $color = 'fg-white, bg-red';
 
                 $this->printWithColor(
                     $color,
                     'FAILURES!'
                 );
-            } elseif (!empty($this->testsWithWarnings)) {
+            } elseif ($result->hasTestsWithWarnings()) {
                 $this->printWithColor(
                     $color,
                     'WARNINGS!'
@@ -407,35 +307,5 @@ final class ResultPrinter
         }
 
         return implode(PHP_EOL, $styledLines);
-    }
-
-    private function wasSuccessful(): bool
-    {
-        return $this->wasSuccessfulIgnoringWarnings() && empty($this->testsWithWarnings);
-    }
-
-    private function wasSuccessfulIgnoringWarnings(): bool
-    {
-        return empty($this->erroredTests) && empty($this->failedTests);
-    }
-
-    private function wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete(): bool
-    {
-        return $this->wasSuccessful() && $this->noneRisky() && $this->noneAborted() && $this->noneSkipped();
-    }
-
-    private function noneSkipped(): bool
-    {
-        return empty($this->skippedTests);
-    }
-
-    private function noneAborted(): bool
-    {
-        return empty($this->incompleteTests);
-    }
-
-    private function noneRisky(): bool
-    {
-        return empty($this->riskyTests);
     }
 }
