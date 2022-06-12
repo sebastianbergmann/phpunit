@@ -412,7 +412,7 @@ final class TestRunner
         $result = $resultCollector->result();
 
         if (isset($resultPrinter)) {
-            $resultPrinter->printResult($legacyResult);
+            $resultPrinter->printResult($result, $legacyResult);
         }
 
         if (isset($junitXmlLogger)) {

@@ -31,6 +31,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult as LegacyTestResult;
 use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\TextUI\TestResult\TestResult;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 use ReflectionMethod;
@@ -94,23 +95,23 @@ final class ResultPrinter
         $this->registerSubscribers();
     }
 
-    public function printResult(LegacyTestResult $legacyResult): void
+    public function printResult(TestResult $result, LegacyTestResult $legacyResult): void
     {
-        $this->printHeader();
-        $this->printTestsWithErrors($legacyResult);
-        $this->printTestsWithWarnings($legacyResult);
-        $this->printTestsWithFailedAssertions($legacyResult);
-        $this->printRiskyTests($legacyResult);
+        $this->printHeader($result);
+        $this->printTestsWithErrors($result, $legacyResult);
+        $this->printTestsWithWarnings($result, $legacyResult);
+        $this->printTestsWithFailedAssertions($result, $legacyResult);
+        $this->printRiskyTests($result, $legacyResult);
 
         if ($this->displayDetailsOnIncompleteTests) {
-            $this->printIncompleteTests($legacyResult);
+            $this->printIncompleteTests($result, $legacyResult);
         }
 
         if ($this->displayDetailsOnSkippedTests) {
-            $this->printSkippedTests($legacyResult);
+            $this->printSkippedTests($result, $legacyResult);
         }
 
-        $this->printFooter();
+        $this->printFooter($result);
     }
 
     public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
@@ -254,39 +255,39 @@ final class ResultPrinter
         $this->status = $status;
     }
 
-    private function printHeader(): void
+    private function printHeader(TestResult $result): void
     {
         if ($this->numberOfTestsRun > 0) {
             $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
         }
     }
 
-    private function printTestsWithErrors(LegacyTestResult $legacyResult): void
+    private function printTestsWithErrors(TestResult $result, LegacyTestResult $legacyResult): void
     {
         $this->printDefects($legacyResult->errors(), 'error');
     }
 
-    private function printTestsWithFailedAssertions(LegacyTestResult $legacyResult): void
+    private function printTestsWithFailedAssertions(TestResult $result, LegacyTestResult $legacyResult): void
     {
         $this->printDefects($legacyResult->failures(), 'failure');
     }
 
-    private function printTestsWithWarnings(LegacyTestResult $legacyResult): void
+    private function printTestsWithWarnings(TestResult $result, LegacyTestResult $legacyResult): void
     {
         $this->printDefects($legacyResult->warnings(), 'warning');
     }
 
-    private function printRiskyTests(LegacyTestResult $legacyResult): void
+    private function printRiskyTests(TestResult $result, LegacyTestResult $legacyResult): void
     {
         $this->printDefects($legacyResult->risky(), 'risky test');
     }
 
-    private function printIncompleteTests(LegacyTestResult $legacyResult): void
+    private function printIncompleteTests(TestResult $result, LegacyTestResult $legacyResult): void
     {
         $this->printDefects($legacyResult->notImplemented(), 'incomplete test');
     }
 
-    private function printSkippedTests(LegacyTestResult $legacyResult): void
+    private function printSkippedTests(TestResult $result, LegacyTestResult $legacyResult): void
     {
         $this->printDefects($legacyResult->skipped(), 'skipped test');
     }
@@ -373,7 +374,7 @@ final class ResultPrinter
         }
     }
 
-    private function printFooter(): void
+    private function printFooter(TestResult $result): void
     {
         if ($this->numberOfTestsRun === 0) {
             $this->printWithColor(
