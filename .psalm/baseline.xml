@@ -1030,12 +1030,6 @@
       <code>$numberOfTests</code>
       <code>$numberOfTestsWidth</code>
     </PropertyNotSetInConstructor>
-    <UndefinedThisPropertyAssignment occurrences="1">
-      <code>$this-&gt;failedTests</code>
-    </UndefinedThisPropertyAssignment>
-    <UndefinedThisPropertyFetch occurrences="1">
-      <code>$this-&gt;failedTests</code>
-    </UndefinedThisPropertyFetch>
   </file>
   <file src="src/TextUI/ResultPrinter.php">
     <MissingThrowsDocblock occurrences="1">
