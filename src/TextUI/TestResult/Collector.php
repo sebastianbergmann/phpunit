@@ -18,7 +18,6 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\PassedWithWarning;
-use PHPUnit\Event\Test\PreparationStarted;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -31,6 +30,7 @@ final class Collector
     private int $numberOfTests      = 0;
     private int $numberOfTestsRun   = 0;
     private int $numberOfAssertions = 0;
+    private bool $prepared          = false;
 
     /**
      * @psalm-var list<Skipped>
@@ -77,7 +77,7 @@ final class Collector
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparationStartedSubscriber($this));
+        Facade::registerSubscriber(new TestPreparedSubscriber($this));
     }
 
     public function result(): TestResult
@@ -103,11 +103,22 @@ final class Collector
     public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
     {
         $this->erroredTests[] = $event;
+
+        $this->numberOfTestsRun++;
+    }
+
+    public function testPrepared(): void
+    {
+        $this->prepared = true;
     }
 
     public function testSkipped(Skipped $event): void
     {
         $this->skippedTests[] = $event;
+
+        if (!$this->prepared) {
+            $this->numberOfTestsRun++;
+        }
     }
 
     public function testAborted(Aborted $event): void
@@ -141,15 +152,25 @@ final class Collector
     public function testErrored(Errored $event): void
     {
         $this->erroredTests[] = $event;
+
+        /*
+         * @todo Eliminate this special case
+         */
+        if (str_contains($event->asString(), 'Test was run in child process and ended unexpectedly')) {
+            return;
+        }
+
+        if (!$this->prepared) {
+            $this->numberOfTestsRun++;
+        }
     }
 
     public function testFinished(Finished $event): void
     {
         $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
-    }
 
-    public function testPreparationStarted(PreparationStarted $event): void
-    {
         $this->numberOfTestsRun++;
+
+        $this->prepared = false;
     }
 }

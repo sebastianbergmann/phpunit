@@ -9,16 +9,16 @@
  */
 namespace PHPUnit\TextUI\TestResult;
 
-use PHPUnit\Event\Test\PreparationStarted;
-use PHPUnit\Event\Test\PreparationStartedSubscriber;
+use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PreparedSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestPreparationStartedSubscriber extends Subscriber implements PreparationStartedSubscriber
+final class TestPreparedSubscriber extends Subscriber implements PreparedSubscriber
 {
-    public function notify(PreparationStarted $event): void
+    public function notify(Prepared $event): void
     {
-        $this->collector()->testPreparationStarted($event);
+        $this->collector()->testPrepared();
     }
 }
