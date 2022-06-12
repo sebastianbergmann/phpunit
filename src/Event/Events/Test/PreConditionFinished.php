@@ -65,11 +65,11 @@ final class PreConditionFinished implements Event
 
     public function asString(): string
     {
-        $buffer = '';
+        $buffer = 'Pre Condition Method Finished:';
 
         foreach ($this->calledMethods as $calledMethod) {
             $buffer .= sprintf(
-                'Pre Condition Method Finished (%s::%s)' . PHP_EOL,
+                PHP_EOL . '- %s::%s',
                 $calledMethod->className(),
                 $calledMethod->methodName()
             );

@@ -65,11 +65,11 @@ final class AfterLastTestMethodFinished implements Event
 
     public function asString(): string
     {
-        $buffer = 'After Last Test Method Finished:' . PHP_EOL;
+        $buffer = 'After Last Test Method Finished:';
 
         foreach ($this->calledMethods as $calledMethod) {
             $buffer .= sprintf(
-                '- %s::%s' . PHP_EOL,
+                PHP_EOL . '- %s::%s',
                 $calledMethod->className(),
                 $calledMethod->methodName()
             );

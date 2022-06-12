@@ -65,11 +65,11 @@ final class PostConditionFinished implements Event
 
     public function asString(): string
     {
-        $buffer = '';
+        $buffer = 'Post Condition Method Finished:';
 
         foreach ($this->calledMethods as $calledMethod) {
             $buffer .= sprintf(
-                'Post Condition Method Finished (%s::%s)' . PHP_EOL,
+                PHP_EOL . '- %s::%s',
                 $calledMethod->className(),
                 $calledMethod->methodName()
             );
