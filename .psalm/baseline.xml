@@ -1037,14 +1037,11 @@
       <code>$this-&gt;failedTests</code>
     </UndefinedThisPropertyFetch>
   </file>
-  <file src="src/TextUI/ResultPrinter/Standard/ResultPrinter.php">
+  <file src="src/TextUI/ResultPrinter/ResultPrinter.php">
     <MissingThrowsDocblock occurrences="2">
       <code>registerSubscribers</code>
       <code>resourceUsageSinceStartOfRequest</code>
     </MissingThrowsDocblock>
-    <PropertyNotSetInConstructor occurrences="1">
-      <code>$numberOfTests</code>
-    </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/TestRunner.php">
     <InternalMethod occurrences="1">
