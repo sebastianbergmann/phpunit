@@ -19,6 +19,6 @@ final class TestFinishedSubscriber extends Subscriber implements FinishedSubscri
 {
     public function notify(Finished $event): void
     {
-        $this->printer()->testFinished($event);
+        $this->printer()->testFinished();
     }
 }

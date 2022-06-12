@@ -13,8 +13,6 @@ use function str_contains;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\Errored;
-use PHPUnit\Event\Test\Failed;
-use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -33,10 +31,9 @@ final class ProgressPrinter
     private int $numberOfTests;
     private int $numberOfTestsWidth;
     private int $maxColumn;
-    private int $numberOfTestsRun   = 0;
-    private int $numberOfAssertions = 0;
-    private ?TestStatus $status     = null;
-    private bool $prepared          = false;
+    private int $numberOfTestsRun = 0;
+    private ?TestStatus $status   = null;
+    private bool $prepared        = false;
 
     public function __construct(Printer $printer, bool $colors, int $numberOfColumns)
     {
@@ -90,7 +87,7 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::warning());
     }
 
-    public function testFailed(Failed $event): void
+    public function testFailed(): void
     {
         $this->updateTestStatus(TestStatus::failure());
     }
@@ -113,7 +110,7 @@ final class ProgressPrinter
         }
     }
 
-    public function testFinished(Finished $event): void
+    public function testFinished(): void
     {
         if ($this->status === null) {
             $this->printProgressForSuccess();
@@ -131,15 +128,8 @@ final class ProgressPrinter
             $this->printProgressForError();
         }
 
-        $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
-
         $this->status   = null;
         $this->prepared = false;
-    }
-
-    public function flush(): void
-    {
-        $this->printer->flush();
     }
 
     /**
