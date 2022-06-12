@@ -13,7 +13,6 @@ use const PHP_EOL;
 use function implode;
 use function max;
 use function preg_split;
-use function str_contains;
 use function str_pad;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
@@ -22,7 +21,6 @@ use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
-use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -46,9 +44,7 @@ final class ResultPrinter
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
     private bool $reverse;
-    private int $numberOfTestsRun   = 0;
     private bool $defectListPrinted = false;
-    private bool $prepared          = false;
 
     /**
      * @psalm-var list<Skipped>
@@ -114,22 +110,11 @@ final class ResultPrinter
     public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
     {
         $this->erroredTests[] = $event;
-
-        $this->numberOfTestsRun++;
-    }
-
-    public function testPrepared(): void
-    {
-        $this->prepared = true;
     }
 
     public function testSkipped(Skipped $event): void
     {
         $this->skippedTests[] = $event;
-
-        if (!$this->prepared) {
-            $this->numberOfTestsRun++;
-        }
     }
 
     public function testAborted(Aborted $event): void
@@ -163,24 +148,6 @@ final class ResultPrinter
     public function testErrored(Errored $event): void
     {
         $this->erroredTests[] = $event;
-
-        /*
-         * @todo Eliminate this special case
-         */
-        if (str_contains($event->asString(), 'Test was run in child process and ended unexpectedly')) {
-            return;
-        }
-
-        if (!$this->prepared) {
-            $this->numberOfTestsRun++;
-        }
-    }
-
-    public function testFinished(Finished $event): void
-    {
-        $this->numberOfTestsRun++;
-
-        $this->prepared = false;
     }
 
     public function flush(): void
@@ -194,8 +161,6 @@ final class ResultPrinter
      */
     private function registerSubscribers(): void
     {
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
@@ -207,7 +172,7 @@ final class ResultPrinter
 
     private function printHeader(TestResult $result): void
     {
-        if ($this->numberOfTestsRun > 0) {
+        if ($result->numberOfTestsRun() > 0) {
             $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
         }
     }
@@ -326,7 +291,7 @@ final class ResultPrinter
 
     private function printFooter(TestResult $result): void
     {
-        if ($this->numberOfTestsRun === 0) {
+        if ($result->numberOfTestsRun() === 0) {
             $this->printWithColor(
                 'fg-black, bg-yellow',
                 'No tests executed!'
@@ -340,8 +305,8 @@ final class ResultPrinter
                 'fg-black, bg-green',
                 sprintf(
                     'OK (%d test%s, %d assertion%s)',
-                    $this->numberOfTestsRun,
-                    $this->numberOfTestsRun === 1 ? '' : 's',
+                    $result->numberOfTestsRun(),
+                    $result->numberOfTestsRun() === 1 ? '' : 's',
                     $result->numberOfAssertions(),
                     $result->numberOfAssertions() === 1 ? '' : 's'
                 )
@@ -386,7 +351,7 @@ final class ResultPrinter
             }
         }
 
-        $this->printCountString($this->numberOfTestsRun, 'Tests', $color, true);
+        $this->printCountString($result->numberOfTestsRun(), 'Tests', $color, true);
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
         $this->printCountString(count($this->erroredTests), 'Errors', $color);
         $this->printCountString(count($this->failedTests), 'Failures', $color);
