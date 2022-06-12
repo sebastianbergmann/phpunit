@@ -152,13 +152,8 @@ final class ProgressPrinter
 
     private function updateTestStatus(TestStatus $status): void
     {
-        if ($this->status === null) {
-            $this->status = $status;
-
-            return;
-        }
-
-        if ($this->status->isMoreImportantThan($status)) {
+        if ($this->status !== null &&
+            $this->status->isMoreImportantThan($status)) {
             return;
         }
 
