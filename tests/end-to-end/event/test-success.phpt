@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for when an exception is raised in setUpBeforeClass()
+The right events are emitted in the right order for a successful test
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = __DIR__ . '/_files/ExceptionInSetUpBeforeClassTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/SuccessTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -30,10 +30,12 @@ Test Suite Loaded (1 test)
 Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest, 1 test)
-Before First Test Method Called (PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest::setUpBeforeClass)
-Before First Test Method Errored (PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest::setUpBeforeClass)
-Before First Test Method Finished:
-- PHPUnit\TestFixture\Event\ExceptionInSetUpBeforeClassTest::setUpBeforeClass
+Test Suite Started (PHPUnit\TestFixture\Event\SuccessTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
+Test Prepared (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
+Assertion Succeeded (Constraint: is true, Value: true)
+Test Passed (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
+Test Finished (PHPUnit\TestFixture\Event\SuccessTest::testSuccess)
+Test Suite Finished (PHPUnit\TestFixture\Event\SuccessTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
