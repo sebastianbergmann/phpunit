@@ -22,7 +22,6 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\Aborted;
-use PHPUnit\Event\Test\AssertionMade;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
@@ -204,11 +203,11 @@ final class JunitXmlLogger
 
         $time = $event->telemetryInfo()->time()->duration($this->time)->asFloat();
 
-        $this->testSuiteAssertions[$this->testSuiteLevel] += $this->numberOfAssertions;
+        $this->testSuiteAssertions[$this->testSuiteLevel] += $event->numberOfAssertionsPerformed();
 
         $this->currentTestCase->setAttribute(
             'assertions',
-            (string) $this->numberOfAssertions
+            (string) $event->numberOfAssertionsPerformed()
         );
 
         $this->currentTestCase->setAttribute(
@@ -232,10 +231,9 @@ final class JunitXmlLogger
             $this->currentTestCase->appendChild($systemOut);
         }
 
-        $this->currentTestCase    = null;
-        $this->numberOfAssertions = 0;
-        $this->time               = null;
-        $this->output             = null;
+        $this->currentTestCase = null;
+        $this->time            = null;
+        $this->output          = null;
     }
 
     public function testAborted(Aborted $event): void
@@ -276,11 +274,6 @@ final class JunitXmlLogger
         $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
 
-    public function assertionMade(AssertionMade $event): void
-    {
-        $this->numberOfAssertions += $event->count();
-    }
-
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
@@ -297,7 +290,6 @@ final class JunitXmlLogger
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestAbortedSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new AssertionMadeSubscriber($this));
 
         if ($reportRiskyTests) {
             Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
@@ -422,8 +414,7 @@ final class JunitXmlLogger
             $testCase->setAttribute('classname', str_replace('\\', '.', $test->className()));
         }
 
-        $this->currentTestCase    = $testCase;
-        $this->numberOfAssertions = 0;
-        $this->time               = $event->telemetryInfo()->time();
+        $this->currentTestCase = $testCase;
+        $this->time            = $event->telemetryInfo()->time();
     }
 }
