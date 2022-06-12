@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ResultPrinter\Standard;
+namespace PHPUnit\TextUI\ResultPrinter;
 
-use PHPUnit\Event\Test\ConsideredRisky;
-use PHPUnit\Event\Test\ConsideredRiskySubscriber;
+use PHPUnit\Event\Test\PassedWithWarning;
+use PHPUnit\Event\Test\PassedWithWarningSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestConsideredRiskySubscriber extends Subscriber implements ConsideredRiskySubscriber
+final class TestPassedWithWarningSubscriber extends Subscriber implements PassedWithWarningSubscriber
 {
-    public function notify(ConsideredRisky $event): void
+    public function notify(PassedWithWarning $event): void
     {
-        $this->printer()->testConsideredRisky($event);
+        $this->printer()->testPassedWithWarning($event);
     }
 }

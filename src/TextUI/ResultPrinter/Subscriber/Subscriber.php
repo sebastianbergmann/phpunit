@@ -7,18 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ResultPrinter\Standard;
-
-use PHPUnit\Event\Test\PassedWithWarning;
-use PHPUnit\Event\Test\PassedWithWarningSubscriber;
+namespace PHPUnit\TextUI\ResultPrinter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestPassedWithWarningSubscriber extends Subscriber implements PassedWithWarningSubscriber
+abstract class Subscriber
 {
-    public function notify(PassedWithWarning $event): void
+    private ResultPrinter $printer;
+
+    public function __construct(ResultPrinter $printer)
     {
-        $this->printer()->testPassedWithWarning($event);
+        $this->printer = $printer;
+    }
+
+    protected function printer(): ResultPrinter
+    {
+        return $this->printer;
     }
 }

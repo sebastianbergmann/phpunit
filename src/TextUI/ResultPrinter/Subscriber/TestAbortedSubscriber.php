@@ -7,22 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ResultPrinter\Standard;
+namespace PHPUnit\TextUI\ResultPrinter;
+
+use PHPUnit\Event\Test\Aborted;
+use PHPUnit\Event\Test\AbortedSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Subscriber
+final class TestAbortedSubscriber extends Subscriber implements AbortedSubscriber
 {
-    private ResultPrinter $printer;
-
-    public function __construct(ResultPrinter $printer)
+    public function notify(Aborted $event): void
     {
-        $this->printer = $printer;
-    }
-
-    protected function printer(): ResultPrinter
-    {
-        return $this->printer;
+        $this->printer()->testAborted($event);
     }
 }

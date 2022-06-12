@@ -38,11 +38,11 @@ use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\ProgressPrinter\ProgressPrinter;
-use PHPUnit\TextUI\ResultPrinter\NullPrinter;
-use PHPUnit\TextUI\ResultPrinter\Standard\ResultPrinter as StandardResultPrinter;
+use PHPUnit\TextUI\ResultPrinter\ResultPrinter;
 use PHPUnit\TextUI\TestResult\Collector as TestResultCollector;
 use PHPUnit\TextUI\TestResult\TestResult;
 use PHPUnit\Util\DefaultPrinter;
+use PHPUnit\Util\NullPrinter;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
@@ -162,6 +162,8 @@ final class TestRunner
             exit('TestDox CLI logging has not been migrated to events yet');
         }
 
+        $this->printer = new NullPrinter;
+
         if ($this->configuration->outputIsDefault()) {
             if ($this->configuration->outputToStandardErrorStream()) {
                 $this->printer = DefaultPrinter::standardError();
@@ -175,16 +177,13 @@ final class TestRunner
                 $this->configuration->columns()
             );
 
-            $resultPrinter = new StandardResultPrinter(
+            $resultPrinter = new ResultPrinter(
                 $this->printer,
                 $this->configuration->displayDetailsOnIncompleteTests(),
                 $this->configuration->displayDetailsOnSkippedTests(),
                 $this->configuration->colors(),
                 $this->configuration->reverseDefectList()
             );
-        } else {
-            $this->printer = new \PHPUnit\Util\NullPrinter;
-            $resultPrinter = new NullPrinter;
         }
 
         $resultCollector = new TestResultCollector;
@@ -240,7 +239,7 @@ final class TestRunner
         $this->write(Version::getVersionString() . "\n");
 
         if ($this->configuration->hasLogfileText()) {
-            $textLogger = new StandardResultPrinter(
+            $textLogger = new ResultPrinter(
                 DefaultPrinter::from($this->configuration->logfileText()),
                 true,
                 true,
@@ -411,7 +410,9 @@ final class TestRunner
 
         $testResult = $resultCollector->result();
 
-        $resultPrinter->printResult($result);
+        if (isset($resultPrinter)) {
+            $resultPrinter->printResult($result);
+        }
 
         if (isset($junitXmlLogger)) {
             file_put_contents(
