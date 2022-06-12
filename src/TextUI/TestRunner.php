@@ -22,6 +22,7 @@ use function range;
 use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\TestResult as LegacyTestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
@@ -156,7 +157,7 @@ final class TestRunner
             unset($_suite);
         }
 
-        $result = new \PHPUnit\Framework\TestResult;
+        $legacyResult = new LegacyTestResult;
 
         if ($this->configuration->outputIsTestDox()) {
             exit('TestDox CLI logging has not been migrated to events yet');
@@ -404,14 +405,14 @@ final class TestRunner
             Event\TestSuite\TestSuite::fromTestSuite($suite)
         );
 
-        $suite->run($result);
+        $suite->run($legacyResult);
 
         Event\Facade::emitter()->testExecutionFinished();
 
-        $testResult = $resultCollector->result();
+        $result = $resultCollector->result();
 
         if (isset($resultPrinter)) {
-            $resultPrinter->printResult($result);
+            $resultPrinter->printResult($legacyResult);
         }
 
         if (isset($junitXmlLogger)) {
@@ -567,7 +568,7 @@ final class TestRunner
             }
         }
 
-        return $testResult;
+        return $result;
     }
 
     private function write(string $buffer): void

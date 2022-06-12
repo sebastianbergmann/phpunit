@@ -29,7 +29,7 @@ use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
-use PHPUnit\Framework\TestResult;
+use PHPUnit\Framework\TestResult as LegacyTestResult;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
@@ -94,20 +94,20 @@ final class ResultPrinter
         $this->registerSubscribers();
     }
 
-    public function printResult(TestResult $result): void
+    public function printResult(LegacyTestResult $legacyResult): void
     {
         $this->printHeader();
-        $this->printTestsWithErrors($result);
-        $this->printTestsWithWarnings($result);
-        $this->printTestsWithFailedAssertions($result);
-        $this->printRiskyTests($result);
+        $this->printTestsWithErrors($legacyResult);
+        $this->printTestsWithWarnings($legacyResult);
+        $this->printTestsWithFailedAssertions($legacyResult);
+        $this->printRiskyTests($legacyResult);
 
         if ($this->displayDetailsOnIncompleteTests) {
-            $this->printIncompleteTests($result);
+            $this->printIncompleteTests($legacyResult);
         }
 
         if ($this->displayDetailsOnSkippedTests) {
-            $this->printSkippedTests($result);
+            $this->printSkippedTests($legacyResult);
         }
 
         $this->printFooter();
@@ -261,34 +261,34 @@ final class ResultPrinter
         }
     }
 
-    private function printTestsWithErrors(TestResult $result): void
+    private function printTestsWithErrors(LegacyTestResult $legacyResult): void
     {
-        $this->printDefects($result->errors(), 'error');
+        $this->printDefects($legacyResult->errors(), 'error');
     }
 
-    private function printTestsWithFailedAssertions(TestResult $result): void
+    private function printTestsWithFailedAssertions(LegacyTestResult $legacyResult): void
     {
-        $this->printDefects($result->failures(), 'failure');
+        $this->printDefects($legacyResult->failures(), 'failure');
     }
 
-    private function printTestsWithWarnings(TestResult $result): void
+    private function printTestsWithWarnings(LegacyTestResult $legacyResult): void
     {
-        $this->printDefects($result->warnings(), 'warning');
+        $this->printDefects($legacyResult->warnings(), 'warning');
     }
 
-    private function printRiskyTests(TestResult $result): void
+    private function printRiskyTests(LegacyTestResult $legacyResult): void
     {
-        $this->printDefects($result->risky(), 'risky test');
+        $this->printDefects($legacyResult->risky(), 'risky test');
     }
 
-    private function printIncompleteTests(TestResult $result): void
+    private function printIncompleteTests(LegacyTestResult $legacyResult): void
     {
-        $this->printDefects($result->notImplemented(), 'incomplete test');
+        $this->printDefects($legacyResult->notImplemented(), 'incomplete test');
     }
 
-    private function printSkippedTests(TestResult $result): void
+    private function printSkippedTests(LegacyTestResult $legacyResult): void
     {
-        $this->printDefects($result->skipped(), 'skipped test');
+        $this->printDefects($legacyResult->skipped(), 'skipped test');
     }
 
     private function printDefects(array $defects, string $type): void
