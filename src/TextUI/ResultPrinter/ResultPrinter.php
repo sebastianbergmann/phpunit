@@ -353,12 +353,12 @@ final class ResultPrinter
 
         $this->printCountString($result->numberOfTestsRun(), 'Tests', $color, true);
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
-        $this->printCountString(count($this->erroredTests), 'Errors', $color);
-        $this->printCountString(count($this->failedTests), 'Failures', $color);
-        $this->printCountString(count($this->testsWithWarnings), 'Warnings', $color);
-        $this->printCountString(count($this->skippedTests), 'Skipped', $color);
-        $this->printCountString(count($this->incompleteTests), 'Incomplete', $color);
-        $this->printCountString(count($this->riskyTests), 'Risky', $color);
+        $this->printCountString($result->numberOfErroredTests(), 'Errors', $color);
+        $this->printCountString($result->numberOfFailedTests(), 'Failures', $color);
+        $this->printCountString($result->numberOfTestsWithWarnings(), 'Warnings', $color);
+        $this->printCountString($result->numberOfSkippedTests(), 'Skipped', $color);
+        $this->printCountString($result->numberOfIncompleteTests(), 'Incomplete', $color);
+        $this->printCountString($result->numberOfRiskyTests(), 'Risky', $color);
         $this->printWithColor($color, '.');
     }
 
