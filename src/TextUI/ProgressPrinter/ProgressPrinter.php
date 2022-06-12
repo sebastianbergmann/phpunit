@@ -92,8 +92,6 @@ final class ProgressPrinter
 
     public function testFailed(Failed $event): void
     {
-        $this->failedTests[] = $event;
-
         $this->updateTestStatus(TestStatus::failure());
     }
 
