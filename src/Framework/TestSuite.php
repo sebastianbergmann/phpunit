@@ -12,7 +12,6 @@ namespace PHPUnit\Framework;
 use const PHP_EOL;
 use function array_keys;
 use function array_map;
-use function array_unique;
 use function assert;
 use function call_user_func;
 use function class_exists;
@@ -65,11 +64,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private ?array $providedTests                    = null;
     private ?bool $beStrictAboutChangesToGlobalState = null;
     private ?Factory $iteratorFilter                 = null;
-
-    /**
-     * @psalm-var array<int,string>
-     */
-    private array $warnings = [];
 
     /**
      * Constructs a new TestSuite.
@@ -273,11 +267,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         } else {
             throw new Exception;
         }
-    }
-
-    public function addWarning(string $warning): void
-    {
-        $this->warnings[] = $warning;
     }
 
     /**
@@ -643,14 +632,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $test->injectFilter($filter);
             }
         }
-    }
-
-    /**
-     * @psalm-return array<int,string>
-     */
-    public function warnings(): array
-    {
-        return array_unique($this->warnings);
     }
 
     /**

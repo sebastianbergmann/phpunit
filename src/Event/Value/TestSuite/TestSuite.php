@@ -47,11 +47,6 @@ abstract class TestSuite
     private string $sortId;
     private TestCollection $tests;
 
-    /**
-     * @psalm-var list<string>
-     */
-    private array $warnings;
-
     public static function fromTestSuite(FrameworkTestSuite $testSuite): self
     {
         $groups = [];
@@ -88,7 +83,6 @@ abstract class TestSuite
                     $testSuite->requires(),
                     $testSuite->sortId(),
                     TestCollection::fromArray($tests),
-                    $testSuite->warnings(),
                     $className,
                     $methodName,
                     $reflector->getFileName(),
@@ -117,7 +111,6 @@ abstract class TestSuite
                     $testSuite->requires(),
                     $testSuite->sortId(),
                     TestCollection::fromArray($tests),
-                    $testSuite->warnings(),
                     $reflector->getFileName(),
                     $reflector->getStartLine(),
                 );
@@ -140,11 +133,10 @@ abstract class TestSuite
             $testSuite->requires(),
             $testSuite->sortId(),
             TestCollection::fromArray($tests),
-            $testSuite->warnings(),
         );
     }
 
-    public function __construct(string $name, int $size, array $groups, array $provides, array $requires, string $sortId, TestCollection $tests, array $warnings)
+    public function __construct(string $name, int $size, array $groups, array $provides, array $requires, string $sortId, TestCollection $tests)
     {
         $this->name     = $name;
         $this->count    = $size;
@@ -153,7 +145,6 @@ abstract class TestSuite
         $this->requires = $requires;
         $this->sortId   = $sortId;
         $this->tests    = $tests;
-        $this->warnings = $warnings;
     }
 
     public function name(): string
@@ -198,11 +189,6 @@ abstract class TestSuite
     public function tests(): TestCollection
     {
         return $this->tests;
-    }
-
-    public function warnings(): array
-    {
-        return $this->warnings;
     }
 
     /**

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI;
 
-use const PHP_EOL;
 use const PHP_SAPI;
 use const PHP_VERSION;
 use function array_map;
@@ -387,18 +386,6 @@ final class TestRunner
 
         $this->processSuiteFilters($suite);
         $suite->setRunTestInSeparateProcess($this->configuration->processIsolation());
-
-        $testSuiteWarningsPrinted = false;
-
-        foreach ($suite->warnings() as $warning) {
-            $this->writeMessage('Warning', $warning);
-
-            $testSuiteWarningsPrinted = true;
-        }
-
-        if ($testSuiteWarningsPrinted) {
-            $this->write(PHP_EOL);
-        }
 
         Event\Facade::emitter()->testExecutionStarted(
             Event\TestSuite\TestSuite::fromTestSuite($suite)
