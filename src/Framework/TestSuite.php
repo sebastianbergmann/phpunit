@@ -45,10 +45,7 @@ use Throwable;
  */
 class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 {
-    protected ?bool $backupGlobals           = null;
-    protected ?bool $backupStaticProperties  = null;
-    protected bool $runTestInSeparateProcess = false;
-    protected string $name                   = '';
+    protected string $name = '';
 
     /**
      * @psalm-var array<string,list<Test>>
@@ -480,18 +477,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 break;
             }
 
-            if ($test instanceof TestCase || $test instanceof self) {
-                if ($this->backupGlobals !== null) {
-                    $test->setBackupGlobals($this->backupGlobals);
-                }
-
-                if ($this->backupStaticProperties !== null) {
-                    $test->setBackupStaticProperties($this->backupStaticProperties);
-                }
-
-                $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
-            }
-
             $test->run($result);
         }
 
@@ -543,11 +528,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
     }
 
-    public function setRunTestInSeparateProcess(bool $runTestInSeparateProcess): void
-    {
-        $this->runTestInSeparateProcess = $runTestInSeparateProcess;
-    }
-
     public function setName(string $name): void
     {
         $this->name = $name;
@@ -581,20 +561,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     public function markTestSuiteSkipped(string $message = ''): never
     {
         throw new SkippedTestSuiteError($message);
-    }
-
-    public function setBackupGlobals(bool $backupGlobals): void
-    {
-        if (null === $this->backupGlobals) {
-            $this->backupGlobals = $backupGlobals;
-        }
-    }
-
-    public function setBackupStaticProperties(bool $backupStaticProperties): void
-    {
-        if (null === $this->backupStaticProperties) {
-            $this->backupStaticProperties = $backupStaticProperties;
-        }
     }
 
     /**

@@ -20,6 +20,7 @@ use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\InvalidDataSetException;
 use ReflectionClass;
@@ -167,14 +168,16 @@ final class TestBuilder
 
         if ($backupSettings['backupGlobals'] !== null) {
             $test->setBackupGlobals($backupSettings['backupGlobals']);
+        } else {
+            $test->setBackupGlobals(ConfigurationRegistry::get()->backupGlobals());
         }
 
         $test->setBackupGlobalsExcludeList($backupSettings['backupGlobalsExcludeList']);
 
         if ($backupSettings['backupStaticProperties'] !== null) {
-            $test->setBackupStaticProperties(
-                $backupSettings['backupStaticProperties']
-            );
+            $test->setBackupStaticProperties($backupSettings['backupStaticProperties']);
+        } else {
+            $test->setBackupStaticProperties(ConfigurationRegistry::get()->backupStaticProperties());
         }
 
         $test->setBackupStaticPropertiesExcludeList($backupSettings['backupStaticPropertiesExcludeList']);

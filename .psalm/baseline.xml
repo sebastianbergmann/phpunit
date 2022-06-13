@@ -360,16 +360,6 @@
     </PossiblyInvalidOperand>
   </file>
   <file src="src/Framework/TestBuilder.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$className</code>
-    </ArgumentTypeCoercion>
-    <InvalidDocblock occurrences="2">
-      <code>private function buildDataProviderTestSuite(string $methodName, string $className, array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite</code>
-      <code>private function configureTestCase(TestCase $test, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): void</code>
-    </InvalidDocblock>
-    <InvalidStringClass occurrences="1">
-      <code>new $className($methodName)</code>
-    </InvalidStringClass>
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
     </LessSpecificReturnStatement>
@@ -423,9 +413,6 @@
     <PropertyTypeCoercion occurrences="1">
       <code>$this-&gt;doubledTypes</code>
     </PropertyTypeCoercion>
-    <RedundantCondition occurrences="1">
-      <code>$this instanceof PhptTestCase</code>
-    </RedundantCondition>
   </file>
   <file src="src/Framework/TestRunner.php">
     <ArgumentTypeCoercion occurrences="1">

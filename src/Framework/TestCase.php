@@ -83,7 +83,6 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Error\Deprecation;
 use PHPUnit\Util\Error\Error;
@@ -911,9 +910,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setBackupGlobals(bool $backupGlobals): void
     {
-        if ($this->backupGlobals === null) {
-            $this->backupGlobals = $backupGlobals;
-        }
+        $this->backupGlobals = $backupGlobals;
     }
 
     /**
@@ -929,9 +926,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setBackupStaticProperties(bool $backupStaticProperties): void
     {
-        if ($this->backupStaticProperties === null) {
-            $this->backupStaticProperties = $backupStaticProperties;
-        }
+        $this->backupStaticProperties = $backupStaticProperties;
     }
 
     /**
@@ -957,9 +952,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function setRunClassInSeparateProcess(bool $runClassInSeparateProcess): void
     {
-        if ($this->runClassInSeparateProcess === null) {
-            $this->runClassInSeparateProcess = $runClassInSeparateProcess;
-        }
+        $this->runClassInSeparateProcess = $runClassInSeparateProcess;
     }
 
     /**
@@ -2070,8 +2063,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     private function shouldRunInSeparateProcess(): bool
     {
-        return ($this->runTestInSeparateProcess || $this->runClassInSeparateProcess) &&
-               !$this->inIsolation && !$this instanceof PhptTestCase;
+        if ($this->inIsolation) {
+            return false;
+        }
+
+        if ($this->runTestInSeparateProcess) {
+            return true;
+        }
+
+        if ($this->runClassInSeparateProcess) {
+            return true;
+        }
+
+        return ConfigurationRegistry::get()->processIsolation();
     }
 
     private function isCallableTestMethod(string $dependency): bool

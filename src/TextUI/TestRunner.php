@@ -101,9 +101,6 @@ final class TestRunner
             $GLOBALS['__PHPUNIT_BOOTSTRAP'] = $this->configuration->bootstrap();
         }
 
-        $suite->setBackupGlobals($this->configuration->backupGlobals());
-        $suite->setBackupStaticProperties($this->configuration->backupStaticProperties());
-
         if ($this->configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
             mt_srand($this->configuration->randomOrderSeed());
         }
@@ -384,7 +381,6 @@ final class TestRunner
         }
 
         $this->processSuiteFilters($suite);
-        $suite->setRunTestInSeparateProcess($this->configuration->processIsolation());
 
         Event\Facade::emitter()->testExecutionStarted(
             Event\TestSuite\TestSuite::fromTestSuite($suite)
