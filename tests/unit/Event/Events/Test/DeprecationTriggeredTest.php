@@ -13,24 +13,30 @@ use const PHP_EOL;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass(DeprecatedPhpunitFeatureUsed::class)]
-final class DeprecatedPhpunitFeatureUsedTest extends AbstractEventTestCase
+#[CoversClass(DeprecationTriggered::class)]
+final class DeprecationTriggeredTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
         $message       = 'message';
+        $file          = 'file';
+        $line          = 1;
 
-        $event = new DeprecatedPhpunitFeatureUsed(
+        $event = new DeprecationTriggered(
             $telemetryInfo,
             $test,
-            $message
+            $message,
+            $file,
+            $line
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
         $this->assertSame($message, $event->message());
-        $this->assertSame('Test Used Deprecated PHPUnit Feature (PHPUnit\Event\AbstractEventTestCase::foo)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame($file, $event->file());
+        $this->assertSame($line, $event->line());
+        $this->assertSame('Test Triggered Deprecation (PHPUnit\Event\AbstractEventTestCase::foo)' . PHP_EOL . 'message', $event->asString());
     }
 }

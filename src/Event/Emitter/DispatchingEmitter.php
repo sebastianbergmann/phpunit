@@ -473,10 +473,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testUsedDeprecatedPhpunitFeature(Code\Test $test, string $message): void
+    public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(
-            new Test\DeprecatedPhpunitFeatureUsed(
+            new Test\PhpunitDeprecationTriggered(
                 $this->telemetryInfo(),
                 $test,
                 $message
@@ -484,10 +484,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message, string $file, int $line): void
+    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
-            new Test\DeprecatedPhpFeatureUsed(
+            new Test\PhpDeprecationTriggered(
                 $this->telemetryInfo(),
                 $test,
                 $message,
@@ -497,10 +497,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testUsedDeprecatedFeature(Code\Test $test, string $message, string $file, int $line): void
+    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
-            new Test\DeprecatedFeatureUsed(
+            new Test\DeprecationTriggered(
                 $this->telemetryInfo(),
                 $test,
                 $message,

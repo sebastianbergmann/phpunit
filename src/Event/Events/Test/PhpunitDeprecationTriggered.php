@@ -17,21 +17,17 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class DeprecatedFeatureUsed implements Event
+final class PhpunitDeprecationTriggered implements Event
 {
     private Telemetry\Info $telemetryInfo;
     private Test $test;
     private string $message;
-    private string $file;
-    private int $line;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message, string $file, int $line)
+    public function __construct(Telemetry\Info $telemetryInfo, Test $test, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->test          = $test;
         $this->message       = $message;
-        $this->file          = $file;
-        $this->line          = $line;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -49,16 +45,6 @@ final class DeprecatedFeatureUsed implements Event
         return $this->message;
     }
 
-    public function file(): string
-    {
-        return $this->file;
-    }
-
-    public function line(): int
-    {
-        return $this->line;
-    }
-
     public function asString(): string
     {
         $message = $this->message;
@@ -68,7 +54,7 @@ final class DeprecatedFeatureUsed implements Event
         }
 
         return sprintf(
-            'Test Used Deprecated Feature (%s)%s',
+            'Test Triggered PHPUnit Deprecation (%s)%s',
             $this->test->id(),
             $message
         );

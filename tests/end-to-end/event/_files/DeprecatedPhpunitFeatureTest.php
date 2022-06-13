@@ -16,7 +16,7 @@ final class DeprecatedPhpunitFeatureTest extends TestCase
 {
     public function testDeprecatedPhpunitFeature(): void
     {
-        EventFacade::emitter()->testUsedDeprecatedPhpunitFeature(
+        EventFacade::emitter()->testTriggeredPhpunitDeprecation(
             $this->valueObjectForEvents(),
             'message'
         );

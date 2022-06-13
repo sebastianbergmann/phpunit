@@ -136,11 +136,11 @@ interface Emitter
      */
     public function testAfterLastTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
 
-    public function testUsedDeprecatedPhpunitFeature(Code\Test $test, string $message): void;
+    public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void;
 
-    public function testUsedDeprecatedPhpFeature(Code\Test $test, string $message, string $file, int $line): void;
+    public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line): void;
 
-    public function testUsedDeprecatedFeature(Code\Test $test, string $message, string $file, int $line): void;
+    public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line): void;
 
     public function testTriggeredError(Code\Test $test, string $message, string $file, int $line): void;
 

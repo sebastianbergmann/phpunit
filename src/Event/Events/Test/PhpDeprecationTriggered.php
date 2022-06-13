@@ -17,7 +17,7 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class DeprecatedPhpFeatureUsed implements Event
+final class PhpDeprecationTriggered implements Event
 {
     private Telemetry\Info $telemetryInfo;
     private Test $test;
@@ -68,7 +68,7 @@ final class DeprecatedPhpFeatureUsed implements Event
         }
 
         return sprintf(
-            'Test Used Deprecated PHP Feature (%s)%s',
+            'Test Triggered PHP Deprecation (%s)%s',
             $this->test->id(),
             $message
         );

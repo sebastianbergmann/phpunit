@@ -123,7 +123,7 @@ final class Handler
                 break;
 
             case E_DEPRECATED:
-                Event\Facade::emitter()->testUsedDeprecatedPhpFeature(
+                Event\Facade::emitter()->testTriggeredPhpDeprecation(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
@@ -137,7 +137,7 @@ final class Handler
                 break;
 
             case E_USER_DEPRECATED:
-                Event\Facade::emitter()->testUsedDeprecatedFeature(
+                Event\Facade::emitter()->testTriggeredDeprecation(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
