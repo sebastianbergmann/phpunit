@@ -138,19 +138,19 @@ final class ResultPrinter
         $this->defectListPrinted = true;
     }
 
-    private function printDefect(TestFailure $defect, int $count): void
+    private function printDefect(TestFailure $defect, int $index): void
     {
-        $this->printDefectHeader($defect, $count);
+        $this->printDefectHeader($index, $defect->getTestName());
         $this->printDefectTrace($defect);
     }
 
-    private function printDefectHeader(TestFailure $defect, int $count): void
+    private function printDefectHeader(int $index, string $testName): void
     {
         $this->printer->print(
             sprintf(
                 "\n%d) %s\n",
-                $count,
-                $defect->getTestName()
+                $index,
+                $testName
             )
         );
     }
