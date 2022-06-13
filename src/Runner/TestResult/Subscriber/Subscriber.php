@@ -7,18 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\TestResult;
-
-use PHPUnit\Event\Test\ConsideredRisky;
-use PHPUnit\Event\Test\ConsideredRiskySubscriber;
+namespace PHPUnit\TestRunner\TestResult;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestConsideredRiskySubscriber extends Subscriber implements ConsideredRiskySubscriber
+abstract class Subscriber
 {
-    public function notify(ConsideredRisky $event): void
+    private Collector $collector;
+
+    public function __construct(Collector $collector)
     {
-        $this->collector()->testConsideredRisky($event);
+        $this->collector = $collector;
+    }
+
+    protected function collector(): Collector
+    {
+        return $this->collector;
     }
 }

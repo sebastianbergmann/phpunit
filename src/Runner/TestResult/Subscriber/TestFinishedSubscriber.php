@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\TestResult;
+namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Event\Test\Failed;
-use PHPUnit\Event\Test\FailedSubscriber;
+use PHPUnit\Event\Test\Finished;
+use PHPUnit\Event\Test\FinishedSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestFailedSubscriber extends Subscriber implements FailedSubscriber
+final class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
-    public function notify(Failed $event): void
+    public function notify(Finished $event): void
     {
-        $this->collector()->testFailed($event);
+        $this->collector()->testFinished($event);
     }
 }

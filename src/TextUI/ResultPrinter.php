@@ -14,7 +14,7 @@ use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestFailure;
 use PHPUnit\Framework\TestResult as LegacyTestResult;
-use PHPUnit\TextUI\TestResult\TestResult;
+use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 use ReflectionMethod;

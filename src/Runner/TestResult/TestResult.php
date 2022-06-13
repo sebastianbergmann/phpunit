@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\TestResult;
+namespace PHPUnit\TestRunner\TestResult;
 
 use function count;
 use PHPUnit\Event\Test\Aborted;

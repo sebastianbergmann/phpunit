@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\TestResult;
+namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Event\Test\PassedWithWarning;
-use PHPUnit\Event\Test\PassedWithWarningSubscriber;
+use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\Test\SkippedSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestPassedWithWarningSubscriber extends Subscriber implements PassedWithWarningSubscriber
+final class TestSkippedSubscriber extends Subscriber implements SkippedSubscriber
 {
-    public function notify(PassedWithWarning $event): void
+    public function notify(Skipped $event): void
     {
-        $this->collector()->testPassedWithWarning($event);
+        $this->collector()->testSkipped($event);
     }
 }

@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\TestResult;
+namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Event\Test\Aborted;
-use PHPUnit\Event\Test\AbortedSubscriber;
+use PHPUnit\Event\Test\Errored;
+use PHPUnit\Event\Test\ErroredSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestAbortedSubscriber extends Subscriber implements AbortedSubscriber
+final class TestErroredSubscriber extends Subscriber implements ErroredSubscriber
 {
-    public function notify(Aborted $event): void
+    public function notify(Errored $event): void
     {
-        $this->collector()->testAborted($event);
+        $this->collector()->testErrored($event);
     }
 }
