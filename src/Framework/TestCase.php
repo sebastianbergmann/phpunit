@@ -84,6 +84,7 @@ use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Error\Deprecation;
 use PHPUnit\Util\Error\Error;
 use PHPUnit\Util\Error\Handler as ErrorHandler;
@@ -126,7 +127,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-var array<string,list<class-string>>
      */
     private array $backupStaticPropertiesExcludeList = [];
-    private ?bool $beStrictAboutChangesToGlobalState = false;
     private ?Snapshot $snapshot                      = null;
     private ?bool $runClassInSeparateProcess         = null;
     private ?bool $runTestInSeparateProcess          = null;
@@ -904,14 +904,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function dependencyInput(): array
     {
         return $this->dependencyInput;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function setBeStrictAboutChangesToGlobalState(bool $beStrictAboutChangesToGlobalState): void
-    {
-        $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;
     }
 
     /**
@@ -1830,7 +1822,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return;
         }
 
-        if ($this->beStrictAboutChangesToGlobalState) {
+        if (ConfigurationRegistry::get()->beStrictAboutChangesToGlobalState()) {
             $snapshotAfter = $this->createGlobalStateSnapshot($this->backupGlobals === true);
 
             try {

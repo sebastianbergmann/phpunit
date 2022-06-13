@@ -60,10 +60,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * @psalm-var list<Test>
      */
-    private array $tests                             = [];
-    private ?array $providedTests                    = null;
-    private ?bool $beStrictAboutChangesToGlobalState = null;
-    private ?Factory $iteratorFilter                 = null;
+    private array $tests             = [];
+    private ?array $providedTests    = null;
+    private ?Factory $iteratorFilter = null;
 
     /**
      * Constructs a new TestSuite.
@@ -490,10 +489,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $test->setBackupStaticProperties($this->backupStaticProperties);
                 }
 
-                if ($this->beStrictAboutChangesToGlobalState !== null) {
-                    $test->setBeStrictAboutChangesToGlobalState($this->beStrictAboutChangesToGlobalState);
-                }
-
                 $test->setRunTestInSeparateProcess($this->runTestInSeparateProcess);
             }
 
@@ -586,13 +581,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     public function markTestSuiteSkipped(string $message = ''): never
     {
         throw new SkippedTestSuiteError($message);
-    }
-
-    public function setBeStrictAboutChangesToGlobalState(bool $beStrictAboutChangesToGlobalState): void
-    {
-        if (null === $this->beStrictAboutChangesToGlobalState) {
-            $this->beStrictAboutChangesToGlobalState = $beStrictAboutChangesToGlobalState;
-        }
     }
 
     public function setBackupGlobals(bool $backupGlobals): void

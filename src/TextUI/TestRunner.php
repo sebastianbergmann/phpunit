@@ -103,7 +103,6 @@ final class TestRunner
 
         $suite->setBackupGlobals($this->configuration->backupGlobals());
         $suite->setBackupStaticProperties($this->configuration->backupStaticProperties());
-        $suite->setBeStrictAboutChangesToGlobalState($this->configuration->beStrictAboutChangesToGlobalState());
 
         if ($this->configuration->executionOrder() === TestSuiteSorter::ORDER_RANDOMIZED) {
             mt_srand($this->configuration->randomOrderSeed());
