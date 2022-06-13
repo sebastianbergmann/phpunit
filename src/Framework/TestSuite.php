@@ -51,7 +51,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @psalm-var array<string,list<Test>>
      */
     protected array $groups         = [];
-    protected int $numTests         = -1;
     protected ?array $requiredTests = null;
 
     /**
@@ -303,18 +302,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * Counts the number of test cases that will be run by this test.
-     *
-     * @todo refactor usage of numTests in DefaultResultPrinter
      */
     public function count(): int
     {
-        $this->numTests = 0;
+        $numTests = 0;
 
         foreach ($this as $test) {
-            $this->numTests += count($test);
+            $numTests += count($test);
         }
 
-        return $this->numTests;
+        return $numTests;
     }
 
     public function isEmpty(): bool
@@ -667,7 +664,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     private function clearCaches(): void
     {
-        $this->numTests      = -1;
         $this->providedTests = null;
         $this->requiredTests = null;
     }
