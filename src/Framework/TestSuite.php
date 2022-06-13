@@ -185,17 +185,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public function addTest(Test $test, array $groups = []): void
     {
-        try {
-            $class = new ReflectionClass($test);
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        $class = new ReflectionClass($test);
 
         if (!$class->isAbstract()) {
             $this->tests[] = $test;

@@ -245,17 +245,7 @@ final class NamePrettifier
 
         foreach ($reflector->getParameters() as $parameter) {
             if (!array_key_exists($i, $providedDataValues) && $parameter->isDefaultValueAvailable()) {
-                try {
-                    $providedDataValues[$i] = $parameter->getDefaultValue();
-                    // @codeCoverageIgnoreStart
-                } catch (ReflectionException $e) {
-                    throw new UtilException(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
-                // @codeCoverageIgnoreEnd
+                $providedDataValues[$i] = $parameter->getDefaultValue();
             }
 
             $value = $providedDataValues[$i++] ?? null;

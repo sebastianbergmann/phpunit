@@ -439,7 +439,6 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <ArgumentTypeCoercion occurrences="1">

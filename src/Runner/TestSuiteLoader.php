@@ -105,17 +105,7 @@ final class TestSuiteLoader
         }
 
         if ($class->hasMethod('suite')) {
-            try {
-                $method = $class->getMethod('suite');
-                // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
-                throw new Exception(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-            // @codeCoverageIgnoreEnd
+            $method = $class->getMethod('suite');
 
             if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
                 return $class;

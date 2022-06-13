@@ -756,17 +756,7 @@ final class Generator
                     $methodName = $method->getName();
 
                     if ($class->hasMethod($methodName)) {
-                        try {
-                            $classMethod = $class->getMethod($methodName);
-                            // @codeCoverageIgnoreStart
-                        } catch (\ReflectionException $e) {
-                            throw new ReflectionException(
-                                $e->getMessage(),
-                                (int) $e->getCode(),
-                                $e
-                            );
-                        }
-                        // @codeCoverageIgnoreEnd
+                        $classMethod = $class->getMethod($methodName);
 
                         if (!$this->canMethodBeDoubled($classMethod)) {
                             continue;
@@ -797,17 +787,7 @@ final class Generator
             }
 
             if ($class->hasMethod('__clone')) {
-                try {
-                    $cloneMethod = $class->getMethod('__clone');
-                    // @codeCoverageIgnoreStart
-                } catch (\ReflectionException $e) {
-                    throw new ReflectionException(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
-                // @codeCoverageIgnoreEnd
+                $cloneMethod = $class->getMethod('__clone');
 
                 if (!$cloneMethod->isFinal()) {
                     if ($callOriginalClone && !$isInterface) {
@@ -836,17 +816,7 @@ final class Generator
         if (is_array($explicitMethods)) {
             foreach ($explicitMethods as $methodName) {
                 if ($class !== null && $class->hasMethod($methodName)) {
-                    try {
-                        $method = $class->getMethod($methodName);
-                        // @codeCoverageIgnoreStart
-                    } catch (\ReflectionException $e) {
-                        throw new ReflectionException(
-                            $e->getMessage(),
-                            (int) $e->getCode(),
-                            $e
-                        );
-                    }
-                    // @codeCoverageIgnoreEnd
+                    $method = $class->getMethod($methodName);
 
                     if ($this->canMethodBeDoubled($method)) {
                         $mockMethods->addMethods(

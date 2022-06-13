@@ -2086,11 +2086,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return false;
         }
 
-        try {
-            $class = new ReflectionClass($className);
-        } catch (ReflectionException $e) {
-            return false;
-        }
+        $class = new ReflectionClass($className);
 
         if (!$class->isSubclassOf(__CLASS__)) {
             return false;
