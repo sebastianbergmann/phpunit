@@ -346,14 +346,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * Set tests groups of the test case.
-     */
-    public function setGroupDetails(array $groups): void
-    {
-        $this->groups = $groups;
-    }
-
-    /**
      * Runs the tests and collects their result in a TestResult.
      *
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
