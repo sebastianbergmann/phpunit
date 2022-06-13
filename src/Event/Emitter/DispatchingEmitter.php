@@ -92,6 +92,16 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testRunnerTriggeredWarning(string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\WarningTriggered(
+                $this->telemetryInfo(),
+                $message
+            )
+        );
+    }
+
     public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
     {
         $this->dispatcher->dispatch(

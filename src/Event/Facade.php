@@ -241,6 +241,7 @@ final class Facade
             TestRunner\ExtensionLoaded::class,
             TestRunner\Finished::class,
             TestRunner\Started::class,
+            TestRunner\WarningTriggered::class,
 
             TestSuite\Filtered::class,
             TestSuite\Finished::class,
