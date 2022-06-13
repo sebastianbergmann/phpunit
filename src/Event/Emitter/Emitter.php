@@ -63,7 +63,7 @@ interface Emitter
 
     public function testConsideredRisky(Code\Test $test, Throwable $throwable): void;
 
-    public function testAborted(Code\Test $test, Throwable $throwable): void;
+    public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void;
 
     public function testSkipped(Code\Test $test, ?Throwable $throwable, string $message): void;
 

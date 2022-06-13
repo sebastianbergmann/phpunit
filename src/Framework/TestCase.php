@@ -761,7 +761,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (IncompleteTest $e) {
             $this->status = TestStatus::incomplete($e->getMessage());
 
-            $emitter->testAborted(
+            $emitter->testMarkedAsIncomplete(
                 $this->valueObjectForEvents(),
                 Event\Code\Throwable::from($e)
             );

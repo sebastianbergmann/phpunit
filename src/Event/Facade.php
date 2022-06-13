@@ -188,7 +188,7 @@ final class Facade
             GlobalState\Modified::class,
             GlobalState\Restored::class,
 
-            Test\Aborted::class,
+            Test\MarkedIncomplete::class,
             Test\AfterLastTestMethodCalled::class,
             Test\AfterLastTestMethodFinished::class,
             Test\AfterTestMethodCalled::class,

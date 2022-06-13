@@ -19,7 +19,7 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class Aborted implements Event
+final class MarkedIncomplete implements Event
 {
     private Telemetry\Info $telemetryInfo;
     private Code\Test $test;
@@ -56,7 +56,7 @@ final class Aborted implements Event
         }
 
         return sprintf(
-            'Test Aborted (%s)%s',
+            'Test Marked Incomplete (%s)%s',
             $this->test->id(),
             $message
         );

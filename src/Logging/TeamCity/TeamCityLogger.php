@@ -22,11 +22,11 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Telemetry\HRTime;
-use PHPUnit\Event\Test\Aborted;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
+use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
@@ -147,7 +147,7 @@ final class TeamCityLogger
         $this->time = $event->telemetryInfo()->time();
     }
 
-    public function testAborted(Aborted $event): void
+    public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         if ($this->time === null) {
             $this->time = $event->telemetryInfo()->time();
@@ -277,7 +277,7 @@ final class TeamCityLogger
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestAbortedSubscriber($this));
+        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
     }

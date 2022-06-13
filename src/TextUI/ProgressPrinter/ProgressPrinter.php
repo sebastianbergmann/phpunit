@@ -72,7 +72,7 @@ final class ProgressPrinter
         }
     }
 
-    public function testAborted(): void
+    public function testMarkedIncomplete(): void
     {
         $this->updateTestStatus(TestStatus::incomplete());
     }
@@ -145,7 +145,7 @@ final class ProgressPrinter
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestAbortedSubscriber($this));
+        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
         Facade::registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
     }

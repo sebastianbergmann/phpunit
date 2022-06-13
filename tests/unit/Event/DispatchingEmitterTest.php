@@ -598,21 +598,21 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame($throwable, $event->throwable());
     }
 
-    public function testTestAbortedDispatchesTestAbortedEvent(): void
+    public function testTestMarkedIncompleteDispatchesTestMarkedIncompleteEvent(): void
     {
         $test = $this->testValueObject();
 
-        $subscriber = new class extends RecordingSubscriber implements Test\AbortedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\MarkedIncompleteSubscriber
         {
-            public function notify(Test\Aborted $event): void
+            public function notify(Test\MarkedIncomplete $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\AbortedSubscriber::class,
-            Test\Aborted::class,
+            Test\MarkedIncompleteSubscriber::class,
+            Test\MarkedIncomplete::class,
             $subscriber
         );
 
@@ -623,9 +623,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $throwable = Throwable::from(new Exception('aborted'));
+        $throwable = Throwable::from(new Exception('incomplete'));
 
-        $emitter->testAborted(
+        $emitter->testMarkedAsIncomplete(
             $test,
             $throwable
         );
@@ -634,7 +634,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(Test\Aborted::class, $event);
+        $this->assertInstanceOf(Test\MarkedIncomplete::class, $event);
 
         $this->assertSame($test, $event->test());
         $this->assertSame($throwable, $event->throwable());

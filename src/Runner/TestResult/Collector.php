@@ -11,12 +11,12 @@ namespace PHPUnit\TestRunner\TestResult;
 
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
-use PHPUnit\Event\Test\Aborted;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
+use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
@@ -38,7 +38,7 @@ final class Collector
     private array $skippedTests = [];
 
     /**
-     * @psalm-var list<Aborted>
+     * @psalm-var list<MarkedIncomplete>
      */
     private array $incompleteTests = [];
 
@@ -70,7 +70,7 @@ final class Collector
     {
         Facade::registerSubscriber(new ExecutionStartedSubscriber($this));
         Facade::registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
-        Facade::registerSubscriber(new TestAbortedSubscriber($this));
+        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
@@ -121,7 +121,7 @@ final class Collector
         }
     }
 
-    public function testAborted(Aborted $event): void
+    public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         $this->incompleteTests[] = $event;
     }

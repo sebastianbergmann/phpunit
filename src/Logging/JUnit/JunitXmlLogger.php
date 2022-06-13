@@ -21,11 +21,11 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry\HRTime;
-use PHPUnit\Event\Test\Aborted;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
+use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\OutputPrinted;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
@@ -235,7 +235,7 @@ final class JunitXmlLogger
         $this->output          = null;
     }
 
-    public function testAborted(Aborted $event): void
+    public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         $this->handleIncompleteOrSkipped($event);
     }
@@ -287,7 +287,7 @@ final class JunitXmlLogger
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestAbortedSubscriber($this));
+        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
 
         if ($reportRiskyTests) {
@@ -325,7 +325,7 @@ final class JunitXmlLogger
         $this->currentTestCase->appendChild($fault);
     }
 
-    private function handleIncompleteOrSkipped(Aborted|Skipped $event): void
+    private function handleIncompleteOrSkipped(MarkedIncomplete|Skipped $event): void
     {
         if ($this->currentTestCase === null) {
             $this->createTestCase($event);
@@ -396,7 +396,7 @@ final class JunitXmlLogger
         );
     }
 
-    private function createTestCase(Prepared|Aborted|Skipped $event): void
+    private function createTestCase(Prepared|MarkedIncomplete|Skipped $event): void
     {
         $testCase = $this->document->createElement('testcase');
 

@@ -33,7 +33,7 @@ Test Runner Execution Started (1 test)
 Test Suite Started (PHPUnit\TestFixture\Event\IncompleteTest, 1 test)
 Test Preparation Started (PHPUnit\TestFixture\Event\IncompleteTest::testIncomplete)
 Test Prepared (PHPUnit\TestFixture\Event\IncompleteTest::testIncomplete)
-Test Aborted (PHPUnit\TestFixture\Event\IncompleteTest::testIncomplete)
+Test Marked Incomplete (PHPUnit\TestFixture\Event\IncompleteTest::testIncomplete)
 message
 Test Finished (PHPUnit\TestFixture\Event\IncompleteTest::testIncomplete)
 Test Suite Finished (PHPUnit\TestFixture\Event\IncompleteTest, 1 test)

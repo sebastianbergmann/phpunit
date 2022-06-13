@@ -247,10 +247,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testAborted(Code\Test $test, Throwable $throwable): void
+    public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
-            new Test\Aborted(
+            new Test\MarkedIncomplete(
                 $this->telemetryInfo(),
                 $test,
                 $throwable

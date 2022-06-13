@@ -10,11 +10,11 @@
 namespace PHPUnit\TestRunner\TestResult;
 
 use function count;
-use PHPUnit\Event\Test\Aborted;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
+use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Skipped;
 
@@ -53,7 +53,7 @@ final class TestResult
     private array $skippedTests;
 
     /**
-     * @psalm-var list<Aborted>
+     * @psalm-var list<MarkedIncomplete>
      */
     private array $incompleteTests;
 
@@ -63,7 +63,7 @@ final class TestResult
      * @psalm-param array<string,list<PassedWithWarning>> $testsWithWarnings
      * @psalm-param array<string,list<ConsideredRisky>> $riskyTests
      * @psalm-param list<Skipped> $skippedTests
-     * @psalm-param list<Aborted> $incompleteTests
+     * @psalm-param list<MarkedIncomplete> $incompleteTests
      */
     public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $erroredTests, array $failedTests, array $testsWithWarnings, array $riskyTests, array $skippedTests, array $incompleteTests)
     {

@@ -14,17 +14,17 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass(Aborted::class)]
-final class AbortedTest extends AbstractEventTestCase
+#[CoversClass(MarkedIncomplete::class)]
+final class MarkedIncompleteTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
 
-        $throwable = Code\Throwable::from(new Exception('aborted'));
+        $throwable = Code\Throwable::from(new Exception('incomplete'));
 
-        $event = new Aborted(
+        $event = new MarkedIncomplete(
             $telemetryInfo,
             $test,
             $throwable
