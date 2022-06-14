@@ -139,7 +139,7 @@ final class TestRunner
         }
 
         if ($this->configuration->hasRepeat()) {
-            $_suite = new TestSuite;
+            $_suite = TestSuite::empty();
 
             /* @noinspection PhpUnusedLocalVariableInspection */
             foreach (range(1, $this->configuration->repeat()) as $step) {

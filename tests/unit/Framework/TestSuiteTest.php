@@ -30,21 +30,21 @@ final class TestSuiteTest extends TestCase
 {
     public function testNotPublicTestCase(): void
     {
-        $suite = new TestSuite(NotPublicTestCase::class);
+        $suite = TestSuite::fromClassName(NotPublicTestCase::class);
 
         $this->assertCount(1, $suite);
     }
 
     public function testNotVoidTestCase(): void
     {
-        $suite = new TestSuite(NotVoidTestCase::class);
+        $suite = TestSuite::fromClassName(NotVoidTestCase::class);
 
         $this->assertCount(1, $suite);
     }
 
     public function testBeforeAndAfterAnnotations(): void
     {
-        $test = new TestSuite(BeforeAndAfterTest::class);
+        $test = TestSuite::fromClassName(BeforeAndAfterTest::class);
 
         BeforeAndAfterTest::resetProperties();
 
@@ -58,7 +58,7 @@ final class TestSuiteTest extends TestCase
 
     public function testPreConditionAndPostConditionAnnotations(): void
     {
-        $test = new TestSuite(PreConditionAndPostConditionTest::class);
+        $test = TestSuite::fromClassName(PreConditionAndPostConditionTest::class);
 
         PreConditionAndPostConditionTest::resetProperties();
 
@@ -72,7 +72,7 @@ final class TestSuiteTest extends TestCase
 
     public function testNormalizeProvidedDependencies(): void
     {
-        $suite = new TestSuite(MultiDependencyTest::class);
+        $suite = TestSuite::fromClassName(MultiDependencyTest::class);
 
         $this->assertEquals([
             MultiDependencyTest::class . '::class',
@@ -86,14 +86,14 @@ final class TestSuiteTest extends TestCase
 
     public function testNormalizeRequiredDependencies(): void
     {
-        $suite = new TestSuite(MultiDependencyTest::class);
+        $suite = TestSuite::fromClassName(MultiDependencyTest::class);
 
         $this->assertSame([], $suite->requires());
     }
 
     public function testDetectMissingDependenciesBetweenTestSuites(): void
     {
-        $suite = new TestSuite(DependencyOnClassTest::class);
+        $suite = TestSuite::fromClassName(DependencyOnClassTest::class);
 
         $this->assertEquals([
             DependencyOnClassTest::class . '::class',
@@ -109,7 +109,7 @@ final class TestSuiteTest extends TestCase
 
     public function testResolveDependenciesBetweenTestSuites(): void
     {
-        $suite = new TestSuite(DependencyOnClassTest::class);
+        $suite = TestSuite::fromClassName(DependencyOnClassTest::class);
         $suite->addTestSuite(new ReflectionClass(DependencyFailureTest::class));
         $suite->addTestSuite(new ReflectionClass(DependencySuccessTest::class));
 
@@ -137,7 +137,7 @@ final class TestSuiteTest extends TestCase
 
     public function testResolverOnlyUsesSuitesAndCases(): void
     {
-        $suite = new TestSuite('SomeName');
+        $suite = TestSuite::empty('SomeName');
         $suite->addTest(new DoubleTestCase(new Success('testOne')));
         $suite->addTestSuite(new ReflectionClass(DependencyOnClassTest::class));
 

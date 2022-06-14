@@ -76,14 +76,14 @@ final class TestSuiteBuilder
         if (is_dir($path)) {
             $files = (new FileIteratorFacade)->getFilesAsArray($path, $suffixes);
 
-            $suite = new TestSuite($path);
+            $suite = TestSuite::empty($path);
             $suite->addTestFiles($files);
 
             return $suite;
         }
 
         if (is_file($path) && str_ends_with($path, '.phpt')) {
-            $suite = new TestSuite;
+            $suite = TestSuite::empty();
             $suite->addTestFile($path);
 
             return $suite;
@@ -97,6 +97,6 @@ final class TestSuiteBuilder
             exit(1);
         }
 
-        return new TestSuite($testClass);
+        return TestSuite::fromClassReflector($testClass);
     }
 }

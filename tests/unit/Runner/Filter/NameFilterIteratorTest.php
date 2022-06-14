@@ -31,7 +31,7 @@ final class NameFilterIteratorTest extends TestCase
 
     private function createFilter(string $filter): NameFilterIterator
     {
-        $suite = new TestSuite;
+        $suite = TestSuite::empty();
         $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'));
 
         $iterator = new NameFilterIterator($suite->getIterator(), $filter);

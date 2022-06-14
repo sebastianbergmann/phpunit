@@ -94,7 +94,7 @@ final class TestBuilder
      */
     private function buildDataProviderTestSuite(string $methodName, string $className, array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
     {
-        $dataProviderTestSuite = new DataProviderTestSuite(
+        $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName
         );
 

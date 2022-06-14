@@ -59,85 +59,60 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
 
-    /**
-     * Constructs a new TestSuite.
-     *
-     *   - PHPUnit\Framework\TestSuite() constructs an empty TestSuite.
-     *
-     *   - PHPUnit\Framework\TestSuite(ReflectionClass) constructs a
-     *     TestSuite from the given class.
-     *
-     *   - PHPUnit\Framework\TestSuite(ReflectionClass, String)
-     *     constructs a TestSuite from the given class with the given
-     *     name.
-     *
-     *   - PHPUnit\Framework\TestSuite(String) either constructs a
-     *     TestSuite from the given class (if the passed string is the
-     *     name of an existing class) or constructs an empty TestSuite
-     *     with the given name.
-     *
-     * @throws Exception
-     */
-    public function __construct(ReflectionClass|string $theClass = '', string $name = '')
+    public static function empty(string $name = null): static
     {
-        if (!$theClass instanceof ReflectionClass) {
-            if (class_exists($theClass, true)) {
-                if ($name === '') {
-                    $name = $theClass;
-                }
-
-                try {
-                    $theClass = new ReflectionClass($theClass);
-                } catch (ReflectionException $e) {
-                    throw new Exception(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
-                // @codeCoverageIgnoreEnd
-            } else {
-                $this->setName($theClass);
-
-                return;
-            }
+        if ($name === null) {
+            $name = '';
         }
 
-        if (!$theClass->isSubclassOf(TestCase::class)) {
-            $this->setName((string) $theClass);
+        return new static($name);
+    }
 
-            return;
+    /**
+     * @psalm-param class-string $className
+     */
+    public static function fromClassName(string $className): static
+    {
+        try {
+            $class = new ReflectionClass($className);
+        } catch (ReflectionException $e) {
+            throw new Exception(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
         }
+        // @codeCoverageIgnoreEnd
 
-        if ($name !== '') {
-            $this->setName($name);
-        } else {
-            $this->setName($theClass->getName());
-        }
+        return static::fromClassReflector($class);
+    }
 
-        $constructor = $theClass->getConstructor();
+    public static function fromClassReflector(ReflectionClass $class): static
+    {
+        $testSuite = new static($class->getName());
 
-        if ($constructor !== null &&
-            !$constructor->isPublic()) {
+        $constructor = $class->getConstructor();
+
+        if ($constructor !== null && !$constructor->isPublic()) {
             $message = sprintf(
                 'Class "%s" has no public constructor.',
-                $theClass->getName()
+                $class->getName()
             );
 
             Event\Facade::emitter()->testRunnerTriggeredWarning($message);
 
-            $this->addTest(
+            $testSuite->addTest(
                 new WarningTestCase(
-                    $theClass->getName(),
+                    $class->getName(),
                     '',
                     $message
                 )
             );
 
-            return;
+            return $testSuite;
         }
 
-        foreach ((new Reflection)->publicMethodsInTestClass($theClass) as $method) {
+        foreach ((new Reflection)->publicMethodsInTestClass($class) as $method) {
             if ($method->getDeclaringClass()->getName() === Assert::class) {
                 continue;
             }
@@ -150,25 +125,32 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 continue;
             }
 
-            $this->addTestMethod($theClass, $method);
+            $testSuite->addTestMethod($class, $method);
         }
 
-        if (empty($this->tests)) {
+        if (count($testSuite) === 0) {
             $message = sprintf(
                 'No tests found in class "%s".',
-                $theClass->getName()
+                $class->getName()
             );
 
             Event\Facade::emitter()->testRunnerTriggeredWarning($message);
 
-            $this->addTest(
+            $testSuite->addTest(
                 new WarningTestCase(
-                    $theClass->getName(),
+                    $class->getName(),
                     '',
                     $message
                 )
             );
         }
+
+        return $testSuite;
+    }
+
+    private function __construct(string $name)
+    {
+        $this->name = $name;
     }
 
     /**
@@ -238,7 +220,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             );
         }
 
-        $this->addTest(new self($testClass));
+        $this->addTest(self::fromClassReflector($testClass));
     }
 
     /**
@@ -492,11 +474,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $result->endTestSuite($this);
 
         $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
-    }
-
-    public function setName(string $name): void
-    {
-        $this->name = $name;
     }
 
     /**

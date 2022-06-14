@@ -363,7 +363,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="3">
+    <MissingThrowsDocblock occurrences="2">
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
@@ -439,6 +439,11 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="1"/>
+    <UnsafeInstantiation occurrences="2">
+      <code>new static($class-&gt;getName())</code>
+      <code>new static($name)</code>
+    </UnsafeInstantiation>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -783,16 +788,13 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
-    <MissingThrowsDocblock occurrences="12">
+    <MissingThrowsDocblock occurrences="9">
       <code>addTestFile</code>
       <code>addTestFiles</code>
       <code>argument</code>
       <code>argument</code>
       <code>defaultTestSuite</code>
       <code>map</code>
-      <code>new TestSuite</code>
-      <code>new TestSuite($path)</code>
-      <code>new TestSuite($testClass)</code>
       <code>testSuffixes</code>
       <code>testSuite</code>
       <code>throw new TestFileNotFoundException($cliConfiguration-&gt;argument());</code>
