@@ -321,6 +321,7 @@ final class Configuration
                $this->hasCoverageCobertura() ||
                $this->hasCoverageCrap4j() ||
                $this->hasCoverageHtml() ||
+               $this->hasCoveragePhp() ||
                $this->hasCoverageText() ||
                $this->hasCoverageXml();
     }
