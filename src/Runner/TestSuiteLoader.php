@@ -104,14 +104,6 @@ final class TestSuiteLoader
             return $class;
         }
 
-        if ($class->hasMethod('suite')) {
-            $method = $class->getMethod('suite');
-
-            if (!$method->isAbstract() && $method->isPublic() && $method->isStatic()) {
-                return $class;
-            }
-        }
-
         throw $this->exceptionFor($suiteClassName, $suiteClassFile);
     }
 
