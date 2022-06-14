@@ -115,11 +115,6 @@ final class TestSuiteLoader
         throw $this->exceptionFor($suiteClassName, $suiteClassFile);
     }
 
-    public function reload(ReflectionClass $aClass): ReflectionClass
-    {
-        return $aClass;
-    }
-
     private function classNameFromFileName(string $suiteClassFile): string
     {
         $className = basename($suiteClassFile, '.php');
