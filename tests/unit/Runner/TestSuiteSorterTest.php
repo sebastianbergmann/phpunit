@@ -23,6 +23,7 @@ use PHPUnit\TestFixture\MultiDependencyTest;
 use PHPUnit\TestFixture\NotReorderableTest;
 use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestWithDifferentSizes;
+use ReflectionClass;
 
 #[CoversClass(TestSuiteSorter::class)]
 #[Small]
@@ -46,7 +47,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testThrowsExceptionWhenUsingInvalidOrderOption(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(MultiDependencyTest::class);
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
         $this->expectException(Exception::class);
@@ -57,7 +58,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testThrowsExceptionWhenUsingInvalidOrderDefectsOption(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(MultiDependencyTest::class);
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
         $this->expectException(Exception::class);
@@ -82,7 +83,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testBasicExecutionOrderOptions(int $order, bool $resolveDependencies, array $expectedOrder): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(MultiDependencyTest::class);
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
         $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFAULT);
@@ -94,7 +95,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testCanSetRandomizationWithASeed(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(MultiDependencyTest::class);
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
         mt_srand(54321);
@@ -114,7 +115,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testCanSetRandomizationWithASeedAndResolveDependencies(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(MultiDependencyTest::class);
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
         mt_srand(54321);
@@ -136,7 +137,7 @@ final class TestSuiteSorterTest extends TestCase
     {
         $suite = new TestSuite;
 
-        $suite->addTestSuite(MultiDependencyTest::class);
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
 
         $sorter = new TestSuiteSorter;
 
@@ -181,7 +182,7 @@ final class TestSuiteSorterTest extends TestCase
     {
         $suite = new TestSuite;
 
-        $suite->addTestSuite(MultiDependencyTest::class);
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
 
         $cache = new DefaultResultCache;
 
@@ -279,7 +280,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testSuiteSorterDefectsOptions(int $order, bool $resolveDependencies, array $runState, array $expected): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(MultiDependencyTest::class);
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
 
         $cache = new DefaultResultCache;
 
@@ -582,7 +583,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testCanHandleSuiteWithEmptyTestCase(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(EmptyTestCaseTest::class);
+        $suite->addTestSuite(new ReflectionClass(EmptyTestCaseTest::class));
 
         $sorter = new TestSuiteSorter;
 
@@ -620,7 +621,7 @@ final class TestSuiteSorterTest extends TestCase
     public function testOrderBySize(): void
     {
         $suite = new TestSuite;
-        $suite->addTestSuite(TestWithDifferentSizes::class);
+        $suite->addTestSuite(new ReflectionClass(TestWithDifferentSizes::class));
         $sorter = new TestSuiteSorter;
 
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_SIZE, true, TestSuiteSorter::ORDER_DEFAULT);

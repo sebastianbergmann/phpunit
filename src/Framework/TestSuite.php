@@ -19,7 +19,6 @@ use function count;
 use function implode;
 use function is_callable;
 use function is_file;
-use function is_string;
 use function sprintf;
 use function str_ends_with;
 use function str_starts_with;
@@ -216,42 +215,30 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     /**
      * Adds the tests from the given class to the suite.
      *
-     * @psalm-param object|class-string $testClass
-     *
      * @throws Exception
      */
-    public function addTestSuite(object|string $testClass): void
+    public function addTestSuite(ReflectionClass $testClass): void
     {
-        if (is_string($testClass) && !class_exists($testClass)) {
-            throw InvalidArgumentException::create(
-                1,
-                'class name or object'
+        if ($testClass->isAbstract()) {
+            throw new Exception(
+                sprintf(
+                    'Class %s is abstract',
+                    $testClass->getName()
+                )
             );
         }
 
-        if (is_string($testClass)) {
-            try {
-                $testClass = new ReflectionClass($testClass);
-                // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
-                throw new Exception(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-            // @codeCoverageIgnoreEnd
+        if (!$testClass->isSubclassOf(TestCase::class)) {
+            throw new Exception(
+                sprintf(
+                    'Class %s is not a subclass of %s',
+                    $testClass->getName(),
+                    TestCase::class
+                )
+            );
         }
 
-        if ($testClass instanceof self) {
-            $this->addTest($testClass);
-        } elseif ($testClass instanceof ReflectionClass) {
-            if (!$testClass->isAbstract() && $testClass->isSubclassOf(TestCase::class)) {
-                $this->addTest(new self($testClass));
-            }
-        } else {
-            throw new Exception;
-        }
+        $this->addTest(new self($testClass));
     }
 
     /**

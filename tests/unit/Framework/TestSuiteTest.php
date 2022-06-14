@@ -22,6 +22,7 @@ use PHPUnit\TestFixture\NotPublicTestCase;
 use PHPUnit\TestFixture\NotVoidTestCase;
 use PHPUnit\TestFixture\PreConditionAndPostConditionTest;
 use PHPUnit\TestFixture\Success;
+use ReflectionClass;
 
 #[CoversClass(TestSuite::class)]
 #[Small]
@@ -109,8 +110,8 @@ final class TestSuiteTest extends TestCase
     public function testResolveDependenciesBetweenTestSuites(): void
     {
         $suite = new TestSuite(DependencyOnClassTest::class);
-        $suite->addTestSuite(DependencyFailureTest::class);
-        $suite->addTestSuite(DependencySuccessTest::class);
+        $suite->addTestSuite(new ReflectionClass(DependencyFailureTest::class));
+        $suite->addTestSuite(new ReflectionClass(DependencySuccessTest::class));
 
         $this->assertEquals([
             DependencyOnClassTest::class . '::class',
@@ -138,7 +139,7 @@ final class TestSuiteTest extends TestCase
     {
         $suite = new TestSuite('SomeName');
         $suite->addTest(new DoubleTestCase(new Success('testOne')));
-        $suite->addTestSuite(new TestSuite(DependencyOnClassTest::class));
+        $suite->addTestSuite(new ReflectionClass(DependencyOnClassTest::class));
 
         $this->assertEquals([
             'SomeName::class',
