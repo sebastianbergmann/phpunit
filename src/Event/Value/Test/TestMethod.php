@@ -127,6 +127,11 @@ final class TestMethod extends Test
         return $buffer;
     }
 
+    public function nameWithClass(): string
+    {
+        return $this->className . '::' . $this->name();
+    }
+
     public function name(): string
     {
         if (!$this->testData->hasDataFromDataProvider()) {
