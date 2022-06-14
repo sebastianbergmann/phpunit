@@ -190,16 +190,6 @@ final class TestResult implements Countable
         }
     }
 
-    public function allHarmless(): bool
-    {
-        return $this->riskyCount() === 0;
-    }
-
-    public function riskyCount(): int
-    {
-        return count($this->risky);
-    }
-
     public function allCompletelyImplemented(): bool
     {
         return $this->notImplementedCount() === 0;
@@ -226,27 +216,12 @@ final class TestResult implements Countable
         return $this->notImplemented;
     }
 
-    public function noneSkipped(): bool
-    {
-        return $this->skippedCount() === 0;
-    }
-
-    public function skippedCount(): int
-    {
-        return count($this->skipped);
-    }
-
     /**
      * @psalm-return list<TestFailure>
      */
     public function skipped(): array
     {
         return $this->skipped;
-    }
-
-    public function errorCount(): int
-    {
-        return count($this->errors);
     }
 
     /**
@@ -257,22 +232,12 @@ final class TestResult implements Countable
         return $this->errors;
     }
 
-    public function failureCount(): int
-    {
-        return count($this->failures);
-    }
-
     /**
      * @psalm-return list<TestFailure>
      */
     public function failures(): array
     {
         return $this->failures;
-    }
-
-    public function warningCount(): int
-    {
-        return count($this->warnings);
     }
 
     /**
