@@ -32,6 +32,7 @@ use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Event\UnknownSubscriberTypeException;
+use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
@@ -268,7 +269,7 @@ final class JunitXmlLogger
 
     public function testConsideredRisky(ConsideredRisky $event): void
     {
-        $this->handleFault($event->test(), $event->throwable(), 'error');
+        $this->handleRisky($event->test(), $event->message());
 
         $this->testSuiteErrors[$this->testSuiteLevel]++;
     }
@@ -323,6 +324,22 @@ final class JunitXmlLogger
         $fault->setAttribute('type', $throwable->className());
 
         $this->currentTestCase->appendChild($fault);
+    }
+
+    private function handleRisky(Test $test, string $message): void
+    {
+        assert($this->currentTestCase !== null);
+
+        $buffer = $this->testAsString($test) . $message;
+
+        $risky = $this->document->createElement(
+            'error',
+            Xml::prepareString($buffer)
+        );
+
+        $risky->setAttribute('type', RiskyTest::class);
+
+        $this->currentTestCase->appendChild($risky);
     }
 
     private function handleIncompleteOrSkipped(MarkedIncomplete|Skipped $event): void

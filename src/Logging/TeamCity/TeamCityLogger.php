@@ -239,8 +239,8 @@ final class TeamCityLogger
             'testFailed',
             [
                 'name'     => $event->test()->name(),
-                'message'  => $this->message($event->throwable()),
-                'details'  => $this->details($event->throwable()),
+                'message'  => $event->message(),
+                'details'  => '',
                 'duration' => $this->duration($event),
             ]
         );

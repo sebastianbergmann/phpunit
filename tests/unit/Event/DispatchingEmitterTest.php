@@ -582,12 +582,9 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $throwable = Throwable::from(new Exception('failure'));
+        $message = 'message';
 
-        $emitter->testConsideredRisky(
-            $test,
-            $throwable
-        );
+        $emitter->testConsideredRisky($test, $message);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
         $this->assertInstanceOf(Test\ConsideredRisky::class, $subscriber->lastRecordedEvent());
@@ -595,7 +592,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $event = $subscriber->lastRecordedEvent();
 
         $this->assertSame($test, $event->test());
-        $this->assertSame($throwable, $event->throwable());
+        $this->assertSame($message, $event->message());
     }
 
     public function testTestMarkedIncompleteDispatchesTestMarkedIncompleteEvent(): void

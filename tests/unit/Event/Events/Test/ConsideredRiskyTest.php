@@ -9,9 +9,7 @@
  */
 namespace PHPUnit\Event\Test;
 
-use Exception;
 use PHPUnit\Event\AbstractEventTestCase;
-use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;
 
 #[CoversClass(ConsideredRisky::class)]
@@ -22,16 +20,16 @@ final class ConsideredRiskyTest extends AbstractEventTestCase
         $telemetryInfo = $this->telemetryInfo();
         $test          = $this->testValueObject();
 
-        $throwable = Code\Throwable::from(new Exception('risky'));
+        $message = 'message';
 
         $event = new ConsideredRisky(
             $telemetryInfo,
             $test,
-            $throwable
+            $message
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
-        $this->assertSame($throwable, $event->throwable());
+        $this->assertSame($message, $event->message());
     }
 }

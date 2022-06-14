@@ -63,7 +63,7 @@ interface Emitter
 
     public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void;
 
-    public function testConsideredRisky(Code\Test $test, Throwable $throwable): void;
+    public function testConsideredRisky(Code\Test $test, string $message): void;
 
     public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void;
 

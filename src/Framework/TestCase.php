@@ -791,7 +791,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $emitter->testConsideredRisky(
                 $this->valueObjectForEvents(),
-                Event\Code\Throwable::from($e)
+                $e->getMessage()
             );
         } catch (Throwable $_e) {
             $e            = $_e;
@@ -1832,7 +1832,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
                 Event\Facade::emitter()->testConsideredRisky(
                     $this->valueObjectForEvents(),
-                    Event\Code\Throwable::from($rte)
+                    $rte->getMessage()
                 );
             }
         }

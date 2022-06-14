@@ -371,7 +371,7 @@ abstract class AbstractPhpProcess
 
                 Event\Facade::emitter()->testConsideredRisky(
                     $test->valueObjectForEvents(),
-                    Event\Code\Throwable::from($riskyException)
+                    $riskyException->getMessage()
                 );
             } elseif (!empty($skipped)) {
                 $result->addFailure(

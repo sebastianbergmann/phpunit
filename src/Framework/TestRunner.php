@@ -151,7 +151,7 @@ final class TestRunner
 
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                Event\Code\Throwable::from($riskyDueToMissingCodeCoverageMetadataException)
+                $riskyDueToMissingCodeCoverageMetadataException->getMessage()
             );
 
             $result->addFailure(
@@ -219,7 +219,7 @@ final class TestRunner
         } elseif (isset($unintentionallyCoveredCodeError)) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                Event\Code\Throwable::from($unintentionallyCoveredCodeError)
+                $unintentionallyCoveredCodeError->getMessage()
             );
 
             $result->addFailure(
@@ -240,7 +240,7 @@ final class TestRunner
 
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                Event\Code\Throwable::from($riskyBecauseNoAssertionsWerePerformedException)
+                $riskyBecauseNoAssertionsWerePerformedException->getMessage()
             );
         } elseif ($this->configuration->reportUselessTests() &&
             $test->doesNotPerformAssertions() &&
@@ -257,7 +257,7 @@ final class TestRunner
 
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                Event\Code\Throwable::from($riskyDueToUnexpectedAssertionsException)
+                $riskyDueToUnexpectedAssertionsException->getMessage()
             );
         } elseif ($this->configuration->disallowTestOutput() && $test->hasOutput()) {
             $riskyDueToOutputException = new RiskyDueToOutputException(
@@ -275,7 +275,7 @@ final class TestRunner
 
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                Event\Code\Throwable::from($riskyDueToOutputException)
+                $riskyDueToOutputException->getMessage()
             );
         }
 
@@ -507,7 +507,7 @@ final class TestRunner
 
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                Event\Code\Throwable::from($riskyDueToTimeoutException)
+                $riskyDueToTimeoutException->getMessage()
             );
 
             return true;
