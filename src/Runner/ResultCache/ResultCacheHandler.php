@@ -77,7 +77,7 @@ final class ResultCacheHandler
     {
         $this->cache->setStatus(
             $event->test()->id(),
-            TestStatus::risky($event->throwable()->message())
+            TestStatus::risky($event->message())
         );
     }
 
