@@ -39,7 +39,7 @@ PHPUnit\TextUI\Application::main();
 
 ##teamcity[testStarted name='testSkipped' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testSkipped' flowId='%d']
 
-##teamcity[testIgnored name='testSkipped' message='' details='%sStatusTest.php:51|n' duration='%d' flowId='%d']
+##teamcity[testIgnored name='testSkipped' message='' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testSkipped' duration='%d' flowId='%d']
 
@@ -75,11 +75,11 @@ PHPUnit\TextUI\Application::main();
 
 ##teamcity[testFinished name='testIncompleteWithMessage' duration='%d' flowId='%d']
 
-##teamcity[testIgnored name='testSkippedByMetadata' message='PHP > 9000 is required.' details='' duration='%d' flowId='%d']
+##teamcity[testIgnored name='testSkippedByMetadata' message='PHP > 9000 is required.' duration='%d' flowId='%d']
 
 ##teamcity[testStarted name='testSkippedWithMessage' locationHint='php_qn://%sStatusTest.php::\PHPUnit\SelfTest\Basic\StatusTest::testSkippedWithMessage' flowId='%d']
 
-##teamcity[testIgnored name='testSkippedWithMessage' message='skipped with custom message' details='%sStatusTest.php:90|n' duration='%d' flowId='%d']
+##teamcity[testIgnored name='testSkippedWithMessage' message='skipped with custom message' duration='%d' flowId='%d']
 
 ##teamcity[testFinished name='testSkippedWithMessage' duration='%d' flowId='%d']
 

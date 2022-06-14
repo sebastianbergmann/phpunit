@@ -67,7 +67,7 @@ interface Emitter
 
     public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void;
 
-    public function testSkipped(Code\Test $test, ?Throwable $throwable, string $message): void;
+    public function testSkipped(Code\Test $test, string $message): void;
 
     public function testPreparationStarted(Code\Test $test): void;
 

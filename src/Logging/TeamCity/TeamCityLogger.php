@@ -175,10 +175,6 @@ final class TeamCityLogger
             'message' => $event->message(),
         ];
 
-        if ($event->hasThrowable()) {
-            $parameters['details'] = $this->details($event->throwable());
-        }
-
         $parameters['duration'] = $this->duration($event);
 
         $this->writeMessage('testIgnored', $parameters);

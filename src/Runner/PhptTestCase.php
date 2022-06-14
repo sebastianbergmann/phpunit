@@ -420,7 +420,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
             EventFacade::emitter()->testSkipped(
                 $this->valueObjectForEvents(),
-                null,
                 $message
             );
 
