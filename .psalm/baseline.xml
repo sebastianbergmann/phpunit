@@ -415,9 +415,6 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$unintentionallyCoveredCodeError</code>
-    </ArgumentTypeCoercion>
     <InvalidScalarArgument occurrences="1">
       <code>$var</code>
     </InvalidScalarArgument>
@@ -462,14 +459,13 @@
     </RedundantCondition>
   </file>
   <file src="src/Logging/TeamCity/TeamCityLogger.php">
-    <MissingThrowsDocblock occurrences="7">
+    <MissingThrowsDocblock occurrences="6">
       <code>duration</code>
       <code>duration</code>
       <code>duration</code>
       <code>duration</code>
       <code>duration</code>
       <code>duration</code>
-      <code>throwable</code>
     </MissingThrowsDocblock>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$flowId</code>
