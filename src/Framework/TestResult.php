@@ -17,6 +17,8 @@ use PHPUnit\TextUI\Configuration\Registry;
 use Throwable;
 
 /**
+ * @deprecated
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestResult implements Countable

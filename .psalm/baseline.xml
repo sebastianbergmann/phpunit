@@ -359,6 +359,11 @@
       <code>$this-&gt;callback</code>
     </PossiblyInvalidOperand>
   </file>
+  <file src="src/Framework/Test.php">
+    <DeprecatedClass occurrences="1">
+      <code>TestResult</code>
+    </DeprecatedClass>
+  </file>
   <file src="src/Framework/TestBuilder.php">
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
@@ -378,6 +383,10 @@
       <code>$this-&gt;expectedException</code>
       <code>$this-&gt;size()</code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass occurrences="2">
+      <code>?TestResult</code>
+      <code>TestResult</code>
+    </DeprecatedClass>
     <InvalidReturnStatement occurrences="1">
       <code>$mockObject</code>
     </InvalidReturnStatement>
@@ -415,6 +424,11 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
+    <DeprecatedClass occurrences="3">
+      <code>TestResult</code>
+      <code>TestResult</code>
+      <code>TestResult</code>
+    </DeprecatedClass>
     <InvalidScalarArgument occurrences="1">
       <code>$var</code>
     </InvalidScalarArgument>
@@ -436,6 +450,9 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass occurrences="1">
+      <code>TestResult</code>
+    </DeprecatedClass>
     <MissingThrowsDocblock occurrences="1"/>
     <UnsafeInstantiation occurrences="2">
       <code>new static($class-&gt;getName())</code>
@@ -578,6 +595,10 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Runner/PhptTestCase.php">
+    <DeprecatedClass occurrences="2">
+      <code>TestResult</code>
+      <code>TestResult</code>
+    </DeprecatedClass>
     <InternalClass occurrences="2">
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
@@ -1017,11 +1038,23 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/ResultPrinter.php">
+    <DeprecatedClass occurrences="7">
+      <code>LegacyTestResult</code>
+      <code>LegacyTestResult</code>
+      <code>LegacyTestResult</code>
+      <code>LegacyTestResult</code>
+      <code>LegacyTestResult</code>
+      <code>LegacyTestResult</code>
+      <code>LegacyTestResult</code>
+    </DeprecatedClass>
     <MissingThrowsDocblock occurrences="1">
       <code>resourceUsageSinceStartOfRequest</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/TestRunner.php">
+    <DeprecatedClass occurrences="1">
+      <code>new LegacyTestResult</code>
+    </DeprecatedClass>
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
@@ -1083,6 +1116,10 @@
       <code>$this-&gt;getException($skipped[0])</code>
       <code>$this-&gt;getException($warnings[0])</code>
     </ArgumentTypeCoercion>
+    <DeprecatedClass occurrences="2">
+      <code>TestResult</code>
+      <code>TestResult</code>
+    </DeprecatedClass>
     <LessSpecificReturnStatement occurrences="1">
       <code>$exception</code>
     </LessSpecificReturnStatement>
