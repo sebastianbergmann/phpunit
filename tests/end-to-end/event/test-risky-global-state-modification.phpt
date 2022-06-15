@@ -40,12 +40,9 @@ Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModifica
 This test modified global state but was not expected to do so
 --- Global variables before the test
 +++ Global variables after the test
-@@ @@
-         '59a8c89424fb59abbafb7b9e7d35c3bf' => true
-         'f7e4bfe68a5b92f823e4904bf540ba11' => true
-     )
+%A
 +    'variable' => 'value'
- )
+%A
 Test Finished (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest::testOne)
 Test Suite Finished (PHPUnit\TestFixture\Event\RiskyBecauseGlobalStateModificationTest, 1 test)
 Test Runner Execution Finished
