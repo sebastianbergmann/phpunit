@@ -11,9 +11,9 @@ namespace PHPUnit\TestFixture\Event;
 
 use PHPUnit\Framework\TestCase;
 
-final class RiskyTest extends TestCase
+final class RiskyBecauseNoAssertionsTest extends TestCase
 {
-    public function testRisky(): void
+    public function testOne(): void
     {
     }
 }

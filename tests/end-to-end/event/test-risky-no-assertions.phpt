@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a risky test
+The right events are emitted in the right order for a test that is considered risky because it did not perform assertions
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
@@ -14,7 +14,7 @@ $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--log-events-text';
 $_SERVER['argv'][] = $traceFile;
-$_SERVER['argv'][] = __DIR__ . '/_files/RiskyTest.php';
+$_SERVER['argv'][] = __DIR__ . '/_files/RiskyBecauseNoAssertionsTest.php';
 
 require __DIR__ . '/../../bootstrap.php';
 
@@ -30,13 +30,13 @@ Test Suite Loaded (1 test)
 Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\RiskyTest, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\Event\RiskyTest::testRisky)
-Test Prepared (PHPUnit\TestFixture\Event\RiskyTest::testRisky)
-Test Passed (PHPUnit\TestFixture\Event\RiskyTest::testRisky)
-Test Considered Risky (PHPUnit\TestFixture\Event\RiskyTest::testRisky)
+Test Suite Started (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest, 1 test)
+Test Preparation Started (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
+Test Prepared (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
+Test Passed (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
+Test Considered Risky (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
 This test did not perform any assertions
-Test Finished (PHPUnit\TestFixture\Event\RiskyTest::testRisky)
-Test Suite Finished (PHPUnit\TestFixture\Event\RiskyTest, 1 test)
+Test Finished (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest::testOne)
+Test Suite Finished (PHPUnit\TestFixture\Event\RiskyBecauseNoAssertionsTest, 1 test)
 Test Runner Execution Finished
 Test Runner Finished
