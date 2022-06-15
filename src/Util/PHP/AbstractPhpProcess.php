@@ -244,18 +244,15 @@ abstract class AbstractPhpProcess
      */
     private function processChildResult(Test $test, TestResult $result, string $stdout, string $stderr): void
     {
-        $time = 0;
-
         if (!empty($stderr)) {
             $exception = new Exception(trim($stderr));
 
             $result->addError(
                 $test,
                 $exception,
-                $time
             );
 
-            $result->endTest($test, $time);
+            $result->endTest($test);
 
             assert($test instanceof TestCase);
 
@@ -291,7 +288,6 @@ abstract class AbstractPhpProcess
                 $result->addError(
                     $test,
                     $exception,
-                    $time
                 );
 
                 assert($test instanceof TestCase);
@@ -315,7 +311,6 @@ abstract class AbstractPhpProcess
             $result->addError(
                 $test,
                 $exception,
-                $time
             );
 
             assert($test instanceof TestCase);
@@ -346,7 +341,6 @@ abstract class AbstractPhpProcess
 
             assert($childResult['result'] instanceof TestResult);
 
-            $time           = $childResult['result']->time();
             $notImplemented = $childResult['result']->notImplemented();
             $risky          = $childResult['result']->risky();
             $skipped        = $childResult['result']->skipped();
@@ -358,7 +352,6 @@ abstract class AbstractPhpProcess
                 $result->addFailure(
                     $test,
                     $this->getException($notImplemented[0]),
-                    $time
                 );
             } elseif (!empty($risky)) {
                 $riskyException = $this->getException($risky[0]);
@@ -366,7 +359,6 @@ abstract class AbstractPhpProcess
                 $result->addFailure(
                     $test,
                     $riskyException,
-                    $time
                 );
 
                 Event\Facade::emitter()->testConsideredRisky(
@@ -377,30 +369,26 @@ abstract class AbstractPhpProcess
                 $result->addFailure(
                     $test,
                     $this->getException($skipped[0]),
-                    $time
                 );
             } elseif (!empty($errors)) {
                 $result->addError(
                     $test,
                     $this->getException($errors[0]),
-                    $time
                 );
             } elseif (!empty($warnings)) {
                 $result->addWarning(
                     $test,
                     $this->getException($warnings[0]),
-                    $time
                 );
             } elseif (!empty($failures)) {
                 $result->addFailure(
                     $test,
                     $this->getException($failures[0]),
-                    $time
                 );
             }
         }
 
-        $result->endTest($test, $time);
+        $result->endTest($test);
 
         if (!empty($output)) {
             print $output;

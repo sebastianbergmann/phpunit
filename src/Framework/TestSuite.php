@@ -360,8 +360,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             } catch (SkippedTestSuiteError $error) {
                 foreach ($this->tests() as $test) {
                     $result->startTest($test);
-                    $result->addFailure($test, $error, 0);
-                    $result->endTest($test, 0);
+                    $result->addFailure($test, $error);
+                    $result->endTest($test);
                 }
 
                 $result->endTestSuite($this);
@@ -393,18 +393,17 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $result->startTest($test);
 
                     if (!$errorAdded) {
-                        $result->addError($test, $t, 0);
+                        $result->addError($test, $t);
 
                         $errorAdded = true;
                     } else {
                         $result->addFailure(
                             $test,
                             new SkippedDueToErrorInHookMethodException,
-                            0
                         );
                     }
 
-                    $result->endTest($test, 0);
+                    $result->endTest($test);
                 }
 
                 $result->endTestSuite($this);
@@ -458,8 +457,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $placeholderTest->setName($afterClassMethod);
 
                     $result->startTest($placeholderTest);
-                    $result->addFailure($placeholderTest, $error, 0);
-                    $result->endTest($placeholderTest, 0);
+                    $result->addFailure($placeholderTest, $error);
+                    $result->endTest($placeholderTest);
                 }
             }
         }

@@ -1658,7 +1658,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $this->result->addFailure(
                         $this,
                         new SkippedDueToDependencyOnLargerTestException,
-                        0
                     );
 
                     return false;
@@ -1707,10 +1706,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->result->addError(
             $this,
             $exception,
-            0
         );
 
-        $this->result->endTest($this, 0);
+        $this->result->endTest($this);
     }
 
     private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
@@ -1734,10 +1732,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             new SkippedDueToMissingDependencyException(
                 $dependency->getTarget()
             ),
-            0
         );
 
-        $this->result->endTest($this, 0);
+        $this->result->endTest($this);
     }
 
     /**

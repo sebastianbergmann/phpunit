@@ -59,7 +59,6 @@ use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
 use SebastianBergmann\Template\Template;
-use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
@@ -121,8 +120,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $e = new Exception($e->getMessage());
 
             $result->startTest($this);
-            $result->addError($this, $e, 0);
-            $result->endTest($this, 0);
+            $result->addError($this, $e);
+            $result->endTest($this);
 
             $emitter->testPrepared($this->valueObjectForEvents());
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
@@ -184,11 +183,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             );
         }
 
-        $timer = new Timer;
-        $timer->start();
-
         $jobResult    = $this->phpUtil->runJob($code, $this->stringifyIni($settings));
-        $time         = $timer->stop()->asSeconds();
         $this->output = $jobResult['stdout'] ?? '';
 
         if (CodeCoverage::isActive() && ($coverage = $this->cleanupForCoverage())) {
@@ -223,7 +218,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 );
             }
 
-            $result->addFailure($this, $failure, $time);
+            $result->addFailure($this, $failure);
 
             if ($failure instanceof IncompleteTestError) {
                 $emitter->testMarkedAsIncomplete($this->valueObjectForEvents(), EventThrowable::from($failure));
@@ -231,7 +226,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 $emitter->testFailed($this->valueObjectForEvents(), EventThrowable::from($failure));
             }
         } catch (Throwable $t) {
-            $result->addError($this, $t, $time);
+            $result->addError($this, $t);
 
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($t));
         }
@@ -239,14 +234,14 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         if ($xfail !== false && $result->allCompletelyImplemented()) {
             $e = new IncompleteTestError('XFAIL section but test passes');
 
-            $result->addFailure($this, $e, $time);
+            $result->addFailure($this, $e);
 
             $emitter->testMarkedAsIncomplete($this->valueObjectForEvents(), EventThrowable::from($e));
         }
 
         $this->runClean($sections, CodeCoverage::isActive());
 
-        $result->endTest($this, $time);
+        $result->endTest($this);
 
         $emitter->testFinished($this->valueObjectForEvents(), 1);
     }
@@ -414,9 +409,8 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $result->addFailure(
                 $this,
                 new SyntheticSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace),
-                0
             );
-            $result->endTest($this, 0);
+            $result->endTest($this);
 
             EventFacade::emitter()->testSkipped(
                 $this->valueObjectForEvents(),

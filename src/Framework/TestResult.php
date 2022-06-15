@@ -64,7 +64,6 @@ final class TestResult implements Countable
      */
     private array $skipped = [];
     private int $runTests  = 0;
-    private float $time    = 0;
     private bool $stop     = false;
     private bool $stopOnError;
     private bool $stopOnFailure;
@@ -88,7 +87,7 @@ final class TestResult implements Countable
         $this->stopOnDefect     = $configuration->stopOnDefect();
     }
 
-    public function addError(Test $test, Throwable $t, float $time): void
+    public function addError(Test $test, Throwable $t): void
     {
         $this->recordError($test, $t);
 
@@ -97,21 +96,18 @@ final class TestResult implements Countable
         }
 
         $this->lastTestFailed = true;
-        $this->time += $time;
     }
 
-    public function addWarning(Test $test, Warning $e, float $time): void
+    public function addWarning(Test $test, Warning $e): void
     {
         if ($this->stopOnWarning || $this->stopOnDefect) {
             $this->stop = true;
         }
 
         $this->recordWarning($test, $e);
-
-        $this->time += $time;
     }
 
-    public function addFailure(Test $test, AssertionFailedError $e, float $time): void
+    public function addFailure(Test $test, AssertionFailedError $e): void
     {
         if ($e instanceof RiskyTest) {
             $this->recordRisky($test, $e);
@@ -144,7 +140,6 @@ final class TestResult implements Countable
         }
 
         $this->lastTestFailed = true;
-        $this->time += $time;
     }
 
     public function startTestSuite(): void
@@ -165,7 +160,7 @@ final class TestResult implements Countable
         $this->runTests += count($test);
     }
 
-    public function endTest(Test $test, float $time): void
+    public function endTest(Test $test): void
     {
         if (!$this->lastTestFailed && $test instanceof TestCase) {
             $class = $test::class;
@@ -183,8 +178,6 @@ final class TestResult implements Countable
                 'result' => $test->result(),
                 'size'   => $size,
             ];
-
-            $this->time += $time;
         }
 
         if ($this->lastTestFailed && $test instanceof TestCase) {
@@ -271,11 +264,6 @@ final class TestResult implements Countable
     public function shouldStop(): bool
     {
         return $this->stop;
-    }
-
-    public function time(): float
-    {
-        return $this->time;
     }
 
     private function recordError(Test $test, Throwable $t): void

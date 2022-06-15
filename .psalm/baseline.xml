@@ -9,11 +9,7 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Event/Emitter/DispatchingEmitter.php">
-    <MissingThrowsDocblock occurrences="62">
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
+    <MissingThrowsDocblock occurrences="58">
       <code>dispatch</code>
       <code>dispatch</code>
       <code>dispatch</code>
@@ -432,7 +428,7 @@
     <InvalidScalarArgument occurrences="1">
       <code>$var</code>
     </InvalidScalarArgument>
-    <MissingThrowsDocblock occurrences="12">
+    <MissingThrowsDocblock occurrences="11">
       <code>CodeCoverage::instance()</code>
       <code>CodeCoverage::instance()</code>
       <code>CodeCoverage::instance()</code>
@@ -441,7 +437,6 @@
       <code>GlobalState::getIncludedFilesAsString()</code>
       <code>cacheDirectory</code>
       <code>saveConfigurationForChildProcess</code>
-      <code>stop</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/TestSuite.php">
@@ -607,10 +602,9 @@
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="4">
+    <MissingThrowsDocblock occurrences="3">
       <code>append</code>
       <code>cacheDirectory</code>
-      <code>stop</code>
     </MissingThrowsDocblock>
     <PossiblyInvalidArgument occurrences="1">
       <code>$sections['FILEEOF']</code>

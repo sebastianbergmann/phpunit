@@ -35,7 +35,6 @@ use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\Template\Template;
-use SebastianBergmann\Timer\Timer;
 use Throwable;
 
 /**
@@ -89,9 +88,6 @@ final class TestRunner
             CodeCoverage::start($test);
         }
 
-        $timer = new Timer;
-        $timer->start();
-
         try {
             if ($this->canTimeLimitBeEnforced() &&
                 $this->shouldTimeLimitBeEnforced($test)) {
@@ -135,8 +131,6 @@ final class TestRunner
             $error = true;
         }
 
-        $time = $timer->stop()->asSeconds();
-
         $test->addToAssertionCount(Assert::getCount());
 
         if ($this->configuration->reportUselessTests() &&
@@ -157,7 +151,6 @@ final class TestRunner
             $result->addFailure(
                 $test,
                 $riskyDueToMissingCodeCoverageMetadataException,
-                $time
             );
 
             $risky = true;
@@ -185,7 +178,6 @@ final class TestRunner
                         new Warning(
                             $cce->getMessage()
                         ),
-                        $time
                     );
                 }
             }
@@ -211,11 +203,11 @@ final class TestRunner
         ErrorHandler::instance()->disable();
 
         if ($error && isset($e)) {
-            $result->addError($test, $e, $time);
+            $result->addError($test, $e);
         } elseif ($failure && isset($e)) {
-            $result->addFailure($test, $e, $time);
+            $result->addFailure($test, $e);
         } elseif ($warning && isset($e)) {
-            $result->addWarning($test, $e, $time);
+            $result->addWarning($test, $e);
         } elseif (isset($unintentionallyCoveredCodeError)) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
@@ -225,7 +217,6 @@ final class TestRunner
             $result->addFailure(
                 $test,
                 $unintentionallyCoveredCodeError,
-                $time
             );
         } elseif ($this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&
@@ -235,7 +226,6 @@ final class TestRunner
             $result->addFailure(
                 $test,
                 $riskyBecauseNoAssertionsWerePerformedException,
-                $time
             );
 
             Event\Facade::emitter()->testConsideredRisky(
@@ -252,7 +242,6 @@ final class TestRunner
             $result->addFailure(
                 $test,
                 $riskyDueToUnexpectedAssertionsException,
-                $time
             );
 
             Event\Facade::emitter()->testConsideredRisky(
@@ -270,7 +259,6 @@ final class TestRunner
             $result->addFailure(
                 $test,
                 $riskyDueToOutputException,
-                $time
             );
 
             Event\Facade::emitter()->testConsideredRisky(
@@ -279,7 +267,7 @@ final class TestRunner
             );
         }
 
-        $result->endTest($test, $time);
+        $result->endTest($test);
 
         if ($test->wasPrepared()) {
             Event\Facade::emitter()->testFinished(
@@ -502,7 +490,6 @@ final class TestRunner
             $result->addFailure(
                 $test,
                 $riskyDueToTimeoutException,
-                $_timeout
             );
 
             Event\Facade::emitter()->testConsideredRisky(
