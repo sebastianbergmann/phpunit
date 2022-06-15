@@ -27,7 +27,6 @@ use function trim;
 use function unserialize;
 use __PHP_Incomplete_Class;
 use ErrorException;
-use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Facade;
@@ -359,11 +358,6 @@ abstract class AbstractPhpProcess
                 $result->addFailure(
                     $test,
                     $riskyException,
-                );
-
-                Event\Facade::emitter()->testConsideredRisky(
-                    $test->valueObjectForEvents(),
-                    $riskyException->getMessage()
                 );
             } elseif (!empty($skipped)) {
                 $result->addFailure(
