@@ -18,7 +18,6 @@ use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\TextUI\Configuration\Configuration;
-use SebastianBergmann\GlobalState\Snapshot;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -145,38 +144,6 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $name,
                 $version
-            )
-        );
-    }
-
-    public function globalStateCaptured(Snapshot $snapshot): void
-    {
-        $this->dispatcher->dispatch(
-            new GlobalState\Captured(
-                $this->telemetryInfo(),
-                $snapshot
-            )
-        );
-    }
-
-    public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $diff): void
-    {
-        $this->dispatcher->dispatch(
-            new GlobalState\Modified(
-                $this->telemetryInfo(),
-                $snapshotBefore,
-                $snapshotAfter,
-                $diff
-            )
-        );
-    }
-
-    public function globalStateRestored(Snapshot $snapshot): void
-    {
-        $this->dispatcher->dispatch(
-            new GlobalState\Restored(
-                $this->telemetryInfo(),
-                $snapshot
             )
         );
     }

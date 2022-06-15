@@ -13,7 +13,6 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\TextUI\Configuration\Configuration;
-use SebastianBergmann\GlobalState\Snapshot;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -44,12 +43,6 @@ interface Emitter
     public function comparatorRegistered(string $className): void;
 
     public function extensionLoaded(string $name, string $version): void;
-
-    public function globalStateCaptured(Snapshot $snapshot): void;
-
-    public function globalStateModified(Snapshot $snapshotBefore, Snapshot $snapshotAfter, string $diff): void;
-
-    public function globalStateRestored(Snapshot $snapshot): void;
 
     public function testErrored(Code\Test $test, Throwable $throwable): void;
 

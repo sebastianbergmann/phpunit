@@ -1799,8 +1799,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $snapshot = $this->createGlobalStateSnapshot($this->backupGlobals === true);
 
-        Event\Facade::emitter()->globalStateCaptured($snapshot);
-
         $this->snapshot = $snapshot;
     }
 
@@ -1822,12 +1820,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $snapshotAfter
                 );
             } catch (RiskyTest $rte) {
-                Event\Facade::emitter()->globalStateModified(
-                    $this->snapshot,
-                    $snapshotAfter,
-                    $rte->getMessage()
-                );
-
                 Event\Facade::emitter()->testConsideredRisky(
                     $this->valueObjectForEvents(),
                     $rte->getMessage()
@@ -1839,8 +1831,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if ($this->backupGlobals) {
             $restorer->restoreGlobalVariables($this->snapshot);
-
-            Event\Facade::emitter()->globalStateRestored($this->snapshot);
         }
 
         if ($this->backupStaticProperties) {

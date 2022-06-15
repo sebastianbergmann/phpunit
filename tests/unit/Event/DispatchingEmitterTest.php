@@ -27,7 +27,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestFixture;
 use PHPUnit\TestFixture\RecordingSubscriber;
-use SebastianBergmann\GlobalState\Snapshot;
 use stdClass;
 
 #[CoversClass(DispatchingEmitter::class)]
@@ -240,122 +239,6 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame(1, $subscriber->recordedEventCount());
         $this->assertInstanceOf(TestRunner\ExtensionLoaded::class, $subscriber->lastRecordedEvent());
-    }
-
-    public function testGlobalStateCapturedDispatchesGlobalStateCapturedEvent(): void
-    {
-        $snapshot = new Snapshot;
-
-        $subscriber = new class extends RecordingSubscriber implements GlobalState\CapturedSubscriber
-        {
-            public function notify(GlobalState\Captured $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            GlobalState\CapturedSubscriber::class,
-            GlobalState\Captured::class,
-            $subscriber
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->globalStateCaptured($snapshot);
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(GlobalState\Captured::class, $event);
-
-        $this->assertSame($snapshot, $event->snapshot());
-    }
-
-    public function testGlobalStateModifiedDispatchesGlobalStateModifiedEvent(): void
-    {
-        $snapshotBefore = new Snapshot;
-        $snapshotAfter  = new Snapshot;
-        $diff           = 'Hmm, who would have thought?';
-
-        $subscriber = new class extends RecordingSubscriber implements GlobalState\ModifiedSubscriber
-        {
-            public function notify(GlobalState\Modified $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            GlobalState\ModifiedSubscriber::class,
-            GlobalState\Modified::class,
-            $subscriber
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->globalStateModified(
-            $snapshotBefore,
-            $snapshotAfter,
-            $diff
-        );
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(GlobalState\Modified::class, $event);
-
-        $this->assertSame($snapshotBefore, $event->snapshotBefore());
-        $this->assertSame($snapshotAfter, $event->snapshotAfter());
-        $this->assertSame($diff, $event->diff());
-    }
-
-    public function testGlobalStateRestoredDispatchesGlobalStateRestoredEvent(): void
-    {
-        $snapshot = new Snapshot;
-
-        $subscriber = new class extends RecordingSubscriber implements GlobalState\RestoredSubscriber
-        {
-            public function notify(GlobalState\Restored $event): void
-            {
-                $this->record($event);
-            }
-        };
-
-        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            GlobalState\RestoredSubscriber::class,
-            GlobalState\Restored::class,
-            $subscriber
-        );
-
-        $telemetrySystem = $this->telemetrySystem();
-
-        $emitter = new DispatchingEmitter(
-            $dispatcher,
-            $telemetrySystem
-        );
-
-        $emitter->globalStateRestored($snapshot);
-
-        $this->assertSame(1, $subscriber->recordedEventCount());
-
-        $event = $subscriber->lastRecordedEvent();
-
-        $this->assertInstanceOf(GlobalState\Restored::class, $event);
-
-        $this->assertSame($snapshot, $event->snapshot());
     }
 
     public function testTestErroredDispatchesTestErroredEvent(): void
