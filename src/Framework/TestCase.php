@@ -53,6 +53,7 @@ use function sprintf;
 use function str_contains;
 use function strpos;
 use function substr;
+use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
@@ -1822,7 +1823,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             } catch (RiskyTest $rte) {
                 Event\Facade::emitter()->testConsideredRisky(
                     $this->valueObjectForEvents(),
-                    $rte->getMessage()
+                    'This test modified global state but was not expected to do so' . PHP_EOL .
+                    trim($rte->getMessage())
                 );
             }
         }
