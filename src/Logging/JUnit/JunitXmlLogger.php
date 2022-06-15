@@ -26,7 +26,6 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
-use PHPUnit\Event\Test\OutputPrinted;
 use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
@@ -88,7 +87,6 @@ final class JunitXmlLogger
     private int $testSuiteLevel          = 0;
     private ?DOMElement $currentTestCase = null;
     private ?HRTime $time                = null;
-    private ?string $output              = null;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -191,11 +189,6 @@ final class JunitXmlLogger
         $this->createTestCase($event);
     }
 
-    public function testPrintedOutput(OutputPrinted $event): void
-    {
-        $this->output = $event->output();
-    }
-
     public function testFinished(Finished $event): void
     {
         assert($this->currentTestCase !== null);
@@ -222,18 +215,8 @@ final class JunitXmlLogger
         $this->testSuiteTests[$this->testSuiteLevel]++;
         $this->testSuiteTimes[$this->testSuiteLevel] += $time;
 
-        if ($this->output !== null) {
-            $systemOut = $this->document->createElement(
-                'system-out',
-                Xml::prepareString($this->output)
-            );
-
-            $this->currentTestCase->appendChild($systemOut);
-        }
-
         $this->currentTestCase = null;
         $this->time            = null;
-        $this->output          = null;
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
@@ -283,7 +266,6 @@ final class JunitXmlLogger
         Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));
         Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
         Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestPrintedOutputSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));

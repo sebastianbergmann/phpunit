@@ -181,17 +181,6 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testOutputPrinted(Code\Test $test, string $output): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\OutputPrinted(
-                $this->telemetryInfo(),
-                $test,
-                $output
-            )
-        );
-    }
-
     public function testPassed(Code\Test $test): void
     {
         $this->dispatcher->dispatch(

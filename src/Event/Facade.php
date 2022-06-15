@@ -203,7 +203,6 @@ final class Facade
             Test\Failed::class,
             Test\Finished::class,
             Test\NoticeTriggered::class,
-            Test\OutputPrinted::class,
             Test\Passed::class,
             Test\PassedWithWarning::class,
             Test\PhpDeprecationTriggered::class,
