@@ -788,11 +788,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         } catch (TimeoutException $e) {
             $this->status = TestStatus::risky($e->getMessage());
-
-            $emitter->testConsideredRisky(
-                $this->valueObjectForEvents(),
-                $e->getMessage()
-            );
         } catch (Throwable $_e) {
             $e            = $_e;
             $this->status = TestStatus::error($_e->getMessage());
