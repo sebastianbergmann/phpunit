@@ -33,34 +33,34 @@ final class Collector
     private bool $prepared          = false;
 
     /**
-     * @psalm-var list<Skipped>
+     * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
      */
-    private array $skippedTests = [];
-
-    /**
-     * @psalm-var list<MarkedIncomplete>
-     */
-    private array $incompleteTests = [];
-
-    /**
-     * @psalm-var array<string,list<ConsideredRisky>>
-     */
-    private array $riskyTests = [];
-
-    /**
-     * @psalm-var array<string,list<PassedWithWarning>>
-     */
-    private array $testsWithWarnings = [];
+    private array $testErroredEvents = [];
 
     /**
      * @psalm-var list<Failed>
      */
-    private array $failedTests = [];
+    private array $testFailedEvents = [];
 
     /**
-     * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
+     * @psalm-var array<string,list<PassedWithWarning>>
      */
-    private array $erroredTests = [];
+    private array $testPassedWithWarningEvents = [];
+
+    /**
+     * @psalm-var list<MarkedIncomplete>
+     */
+    private array $testMarkedIncompleteEvents = [];
+
+    /**
+     * @psalm-var list<Skipped>
+     */
+    private array $testSkippedEvents = [];
+
+    /**
+     * @psalm-var array<string,list<ConsideredRisky>>
+     */
+    private array $testConsideredRiskyEvents = [];
 
     /**
      * @throws EventFacadeIsSealedException
@@ -69,15 +69,15 @@ final class Collector
     public function __construct()
     {
         Facade::registerSubscriber(new ExecutionStartedSubscriber($this));
+        Facade::registerSubscriber(new TestPreparedSubscriber($this));
+        Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
-        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
-        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
+        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
+        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
     }
 
     public function result(): TestResult
@@ -86,12 +86,12 @@ final class Collector
             $this->numberOfTests,
             $this->numberOfTestsRun,
             $this->numberOfAssertions,
-            $this->erroredTests,
-            $this->failedTests,
-            $this->testsWithWarnings,
-            $this->riskyTests,
-            $this->skippedTests,
-            $this->incompleteTests
+            $this->testErroredEvents,
+            $this->testFailedEvents,
+            $this->testPassedWithWarningEvents,
+            $this->testConsideredRiskyEvents,
+            $this->testSkippedEvents,
+            $this->testMarkedIncompleteEvents
         );
     }
 
@@ -100,58 +100,30 @@ final class Collector
         $this->numberOfTests = $event->testSuite()->count();
     }
 
-    public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
-    {
-        $this->erroredTests[] = $event;
-
-        $this->numberOfTestsRun++;
-    }
-
     public function testPrepared(): void
     {
         $this->prepared = true;
     }
 
-    public function testSkipped(Skipped $event): void
+    public function testFinished(Finished $event): void
     {
-        $this->skippedTests[] = $event;
+        $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
 
-        if (!$this->prepared) {
-            $this->numberOfTestsRun++;
-        }
+        $this->numberOfTestsRun++;
+
+        $this->prepared = false;
     }
 
-    public function testMarkedIncomplete(MarkedIncomplete $event): void
+    public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
     {
-        $this->incompleteTests[] = $event;
-    }
+        $this->testErroredEvents[] = $event;
 
-    public function testConsideredRisky(ConsideredRisky $event): void
-    {
-        if (!isset($this->riskyTests[$event->test()->id()])) {
-            $this->riskyTests[$event->test()->id()] = [];
-        }
-
-        $this->riskyTests[$event->test()->id()][] = $event;
-    }
-
-    public function testPassedWithWarning(PassedWithWarning $event): void
-    {
-        if (!isset($this->testsWithWarnings[$event->test()->id()])) {
-            $this->testsWithWarnings[$event->test()->id()] = [];
-        }
-
-        $this->testsWithWarnings[$event->test()->id()][] = $event;
-    }
-
-    public function testFailed(Failed $event): void
-    {
-        $this->failedTests[] = $event;
+        $this->numberOfTestsRun++;
     }
 
     public function testErrored(Errored $event): void
     {
-        $this->erroredTests[] = $event;
+        $this->testErroredEvents[] = $event;
 
         /*
          * @todo Eliminate this special case
@@ -165,12 +137,40 @@ final class Collector
         }
     }
 
-    public function testFinished(Finished $event): void
+    public function testFailed(Failed $event): void
     {
-        $this->numberOfAssertions += $event->numberOfAssertionsPerformed();
+        $this->testFailedEvents[] = $event;
+    }
 
-        $this->numberOfTestsRun++;
+    public function testPassedWithWarning(PassedWithWarning $event): void
+    {
+        if (!isset($this->testPassedWithWarningEvents[$event->test()->id()])) {
+            $this->testPassedWithWarningEvents[$event->test()->id()] = [];
+        }
 
-        $this->prepared = false;
+        $this->testPassedWithWarningEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testMarkedIncomplete(MarkedIncomplete $event): void
+    {
+        $this->testMarkedIncompleteEvents[] = $event;
+    }
+
+    public function testSkipped(Skipped $event): void
+    {
+        $this->testSkippedEvents[] = $event;
+
+        if (!$this->prepared) {
+            $this->numberOfTestsRun++;
+        }
+    }
+
+    public function testConsideredRisky(ConsideredRisky $event): void
+    {
+        if (!isset($this->testConsideredRiskyEvents[$event->test()->id()])) {
+            $this->testConsideredRiskyEvents[$event->test()->id()] = [];
+        }
+
+        $this->testConsideredRiskyEvents[$event->test()->id()][] = $event;
     }
 }

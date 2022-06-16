@@ -381,24 +381,24 @@ final class Application
         }
 
         if ($result->wasSuccessfulIgnoringWarnings()) {
-            if ($configuration->failOnRisky() && $result->hasRiskyTests()) {
+            if ($configuration->failOnRisky() && $result->hasTestConsideredRiskyEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnWarning() && $result->hasTestsWithWarnings()) {
+            if ($configuration->failOnWarning() && $result->hasTestPassedWithWarningEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnIncomplete() && $result->hasIncompleteTests()) {
+            if ($configuration->failOnIncomplete() && $result->hasTestMarkedIncompleteEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnSkipped() && $result->hasSkippedTests()) {
+            if ($configuration->failOnSkipped() && $result->hasTestSkippedEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
         }
 
-        if ($result->hasErroredTests()) {
+        if ($result->hasTestErroredEvents()) {
             $returnCode = self::EXCEPTION_EXIT;
         }
 

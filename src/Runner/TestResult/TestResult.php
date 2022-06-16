@@ -30,52 +30,52 @@ final class TestResult
     /**
      * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
      */
-    private array $erroredTests;
+    private array $testErroredEvents;
 
     /**
      * @psalm-var list<Failed>
      */
-    private array $failedTests;
+    private array $testFailedEvents;
 
     /**
      * @psalm-var array<string,list<PassedWithWarning>>
      */
-    private array $testsWithWarnings;
-
-    /**
-     * @psalm-var array<string,list<ConsideredRisky>>
-     */
-    private array $riskyTests;
-
-    /**
-     * @psalm-var list<Skipped>
-     */
-    private array $skippedTests;
+    private array $testPassedWithWarningEvents;
 
     /**
      * @psalm-var list<MarkedIncomplete>
      */
-    private array $incompleteTests;
+    private array $testMarkedIncompleteEvents;
 
     /**
-     * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $erroredTests
-     * @psalm-param list<Failed> $failedTests
-     * @psalm-param array<string,list<PassedWithWarning>> $testsWithWarnings
-     * @psalm-param array<string,list<ConsideredRisky>> $riskyTests
-     * @psalm-param list<Skipped> $skippedTests
-     * @psalm-param list<MarkedIncomplete> $incompleteTests
+     * @psalm-var list<Skipped>
      */
-    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $erroredTests, array $failedTests, array $testsWithWarnings, array $riskyTests, array $skippedTests, array $incompleteTests)
+    private array $testSkippedEvents;
+
+    /**
+     * @psalm-var array<string,list<ConsideredRisky>>
+     */
+    private array $testConsideredRiskyEvents;
+
+    /**
+     * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $testErroredEvents
+     * @psalm-param list<Failed> $testFailedEvents
+     * @psalm-param array<string,list<PassedWithWarning>> $testPassedWithWarningEvents
+     * @psalm-param array<string,list<ConsideredRisky>> $testConsideredRiskyEvents
+     * @psalm-param list<Skipped> $testSkippedEvents
+     * @psalm-param list<MarkedIncomplete> $testMarkedIncompleteEvents
+     */
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testPassedWithWarningEvents, array $testConsideredRiskyEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents)
     {
-        $this->numberOfTests      = $numberOfTests;
-        $this->numberOfTestsRun   = $numberOfTestsRun;
-        $this->numberOfAssertions = $numberOfAssertions;
-        $this->erroredTests       = $erroredTests;
-        $this->failedTests        = $failedTests;
-        $this->testsWithWarnings  = $testsWithWarnings;
-        $this->riskyTests         = $riskyTests;
-        $this->skippedTests       = $skippedTests;
-        $this->incompleteTests    = $incompleteTests;
+        $this->numberOfTests               = $numberOfTests;
+        $this->numberOfTestsRun            = $numberOfTestsRun;
+        $this->numberOfAssertions          = $numberOfAssertions;
+        $this->testErroredEvents           = $testErroredEvents;
+        $this->testFailedEvents            = $testFailedEvents;
+        $this->testPassedWithWarningEvents = $testPassedWithWarningEvents;
+        $this->testConsideredRiskyEvents   = $testConsideredRiskyEvents;
+        $this->testSkippedEvents           = $testSkippedEvents;
+        $this->testMarkedIncompleteEvents  = $testMarkedIncompleteEvents;
     }
 
     public function numberOfTests(): int
@@ -93,78 +93,78 @@ final class TestResult
         return $this->numberOfAssertions;
     }
 
-    public function numberOfErroredTests(): int
+    public function numberOfTestErroredEvents(): int
     {
-        return count($this->erroredTests);
+        return count($this->testErroredEvents);
     }
 
-    public function hasErroredTests(): bool
+    public function hasTestErroredEvents(): bool
     {
-        return $this->numberOfErroredTests() > 0;
+        return $this->numberOfTestErroredEvents() > 0;
     }
 
-    public function numberOfFailedTests(): int
+    public function numberOfTestFailedEvents(): int
     {
-        return count($this->failedTests);
+        return count($this->testFailedEvents);
     }
 
-    public function hasFailedTests(): bool
+    public function hasTestFailedEvents(): bool
     {
-        return $this->numberOfFailedTests() > 0;
+        return $this->numberOfTestFailedEvents() > 0;
     }
 
-    public function numberOfTestsWithWarnings(): int
+    public function numberOfTestPassedWithWarningEvents(): int
     {
-        return count($this->testsWithWarnings);
+        return count($this->testPassedWithWarningEvents);
     }
 
-    public function hasTestsWithWarnings(): bool
+    public function hasTestPassedWithWarningEvents(): bool
     {
-        return $this->numberOfTestsWithWarnings() > 0;
+        return $this->numberOfTestPassedWithWarningEvents() > 0;
     }
 
-    public function numberOfRiskyTests(): int
+    public function numberOfTestConsideredRiskyEvents(): int
     {
-        return count($this->riskyTests);
+        return count($this->testConsideredRiskyEvents);
     }
 
-    public function hasRiskyTests(): bool
+    public function hasTestConsideredRiskyEvents(): bool
     {
-        return $this->numberOfRiskyTests() > 0;
+        return $this->numberOfTestConsideredRiskyEvents() > 0;
     }
 
-    public function numberOfSkippedTests(): int
+    public function numberOfTestSkippedEvents(): int
     {
-        return count($this->skippedTests);
+        return count($this->testSkippedEvents);
     }
 
-    public function hasSkippedTests(): bool
+    public function hasTestSkippedEvents(): bool
     {
-        return $this->numberOfSkippedTests() > 0;
+        return $this->numberOfTestSkippedEvents() > 0;
     }
 
-    public function numberOfIncompleteTests(): int
+    public function numberTestMarkedIncompleteEvents(): int
     {
-        return count($this->incompleteTests);
+        return count($this->testMarkedIncompleteEvents);
     }
 
-    public function hasIncompleteTests(): bool
+    public function hasTestMarkedIncompleteEvents(): bool
     {
-        return $this->numberOfIncompleteTests() > 0;
+        return $this->numberTestMarkedIncompleteEvents() > 0;
     }
 
     public function wasSuccessful(): bool
     {
-        return $this->wasSuccessfulIgnoringWarnings() && !$this->hasTestsWithWarnings();
+        return $this->wasSuccessfulIgnoringWarnings() && !$this->hasTestPassedWithWarningEvents();
     }
 
     public function wasSuccessfulIgnoringWarnings(): bool
     {
-        return !$this->hasErroredTests() && !$this->hasFailedTests();
+        return !$this->hasTestErroredEvents() && !$this->hasTestFailedEvents();
     }
 
     public function wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete(): bool
     {
-        return $this->wasSuccessful() && !$this->hasRiskyTests() && !$this->hasIncompleteTests() && !$this->hasSkippedTests();
+        return $this->wasSuccessful() && !$this->hasTestConsideredRiskyEvents() && !$this->hasTestMarkedIncompleteEvents() && !$this->hasTestSkippedEvents();
     }
 }

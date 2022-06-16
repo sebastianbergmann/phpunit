@@ -214,7 +214,7 @@ final class ResultPrinter
         $color = 'fg-black, bg-yellow';
 
         if ($result->wasSuccessful()) {
-            if ($this->displayDetailsOnIncompleteTests || $this->displayDetailsOnSkippedTests || $result->hasRiskyTests()) {
+            if ($this->displayDetailsOnIncompleteTests || $this->displayDetailsOnSkippedTests || $result->hasTestConsideredRiskyEvents()) {
                 $this->printer->print("\n");
             }
 
@@ -225,21 +225,21 @@ final class ResultPrinter
         } else {
             $this->printer->print("\n");
 
-            if ($result->hasErroredTests()) {
+            if ($result->hasTestErroredEvents()) {
                 $color = 'fg-white, bg-red';
 
                 $this->printWithColor(
                     $color,
                     'ERRORS!'
                 );
-            } elseif ($result->hasFailedTests()) {
+            } elseif ($result->hasTestFailedEvents()) {
                 $color = 'fg-white, bg-red';
 
                 $this->printWithColor(
                     $color,
                     'FAILURES!'
                 );
-            } elseif ($result->hasTestsWithWarnings()) {
+            } elseif ($result->hasTestPassedWithWarningEvents()) {
                 $this->printWithColor(
                     $color,
                     'WARNINGS!'
@@ -249,12 +249,12 @@ final class ResultPrinter
 
         $this->printCountString($result->numberOfTestsRun(), 'Tests', $color, true);
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
-        $this->printCountString($result->numberOfErroredTests(), 'Errors', $color);
-        $this->printCountString($result->numberOfFailedTests(), 'Failures', $color);
-        $this->printCountString($result->numberOfTestsWithWarnings(), 'Warnings', $color);
-        $this->printCountString($result->numberOfSkippedTests(), 'Skipped', $color);
-        $this->printCountString($result->numberOfIncompleteTests(), 'Incomplete', $color);
-        $this->printCountString($result->numberOfRiskyTests(), 'Risky', $color);
+        $this->printCountString($result->numberOfTestErroredEvents(), 'Errors', $color);
+        $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
+        $this->printCountString($result->numberOfTestPassedWithWarningEvents(), 'Warnings', $color);
+        $this->printCountString($result->numberOfTestSkippedEvents(), 'Skipped', $color);
+        $this->printCountString($result->numberTestMarkedIncompleteEvents(), 'Incomplete', $color);
+        $this->printCountString($result->numberOfTestConsideredRiskyEvents(), 'Risky', $color);
         $this->printWithColor($color, '.');
     }
 
