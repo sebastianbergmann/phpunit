@@ -12,15 +12,21 @@ if ($argc !== 3) {
     exit(1);
 }
 
-$dependencies = dependencies();
+$package      = package();
 $version      = version();
+$dependencies = dependencies();
 
-manifest($argv[1], $version, $dependencies);
-sbom($argv[2], $version, $dependencies);
+manifest($argv[1], $package, $version, $dependencies);
+sbom($argv[2], $package, $version, $dependencies);
 
-function manifest(string $outputFilename, string $version, array $dependencies): void
+function manifest(string $outputFilename, array $package, string $version, array $dependencies): void
 {
-    $buffer = 'phpunit/phpunit: ' . $version . "\n";
+    $buffer = sprintf(
+        '%s/%s: %s' . "\n",
+        $package['group'],
+        $package['name'],
+        $version
+    );
 
     foreach ($dependencies as $dependency) {
         $buffer .= $dependency['name'] . ': ' . $dependency['version'];
@@ -35,7 +41,7 @@ function manifest(string $outputFilename, string $version, array $dependencies):
     file_put_contents($outputFilename, $buffer);
 }
 
-function sbom(string $outputFilename, string $version, array $dependencies): void
+function sbom(string $outputFilename, array $package, string $version, array $dependencies): void
 {
     $writer = new XMLWriter;
 
@@ -50,11 +56,11 @@ function sbom(string $outputFilename, string $version, array $dependencies): voi
 
     writeComponent(
         $writer,
-        'phpunit',
-        'phpunit',
+        $package['group'],
+        $package['name'],
         $version,
-        'The PHP Unit Testing framework',
-        ['BSD-3-Clause']
+        $package['description'],
+        $package['license']
     );
 
     foreach ($dependencies as $dependency) {
@@ -90,6 +96,26 @@ function dependencies(): array
         ),
         true
     )['packages'];
+}
+
+function package(): array
+{
+    $data = json_decode(
+        file_get_contents(
+            __DIR__ . '/../../composer.json'
+        ),
+        true
+    );
+
+    [$group, $name] = explode('/', $data['name']);
+
+    return [
+        'group' => $group,
+        'name' => $name,
+        'description' => $data['description'],
+        'license' => [$data['license']],
+        'branch' => $data['extra']['branch-alias']['dev-master']
+    ];
 }
 
 function version(): string
