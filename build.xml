@@ -133,6 +133,7 @@
 
         <exec executable="${basedir}/build/scripts/phar-manifest.php" failonerror="true">
             <arg path="${basedir}/build/tmp/phar/manifest.txt"/>
+            <arg path="${basedir}/build/tmp/phar/sbom.xml"/>
         </exec>
 
         <copy file="${basedir}/vendor/phpunit/php-code-coverage/LICENSE" tofile="${basedir}/build/tmp/phar/php-code-coverage/LICENSE"/>
