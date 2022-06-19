@@ -2299,7 +2299,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $excludeList->addClassNamePrefix('SebastianBergmann\Invoker');
             $excludeList->addClassNamePrefix('SebastianBergmann\Template');
             $excludeList->addClassNamePrefix('SebastianBergmann\Timer');
-            $excludeList->addClassNamePrefix('Symfony');
             $excludeList->addClassNamePrefix('Doctrine\Instantiator');
             $excludeList->addClassNamePrefix('Prophecy');
             $excludeList->addStaticAttribute(ComparatorFactory::class, 'instance');

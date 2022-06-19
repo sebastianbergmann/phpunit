@@ -117,7 +117,10 @@
             </fileset>
         </copy>
 
-        <exec executable="${basedir}/build/scripts/phar-manifest.php" output="${basedir}/build/tmp/phar/manifest.txt" failonerror="true"/>
+        <exec executable="${basedir}/build/scripts/phar-manifest.php" failonerror="true">
+            <arg path="${basedir}/build/tmp/phar/manifest.txt"/>
+            <arg path="${basedir}/build/tmp/phar/sbom.xml"/>
+        </exec>
 
         <copy file="${basedir}/vendor/phpunit/php-code-coverage/LICENSE" tofile="${basedir}/build/tmp/phar/php-code-coverage/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/php-code-coverage">
@@ -324,13 +327,6 @@
         <copy file="${basedir}/vendor/phpspec/prophecy/LICENSE" tofile="${basedir}/build/tmp/phar/phpspec-prophecy/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/phpspec-prophecy">
             <fileset dir="${basedir}/vendor/phpspec/prophecy/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
-        <copy file="${basedir}/vendor/symfony/polyfill-ctype/LICENSE" tofile="${basedir}/build/tmp/phar/symfony-polyfill-ctype/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/symfony-polyfill-ctype">
-            <fileset dir="${basedir}/vendor/symfony/polyfill-ctype">
                 <include name="**/*.php" />
             </fileset>
         </copy>
