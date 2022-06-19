@@ -29,13 +29,14 @@ function manifest(string $outputFilename, array $package, string $version, array
     );
 
     foreach ($dependencies as $dependency) {
-        $buffer .= $dependency['name'] . ': ' . $dependency['version'];
-
-        if (!preg_match('/^[v= ]*(([0-9]+)(\\.([0-9]+)(\\.([0-9]+)(-([0-9]+))?(-?([a-zA-Z-+][a-zA-Z0-9.\\-:]*)?)?)?)?)$/', $dependency['version'])) {
-            $buffer .=  '@' . $dependency['source']['reference'];
-        }
-
-        $buffer .=  "\n";
+        $buffer .= sprintf(
+            '%s: %s' . "\n",
+            $dependency['name'],
+            versionWithReference(
+                $dependency['version'],
+                $dependency['source']['reference']
+            )
+        );
     }
 
     file_put_contents($outputFilename, $buffer);
@@ -64,18 +65,16 @@ function sbom(string $outputFilename, array $package, string $version, array $de
     );
 
     foreach ($dependencies as $dependency) {
-        [$group, $name]    = explode('/', $dependency['name']);
-        $dependencyVersion = $dependency['version'];
-
-        if (!preg_match('/^[v= ]*(([0-9]+)(\\.([0-9]+)(\\.([0-9]+)(-([0-9]+))?(-?([a-zA-Z-+][a-zA-Z0-9.\\-:]*)?)?)?)?)$/', $dependencyVersion)) {
-            $dependencyVersion .=  '@' . $dependency['source']['reference'];
-        }
+        [$group, $name] = explode('/', $dependency['name']);
 
         writeComponent(
             $writer,
             $group,
             $name,
-            $dependencyVersion,
+            versionWithReference(
+                $dependency['version'],
+                $dependency['source']['reference']
+            ),
             $dependency['description'],
             $dependency['license']
         );
@@ -86,16 +85,6 @@ function sbom(string $outputFilename, array $package, string $version, array $de
     $writer->endDocument();
 
     file_put_contents($outputFilename, $writer->outputMemory());
-}
-
-function dependencies(): array
-{
-    return json_decode(
-        file_get_contents(
-            __DIR__ . '/../../composer.lock'
-        ),
-        true
-    )['packages'];
 }
 
 function package(): array
@@ -129,6 +118,25 @@ function version(): string
     $hash   = @exec('git log -1 --format="%H"');
 
     return $branch . '@' . $hash;
+}
+
+function dependencies(): array
+{
+    return json_decode(
+        file_get_contents(
+            __DIR__ . '/../../composer.lock'
+        ),
+        true
+    )['packages'];
+}
+
+function versionWithReference(string $version, string $reference): string
+{
+    if (!preg_match('/^[v= ]*(([0-9]+)(\\.([0-9]+)(\\.([0-9]+)(-([0-9]+))?(-?([a-zA-Z-+][a-zA-Z0-9.\\-:]*)?)?)?)?)$/', $version)) {
+        $version .=  '@' . $reference;
+    }
+
+    return $version;
 }
 
 function writeComponent(XMLWriter $writer, string $group, string $name, string $version, string $description, array $licenses): void
