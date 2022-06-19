@@ -114,7 +114,6 @@ function package(): array
         'name' => $name,
         'description' => $data['description'],
         'license' => [$data['license']],
-        'branch' => $data['extra']['branch-alias']['dev-master']
     ];
 }
 
