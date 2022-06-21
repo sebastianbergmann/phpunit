@@ -254,7 +254,7 @@ final class ResultPrinter
         $this->printCountString($result->numberOfTestPassedWithWarningEvents(), 'Warnings', $color);
         $this->printCountString($result->numberOfTestSkippedEvents(), 'Skipped', $color);
         $this->printCountString($result->numberTestMarkedIncompleteEvents(), 'Incomplete', $color);
-        $this->printCountString($result->numberOfTestConsideredRiskyEvents(), 'Risky', $color);
+        $this->printCountString($result->numberOfTestsWithTestConsideredRiskyEvents(), 'Risky', $color);
         $this->printWithColor($color, '.');
     }
 

@@ -203,14 +203,14 @@ final class TestResult
         return $this->numberOfTestPassedWithWarningEvents() > 0;
     }
 
-    public function numberOfTestConsideredRiskyEvents(): int
+    public function numberOfTestsWithTestConsideredRiskyEvents(): int
     {
         return count($this->testConsideredRiskyEvents);
     }
 
     public function hasTestConsideredRiskyEvents(): bool
     {
-        return $this->numberOfTestConsideredRiskyEvents() > 0;
+        return $this->numberOfTestsWithTestConsideredRiskyEvents() > 0;
     }
 
     public function numberOfTestSkippedEvents(): int
