@@ -173,6 +173,14 @@ final class TestResult
         return $this->numberOfAssertions;
     }
 
+    /**
+     * @psalm-return list<BeforeFirstTestMethodErrored|Errored>
+     */
+    public function testErroredEvents(): array
+    {
+        return $this->testErroredEvents;
+    }
+
     public function numberOfTestErroredEvents(): int
     {
         return count($this->testErroredEvents);
@@ -181,6 +189,14 @@ final class TestResult
     public function hasTestErroredEvents(): bool
     {
         return $this->numberOfTestErroredEvents() > 0;
+    }
+
+    /**
+     * @psalm-return list<Failed>
+     */
+    public function testFailedEvents(): array
+    {
+        return $this->testFailedEvents;
     }
 
     public function numberOfTestFailedEvents(): int
@@ -193,6 +209,14 @@ final class TestResult
         return $this->numberOfTestFailedEvents() > 0;
     }
 
+    /**
+     * @psalm-return list<PassedWithWarning>
+     */
+    public function testPassedWithWarningEvents(): array
+    {
+        return $this->testPassedWithWarningEvents;
+    }
+
     public function numberOfTestPassedWithWarningEvents(): int
     {
         return count($this->testPassedWithWarningEvents);
@@ -201,6 +225,14 @@ final class TestResult
     public function hasTestPassedWithWarningEvents(): bool
     {
         return $this->numberOfTestPassedWithWarningEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<ConsideredRisky>>
+     */
+    public function testConsideredRiskyEvents(): array
+    {
+        return $this->testConsideredRiskyEvents;
     }
 
     public function numberOfTestsWithTestConsideredRiskyEvents(): int
@@ -213,6 +245,14 @@ final class TestResult
         return $this->numberOfTestsWithTestConsideredRiskyEvents() > 0;
     }
 
+    /**
+     * @psalm-return list<Skipped>
+     */
+    public function testSkippedEvents(): array
+    {
+        return $this->testSkippedEvents;
+    }
+
     public function numberOfTestSkippedEvents(): int
     {
         return count($this->testSkippedEvents);
@@ -221,6 +261,14 @@ final class TestResult
     public function hasTestSkippedEvents(): bool
     {
         return $this->numberOfTestSkippedEvents() > 0;
+    }
+
+    /**
+     * @psalm-return list<MarkedIncomplete>
+     */
+    public function testMarkedIncompleteEvents(): array
+    {
+        return $this->testMarkedIncompleteEvents;
     }
 
     public function numberTestMarkedIncompleteEvents(): int
