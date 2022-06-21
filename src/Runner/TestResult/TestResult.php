@@ -120,7 +120,7 @@ final class TestResult
     /**
      * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $testErroredEvents
      * @psalm-param list<Failed> $testFailedEvents
-     * @psalm-param array<string,list<PassedWithWarning>> $testPassedWithWarningEvents
+     * @psalm-param list<PassedWithWarning> $testPassedWithWarningEvents
      * @psalm-param array<string,list<ConsideredRisky>> $testConsideredRiskyEvents
      * @psalm-param list<Skipped> $testSkippedEvents
      * @psalm-param list<MarkedIncomplete> $testMarkedIncompleteEvents
