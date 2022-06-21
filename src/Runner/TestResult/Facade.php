@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
+use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Runner\Exception;
 
 /**
@@ -32,10 +33,38 @@ final class Facade
      */
     public static function result(): TestResult
     {
+        self::ensureEventsAreCollected();
+
+        return self::$collector->result();
+    }
+
+    /**
+     * @psalm-return list<class-string>
+     */
+    public static function passedTestClasses(): array
+    {
+        self::ensureEventsAreCollected();
+
+        return self::$collector->passedTestClasses();
+    }
+
+    /**
+     * @psalm-return array<string,array{result: mixed, size: TestSize}>
+     */
+    public static function passedTestMethods(): array
+    {
+        self::ensureEventsAreCollected();
+
+        return self::$collector->passedTestMethods();
+    }
+
+    /**
+     * @throws Exception
+     */
+    private static function ensureEventsAreCollected(): void
+    {
         if (self::$collector === null) {
             throw new Exception;
         }
-
-        return self::$collector->result();
     }
 }

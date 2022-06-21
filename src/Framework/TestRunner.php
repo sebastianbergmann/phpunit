@@ -267,8 +267,6 @@ final class TestRunner
             );
         }
 
-        $result->endTest($test);
-
         if ($test->wasPrepared()) {
             Event\Facade::emitter()->testFinished(
                 $test->valueObjectForEvents(),

@@ -251,8 +251,6 @@ abstract class AbstractPhpProcess
                 $exception,
             );
 
-            $result->endTest($test);
-
             assert($test instanceof TestCase);
 
             Facade::emitter()->testErrored(
@@ -381,8 +379,6 @@ abstract class AbstractPhpProcess
                 );
             }
         }
-
-        $result->endTest($test);
 
         if (!empty($output)) {
             print $output;

@@ -84,6 +84,7 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Error\Deprecation;
 use PHPUnit\Util\Error\Error;
@@ -1602,18 +1603,19 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return true;
         }
 
-        $passed     = $this->result->passed();
-        $passedKeys = array_keys($passed);
+        $passedTestClasses     = Facade::passedTestClasses();
+        $passedTestMethods     = Facade::passedTestMethods();
+        $passedTestMethodsKeys = array_keys($passedTestMethods);
 
-        foreach ($passedKeys as $keyIndex => $keyValue) {
+        foreach ($passedTestMethodsKeys as $keyIndex => $keyValue) {
             $pos = strpos($keyValue, ' with data set');
 
             if ($pos !== false) {
-                $passedKeys[$keyIndex] = substr($keyValue, 0, $pos);
+                $passedTestMethodsKeys[$keyIndex] = substr($keyValue, 0, $pos);
             }
         }
 
-        $passedKeys = array_flip(array_unique($passedKeys));
+        $passedTestMethodsKeys = array_flip(array_unique($passedTestMethodsKeys));
 
         foreach ($this->dependencies as $dependency) {
             if (!$dependency->isValid()) {
@@ -1631,7 +1633,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     return false;
                 }
 
-                if (!in_array($dependencyClassName, $this->result->passedClasses(), true)) {
+                if (!in_array($dependencyClassName, $passedTestClasses, true)) {
                     $this->markSkippedForMissingDependency($dependency);
 
                     return false;
@@ -1642,7 +1644,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $dependencyTarget = $dependency->getTarget();
 
-            if (!isset($passedKeys[$dependencyTarget])) {
+            if (!isset($passedTestMethodsKeys[$dependencyTarget])) {
                 if (!$this->isCallableTestMethod($dependencyTarget)) {
                     $this->markErrorForInvalidDependency($dependency);
                 } else {
@@ -1652,10 +1654,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 return false;
             }
 
-            if (isset($passed[$dependencyTarget])) {
-                if ($passed[$dependencyTarget]['size']->isKnown() &&
+            if (isset($passedTestMethods[$dependencyTarget])) {
+                if ($passedTestMethods[$dependencyTarget]['size']->isKnown() &&
                     $this->size()->isKnown() &&
-                    $passed[$dependencyTarget]['size']->isGreaterThan($this->size())) {
+                    $passedTestMethods[$dependencyTarget]['size']->isGreaterThan($this->size())) {
                     $this->result->addFailure(
                         $this,
                         new SkippedDueToDependencyOnLargerTestException,
@@ -1668,11 +1670,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $deepCopy = new DeepCopy;
                     $deepCopy->skipUncloneable(false);
 
-                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($passed[$dependencyTarget]['result']);
+                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($passedTestMethods[$dependencyTarget]['result']);
                 } elseif ($dependency->shallowClone()) {
-                    $this->dependencyInput[$dependencyTarget] = clone $passed[$dependencyTarget]['result'];
+                    $this->dependencyInput[$dependencyTarget] = clone $passedTestMethods[$dependencyTarget]['result'];
                 } else {
-                    $this->dependencyInput[$dependencyTarget] = $passed[$dependencyTarget]['result'];
+                    $this->dependencyInput[$dependencyTarget] = $passedTestMethods[$dependencyTarget]['result'];
                 }
             } else {
                 $this->dependencyInput[$dependencyTarget] = null;
@@ -1708,8 +1710,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this,
             $exception,
         );
-
-        $this->result->endTest($this);
     }
 
     private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
@@ -1734,8 +1734,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $dependency->getTarget()
             ),
         );
-
-        $this->result->endTest($this);
     }
 
     /**

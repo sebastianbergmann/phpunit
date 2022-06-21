@@ -408,7 +408,7 @@
       <code>list&lt;string&gt;</code>
     </MoreSpecificReturnType>
     <PossiblyNullReference occurrences="3">
-      <code>passed</code>
+      <code>addFailure</code>
       <code>startTest</code>
       <code>startTest</code>
     </PossiblyNullReference>
@@ -617,10 +617,23 @@
       <code>duration</code>
     </MissingThrowsDocblock>
   </file>
+  <file src="src/Runner/TestResult/Collector.php">
+    <RedundantCondition occurrences="2">
+      <code>assert($test instanceof TestMethod)</code>
+      <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
+    </RedundantCondition>
+  </file>
   <file src="src/Runner/TestResult/Facade.php">
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="3">
       <code>new Collector</code>
+      <code>self::ensureEventsAreCollected()</code>
+      <code>self::ensureEventsAreCollected()</code>
     </MissingThrowsDocblock>
+    <PossiblyNullReference occurrences="3">
+      <code>passedTestClasses</code>
+      <code>passedTestMethods</code>
+      <code>result</code>
+    </PossiblyNullReference>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <UnresolvableInclude occurrences="1">

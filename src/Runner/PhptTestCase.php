@@ -121,7 +121,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
             $result->startTest($this);
             $result->addError($this, $e);
-            $result->endTest($this);
 
             $emitter->testPrepared($this->valueObjectForEvents());
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
@@ -240,8 +239,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         $this->runClean($sections, CodeCoverage::isActive());
-
-        $result->endTest($this);
 
         $emitter->testFinished($this->valueObjectForEvents(), 1);
     }
@@ -410,7 +407,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 $this,
                 new SyntheticSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace),
             );
-            $result->endTest($this);
 
             EventFacade::emitter()->testSkipped(
                 $this->valueObjectForEvents(),

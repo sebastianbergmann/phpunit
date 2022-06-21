@@ -33,7 +33,5 @@ class DoubleTestCase implements Test
 
         $this->testCase->runBare();
         $this->testCase->runBare();
-
-        $result->endTest($this);
     }
 }

@@ -11,8 +11,6 @@ namespace PHPUnit\Framework;
 
 use function count;
 use Countable;
-use PHPUnit\Framework\TestSize\TestSize;
-use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\TextUI\Configuration\Registry;
 use Throwable;
 
@@ -23,17 +21,6 @@ use Throwable;
  */
 final class TestResult implements Countable
 {
-    /**
-     * @psalm-var array<string,array{result: mixed, size: TestSize}>
-     */
-    private array $passed = [];
-
-    /**
-     * @psalm-var list<string>
-     */
-    private array $passedTestClasses     = [];
-    private bool $currentTestSuiteFailed = false;
-
     /**
      * @psalm-var list<TestFailure>
      */
@@ -72,7 +59,6 @@ final class TestResult implements Countable
     private bool $stopOnIncomplete;
     private bool $stopOnSkipped;
     private bool $stopOnDefect;
-    private bool $lastTestFailed = false;
 
     public function __construct()
     {
@@ -94,8 +80,6 @@ final class TestResult implements Countable
         if ($this->stopOnError || $this->stopOnFailure) {
             $this->stop = true;
         }
-
-        $this->lastTestFailed = true;
     }
 
     public function addWarning(Test $test, Warning $e): void
@@ -138,51 +122,11 @@ final class TestResult implements Countable
                 $this->stop = true;
             }
         }
-
-        $this->lastTestFailed = true;
-    }
-
-    public function startTestSuite(): void
-    {
-        $this->currentTestSuiteFailed = false;
-    }
-
-    public function endTestSuite(TestSuite $suite): void
-    {
-        if (!$this->currentTestSuiteFailed) {
-            $this->passedTestClasses[] = $suite->getName();
-        }
     }
 
     public function startTest(Test $test): void
     {
-        $this->lastTestFailed = false;
         $this->runTests += count($test);
-    }
-
-    public function endTest(Test $test): void
-    {
-        if (!$this->lastTestFailed && $test instanceof TestCase) {
-            $class = $test::class;
-            $key   = $class . '::' . $test->getName();
-            $size  = TestSize::unknown();
-
-            if ($class !== WarningTestCase::class) {
-                $size = (new Groups)->size(
-                    $class,
-                    $test->getName(false)
-                );
-            }
-
-            $this->passed[$key] = [
-                'result' => $test->result(),
-                'size'   => $size,
-            ];
-        }
-
-        if ($this->lastTestFailed && $test instanceof TestCase) {
-            $this->currentTestSuiteFailed = true;
-        }
     }
 
     public function allCompletelyImplemented(): bool
@@ -241,19 +185,6 @@ final class TestResult implements Countable
     public function warnings(): array
     {
         return $this->warnings;
-    }
-
-    /**
-     * @psalm-return array<string,array{result: mixed, size: TestSize}>
-     */
-    public function passed(): array
-    {
-        return $this->passed;
-    }
-
-    public function passedClasses(): array
-    {
-        return $this->passedTestClasses;
     }
 
     public function count(): int

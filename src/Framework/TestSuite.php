@@ -322,8 +322,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $className   = $this->name;
         $hookMethods = (new HookMethods)->hookMethods($className);
 
-        $result->startTestSuite();
-
         $emitter                       = Event\Facade::emitter();
         $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this);
 
@@ -361,10 +359,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 foreach ($this->tests() as $test) {
                     $result->startTest($test);
                     $result->addFailure($test, $error);
-                    $result->endTest($test);
                 }
-
-                $result->endTestSuite($this);
 
                 return;
             } catch (Throwable $t) {
@@ -402,11 +397,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                             new SkippedDueToErrorInHookMethodException,
                         );
                     }
-
-                    $result->endTest($test);
                 }
-
-                $result->endTestSuite($this);
 
                 return;
             }
@@ -458,7 +449,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                     $result->startTest($placeholderTest);
                     $result->addFailure($placeholderTest, $error);
-                    $result->endTest($placeholderTest);
                 }
             }
         }
@@ -469,8 +459,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 ...$methodsCalledAfterLastTest
             );
         }
-
-        $result->endTestSuite($this);
 
         $emitter->testSuiteFinished($testSuiteValueObjectForEvents);
     }
