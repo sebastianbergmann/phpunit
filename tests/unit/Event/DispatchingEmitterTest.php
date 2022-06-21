@@ -364,7 +364,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testTestPassedDispatchesTestPassedEvent(): void
     {
-        $test = $this->testValueObject();
+        $test                  = $this->testValueObject();
+        $testMethodReturnValue = 'test method return value';
 
         $subscriber = new class extends RecordingSubscriber implements Test\PassedSubscriber
         {
@@ -387,7 +388,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testPassed($test);
+        $emitter->testPassed($test, $testMethodReturnValue);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -396,6 +397,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\Passed::class, $event);
 
         $this->assertSame($test, $event->test());
+        $this->assertSame($testMethodReturnValue, $event->testMethodReturnValue());
     }
 
     public function testTestPassedWithWarningDispatchesTestPassedWithWarningEvent(): void

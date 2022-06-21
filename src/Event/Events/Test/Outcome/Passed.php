@@ -21,11 +21,13 @@ final class Passed implements Event
 {
     private Telemetry\Info $telemetryInfo;
     private Code\Test $test;
+    private mixed $testMethodReturnValue;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, mixed $testMethodReturnValue)
     {
-        $this->telemetryInfo = $telemetryInfo;
-        $this->test          = $test;
+        $this->telemetryInfo         = $telemetryInfo;
+        $this->test                  = $test;
+        $this->testMethodReturnValue = $testMethodReturnValue;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -36,6 +38,11 @@ final class Passed implements Event
     public function test(): Code\Test
     {
         return $this->test;
+    }
+
+    public function testMethodReturnValue(): mixed
+    {
+        return $this->testMethodReturnValue;
     }
 
     public function asString(): string

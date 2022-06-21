@@ -181,12 +181,13 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testPassed(Code\Test $test): void
+    public function testPassed(Code\Test $test, mixed $testMethodReturnValue): void
     {
         $this->dispatcher->dispatch(
             new Test\Passed(
                 $this->telemetryInfo(),
-                $test
+                $test,
+                $testMethodReturnValue
             )
         );
     }
