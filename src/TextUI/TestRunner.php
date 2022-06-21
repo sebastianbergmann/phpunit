@@ -34,7 +34,7 @@ use PHPUnit\Runner\ResultCache\NullResultCache;
 use PHPUnit\Runner\ResultCache\ResultCacheHandler;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
-use PHPUnit\TestRunner\TestResult\Collector as TestResultCollector;
+use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
@@ -181,7 +181,7 @@ final class TestRunner
             );
         }
 
-        $resultCollector = new TestResultCollector;
+        Facade::init();
 
         if ($this->configuration->hasLogEventsText()) {
             if (is_file($this->configuration->logEventsText())) {
@@ -390,7 +390,7 @@ final class TestRunner
 
         Event\Facade::emitter()->testExecutionFinished();
 
-        $result = $resultCollector->result();
+        $result = Facade::result();
 
         if (isset($resultPrinter)) {
             $resultPrinter->printResult($result, $legacyResult);

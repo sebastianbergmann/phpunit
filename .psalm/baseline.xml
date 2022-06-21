@@ -617,6 +617,11 @@
       <code>duration</code>
     </MissingThrowsDocblock>
   </file>
+  <file src="src/Runner/TestResult/Facade.php">
+    <MissingThrowsDocblock occurrences="1">
+      <code>new Collector</code>
+    </MissingThrowsDocblock>
+  </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <UnresolvableInclude occurrences="1">
       <code>include_once $suiteClassFile</code>
@@ -1060,7 +1065,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="41">
+    <MissingThrowsDocblock occurrences="40">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1089,7 +1094,6 @@
       <code>logfileTeamcity</code>
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
-      <code>new TestResultCollector</code>
       <code>pharExtensionDirectory</code>
       <code>run</code>
       <code>stop</code>
