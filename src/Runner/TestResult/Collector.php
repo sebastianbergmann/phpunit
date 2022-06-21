@@ -13,12 +13,22 @@ use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
+use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\Errored;
+use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
+use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PassedWithWarning;
+use PHPUnit\Event\Test\PhpDeprecationTriggered;
+use PHPUnit\Event\Test\PhpErrorTriggered;
+use PHPUnit\Event\Test\PhpNoticeTriggered;
+use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitWarningTriggered;
+use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 
@@ -63,6 +73,56 @@ final class Collector
     private array $testConsideredRiskyEvents = [];
 
     /**
+     * @psalm-var array<string,list<DeprecationTriggered>>
+     */
+    private array $testTriggeredDeprecationEvents = [];
+
+    /**
+     * @psalm-var array<string,list<PhpDeprecationTriggered>>
+     */
+    private array $testTriggeredPhpDeprecationEvents = [];
+
+    /**
+     * @psalm-var array<string,list<PhpunitDeprecationTriggered>>
+     */
+    private array $testTriggeredPhpunitDeprecationEvents = [];
+
+    /**
+     * @psalm-var array<string,list<ErrorTriggered>>
+     */
+    private array $testTriggeredErrorEvents = [];
+
+    /**
+     * @psalm-var array<string,list<PhpErrorTriggered>>
+     */
+    private array $testTriggeredPhpErrorEvents = [];
+
+    /**
+     * @psalm-var array<string,list<NoticeTriggered>>
+     */
+    private array $testTriggeredNoticeEvents = [];
+
+    /**
+     * @psalm-var array<string,list<PhpNoticeTriggered>>
+     */
+    private array $testTriggeredPhpNoticeEvents = [];
+
+    /**
+     * @psalm-var array<string,list<WarningTriggered>>
+     */
+    private array $testTriggeredWarningEvents = [];
+
+    /**
+     * @psalm-var array<string,list<PhpWarningTriggered>>
+     */
+    private array $testTriggeredPhpWarningEvents = [];
+
+    /**
+     * @psalm-var array<string,list<PhpunitWarningTriggered>>
+     */
+    private array $testTriggeredPhpunitWarningEvents = [];
+
+    /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
@@ -78,6 +138,16 @@ final class Collector
         Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredDeprecationSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredErrorSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredNoticeSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredPhpDeprecationSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredPhpErrorSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredPhpNoticeSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredPhpunitDeprecationSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredPhpunitWarningSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredPhpWarningSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredWarningSubscriber($this));
     }
 
     public function result(): TestResult
@@ -91,7 +161,17 @@ final class Collector
             $this->testPassedWithWarningEvents,
             $this->testConsideredRiskyEvents,
             $this->testSkippedEvents,
-            $this->testMarkedIncompleteEvents
+            $this->testMarkedIncompleteEvents,
+            $this->testTriggeredDeprecationEvents,
+            $this->testTriggeredPhpDeprecationEvents,
+            $this->testTriggeredPhpunitDeprecationEvents,
+            $this->testTriggeredErrorEvents,
+            $this->testTriggeredPhpErrorEvents,
+            $this->testTriggeredNoticeEvents,
+            $this->testTriggeredPhpNoticeEvents,
+            $this->testTriggeredWarningEvents,
+            $this->testTriggeredPhpWarningEvents,
+            $this->testTriggeredPhpunitWarningEvents
         );
     }
 
@@ -172,5 +252,95 @@ final class Collector
         }
 
         $this->testConsideredRiskyEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredDeprecation(DeprecationTriggered $event): void
+    {
+        if (!isset($this->testTriggeredDeprecationEvents[$event->test()->id()])) {
+            $this->testTriggeredDeprecationEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredDeprecationEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
+    {
+        if (!isset($this->testTriggeredPhpDeprecationEvents[$event->test()->id()])) {
+            $this->testTriggeredPhpDeprecationEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredPhpDeprecationEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredPhpunitDeprecation(PhpunitDeprecationTriggered $event): void
+    {
+        if (!isset($this->testTriggeredPhpunitDeprecationEvents[$event->test()->id()])) {
+            $this->testTriggeredPhpunitDeprecationEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredPhpunitDeprecationEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredError(ErrorTriggered $event): void
+    {
+        if (!isset($this->testTriggeredErrorEvents[$event->test()->id()])) {
+            $this->testTriggeredErrorEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredErrorEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredPhpError(PhpErrorTriggered $event): void
+    {
+        if (!isset($this->testTriggeredPhpErrorEvents[$event->test()->id()])) {
+            $this->testTriggeredPhpErrorEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredPhpErrorEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredNotice(NoticeTriggered $event): void
+    {
+        if (!isset($this->testTriggeredNoticeEvents[$event->test()->id()])) {
+            $this->testTriggeredNoticeEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredNoticeEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
+    {
+        if (!isset($this->testTriggeredPhpNoticeEvents[$event->test()->id()])) {
+            $this->testTriggeredPhpNoticeEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredPhpNoticeEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredWarning(WarningTriggered $event): void
+    {
+        if (!isset($this->testTriggeredWarningEvents[$event->test()->id()])) {
+            $this->testTriggeredWarningEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredWarningEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
+    {
+        if (!isset($this->testTriggeredPhpWarningEvents[$event->test()->id()])) {
+            $this->testTriggeredPhpWarningEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredPhpWarningEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredPhpunitWarning(PhpunitWarningTriggered $event): void
+    {
+        if (!isset($this->testTriggeredPhpunitWarningEvents[$event->test()->id()])) {
+            $this->testTriggeredPhpunitWarningEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredPhpunitWarningEvents[$event->test()->id()][] = $event;
     }
 }
