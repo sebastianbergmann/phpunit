@@ -48,7 +48,7 @@ final class TestResult
     private array $testFailedEvents;
 
     /**
-     * @psalm-var array<string,list<PassedWithWarning>>
+     * @psalm-var list<PassedWithWarning>
      */
     private array $testPassedWithWarningEvents;
 

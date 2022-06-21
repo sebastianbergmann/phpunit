@@ -72,7 +72,7 @@ final class Collector
     private array $testFailedEvents = [];
 
     /**
-     * @psalm-var array<string,list<PassedWithWarning>>
+     * @psalm-var list<PassedWithWarning>
      */
     private array $testPassedWithWarningEvents = [];
 
@@ -313,11 +313,7 @@ final class Collector
 
     public function testPassedWithWarning(PassedWithWarning $event): void
     {
-        if (!isset($this->testPassedWithWarningEvents[$event->test()->id()])) {
-            $this->testPassedWithWarningEvents[$event->test()->id()] = [];
-        }
-
-        $this->testPassedWithWarningEvents[$event->test()->id()][] = $event;
+        $this->testPassedWithWarningEvents[] = $event;
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
