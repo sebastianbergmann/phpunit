@@ -10,7 +10,6 @@
 namespace PHPUnit\TestRunner\TestResult;
 
 use PHPUnit\Framework\TestSize\TestSize;
-use PHPUnit\Runner\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -21,21 +20,12 @@ final class Facade
 
     public static function init(): void
     {
-        if (self::$collector !== null) {
-            return;
-        }
-
-        self::$collector = new Collector;
+        self::collector();
     }
 
-    /**
-     * @throws Exception
-     */
     public static function result(): TestResult
     {
-        self::ensureEventsAreCollected();
-
-        return self::$collector->result();
+        return self::collector()->result();
     }
 
     /**
@@ -43,9 +33,7 @@ final class Facade
      */
     public static function passedTestClasses(): array
     {
-        self::ensureEventsAreCollected();
-
-        return self::$collector->passedTestClasses();
+        return self::collector()->passedTestClasses();
     }
 
     /**
@@ -53,18 +41,45 @@ final class Facade
      */
     public static function passedTestMethods(): array
     {
-        self::ensureEventsAreCollected();
-
-        return self::$collector->passedTestMethods();
+        return self::collector()->passedTestMethods();
     }
 
-    /**
-     * @throws Exception
-     */
-    private static function ensureEventsAreCollected(): void
+    public static function hasTestErroredEvents(): bool
+    {
+        return self::collector()->hasTestErroredEvents();
+    }
+
+    public static function hasTestFailedEvents(): bool
+    {
+        return self::collector()->hasTestFailedEvents();
+    }
+
+    public static function hasTestPassedWithWarningEvents(): bool
+    {
+        return self::collector()->hasTestPassedWithWarningEvents();
+    }
+
+    public static function hasTestConsideredRiskyEvents(): bool
+    {
+        return self::collector()->hasTestConsideredRiskyEvents();
+    }
+
+    public static function hasTestSkippedEvents(): bool
+    {
+        return self::collector()->hasTestSkippedEvents();
+    }
+
+    public static function hasTestMarkedIncompleteEvents(): bool
+    {
+        return self::collector()->hasTestMarkedIncompleteEvents();
+    }
+
+    private static function collector(): Collector
     {
         if (self::$collector === null) {
-            throw new Exception;
+            self::$collector = new Collector;
         }
+
+        return self::$collector;
     }
 }

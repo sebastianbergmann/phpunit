@@ -32,6 +32,8 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
+use PHPUnit\TestRunner\TestResult\Facade;
+use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
@@ -58,6 +60,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private array $tests             = [];
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
+    private bool $stopOnError;
+    private bool $stopOnFailure;
+    private bool $stopOnWarning;
+    private bool $stopOnRisky;
+    private bool $stopOnIncomplete;
+    private bool $stopOnSkipped;
+    private bool $stopOnDefect;
 
     public static function empty(string $name = null): static
     {
@@ -151,6 +160,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private function __construct(string $name)
     {
         $this->name = $name;
+
+        $configuration = Registry::get();
+
+        $this->stopOnError      = $configuration->stopOnError();
+        $this->stopOnFailure    = $configuration->stopOnFailure();
+        $this->stopOnWarning    = $configuration->stopOnWarning();
+        $this->stopOnRisky      = $configuration->stopOnRisky();
+        $this->stopOnIncomplete = $configuration->stopOnIncomplete();
+        $this->stopOnSkipped    = $configuration->stopOnSkipped();
+        $this->stopOnDefect     = $configuration->stopOnDefect();
     }
 
     /**
@@ -381,10 +400,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 $errorAdded = false;
 
                 foreach ($this->tests() as $test) {
-                    if ($result->shouldStop()) {
-                        break;
-                    }
-
                     $result->startTest($test);
 
                     if (!$errorAdded) {
@@ -411,7 +426,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         foreach ($this as $test) {
-            if ($result->shouldStop()) {
+            if ($this->shouldStop()) {
                 break;
             }
 
@@ -618,5 +633,34 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
         return !$reflector->hasMethod($methodName) ||
                $reflector->getMethod($methodName)->getDeclaringClass()->getName() === TestCase::class;
+    }
+
+    private function shouldStop(): bool
+    {
+        if (($this->stopOnDefect || $this->stopOnError) && Facade::hasTestErroredEvents()) {
+            return true;
+        }
+
+        if (($this->stopOnDefect || $this->stopOnFailure) && Facade::hasTestFailedEvents()) {
+            return true;
+        }
+
+        if (($this->stopOnDefect || $this->stopOnWarning) && Facade::hasTestPassedWithWarningEvents()) {
+            return true;
+        }
+
+        if (($this->stopOnDefect || $this->stopOnRisky) && Facade::hasTestConsideredRiskyEvents()) {
+            return true;
+        }
+
+        if ($this->stopOnSkipped && Facade::hasTestSkippedEvents()) {
+            return true;
+        }
+
+        if ($this->stopOnIncomplete && Facade::hasTestMarkedIncompleteEvents()) {
+            return true;
+        }
+
+        return false;
     }
 }

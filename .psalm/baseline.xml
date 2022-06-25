@@ -624,16 +624,9 @@
     </RedundantCondition>
   </file>
   <file src="src/Runner/TestResult/Facade.php">
-    <MissingThrowsDocblock occurrences="3">
+    <MissingThrowsDocblock occurrences="1">
       <code>new Collector</code>
-      <code>self::ensureEventsAreCollected()</code>
-      <code>self::ensureEventsAreCollected()</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="3">
-      <code>passedTestClasses</code>
-      <code>passedTestMethods</code>
-      <code>result</code>
-    </PossiblyNullReference>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <UnresolvableInclude occurrences="1">

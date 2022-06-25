@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use function count;
 use Countable;
-use PHPUnit\TextUI\Configuration\Registry;
 use Throwable;
 
 /**
@@ -51,43 +50,14 @@ final class TestResult implements Countable
      */
     private array $skipped = [];
     private int $runTests  = 0;
-    private bool $stop     = false;
-    private bool $stopOnError;
-    private bool $stopOnFailure;
-    private bool $stopOnWarning;
-    private bool $stopOnRisky;
-    private bool $stopOnIncomplete;
-    private bool $stopOnSkipped;
-    private bool $stopOnDefect;
-
-    public function __construct()
-    {
-        $configuration = Registry::get();
-
-        $this->stopOnError      = $configuration->stopOnError();
-        $this->stopOnFailure    = $configuration->stopOnFailure();
-        $this->stopOnWarning    = $configuration->stopOnWarning();
-        $this->stopOnRisky      = $configuration->stopOnRisky();
-        $this->stopOnIncomplete = $configuration->stopOnIncomplete();
-        $this->stopOnSkipped    = $configuration->stopOnSkipped();
-        $this->stopOnDefect     = $configuration->stopOnDefect();
-    }
 
     public function addError(Test $test, Throwable $t): void
     {
         $this->recordError($test, $t);
-
-        if ($this->stopOnError || $this->stopOnFailure) {
-            $this->stop = true;
-        }
     }
 
     public function addWarning(Test $test, Warning $e): void
     {
-        if ($this->stopOnWarning || $this->stopOnDefect) {
-            $this->stop = true;
-        }
-
         $this->recordWarning($test, $e);
     }
 
@@ -99,28 +69,12 @@ final class TestResult implements Countable
             if ($test instanceof TestCase) {
                 $test->markAsRisky();
             }
-
-            if ($this->stopOnRisky || $this->stopOnDefect) {
-                $this->stop = true;
-            }
         } elseif ($e instanceof IncompleteTest) {
             $this->recordNotImplemented($test, $e);
-
-            if ($this->stopOnIncomplete) {
-                $this->stop = true;
-            }
         } elseif ($e instanceof SkippedTest) {
             $this->recordSkipped($test, $e);
-
-            if ($this->stopOnSkipped) {
-                $this->stop = true;
-            }
         } else {
             $this->failures[] = new TestFailure($test, $e);
-
-            if ($this->stopOnFailure || $this->stopOnDefect) {
-                $this->stop = true;
-            }
         }
     }
 
@@ -190,11 +144,6 @@ final class TestResult implements Countable
     public function count(): int
     {
         return $this->runTests;
-    }
-
-    public function shouldStop(): bool
-    {
-        return $this->stop;
     }
 
     private function recordError(Test $test, Throwable $t): void

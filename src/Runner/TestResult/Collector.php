@@ -197,6 +197,36 @@ final class Collector
         );
     }
 
+    public function hasTestErroredEvents(): bool
+    {
+        return !empty($this->testErroredEvents);
+    }
+
+    public function hasTestFailedEvents(): bool
+    {
+        return !empty($this->testFailedEvents);
+    }
+
+    public function hasTestPassedWithWarningEvents(): bool
+    {
+        return !empty($this->testPassedWithWarningEvents);
+    }
+
+    public function hasTestConsideredRiskyEvents(): bool
+    {
+        return !empty($this->testConsideredRiskyEvents);
+    }
+
+    public function hasTestSkippedEvents(): bool
+    {
+        return !empty($this->testSkippedEvents);
+    }
+
+    public function hasTestMarkedIncompleteEvents(): bool
+    {
+        return !empty($this->testMarkedIncompleteEvents);
+    }
+
     /**
      * @psalm-return list<class-string>
      */
