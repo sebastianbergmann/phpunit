@@ -15,6 +15,7 @@ use function preg_match;
 use function sprintf;
 use function str_replace;
 use Exception;
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;

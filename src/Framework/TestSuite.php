@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Framework\Assert;
 use const PHP_EOL;
 use function array_keys;
 use function array_map;
@@ -148,7 +147,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     private function __construct(string $name, Event\Facade $eventFacade)
     {
-        $this->name = $name;
+        $this->name        = $name;
         $this->eventFacade = $eventFacade;
 
         $configuration = Registry::get();

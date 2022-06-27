@@ -9,15 +9,15 @@
  */
 namespace PHPUnit\TestFixture\Event;
 
-use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
+use ReflectionProperty;
 
 final class DeprecatedPhpunitFeatureTest extends TestCase
 {
     public function testDeprecatedPhpunitFeature(): void
     {
-        $refProperty = new \ReflectionProperty(Assert::class, 'eventFacade');
+        $refProperty = new ReflectionProperty(Assert::class, 'eventFacade');
         $refProperty->getValue($this)->emitter()->testTriggeredPhpunitDeprecation(
             $this->valueObjectForEvents(),
             'message'

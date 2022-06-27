@@ -41,7 +41,7 @@ final class ResultCacheHandler
      */
     public function __construct(ResultCache $cache, Facade $facade)
     {
-        $this->cache = $cache;
+        $this->cache  = $cache;
         $this->facade = $facade;
 
         $this->registerSubscribers();

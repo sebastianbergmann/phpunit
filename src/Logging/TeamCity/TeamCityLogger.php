@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Logging\TeamCity;
 
-use PHPUnit\Event\Facade as EventFacade;
 use function assert;
 use function getmypid;
 use function ini_get;
@@ -21,6 +20,7 @@ use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\ConsideredRisky;
@@ -55,7 +55,7 @@ final class TeamCityLogger
      */
     public function __construct(Printer $printer, EventFacade $eventFacade)
     {
-        $this->printer = $printer;
+        $this->printer     = $printer;
         $this->eventFacade = $eventFacade;
 
         $this->registerSubscribers();

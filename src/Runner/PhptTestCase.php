@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Runner;
 
-use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const DIRECTORY_SEPARATOR;
 use function array_merge;
@@ -53,6 +52,7 @@ use PHPUnit\Framework\PHPTAssertionFailedError;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;

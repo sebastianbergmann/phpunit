@@ -9,11 +9,11 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
-use PHPUnit\Event\Facade;
 use function is_dir;
 use function is_file;
 use function realpath;
 use function str_ends_with;
+use PHPUnit\Event\Facade;
 use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteLoader;

@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\TextUI;
 
-use PHPUnit\Framework\Assert;
 use const PATH_SEPARATOR;
 use const PHP_EOL;
 use function array_keys;
@@ -90,7 +89,7 @@ final class Application
      */
     public function run(array $argv, bool $exit = true): int
     {
-        $facade = new Facade();
+        $facade = new Facade;
         $facade->emitter()->testRunnerStarted();
 
         $suite = $this->handleArguments($argv, $facade);

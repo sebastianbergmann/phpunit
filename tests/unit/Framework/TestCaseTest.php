@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
-use PHPUnit\Util\Error\Handler;
 use const E_USER_DEPRECATED;
 use const E_USER_ERROR;
 use const E_USER_NOTICE;
@@ -21,6 +19,8 @@ use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\TestFixture\Mockable;
 use PHPUnit\TestFixture\TestWithDifferentNames;
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
+use PHPUnit\Util\ErrorHandler;
 
 #[ExcludeGlobalVariableFromBackup('i')]
 #[ExcludeGlobalVariableFromBackup('singleton')]

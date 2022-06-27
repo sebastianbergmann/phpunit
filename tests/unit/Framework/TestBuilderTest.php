@@ -21,7 +21,7 @@ final class TestBuilderTest extends TestCase
     #[DataProvider('provideWithAnnotations')]
     public function testWithAnnotations(string $methodName): void
     {
-        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName, new Facade());
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName, new Facade);
         $this->assertInstanceOf(TestWithAnnotations::class, $test);
     }
 
@@ -37,7 +37,7 @@ final class TestBuilderTest extends TestCase
     #[DataProvider('provideWithAnnotationsAndDataProvider')]
     public function testWithAnnotationsAndDataProvider(string $methodName): void
     {
-        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName, new Facade());
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName, new Facade);
         $this->assertInstanceOf(DataProviderTestSuite::class, $test);
     }
 

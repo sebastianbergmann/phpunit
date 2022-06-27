@@ -21,7 +21,6 @@ use function tempnam;
 use function var_export;
 use AssertionError;
 use PHPUnit\Event;
-use PHPUnit\Event\Facade;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
@@ -50,7 +49,7 @@ final class TestRunner
     public function __construct(Event\Facade $eventFacade)
     {
         $this->configuration = Registry::get();
-        $this->eventFacade = $eventFacade;
+        $this->eventFacade   = $eventFacade;
     }
 
     /**

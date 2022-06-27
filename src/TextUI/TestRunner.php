@@ -73,7 +73,7 @@ final class TestRunner
     public function __construct(Event\Facade $eventFacade)
     {
         $this->configuration = Registry::get();
-        $this->eventFacade = $eventFacade;
+        $this->eventFacade   = $eventFacade;
     }
 
     /**
@@ -168,7 +168,7 @@ final class TestRunner
                 $this->printer,
                 $this->configuration->colors(),
                 $this->configuration->columns(),
-                $this->eventFacade    
+                $this->eventFacade
             );
 
             $resultPrinter = new ResultPrinter(

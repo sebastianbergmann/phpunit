@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
-use PHPUnit\Util\Error\Handler;
 use const LC_ALL;
 use const LC_COLLATE;
 use const LC_CTYPE;
@@ -93,8 +91,9 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use PHPUnit\TestRunner\TestResult\Facade;
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
 use ReflectionClass;
@@ -191,10 +190,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<Comparator>
      */
-    private array $customComparators                             = [];
-    private ?Event\Code\TestMethod $testValueObjectForEvents     = null;
-    private bool $wasPrepared                                    = false;
-    private bool $deprecationExpected                            = false;
+    private array $customComparators                         = [];
+    private ?Event\Code\TestMethod $testValueObjectForEvents = null;
+    private bool $wasPrepared                                = false;private bool $deprecationExpected                            = false;
     private ?string $expectedDeprecationMessage                  = null;
     private ?string $expectedDeprecationMessageRegularExpression = null;
     private bool $errorExpected                                  = false;
@@ -206,7 +204,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $warningExpected                                = false;
     private ?string $expectedWarningMessage                      = null;
     private ?string $expectedWarningMessageRegularExpression     = null;
-
     private Handler $errorHandler;
 
     /**
@@ -701,7 +698,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function runBare(Event\Facade $eventFacade, Handler $errorHandler): void
     {
         $this->errorHandler = $errorHandler;
-        $emitter = $eventFacade->emitter();
+        $emitter            = $eventFacade->emitter();
 
         $emitter->testPreparationStarted(
             $this->valueObjectForEvents()

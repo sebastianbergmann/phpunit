@@ -21,7 +21,27 @@ final class Facade
     private ?Emitter $suspended = null;
     private DeferredDispatcher $deferredDispatcher;
     private bool $sealed = false;
-    
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public static function initForIsolation(HRTime $offset): array
+    {
+        $eventFacade = new self;
+
+        $dispatcher = new CollectingDispatcher;
+
+        $eventFacade->emitter = new DispatchingEmitter(
+            $dispatcher,
+            new Telemetry\System(
+                new Telemetry\SystemStopWatchWithOffset($offset),
+                new Telemetry\SystemMemoryMeter
+            )
+        );
+
+        return [$eventFacade, $dispatcher];
+    }
+
     public function __construct()
     {
         $this->emitter = $this->createDispatchingEmitter();
@@ -126,7 +146,7 @@ final class Facade
 
     private function deferredDispatcher(): DeferredDispatcher
     {
-        if (! isset($this->deferredDispatcher)) {
+        if (!isset($this->deferredDispatcher)) {
             $this->deferredDispatcher = new DeferredDispatcher(
                 new DirectDispatcher($this->typeMap())
             );
@@ -137,7 +157,7 @@ final class Facade
 
     private function typeMap(): TypeMap
     {
-        if (! isset($this->typeMap)) {
+        if (!isset($this->typeMap)) {
             $typeMap = new TypeMap;
 
             $this->registerDefaultTypes($typeMap);

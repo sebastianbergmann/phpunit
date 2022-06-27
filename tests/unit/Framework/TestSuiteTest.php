@@ -25,14 +25,14 @@ final class TestSuiteTest extends TestCase
 {
     public function testNotPublicTestCase(): void
     {
-        $suite = TestSuite::fromClassName(NotPublicTestCase::class, new Facade());
+        $suite = TestSuite::fromClassName(NotPublicTestCase::class, new Facade);
 
         $this->assertCount(1, $suite);
     }
 
     public function testNormalizeProvidedDependencies(): void
     {
-        $suite = TestSuite::fromClassName(MultiDependencyTest::class, new Facade());
+        $suite = TestSuite::fromClassName(MultiDependencyTest::class, new Facade);
 
         $this->assertEquals([
             MultiDependencyTest::class . '::class',
@@ -46,14 +46,14 @@ final class TestSuiteTest extends TestCase
 
     public function testNormalizeRequiredDependencies(): void
     {
-        $suite = TestSuite::fromClassName(MultiDependencyTest::class, new Facade());
+        $suite = TestSuite::fromClassName(MultiDependencyTest::class, new Facade);
 
         $this->assertSame([], $suite->requires());
     }
 
     public function testDetectMissingDependenciesBetweenTestSuites(): void
     {
-        $suite = TestSuite::fromClassName(DependencyOnClassTest::class, new Facade());
+        $suite = TestSuite::fromClassName(DependencyOnClassTest::class, new Facade);
 
         $this->assertEquals([
             DependencyOnClassTest::class . '::class',
@@ -69,7 +69,7 @@ final class TestSuiteTest extends TestCase
 
     public function testResolveDependenciesBetweenTestSuites(): void
     {
-        $suite = TestSuite::fromClassName(DependencyOnClassTest::class, new Facade());
+        $suite = TestSuite::fromClassName(DependencyOnClassTest::class, new Facade);
         $suite->addTestSuite(new ReflectionClass(DependencyFailureTest::class));
         $suite->addTestSuite(new ReflectionClass(DependencySuccessTest::class));
 
@@ -97,7 +97,7 @@ final class TestSuiteTest extends TestCase
 
     public function testResolverOnlyUsesSuitesAndCases(): void
     {
-        $suite = TestSuite::empty('SomeName', new Facade());
+        $suite = TestSuite::empty('SomeName', new Facade);
         $suite->addTestSuite(new ReflectionClass(DependencyOnClassTest::class));
 
         $this->assertEquals([

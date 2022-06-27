@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
-use PHPUnit\Event\Facade;
 use function class_exists;
 use function explode;
 use PHPUnit\Event\Code\TestCollection;
+use PHPUnit\Event\Facade;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\ExecutionOrderDependency;
