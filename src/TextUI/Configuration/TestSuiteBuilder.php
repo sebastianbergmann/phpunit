@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Configuration;
 
+use PHPUnit\Event\Facade;
 use function is_dir;
 use function is_file;
 use function realpath;
@@ -27,7 +28,7 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  */
 final class TestSuiteBuilder
 {
-    public function build(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): TestSuite
+    public function build(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration, Facade $eventFacade): TestSuite
     {
         if ($cliConfiguration->hasArgument()) {
             $argument = realpath($cliConfiguration->argument());
@@ -38,7 +39,8 @@ final class TestSuiteBuilder
 
             return $this->testSuiteFromPath(
                 $argument,
-                $this->testSuffixes($cliConfiguration)
+                $this->testSuffixes($cliConfiguration),
+                $eventFacade
             );
         }
 
@@ -53,7 +55,8 @@ final class TestSuiteBuilder
         return (new TestSuiteMapper)->map(
             $xmlConfiguration->testSuite(),
             $includeTestSuite,
-            $cliConfiguration->hasExcludedTestSuite() ? $cliConfiguration->excludedTestSuite() : ''
+            $cliConfiguration->hasExcludedTestSuite() ? $cliConfiguration->excludedTestSuite() : '',
+            $eventFacade
         );
     }
 
@@ -71,19 +74,19 @@ final class TestSuiteBuilder
     /**
      * @psalm-param list<string> $suffixes
      */
-    private function testSuiteFromPath(string $path, array $suffixes): TestSuite
+    private function testSuiteFromPath(string $path, array $suffixes, Facade $eventFacade): TestSuite
     {
         if (is_dir($path)) {
             $files = (new FileIteratorFacade)->getFilesAsArray($path, $suffixes);
 
-            $suite = TestSuite::empty($path);
+            $suite = TestSuite::empty($path, $eventFacade);
             $suite->addTestFiles($files);
 
             return $suite;
         }
 
         if (is_file($path) && str_ends_with($path, '.phpt')) {
-            $suite = TestSuite::empty();
+            $suite = TestSuite::empty(null, $eventFacade);
             $suite->addTestFile($path);
 
             return $suite;
@@ -97,6 +100,6 @@ final class TestSuiteBuilder
             exit(1);
         }
 
-        return TestSuite::fromClassReflector($testClass);
+        return TestSuite::fromClassReflector($testClass, $eventFacade);
     }
 }

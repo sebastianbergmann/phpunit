@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
+use PHPUnit\Util\Error\Handler;
 use const E_USER_DEPRECATED;
 use const E_USER_ERROR;
 use const E_USER_NOTICE;

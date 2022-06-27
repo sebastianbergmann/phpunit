@@ -34,13 +34,14 @@ final class ProgressPrinter
     private int $numberOfTestsRun = 0;
     private ?TestStatus $status   = null;
     private bool $prepared        = false;
+    private Facade $facade;
 
-    public function __construct(Printer $printer, bool $colors, int $numberOfColumns)
+    public function __construct(Printer $printer, bool $colors, int $numberOfColumns, Facade $facade)
     {
         $this->printer = $printer;
-
         $this->colors          = $colors;
         $this->numberOfColumns = $numberOfColumns;
+        $this->facade = $facade;
 
         $this->registerSubscribers();
     }
@@ -133,15 +134,15 @@ final class ProgressPrinter
      */
     private function registerSubscribers(): void
     {
-        Facade::registerSubscriber(new TestRunnerExecutionStartedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
-        Facade::registerSubscriber(new TestErroredSubscriber($this));
-        Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
+        $this->facade->registerSubscriber(new TestRunnerExecutionStartedSubscriber($this));
+        $this->facade->registerSubscriber(new TestPreparedSubscriber($this));
+        $this->facade->registerSubscriber(new TestFinishedSubscriber($this));
+        $this->facade->registerSubscriber(new TestConsideredRiskySubscriber($this));
+        $this->facade->registerSubscriber(new TestErroredSubscriber($this));
+        $this->facade->registerSubscriber(new TestFailedSubscriber($this));
+        $this->facade->registerSubscriber(new TestMarkedIncompleteSubscriber($this));
+        $this->facade->registerSubscriber(new TestSkippedSubscriber($this));
+        $this->facade->registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
     }
 
     private function updateTestStatus(TestStatus $status): void

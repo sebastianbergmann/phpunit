@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const DIRECTORY_SEPARATOR;
 use function array_merge;
@@ -98,9 +99,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @throws Exception
      * @noinspection RepetitiveMethodCallsInspection
      */
-    public function run(): void
+    public function run(EventFacade $eventFacade, ResultFacade $resultFacade): void
     {
-        $emitter = EventFacade::emitter();
+        $emitter = $eventFacade->emitter();
 
         $emitter->testPreparationStarted(
             $this->valueObjectForEvents()
@@ -137,7 +138,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $this->phpUtil->setTimeout(Registry::get()->timeoutForLargeTests());
         }
 
-        if ($this->shouldTestBeSkipped($sections, $settings)) {
+        if ($this->shouldTestBeSkipped($sections, $eventFacade, $settings)) {
             return;
         }
 
@@ -358,7 +359,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         throw new InvalidPhptFileException;
     }
 
-    private function shouldTestBeSkipped(array $sections, array $settings): bool
+    private function shouldTestBeSkipped(array $sections, EventFacade $eventFacade, array $settings): bool
     {
         if (!isset($sections['SKIPIF'])) {
             return false;
@@ -374,12 +375,12 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 $message = substr($skipMatch[1], 2);
             }
 
-            EventFacade::emitter()->testSkipped(
+            $eventFacade->emitter()->testSkipped(
                 $this->valueObjectForEvents(),
                 $message
             );
 
-            EventFacade::emitter()->testFinished($this->valueObjectForEvents(), 0);
+            $eventFacade->emitter()->testFinished($this->valueObjectForEvents(), 0);
 
             return true;
         }

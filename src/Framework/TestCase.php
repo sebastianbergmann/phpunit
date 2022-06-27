@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
+use PHPUnit\Util\Error\Handler;
 use const LC_ALL;
 use const LC_COLLATE;
 use const LC_CTYPE;
@@ -204,6 +206,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $warningExpected                                = false;
     private ?string $expectedWarningMessage                      = null;
     private ?string $expectedWarningMessageRegularExpression     = null;
+
+    private Handler $errorHandler;
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -543,16 +547,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
      */
-    final public function run(): void
+    final public function run(Event\Facade $eventFacade, ResultFacade $resultFacade): void
     {
-        if (!$this->handleDependencies()) {
+        Assert::$eventFacade = $eventFacade;
+        if (!$this->handleDependencies($resultFacade)) {
             return;
         }
 
         if (!$this->shouldRunInSeparateProcess()) {
-            (new TestRunner)->run($this);
+            (new TestRunner($eventFacade))->run($this);
         } else {
-            (new TestRunner)->runInSeparateProcess(
+            (new TestRunner($eventFacade))->runInSeparateProcess(
                 $this,
                 $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess,
                 $this->preserveGlobalState
@@ -578,7 +583,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         ComparatorFactory::getInstance()->register($comparator);
 
-        Event\Facade::emitter()->comparatorRegistered($comparator::class);
+        self::$eventFacade->emitter()->comparatorRegistered($comparator::class);
 
         $this->customComparators[] = $comparator;
     }
@@ -693,9 +698,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function runBare(): void
+    final public function runBare(Event\Facade $eventFacade, Handler $errorHandler): void
     {
-        $emitter = Event\Facade::emitter();
+        $this->errorHandler = $errorHandler;
+        $emitter = $eventFacade->emitter();
 
         $emitter->testPreparationStarted(
             $this->valueObjectForEvents()
@@ -782,7 +788,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if ($this->status()->isSuccess()) {
-            Event\Facade::emitter()->testPassed(
+            $emitter->testPassed(
                 $this->valueObjectForEvents(),
                 $this->testResult
             );
@@ -1213,7 +1219,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $stub = $this->createMockObject($originalClassName, false);
 
-        Event\Facade::emitter()->testTestStubCreated($originalClassName);
+        self::$eventFacade->emitter()->testTestStubCreated($originalClassName);
 
         return $stub;
     }
@@ -1229,7 +1235,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $mock = $this->createMockObject($originalClassName);
 
-        Event\Facade::emitter()->testMockObjectCreated($originalClassName);
+        self::$eventFacade->emitter()->testMockObjectCreated($originalClassName);
 
         return $mock;
     }
@@ -1271,7 +1277,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             ->onlyMethods($methods)
             ->getMock();
 
-        Event\Facade::emitter()->testPartialMockObjectCreated(
+        self::$eventFacade->emitter()->testPartialMockObjectCreated(
             $originalClassName,
             ...$methods
         );
@@ -1293,7 +1299,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             ->enableProxyingToOriginalMethods()
             ->getMock();
 
-        Event\Facade::emitter()->testTestProxyCreated(
+        self::$eventFacade->emitter()->testTestProxyCreated(
             $originalClassName,
             $constructorArguments
         );
@@ -1327,7 +1333,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->registerMockObject($mockObject);
 
-        Event\Facade::emitter()->testMockObjectCreatedForAbstractClass($originalClassName);
+        self::$eventFacade->emitter()->testMockObjectCreatedForAbstractClass($originalClassName);
 
         return $mockObject;
     }
@@ -1369,7 +1375,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             false
         );
 
-        Event\Facade::emitter()->testMockObjectCreatedFromWsdl(
+        self::$eventFacade->emitter()->testMockObjectCreatedFromWsdl(
             $wsdlFile,
             $originalClassName,
             $mockClassName,
@@ -1407,7 +1413,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->registerMockObject($mockObject);
 
-        Event\Facade::emitter()->testMockObjectCreatedForTrait($traitName);
+        self::$eventFacade->emitter()->testMockObjectCreatedForTrait($traitName);
 
         return $mockObject;
     }
@@ -1480,14 +1486,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
-    private function handleDependencies(): bool
+    private function handleDependencies(ResultFacade $resultFacade): bool
     {
         if ([] === $this->dependencies || $this->inIsolation) {
             return true;
         }
 
-        $passedTestClasses     = Facade::passedTestClasses();
-        $passedTestMethods     = Facade::passedTestMethods();
+        $passedTestClasses     = $resultFacade->passedTestClasses();
+        $passedTestMethods     = $resultFacade->passedTestMethods();
         $passedTestMethodsKeys = array_keys($passedTestMethods);
 
         foreach ($passedTestMethodsKeys as $keyIndex => $keyValue) {
@@ -1580,7 +1586,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $exception = new InvalidDependencyException($message);
 
-        Event\Facade::emitter()->testErrored(
+        self::$eventFacade->emitter()->testErrored(
             $this->valueObjectForEvents(),
             Event\Code\Throwable::from($exception)
         );
@@ -1595,7 +1601,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $dependency->getTarget()
         );
 
-        Event\Facade::emitter()->testSkipped(
+        self::$eventFacade->emitter()->testSkipped(
             $this->valueObjectForEvents(),
             $message
         );
@@ -1957,7 +1963,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (ExpectationFailedException $e) {
             $this->status = TestStatus::failure($e->getMessage());
 
-            Event\Facade::emitter()->testFailed(
+            self::$eventFacade->emitter()->testFailed(
                 $this->valueObjectForEvents(),
                 Event\Code\Throwable::from($e)
             );

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\Success;
@@ -19,7 +20,7 @@ final class TestSuiteIteratorTest extends TestCase
 {
     public function testKeyForEmptyTestSuiteInitiallyReturnsZero(): void
     {
-        $testSuite = TestSuite::empty();
+        $testSuite = TestSuite::empty(null, new Facade());
         $subject   = new TestSuiteIterator($testSuite);
 
         $this->assertSame(0, $subject->key());
@@ -27,7 +28,7 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testValidForEmptyTestSuiteInitiallyReturnsFalse(): void
     {
-        $testSuite = TestSuite::empty();
+        $testSuite = TestSuite::empty(null, new Facade());
         $subject   = new TestSuiteIterator($testSuite);
 
         $this->assertFalse($subject->valid());
@@ -50,7 +51,7 @@ final class TestSuiteIteratorTest extends TestCase
     public function testCurrentForNonEmptyTestSuiteInitiallyReturnsFirstTest(): void
     {
         $test      = new Success('testOne');
-        $testSuite = TestSuite::empty();
+        $testSuite = TestSuite::empty(null, new Facade());
         $testSuite->addTest($test);
         $subject = new TestSuiteIterator($testSuite);
 
@@ -69,7 +70,7 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testRewindResetsCurrentToFirstElement(): void
     {
-        $testSuite = TestSuite::empty();
+        $testSuite = TestSuite::empty(null, new Facade());
         $test      = new Success('testOne');
         $testSuite->addTest($test);
         $subject = new TestSuiteIterator($testSuite);
@@ -100,7 +101,7 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testGetChildrenForEmptyTestSuiteThrowsException(): void
     {
-        $subject = new TestSuiteIterator(TestSuite::empty());
+        $subject = new TestSuiteIterator(TestSuite::empty(null, new Facade()));
 
         $this->expectException(NoChildTestSuiteException::class);
 
@@ -118,11 +119,11 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testGetChildrenReturnsNewInstanceWithCurrentTestSuite(): void
     {
-        $childSuite = TestSuite::empty();
+        $childSuite = TestSuite::empty(null, new Facade());
         $test       = new Success('testOne');
         $childSuite->addTest($test);
 
-        $testSuite = TestSuite::empty();
+        $testSuite = TestSuite::empty(null, new Facade());
         $testSuite->addTest($childSuite);
 
         $subject = new TestSuiteIterator($testSuite);
@@ -135,8 +136,8 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testHasChildrenForCurrentTestSuiteReturnsTrue(): void
     {
-        $testSuite  = TestSuite::empty();
-        $childSuite = TestSuite::empty();
+        $testSuite  = TestSuite::empty(null, new Facade());
+        $childSuite = TestSuite::empty(null, new Facade());
         $testSuite->addTest($childSuite);
         $subject = new TestSuiteIterator($testSuite);
 
@@ -152,14 +153,14 @@ final class TestSuiteIteratorTest extends TestCase
 
     public function testHasChildrenForNoTestsReturnsFalse(): void
     {
-        $subject = new TestSuiteIterator(TestSuite::empty());
+        $subject = new TestSuiteIterator(TestSuite::empty(null, new Facade()));
 
         $this->assertFalse($subject->hasChildren());
     }
 
     private function suiteWithEmptyTestCase(): TestSuite
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty(null, new Facade());
 
         $suite->addTest(new Success('testOne'));
 

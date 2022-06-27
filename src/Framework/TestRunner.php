@@ -21,12 +21,13 @@ use function tempnam;
 use function var_export;
 use AssertionError;
 use PHPUnit\Event;
+use PHPUnit\Event\Facade;
 use PHPUnit\Metadata\Api\CodeCoverage as CodeCoverageMetadataApi;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\Util\ErrorHandler as ErrorHandler;
+use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\GlobalState;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use ReflectionClass;
@@ -44,10 +45,12 @@ final class TestRunner
 {
     private ?bool $timeLimitCanBeEnforced = null;
     private Configuration $configuration;
+    private Event\Facade $eventFacade;
 
-    public function __construct()
+    public function __construct(Event\Facade $eventFacade)
     {
         $this->configuration = Registry::get();
+        $this->eventFacade = $eventFacade;
     }
 
     /**
@@ -74,7 +77,8 @@ final class TestRunner
         $risky      = false;
         $skipped    = false;
 
-        ErrorHandler::instance()->enable();
+        $errorHandler = new ErrorHandler($this->eventFacade);
+        $errorHandler->enable();
 
         $collectCodeCoverage = CodeCoverage::isActive() &&
                                $shouldCodeCoverageBeCollected;
@@ -86,9 +90,9 @@ final class TestRunner
         try {
             if ($this->canTimeLimitBeEnforced() &&
                 $this->shouldTimeLimitBeEnforced($test)) {
-                $risky = $this->runTestWithTimeout($test);
+                $risky = $this->runTestWithTimeout($test, $errorHandler);
             } else {
-                $test->runBare();
+                $test->runBare($this->eventFacade, $errorHandler);
             }
         } catch (AssertionFailedError $e) {
             $failure = true;
@@ -129,7 +133,7 @@ final class TestRunner
         if (!$error && !$failure && !$incomplete && !$skipped && !$risky &&
             $this->configuration->requireCoverageMetadata() &&
             !$this->hasCoverageMetadata($test::class, $test->name())) {
-            Event\Facade::emitter()->testConsideredRisky(
+            $this->eventFacade->emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 'This test does not define a code coverage target but is expected to do so'
             );
@@ -154,7 +158,7 @@ final class TestRunner
                         $test->name()
                     );
                 } catch (InvalidCoversTargetException $cce) {
-                    Event\Facade::emitter()->testTriggeredPhpunitWarning(
+                    $this->eventFacade->emitter()->testTriggeredPhpunitWarning(
                         $test->valueObjectForEvents(),
                         $cce->getMessage()
                     );
@@ -168,7 +172,7 @@ final class TestRunner
                     $linesToBeUsed
                 );
             } catch (UnintentionallyCoveredCodeException $cce) {
-                Event\Facade::emitter()->testConsideredRisky(
+                $this->eventFacade->emitter()->testConsideredRisky(
                     $test->valueObjectForEvents(),
                     'This test executed code that is not listed as code to be covered or used:' .
                     PHP_EOL .
@@ -181,11 +185,11 @@ final class TestRunner
             }
         }
 
-        ErrorHandler::instance()->disable();
+        $errorHandler->disable();
 
         if (isset($e)) {
             if ($test->wasPrepared()) {
-                Event\Facade::emitter()->testFinished(
+                $this->eventFacade->emitter()->testFinished(
                     $test->valueObjectForEvents(),
                     $test->numberOfAssertionsPerformed()
                 );
@@ -197,7 +201,7 @@ final class TestRunner
         if ($this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
-            Event\Facade::emitter()->testConsideredRisky(
+            $this->eventFacade->emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 'This test did not perform any assertions'
             );
@@ -205,7 +209,7 @@ final class TestRunner
 
         if ($test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() > 0) {
-            Event\Facade::emitter()->testConsideredRisky(
+            $this->eventFacade->emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 sprintf(
                     'This test is not expected to perform assertions but performed %d assertions',
@@ -215,7 +219,7 @@ final class TestRunner
         }
 
         if ($this->configuration->disallowTestOutput() && $test->hasOutput()) {
-            Event\Facade::emitter()->testConsideredRisky(
+            $this->eventFacade->emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 sprintf(
                     'This test printed output: %s',
@@ -225,7 +229,7 @@ final class TestRunner
         }
 
         if ($test->wasPrepared()) {
-            Event\Facade::emitter()->testFinished(
+            $this->eventFacade->emitter()->testFinished(
                 $test->valueObjectForEvents(),
                 $test->numberOfAssertionsPerformed()
             );
@@ -349,7 +353,7 @@ final class TestRunner
         $template->setVar($var);
 
         $php = AbstractPhpProcess::factory();
-        $php->runTestJob($template->render(), $test);
+        $php->runTestJob($template->render(), $test, $this->eventFacade);
 
         @unlink($serializedConfiguration);
     }
@@ -417,7 +421,7 @@ final class TestRunner
     /**
      * @throws Throwable
      */
-    private function runTestWithTimeout(TestCase $test): bool
+    private function runTestWithTimeout(TestCase $test, Handler $errorHandler): bool
     {
         $_timeout = $this->configuration->defaultTimeLimit();
 
@@ -430,9 +434,9 @@ final class TestRunner
         }
 
         try {
-            (new Invoker)->invoke([$test, 'runBare'], [], $_timeout);
+            (new Invoker)->invoke([$test, 'runBare'], [$this->eventFacade, $errorHandler], $_timeout);
         } catch (TimeoutException) {
-            Event\Facade::emitter()->testConsideredRisky(
+            $this->eventFacade->emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 sprintf(
                     'This test was aborted after %d second%s',

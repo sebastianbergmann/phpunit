@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
+use PHPUnit\Util\Error\Handler;
+use const PHP_EOL;
+use function file_put_contents;
 use function sys_get_temp_dir;
 use function touch;
 use function unlink;

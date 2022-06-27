@@ -151,12 +151,13 @@ abstract class AbstractPhpProcess
     /**
      * Runs a single test in a separate PHP process.
      */
-    public function runTestJob(string $job, Test $test): void
+    public function runTestJob(string $job, Test $test, Facade $eventFacade): void
     {
         $_result = $this->runJob($job);
 
         $this->processChildResult(
             $test,
+            $eventFacade,
             $_result['stdout'],
             $_result['stderr']
         );
@@ -229,14 +230,14 @@ abstract class AbstractPhpProcess
         return $buffer;
     }
 
-    private function processChildResult(Test $test, string $stdout, string $stderr): void
+    private function processChildResult(Test $test, Facade $eventFacade, string $stdout, string $stderr): void
     {
         if (!empty($stderr)) {
             $exception = new Exception(trim($stderr));
 
             assert($test instanceof TestCase);
 
-            Facade::emitter()->testErrored(
+            $eventFacade->emitter()->testErrored(
                 TestMethod::fromTestCase($test),
                 Throwable::from($exception)
             );
@@ -267,12 +268,12 @@ abstract class AbstractPhpProcess
 
                 assert($test instanceof TestCase);
 
-                Facade::emitter()->testErrored(
+                $eventFacade->emitter()->testErrored(
                     TestMethod::fromTestCase($test),
                     Throwable::from($exception)
                 );
 
-                Facade::emitter()->testFinished(
+                $eventFacade->emitter()->testFinished(
                     TestMethod::fromTestCase($test),
                     0
                 );
@@ -285,7 +286,7 @@ abstract class AbstractPhpProcess
 
             assert($test instanceof TestCase);
 
-            Facade::emitter()->testErrored(
+            $eventFacade->emitter()->testErrored(
                 TestMethod::fromTestCase($test),
                 Throwable::from($exception)
             );
@@ -296,7 +297,7 @@ abstract class AbstractPhpProcess
                 $output = $childResult['output'];
             }
 
-            Facade::forward($childResult['events']);
+            $eventFacade->forward($childResult['events']);
 
             assert($test instanceof TestCase);
 

@@ -10,11 +10,13 @@
 namespace PHPUnit\Framework;
 
 use Countable;
+use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface Test extends Countable
 {
-    public function run(): void;
+    public function run(EventFacade $eventFacade, ResultFacade $resultFacade): void;
 }

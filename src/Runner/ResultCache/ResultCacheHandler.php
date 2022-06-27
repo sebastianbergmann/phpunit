@@ -33,14 +33,16 @@ final class ResultCacheHandler
     private ResultCache $cache;
     private ?HRTime $time  = null;
     private int $testSuite = 0;
+    private Facade $facade;
 
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(ResultCache $cache)
+    public function __construct(ResultCache $cache, Facade $facade)
     {
         $this->cache = $cache;
+        $this->facade = $facade;
 
         $this->registerSubscribers();
     }
@@ -131,14 +133,14 @@ final class ResultCacheHandler
      */
     private function registerSubscribers(): void
     {
-        Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));
-        Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
-        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
-        Facade::registerSubscriber(new TestErroredSubscriber($this));
-        Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
+        $this->facade->registerSubscriber(new TestSuiteStartedSubscriber($this));
+        $this->facade->registerSubscriber(new TestSuiteFinishedSubscriber($this));
+        $this->facade->registerSubscriber(new TestPreparedSubscriber($this));
+        $this->facade->registerSubscriber(new TestMarkedIncompleteSubscriber($this));
+        $this->facade->registerSubscriber(new TestConsideredRiskySubscriber($this));
+        $this->facade->registerSubscriber(new TestErroredSubscriber($this));
+        $this->facade->registerSubscriber(new TestFailedSubscriber($this));
+        $this->facade->registerSubscriber(new TestSkippedSubscriber($this));
+        $this->facade->registerSubscriber(new TestFinishedSubscriber($this));
     }
 }

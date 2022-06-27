@@ -41,7 +41,7 @@ final class MessageMatchesRegularExpression extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        $match = @preg_match($this->regularExpression, (string) $other);
+        $match = @preg_match($this->regularExpression, (string) $other, $this->errorHandler);
 
         if ($match === false) {
             throw new \PHPUnit\Framework\Exception(

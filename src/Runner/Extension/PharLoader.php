@@ -25,7 +25,7 @@ final class PharLoader
     /**
      * @psalm-return array{loadedExtensions: list<string>, notLoadedExtensions: list<string>}
      */
-    public function loadPharExtensionsInDirectory(string $directory): array
+    public function loadPharExtensionsInDirectory(string $directory, Event\Facade $eventFacade): array
     {
         $loadedExtensions    = [];
         $notLoadedExtensions = [];
@@ -66,7 +66,7 @@ final class PharLoader
 
             $loadedExtensions[] = $manifest->getName()->asString() . ' ' . $manifest->getVersion()->getVersionString();
 
-            Event\Facade::emitter()->extensionLoaded(
+            $eventFacade->emitter()->extensionLoaded(
                 $manifest->getName()->asString(),
                 $manifest->getVersion()->getVersionString()
             );

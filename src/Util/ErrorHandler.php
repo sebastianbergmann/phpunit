@@ -29,12 +29,12 @@ use PHPUnit\Framework\TestCase;
  */
 final class ErrorHandler
 {
-    private static ?self $instance = null;
-    private bool $enabled          = false;
+    private bool $enabled = false;
+    private Event\Facade $eventFacade;
 
-    public static function instance(): self
+    public function __construct(Event\Facade $eventFacade)
     {
-        return self::$instance ?? self::$instance = new self;
+        $this->eventFacade = $eventFacade;
     }
 
     /**
@@ -52,7 +52,7 @@ final class ErrorHandler
         switch ($errorNumber) {
             case E_NOTICE:
             case E_STRICT:
-                Event\Facade::emitter()->testTriggeredPhpNotice(
+                $this->eventFacade->emitter()->testTriggeredPhpNotice(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
@@ -62,7 +62,7 @@ final class ErrorHandler
                 return true;
 
             case E_USER_NOTICE:
-                Event\Facade::emitter()->testTriggeredNotice(
+                $this->eventFacade->emitter()->testTriggeredNotice(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
@@ -72,7 +72,7 @@ final class ErrorHandler
                 break;
 
             case E_WARNING:
-                Event\Facade::emitter()->testTriggeredPhpWarning(
+                $this->eventFacade->emitter()->testTriggeredPhpWarning(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
@@ -82,7 +82,7 @@ final class ErrorHandler
                 break;
 
             case E_USER_WARNING:
-                Event\Facade::emitter()->testTriggeredWarning(
+                $this->eventFacade->emitter()->testTriggeredWarning(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
@@ -92,7 +92,7 @@ final class ErrorHandler
                 break;
 
             case E_DEPRECATED:
-                Event\Facade::emitter()->testTriggeredPhpDeprecation(
+                $this->eventFacade->emitter()->testTriggeredPhpDeprecation(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
@@ -102,7 +102,7 @@ final class ErrorHandler
                 break;
 
             case E_USER_DEPRECATED:
-                Event\Facade::emitter()->testTriggeredDeprecation(
+                $this->eventFacade->emitter()->testTriggeredDeprecation(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,
@@ -112,7 +112,7 @@ final class ErrorHandler
                 break;
 
             case E_USER_ERROR:
-                Event\Facade::emitter()->testTriggeredError(
+                $this->eventFacade->emitter()->testTriggeredError(
                     $this->testValueObjectForEvents(),
                     $errorString,
                     $errorFile,

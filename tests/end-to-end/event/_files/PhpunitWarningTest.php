@@ -10,13 +10,15 @@
 namespace PHPUnit\TestFixture\Event;
 
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 
 final class PhpunitWarningTest extends TestCase
 {
     public function testPhpunitWarning(): void
     {
-        EventFacade::emitter()->testTriggeredPhpunitWarning(
+        $refProperty = new \ReflectionProperty(Assert::class, 'eventFacade');
+        $refProperty->getValue($this)->emitter()->testTriggeredPhpunitWarning(
             $this->valueObjectForEvents(),
             'message'
         );

@@ -68,10 +68,12 @@ final class TestRunner
     private ?Printer $printer    = null;
     private bool $messagePrinted = false;
     private ?Timer $timer        = null;
+    private Event\Facade $eventFacade;
 
-    public function __construct()
+    public function __construct(Event\Facade $eventFacade)
     {
         $this->configuration = Registry::get();
+        $this->eventFacade = $eventFacade;
     }
 
     /**
@@ -90,7 +92,8 @@ final class TestRunner
             $this->configuration->hasPharExtensionDirectory() &&
             extension_loaded('phar')) {
             $pharExtensions = (new PharLoader)->loadPharExtensionsInDirectory(
-                $this->configuration->pharExtensionDirectory()
+                $this->configuration->pharExtensionDirectory(),
+                $this->eventFacade
             );
         }
 
@@ -105,7 +108,7 @@ final class TestRunner
         if ($this->configuration->cacheResult()) {
             $cache = new DefaultResultCache($this->configuration->testResultCacheFile());
 
-            new ResultCacheHandler($cache);
+            new ResultCacheHandler($cache, $this->eventFacade);
         }
 
         if ($this->configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
@@ -124,7 +127,7 @@ final class TestRunner
                 $this->configuration->executionOrderDefects()
             );
 
-            Event\Facade::emitter()->testSuiteSorted(
+            $this->eventFacade->emitter()->testSuiteSorted(
                 $this->configuration->executionOrder(),
                 $this->configuration->executionOrderDefects(),
                 $this->configuration->resolveDependencies()
@@ -136,7 +139,7 @@ final class TestRunner
         }
 
         if ($this->configuration->hasRepeat()) {
-            $_suite = TestSuite::empty();
+            $_suite = TestSuite::empty(null, $this->eventFacade);
 
             /* @noinspection PhpUnusedLocalVariableInspection */
             foreach (range(1, $this->configuration->repeat()) as $step) {
@@ -164,7 +167,8 @@ final class TestRunner
             new ProgressPrinter(
                 $this->printer,
                 $this->configuration->colors(),
-                $this->configuration->columns()
+                $this->configuration->columns(),
+                $this->eventFacade    
             );
 
             $resultPrinter = new ResultPrinter(
@@ -180,14 +184,14 @@ final class TestRunner
             );
         }
 
-        Facade::init();
+        $resultFacade = new Facade($this->eventFacade);
 
         if ($this->configuration->hasLogEventsText()) {
             if (is_file($this->configuration->logEventsText())) {
                 unlink($this->configuration->logEventsText());
             }
 
-            Event\Facade::registerTracer(
+            $this->eventFacade->registerTracer(
                 new EventLogger(
                     $this->configuration->logEventsText(),
                     false
@@ -200,7 +204,7 @@ final class TestRunner
                 unlink($this->configuration->logEventsVerboseText());
             }
 
-            Event\Facade::registerTracer(
+            $this->eventFacade->registerTracer(
                 new EventLogger(
                     $this->configuration->logEventsVerboseText(),
                     true
@@ -210,7 +214,8 @@ final class TestRunner
 
         if ($this->configuration->hasLogfileJunit()) {
             $junitXmlLogger = new JunitXmlLogger(
-                $this->configuration->reportUselessTests()
+                $this->configuration->reportUselessTests(),
+                $this->eventFacade
             );
         }
 
@@ -218,17 +223,19 @@ final class TestRunner
             $teamCityLogger = new TeamCityLogger(
                 DefaultPrinter::from(
                     $this->configuration->logfileTeamcity()
-                )
+                ),
+                $this->eventFacade
             );
         }
 
         if ($this->configuration->outputIsTeamCity()) {
             $teamCityOutput = new TeamCityLogger(
-                DefaultPrinter::standardOutput()
+                DefaultPrinter::standardOutput(),
+                $this->eventFacade
             );
         }
 
-        Event\Facade::seal();
+        $this->eventFacade->seal();
 
         $this->write(Version::getVersionString() . "\n");
 
@@ -295,11 +302,11 @@ final class TestRunner
 
             if (CodeCoverageFilterRegistry::get()->isEmpty()) {
                 if (!CodeCoverageFilterRegistry::configured()) {
-                    Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    $this->eventFacade->emitter()->testRunnerTriggeredWarning(
                         'No filter is configured, code coverage will not be processed'
                     );
                 } else {
-                    Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    $this->eventFacade->emitter()->testRunnerTriggeredWarning(
                         'Incorrect filter configuration, code coverage will not be processed'
                     );
                 }
@@ -351,18 +358,18 @@ final class TestRunner
         }
 
         if ($this->configuration->tooFewColumnsRequested()) {
-            Event\Facade::emitter()->testRunnerTriggeredWarning(
+            $this->eventFacade->emitter()->testRunnerTriggeredWarning(
                 'Less than 16 columns requested, number of columns set to 16'
             );
         }
 
         if ($this->configuration->hasXmlValidationErrors()) {
             if ((new SchemaDetector)->detect($this->configuration->configurationFile())->detected()) {
-                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                $this->eventFacade->emitter()->testRunnerTriggeredWarning(
                     'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!'
                 );
             } else {
-                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                $this->eventFacade->emitter()->testRunnerTriggeredWarning(
                     "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
                     $this->configuration->xmlValidationErrors()
                 );
@@ -372,22 +379,22 @@ final class TestRunner
         $this->write("\n");
 
         if ($this->configuration->enforceTimeLimit() && !(new Invoker)->canInvokeWithTimeout()) {
-            Event\Facade::emitter()->testRunnerTriggeredWarning(
+            $this->eventFacade->emitter()->testRunnerTriggeredWarning(
                 'The pcntl extension is required for enforcing time limits'
             );
         }
 
         $this->processSuiteFilters($suite);
 
-        Event\Facade::emitter()->testExecutionStarted(
-            Event\TestSuite\TestSuite::fromTestSuite($suite)
+        $this->eventFacade->emitter()->testExecutionStarted(
+            Event\TestSuite\TestSuite::fromTestSuite($suite, $this->eventFacade)
         );
 
-        $suite->run();
+        $suite->run($this->eventFacade, $resultFacade);
 
-        Event\Facade::emitter()->testExecutionFinished();
+        $this->eventFacade->emitter()->testExecutionFinished();
 
-        $result = Facade::result();
+        $result = $resultFacade->result();
 
         if ($result->numberOfTestsRun() > 0) {
             $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
@@ -618,8 +625,8 @@ final class TestRunner
 
         $suite->injectFilter($filterFactory);
 
-        Event\Facade::emitter()->testSuiteFiltered(
-            Event\TestSuite\TestSuite::fromTestSuite($suite)
+        $this->eventFacade->emitter()->testSuiteFiltered(
+            Event\TestSuite\TestSuite::fromTestSuite($suite, $this->eventFacade)
         );
     }
 

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\TestSuite;
 
+use PHPUnit\Event\Facade;
 use function class_exists;
 use function explode;
 use PHPUnit\Event\Code\TestCollection;
@@ -47,7 +48,7 @@ abstract class TestSuite
     private string $sortId;
     private TestCollection $tests;
 
-    public static function fromTestSuite(FrameworkTestSuite $testSuite): self
+    public static function fromTestSuite(FrameworkTestSuite $testSuite, Facade $facade): self
     {
         $groups = [];
 

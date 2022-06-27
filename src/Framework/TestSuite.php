@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Framework\Assert;
 use const PHP_EOL;
 use function array_keys;
 use function array_map;
@@ -70,20 +71,21 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private bool $stopOnIncomplete;
     private bool $stopOnSkipped;
     private bool $stopOnDefect;
+    private Event\Facade $eventFacade;
 
-    public static function empty(string $name = null): static
+    public static function empty(?string $name, Event\Facade $eventFacade): static
     {
         if ($name === null) {
             $name = '';
         }
 
-        return new static($name);
+        return new static($name, $eventFacade);
     }
 
     /**
      * @psalm-param class-string $className
      */
-    public static function fromClassName(string $className): static
+    public static function fromClassName(string $className, Event\Facade $eventFacade): static
     {
         try {
             $class = new ReflectionClass($className);
@@ -96,17 +98,17 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
         // @codeCoverageIgnoreEnd
 
-        return static::fromClassReflector($class);
+        return static::fromClassReflector($class, $eventFacade);
     }
 
-    public static function fromClassReflector(ReflectionClass $class): static
+    public static function fromClassReflector(ReflectionClass $class, Event\Facade $eventFacade): static
     {
-        $testSuite = new static($class->getName());
+        $testSuite = new static($class->getName(), $eventFacade);
 
         $constructor = $class->getConstructor();
 
         if ($constructor !== null && !$constructor->isPublic()) {
-            Event\Facade::emitter()->testRunnerTriggeredWarning(
+            $eventFacade->emitter()->testRunnerTriggeredWarning(
                 sprintf(
                     'Class "%s" has no public constructor.',
                     $class->getName()
@@ -133,7 +135,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         if (count($testSuite) === 0) {
-            Event\Facade::emitter()->testRunnerTriggeredWarning(
+            $eventFacade->emitter()->testRunnerTriggeredWarning(
                 sprintf(
                     'No tests found in class "%s".',
                     $class->getName()
@@ -144,9 +146,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return $testSuite;
     }
 
-    private function __construct(string $name)
+    private function __construct(string $name, Event\Facade $eventFacade)
     {
         $this->name = $name;
+        $this->eventFacade = $eventFacade;
+        Assert::$eventFacade = $eventFacade;
 
         $configuration = Registry::get();
 
@@ -226,7 +230,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             );
         }
 
-        $this->addTest(self::fromClassReflector($testClass));
+        $this->addTest(self::fromClassReflector($testClass, $this->eventFacade));
     }
 
     /**
@@ -315,7 +319,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
      */
-    public function run(): void
+    public function run(Event\Facade $eventFacade, Facade $resultFacade): void
     {
         if (count($this) === 0) {
             return;
@@ -325,9 +329,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $className   = $this->name;
         $hookMethods = (new HookMethods)->hookMethods($className);
 
-        $emitter                       = Event\Facade::emitter();
-        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this);
+        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this, $eventFacade);
 
+        $emitter = $eventFacade->emitter();
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
         $methodsCalledBeforeFirstTest = [];
@@ -386,12 +390,14 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             );
         }
 
+        Assert::$eventFacade = $eventFacade;
+
         foreach ($this as $test) {
-            if ($this->shouldStop()) {
+            if ($this->shouldStop($resultFacade)) {
                 break;
             }
 
-            $test->run();
+            $test->run($eventFacade, $resultFacade);
         }
 
         $methodsCalledAfterLastTest = [];
@@ -552,7 +558,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $methodName = $method->getName();
 
         try {
-            $test = (new TestBuilder)->build($class, $methodName);
+            $test = (new TestBuilder)->build($class, $methodName, $this->eventFacade);
         } catch (InvalidDataProviderException $e) {
             Event\Facade::emitter()->testTriggeredPhpunitError(
                 new TestMethod(
@@ -611,29 +617,29 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                $reflector->getMethod($methodName)->getDeclaringClass()->getName() === TestCase::class;
     }
 
-    private function shouldStop(): bool
+    private function shouldStop(Facade $resultFacade): bool
     {
-        if (($this->stopOnDefect || $this->stopOnError) && Facade::hasTestErroredEvents()) {
+        if (($this->stopOnDefect || $this->stopOnError) && $resultFacade->hasTestErroredEvents()) {
             return true;
         }
 
-        if (($this->stopOnDefect || $this->stopOnFailure) && Facade::hasTestFailedEvents()) {
+        if (($this->stopOnDefect || $this->stopOnFailure) && $resultFacade->hasTestFailedEvents()) {
             return true;
         }
 
-        if (($this->stopOnDefect || $this->stopOnWarning) && Facade::hasWarningEvents()) {
+        if (($this->stopOnDefect || $this->stopOnWarning) && $resultFacade->hasWarningEvents()) {
             return true;
         }
 
-        if (($this->stopOnDefect || $this->stopOnRisky) && Facade::hasTestConsideredRiskyEvents()) {
+        if (($this->stopOnDefect || $this->stopOnRisky) && $resultFacade->hasTestConsideredRiskyEvents()) {
             return true;
         }
 
-        if ($this->stopOnSkipped && Facade::hasTestSkippedEvents()) {
+        if ($this->stopOnSkipped && $resultFacade->hasTestSkippedEvents()) {
             return true;
         }
 
-        if ($this->stopOnIncomplete && Facade::hasTestMarkedIncompleteEvents()) {
+        if ($this->stopOnIncomplete && $resultFacade->hasTestMarkedIncompleteEvents()) {
             return true;
         }
 

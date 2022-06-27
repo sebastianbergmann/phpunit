@@ -16,6 +16,7 @@ use function is_dir;
 use function is_file;
 use function str_contains;
 use function version_compare;
+use PHPUnit\Event;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
 use PHPUnit\TextUI\RuntimeException;
@@ -33,12 +34,12 @@ final class TestSuiteMapper
      * @throws TestDirectoryNotFoundException
      * @throws TestFileNotFoundException
      */
-    public function map(TestSuiteCollection $configuration, string $filter, string $excludedTestSuites): TestSuiteObject
+    public function map(TestSuiteCollection $configuration, string $filter, string $excludedTestSuites, Event\Facade $eventFacade): TestSuiteObject
     {
         try {
             $filterAsArray         = $filter ? explode(',', $filter) : [];
             $excludedFilterAsArray = $excludedTestSuites ? explode(',', $excludedTestSuites) : [];
-            $result                = TestSuiteObject::empty();
+            $result                = TestSuiteObject::empty(null, $eventFacade);
 
             foreach ($configuration as $testSuiteConfiguration) {
                 if (!empty($filterAsArray) && !in_array($testSuiteConfiguration->name(), $filterAsArray, true)) {
@@ -49,7 +50,7 @@ final class TestSuiteMapper
                     continue;
                 }
 
-                $testSuite      = TestSuiteObject::empty($testSuiteConfiguration->name());
+                $testSuite      = TestSuiteObject::empty($testSuiteConfiguration->name(), $eventFacade);
                 $testSuiteEmpty = true;
 
                 $exclude = [];

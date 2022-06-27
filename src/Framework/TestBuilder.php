@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Event\Facade;
 use function assert;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
@@ -29,7 +30,7 @@ final class TestBuilder
     /**
      * @throws InvalidDataProviderException
      */
-    public function build(ReflectionClass $theClass, string $methodName): Test
+    public function build(ReflectionClass $theClass, string $methodName, Facade $eventFacade): Test
     {
         $className = $theClass->getName();
 
@@ -46,7 +47,8 @@ final class TestBuilder
                 $this->shouldTestMethodBeRunInSeparateProcess($className, $methodName),
                 $this->shouldGlobalStateBePreserved($className, $methodName),
                 $this->shouldAllTestMethodsOfTestClassBeRunInSingleSeparateProcess($className),
-                $this->backupSettings($className, $methodName)
+                $this->backupSettings($className, $methodName),
+                $eventFacade
             );
         } else {
             $test = new $className($methodName);
@@ -69,10 +71,11 @@ final class TestBuilder
      * @psalm-param class-string $className
      * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings, Facade $eventFacade): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
-            $className . '::' . $methodName
+            $className . '::' . $methodName,
+            $eventFacade
         );
 
         $groups = (new Groups)->groups($className, $methodName);

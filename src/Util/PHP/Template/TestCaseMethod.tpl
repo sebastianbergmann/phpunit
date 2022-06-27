@@ -1,7 +1,9 @@
 <?php
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
@@ -31,7 +33,7 @@ if ($composerAutoload) {
 
 function __phpunit_run_isolated_test()
 {
-    $dispatcher = Facade::initForIsolation(
+    [$eventFacade, $dispatcher] = Facade::initForIsolation(
         PHPUnit\Event\Telemetry\HRTime::fromSecondsAndNanoseconds(
             {offsetSeconds},
             {offsetNanoseconds}
@@ -58,8 +60,10 @@ function __phpunit_run_isolated_test()
     $test->setDependencyInput(unserialize('{dependencyInput}'));
     $test->setInIsolation(true);
 
+    Assert::$eventFacade = $eventFacade;
+
     ob_end_clean();
-    $test->run();
+    $test->run($eventFacade, new ResultFacade($eventFacade));
     $output = '';
     if (!$test->hasExpectationOnOutput()) {
         $output = $test->output();

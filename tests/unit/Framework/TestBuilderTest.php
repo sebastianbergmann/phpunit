@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\TestFixture\TestWithAnnotations;
@@ -20,7 +21,7 @@ final class TestBuilderTest extends TestCase
     #[DataProvider('provideWithAnnotations')]
     public function testWithAnnotations(string $methodName): void
     {
-        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName, new Facade());
         $this->assertInstanceOf(TestWithAnnotations::class, $test);
     }
 
@@ -36,7 +37,7 @@ final class TestBuilderTest extends TestCase
     #[DataProvider('provideWithAnnotationsAndDataProvider')]
     public function testWithAnnotationsAndDataProvider(string $methodName): void
     {
-        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName, new Facade());
         $this->assertInstanceOf(DataProviderTestSuite::class, $test);
     }
 

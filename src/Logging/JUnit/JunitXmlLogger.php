@@ -80,13 +80,15 @@ final class JunitXmlLogger
     private int $testSuiteLevel          = 0;
     private ?DOMElement $currentTestCase = null;
     private ?HRTime $time                = null;
+    private Facade $eventFacade;
 
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(bool $reportRiskyTests)
+    public function __construct(bool $reportRiskyTests, Facade $eventFacade)
     {
+        $this->eventFacade = $eventFacade;
         $this->registerSubscribers($reportRiskyTests);
         $this->createDocument();
     }
@@ -242,17 +244,17 @@ final class JunitXmlLogger
      */
     private function registerSubscribers(bool $reportRiskyTests): void
     {
-        Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));
-        Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestErroredSubscriber($this));
-        Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedSubscriber($this));
+        $this->eventFacade->registerSubscriber(new TestSuiteStartedSubscriber($this));
+        $this->eventFacade->registerSubscriber(new TestSuiteFinishedSubscriber($this));
+        $this->eventFacade->registerSubscriber(new TestPreparedSubscriber($this));
+        $this->eventFacade->registerSubscriber(new TestFinishedSubscriber($this));
+        $this->eventFacade->registerSubscriber(new TestErroredSubscriber($this));
+        $this->eventFacade->registerSubscriber(new TestFailedSubscriber($this));
+        $this->eventFacade->registerSubscriber(new TestMarkedIncompleteSubscriber($this));
+        $this->eventFacade->registerSubscriber(new TestSkippedSubscriber($this));
 
         if ($reportRiskyTests) {
-            Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
+            $this->eventFacade->registerSubscriber(new TestConsideredRiskySubscriber($this));
         }
     }
 

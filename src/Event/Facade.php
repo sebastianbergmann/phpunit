@@ -16,79 +16,80 @@ use PHPUnit\Event\Telemetry\HRTime;
  */
 final class Facade
 {
-    private static ?TypeMap $typeMap                       = null;
-    private static ?Emitter $emitter                       = null;
-    private static ?Emitter $suspended                     = null;
-    private static ?DeferredDispatcher $deferredDispatcher = null;
-    private static bool $sealed                            = false;
+    private TypeMap $typeMap;
+    private Emitter $emitter;
+    private ?Emitter $suspended = null;
+    private DeferredDispatcher $deferredDispatcher;
+    private bool $sealed = false;
+    
+    public function __construct()
+    {
+        $this->emitter = $this->createDispatchingEmitter();
+    }
 
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public static function registerSubscriber(Subscriber $subscriber): void
+    public function registerSubscriber(Subscriber $subscriber): void
     {
-        if (self::$sealed) {
+        if ($this->sealed) {
             throw new EventFacadeIsSealedException;
         }
 
-        self::deferredDispatcher()->registerSubscriber($subscriber);
+        $this->deferredDispatcher()->registerSubscriber($subscriber);
     }
 
     /**
      * @throws EventFacadeIsSealedException
      */
-    public static function registerTracer(Tracer\Tracer $tracer): void
+    public function registerTracer(Tracer\Tracer $tracer): void
     {
-        if (self::$sealed) {
+        if ($this->sealed) {
             throw new EventFacadeIsSealedException;
         }
 
-        self::deferredDispatcher()->registerTracer($tracer);
+        $this->deferredDispatcher()->registerTracer($tracer);
     }
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public static function emitter(): Emitter
+    public function emitter(): Emitter
     {
-        if (self::$emitter === null) {
-            self::$emitter = self::createDispatchingEmitter();
-        }
-
-        return self::$emitter;
+        return $this->emitter;
     }
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public static function initForIsolation(HRTime $offset): CollectingDispatcher
+    public static function initForIsolation(HRTime $offset): array
     {
+        $eventFacade = new self();
+
         $dispatcher = new CollectingDispatcher;
 
-        self::$emitter = new DispatchingEmitter(
+        $eventFacade->emitter = new DispatchingEmitter(
             $dispatcher,
             new Telemetry\System(
                 new Telemetry\SystemStopWatchWithOffset($offset),
                 new Telemetry\SystemMemoryMeter
             )
         );
-
-        self::$sealed = true;
-
-        return $dispatcher;
+        
+        return [$eventFacade, $dispatcher];
     }
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public static function forward(EventCollection $events): void
+    public function forward(EventCollection $events): void
     {
-        if (self::$suspended !== null) {
+        if ($this->suspended !== null) {
             return;
         }
 
-        $dispatcher = self::deferredDispatcher();
+        $dispatcher = $this->deferredDispatcher();
 
         foreach ($events as $event) {
             $dispatcher->dispatch($event);
@@ -98,24 +99,24 @@ final class Facade
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    public static function seal(): void
+    public function seal(): void
     {
-        self::$deferredDispatcher->flush();
+        $this->deferredDispatcher->flush();
 
-        self::$sealed = true;
+        $this->sealed = true;
 
-        self::emitter()->eventFacadeSealed();
+        $this->emitter()->eventFacadeSealed();
     }
 
-    private static function createDispatchingEmitter(): DispatchingEmitter
+    private function createDispatchingEmitter(): DispatchingEmitter
     {
         return new DispatchingEmitter(
-            self::deferredDispatcher(),
-            self::createTelemetrySystem()
+            $this->deferredDispatcher(),
+            $this->createTelemetrySystem()
         );
     }
 
-    private static function createTelemetrySystem(): Telemetry\System
+    private function createTelemetrySystem(): Telemetry\System
     {
         return new Telemetry\System(
             new Telemetry\SystemStopWatch,
@@ -123,31 +124,31 @@ final class Facade
         );
     }
 
-    private static function deferredDispatcher(): DeferredDispatcher
+    private function deferredDispatcher(): DeferredDispatcher
     {
-        if (self::$deferredDispatcher === null) {
-            self::$deferredDispatcher = new DeferredDispatcher(
-                new DirectDispatcher(self::typeMap())
+        if (! isset($this->deferredDispatcher)) {
+            $this->deferredDispatcher = new DeferredDispatcher(
+                new DirectDispatcher($this->typeMap())
             );
         }
 
-        return self::$deferredDispatcher;
+        return $this->deferredDispatcher;
     }
 
-    private static function typeMap(): TypeMap
+    private function typeMap(): TypeMap
     {
-        if (self::$typeMap === null) {
+        if (! isset($this->typeMap)) {
             $typeMap = new TypeMap;
 
-            self::registerDefaultTypes($typeMap);
+            $this->registerDefaultTypes($typeMap);
 
-            self::$typeMap = $typeMap;
+            $this->typeMap = $typeMap;
         }
 
-        return self::$typeMap;
+        return $this->typeMap;
     }
 
-    private static function registerDefaultTypes(TypeMap $typeMap): void
+    private function registerDefaultTypes(TypeMap $typeMap): void
     {
         $defaultEvents = [
             Test\MarkedIncomplete::class,

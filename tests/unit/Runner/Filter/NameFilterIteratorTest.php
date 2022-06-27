@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Filter;
 
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
@@ -31,7 +32,7 @@ final class NameFilterIteratorTest extends TestCase
 
     private function createFilter(string $filter): NameFilterIterator
     {
-        $suite = TestSuite::empty();
+        $suite = TestSuite::empty(null, new Facade());
         $suite->addTest(new BankAccountTest('testBalanceIsInitiallyZero'));
 
         $iterator = new NameFilterIterator($suite->getIterator(), $filter);

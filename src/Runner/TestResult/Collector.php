@@ -157,32 +157,32 @@ final class Collector
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct()
+    public function __construct(Facade $facade)
     {
-        Facade::registerSubscriber(new ExecutionStartedSubscriber($this));
-        Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));
-        Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
-        Facade::registerSubscriber(new TestErroredSubscriber($this));
-        Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestPassedSubscriber($this));
-        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredDeprecationSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredErrorSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredNoticeSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpDeprecationSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpNoticeSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpunitDeprecationSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpunitErrorSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpunitWarningSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpWarningSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredWarningSubscriber($this));
-        Facade::registerSubscriber(new TestRunnerTriggeredDeprecationSubscriber($this));
-        Facade::registerSubscriber(new TestRunnerTriggeredWarningSubscriber($this));
+        $facade->registerSubscriber(new ExecutionStartedSubscriber($this));
+        $facade->registerSubscriber(new TestSuiteStartedSubscriber($this));
+        $facade->registerSubscriber(new TestSuiteFinishedSubscriber($this));
+        $facade->registerSubscriber(new TestPreparedSubscriber($this));
+        $facade->registerSubscriber(new TestFinishedSubscriber($this));
+        $facade->registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
+        $facade->registerSubscriber(new TestErroredSubscriber($this));
+        $facade->registerSubscriber(new TestFailedSubscriber($this));
+        $facade->registerSubscriber(new TestPassedSubscriber($this));
+        $facade->registerSubscriber(new TestMarkedIncompleteSubscriber($this));
+        $facade->registerSubscriber(new TestSkippedSubscriber($this));
+        $facade->registerSubscriber(new TestConsideredRiskySubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredDeprecationSubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredErrorSubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredNoticeSubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredPhpDeprecationSubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredPhpNoticeSubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredPhpunitDeprecationSubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredPhpunitErrorSubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredPhpunitWarningSubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredPhpWarningSubscriber($this));
+        $facade->registerSubscriber(new TestTriggeredWarningSubscriber($this));
+        $facade->registerSubscriber(new TestRunnerTriggeredDeprecationSubscriber($this));
+        $facade->registerSubscriber(new TestRunnerTriggeredWarningSubscriber($this));
     }
 
     public function result(): TestResult

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\TextUI\Application;
 use const DEBUG_BACKTRACE_IGNORE_ARGS;
 use const PHP_EOL;
 use function array_shift;
@@ -79,6 +80,11 @@ use PHPUnit\Util\Xml\Loader as XmlLoader;
 abstract class Assert
 {
     private static int $count = 0;
+
+    /**
+     * @internal
+     */
+    public static ?Event\Facade $eventFacade;
 
     /**
      * Asserts that an array has a specified key.
@@ -1734,7 +1740,7 @@ abstract class Assert
 
             $hasFailed = false;
         } finally {
-            Event\Facade::emitter()->assertionMade(
+            self::$eventFacade->emitter()->assertionMade(
                 $value,
                 $constraint,
                 $message,

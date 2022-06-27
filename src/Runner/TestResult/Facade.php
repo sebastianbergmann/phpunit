@@ -24,103 +24,94 @@ use PHPUnit\Runner\NoIgnoredEventException;
  */
 final class Facade
 {
-    private static ?Collector $collector = null;
+    private Collector $collector;
 
-    public static function init(): void
+    public function __construct(\PHPUnit\Event\Facade $facade)
     {
-        self::collector();
+        $this->collector = new Collector($facade);
     }
 
-    public static function result(): TestResult
+    public function result(): TestResult
     {
-        return self::collector()->result();
+        return $this->collector->result();
     }
 
     /**
      * @psalm-return list<class-string>
      */
-    public static function passedTestClasses(): array
+    public function passedTestClasses(): array
     {
-        return self::collector()->passedTestClasses();
+        return $this->collector->passedTestClasses();
     }
 
     /**
      * @psalm-return array<string,array{result: mixed, size: TestSize}>
      */
-    public static function passedTestMethods(): array
+    public function passedTestMethods(): array
     {
-        return self::collector()->passedTestMethods();
+        return $this->collector->passedTestMethods();
     }
 
-    public static function hasTestErroredEvents(): bool
+    public function hasTestErroredEvents(): bool
     {
-        return self::collector()->hasTestErroredEvents();
+        return $this->collector->hasTestErroredEvents();
     }
 
-    public static function hasTestFailedEvents(): bool
+    public function hasTestFailedEvents(): bool
     {
-        return self::collector()->hasTestFailedEvents();
+        return $this->collector->hasTestFailedEvents();
     }
 
-    public static function hasWarningEvents(): bool
+    public function hasWarningEvents(): bool
     {
-        return self::collector()->hasWarningEvents();
+        return $this->collector->hasWarningEvents();
     }
 
-    public static function hasTestConsideredRiskyEvents(): bool
+    public function hasTestConsideredRiskyEvents(): bool
     {
-        return self::collector()->hasTestConsideredRiskyEvents();
+        return $this->collector->hasTestConsideredRiskyEvents();
     }
 
-    public static function hasTestSkippedEvents(): bool
+    public function hasTestSkippedEvents(): bool
     {
-        return self::collector()->hasTestSkippedEvents();
+        return $this->collector->hasTestSkippedEvents();
     }
 
-    public static function hasTestMarkedIncompleteEvents(): bool
+    public function hasTestMarkedIncompleteEvents(): bool
     {
-        return self::collector()->hasTestMarkedIncompleteEvents();
+        return $this->collector->hasTestMarkedIncompleteEvents();
     }
 
-    public static function ignoreTestTriggeredDeprecationEventForExpectation(): void
+    public function ignoreTestTriggeredDeprecationEventForExpectation(): void
     {
-        self::collector()->ignoreTestTriggeredDeprecationEventForExpectation();
+        $this->collector->ignoreTestTriggeredDeprecationEventForExpectation();
     }
 
-    public static function ignoreTestTriggeredErrorEventForExpectation(): void
+    public function ignoreTestTriggeredErrorEventForExpectation(): void
     {
-        self::collector()->ignoreTestTriggeredErrorEventForExpectation();
+        $this->collector->ignoreTestTriggeredErrorEventForExpectation();
     }
 
-    public static function ignoreTestTriggeredNoticeEventForExpectation(): void
+    public function ignoreTestTriggeredNoticeEventForExpectation(): void
     {
-        self::collector()->ignoreTestTriggeredNoticeEventForExpectation();
+        $this->collector->ignoreTestTriggeredNoticeEventForExpectation();
     }
 
-    public static function ignoreTestTriggeredWarningEventForExpectation(): void
+    public function ignoreTestTriggeredWarningEventForExpectation(): void
     {
-        self::collector()->ignoreTestTriggeredWarningEventForExpectation();
+        $this->collector->ignoreTestTriggeredWarningEventForExpectation();
     }
 
-    public static function hasIgnoredEvent(): bool
+    public function hasIgnoredEvent(): bool
     {
-        return self::collector()->hasIgnoredEvent();
+        return $this->collector->hasIgnoredEvent();
     }
 
     /**
      * @throws NoIgnoredEventException
      */
-    public static function ignoredEvent(): DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered
+    public function ignoredEvent(): DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered
     {
-        return self::collector()->ignoredEvent();
-    }
-
-    private static function collector(): Collector
-    {
-        if (self::$collector === null) {
-            self::$collector = new Collector;
-        }
-
-        return self::$collector;
+        return $this->collector->ignoredEvent();
     }
 }

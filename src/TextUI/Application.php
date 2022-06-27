@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI;
 
+use PHPUnit\Framework\Assert;
 use const PATH_SEPARATOR;
 use const PHP_EOL;
 use function array_keys;
@@ -89,13 +90,14 @@ final class Application
      */
     public function run(array $argv, bool $exit = true): int
     {
-        Event\Facade::emitter()->testRunnerStarted();
+        $facade = new Facade();
+        $facade->emitter()->testRunnerStarted();
 
-        $suite = $this->handleArguments($argv);
+        $suite = $this->handleArguments($argv, $facade);
 
-        Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
+        $facade->emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
 
-        $runner = new TestRunner;
+        $runner = new TestRunner($facade);
 
         foreach ($this->xmlConfiguration->extensions() as $extension) {
             (new ExtensionHandler)->registerExtension($extension, $runner);
@@ -131,7 +133,7 @@ final class Application
             exit(self::CRASH_EXIT);
         }
 
-        Event\Facade::emitter()->testRunnerFinished();
+        $facade->emitter()->testRunnerFinished();
 
         if ($exit) {
             exit($returnCode);
@@ -143,7 +145,7 @@ final class Application
     /**
      * @throws Exception
      */
-    private function handleArguments(array $argv): TestSuite
+    private function handleArguments(array $argv, Facade $facade): TestSuite
     {
         try {
             $arguments = (new Builder)->fromParameters($argv, array_keys($this->longOptions));
@@ -226,14 +228,14 @@ final class Application
             $this->xmlConfiguration
         );
 
-        Event\Facade::emitter()->testRunnerConfigured($configuration);
+        $facade->emitter()->testRunnerConfigured($configuration);
 
         try {
             if ($configuration->hasBootstrap()) {
-                $this->handleBootstrap($configuration->bootstrap());
+                $this->handleBootstrap($configuration->bootstrap(), $facade);
             }
 
-            $testSuite = (new TestSuiteBuilder)->build($arguments, $this->xmlConfiguration);
+            $testSuite = (new TestSuiteBuilder)->build($arguments, $this->xmlConfiguration, $facade);
         } catch (Exception $e) {
             $this->printVersionString();
 
@@ -402,7 +404,7 @@ final class Application
         return $returnCode;
     }
 
-    private function handleBootstrap(string $filename): void
+    private function handleBootstrap(string $filename, Facade $facade): void
     {
         if (!is_readable($filename)) {
             throw new InvalidBootstrapException($filename);
@@ -414,6 +416,6 @@ final class Application
             throw new BootstrapException($t);
         }
 
-        Facade::emitter()->bootstrapFinished($filename);
+        $facade->emitter()->bootstrapFinished($filename);
     }
 }
