@@ -74,9 +74,6 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$eventClass . 'Subscriber'</code>
     </ArgumentTypeCoercion>
-    <PossiblyNullReference occurrences="1">
-      <code>flush</code>
-    </PossiblyNullReference>
   </file>
   <file src="src/Event/Value/Runtime/Extensions.php">
     <ImpureFunctionCall occurrences="1">
@@ -371,7 +368,8 @@
       <code>$this-&gt;expectedNoticeMessage</code>
       <code>$this-&gt;expectedWarningMessage</code>
     </PossiblyNullArgument>
-    <PropertyNotSetInConstructor occurrences="1">
+    <PropertyNotSetInConstructor occurrences="2">
+      <code>$errorHandler</code>
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>
     <PropertyTypeCoercion occurrences="1">
@@ -405,8 +403,8 @@
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
     <UnsafeInstantiation occurrences="2">
-      <code>new static($class-&gt;getName())</code>
-      <code>new static($name)</code>
+      <code>new static($class-&gt;getName(), $eventFacade)</code>
+      <code>new static($name, $eventFacade)</code>
     </UnsafeInstantiation>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
@@ -572,11 +570,6 @@
       <code>assert($test instanceof TestMethod)</code>
       <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
     </RedundantCondition>
-  </file>
-  <file src="src/Runner/TestResult/Facade.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>new Collector</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <MissingThrowsDocblock occurrences="1"/>
@@ -1021,9 +1014,12 @@
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
       <code>logfileText</code>
-      <code>new ResultCacheHandler($cache)</code>
+      <code>new Facade($this-&gt;eventFacade)</code>
+      <code>new ResultCacheHandler($cache, $this-&gt;eventFacade)</code>
       <code>pharExtensionDirectory</code>
       <code>resourceUsageSinceStartOfRequest</code>
+      <code>registerTracer</code>
+      <code>registerTracer</code>
       <code>run</code>
       <code>stop</code>
       <code>stop</code>

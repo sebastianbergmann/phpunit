@@ -22,29 +22,19 @@ final class Facade
     private DeferredDispatcher $deferredDispatcher;
     private bool $sealed = false;
 
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public static function initForIsolation(HRTime $offset): array
-    {
-        $eventFacade = new self;
-
-        $dispatcher = new CollectingDispatcher;
-
-        $eventFacade->emitter = new DispatchingEmitter(
-            $dispatcher,
-            new Telemetry\System(
-                new Telemetry\SystemStopWatchWithOffset($offset),
-                new Telemetry\SystemMemoryMeter
-            )
-        );
-
-        return [$eventFacade, $dispatcher];
-    }
-
     public function __construct()
     {
-        $this->emitter = $this->createDispatchingEmitter();
+        $this->typeMap = new TypeMap;
+        $this->registerDefaultTypes($this->typeMap);
+
+        $this->deferredDispatcher = new DeferredDispatcher(
+            new DirectDispatcher($this->typeMap)
+        );
+
+        $this->emitter = new DispatchingEmitter(
+            $this->deferredDispatcher,
+            $this->createTelemetrySystem()
+        );
     }
 
     /**
@@ -57,7 +47,7 @@ final class Facade
             throw new EventFacadeIsSealedException;
         }
 
-        $this->deferredDispatcher()->registerSubscriber($subscriber);
+        $this->deferredDispatcher->registerSubscriber($subscriber);
     }
 
     /**
@@ -69,7 +59,7 @@ final class Facade
             throw new EventFacadeIsSealedException;
         }
 
-        $this->deferredDispatcher()->registerTracer($tracer);
+        $this->deferredDispatcher->registerTracer($tracer);
     }
 
     /**
@@ -109,7 +99,7 @@ final class Facade
             return;
         }
 
-        $dispatcher = $this->deferredDispatcher();
+        $dispatcher = $this->deferredDispatcher;
 
         foreach ($events as $event) {
             $dispatcher->dispatch($event);
@@ -128,44 +118,12 @@ final class Facade
         $this->emitter()->eventFacadeSealed();
     }
 
-    private function createDispatchingEmitter(): DispatchingEmitter
-    {
-        return new DispatchingEmitter(
-            $this->deferredDispatcher(),
-            $this->createTelemetrySystem()
-        );
-    }
-
     private function createTelemetrySystem(): Telemetry\System
     {
         return new Telemetry\System(
             new Telemetry\SystemStopWatch,
             new Telemetry\SystemMemoryMeter
         );
-    }
-
-    private function deferredDispatcher(): DeferredDispatcher
-    {
-        if (!isset($this->deferredDispatcher)) {
-            $this->deferredDispatcher = new DeferredDispatcher(
-                new DirectDispatcher($this->typeMap())
-            );
-        }
-
-        return $this->deferredDispatcher;
-    }
-
-    private function typeMap(): TypeMap
-    {
-        if (!isset($this->typeMap)) {
-            $typeMap = new TypeMap;
-
-            $this->registerDefaultTypes($typeMap);
-
-            $this->typeMap = $typeMap;
-        }
-
-        return $this->typeMap;
     }
 
     private function registerDefaultTypes(TypeMap $typeMap): void

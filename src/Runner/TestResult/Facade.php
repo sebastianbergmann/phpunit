@@ -16,6 +16,8 @@ use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\EventFacadeIsSealedException;
+use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Runner\NoIgnoredEventException;
 
@@ -26,6 +28,10 @@ final class Facade
 {
     private Collector $collector;
 
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     public function __construct(\PHPUnit\Event\Facade $facade)
     {
         $this->collector = new Collector($facade);
