@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use PHPUnit\Event\Facade;
+use PHPUnit\Framework\Assert;
 use function assert;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
@@ -33,6 +34,8 @@ final class TestBuilder
     public function build(ReflectionClass $theClass, string $methodName, Facade $eventFacade): Test
     {
         $className = $theClass->getName();
+
+        Assert::$eventFacade = $eventFacade;
 
         $data = (new DataProvider)->providedData(
             $className,

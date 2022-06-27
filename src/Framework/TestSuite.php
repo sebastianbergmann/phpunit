@@ -150,7 +150,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     {
         $this->name = $name;
         $this->eventFacade = $eventFacade;
-        Assert::$eventFacade = $eventFacade;
 
         $configuration = Registry::get();
 

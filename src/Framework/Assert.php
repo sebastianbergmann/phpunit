@@ -84,7 +84,7 @@ abstract class Assert
     /**
      * @internal
      */
-    public static ?Event\Facade $eventFacade;
+    public static Event\Facade $eventFacade;
 
     /**
      * Asserts that an array has a specified key.
