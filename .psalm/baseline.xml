@@ -1539,9 +1539,9 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Util/TextTestListRenderer.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <InvalidArgument occurrences="1">
       <code>$suite-&gt;getIterator()</code>
-    </ArgumentTypeCoercion>
+    </InvalidArgument>
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
     <MissingThrowsDocblock occurrences="1">
@@ -1570,8 +1570,8 @@
     </RedundantCast>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <InvalidArgument occurrences="1">
       <code>$suite-&gt;getIterator()</code>
-    </ArgumentTypeCoercion>
+    </InvalidArgument>
   </file>
 </files>
