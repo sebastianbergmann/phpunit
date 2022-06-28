@@ -669,14 +669,14 @@
     </UnresolvableInclude>
   </file>
   <file src="src/TextUI/Command/Commands/ListTestsAsTextCommand.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <InvalidArgument occurrences="1">
       <code>$this-&gt;suite-&gt;getIterator()</code>
-    </ArgumentTypeCoercion>
+    </InvalidArgument>
   </file>
   <file src="src/TextUI/Command/Commands/ListTestsAsXmlCommand.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <InvalidArgument occurrences="1">
       <code>$this-&gt;suite-&gt;getIterator()</code>
-    </ArgumentTypeCoercion>
+    </InvalidArgument>
   </file>
   <file src="src/TextUI/Command/Commands/WarmCodeCoverageCacheCommand.php">
     <MissingThrowsDocblock occurrences="2">
