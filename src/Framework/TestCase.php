@@ -1658,6 +1658,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 if ($passedTestMethods[$dependencyTarget]['size']->isKnown() &&
                     $this->size()->isKnown() &&
                     $passedTestMethods[$dependencyTarget]['size']->isGreaterThan($this->size())) {
+                    Event\Facade::emitter()->testConsideredRisky(
+                        $this->valueObjectForEvents(),
+                        'This test depends on a test that is larger than itself'
+                    );
+
                     $this->result->addFailure(
                         $this,
                         new SkippedDueToDependencyOnLargerTestException,
