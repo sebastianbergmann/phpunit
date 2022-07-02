@@ -173,6 +173,11 @@ final class TestRunner
                         $test->getName(false)
                     );
                 } catch (InvalidCoversTargetException $cce) {
+                    Event\Facade::emitter()->testTriggeredPhpunitWarning(
+                        $test->valueObjectForEvents(),
+                        $cce->getMessage()
+                    );
+
                     $result->addWarning(
                         $test,
                         new Warning(
