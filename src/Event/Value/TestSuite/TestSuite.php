@@ -57,7 +57,7 @@ abstract class TestSuite
             }
 
             foreach ($tests as $test) {
-                $groups[$groupName][] = get_class($test);
+                $groups[$groupName][] = $test::class;
             }
         }
 
