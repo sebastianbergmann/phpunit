@@ -280,10 +280,8 @@ final class NamePrettifier
         }
 
         if ($this->useColor) {
-            $providedData = array_map(static function ($value)
-            {
-                return Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true));
-            }, $providedData);
+            $providedData = array_map(static fn ($value)
+            => Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true)), $providedData);
         }
 
         return $providedData;

@@ -233,10 +233,8 @@ final class DocBlock
             $annotations = array_merge(
                 $annotations,
                 ...array_map(
-                    static function (ReflectionClass $trait): array
-                    {
-                        return self::parseDocBlock((string) $trait->getDocComment());
-                    },
+                    static fn (ReflectionClass $trait): array
+                    => self::parseDocBlock((string) $trait->getDocComment()),
                     array_values($reflector->getTraits())
                 )
             );
