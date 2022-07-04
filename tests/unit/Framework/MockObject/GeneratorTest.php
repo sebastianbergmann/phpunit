@@ -66,7 +66,7 @@ final class GeneratorTest extends TestCase
     {
         $this->expectException(InvalidMethodNameException::class);
 
-        $this->generator->getMock(stdClass::class, [0]);
+        $this->generator->createPartialMock(stdClass::class, [0]);
     }
 
     public function testGetMockThrowsExceptionWithNonExistingClass(): void
@@ -96,7 +96,7 @@ final class GeneratorTest extends TestCase
 
     public function testGetMockCanCreateNonExistingFunctions(): void
     {
-        $mock = $this->generator->getMock(stdClass::class, ['testFunction']);
+        $mock = $this->generator->createPartialMock(stdClass::class, ['testFunction']);
 
         $this->assertTrue(method_exists($mock, 'testFunction'));
     }
@@ -106,12 +106,12 @@ final class GeneratorTest extends TestCase
         $this->expectException(DuplicateMethodException::class);
         $this->expectExceptionMessage('duplicates: "foo, bar, foo" (duplicate: "foo")');
 
-        $this->generator->getMock(stdClass::class, ['foo', 'bar', 'foo']);
+        $this->generator->createPartialMock(stdClass::class, ['foo', 'bar', 'foo']);
     }
 
     public function testGetMockBlacklistedMethodNamesPhp7(): void
     {
-        $mock = $this->generator->getMock(InterfaceWithSemiReservedMethodName::class);
+        $mock = $this->generator->createMock(InterfaceWithSemiReservedMethodName::class);
 
         $this->assertTrue(method_exists($mock, 'unset'));
         $this->assertInstanceOf(InterfaceWithSemiReservedMethodName::class, $mock);
@@ -227,7 +227,7 @@ final class GeneratorTest extends TestCase
 
     public function testCanImplementInterfacesThatHaveMethodsWithReturnTypes(): void
     {
-        $stub = $this->generator->getMock(AnInterfaceWithReturnType::class);
+        $stub = $this->generator->createMock(AnInterfaceWithReturnType::class);
 
         $this->assertInstanceOf(AnInterfaceWithReturnType::class, $stub);
         $this->assertInstanceOf(MockObject::class, $stub);
@@ -237,7 +237,7 @@ final class GeneratorTest extends TestCase
     {
         $className = 'X' . md5(microtime());
 
-        $mock = $this->generator->getMock($className, ['someMethod']);
+        $mock = $this->generator->createPartialMock($className, ['someMethod']);
 
         $this->assertInstanceOf($className, $mock);
     }
@@ -246,7 +246,7 @@ final class GeneratorTest extends TestCase
     {
         $className = 'X' . md5(microtime());
 
-        $mock = $this->generator->getMock($className, ['someMethod']);
+        $mock = $this->generator->createPartialMock($className, ['someMethod']);
 
         $mock->expects($this->once())->method('someMethod');
 
@@ -255,7 +255,7 @@ final class GeneratorTest extends TestCase
 
     public function testMockingOfExceptionWithThrowable(): void
     {
-        $stub = $this->generator->getMock(ExceptionWithThrowable::class);
+        $stub = $this->generator->createMock(ExceptionWithThrowable::class);
 
         $this->assertInstanceOf(ExceptionWithThrowable::class, $stub);
         $this->assertInstanceOf(Exception::class, $stub);
@@ -264,7 +264,7 @@ final class GeneratorTest extends TestCase
 
     public function testMockingOfThrowable(): void
     {
-        $stub = $this->generator->getMock(Throwable::class);
+        $stub = $this->generator->createMock(Throwable::class);
 
         $this->assertInstanceOf(Throwable::class, $stub);
         $this->assertInstanceOf(Exception::class, $stub);
