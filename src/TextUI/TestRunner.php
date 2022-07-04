@@ -114,7 +114,7 @@ final class TestRunner
         if ($this->configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
             $this->configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
             $this->configuration->resolveDependencies()) {
-            $cache = $cache ?? new NullResultCache;
+            $cache ??= new NullResultCache;
 
             $cache->load();
 

@@ -201,7 +201,7 @@ final class TestRunner
             } catch (OriginalCodeCoverageException $cce) {
                 $error = true;
 
-                $e = $e ?? $cce;
+                $e ??= $cce;
             }
         }
 

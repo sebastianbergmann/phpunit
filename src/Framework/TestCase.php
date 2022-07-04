@@ -795,7 +795,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         try {
             $this->stopOutputBuffering();
         } catch (RiskyTest $_e) {
-            $e = $e ?? $_e;
+            $e ??= $_e;
         }
 
         if (!isset($e)) {
@@ -822,7 +822,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 }
             }
         } catch (Throwable $_e) {
-            $e = $e ?? $_e;
+            $e ??= $_e;
         }
 
         if (isset($_e)) {

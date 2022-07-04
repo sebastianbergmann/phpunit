@@ -224,7 +224,7 @@ final class Application
             $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
         }
 
-        $this->xmlConfiguration = $this->xmlConfiguration ?? DefaultConfiguration::create();
+        $this->xmlConfiguration ??= DefaultConfiguration::create();
 
         (new PhpHandler)->handle($this->xmlConfiguration->php());
 
