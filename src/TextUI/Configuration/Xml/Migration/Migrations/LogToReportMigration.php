@@ -22,7 +22,7 @@ abstract class LogToReportMigration implements Migration
     /**
      * @throws MigrationException
      */
-    public function migrate(DOMDocument $document): void
+    final public function migrate(DOMDocument $document): void
     {
         $coverage = $document->getElementsByTagName('coverage')->item(0);
 

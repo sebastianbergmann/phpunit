@@ -17,7 +17,7 @@ abstract class TestStatus
 {
     private string $message;
 
-    public static function from(int $status): self
+    final public static function from(int $status): self
     {
         return match ($status) {
             0       => self::success(),
@@ -33,52 +33,52 @@ abstract class TestStatus
         };
     }
 
-    public static function unknown(): self
+    final public static function unknown(): self
     {
         return new Unknown;
     }
 
-    public static function success(): self
+    final public static function success(): self
     {
         return new Success;
     }
 
-    public static function skipped(string $message = ''): self
+    final public static function skipped(string $message = ''): self
     {
         return new Skipped($message);
     }
 
-    public static function incomplete(string $message = ''): self
+    final public static function incomplete(string $message = ''): self
     {
         return new Incomplete($message);
     }
 
-    public static function notice(string $message = ''): self
+    final public static function notice(string $message = ''): self
     {
         return new Notice($message);
     }
 
-    public static function deprecation(string $message = ''): self
+    final public static function deprecation(string $message = ''): self
     {
         return new Deprecation($message);
     }
 
-    public static function failure(string $message = ''): self
+    final public static function failure(string $message = ''): self
     {
         return new Failure($message);
     }
 
-    public static function error(string $message = ''): self
+    final public static function error(string $message = ''): self
     {
         return new Error($message);
     }
 
-    public static function warning(string $message = ''): self
+    final public static function warning(string $message = ''): self
     {
         return new Warning($message);
     }
 
-    public static function risky(string $message = ''): self
+    final public static function risky(string $message = ''): self
     {
         return new Risky($message);
     }
@@ -91,7 +91,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Known $this
      */
-    public function isKnown(): bool
+    final public function isKnown(): bool
     {
         return false;
     }
@@ -99,7 +99,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Unknown $this
      */
-    public function isUnknown(): bool
+    final public function isUnknown(): bool
     {
         return false;
     }
@@ -107,7 +107,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Success $this
      */
-    public function isSuccess(): bool
+    final public function isSuccess(): bool
     {
         return false;
     }
@@ -115,7 +115,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Skipped $this
      */
-    public function isSkipped(): bool
+    final public function isSkipped(): bool
     {
         return false;
     }
@@ -123,7 +123,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Incomplete $this
      */
-    public function isIncomplete(): bool
+    final public function isIncomplete(): bool
     {
         return false;
     }
@@ -131,7 +131,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Notice $this
      */
-    public function isNotice(): bool
+    final public function isNotice(): bool
     {
         return false;
     }
@@ -139,7 +139,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Deprecation $this
      */
-    public function isDeprecation(): bool
+    final public function isDeprecation(): bool
     {
         return false;
     }
@@ -147,7 +147,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Failure $this
      */
-    public function isFailure(): bool
+    final public function isFailure(): bool
     {
         return false;
     }
@@ -155,7 +155,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Error $this
      */
-    public function isError(): bool
+    final public function isError(): bool
     {
         return false;
     }
@@ -163,7 +163,7 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Warning $this
      */
-    public function isWarning(): bool
+    final public function isWarning(): bool
     {
         return false;
     }
@@ -171,17 +171,17 @@ abstract class TestStatus
     /**
      * @psalm-assert-if-true Risky $this
      */
-    public function isRisky(): bool
+    final public function isRisky(): bool
     {
         return false;
     }
 
-    public function message(): string
+    final public function message(): string
     {
         return $this->message;
     }
 
-    public function isMoreImportantThan(self $other): bool
+    final public function isMoreImportantThan(self $other): bool
     {
         return $this->asInt() > $other->asInt();
     }

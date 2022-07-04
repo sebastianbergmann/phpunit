@@ -18,7 +18,7 @@ abstract class Known extends TestSize
     /**
      * @psalm-assert-if-true Known $this
      */
-    public function isKnown(): bool
+    final public function isKnown(): bool
     {
         return true;
     }

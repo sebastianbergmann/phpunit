@@ -47,7 +47,7 @@ abstract class TestSuite
     private string $sortId;
     private TestCollection $tests;
 
-    public static function fromTestSuite(FrameworkTestSuite $testSuite): self
+    final public static function fromTestSuite(FrameworkTestSuite $testSuite): self
     {
         $groups = [];
 
@@ -147,12 +147,12 @@ abstract class TestSuite
         $this->tests    = $tests;
     }
 
-    public function name(): string
+    final public function name(): string
     {
         return $this->name;
     }
 
-    public function count(): int
+    final public function count(): int
     {
         return $this->count;
     }
@@ -160,7 +160,7 @@ abstract class TestSuite
     /**
      * @psalm-return array<string, list<class-string>>
      */
-    public function groups(): array
+    final public function groups(): array
     {
         return $this->groups;
     }
@@ -168,7 +168,7 @@ abstract class TestSuite
     /**
      * @psalm-return list<ExecutionOrderDependency>
      */
-    public function provides(): array
+    final public function provides(): array
     {
         return $this->provides;
     }
@@ -176,17 +176,17 @@ abstract class TestSuite
     /**
      * @psalm-return list<ExecutionOrderDependency>
      */
-    public function requires(): array
+    final public function requires(): array
     {
         return $this->requires;
     }
 
-    public function sortId(): string
+    final public function sortId(): string
     {
         return $this->sortId;
     }
 
-    public function tests(): TestCollection
+    final public function tests(): TestCollection
     {
         return $this->tests;
     }
@@ -194,7 +194,7 @@ abstract class TestSuite
     /**
      * @psalm-assert-if-true TestSuiteWithName $this
      */
-    public function isWithName(): bool
+    final public function isWithName(): bool
     {
         return false;
     }
@@ -202,7 +202,7 @@ abstract class TestSuite
     /**
      * @psalm-assert-if-true TestSuiteForTestClass $this
      */
-    public function isForTestClass(): bool
+    final public function isForTestClass(): bool
     {
         return false;
     }
@@ -210,7 +210,7 @@ abstract class TestSuite
     /**
      * @psalm-assert-if-true TestSuiteForTestMethodWithDataProvider $this
      */
-    public function isForTestMethodWithDataProvider(): bool
+    final public function isForTestMethodWithDataProvider(): bool
     {
         return false;
     }

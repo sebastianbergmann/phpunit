@@ -56,7 +56,7 @@ abstract class AbstractPhpProcess
     protected array $env   = [];
     protected int $timeout = 0;
 
-    public static function factory(): self
+    final public static function factory(): self
     {
         if (DIRECTORY_SEPARATOR === '\\') {
             return new WindowsPhpProcess;
@@ -75,7 +75,7 @@ abstract class AbstractPhpProcess
      *
      * Then $stderrRedirection is TRUE, STDERR is redirected to STDOUT.
      */
-    public function setUseStderrRedirection(bool $stderrRedirection): void
+    final public function setUseStderrRedirection(bool $stderrRedirection): void
     {
         $this->stderrRedirection = $stderrRedirection;
     }
@@ -83,7 +83,7 @@ abstract class AbstractPhpProcess
     /**
      * Returns TRUE if uses STDERR redirection or FALSE if not.
      */
-    public function useStderrRedirection(): bool
+    final public function useStderrRedirection(): bool
     {
         return $this->stderrRedirection;
     }
@@ -91,7 +91,7 @@ abstract class AbstractPhpProcess
     /**
      * Sets the input string to be sent via STDIN.
      */
-    public function setStdin(string $stdin): void
+    final public function setStdin(string $stdin): void
     {
         $this->stdin = $stdin;
     }
@@ -99,7 +99,7 @@ abstract class AbstractPhpProcess
     /**
      * Returns the input string to be sent via STDIN.
      */
-    public function getStdin(): string
+    final public function getStdin(): string
     {
         return $this->stdin;
     }
@@ -107,7 +107,7 @@ abstract class AbstractPhpProcess
     /**
      * Sets the string of arguments to pass to the php job.
      */
-    public function setArgs(string $arguments): void
+    final public function setArgs(string $arguments): void
     {
         $this->arguments = $arguments;
     }
@@ -115,7 +115,7 @@ abstract class AbstractPhpProcess
     /**
      * Returns the string of arguments to pass to the php job.
      */
-    public function getArgs(): string
+    final public function getArgs(): string
     {
         return $this->arguments;
     }
@@ -125,7 +125,7 @@ abstract class AbstractPhpProcess
      *
      * @psalm-param array<string, string> $env
      */
-    public function setEnv(array $env): void
+    final public function setEnv(array $env): void
     {
         $this->env = $env;
     }
@@ -133,7 +133,7 @@ abstract class AbstractPhpProcess
     /**
      * Returns the array of environment variables to start the child process with.
      */
-    public function getEnv(): array
+    final public function getEnv(): array
     {
         return $this->env;
     }
@@ -141,7 +141,7 @@ abstract class AbstractPhpProcess
     /**
      * Sets the amount of seconds to wait before timing out.
      */
-    public function setTimeout(int $timeout): void
+    final public function setTimeout(int $timeout): void
     {
         $this->timeout = $timeout;
     }
@@ -149,7 +149,7 @@ abstract class AbstractPhpProcess
     /**
      * Returns the amount of seconds to wait before timing out.
      */
-    public function getTimeout(): int
+    final public function getTimeout(): int
     {
         return $this->timeout;
     }
@@ -157,7 +157,7 @@ abstract class AbstractPhpProcess
     /**
      * Runs a single test in a separate PHP process.
      */
-    public function runTestJob(string $job, Test $test, TestResult $result): void
+    final public function runTestJob(string $job, Test $test, TestResult $result): void
     {
         $result->startTest($test);
 
@@ -174,7 +174,7 @@ abstract class AbstractPhpProcess
     /**
      * Returns the command based into the configurations.
      */
-    public function getCommand(array $settings, string $file = null): string
+    final public function getCommand(array $settings, string $file = null): string
     {
         $command = $this->runtime->getBinary();
 

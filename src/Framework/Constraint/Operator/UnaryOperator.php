@@ -26,7 +26,7 @@ abstract class UnaryOperator extends Operator
     /**
      * Returns the number of operands (constraints).
      */
-    public function arity(): int
+    final public function arity(): int
     {
         return 1;
     }
@@ -34,7 +34,7 @@ abstract class UnaryOperator extends Operator
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    final public function toString(): string
     {
         $reduced = $this->reduce();
 
@@ -60,7 +60,7 @@ abstract class UnaryOperator extends Operator
     /**
      * Counts the number of constraint elements.
      */
-    public function count(): int
+    final public function count(): int
     {
         return count($this->constraint);
     }

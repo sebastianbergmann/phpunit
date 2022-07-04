@@ -35,7 +35,7 @@ abstract class Constraint implements Countable, SelfDescribing
      *
      * @throws ExpectationFailedException
      */
-    public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
+    final public function evaluate(mixed $other, string $description = '', bool $returnResult = false): ?bool
     {
         $success = false;
 
@@ -57,7 +57,7 @@ abstract class Constraint implements Countable, SelfDescribing
     /**
      * Counts the number of constraint elements.
      */
-    public function count(): int
+    final public function count(): int
     {
         return 1;
     }

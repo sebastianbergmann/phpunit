@@ -16,7 +16,7 @@ namespace PHPUnit\Util\Xml;
  */
 abstract class SchemaDetectionResult
 {
-    public function detected(): bool
+    final public function detected(): bool
     {
         return false;
     }
@@ -24,7 +24,7 @@ abstract class SchemaDetectionResult
     /**
      * @throws Exception
      */
-    public function version(): string
+    final public function version(): string
     {
         throw new Exception('No supported schema was detected');
     }

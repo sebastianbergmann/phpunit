@@ -43,7 +43,7 @@ abstract class BinaryOperator extends Operator
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    final public function toString(): string
     {
         $reduced = $this->reduce();
 
@@ -65,7 +65,7 @@ abstract class BinaryOperator extends Operator
     /**
      * Counts the number of constraint elements.
      */
-    public function count(): int
+    final public function count(): int
     {
         $count = 0;
 

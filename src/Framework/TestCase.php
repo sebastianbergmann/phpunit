@@ -313,14 +313,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * This method is called before the first test of this test class is run.
      */
-    public static function setUpBeforeClass(): void
+    final public static function setUpBeforeClass(): void
     {
     }
 
     /**
      * This method is called after the last test of this test class is run.
      */
-    public static function tearDownAfterClass(): void
+    final public static function tearDownAfterClass(): void
     {
     }
 
@@ -361,7 +361,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws Exception
      */
-    public function toString(): string
+    final public function toString(): string
     {
         $buffer = sprintf(
             '%s::%s',

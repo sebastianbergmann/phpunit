@@ -27,7 +27,7 @@ abstract class Requirement
     /**
      * @throws InvalidVersionRequirementException
      */
-    public static function from(string $versionRequirement): self
+    final public static function from(string $versionRequirement): self
     {
         try {
             return new ConstraintRequirement(

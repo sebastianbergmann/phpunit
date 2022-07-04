@@ -43,7 +43,7 @@ abstract class GroupFilterIterator extends RecursiveFilterIterator
         }
     }
 
-    public function accept(): bool
+    final public function accept(): bool
     {
         $test = $this->getInnerIterator()->current();
 

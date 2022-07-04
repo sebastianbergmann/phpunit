@@ -22,7 +22,7 @@ abstract class Test
         $this->file = $file;
     }
 
-    public function file(): string
+    final public function file(): string
     {
         return $this->file;
     }
@@ -30,7 +30,7 @@ abstract class Test
     /**
      * @psalm-assert-if-true TestMethod $this
      */
-    public function isTestMethod(): bool
+    final public function isTestMethod(): bool
     {
         return false;
     }
@@ -38,7 +38,7 @@ abstract class Test
     /**
      * @psalm-assert-if-true Phpt $this
      */
-    public function isPhpt(): bool
+    final public function isPhpt(): bool
     {
         return false;
     }

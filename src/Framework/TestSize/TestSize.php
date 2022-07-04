@@ -15,22 +15,22 @@ namespace PHPUnit\Framework\TestSize;
  */
 abstract class TestSize
 {
-    public static function unknown(): self
+    final public static function unknown(): self
     {
         return new Unknown;
     }
 
-    public static function small(): self
+    final public static function small(): self
     {
         return new Small;
     }
 
-    public static function medium(): self
+    final public static function medium(): self
     {
         return new Medium;
     }
 
-    public static function large(): self
+    final public static function large(): self
     {
         return new Large;
     }
@@ -38,7 +38,7 @@ abstract class TestSize
     /**
      * @psalm-assert-if-true Known $this
      */
-    public function isKnown(): bool
+    final public function isKnown(): bool
     {
         return false;
     }
@@ -46,7 +46,7 @@ abstract class TestSize
     /**
      * @psalm-assert-if-true Unknown $this
      */
-    public function isUnknown(): bool
+    final public function isUnknown(): bool
     {
         return false;
     }
@@ -54,7 +54,7 @@ abstract class TestSize
     /**
      * @psalm-assert-if-true Small $this
      */
-    public function isSmall(): bool
+    final public function isSmall(): bool
     {
         return false;
     }
@@ -62,7 +62,7 @@ abstract class TestSize
     /**
      * @psalm-assert-if-true Medium $this
      */
-    public function isMedium(): bool
+    final public function isMedium(): bool
     {
         return false;
     }
@@ -70,7 +70,7 @@ abstract class TestSize
     /**
      * @psalm-assert-if-true Large $this
      */
-    public function isLarge(): bool
+    final public function isLarge(): bool
     {
         return false;
     }

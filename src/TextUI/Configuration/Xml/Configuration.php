@@ -39,42 +39,42 @@ abstract class Configuration
         $this->testSuite     = $testSuite;
     }
 
-    public function extensions(): ExtensionCollection
+    final public function extensions(): ExtensionCollection
     {
         return $this->extensions;
     }
 
-    public function codeCoverage(): CodeCoverage
+    final public function codeCoverage(): CodeCoverage
     {
         return $this->codeCoverage;
     }
 
-    public function groups(): Groups
+    final public function groups(): Groups
     {
         return $this->groups;
     }
 
-    public function testdoxGroups(): Groups
+    final public function testdoxGroups(): Groups
     {
         return $this->testdoxGroups;
     }
 
-    public function logging(): Logging
+    final public function logging(): Logging
     {
         return $this->logging;
     }
 
-    public function php(): Php
+    final public function php(): Php
     {
         return $this->php;
     }
 
-    public function phpunit(): PHPUnit
+    final public function phpunit(): PHPUnit
     {
         return $this->phpunit;
     }
 
-    public function testSuite(): TestSuiteCollection
+    final public function testSuite(): TestSuiteCollection
     {
         return $this->testSuite;
     }
@@ -82,7 +82,7 @@ abstract class Configuration
     /**
      * @psalm-assert-if-true DefaultConfiguration $this
      */
-    public function isDefault(): bool
+    final public function isDefault(): bool
     {
         return false;
     }
@@ -90,7 +90,7 @@ abstract class Configuration
     /**
      * @psalm-assert-if-true LoadedFromFileConfiguration $this
      */
-    public function wasLoadedFromFile(): bool
+    final public function wasLoadedFromFile(): bool
     {
         return false;
     }

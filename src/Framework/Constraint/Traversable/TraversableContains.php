@@ -27,7 +27,7 @@ abstract class TraversableContains extends Constraint
     /**
      * Returns a string representation of the constraint.
      */
-    public function toString(): string
+    final public function toString(): string
     {
         return 'contains ' . $this->exporter()->export($this->value);
     }

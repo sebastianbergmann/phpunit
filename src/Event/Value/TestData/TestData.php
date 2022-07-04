@@ -24,7 +24,7 @@ abstract class TestData
         $this->data = $data;
     }
 
-    public function data(): ExportedVariable
+    final public function data(): ExportedVariable
     {
         return $this->data;
     }
@@ -32,7 +32,7 @@ abstract class TestData
     /**
      * @psalm-assert-if-true DataFromDataProvider $this
      */
-    public function isFromDataProvider(): bool
+    final public function isFromDataProvider(): bool
     {
         return false;
     }
@@ -40,7 +40,7 @@ abstract class TestData
     /**
      * @psalm-assert-if-true DataFromTestDependency $this
      */
-    public function isFromTestDependency(): bool
+    final public function isFromTestDependency(): bool
     {
         return false;
     }
