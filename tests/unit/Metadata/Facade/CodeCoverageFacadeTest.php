@@ -10,7 +10,6 @@
 namespace PHPUnit\Metadata;
 
 use function array_merge;
-use function get_class;
 use function range;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
@@ -210,7 +209,7 @@ final class CodeCoverageFacadeTest extends TestCase
     public function testCanSkipCoverage(string $testCase, bool $expectedCanSkip): void
     {
         $test             = new $testCase('testSomething');
-        $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor(get_class($test), $test->getName(false));
+        $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor($test::class, $test->getName(false));
         $canSkipCoverage  = !$coverageRequired;
 
         $this->assertEquals($expectedCanSkip, $canSkipCoverage);
