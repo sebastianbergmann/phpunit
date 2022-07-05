@@ -5,6 +5,9 @@ The right events are emitted in the right order for a test that has invalid code
 if (DIRECTORY_SEPARATOR === '\\') {
     print "skip: this test does not work on Windows / GitHub Actions\n";
 }
+if (!extension_loaded('pcov')) {
+    print "skip: this test requires pcov\n";
+}
 --FILE--
 <?php declare(strict_types=1);
 $traceFile = tempnam(sys_get_temp_dir(), __FILE__);
