@@ -114,6 +114,34 @@ abstract class Assert
         static::assertThat($array, $constraint, $message);
     }
 
+    /**
+     * Asserts that an array has a specified keys.
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArrayHasKeys(array $keys, array|ArrayAccess $array, string $message = ''): void
+    {
+        $constraint = new ArrayHasKeys($keys);
+
+        static::assertThat($array, $constraint, $message);
+    }
+
+    /**
+     * Asserts that an array does not have a specified keys.
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     */
+    final public static function assertArrayNotHasKeys(array $keys, array|ArrayAccess $array, string $message = ''): void
+    {
+        $constraint = new LogicalNot(
+            new ArrayHasKeys($keys)
+        );
+
+        static::assertThat($array, $constraint, $message);
+    }
+
     final public static function assertArrayIsList(array $array, string $message = ''): void
     {
         static::assertThat(
