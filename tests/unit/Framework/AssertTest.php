@@ -165,7 +165,7 @@ final class AssertTest extends TestCase
         $this->assertArrayNotHasKey('bar', $array);
     }
 
-    public function testAssertArrayNotHasKeyPropertlyFailsWithArrayAccessValue(): void
+    public function testAssertArrayNotHasKeyProperlyFailsWithArrayAccessValue(): void
     {
         $array        = new ArrayObject;
         $array['bar'] = 'bar';
@@ -173,6 +173,96 @@ final class AssertTest extends TestCase
         $this->expectException(AssertionFailedError::class);
 
         $this->assertArrayNotHasKey('bar', $array);
+    }
+
+    public function testAssertArrayHasIntegerKeys(): void
+    {
+        $this->assertArrayHasKeys([0], ['foo']);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasKeys([0, 1], ['foo']);
+    }
+
+    public function testAssertArrayNotHasIntegerKeys(): void
+    {
+        $this->assertArrayNotHasKeys([0, 1], ['foo']);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayNotHasKeys([0], ['foo']);
+    }
+
+    public function testAssertArrayHasStringKeys(): void
+    {
+        $this->assertArrayHasKeys(['foo'], ['foo' => 'bar']);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasKeys(['foo', 'bar'], ['foo' => 'bar']);
+    }
+
+    public function testAssertArrayNotHasStringKeys(): void
+    {
+        $this->assertArrayNotHasKeys(['foo', 'bar'], ['foo' => 'bar']);
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayNotHasKeys(['foo'], ['foo' => 'bar']);
+    }
+
+    public function testAssertArrayHasKeysAcceptsArrayObjectValue(): void
+    {
+        $array        = new ArrayObject;
+        $array['foo'] = 'bar';
+
+        $this->assertArrayHasKeys(['foo'], $array);
+    }
+
+    public function testAssertArrayHasKeysProperlyFailsWithArrayObjectValue(): void
+    {
+        $array        = new ArrayObject;
+        $array['bar'] = 'bar';
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasKeys(['foo'], $array);
+    }
+
+    public function testAssertArrayHasKeysAcceptsArrayAccessValue(): void
+    {
+        $array        = new SampleArrayAccess;
+        $array['foo'] = 'bar';
+
+        $this->assertArrayHasKeys(['foo'], $array);
+    }
+
+    public function testAssertArrayHasKeysProperlyFailsWithArrayAccessValue(): void
+    {
+        $array        = new SampleArrayAccess;
+        $array['bar'] = 'bar';
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayHasKeys(['foo'], $array);
+    }
+
+    public function testAssertArrayNotHasKeysAcceptsArrayAccessValue(): void
+    {
+        $array        = new ArrayObject;
+        $array['foo'] = 'bar';
+
+        $this->assertArrayNotHasKeys(['bar'], $array);
+    }
+
+    public function testAssertArrayNotHasKeysProperlyFailsWithArrayAccessValue(): void
+    {
+        $array        = new ArrayObject;
+        $array['bar'] = 'bar';
+
+        $this->expectException(AssertionFailedError::class);
+
+        $this->assertArrayNotHasKeys(['bar'], $array);
     }
 
     public function testAssertArrayIsList(): void

@@ -105,6 +105,40 @@ if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
     }
 }
 
+if (!function_exists('PHPUnit\Framework\assertArrayHasKeys')) {
+    /**
+     * Asserts that an array has a specified keys.
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertArrayHasKeys
+     */
+    function assertArrayHasKeys(array $keys, array|ArrayAccess $array, string $message = ''): void
+    {
+        Assert::assertArrayHasKeys(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\assertArrayNotHasKeys')) {
+    /**
+     * Asserts that an array does not have a specified keys.
+     *
+     * @throws Exception
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertArrayNotHasKeys
+     */
+    function assertArrayNotHasKey(array $keys, array|ArrayAccess $array, string $message = ''): void
+    {
+        Assert::assertArrayNotHasKeys(...func_get_args());
+    }
+}
+
 if (!function_exists('PHPUnit\Framework\assertArrayIsList')) {
     /**
      * Asserts that an array is list.

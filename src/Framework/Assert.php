@@ -29,6 +29,7 @@ use Countable;
 use Generator;
 use PHPUnit\Event;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArrayHasKeys;
 use PHPUnit\Framework\Constraint\ArrayIsList;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
