@@ -14,6 +14,7 @@ use function function_exists;
 use ArrayAccess;
 use Countable;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
+use PHPUnit\Framework\Constraint\ArrayHasKeys;
 use PHPUnit\Framework\Constraint\ArrayIsList;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
@@ -133,7 +134,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayNotHasKeys')) {
      *
      * @see Assert::assertArrayNotHasKeys
      */
-    function assertArrayNotHasKey(array $keys, array|ArrayAccess $array, string $message = ''): void
+    function assertArrayNotHasKeys(array $keys, array|ArrayAccess $array, string $message = ''): void
     {
         Assert::assertArrayNotHasKeys(...func_get_args());
     }
@@ -2431,6 +2432,13 @@ if (!function_exists('PHPUnit\Framework\arrayHasKey')) {
     function arrayHasKey(int|string $key): ArrayHasKey
     {
         return Assert::arrayHasKey(...func_get_args());
+    }
+}
+
+if (!function_exists('PHPUnit\Framework\arrayHasKeys')) {
+    function arrayHasKeys(array $keys): ArrayHasKeys
+    {
+        return Assert::arrayHasKeys(...func_get_args());
     }
 }
 

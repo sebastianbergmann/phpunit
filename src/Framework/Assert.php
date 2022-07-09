@@ -2191,6 +2191,11 @@ abstract class Assert
         return new ArrayHasKey($key);
     }
 
+    final public static function arrayHasKeys(array $keys): ArrayHasKeys
+    {
+        return new ArrayHasKeys($keys);
+    }
+
     final public static function arrayIsList(): ArrayIsList
     {
         return new ArrayIsList;
