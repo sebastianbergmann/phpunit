@@ -265,7 +265,7 @@ final class Builder
                         $columns = 'max';
                     }
 
-                break;
+                    break;
 
                 case 'c':
                 case '--configuration':
@@ -313,11 +313,11 @@ final class Builder
                         $option[1] = 'php://stdout';
                     }
 
-                $coverageText                   = $option[1];
-                $coverageTextShowUncoveredFiles = false;
-                $coverageTextShowOnlySummary    = false;
+                    $coverageText                   = $option[1];
+                    $coverageTextShowUncoveredFiles = false;
+                    $coverageTextShowOnlySummary    = false;
 
-                break;
+                    break;
 
                 case '--coverage-xml':
                     $coverageXml = $option[1];
@@ -340,7 +340,7 @@ final class Builder
                         }
                     }
 
-                break;
+                    break;
 
                 case 'h':
                 case '--help':
@@ -483,7 +483,7 @@ final class Builder
                         }
                     }
 
-                break;
+                    break;
 
                 case '--process-isolation':
                     $processIsolation = true;
@@ -705,9 +705,9 @@ final class Builder
                         $coverageFilter = [];
                     }
 
-                $coverageFilter[] = $option[1];
+                    $coverageFilter[] = $option[1];
 
-                break;
+                    break;
 
                 case '--random-order':
                     $executionOrder = TestSuiteSorter::ORDER_RANDOMIZED;

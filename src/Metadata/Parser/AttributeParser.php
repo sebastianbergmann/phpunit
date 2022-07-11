@@ -196,12 +196,12 @@ final class AttributeParser implements Parser
                         );
                     }
 
-                $result[] = Metadata::requiresPhpExtensionOnClass(
-                    $attributeInstance->extension(),
-                    $versionConstraint
-                );
+                    $result[] = Metadata::requiresPhpExtensionOnClass(
+                        $attributeInstance->extension(),
+                        $versionConstraint
+                    );
 
-                break;
+                    break;
 
                 case RequiresPhpunit::class:
                     $result[] = Metadata::requiresPhpunitOnClass(
@@ -449,12 +449,12 @@ final class AttributeParser implements Parser
                         );
                     }
 
-                $result[] = Metadata::requiresPhpExtensionOnMethod(
-                    $attributeInstance->extension(),
-                    $versionConstraint
-                );
+                    $result[] = Metadata::requiresPhpExtensionOnMethod(
+                        $attributeInstance->extension(),
+                        $versionConstraint
+                    );
 
-                break;
+                    break;
 
                 case RequiresPhpunit::class:
                     $result[] = Metadata::requiresPhpunitOnMethod(

@@ -80,7 +80,7 @@ final class Xml
                     }
                 }
 
-            break;
+                break;
 
             case 'object':
                 $className = $element->getAttribute('class');
@@ -107,12 +107,12 @@ final class Xml
                             $e
                         );
                     }
-                // @codeCoverageIgnoreEnd
+                    // @codeCoverageIgnoreEnd
                 } else {
                     $variable = new $className;
                 }
 
-            break;
+                break;
 
             case 'boolean':
                 $variable = $element->textContent === 'true';
