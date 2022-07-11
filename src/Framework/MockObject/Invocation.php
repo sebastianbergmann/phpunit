@@ -157,7 +157,7 @@ final class Invocation implements SelfDescribing
                     yield from [];
                 };
 
-                return $generator();
+            return $generator();
 
             default:
                 $generator = new Generator;

@@ -190,16 +190,16 @@ final class IsType extends Constraint
                     return true;
                 }
 
-                try {
-                    $resource = @get_resource_type($other);
+            try {
+                $resource = @get_resource_type($other);
 
-                    if (is_string($resource)) {
-                        return true;
-                    }
-                } catch (TypeError $e) {
+                if (is_string($resource)) {
+                    return true;
                 }
+            } catch (TypeError $e) {
+            }
 
-                return false;
+            return false;
 
             case 'scalar':
                 return is_scalar($other);
