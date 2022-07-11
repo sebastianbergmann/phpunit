@@ -101,7 +101,7 @@ final class ErrorHandler
                     return false;
                 }
 
-                throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
+            throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
 
             case E_WARNING:
             case E_USER_WARNING:
@@ -109,7 +109,7 @@ final class ErrorHandler
                     return false;
                 }
 
-                throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+            throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
 
             case E_DEPRECATED:
             case E_USER_DEPRECATED:
@@ -117,14 +117,14 @@ final class ErrorHandler
                     return false;
                 }
 
-                throw new Deprecated($errorString, $errorNumber, $errorFile, $errorLine);
+            throw new Deprecated($errorString, $errorNumber, $errorFile, $errorLine);
 
             default:
                 if (!$this->convertErrorsToExceptions) {
                     return false;
                 }
 
-                throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
+            throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
         }
     }
 

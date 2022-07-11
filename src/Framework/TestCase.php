@@ -600,22 +600,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             case Deprecated::class:
                 $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Deprecated is deprecated and will be removed in PHPUnit 10. Use expectDeprecation() instead.');
 
-            break;
+                break;
 
             case Error::class:
                 $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Error is deprecated and will be removed in PHPUnit 10. Use expectError() instead.');
 
-            break;
+                break;
 
             case Notice::class:
                 $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Notice is deprecated and will be removed in PHPUnit 10. Use expectNotice() instead.');
 
-            break;
+                break;
 
             case WarningError::class:
                 $this->addWarning('Support for using expectException() with PHPUnit\Framework\Error\Warning is deprecated and will be removed in PHPUnit 10. Use expectWarning() instead.');
 
-            break;
+                break;
         }
         // @codeCoverageIgnoreEnd
 
