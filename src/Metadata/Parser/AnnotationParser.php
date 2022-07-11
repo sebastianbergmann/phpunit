@@ -50,7 +50,7 @@ final class AnnotationParser implements Parser
 
                 case 'backupStaticAttributes':
                 case 'backupStaticProperties':
-                $result[] = Metadata::backupStaticPropertiesOnClass($this->stringToBool($values[0]));
+                    $result[] = Metadata::backupStaticPropertiesOnClass($this->stringToBool($values[0]));
 
                     break;
 
@@ -66,7 +66,7 @@ final class AnnotationParser implements Parser
                         $result[] = Metadata::coversOnClass($value);
                     }
 
-                    break;
+                break;
 
                 case 'coversDefaultClass':
                     $result[] = Metadata::coversDefaultClass($values[0]);
@@ -89,7 +89,7 @@ final class AnnotationParser implements Parser
                         $result[] = Metadata::groupOnClass($value);
                     }
 
-                    break;
+                break;
 
                 case 'large':
                     $result[] = Metadata::groupOnClass('large');
@@ -133,7 +133,7 @@ final class AnnotationParser implements Parser
                         $result[] = Metadata::usesOnClass($value);
                     }
 
-                    break;
+                break;
 
                 case 'usesDefaultClass':
                     $result[] = Metadata::usesDefaultClass($values[0]);
@@ -182,7 +182,7 @@ final class AnnotationParser implements Parser
 
                 case 'backupStaticAttributes':
                 case 'backupStaticProperties':
-                $result[] = Metadata::backupStaticPropertiesOnMethod($this->stringToBool($values[0]));
+                    $result[] = Metadata::backupStaticPropertiesOnMethod($this->stringToBool($values[0]));
 
                     break;
 
@@ -208,7 +208,7 @@ final class AnnotationParser implements Parser
                         $result[] = Metadata::coversOnMethod($value);
                     }
 
-                    break;
+                break;
 
                 case 'coversNothing':
                     $result[] = Metadata::coversNothingOnMethod();
@@ -226,7 +226,7 @@ final class AnnotationParser implements Parser
                         $result[] = Metadata::dataProvider($className, $value);
                     }
 
-                    break;
+                break;
 
                 case 'depends':
                     foreach ($values as $value) {
@@ -262,7 +262,7 @@ final class AnnotationParser implements Parser
                         $result[] = Metadata::dependsOnMethod($className, $value, $deepClone, $shallowClone);
                     }
 
-                    break;
+                break;
 
                 case 'doesNotPerformAssertions':
                     $result[] = Metadata::doesNotPerformAssertionsOnMethod();
@@ -274,7 +274,7 @@ final class AnnotationParser implements Parser
                         $result[] = Metadata::excludeGlobalVariableFromBackupOnMethod($value);
                     }
 
-                    break;
+                break;
 
                 case 'excludeStaticPropertyFromBackup':
                     foreach ($values as $value) {
@@ -290,7 +290,7 @@ final class AnnotationParser implements Parser
                         );
                     }
 
-                    break;
+                break;
 
                 case 'group':
                 case 'ticket':
@@ -298,7 +298,7 @@ final class AnnotationParser implements Parser
                         $result[] = Metadata::groupOnMethod($value);
                     }
 
-                    break;
+                break;
 
                 case 'large':
                     $result[] = Metadata::groupOnMethod('large');
@@ -352,7 +352,7 @@ final class AnnotationParser implements Parser
                         $result[] = Metadata::usesOnMethod($value);
                     }
 
-                    break;
+                break;
             }
         }
 

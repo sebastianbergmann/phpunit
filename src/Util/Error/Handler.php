@@ -74,7 +74,7 @@ final class Handler
                     throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
                 }
 
-                return true;
+            return true;
 
             case E_USER_NOTICE:
                 Event\Facade::emitter()->testTriggeredNotice(
@@ -88,25 +88,25 @@ final class Handler
                     throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
                 }
 
-                break;
+            break;
 
             case E_WARNING:
                 if ($this->ignoreWarnings) {
                     return true;
                 }
 
-                Event\Facade::emitter()->testTriggeredPhpWarning(
-                    $this->testValueObjectForEvents(),
-                    $errorString,
-                    $errorFile,
-                    $errorLine
-                );
+            Event\Facade::emitter()->testTriggeredPhpWarning(
+                $this->testValueObjectForEvents(),
+                $errorString,
+                $errorFile,
+                $errorLine
+            );
 
-                if ($this->convertWarningsToExceptions) {
-                    throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
-                }
+            if ($this->convertWarningsToExceptions) {
+                throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
+            }
 
-                break;
+            break;
 
             case E_USER_WARNING:
                 Event\Facade::emitter()->testTriggeredWarning(
@@ -120,7 +120,7 @@ final class Handler
                     throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
                 }
 
-                break;
+            break;
 
             case E_DEPRECATED:
                 Event\Facade::emitter()->testTriggeredPhpDeprecation(
@@ -134,7 +134,7 @@ final class Handler
                     throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
                 }
 
-                break;
+            break;
 
             case E_USER_DEPRECATED:
                 Event\Facade::emitter()->testTriggeredDeprecation(
@@ -148,7 +148,7 @@ final class Handler
                     throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
                 }
 
-                break;
+            break;
 
             case E_USER_ERROR:
                 Event\Facade::emitter()->testTriggeredError(
@@ -162,7 +162,7 @@ final class Handler
                     throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
                 }
 
-                break;
+            break;
 
             default:
                 Event\Facade::emitter()->testTriggeredPhpError(
