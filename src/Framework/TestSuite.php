@@ -173,7 +173,7 @@ class TestSuite implements IteratorAggregate, SelfDescribing, Test
                         $e
                     );
                 }
-            // @codeCoverageIgnoreEnd
+                // @codeCoverageIgnoreEnd
             } else {
                 $this->setName($theClass);
 

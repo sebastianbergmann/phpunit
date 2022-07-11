@@ -11,6 +11,6 @@ if (\extension_loaded('xdebug') && \version_compare(\phpversion('xdebug'), '3', 
     \xdebug_disable();
 }
 
-throw new Exception(
-    'PHPUnit suppresses exceptions thrown outside of test case function'
-);
+    throw new Exception(
+        'PHPUnit suppresses exceptions thrown outside of test case function'
+    );

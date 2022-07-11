@@ -351,7 +351,7 @@ class Command
                         $this->arguments['columns'] = 'max';
                     }
 
-                break;
+                    break;
 
                 case 'c':
                 case '--configuration':
@@ -384,11 +384,11 @@ class Command
                         $option[1] = 'php://stdout';
                     }
 
-                $this->arguments['coverageText']                   = $option[1];
-                $this->arguments['coverageTextShowUncoveredFiles'] = false;
-                $this->arguments['coverageTextShowOnlySummary']    = false;
+                    $this->arguments['coverageText']                   = $option[1];
+                    $this->arguments['coverageTextShowUncoveredFiles'] = false;
+                    $this->arguments['coverageTextShowOnlySummary']    = false;
 
-                break;
+                    break;
 
                 case '--coverage-xml':
                     $this->arguments['coverageXml'] = $option[1];
@@ -406,7 +406,7 @@ class Command
                         }
                     }
 
-                break;
+                    break;
 
                 case '--debug':
                     $this->arguments['debug'] = true;
@@ -449,31 +449,31 @@ class Command
                         $bootstrapScript = 'vendor/autoload.php';
                     }
 
-                if ($testsDirectory === '') {
-                    $testsDirectory = 'tests';
-                }
+                    if ($testsDirectory === '') {
+                        $testsDirectory = 'tests';
+                    }
 
-                if ($src === '') {
-                    $src = 'src';
-                }
+                    if ($src === '') {
+                        $src = 'src';
+                    }
 
-                $generator = new ConfigurationGenerator;
+                    $generator = new ConfigurationGenerator;
 
-                file_put_contents(
-                    'phpunit.xml',
-                    $generator->generateDefaultConfiguration(
-                        Version::series(),
-                        $bootstrapScript,
-                        $testsDirectory,
-                        $src
-                    )
-                );
+                    file_put_contents(
+                        'phpunit.xml',
+                        $generator->generateDefaultConfiguration(
+                            Version::series(),
+                            $bootstrapScript,
+                            $testsDirectory,
+                            $src
+                        )
+                    );
 
-                print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . PHP_EOL;
+                    print PHP_EOL . 'Generated phpunit.xml in ' . getcwd() . PHP_EOL;
 
-                exit(TestRunner::SUCCESS_EXIT);
+                    exit(TestRunner::SUCCESS_EXIT);
 
-                break;
+                    break;
 
                 case '--group':
                     $this->arguments['groups'] = explode(',', $option[1]);
@@ -693,9 +693,9 @@ class Command
                         exit(TestRunner::SUCCESS_EXIT);
                     }
 
-                exit(TestRunner::FAILURE_EXIT);
+                    exit(TestRunner::FAILURE_EXIT);
 
-                break;
+                    break;
 
                 case '--version':
                     $this->printVersionString();
@@ -805,9 +805,9 @@ class Command
                         $handler = $this->longOptions[$optionName . '='];
                     }
 
-                if (isset($handler) && is_callable([$this, $handler])) {
-                    $this->{$handler}($option[1]);
-                }
+                    if (isset($handler) && is_callable([$this, $handler])) {
+                        $this->{$handler}($option[1]);
+                    }
             }
         }
 
