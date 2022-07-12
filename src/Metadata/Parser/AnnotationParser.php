@@ -50,7 +50,7 @@ final class AnnotationParser implements Parser
 
                 case 'backupStaticAttributes':
                 case 'backupStaticProperties':
-                $result[] = Metadata::backupStaticPropertiesOnClass($this->stringToBool($values[0]));
+                    $result[] = Metadata::backupStaticPropertiesOnClass($this->stringToBool($values[0]));
 
                     break;
 
@@ -182,7 +182,7 @@ final class AnnotationParser implements Parser
 
                 case 'backupStaticAttributes':
                 case 'backupStaticProperties':
-                $result[] = Metadata::backupStaticPropertiesOnMethod($this->stringToBool($values[0]));
+                    $result[] = Metadata::backupStaticPropertiesOnMethod($this->stringToBool($values[0]));
 
                     break;
 

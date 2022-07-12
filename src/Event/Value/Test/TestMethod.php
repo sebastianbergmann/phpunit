@@ -179,10 +179,10 @@ final class TestMethod extends Test
     {
         if (class_exists($className)) {
             if (method_exists($className, $methodName)) {
-                return (MetadataRegistry::parser())->forClassAndMethod($className, $methodName);
+                return MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
             }
 
-            return (MetadataRegistry::parser())->forClass($className);
+            return MetadataRegistry::parser()->forClass($className);
         }
 
         return MetadataCollection::fromArray([]);
