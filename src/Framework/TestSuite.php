@@ -184,7 +184,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $e
                     );
                 }
-                // @codeCoverageIgnoreEnd
+            // @codeCoverageIgnoreEnd
             } else {
                 $this->setName($theClass);
 

@@ -67,7 +67,7 @@ custom message
 Failed asserting that %s Object &%%x () is of type "string".
 
 EOF
-                ,
+                    ,
                     stdClass::class
                 ),
                 $this->trimnl(TestFailure::exceptionToString($e))

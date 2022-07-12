@@ -130,7 +130,7 @@ final class Xml
                             $e
                         );
                     }
-                    // @codeCoverageIgnoreEnd
+                // @codeCoverageIgnoreEnd
                 } else {
                     $variable = new $className;
                 }
