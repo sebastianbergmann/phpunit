@@ -325,7 +325,7 @@ final class TestRunner extends BaseTestRunner
                 Version::id() .
                 ' ' .
                 Color::colorize('bg-blue,fg-white', '#StandWith') .
-                Color::colorize('bg-yellow', 'Ukraine') .
+                Color::colorize('bg-yellow,fg-black', 'Ukraine') .
                 "\n"
             );
         } else {
