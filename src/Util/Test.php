@@ -682,7 +682,7 @@ final class Test
                     $e
                 );
             }
-        // @codeCoverageIgnoreEnd
+            // @codeCoverageIgnoreEnd
         } elseif (strpos($element, '::') !== false) {
             [$className, $methodName] = explode('::', $element);
 
@@ -748,7 +748,7 @@ final class Test
                                 $e
                             );
                         }
-                    // @codeCoverageIgnoreEnd
+                        // @codeCoverageIgnoreEnd
                     } else {
                         if (!((class_exists($className) || interface_exists($className) || trait_exists($className)) &&
                             method_exists($className, $methodName))) {
