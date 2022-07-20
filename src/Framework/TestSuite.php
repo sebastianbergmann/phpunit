@@ -473,7 +473,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $this->addTest($method->invoke(null, $className));
                     }
                 } elseif ($class->implementsInterface(Test::class)) {
-                    $expectedClassName = $shortName;
+                    $isPsr0            = (!$class->inNamespace()) && (strpos($class->getName(), '_') !== false);
+                    $expectedClassName = $isPsr0 ? $className : $shortName;
 
                     if (($pos = strpos($expectedClassName, '.')) !== false) {
                         $expectedClassName = substr(
