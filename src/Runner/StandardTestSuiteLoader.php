@@ -61,6 +61,12 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
 
                     break;
                 }
+
+                if (stripos(substr($loadedClass, $offset - 1), '_' . $suiteClassName) === 0) {
+                    $suiteClassName = $loadedClass;
+
+                    break;
+                }
             }
         }
 
