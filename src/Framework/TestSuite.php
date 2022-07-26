@@ -473,6 +473,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $this->addTest($method->invoke(null, $className));
                     }
                 } elseif ($class->implementsInterface(Test::class)) {
+                    // Do we have modern namespacing ('Foo\Bar\WhizBangTest') or old-school namespacing ('Foo_Bar_WhizBangTest')?
                     $isPsr0            = (!$class->inNamespace()) && (strpos($class->getName(), '_') !== false);
                     $expectedClassName = $isPsr0 ? $className : $shortName;
 

@@ -52,16 +52,18 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
         }
 
         if (!class_exists($suiteClassName, false)) {
-            // this block will handle namespaced classes
+            // Perhaps this file defines a class inside a namespace? Let's check...
             $offset = 0 - strlen($suiteClassName);
 
             foreach ($loadedClasses as $loadedClass) {
+                // Detect modern namespace (eg './tests/Foo/Bar/WhizBangTest.php' <=> 'Foo\Bar\WhizBangTest')
                 if (stripos(substr($loadedClass, $offset - 1), '\\' . $suiteClassName) === 0) {
                     $suiteClassName = $loadedClass;
 
                     break;
                 }
 
+                // Detect old-school namespace (eg 'tests/Foo/Bar/WhizBangTest.php' <=> 'Foo_Bar_WhizBangTest'; #5020)
                 if (stripos(substr($loadedClass, $offset - 1), '_' . $suiteClassName) === 0) {
                     $suiteClassName = $loadedClass;
 
