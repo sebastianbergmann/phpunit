@@ -42,7 +42,7 @@ final class Reflection
     {
         $methods = [];
 
-        // PHP <7.2.18 and <7.3.5 throw error when null is passed
+        // PHP <7.3.5 throw error when null is passed
         // to ReflectionClass::getMethods() when strict_types is enabled.
         $classMethods = $filter === null ? $class->getMethods() : $class->getMethods($filter);
 
