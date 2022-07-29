@@ -7,6 +7,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 ### Fixed
 
 * [#5015](https://github.com/sebastianbergmann/phpunit/pull/5015): Ukraine banner unreadable on black background
+* [#5016](https://github.com/sebastianbergmann/phpunit/issues/5016): PHPUnit 8.5.27 does not work on PHP 7.2.0-7.2.18 and PHP 7.3.0-7.3.5
 
 ## [8.5.27] - 2022-06-19
 
