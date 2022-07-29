@@ -361,6 +361,12 @@
     </DeprecatedClass>
   </file>
   <file src="src/Framework/TestBuilder.php">
+    <InvalidReturnStatement occurrences="1">
+      <code>$dataProviderTestSuite</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>DataProviderTestSuite</code>
+    </InvalidReturnType>
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
     </LessSpecificReturnStatement>
@@ -371,6 +377,10 @@
     <MoreSpecificReturnType occurrences="1">
       <code>Test</code>
     </MoreSpecificReturnType>
+    <UndefinedMethod occurrences="2">
+      <code>addTest</code>
+      <code>addTest</code>
+    </UndefinedMethod>
   </file>
   <file src="src/Framework/TestCase.php">
     <ArgumentTypeCoercion occurrences="4">
