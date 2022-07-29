@@ -42,7 +42,11 @@ final class Reflection
     {
         $methods = [];
 
-        foreach ($class->getMethods($filter) as $method) {
+        // PHP <7.3.5 throw error when null is passed
+        // to ReflectionClass::getMethods() when strict_types is enabled.
+        $classMethods = $filter === null ? $class->getMethods() : $class->getMethods($filter);
+
+        foreach ($classMethods as $method) {
             if ($method->getDeclaringClass()->getName() === TestCase::class) {
                 continue;
             }
