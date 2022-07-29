@@ -2,11 +2,12 @@
 
 All notable changes of the PHPUnit 8.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [8.5.28] - 2022-MM-DD
+## [8.5.28] - 2022-07-29
 
 ### Fixed
 
 * [#5015](https://github.com/sebastianbergmann/phpunit/pull/5015): Ukraine banner unreadable on black background
+* [#5016](https://github.com/sebastianbergmann/phpunit/issues/5016): PHPUnit 8.5.27 does not work on PHP 7.2.0-7.2.18 and PHP 7.3.0-7.3.5
 
 ## [8.5.27] - 2022-06-19
 
@@ -232,7 +233,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 * [#3967](https://github.com/sebastianbergmann/phpunit/issues/3967): Cannot double interface that extends interface that extends `\Throwable`
 * [#3968](https://github.com/sebastianbergmann/phpunit/pull/3968): Test class run in a separate PHP process are passing when `exit` called inside
 
-[8.5.28]: https://github.com/sebastianbergmann/phpunit/compare/8.5.27...8.5
+[8.5.28]: https://github.com/sebastianbergmann/phpunit/compare/8.5.27...8.5.28
 [8.5.27]: https://github.com/sebastianbergmann/phpunit/compare/8.5.26...8.5.27
 [8.5.26]: https://github.com/sebastianbergmann/phpunit/compare/8.5.25...8.5.26
 [8.5.25]: https://github.com/sebastianbergmann/phpunit/compare/8.5.24...8.5.25
