@@ -2287,6 +2287,11 @@ abstract class Assert
         return new IsType($type);
     }
 
+    final public static function jsonMatches(string $value): JsonMatches
+    {
+        return new JsonMatches($value);
+    }
+
     final public static function lessThan(mixed $value): LessThan
     {
         return new LessThan($value);

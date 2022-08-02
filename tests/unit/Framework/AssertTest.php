@@ -1050,6 +1050,11 @@ XML;
         $this->assertThat(2, $this->greaterThanOrEqual(1));
     }
 
+    public function testAssertThatJsonMatches(): void
+    {
+        $this->assertThat('{ "foo": "bar", "key": "value" }', $this->jsonMatches('{ "key": "value", "foo": "bar" }'));
+    }
+
     public function testAssertThatLessThan(): void
     {
         $this->assertThat(1, $this->lessThan(2));
