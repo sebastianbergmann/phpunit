@@ -34,6 +34,7 @@ This test has an invalid dependency
 There was 1 failure:
 
 1) PHPUnit\TestFixture\DependencyFailureTest::testOne
+Failed asserting that false is true.
 
 %s%etests%e_files%edependencies%eDependencyFailureTest.php:18
 
