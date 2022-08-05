@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a failed test
+The right events are emitted in the right order for a test that fails because of an assertion method
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {
