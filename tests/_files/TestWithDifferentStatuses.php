@@ -16,7 +16,7 @@ final class TestWithDifferentStatuses extends TestCase
 {
     public function testThatFails(): void
     {
-        $this->fail();
+        $this->assertTrue(false);
     }
 
     public function testThatErrors(): void
