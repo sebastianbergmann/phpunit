@@ -271,14 +271,14 @@ final class TestResult
         return $this->testMarkedIncompleteEvents;
     }
 
-    public function numberTestMarkedIncompleteEvents(): int
+    public function numberOfTestMarkedIncompleteEvents(): int
     {
         return count($this->testMarkedIncompleteEvents);
     }
 
     public function hasTestMarkedIncompleteEvents(): bool
     {
-        return $this->numberTestMarkedIncompleteEvents() > 0;
+        return $this->numberOfTestMarkedIncompleteEvents() > 0;
     }
 
     public function wasSuccessful(): bool
