@@ -33,6 +33,7 @@ use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
+use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
@@ -142,6 +143,11 @@ final class Collector
     private array $testTriggeredPhpunitWarningEvents = [];
 
     /**
+     * @psalm-var list<TestRunnerWarningTriggered>
+     */
+    private array $testRunnerTriggeredWarningEvents = [];
+
+    /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
@@ -170,6 +176,7 @@ final class Collector
         Facade::registerSubscriber(new TestTriggeredPhpunitWarningSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpWarningSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredWarningSubscriber($this));
+        Facade::registerSubscriber(new TestRunnerTriggeredWarningSubscriber($this));
     }
 
     public function result(): TestResult
@@ -193,7 +200,8 @@ final class Collector
             $this->testTriggeredPhpNoticeEvents,
             $this->testTriggeredWarningEvents,
             $this->testTriggeredPhpWarningEvents,
-            $this->testTriggeredPhpunitWarningEvents
+            $this->testTriggeredPhpunitWarningEvents,
+            $this->testRunnerTriggeredWarningEvents
         );
     }
 
@@ -457,5 +465,10 @@ final class Collector
         }
 
         $this->testTriggeredPhpunitWarningEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testRunnerTriggeredWarning(TestRunnerWarningTriggered $event): void
+    {
+        $this->testRunnerTriggeredWarningEvents[] = $event;
     }
 }
