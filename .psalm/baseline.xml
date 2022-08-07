@@ -125,8 +125,9 @@
     <MissingDocblockType occurrences="1">
       <code>public function className(): string</code>
     </MissingDocblockType>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="2">
       <code>Filter::getFilteredStacktrace($t)</code>
+      <code>previous</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Assert.php">

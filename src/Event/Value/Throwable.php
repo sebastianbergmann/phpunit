@@ -61,11 +61,17 @@ final class Throwable
 
     public function asString(): string
     {
-        if (empty($this->stackTrace())) {
-            return $this->description();
+        $buffer = $this->description();
+
+        if (!empty($this->stackTrace())) {
+            $buffer .= PHP_EOL . $this->stackTrace();
         }
 
-        return $this->description() . PHP_EOL . $this->stackTrace();
+        if ($this->hasPrevious()) {
+            $buffer .= PHP_EOL . 'Caused by' . PHP_EOL . $this->previous()->asString();
+        }
+
+        return $buffer;
     }
 
     /**
