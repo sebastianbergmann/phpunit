@@ -19,11 +19,11 @@ Time: %s, Memory: %s
 
 There were 2 errors:
 
-1) Error
+1) PHPUnit\TestFixture\Issue2137Test::testBrandService
 The data provider specified for PHPUnit\TestFixture\Issue2137Test::testBrandService is invalid
 Data set #0 is invalid
 
-2) Error
+2) PHPUnit\TestFixture\Issue2137Test::testSomethingElseInvalid
 The data provider specified for PHPUnit\TestFixture\Issue2137Test::testSomethingElseInvalid is invalid
 Data set #0 is invalid
 

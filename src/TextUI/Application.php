@@ -249,6 +249,15 @@ final class Application
             exit(self::EXCEPTION_EXIT);
         }
 
+        if ($testSuite->isEmpty() &&
+            ($arguments->hasArgument() || $this->xmlConfiguration->phpunit()->hasDefaultTestSuite())) {
+            $this->printVersionString();
+
+            print 'No tests found.' . PHP_EOL;
+
+            exit(self::EXCEPTION_EXIT);
+        }
+
         if ($configuration->hasCoverageReport() || $arguments->hasWarmCoverageCache()) {
             CodeCoverageFilterRegistry::init($arguments, $this->xmlConfiguration);
         }

@@ -21,7 +21,7 @@ Time: %s, Memory: %s
 
 There was 1 error:
 
-1) Error
+1) PHPUnit\TestFixture\Issue498Test::shouldBeFalse
 The data provider specified for PHPUnit\TestFixture\Issue498Test::shouldBeFalse is invalid
 Exception: Can't create the data
 %sIssue498Test.php:%d

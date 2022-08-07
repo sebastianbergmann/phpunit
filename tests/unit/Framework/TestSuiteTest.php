@@ -19,7 +19,6 @@ use PHPUnit\TestFixture\DependencySuccessTest;
 use PHPUnit\TestFixture\DoubleTestCase;
 use PHPUnit\TestFixture\MultiDependencyTest;
 use PHPUnit\TestFixture\NotPublicTestCase;
-use PHPUnit\TestFixture\NotVoidTestCase;
 use PHPUnit\TestFixture\PreConditionAndPostConditionTest;
 use PHPUnit\TestFixture\Success;
 use ReflectionClass;
@@ -31,13 +30,6 @@ final class TestSuiteTest extends TestCase
     public function testNotPublicTestCase(): void
     {
         $suite = TestSuite::fromClassName(NotPublicTestCase::class);
-
-        $this->assertCount(1, $suite);
-    }
-
-    public function testNotVoidTestCase(): void
-    {
-        $suite = TestSuite::fromClassName(NotVoidTestCase::class);
 
         $this->assertCount(1, $suite);
     }

@@ -11,16 +11,4 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
-Runtime: %s
-
-W                                                                   1 / 1 (100%)
-
-Time: %s, Memory: %s
-
-There was 1 warning:
-
-1) Warning
-No tests found in class "PHPUnit\TestFixture\EmptyTestCaseTest".
-
-WARNINGS!
-Tests: 1, Assertions: 0, Warnings: 1.
+No tests found.

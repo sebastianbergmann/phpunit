@@ -10,14 +10,19 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
-use PHPUnit\Framework\RiskyTest;
-use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\Framework\TestResult as LegacyTestResult;
+use function assert;
+use function count;
+use function sprintf;
+use function str_starts_with;
+use function strlen;
+use function substr;
+use function trim;
+use PHPUnit\Event\Code\Test;
+use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
-use ReflectionMethod;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 
 /**
@@ -26,36 +31,36 @@ use SebastianBergmann\Timer\ResourceUsageFormatter;
 final class ResultPrinter
 {
     private Printer $printer;
-    private bool $colors;
+    private bool $colorizeOutput;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
-    private bool $reverse;
-    private bool $defectListPrinted = false;
+    private bool $displayDefectsInReverseOrder;
+    private bool $listPrinted = false;
 
-    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colors, bool $reverse)
+    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colorizeOutput, bool $displayDefectsInReverseOrder)
     {
         $this->printer = $printer;
 
         $this->displayDetailsOnIncompleteTests = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests    = $displayDetailsOnSkippedTests;
-        $this->colors                          = $colors;
-        $this->reverse                         = $reverse;
+        $this->colorizeOutput                  = $colorizeOutput;
+        $this->displayDefectsInReverseOrder    = $displayDefectsInReverseOrder;
     }
 
-    public function printResult(TestResult $result, LegacyTestResult $legacyResult): void
+    public function printResult(TestResult $result): void
     {
         $this->printHeader($result);
-        $this->printTestsWithErrors($result, $legacyResult);
-        $this->printTestsWithWarnings($result, $legacyResult);
-        $this->printTestsWithFailedAssertions($result, $legacyResult);
-        $this->printRiskyTests($result, $legacyResult);
+        $this->printTestsWithErrors($result);
+        $this->printTestsWithWarnings($result);
+        $this->printTestsWithFailedAssertions($result);
+        $this->printRiskyTests($result);
 
         if ($this->displayDetailsOnIncompleteTests) {
-            $this->printIncompleteTests($result, $legacyResult);
+            $this->printIncompleteTests($result);
         }
 
         if ($this->displayDetailsOnSkippedTests) {
-            $this->printSkippedTests($result, $legacyResult);
+            $this->printSkippedTests($result);
         }
 
         $this->printFooter($result);
@@ -73,47 +78,139 @@ final class ResultPrinter
         }
     }
 
-    private function printTestsWithErrors(TestResult $result, LegacyTestResult $legacyResult): void
+    private function printTestsWithErrors(TestResult $result): void
     {
-        $this->printDefects($legacyResult->errors(), 'error');
-    }
-
-    private function printTestsWithFailedAssertions(TestResult $result, LegacyTestResult $legacyResult): void
-    {
-        $this->printDefects($legacyResult->failures(), 'failure');
-    }
-
-    private function printTestsWithWarnings(TestResult $result, LegacyTestResult $legacyResult): void
-    {
-        $this->printDefects($legacyResult->warnings(), 'warning');
-    }
-
-    private function printRiskyTests(TestResult $result, LegacyTestResult $legacyResult): void
-    {
-        $this->printDefects($legacyResult->risky(), 'risky test');
-    }
-
-    private function printIncompleteTests(TestResult $result, LegacyTestResult $legacyResult): void
-    {
-        $this->printDefects($legacyResult->notImplemented(), 'incomplete test');
-    }
-
-    private function printSkippedTests(TestResult $result, LegacyTestResult $legacyResult): void
-    {
-        $this->printDefects($legacyResult->skipped(), 'skipped test');
-    }
-
-    private function printDefects(array $defects, string $type): void
-    {
-        $count = count($defects);
-
-        if ($count === 0) {
+        if (!$result->hasTestErroredEvents()) {
             return;
         }
 
-        if ($this->defectListPrinted) {
+        $elements = [];
+
+        foreach ($result->testErroredEvents() as $event) {
+            if ($event instanceof BeforeFirstTestMethodErrored) {
+                $title = $event->testClassName();
+            } else {
+                $title = $this->name($event->test());
+            }
+
+            $elements[] = [
+                'title' => $title,
+                'body'  => $event->throwable()->asString(),
+            ];
+        }
+
+        $this->printList(count($elements), $elements, 'error');
+    }
+
+    private function printTestsWithFailedAssertions(TestResult $result): void
+    {
+        if (!$result->hasTestFailedEvents()) {
+            return;
+        }
+
+        $elements = [];
+
+        foreach ($result->testFailedEvents() as $event) {
+            $body = $event->throwable()->asString();
+
+            if (str_starts_with($body, 'AssertionError: ')) {
+                $body = substr($body, strlen('AssertionError: '));
+            }
+
+            $elements[] = [
+                'title' => $this->name($event->test()),
+                'body'  => $body,
+            ];
+        }
+
+        $this->printList(count($elements), $elements, 'failure');
+    }
+
+    private function printTestsWithWarnings(TestResult $result): void
+    {
+    }
+
+    private function printRiskyTests(TestResult $result): void
+    {
+        if (!$result->hasTestConsideredRiskyEvents()) {
+            return;
+        }
+
+        $elements = [];
+
+        foreach ($result->testConsideredRiskyEvents() as $reasons) {
+            foreach ($reasons as $reason) {
+                $body = $reason->message() . PHP_EOL;
+                $test = $reason->test();
+
+                if ($test->isTestMethod()) {
+                    assert($test instanceof TestMethod);
+
+                    $body .= sprintf(
+                        '%s%s:%d%s',
+                        PHP_EOL,
+                        $test->file(),
+                        $test->line(),
+                        PHP_EOL
+                    );
+                }
+
+                $elements[] = [
+                    'title' => $this->name($test),
+                    'body'  => $body,
+                ];
+            }
+        }
+
+        $this->printList($result->numberOfTestsWithTestConsideredRiskyEvents(), $elements, 'risky test');
+    }
+
+    private function printIncompleteTests(TestResult $result): void
+    {
+        if (!$result->hasTestMarkedIncompleteEvents()) {
+            return;
+        }
+
+        $elements = [];
+
+        foreach ($result->testMarkedIncompleteEvents() as $event) {
+            $elements[] = [
+                'title' => $this->name($event->test()),
+                'body'  => $event->throwable()->asString(),
+            ];
+        }
+
+        $this->printList(count($elements), $elements, 'incomplete test');
+    }
+
+    private function printSkippedTests(TestResult $result): void
+    {
+        if (!$result->hasTestSkippedEvents()) {
+            return;
+        }
+
+        $elements = [];
+
+        foreach ($result->testSkippedEvents() as $event) {
+            $elements[] = [
+                'title' => $this->name($event->test()),
+                'body'  => $event->message(),
+            ];
+        }
+
+        $this->printList(count($elements), $elements, 'skipped test');
+    }
+
+    /**
+     * @psalm-param list<array{title: string, body: string}> $elements
+     */
+    private function printList(int $count, array $elements, string $type): void
+    {
+        if ($this->listPrinted) {
             $this->printer->print("\n--\n\n");
         }
+
+        $this->listPrinted = true;
 
         $this->printer->print(
             sprintf(
@@ -127,62 +224,25 @@ final class ResultPrinter
 
         $i = 1;
 
-        if ($this->reverse) {
-            $defects = array_reverse($defects);
+        if ($this->displayDefectsInReverseOrder) {
+            $elements = array_reverse($elements);
         }
 
-        foreach ($defects as $defect) {
-            $this->printDefect($defect, $i++);
+        foreach ($elements as $element) {
+            $this->printListElement($i++, $element['title'], $element['body']);
         }
-
-        $this->defectListPrinted = true;
     }
 
-    private function printDefect(TestFailure $defect, int $index): void
-    {
-        $this->printDefectHeader($index, $defect->getTestName());
-        $this->printDefectTrace($defect);
-    }
-
-    private function printDefectHeader(int $index, string $testName): void
+    private function printListElement(int $number, string $title, string $body): void
     {
         $this->printer->print(
             sprintf(
-                "\n%d) %s\n",
-                $index,
-                $testName
+                "\n%d) %s\n%s\n",
+                $number,
+                $title,
+                trim($body)
             )
         );
-    }
-
-    private function printDefectTrace(TestFailure $defect): void
-    {
-        $e = $defect->thrownException();
-
-        $this->printer->print((string) $e);
-
-        if ($defect->thrownException() instanceof RiskyTest) {
-            $test = $defect->failedTest();
-
-            assert($test instanceof TestCase);
-
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $reflector = new ReflectionMethod($test::class, $test->getName(false));
-
-            $this->printer->print(
-                sprintf(
-                    '%s%s:%d%s',
-                    PHP_EOL,
-                    $reflector->getFileName(),
-                    $reflector->getStartLine(),
-                    PHP_EOL
-                )
-            );
-        } else {
-            while ($e = $e->getPrevious()) {
-                $this->printer->print("\nCaused by\n" . $e);
-            }
-        }
     }
 
     private function printFooter(TestResult $result): void
@@ -280,7 +340,7 @@ final class ResultPrinter
 
     private function printWithColor(string $color, string $buffer, bool $lf = true): void
     {
-        if ($this->colors) {
+        if ($this->colorizeOutput) {
             $buffer = Color::colorizeTextBox($color, $buffer);
         }
 
@@ -289,5 +349,16 @@ final class ResultPrinter
         if ($lf) {
             $this->printer->print(PHP_EOL);
         }
+    }
+
+    private function name(Test $test): string
+    {
+        if ($test->isTestMethod()) {
+            assert($test instanceof TestMethod);
+
+            return $test->nameWithClass();
+        }
+
+        return $test->name();
     }
 }

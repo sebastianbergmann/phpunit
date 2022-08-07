@@ -22,12 +22,15 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) PHPUnit\TestFixture\RiskyTests\GlobalStateManipulatorTest::testManipulatesGlobalState
+This test modified global state but was not expected to do so
 --- Global variables before the test
 +++ Global variables after the test
 @@ @@
 %A
 +    'foo' => 'bar'
 %A
+
+%s:%d
 
 OK, but incomplete, skipped, or risky tests!
 Tests: 1, Assertions: 1, Risky: 1.

@@ -393,7 +393,7 @@ final class TestRunner
         $result = Facade::result();
 
         if (isset($resultPrinter)) {
-            $resultPrinter->printResult($result, $legacyResult);
+            $resultPrinter->printResult($result);
         }
 
         if (isset($junitXmlLogger)) {

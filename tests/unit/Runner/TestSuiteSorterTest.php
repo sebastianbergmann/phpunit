@@ -17,7 +17,6 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
-use PHPUnit\TestFixture\EmptyTestCaseTest;
 use PHPUnit\TestFixture\FailureTest;
 use PHPUnit\TestFixture\MultiDependencyTest;
 use PHPUnit\TestFixture\NotReorderableTest;
@@ -575,28 +574,6 @@ final class TestSuiteSorterTest extends TestCase
                 ],
             ],
         ];
-    }
-
-    /**
-     * @see https://github.com/lstrojny/phpunit-clever-and-smart/issues/38
-     */
-    public function testCanHandleSuiteWithEmptyTestCase(): void
-    {
-        $suite = TestSuite::empty();
-        $suite->addTestSuite(new ReflectionClass(EmptyTestCaseTest::class));
-
-        $sorter = new TestSuiteSorter;
-
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFAULT);
-
-        $this->assertSame(EmptyTestCaseTest::class, $suite->tests()[0]->getName());
-        $this->assertSame(
-            sprintf(
-                'No tests found in class "%s".',
-                EmptyTestCaseTest::class
-            ),
-            $suite->tests()[0]->tests()[0]->getMessage()
-        );
     }
 
     public function suiteSorterOptionPermutationsProvider(): array

@@ -235,6 +235,19 @@ final class Collector
         return !empty($this->testMarkedIncompleteEvents);
     }
 
+    public function hasTestRunnerTriggeredWarningEvents(): bool
+    {
+        return !empty($this->testRunnerTriggeredWarningEvents);
+    }
+
+    /**
+     * @psalm-return list<TestRunnerWarningTriggered>
+     */
+    public function testRunnerTriggeredWarningEvents(): array
+    {
+        return $this->testRunnerTriggeredWarningEvents;
+    }
+
     /**
      * @psalm-return list<class-string>
      */

@@ -21,7 +21,7 @@ Time: %s, Memory: %s
 
 There was 1 failure:
 
-1) PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2 (1, 1, 3)
+1) PHPUnit\TestFixture\DataProviderTest::testAdd with data set #2
 Failed asserting that 2 matches expected 3.
 
 %s:%i

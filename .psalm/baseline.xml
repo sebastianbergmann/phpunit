@@ -1044,18 +1044,13 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/ResultPrinter.php">
-    <DeprecatedClass occurrences="7">
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-    </DeprecatedClass>
     <MissingThrowsDocblock occurrences="1">
       <code>resourceUsageSinceStartOfRequest</code>
     </MissingThrowsDocblock>
+    <RedundantCondition occurrences="2">
+      <code>assert($test instanceof TestMethod)</code>
+      <code>assert($test instanceof TestMethod)</code>
+    </RedundantCondition>
   </file>
   <file src="src/TextUI/TestRunner.php">
     <DeprecatedClass occurrences="1">
