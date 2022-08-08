@@ -174,7 +174,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     private array $doubledTypes                                   = [];
     private bool $registerMockObjectsFromTestArgumentsRecursively = false;
-    private ?TestResult $result                                   = null;
     private TestStatus $status;
     private int $numberOfAssertionsPerformed = 0;
     private mixed $testResult                = null;
@@ -536,19 +535,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Runs the test case and collects the results in a TestResult object.
-     *
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
      * @throws UtilException
      */
-    final public function run(TestResult $result): void
+    final public function run(): void
     {
-        if (!$this instanceof ErrorTestCase && !$this instanceof WarningTestCase) {
-            $this->result = $result;
-        }
-
         if (!$this instanceof ErrorTestCase &&
             !$this instanceof WarningTestCase &&
             !$this instanceof SkippedTestCase &&
@@ -557,17 +550,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if (!$this->shouldRunInSeparateProcess()) {
-            (new TestRunner)->run($this, $result);
+            (new TestRunner)->run($this);
         } else {
             (new TestRunner)->runInSeparateProcess(
                 $this,
-                $result,
                 $this->runClassInSeparateProcess && !$this->runTestInSeparateProcess,
                 $this->preserveGlobalState
             );
         }
-
-        $this->result = null;
     }
 
     /**
@@ -1663,11 +1653,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                         'This test depends on a test that is larger than itself'
                     );
 
-                    $this->result->addFailure(
-                        $this,
-                        new SkippedDueToDependencyOnLargerTestException,
-                    );
-
                     return false;
                 }
 
@@ -1708,13 +1693,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         $this->status = TestStatus::error($message);
-
-        $this->result->startTest($this);
-
-        $this->result->addError(
-            $this,
-            $exception,
-        );
     }
 
     private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
@@ -1730,15 +1708,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
 
         $this->status = TestStatus::skipped($message);
-
-        $this->result->startTest($this);
-
-        $this->result->addFailure(
-            $this,
-            new SkippedDueToMissingDependencyException(
-                $dependency->getTarget()
-            ),
-        );
     }
 
     /**

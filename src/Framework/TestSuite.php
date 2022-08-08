@@ -308,14 +308,12 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * Runs the tests and collects their result in a TestResult.
-     *
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
      * @throws Warning
      */
-    public function run(TestResult $result): void
+    public function run(): void
     {
         if (count($this) === 0) {
             return;
@@ -331,7 +329,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
         $methodsCalledBeforeFirstTest = [];
-        $test                         = null;
 
         if (class_exists($this->name, false)) {
             try {
@@ -359,11 +356,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     call_user_func([$this->name, $beforeClassMethod]);
                 }
             } catch (SkippedTestSuiteError $error) {
-                foreach ($this->tests() as $test) {
-                    $result->startTest($test);
-                    $result->addFailure($test, $error);
-                }
-
                 return;
             } catch (Throwable $t) {
                 assert(isset($methodCalledBeforeFirstTest));
@@ -379,23 +371,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $this->name,
                         ...$methodsCalledBeforeFirstTest
                     );
-                }
-
-                $errorAdded = false;
-
-                foreach ($this->tests() as $test) {
-                    $result->startTest($test);
-
-                    if (!$errorAdded) {
-                        $result->addError($test, $t);
-
-                        $errorAdded = true;
-                    } else {
-                        $result->addFailure(
-                            $test,
-                            new SkippedDueToErrorInHookMethodException,
-                        );
-                    }
                 }
 
                 return;
@@ -414,7 +389,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 break;
             }
 
-            $test->run($result);
+            $test->run();
         }
 
         $methodsCalledAfterLastTest = [];
@@ -440,14 +415,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                     $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
                 } catch (Throwable $t) {
-                    $message = "Exception in {$this->name}::{$afterClassMethod}" . PHP_EOL . $t->getMessage();
-                    $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());
-
-                    $placeholderTest = clone $test;
-                    $placeholderTest->setName($afterClassMethod);
-
-                    $result->startTest($placeholderTest);
-                    $result->addFailure($placeholderTest, $error);
+                    // @todo
                 }
             }
         }

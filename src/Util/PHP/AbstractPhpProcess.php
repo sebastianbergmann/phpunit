@@ -18,25 +18,19 @@ use function escapeshellarg;
 use function ini_get_all;
 use function restore_error_handler;
 use function set_error_handler;
-use function sprintf;
 use function str_replace;
 use function str_starts_with;
-use function strrpos;
 use function substr;
 use function trim;
 use function unserialize;
-use __PHP_Incomplete_Class;
 use ErrorException;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\SyntheticError;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\Framework\TestResult;
 use PHPUnit\Runner\CodeCoverage;
 use SebastianBergmann\Environment\Runtime;
 
@@ -157,15 +151,12 @@ abstract class AbstractPhpProcess
     /**
      * Runs a single test in a separate PHP process.
      */
-    public function runTestJob(string $job, Test $test, TestResult $result): void
+    public function runTestJob(string $job, Test $test): void
     {
-        $result->startTest($test);
-
         $_result = $this->runJob($job);
 
         $this->processChildResult(
             $test,
-            $result,
             $_result['stdout'],
             $_result['stderr']
         );
@@ -238,18 +229,10 @@ abstract class AbstractPhpProcess
         return $buffer;
     }
 
-    /**
-     * Processes the TestResult object from an isolated process.
-     */
-    private function processChildResult(Test $test, TestResult $result, string $stdout, string $stderr): void
+    private function processChildResult(Test $test, string $stdout, string $stderr): void
     {
         if (!empty($stderr)) {
             $exception = new Exception(trim($stderr));
-
-            $result->addError(
-                $test,
-                $exception,
-            );
 
             assert($test instanceof TestCase);
 
@@ -282,11 +265,6 @@ abstract class AbstractPhpProcess
             if ($childResult === false) {
                 $exception = new AssertionFailedError('Test was run in child process and ended unexpectedly');
 
-                $result->addError(
-                    $test,
-                    $exception,
-                );
-
                 assert($test instanceof TestCase);
 
                 Facade::emitter()->testErrored(
@@ -304,11 +282,6 @@ abstract class AbstractPhpProcess
             $childResult = false;
 
             $exception = new Exception(trim($stdout), 0, $e);
-
-            $result->addError(
-                $test,
-                $exception,
-            );
 
             assert($test instanceof TestCase);
 
@@ -335,86 +308,10 @@ abstract class AbstractPhpProcess
                     $childResult['codeCoverage']
                 );
             }
-
-            assert($childResult['result'] instanceof TestResult);
-
-            $notImplemented = $childResult['result']->notImplemented();
-            $risky          = $childResult['result']->risky();
-            $skipped        = $childResult['result']->skipped();
-            $errors         = $childResult['result']->errors();
-            $warnings       = $childResult['result']->warnings();
-            $failures       = $childResult['result']->failures();
-
-            if (!empty($notImplemented)) {
-                $result->addFailure(
-                    $test,
-                    $this->getException($notImplemented[0]),
-                );
-            } elseif (!empty($risky)) {
-                $riskyException = $this->getException($risky[0]);
-
-                $result->addFailure(
-                    $test,
-                    $riskyException,
-                );
-            } elseif (!empty($skipped)) {
-                $result->addFailure(
-                    $test,
-                    $this->getException($skipped[0]),
-                );
-            } elseif (!empty($errors)) {
-                $result->addError(
-                    $test,
-                    $this->getException($errors[0]),
-                );
-            } elseif (!empty($warnings)) {
-                $result->addWarning(
-                    $test,
-                    $this->getException($warnings[0]),
-                );
-            } elseif (!empty($failures)) {
-                $result->addFailure(
-                    $test,
-                    $this->getException($failures[0]),
-                );
-            }
         }
 
         if (!empty($output)) {
             print $output;
         }
-    }
-
-    /**
-     * Gets the thrown exception from a PHPUnit\Framework\TestFailure.
-     *
-     * @see https://github.com/sebastianbergmann/phpunit/issues/74
-     */
-    private function getException(TestFailure $error): Exception
-    {
-        $exception = $error->thrownException();
-
-        if ($exception instanceof __PHP_Incomplete_Class) {
-            $exceptionArray = [];
-
-            foreach ((array) $exception as $key => $value) {
-                $key                  = substr($key, strrpos($key, "\0") + 1);
-                $exceptionArray[$key] = $value;
-            }
-
-            $exception = new SyntheticError(
-                sprintf(
-                    '%s: %s',
-                    $exceptionArray['_PHP_Incomplete_Class_Name'],
-                    $exceptionArray['message']
-                ),
-                $exceptionArray['code'],
-                $exceptionArray['file'],
-                $exceptionArray['line'],
-                $exceptionArray['trace']
-            );
-        }
-
-        return $exception;
     }
 }

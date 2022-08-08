@@ -52,9 +52,7 @@ use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\PHPTAssertionFailedError;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Framework\SyntheticSkippedError;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestResult;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
@@ -106,7 +104,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @throws Exception
      * @noinspection RepetitiveMethodCallsInspection
      */
-    public function run(TestResult $result): void
+    public function run(): void
     {
         $emitter = EventFacade::emitter();
 
@@ -119,9 +117,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         } catch (Exception $e) {
             $e = new Exception($e->getMessage());
 
-            $result->startTest($this);
-            $result->addError($this, $e);
-
             $emitter->testPrepared($this->valueObjectForEvents());
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
             $emitter->testFinished($this->valueObjectForEvents(), 0);
@@ -132,8 +127,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $code     = $this->render($sections['FILE']);
         $xfail    = false;
         $settings = $this->parseIniSection($this->settings(CodeCoverage::isActive()));
-
-        $result->startTest($this);
 
         $emitter->testPrepared($this->valueObjectForEvents());
 
@@ -152,7 +145,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $this->phpUtil->setTimeout(Registry::get()->timeoutForLargeTests());
         }
 
-        if ($this->shouldTestBeSkipped($sections, $result, $settings)) {
+        if ($this->shouldTestBeSkipped($sections, $settings)) {
             return;
         }
 
@@ -217,25 +210,13 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
                 );
             }
 
-            $result->addFailure($this, $failure);
-
             if ($failure instanceof IncompleteTestError) {
                 $emitter->testMarkedAsIncomplete($this->valueObjectForEvents(), EventThrowable::from($failure));
             } else {
                 $emitter->testFailed($this->valueObjectForEvents(), EventThrowable::from($failure));
             }
         } catch (Throwable $t) {
-            $result->addError($this, $t);
-
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($t));
-        }
-
-        if ($xfail !== false && $result->allCompletelyImplemented()) {
-            $e = new IncompleteTestError('XFAIL section but test passes');
-
-            $result->addFailure($this, $e);
-
-            $emitter->testMarkedAsIncomplete($this->valueObjectForEvents(), EventThrowable::from($e));
         }
 
         $this->runClean($sections, CodeCoverage::isActive());
@@ -385,7 +366,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         throw new Exception('No PHPT assertion found');
     }
 
-    private function shouldTestBeSkipped(array &$sections, TestResult $result, array $settings): bool
+    private function shouldTestBeSkipped(array &$sections, array $settings): bool
     {
         if (!isset($sections['SKIPIF'])) {
             return false;
@@ -400,13 +381,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             if (preg_match('/^\s*skip\s*(.+)\s*/i', $jobResult['stdout'], $skipMatch)) {
                 $message = substr($skipMatch[1], 2);
             }
-
-            $hint  = $this->getLocationHint($message, $sections, 'SKIPIF');
-            $trace = array_merge($hint, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
-            $result->addFailure(
-                $this,
-                new SyntheticSkippedError($message, 0, $trace[0]['file'], $trace[0]['line'], $trace),
-            );
 
             EventFacade::emitter()->testSkipped(
                 $this->valueObjectForEvents(),

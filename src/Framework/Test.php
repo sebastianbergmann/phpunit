@@ -16,5 +16,5 @@ use Countable;
  */
 interface Test extends Countable
 {
-    public function run(TestResult $result): void;
+    public function run(): void;
 }

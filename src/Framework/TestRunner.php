@@ -55,7 +55,7 @@ final class TestRunner
      * @throws CodeCoverageException
      * @throws UnintentionallyCoveredCodeException
      */
-    public function run(TestCase $test, TestResult $result): void
+    public function run(TestCase $test): void
     {
         Assert::resetCount();
 
@@ -75,8 +75,6 @@ final class TestRunner
         $risky      = false;
         $skipped    = false;
 
-        $result->startTest($test);
-
         ErrorHandler::instance()->enable();
 
         $collectCodeCoverage = CodeCoverage::isActive() &&
@@ -91,7 +89,7 @@ final class TestRunner
         try {
             if ($this->canTimeLimitBeEnforced() &&
                 $this->shouldTimeLimitBeEnforced($test)) {
-                $risky = $this->runTestWithTimeout($test, $result);
+                $risky = $this->runTestWithTimeout($test);
             } else {
                 $test->runBare();
             }
@@ -148,11 +146,6 @@ final class TestRunner
                 $riskyDueToMissingCodeCoverageMetadataException->getMessage()
             );
 
-            $result->addFailure(
-                $test,
-                $riskyDueToMissingCodeCoverageMetadataException,
-            );
-
             $risky = true;
         }
 
@@ -176,13 +169,6 @@ final class TestRunner
                     Event\Facade::emitter()->testTriggeredPhpunitWarning(
                         $test->valueObjectForEvents(),
                         $cce->getMessage()
-                    );
-
-                    $result->addWarning(
-                        $test,
-                        new Warning(
-                            $cce->getMessage()
-                        ),
                     );
                 }
             }
@@ -208,30 +194,17 @@ final class TestRunner
         ErrorHandler::instance()->disable();
 
         if ($error && isset($e)) {
-            $result->addError($test, $e);
         } elseif ($failure && isset($e)) {
-            $result->addFailure($test, $e);
         } elseif ($warning && isset($e)) {
-            $result->addWarning($test, $e);
         } elseif (isset($unintentionallyCoveredCodeError)) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 $unintentionallyCoveredCodeError->getMessage()
             );
-
-            $result->addFailure(
-                $test,
-                $unintentionallyCoveredCodeError,
-            );
         } elseif ($this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
             $riskyBecauseNoAssertionsWerePerformedException = new RiskyBecauseNoAssertionsWerePerformedException;
-
-            $result->addFailure(
-                $test,
-                $riskyBecauseNoAssertionsWerePerformedException,
-            );
 
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
@@ -244,31 +217,17 @@ final class TestRunner
                 $test->numberOfAssertionsPerformed()
             );
 
-            $result->addFailure(
-                $test,
-                $riskyDueToUnexpectedAssertionsException,
-            );
-
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 $riskyDueToUnexpectedAssertionsException->getMessage()
             );
         } elseif ($this->configuration->disallowTestOutput() && $test->hasOutput()) {
-            $riskyDueToOutputException = new RiskyDueToOutputException(
+            Event\Facade::emitter()->testConsideredRisky(
+                $test->valueObjectForEvents(),
                 sprintf(
                     'This test printed output: %s',
                     $test->output()
                 )
-            );
-
-            $result->addFailure(
-                $test,
-                $riskyDueToOutputException,
-            );
-
-            Event\Facade::emitter()->testConsideredRisky(
-                $test->valueObjectForEvents(),
-                $riskyDueToOutputException->getMessage()
             );
         }
 
@@ -280,7 +239,7 @@ final class TestRunner
         }
     }
 
-    public function runInSeparateProcess(TestCase $test, TestResult $result, bool $runEntireClass, bool $preserveGlobalState): void
+    public function runInSeparateProcess(TestCase $test, bool $runEntireClass, bool $preserveGlobalState): void
     {
         $class = new ReflectionClass($test);
 
@@ -397,7 +356,7 @@ final class TestRunner
         $template->setVar($var);
 
         $php = AbstractPhpProcess::factory();
-        $php->runTestJob($template->render(), $test, $result);
+        $php->runTestJob($template->render(), $test);
 
         @unlink($serializedConfiguration);
     }
@@ -473,7 +432,7 @@ final class TestRunner
     /**
      * @throws Throwable
      */
-    private function runTestWithTimeout(TestCase $test, TestResult $result): bool
+    private function runTestWithTimeout(TestCase $test): bool
     {
         $_timeout = $this->configuration->defaultTimeLimit();
 
@@ -489,11 +448,6 @@ final class TestRunner
             (new Invoker)->invoke([$test, 'runBare'], [], $_timeout);
         } catch (TimeoutException) {
             $riskyDueToTimeoutException = new RiskyDueToTimeoutException($_timeout);
-
-            $result->addFailure(
-                $test,
-                $riskyDueToTimeoutException,
-            );
 
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),

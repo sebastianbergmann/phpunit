@@ -356,11 +356,6 @@
       <code>$this-&gt;callback</code>
     </PossiblyInvalidOperand>
   </file>
-  <file src="src/Framework/Test.php">
-    <DeprecatedClass occurrences="1">
-      <code>TestResult</code>
-    </DeprecatedClass>
-  </file>
   <file src="src/Framework/TestBuilder.php">
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
@@ -380,10 +375,6 @@
       <code>$this-&gt;expectedException</code>
       <code>$this-&gt;size()</code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="2">
-      <code>?TestResult</code>
-      <code>TestResult</code>
-    </DeprecatedClass>
     <InvalidReturnStatement occurrences="1">
       <code>$mockObject</code>
     </InvalidReturnStatement>
@@ -408,11 +399,6 @@
     <MoreSpecificReturnType occurrences="1">
       <code>list&lt;string&gt;</code>
     </MoreSpecificReturnType>
-    <PossiblyNullReference occurrences="3">
-      <code>addFailure</code>
-      <code>startTest</code>
-      <code>startTest</code>
-    </PossiblyNullReference>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>
@@ -421,11 +407,6 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
-    <DeprecatedClass occurrences="3">
-      <code>TestResult</code>
-      <code>TestResult</code>
-      <code>TestResult</code>
-    </DeprecatedClass>
     <InvalidScalarArgument occurrences="1">
       <code>$var</code>
     </InvalidScalarArgument>
@@ -446,9 +427,6 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="1">
-      <code>TestResult</code>
-    </DeprecatedClass>
     <MissingThrowsDocblock occurrences="1"/>
     <UnsafeInstantiation occurrences="2">
       <code>new static($class-&gt;getName())</code>
@@ -591,10 +569,6 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Runner/PhptTestCase.php">
-    <DeprecatedClass occurrences="2">
-      <code>TestResult</code>
-      <code>TestResult</code>
-    </DeprecatedClass>
     <InternalClass occurrences="2">
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
@@ -1053,9 +1027,6 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedClass occurrences="1">
-      <code>new LegacyTestResult</code>
-    </DeprecatedClass>
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
@@ -1109,20 +1080,6 @@
     </PossiblyNullReference>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
-    <ArgumentTypeCoercion occurrences="5">
-      <code>$riskyException</code>
-      <code>$this-&gt;getException($failures[0])</code>
-      <code>$this-&gt;getException($notImplemented[0])</code>
-      <code>$this-&gt;getException($skipped[0])</code>
-      <code>$this-&gt;getException($warnings[0])</code>
-    </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="2">
-      <code>TestResult</code>
-      <code>TestResult</code>
-    </DeprecatedClass>
-    <LessSpecificReturnStatement occurrences="1">
-      <code>$exception</code>
-    </LessSpecificReturnStatement>
     <MissingClosureParamType occurrences="4">
       <code>$errfile</code>
       <code>$errline</code>
@@ -1132,12 +1089,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>CodeCoverage::instance()</code>
     </MissingThrowsDocblock>
-    <MoreSpecificReturnType occurrences="1">
-      <code>Exception</code>
-    </MoreSpecificReturnType>
-    <PossiblyFalseOperand occurrences="1">
-      <code>strrpos($key, "\0")</code>
-    </PossiblyFalseOperand>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <RedundantCondition occurrences="1">
