@@ -14,12 +14,10 @@ use const E_USER_ERROR;
 use const E_USER_NOTICE;
 use const E_USER_WARNING;
 use function trigger_error;
-use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\TestFixture\Mockable;
-use PHPUnit\TestFixture\TestAutoreferenced;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 
 #[ExcludeGlobalVariableFromBackup('i')]
@@ -174,42 +172,6 @@ class TestCaseTest extends TestCase
 
         $this->assertFalse($mock->mockableMethod());
         $this->assertNull($mock->anotherMockableMethod());
-    }
-
-    public function testProvidingOfAutoreferencedArray(): void
-    {
-        $test = new TestAutoreferenced('testJsonEncodeException');
-
-        $test->setData(0, $this->getAutoreferencedArray());
-
-        Facade::suspend();
-        $test->runBare();
-        Facade::resume();
-
-        $this->assertIsArray($test->myTestData);
-        $this->assertArrayHasKey('data', $test->myTestData);
-        $this->assertEquals($test->myTestData['data'][0], $test->myTestData['data']);
-    }
-
-    public function testProvidingArrayThatMixesObjectsAndScalars(): void
-    {
-        $data = [
-            [123],
-            ['foo'],
-            [$this->createMock(Mockable::class)],
-            [$this->createStub(Mockable::class)],
-        ];
-
-        $test = new TestAutoreferenced('testJsonEncodeException');
-
-        $test->setData(0, [$data]);
-
-        Facade::suspend();
-        $test->runBare();
-        Facade::resume();
-
-        $this->assertIsArray($test->myTestData);
-        $this->assertSame($data, $test->myTestData);
     }
 
     public function testGetNameReturnsMethodName(): void
