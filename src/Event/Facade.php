@@ -60,40 +60,6 @@ final class Facade
     }
 
     /**
-     * @throws NoEmitterToSuspendException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public static function suspend(): void
-    {
-        if (self::$emitter === null) {
-            throw new NoEmitterToSuspendException;
-        }
-
-        self::$suspended = self::$emitter;
-
-        self::$emitter = new DispatchingEmitter(
-            new CollectingDispatcher,
-            self::createTelemetrySystem()
-        );
-    }
-
-    /**
-     * @throws NoEmitterToResumeException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public static function resume(): void
-    {
-        if (self::$suspended === null) {
-            throw new NoEmitterToResumeException;
-        }
-
-        self::$emitter   = self::$suspended;
-        self::$suspended = null;
-    }
-
-    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function initForIsolation(HRTime $offset): CollectingDispatcher
