@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\TestFixture\NotSelfDescribingTest;
 use PHPUnit\Util\Error\Error;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
@@ -35,15 +34,6 @@ final class TestFailureTest extends TestCase
         $failure   = new TestFailure($test, $exception);
 
         $this->assertEquals(__METHOD__ . ': message', $failure->toString());
-    }
-
-    public function testToStringForNonSelfDescribing(): void
-    {
-        $test      = new NotSelfDescribingTest;
-        $exception = new Exception('message');
-        $failure   = new TestFailure($test, $exception);
-
-        $this->assertEquals('PHPUnit\TestFixture\NotSelfDescribingTest: message', $failure->toString());
     }
 
     public function testgetExceptionAsString(): void

@@ -9,17 +9,13 @@
  */
 namespace PHPUnit\Runner;
 
-use const PHP_EOL;
-use function file_put_contents;
 use function sys_get_temp_dir;
 use function touch;
 use function unlink;
-use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestResult;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 
 #[CoversClass(PhptTestCase::class)]
@@ -66,27 +62,6 @@ EOF;
         $this->assertFalse($this->testCase->usesDataProvider());
     }
 
-    public function testShouldNotRunTestSectionIfSkipifSectionReturnsOutputWithSkipWord(): void
-    {
-        $skipifSection = '<?php echo "skip: Reason"; ?>' . PHP_EOL;
-
-        $phptContent = self::EXPECT_CONTENT . PHP_EOL;
-        $phptContent .= '--SKIPIF--' . PHP_EOL;
-        $phptContent .= $skipifSection;
-
-        $this->setPhpContent($phptContent);
-
-        $this->phpProcess
-             ->expects($this->once())
-             ->method('runJob')
-             ->with($skipifSection)
-             ->willReturn(['stdout' => 'skip: Reason', 'stderr' => '']);
-
-        Facade::suspend();
-        $this->testCase->run(new TestResult);
-        Facade::resume();
-    }
-
     public function testPHPTReturnsFilenameAsTestName(): void
     {
         $this->assertSame($this->filename, $this->testCase->getName());
@@ -101,10 +76,5 @@ EOF;
     {
         $this->assertSame([], $this->testCase->provides());
         $this->assertSame([], $this->testCase->requires());
-    }
-
-    private function setPhpContent(string $content): void
-    {
-        file_put_contents($this->filename, $content);
     }
 }

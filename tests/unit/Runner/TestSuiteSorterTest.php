@@ -17,10 +17,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
-use PHPUnit\TestFixture\FailureTest;
 use PHPUnit\TestFixture\MultiDependencyTest;
-use PHPUnit\TestFixture\NotReorderableTest;
-use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestWithDifferentSizes;
 use ReflectionClass;
 
@@ -615,17 +612,5 @@ final class TestSuiteSorterTest extends TestCase
         ];
 
         $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
-    }
-
-    public function testSorterQuietlyIgnoresNonReorderable(): void
-    {
-        $suite          = TestSuite::empty();
-        $testCollection = [new Success('testOne'), new NotReorderableTest, new FailureTest('testAssertArrayEqualsArray')];
-        $suite->setTests($testCollection);
-
-        $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DURATION, true, TestSuiteSorter::ORDER_DEFECTS_FIRST);
-
-        $this->assertEquals($testCollection, $suite->tests());
     }
 }
