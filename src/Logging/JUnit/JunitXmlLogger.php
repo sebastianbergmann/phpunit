@@ -31,7 +31,6 @@ use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Event\UnknownSubscriberTypeException;
-use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
@@ -319,7 +318,7 @@ final class JunitXmlLogger
             Xml::prepareString($buffer)
         );
 
-        $risky->setAttribute('type', RiskyTest::class);
+        $risky->setAttribute('type', 'PHPUnit\Framework\RiskyTest');
 
         $this->currentTestCase->appendChild($risky);
     }

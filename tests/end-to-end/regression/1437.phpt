@@ -24,5 +24,14 @@ Failed asserting that false is true.
 
 %sIssue1437Test.php:%i
 
+--
+
+There was 1 risky test:
+
+1) PHPUnit\TestFixture\Issue1437Test::testFailure
+Test code or tested code did not (only) close its own output buffers
+
+%sIssue1437Test.php:%i
+
 FAILURES!
-Tests: 1, Assertions: 1, Failures: 1.
+Tests: 1, Assertions: 1, Failures: 1, Risky: 1.

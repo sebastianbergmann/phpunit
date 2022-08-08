@@ -384,7 +384,7 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="10">
+    <MissingThrowsDocblock occurrences="9">
       <code>generateClassFromWsdl</code>
       <code>getMock</code>
       <code>getMock</code>
@@ -394,7 +394,6 @@
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
       <code>onlyMethods</code>
-      <code>restoreGlobalState</code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType occurrences="1">
       <code>list&lt;string&gt;</code>

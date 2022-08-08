@@ -96,9 +96,7 @@ final class TestRunner
         } catch (AssertionFailedError $e) {
             $failure = true;
 
-            if ($e instanceof RiskyTest) {
-                $risky = true;
-            } elseif ($e instanceof IncompleteTestError) {
+            if ($e instanceof IncompleteTestError) {
                 $incomplete = true;
             } elseif ($e instanceof SkippedTest) {
                 $skipped = true;
@@ -139,11 +137,9 @@ final class TestRunner
         if (!$error && !$failure && !$warning && !$incomplete && !$skipped && !$risky &&
             $this->configuration->requireCoverageMetadata() &&
             !$this->hasCoverageMetadata($test::class, $test->getName(false))) {
-            $riskyDueToMissingCodeCoverageMetadataException = new RiskyDueToMissingCodeCoverageMetadataException;
-
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                $riskyDueToMissingCodeCoverageMetadataException->getMessage()
+                'This test does not define a code coverage target using an attribute or annotation but is expected to do so'
             );
 
             $risky = true;
@@ -180,9 +176,11 @@ final class TestRunner
                     $linesToBeUsed
                 );
             } catch (UnintentionallyCoveredCodeException $cce) {
-                $unintentionallyCoveredCodeError = new RiskyDueToUnintentionallyCoveredCodeException(
+                Event\Facade::emitter()->testConsideredRisky(
+                    $test->valueObjectForEvents(),
                     'This test executed code that is not listed as code to be covered or used:' .
-                    PHP_EOL . $cce->getMessage()
+                    PHP_EOL .
+                    $cce->getMessage()
                 );
             } catch (OriginalCodeCoverageException $cce) {
                 $error = true;
@@ -196,30 +194,22 @@ final class TestRunner
         if ($error && isset($e)) {
         } elseif ($failure && isset($e)) {
         } elseif ($warning && isset($e)) {
-        } elseif (isset($unintentionallyCoveredCodeError)) {
-            Event\Facade::emitter()->testConsideredRisky(
-                $test->valueObjectForEvents(),
-                $unintentionallyCoveredCodeError->getMessage()
-            );
         } elseif ($this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
-            $riskyBecauseNoAssertionsWerePerformedException = new RiskyBecauseNoAssertionsWerePerformedException;
-
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                $riskyBecauseNoAssertionsWerePerformedException->getMessage()
+                'This test did not perform any assertions'
             );
         } elseif ($this->configuration->reportUselessTests() &&
             $test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() > 0) {
-            $riskyDueToUnexpectedAssertionsException = new RiskyDueToUnexpectedAssertionsException(
-                $test->numberOfAssertionsPerformed()
-            );
-
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                $riskyDueToUnexpectedAssertionsException->getMessage()
+                sprintf(
+                    'This test is annotated with "@doesNotPerformAssertions" but performed %d assertions',
+                    $test->numberOfAssertionsPerformed()
+                )
             );
         } elseif ($this->configuration->disallowTestOutput() && $test->hasOutput()) {
             Event\Facade::emitter()->testConsideredRisky(
@@ -447,11 +437,13 @@ final class TestRunner
         try {
             (new Invoker)->invoke([$test, 'runBare'], [], $_timeout);
         } catch (TimeoutException) {
-            $riskyDueToTimeoutException = new RiskyDueToTimeoutException($_timeout);
-
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                $riskyDueToTimeoutException->getMessage()
+                sprintf(
+                    'This test was aborted after %d second%s',
+                    $_timeout,
+                    $_timeout !== 1 ? 's' : ''
+                )
             );
 
             return true;

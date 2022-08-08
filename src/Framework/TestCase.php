@@ -782,13 +782,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             );
         }
 
-        try {
-            $this->stopOutputBuffering();
-        } catch (RiskyTest $_e) {
-            $e = $e ?? $_e;
-        }
-
-        if (!isset($e)) {
+        if ($this->stopOutputBuffering() && !isset($e)) {
             $this->performAssertionsOnOutput();
         }
 
@@ -816,11 +810,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if (isset($_e)) {
-            if ($_e instanceof RiskyTest) {
-                $this->status = TestStatus::risky($_e->getMessage());
-            } else {
-                $this->status = TestStatus::error($_e->getMessage());
-            }
+            $this->status = TestStatus::error($_e->getMessage());
         }
 
         ErrorHandler::instance()->doNotConvertDeprecationsToExceptions();
@@ -1730,23 +1720,31 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputBufferingLevel  = ob_get_level();
     }
 
-    /**
-     * @throws RiskyTest
-     */
-    private function stopOutputBuffering(): void
+    private function stopOutputBuffering(): bool
     {
         if (ob_get_level() !== $this->outputBufferingLevel) {
             while (ob_get_level() >= $this->outputBufferingLevel) {
                 ob_end_clean();
             }
 
-            throw new RiskyDueToOutputBufferingException;
+            $message = 'Test code or tested code did not (only) close its own output buffers';
+
+            Event\Facade::emitter()->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                $message
+            );
+
+            $this->status = TestStatus::risky($message);
+
+            return false;
         }
 
         $this->output = ob_get_clean();
 
         $this->outputBufferingActive = false;
         $this->outputBufferingLevel  = ob_get_level();
+
+        return true;
     }
 
     private function snapshotGlobalState(): void
@@ -1761,9 +1759,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->snapshot = $snapshot;
     }
 
-    /**
-     * @throws RiskyTest
-     */
     private function restoreGlobalState(): void
     {
         if (!$this->snapshot instanceof Snapshot) {
@@ -1771,20 +1766,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if (ConfigurationRegistry::get()->beStrictAboutChangesToGlobalState()) {
-            $snapshotAfter = $this->createGlobalStateSnapshot($this->backupGlobals === true);
-
-            try {
-                $this->compareGlobalStateSnapshots(
-                    $this->snapshot,
-                    $snapshotAfter
-                );
-            } catch (RiskyTest $rte) {
-                Event\Facade::emitter()->testConsideredRisky(
-                    $this->valueObjectForEvents(),
-                    'This test modified global state but was not expected to do so' . PHP_EOL .
-                    trim($rte->getMessage())
-                );
-            }
+            $this->compareGlobalStateSnapshots(
+                $this->snapshot,
+                $this->createGlobalStateSnapshot($this->backupGlobals === true)
+            );
         }
 
         $restorer = new Restorer;
@@ -1798,10 +1783,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         $this->snapshot = null;
-
-        if (isset($rte)) {
-            throw $rte;
-        }
     }
 
     private function createGlobalStateSnapshot(bool $backupGlobals): Snapshot
@@ -1843,9 +1824,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
     }
 
-    /**
-     * @throws RiskyTest
-     */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
     {
         $backupGlobals = $this->backupGlobals === null || $this->backupGlobals;
@@ -1873,21 +1851,22 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
-    /**
-     * @throws RiskyTest
-     */
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
         if ($before != $after) {
             $differ   = new Differ(new UnifiedDiffOutputBuilder($header));
             $exporter = new Exporter;
 
-            $diff = $differ->diff(
-                $exporter->export($before),
-                $exporter->export($after)
+            Event\Facade::emitter()->testConsideredRisky(
+                $this->valueObjectForEvents(),
+                'This test modified global state but was not expected to do so' . PHP_EOL .
+                trim(
+                    $differ->diff(
+                        $exporter->export($before),
+                        $exporter->export($after)
+                    )
+                )
             );
-
-            throw new RiskyDueToGlobalStateException($diff);
         }
     }
 
