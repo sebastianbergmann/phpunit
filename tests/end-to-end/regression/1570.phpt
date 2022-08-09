@@ -18,7 +18,7 @@ R                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 risky test:
+1 test is considered risky for 1 reason:
 
 1) PHPUnit\TestFixture\Issue1570Test::testOne
 This test printed output: *

@@ -91,7 +91,8 @@ final class ResultPrinter
             ];
         }
 
-        $this->printList(count($elements), $elements, 'error');
+        $this->printListHeader(count($elements), 'error');
+        $this->printList($elements);
     }
 
     private function printTestsWithFailedAssertions(TestResult $result): void
@@ -115,7 +116,8 @@ final class ResultPrinter
             ];
         }
 
-        $this->printList(count($elements), $elements, 'failure');
+        $this->printListHeader(count($elements), 'failure');
+        $this->printList($elements);
     }
 
     private function printTestsWithWarnings(TestResult $result): void
@@ -154,7 +156,8 @@ final class ResultPrinter
             }
         }
 
-        $this->printList($result->numberOfTestsWithTestConsideredRiskyEvents(), $elements, 'risky test');
+        $this->printRiskyListHeader($result->numberOfTestsWithTestConsideredRiskyEvents(), count($elements));
+        $this->printList($elements);
     }
 
     private function printIncompleteTests(TestResult $result): void
@@ -172,7 +175,8 @@ final class ResultPrinter
             ];
         }
 
-        $this->printList(count($elements), $elements, 'incomplete test');
+        $this->printListHeader(count($elements), 'incomplete test');
+        $this->printList($elements);
     }
 
     private function printSkippedTests(TestResult $result): void
@@ -190,13 +194,11 @@ final class ResultPrinter
             ];
         }
 
-        $this->printList(count($elements), $elements, 'skipped test');
+        $this->printListHeader(count($elements), 'skipped test');
+        $this->printList($elements);
     }
 
-    /**
-     * @psalm-param list<array{title: string, body: string}> $elements
-     */
-    private function printList(int $count, array $elements, string $type): void
+    private function printListHeader(int $numberOfTests, string $type): void
     {
         if ($this->listPrinted) {
             $this->printer->print("\n--\n\n");
@@ -207,13 +209,39 @@ final class ResultPrinter
         $this->printer->print(
             sprintf(
                 "There %s %d %s%s:\n",
-                ($count === 1) ? 'was' : 'were',
-                $count,
+                ($numberOfTests === 1) ? 'was' : 'were',
+                $numberOfTests,
                 $type,
-                ($count === 1) ? '' : 's'
+                ($numberOfTests === 1) ? '' : 's'
             )
         );
+    }
 
+    private function printRiskyListHeader(int $numberOfTests, int $numberOfReasons): void
+    {
+        if ($this->listPrinted) {
+            $this->printer->print("\n--\n\n");
+        }
+
+        $this->listPrinted = true;
+
+        $this->printer->print(
+            sprintf(
+                "%d test%s %s considered risky for %d reason%s:\n",
+                $numberOfTests,
+                ($numberOfTests === 1) ? '' : 's',
+                ($numberOfTests === 1) ? 'is' : 'are',
+                $numberOfReasons,
+                ($numberOfReasons === 1) ? '' : 's'
+            )
+        );
+    }
+
+    /**
+     * @psalm-param list<array{title: string, body: string}> $elements
+     */
+    private function printList(array $elements): void
+    {
         $i = 1;
 
         if ($this->displayDefectsInReverseOrder) {

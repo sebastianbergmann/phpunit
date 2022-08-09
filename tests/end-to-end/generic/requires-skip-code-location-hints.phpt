@@ -18,7 +18,7 @@ RRRRRRRRSSSSSRRRRSSSSRSSSSSSSRRSSSSSSSRRSSSSSSSSSSSSSSSSSSSS      60 / 60 (100%)
 
 Time: %s, Memory: %s
 
-There were 17 risky tests:
+17 tests are considered risky for 17 reasons:
 
 1) PHPUnit\TestFixture\RequirementsTest::testOne
 This test did not perform any assertions

@@ -26,7 +26,7 @@ Failed asserting that false is true.
 
 --
 
-There was 1 risky test:
+1 test is considered risky for 1 reason:
 
 1) PHPUnit\TestFixture\Issue1437Test::testFailure
 Test code or tested code did not (only) close its own output buffers
