@@ -35,7 +35,8 @@ final class ResultPrinter
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
     private bool $displayDefectsInReverseOrder;
-    private bool $listPrinted = false;
+    private bool $listPrinted  = false;
+    private bool $countPrinted = false;
 
     public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colorizeOutput, bool $displayDefectsInReverseOrder)
     {
@@ -320,21 +321,19 @@ final class ResultPrinter
 
     private function printCountString(int $count, string $name, string $color, bool $always = false): void
     {
-        static $first = true;
-
         if ($always || $count > 0) {
             $this->printWithColor(
                 $color,
                 sprintf(
                     '%s%s: %d',
-                    !$first ? ', ' : '',
+                    $this->countPrinted ? ', ' : '',
                     $name,
                     $count
                 ),
                 false
             );
 
-            $first = false;
+            $this->countPrinted = true;
         }
     }
 
