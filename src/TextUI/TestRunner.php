@@ -57,6 +57,7 @@ use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
 
 /**
@@ -388,6 +389,10 @@ final class TestRunner
         Event\Facade::emitter()->testExecutionFinished();
 
         $result = Facade::result();
+
+        if ($result->numberOfTestsRun() > 0) {
+            $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
+        }
 
         if (isset($resultPrinter)) {
             $resultPrinter->printResult($result);

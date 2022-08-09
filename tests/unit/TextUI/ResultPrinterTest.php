@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI;
 
 use function hrtime;
-use function ltrim;
 use Exception;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
@@ -86,7 +85,7 @@ final class ResultPrinterTest extends TestCase
 
         $this->assertStringMatchesFormatFile(
             $expectationFile,
-            ltrim($printer->buffer())
+            $printer->buffer()
         );
     }
 

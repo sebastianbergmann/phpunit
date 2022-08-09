@@ -23,7 +23,6 @@ use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
-use SebastianBergmann\Timer\ResourceUsageFormatter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -50,7 +49,6 @@ final class ResultPrinter
 
     public function printResult(TestResult $result): void
     {
-        $this->printHeader($result);
         $this->printTestsWithErrors($result);
         $this->printTestsWithWarnings($result);
         $this->printTestsWithFailedAssertions($result);
@@ -70,13 +68,6 @@ final class ResultPrinter
     public function flush(): void
     {
         $this->printer->flush();
-    }
-
-    private function printHeader(TestResult $result): void
-    {
-        if ($result->numberOfTestsRun() > 0) {
-            $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
-        }
     }
 
     private function printTestsWithErrors(TestResult $result): void

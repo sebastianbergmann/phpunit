@@ -1,5 +1,3 @@
-Time: %s, Memory: %s
-
 There was 1 error:
 
 1) FooTest::testBar

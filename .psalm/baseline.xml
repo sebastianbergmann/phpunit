@@ -1017,9 +1017,6 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/ResultPrinter.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>resourceUsageSinceStartOfRequest</code>
-    </MissingThrowsDocblock>
     <RedundantCondition occurrences="2">
       <code>assert($test instanceof TestMethod)</code>
       <code>assert($test instanceof TestMethod)</code>
@@ -1037,7 +1034,7 @@
       <code>$e</code>
       <code>$e</code>
     </InvalidArgument>
-    <MissingThrowsDocblock occurrences="40">
+    <MissingThrowsDocblock occurrences="41">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1067,6 +1064,7 @@
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
       <code>pharExtensionDirectory</code>
+      <code>resourceUsageSinceStartOfRequest</code>
       <code>run</code>
       <code>stop</code>
       <code>stop</code>
