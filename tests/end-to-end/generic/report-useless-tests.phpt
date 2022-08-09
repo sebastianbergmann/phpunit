@@ -17,7 +17,7 @@ R                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-1 test is considered risky for 1 reason:
+There was 1 risky test:
 
 1) PHPUnit\TestFixture\NothingTest::testNothing
 This test did not perform any assertions
