@@ -12,6 +12,8 @@ namespace PHPUnit\TextUI;
 use const PHP_EOL;
 use function assert;
 use function count;
+use function explode;
+use function range;
 use function sprintf;
 use function str_starts_with;
 use function strlen;
@@ -138,10 +140,25 @@ final class ResultPrinter
             if (count($reasons) === 1) {
                 $body = $reasons[0]->message() . PHP_EOL;
             } else {
-                $body = '';
+                $body  = '';
+                $first = true;
 
                 foreach ($reasons as $reason) {
-                    $body .= '- ' . $reason->message() . PHP_EOL;
+                    if ($first) {
+                        $first = false;
+                    } else {
+                        $body .= PHP_EOL;
+                    }
+
+                    $lines = explode(PHP_EOL, trim($reason->message()));
+
+                    $body .= '* ' . $lines[0] . PHP_EOL;
+
+                    if (count($lines) > 1) {
+                        foreach (range(1, count($lines) - 1) as $line) {
+                            $body .= '  ' . $lines[$line] . PHP_EOL;
+                        }
+                    }
                 }
             }
 
