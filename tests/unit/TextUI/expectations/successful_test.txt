@@ -1,0 +1,5 @@
+
+
+Time: %s, Memory: %s
+
+OK (1 test, 1 assertion)
