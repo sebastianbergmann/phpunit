@@ -131,27 +131,28 @@ final class ResultPrinter
         $elements = [];
 
         foreach ($result->testConsideredRiskyEvents() as $reasons) {
-            foreach ($reasons as $reason) {
-                $body = $reason->message() . PHP_EOL;
-                $test = $reason->test();
+            $test     = $reasons[0]->test();
+            $title    = $this->name($test);
+            $location = $this->location($test);
 
-                if ($test->isTestMethod()) {
-                    assert($test instanceof TestMethod);
+            if (count($reasons) === 1) {
+                $body = $reasons[0]->message() . PHP_EOL;
+            } else {
+                $body = '';
 
-                    $body .= sprintf(
-                        '%s%s:%d%s',
-                        PHP_EOL,
-                        $test->file(),
-                        $test->line(),
-                        PHP_EOL
-                    );
+                foreach ($reasons as $reason) {
+                    $body .= '- ' . $reason->message() . PHP_EOL;
                 }
-
-                $elements[] = [
-                    'title' => $this->name($test),
-                    'body'  => $body,
-                ];
             }
+
+            if (!empty($location)) {
+                $body .= $location;
+            }
+
+            $elements[] = [
+                'title' => $title,
+                'body'  => $body,
+            ];
         }
 
         $this->printList($result->numberOfTestsWithTestConsideredRiskyEvents(), $elements, 'risky test');
@@ -350,5 +351,21 @@ final class ResultPrinter
         }
 
         return $test->name();
+    }
+
+    private function location(Test $test): string
+    {
+        if (!$test->isTestMethod()) {
+            return '';
+        }
+        assert($test instanceof TestMethod);
+
+        return sprintf(
+            '%s%s:%d%s',
+            PHP_EOL,
+            $test->file(),
+            $test->line(),
+            PHP_EOL
+        );
     }
 }
