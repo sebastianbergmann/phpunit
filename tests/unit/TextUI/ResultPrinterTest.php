@@ -53,24 +53,7 @@ final class ResultPrinterTest extends TestCase
     #[DataProvider('provider')]
     public function testPrintsExpectedOutputForTestResultObject(string $expectationFile, TestResult $result): void
     {
-        $printer = new class implements Printer
-        {
-            private string $buffer = '';
-
-            public function print(string $buffer): void
-            {
-                $this->buffer .= $buffer;
-            }
-
-            public function flush(): void
-            {
-            }
-
-            public function buffer(): string
-            {
-                return $this->buffer;
-            }
-        };
+        $printer = $this->printer();
 
         $resultPrinter = new ResultPrinter(
             $printer,
@@ -104,11 +87,7 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/errored_test.txt',
                 $this->createTestResult(
                     testErroredEvents: [
-                        new Errored(
-                            $this->telemetryInfo(),
-                            $this->testMethod(),
-                            Throwable::from(new Exception('message'))
-                        ),
+                        $this->erroredTest(),
                     ]
                 ),
             ],
@@ -117,15 +96,7 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/failed_test.txt',
                 $this->createTestResult(
                     testFailedEvents: [
-                        new Failed(
-                            $this->telemetryInfo(),
-                            $this->testMethod(),
-                            Throwable::from(
-                                new ExpectationFailedException(
-                                    'Failed asserting that false is true.'
-                                )
-                            )
-                        ),
+                        $this->failedTest(),
                     ]
                 ),
             ],
@@ -177,6 +148,28 @@ final class ResultPrinterTest extends TestCase
         );
     }
 
+    private function failedTest(): Failed
+    {
+        return new Failed(
+            $this->telemetryInfo(),
+            $this->testMethod(),
+            Throwable::from(
+                new ExpectationFailedException(
+                    'Failed asserting that false is true.'
+                )
+            )
+        );
+    }
+
+    private function erroredTest(): Errored
+    {
+        return new Errored(
+            $this->telemetryInfo(),
+            $this->testMethod(),
+            Throwable::from(new Exception('message'))
+        );
+    }
+
     private function testMethod(): TestMethod
     {
         return new TestMethod(
@@ -202,5 +195,26 @@ final class ResultPrinterTest extends TestCase
             Duration::fromSecondsAndNanoseconds(234, 567),
             MemoryUsage::fromBytes(3000)
         );
+    }
+
+    private function printer()
+    {
+        return new class implements Printer {
+            private string $buffer = '';
+
+            public function print(string $buffer): void
+            {
+                $this->buffer .= $buffer;
+            }
+
+            public function flush(): void
+            {
+            }
+
+            public function buffer(): string
+            {
+                return $this->buffer;
+            }
+        };
     }
 }
