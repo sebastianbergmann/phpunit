@@ -197,7 +197,7 @@ final class ResultPrinterTest extends TestCase
         );
     }
 
-    private function printer()
+    private function printer(): Printer
     {
         return new class implements Printer {
             private string $buffer = '';
