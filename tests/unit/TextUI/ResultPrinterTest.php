@@ -41,6 +41,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestRunner\TestResult\TestResult;
@@ -97,6 +98,24 @@ final class ResultPrinterTest extends TestCase
                 $this->createTestResult(
                     testFailedEvents: [
                         $this->failedTest(),
+                    ]
+                ),
+            ],
+
+            'incomplete test' => [
+                __DIR__ . '/expectations/incomplete_test.txt',
+                $this->createTestResult(
+                    testMarkedIncompleteEvents: [
+                        $this->incompleteTest(),
+                    ]
+                ),
+            ],
+
+            'skipped test' => [
+                __DIR__ . '/expectations/skipped_test.txt',
+                $this->createTestResult(
+                    testSkippedEvents: [
+                        $this->skippedTest(),
                     ]
                 ),
             ],
@@ -167,6 +186,24 @@ final class ResultPrinterTest extends TestCase
                     'Failed asserting that false is true.'
                 )
             )
+        );
+    }
+
+    private function incompleteTest(): MarkedIncomplete
+    {
+        return new MarkedIncomplete(
+            $this->telemetryInfo(),
+            $this->testMethod(),
+            Throwable::from(new IncompleteTestError('message'))
+        );
+    }
+
+    private function skippedTest(): Skipped
+    {
+        return new Skipped(
+            $this->telemetryInfo(),
+            $this->testMethod(),
+            'message'
         );
     }
 
