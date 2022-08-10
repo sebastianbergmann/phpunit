@@ -119,6 +119,41 @@ final class ResultPrinterTest extends TestCase
                     ]
                 ),
             ],
+
+            'risky test with single-line message' => [
+                __DIR__ . '/expectations/risky_test_single_line_message.txt',
+                $this->createTestResult(
+                    testConsideredRiskyEvents: [
+                        'Foo::testBar' => [
+                            $this->riskyTest('message'),
+                        ],
+                    ]
+                ),
+            ],
+
+            'risky test with multiple reasons with single-line messages' => [
+                __DIR__ . '/expectations/risky_test_with_multiple_reasons_with_single_line_messages.txt',
+                $this->createTestResult(
+                    testConsideredRiskyEvents: [
+                        'Foo::testBar' => [
+                            $this->riskyTest('message'),
+                            $this->riskyTest('message'),
+                        ],
+                    ]
+                ),
+            ],
+
+            'risky test with multiple reasons with multi-line messages' => [
+                __DIR__ . '/expectations/risky_test_with_multiple_reasons_with_multi_line_messages.txt',
+                $this->createTestResult(
+                    testConsideredRiskyEvents: [
+                        'Foo::testBar' => [
+                            $this->riskyTest("message\nmessage\nmessage"),
+                            $this->riskyTest("message\nmessage\nmessage"),
+                        ],
+                    ]
+                ),
+            ],
         ];
     }
 
@@ -207,6 +242,15 @@ final class ResultPrinterTest extends TestCase
         );
     }
 
+    private function riskyTest(string $message): ConsideredRisky
+    {
+        return new ConsideredRisky(
+            $this->telemetryInfo(),
+            $this->testMethod(),
+            $message
+        );
+    }
+
     private function testMethod(): TestMethod
     {
         return new TestMethod(
@@ -236,7 +280,8 @@ final class ResultPrinterTest extends TestCase
 
     private function printer(): Printer
     {
-        return new class implements Printer {
+        return new class implements Printer
+        {
             private string $buffer = '';
 
             public function print(string $buffer): void
