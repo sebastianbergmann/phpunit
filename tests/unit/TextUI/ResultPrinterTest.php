@@ -148,6 +148,15 @@ final class ResultPrinterTest extends TestCase
         );
     }
 
+    private function erroredTest(): Errored
+    {
+        return new Errored(
+            $this->telemetryInfo(),
+            $this->testMethod(),
+            Throwable::from(new Exception('message'))
+        );
+    }
+
     private function failedTest(): Failed
     {
         return new Failed(
@@ -158,15 +167,6 @@ final class ResultPrinterTest extends TestCase
                     'Failed asserting that false is true.'
                 )
             )
-        );
-    }
-
-    private function erroredTest(): Errored
-    {
-        return new Errored(
-            $this->telemetryInfo(),
-            $this->testMethod(),
-            Throwable::from(new Exception('message'))
         );
     }
 
