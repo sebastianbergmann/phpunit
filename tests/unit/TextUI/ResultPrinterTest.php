@@ -67,6 +67,7 @@ final class ResultPrinterTest extends TestCase
         $resultPrinter->printResult($result);
         $resultPrinter->flush();
 
+        /* @noinspection PhpPossiblePolymorphicInvocationInspection */
         $this->assertStringMatchesFormatFile(
             $expectationFile,
             $printer->buffer()
