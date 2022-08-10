@@ -79,6 +79,13 @@ final class ResultPrinterTest extends TestCase
     public function provider(): array
     {
         return [
+            'no tests' => [
+                __DIR__ . '/expectations/no_tests.txt',
+                $this->createTestResult(
+                    numberOfTestsRun: 0
+                ),
+            ],
+
             'successful test' => [
                 __DIR__ . '/expectations/successful_test.txt',
                 $this->createTestResult(),
