@@ -1,0 +1,18 @@
+There was 1 failure:
+
+1) FooTest::testBar
+Failed asserting that false is true.
+
+%A
+
+--
+
+There was 1 risky test:
+
+1) FooTest::testBar
+message
+
+%s:%i
+
+FAILURES!
+Tests: 1, Assertions: 1, Failures: 1, Risky: 1.

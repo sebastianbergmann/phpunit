@@ -162,6 +162,34 @@ final class ResultPrinterTest extends TestCase
                     ]
                 ),
             ],
+
+            'errored test that is risky' => [
+                __DIR__ . '/expectations/errored_test_that_is_risky.txt',
+                $this->createTestResult(
+                    testErroredEvents: [
+                        $this->erroredTest(),
+                    ],
+                    testConsideredRiskyEvents: [
+                        'Foo::testBar' => [
+                            $this->riskyTest('message'),
+                        ],
+                    ]
+                ),
+            ],
+
+            'failed test that is risky' => [
+                __DIR__ . '/expectations/failed_test_that_is_risky.txt',
+                $this->createTestResult(
+                    testFailedEvents: [
+                        $this->failedTest(),
+                    ],
+                    testConsideredRiskyEvents: [
+                        'Foo::testBar' => [
+                            $this->riskyTest('message'),
+                        ],
+                    ]
+                ),
+            ],
         ];
     }
 
