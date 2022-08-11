@@ -29,11 +29,10 @@ use PHPUnit\Framework\TestFailure;
 final class Matcher
 {
     private InvocationOrder $invocationRule;
-    private ?string $afterMatchBuilderId     = null;
-    private bool $afterMatchBuilderIsInvoked = false;
-    private ?MethodName $methodNameRule      = null;
-    private ?ParametersRule $parametersRule  = null;
-    private ?Stub $stub                      = null;
+    private ?string $afterMatchBuilderId    = null;
+    private ?MethodName $methodNameRule     = null;
+    private ?ParametersRule $parametersRule = null;
+    private ?Stub $stub                     = null;
 
     public function __construct(InvocationOrder $rule)
     {
@@ -100,12 +99,6 @@ final class Matcher
 
             if (!$matcher) {
                 throw new MatchBuilderNotFoundException($this->afterMatchBuilderId);
-            }
-
-            assert($matcher instanceof self);
-
-            if ($matcher->invocationRule->hasBeenInvoked()) {
-                $this->afterMatchBuilderIsInvoked = true;
             }
         }
 
