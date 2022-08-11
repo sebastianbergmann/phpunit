@@ -70,7 +70,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4596](https://github.com/sebastianbergmann/phpunit/issues/4595): Remove Test Hooks
 * [#4564](https://github.com/sebastianbergmann/phpunit/issues/4564): Deprecate `withConsecutive()`
 * [#4567](https://github.com/sebastianbergmann/phpunit/issues/4567): Deprecate support for generators in `assertCount()` and `Count` constraint
-* [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): Deprecate assertions that operate on class/object properties
+* [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): Remove assertions that operate on class/object properties
 * Removed the `PHPUnit\Runner\TestSuiteLoader` interface
 * Removed the `<listeners>` XML configuration element and its children
 * Removed the `groups` attribute on the `<test>` element in the TestDox XML report

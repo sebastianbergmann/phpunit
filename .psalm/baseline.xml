@@ -131,20 +131,6 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Assert.php">
-    <DeprecatedClass occurrences="12">
-      <code>ClassHasAttribute</code>
-      <code>ClassHasStaticAttribute</code>
-      <code>ObjectHasAttribute</code>
-      <code>new ClassHasAttribute($attributeName)</code>
-      <code>new ClassHasAttribute($attributeName)</code>
-      <code>new ClassHasAttribute($attributeName)</code>
-      <code>new ClassHasStaticAttribute($attributeName)</code>
-      <code>new ClassHasStaticAttribute($attributeName)</code>
-      <code>new ClassHasStaticAttribute($attributeName)</code>
-      <code>new ObjectHasAttribute($attributeName)</code>
-      <code>new ObjectHasAttribute($attributeName)</code>
-      <code>new ObjectHasAttribute($attributeName)</code>
-    </DeprecatedClass>
     <MissingThrowsDocblock occurrences="37">
       <code>loadFile</code>
       <code>loadFile</code>
@@ -182,22 +168,6 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Assert/Functions.php">
-    <DeprecatedClass occurrences="3">
-      <code>ClassHasAttribute</code>
-      <code>ClassHasStaticAttribute</code>
-      <code>ObjectHasAttribute</code>
-    </DeprecatedClass>
-    <DeprecatedMethod occurrences="9">
-      <code>Assert::assertClassHasAttribute(...func_get_args())</code>
-      <code>Assert::assertClassHasStaticAttribute(...func_get_args())</code>
-      <code>Assert::assertClassNotHasAttribute(...func_get_args())</code>
-      <code>Assert::assertClassNotHasStaticAttribute(...func_get_args())</code>
-      <code>Assert::assertObjectHasAttribute(...func_get_args())</code>
-      <code>Assert::assertObjectNotHasAttribute(...func_get_args())</code>
-      <code>Assert::classHasAttribute(...func_get_args())</code>
-      <code>Assert::classHasStaticAttribute(...func_get_args())</code>
-      <code>Assert::objectHasAttribute(...func_get_args())</code>
-    </DeprecatedMethod>
     <MissingThrowsDocblock occurrences="3">
       <code>Assert::logicalAnd(...func_get_args())</code>
       <code>Assert::stringEndsWith(...func_get_args())</code>
@@ -218,6 +188,22 @@
       <code>Assert::isTrue(...func_get_args())</code>
       <code>Assert::isWritable(...func_get_args())</code>
     </TooManyArguments>
+    <UndefinedClass occurrences="3">
+      <code>ClassHasAttribute</code>
+      <code>ClassHasStaticAttribute</code>
+      <code>ObjectHasAttribute</code>
+    </UndefinedClass>
+    <UndefinedMethod occurrences="9">
+      <code>Assert::assertClassHasAttribute(...func_get_args())</code>
+      <code>Assert::assertClassHasStaticAttribute(...func_get_args())</code>
+      <code>Assert::assertClassNotHasAttribute(...func_get_args())</code>
+      <code>Assert::assertClassNotHasStaticAttribute(...func_get_args())</code>
+      <code>Assert::assertObjectHasAttribute(...func_get_args())</code>
+      <code>Assert::assertObjectNotHasAttribute(...func_get_args())</code>
+      <code>Assert::classHasAttribute(...func_get_args())</code>
+      <code>Assert::classHasStaticAttribute(...func_get_args())</code>
+      <code>Assert::objectHasAttribute(...func_get_args())</code>
+    </UndefinedMethod>
   </file>
   <file src="src/Framework/Constraint/Cardinality/Count.php">
     <MissingThrowsDocblock occurrences="1">
@@ -233,20 +219,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($other)</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Constraint/Object/ClassHasAttribute.php">
-    <MissingThrowsDocblock occurrences="1"/>
-  </file>
-  <file src="src/Framework/Constraint/Object/ClassHasStaticAttribute.php">
-    <DeprecatedClass occurrences="1">
-      <code>ClassHasAttribute</code>
-    </DeprecatedClass>
-    <MissingThrowsDocblock occurrences="1"/>
-  </file>
-  <file src="src/Framework/Constraint/Object/ObjectHasAttribute.php">
-    <DeprecatedClass occurrences="1">
-      <code>ClassHasAttribute</code>
-    </DeprecatedClass>
   </file>
   <file src="src/Framework/Constraint/Operator/LogicalNot.php">
     <MissingThrowsDocblock occurrences="1">
