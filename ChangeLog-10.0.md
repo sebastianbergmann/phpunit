@@ -68,7 +68,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4531](https://github.com/sebastianbergmann/phpunit/pull/4531): Remove `--loader` option as well as `testSuiteLoaderClass` and `testSuiteLoaderFile` XML configuration settings
 * [#4536](https://github.com/sebastianbergmann/phpunit/issues/4536): Remove `assertFileNotIsWritable()`
 * [#4596](https://github.com/sebastianbergmann/phpunit/issues/4595): Remove Test Hooks
-* [#4564](https://github.com/sebastianbergmann/phpunit/issues/4564): Deprecate `withConsecutive()`
+* [#4564](https://github.com/sebastianbergmann/phpunit/issues/4564): Remove `withConsecutive()`
 * [#4567](https://github.com/sebastianbergmann/phpunit/issues/4567): Remove support for generators in `assertCount()` and `Count` constraint
 * [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): Remove assertions that operate on class/object properties
 * Removed the `PHPUnit\Runner\TestSuiteLoader` interface

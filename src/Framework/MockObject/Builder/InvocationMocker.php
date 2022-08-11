@@ -34,7 +34,6 @@ use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap;
 use PHPUnit\Framework\MockObject\Stub\Stub;
-use PHPUnit\Util\Warning as WarningUtil;
 use Throwable;
 
 /**
@@ -175,28 +174,6 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         $this->ensureParametersCanBeConfigured();
 
         $this->matcher->setParametersRule(new Rule\Parameters($arguments));
-
-        return $this;
-    }
-
-    /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws MethodNameNotConfiguredException
-     * @throws MethodParametersAlreadyConfiguredException
-     *
-     * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4564
-     */
-    public function withConsecutive(mixed ...$arguments): self
-    {
-        $this->ensureParametersCanBeConfigured();
-
-        (new WarningUtil)->createForTestCaseObjectOnCallStack(
-            'The withConsecutive() method has been deprecated. It will be removed in PHPUnit 11.'
-        );
-
-        $this->matcher->setParametersRule(new Rule\ConsecutiveParameters($arguments));
 
         return $this;
     }
