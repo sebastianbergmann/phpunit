@@ -1091,11 +1091,6 @@
       <code>ensureOperatorIsValid</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Util/Warning.php">
-    <RedundantCondition occurrences="1">
-      <code>assert($step['object'] instanceof TestCase)</code>
-    </RedundantCondition>
-  </file>
   <file src="src/Util/Xml.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$item</code>
