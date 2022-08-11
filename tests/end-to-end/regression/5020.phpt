@@ -1,5 +1,5 @@
 --TEST--
-GH-5020: Load PSR-0 tests
+https://github.com/sebastianbergmann/phpunit/issues/5020
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
