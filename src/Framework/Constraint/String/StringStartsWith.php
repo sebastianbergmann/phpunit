@@ -10,7 +10,7 @@
 namespace PHPUnit\Framework\Constraint;
 
 use function str_starts_with;
-use PHPUnit\Framework\InvalidArgumentException;
+use PHPUnit\Framework\EmptyStringException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -20,12 +20,12 @@ final class StringStartsWith extends Constraint
     private string $prefix;
 
     /**
-     * @throws InvalidArgumentException
+     * @throws EmptyStringException
      */
     public function __construct(string $prefix)
     {
         if ($prefix === '') {
-            throw InvalidArgumentException::create(1, 'non-empty string');
+            throw new EmptyStringException;
         }
 
         $this->prefix = $prefix;

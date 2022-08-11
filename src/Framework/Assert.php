@@ -934,11 +934,11 @@ abstract class Assert
     final public static function assertClassHasAttribute(string $attributeName, string $className, string $message = ''): void
     {
         if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
+            throw new InvalidPropertyNameException($attributeName);
         }
 
         if (!class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name');
+            throw new UnknownClassException($className);
         }
 
         (new WarningUtil)->createForTestCaseObjectOnCallStack(
@@ -961,11 +961,11 @@ abstract class Assert
     final public static function assertClassNotHasAttribute(string $attributeName, string $className, string $message = ''): void
     {
         if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
+            throw new InvalidPropertyNameException($attributeName);
         }
 
         if (!class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name');
+            throw new UnknownClassException($className);
         }
 
         (new WarningUtil)->createForTestCaseObjectOnCallStack(
@@ -994,11 +994,11 @@ abstract class Assert
     final public static function assertClassHasStaticAttribute(string $attributeName, string $className, string $message = ''): void
     {
         if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
+            throw new InvalidPropertyNameException($attributeName);
         }
 
         if (!class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name');
+            throw new UnknownClassException($className);
         }
 
         (new WarningUtil)->createForTestCaseObjectOnCallStack(
@@ -1025,11 +1025,11 @@ abstract class Assert
     final public static function assertClassNotHasStaticAttribute(string $attributeName, string $className, string $message = ''): void
     {
         if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
+            throw new InvalidPropertyNameException($attributeName);
         }
 
         if (!class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name');
+            throw new UnknownClassException($className);
         }
 
         (new WarningUtil)->createForTestCaseObjectOnCallStack(
@@ -1058,7 +1058,7 @@ abstract class Assert
     final public static function assertObjectHasAttribute(string $attributeName, object $object, string $message = ''): void
     {
         if (!self::isValidObjectAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
+            throw new InvalidPropertyNameException($attributeName);
         }
 
         (new WarningUtil)->createForTestCaseObjectOnCallStack(
@@ -1085,7 +1085,7 @@ abstract class Assert
     final public static function assertObjectNotHasAttribute(string $attributeName, object $object, string $message = ''): void
     {
         if (!self::isValidObjectAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
+            throw new InvalidPropertyNameException($attributeName);
         }
 
         (new WarningUtil)->createForTestCaseObjectOnCallStack(
@@ -1156,7 +1156,7 @@ abstract class Assert
     final public static function assertInstanceOf(string $expected, mixed $actual, string $message = ''): void
     {
         if (!class_exists($expected) && !interface_exists($expected)) {
-            throw InvalidArgumentException::create(1, 'class or interface name');
+            throw new UnknownClassOrInterfaceException($expected);
         }
 
         static::assertThat(
@@ -1179,7 +1179,7 @@ abstract class Assert
     final public static function assertNotInstanceOf(string $expected, mixed $actual, string $message = ''): void
     {
         if (!class_exists($expected) && !interface_exists($expected)) {
-            throw InvalidArgumentException::create(1, 'class or interface name');
+            throw new UnknownClassOrInterfaceException($expected);
         }
 
         static::assertThat(
