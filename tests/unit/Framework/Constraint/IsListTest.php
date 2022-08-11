@@ -14,20 +14,20 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
 
-#[CoversClass(ArrayIsList::class)]
+#[CoversClass(IsList::class)]
 #[Small]
-final class ArrayIsListTest extends ConstraintTestCase
+final class IsListTest extends ConstraintTestCase
 {
-    public function testConstraintArrayIsListWhenEmpty(): void
+    public function testConstraintIsListWhenEmpty(): void
     {
-        $constraint = new ArrayIsList;
+        $constraint = new IsList;
 
         $this->assertTrue($constraint->evaluate([], '', true));
     }
 
-    public function testConstraintArrayIsNotList(): void
+    public function testConstraintIsNotList(): void
     {
-        $constraint = new ArrayIsList;
+        $constraint = new IsList;
 
         $this->assertFalse($constraint->evaluate([1 => 1], '', true));
         $this->assertEquals('is list', $constraint->toString());
@@ -51,9 +51,9 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintArrayIsNotListWithFilteredArray(): void
+    public function testConstraintIsNotListWithFilteredArray(): void
     {
-        $constraint = new ArrayIsList;
+        $constraint = new IsList;
 
         $this->assertFalse($constraint->evaluate([0 => 0, 1 => 1, 3 => 3], '', true));
         $this->assertEquals('is list', $constraint->toString());
@@ -77,9 +77,9 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintArrayIsNotListWithCustomMessage(): void
+    public function testConstraintIsNotListWithCustomMessage(): void
     {
-        $constraint = new ArrayIsList;
+        $constraint = new IsList;
 
         try {
             $constraint->evaluate([1 => 1], 'custom message');
@@ -100,9 +100,9 @@ EOF
         $this->fail();
     }
 
-    public function testConstraintArrayIsNotListWhenNotArray(): void
+    public function testConstraintIsNotListWhenNotArray(): void
     {
-        $constraint = new ArrayIsList;
+        $constraint = new IsList;
 
         try {
             $constraint->evaluate('not array');

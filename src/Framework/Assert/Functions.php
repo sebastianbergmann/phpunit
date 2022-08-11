@@ -14,7 +14,6 @@ use function function_exists;
 use ArrayAccess;
 use Countable;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
-use PHPUnit\Framework\Constraint\ArrayIsList;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\ClassHasAttribute;
 use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
@@ -35,6 +34,7 @@ use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
+use PHPUnit\Framework\Constraint\IsList;
 use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
@@ -105,7 +105,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertArrayIsList')) {
+if (!function_exists('PHPUnit\Framework\assertIsList')) {
     /**
      * Asserts that an array is list.
      *
@@ -114,11 +114,11 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsList')) {
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @see Assert::assertArrayIsList()
+     * @see Assert::assertIsList()
      */
-    function assertArrayIsList(array $array, string $message = ''): void
+    function assertIsList(array $array, string $message = ''): void
     {
-        Assert::assertArrayIsList(...func_get_args());
+        Assert::assertIsList(...func_get_args());
     }
 }
 
@@ -2400,10 +2400,10 @@ if (!function_exists('PHPUnit\Framework\arrayHasKey')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\arrayIsList')) {
-    function arrayIsList(): ArrayIsList
+if (!function_exists('PHPUnit\Framework\isList')) {
+    function isList(): IsList
     {
-        return Assert::arrayIsList();
+        return Assert::isList();
     }
 }
 

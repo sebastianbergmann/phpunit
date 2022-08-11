@@ -28,7 +28,6 @@ use Countable;
 use Generator;
 use PHPUnit\Event;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
-use PHPUnit\Framework\Constraint\ArrayIsList;
 use PHPUnit\Framework\Constraint\Callback;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
@@ -47,6 +46,7 @@ use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
+use PHPUnit\Framework\Constraint\IsList;
 use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
@@ -108,11 +108,11 @@ abstract class Assert
         static::assertThat($array, $constraint, $message);
     }
 
-    final public static function assertArrayIsList(array $array, string $message = ''): void
+    final public static function assertIsList(array $array, string $message = ''): void
     {
         static::assertThat(
             $array,
-            new ArrayIsList,
+            new IsList,
             $message
         );
     }
@@ -1975,9 +1975,9 @@ abstract class Assert
         return new ArrayHasKey($key);
     }
 
-    final public static function arrayIsList(): ArrayIsList
+    final public static function isList(): IsList
     {
-        return new ArrayIsList;
+        return new IsList;
     }
 
     final public static function equalTo(mixed $value): IsEqual

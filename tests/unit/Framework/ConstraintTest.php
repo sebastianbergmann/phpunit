@@ -79,7 +79,7 @@ EOF
     public function testConstraintArrayIsNotList(): void
     {
         $constraint = Assert::logicalNot(
-            Assert::arrayIsList()
+            Assert::isList()
         );
 
         try {
