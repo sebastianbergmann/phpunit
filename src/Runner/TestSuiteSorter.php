@@ -116,9 +116,7 @@ final class TestSuiteSorter
         ];
 
         if (!in_array($order, $allowedOrders, true)) {
-            throw new Exception(
-                '$order must be one of TestSuiteSorter::ORDER_[DEFAULT|REVERSED|RANDOMIZED|DURATION|SIZE]'
-            );
+            throw new InvalidOrderException;
         }
 
         $allowedOrderDefects = [
@@ -127,9 +125,7 @@ final class TestSuiteSorter
         ];
 
         if (!in_array($orderDefects, $allowedOrderDefects, true)) {
-            throw new Exception(
-                '$orderDefects must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST'
-            );
+            throw new InvalidOrderException;
         }
 
         if ($isRootTestSuite) {

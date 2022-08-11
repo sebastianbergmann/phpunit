@@ -18,11 +18,11 @@ use PHPUnit\Metadata\BackupGlobals;
 use PHPUnit\Metadata\BackupStaticProperties;
 use PHPUnit\Metadata\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
+use PHPUnit\Metadata\InvalidDataSetException;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Filter;
-use PHPUnit\Util\InvalidDataSetException;
 use ReflectionClass;
 use Throwable;
 

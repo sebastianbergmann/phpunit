@@ -91,7 +91,6 @@ use PHPUnit\Util\Error\Error;
 use PHPUnit\Util\Error\Handler as ErrorHandler;
 use PHPUnit\Util\Error\Notice;
 use PHPUnit\Util\Error\Warning as WarningError;
-use PHPUnit\Util\Exception as UtilException;
 use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
 use ReflectionClass;
@@ -538,7 +537,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
-     * @throws UtilException
      */
     final public function run(): void
     {

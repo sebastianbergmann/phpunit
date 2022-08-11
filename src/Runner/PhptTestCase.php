@@ -31,7 +31,6 @@ use function preg_replace;
 use function preg_split;
 use function realpath;
 use function rtrim;
-use function sprintf;
 use function str_contains;
 use function str_replace;
 use function str_starts_with;
@@ -76,12 +75,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     public function __construct(string $filename, AbstractPhpProcess $phpUtil = null)
     {
         if (!is_file($filename)) {
-            throw new Exception(
-                sprintf(
-                    'File "%s" does not exist.',
-                    $filename
-                )
-            );
+            throw new FileDoesNotExistException($filename);
         }
 
         $this->filename = $filename;
@@ -115,8 +109,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         try {
             $sections = $this->parse();
         } catch (Exception $e) {
-            $e = new Exception($e->getMessage());
-
             $emitter->testPrepared($this->valueObjectForEvents());
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
             $emitter->testFinished($this->valueObjectForEvents(), 0);
@@ -363,7 +355,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
         }
 
-        throw new Exception('No PHPT assertion found');
+        throw new InvalidPhptFileException;
     }
 
     private function shouldTestBeSkipped(array $sections, array $settings): bool
@@ -446,7 +438,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             }
 
             if (empty($section)) {
-                throw new Exception('Invalid PHPT file: empty section header');
+                throw new InvalidPhptFileException;
             }
 
             $sections[$section] .= $line;
@@ -460,14 +452,12 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $this->parseExternal($sections);
 
         if (!$this->validate($sections)) {
-            throw new Exception('Invalid PHPT file');
+            throw new InvalidPhptFileException;
         }
 
         foreach ($unsupportedSections as $section) {
             if (isset($sections[$section])) {
-                throw new Exception(
-                    "PHPUnit does not support PHPT {$section} sections"
-                );
+                throw new UnsupportedPhptSectionException($section);
             }
         }
 
@@ -493,12 +483,9 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
                 if (!is_file($testDirectory . $externalFilename) ||
                     !is_readable($testDirectory . $externalFilename)) {
-                    throw new Exception(
-                        sprintf(
-                            'Could not load --%s-- %s for PHPT file',
-                            $section . '_EXTERNAL',
-                            $testDirectory . $externalFilename
-                        )
+                    throw new PhptExternalFileCannotBeLoadedException(
+                        $section,
+                        $testDirectory . $externalFilename
                     );
                 }
 

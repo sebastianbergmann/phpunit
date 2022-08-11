@@ -12,12 +12,12 @@ namespace PHPUnit\Event\TestSuite;
 use function class_exists;
 use function explode;
 use PHPUnit\Event\Code\TestCollection;
+use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\PhptTestCase;
-use PHPUnit\Util\Exception;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionMethod;
@@ -90,7 +90,7 @@ abstract class TestSuite
                 );
                 // @codeCoverageIgnoreStart
             } catch (ReflectionException $e) {
-                throw new Exception(
+                throw new RuntimeException(
                     $e->getMessage(),
                     (int) $e->getCode(),
                     $e

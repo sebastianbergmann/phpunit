@@ -46,8 +46,8 @@ final class TestSuiteSorterTest extends TestCase
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('$order must be one of TestSuiteSorter::ORDER_[DEFAULT|REVERSED|RANDOMIZED|DURATION|SIZE]');
+        $this->expectException(InvalidOrderException::class);
+
         $sorter->reorderTestsInSuite($suite, -1, false, TestSuiteSorter::ORDER_DEFAULT);
     }
 
@@ -57,8 +57,8 @@ final class TestSuiteSorterTest extends TestCase
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('$orderDefects must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST');
+        $this->expectException(InvalidOrderException::class);
+
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, -1);
     }
 

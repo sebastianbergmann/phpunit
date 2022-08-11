@@ -16,8 +16,8 @@ use function file_get_contents;
 use function file_put_contents;
 use function is_dir;
 use function is_file;
-use function sprintf;
 use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\Runner\DirectoryCannotBeCreatedException;
 use PHPUnit\Runner\Exception;
 use PHPUnit\Util\Filesystem;
 
@@ -120,12 +120,7 @@ final class DefaultResultCache implements ResultCache
     public function persist(): void
     {
         if (!Filesystem::createDirectory(dirname($this->cacheFilename))) {
-            throw new Exception(
-                sprintf(
-                    'Cannot create directory "%s" for result cache file',
-                    $this->cacheFilename
-                )
-            );
+            throw new DirectoryCannotBeCreatedException($this->cacheFilename);
         }
 
         $data = [

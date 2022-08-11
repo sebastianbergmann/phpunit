@@ -116,7 +116,10 @@
       <code>$testSuite-&gt;getName()</code>
       <code>$testSuite-&gt;getName()</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="2"/>
+    <MissingThrowsDocblock occurrences="1"/>
+    <UndefinedClass occurrences="1">
+      <code>Exception</code>
+    </UndefinedClass>
   </file>
   <file src="src/Event/Value/TestSuite/TestSuiteForTestMethodWithDataProvider.php">
     <PropertyTypeCoercion occurrences="1">
@@ -493,6 +496,12 @@
       <code>explode('::', $value)</code>
       <code>trim($tmp[0])</code>
     </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="4">
+      <code>forClassName</code>
+      <code>forClassName</code>
+      <code>forMethod</code>
+      <code>forMethod</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/CodeCoverage.php">
     <InvalidNullableReturnType occurrences="2">
@@ -511,6 +520,9 @@
       <code>start</code>
       <code>stop</code>
     </PossiblyNullReference>
+  </file>
+  <file src="src/Runner/Extension/ExtensionHandler.php">
+    <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PossiblyNullArgument occurrences="1">
@@ -553,6 +565,7 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
+    <MissingThrowsDocblock occurrences="1"/>
     <UnresolvableInclude occurrences="1">
       <code>include_once $suiteClassFile</code>
     </UnresolvableInclude>

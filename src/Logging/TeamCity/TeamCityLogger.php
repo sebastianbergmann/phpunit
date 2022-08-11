@@ -36,7 +36,6 @@ use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\TestSuite\TestSuiteForTestMethodWithDataProvider;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\Exception as FrameworkException;
-use PHPUnit\Util\Exception;
 use PHPUnit\Util\Printer;
 
 /**
@@ -51,7 +50,6 @@ final class TeamCityLogger
 
     /**
      * @throws EventFacadeIsSealedException
-     * @throws Exception
      * @throws UnknownSubscriberTypeException
      */
     public function __construct(Printer $printer)

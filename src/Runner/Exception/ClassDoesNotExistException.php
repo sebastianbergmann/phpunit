@@ -14,6 +14,15 @@ use RuntimeException;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Exception extends RuntimeException implements \PHPUnit\Exception
+final class ClassDoesNotExistException extends RuntimeException implements Exception
 {
+    public function __construct(string $className)
+    {
+        parent::__construct(
+            sprintf(
+                'Class "%s" does not exist',
+                $className
+            )
+        );
+    }
 }

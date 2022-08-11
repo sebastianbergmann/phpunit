@@ -112,9 +112,7 @@ final class CodeCoverage
     private static function ensureIsActive(): void
     {
         if (self::$instance === null) {
-            throw new Exception(
-                'Code Coverage has not been set up'
-            );
+            throw new CodeCoverageIsNotActiveException;
         }
     }
 
@@ -124,9 +122,7 @@ final class CodeCoverage
     private static function ensureIsNotActive(): void
     {
         if (self::$instance !== null) {
-            throw new Exception(
-                'Code Coverage has not been set up'
-            );
+            throw new CodeCoverageIsActiveException;
         }
     }
 }

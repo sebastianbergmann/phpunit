@@ -15,9 +15,9 @@ use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Annotation\Parser\DocBlock;
 use PHPUnit\Metadata\Annotation\Parser\Registry;
+use PHPUnit\Metadata\ReflectionException;
 use PHPUnit\TestFixture\Metadata\Annotation\CoversTest;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
-use PHPUnit\Util\Exception;
 use ThisClassDoesNotExist;
 
 #[CoversClass(Registry::class)]
@@ -80,7 +80,7 @@ final class RegistryTest extends TestCase
     {
         $registry = Registry::getInstance();
 
-        $this->expectException(Exception::class);
+        $this->expectException(ReflectionException::class);
 
         $registry->forClassName(ThisClassDoesNotExist::class);
     }
@@ -89,7 +89,7 @@ final class RegistryTest extends TestCase
     {
         $registry = Registry::getInstance();
 
-        $this->expectException(Exception::class);
+        $this->expectException(ReflectionException::class);
 
         $registry->forMethod(self::class, 'thisMethodDoesNotExist');
     }

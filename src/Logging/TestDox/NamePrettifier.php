@@ -40,9 +40,9 @@ use function strtoupper;
 use function substr;
 use function trim;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Logging\Exception;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\Color;
-use PHPUnit\Util\Exception as UtilException;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionObject;
@@ -229,7 +229,7 @@ final class NamePrettifier
             $reflector = new ReflectionMethod($test::class, $test->getName(false));
             // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
-            throw new UtilException(
+            throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e

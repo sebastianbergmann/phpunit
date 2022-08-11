@@ -10,9 +10,8 @@
 namespace PHPUnit\Metadata\Annotation\Parser;
 
 use function array_key_exists;
-use PHPUnit\Util\Exception;
+use PHPUnit\Metadata\ReflectionException;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 
 /**
@@ -45,7 +44,7 @@ final class Registry
     }
 
     /**
-     * @throws Exception
+     * @throws ReflectionException
      * @psalm-param class-string $class
      */
     public function forClassName(string $class): DocBlock
@@ -57,8 +56,8 @@ final class Registry
         try {
             $reflection = new ReflectionClass($class);
             // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
+        } catch (\ReflectionException $e) {
+            throw new ReflectionException(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
@@ -70,7 +69,7 @@ final class Registry
     }
 
     /**
-     * @throws Exception
+     * @throws ReflectionException
      * @psalm-param class-string $classInHierarchy
      */
     public function forMethod(string $classInHierarchy, string $method): DocBlock
@@ -82,8 +81,8 @@ final class Registry
         try {
             $reflection = new ReflectionMethod($classInHierarchy, $method);
             // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
+        } catch (\ReflectionException $e) {
+            throw new ReflectionException(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
