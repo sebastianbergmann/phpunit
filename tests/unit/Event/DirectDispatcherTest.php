@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\DummyEvent;
 use PHPUnit\TestFixture\DummySubscriber;
-use PHPUnit\TestFixture\NullSubscriber;
 use PHPUnit\TestFixture\SpyingDummySubscriber;
 use RuntimeException;
 
@@ -22,7 +21,7 @@ final class DirectDispatcherTest extends TestCase
 {
     public function testRegisterRejectsUnknownSubscriber(): void
     {
-        $subscriber = new NullSubscriber;
+        $subscriber = $this->createStub(Subscriber::class);
 
         $dispatcher = new DirectDispatcher(new TypeMap);
 
