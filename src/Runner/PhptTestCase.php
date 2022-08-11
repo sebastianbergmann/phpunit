@@ -366,7 +366,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         throw new Exception('No PHPT assertion found');
     }
 
-    private function shouldTestBeSkipped(array &$sections, array $settings): bool
+    private function shouldTestBeSkipped(array $sections, array $settings): bool
     {
         if (!isset($sections['SKIPIF'])) {
             return false;
@@ -395,7 +395,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return false;
     }
 
-    private function runClean(array &$sections, bool $collectCoverage): void
+    private function runClean(array $sections, bool $collectCoverage): void
     {
         $this->phpUtil->setStdin('');
         $this->phpUtil->setArgs('');
@@ -507,7 +507,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
     }
 
-    private function validate(array &$sections): bool
+    private function validate(array $sections): bool
     {
         $requiredSections = [
             'FILE',
