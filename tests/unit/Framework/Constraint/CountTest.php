@@ -17,7 +17,6 @@ use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;
-use PHPUnit\TestFixture\TestGeneratorMaker;
 use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\TestFixture\TestIterator2;
 use PHPUnit\TestFixture\TestIteratorAggregate;
@@ -110,38 +109,6 @@ final class CountTest extends ConstraintTestCase
         $it->next();
         $countConstraint->evaluate($ia2, '', true);
         $this->assertFalse($it->valid());
-    }
-
-    public function testCountGeneratorsDoNotRewind(): void
-    {
-        $generatorMaker = new TestGeneratorMaker;
-
-        $countConstraint = new Count(3);
-
-        $generator = $generatorMaker->create([1, 2, 3]);
-        $this->assertEquals(1, $generator->current());
-        $countConstraint->evaluate($generator, '', true);
-        $this->assertEquals(null, $generator->current());
-
-        $countConstraint = new Count(2);
-
-        $generator = $generatorMaker->create([1, 2, 3]);
-        $this->assertEquals(1, $generator->current());
-        $generator->next();
-        $this->assertEquals(2, $generator->current());
-        $countConstraint->evaluate($generator, '', true);
-        $this->assertEquals(null, $generator->current());
-
-        $countConstraint = new Count(1);
-
-        $generator = $generatorMaker->create([1, 2, 3]);
-        $this->assertEquals(1, $generator->current());
-        $generator->next();
-        $this->assertEquals(2, $generator->current());
-        $generator->next();
-        $this->assertEquals(3, $generator->current());
-        $countConstraint->evaluate($generator, '', true);
-        $this->assertEquals(null, $generator->current());
     }
 
     public function testCountCanBeExportedToString(): void

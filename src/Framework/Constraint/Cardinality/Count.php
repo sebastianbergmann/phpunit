@@ -18,6 +18,7 @@ use Generator;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Framework\Exception;
+use PHPUnit\Framework\GeneratorNotSupportedException;
 use Traversable;
 
 /**
@@ -80,7 +81,7 @@ class Count extends Constraint
             $iterator = $other;
 
             if ($iterator instanceof Generator) {
-                return $this->getCountOfGenerator($iterator);
+                throw new GeneratorNotSupportedException;
             }
 
             if (!$iterator instanceof Iterator) {
@@ -104,19 +105,6 @@ class Count extends Constraint
         }
 
         return null;
-    }
-
-    /**
-     * Returns the total number of iterations from a generator.
-     * This will fully exhaust the generator.
-     */
-    protected function getCountOfGenerator(Generator $generator): int
-    {
-        for ($count = 0; $generator->valid(); $generator->next()) {
-            $count++;
-        }
-
-        return $count;
     }
 
     /**

@@ -71,7 +71,6 @@ use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
-use PHPUnit\Util\Warning as WarningUtil;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 /**
@@ -230,9 +229,7 @@ abstract class Assert
     final public static function assertCount(int $expectedCount, Countable|iterable $haystack, string $message = ''): void
     {
         if ($haystack instanceof Generator) {
-            (new WarningUtil)->createForTestCaseObjectOnCallStack(
-                'Passing an argument of type Generator for the $haystack parameter is deprecated. Support for this will be removed in PHPUnit 11.'
-            );
+            throw new GeneratorNotSupportedException;
         }
 
         static::assertThat(
