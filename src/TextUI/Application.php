@@ -301,7 +301,7 @@ final class Application
         $this->versionStringPrinted = true;
     }
 
-    private function exitWithErrorMessage(string $message): void
+    private function exitWithErrorMessage(string $message): never
     {
         $this->printVersionString();
 
@@ -310,7 +310,7 @@ final class Application
         exit(self::FAILURE_EXIT);
     }
 
-    private function execute(Command\Command $command): void
+    private function execute(Command\Command $command): never
     {
         $this->printVersionString();
 
