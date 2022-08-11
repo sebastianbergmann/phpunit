@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI;
 use const PATH_SEPARATOR;
 use const PHP_EOL;
 use function array_keys;
-use function assert;
 use function getcwd;
 use function ini_get;
 use function ini_set;
@@ -155,8 +154,6 @@ final class Application
         } catch (ArgumentsException $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
-
-        assert(isset($arguments) && $arguments instanceof CliConfiguration);
 
         if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
             $this->execute(new GenerateConfigurationCommand);

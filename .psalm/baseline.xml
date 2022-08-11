@@ -596,11 +596,6 @@
     <PossiblyNullReference occurrences="1">
       <code>extensions</code>
     </PossiblyNullReference>
-    <RedundantCondition occurrences="3">
-      <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
-      <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
-      <code>isset($arguments)</code>
-    </RedundantCondition>
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>
