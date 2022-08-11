@@ -24,9 +24,7 @@ final class ComparisonMethodDoesNotDeclareExactlyOneParameterException extends E
                 'Comparison method %s::%s() does not declare exactly one parameter.',
                 $className,
                 $methodName
-            ),
-            0,
-            null
+            )
         );
     }
 

@@ -19,9 +19,7 @@ final class ActualValueIsNotAnObjectException extends Exception
     public function __construct()
     {
         parent::__construct(
-            'Actual value is not an object',
-            0,
-            null
+            'Actual value is not an object'
         );
     }
 

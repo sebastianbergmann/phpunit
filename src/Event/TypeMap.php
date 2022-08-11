@@ -39,7 +39,7 @@ final class TypeMap
      */
     public function addMapping(string $subscriberInterface, string $eventClass): void
     {
-        if (!interface_exists($subscriberInterface, true)) {
+        if (!interface_exists($subscriberInterface)) {
             throw new UnknownSubscriberException(
                 sprintf(
                     'Subscriber "%s" does not exist or is not an interface',
@@ -48,7 +48,7 @@ final class TypeMap
             );
         }
 
-        if (!class_exists($eventClass, true)) {
+        if (!class_exists($eventClass)) {
             throw new UnknownEventException(
                 sprintf(
                     'Event class "%s" does not exist',

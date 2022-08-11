@@ -34,7 +34,7 @@ final class Extensions implements IteratorAggregate
     {
         $all = array_merge(
             get_loaded_extensions(true),
-            get_loaded_extensions(false)
+            get_loaded_extensions()
         );
 
         asort($all);

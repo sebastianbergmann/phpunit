@@ -310,7 +310,7 @@ final class TestRunner
 
         $configurationFilePath = $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] ?? '';
 
-        $offset = hrtime(false);
+        $offset = hrtime();
 
         $serializedConfiguration = $this->saveConfigurationForChildProcess();
 
