@@ -1877,10 +1877,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $enumerator = new Enumerator;
 
-        foreach ($enumerator->enumerate($this->dependencyInput) as $object) {
-            if ($mock === $object) {
-                return false;
-            }
+        if (in_array($mock, $enumerator->enumerate($this->dependencyInput), true)) {
+            return false;
         }
 
         if (!is_array($this->testResult) && !is_object($this->testResult)) {
