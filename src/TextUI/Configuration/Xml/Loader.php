@@ -292,7 +292,7 @@ final class Loader
                 }
 
                 if ($argument->tagName === 'file' || $argument->tagName === 'directory') {
-                    $arguments[] = $this->toAbsolutePath($filename, (string) $argument->textContent);
+                    $arguments[] = $this->toAbsolutePath($filename, $argument->textContent);
                 } else {
                     $arguments[] = Xml::xmlToVariable($argument);
                 }
@@ -498,7 +498,7 @@ final class Loader
         foreach ($xpath->query($query) as $directoryNode) {
             assert($directoryNode instanceof DOMElement);
 
-            $directoryPath = (string) $directoryNode->textContent;
+            $directoryPath = $directoryNode->textContent;
 
             if (!$directoryPath) {
                 continue;
@@ -520,7 +520,7 @@ final class Loader
         $files = [];
 
         foreach ($xpath->query($query) as $file) {
-            $filePath = (string) $file->textContent;
+            $filePath = $file->textContent;
 
             if ($filePath) {
                 $files[] = new File($this->toAbsolutePath($filename, $filePath));
@@ -546,11 +546,11 @@ final class Loader
         $exclude = [];
 
         foreach ($xpath->query($root . '/include/group') as $group) {
-            $include[] = new Group((string) $group->textContent);
+            $include[] = new Group($group->textContent);
         }
 
         foreach ($xpath->query($root . '/exclude/group') as $group) {
-            $exclude[] = new Group((string) $group->textContent);
+            $exclude[] = new Group($group->textContent);
         }
 
         return new Groups(
@@ -615,7 +615,7 @@ final class Loader
         $includePaths = [];
 
         foreach ($xpath->query('php/includePath') as $includePath) {
-            $path = (string) $includePath->textContent;
+            $path = $includePath->textContent;
 
             if ($path) {
                 $includePaths[] = new Directory($this->toAbsolutePath($filename, $path));
@@ -886,7 +886,7 @@ final class Loader
             $exclude = [];
 
             foreach ($element->getElementsByTagName('exclude') as $excludeNode) {
-                $excludeFile = (string) $excludeNode->textContent;
+                $excludeFile = $excludeNode->textContent;
 
                 if ($excludeFile) {
                     $exclude[] = new File($this->toAbsolutePath($filename, $excludeFile));
@@ -898,7 +898,7 @@ final class Loader
             foreach ($element->getElementsByTagName('directory') as $directoryNode) {
                 assert($directoryNode instanceof DOMElement);
 
-                $directory = (string) $directoryNode->textContent;
+                $directory = $directoryNode->textContent;
 
                 if (empty($directory)) {
                     continue;
@@ -942,7 +942,7 @@ final class Loader
             foreach ($element->getElementsByTagName('file') as $fileNode) {
                 assert($fileNode instanceof DOMElement);
 
-                $file = (string) $fileNode->textContent;
+                $file = $fileNode->textContent;
 
                 if (empty($file)) {
                     continue;

@@ -307,7 +307,7 @@ final class MockMethod
             $defaultValue = $parameter->getDefaultValue();
 
             if (!is_object($defaultValue)) {
-                return (string) var_export($defaultValue, true);
+                return var_export($defaultValue, true);
             }
 
             $parameterAsString = $parameter->__toString();

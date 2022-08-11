@@ -300,9 +300,6 @@
     <PossiblyFalseOperand occurrences="1">
       <code>strpos($parameterAsString, '&lt;optional&gt; ')</code>
     </PossiblyFalseOperand>
-    <RedundantCastGivenDocblockType occurrences="1">
-      <code>(string) var_export($defaultValue, true)</code>
-    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <PropertyNotSetInConstructor occurrences="1">
@@ -485,11 +482,6 @@
       <code>$className</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
-  </file>
-  <file src="src/Metadata/Parser/Annotation/DocBlock.php">
-    <RedundantCast occurrences="1">
-      <code>(string) $matches['value'][$i]</code>
-    </RedundantCast>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
     <ArgumentTypeCoercion occurrences="7">
@@ -801,17 +793,6 @@
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
-    <RedundantCast occurrences="9">
-      <code>(string) $argument-&gt;textContent</code>
-      <code>(string) $directoryNode-&gt;textContent</code>
-      <code>(string) $directoryNode-&gt;textContent</code>
-      <code>(string) $excludeNode-&gt;textContent</code>
-      <code>(string) $file-&gt;textContent</code>
-      <code>(string) $fileNode-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $includePath-&gt;textContent</code>
-    </RedundantCast>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
