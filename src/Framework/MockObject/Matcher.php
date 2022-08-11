@@ -214,11 +214,7 @@ final class Matcher
 
     public function toString(): string
     {
-        $list = [];
-
-        if ($this->invocationRule !== null) {
-            $list[] = $this->invocationRule->toString();
-        }
+        $list = [$this->invocationRule->toString()];
 
         if ($this->methodNameRule !== null) {
             $list[] = 'where ' . $this->methodNameRule->toString();

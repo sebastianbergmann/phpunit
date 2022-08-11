@@ -276,9 +276,6 @@
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;methodNameRule</code>
     </NullableReturnStatement>
-    <RedundantCondition occurrences="1">
-      <code>$this-&gt;invocationRule !== null</code>
-    </RedundantCondition>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <ArgumentTypeCoercion occurrences="4">
