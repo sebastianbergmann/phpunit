@@ -663,7 +663,7 @@ final class TestRunner
         );
     }
 
-    private function codeCoverageGenerationFailed(\Exception $e): void
+    private function codeCoverageGenerationFailed(CodeCoverageException $e): void
     {
         $this->write(
             sprintf(

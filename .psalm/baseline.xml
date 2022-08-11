@@ -981,14 +981,6 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <InvalidArgument occurrences="6">
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-    </InvalidArgument>
     <MissingThrowsDocblock occurrences="41">
       <code>bootstrap</code>
       <code>configurationFile</code>
