@@ -714,7 +714,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         return $line;
     }
 
-    private function getLocationHint(string $needle, array $sections, ?string $sectionName = null): array
+    private function getLocationHint(string $needle, array $sections): array
     {
         $needle = trim($needle);
 
@@ -725,18 +725,12 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             ]];
         }
 
-        if ($sectionName) {
-            $search = [$sectionName];
-        } else {
-            $search = [
-                // 'FILE',
-                'EXPECT',
-                'EXPECTF',
-                'EXPECTREGEX',
-            ];
-        }
-
-        $sectionOffset = null;
+        $search = [
+            // 'FILE',
+            'EXPECT',
+            'EXPECTF',
+            'EXPECTREGEX',
+        ];
 
         foreach ($search as $section) {
             if (!isset($sections[$section])) {
@@ -763,28 +757,24 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
             foreach (preg_split('/\r\n|\r|\n/', $sections[$section]) as $line) {
                 if (str_contains($line, $needle)) {
-                    return [[
-                        'file' => realpath($this->filename),
-                        'line' => $offset,
-                    ]];
+                    return [
+                        [
+                            'file' => realpath($this->filename),
+                            'line' => $offset,
+                        ],
+                    ];
                 }
+
                 $offset++;
             }
         }
 
-        if ($sectionName) {
-            // String not found in specified section, show user the start of the named section
-            return [[
+        return [
+            [
                 'file' => realpath($this->filename),
-                'line' => $sectionOffset,
-            ]];
-        }
-
-        // No section specified, show user start of code
-        return [[
-            'file' => realpath($this->filename),
-            'line' => 1,
-        ]];
+                'line' => 1,
+            ],
+        ];
     }
 
     /**
