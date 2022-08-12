@@ -281,20 +281,17 @@ final class TestResult
         return $this->numberOfTestRunnerTriggeredWarningEvents() > 0;
     }
 
-    /**
-     * @todo
-     */
     public function hasWarningEvents(): bool
     {
-        return false;
+        return !empty($this->testTriggeredWarningEvents) ||
+               !empty($this->testTriggeredPhpWarningEvents) ||
+               !empty($this->testTriggeredPhpunitWarningEvents) ||
+               !empty($this->testRunnerTriggeredWarningEvents);
     }
 
-    /**
-     * @todo
-     */
     public function wasSuccessful(): bool
     {
-        return $this->wasSuccessfulIgnoringWarnings() && true;
+        return $this->wasSuccessfulIgnoringWarnings() && !$this->hasWarningEvents();
     }
 
     public function wasSuccessfulIgnoringWarnings(): bool

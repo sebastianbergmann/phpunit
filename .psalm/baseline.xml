@@ -563,11 +563,6 @@
       <code>new Collector</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Runner/TestResult/TestResult.php">
-    <RedundantCondition occurrences="1">
-      <code>true</code>
-    </RedundantCondition>
-  </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <MissingThrowsDocblock occurrences="1"/>
     <UnresolvableInclude occurrences="1">

@@ -467,11 +467,11 @@ final class Collector
         $this->testRunnerTriggeredWarningEvents[] = $event;
     }
 
-    /**
-     * @todo
-     */
     public function hasWarningEvents(): bool
     {
-        return false;
+        return !empty($this->testTriggeredWarningEvents) ||
+               !empty($this->testTriggeredPhpWarningEvents) ||
+               !empty($this->testTriggeredPhpunitWarningEvents) ||
+               !empty($this->testRunnerTriggeredWarningEvents);
     }
 }
