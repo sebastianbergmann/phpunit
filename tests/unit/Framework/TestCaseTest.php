@@ -226,19 +226,4 @@ class TestCaseTest extends TestCase
 
         trigger_error('foo', E_USER_ERROR);
     }
-
-    /**
-     * @return array<string, array>
-     */
-    private function getAutoreferencedArray(): array
-    {
-        $recursionData   = [];
-        $recursionData[] = &$recursionData;
-
-        return [
-            'RECURSION' => [
-                'data' => $recursionData,
-            ],
-        ];
-    }
 }
