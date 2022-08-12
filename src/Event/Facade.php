@@ -170,7 +170,6 @@ final class Facade
             Test\Finished::class,
             Test\NoticeTriggered::class,
             Test\Passed::class,
-            Test\PassedWithWarning::class,
             Test\PhpDeprecationTriggered::class,
             Test\PhpErrorTriggered::class,
             Test\PhpNoticeTriggered::class,

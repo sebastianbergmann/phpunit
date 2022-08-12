@@ -19,7 +19,6 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
-use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\UnknownSubscriberTypeException;
@@ -97,14 +96,6 @@ final class ResultCacheHandler
         );
     }
 
-    public function testPassedWithWarning(PassedWithWarning $event): void
-    {
-        $this->cache->setStatus(
-            $event->test()->id(),
-            TestStatus::warning($event->throwable()->message())
-        );
-    }
-
     public function testSkipped(Skipped $event): void
     {
         $this->cache->setStatus(
@@ -147,7 +138,6 @@ final class ResultCacheHandler
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
     }

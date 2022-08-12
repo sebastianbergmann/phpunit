@@ -391,7 +391,7 @@ final class Application
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnWarning() && $result->hasTestPassedWithWarningEvents()) {
+            if ($configuration->failOnWarning() && $result->hasWarningEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 

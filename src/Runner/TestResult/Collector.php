@@ -23,7 +23,6 @@ use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\Passed;
-use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
@@ -71,11 +70,6 @@ final class Collector
      * @psalm-var list<Failed>
      */
     private array $testFailedEvents = [];
-
-    /**
-     * @psalm-var list<PassedWithWarning>
-     */
-    private array $testPassedWithWarningEvents = [];
 
     /**
      * @psalm-var list<MarkedIncomplete>
@@ -162,7 +156,6 @@ final class Collector
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestPassedSubscriber($this));
-        Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
         Facade::registerSubscriber(new TestSkippedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
@@ -187,7 +180,6 @@ final class Collector
             $this->numberOfAssertions,
             $this->testErroredEvents,
             $this->testFailedEvents,
-            $this->testPassedWithWarningEvents,
             $this->testConsideredRiskyEvents,
             $this->testSkippedEvents,
             $this->testMarkedIncompleteEvents,
@@ -213,11 +205,6 @@ final class Collector
     public function hasTestFailedEvents(): bool
     {
         return !empty($this->testFailedEvents);
-    }
-
-    public function hasTestPassedWithWarningEvents(): bool
-    {
-        return !empty($this->testPassedWithWarningEvents);
     }
 
     public function hasTestConsideredRiskyEvents(): bool
@@ -362,11 +349,6 @@ final class Collector
         ];
     }
 
-    public function testPassedWithWarning(PassedWithWarning $event): void
-    {
-        $this->testPassedWithWarningEvents[] = $event;
-    }
-
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         $this->testMarkedIncompleteEvents[] = $event;
@@ -483,5 +465,13 @@ final class Collector
     public function testRunnerTriggeredWarning(TestRunnerWarningTriggered $event): void
     {
         $this->testRunnerTriggeredWarningEvents[] = $event;
+    }
+
+    /**
+     * @todo
+     */
+    public function hasWarningEvents(): bool
+    {
+        return false;
     }
 }

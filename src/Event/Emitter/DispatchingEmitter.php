@@ -192,17 +192,6 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\PassedWithWarning(
-                $this->telemetryInfo(),
-                $test,
-                $throwable
-            )
-        );
-    }
-
     public function testConsideredRisky(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(

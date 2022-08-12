@@ -52,7 +52,6 @@ final class ResultPrinter
     public function printResult(TestResult $result): void
     {
         $this->printTestsWithErrors($result);
-        $this->printTestsWithWarnings($result);
         $this->printTestsWithFailedAssertions($result);
         $this->printRiskyTests($result);
 
@@ -118,10 +117,6 @@ final class ResultPrinter
         }
 
         $this->printList(count($elements), $elements, 'failure');
-    }
-
-    private function printTestsWithWarnings(TestResult $result): void
-    {
     }
 
     private function printRiskyTests(TestResult $result): void
@@ -309,11 +304,6 @@ final class ResultPrinter
                     $color,
                     'FAILURES!'
                 );
-            } elseif ($result->hasTestPassedWithWarningEvents()) {
-                $this->printWithColor(
-                    $color,
-                    'WARNINGS!'
-                );
             }
         }
 
@@ -321,7 +311,6 @@ final class ResultPrinter
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
         $this->printCountString($result->numberOfTestErroredEvents(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
-        $this->printCountString($result->numberOfTestPassedWithWarningEvents(), 'Warnings', $color);
         $this->printCountString($result->numberOfTestSkippedEvents(), 'Skipped', $color);
         $this->printCountString($result->numberOfTestMarkedIncompleteEvents(), 'Incomplete', $color);
         $this->printCountString($result->numberOfTestsWithTestConsideredRiskyEvents(), 'Risky', $color);

@@ -52,8 +52,6 @@ interface Emitter
 
     public function testPassed(Code\Test $test, mixed $testMethodReturnValue): void;
 
-    public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void;
-
     public function testConsideredRisky(Code\Test $test, string $message): void;
 
     public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void;

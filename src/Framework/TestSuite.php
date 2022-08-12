@@ -597,7 +597,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return true;
         }
 
-        if (($this->stopOnDefect || $this->stopOnWarning) && Facade::hasTestPassedWithWarningEvents()) {
+        if (($this->stopOnDefect || $this->stopOnWarning) && Facade::hasWarningEvents()) {
             return true;
         }
 

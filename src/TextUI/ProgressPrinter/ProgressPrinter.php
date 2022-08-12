@@ -82,11 +82,6 @@ final class ProgressPrinter
         $this->updateTestStatus(TestStatus::risky());
     }
 
-    public function testPassedWithWarning(): void
-    {
-        $this->updateTestStatus(TestStatus::warning());
-    }
-
     public function testFailed(): void
     {
         $this->updateTestStatus(TestStatus::failure());
@@ -142,7 +137,6 @@ final class ProgressPrinter
         Facade::registerSubscriber(new TestPreparedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
-        Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));

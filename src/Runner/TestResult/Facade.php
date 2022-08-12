@@ -54,9 +54,9 @@ final class Facade
         return self::collector()->hasTestFailedEvents();
     }
 
-    public static function hasTestPassedWithWarningEvents(): bool
+    public static function hasWarningEvents(): bool
     {
-        return self::collector()->hasTestPassedWithWarningEvents();
+        return self::collector()->hasWarningEvents();
     }
 
     public static function hasTestConsideredRiskyEvents(): bool

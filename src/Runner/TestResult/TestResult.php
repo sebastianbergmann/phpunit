@@ -18,7 +18,6 @@ use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\NoticeTriggered;
-use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
@@ -47,11 +46,6 @@ final class TestResult
      * @psalm-var list<Failed>
      */
     private array $testFailedEvents;
-
-    /**
-     * @psalm-var list<PassedWithWarning>
-     */
-    private array $testPassedWithWarningEvents;
 
     /**
      * @psalm-var list<MarkedIncomplete>
@@ -126,7 +120,6 @@ final class TestResult
     /**
      * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $testErroredEvents
      * @psalm-param list<Failed> $testFailedEvents
-     * @psalm-param list<PassedWithWarning> $testPassedWithWarningEvents
      * @psalm-param array<string,list<ConsideredRisky>> $testConsideredRiskyEvents
      * @psalm-param list<Skipped> $testSkippedEvents
      * @psalm-param list<MarkedIncomplete> $testMarkedIncompleteEvents
@@ -142,14 +135,13 @@ final class TestResult
      * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
      */
-    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testPassedWithWarningEvents, array $testConsideredRiskyEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredDeprecationEvents, array $testTriggeredPhpDeprecationEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredPhpErrorEvents, array $testTriggeredNoticeEvents, array $testTriggeredPhpNoticeEvents, array $testTriggeredWarningEvents, array $testTriggeredPhpWarningEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredWarningEvents)
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredDeprecationEvents, array $testTriggeredPhpDeprecationEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredPhpErrorEvents, array $testTriggeredNoticeEvents, array $testTriggeredPhpNoticeEvents, array $testTriggeredWarningEvents, array $testTriggeredPhpWarningEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredWarningEvents)
     {
         $this->numberOfTests                         = $numberOfTests;
         $this->numberOfTestsRun                      = $numberOfTestsRun;
         $this->numberOfAssertions                    = $numberOfAssertions;
         $this->testErroredEvents                     = $testErroredEvents;
         $this->testFailedEvents                      = $testFailedEvents;
-        $this->testPassedWithWarningEvents           = $testPassedWithWarningEvents;
         $this->testConsideredRiskyEvents             = $testConsideredRiskyEvents;
         $this->testSkippedEvents                     = $testSkippedEvents;
         $this->testMarkedIncompleteEvents            = $testMarkedIncompleteEvents;
@@ -215,24 +207,6 @@ final class TestResult
     public function hasTestFailedEvents(): bool
     {
         return $this->numberOfTestFailedEvents() > 0;
-    }
-
-    /**
-     * @psalm-return list<PassedWithWarning>
-     */
-    public function testPassedWithWarningEvents(): array
-    {
-        return $this->testPassedWithWarningEvents;
-    }
-
-    public function numberOfTestPassedWithWarningEvents(): int
-    {
-        return count($this->testPassedWithWarningEvents);
-    }
-
-    public function hasTestPassedWithWarningEvents(): bool
-    {
-        return $this->numberOfTestPassedWithWarningEvents() > 0;
     }
 
     /**
@@ -307,9 +281,20 @@ final class TestResult
         return $this->numberOfTestRunnerTriggeredWarningEvents() > 0;
     }
 
+    /**
+     * @todo
+     */
+    public function hasWarningEvents(): bool
+    {
+        return false;
+    }
+
+    /**
+     * @todo
+     */
     public function wasSuccessful(): bool
     {
-        return $this->wasSuccessfulIgnoringWarnings() && !$this->hasTestPassedWithWarningEvents();
+        return $this->wasSuccessfulIgnoringWarnings() && true;
     }
 
     public function wasSuccessfulIgnoringWarnings(): bool

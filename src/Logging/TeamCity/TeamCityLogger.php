@@ -27,7 +27,6 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
-use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
@@ -212,17 +211,6 @@ final class TeamCityLogger
         );
     }
 
-    public function testPassedWithWarning(PassedWithWarning $event): void
-    {
-        if ($this->time === null) {
-            $this->time = $event->telemetryInfo()->time();
-        }
-
-        if (!empty($event->throwable()->message())) {
-            $this->printer->print($event->throwable()->message() . "\n");
-        }
-    }
-
     public function testConsideredRisky(ConsideredRisky $event): void
     {
         if ($this->time === null) {
@@ -268,7 +256,6 @@ final class TeamCityLogger
         Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
         Facade::registerSubscriber(new TestPreparedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
