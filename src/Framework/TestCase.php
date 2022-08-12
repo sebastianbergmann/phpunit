@@ -182,12 +182,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $outputBufferingActive      = false;
     private int $outputBufferingLevel;
     private bool $outputRetrievedForAssertion = false;
-
-    /**
-     * @psalm-var list<string>
-     */
-    private array $warnings                = [];
-    private bool $doesNotPerformAssertions = false;
+    private bool $doesNotPerformAssertions    = false;
 
     /**
      * @psalm-var list<Comparator>
@@ -729,15 +724,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->verifyMockObjects();
             $this->invokePostConditionHookMethods($hookMethods, $emitter);
 
-            if (!empty($this->warnings)) {
-                throw new Warning(
-                    implode(
-                        "\n",
-                        array_unique($this->warnings)
-                    )
-                );
-            }
-
             $this->status = TestStatus::success();
         } catch (IncompleteTest $e) {
             $this->status = TestStatus::incomplete($e->getMessage());
@@ -1036,14 +1022,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function getProvidedData(): array
     {
         return $this->data;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function addWarning(string $warning): void
-    {
-        $this->warnings[] = $warning;
     }
 
     /**
@@ -1549,7 +1527,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * @throws SkippedTest
-     * @throws Warning
      */
     private function checkRequirements(): void
     {

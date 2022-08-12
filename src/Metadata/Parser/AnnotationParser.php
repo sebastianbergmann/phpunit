@@ -18,7 +18,6 @@ use function str_starts_with;
 use function strlen;
 use function substr;
 use function trim;
-use PHPUnit\Framework\Warning;
 use PHPUnit\Metadata\Annotation\Parser\Registry as AnnotationRegistry;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
@@ -33,8 +32,6 @@ final class AnnotationParser implements Parser
 {
     /**
      * @psalm-param class-string $className
-     *
-     * @throws Warning
      */
     public function forClass(string $className): MetadataCollection
     {
@@ -154,8 +151,6 @@ final class AnnotationParser implements Parser
 
     /**
      * @psalm-param class-string $className
-     *
-     * @throws Warning
      */
     public function forMethod(string $className, string $methodName): MetadataCollection
     {
@@ -369,8 +364,6 @@ final class AnnotationParser implements Parser
 
     /**
      * @psalm-param class-string $className
-     *
-     * @throws Warning
      */
     public function forClassAndMethod(string $className, string $methodName): MetadataCollection
     {

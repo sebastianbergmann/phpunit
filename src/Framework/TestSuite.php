@@ -311,7 +311,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
-     * @throws Warning
      */
     public function run(): void
     {

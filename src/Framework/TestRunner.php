@@ -70,7 +70,6 @@ final class TestRunner
 
         $error      = false;
         $failure    = false;
-        $warning    = false;
         $incomplete = false;
         $risky      = false;
         $skipped    = false;
@@ -117,8 +116,6 @@ final class TestRunner
                     $frame['line']
                 )
             );
-        } catch (Warning $e) {
-            $warning = true;
         } catch (Exception $e) {
             $error = true;
         } catch (Throwable $e) {
@@ -133,7 +130,7 @@ final class TestRunner
             $risky = true;
         }
 
-        if (!$error && !$failure && !$warning && !$incomplete && !$skipped && !$risky &&
+        if (!$error && !$failure && !$incomplete && !$skipped && !$risky &&
             $this->configuration->requireCoverageMetadata() &&
             !$this->hasCoverageMetadata($test::class, $test->getName(false))) {
             Event\Facade::emitter()->testConsideredRisky(
@@ -192,7 +189,6 @@ final class TestRunner
 
         if ($error && isset($e)) {
         } elseif ($failure && isset($e)) {
-        } elseif ($warning && isset($e)) {
         } elseif ($this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
