@@ -79,7 +79,6 @@ final class TestRunner
 
         $collectCodeCoverage = CodeCoverage::isActive() &&
                                !$test instanceof ErrorTestCase &&
-                               !$test instanceof WarningTestCase &&
                                $shouldCodeCoverageBeCollected;
 
         if ($collectCodeCoverage) {
@@ -397,10 +396,6 @@ final class TestRunner
     private function shouldTimeLimitBeEnforced(TestCase $test): bool
     {
         if ($test instanceof ErrorTestCase) {
-            return false;
-        }
-
-        if ($test instanceof WarningTestCase) {
             return false;
         }
 

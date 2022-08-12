@@ -20,7 +20,6 @@ use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Framework\SkippedTestCase;
-use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversFunction;
@@ -211,7 +210,7 @@ final class CodeCoverage
      */
     public function shouldCodeCoverageBeCollectedFor(string $className, string $methodName): bool
     {
-        if (in_array($className, [ErrorTestCase::class, IncompleteTestCase::class, SkippedTestCase::class, WarningTestCase::class], true)) {
+        if (in_array($className, [ErrorTestCase::class, IncompleteTestCase::class, SkippedTestCase::class], true)) {
             return false;
         }
 

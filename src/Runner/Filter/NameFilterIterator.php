@@ -20,7 +20,6 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Util\RegularExpression;
 use RecursiveFilterIterator;
 use RecursiveIterator;
@@ -54,7 +53,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
 
         $tmp = $this->describe($test);
 
-        if ($test instanceof ErrorTestCase || $test instanceof WarningTestCase) {
+        if ($test instanceof ErrorTestCase) {
             $name = $test->getMessage();
         } elseif ($tmp[0] !== '') {
             $name = implode('::', $tmp);

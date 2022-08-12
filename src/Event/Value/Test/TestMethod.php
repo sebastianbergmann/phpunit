@@ -18,7 +18,6 @@ use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\VariableExporter;
@@ -48,8 +47,7 @@ final class TestMethod extends Test
 
         if ($testCase instanceof ErrorTestCase ||
             $testCase instanceof IncompleteTestCase ||
-            $testCase instanceof SkippedTestCase ||
-            $testCase instanceof WarningTestCase) {
+            $testCase instanceof SkippedTestCase) {
             $className  = $testCase->className();
             $methodName = $testCase->methodName();
         }
