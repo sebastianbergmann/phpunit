@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Error;
+namespace PHPUnit\Util;
 
 use const E_DEPRECATED;
 use const E_NOTICE;
@@ -22,20 +22,15 @@ use function restore_error_handler;
 use function set_error_handler;
 use PHPUnit\Event;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Util\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Handler
+final class ErrorHandler
 {
-    private static ?self $instance                = null;
-    private bool $enabled                         = false;
-    private bool $convertDeprecationsToExceptions = false;
-    private bool $convertErrorsToExceptions       = false;
-    private bool $convertNoticesToExceptions      = false;
-    private bool $convertWarningsToExceptions     = false;
-    private bool $ignoreWarnings                  = false;
+    private static ?self $instance = null;
+    private bool $enabled          = false;
+    private bool $ignoreWarnings   = false;
 
     public static function instance(): self
     {
@@ -43,11 +38,7 @@ final class Handler
     }
 
     /**
-     * @throws Deprecation
-     * @throws Error
      * @throws Exception
-     * @throws Notice
-     * @throws Warning
      */
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
@@ -70,10 +61,6 @@ final class Handler
                     $errorLine
                 );
 
-                if ($this->convertNoticesToExceptions) {
-                    throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
-                }
-
                 return true;
 
             case E_USER_NOTICE:
@@ -83,10 +70,6 @@ final class Handler
                     $errorFile,
                     $errorLine
                 );
-
-                if ($this->convertNoticesToExceptions) {
-                    throw new Notice($errorString, $errorNumber, $errorFile, $errorLine);
-                }
 
                 break;
 
@@ -102,10 +85,6 @@ final class Handler
                     $errorLine
                 );
 
-                if ($this->convertWarningsToExceptions) {
-                    throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
-                }
-
                 break;
 
             case E_USER_WARNING:
@@ -115,10 +94,6 @@ final class Handler
                     $errorFile,
                     $errorLine
                 );
-
-                if ($this->convertWarningsToExceptions) {
-                    throw new Warning($errorString, $errorNumber, $errorFile, $errorLine);
-                }
 
                 break;
 
@@ -130,10 +105,6 @@ final class Handler
                     $errorLine
                 );
 
-                if ($this->convertDeprecationsToExceptions) {
-                    throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
-                }
-
                 break;
 
             case E_USER_DEPRECATED:
@@ -143,10 +114,6 @@ final class Handler
                     $errorFile,
                     $errorLine
                 );
-
-                if ($this->convertDeprecationsToExceptions) {
-                    throw new Deprecation($errorString, $errorNumber, $errorFile, $errorLine);
-                }
 
                 break;
 
@@ -158,10 +125,6 @@ final class Handler
                     $errorLine
                 );
 
-                if ($this->convertErrorsToExceptions) {
-                    throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
-                }
-
                 break;
 
             default:
@@ -171,10 +134,6 @@ final class Handler
                     $errorFile,
                     $errorLine
                 );
-
-                if ($this->convertErrorsToExceptions) {
-                    throw new Error($errorString, $errorNumber, $errorFile, $errorLine);
-                }
         }
 
         return true;
@@ -211,46 +170,6 @@ final class Handler
     public function isDisabled(): bool
     {
         return !$this->enabled;
-    }
-
-    public function convertDeprecationsToExceptions(): void
-    {
-        $this->convertDeprecationsToExceptions = true;
-    }
-
-    public function doNotConvertDeprecationsToExceptions(): void
-    {
-        $this->convertDeprecationsToExceptions = false;
-    }
-
-    public function convertErrorsToExceptions(): void
-    {
-        $this->convertErrorsToExceptions = true;
-    }
-
-    public function doNotConvertErrorsToExceptions(): void
-    {
-        $this->convertErrorsToExceptions = false;
-    }
-
-    public function convertNoticesToExceptions(): void
-    {
-        $this->convertNoticesToExceptions = true;
-    }
-
-    public function doNotConvertNoticesToExceptions(): void
-    {
-        $this->convertNoticesToExceptions = false;
-    }
-
-    public function convertWarningsToExceptions(): void
-    {
-        $this->convertWarningsToExceptions = true;
-    }
-
-    public function doNotConvertWarningsToExceptions(): void
-    {
-        $this->convertWarningsToExceptions = false;
     }
 
     public function ignoreWarnings(): void

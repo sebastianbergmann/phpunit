@@ -341,7 +341,23 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="9">
+    <MissingThrowsDocblock occurrences="29">
+      <code>Facade::ignoredEvent()</code>
+      <code>Facade::ignoredEvent()</code>
+      <code>Facade::ignoredEvent()</code>
+      <code>Facade::ignoredEvent()</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
       <code>generateClassFromWsdl</code>
       <code>getMock</code>
       <code>getMock</code>
@@ -351,10 +367,20 @@
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
       <code>onlyMethods</code>
+      <code>throw new AssertionFailedError('Failed asserting that a deprecation is triggered');</code>
+      <code>throw new AssertionFailedError('Failed asserting that a notice is triggered');</code>
+      <code>throw new AssertionFailedError('Failed asserting that a warning is triggered');</code>
+      <code>throw new AssertionFailedError('Failed asserting that an error is triggered');</code>
     </MissingThrowsDocblock>
     <MoreSpecificReturnType occurrences="1">
       <code>list&lt;string&gt;</code>
     </MoreSpecificReturnType>
+    <PossiblyNullArgument occurrences="4">
+      <code>$this-&gt;expectedDeprecationMessage</code>
+      <code>$this-&gt;expectedErrorMessage</code>
+      <code>$this-&gt;expectedNoticeMessage</code>
+      <code>$this-&gt;expectedWarningMessage</code>
+    </PossiblyNullArgument>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>

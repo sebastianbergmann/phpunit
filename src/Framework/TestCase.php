@@ -23,6 +23,7 @@ use function array_keys;
 use function array_merge;
 use function array_unique;
 use function array_values;
+use function assert;
 use function basename;
 use function chdir;
 use function class_exists;
@@ -57,11 +58,18 @@ use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
+use PHPUnit\Event\Test\DeprecationTriggered;
+use PHPUnit\Event\Test\ErrorTriggered;
+use PHPUnit\Event\Test\NoticeTriggered;
+use PHPUnit\Event\Test\PhpDeprecationTriggered;
+use PHPUnit\Event\Test\PhpErrorTriggered;
+use PHPUnit\Event\Test\PhpNoticeTriggered;
+use PHPUnit\Event\Test\PhpWarningTriggered;
+use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
-use PHPUnit\Framework\Constraint\ExceptionMessage;
-use PHPUnit\Framework\Constraint\ExceptionMessageRegularExpression;
-use PHPUnit\Framework\Constraint\LogicalOr;
+use PHPUnit\Framework\Constraint\MessageIsOrContains;
+use PHPUnit\Framework\Constraint\MessageMatchesRegularExpression;
 use PHPUnit\Framework\MockObject\Generator as MockGenerator;
 use PHPUnit\Framework\MockObject\MockBuilder;
 use PHPUnit\Framework\MockObject\MockObject;
@@ -86,11 +94,6 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\Error\Deprecation;
-use PHPUnit\Util\Error\Error;
-use PHPUnit\Util\Error\Handler as ErrorHandler;
-use PHPUnit\Util\Error\Notice;
-use PHPUnit\Util\Error\Warning as WarningError;
 use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
 use ReflectionClass;
@@ -187,9 +190,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<Comparator>
      */
-    private array $customComparators                         = [];
-    private ?Event\Code\TestMethod $testValueObjectForEvents = null;
-    private bool $wasPrepared                                = false;
+    private array $customComparators                             = [];
+    private ?Event\Code\TestMethod $testValueObjectForEvents     = null;
+    private bool $wasPrepared                                    = false;
+    private bool $deprecationExpected                            = false;
+    private ?string $expectedDeprecationMessage                  = null;
+    private ?string $expectedDeprecationMessageRegularExpression = null;
+    private bool $errorExpected                                  = false;
+    private ?string $expectedErrorMessage                        = null;
+    private ?string $expectedErrorMessageRegularExpression       = null;
+    private bool $noticeExpected                                 = false;
+    private ?string $expectedNoticeMessage                       = null;
+    private ?string $expectedNoticeMessageRegularExpression      = null;
+    private bool $warningExpected                                = false;
+    private ?string $expectedWarningMessage                      = null;
+    private ?string $expectedWarningMessageRegularExpression     = null;
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -429,86 +444,94 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectDeprecation(): void
     {
-        ErrorHandler::instance()->convertDeprecationsToExceptions();
+        Facade::ignoreTestTriggeredDeprecationEventForExpectation();
 
-        $this->expectedException = Deprecation::class;
+        $this->deprecationExpected = true;
     }
 
     final public function expectDeprecationMessage(string $message): void
     {
-        ErrorHandler::instance()->convertDeprecationsToExceptions();
+        Facade::ignoreTestTriggeredDeprecationEventForExpectation();
 
-        $this->expectExceptionMessage($message);
+        $this->deprecationExpected        = true;
+        $this->expectedDeprecationMessage = $message;
     }
 
     final public function expectDeprecationMessageMatches(string $regularExpression): void
     {
-        ErrorHandler::instance()->convertDeprecationsToExceptions();
+        Facade::ignoreTestTriggeredDeprecationEventForExpectation();
 
-        $this->expectExceptionMessageMatches($regularExpression);
-    }
-
-    final public function expectNotice(): void
-    {
-        ErrorHandler::instance()->convertNoticesToExceptions();
-
-        $this->expectedException = Notice::class;
-    }
-
-    final public function expectNoticeMessage(string $message): void
-    {
-        ErrorHandler::instance()->convertNoticesToExceptions();
-
-        $this->expectExceptionMessage($message);
-    }
-
-    final public function expectNoticeMessageMatches(string $regularExpression): void
-    {
-        ErrorHandler::instance()->convertNoticesToExceptions();
-
-        $this->expectExceptionMessageMatches($regularExpression);
-    }
-
-    final public function expectWarning(): void
-    {
-        ErrorHandler::instance()->convertWarningsToExceptions();
-
-        $this->expectedException = WarningError::class;
-    }
-
-    final public function expectWarningMessage(string $message): void
-    {
-        ErrorHandler::instance()->convertWarningsToExceptions();
-
-        $this->expectExceptionMessage($message);
-    }
-
-    final public function expectWarningMessageMatches(string $regularExpression): void
-    {
-        ErrorHandler::instance()->convertWarningsToExceptions();
-
-        $this->expectExceptionMessageMatches($regularExpression);
+        $this->deprecationExpected                         = true;
+        $this->expectedDeprecationMessageRegularExpression = $regularExpression;
     }
 
     final public function expectError(): void
     {
-        ErrorHandler::instance()->convertErrorsToExceptions();
+        Facade::ignoreTestTriggeredErrorEventForExpectation();
 
-        $this->expectedException = Error::class;
+        $this->errorExpected = true;
     }
 
     final public function expectErrorMessage(string $message): void
     {
-        ErrorHandler::instance()->convertErrorsToExceptions();
+        Facade::ignoreTestTriggeredErrorEventForExpectation();
 
-        $this->expectExceptionMessage($message);
+        $this->errorExpected        = true;
+        $this->expectedErrorMessage = $message;
     }
 
     final public function expectErrorMessageMatches(string $regularExpression): void
     {
-        ErrorHandler::instance()->convertErrorsToExceptions();
+        Facade::ignoreTestTriggeredErrorEventForExpectation();
 
-        $this->expectExceptionMessageMatches($regularExpression);
+        $this->errorExpected                         = true;
+        $this->expectedErrorMessageRegularExpression = $regularExpression;
+    }
+
+    final public function expectNotice(): void
+    {
+        Facade::ignoreTestTriggeredNoticeEventForExpectation();
+
+        $this->noticeExpected = true;
+    }
+
+    final public function expectNoticeMessage(string $message): void
+    {
+        Facade::ignoreTestTriggeredNoticeEventForExpectation();
+
+        $this->noticeExpected        = true;
+        $this->expectedNoticeMessage = $message;
+    }
+
+    final public function expectNoticeMessageMatches(string $regularExpression): void
+    {
+        Facade::ignoreTestTriggeredNoticeEventForExpectation();
+
+        $this->noticeExpected                         = true;
+        $this->expectedNoticeMessageRegularExpression = $regularExpression;
+    }
+
+    final public function expectWarning(): void
+    {
+        Facade::ignoreTestTriggeredWarningEventForExpectation();
+
+        $this->warningExpected = true;
+    }
+
+    final public function expectWarningMessage(string $message): void
+    {
+        Facade::ignoreTestTriggeredWarningEventForExpectation();
+
+        $this->warningExpected        = true;
+        $this->expectedWarningMessage = $message;
+    }
+
+    final public function expectWarningMessageMatches(string $regularExpression): void
+    {
+        Facade::ignoreTestTriggeredWarningEventForExpectation();
+
+        $this->warningExpected                         = true;
+        $this->expectedWarningMessageRegularExpression = $regularExpression;
     }
 
     final public function status(): TestStatus
@@ -749,14 +772,21 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (TimeoutException $e) {
             $this->status = TestStatus::risky($e->getMessage());
         } catch (Throwable $_e) {
-            $e            = $_e;
-            $this->status = TestStatus::error($_e->getMessage());
+            if (!$this->errorExpected || $_e::class !== 'Error') {
+                $e            = $_e;
+                $this->status = TestStatus::error($_e->getMessage());
 
-            $emitter->testErrored(
-                $this->valueObjectForEvents(),
-                Event\Code\Throwable::from($_e)
-            );
+                $emitter->testErrored(
+                    $this->valueObjectForEvents(),
+                    Event\Code\Throwable::from($_e)
+                );
+            }
         }
+
+        $this->verifyDeprecationExpectations();
+        $this->verifyErrorExpectations();
+        $this->verifyNoticeExpectations();
+        $this->verifyWarningExpectations();
 
         if ($this->stopOutputBuffering() && !isset($e)) {
             $this->performAssertionsOnOutput();
@@ -788,11 +818,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         if (isset($_e)) {
             $this->status = TestStatus::error($_e->getMessage());
         }
-
-        ErrorHandler::instance()->doNotConvertDeprecationsToExceptions();
-        ErrorHandler::instance()->doNotConvertErrorsToExceptions();
-        ErrorHandler::instance()->doNotConvertNoticesToExceptions();
-        ErrorHandler::instance()->doNotConvertWarningsToExceptions();
 
         clearstatcache();
 
@@ -1115,94 +1140,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         try {
             $testResult = $this->{$this->name}(...array_values($testArguments));
         } catch (Throwable $exception) {
-            if (!$this->checkExceptionExpectations($exception)) {
+            if (!$this->shouldExceptionExpectationsBeVerified($exception)) {
                 throw $exception;
             }
 
-            if ($this->expectedException !== null) {
-                if ($this->expectedException === Error::class) {
-                    $this->assertThat(
-                        $exception,
-                        LogicalOr::fromConstraints(
-                            new ExceptionConstraint(Error::class),
-                            new ExceptionConstraint(\Error::class)
-                        )
-                    );
-                } else {
-                    $this->assertThat(
-                        $exception,
-                        new ExceptionConstraint(
-                            $this->expectedException
-                        )
-                    );
-                }
-            }
-
-            if ($this->expectedExceptionMessage !== null) {
-                $this->assertThat(
-                    $exception,
-                    new ExceptionMessage(
-                        $this->expectedExceptionMessage
-                    )
-                );
-            }
-
-            if ($this->expectedExceptionMessageRegExp !== null) {
-                $this->assertThat(
-                    $exception,
-                    new ExceptionMessageRegularExpression(
-                        $this->expectedExceptionMessageRegExp
-                    )
-                );
-            }
-
-            if ($this->expectedExceptionCode !== null) {
-                $this->assertThat(
-                    $exception,
-                    new ExceptionCode(
-                        $this->expectedExceptionCode
-                    )
-                );
-            }
+            $this->verifyExceptionExpectations($exception);
 
             return null;
         }
 
-        if ($this->expectedException !== null) {
-            $this->assertThat(
-                null,
-                new ExceptionConstraint(
-                    $this->expectedException
-                )
-            );
-        } elseif ($this->expectedExceptionMessage !== null) {
-            $this->numberOfAssertionsPerformed++;
-
-            throw new AssertionFailedError(
-                sprintf(
-                    'Failed asserting that exception with message "%s" is thrown',
-                    $this->expectedExceptionMessage
-                )
-            );
-        } elseif ($this->expectedExceptionMessageRegExp !== null) {
-            $this->numberOfAssertionsPerformed++;
-
-            throw new AssertionFailedError(
-                sprintf(
-                    'Failed asserting that exception with message matching "%s" is thrown',
-                    $this->expectedExceptionMessageRegExp
-                )
-            );
-        } elseif ($this->expectedExceptionCode !== null) {
-            $this->numberOfAssertionsPerformed++;
-
-            throw new AssertionFailedError(
-                sprintf(
-                    'Failed asserting that exception with code "%s" is thrown',
-                    $this->expectedExceptionCode
-                )
-            );
-        }
+        $this->expectedExceptionWasNotRaised();
 
         return $testResult;
     }
@@ -1918,7 +1865,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @throws Exception
      */
-    private function checkExceptionExpectations(Throwable $throwable): bool
+    private function shouldExceptionExpectationsBeVerified(Throwable $throwable): bool
     {
         $result = false;
 
@@ -2133,5 +2080,234 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         return !$reflector->hasMethod($methodName) ||
                $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
+    }
+
+    private function verifyExceptionExpectations(Throwable|\Exception $exception): void
+    {
+        if ($this->expectedException !== null) {
+            $this->assertThat(
+                $exception,
+                new ExceptionConstraint(
+                    $this->expectedException
+                )
+            );
+        }
+
+        if ($this->expectedExceptionMessage !== null) {
+            $this->assertThat(
+                $exception->getMessage(),
+                new MessageIsOrContains(
+                    'exception',
+                    $this->expectedExceptionMessage
+                )
+            );
+        }
+
+        if ($this->expectedExceptionMessageRegExp !== null) {
+            $this->assertThat(
+                $exception->getMessage(),
+                new MessageMatchesRegularExpression(
+                    'exception',
+                    $this->expectedExceptionMessageRegExp
+                )
+            );
+        }
+
+        if ($this->expectedExceptionCode !== null) {
+            $this->assertThat(
+                $exception,
+                new ExceptionCode(
+                    $this->expectedExceptionCode
+                )
+            );
+        }
+    }
+
+    /**
+     * @throws AssertionFailedError
+     */
+    private function expectedExceptionWasNotRaised(): void
+    {
+        if ($this->expectedException !== null) {
+            $this->assertThat(
+                null,
+                new ExceptionConstraint($this->expectedException)
+            );
+        } elseif ($this->expectedExceptionMessage !== null) {
+            $this->numberOfAssertionsPerformed++;
+
+            throw new AssertionFailedError(
+                sprintf(
+                    'Failed asserting that exception with message "%s" is thrown',
+                    $this->expectedExceptionMessage
+                )
+            );
+        } elseif ($this->expectedExceptionMessageRegExp !== null) {
+            $this->numberOfAssertionsPerformed++;
+
+            throw new AssertionFailedError(
+                sprintf(
+                    'Failed asserting that exception with message matching "%s" is thrown',
+                    $this->expectedExceptionMessageRegExp
+                )
+            );
+        } elseif ($this->expectedExceptionCode !== null) {
+            $this->numberOfAssertionsPerformed++;
+
+            throw new AssertionFailedError(
+                sprintf(
+                    'Failed asserting that exception with code "%s" is thrown',
+                    $this->expectedExceptionCode
+                )
+            );
+        }
+    }
+
+    private function verifyDeprecationExpectations(): void
+    {
+        if (!$this->deprecationExpected) {
+            return;
+        }
+
+        $this->numberOfAssertionsPerformed++;
+
+        if (!Facade::hasIgnoredEvent()) {
+            throw new AssertionFailedError('Failed asserting that a deprecation is triggered');
+        }
+
+        $event = Facade::ignoredEvent();
+
+        assert($event instanceof DeprecationTriggered || $event instanceof PhpDeprecationTriggered);
+
+        if ($this->expectedDeprecationMessage !== null) {
+            $this->assertThat(
+                $event->message(),
+                new MessageIsOrContains(
+                    'deprecation',
+                    $this->expectedDeprecationMessage
+                )
+            );
+        }
+
+        if ($this->expectedDeprecationMessageRegularExpression !== null) {
+            $this->assertThat(
+                $event->message(),
+                new MessageMatchesRegularExpression(
+                    'deprecation',
+                    $this->expectedDeprecationMessage
+                )
+            );
+        }
+    }
+
+    private function verifyErrorExpectations(): void
+    {
+        if (!$this->errorExpected) {
+            return;
+        }
+
+        $this->numberOfAssertionsPerformed++;
+
+        if (!Facade::hasIgnoredEvent()) {
+            throw new AssertionFailedError('Failed asserting that an error is triggered');
+        }
+
+        $event = Facade::ignoredEvent();
+
+        assert($event instanceof ErrorTriggered || $event instanceof PhpErrorTriggered);
+
+        if ($this->expectedErrorMessage !== null) {
+            $this->assertThat(
+                $event->message(),
+                new MessageIsOrContains(
+                    'error',
+                    $this->expectedErrorMessage
+                )
+            );
+        }
+
+        if ($this->expectedErrorMessageRegularExpression !== null) {
+            $this->assertThat(
+                $event->message(),
+                new MessageMatchesRegularExpression(
+                    'error',
+                    $this->expectedErrorMessage
+                )
+            );
+        }
+    }
+
+    private function verifyNoticeExpectations(): void
+    {
+        if (!$this->noticeExpected) {
+            return;
+        }
+
+        $this->numberOfAssertionsPerformed++;
+
+        if (!Facade::hasIgnoredEvent()) {
+            throw new AssertionFailedError('Failed asserting that a notice is triggered');
+        }
+
+        $event = Facade::ignoredEvent();
+
+        assert($event instanceof NoticeTriggered || $event instanceof PhpNoticeTriggered);
+
+        if ($this->expectedNoticeMessage !== null) {
+            $this->assertThat(
+                $event->message(),
+                new MessageIsOrContains(
+                    'notice',
+                    $this->expectedNoticeMessage
+                )
+            );
+        }
+
+        if ($this->expectedNoticeMessageRegularExpression !== null) {
+            $this->assertThat(
+                $event->message(),
+                new MessageMatchesRegularExpression(
+                    'notice',
+                    $this->expectedNoticeMessage
+                )
+            );
+        }
+    }
+
+    private function verifyWarningExpectations(): void
+    {
+        if (!$this->warningExpected) {
+            return;
+        }
+
+        $this->numberOfAssertionsPerformed++;
+
+        if (!Facade::hasIgnoredEvent()) {
+            throw new AssertionFailedError('Failed asserting that a warning is triggered');
+        }
+
+        $event = Facade::ignoredEvent();
+
+        assert($event instanceof WarningTriggered || $event instanceof PhpWarningTriggered);
+
+        if ($this->expectedWarningMessage !== null) {
+            $this->assertThat(
+                $event->message(),
+                new MessageIsOrContains(
+                    'warning',
+                    $this->expectedWarningMessage
+                )
+            );
+        }
+
+        if ($this->expectedWarningMessageRegularExpression !== null) {
+            $this->assertThat(
+                $event->message(),
+                new MessageMatchesRegularExpression(
+                    'warning',
+                    $this->expectedWarningMessage
+                )
+            );
+        }
     }
 }

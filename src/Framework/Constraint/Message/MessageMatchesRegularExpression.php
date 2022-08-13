@@ -16,18 +16,20 @@ use PHPUnit\Util\RegularExpression as RegularExpressionUtil;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class ExceptionMessageRegularExpression extends Constraint
+final class MessageMatchesRegularExpression extends Constraint
 {
-    private string $expectedMessageRegExp;
+    private string $messageType;
+    private string $regularExpression;
 
-    public function __construct(string $expected)
+    public function __construct(string $messageType, string $regularExpression)
     {
-        $this->expectedMessageRegExp = $expected;
+        $this->messageType       = $messageType;
+        $this->regularExpression = $regularExpression;
     }
 
     public function toString(): string
     {
-        return 'exception message matches ';
+        return $this->messageType . ' message matches ';
     }
 
     /**
@@ -39,11 +41,15 @@ final class ExceptionMessageRegularExpression extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        $match = RegularExpressionUtil::safeMatch($this->expectedMessageRegExp, $other->getMessage());
+        $match = RegularExpressionUtil::safeMatch($this->regularExpression, (string) $other);
 
         if ($match === false) {
             throw new \PHPUnit\Framework\Exception(
-                "Invalid expected exception message regex given: '{$this->expectedMessageRegExp}'"
+                sprintf(
+                    'Invalid expected %s message regular expression given: %s',
+                    $this->messageType,
+                    $this->regularExpression
+                )
             );
         }
 
@@ -59,9 +65,10 @@ final class ExceptionMessageRegularExpression extends Constraint
     protected function failureDescription(mixed $other): string
     {
         return sprintf(
-            "exception message '%s' matches '%s'",
-            $other->getMessage(),
-            $this->expectedMessageRegExp
+            "%s message '%s' matches '%s'",
+            $this->messageType,
+            $other,
+            $this->regularExpression
         );
     }
 }

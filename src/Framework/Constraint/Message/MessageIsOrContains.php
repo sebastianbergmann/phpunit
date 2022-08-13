@@ -15,35 +15,33 @@ use function str_contains;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class ExceptionMessage extends Constraint
+final class MessageIsOrContains extends Constraint
 {
+    private string $messageType;
     private string $expectedMessage;
 
-    public function __construct(string $expected)
+    public function __construct(string $messageType, string $expectedMessage)
     {
-        $this->expectedMessage = $expected;
+        $this->messageType     = $messageType;
+        $this->expectedMessage = $expectedMessage;
     }
 
     public function toString(): string
     {
         if ($this->expectedMessage === '') {
-            return 'exception message is empty';
+            return $this->messageType . ' message is empty';
         }
 
-        return 'exception message contains ';
+        return $this->messageType . ' message contains ';
     }
 
-    /**
-     * Evaluates the constraint for parameter $other. Returns true if the
-     * constraint is met, false otherwise.
-     */
     protected function matches(mixed $other): bool
     {
         if ($this->expectedMessage === '') {
-            return $other->getMessage() === '';
+            return $other === '';
         }
 
-        return str_contains((string) $other->getMessage(), $this->expectedMessage);
+        return str_contains((string) $other, $this->expectedMessage);
     }
 
     /**
@@ -56,14 +54,16 @@ final class ExceptionMessage extends Constraint
     {
         if ($this->expectedMessage === '') {
             return sprintf(
-                "exception message is empty but is '%s'",
-                $other->getMessage()
+                "%s message is empty but is '%s'",
+                $this->messageType,
+                $other
             );
         }
 
         return sprintf(
-            "exception message '%s' contains '%s'",
-            $other->getMessage(),
+            "%s message '%s' contains '%s'",
+            $this->messageType,
+            $other,
             $this->expectedMessage
         );
     }

@@ -185,8 +185,6 @@ class TestCaseTest extends TestCase
 
     public function testDeprecationCanBeExpected(): void
     {
-        $this->markTestIncomplete('Test\*DeprecationTriggered must not be emitted for tests that use expectDeprecation()');
-
         $this->expectDeprecation();
         $this->expectDeprecationMessage('foo');
         $this->expectDeprecationMessageMatches('/foo/');
@@ -196,8 +194,6 @@ class TestCaseTest extends TestCase
 
     public function testNoticeCanBeExpected(): void
     {
-        $this->markTestIncomplete('Test\*NoticeTriggered must not be emitted for tests that use expectNotice()');
-
         $this->expectNotice();
         $this->expectNoticeMessage('foo');
         $this->expectNoticeMessageMatches('/foo/');
@@ -207,8 +203,6 @@ class TestCaseTest extends TestCase
 
     public function testWarningCanBeExpected(): void
     {
-        $this->markTestIncomplete('Test\*WarningTriggered must not be emitted for tests that use expectWarning()');
-
         $this->expectWarning();
         $this->expectWarningMessage('foo');
         $this->expectWarningMessageMatches('/foo/');
@@ -218,8 +212,6 @@ class TestCaseTest extends TestCase
 
     public function testErrorCanBeExpected(): void
     {
-        $this->markTestIncomplete('Test\*ErrorTriggered must not be emitted for tests that use expectError()');
-
         $this->expectError();
         $this->expectErrorMessage('foo');
         $this->expectErrorMessageMatches('/foo/');

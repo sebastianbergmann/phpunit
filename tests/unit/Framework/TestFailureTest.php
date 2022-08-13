@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\Util\Error\Error;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
 #[CoversClass(TestFailure::class)]
@@ -64,13 +63,6 @@ final class TestFailureTest extends TestCase
         $exception = new ExpectationFailedException('message', new ComparisonFailure('expected', 'actual', 'expected', 'actual'));
 
         $this->assertEquals("message\n--- Expected\n+++ Actual\n@@ @@\n-expected\n+actual\n", TestFailure::exceptionToString($exception));
-    }
-
-    public function testExceptionToStringForFrameworkError(): void
-    {
-        $exception = new Error('message', 0, 'file', 1);
-
-        $this->assertEquals("message\n", TestFailure::exceptionToString($exception));
     }
 
     public function testExceptionToStringForExceptionWrapper(): void

@@ -7,11 +7,13 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Util\Error;
+namespace PHPUnit\Runner;
+
+use RuntimeException;
 
 /**
- * @internal
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Warning extends Error
+final class NoIgnoredEventException extends RuntimeException implements Exception
 {
 }

@@ -11,7 +11,6 @@ namespace PHPUnit\Framework;
 
 use function sprintf;
 use function trim;
-use PHPUnit\Util\Error\Error;
 use Throwable;
 
 /**
@@ -44,10 +43,6 @@ final class TestFailure
             }
 
             return $buffer;
-        }
-
-        if ($e instanceof Error) {
-            return $e->getMessage() . "\n";
         }
 
         if ($e instanceof ExceptionWrapper) {

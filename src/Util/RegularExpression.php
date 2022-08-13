@@ -10,7 +10,7 @@
 namespace PHPUnit\Util;
 
 use function preg_match;
-use PHPUnit\Util\Error\Handler as ErrorHandler;
+use PHPUnit\Util\ErrorHandler as ErrorHandler;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
