@@ -110,6 +110,10 @@ final class Help
 
             ['arg'    => '--display-incomplete', 'desc' => 'Display details for incomplete tests'],
             ['arg'    => '--display-skipped', 'desc' => 'Display details for skipped tests'],
+            ['arg'    => '--display-deprecations', 'desc' => 'Display details for deprecations triggered by tests'],
+            ['arg'    => '--display-errors', 'desc' => 'Display details for errors triggered by tests'],
+            ['arg'    => '--display-notices', 'desc' => 'Display details for notices triggered by tests'],
+            ['arg'    => '--display-warnings', 'desc' => 'Display details for warnings triggered by tests'],
             ['arg'    => '--reverse-list', 'desc' => 'Print defects in reverse order'],
             ['arg'    => '-v|--verbose', 'desc' => 'Output more verbose information'],
             ['spacer' => ''],

@@ -59,6 +59,10 @@ final class ResultPrinterTest extends TestCase
             $printer,
             true,
             true,
+            true,
+            true,
+            true,
+            true,
             false,
             false
         );

@@ -47,6 +47,10 @@ final class Builder
         'disallow-test-output',
         'display-incomplete',
         'display-skipped',
+        'display-deprecations',
+        'display-errors',
+        'display-notices',
+        'display-warnings',
         'default-time-limit=',
         'enforce-time-limit',
         'exclude-group=',
@@ -162,6 +166,10 @@ final class Builder
         $disallowTestOutput                = null;
         $displayIncomplete                 = null;
         $displaySkipped                    = null;
+        $displayDeprecations               = null;
+        $displayErrors                     = null;
+        $displayNotices                    = null;
+        $displayWarnings                   = null;
         $enforceTimeLimit                  = null;
         $excludeGroups                     = null;
         $executionOrder                    = null;
@@ -680,6 +688,26 @@ final class Builder
 
                     break;
 
+                case '--display-deprecations':
+                    $displayDeprecations = true;
+
+                    break;
+
+                case '--display-errors':
+                    $displayErrors = true;
+
+                    break;
+
+                case '--display-notices':
+                    $displayNotices = true;
+
+                    break;
+
+                case '--display-warnings':
+                    $displayWarnings = true;
+
+                    break;
+
                 case '--default-time-limit':
                     $defaultTimeLimit = (int) $option[1];
 
@@ -839,6 +867,10 @@ final class Builder
             $useDefaultConfiguration,
             $displayIncomplete,
             $displaySkipped,
+            $displayDeprecations,
+            $displayErrors,
+            $displayNotices,
+            $displayWarnings,
             $version,
             $coverageFilter,
             $logEventsText,

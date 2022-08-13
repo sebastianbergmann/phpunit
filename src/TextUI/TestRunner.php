@@ -174,6 +174,10 @@ final class TestRunner
                 $this->printer,
                 $this->configuration->displayDetailsOnIncompleteTests(),
                 $this->configuration->displayDetailsOnSkippedTests(),
+                $this->configuration->displayDetailsOnTestsThatTriggerDeprecations(),
+                $this->configuration->displayDetailsOnTestsThatTriggerErrors(),
+                $this->configuration->displayDetailsOnTestsThatTriggerNotices(),
+                $this->configuration->displayDetailsOnTestsThatTriggerWarnings(),
                 $this->configuration->colors(),
                 $this->configuration->reverseDefectList()
             );
@@ -234,6 +238,10 @@ final class TestRunner
         if ($this->configuration->hasLogfileText()) {
             $textLogger = new ResultPrinter(
                 DefaultPrinter::from($this->configuration->logfileText()),
+                true,
+                true,
+                true,
+                true,
                 true,
                 true,
                 false,

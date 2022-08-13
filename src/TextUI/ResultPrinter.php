@@ -35,18 +35,25 @@ final class ResultPrinter
     private bool $colorizeOutput;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
+    private bool $displayDetailsOnTestsThatTriggerDeprecations;
+    private bool $displayDetailsOnTestsThatTriggerErrors;
+    private bool $displayDetailsOnTestsThatTriggerNotices;
+    private bool $displayDetailsOnTestsThatTriggerWarnings;
     private bool $displayDefectsInReverseOrder;
     private bool $listPrinted  = false;
     private bool $countPrinted = false;
 
-    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $colorizeOutput, bool $displayDefectsInReverseOrder)
+    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $colorizeOutput, bool $displayDefectsInReverseOrder)
     {
-        $this->printer = $printer;
-
-        $this->displayDetailsOnIncompleteTests = $displayDetailsOnIncompleteTests;
-        $this->displayDetailsOnSkippedTests    = $displayDetailsOnSkippedTests;
-        $this->colorizeOutput                  = $colorizeOutput;
-        $this->displayDefectsInReverseOrder    = $displayDefectsInReverseOrder;
+        $this->printer                                      = $printer;
+        $this->displayDetailsOnIncompleteTests              = $displayDetailsOnIncompleteTests;
+        $this->displayDetailsOnSkippedTests                 = $displayDetailsOnSkippedTests;
+        $this->displayDetailsOnTestsThatTriggerDeprecations = $displayDetailsOnTestsThatTriggerDeprecations;
+        $this->displayDetailsOnTestsThatTriggerErrors       = $displayDetailsOnTestsThatTriggerErrors;
+        $this->displayDetailsOnTestsThatTriggerNotices      = $displayDetailsOnTestsThatTriggerNotices;
+        $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
+        $this->colorizeOutput                               = $colorizeOutput;
+        $this->displayDefectsInReverseOrder                 = $displayDefectsInReverseOrder;
     }
 
     public function printResult(TestResult $result): void
@@ -61,6 +68,22 @@ final class ResultPrinter
 
         if ($this->displayDetailsOnSkippedTests) {
             $this->printSkippedTests($result);
+        }
+
+        if ($this->displayDetailsOnTestsThatTriggerDeprecations) {
+            $this->printDetailsOnTestsThatTriggerDeprecations($result);
+        }
+
+        if ($this->displayDetailsOnTestsThatTriggerErrors) {
+            $this->printDetailsOnTestsThatTriggerErrors($result);
+        }
+
+        if ($this->displayDetailsOnTestsThatTriggerNotices) {
+            $this->printDetailsOnTestsThatTriggerNotices($result);
+        }
+
+        if ($this->displayDetailsOnTestsThatTriggerWarnings) {
+            $this->printDetailsOnTestsThatTriggerWarnings($result);
         }
 
         $this->printFooter($result);
@@ -204,6 +227,22 @@ final class ResultPrinter
         }
 
         $this->printList(count($elements), $elements, 'skipped test');
+    }
+
+    private function printDetailsOnTestsThatTriggerDeprecations(TestResult $result): void
+    {
+    }
+
+    private function printDetailsOnTestsThatTriggerErrors(TestResult $result): void
+    {
+    }
+
+    private function printDetailsOnTestsThatTriggerNotices(TestResult $result): void
+    {
+    }
+
+    private function printDetailsOnTestsThatTriggerWarnings(TestResult $result): void
+    {
     }
 
     /**

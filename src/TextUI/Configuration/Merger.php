@@ -391,6 +391,30 @@ final class Merger
             $displayDetailsOnSkippedTests = $xmlConfiguration->phpunit()->displayDetailsOnSkippedTests();
         }
 
+        if ($cliConfiguration->hasDisplayDetailsOnTestsThatTriggerDeprecations()) {
+            $displayDetailsOnTestsThatTriggerDeprecations = $cliConfiguration->displayDetailsOnTestsThatTriggerDeprecations();
+        } else {
+            $displayDetailsOnTestsThatTriggerDeprecations = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerDeprecations();
+        }
+
+        if ($cliConfiguration->hasDisplayDetailsOnTestsThatTriggerErrors()) {
+            $displayDetailsOnTestsThatTriggerErrors = $cliConfiguration->displayDetailsOnTestsThatTriggerErrors();
+        } else {
+            $displayDetailsOnTestsThatTriggerErrors = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerErrors();
+        }
+
+        if ($cliConfiguration->hasDisplayDetailsOnTestsThatTriggerNotices()) {
+            $displayDetailsOnTestsThatTriggerNotices = $cliConfiguration->displayDetailsOnTestsThatTriggerNotices();
+        } else {
+            $displayDetailsOnTestsThatTriggerNotices = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerNotices();
+        }
+
+        if ($cliConfiguration->hasDisplayDetailsOnTestsThatTriggerWarnings()) {
+            $displayDetailsOnTestsThatTriggerWarnings = $cliConfiguration->displayDetailsOnTestsThatTriggerWarnings();
+        } else {
+            $displayDetailsOnTestsThatTriggerWarnings = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerWarnings();
+        }
+
         if ($cliConfiguration->hasReverseList()) {
             $reverseDefectList = $cliConfiguration->reverseList();
         } else {
@@ -651,6 +675,10 @@ final class Merger
             $disallowTestOutput,
             $displayDetailsOnIncompleteTests,
             $displayDetailsOnSkippedTests,
+            $displayDetailsOnTestsThatTriggerDeprecations,
+            $displayDetailsOnTestsThatTriggerErrors,
+            $displayDetailsOnTestsThatTriggerNotices,
+            $displayDetailsOnTestsThatTriggerWarnings,
             $reverseDefectList,
             $requireCoverageMetadata,
             $registerMockObjectsFromTestArgumentsRecursively,

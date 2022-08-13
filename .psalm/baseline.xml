@@ -676,7 +676,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="86">
+    <MissingThrowsDocblock occurrences="90">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -708,6 +708,10 @@
       <code>disallowTestOutput</code>
       <code>displayDetailsOnIncompleteTests</code>
       <code>displayDetailsOnSkippedTests</code>
+      <code>displayDetailsOnTestsThatTriggerDeprecations</code>
+      <code>displayDetailsOnTestsThatTriggerErrors</code>
+      <code>displayDetailsOnTestsThatTriggerNotices</code>
+      <code>displayDetailsOnTestsThatTriggerWarnings</code>
       <code>enforceTimeLimit</code>
       <code>excludeGroups</code>
       <code>executionOrder</code>

@@ -18,6 +18,12 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * `--log-events-text <file>` option that controls streaming of event information (without event telemetry) in text format to a file
 * `--log-events-verbose-text <file>` option that controls streaming of event information (with event telemetry) in text format to a file
 * `--no-output` option to disable the output
+* `--display-incomplete` option and `displayDetailsOnIncompleteTests` XML configuration attribute to control whether details on incomplete tests should be displayed
+* `--display-skipped` option and `displayDetailsOnSkippedTests` XML configuration attribute to control whether details on skipped tests should be displayed
+* `--display-deprecations` option and `displayDetailsOnTestsThatTriggerDeprecations` XML configuration attribute to control whether details on tests that trigger `E_DEPRECATED` or `E_USER_DEPRECATED` should be displayed
+* `--display-errors` option and `displayDetailsOnTestsThatTriggerErrors` XML configuration attribute to control whether details on tests that trigger `E_ERROR` or `E_USER_ERROR` should be displayed
+* `--display-notices` option and `displayDetailsOnTestsThatTriggerNotices` XML configuration attribute to control whether details on tests that trigger `E_STRING`, `E_NOTICE`, or `E_USER_NOTICE` should be displayed
+* `--display-warnings` option and `displayDetailsOnTestsThatTriggerWarnings` XML configuration attribute to control whether details on tests that trigger `E_WARNING` or `E_USER_WARNING` should be displayed
 
 ### Changed
 
