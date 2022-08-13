@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use Error;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use SebastianBergmann\Comparator\ComparisonFailure;
@@ -29,7 +30,7 @@ final class TestFailureTest extends TestCase
     public function testToStringForError(): void
     {
         $test      = new self(__FUNCTION__);
-        $exception = new \Error('message');
+        $exception = new Error('message');
         $failure   = new TestFailure($test, $exception);
 
         $this->assertEquals(__METHOD__ . ': message', $failure->toString());
@@ -38,7 +39,7 @@ final class TestFailureTest extends TestCase
     public function testgetExceptionAsString(): void
     {
         $test      = new self(__FUNCTION__);
-        $exception = new \Error('message');
+        $exception = new Error('message');
         $failure   = new TestFailure($test, $exception);
 
         $this->assertEquals("Error: message\n", $failure->getExceptionAsString());
@@ -67,7 +68,7 @@ final class TestFailureTest extends TestCase
 
     public function testExceptionToStringForExceptionWrapper(): void
     {
-        $exception = new ExceptionWrapper(new \Error('message'));
+        $exception = new ExceptionWrapper(new Error('message'));
 
         $this->assertEquals("Error: message\n", TestFailure::exceptionToString($exception));
     }
