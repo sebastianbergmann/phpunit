@@ -1294,9 +1294,6 @@
     </MissingReturnType>
   </file>
   <file src="src/Util/ExcludeList.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>self::$directories === null</code>
-    </DocblockTypeContradiction>
     <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/Util/Filter.php">
@@ -1429,11 +1426,6 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$stream</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Util/Reflection.php">
-    <PossiblyNullArgument occurrences="1">
-      <code>$filter</code>
-    </PossiblyNullArgument>
   </file>
   <file src="src/Util/Test.php">
     <MissingReturnType occurrences="1">

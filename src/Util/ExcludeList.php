@@ -166,7 +166,12 @@ final class ExcludeList
     /**
      * @var string[]
      */
-    private static $directories;
+    private static $directories = [];
+
+    /**
+     * @var bool
+     */
+    private static $initialized = false;
 
     public static function addDirectory(string $directory): void
     {
@@ -219,39 +224,41 @@ final class ExcludeList
      */
     private function initialize(): void
     {
-        if (self::$directories === null) {
-            self::$directories = [];
-
-            foreach (self::EXCLUDED_CLASS_NAMES as $className => $parent) {
-                if (!class_exists($className)) {
-                    continue;
-                }
-
-                try {
-                    $directory = (new ReflectionClass($className))->getFileName();
-                    // @codeCoverageIgnoreStart
-                } catch (ReflectionException $e) {
-                    throw new Exception(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
-                // @codeCoverageIgnoreEnd
-
-                for ($i = 0; $i < $parent; $i++) {
-                    $directory = dirname($directory);
-                }
-
-                self::$directories[] = $directory;
-            }
-
-            // Hide process isolation workaround on Windows.
-            if (DIRECTORY_SEPARATOR === '\\') {
-                // tempnam() prefix is limited to first 3 chars.
-                // @see https://php.net/manual/en/function.tempnam.php
-                self::$directories[] = sys_get_temp_dir() . '\\PHP';
-            }
+        if (self::$initialized) {
+            return;
         }
+
+        foreach (self::EXCLUDED_CLASS_NAMES as $className => $parent) {
+            if (!class_exists($className)) {
+                continue;
+            }
+
+            try {
+                $directory = (new ReflectionClass($className))->getFileName();
+                // @codeCoverageIgnoreStart
+            } catch (ReflectionException $e) {
+                throw new Exception(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
+            // @codeCoverageIgnoreEnd
+
+            for ($i = 0; $i < $parent; $i++) {
+                $directory = dirname($directory);
+            }
+
+            self::$directories[] = $directory;
+        }
+
+        // Hide process isolation workaround on Windows.
+        if (DIRECTORY_SEPARATOR === '\\') {
+            // tempnam() prefix is limited to first 3 chars.
+            // @see https://php.net/manual/en/function.tempnam.php
+            self::$directories[] = sys_get_temp_dir() . '\\PHP';
+        }
+
+        self::$initialized = true;
     }
 }

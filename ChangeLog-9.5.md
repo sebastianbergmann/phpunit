@@ -8,6 +8,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#5015](https://github.com/sebastianbergmann/phpunit/pull/5015): Ukraine banner unreadable on black background
 * [#5020](https://github.com/sebastianbergmann/phpunit/issues/5020): PHPUnit 9 breaks loading of PSR-0/PEAR style classes
+* [#5022](https://github.com/sebastianbergmann/phpunit/issues/5022): `ExcludeList::addDirectory()` does not work correctly
 
 ## [9.5.21] - 2022-06-19
 
