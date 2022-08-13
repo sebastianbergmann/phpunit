@@ -55,7 +55,6 @@ use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\Comparator\Comparator;
-use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Invoker\Invoker;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
@@ -86,8 +85,6 @@ final class TestRunner
         if ($this->configuration->hasConfigurationFile()) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $this->configuration->configurationFile();
         }
-
-        $warnings = $this->configuration->warnings();
 
         if ($this->configuration->loadPharExtensions() &&
             $this->configuration->hasPharExtensionDirectory() &&
@@ -262,52 +259,52 @@ final class TestRunner
         }
 
         if ($this->configuration->hasCoverageReport()) {
-            try {
-                if ($this->configuration->pathCoverage()) {
-                    CodeCoverage::activate(CodeCoverageFilterRegistry::get(), true);
+            if ($this->configuration->pathCoverage()) {
+                CodeCoverage::activate(CodeCoverageFilterRegistry::get(), true);
+            } else {
+                CodeCoverage::activate(CodeCoverageFilterRegistry::get(), false);
+            }
+
+            if ($this->configuration->hasCoverageCacheDirectory()) {
+                CodeCoverage::instance()->cacheStaticAnalysis($this->configuration->coverageCacheDirectory());
+            }
+
+            CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
+
+            if ($this->configuration->strictCoverage()) {
+                CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
+            }
+
+            if ($this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
+                CodeCoverage::instance()->ignoreDeprecatedCode();
+            } else {
+                CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
+            }
+
+            if ($this->configuration->disableCodeCoverageIgnore()) {
+                CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
+            } else {
+                CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
+            }
+
+            if ($this->configuration->includeUncoveredFiles()) {
+                CodeCoverage::instance()->includeUncoveredFiles();
+            } else {
+                CodeCoverage::instance()->excludeUncoveredFiles();
+            }
+
+            if (CodeCoverageFilterRegistry::get()->isEmpty()) {
+                if (!CodeCoverageFilterRegistry::configured()) {
+                    Event\Facade::emitter()->testRunnerTriggeredWarning(
+                        'No filter is configured, code coverage will not be processed'
+                    );
                 } else {
-                    CodeCoverage::activate(CodeCoverageFilterRegistry::get(), false);
+                    Event\Facade::emitter()->testRunnerTriggeredWarning(
+                        'Incorrect filter configuration, code coverage will not be processed'
+                    );
                 }
 
-                if ($this->configuration->hasCoverageCacheDirectory()) {
-                    CodeCoverage::instance()->cacheStaticAnalysis($this->configuration->coverageCacheDirectory());
-                }
-
-                CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
-
-                if ($this->configuration->strictCoverage()) {
-                    CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
-                }
-
-                if ($this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
-                    CodeCoverage::instance()->ignoreDeprecatedCode();
-                } else {
-                    CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
-                }
-
-                if ($this->configuration->disableCodeCoverageIgnore()) {
-                    CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
-                } else {
-                    CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
-                }
-
-                if ($this->configuration->includeUncoveredFiles()) {
-                    CodeCoverage::instance()->includeUncoveredFiles();
-                } else {
-                    CodeCoverage::instance()->excludeUncoveredFiles();
-                }
-
-                if (CodeCoverageFilterRegistry::get()->isEmpty()) {
-                    if (!CodeCoverageFilterRegistry::configured()) {
-                        $warnings[] = 'No filter is configured, code coverage will not be processed';
-                    } else {
-                        $warnings[] = 'Incorrect filter configuration, code coverage will not be processed';
-                    }
-
-                    CodeCoverage::deactivate();
-                }
-            } catch (CodeCoverageException $e) {
-                $warnings[] = $e->getMessage();
+                CodeCoverage::deactivate();
             }
         }
 
@@ -354,36 +351,30 @@ final class TestRunner
         }
 
         if ($this->configuration->tooFewColumnsRequested()) {
-            $warnings[] = 'Less than 16 columns requested, number of columns set to 16';
-        }
-
-        if ((new Runtime)->discardsComments()) {
-            $warnings[] = 'opcache.save_comments=0 set; annotations will not work';
-        }
-
-        foreach ($warnings as $warning) {
-            $this->writeMessage('Warning', $warning);
+            Event\Facade::emitter()->testRunnerTriggeredWarning(
+                'Less than 16 columns requested, number of columns set to 16'
+            );
         }
 
         if ($this->configuration->hasXmlValidationErrors()) {
             if ((new SchemaDetector)->detect($this->configuration->configurationFile())->detected()) {
-                $this->writeMessage('Warning', 'Your XML configuration validates against a deprecated schema.');
-                $this->writeMessage('Suggestion', 'Migrate your XML configuration using "--migrate-configuration"!');
-            } else {
-                $this->write(
-                    "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!'
                 );
-
-                $this->write($this->configuration->xmlValidationErrors());
-
-                $this->write("\n  Test results may not be as expected.\n\n");
+            } else {
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
+                    $this->configuration->xmlValidationErrors()
+                );
             }
         }
 
         $this->write("\n");
 
         if ($this->configuration->enforceTimeLimit() && !(new Invoker)->canInvokeWithTimeout()) {
-            $this->writeMessage('Error', 'PHP extension pcntl is required for enforcing time limits');
+            Event\Facade::emitter()->testRunnerTriggeredWarning(
+                'The pcntl extension is required for enforcing time limits'
+            );
         }
 
         $this->processSuiteFilters($suite);

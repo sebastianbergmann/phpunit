@@ -281,12 +281,35 @@ final class TestResult
         return $this->numberOfTestRunnerTriggeredWarningEvents() > 0;
     }
 
+    public function numberOfTestTriggeredWarningEvents(): int
+    {
+        return count($this->testTriggeredWarningEvents);
+    }
+
+    public function numberOfTestTriggeredPhpWarningEvents(): int
+    {
+        return count($this->testTriggeredPhpWarningEvents);
+    }
+
+    public function numberOfTestTriggeredPhpunitWarningEvents(): int
+    {
+        return count($this->testTriggeredPhpunitWarningEvents);
+    }
+
     public function hasWarningEvents(): bool
     {
         return !empty($this->testTriggeredWarningEvents) ||
                !empty($this->testTriggeredPhpWarningEvents) ||
                !empty($this->testTriggeredPhpunitWarningEvents) ||
                !empty($this->testRunnerTriggeredWarningEvents);
+    }
+
+    public function numberOfWarningEvents(): int
+    {
+        return $this->numberOfTestTriggeredWarningEvents() +
+               $this->numberOfTestTriggeredPhpWarningEvents() +
+               $this->numberOfTestTriggeredPhpunitWarningEvents() +
+               $this->numberOfTestRunnerTriggeredWarningEvents();
     }
 
     public function wasSuccessful(): bool

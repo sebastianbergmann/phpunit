@@ -58,9 +58,12 @@ final class ResultPrinter
 
     public function printResult(TestResult $result): void
     {
+        $this->printTestRunnerWarnings($result);
+        $this->printTestWarnings($result);
         $this->printTestsWithErrors($result);
         $this->printTestsWithFailedAssertions($result);
         $this->printRiskyTests($result);
+        $this->printPhpunitDeprecations($result);
 
         if ($this->displayDetailsOnIncompleteTests) {
             $this->printIncompleteTests($result);
@@ -92,6 +95,32 @@ final class ResultPrinter
     public function flush(): void
     {
         $this->printer->flush();
+    }
+
+    private function printTestRunnerWarnings(TestResult $result): void
+    {
+        if (!$result->hasTestRunnerTriggeredWarningEvents()) {
+            return;
+        }
+
+        $elements = [];
+
+        foreach ($result->testRunnerTriggeredWarningEvents() as $event) {
+            $elements[] = [
+                'title' => $event->message(),
+                'body'  => '',
+            ];
+        }
+
+        $this->printList(count($elements), $elements, 'test runner warning');
+    }
+
+    private function printTestWarnings(TestResult $result): void
+    {
+    }
+
+    private function printPhpunitDeprecations(TestResult $result): void
+    {
     }
 
     private function printTestsWithErrors(TestResult $result): void
@@ -279,12 +308,18 @@ final class ResultPrinter
 
     private function printListElement(int $number, string $title, string $body): void
     {
+        $body = trim($body);
+
+        if (!empty($body)) {
+            $body .= "\n";
+        }
+
         $this->printer->print(
             sprintf(
-                "\n%d) %s\n%s\n",
+                "\n%d) %s\n%s",
                 $number,
                 $title,
-                trim($body)
+                $body
             )
         );
     }
@@ -343,6 +378,11 @@ final class ResultPrinter
                     $color,
                     'FAILURES!'
                 );
+            } elseif ($result->hasWarningEvents()) {
+                $this->printWithColor(
+                    $color,
+                    'WARNINGS!'
+                );
             }
         }
 
@@ -350,6 +390,7 @@ final class ResultPrinter
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
         $this->printCountString($result->numberOfTestErroredEvents(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
+        $this->printCountString($result->numberOfWarningEvents(), 'Warnings', $color);
         $this->printCountString($result->numberOfTestSkippedEvents(), 'Skipped', $color);
         $this->printCountString($result->numberOfTestMarkedIncompleteEvents(), 'Incomplete', $color);
         $this->printCountString($result->numberOfTestsWithTestConsideredRiskyEvents(), 'Risky', $color);

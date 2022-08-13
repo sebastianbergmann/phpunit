@@ -33,8 +33,6 @@ final class Merger
 {
     public function merge(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
-        $warnings = [];
-
         $bootstrap = null;
 
         $configurationFile = null;
@@ -709,7 +707,6 @@ final class Merger
             $randomOrderSeed,
             $includeUncoveredFiles,
             $xmlValidationErrors,
-            $warnings
         );
     }
 }
