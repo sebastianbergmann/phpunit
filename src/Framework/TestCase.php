@@ -544,13 +544,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->status = TestStatus::risky();
     }
 
-    final public function hasFailed(): bool
-    {
-        $status = $this->status();
-
-        return $status->isFailure() || $status->isError();
-    }
-
     /**
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
