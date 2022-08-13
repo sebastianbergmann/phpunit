@@ -30,7 +30,6 @@ use PhpParser\Parser;
 use PHPUnit\Framework\TestCase;
 use Prophecy\Prophet;
 use ReflectionClass;
-use ReflectionException;
 use SebastianBergmann\CliParser\Parser as CliParser;
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeUnit\CodeUnit;
@@ -233,17 +232,7 @@ final class ExcludeList
                 continue;
             }
 
-            try {
-                $directory = (new ReflectionClass($className))->getFileName();
-                // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
-                throw new Exception(
-                    $e->getMessage(),
-                    (int) $e->getCode(),
-                    $e
-                );
-            }
-            // @codeCoverageIgnoreEnd
+            $directory = (new ReflectionClass($className))->getFileName();
 
             for ($i = 0; $i < $parent; $i++) {
                 $directory = dirname($directory);
