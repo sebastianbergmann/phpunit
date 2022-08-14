@@ -264,6 +264,186 @@ final class TestResult
     }
 
     /**
+     * @psalm-return array<string,list<DeprecationTriggered>>
+     */
+    public function testTriggeredDeprecationEvents(): array
+    {
+        return $this->testTriggeredDeprecationEvents;
+    }
+
+    public function numberOfTestTriggeredDeprecationEvents(): int
+    {
+        return count($this->testTriggeredDeprecationEvents);
+    }
+
+    public function hasTestTriggeredDeprecationEvents(): bool
+    {
+        return $this->numberOfTestTriggeredDeprecationEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<PhpDeprecationTriggered>>
+     */
+    public function testTriggeredPhpDeprecationEvents(): array
+    {
+        return $this->testTriggeredPhpDeprecationEvents;
+    }
+
+    public function numberOfTestTriggeredPhpDeprecationEvents(): int
+    {
+        return count($this->testTriggeredPhpDeprecationEvents);
+    }
+
+    public function hasTestTriggeredPhpDeprecationEvents(): bool
+    {
+        return $this->numberOfTestTriggeredPhpDeprecationEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<PhpunitDeprecationTriggered>>
+     */
+    public function testTriggeredPhpunitDeprecationEvents(): array
+    {
+        return $this->testTriggeredPhpunitDeprecationEvents;
+    }
+
+    public function numberOfTestTriggeredPhpunitDeprecationEvents(): int
+    {
+        return count($this->testTriggeredPhpunitDeprecationEvents);
+    }
+
+    public function hasTestTriggeredPhpunitDeprecationEvents(): bool
+    {
+        return $this->numberOfTestTriggeredPhpunitDeprecationEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<ErrorTriggered>>
+     */
+    public function testTriggeredErrorEvents(): array
+    {
+        return $this->testTriggeredErrorEvents;
+    }
+
+    public function numberOfTestTriggeredErrorEvents(): int
+    {
+        return count($this->testTriggeredErrorEvents);
+    }
+
+    public function hasTestTriggeredErrorEvents(): bool
+    {
+        return $this->numberOfTestTriggeredErrorEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<PhpErrorTriggered>>
+     */
+    public function testTriggeredPhpErrorEvents(): array
+    {
+        return $this->testTriggeredPhpErrorEvents;
+    }
+
+    public function numberOfTestTriggeredPhpErrorEvents(): int
+    {
+        return count($this->testTriggeredPhpErrorEvents);
+    }
+
+    public function hasTestTriggeredPhpErrorEvents(): bool
+    {
+        return $this->numberOfTestTriggeredPhpErrorEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<NoticeTriggered>>
+     */
+    public function testTriggeredNoticeEvents(): array
+    {
+        return $this->testTriggeredNoticeEvents;
+    }
+
+    public function numberOfTestTriggeredNoticeEvents(): int
+    {
+        return count($this->testTriggeredNoticeEvents);
+    }
+
+    public function hasTestTriggeredNoticeEvents(): bool
+    {
+        return $this->numberOfTestTriggeredNoticeEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<PhpNoticeTriggered>>
+     */
+    public function testTriggeredPhpNoticeEvents(): array
+    {
+        return $this->testTriggeredPhpNoticeEvents;
+    }
+
+    public function numberOfTestTriggeredPhpNoticeEvents(): int
+    {
+        return count($this->testTriggeredPhpNoticeEvents);
+    }
+
+    public function hasTestTriggeredPhpNoticeEvents(): bool
+    {
+        return $this->numberOfTestTriggeredPhpNoticeEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<WarningTriggered>>
+     */
+    public function testTriggeredWarningEvents(): array
+    {
+        return $this->testTriggeredWarningEvents;
+    }
+
+    public function numberOfTestTriggeredWarningEvents(): int
+    {
+        return count($this->testTriggeredWarningEvents);
+    }
+
+    public function hasTestTriggeredWarningEvents(): bool
+    {
+        return $this->numberOfTestTriggeredWarningEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<PhpWarningTriggered>>
+     */
+    public function testTriggeredPhpWarningEvents(): array
+    {
+        return $this->testTriggeredPhpWarningEvents;
+    }
+
+    public function numberOfTestTriggeredPhpWarningEvents(): int
+    {
+        return count($this->testTriggeredPhpWarningEvents);
+    }
+
+    public function hasTestTriggeredPhpWarningEvents(): bool
+    {
+        return $this->numberOfTestTriggeredPhpWarningEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<PhpunitWarningTriggered>>
+     */
+    public function testTriggeredPhpunitWarningEvents(): array
+    {
+        return $this->testTriggeredPhpunitWarningEvents;
+    }
+
+    public function numberOfTestTriggeredPhpunitWarningEvents(): int
+    {
+        return count($this->testTriggeredPhpunitWarningEvents);
+    }
+
+    public function hasTestTriggeredPhpunitWarningEvents(): bool
+    {
+        return $this->numberOfTestTriggeredPhpunitWarningEvents() > 0;
+    }
+
+    /**
      * @psalm-return list<TestRunnerWarningTriggered>
      */
     public function testRunnerTriggeredWarningEvents(): array
@@ -281,27 +461,32 @@ final class TestResult
         return $this->numberOfTestRunnerTriggeredWarningEvents() > 0;
     }
 
-    public function numberOfTestTriggeredWarningEvents(): int
+    public function hasDeprecationEvents(): bool
     {
-        return count($this->testTriggeredWarningEvents);
+        return $this->numberOfDeprecationEvents() > 0;
     }
 
-    public function numberOfTestTriggeredPhpWarningEvents(): int
+    public function numberOfDeprecationEvents(): int
     {
-        return count($this->testTriggeredPhpWarningEvents);
+        return $this->numberOfTestTriggeredDeprecationEvents() +
+               $this->numberOfTestTriggeredPhpDeprecationEvents() +
+               $this->numberOfTestTriggeredPhpunitDeprecationEvents();
     }
 
-    public function numberOfTestTriggeredPhpunitWarningEvents(): int
+    public function hasNoticeEvents(): bool
     {
-        return count($this->testTriggeredPhpunitWarningEvents);
+        return $this->numberOfNoticeEvents() > 0;
+    }
+
+    public function numberOfNoticeEvents(): int
+    {
+        return $this->numberOfTestTriggeredNoticeEvents() +
+               $this->numberOfTestTriggeredPhpNoticeEvents();
     }
 
     public function hasWarningEvents(): bool
     {
-        return !empty($this->testTriggeredWarningEvents) ||
-               !empty($this->testTriggeredPhpWarningEvents) ||
-               !empty($this->testTriggeredPhpunitWarningEvents) ||
-               !empty($this->testRunnerTriggeredWarningEvents);
+        return $this->numberOfWarningEvents() > 0;
     }
 
     public function numberOfWarningEvents(): int
@@ -314,16 +499,21 @@ final class TestResult
 
     public function wasSuccessful(): bool
     {
-        return $this->wasSuccessfulIgnoringWarnings() && !$this->hasWarningEvents();
+        return $this->wasSuccessfulIgnoringWarnings() &&
+               !$this->hasWarningEvents();
     }
 
     public function wasSuccessfulIgnoringWarnings(): bool
     {
-        return !$this->hasTestErroredEvents() && !$this->hasTestFailedEvents();
+        return !$this->hasTestErroredEvents() &&
+               !$this->hasTestFailedEvents();
     }
 
     public function wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete(): bool
     {
-        return $this->wasSuccessful() && !$this->hasTestConsideredRiskyEvents() && !$this->hasTestMarkedIncompleteEvents() && !$this->hasTestSkippedEvents();
+        return $this->wasSuccessful() &&
+               !$this->hasTestConsideredRiskyEvents() &&
+               !$this->hasTestMarkedIncompleteEvents() &&
+               !$this->hasTestSkippedEvents();
     }
 }
