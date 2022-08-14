@@ -25,5 +25,5 @@ This test printed output: *
 
 %s:%d
 
-OK, but incomplete, skipped, or risky tests!
+OK, but some tests have issues!
 Tests: 1, Assertions: 1, Risky: 1.

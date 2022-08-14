@@ -359,7 +359,7 @@ final class ResultPrinter
 
             $this->printWithColor(
                 $color,
-                'OK, but incomplete, skipped, or risky tests!'
+                'OK, but some tests have issues!'
             );
         } else {
             $this->printer->print("\n");

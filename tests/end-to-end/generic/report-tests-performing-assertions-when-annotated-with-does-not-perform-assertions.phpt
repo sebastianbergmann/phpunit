@@ -24,5 +24,5 @@ This test is annotated with "@doesNotPerformAssertions" but performed 2 assertio
 
 %s:%d
 
-OK, but incomplete, skipped, or risky tests!
+OK, but some tests have issues!
 Tests: 1, Assertions: 2, Risky: 1.

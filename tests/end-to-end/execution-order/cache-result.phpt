@@ -25,7 +25,7 @@ Runtime: %s
 
 Time: %s, Memory: %s
 
-OK, but incomplete, skipped, or risky tests!
+OK, but some tests have issues!
 Tests: 5, Assertions: 3, Skipped: 2.
 {"version":1,"defects":{"PHPUnit\\TestFixture\\MultiDependencyTest::testFour":1,"PHPUnit\\TestFixture\\MultiDependencyTest::testThree":1},"times":{"PHPUnit\\TestFixture\\MultiDependencyTest::testFive":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testFour":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testThree":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testTwo":%f,"PHPUnit\\TestFixture\\MultiDependencyTest::testOne":%f}}
 --CLEAN--

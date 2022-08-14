@@ -25,5 +25,5 @@ This test did not perform any assertions
 
 %s:%d
 
-OK, but incomplete, skipped, or risky tests!
+OK, but some tests have issues!
 Tests: 1, Assertions: 0, Risky: 1.

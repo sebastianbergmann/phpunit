@@ -26,5 +26,5 @@ This test does not define a code coverage target using an attribute or annotatio
 
 %s:%d
 
-OK, but incomplete, skipped, or risky tests!
+OK, but some tests have issues!
 Tests: 1, Assertions: 1, Risky: 1.
