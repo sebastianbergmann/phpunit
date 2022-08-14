@@ -383,6 +383,16 @@ final class ResultPrinter
                     $color,
                     'WARNINGS!'
                 );
+            } elseif ($result->hasDeprecationEvents()) {
+                $this->printWithColor(
+                    $color,
+                    'DEPRECATIONS!'
+                );
+            } elseif ($result->hasNoticeEvents()) {
+                $this->printWithColor(
+                    $color,
+                    'NOTICES!'
+                );
             }
         }
 
@@ -391,6 +401,8 @@ final class ResultPrinter
         $this->printCountString($result->numberOfTestErroredEvents(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
         $this->printCountString($result->numberOfWarningEvents(), 'Warnings', $color);
+        $this->printCountString($result->numberOfDeprecationEvents(), 'Deprecations', $color);
+        $this->printCountString($result->numberOfNoticeEvents(), 'Notices', $color);
         $this->printCountString($result->numberOfTestSkippedEvents(), 'Skipped', $color);
         $this->printCountString($result->numberOfTestMarkedIncompleteEvents(), 'Incomplete', $color);
         $this->printCountString($result->numberOfTestsWithTestConsideredRiskyEvents(), 'Risky', $color);
