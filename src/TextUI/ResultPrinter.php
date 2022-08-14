@@ -335,7 +335,7 @@ final class ResultPrinter
             return;
         }
 
-        if ($result->wasSuccessfulAndNoTestIsRiskyOrSkippedOrIncomplete()) {
+        if ($result->wasSuccessfulAndNoTestHasIssues()) {
             $this->printWithColor(
                 'fg-black, bg-green',
                 sprintf(
