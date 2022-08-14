@@ -193,6 +193,17 @@ final class ResultPrinterTest extends TestCase
                     ]
                 ),
             ],
+
+            'test that triggers PHPUnit warning' => [
+                __DIR__ . '/expectations/successful_test_with_phpunit_warning.txt',
+                $this->createTestResult(
+                    testTriggeredPhpunitDeprecationEvents: [
+                        'Foo::testBar' => [
+                            $this->successfulTestWithPhpunitDeprecation(),
+                        ],
+                    ]
+                ),
+            ],
         ];
     }
 
@@ -285,6 +296,15 @@ final class ResultPrinterTest extends TestCase
             $this->telemetryInfo(),
             $this->testMethod(),
             $message
+        );
+    }
+
+    private function successfulTestWithPhpunitDeprecation(): PhpunitDeprecationTriggered
+    {
+        return new PhpunitDeprecationTriggered(
+            $this->telemetryInfo(),
+            $this->testMethod(),
+            'message'
         );
     }
 

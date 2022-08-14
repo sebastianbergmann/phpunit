@@ -63,7 +63,7 @@ final class ResultPrinter
         $this->printTestsWithErrors($result);
         $this->printTestsWithFailedAssertions($result);
         $this->printRiskyTests($result);
-        $this->printPhpunitDeprecations($result);
+        $this->printDetailsOnTestsThatTriggeredPhpunitDeprecations($result);
 
         if ($this->displayDetailsOnIncompleteTests) {
             $this->printIncompleteTests($result);
@@ -119,8 +119,55 @@ final class ResultPrinter
     {
     }
 
-    private function printPhpunitDeprecations(TestResult $result): void
+    private function printDetailsOnTestsThatTriggeredPhpunitDeprecations(TestResult $result): void
     {
+        if (!$result->hasTestTriggeredPhpunitDeprecationEvents()) {
+            return;
+        }
+
+        $elements = [];
+
+        foreach ($result->testTriggeredPhpunitDeprecationEvents() as $reasons) {
+            $test     = $reasons[0]->test();
+            $title    = $this->name($test);
+            $location = $this->location($test);
+
+            if (count($reasons) === 1) {
+                $body = $reasons[0]->message() . PHP_EOL;
+            } else {
+                $body  = '';
+                $first = true;
+
+                foreach ($reasons as $reason) {
+                    if ($first) {
+                        $first = false;
+                    } else {
+                        $body .= PHP_EOL;
+                    }
+
+                    $lines = explode(PHP_EOL, trim($reason->message()));
+
+                    $body .= '* ' . $lines[0] . PHP_EOL;
+
+                    if (count($lines) > 1) {
+                        foreach (range(1, count($lines) - 1) as $line) {
+                            $body .= '  ' . $lines[$line] . PHP_EOL;
+                        }
+                    }
+                }
+            }
+
+            if (!empty($location)) {
+                $body .= $location;
+            }
+
+            $elements[] = [
+                'title' => $title,
+                'body'  => $body,
+            ];
+        }
+
+        $this->printList($result->numberOfTestTriggeredPhpunitDeprecationEvents(), $elements, 'PHPUnit deprecation');
     }
 
     private function printTestsWithErrors(TestResult $result): void
