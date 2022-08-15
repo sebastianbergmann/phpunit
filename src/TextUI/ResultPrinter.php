@@ -22,6 +22,8 @@ use function trim;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
+use PHPUnit\Event\Test\ConsideredRisky;
+use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
@@ -125,49 +127,11 @@ final class ResultPrinter
             return;
         }
 
-        $elements = [];
-
-        foreach ($result->testTriggeredPhpunitDeprecationEvents() as $reasons) {
-            $test     = $reasons[0]->test();
-            $title    = $this->name($test);
-            $location = $this->location($test);
-
-            if (count($reasons) === 1) {
-                $body = $reasons[0]->message() . PHP_EOL;
-            } else {
-                $body  = '';
-                $first = true;
-
-                foreach ($reasons as $reason) {
-                    if ($first) {
-                        $first = false;
-                    } else {
-                        $body .= PHP_EOL;
-                    }
-
-                    $lines = explode(PHP_EOL, trim($reason->message()));
-
-                    $body .= '* ' . $lines[0] . PHP_EOL;
-
-                    if (count($lines) > 1) {
-                        foreach (range(1, count($lines) - 1) as $line) {
-                            $body .= '  ' . $lines[$line] . PHP_EOL;
-                        }
-                    }
-                }
-            }
-
-            if (!empty($location)) {
-                $body .= $location;
-            }
-
-            $elements[] = [
-                'title' => $title,
-                'body'  => $body,
-            ];
-        }
-
-        $this->printList($result->numberOfTestTriggeredPhpunitDeprecationEvents(), $elements, 'PHPUnit deprecation');
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredPhpunitDeprecationEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpunitDeprecationEvents()),
+            'PHPUnit deprecation'
+        );
     }
 
     private function printTestsWithErrors(TestResult $result): void
@@ -224,49 +188,11 @@ final class ResultPrinter
             return;
         }
 
-        $elements = [];
-
-        foreach ($result->testConsideredRiskyEvents() as $reasons) {
-            $test     = $reasons[0]->test();
-            $title    = $this->name($test);
-            $location = $this->location($test);
-
-            if (count($reasons) === 1) {
-                $body = $reasons[0]->message() . PHP_EOL;
-            } else {
-                $body  = '';
-                $first = true;
-
-                foreach ($reasons as $reason) {
-                    if ($first) {
-                        $first = false;
-                    } else {
-                        $body .= PHP_EOL;
-                    }
-
-                    $lines = explode(PHP_EOL, trim($reason->message()));
-
-                    $body .= '* ' . $lines[0] . PHP_EOL;
-
-                    if (count($lines) > 1) {
-                        foreach (range(1, count($lines) - 1) as $line) {
-                            $body .= '  ' . $lines[$line] . PHP_EOL;
-                        }
-                    }
-                }
-            }
-
-            if (!empty($location)) {
-                $body .= $location;
-            }
-
-            $elements[] = [
-                'title' => $title,
-                'body'  => $body,
-            ];
-        }
-
-        $this->printList($result->numberOfTestsWithTestConsideredRiskyEvents(), $elements, 'risky test');
+        $this->printList(
+            $result->numberOfTestsWithTestConsideredRiskyEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testConsideredRiskyEvents()),
+            'risky test'
+        );
     }
 
     private function printIncompleteTests(TestResult $result): void
@@ -512,5 +438,57 @@ final class ResultPrinter
             $test->line(),
             PHP_EOL
         );
+    }
+
+    /**
+     * @psalm-param array<string,list<ConsideredRisky|PhpunitDeprecationTriggered>> $events
+     *
+     * @psalm-return list<array{title: string, body: string}>
+     */
+    private function mapTestsWithIssuesEventsToElements(array $events): array
+    {
+        $elements = [];
+
+        foreach ($events as $reasons) {
+            $test     = $reasons[0]->test();
+            $title    = $this->name($test);
+            $location = $this->location($test);
+
+            if (count($reasons) === 1) {
+                $body = $reasons[0]->message() . PHP_EOL;
+            } else {
+                $body  = '';
+                $first = true;
+
+                foreach ($reasons as $reason) {
+                    if ($first) {
+                        $first = false;
+                    } else {
+                        $body .= PHP_EOL;
+                    }
+
+                    $lines = explode(PHP_EOL, trim($reason->message()));
+
+                    $body .= '* ' . $lines[0] . PHP_EOL;
+
+                    if (count($lines) > 1) {
+                        foreach (range(1, count($lines) - 1) as $line) {
+                            $body .= '  ' . $lines[$line] . PHP_EOL;
+                        }
+                    }
+                }
+            }
+
+            if (!empty($location)) {
+                $body .= $location;
+            }
+
+            $elements[] = [
+                'title' => $title,
+                'body'  => $body,
+            ];
+        }
+
+        return $elements;
     }
 }

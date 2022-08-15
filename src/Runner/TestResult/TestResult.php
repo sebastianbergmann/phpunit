@@ -307,14 +307,14 @@ final class TestResult
         return $this->testTriggeredPhpunitDeprecationEvents;
     }
 
-    public function numberOfTestTriggeredPhpunitDeprecationEvents(): int
+    public function numberOfTestsWithTestTriggeredPhpunitDeprecationEvents(): int
     {
         return count($this->testTriggeredPhpunitDeprecationEvents);
     }
 
     public function hasTestTriggeredPhpunitDeprecationEvents(): bool
     {
-        return $this->numberOfTestTriggeredPhpunitDeprecationEvents() > 0;
+        return $this->numberOfTestsWithTestTriggeredPhpunitDeprecationEvents() > 0;
     }
 
     /**
@@ -470,7 +470,7 @@ final class TestResult
     {
         return $this->numberOfTestTriggeredDeprecationEvents() +
                $this->numberOfTestTriggeredPhpDeprecationEvents() +
-               $this->numberOfTestTriggeredPhpunitDeprecationEvents();
+               $this->numberOfTestsWithTestTriggeredPhpunitDeprecationEvents();
     }
 
     public function hasNoticeEvents(): bool
