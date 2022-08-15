@@ -386,7 +386,7 @@ final class Application
             $returnCode = self::FAILURE_EXIT;
         }
 
-        if ($result->wasSuccessfulIgnoringWarnings()) {
+        if ($result->wasSuccessfulIgnoringPhpunitWarnings()) {
             if ($configuration->failOnRisky() && $result->hasTestConsideredRiskyEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }

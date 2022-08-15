@@ -90,8 +90,8 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test' => [
-                __DIR__ . '/expectations/successful_test.txt',
+            'successful test without issues' => [
+                __DIR__ . '/expectations/successful_test_without_issues.txt',
                 $this->createTestResult(),
             ],
 
@@ -117,7 +117,11 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/incomplete_test.txt',
                 $this->createTestResult(
                     testMarkedIncompleteEvents: [
-                        $this->incompleteTest(),
+                        new MarkedIncomplete(
+                            $this->telemetryInfo(),
+                            $this->testMethod(),
+                            Throwable::from(new IncompleteTestError('message'))
+                        ),
                     ]
                 ),
             ],
@@ -126,7 +130,11 @@ final class ResultPrinterTest extends TestCase
                 __DIR__ . '/expectations/skipped_test.txt',
                 $this->createTestResult(
                     testSkippedEvents: [
-                        $this->skippedTest(),
+                        new Skipped(
+                            $this->telemetryInfo(),
+                            $this->testMethod(),
+                            'message'
+                        ),
                     ]
                 ),
             ],
@@ -194,16 +202,172 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'test that triggers PHPUnit warning' => [
-                __DIR__ . '/expectations/successful_test_with_phpunit_warning.txt',
+            'successful test that triggers deprecation' => [
+                __DIR__ . '/expectations/successful_test_with_deprecation.txt',
                 $this->createTestResult(
-                    testTriggeredPhpunitDeprecationEvents: [
+                    testTriggeredDeprecationEvents: [
                         'Foo::testBar' => [
-                            $this->successfulTestWithPhpunitDeprecation(),
+                            new DeprecationTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message',
+                                'file',
+                                1
+                            ),
                         ],
                     ]
                 ),
             ],
+
+            'successful test that triggers PHP deprecation' => [
+                __DIR__ . '/expectations/successful_test_with_php_deprecation.txt',
+                $this->createTestResult(
+                    testTriggeredPhpDeprecationEvents: [
+                        'Foo::testBar' => [
+                            new PhpDeprecationTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message',
+                                'file',
+                                1
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
+            'successful test that triggers PHPUnit deprecation' => [
+                __DIR__ . '/expectations/successful_test_with_phpunit_deprecation.txt',
+                $this->createTestResult(
+                    testTriggeredPhpunitDeprecationEvents: [
+                        'Foo::testBar' => [
+                            new PhpunitDeprecationTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message'
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
+            'successful test that triggers error' => [
+                __DIR__ . '/expectations/successful_test_with_error.txt',
+                $this->createTestResult(
+                    testTriggeredErrorEvents: [
+                        'Foo::testBar' => [
+                            new ErrorTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message',
+                                'file',
+                                1
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
+            'successful test that triggers PHP error' => [
+                __DIR__ . '/expectations/successful_test_with_php_error.txt',
+                $this->createTestResult(
+                    testTriggeredPhpErrorEvents: [
+                        'Foo::testBar' => [
+                            new PhpErrorTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message',
+                                'file',
+                                1
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
+            'successful test that triggers notice' => [
+                __DIR__ . '/expectations/successful_test_with_notice.txt',
+                $this->createTestResult(
+                    testTriggeredNoticeEvents: [
+                        'Foo::testBar' => [
+                            new NoticeTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message',
+                                'file',
+                                1
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
+            'successful test that triggers PHP notice' => [
+                __DIR__ . '/expectations/successful_test_with_php_notice.txt',
+                $this->createTestResult(
+                    testTriggeredPhpNoticeEvents: [
+                        'Foo::testBar' => [
+                            new PhpNoticeTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message',
+                                'file',
+                                1
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
+            'successful test that triggers warning' => [
+                __DIR__ . '/expectations/successful_test_with_warning.txt',
+                $this->createTestResult(
+                    testTriggeredWarningEvents: [
+                        'Foo::testBar' => [
+                            new WarningTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message',
+                                'file',
+                                1
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
+            'successful test that triggers PHP warning' => [
+                __DIR__ . '/expectations/successful_test_with_php_warning.txt',
+                $this->createTestResult(
+                    testTriggeredPhpWarningEvents: [
+                        'Foo::testBar' => [
+                            new PhpWarningTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message',
+                                'file',
+                                1
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
+            'successful test that triggers PHPUnit warning' => [
+                __DIR__ . '/expectations/successful_test_with_phpunit_warning.txt',
+                $this->createTestResult(
+                    testTriggeredPhpunitWarningEvents: [
+                        'Foo::testBar' => [
+                            new PhpunitWarningTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message'
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
         ];
     }
 
@@ -272,39 +436,12 @@ final class ResultPrinterTest extends TestCase
         );
     }
 
-    private function incompleteTest(): MarkedIncomplete
-    {
-        return new MarkedIncomplete(
-            $this->telemetryInfo(),
-            $this->testMethod(),
-            Throwable::from(new IncompleteTestError('message'))
-        );
-    }
-
-    private function skippedTest(): Skipped
-    {
-        return new Skipped(
-            $this->telemetryInfo(),
-            $this->testMethod(),
-            'message'
-        );
-    }
-
     private function riskyTest(string $message): ConsideredRisky
     {
         return new ConsideredRisky(
             $this->telemetryInfo(),
             $this->testMethod(),
             $message
-        );
-    }
-
-    private function successfulTestWithPhpunitDeprecation(): PhpunitDeprecationTriggered
-    {
-        return new PhpunitDeprecationTriggered(
-            $this->telemetryInfo(),
-            $this->testMethod(),
-            'message'
         );
     }
 

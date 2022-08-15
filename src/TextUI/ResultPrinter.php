@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
+use function array_merge;
 use function assert;
 use function count;
 use function explode;
@@ -23,7 +24,16 @@ use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
+use PHPUnit\Event\Test\DeprecationTriggered;
+use PHPUnit\Event\Test\ErrorTriggered;
+use PHPUnit\Event\Test\NoticeTriggered;
+use PHPUnit\Event\Test\PhpDeprecationTriggered;
+use PHPUnit\Event\Test\PhpErrorTriggered;
+use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitWarningTriggered;
+use PHPUnit\Event\Test\PhpWarningTriggered;
+use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
@@ -60,8 +70,7 @@ final class ResultPrinter
 
     public function printResult(TestResult $result): void
     {
-        $this->printTestRunnerWarnings($result);
-        $this->printTestWarnings($result);
+        $this->printPhpunitWarnings($result);
         $this->printTestsWithErrors($result);
         $this->printTestsWithFailedAssertions($result);
         $this->printRiskyTests($result);
@@ -76,18 +85,22 @@ final class ResultPrinter
         }
 
         if ($this->displayDetailsOnTestsThatTriggerDeprecations) {
+            $this->printDetailsOnTestsThatTriggerPhpDeprecations($result);
             $this->printDetailsOnTestsThatTriggerDeprecations($result);
         }
 
         if ($this->displayDetailsOnTestsThatTriggerErrors) {
+            $this->printDetailsOnTestsThatTriggerPhpErrors($result);
             $this->printDetailsOnTestsThatTriggerErrors($result);
         }
 
         if ($this->displayDetailsOnTestsThatTriggerNotices) {
+            $this->printDetailsOnTestsThatTriggerPhpNotices($result);
             $this->printDetailsOnTestsThatTriggerNotices($result);
         }
 
         if ($this->displayDetailsOnTestsThatTriggerWarnings) {
+            $this->printDetailsOnTestsThatTriggerPhpWarnings($result);
             $this->printDetailsOnTestsThatTriggerWarnings($result);
         }
 
@@ -99,9 +112,10 @@ final class ResultPrinter
         $this->printer->flush();
     }
 
-    private function printTestRunnerWarnings(TestResult $result): void
+    private function printPhpunitWarnings(TestResult $result): void
     {
-        if (!$result->hasTestRunnerTriggeredWarningEvents()) {
+        if (!$result->hasTestRunnerTriggeredWarningEvents() &&
+            !$result->hasTestTriggeredPhpunitWarningEvents()) {
             return;
         }
 
@@ -114,11 +128,16 @@ final class ResultPrinter
             ];
         }
 
-        $this->printList(count($elements), $elements, 'test runner warning');
-    }
+        $elements = array_merge(
+            $elements,
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpunitWarningEvents())
+        );
 
-    private function printTestWarnings(TestResult $result): void
-    {
+        $this->printList(
+            $result->numberOfTestRunnerTriggeredWarningEvents() + $result->numberOfTestsWithTestTriggeredPhpunitWarningEvents(),
+            $elements,
+            'PHPUnit warning'
+        );
     }
 
     private function printDetailsOnTestsThatTriggeredPhpunitDeprecations(TestResult $result): void
@@ -231,20 +250,108 @@ final class ResultPrinter
         $this->printList(count($elements), $elements, 'skipped test');
     }
 
+    private function printDetailsOnTestsThatTriggerPhpDeprecations(TestResult $result): void
+    {
+        if (!$result->hasTestTriggeredPhpDeprecationEvents()) {
+            return;
+        }
+
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredPhpDeprecationEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpDeprecationEvents()),
+            'PHP deprecation'
+        );
+    }
+
     private function printDetailsOnTestsThatTriggerDeprecations(TestResult $result): void
     {
+        if (!$result->hasTestTriggeredDeprecationEvents()) {
+            return;
+        }
+
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredDeprecationEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredDeprecationEvents()),
+            'deprecation'
+        );
+    }
+
+    private function printDetailsOnTestsThatTriggerPhpErrors(TestResult $result): void
+    {
+        if (!$result->hasTestTriggeredPhpErrorEvents()) {
+            return;
+        }
+
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredPhpErrorEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpErrorEvents()),
+            'PHP error'
+        );
     }
 
     private function printDetailsOnTestsThatTriggerErrors(TestResult $result): void
     {
+        if (!$result->hasTestTriggeredErrorEvents()) {
+            return;
+        }
+
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredErrorEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredErrorEvents()),
+            'error'
+        );
+    }
+
+    private function printDetailsOnTestsThatTriggerPhpNotices(TestResult $result): void
+    {
+        if (!$result->hasTestTriggeredPhpNoticeEvents()) {
+            return;
+        }
+
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredPhpNoticeEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpNoticeEvents()),
+            'PHP notice'
+        );
     }
 
     private function printDetailsOnTestsThatTriggerNotices(TestResult $result): void
     {
+        if (!$result->hasTestTriggeredNoticeEvents()) {
+            return;
+        }
+
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredNoticeEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredNoticeEvents()),
+            'notice'
+        );
+    }
+
+    private function printDetailsOnTestsThatTriggerPhpWarnings(TestResult $result): void
+    {
+        if (!$result->hasTestTriggeredPhpWarningEvents()) {
+            return;
+        }
+
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredPhpWarningEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpWarningEvents()),
+            'PHP warning'
+        );
     }
 
     private function printDetailsOnTestsThatTriggerWarnings(TestResult $result): void
     {
+        if (!$result->hasTestTriggeredWarningEvents()) {
+            return;
+        }
+
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredWarningEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredWarningEvents()),
+            'warning'
+        );
     }
 
     /**
@@ -371,7 +478,7 @@ final class ResultPrinter
 
         $this->printCountString($result->numberOfTestsRun(), 'Tests', $color, true);
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
-        $this->printCountString($result->numberOfTestErroredEvents(), 'Errors', $color);
+        $this->printCountString($result->numberOfTestErroredEvents() + $result->numberOfErrorEvents(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
         $this->printCountString($result->numberOfWarningEvents(), 'Warnings', $color);
         $this->printCountString($result->numberOfDeprecationEvents(), 'Deprecations', $color);
@@ -441,7 +548,7 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-param array<string,list<ConsideredRisky|PhpunitDeprecationTriggered>> $events
+     * @psalm-param array<string,list<ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered|ErrorTriggered|PhpErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|PhpunitWarningTriggered>> $events
      *
      * @psalm-return list<array{title: string, body: string}>
      */
