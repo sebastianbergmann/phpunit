@@ -35,6 +35,7 @@ use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Event\TestDataCollection;
+use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
@@ -387,9 +388,10 @@ final class ResultPrinterTest extends TestCase
      * @psalm-param array<string,list<WarningTriggered>> $testTriggeredWarningEvents
      * @psalm-param array<string,list<PhpWarningTriggered>> $testTriggeredPhpWarningEvents
      * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
+     * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
      */
-    private function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $testTriggeredDeprecationEvents = [], array $testTriggeredPhpDeprecationEvents = [], array $testTriggeredPhpunitDeprecationEvents = [], array $testTriggeredErrorEvents = [], array $testTriggeredPhpErrorEvents = [], array $testTriggeredNoticeEvents = [], array $testTriggeredPhpNoticeEvents = [], array $testTriggeredWarningEvents = [], array $testTriggeredPhpWarningEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredWarningEvents = []): TestResult
+    private function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $testTriggeredDeprecationEvents = [], array $testTriggeredPhpDeprecationEvents = [], array $testTriggeredPhpunitDeprecationEvents = [], array $testTriggeredErrorEvents = [], array $testTriggeredPhpErrorEvents = [], array $testTriggeredNoticeEvents = [], array $testTriggeredPhpNoticeEvents = [], array $testTriggeredWarningEvents = [], array $testTriggeredPhpWarningEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = []): TestResult
     {
         return new TestResult(
             $numberOfTests,
@@ -410,6 +412,7 @@ final class ResultPrinterTest extends TestCase
             $testTriggeredWarningEvents,
             $testTriggeredPhpWarningEvents,
             $testTriggeredPhpunitWarningEvents,
+            $testRunnerTriggeredDeprecationEvents,
             $testRunnerTriggeredWarningEvents
         );
     }

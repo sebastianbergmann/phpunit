@@ -31,6 +31,8 @@ interface Emitter
 
     public function testRunnerFinished(): void;
 
+    public function testRunnerTriggeredDeprecation(string $message): void;
+
     public function testRunnerTriggeredWarning(string $message): void;
 
     public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void;

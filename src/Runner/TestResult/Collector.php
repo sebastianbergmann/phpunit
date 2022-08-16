@@ -31,6 +31,7 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\WarningTriggered;
+use PHPUnit\Event\TestRunner\DeprecationTriggered as TestRunnerDeprecationTriggered;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\WarningTriggered as TestRunnerWarningTriggered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
@@ -140,7 +141,12 @@ final class Collector
     /**
      * @psalm-var list<TestRunnerWarningTriggered>
      */
-    private array $testRunnerTriggeredWarningEvents                                                                                                                                  = [];
+    private array $testRunnerTriggeredWarningEvents = [];
+
+    /**
+     * @psalm-var list<TestRunnerDeprecationTriggered>
+     */
+    private array $testRunnerTriggeredDeprecationEvents                                                                                                                              = [];
     private bool $ignoreTestTriggeredDeprecationEventForExpectation                                                                                                                  = false;
     private bool $ignoreTestTriggeredErrorEventForExpectation                                                                                                                        = false;
     private bool $ignoreTestTriggeredNoticeEventForExpectation                                                                                                                       = false;
@@ -175,6 +181,7 @@ final class Collector
         Facade::registerSubscriber(new TestTriggeredPhpunitWarningSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpWarningSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredWarningSubscriber($this));
+        Facade::registerSubscriber(new TestRunnerTriggeredDeprecationSubscriber($this));
         Facade::registerSubscriber(new TestRunnerTriggeredWarningSubscriber($this));
     }
 
@@ -199,6 +206,7 @@ final class Collector
             $this->testTriggeredWarningEvents,
             $this->testTriggeredPhpWarningEvents,
             $this->testTriggeredPhpunitWarningEvents,
+            $this->testRunnerTriggeredDeprecationEvents,
             $this->testRunnerTriggeredWarningEvents
         );
     }
@@ -518,6 +526,11 @@ final class Collector
         }
 
         $this->testTriggeredPhpunitWarningEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testRunnerTriggeredDeprecation(TestRunnerDeprecationTriggered $event): void
+    {
+        $this->testRunnerTriggeredDeprecationEvents[] = $event;
     }
 
     public function testRunnerTriggeredWarning(TestRunnerWarningTriggered $event): void

@@ -9,7 +9,8 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Event/Emitter/DispatchingEmitter.php">
-    <MissingThrowsDocblock occurrences="57">
+    <MissingThrowsDocblock occurrences="58">
+      <code>dispatch</code>
       <code>dispatch</code>
       <code>dispatch</code>
       <code>dispatch</code>

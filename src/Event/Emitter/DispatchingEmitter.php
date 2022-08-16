@@ -91,6 +91,16 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testRunnerTriggeredDeprecation(string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\DeprecationTriggered(
+                $this->telemetryInfo(),
+                $message
+            )
+        );
+    }
+
     public function testRunnerTriggeredWarning(string $message): void
     {
         $this->dispatcher->dispatch(
