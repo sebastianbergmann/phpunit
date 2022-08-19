@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI;
 
 use function hrtime;
 use Exception;
+use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Duration;
@@ -471,7 +472,8 @@ final class ResultPrinterTest extends TestCase
             Duration::fromSecondsAndNanoseconds(123, 456),
             MemoryUsage::fromBytes(2000),
             Duration::fromSecondsAndNanoseconds(234, 567),
-            MemoryUsage::fromBytes(3000)
+            MemoryUsage::fromBytes(3000),
+            new ClassMethod(__CLASS__, __METHOD__)
         );
     }
 

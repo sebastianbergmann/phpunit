@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
+use PHPUnit\Event\Code\ClassMethod;
+
 /**
  * @psalm-immutable
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -20,14 +22,16 @@ final class Info
     private MemoryUsage $memorySinceStart;
     private Duration $durationSincePrevious;
     private MemoryUsage $memorySincePrevious;
+    private ClassMethod $origin;
 
-    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious)
+    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious, ClassMethod $origin)
     {
         $this->current               = $current;
         $this->durationSinceStart    = $durationSinceStart;
         $this->memorySinceStart      = $memorySinceStart;
         $this->durationSincePrevious = $durationSincePrevious;
         $this->memorySincePrevious   = $memorySincePrevious;
+        $this->origin                = $origin;
     }
 
     public function time(): HRTime
@@ -63,6 +67,11 @@ final class Info
     public function memoryUsageSincePrevious(): MemoryUsage
     {
         return $this->memorySincePrevious;
+    }
+
+    public function origin(): ClassMethod
+    {
+        return $this->origin;
     }
 
     public function asString(): string

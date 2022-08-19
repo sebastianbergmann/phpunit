@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Event;
 
+use function assert;
+use function debug_backtrace;
+use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
@@ -717,14 +720,21 @@ final class DispatchingEmitter implements Emitter
 
     private function telemetryInfo(): Telemetry\Info
     {
-        $current = $this->system->snapshot();
+        $current  = $this->system->snapshot();
+        $location = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2];
+
+        assert(isset($location['class'], $location['function']));
 
         $info = new Telemetry\Info(
             $current,
             $current->time()->duration($this->startSnapshot->time()),
             $current->memoryUsage()->diff($this->startSnapshot->memoryUsage()),
             $current->time()->duration($this->previousSnapshot->time()),
-            $current->memoryUsage()->diff($this->previousSnapshot->memoryUsage())
+            $current->memoryUsage()->diff($this->previousSnapshot->memoryUsage()),
+            new ClassMethod(
+                $location['class'],
+                $location['function']
+            )
         );
 
         $this->previousSnapshot = $current;
