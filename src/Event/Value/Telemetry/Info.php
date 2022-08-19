@@ -22,16 +22,16 @@ final class Info
     private MemoryUsage $memorySinceStart;
     private Duration $durationSincePrevious;
     private MemoryUsage $memorySincePrevious;
-    private ClassMethod $origin;
+    private ClassMethod $emitter;
 
-    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious, ClassMethod $origin)
+    public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious, ClassMethod $emitter)
     {
         $this->current               = $current;
         $this->durationSinceStart    = $durationSinceStart;
         $this->memorySinceStart      = $memorySinceStart;
         $this->durationSincePrevious = $durationSincePrevious;
         $this->memorySincePrevious   = $memorySincePrevious;
-        $this->origin                = $origin;
+        $this->emitter               = $emitter;
     }
 
     public function time(): HRTime
@@ -69,9 +69,9 @@ final class Info
         return $this->memorySincePrevious;
     }
 
-    public function origin(): ClassMethod
+    public function emitter(): ClassMethod
     {
-        return $this->origin;
+        return $this->emitter;
     }
 
     public function asString(): string
