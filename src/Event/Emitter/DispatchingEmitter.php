@@ -720,10 +720,10 @@ final class DispatchingEmitter implements Emitter
 
     private function telemetryInfo(): Telemetry\Info
     {
-        $current  = $this->system->snapshot();
-        $location = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2];
+        $current = $this->system->snapshot();
+        $emitter = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2];
 
-        assert(isset($location['class'], $location['function']));
+        assert(isset($emitter['class'], $emitter['function']));
 
         $info = new Telemetry\Info(
             $current,
@@ -731,10 +731,7 @@ final class DispatchingEmitter implements Emitter
             $current->memoryUsage()->diff($this->startSnapshot->memoryUsage()),
             $current->time()->duration($this->previousSnapshot->time()),
             $current->memoryUsage()->diff($this->previousSnapshot->memoryUsage()),
-            new ClassMethod(
-                $location['class'],
-                $location['function']
-            )
+            new ClassMethod($emitter['class'], $emitter['function'])
         );
 
         $this->previousSnapshot = $current;
