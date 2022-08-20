@@ -65,13 +65,15 @@ final class TestSuiteSorter
      * List of sorting weights for all test result codes. A higher number gives higher priority.
      */
     private const DEFECT_SORT_WEIGHT = [
-        'error'      => 6,
-        'failure'    => 5,
-        'warning'    => 4,
-        'incomplete' => 3,
-        'risky'      => 2,
-        'skipped'    => 1,
-        'unknown'    => 0,
+        'error'       => 8,
+        'failure'     => 7,
+        'warning'     => 6,
+        'risky'       => 5,
+        'deprecation' => 4,
+        'notice'      => 3,
+        'incomplete'  => 2,
+        'skipped'     => 1,
+        'unknown'     => 0,
     ];
 
     private const SIZE_SORT_WEIGHT = [
