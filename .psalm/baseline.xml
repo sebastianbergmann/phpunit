@@ -715,7 +715,7 @@
       <code>getResult</code>
       <code>runTest</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="19">
+    <MissingThrowsDocblock occurrences="20">
       <code>cacheDirectory</code>
       <code>endTest</code>
       <code>endTest</code>
@@ -730,6 +730,7 @@
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
+      <code>throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy ^1.12.1".');</code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue occurrences="3">
       <code>$beStrictAboutChangesToGlobalState</code>
@@ -745,9 +746,6 @@
       <code>$runClassInSeparateProcess</code>
       <code>$runTestInSeparateProcess</code>
     </PropertyNotSetInConstructor>
-    <RawObjectIteration occurrences="1">
-      <code>$methodProphecies</code>
-    </RawObjectIteration>
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(bool) $this-&gt;backupStaticAttributes</code>
     </RedundantCastGivenDocblockType>
@@ -757,6 +755,22 @@
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>$this-&gt;prophet !== null</code>
     </RedundantConditionGivenDocblockType>
+    <UndefinedClass occurrences="6">
+      <code>$e</code>
+      <code>ObjectProphecy</code>
+      <code>PredictionException</code>
+      <code>PredictionException</code>
+      <code>Prophet</code>
+      <code>Prophet</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="6">
+      <code>$this-&gt;prophet</code>
+      <code>$this-&gt;prophet</code>
+      <code>\Prophecy\Exception\Doubler\ClassNotFoundException</code>
+      <code>\Prophecy\Exception\Doubler\DoubleException</code>
+      <code>\Prophecy\Exception\Doubler\InterfaceNotFoundException</code>
+      <code>\Prophecy\Prophet</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="src/Framework/TestResult.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -1295,6 +1309,13 @@
   </file>
   <file src="src/Util/ExcludeList.php">
     <MissingThrowsDocblock occurrences="1"/>
+    <UndefinedClass occurrences="5">
+      <code>Assert</code>
+      <code>DocBlock</code>
+      <code>Project</code>
+      <code>Prophet</code>
+      <code>Type</code>
+    </UndefinedClass>
   </file>
   <file src="src/Util/Filter.php">
     <MissingParamType occurrences="1">

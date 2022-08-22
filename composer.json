@@ -32,7 +32,6 @@
         "myclabs/deep-copy": "^1.10.1",
         "phar-io/manifest": "^2.0.3",
         "phar-io/version": "^3.0.2",
-        "phpspec/prophecy": "^1.12.1",
         "phpunit/php-code-coverage": "^9.2.13",
         "phpunit/php-file-iterator": "^3.0.5",
         "phpunit/php-invoker": "^3.1.1",
@@ -49,9 +48,6 @@
         "sebastian/resource-operations": "^3.0.3",
         "sebastian/type": "^3.0",
         "sebastian/version": "^3.0.2"
-    },
-    "require-dev": {
-        "phpspec/prophecy-phpunit": "^2.0.1"
     },
     "config": {
         "platform": {

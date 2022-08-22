@@ -1954,6 +1954,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function prophesize(?string $classOrInterface = null): ObjectProphecy
     {
+        if (!class_exists(Prophet::class)) {
+            throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');
+        }
+
         $this->addWarning('PHPUnit\Framework\TestCase::prophesize() is deprecated and will be removed in PHPUnit 10. Please use the trait provided by phpspec/prophecy-phpunit.');
 
         if (is_string($classOrInterface)) {

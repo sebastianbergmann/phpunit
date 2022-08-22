@@ -106,6 +106,12 @@
     </target>
 
     <target name="-phar-prepare" depends="clean,install-dependencies">
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="require"/>
+            <arg value="phpspec/prophecy"/>
+            <arg value="^1.12.1"/>
+        </exec>
+
         <mkdir dir="${basedir}/build/artifacts"/>
         <mkdir dir="${basedir}/build/tmp/phar"/>
         <mkdir dir="${basedir}/build/tmp/phar-scoped"/>
@@ -344,6 +350,11 @@
                 <include name="**/*.php" />
             </fileset>
         </copy>
+
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="remove"/>
+            <arg value="phpspec/prophecy"/>
+        </exec>
     </target>
 
     <target name="-phar-build" depends="-phar-determine-version">
