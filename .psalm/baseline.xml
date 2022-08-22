@@ -942,9 +942,6 @@
       <code>$runTestInSeparateProcess</code>
       <code>$snapshot</code>
     </PropertyNotSetInConstructor>
-    <RawObjectIteration occurrences="1">
-      <code>$methodProphecies</code>
-    </RawObjectIteration>
     <RedundantCastGivenDocblockType occurrences="1">
       <code>(bool) $this-&gt;backupStaticAttributes</code>
     </RedundantCastGivenDocblockType>
@@ -960,6 +957,24 @@
       <code>is_string($this-&gt;outputExpectedRegex)</code>
       <code>is_string($this-&gt;outputExpectedString)</code>
     </RedundantConditionGivenDocblockType>
+    <UndefinedClass occurrences="8">
+      <code>$e</code>
+      <code>$methodProphecy</code>
+      <code>MethodProphecy</code>
+      <code>ObjectProphecy</code>
+      <code>PredictionException</code>
+      <code>PredictionException</code>
+      <code>Prophet</code>
+      <code>Prophet</code>
+    </UndefinedClass>
+    <UndefinedDocblockClass occurrences="6">
+      <code>$this-&gt;prophet</code>
+      <code>$this-&gt;prophet</code>
+      <code>\Prophecy\Exception\Doubler\ClassNotFoundException</code>
+      <code>\Prophecy\Exception\Doubler\DoubleException</code>
+      <code>\Prophecy\Exception\Doubler\InterfaceNotFoundException</code>
+      <code>\Prophecy\Prophet</code>
+    </UndefinedDocblockClass>
   </file>
   <file src="src/Framework/TestResult.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -1274,8 +1289,13 @@
     <DocblockTypeContradiction occurrences="1">
       <code>self::$directories === null</code>
     </DocblockTypeContradiction>
-    <UndefinedClass occurrences="1">
+    <UndefinedClass occurrences="6">
+      <code>Assert</code>
+      <code>DocBlock</code>
       <code>Invoker</code>
+      <code>Project</code>
+      <code>Prophet</code>
+      <code>Type</code>
     </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
@@ -1563,11 +1583,6 @@
       <code>$out</code>
       <code>$outTarget</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/Util/Reflection.php">
-    <PossiblyNullArgument occurrences="1">
-      <code>$filter</code>
-    </PossiblyNullArgument>
   </file>
   <file src="src/Util/Test.php">
     <InvalidScalarArgument occurrences="1">
