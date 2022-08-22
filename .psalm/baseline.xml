@@ -730,7 +730,7 @@
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
-      <code>throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy ^1.12.1".');</code>
+      <code>throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');</code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue occurrences="3">
       <code>$beStrictAboutChangesToGlobalState</code>
