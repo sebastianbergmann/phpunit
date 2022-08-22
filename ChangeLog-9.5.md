@@ -2,7 +2,7 @@
 
 All notable changes of the PHPUnit 9.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
-## [9.5.23] - 2022-MM-DD
+## [9.5.23] - 2022-08-22
 
 ### Changed
 
@@ -178,7 +178,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
 
-[9.5.23]: https://github.com/sebastianbergmann/phpunit/compare/9.5.22...9.5
+[9.5.23]: https://github.com/sebastianbergmann/phpunit/compare/9.5.22...9.5.23
 [9.5.22]: https://github.com/sebastianbergmann/phpunit/compare/9.5.21...9.5.22
 [9.5.21]: https://github.com/sebastianbergmann/phpunit/compare/9.5.20...9.5.21
 [9.5.20]: https://github.com/sebastianbergmann/phpunit/compare/9.5.19...9.5.20
