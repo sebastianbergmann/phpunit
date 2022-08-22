@@ -32,7 +32,6 @@
         "myclabs/deep-copy": "^1.10.0",
         "phar-io/manifest": "^2.0.3",
         "phar-io/version": "^3.0.2",
-        "phpspec/prophecy": "^1.10.3",
         "phpunit/php-code-coverage": "^7.0.12",
         "phpunit/php-file-iterator": "^2.0.4",
         "phpunit/php-text-template": "^1.2.1",

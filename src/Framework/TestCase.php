@@ -1953,6 +1953,10 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      */
     protected function prophesize($classOrInterface = null): ObjectProphecy
     {
+        if (!class_exists(Prophet::class)) {
+            throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');
+        }
+
         if (is_string($classOrInterface)) {
             $this->recordDoubledType($classOrInterface);
         }

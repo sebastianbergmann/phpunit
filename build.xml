@@ -124,7 +124,30 @@
         </antcall>
     </target>
 
-    <target name="-phar-prepare" depends="clean,install-dependencies">
+    <target name="-phar-prepare" depends="clean">
+        <copy file="${basedir}/composer.json" tofile="${basedir}/build/tmp/composer.json"/>
+
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="require"/>
+            <arg value="--no-update"/>
+            <arg value="phpunit/php-invoker:^2.0"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="require"/>
+            <arg value="--no-update"/>
+            <arg value="phpspec/prophecy:^1.10.3"/>
+        </exec>
+
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="update"/>
+            <arg value="--no-interaction"/>
+            <arg value="--no-progress"/>
+            <arg value="--no-ansi"/>
+        </exec>
+
+        <move file="${basedir}/build/tmp/composer.json" tofile="${basedir}/composer.json"/>
+
         <mkdir dir="${basedir}/build/artifacts"/>
         <mkdir dir="${basedir}/build/tmp/phar"/>
         <mkdir dir="${basedir}/build/tmp/phar-scoped"/>
@@ -330,6 +353,11 @@
                 <include name="**/*.php" />
             </fileset>
         </copy>
+
+        <exec executable="${basedir}/tools/composer" taskname="composer">
+            <arg value="remove"/>
+            <arg value="phpspec/prophecy"/>
+        </exec>
     </target>
 
     <target name="-phar-build" depends="-phar-determine-version">

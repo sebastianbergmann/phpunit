@@ -905,7 +905,7 @@
       <code>getResult</code>
       <code>runTest</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="17">
+    <MissingThrowsDocblock occurrences="18">
       <code>endTest</code>
       <code>endTest</code>
       <code>endTest</code>
@@ -919,6 +919,7 @@
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
       <code>new Differ($header)</code>
+      <code>throw new Exception('This test uses TestCase::prophesize(), but phpspec/prophecy is not installed. Please run "composer require --dev phpspec/prophecy".');</code>
     </MissingThrowsDocblock>
     <PossiblyNullPropertyAssignmentValue occurrences="4">
       <code>$beStrictAboutChangesToGlobalState</code>
