@@ -41,8 +41,6 @@ use function strpos;
 use function strtolower;
 use function substr;
 use function trait_exists;
-use Doctrine\Instantiator\Exception\ExceptionInterface as InstantiatorException;
-use Doctrine\Instantiator\Instantiator;
 use Exception;
 use Iterator;
 use IteratorAggregate;
@@ -993,6 +991,8 @@ final class Generator
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws ReflectionException
      */
     private function instantiate(string $className, bool $callOriginalConstructor, array $arguments): object
     {
@@ -1015,14 +1015,22 @@ final class Generator
         }
 
         try {
-            return (new Instantiator)->instantiate($className);
-        } catch (InstantiatorException $e) {
-            throw new RuntimeException($e->getMessage());
+            return (new ReflectionClass($className))->newInstanceWithoutConstructor();
+            // @codeCoverageIgnoreStart
+        } catch (\ReflectionException $e) {
+            throw new ReflectionException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
         }
+        // @codeCoverageIgnoreEnd
     }
 
     /**
      * @psalm-param class-string $type
+     *
+     * @throws ReflectionException
      */
     private function instantiateProxyTarget(?object $proxyTarget, object $object, string $type, array $arguments): void
     {

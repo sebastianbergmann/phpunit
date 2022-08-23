@@ -20,9 +20,9 @@ use function str_contains;
 use function str_starts_with;
 use function strtolower;
 use function substr;
-use Doctrine\Instantiator\Instantiator;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Type;
+use ReflectionClass;
 use SebastianBergmann\Exporter\Exporter;
 use stdClass;
 use Throwable;
@@ -140,14 +140,16 @@ final class Invocation implements SelfDescribing
 
             if (in_array('static', $types, true)) {
                 try {
-                    return (new Instantiator)->instantiate($this->object::class);
-                } catch (Throwable $t) {
-                    throw new RuntimeException(
-                        $t->getMessage(),
-                        (int) $t->getCode(),
-                        $t
+                    return (new ReflectionClass($this->object::class))->newInstanceWithoutConstructor();
+                    // @codeCoverageIgnoreStart
+                } catch (\ReflectionException $e) {
+                    throw new ReflectionException(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
             }
 
             if (in_array('object', $types, true)) {

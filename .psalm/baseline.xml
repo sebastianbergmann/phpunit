@@ -250,10 +250,11 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
-    <ArgumentTypeCoercion occurrences="3">
+    <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
       <code>$className</code>
       <code>$interfaceName</code>
+      <code>$type</code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement occurrences="1"/>
     <InvalidReturnType occurrences="1">
@@ -266,6 +267,9 @@
     <PossiblyNullArgument occurrences="1">
       <code>$client-&gt;__getFunctions()</code>
     </PossiblyNullArgument>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>assert(class_exists($type))</code>
+    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <ArgumentTypeCoercion occurrences="1">

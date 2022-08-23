@@ -20,7 +20,6 @@ use function str_starts_with;
 use function sys_get_temp_dir;
 use Composer\Autoload\ClassLoader;
 use DeepCopy\DeepCopy;
-use Doctrine\Instantiator\Instantiator;
 use PharIo\Manifest\Manifest;
 use PharIo\Version\Version as PharIoVersion;
 use PhpParser\Parser;
@@ -58,9 +57,6 @@ final class ExcludeList
     private const EXCLUDED_CLASS_NAMES = [
         // composer
         ClassLoader::class => 1,
-
-        // doctrine/instantiator
-        Instantiator::class => 1,
 
         // myclabs/deepcopy
         DeepCopy::class => 1,
