@@ -116,10 +116,7 @@ final class TestRunner
                     $frame['line']
                 )
             );
-        } catch (Exception $e) {
-            $error = true;
         } catch (Throwable $e) {
-            $e     = new ExceptionWrapper($e);
             $error = true;
         }
 

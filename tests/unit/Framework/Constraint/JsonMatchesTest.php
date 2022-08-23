@@ -15,8 +15,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
 use PHPUnit\Util\Json;
+use PHPUnit\Util\ThrowableToStringMapper;
 
 #[CoversClass(JsonMatches::class)]
 #[Small]
@@ -106,7 +106,7 @@ Failed asserting that '{"Mascott"::}' matches JSON string "{"Mascott"::}".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
         }
     }
@@ -125,7 +125,7 @@ Failed asserting that '{"Mascott":"Tux"}' matches JSON string "{"Mascott"::}".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
         }
     }
@@ -151,7 +151,7 @@ Failed asserting that '{"obj": {}, "val": 2}' matches JSON string "{"obj": {}, "
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
         }
     }
@@ -178,7 +178,7 @@ Failed asserting that '{"obj": {"y": 2, "x": 1}, "val": 2}' matches JSON string 
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
         }
     }

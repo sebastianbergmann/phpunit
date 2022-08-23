@@ -18,7 +18,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
+use PHPUnit\Util\ThrowableToStringMapper;
 use SplObjectStorage;
 use stdClass;
 
@@ -44,7 +44,7 @@ Failed asserting that 0 matches expected 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -63,7 +63,7 @@ EOF
         } catch (ExpectationFailedException $e) {
             $this->assertEquals(
                 "custom message\n{$message}",
-                $this->removeSpacesInFrontOfNewlines(TestFailure::exceptionToString($e))
+                $this->removeSpacesInFrontOfNewlines(ThrowableToStringMapper::map($e))
             );
 
             return;

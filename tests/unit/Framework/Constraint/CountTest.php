@@ -16,11 +16,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
 use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\TestFixture\TestIterator2;
 use PHPUnit\TestFixture\TestIteratorAggregate;
 use PHPUnit\TestFixture\TestIteratorAggregate2;
+use PHPUnit\Util\ThrowableToStringMapper;
 
 #[CoversClass(Count::class)]
 #[Small]
@@ -131,7 +131,7 @@ Failed asserting that actual size 0 matches expected size 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
         }
     }

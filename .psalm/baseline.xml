@@ -127,9 +127,6 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Value/Throwable.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$t instanceof ExceptionWrapper ? $t-&gt;getClassName() : $t::class</code>
-    </ArgumentTypeCoercion>
     <MissingDocblockType occurrences="1">
       <code>public function className(): string</code>
     </MissingDocblockType>
@@ -240,14 +237,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>Filter::getFilteredStacktrace($this)</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/ExceptionWrapper.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>Filter::getFilteredStacktrace($this)</code>
-    </MissingThrowsDocblock>
-    <PossiblyNullArgument occurrences="1">
-      <code>$t-&gt;getPrevious()</code>
-    </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion occurrences="4">

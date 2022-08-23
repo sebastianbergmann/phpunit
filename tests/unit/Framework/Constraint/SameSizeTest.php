@@ -13,8 +13,8 @@ use ArrayObject;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
 use PHPUnit\TestFixture\TestIterator;
+use PHPUnit\Util\ThrowableToStringMapper;
 
 #[CoversClass(SameSize::class)]
 #[Small]
@@ -57,7 +57,7 @@ Failed asserting that actual size 2 matches expected size 5.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;

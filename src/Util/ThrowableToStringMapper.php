@@ -1,0 +1,44 @@
+<?php declare(strict_types=1);
+/*
+ * This file is part of PHPUnit.
+ *
+ * (c) Sebastian Bergmann <sebastian@phpunit.de>
+ *
+ * For the full copyright and license information, please view the LICENSE
+ * file that was distributed with this source code.
+ */
+namespace PHPUnit\Util;
+
+use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Framework\PHPTAssertionFailedError;
+use PHPUnit\Framework\SelfDescribing;
+use Throwable;
+
+/**
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ */
+final class ThrowableToStringMapper
+{
+    public static function map(Throwable $t): string
+    {
+        if ($t instanceof SelfDescribing) {
+            $buffer = $t->toString();
+
+            if ($t instanceof ExpectationFailedException && $t->getComparisonFailure()) {
+                $buffer .= $t->getComparisonFailure()->getDiff();
+            }
+
+            if ($t instanceof PHPTAssertionFailedError) {
+                $buffer .= $t->getDiff();
+            }
+
+            if (!empty($buffer)) {
+                $buffer = trim($buffer) . "\n";
+            }
+
+            return $buffer;
+        }
+
+        return $t::class . ': ' . $t->getMessage() . "\n";
+    }
+}

@@ -18,6 +18,7 @@ use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\TestFixture\DummyException;
 use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\Util\Filter;
+use PHPUnit\Util\ThrowableToStringMapper;
 use stdClass;
 
 #[Small]
@@ -42,7 +43,7 @@ Failed asserting that an array does not have the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -67,7 +68,7 @@ Failed asserting that an array does not have the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -92,7 +93,7 @@ Failed asserting that an array is not list.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -122,7 +123,7 @@ Failed asserting that file "{$file}" does not exist.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -149,7 +150,7 @@ Failed asserting that file "{$file}" does not exist.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -177,7 +178,7 @@ Failed asserting that 2 is not greater than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -202,7 +203,7 @@ Failed asserting that 2 is not greater than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -229,7 +230,7 @@ Failed asserting that 0 is equal to 1 or is greater than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -252,7 +253,7 @@ Failed asserting that 0 is equal to 1 or is greater than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -280,7 +281,7 @@ Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -305,7 +306,7 @@ Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -343,7 +344,7 @@ Failed asserting that null is not anything.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -372,7 +373,7 @@ Failed asserting that 1 is not equal to 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -397,7 +398,7 @@ Failed asserting that 1 is not equal to 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -435,7 +436,7 @@ Failed asserting that two variables don't reference the same object.
 
 EOF
                 ,
-                $this->trimNewlines(TestFailure::exceptionToString($e))
+                $this->trimNewlines(ThrowableToStringMapper::map($e))
             );
 
             return;
@@ -462,7 +463,7 @@ Failed asserting that two variables don't reference the same object.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -487,7 +488,7 @@ Failed asserting that two strings are not identical.
 
 EOF
                 ,
-                $this->trimNewlines(TestFailure::exceptionToString($e))
+                $this->trimNewlines(ThrowableToStringMapper::map($e))
             );
 
             return;
@@ -535,7 +536,7 @@ EOF
                     stdClass::class,
                     \Exception::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -562,7 +563,7 @@ EOF
                     stdClass::class,
                     \Exception::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -601,7 +602,7 @@ EOF
                     stdClass::class,
                     stdClass::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -630,7 +631,7 @@ EOF
                     stdClass::class,
                     stdClass::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -659,7 +660,7 @@ Failed asserting that '' is not of type "string".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -684,7 +685,7 @@ Failed asserting that '' is not of type "string".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -713,7 +714,7 @@ Failed asserting that null is not null.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -738,7 +739,7 @@ Failed asserting that null is not null.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -767,7 +768,7 @@ Failed asserting that 0 is not less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -792,7 +793,7 @@ Failed asserting that 0 is not less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -819,7 +820,7 @@ Failed asserting that 2 is equal to 1 or is less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -842,7 +843,7 @@ Failed asserting that 2 is equal to 1 or is less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -871,7 +872,7 @@ Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -896,7 +897,7 @@ Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -925,7 +926,7 @@ Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -950,7 +951,7 @@ Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -979,7 +980,7 @@ Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1004,7 +1005,7 @@ Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1033,7 +1034,7 @@ Failed asserting that 'barfoobar' does not contain "foo".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1092,7 +1093,7 @@ Failed asserting that 'barfoobar' does not contain "foo".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1121,7 +1122,7 @@ Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1146,7 +1147,7 @@ Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1192,7 +1193,7 @@ Failed asserting that actual size 2 matches expected size 5.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1216,7 +1217,7 @@ Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1240,7 +1241,7 @@ Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1268,7 +1269,7 @@ EOF
                     ,
                     DummyException::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
