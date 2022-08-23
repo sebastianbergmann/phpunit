@@ -46,7 +46,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ### Removed
 
-* [#3389](https://github.com/sebastianbergmann/phpunit/issues/3389): Removed `PHPUnit\Framework\TestListener` and `PHPUnit\Framework\TestListenerDefaultImplementation`
+* [#3389](https://github.com/sebastianbergmann/phpunit/issues/3389): Remove `PHPUnit\Framework\TestListener` and `PHPUnit\Framework\TestListenerDefaultImplementation`
 * [#3631](https://github.com/sebastianbergmann/phpunit/issues/3631): Remove support for `"ClassName<*>"` as values for `@covers` and `@uses` annotations
 * [#3769](https://github.com/sebastianbergmann/phpunit/issues/3769): Remove `MockBuilder::setMethods()` and `MockBuilder::setMethodsExcept()`
 * [#3777](https://github.com/sebastianbergmann/phpunit/issues/3777): Remove `PHPUnit\Framework\Error\*` classes
