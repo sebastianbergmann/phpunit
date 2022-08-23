@@ -120,7 +120,6 @@ final class Generator
             $mock,
             $type,
             $callOriginalConstructor,
-            $callAutoload,
             $arguments,
             $callOriginalMethods,
             $proxyTarget,
@@ -340,7 +339,6 @@ final class Generator
             ),
             '',
             $callOriginalConstructor,
-            $callAutoload,
             $arguments
         );
     }
@@ -607,7 +605,7 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function getObject(MockType $mockClass, string $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true): object
+    private function getObject(MockType $mockClass, string $type = '', bool $callOriginalConstructor = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
         $object    = $this->instantiate($className, $callOriginalConstructor, $arguments);
