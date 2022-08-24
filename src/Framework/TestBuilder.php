@@ -92,7 +92,7 @@ final class TestBuilder
      * @psalm-param class-string $className
      * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, string $className, array|ErrorTestCase $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName
@@ -100,9 +100,7 @@ final class TestBuilder
 
         $groups = (new Groups)->groups($className, $methodName);
 
-        if ($data instanceof ErrorTestCase ||
-            $data instanceof SkippedTestCase ||
-            $data instanceof IncompleteTestCase) {
+        if ($data instanceof ErrorTestCase) {
             $dataProviderTestSuite->addTest($data, $groups);
         } else {
             foreach ($data as $_dataName => $_data) {

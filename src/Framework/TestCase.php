@@ -547,7 +547,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     final public function run(): void
     {
         if (!$this instanceof ErrorTestCase &&
-            !$this instanceof SkippedTestCase &&
             !$this->handleDependencies()) {
             return;
         }

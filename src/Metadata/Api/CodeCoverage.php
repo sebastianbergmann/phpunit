@@ -11,15 +11,12 @@ namespace PHPUnit\Metadata\Api;
 
 use function assert;
 use function count;
-use function in_array;
 use function interface_exists;
 use function sprintf;
 use function str_starts_with;
 use PHPUnit\Framework\CodeCoverageException;
 use PHPUnit\Framework\ErrorTestCase;
-use PHPUnit\Framework\IncompleteTestCase;
 use PHPUnit\Framework\InvalidCoversTargetException;
-use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversFunction;
@@ -210,7 +207,7 @@ final class CodeCoverage
      */
     public function shouldCodeCoverageBeCollectedFor(string $className, string $methodName): bool
     {
-        if (in_array($className, [ErrorTestCase::class, IncompleteTestCase::class, SkippedTestCase::class], true)) {
+        if ($className === ErrorTestCase::class) {
             return false;
         }
 

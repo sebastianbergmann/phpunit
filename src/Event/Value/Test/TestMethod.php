@@ -15,8 +15,6 @@ use function method_exists;
 use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\ErrorTestCase;
-use PHPUnit\Framework\IncompleteTestCase;
-use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
@@ -45,9 +43,7 @@ final class TestMethod extends Test
         $methodName = $testCase->name();
         $testData   = self::dataFor($testCase);
 
-        if ($testCase instanceof ErrorTestCase ||
-            $testCase instanceof IncompleteTestCase ||
-            $testCase instanceof SkippedTestCase) {
+        if ($testCase instanceof ErrorTestCase) {
             $className  = $testCase->className();
             $methodName = $testCase->methodName();
         }
