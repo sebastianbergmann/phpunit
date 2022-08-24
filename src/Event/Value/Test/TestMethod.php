@@ -166,7 +166,7 @@ final class TestMethod extends Test
 
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
-                (new VariableExporter)->export($testCase->getProvidedData())
+                (new VariableExporter)->export($testCase->providedData())
             );
         }
 

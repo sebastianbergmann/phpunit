@@ -37,7 +37,7 @@ final class InvokedAtLeastCount extends InvocationOrder
      */
     public function verify(): void
     {
-        $count = $this->getInvocationCount();
+        $count = $this->numberOfInvocations();
 
         if ($count < $this->requiredInvocations) {
             throw new ExpectationFailedException(

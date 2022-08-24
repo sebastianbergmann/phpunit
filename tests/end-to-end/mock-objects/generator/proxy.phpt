@@ -21,7 +21,7 @@ $mock = $generator->generate(
     'Foo', [], 'ProxyFoo', true, true, true, true
 );
 
-print $mock->getClassCode();
+print $mock->classCode();
 --EXPECTF--
 declare(strict_types=1);
 

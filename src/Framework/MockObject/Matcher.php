@@ -49,7 +49,7 @@ final class Matcher
         return $this->methodNameRule !== null;
     }
 
-    public function getMethodNameRule(): MethodName
+    public function methodNameRule(): MethodName
     {
         return $this->methodNameRule;
     }
@@ -93,7 +93,7 @@ final class Matcher
         }
 
         if ($this->afterMatchBuilderId !== null) {
-            $matcher = $invocation->getObject()
+            $matcher = $invocation->object()
                                   ->__phpunit_getInvocationHandler()
                                   ->lookupMatcher($this->afterMatchBuilderId);
 
@@ -134,7 +134,7 @@ final class Matcher
     public function matches(Invocation $invocation): bool
     {
         if ($this->afterMatchBuilderId !== null) {
-            $matcher = $invocation->getObject()
+            $matcher = $invocation->object()
                                   ->__phpunit_getInvocationHandler()
                                   ->lookupMatcher($this->afterMatchBuilderId);
 

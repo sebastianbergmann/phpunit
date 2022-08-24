@@ -60,7 +60,7 @@ final class MockClass implements MockType
         return $this->mockName;
     }
 
-    public function getClassCode(): string
+    public function classCode(): string
     {
         return $this->classCode;
     }

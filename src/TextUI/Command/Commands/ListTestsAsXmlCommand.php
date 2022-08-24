@@ -59,13 +59,13 @@ final class ListTestsAsXmlCommand implements Command
                 $writer->writeAttribute('name', $test->name());
                 $writer->writeAttribute('groups', implode(',', $test->groups()));
 
-                if (!empty($test->getDataSetAsString())) {
+                if (!empty($test->dataSetAsString())) {
                     $writer->writeAttribute(
                         'dataSet',
                         str_replace(
                             ' with data set ',
                             '',
-                            $test->getDataSetAsString()
+                            $test->dataSetAsString()
                         )
                     );
                 }

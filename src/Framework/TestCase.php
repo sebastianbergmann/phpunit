@@ -377,7 +377,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->name
         );
 
-        return $buffer . $this->getDataSetAsStringWithData();
+        return $buffer . $this->dataSetAsStringWithData();
     }
 
     final public function count(): int
@@ -612,7 +612,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function nameWithDataSet(): string
     {
-        return $this->name . $this->getDataSetAsString();
+        return $this->name . $this->dataSetAsString();
     }
 
     /**
@@ -996,7 +996,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function getDataSetAsString(): string
+    final public function dataSetAsString(): string
     {
         $buffer = '';
 
@@ -1014,13 +1014,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function getDataSetAsStringWithData(): string
+    final public function dataSetAsStringWithData(): string
     {
         if (empty($this->data)) {
             return '';
         }
 
-        return $this->getDataSetAsString() . sprintf(
+        return $this->dataSetAsString() . sprintf(
             ' (%s)',
             (new Exporter)->shortenedRecursiveExport($this->data)
         );
@@ -1031,7 +1031,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function getProvidedData(): array
+    final public function providedData(): array
     {
         return $this->data;
     }
@@ -1048,7 +1048,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
 
         if ($this->usesDataProvider()) {
-            $id .= $this->getDataSetAsString();
+            $id .= $this->dataSetAsString();
         }
 
         return $id;

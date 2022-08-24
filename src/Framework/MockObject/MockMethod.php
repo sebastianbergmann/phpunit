@@ -87,8 +87,8 @@ final class MockMethod
             $method->getName(),
             $cloneArguments,
             $modifier,
-            self::getMethodParametersForDeclaration($method),
-            self::getMethodParametersForCall($method),
+            self::methodParametersForDeclaration($method),
+            self::methodParametersForCall($method),
             (new ReflectionMapper)->fromReturnType($method),
             $reference,
             $callOriginalMethod,
@@ -129,7 +129,7 @@ final class MockMethod
         $this->deprecation             = $deprecation;
     }
 
-    public function getName(): string
+    public function methodName(): string
     {
         return $this->methodName;
     }
@@ -189,7 +189,7 @@ final class MockMethod
         return $template->render();
     }
 
-    public function getReturnType(): Type
+    public function returnType(): Type
     {
         return $this->returnType;
     }
@@ -199,7 +199,7 @@ final class MockMethod
      *
      * @throws RuntimeException
      */
-    private static function getMethodParametersForDeclaration(ReflectionMethod $method): string
+    private static function methodParametersForDeclaration(ReflectionMethod $method): string
     {
         $parameters = [];
 
@@ -270,7 +270,7 @@ final class MockMethod
      *
      * @throws ReflectionException
      */
-    private static function getMethodParametersForCall(ReflectionMethod $method): string
+    private static function methodParametersForCall(ReflectionMethod $method): string
     {
         $parameters = [];
 

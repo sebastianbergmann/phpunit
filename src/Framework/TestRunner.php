@@ -285,7 +285,7 @@ final class TestRunner
             }
         }
 
-        $data                       = var_export(serialize($test->getProvidedData()), true);
+        $data                       = var_export(serialize($test->providedData()), true);
         $dataName                   = var_export($test->dataName(), true);
         $dependencyInput            = var_export(serialize($test->dependencyInput()), true);
         $includePath                = var_export(get_include_path(), true);

@@ -24,7 +24,7 @@ abstract class InvocationOrder implements SelfDescribing, Verifiable
      */
     private array $invocations = [];
 
-    public function getInvocationCount(): int
+    public function numberOfInvocations(): int
     {
         return count($this->invocations);
     }

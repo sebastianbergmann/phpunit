@@ -103,7 +103,7 @@ final class Parameters implements ParametersRule
             throw new ExpectationFailedException('Mocked method does not exist.');
         }
 
-        if (count($this->invocation->getParameters()) < count($this->parameters)) {
+        if (count($this->invocation->parameters()) < count($this->parameters)) {
             $message = 'Parameter count for invocation %s is too low.';
 
             // The user called `->with($this->anything())`, but may have meant
@@ -122,7 +122,7 @@ final class Parameters implements ParametersRule
 
         foreach ($this->parameters as $i => $parameter) {
             $parameter->evaluate(
-                $this->invocation->getParameters()[$i],
+                $this->invocation->parameters()[$i],
                 sprintf(
                     'Parameter %s for invocation %s does not match expected ' .
                     'value.',

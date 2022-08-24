@@ -154,7 +154,7 @@ final class NamePrettifier
     public function prettifyDataSet(TestCase $test): string
     {
         if (!$this->useColor) {
-            return $test->getDataSetAsString();
+            return $test->dataSetAsString();
         }
 
         if (is_int($test->dataName())) {
@@ -238,7 +238,7 @@ final class NamePrettifier
         // @codeCoverageIgnoreEnd
 
         $providedData       = [];
-        $providedDataValues = array_values($test->getProvidedData());
+        $providedDataValues = array_values($test->providedData());
         $i                  = 0;
 
         $providedData['$_dataName'] = $test->dataName();

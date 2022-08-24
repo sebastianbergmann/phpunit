@@ -70,17 +70,17 @@ final class Invocation implements SelfDescribing
         }
     }
 
-    public function getClassName(): string
+    public function className(): string
     {
         return $this->className;
     }
 
-    public function getMethodName(): string
+    public function methodName(): string
     {
         return $this->methodName;
     }
 
-    public function getParameters(): array
+    public function parameters(): array
     {
         return $this->parameters;
     }
@@ -254,7 +254,7 @@ final class Invocation implements SelfDescribing
         );
     }
 
-    public function getObject(): object
+    public function object(): object
     {
         return $this->object;
     }

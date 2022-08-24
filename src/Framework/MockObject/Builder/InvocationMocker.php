@@ -210,7 +210,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
             $this->configurableMethodNames ??= array_flip(array_map(
                 static function (ConfigurableMethod $configurable)
                 {
-                    return strtolower($configurable->getName());
+                    return strtolower($configurable->name());
                 },
                 $this->configurableMethods
             ));
@@ -240,12 +240,12 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         }
     }
 
-    private function getConfiguredMethod(): ?ConfigurableMethod
+    private function configuredMethod(): ?ConfigurableMethod
     {
         $configuredMethod = null;
 
         foreach ($this->configurableMethods as $configurableMethod) {
-            if ($this->matcher->getMethodNameRule()->matchesName($configurableMethod->getName())) {
+            if ($this->matcher->methodNameRule()->matchesName($configurableMethod->name())) {
                 if ($configuredMethod !== null) {
                     return null;
                 }
@@ -262,7 +262,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
      */
     private function ensureTypeOfReturnValues(array $values): void
     {
-        $configuredMethod = $this->getConfiguredMethod();
+        $configuredMethod = $this->configuredMethod();
 
         if ($configuredMethod === null) {
             return;

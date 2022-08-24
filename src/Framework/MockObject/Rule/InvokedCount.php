@@ -48,7 +48,7 @@ final class InvokedCount extends InvocationOrder
      */
     public function verify(): void
     {
-        $count = $this->getInvocationCount();
+        $count = $this->numberOfInvocations();
 
         if ($count !== $this->expectedCount) {
             throw new ExpectationFailedException(
@@ -67,7 +67,7 @@ final class InvokedCount extends InvocationOrder
      */
     protected function invokedDo(BaseInvocation $invocation): void
     {
-        $count = $this->getInvocationCount();
+        $count = $this->numberOfInvocations();
 
         if ($count > $this->expectedCount) {
             $message = $invocation->toString() . ' ';
