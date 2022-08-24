@@ -1209,7 +1209,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function createStub(string $originalClassName): Stub
     {
-        $stub = $this->createMockObject($originalClassName);
+        $stub = $this->createMockObject($originalClassName, false);
 
         Event\Facade::emitter()->testTestStubCreated($originalClassName);
 
@@ -1931,14 +1931,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      * @psalm-return MockObject&RealInstanceType
      */
-    private function createMockObject(string $originalClassName): MockObject
+    private function createMockObject(string $originalClassName, bool $register = true): MockObject
     {
         return $this->getMockBuilder($originalClassName)
                     ->disableOriginalConstructor()
                     ->disableOriginalClone()
                     ->disableArgumentCloning()
                     ->disallowMockingUnknownTypes()
-                    ->getMock();
+                    ->getMock($register);
     }
 
     /**
