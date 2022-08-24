@@ -22,6 +22,7 @@ use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped;
@@ -109,6 +110,11 @@ final class TestResult
     private array $testTriggeredPhpWarningEvents = [];
 
     /**
+     * @psalm-var array<string,list<PhpunitErrorTriggered>>
+     */
+    private array $testTriggeredPhpunitErrorEvents = [];
+
+    /**
      * @psalm-var array<string,list<PhpunitWarningTriggered>>
      */
     private array $testTriggeredPhpunitWarningEvents = [];
@@ -138,11 +144,12 @@ final class TestResult
      * @psalm-param array<string,list<PhpNoticeTriggered>> $testTriggeredPhpNoticeEvents
      * @psalm-param array<string,list<WarningTriggered>> $testTriggeredWarningEvents
      * @psalm-param array<string,list<PhpWarningTriggered>> $testTriggeredPhpWarningEvents
+     * @psalm-param array<string,list<PhpunitErrorTriggered>> $testTriggeredPhpunitErrorEvents
      * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
      * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
      */
-    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredDeprecationEvents, array $testTriggeredPhpDeprecationEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredPhpErrorEvents, array $testTriggeredNoticeEvents, array $testTriggeredPhpNoticeEvents, array $testTriggeredWarningEvents, array $testTriggeredPhpWarningEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredWarningEvents)
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredDeprecationEvents, array $testTriggeredPhpDeprecationEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredPhpErrorEvents, array $testTriggeredNoticeEvents, array $testTriggeredPhpNoticeEvents, array $testTriggeredWarningEvents, array $testTriggeredPhpWarningEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredWarningEvents)
     {
         $this->numberOfTests                         = $numberOfTests;
         $this->numberOfTestsRun                      = $numberOfTestsRun;
@@ -161,6 +168,7 @@ final class TestResult
         $this->testTriggeredPhpNoticeEvents          = $testTriggeredPhpNoticeEvents;
         $this->testTriggeredWarningEvents            = $testTriggeredWarningEvents;
         $this->testTriggeredPhpWarningEvents         = $testTriggeredPhpWarningEvents;
+        $this->testTriggeredPhpunitErrorEvents       = $testTriggeredPhpunitErrorEvents;
         $this->testTriggeredPhpunitWarningEvents     = $testTriggeredPhpunitWarningEvents;
         $this->testRunnerTriggeredDeprecationEvents  = $testRunnerTriggeredDeprecationEvents;
         $this->testRunnerTriggeredWarningEvents      = $testRunnerTriggeredWarningEvents;
@@ -431,6 +439,24 @@ final class TestResult
     public function hasTestTriggeredPhpWarningEvents(): bool
     {
         return $this->numberOfTestsWithTestTriggeredPhpWarningEvents() > 0;
+    }
+
+    /**
+     * @psalm-return array<string,list<PhpunitErrorTriggered>>
+     */
+    public function testTriggeredPhpunitErrorEvents(): array
+    {
+        return $this->testTriggeredPhpunitErrorEvents;
+    }
+
+    public function numberOfTestsWithTestTriggeredPhpunitErrorEvents(): int
+    {
+        return count($this->testTriggeredPhpunitErrorEvents);
+    }
+
+    public function hasTestTriggeredPhpunitErrorEvents(): bool
+    {
+        return $this->numberOfTestsWithTestTriggeredPhpunitErrorEvents() > 0;
     }
 
     /**

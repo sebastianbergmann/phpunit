@@ -31,6 +31,7 @@ use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped;
@@ -355,6 +356,24 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
+            'test that triggers PHPUnit error' => [
+                __DIR__ . '/expectations/test_with_phpunit_error.txt',
+                $this->createTestResult(
+                    numberOfTests: 0,
+                    numberOfTestsRun: 0,
+                    numberOfAssertions: 0,
+                    testTriggeredPhpunitErrorEvents: [
+                        'Foo::testBar' => [
+                            new PhpunitErrorTriggered(
+                                $this->telemetryInfo(),
+                                $this->testMethod(),
+                                'message'
+                            ),
+                        ],
+                    ]
+                ),
+            ],
+
             'successful test that triggers PHPUnit warning' => [
                 __DIR__ . '/expectations/successful_test_with_phpunit_warning.txt',
                 $this->createTestResult(
@@ -388,11 +407,12 @@ final class ResultPrinterTest extends TestCase
      * @psalm-param array<string,list<PhpNoticeTriggered>> $testTriggeredPhpNoticeEvents
      * @psalm-param array<string,list<WarningTriggered>> $testTriggeredWarningEvents
      * @psalm-param array<string,list<PhpWarningTriggered>> $testTriggeredPhpWarningEvents
+     * @psalm-param array<string,list<PhpunitErrorTriggered>> $testTriggeredPhpunitErrorEvents
      * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
      * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
      */
-    private function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $testTriggeredDeprecationEvents = [], array $testTriggeredPhpDeprecationEvents = [], array $testTriggeredPhpunitDeprecationEvents = [], array $testTriggeredErrorEvents = [], array $testTriggeredPhpErrorEvents = [], array $testTriggeredNoticeEvents = [], array $testTriggeredPhpNoticeEvents = [], array $testTriggeredWarningEvents = [], array $testTriggeredPhpWarningEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = []): TestResult
+    private function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $testTriggeredDeprecationEvents = [], array $testTriggeredPhpDeprecationEvents = [], array $testTriggeredPhpunitDeprecationEvents = [], array $testTriggeredErrorEvents = [], array $testTriggeredPhpErrorEvents = [], array $testTriggeredNoticeEvents = [], array $testTriggeredPhpNoticeEvents = [], array $testTriggeredWarningEvents = [], array $testTriggeredPhpWarningEvents = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = []): TestResult
     {
         return new TestResult(
             $numberOfTests,
@@ -412,6 +432,7 @@ final class ResultPrinterTest extends TestCase
             $testTriggeredPhpNoticeEvents,
             $testTriggeredWarningEvents,
             $testTriggeredPhpWarningEvents,
+            $testTriggeredPhpunitErrorEvents,
             $testTriggeredPhpunitWarningEvents,
             $testRunnerTriggeredDeprecationEvents,
             $testRunnerTriggeredWarningEvents

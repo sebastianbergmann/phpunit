@@ -27,6 +27,7 @@ use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\Skipped;
@@ -134,6 +135,11 @@ final class Collector
     private array $testTriggeredPhpWarningEvents = [];
 
     /**
+     * @psalm-var array<string,list<PhpunitErrorTriggered>>
+     */
+    private array $testTriggeredPhpunitErrorEvents = [];
+
+    /**
      * @psalm-var array<string,list<PhpunitWarningTriggered>>
      */
     private array $testTriggeredPhpunitWarningEvents = [];
@@ -178,6 +184,7 @@ final class Collector
         Facade::registerSubscriber(new TestTriggeredPhpErrorSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpNoticeSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpunitDeprecationSubscriber($this));
+        Facade::registerSubscriber(new TestTriggeredPhpunitErrorSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpunitWarningSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpWarningSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredWarningSubscriber($this));
@@ -205,6 +212,7 @@ final class Collector
             $this->testTriggeredPhpNoticeEvents,
             $this->testTriggeredWarningEvents,
             $this->testTriggeredPhpWarningEvents,
+            $this->testTriggeredPhpunitErrorEvents,
             $this->testTriggeredPhpunitWarningEvents,
             $this->testRunnerTriggeredDeprecationEvents,
             $this->testRunnerTriggeredWarningEvents
@@ -517,6 +525,15 @@ final class Collector
         }
 
         $this->testTriggeredPhpWarningEvents[$event->test()->id()][] = $event;
+    }
+
+    public function testTriggeredPhpunitError(PhpunitErrorTriggered $event): void
+    {
+        if (!isset($this->testTriggeredPhpunitErrorEvents[$event->test()->id()])) {
+            $this->testTriggeredPhpunitErrorEvents[$event->test()->id()] = [];
+        }
+
+        $this->testTriggeredPhpunitErrorEvents[$event->test()->id()][] = $event;
     }
 
     public function testTriggeredPhpunitWarning(PhpunitWarningTriggered $event): void

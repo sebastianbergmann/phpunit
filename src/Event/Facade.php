@@ -174,6 +174,7 @@ final class Facade
             Test\PhpErrorTriggered::class,
             Test\PhpNoticeTriggered::class,
             Test\PhpunitDeprecationTriggered::class,
+            Test\PhpunitErrorTriggered::class,
             Test\PhpunitWarningTriggered::class,
             Test\PhpWarningTriggered::class,
             Test\PostConditionCalled::class,

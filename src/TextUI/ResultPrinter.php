@@ -31,6 +31,7 @@ use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
+use PHPUnit\Event\Test\PhpunitErrorTriggered;
 use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
@@ -70,6 +71,7 @@ final class ResultPrinter
 
     public function printResult(TestResult $result): void
     {
+        $this->printPhpunitErrors($result);
         $this->printPhpunitWarnings($result);
         $this->printTestsWithErrors($result);
         $this->printTestsWithFailedAssertions($result);
@@ -110,6 +112,19 @@ final class ResultPrinter
     public function flush(): void
     {
         $this->printer->flush();
+    }
+
+    private function printPhpunitErrors(TestResult $result): void
+    {
+        if (!$result->hasTestTriggeredPhpunitErrorEvents()) {
+            return;
+        }
+
+        $this->printList(
+            $result->numberOfTestsWithTestTriggeredPhpunitErrorEvents(),
+            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpunitErrorEvents()),
+            'PHPUnit error'
+        );
     }
 
     private function printPhpunitWarnings(TestResult $result): void
@@ -548,7 +563,7 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-param array<string,list<ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered|ErrorTriggered|PhpErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|PhpunitWarningTriggered>> $events
+     * @psalm-param array<string,list<ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered|ErrorTriggered|PhpErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered>> $events
      *
      * @psalm-return list<array{title: string, body: string}>
      */

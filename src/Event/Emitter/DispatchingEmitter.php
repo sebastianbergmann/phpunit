@@ -556,6 +556,17 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testTriggeredPhpunitError(Code\Test $test, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PhpunitErrorTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+            )
+        );
+    }
+
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(
