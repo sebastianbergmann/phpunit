@@ -42,7 +42,7 @@ final class TestMethod extends Test
     public static function fromTestCase(TestCase $testCase): self
     {
         $className  = $testCase::class;
-        $methodName = $testCase->getName(false);
+        $methodName = $testCase->name();
         $testData   = self::dataFor($testCase);
 
         if ($testCase instanceof ErrorTestCase ||

@@ -128,7 +128,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
     private function describe(Test $test): array
     {
         if ($test instanceof TestCase) {
-            return [$test::class, $test->getName()];
+            return [$test::class, $test->nameWithDataSet()];
         }
 
         if ($test instanceof SelfDescribing) {

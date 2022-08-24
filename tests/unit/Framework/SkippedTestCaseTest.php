@@ -41,7 +41,7 @@ final class SkippedTestCaseTest extends TestCase
             $methodName
         );
 
-        $this->assertSame($name, $testCase->getName());
+        $this->assertSame($name, $testCase->nameWithDataSet());
     }
 
     public function testGetMessageReturnsMessage(): void

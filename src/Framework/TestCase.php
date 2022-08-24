@@ -374,7 +374,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $buffer = sprintf(
             '%s::%s',
             (new ReflectionClass($this))->getName(),
-            $this->getName(false)
+            $this->name
         );
 
         return $buffer . $this->getDataSetAsStringWithData();
@@ -610,12 +610,16 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function getName(bool $withDataSet = true): string
+    final public function nameWithDataSet(): string
     {
-        if ($withDataSet) {
-            return $this->name . $this->getDataSetAsString();
-        }
+        return $this->name . $this->getDataSetAsString();
+    }
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    final public function name(): string
+    {
         return $this->name;
     }
 
@@ -626,7 +630,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         return (new Groups)->size(
             static::class,
-            $this->getName(false)
+            $this->name
         );
     }
 

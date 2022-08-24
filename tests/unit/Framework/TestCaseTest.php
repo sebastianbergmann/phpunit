@@ -180,7 +180,7 @@ class TestCaseTest extends TestCase
 
         $testCase = new TestWithDifferentNames($methodName);
 
-        $this->assertSame($methodName, $testCase->getName());
+        $this->assertSame($methodName, $testCase->nameWithDataSet());
     }
 
     public function testDeprecationCanBeExpected(): void

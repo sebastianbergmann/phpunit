@@ -56,7 +56,7 @@ final class ListTestsAsXmlCommand implements Command
                 }
 
                 $writer->startElement('testCaseMethod');
-                $writer->writeAttribute('name', $test->getName(false));
+                $writer->writeAttribute('name', $test->name());
                 $writer->writeAttribute('groups', implode(',', $test->groups()));
 
                 if (!empty($test->getDataSetAsString())) {

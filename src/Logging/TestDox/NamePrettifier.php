@@ -116,7 +116,7 @@ final class NamePrettifier
     {
         $annotationWithPlaceholders = false;
 
-        $metadata = MetadataRegistry::parser()->forMethod($test::class, $test->getName(false));
+        $metadata = MetadataRegistry::parser()->forMethod($test::class, $test->name());
 
         if ($metadata->isTestDox()->isNotEmpty()) {
             $result = $metadata->isTestDox()->asArray()[0]->text();
@@ -141,7 +141,7 @@ final class NamePrettifier
                 $annotationWithPlaceholders = true;
             }
         } else {
-            $result = $this->prettifyTestMethod($test->getName(false));
+            $result = $this->prettifyTestMethod($test->name());
         }
 
         if (!$annotationWithPlaceholders && $test->usesDataProvider()) {
@@ -226,7 +226,7 @@ final class NamePrettifier
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
     {
         try {
-            $reflector = new ReflectionMethod($test::class, $test->getName(false));
+            $reflector = new ReflectionMethod($test::class, $test->name());
             // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
             throw new Exception(

@@ -61,7 +61,7 @@ final class SkippedTestCase extends TestCase
      */
     public function toString(): string
     {
-        return $this->getName();
+        return $this->nameWithDataSet();
     }
 
     /**

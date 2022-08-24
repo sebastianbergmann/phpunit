@@ -65,7 +65,7 @@ final class TestRunner
 
         $shouldCodeCoverageBeCollected = (new CodeCoverageMetadataApi)->shouldCodeCoverageBeCollectedFor(
             $test::class,
-            $test->getName(false)
+            $test->name()
         );
 
         $error      = false;
@@ -129,7 +129,7 @@ final class TestRunner
 
         if (!$error && !$failure && !$incomplete && !$skipped && !$risky &&
             $this->configuration->requireCoverageMetadata() &&
-            !$this->hasCoverageMetadata($test::class, $test->getName(false))) {
+            !$this->hasCoverageMetadata($test::class, $test->name())) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 'This test does not define a code coverage target using an attribute or annotation but is expected to do so'
@@ -147,12 +147,12 @@ final class TestRunner
                 try {
                     $linesToBeCovered = (new CodeCoverageMetadataApi)->linesToBeCovered(
                         $test::class,
-                        $test->getName(false)
+                        $test->name()
                     );
 
                     $linesToBeUsed = (new CodeCoverageMetadataApi)->linesToBeUsed(
                         $test::class,
-                        $test->getName(false)
+                        $test->name()
                     );
                 } catch (InvalidCoversTargetException $cce) {
                     Event\Facade::emitter()->testTriggeredPhpunitWarning(
@@ -325,14 +325,14 @@ final class TestRunner
             'iniSettings'                    => $iniSettings,
             'codeCoverageFilter'             => $codeCoverageFilter,
             'configurationFilePath'          => $configurationFilePath,
-            'name'                           => $test->getName(false),
+            'name'                           => $test->name(),
             'offsetSeconds'                  => $offset[0],
             'offsetNanoseconds'              => $offset[1],
             'serializedConfiguration'        => $serializedConfiguration,
         ];
 
         if (!$runEntireClass) {
-            $var['methodName'] = $test->getName(false);
+            $var['methodName'] = $test->name();
         }
 
         $template->setVar($var);
