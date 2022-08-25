@@ -53,7 +53,7 @@ final class TestBuilder
             );
         }
 
-        if (isset($data)) {
+        if ($data !== null) {
             $test = $this->buildDataProviderTestSuite(
                 $methodName,
                 $className,
