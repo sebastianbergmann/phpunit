@@ -35,14 +35,6 @@ final class TestBuilder
     {
         $className = $theClass->getName();
 
-        if (!$theClass->isInstantiable()) {
-            return new ErrorTestCase(
-                $className,
-                '',
-                sprintf('Cannot instantiate class "%s".', $className)
-            );
-        }
-
         try {
             $data = (new DataProvider)->providedData(
                 $className,
