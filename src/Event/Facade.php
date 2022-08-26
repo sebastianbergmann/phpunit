@@ -22,6 +22,26 @@ final class Facade
     private DeferredDispatcher $deferredDispatcher;
     private bool $sealed = false;
 
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
+    public static function initForIsolation(HRTime $offset): array
+    {
+        $eventFacade = new self;
+
+        $dispatcher = new CollectingDispatcher;
+
+        $eventFacade->emitter = new DispatchingEmitter(
+            $dispatcher,
+            new Telemetry\System(
+                new Telemetry\SystemStopWatchWithOffset($offset),
+                new Telemetry\SystemMemoryMeter
+            )
+        );
+
+        return [$eventFacade, $dispatcher];
+    }
+
     public function __construct()
     {
         $this->typeMap = new TypeMap;
@@ -68,26 +88,6 @@ final class Facade
     public function emitter(): Emitter
     {
         return $this->emitter;
-    }
-
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public static function initForIsolation(HRTime $offset): array
-    {
-        $eventFacade = new self;
-
-        $dispatcher = new CollectingDispatcher;
-
-        $eventFacade->emitter = new DispatchingEmitter(
-            $dispatcher,
-            new Telemetry\System(
-                new Telemetry\SystemStopWatchWithOffset($offset),
-                new Telemetry\SystemMemoryMeter
-            )
-        );
-
-        return [$eventFacade, $dispatcher];
     }
 
     /**
