@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
+use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\NoticeTriggered;
@@ -16,7 +17,6 @@ use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
-use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Runner\NoIgnoredEventException;

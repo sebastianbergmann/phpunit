@@ -10,10 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function assert;
-use function sprintf;
-use function trim;
 use PHPUnit\Event\Facade;
-use PHPUnit\Framework\Assert;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\BackupGlobals;

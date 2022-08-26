@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\TestFixture\DependencyFailureTest;
@@ -16,7 +17,6 @@ use PHPUnit\TestFixture\DependencyOnClassTest;
 use PHPUnit\TestFixture\DependencySuccessTest;
 use PHPUnit\TestFixture\MultiDependencyTest;
 use PHPUnit\TestFixture\NotPublicTestCase;
-use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
 use ReflectionClass;
 
 #[CoversClass(TestSuite::class)]

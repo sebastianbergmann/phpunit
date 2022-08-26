@@ -327,7 +327,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $className   = $this->name;
         $hookMethods = (new HookMethods)->hookMethods($className);
 
-        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this, $eventFacade);
+        $testSuiteValueObjectForEvents = Event\TestSuite\TestSuite::fromTestSuite($this);
 
         $emitter = $eventFacade->emitter();
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
@@ -558,7 +558,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         try {
             $test = (new TestBuilder)->build($class, $methodName, $this->eventFacade);
         } catch (InvalidDataProviderException $e) {
-            Event\Facade::emitter()->testTriggeredPhpunitError(
+            $this->eventFacade->emitter()->testTriggeredPhpunitError(
                 new TestMethod(
                     $className,
                     $methodName,

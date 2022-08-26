@@ -12,7 +12,6 @@ namespace PHPUnit\Event\TestSuite;
 use function class_exists;
 use function explode;
 use PHPUnit\Event\Code\TestCollection;
-use PHPUnit\Event\Facade;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -48,7 +47,7 @@ abstract class TestSuite
     private string $sortId;
     private TestCollection $tests;
 
-    public static function fromTestSuite(FrameworkTestSuite $testSuite, Facade $facade): self
+    public static function fromTestSuite(FrameworkTestSuite $testSuite): self
     {
         $groups = [];
 

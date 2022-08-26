@@ -420,7 +420,7 @@ final class TestRunner
     /**
      * @throws Throwable
      */
-    private function runTestWithTimeout(TestCase $test, Handler $errorHandler): bool
+    private function runTestWithTimeout(TestCase $test, ErrorHandler $errorHandler): bool
     {
         $_timeout = $this->configuration->defaultTimeLimit();
 

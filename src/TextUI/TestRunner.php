@@ -387,7 +387,7 @@ final class TestRunner
         $this->processSuiteFilters($suite);
 
         $this->eventFacade->emitter()->testExecutionStarted(
-            Event\TestSuite\TestSuite::fromTestSuite($suite, $this->eventFacade)
+            Event\TestSuite\TestSuite::fromTestSuite($suite)
         );
 
         $suite->run($this->eventFacade, $resultFacade);
@@ -626,7 +626,7 @@ final class TestRunner
         $suite->injectFilter($filterFactory);
 
         $this->eventFacade->emitter()->testSuiteFiltered(
-            Event\TestSuite\TestSuite::fromTestSuite($suite, $this->eventFacade)
+            Event\TestSuite\TestSuite::fromTestSuite($suite)
         );
     }
 

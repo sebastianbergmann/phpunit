@@ -329,10 +329,6 @@
       <code>array_unique($this-&gt;doubledTypes)</code>
     </LessSpecificReturnStatement>
     <MissingThrowsDocblock occurrences="29">
-      <code>Facade::ignoredEvent()</code>
-      <code>Facade::ignoredEvent()</code>
-      <code>Facade::ignoredEvent()</code>
-      <code>Facade::ignoredEvent()</code>
       <code>assertThat</code>
       <code>assertThat</code>
       <code>assertThat</code>
@@ -353,6 +349,10 @@
       <code>getMockForAbstractClass</code>
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
+      <code>ignoredEvent</code>
+      <code>ignoredEvent</code>
+      <code>ignoredEvent</code>
+      <code>ignoredEvent</code>
       <code>onlyMethods</code>
       <code>throw new AssertionFailedError('Failed asserting that a deprecation is triggered');</code>
       <code>throw new AssertionFailedError('Failed asserting that a notice is triggered');</code>
@@ -986,7 +986,7 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="41">
+    <MissingThrowsDocblock occurrences="42">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1017,9 +1017,9 @@
       <code>new Facade($this-&gt;eventFacade)</code>
       <code>new ResultCacheHandler($cache, $this-&gt;eventFacade)</code>
       <code>pharExtensionDirectory</code>
+      <code>registerTracer</code>
+      <code>registerTracer</code>
       <code>resourceUsageSinceStartOfRequest</code>
-      <code>registerTracer</code>
-      <code>registerTracer</code>
       <code>run</code>
       <code>stop</code>
       <code>stop</code>

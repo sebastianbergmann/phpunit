@@ -1424,7 +1424,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $emitter->testSuiteLoaded(
-            TestSuite::fromTestSuite($this->createMock(Framework\TestSuite::class), new Facade)
+            TestSuite::fromTestSuite($this->createMock(Framework\TestSuite::class))
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1460,7 +1460,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testSuite->method('getName')->willReturn('foo');
 
         $emitter->testSuiteFinished(
-            TestSuite::fromTestSuite($testSuite, new Facade),
+            TestSuite::fromTestSuite($testSuite),
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -1554,7 +1554,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $testSuite->method('count')->willReturn(1);
         $testSuite->method('getName')->willReturn('foo');
 
-        $emitter->testSuiteStarted(TestSuite::fromTestSuite($testSuite, new Facade));
+        $emitter->testSuiteStarted(TestSuite::fromTestSuite($testSuite));
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 

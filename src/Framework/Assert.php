@@ -70,6 +70,7 @@ use PHPUnit\Framework\Constraint\StringStartsWith;
 use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
+use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
@@ -82,6 +83,11 @@ abstract class Assert
      * @internal
      */
     public static Event\Facade $eventFacade;
+
+    /**
+     * @internal
+     */
+    public static ResultFacade $resultFacade;
     private static int $count = 0;
 
     /**

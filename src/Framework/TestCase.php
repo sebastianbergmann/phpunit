@@ -190,9 +190,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<Comparator>
      */
-    private array $customComparators                         = [];
-    private ?Event\Code\TestMethod $testValueObjectForEvents = null;
-    private bool $wasPrepared                                = false;private bool $deprecationExpected                            = false;
+    private array $customComparators                             = [];
+    private ?Event\Code\TestMethod $testValueObjectForEvents     = null;
+    private bool $wasPrepared                                    = false;
+    private bool $deprecationExpected                            = false;
     private ?string $expectedDeprecationMessage                  = null;
     private ?string $expectedDeprecationMessageRegularExpression = null;
     private bool $errorExpected                                  = false;
@@ -204,7 +205,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $warningExpected                                = false;
     private ?string $expectedWarningMessage                      = null;
     private ?string $expectedWarningMessageRegularExpression     = null;
-    private Handler $errorHandler;
+    private ErrorHandler $errorHandler;
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -444,14 +445,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectDeprecation(): void
     {
-        Facade::ignoreTestTriggeredDeprecationEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredDeprecationEventForExpectation();
 
         $this->deprecationExpected = true;
     }
 
     final public function expectDeprecationMessage(string $message): void
     {
-        Facade::ignoreTestTriggeredDeprecationEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredDeprecationEventForExpectation();
 
         $this->deprecationExpected        = true;
         $this->expectedDeprecationMessage = $message;
@@ -459,7 +460,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectDeprecationMessageMatches(string $regularExpression): void
     {
-        Facade::ignoreTestTriggeredDeprecationEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredDeprecationEventForExpectation();
 
         $this->deprecationExpected                         = true;
         $this->expectedDeprecationMessageRegularExpression = $regularExpression;
@@ -467,14 +468,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectError(): void
     {
-        Facade::ignoreTestTriggeredErrorEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredErrorEventForExpectation();
 
         $this->errorExpected = true;
     }
 
     final public function expectErrorMessage(string $message): void
     {
-        Facade::ignoreTestTriggeredErrorEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredErrorEventForExpectation();
 
         $this->errorExpected        = true;
         $this->expectedErrorMessage = $message;
@@ -482,7 +483,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectErrorMessageMatches(string $regularExpression): void
     {
-        Facade::ignoreTestTriggeredErrorEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredErrorEventForExpectation();
 
         $this->errorExpected                         = true;
         $this->expectedErrorMessageRegularExpression = $regularExpression;
@@ -490,14 +491,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectNotice(): void
     {
-        Facade::ignoreTestTriggeredNoticeEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredNoticeEventForExpectation();
 
         $this->noticeExpected = true;
     }
 
     final public function expectNoticeMessage(string $message): void
     {
-        Facade::ignoreTestTriggeredNoticeEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredNoticeEventForExpectation();
 
         $this->noticeExpected        = true;
         $this->expectedNoticeMessage = $message;
@@ -505,7 +506,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectNoticeMessageMatches(string $regularExpression): void
     {
-        Facade::ignoreTestTriggeredNoticeEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredNoticeEventForExpectation();
 
         $this->noticeExpected                         = true;
         $this->expectedNoticeMessageRegularExpression = $regularExpression;
@@ -513,14 +514,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectWarning(): void
     {
-        Facade::ignoreTestTriggeredWarningEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredWarningEventForExpectation();
 
         $this->warningExpected = true;
     }
 
     final public function expectWarningMessage(string $message): void
     {
-        Facade::ignoreTestTriggeredWarningEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredWarningEventForExpectation();
 
         $this->warningExpected        = true;
         $this->expectedWarningMessage = $message;
@@ -528,7 +529,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     final public function expectWarningMessageMatches(string $regularExpression): void
     {
-        Facade::ignoreTestTriggeredWarningEventForExpectation();
+        self::$resultFacade->ignoreTestTriggeredWarningEventForExpectation();
 
         $this->warningExpected                         = true;
         $this->expectedWarningMessageRegularExpression = $regularExpression;
@@ -546,8 +547,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function run(Event\Facade $eventFacade, ResultFacade $resultFacade): void
     {
-        Assert::$eventFacade = $eventFacade;
-        if (!$this->handleDependencies($resultFacade)) {
+        Assert::$eventFacade  = $eventFacade;
+        Assert::$resultFacade = $resultFacade;
+
+        if (!$this->handleDependencies($eventFacade, $resultFacade)) {
             return;
         }
 
@@ -695,7 +698,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function runBare(Event\Facade $eventFacade, Handler $errorHandler): void
+    final public function runBare(Event\Facade $eventFacade, ErrorHandler $errorHandler): void
     {
         $this->errorHandler = $errorHandler;
         $emitter            = $eventFacade->emitter();
@@ -1483,7 +1486,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
-    private function handleDependencies(ResultFacade $resultFacade): bool
+    private function handleDependencies(Event\Facade $eventFacade, ResultFacade $resultFacade): bool
     {
         if ([] === $this->dependencies || $this->inIsolation) {
             return true;
@@ -1544,7 +1547,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 if ($passedTestMethods[$dependencyTarget]['size']->isKnown() &&
                     $this->size()->isKnown() &&
                     $passedTestMethods[$dependencyTarget]['size']->isGreaterThan($this->size())) {
-                    Event\Facade::emitter()->testConsideredRisky(
+                    $eventFacade->emitter()->testConsideredRisky(
                         $this->valueObjectForEvents(),
                         'This test depends on a test that is larger than itself'
                     );
@@ -1635,7 +1638,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $message = 'Test code or tested code did not (only) close its own output buffers';
 
-            Event\Facade::emitter()->testConsideredRisky(
+            self::$eventFacade->emitter()->testConsideredRisky(
                 $this->valueObjectForEvents(),
                 $message
             );
@@ -1762,7 +1765,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $differ   = new Differ(new UnifiedDiffOutputBuilder($header));
             $exporter = new Exporter;
 
-            Event\Facade::emitter()->testConsideredRisky(
+            self::$eventFacade->emitter()->testConsideredRisky(
                 $this->valueObjectForEvents(),
                 'This test modified global state but was not expected to do so' . PHP_EOL .
                 trim(
@@ -2099,7 +2102,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $exception->getMessage(),
                 new MessageMatchesRegularExpression(
                     'exception',
-                    $this->expectedExceptionMessageRegExp
+                    $this->expectedExceptionMessageRegExp,
+                    $this->errorHandler
                 )
             );
         }
@@ -2162,11 +2166,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->numberOfAssertionsPerformed++;
 
-        if (!Facade::hasIgnoredEvent()) {
+        if (!self::$resultFacade->hasIgnoredEvent()) {
             throw new AssertionFailedError('Failed asserting that a deprecation is triggered');
         }
 
-        $event = Facade::ignoredEvent();
+        $event = self::$resultFacade->ignoredEvent();
 
         assert($event instanceof DeprecationTriggered || $event instanceof PhpDeprecationTriggered);
 
@@ -2185,7 +2189,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $event->message(),
                 new MessageMatchesRegularExpression(
                     'deprecation',
-                    $this->expectedDeprecationMessage
+                    $this->expectedDeprecationMessage,
+                    $this->errorHandler
                 )
             );
         }
@@ -2199,11 +2204,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->numberOfAssertionsPerformed++;
 
-        if (!Facade::hasIgnoredEvent()) {
+        if (!self::$resultFacade->hasIgnoredEvent()) {
             throw new AssertionFailedError('Failed asserting that an error is triggered');
         }
 
-        $event = Facade::ignoredEvent();
+        $event = self::$resultFacade->ignoredEvent();
 
         assert($event instanceof ErrorTriggered);
 
@@ -2222,7 +2227,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $event->message(),
                 new MessageMatchesRegularExpression(
                     'error',
-                    $this->expectedErrorMessage
+                    $this->expectedErrorMessage,
+                    $this->errorHandler
                 )
             );
         }
@@ -2236,11 +2242,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->numberOfAssertionsPerformed++;
 
-        if (!Facade::hasIgnoredEvent()) {
+        if (!self::$resultFacade->hasIgnoredEvent()) {
             throw new AssertionFailedError('Failed asserting that a notice is triggered');
         }
 
-        $event = Facade::ignoredEvent();
+        $event = self::$resultFacade->ignoredEvent();
 
         assert($event instanceof NoticeTriggered || $event instanceof PhpNoticeTriggered);
 
@@ -2259,7 +2265,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $event->message(),
                 new MessageMatchesRegularExpression(
                     'notice',
-                    $this->expectedNoticeMessage
+                    $this->expectedNoticeMessage,
+                    $this->errorHandler
                 )
             );
         }
@@ -2273,11 +2280,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->numberOfAssertionsPerformed++;
 
-        if (!Facade::hasIgnoredEvent()) {
+        if (!self::$resultFacade->hasIgnoredEvent()) {
             throw new AssertionFailedError('Failed asserting that a warning is triggered');
         }
 
-        $event = Facade::ignoredEvent();
+        $event = self::$resultFacade->ignoredEvent();
 
         assert($event instanceof WarningTriggered || $event instanceof PhpWarningTriggered);
 
@@ -2296,7 +2303,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $event->message(),
                 new MessageMatchesRegularExpression(
                     'warning',
-                    $this->expectedWarningMessage
+                    $this->expectedWarningMessage,
+                    $this->errorHandler
                 )
             );
         }
