@@ -26,20 +26,14 @@ unlink($traceFile);
 --EXPECTF--
 Test Runner Started (PHPUnit %s using %s)
 Test Runner Configured
-Test Suite Loaded (1 test)
-Test Suite Sorted
-Event Facade Sealed
-Test Runner Execution Started (1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\EmptyDataProviderTest, 1 test)
-Test Suite Started (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase, 1 test)
-Test Preparation Started (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
-Test Prepared (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
-Test Errored (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
+Test Triggered PHPUnit Error (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
 The data provider specified for PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase is invalid
 Empty data set provided by data provider
 
-Test Finished (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase)
-Test Suite Finished (PHPUnit\TestFixture\Event\EmptyDataProviderTest::testCase, 1 test)
-Test Suite Finished (PHPUnit\TestFixture\Event\EmptyDataProviderTest, 1 test)
+Test Runner Triggered Warning (No tests found in class "PHPUnit\TestFixture\Event\EmptyDataProviderTest".)
+Test Suite Loaded (0 tests)
+Test Suite Sorted
+Event Facade Sealed
+Test Runner Execution Started (0 tests)
 Test Runner Execution Finished
 Test Runner Finished

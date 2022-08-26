@@ -14,7 +14,6 @@ use function is_int;
 use function method_exists;
 use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
-use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
@@ -39,24 +38,15 @@ final class TestMethod extends Test
 
     public static function fromTestCase(TestCase $testCase): self
     {
-        $className  = $testCase::class;
-        $methodName = $testCase->name();
-        $testData   = self::dataFor($testCase);
-
-        if ($testCase instanceof ErrorTestCase) {
-            $className  = $testCase->className();
-            $methodName = $testCase->methodName();
-        }
-
-        $location = self::sourceLocationFor($className, $methodName);
+        $location = self::sourceLocationFor($testCase::class, $testCase->name());
 
         return new self(
-            $className,
-            $methodName,
+            $testCase::class,
+            $testCase->name(),
             $location['file'],
             $location['line'],
-            self::metadataFor($className, $methodName),
-            $testData,
+            self::metadataFor($testCase::class, $testCase->name()),
+            self::dataFor($testCase),
         );
     }
 

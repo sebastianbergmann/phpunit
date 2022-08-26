@@ -77,7 +77,6 @@ final class TestRunner
         ErrorHandler::instance()->enable();
 
         $collectCodeCoverage = CodeCoverage::isActive() &&
-                               !$test instanceof ErrorTestCase &&
                                $shouldCodeCoverageBeCollected;
 
         if ($collectCodeCoverage) {
@@ -388,10 +387,6 @@ final class TestRunner
 
     private function shouldTimeLimitBeEnforced(TestCase $test): bool
     {
-        if ($test instanceof ErrorTestCase) {
-            return false;
-        }
-
         if (!$this->configuration->enforceTimeLimit()) {
             return false;
         }

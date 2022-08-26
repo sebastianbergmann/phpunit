@@ -11,21 +11,12 @@ namespace PHPUnit\Framework;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
-use PHPUnit\TestFixture\EmptyDataProviderTest;
 use PHPUnit\TestFixture\TestWithAnnotations;
 use ReflectionClass;
 
 #[CoversClass(TestBuilder::class)]
 final class TestBuilderTest extends TestCase
 {
-    public function testCreateWithEmptyData(): void
-    {
-        $test = (new TestBuilder)->build(new ReflectionClass(EmptyDataProviderTest::class), 'testCase');
-        $this->assertInstanceOf(DataProviderTestSuite::class, $test);
-        /* @var DataProviderTestSuite $test */
-        $this->assertInstanceOf(ErrorTestCase::class, $test->getGroupDetails()['default'][0]);
-    }
-
     #[DataProvider('provideWithAnnotations')]
     public function testWithAnnotations(string $methodName): void
     {

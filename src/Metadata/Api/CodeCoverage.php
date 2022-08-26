@@ -15,7 +15,6 @@ use function interface_exists;
 use function sprintf;
 use function str_starts_with;
 use PHPUnit\Framework\CodeCoverageException;
-use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\InvalidCoversTargetException;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
@@ -207,10 +206,6 @@ final class CodeCoverage
      */
     public function shouldCodeCoverageBeCollectedFor(string $className, string $methodName): bool
     {
-        if ($className === ErrorTestCase::class) {
-            return false;
-        }
-
         $metadataForClass  = Registry::parser()->forClass($className);
         $metadataForMethod = Registry::parser()->forMethod($className, $methodName);
 

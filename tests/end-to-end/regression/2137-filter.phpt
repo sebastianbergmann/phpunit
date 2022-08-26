@@ -15,15 +15,24 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-E                                                                   1 / 1 (100%)
-
-Time: %s, Memory: %s
-
-There was 1 error:
+There were 2 PHPUnit errors:
 
 1) PHPUnit\TestFixture\Issue2137Test::testBrandService
 The data provider specified for PHPUnit\TestFixture\Issue2137Test::testBrandService is invalid
 Data set #0 is invalid
 
-ERRORS!
-Tests: 1, Assertions: 0, Errors: 1.
+%s:%d
+
+2) PHPUnit\TestFixture\Issue2137Test::testSomethingElseInvalid
+The data provider specified for PHPUnit\TestFixture\Issue2137Test::testSomethingElseInvalid is invalid
+Data set #0 is invalid
+
+%s:%d
+
+--
+
+There was 1 PHPUnit warning:
+
+1) No tests found in class "PHPUnit\TestFixture\Issue2137Test".
+
+No tests executed!

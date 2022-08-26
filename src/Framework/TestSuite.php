@@ -25,15 +25,18 @@ use function str_starts_with;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\Util\Filter;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
@@ -545,9 +548,31 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
     {
+        $className  = $class->getName();
         $methodName = $method->getName();
 
-        $test = (new TestBuilder)->build($class, $methodName);
+        try {
+            $test = (new TestBuilder)->build($class, $methodName);
+        } catch (InvalidDataProviderException $e) {
+            Event\Facade::emitter()->testTriggeredPhpunitError(
+                new TestMethod(
+                    $className,
+                    $methodName,
+                    $class->getFileName(),
+                    $method->getStartLine(),
+                    MetadataCollection::fromArray([]),
+                    Event\TestDataCollection::fromArray([])
+                ),
+                sprintf(
+                    "The data provider specified for %s::%s is invalid\n%s",
+                    $className,
+                    $methodName,
+                    $this->throwableToString($e)
+                )
+            );
+
+            return;
+        }
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
@@ -613,5 +638,29 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         return false;
+    }
+
+    private function throwableToString(Throwable $t): string
+    {
+        $message = $t->getMessage();
+
+        if (empty(trim($message))) {
+            $message = '<no message>';
+        }
+
+        if ($t instanceof InvalidDataProviderException) {
+            return sprintf(
+                "%s\n%s",
+                $message,
+                Filter::getFilteredStacktrace($t)
+            );
+        }
+
+        return sprintf(
+            "%s: %s\n%s",
+            $t::class,
+            $message,
+            Filter::getFilteredStacktrace($t)
+        );
     }
 }

@@ -312,10 +312,6 @@
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="2">
-      <code>Filter::getFilteredStacktrace($t)</code>
-      <code>Filter::getFilteredStacktrace($t)</code>
-    </MissingThrowsDocblock>
     <MoreSpecificReturnType occurrences="1">
       <code>Test</code>
     </MoreSpecificReturnType>
@@ -404,7 +400,11 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="1"/>
+    <MissingThrowsDocblock occurrences="4">
+      <code>Event\TestDataCollection::fromArray([])</code>
+      <code>Filter::getFilteredStacktrace($t)</code>
+      <code>Filter::getFilteredStacktrace($t)</code>
+    </MissingThrowsDocblock>
     <UnsafeInstantiation occurrences="2">
       <code>new static($class-&gt;getName())</code>
       <code>new static($name)</code>
@@ -466,11 +466,6 @@
       <code>className</code>
       <code>className</code>
     </UndefinedMethod>
-  </file>
-  <file src="src/Metadata/Api/DataProvider.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>dataProvidedByTestWithAnnotation</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Metadata/Api/Dependencies.php">
     <RedundantCondition occurrences="2">

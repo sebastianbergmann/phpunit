@@ -93,10 +93,6 @@ final class Application
 
         $suite = $this->handleArguments($argv);
 
-        if ($suite->isEmpty()) {
-            $this->execute(new ShowHelpCommand(false));
-        }
-
         Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
 
         $runner = new TestRunner;
@@ -246,15 +242,6 @@ final class Application
             exit(self::EXCEPTION_EXIT);
         }
 
-        if ($testSuite->isEmpty() &&
-            ($arguments->hasArgument() || $this->xmlConfiguration->phpunit()->hasDefaultTestSuite())) {
-            $this->printVersionString();
-
-            print 'No tests found.' . PHP_EOL;
-
-            exit(self::EXCEPTION_EXIT);
-        }
-
         if ($configuration->hasCoverageReport() || $arguments->hasWarmCoverageCache()) {
             CodeCoverageFilterRegistry::init($arguments, $this->xmlConfiguration);
         }
@@ -282,6 +269,10 @@ final class Application
                     $testSuite
                 )
             );
+        }
+
+        if ($testSuite->isEmpty() && !$arguments->hasArgument() && !$this->xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
+            $this->execute(new ShowHelpCommand(false));
         }
 
         return $testSuite;

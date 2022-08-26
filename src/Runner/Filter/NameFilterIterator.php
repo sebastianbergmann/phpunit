@@ -15,7 +15,6 @@ use function preg_match;
 use function sprintf;
 use function str_replace;
 use Exception;
-use PHPUnit\Framework\ErrorTestCase;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
@@ -53,9 +52,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
 
         $tmp = $this->describe($test);
 
-        if ($test instanceof ErrorTestCase) {
-            $name = $test->getMessage();
-        } elseif ($tmp[0] !== '') {
+        if ($tmp[0] !== '') {
             $name = implode('::', $tmp);
         } else {
             $name = $tmp[1];

@@ -13,16 +13,16 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-.E                                                                  2 / 2 (100%)
+.                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-There was 1 error:
+There was 1 PHPUnit error:
 
 1) PHPUnit\TestFixture\Issue765Test::testDependent
 The data provider specified for PHPUnit\TestFixture\Issue765Test::testDependent is invalid
-Exception: <no message>
-%sIssue765Test.php:%d
+<no message>
 
-ERRORS!
-Tests: 2, Assertions: 1, Errors: 1.
+%s:%d
+
+OK (1 test, 1 assertion)

@@ -375,14 +375,14 @@ final class ResultPrinter
     private function printList(int $count, array $elements, string $type): void
     {
         if ($this->listPrinted) {
-            $this->printer->print("\n--\n\n");
+            $this->printer->print("--\n\n");
         }
 
         $this->listPrinted = true;
 
         $this->printer->print(
             sprintf(
-                "There %s %d %s%s:\n",
+                "There %s %d %s%s:\n\n",
                 ($count === 1) ? 'was' : 'were',
                 $count,
                 $type,
@@ -399,22 +399,22 @@ final class ResultPrinter
         foreach ($elements as $element) {
             $this->printListElement($i++, $element['title'], $element['body']);
         }
+
+        $this->printer->print("\n");
     }
 
     private function printListElement(int $number, string $title, string $body): void
     {
         $body = trim($body);
 
-        if (!empty($body)) {
-            $body .= "\n";
-        }
-
         $this->printer->print(
             sprintf(
-                "\n%d) %s\n%s",
+                "%s%d) %s\n%s%s",
+                $number > 1 ? "\n" : '',
                 $number,
                 $title,
-                $body
+                $body,
+                !empty($body) ? "\n" : ''
             )
         );
     }
@@ -448,17 +448,11 @@ final class ResultPrinter
         $color = 'fg-black, bg-yellow';
 
         if ($result->wasSuccessful()) {
-            if ($this->displayDetailsOnIncompleteTests || $this->displayDetailsOnSkippedTests || $result->hasTestConsideredRiskyEvents()) {
-                $this->printer->print("\n");
-            }
-
             $this->printWithColor(
                 $color,
                 'OK, but some tests have issues!'
             );
         } else {
-            $this->printer->print("\n");
-
             if ($result->hasTestErroredEvents()) {
                 $color = 'fg-white, bg-red';
 
@@ -577,7 +571,7 @@ final class ResultPrinter
             $location = $this->location($test);
 
             if (count($reasons) === 1) {
-                $body = $reasons[0]->message() . PHP_EOL;
+                $body = trim($reasons[0]->message()) . PHP_EOL;
             } else {
                 $body  = '';
                 $first = true;

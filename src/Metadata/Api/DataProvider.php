@@ -24,13 +24,12 @@ use function substr;
 use function trim;
 use PHPUnit\Framework\InvalidDataProviderException;
 use PHPUnit\Metadata\DataProvider as DataProviderMetadata;
-use PHPUnit\Metadata\InvalidDataSetException;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\TestWith;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
+use Throwable;
 use Traversable;
 
 /**
@@ -41,7 +40,7 @@ final class DataProvider
     /**
      * @psalm-param class-string $className
      *
-     * @throws InvalidDataSetException
+     * @throws InvalidDataProviderException
      */
     public function providedData(string $className, string $methodName): ?array
     {
@@ -59,14 +58,14 @@ final class DataProvider
         }
 
         if ($data === []) {
-            throw new InvalidDataSetException(
+            throw new InvalidDataProviderException(
                 'Empty data set provided by data provider'
             );
         }
 
         foreach ($data as $key => $value) {
             if (!is_array($value)) {
-                throw new InvalidDataSetException(
+                throw new InvalidDataProviderException(
                     sprintf(
                         'Data set %s is invalid',
                         is_int($key) ? '#' . $key : '"' . $key . '"'
@@ -78,6 +77,9 @@ final class DataProvider
         return $data;
     }
 
+    /**
+     * @throws InvalidDataProviderException
+     */
     private function dataProvidedByMethods(MetadataCollection $dataProvider): array
     {
         $result = [];
@@ -88,26 +90,24 @@ final class DataProvider
             try {
                 $class  = new ReflectionClass($_dataProvider->className());
                 $method = $class->getMethod($_dataProvider->methodName());
-                // @codeCoverageIgnoreStart
-            } catch (ReflectionException $e) {
+
+                if ($method->isStatic()) {
+                    $object = null;
+                } else {
+                    $object = $class->newInstanceWithoutConstructor();
+                }
+
+                if ($method->getNumberOfParameters() === 0) {
+                    $data = $method->invoke($object);
+                } else {
+                    $data = $method->invoke($object, $_dataProvider->methodName());
+                }
+            } catch (Throwable $e) {
                 throw new InvalidDataProviderException(
                     $e->getMessage(),
                     (int) $e->getCode(),
                     $e
                 );
-                // @codeCoverageIgnoreEnd
-            }
-
-            if ($method->isStatic()) {
-                $object = null;
-            } else {
-                $object = $class->newInstanceWithoutConstructor();
-            }
-
-            if ($method->getNumberOfParameters() === 0) {
-                $data = $method->invoke($object);
-            } else {
-                $data = $method->invoke($object, $_dataProvider->methodName());
             }
 
             if ($data instanceof Traversable) {

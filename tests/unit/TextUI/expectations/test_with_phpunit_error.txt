@@ -4,4 +4,5 @@ There was 1 PHPUnit error:
 message
 
 FooTest.php:1
+
 No tests executed!
