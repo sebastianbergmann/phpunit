@@ -183,17 +183,27 @@ final class TestRunner
 
         ErrorHandler::instance()->disable();
 
-        if ($error && isset($e)) {
-        } elseif ($failure && isset($e)) {
-        } elseif ($this->configuration->reportUselessTests() &&
+        if (isset($e)) {
+            if ($test->wasPrepared()) {
+                Event\Facade::emitter()->testFinished(
+                    $test->valueObjectForEvents(),
+                    $test->numberOfAssertionsPerformed()
+                );
+            }
+
+            return;
+        }
+
+        if ($this->configuration->reportUselessTests() &&
             !$test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() === 0) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 'This test did not perform any assertions'
             );
-        } elseif ($this->configuration->reportUselessTests() &&
-            $test->doesNotPerformAssertions() &&
+        }
+
+        if ($test->doesNotPerformAssertions() &&
             $test->numberOfAssertionsPerformed() > 0) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
@@ -202,7 +212,9 @@ final class TestRunner
                     $test->numberOfAssertionsPerformed()
                 )
             );
-        } elseif ($this->configuration->disallowTestOutput() && $test->hasOutput()) {
+        }
+
+        if ($this->configuration->disallowTestOutput() && $test->hasOutput()) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 sprintf(
