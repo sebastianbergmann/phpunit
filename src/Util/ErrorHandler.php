@@ -139,15 +139,7 @@ final class ErrorHandler
             // @codeCoverageIgnoreEnd
         }
 
-        $oldErrorHandler = set_error_handler($this);
-
-        if ($oldErrorHandler !== null) {
-            // @codeCoverageIgnoreStart
-            restore_error_handler();
-
-            return;
-            // @codeCoverageIgnoreEnd
-        }
+        set_error_handler($this);
 
         $this->enabled = true;
     }
