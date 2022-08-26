@@ -131,7 +131,7 @@ final class TestRunner
             !$this->hasCoverageMetadata($test::class, $test->name())) {
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
-                'This test does not define a code coverage target using an attribute or annotation but is expected to do so'
+                'This test does not define a code coverage target but is expected to do so'
             );
 
             $risky = true;
@@ -208,7 +208,7 @@ final class TestRunner
             Event\Facade::emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),
                 sprintf(
-                    'This test is annotated with "@doesNotPerformAssertions" but performed %d assertions',
+                    'This test is not expected to perform assertions but performed %d assertions',
                     $test->numberOfAssertionsPerformed()
                 )
             );
