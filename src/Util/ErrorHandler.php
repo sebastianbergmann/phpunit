@@ -42,12 +42,9 @@ final class ErrorHandler
      */
     public function __invoke(int $errorNumber, string $errorString, string $errorFile, int $errorLine): bool
     {
-        /*
-         * Do not raise an exception when the error suppression operator (@) was used.
-         *
-         * @see https://github.com/sebastianbergmann/phpunit/issues/3739
-         */
-        if (!($errorNumber & error_reporting())) {
+        $suppressed = !($errorNumber & error_reporting());
+
+        if ($suppressed) {
             return false;
         }
 
