@@ -167,15 +167,9 @@ final class ErrorHandler
     private function testValueObjectForEvents(): Event\Code\Test
     {
         foreach (debug_backtrace() as $frame) {
-            if (!isset($frame['object'])) {
-                continue;
+            if (isset($frame['object']) && $frame['object'] instanceof TestCase) {
+                return $frame['object']->valueObjectForEvents();
             }
-
-            if (!$frame['object'] instanceof TestCase) {
-                continue;
-            }
-
-            return $frame['object']->valueObjectForEvents();
         }
 
         throw new Exception('Cannot find TestCase object on call stack');
