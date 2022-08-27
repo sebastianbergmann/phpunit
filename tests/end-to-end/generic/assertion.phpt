@@ -29,5 +29,10 @@ There was 1 failure:
 1) PHPUnit\TestFixture\AssertionExampleTest::testOne
 assert(false) in %sAssertionExample.php:%d
 
+Caused by
+AssertionError: assert(false) in %sAssertionExample.php:%d
+Stack trace:
+%A
+
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.

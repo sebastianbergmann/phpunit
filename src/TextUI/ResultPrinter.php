@@ -23,6 +23,7 @@ use function sprintf;
 use function str_pad;
 use function str_repeat;
 use function strlen;
+use function trim;
 use function vsprintf;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
@@ -367,7 +368,7 @@ class ResultPrinter extends Printer implements TestListener
         $this->write((string) $e);
 
         while ($e = $e->getPrevious()) {
-            $this->write("\nCaused by\n" . $e);
+            $this->write("\nCaused by\n" . trim((string) $e) . "\n");
         }
     }
 
