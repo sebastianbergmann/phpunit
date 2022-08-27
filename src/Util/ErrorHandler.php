@@ -18,6 +18,7 @@ use const E_USER_WARNING;
 use const E_WARNING;
 use function debug_backtrace;
 use function error_reporting;
+use function in_array;
 use function restore_error_handler;
 use function set_error_handler;
 use PHPUnit\Event;
@@ -44,7 +45,8 @@ final class ErrorHandler
     {
         $suppressed = !($errorNumber & error_reporting());
 
-        if ($suppressed) {
+        if ($suppressed &&
+            in_array($errorNumber, [E_NOTICE, E_STRICT, E_WARNING], true)) {
             return false;
         }
 
