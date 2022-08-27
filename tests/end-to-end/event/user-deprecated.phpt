@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for tests that use deprecated features (E_USER_DEPRECATED)
+The right events are emitted in the right order for a test that runs code which triggers E_USER_DEPRECATED
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {

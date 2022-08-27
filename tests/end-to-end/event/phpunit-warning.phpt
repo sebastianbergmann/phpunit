@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for tests that trigger a PHPUnit warning
+The right events are emitted in the right order for a test that runs code which triggers a PHPUnit warning
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {

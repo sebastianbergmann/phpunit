@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for tests that use deprecated PHP features (E_DEPRECATED)
+The right events are emitted in the right order for a test that runs code which triggers E_DEPRECATED
 --SKIPIF--
 <?php declare(strict_types=1);
 if (!(PHP_MAJOR_VERSION === 8 && PHP_MINOR_VERSION === 1)) {
