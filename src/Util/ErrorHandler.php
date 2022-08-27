@@ -31,7 +31,6 @@ final class ErrorHandler
 {
     private static ?self $instance = null;
     private bool $enabled          = false;
-    private bool $ignoreWarnings   = false;
 
     public static function instance(): self
     {
@@ -73,10 +72,6 @@ final class ErrorHandler
                 break;
 
             case E_WARNING:
-                if ($this->ignoreWarnings) {
-                    return true;
-                }
-
                 Event\Facade::emitter()->testTriggeredPhpWarning(
                     $this->testValueObjectForEvents(),
                     $errorString,
@@ -164,21 +159,6 @@ final class ErrorHandler
         restore_error_handler();
 
         $this->enabled = false;
-    }
-
-    public function isDisabled(): bool
-    {
-        return !$this->enabled;
-    }
-
-    public function ignoreWarnings(): void
-    {
-        $this->ignoreWarnings = true;
-    }
-
-    public function doNotIgnoreWarnings(): void
-    {
-        $this->ignoreWarnings = false;
     }
 
     /**

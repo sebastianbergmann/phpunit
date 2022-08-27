@@ -19,7 +19,6 @@ use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Util\RegularExpression;
 use RecursiveFilterIterator;
 use RecursiveIterator;
 
@@ -73,7 +72,7 @@ final class NameFilterIterator extends RecursiveFilterIterator
      */
     private function setFilter(string $filter): void
     {
-        if (RegularExpression::safeMatch($filter, '') === false) {
+        if (@preg_match($filter, '') === false) {
             // Handles:
             //  * testAssertEqualsSucceeds#4
             //  * testAssertEqualsSucceeds#4-8

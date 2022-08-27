@@ -9,9 +9,9 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
+use function preg_match;
 use function sprintf;
 use Exception;
-use PHPUnit\Util\RegularExpression as RegularExpressionUtil;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -41,7 +41,7 @@ final class MessageMatchesRegularExpression extends Constraint
      */
     protected function matches(mixed $other): bool
     {
-        $match = RegularExpressionUtil::safeMatch($this->regularExpression, (string) $other);
+        $match = @preg_match($this->regularExpression, (string) $other);
 
         if ($match === false) {
             throw new \PHPUnit\Framework\Exception(
