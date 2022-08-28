@@ -28,7 +28,6 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
-use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
@@ -271,23 +270,6 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers PHP error' => [
-                __DIR__ . '/expectations/successful_test_with_php_error.txt',
-                $this->createTestResult(
-                    testTriggeredPhpErrorEvents: [
-                        'Foo::testBar' => [
-                            new PhpErrorTriggered(
-                                $this->telemetryInfo(),
-                                $this->testMethod(),
-                                'message',
-                                'file',
-                                1
-                            ),
-                        ],
-                    ]
-                ),
-            ],
-
             'successful test that triggers notice' => [
                 __DIR__ . '/expectations/successful_test_with_notice.txt',
                 $this->createTestResult(
@@ -402,7 +384,6 @@ final class ResultPrinterTest extends TestCase
      * @psalm-param array<string,list<PhpDeprecationTriggered>> $testTriggeredPhpDeprecationEvents
      * @psalm-param array<string,list<PhpunitDeprecationTriggered>> $testTriggeredPhpunitDeprecationEvents
      * @psalm-param array<string,list<ErrorTriggered>> $testTriggeredErrorEvents
-     * @psalm-param array<string,list<PhpErrorTriggered>> $testTriggeredPhpErrorEvents
      * @psalm-param array<string,list<NoticeTriggered>> $testTriggeredNoticeEvents
      * @psalm-param array<string,list<PhpNoticeTriggered>> $testTriggeredPhpNoticeEvents
      * @psalm-param array<string,list<WarningTriggered>> $testTriggeredWarningEvents
@@ -412,7 +393,7 @@ final class ResultPrinterTest extends TestCase
      * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
      */
-    private function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $testTriggeredDeprecationEvents = [], array $testTriggeredPhpDeprecationEvents = [], array $testTriggeredPhpunitDeprecationEvents = [], array $testTriggeredErrorEvents = [], array $testTriggeredPhpErrorEvents = [], array $testTriggeredNoticeEvents = [], array $testTriggeredPhpNoticeEvents = [], array $testTriggeredWarningEvents = [], array $testTriggeredPhpWarningEvents = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = []): TestResult
+    private function createTestResult(int $numberOfTests = 1, int $numberOfTestsRun = 1, int $numberOfAssertions = 1, array $testErroredEvents = [], array $testFailedEvents = [], array $testConsideredRiskyEvents = [], array $testSkippedEvents = [], array $testMarkedIncompleteEvents = [], array $testTriggeredDeprecationEvents = [], array $testTriggeredPhpDeprecationEvents = [], array $testTriggeredPhpunitDeprecationEvents = [], array $testTriggeredErrorEvents = [], array $testTriggeredNoticeEvents = [], array $testTriggeredPhpNoticeEvents = [], array $testTriggeredWarningEvents = [], array $testTriggeredPhpWarningEvents = [], array $testTriggeredPhpunitErrorEvents = [], array $testTriggeredPhpunitWarningEvents = [], array $testRunnerTriggeredDeprecationEvents = [], array $testRunnerTriggeredWarningEvents = []): TestResult
     {
         return new TestResult(
             $numberOfTests,
@@ -427,7 +408,6 @@ final class ResultPrinterTest extends TestCase
             $testTriggeredPhpDeprecationEvents,
             $testTriggeredPhpunitDeprecationEvents,
             $testTriggeredErrorEvents,
-            $testTriggeredPhpErrorEvents,
             $testTriggeredNoticeEvents,
             $testTriggeredPhpNoticeEvents,
             $testTriggeredWarningEvents,

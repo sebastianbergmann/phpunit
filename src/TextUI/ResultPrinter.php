@@ -28,7 +28,6 @@ use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
-use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
@@ -92,7 +91,6 @@ final class ResultPrinter
         }
 
         if ($this->displayDetailsOnTestsThatTriggerErrors) {
-            $this->printDetailsOnTestsThatTriggerPhpErrors($result);
             $this->printDetailsOnTestsThatTriggerErrors($result);
         }
 
@@ -291,19 +289,6 @@ final class ResultPrinter
         );
     }
 
-    private function printDetailsOnTestsThatTriggerPhpErrors(TestResult $result): void
-    {
-        if (!$result->hasTestTriggeredPhpErrorEvents()) {
-            return;
-        }
-
-        $this->printList(
-            $result->numberOfTestsWithTestTriggeredPhpErrorEvents(),
-            $this->mapTestsWithIssuesEventsToElements($result->testTriggeredPhpErrorEvents()),
-            'PHP error'
-        );
-    }
-
     private function printDetailsOnTestsThatTriggerErrors(TestResult $result): void
     {
         if (!$result->hasTestTriggeredErrorEvents()) {
@@ -487,7 +472,7 @@ final class ResultPrinter
 
         $this->printCountString($result->numberOfTestsRun(), 'Tests', $color, true);
         $this->printCountString($result->numberOfAssertions(), 'Assertions', $color, true);
-        $this->printCountString($result->numberOfTestErroredEvents() + $result->numberOfErrorEvents(), 'Errors', $color);
+        $this->printCountString($result->numberOfTestErroredEvents() + $result->numberOfTestsWithTestTriggeredErrorEvents(), 'Errors', $color);
         $this->printCountString($result->numberOfTestFailedEvents(), 'Failures', $color);
         $this->printCountString($result->numberOfWarningEvents(), 'Warnings', $color);
         $this->printCountString($result->numberOfDeprecationEvents(), 'Deprecations', $color);
@@ -557,7 +542,7 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-param array<string,list<ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered|ErrorTriggered|PhpErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered>> $events
+     * @psalm-param array<string,list<ConsideredRisky|DeprecationTriggered|PhpDeprecationTriggered|PhpunitDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|PhpunitErrorTriggered|PhpunitWarningTriggered>> $events
      *
      * @psalm-return list<array{title: string, body: string}>
      */

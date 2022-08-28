@@ -13,7 +13,6 @@ use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
-use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
@@ -111,7 +110,7 @@ final class Facade
     /**
      * @throws NoIgnoredEventException
      */
-    public static function ignoredEvent(): DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|PhpErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered
+    public static function ignoredEvent(): DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered
     {
         return self::collector()->ignoredEvent();
     }

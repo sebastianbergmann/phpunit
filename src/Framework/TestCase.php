@@ -62,7 +62,6 @@ use PHPUnit\Event\Test\DeprecationTriggered;
 use PHPUnit\Event\Test\ErrorTriggered;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
-use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
@@ -2203,7 +2202,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $event = Facade::ignoredEvent();
 
-        assert($event instanceof ErrorTriggered || $event instanceof PhpErrorTriggered);
+        assert($event instanceof ErrorTriggered);
 
         if ($this->expectedErrorMessage !== null) {
             $this->assertThat(

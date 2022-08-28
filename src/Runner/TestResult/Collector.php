@@ -24,7 +24,6 @@ use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\NoticeTriggered;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
-use PHPUnit\Event\Test\PhpErrorTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
 use PHPUnit\Event\Test\PhpunitErrorTriggered;
@@ -110,11 +109,6 @@ final class Collector
     private array $testTriggeredErrorEvents = [];
 
     /**
-     * @psalm-var array<string,list<PhpErrorTriggered>>
-     */
-    private array $testTriggeredPhpErrorEvents = [];
-
-    /**
      * @psalm-var array<string,list<NoticeTriggered>>
      */
     private array $testTriggeredNoticeEvents = [];
@@ -152,12 +146,12 @@ final class Collector
     /**
      * @psalm-var list<TestRunnerDeprecationTriggered>
      */
-    private array $testRunnerTriggeredDeprecationEvents                                                                                                                              = [];
-    private bool $ignoreTestTriggeredDeprecationEventForExpectation                                                                                                                  = false;
-    private bool $ignoreTestTriggeredErrorEventForExpectation                                                                                                                        = false;
-    private bool $ignoreTestTriggeredNoticeEventForExpectation                                                                                                                       = false;
-    private bool $ignoreTestTriggeredWarningEventForExpectation                                                                                                                      = false;
-    private DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|PhpErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|null $ignoredEvent = null;
+    private array $testRunnerTriggeredDeprecationEvents                                                                                                            = [];
+    private bool $ignoreTestTriggeredDeprecationEventForExpectation                                                                                                = false;
+    private bool $ignoreTestTriggeredErrorEventForExpectation                                                                                                      = false;
+    private bool $ignoreTestTriggeredNoticeEventForExpectation                                                                                                     = false;
+    private bool $ignoreTestTriggeredWarningEventForExpectation                                                                                                    = false;
+    private DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|null $ignoredEvent = null;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -181,7 +175,6 @@ final class Collector
         Facade::registerSubscriber(new TestTriggeredErrorSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredNoticeSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpDeprecationSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpErrorSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpNoticeSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpunitDeprecationSubscriber($this));
         Facade::registerSubscriber(new TestTriggeredPhpunitErrorSubscriber($this));
@@ -207,7 +200,6 @@ final class Collector
             $this->testTriggeredPhpDeprecationEvents,
             $this->testTriggeredPhpunitDeprecationEvents,
             $this->testTriggeredErrorEvents,
-            $this->testTriggeredPhpErrorEvents,
             $this->testTriggeredNoticeEvents,
             $this->testTriggeredPhpNoticeEvents,
             $this->testTriggeredWarningEvents,
@@ -452,21 +444,6 @@ final class Collector
         $this->testTriggeredErrorEvents[$event->test()->id()][] = $event;
     }
 
-    public function testTriggeredPhpError(PhpErrorTriggered $event): void
-    {
-        if ($this->ignoreTestTriggeredErrorEventForExpectation) {
-            $this->ignoredEvent = $event;
-
-            return;
-        }
-
-        if (!isset($this->testTriggeredPhpErrorEvents[$event->test()->id()])) {
-            $this->testTriggeredPhpErrorEvents[$event->test()->id()] = [];
-        }
-
-        $this->testTriggeredPhpErrorEvents[$event->test()->id()][] = $event;
-    }
-
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
         if ($this->ignoreTestTriggeredNoticeEventForExpectation) {
@@ -591,7 +568,7 @@ final class Collector
     /**
      * @throws NoIgnoredEventException
      */
-    public function ignoredEvent(): DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|PhpErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered
+    public function ignoredEvent(): DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered
     {
         if ($this->ignoredEvent === null) {
             throw new NoIgnoredEventException;

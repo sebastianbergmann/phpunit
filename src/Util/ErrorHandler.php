@@ -122,12 +122,9 @@ final class ErrorHandler
                 break;
 
             default:
-                Event\Facade::emitter()->testTriggeredPhpError(
-                    $this->testValueObjectForEvents(),
-                    $errorString,
-                    $errorFile,
-                    $errorLine
-                );
+                // @codeCoverageIgnoreStart
+                return false;
+            // @codeCoverageIgnoreEnd
         }
 
         return true;

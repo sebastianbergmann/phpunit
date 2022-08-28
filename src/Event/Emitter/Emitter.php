@@ -137,8 +137,6 @@ interface Emitter
 
     public function testTriggeredError(Code\Test $test, string $message, string $file, int $line): void;
 
-    public function testTriggeredPhpError(Code\Test $test, string $message, string $file, int $line): void;
-
     public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line): void;
 
     public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line): void;
