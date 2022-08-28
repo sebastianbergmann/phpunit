@@ -15,7 +15,10 @@ final class PhpNoticeTest extends TestCase
 {
     public function testPhpNotice(): void
     {
-        $f = function () {};
+        $f = static function (): void
+        {
+        };
+
         $a = &$f();
 
         $this->assertTrue(true);
