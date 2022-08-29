@@ -30,7 +30,6 @@ use PHPUnit\Framework\TestCase;
 final class ErrorHandler
 {
     private bool $enabled = false;
-    
     private Event\Facade $eventFacade;
 
     public function __construct(Event\Facade $eventFacade)
