@@ -32,7 +32,10 @@ use PHPUnit\TestFixture\InterfaceWithStaticMethod;
 use PHPUnit\TestFixture\MethodCallback;
 use PHPUnit\TestFixture\MethodCallbackByReference;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningFalse;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningIntersection;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningNull;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningTrue;
 use PHPUnit\TestFixture\PartialMockTestClass;
 use PHPUnit\TestFixture\SomeClass;
 use PHPUnit\TestFixture\StringableClass;
@@ -1286,6 +1289,42 @@ EOF
         $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
 
         $stub->method();
+    }
+
+    /**
+     * @requires PHP 8.2
+     */
+    public function testMethodThatReturnsNullCanBeStubbed(): void
+    {
+        $i = $this->createStub(InterfaceWithMethodReturningNull::class);
+
+        $i->method('returnsNull')->willReturn(null);
+
+        $this->assertNull($i->returnsNull());
+    }
+
+    /**
+     * @requires PHP 8.2
+     */
+    public function testMethodThatReturnsFalseCanBeStubbed(): void
+    {
+        $i = $this->createStub(InterfaceWithMethodReturningFalse::class);
+
+        $i->method('returnsFalse')->willReturn(false);
+
+        $this->assertFalse($i->returnsFalse());
+    }
+
+    /**
+     * @requires PHP 8.2
+     */
+    public function testMethodThatReturnsTrueCanBeStubbed(): void
+    {
+        $i = $this->createStub(InterfaceWithMethodReturningTrue::class);
+
+        $i->method('returnsTrue')->willReturn(true);
+
+        $this->assertTrue($i->returnsTrue());
     }
 
     private function resetMockObjects(): void

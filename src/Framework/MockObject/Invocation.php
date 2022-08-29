@@ -144,6 +144,10 @@ final class Invocation implements SelfDescribing
                 return null;
             }
 
+            if (in_array('true', $types, true)) {
+                return true;
+            }
+
             if (in_array('false', $types, true) ||
                 in_array('bool', $types, true)) {
                 return false;
