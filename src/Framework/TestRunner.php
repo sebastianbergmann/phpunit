@@ -89,9 +89,9 @@ final class TestRunner
         try {
             if ($this->canTimeLimitBeEnforced() &&
                 $this->shouldTimeLimitBeEnforced($test)) {
-                $risky = $this->runTestWithTimeout($test, $errorHandler);
+                $risky = $this->runTestWithTimeout($test);
             } else {
-                $test->runBare($this->eventFacade, $errorHandler);
+                $test->runBare($this->eventFacade);
             }
         } catch (AssertionFailedError $e) {
             $failure = true;
@@ -420,7 +420,7 @@ final class TestRunner
     /**
      * @throws Throwable
      */
-    private function runTestWithTimeout(TestCase $test, ErrorHandler $errorHandler): bool
+    private function runTestWithTimeout(TestCase $test): bool
     {
         $_timeout = $this->configuration->defaultTimeLimit();
 
@@ -433,7 +433,7 @@ final class TestRunner
         }
 
         try {
-            (new Invoker)->invoke([$test, 'runBare'], [$this->eventFacade, $errorHandler], $_timeout);
+            (new Invoker)->invoke([$test, 'runBare'], [$this->eventFacade], $_timeout);
         } catch (TimeoutException) {
             $this->eventFacade->emitter()->testConsideredRisky(
                 $test->valueObjectForEvents(),

@@ -93,7 +93,6 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\TestRunner\TestResult\Facade as ResultFacade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\ErrorHandler;
 use PHPUnit\Util\Test as TestUtil;
 use PHPUnit\Util\Type;
 use ReflectionClass;
@@ -205,7 +204,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     private bool $warningExpected                                = false;
     private ?string $expectedWarningMessage                      = null;
     private ?string $expectedWarningMessageRegularExpression     = null;
-    private ErrorHandler $errorHandler;
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -698,10 +696,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
-    final public function runBare(Event\Facade $eventFacade, ErrorHandler $errorHandler): void
+    final public function runBare(Event\Facade $eventFacade): void
     {
-        $this->errorHandler = $errorHandler;
-        $emitter            = $eventFacade->emitter();
+        $emitter = $eventFacade->emitter();
 
         $emitter->testPreparationStarted(
             $this->valueObjectForEvents()
@@ -2102,8 +2099,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $exception->getMessage(),
                 new MessageMatchesRegularExpression(
                     'exception',
-                    $this->expectedExceptionMessageRegExp,
-                    $this->errorHandler
+                    $this->expectedExceptionMessageRegExp
                 )
             );
         }
@@ -2189,8 +2185,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $event->message(),
                 new MessageMatchesRegularExpression(
                     'deprecation',
-                    $this->expectedDeprecationMessage,
-                    $this->errorHandler
+                    $this->expectedDeprecationMessage
                 )
             );
         }
@@ -2227,8 +2222,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $event->message(),
                 new MessageMatchesRegularExpression(
                     'error',
-                    $this->expectedErrorMessage,
-                    $this->errorHandler
+                    $this->expectedErrorMessage
                 )
             );
         }
@@ -2265,8 +2259,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $event->message(),
                 new MessageMatchesRegularExpression(
                     'notice',
-                    $this->expectedNoticeMessage,
-                    $this->errorHandler
+                    $this->expectedNoticeMessage
                 )
             );
         }
@@ -2303,8 +2296,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $event->message(),
                 new MessageMatchesRegularExpression(
                     'warning',
-                    $this->expectedWarningMessage,
-                    $this->errorHandler
+                    $this->expectedWarningMessage
                 )
             );
         }
