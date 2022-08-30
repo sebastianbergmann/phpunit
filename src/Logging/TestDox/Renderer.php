@@ -20,13 +20,13 @@ use PHPUnit\TestRunner\TestResult\TestResult;
 abstract class Renderer
 {
     /**
-     * @psalm-param list<string> $groups
+     * @psalm-param list<string> $includeGroups
      * @psalm-param list<string> $excludeGroups
      */
-    public function render(TestResult $result, array $groups, array $excludeGroups): string
+    public function render(TestResult $result, array $includeGroups, array $excludeGroups): string
     {
         return $this->doRender(
-            $this->testMethodsFilteredByTestDoxGroupsAndGroupedByClassAndSortedByLine($result, $groups, $excludeGroups)
+            $this->testMethodsFilteredByTestDoxGroupsAndGroupedByClassAndSortedByLine($result, $includeGroups, $excludeGroups)
         );
     }
 
@@ -36,18 +36,18 @@ abstract class Renderer
     abstract protected function doRender(array $tests): string;
 
     /**
-     * @psalm-param list<string> $groups
+     * @psalm-param list<string> $includeGroups
      * @psalm-param list<string> $excludeGroups
      *
      * @psalm-return array<class-string,list<TestMethod>>
      */
-    private function testMethodsFilteredByTestDoxGroupsAndGroupedByClassAndSortedByLine(TestResult $result, array $groups, array $excludeGroups): array
+    private function testMethodsFilteredByTestDoxGroupsAndGroupedByClassAndSortedByLine(TestResult $result, array $includeGroups, array $excludeGroups): array
     {
         $tests = [];
 
         foreach ($result->testMethodsGroupedByClassAndSortedByLine() as $className => $methods) {
             foreach ($methods as $method) {
-                if (!$this->isOfInterest($method)) {
+                if (!$this->isOfInterest($method, $includeGroups, $excludeGroups)) {
                     continue;
                 }
 
@@ -62,13 +62,13 @@ abstract class Renderer
         return $tests;
     }
 
-    private function isOfInterest(TestMethod $test): bool
+    private function isOfInterest(TestMethod $test, array $includeGroups, array $excludeGroups): bool
     {
         $groups = $this->groups($test);
 
-        if (!empty($this->groups)) {
+        if (!empty($includeGroups)) {
             foreach ($groups as $group) {
-                if (in_array($group, $this->groups, true)) {
+                if (in_array($group, $includeGroups, true)) {
                     return true;
                 }
             }
@@ -76,9 +76,9 @@ abstract class Renderer
             return false;
         }
 
-        if (!empty($this->excludeGroups)) {
+        if (!empty($excludeGroups)) {
             foreach ($groups as $group) {
-                if (in_array($group, $this->excludeGroups, true)) {
+                if (in_array($group, $excludeGroups, true)) {
                     return false;
                 }
             }
