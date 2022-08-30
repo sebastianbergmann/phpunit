@@ -66,62 +66,62 @@ final class TestResult
     /**
      * @psalm-var array<string,list<DeprecationTriggered>>
      */
-    private array $testTriggeredDeprecationEvents = [];
+    private array $testTriggeredDeprecationEvents;
 
     /**
      * @psalm-var array<string,list<PhpDeprecationTriggered>>
      */
-    private array $testTriggeredPhpDeprecationEvents = [];
+    private array $testTriggeredPhpDeprecationEvents;
 
     /**
      * @psalm-var array<string,list<PhpunitDeprecationTriggered>>
      */
-    private array $testTriggeredPhpunitDeprecationEvents = [];
+    private array $testTriggeredPhpunitDeprecationEvents;
 
     /**
      * @psalm-var array<string,list<ErrorTriggered>>
      */
-    private array $testTriggeredErrorEvents = [];
+    private array $testTriggeredErrorEvents;
 
     /**
      * @psalm-var array<string,list<NoticeTriggered>>
      */
-    private array $testTriggeredNoticeEvents = [];
+    private array $testTriggeredNoticeEvents;
 
     /**
      * @psalm-var array<string,list<PhpNoticeTriggered>>
      */
-    private array $testTriggeredPhpNoticeEvents = [];
+    private array $testTriggeredPhpNoticeEvents;
 
     /**
      * @psalm-var array<string,list<WarningTriggered>>
      */
-    private array $testTriggeredWarningEvents = [];
+    private array $testTriggeredWarningEvents;
 
     /**
      * @psalm-var array<string,list<PhpWarningTriggered>>
      */
-    private array $testTriggeredPhpWarningEvents = [];
+    private array $testTriggeredPhpWarningEvents;
 
     /**
      * @psalm-var array<string,list<PhpunitErrorTriggered>>
      */
-    private array $testTriggeredPhpunitErrorEvents = [];
+    private array $testTriggeredPhpunitErrorEvents;
 
     /**
      * @psalm-var array<string,list<PhpunitWarningTriggered>>
      */
-    private array $testTriggeredPhpunitWarningEvents = [];
+    private array $testTriggeredPhpunitWarningEvents;
 
     /**
      * @psalm-var list<TestRunnerDeprecationTriggered>
      */
-    private array $testRunnerTriggeredDeprecationEvents = [];
+    private array $testRunnerTriggeredDeprecationEvents;
 
     /**
      * @psalm-var list<TestRunnerWarningTriggered>
      */
-    private array $testRunnerTriggeredWarningEvents = [];
+    private array $testRunnerTriggeredWarningEvents;
 
     /**
      * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $testErroredEvents
