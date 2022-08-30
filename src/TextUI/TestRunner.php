@@ -517,19 +517,13 @@ final class TestRunner
             }
 
             if ($this->configuration->hasCoverageText()) {
-                if ($this->configuration->coverageText() === 'php://stdout') {
-                    $outputStream = $this->printer;
-                } else {
-                    $outputStream = DefaultPrinter::from($this->configuration->coverageText());
-                }
-
                 $processor = new TextReport(
                     Thresholds::default(),
                     $this->configuration->coverageTextShowUncoveredFiles(),
                     $this->configuration->coverageTextShowOnlySummary()
                 );
 
-                $outputStream->print(
+                $this->printerFor($this->configuration->coverageText())->print(
                     $processor->process(CodeCoverage::instance(), $this->configuration->colors())
                 );
             }
@@ -680,5 +674,18 @@ final class TestRunner
         }
 
         return $this->timer;
+    }
+
+    private function printerFor(string $target): Printer
+    {
+        if ($target === 'php://stdout') {
+            if (!$this->printer instanceof NullPrinter) {
+                return $this->printer;
+            }
+
+            return DefaultPrinter::standardOutput();
+        }
+
+        return DefaultPrinter::from($target);
     }
 }
