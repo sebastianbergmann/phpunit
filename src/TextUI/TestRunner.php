@@ -679,11 +679,7 @@ final class TestRunner
     private function printerFor(string $target): Printer
     {
         if ($target === 'php://stdout') {
-            if (!$this->printer instanceof NullPrinter) {
-                return $this->printer;
-            }
-
-            return DefaultPrinter::standardOutput();
+            return $this->printer;
         }
 
         return DefaultPrinter::from($target);
