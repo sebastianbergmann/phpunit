@@ -246,18 +246,6 @@ final class TestRunner
             );
         }
 
-        if ($this->configuration->hasLogfileTestdoxHtml()) {
-            exit('TestDox HTML logging has not been migrated to events yet');
-        }
-
-        if ($this->configuration->hasLogfileTestdoxText()) {
-            exit('TestDox text logging has not been migrated to events yet');
-        }
-
-        if ($this->configuration->hasLogfileTestdoxXml()) {
-            exit('TestDox XML logging has not been migrated to events yet');
-        }
-
         if ($this->configuration->hasCoverageReport()) {
             if ($this->configuration->pathCoverage()) {
                 CodeCoverage::activate(CodeCoverageFilterRegistry::get(), true);
@@ -414,6 +402,18 @@ final class TestRunner
 
         if (isset($textLogger)) {
             $textLogger->flush();
+        }
+
+        if ($this->configuration->hasLogfileTestdoxHtml()) {
+            exit('TestDox HTML logging has not been migrated to events yet');
+        }
+
+        if ($this->configuration->hasLogfileTestdoxText()) {
+            exit('TestDox text logging has not been migrated to events yet');
+        }
+
+        if ($this->configuration->hasLogfileTestdoxXml()) {
+            exit('TestDox XML logging has not been migrated to events yet');
         }
 
         if (CodeCoverage::isActive()) {
