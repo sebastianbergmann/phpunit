@@ -578,6 +578,14 @@
       <code>new Collector</code>
     </MissingThrowsDocblock>
   </file>
+  <file src="src/Runner/TestResult/TestResult.php">
+    <LessSpecificReturnStatement occurrences="1">
+      <code>$tests</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>array&lt;class-string,list&lt;TestMethod&gt;&gt;</code>
+    </MoreSpecificReturnType>
+  </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <MissingThrowsDocblock occurrences="1"/>
     <UnresolvableInclude occurrences="1">
@@ -993,7 +1001,7 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="41">
+    <MissingThrowsDocblock occurrences="43">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1005,7 +1013,6 @@
       <code>coverageHtml</code>
       <code>coverageHtmlCustomCssFile</code>
       <code>coveragePhp</code>
-      <code>coverageText</code>
       <code>coverageText</code>
       <code>coverageXml</code>
       <code>detect</code>
@@ -1020,6 +1027,9 @@
       <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
+      <code>logfileTestdoxHtml</code>
+      <code>logfileTestdoxText</code>
+      <code>logfileTestdoxXml</code>
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
       <code>pharExtensionDirectory</code>
@@ -1031,9 +1041,9 @@
       <code>testsUsing</code>
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="1">
-      <code>print</code>
-    </PossiblyNullReference>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$printer</code>
+    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
     <MissingClosureParamType occurrences="4">
