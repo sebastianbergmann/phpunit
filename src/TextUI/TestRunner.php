@@ -409,19 +409,31 @@ final class TestRunner
 
         if ($this->configuration->hasLogfileTestdoxHtml()) {
             $this->printerFor($this->configuration->logfileTestdoxHtml())->print(
-                (new TestDoxHtmlRenderer)->render($result)
+                (new TestDoxHtmlRenderer)->render(
+                    $result,
+                    $this->configuration->testdoxGroups(),
+                    $this->configuration->testdoxExcludeGroups()
+                )
             );
         }
 
         if ($this->configuration->hasLogfileTestdoxText()) {
             $this->printerFor($this->configuration->logfileTestdoxText())->print(
-                (new TestDoxTextRenderer)->render($result)
+                (new TestDoxTextRenderer)->render(
+                    $result,
+                    $this->configuration->testdoxGroups(),
+                    $this->configuration->testdoxExcludeGroups()
+                )
             );
         }
 
         if ($this->configuration->hasLogfileTestdoxXml()) {
             $this->printerFor($this->configuration->logfileTestdoxXml())->print(
-                (new TestDoxXmlRenderer)->render($result)
+                (new TestDoxXmlRenderer)->render(
+                    $result,
+                    $this->configuration->testdoxGroups(),
+                    $this->configuration->testdoxExcludeGroups()
+                )
             );
         }
 

@@ -9,14 +9,12 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
-use PHPUnit\TestRunner\TestResult\TestResult;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class XmlRenderer
+final class XmlRenderer extends Renderer
 {
-    public function render(TestResult $result): string
+    protected function doRender(array $tests): string
     {
         return '';
     }

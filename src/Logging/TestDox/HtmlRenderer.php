@@ -10,12 +10,11 @@
 namespace PHPUnit\Logging\TestDox;
 
 use function sprintf;
-use PHPUnit\TestRunner\TestResult\TestResult;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class HtmlRenderer
+final class HtmlRenderer extends Renderer
 {
     /**
      * @var string
@@ -81,19 +80,19 @@ EOT;
 </html>
 EOT;
 
-    public function render(TestResult $result): string
+    protected function doRender(array $tests): string
     {
         $buffer     = self::PAGE_HEADER;
         $prettifier = new NamePrettifier;
 
-        foreach ($result->testMethodsGroupedByClassAndSortedByLine() as $className => $tests) {
+        foreach ($tests as $className => $_tests) {
             $buffer .= sprintf(
                 self::CLASS_HEADER,
                 $className,
                 $prettifier->prettifyTestClass($className)
             );
 
-            foreach ($tests as $test) {
+            foreach ($_tests as $test) {
                 $buffer .= sprintf(
                     "            <li style=\"color: %s;\">%s %s</li>\n",
                     $test->status()->isSuccess() ? '#555753' : '#ef2929',
