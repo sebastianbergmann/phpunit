@@ -24,6 +24,8 @@ use PHPUnit\Event\TestSuite\StartedSubscriber as TestSuiteStartedSubscriber;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\TestSize\TestSize;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestFixture;
 use PHPUnit\TestFixture\RecordingSubscriber;
@@ -1619,8 +1621,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'foo',
             '',
             0,
+            TestStatus::unknown(),
+            TestSize::unknown(),
             MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([]),
+            TestDataCollection::fromArray([])
         );
     }
 }

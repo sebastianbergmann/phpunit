@@ -9,12 +9,20 @@
  */
 namespace PHPUnit\Event\Code;
 
+use PHPUnit\Framework\TestSize\TestSize;
+use PHPUnit\Framework\TestStatus\TestStatus;
+
 /**
  * @psalm-immutable
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class Phpt extends Test
 {
+    public function __construct(string $file, TestStatus $status)
+    {
+        parent::__construct($file, $status, TestSize::large());
+    }
+
     /**
      * @psalm-assert-if-true Phpt $this
      */

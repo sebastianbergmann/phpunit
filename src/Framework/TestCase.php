@@ -190,7 +190,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-var list<Comparator>
      */
     private array $customComparators                             = [];
-    private ?Event\Code\TestMethod $testValueObjectForEvents     = null;
     private bool $wasPrepared                                    = false;
     private bool $deprecationExpected                            = false;
     private ?string $expectedDeprecationMessage                  = null;
@@ -820,8 +819,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->cleanupLocaleSettings();
         libxml_clear_errors();
 
-        $this->testValueObjectForEvents = null;
-
         if (isset($e)) {
             $this->onNotSuccessfulTest($e);
         }
@@ -1094,13 +1091,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function valueObjectForEvents(): Event\Code\TestMethod
     {
-        if ($this->testValueObjectForEvents !== null) {
-            return $this->testValueObjectForEvents;
-        }
-
-        $this->testValueObjectForEvents = Event\Code\TestMethod::fromTestCase($this);
-
-        return $this->testValueObjectForEvents;
+        return Event\Code\TestMethod::fromTestCase($this);
     }
 
     /**

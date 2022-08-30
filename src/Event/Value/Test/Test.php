@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Event\Code;
 
+use PHPUnit\Framework\TestSize\TestSize;
+use PHPUnit\Framework\TestStatus\TestStatus;
+
 /**
  * @psalm-immutable
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -16,15 +19,29 @@ namespace PHPUnit\Event\Code;
 abstract class Test
 {
     private string $file;
+    private TestStatus $status;
+    private TestSize $size;
 
-    public function __construct(string $file)
+    public function __construct(string $file, TestStatus $status, TestSize $size)
     {
-        $this->file = $file;
+        $this->file   = $file;
+        $this->status = $status;
+        $this->size   = $size;
     }
 
     public function file(): string
     {
         return $this->file;
+    }
+
+    public function status(): TestStatus
+    {
+        return $this->status;
+    }
+
+    public function size(): TestSize
+    {
+        return $this->size;
     }
 
     /**

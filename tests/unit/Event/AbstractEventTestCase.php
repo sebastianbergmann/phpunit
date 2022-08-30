@@ -16,6 +16,8 @@ use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Framework\TestSize\TestSize;
+use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\MetadataCollection;
 
 abstract class AbstractEventTestCase extends TestCase
@@ -43,6 +45,8 @@ abstract class AbstractEventTestCase extends TestCase
             'foo',
             '',
             0,
+            TestStatus::unknown(),
+            TestSize::unknown(),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );
