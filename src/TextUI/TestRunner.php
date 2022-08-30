@@ -25,6 +25,7 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
+use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
@@ -405,7 +406,9 @@ final class TestRunner
         }
 
         if ($this->configuration->hasLogfileTestdoxHtml()) {
-            exit('TestDox HTML logging has not been migrated to events yet');
+            $this->printerFor($this->configuration->logfileTestdoxHtml())->print(
+                (new TestDoxHtmlRenderer)->render($result)
+            );
         }
 
         if ($this->configuration->hasLogfileTestdoxText()) {
