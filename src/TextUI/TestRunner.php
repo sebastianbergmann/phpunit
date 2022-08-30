@@ -26,6 +26,8 @@ use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
+use PHPUnit\Logging\TestDox\TextRenderer as TestDoxTextRenderer;
+use PHPUnit\Logging\TestDox\XmlRenderer as TestDoxXmlRenderer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
@@ -66,7 +68,7 @@ use SebastianBergmann\Timer\Timer;
 final class TestRunner
 {
     private Configuration $configuration;
-    private ?Printer $printer    = null;
+    private Printer $printer;
     private bool $messagePrinted = false;
     private ?Timer $timer        = null;
 
@@ -412,11 +414,15 @@ final class TestRunner
         }
 
         if ($this->configuration->hasLogfileTestdoxText()) {
-            exit('TestDox text logging has not been migrated to events yet');
+            $this->printerFor($this->configuration->logfileTestdoxText())->print(
+                (new TestDoxTextRenderer)->render($result)
+            );
         }
 
         if ($this->configuration->hasLogfileTestdoxXml()) {
-            exit('TestDox XML logging has not been migrated to events yet');
+            $this->printerFor($this->configuration->logfileTestdoxXml())->print(
+                (new TestDoxXmlRenderer)->render($result)
+            );
         }
 
         if (CodeCoverage::isActive()) {
