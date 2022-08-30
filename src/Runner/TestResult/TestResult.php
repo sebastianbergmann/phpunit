@@ -570,7 +570,7 @@ final class TestResult
     }
 
     /**
-     * @psalm-return array<string,list<TestMethod>>
+     * @psalm-return array<class-string,list<TestMethod>>
      */
     public function testMethodsGroupedByClassAndSortedByLine(): array
     {
