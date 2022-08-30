@@ -9,8 +9,12 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
+use function array_keys;
+use function array_values;
 use function count;
+use function ksort;
 use PHPUnit\Event\Code\Test;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
@@ -563,5 +567,32 @@ final class TestResult
     public function tests(): array
     {
         return $this->tests;
+    }
+
+    /**
+     * @psalm-return array<string,list<TestMethod>>
+     */
+    public function testMethodsGroupedByClassAndSortedByLine(): array
+    {
+        $tests = [];
+
+        foreach ($this->tests as $test) {
+            if (!$test instanceof TestMethod) {
+                continue;
+            }
+
+            if (!isset($tests[$test->className()])) {
+                $tests[$test->className()] = [];
+            }
+
+            $tests[$test->className()][$test->line()] = $test;
+        }
+
+        foreach (array_keys($tests) as $key) {
+            ksort($tests[$key]);
+            $tests[$key] = array_values($tests[$key]);
+        }
+
+        return $tests;
     }
 }
