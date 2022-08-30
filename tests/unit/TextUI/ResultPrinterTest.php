@@ -9,10 +9,10 @@
  */
 namespace PHPUnit\TextUI;
 
-use PHPUnit\Event\Code\Test;
 use function hrtime;
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
+use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Duration;
