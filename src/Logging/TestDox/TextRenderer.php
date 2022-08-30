@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
+use function sprintf;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -16,6 +18,23 @@ final class TextRenderer extends Renderer
 {
     protected function doRender(array $tests): string
     {
-        return '';
+        $buffer     = '';
+        $prettifier = new NamePrettifier;
+
+        foreach ($tests as $className => $_tests) {
+            $buffer .= $prettifier->prettifyTestClass($className) . "\n";
+
+            foreach ($_tests as $test) {
+                $buffer .= sprintf(
+                    ' [%s] %s' . "\n",
+                    $test->status()->isSuccess() ? 'x' : ' ',
+                    $prettifier->prettifyTestMethod($test->methodName())
+                );
+            }
+
+            $buffer .= "\n";
+        }
+
+        return $buffer;
     }
 }
