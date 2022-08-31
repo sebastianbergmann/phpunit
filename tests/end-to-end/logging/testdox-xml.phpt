@@ -5,21 +5,24 @@ TestDox logging has not been migrated to events yet.
 See https://github.com/sebastianbergmann/phpunit/issues/4702 for details.
 --FILE--
 <?php declare(strict_types=1);
+$output = tempnam(sys_get_temp_dir(), __FILE__);
+
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--testdox-xml';
-$_SERVER['argv'][] = 'php://stdout';
+$_SERVER['argv'][] = $output;
 $_SERVER['argv'][] = __DIR__ . '/../_files/basic/unit/StatusTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Application::main();
+PHPUnit\TextUI\Application::main(false);
+
+print file_get_contents($output);
+
+unlink($output);
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
-
-Runtime: %s
-
-.FEISRW.FEISRW                                                    14 / 14 (100%)<?xml version="1.0" encoding="UTF-8"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <tests>
   <test className="PHPUnit\SelfTest\Basic\StatusTest" methodName="testSuccess" prettifiedClassName="Test result status with and without message" prettifiedMethodName="Success" status="success" time="%s" size="unknown">
     <group name="default"/>
@@ -93,63 +96,3 @@ Runtime: %s
     <uses target="Bar"/>
   </test>
 </tests>
-
-
-Time: %s, Memory: %s
-
-There were 2 errors:
-
-1) PHPUnit\SelfTest\Basic\StatusTest::testError
-RuntimeException:%w
-
-%s%eStatusTest.php:%d
-
-2) PHPUnit\SelfTest\Basic\StatusTest::testErrorWithMessage
-RuntimeException: error with custom message
-
-%s%eStatusTest.php:%d
-
---
-
-There were 2 warnings:
-
-1) PHPUnit\SelfTest\Basic\StatusTest::testWarning
-
-%s%eStatusTest.php:%d
-
-2) PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage
-warning with custom message
-
-%s%eStatusTest.php:%d
-
---
-
-There were 2 failures:
-
-1) PHPUnit\SelfTest\Basic\StatusTest::testFailure
-Failed asserting that false is true.
-
-%s%eStatusTest.php:%d
-
-2) PHPUnit\SelfTest\Basic\StatusTest::testFailureWithMessage
-failure with custom message
-Failed asserting that false is true.
-
-%s%eStatusTest.php:%d
-
---
-
-There were 2 risky tests:
-
-1) PHPUnit\SelfTest\Basic\StatusTest::testRisky
-This test did not perform any assertions
-
-%s%eStatusTest.php:%d
-
-2) PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage
-This test did not perform any assertions
-
-%s%eStatusTest.php:%d
-
-ERRORS!
-Tests: 14, Assertions: 4, Errors: 2, Failures: 2, Warnings: 2, Skipped: 2, Incomplete: 2, Risky: 2.
