@@ -20,7 +20,7 @@ unlink($target);
 PHPUnit %s #StandWithUkraine
 
 Wrote list of tests that would have been run to %s
-<?xml version="1.0"?>
+<?xml version="1.0" encoding="UTF-8"?>
 <tests>
  <testCaseClass name="PHPUnit\TestFixture\DataProviderTest">
   <testCaseMethod name="testAdd" groups="default" dataSet="#0"/>

@@ -32,7 +32,7 @@ final class XmlTestListRenderer
 
         $writer->openMemory();
         $writer->setIndent(true);
-        $writer->startDocument();
+        $writer->startDocument('1.0', 'UTF-8');
         $writer->startElement('tests');
 
         $currentTestCase = null;
@@ -84,6 +84,7 @@ final class XmlTestListRenderer
         }
 
         $writer->endElement();
+        $writer->endDocument();
 
         return $writer->outputMemory();
     }
