@@ -45,7 +45,6 @@ use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestRunner\TestResult\TestResult;
@@ -463,7 +462,6 @@ final class ResultPrinterTest extends TestCase
             'FooTest.php',
             1,
             TestStatus::unknown(),
-            TestSize::unknown(),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );

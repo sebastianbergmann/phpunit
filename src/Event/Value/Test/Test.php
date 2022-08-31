@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\Code;
 
-use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
 /**
@@ -20,13 +19,11 @@ abstract class Test
 {
     private string $file;
     private TestStatus $status;
-    private TestSize $size;
 
-    public function __construct(string $file, TestStatus $status, TestSize $size)
+    public function __construct(string $file, TestStatus $status)
     {
         $this->file   = $file;
         $this->status = $status;
-        $this->size   = $size;
     }
 
     public function file(): string
@@ -37,11 +34,6 @@ abstract class Test
     public function status(): TestStatus
     {
         return $this->status;
-    }
-
-    public function size(): TestSize
-    {
-        return $this->size;
     }
 
     /**
