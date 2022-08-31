@@ -103,9 +103,6 @@
                                    format
   [32m--testdox                       [0m Report test execution progress in TestDox
                                    format
-  [32m--testdox-group                 [0m Only include tests from the specified
-                                   group(s)
-  [32m--testdox-exclude-group         [0m Exclude tests from the specified group(s)
   [32m--no-interaction                [0m Disable TestDox progress animation
 
 [33mLogging:[0m

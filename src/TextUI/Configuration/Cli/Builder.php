@@ -104,8 +104,6 @@ final class Builder
         'strict-global-state',
         'teamcity',
         'testdox',
-        'testdox-group=',
-        'testdox-exclude-group=',
         'testdox-html=',
         'testdox-text=',
         'testdox-xml=',
@@ -214,8 +212,6 @@ final class Builder
         $stopOnSkipped                     = null;
         $stopOnWarning                     = null;
         $teamcityLogfile                   = null;
-        $testdoxExcludeGroups              = null;
-        $testdoxGroups                     = null;
         $testdoxHtmlFile                   = null;
         $testdoxTextFile                   = null;
         $testdoxXmlFile                    = null;
@@ -578,16 +574,6 @@ final class Builder
 
                     break;
 
-                case '--testdox-group':
-                    $testdoxGroups = explode(',', $option[1]);
-
-                    break;
-
-                case '--testdox-exclude-group':
-                    $testdoxExcludeGroups = explode(',', $option[1]);
-
-                    break;
-
                 case '--testdox-html':
                     $testdoxHtmlFile = $option[1];
 
@@ -855,8 +841,6 @@ final class Builder
             $stopOnSkipped,
             $stopOnWarning,
             $teamcityLogfile,
-            $testdoxExcludeGroups,
-            $testdoxGroups,
             $testdoxHtmlFile,
             $testdoxTextFile,
             $testdoxXmlFile,

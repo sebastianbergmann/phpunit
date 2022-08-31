@@ -573,18 +573,6 @@ final class Merger
 
         $excludeGroups = array_diff($excludeGroups, $groups);
 
-        if ($cliConfiguration->hasTestdoxGroups()) {
-            $testdoxGroups = $cliConfiguration->testdoxGroups();
-        } else {
-            $testdoxGroups = $xmlConfiguration->testdoxGroups()->include()->asArrayOfStrings();
-        }
-
-        if ($cliConfiguration->hasTestdoxExcludeGroups()) {
-            $testdoxExcludeGroups = $cliConfiguration->testdoxExcludeGroups();
-        } else {
-            $testdoxExcludeGroups = $xmlConfiguration->testdoxGroups()->exclude()->asArrayOfStrings();
-        }
-
         $includePath = null;
 
         if ($cliConfiguration->hasIncludePath()) {
@@ -701,8 +689,6 @@ final class Merger
             $filter,
             $groups,
             $excludeGroups,
-            $testdoxGroups,
-            $testdoxExcludeGroups,
             $includePath,
             $randomOrderSeed,
             $includeUncoveredFiles,

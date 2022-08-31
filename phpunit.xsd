@@ -252,7 +252,6 @@
         <xs:all>
             <xs:element ref="testSuiteFacet" minOccurs="0"/>
             <xs:element name="groups" type="groupsType" minOccurs="0"/>
-            <xs:element name="testdoxGroups" type="groupsType" minOccurs="0"/>
             <xs:element name="coverage" type="coverageType" minOccurs="0"/>
             <xs:element name="logging" type="loggingType" minOccurs="0"/>
             <xs:element name="extensions" type="extensionsType" minOccurs="0"/>

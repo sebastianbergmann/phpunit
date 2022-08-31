@@ -87,6 +87,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `convertNoticesToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
 * Removed the `convertWarningsToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
 * Removed the `processUncoveredFiles` attribute on the `<coverage>` XML configuration element
+* Removed the `testdoxGroups` XML configuration element, the `--testdox-group` option, and the `--testdox-exclude-group` option as well as the feature they used to control
 * Removed the `PHPUnit\Framework\TestCase::getMockClass()` method
 * Removed the `PHPUnit\Framework\TestCase::$backupGlobalsExcludeList` property, use the `#[ExcludeGlobalVariableFromBackup('variable')]` attribute instead for excluding a global variable from the backup/restore of global and super-global variables
 * Removed the `PHPUnit\Framework\TestCase::$backupStaticAttributesExcludeList` property, use the `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute instead for excluding a static property from the backup/restore of static properties in user-defined classes

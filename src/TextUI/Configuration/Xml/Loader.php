@@ -96,7 +96,6 @@ final class Loader
             $this->extensions($filename, $xpath),
             $this->codeCoverage($filename, $xpath),
             $this->groups($xpath),
-            $this->testdoxGroups($xpath),
             $this->logging($filename, $xpath),
             $this->php($filename, $xpath),
             $this->phpunit($filename, $document),
@@ -532,24 +531,14 @@ final class Loader
 
     private function groups(DOMXPath $xpath): Groups
     {
-        return $this->parseGroupConfiguration($xpath, 'groups');
-    }
-
-    private function testdoxGroups(DOMXPath $xpath): Groups
-    {
-        return $this->parseGroupConfiguration($xpath, 'testdoxGroups');
-    }
-
-    private function parseGroupConfiguration(DOMXPath $xpath, string $root): Groups
-    {
         $include = [];
         $exclude = [];
 
-        foreach ($xpath->query($root . '/include/group') as $group) {
+        foreach ($xpath->query('groups' . '/include/group') as $group) {
             $include[] = new Group($group->textContent);
         }
 
-        foreach ($xpath->query($root . '/exclude/group') as $group) {
+        foreach ($xpath->query('groups' . '/exclude/group') as $group) {
             $exclude[] = new Group($group->textContent);
         }
 

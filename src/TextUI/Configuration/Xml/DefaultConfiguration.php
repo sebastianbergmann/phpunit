@@ -46,10 +46,6 @@ final class DefaultConfiguration extends Configuration
                 GroupCollection::fromArray([]),
                 GroupCollection::fromArray([])
             ),
-            new Groups(
-                GroupCollection::fromArray([]),
-                GroupCollection::fromArray([])
-            ),
             new Logging(
                 null,
                 null,
