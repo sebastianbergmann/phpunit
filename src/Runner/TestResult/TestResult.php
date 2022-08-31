@@ -9,12 +9,7 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
-use function array_keys;
-use function array_values;
 use function count;
-use function ksort;
-use PHPUnit\Event\Code\Test;
-use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
@@ -129,11 +124,6 @@ final class TestResult
     private array $testRunnerTriggeredWarningEvents;
 
     /**
-     * @psalm-var list<Test>
-     */
-    private array $tests;
-
-    /**
      * @psalm-param list<BeforeFirstTestMethodErrored|Errored> $testErroredEvents
      * @psalm-param list<Failed> $testFailedEvents
      * @psalm-param array<string,list<ConsideredRisky>> $testConsideredRiskyEvents
@@ -151,9 +141,8 @@ final class TestResult
      * @psalm-param array<string,list<PhpunitWarningTriggered>> $testTriggeredPhpunitWarningEvents
      * @psalm-param list<TestRunnerDeprecationTriggered> $testRunnerTriggeredDeprecationEvents
      * @psalm-param list<TestRunnerWarningTriggered> $testRunnerTriggeredWarningEvents
-     * @psalm-param list<Test> $tests
      */
-    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredDeprecationEvents, array $testTriggeredPhpDeprecationEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredNoticeEvents, array $testTriggeredPhpNoticeEvents, array $testTriggeredWarningEvents, array $testTriggeredPhpWarningEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredWarningEvents, array $tests)
+    public function __construct(int $numberOfTests, int $numberOfTestsRun, int $numberOfAssertions, array $testErroredEvents, array $testFailedEvents, array $testConsideredRiskyEvents, array $testSkippedEvents, array $testMarkedIncompleteEvents, array $testTriggeredDeprecationEvents, array $testTriggeredPhpDeprecationEvents, array $testTriggeredPhpunitDeprecationEvents, array $testTriggeredErrorEvents, array $testTriggeredNoticeEvents, array $testTriggeredPhpNoticeEvents, array $testTriggeredWarningEvents, array $testTriggeredPhpWarningEvents, array $testTriggeredPhpunitErrorEvents, array $testTriggeredPhpunitWarningEvents, array $testRunnerTriggeredDeprecationEvents, array $testRunnerTriggeredWarningEvents)
     {
         $this->numberOfTests                         = $numberOfTests;
         $this->numberOfTestsRun                      = $numberOfTestsRun;
@@ -175,7 +164,6 @@ final class TestResult
         $this->testTriggeredPhpunitWarningEvents     = $testTriggeredPhpunitWarningEvents;
         $this->testRunnerTriggeredDeprecationEvents  = $testRunnerTriggeredDeprecationEvents;
         $this->testRunnerTriggeredWarningEvents      = $testRunnerTriggeredWarningEvents;
-        $this->tests                                 = $tests;
     }
 
     public function numberOfTests(): int
@@ -559,40 +547,5 @@ final class TestResult
                !$this->hasTestTriggeredErrorEvents() &&
                !$this->hasNoticeEvents() &&
                !$this->hasWarningEvents();
-    }
-
-    /**
-     * @psalm-return list<Test>
-     */
-    public function tests(): array
-    {
-        return $this->tests;
-    }
-
-    /**
-     * @psalm-return array<class-string,list<TestMethod>>
-     */
-    public function testMethodsGroupedByClassAndSortedByLine(): array
-    {
-        $tests = [];
-
-        foreach ($this->tests as $test) {
-            if (!$test instanceof TestMethod) {
-                continue;
-            }
-
-            if (!isset($tests[$test->className()])) {
-                $tests[$test->className()] = [];
-            }
-
-            $tests[$test->className()][$test->line()] = $test;
-        }
-
-        foreach (array_keys($tests) as $key) {
-            ksort($tests[$key]);
-            $tests[$key] = array_values($tests[$key]);
-        }
-
-        return $tests;
     }
 }

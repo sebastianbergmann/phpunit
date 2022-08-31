@@ -25,9 +25,6 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
-use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
-use PHPUnit\Logging\TestDox\TextRenderer as TestDoxTextRenderer;
-use PHPUnit\Logging\TestDox\XmlRenderer as TestDoxXmlRenderer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
@@ -408,33 +405,15 @@ final class TestRunner
         }
 
         if ($this->configuration->hasLogfileTestdoxHtml()) {
-            $this->printerFor($this->configuration->logfileTestdoxHtml())->print(
-                (new TestDoxHtmlRenderer)->render(
-                    $result,
-                    $this->configuration->testdoxGroups(),
-                    $this->configuration->testdoxExcludeGroups()
-                )
-            );
+            exit('TestDox HTML logging has not been migrated to events yet');
         }
 
         if ($this->configuration->hasLogfileTestdoxText()) {
-            $this->printerFor($this->configuration->logfileTestdoxText())->print(
-                (new TestDoxTextRenderer)->render(
-                    $result,
-                    $this->configuration->testdoxGroups(),
-                    $this->configuration->testdoxExcludeGroups()
-                )
-            );
+            exit('TestDox text logging has not been migrated to events yet');
         }
 
         if ($this->configuration->hasLogfileTestdoxXml()) {
-            $this->printerFor($this->configuration->logfileTestdoxXml())->print(
-                (new TestDoxXmlRenderer)->render(
-                    $result,
-                    $this->configuration->testdoxGroups(),
-                    $this->configuration->testdoxExcludeGroups()
-                )
-            );
+            exit('TestDox XML logging has not been migrated to events yet');
         }
 
         if (CodeCoverage::isActive()) {

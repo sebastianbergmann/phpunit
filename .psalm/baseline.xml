@@ -578,14 +578,6 @@
       <code>new Collector</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Runner/TestResult/TestResult.php">
-    <LessSpecificReturnStatement occurrences="1">
-      <code>$tests</code>
-    </LessSpecificReturnStatement>
-    <MoreSpecificReturnType occurrences="1">
-      <code>array&lt;class-string,list&lt;TestMethod&gt;&gt;</code>
-    </MoreSpecificReturnType>
-  </file>
   <file src="src/Runner/TestSuiteLoader.php">
     <MissingThrowsDocblock occurrences="1"/>
     <UnresolvableInclude occurrences="1">
@@ -1001,7 +993,7 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="43">
+    <MissingThrowsDocblock occurrences="40">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1027,9 +1019,6 @@
       <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
-      <code>logfileTestdoxHtml</code>
-      <code>logfileTestdoxText</code>
-      <code>logfileTestdoxXml</code>
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
       <code>pharExtensionDirectory</code>

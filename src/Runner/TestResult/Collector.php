@@ -10,7 +10,6 @@
 namespace PHPUnit\TestRunner\TestResult;
 
 use function assert;
-use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
@@ -155,11 +154,6 @@ final class Collector
     private DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|null $ignoredEvent = null;
 
     /**
-     * @psalm-var list<Test>
-     */
-    private array $tests = [];
-
-    /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
@@ -214,7 +208,6 @@ final class Collector
             $this->testTriggeredPhpunitWarningEvents,
             $this->testRunnerTriggeredDeprecationEvents,
             $this->testRunnerTriggeredWarningEvents,
-            $this->tests
         );
     }
 
@@ -319,8 +312,6 @@ final class Collector
         $this->ignoreTestTriggeredErrorEventForExpectation       = false;
         $this->ignoreTestTriggeredNoticeEventForExpectation      = false;
         $this->ignoreTestTriggeredWarningEventForExpectation     = false;
-
-        $this->tests[] = $event->test();
     }
 
     public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
