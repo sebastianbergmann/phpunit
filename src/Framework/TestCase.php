@@ -108,7 +108,6 @@ use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
-use SoapClient;
 use Throwable;
 
 /**
@@ -168,12 +167,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<MockObject>
      */
-    private array $mockObjects = [];
-
-    /**
-     * @psalm-var list<class-string>
-     */
-    private array $doubledTypes                                   = [];
+    private array $mockObjects                                    = [];
     private bool $registerMockObjectsFromTestArgumentsRecursively = false;
     private TestStatus $status;
     private int $numberOfAssertionsPerformed = 0;
@@ -568,8 +562,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function getMockBuilder(string $className): MockBuilder
     {
-        $this->recordDoubledType($className);
-
         return new MockBuilder($this, $className);
     }
 
@@ -580,16 +572,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         Event\Facade::emitter()->comparatorRegistered($comparator::class);
 
         $this->customComparators[] = $comparator;
-    }
-
-    /**
-     * @psalm-return list<string>
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    final public function doubledTypes(): array
-    {
-        return array_unique($this->doubledTypes);
     }
 
     /**
@@ -1303,8 +1285,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
-        $this->recordDoubledType($originalClassName);
-
         $mockObject = $this->getMockObjectGenerator()->getMockForAbstractClass(
             $originalClassName,
             $arguments,
@@ -1332,8 +1312,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
     {
-        $this->recordDoubledType(SoapClient::class);
-
         if ($originalClassName === '') {
             $fileName          = pathinfo(basename(parse_url($wsdlFile, PHP_URL_PATH)), PATHINFO_FILENAME);
             $originalClassName = preg_replace('/\W/', '', $fileName);
@@ -1383,8 +1361,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
-        $this->recordDoubledType($traitName);
-
         $mockObject = $this->getMockObjectGenerator()->getMockForTrait(
             $traitName,
             $arguments,
@@ -1410,8 +1386,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
     {
-        $this->recordDoubledType($traitName);
-
         return $this->getMockObjectGenerator()->getObjectForTrait(
             $traitName,
             $traitClassName,
@@ -1429,11 +1403,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     protected function onNotSuccessfulTest(Throwable $t): void
     {
         throw $t;
-    }
-
-    protected function recordDoubledType(string $originalClassName): void
-    {
-        $this->doubledTypes[] = $originalClassName;
     }
 
     /**

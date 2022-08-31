@@ -328,9 +328,6 @@
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
-    <LessSpecificReturnStatement occurrences="1">
-      <code>array_unique($this-&gt;doubledTypes)</code>
-    </LessSpecificReturnStatement>
     <MissingThrowsDocblock occurrences="29">
       <code>Facade::ignoredEvent()</code>
       <code>Facade::ignoredEvent()</code>
@@ -362,9 +359,6 @@
       <code>throw new AssertionFailedError('Failed asserting that a warning is triggered');</code>
       <code>throw new AssertionFailedError('Failed asserting that an error is triggered');</code>
     </MissingThrowsDocblock>
-    <MoreSpecificReturnType occurrences="1">
-      <code>list&lt;string&gt;</code>
-    </MoreSpecificReturnType>
     <PossiblyNullArgument occurrences="4">
       <code>$this-&gt;expectedDeprecationMessage</code>
       <code>$this-&gt;expectedErrorMessage</code>
@@ -374,9 +368,6 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>
-    <PropertyTypeCoercion occurrences="1">
-      <code>$this-&gt;doubledTypes</code>
-    </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
     <InvalidScalarArgument occurrences="1">
