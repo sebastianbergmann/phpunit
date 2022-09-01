@@ -435,6 +435,21 @@
       <code>assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)</code>
     </RedundantCondition>
   </file>
+  <file src="src/Logging/TestDox/HtmlRenderer.php">
+    <InvalidArrayOffset occurrences="2">
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+    </InvalidArrayOffset>
+    <PossiblyInvalidMethodCall occurrences="3">
+      <code>isSuccess</code>
+      <code>isSuccess</code>
+      <code>methodName</code>
+    </PossiblyInvalidMethodCall>
+    <UndefinedMethod occurrences="2">
+      <code>$test</code>
+      <code>$test</code>
+    </UndefinedMethod>
+  </file>
   <file src="src/Logging/TestDox/NamePrettifier.php">
     <InvalidCast occurrences="1">
       <code>$value</code>
@@ -443,6 +458,70 @@
     <UndefinedMethod occurrences="2">
       <code>text</code>
       <code>text</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/Logging/TestDox/TestMethodCollector.php">
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$this-&gt;tests</code>
+    </InvalidPropertyAssignmentValue>
+    <InvalidReturnStatement occurrences="1">
+      <code>$tests</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array&lt;class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list&lt;class-string&gt;}&gt;</code>
+    </InvalidReturnType>
+    <MissingThrowsDocblock occurrences="1">
+      <code>duration</code>
+    </MissingThrowsDocblock>
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;time</code>
+    </PossiblyNullArgument>
+    <PropertyTypeCoercion occurrences="1">
+      <code>$this-&gt;tests</code>
+    </PropertyTypeCoercion>
+    <RedundantCondition occurrences="1">
+      <code>assert($test instanceof TestMethod)</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Logging/TestDox/TextRenderer.php">
+    <InvalidArrayOffset occurrences="2">
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+    </InvalidArrayOffset>
+    <PossiblyInvalidMethodCall occurrences="2">
+      <code>isSuccess</code>
+      <code>methodName</code>
+    </PossiblyInvalidMethodCall>
+    <UndefinedMethod occurrences="2">
+      <code>$test</code>
+      <code>$test</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/Logging/TestDox/XmlRenderer.php">
+    <InvalidArrayOffset occurrences="4">
+      <code>$test['duration']</code>
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+      <code>$test['testDoubles']</code>
+    </InvalidArrayOffset>
+    <PossiblyInvalidIterator occurrences="1">
+      <code>$test['testDoubles']</code>
+    </PossiblyInvalidIterator>
+    <PossiblyInvalidMethodCall occurrences="8">
+      <code>asFloat</code>
+      <code>asString</code>
+      <code>isError</code>
+      <code>isFailure</code>
+      <code>message</code>
+      <code>metadata</code>
+      <code>metadata</code>
+      <code>methodName</code>
+    </PossiblyInvalidMethodCall>
+    <UndefinedMethod occurrences="4">
+      <code>$test</code>
+      <code>$test</code>
+      <code>$test</code>
+      <code>$test</code>
     </UndefinedMethod>
   </file>
   <file src="src/Metadata/Api/CodeCoverage.php">
@@ -988,7 +1067,7 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="40">
+    <MissingThrowsDocblock occurrences="44">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1014,8 +1093,12 @@
       <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
+      <code>logfileTestdoxHtml</code>
+      <code>logfileTestdoxText</code>
+      <code>logfileTestdoxXml</code>
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
+      <code>new TestMethodCollector</code>
       <code>pharExtensionDirectory</code>
       <code>resourceUsageSinceStartOfRequest</code>
       <code>run</code>

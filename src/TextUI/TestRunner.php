@@ -25,6 +25,10 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
+use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
+use PHPUnit\Logging\TestDox\TestMethodCollector;
+use PHPUnit\Logging\TestDox\TextRenderer as TestDoxTextRenderer;
+use PHPUnit\Logging\TestDox\XmlRenderer as TestDoxXmlRenderer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
@@ -228,6 +232,12 @@ final class TestRunner
             );
         }
 
+        if ($this->configuration->hasLogfileTestdoxHtml() ||
+            $this->configuration->hasLogfileTestdoxText() ||
+            $this->configuration->hasLogfileTestdoxXml()) {
+            $testDoxCollector = new TestMethodCollector;
+        }
+
         Event\Facade::seal();
 
         $this->write(Version::getVersionString() . "\n");
@@ -404,16 +414,31 @@ final class TestRunner
             $textLogger->flush();
         }
 
-        if ($this->configuration->hasLogfileTestdoxHtml()) {
-            exit('TestDox HTML logging has not been migrated to events yet');
+        if (isset($testDoxCollector) &&
+            $this->configuration->hasLogfileTestdoxHtml()) {
+            $this->printerFor($this->configuration->logfileTestdoxHtml())->print(
+                (new TestDoxHtmlRenderer)->render(
+                    $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                )
+            );
         }
 
-        if ($this->configuration->hasLogfileTestdoxText()) {
-            exit('TestDox text logging has not been migrated to events yet');
+        if (isset($testDoxCollector) &&
+            $this->configuration->hasLogfileTestdoxText()) {
+            $this->printerFor($this->configuration->logfileTestdoxText())->print(
+                (new TestDoxTextRenderer)->render(
+                    $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                )
+            );
         }
 
-        if ($this->configuration->hasLogfileTestdoxXml()) {
-            exit('TestDox XML logging has not been migrated to events yet');
+        if (isset($testDoxCollector) &&
+            $this->configuration->hasLogfileTestdoxXml()) {
+            $this->printerFor($this->configuration->logfileTestdoxXml())->print(
+                (new TestDoxXmlRenderer)->render(
+                    $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                )
+            );
         }
 
         if (CodeCoverage::isActive()) {
