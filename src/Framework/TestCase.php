@@ -527,6 +527,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->expectedWarningMessageRegularExpression = $regularExpression;
     }
 
+    final public function status(): TestStatus
+    {
+        return $this->status;
+    }
+
     /**
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
