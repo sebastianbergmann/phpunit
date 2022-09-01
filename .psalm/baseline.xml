@@ -464,11 +464,17 @@
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/Groups.php">
-    <RedundantCondition occurrences="6">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>array_unique($groups)</code>
+      <code>array_unique($groups)</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>list&lt;string&gt;</code>
+    </MoreSpecificReturnType>
+    <RedundantCondition occurrences="5">
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
       <code>assert($metadata instanceof Covers)</code>
-      <code>assert($metadata instanceof Group)</code>
       <code>assert($metadata instanceof Metadata)</code>
       <code>assert($metadata instanceof Uses)</code>
     </RedundantCondition>

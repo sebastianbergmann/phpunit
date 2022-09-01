@@ -13,30 +13,55 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Api\Groups;
+use PHPUnit\TestFixture\AssertionExampleTest;
+use PHPUnit\TestFixture\BankAccountTest;
 use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 
 #[\PHPUnit\Framework\Attributes\CoversClass(Groups::class)]
 #[Small]
 final class GroupsFacadeTest extends TestCase
 {
-    #[DataProvider('getGroupsProvider')]
-    public function testGetGroupsFromTicketAnnotations(string $class, string $method, array $groups): void
+    #[DataProvider('provider')]
+    public function testGroupsAreAssigned(string $class, string $method, array $groups): void
     {
         $this->assertSame($groups, (new Groups)->groups($class, $method));
     }
 
-    public function getGroupsProvider(): array
+    public function provider(): array
     {
         return [
             [
+                AssertionExampleTest::class,
+                'testOne',
+                [
+                    'default',
+                ],
+            ],
+            [
+                BankAccountTest::class,
+                'testBalanceIsInitiallyZero',
+                [
+                    'balanceIsInitiallyZero',
+                    'specification',
+                    '1234',
+                    '__phpunit_covers_bankaccount::getbalance',
+                ],
+            ],
+            [
                 NumericGroupAnnotationTest::class,
                 'testTicketAnnotationSupportsNumericValue',
-                ['t123456', '3502'],
+                [
+                    't123456',
+                    '3502',
+                ],
             ],
             [
                 NumericGroupAnnotationTest::class,
                 'testGroupAnnotationSupportsNumericValue',
-                ['t123456', '3502'],
+                [
+                    't123456',
+                    '3502',
+                ],
             ],
         ];
     }
