@@ -184,6 +184,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-var list<Comparator>
      */
     private array $customComparators                             = [];
+    private ?Event\Code\TestMethod $testValueObjectForEvents     = null;
     private bool $wasPrepared                                    = false;
     private bool $deprecationExpected                            = false;
     private ?string $expectedDeprecationMessage                  = null;
@@ -526,11 +527,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->expectedWarningMessageRegularExpression = $regularExpression;
     }
 
-    final public function status(): TestStatus
-    {
-        return $this->status;
-    }
-
     /**
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
@@ -762,7 +758,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             $this->performAssertionsOnOutput();
         }
 
-        if ($this->status()->isSuccess()) {
+        if ($this->status->isSuccess()) {
             Event\Facade::emitter()->testPassed(
                 $this->valueObjectForEvents(),
                 $this->testResult
@@ -800,6 +796,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->cleanupIniSettings();
         $this->cleanupLocaleSettings();
         libxml_clear_errors();
+
+        $this->testValueObjectForEvents = null;
 
         if (isset($e)) {
             $this->onNotSuccessfulTest($e);
@@ -1073,7 +1071,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      */
     final public function valueObjectForEvents(): Event\Code\TestMethod
     {
-        return Event\Code\TestMethod::fromTestCase($this);
+        if ($this->testValueObjectForEvents !== null) {
+            return $this->testValueObjectForEvents;
+        }
+
+        $this->testValueObjectForEvents = Event\Code\TestMethod::fromTestCase($this);
+
+        return $this->testValueObjectForEvents;
     }
 
     /**

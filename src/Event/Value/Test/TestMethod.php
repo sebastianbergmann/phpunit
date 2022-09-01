@@ -15,7 +15,6 @@ use function method_exists;
 use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\VariableExporter;
@@ -46,7 +45,6 @@ final class TestMethod extends Test
             $testCase->name(),
             $location['file'],
             $location['line'],
-            $testCase->status(),
             self::metadataFor($testCase::class, $testCase->name()),
             self::dataFor($testCase),
         );
@@ -55,9 +53,9 @@ final class TestMethod extends Test
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName, string $file, int $line, TestStatus $status, MetadataCollection $metadata, TestDataCollection $testData)
+    public function __construct(string $className, string $methodName, string $file, int $line, MetadataCollection $metadata, TestDataCollection $testData)
     {
-        parent::__construct($file, $status);
+        parent::__construct($file);
 
         $this->className  = $className;
         $this->methodName = $methodName;

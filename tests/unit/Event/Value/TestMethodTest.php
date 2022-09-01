@@ -13,7 +13,6 @@ use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Util\ExportedVariable;
 
@@ -26,7 +25,6 @@ final class TestMethodTest extends TestCase
         $methodName = 'testExample';
         $file       = 'ExampleTest.php';
         $line       = 1;
-        $status     = TestStatus::unknown();
         $testData   = TestDataCollection::fromArray([]);
         $metadata   = MetadataCollection::fromArray([]);
 
@@ -35,7 +33,6 @@ final class TestMethodTest extends TestCase
             $methodName,
             $file,
             $line,
-            $status,
             $metadata,
             $testData
         );
@@ -44,7 +41,6 @@ final class TestMethodTest extends TestCase
         $this->assertSame($methodName, $test->methodName());
         $this->assertSame($file, $test->file());
         $this->assertSame($line, $test->line());
-        $this->assertSame($status, $test->status());
         $this->assertSame($metadata, $test->metadata());
         $this->assertSame($testData, $test->testData());
     }
@@ -56,7 +52,6 @@ final class TestMethodTest extends TestCase
             'testExample',
             'ExampleTest.php',
             1,
-            TestStatus::unknown(),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );
@@ -73,7 +68,6 @@ final class TestMethodTest extends TestCase
             'testExample',
             'ExampleTest.php',
             1,
-            TestStatus::unknown(),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(
@@ -104,7 +98,6 @@ final class TestMethodTest extends TestCase
             'testExample',
             'ExampleTest.php',
             1,
-            TestStatus::unknown(),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(

@@ -26,7 +26,6 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
@@ -561,7 +560,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $methodName,
                     $class->getFileName(),
                     $method->getStartLine(),
-                    TestStatus::unknown(),
                     MetadataCollection::fromArray([]),
                     Event\TestDataCollection::fromArray([])
                 ),

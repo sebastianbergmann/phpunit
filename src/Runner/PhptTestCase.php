@@ -52,7 +52,6 @@ use PHPUnit\Framework\PHPTAssertionFailedError;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
-use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
@@ -67,7 +66,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     private string $filename;
     private AbstractPhpProcess $phpUtil;
     private string $output = '';
-    private TestStatus $status;
 
     /**
      * Constructs a test case with the given filename.
@@ -82,7 +80,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
         $this->filename = $filename;
         $this->phpUtil  = $phpUtil ?: AbstractPhpProcess::factory();
-        $this->status   = TestStatus::unknown();
     }
 
     /**
@@ -116,8 +113,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($e));
             $emitter->testFinished($this->valueObjectForEvents(), 0);
 
-            $this->status = TestStatus::error();
-
             return;
         }
 
@@ -143,8 +138,6 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         }
 
         if ($this->shouldTestBeSkipped($sections, $settings)) {
-            $this->status = TestStatus::skipped();
-
             return;
         }
 
@@ -211,17 +204,11 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
             if ($failure instanceof IncompleteTestError) {
                 $emitter->testMarkedAsIncomplete($this->valueObjectForEvents(), EventThrowable::from($failure));
-
-                $this->status = TestStatus::incomplete();
             } else {
                 $emitter->testFailed($this->valueObjectForEvents(), EventThrowable::from($failure));
-
-                $this->status = TestStatus::failure();
             }
         } catch (Throwable $t) {
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($t));
-
-            $this->status = TestStatus::error();
         }
 
         $this->runClean($sections, CodeCoverage::isActive());
@@ -291,7 +278,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      */
     public function valueObjectForEvents(): Phpt
     {
-        return new Phpt($this->filename, $this->status);
+        return new Phpt($this->filename);
     }
 
     /**
