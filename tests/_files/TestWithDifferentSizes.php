@@ -28,6 +28,7 @@ final class TestWithDifferentSizes extends TestCase
 
     /**
      * @depends testDataProviderWithSizeMedium
+     *
      * @medium
      */
     public function testWithSizeMedium(): void
@@ -37,6 +38,7 @@ final class TestWithDifferentSizes extends TestCase
 
     /**
      * @depends testWithSizeLarge
+     *
      * @small
      */
     public function testWithSizeSmall(): void
@@ -46,6 +48,7 @@ final class TestWithDifferentSizes extends TestCase
 
     /**
      * @dataProvider provider
+     *
      * @small
      */
     public function testDataProviderWithSizeSmall(bool $value): void
@@ -55,6 +58,7 @@ final class TestWithDifferentSizes extends TestCase
 
     /**
      * @dataProvider provider
+     *
      * @medium
      */
     public function testDataProviderWithSizeMedium(bool $value): void

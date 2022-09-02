@@ -297,6 +297,7 @@ final class AssertTest extends TestCase
 
     /**
      * @testdox assertNotEquals($a, $b) with delta $delta, canoicalize $canonicalize, ignoreCase $ignoreCase
+     *
      * @dataProvider equalProvider
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -311,6 +312,7 @@ final class AssertTest extends TestCase
 
     /**
      * @testdox assertNotSame($a, $b) fails
+     *
      * @dataProvider sameProvider
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -323,6 +325,7 @@ final class AssertTest extends TestCase
 
     /**
      * @testdox assertNotSame($a, $b)
+     *
      * @dataProvider notSameProvider
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -337,6 +340,7 @@ final class AssertTest extends TestCase
 
     /**
      * @testdox assertSame($a, $b) fails
+     *
      * @dataProvider notSameProvider
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -349,6 +353,7 @@ final class AssertTest extends TestCase
 
     /**
      * @testdox assertSame($a, $b)
+     *
      * @dataProvider sameProvider
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
@@ -1728,6 +1733,7 @@ XML;
 
     /**
      * @testdox Assert JSON string equals equals JSON string raised $_dataName
+     *
      * @dataProvider validInvalidJsonDataprovider
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException

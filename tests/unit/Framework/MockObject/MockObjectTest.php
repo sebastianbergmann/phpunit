@@ -508,6 +508,7 @@ final class MockObjectTest extends TestCase
 
     /**
      * @testdox getMock() for Traversable $_dataName
+     *
      * @dataProvider traversableProvider
      */
     public function testGetMockForTraversable($type): void
@@ -992,7 +993,9 @@ EOF
 
     /**
      * @see      https://github.com/sebastianbergmann/phpunit/issues/2573
+     *
      * @ticket   2573
+     *
      * @requires extension soap
      */
     public function testCreateMockOfWsdlFileWithSpecialChars(): void
@@ -1004,6 +1007,7 @@ EOF
 
     /**
      * @see    https://github.com/sebastianbergmann/phpunit-mock-objects/issues/156
+     *
      * @ticket 156
      */
     public function testInterfaceWithStaticMethodCanBeStubbed(): void
@@ -1025,7 +1029,9 @@ EOF
 
     /**
      * @see    https://github.com/sebastianbergmann/phpunit-mock-objects/issues/171
+     *
      * @ticket 171
+     *
      * @requires PHP < 8.1
      */
     public function testStubForClassThatImplementsSerializableCanBeCreatedWithoutInvokingTheConstructor(): void

@@ -16,6 +16,7 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Xml as TestDoxXml;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
  * @psalm-immutable
  */
 final class Logging

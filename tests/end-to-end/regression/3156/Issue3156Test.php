@@ -31,6 +31,7 @@ class Issue3156Test extends TestCase
 
     /**
      * @depends testConstants
+     *
      * @dataProvider dataSelectOperatorsProvider
      */
     public function testDependsRequire(string $val, stdClass $obj): void

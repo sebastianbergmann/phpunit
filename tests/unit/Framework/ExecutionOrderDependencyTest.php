@@ -60,6 +60,7 @@ class ExecutionOrderDependencyTest extends TestCase
 
     /**
      * @testdox Create valid dependency from [$className, $methodName]
+     *
      * @dataProvider createFromParametersProvider
      */
     public function testCreateDependencyFromParameters(
@@ -85,6 +86,7 @@ class ExecutionOrderDependencyTest extends TestCase
 
     /**
      * @testdox Create valid dependency with clone option $option
+     *
      * @dataProvider createWithCloneOptionProvider
      */
     public function testCreateDependencyWithCloneOption(

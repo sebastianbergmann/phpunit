@@ -24,6 +24,7 @@ use PHPUnit\TestFixture\TestWarning;
 
 /**
  * @group test-reorder
+ *
  * @small
  */
 final class ResultCacheExtensionTest extends TestCase
@@ -57,6 +58,7 @@ final class ResultCacheExtensionTest extends TestCase
 
     /**
      * @testdox Clean up test name $_dataName
+     *
      * @dataProvider longTestNamesDataprovider
      */
     public function testStripsDataproviderParametersFromTestName(string $testName, string $expectedTestName): void

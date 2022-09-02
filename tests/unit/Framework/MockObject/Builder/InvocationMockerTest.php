@@ -22,6 +22,7 @@ use stdClass;
 
 /**
  * @covers \PHPUnit\Framework\MockObject\Builder\InvocationMocker
+ *
  * @small
  */
 final class InvocationMockerTest extends TestCase

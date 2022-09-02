@@ -89,6 +89,7 @@ final class XmlConfigurationTest extends TestCase
 
     /**
      * @testdox Parse XML configuration root attribute $optionName = $optionValue
+     *
      * @dataProvider configurationRootOptionsProvider
      *
      * @group test-reorder
@@ -520,6 +521,7 @@ final class XmlConfigurationTest extends TestCase
 
     /**
      * @testdox PHP configuration is handled correctly
+     *
      * @backupGlobals enabled
      */
     public function testPHPConfigurationIsHandledCorrectly(): void
@@ -548,6 +550,7 @@ final class XmlConfigurationTest extends TestCase
 
     /**
      * @testdox handlePHPConfiguration() does not overwrite existing $ENV[] variables
+     *
      * @backupGlobals enabled
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/1181
@@ -564,6 +567,7 @@ final class XmlConfigurationTest extends TestCase
 
     /**
      * @testdox handlePHPConfiguration() does force overwritten existing $ENV[] variables
+     *
      * @backupGlobals enabled
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/2353
@@ -580,6 +584,7 @@ final class XmlConfigurationTest extends TestCase
 
     /**
      * @testdox handlePHPConfiguration() does not overwrite variables from putenv()
+     *
      * @backupGlobals enabled
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/1181
@@ -604,6 +609,7 @@ final class XmlConfigurationTest extends TestCase
 
     /**
      * @testdox handlePHPConfiguration() does overwrite variables from putenv() when forced
+     *
      * @backupGlobals enabled
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/1181

@@ -23,6 +23,7 @@ use PHPUnit\TextUI\XmlConfiguration\FileCollection;
 
 /**
  * @small
+ *
  * @covers \PHPUnit\Util\XdebugFilterScriptGenerator
  */
 final class XDebugFilterScriptGeneratorTest extends TestCase

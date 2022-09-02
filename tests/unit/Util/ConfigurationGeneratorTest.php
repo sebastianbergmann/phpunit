@@ -14,6 +14,7 @@ use PHPUnit\TextUI\XmlConfiguration\Generator;
 
 /**
  * @small
+ *
  * @covers \PHPUnit\TextUI\XmlConfiguration\Generator
  */
 final class ConfigurationGeneratorTest extends TestCase

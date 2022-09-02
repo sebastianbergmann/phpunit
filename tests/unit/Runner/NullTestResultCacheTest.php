@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @group test-reorder
+ *
  * @small
  */
 final class NullTestResultCacheTest extends TestCase

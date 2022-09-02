@@ -17,6 +17,7 @@ use PHPUnit\TestFixture\TestableCliTestDoxPrinter;
 
 /**
  * @group testdox
+ *
  * @small
  */
 final class CliTestDoxPrinterTest extends TestCase

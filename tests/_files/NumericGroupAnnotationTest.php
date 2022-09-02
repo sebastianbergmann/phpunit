@@ -11,12 +11,14 @@ namespace PHPUnit\TestFixture;
 
 /**
  * @author Companion Cube
+ *
  * @ticket t123456
  */
 class NumericGroupAnnotationTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @testdox Empty test for @ticket numeric annotation values
+     *
      * @ticket  3502
      *
      * @author C. Lippy
@@ -30,6 +32,7 @@ class NumericGroupAnnotationTest extends \PHPUnit\Framework\TestCase
 
     /**
      * @testdox Empty test for @group numeric annotation values
+     *
      * @group   3502
      *
      * @see https://github.com/sebastianbergmann/phpunit/issues/3502

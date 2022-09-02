@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @covers \PHPUnit\Runner\DefaultTestResultCache
+ *
  * @small
  */
 final class DefaultTestResultCacheTest extends TestCase
