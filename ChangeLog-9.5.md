@@ -56,7 +56,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#4877](https://github.com/sebastianbergmann/phpunit/issues/4877): No stack trace shown when an error occurs during bootstrap
 
-## [9.5.17] - 2022-03-05 - #StandWithUkraine
+## [9.5.17] - 2022-03-05
 
 ## [9.5.16] - 2022-02-23
 

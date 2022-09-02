@@ -40,7 +40,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 * [#4934](https://github.com/sebastianbergmann/phpunit/issues/4934): Code Coverage does not work with PHPUnit 8.5.24 PHAR on PHP 7
 
-## [8.5.24] - 2022-03-05 - #StandWithUkraine
+## [8.5.24] - 2022-03-05
 
 ### Changed
 
