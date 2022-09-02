@@ -55,6 +55,8 @@ use PHPUnit\Framework\Test;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\Util\PHP\AbstractPhpProcess;
 use SebastianBergmann\CodeCoverage\Data\RawCodeCoverageData;
+use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
+use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
 use SebastianBergmann\Template\Template;
 use Throwable;
 
@@ -172,7 +174,16 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
         $this->output = $jobResult['stdout'] ?? '';
 
         if (CodeCoverage::isActive() && ($coverage = $this->cleanupForCoverage())) {
-            CodeCoverage::instance()->append($coverage, $this, true, [], []);
+            CodeCoverage::instance()->start($this->filename, TestSize::large());
+
+            CodeCoverage::instance()->append(
+                $coverage,
+                $this->filename,
+                true,
+                TestStatus::unknown(),
+                [],
+                []
+            );
         }
 
         try {
