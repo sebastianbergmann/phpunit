@@ -38,6 +38,7 @@ final class RegularExpressionTest extends TestCase
 
     /**
      * @testdox Valid regex $pattern on $subject returns $return
+     *
      * @dataProvider validRegexpProvider
      *
      * @throws \PHPUnit\Framework\ExpectationFailedException
@@ -50,6 +51,7 @@ final class RegularExpressionTest extends TestCase
 
     /**
      * @testdox Invalid regex $pattern on $subject
+     *
      * @dataProvider invalidRegexpProvider
      *
      * @throws \PHPUnit\Framework\ExpectationFailedException

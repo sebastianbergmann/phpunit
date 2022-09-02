@@ -11,6 +11,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @runTestsInSeparateProcesses
+ *
  * @preserveGlobalState enabled
  */
 class Issue1335Test extends TestCase

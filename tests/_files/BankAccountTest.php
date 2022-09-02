@@ -25,6 +25,7 @@ class BankAccountTest extends TestCase
 
     /**
      * @covers BankAccount::getBalance
+     *
      * @group balanceIsInitiallyZero
      * @group specification
      */
@@ -42,6 +43,7 @@ class BankAccountTest extends TestCase
 
     /**
      * @covers BankAccount::withdrawMoney
+     *
      * @group balanceCannotBecomeNegative
      * @group specification
      */
@@ -60,6 +62,7 @@ class BankAccountTest extends TestCase
 
     /**
      * @covers BankAccount::depositMoney
+     *
      * @group balanceCannotBecomeNegative
      * @group specification
      */

@@ -79,6 +79,7 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
 
     /**
      * @testdox Determine JSON error $_dataName
+     *
      * @dataProvider determineJsonErrorDataprovider
      *
      * @throws \PHPUnit\Framework\ExpectationFailedException

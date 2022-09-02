@@ -13,6 +13,7 @@ class CoverageMethodNothingCoversMethod extends TestCase
 {
     /**
      * @covers CoveredClass::publicMethod
+     *
      * @coversNothing
      */
     public function testSomething(): void

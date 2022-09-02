@@ -96,22 +96,22 @@ This test did not perform any assertions
 14) PHPUnit\TestFixture\RequirementsTest::testPHPVersionOperatorBangEquals
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:239
+%stests%e_files%eRequirementsTest.php:246
 
 15) PHPUnit\TestFixture\RequirementsTest::testPHPVersionOperatorNotEquals
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:247
+%stests%e_files%eRequirementsTest.php:255
 
 16) PHPUnit\TestFixture\RequirementsTest::testPHPUnitVersionOperatorBangEquals
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:311
+%stests%e_files%eRequirementsTest.php:327
 
 17) PHPUnit\TestFixture\RequirementsTest::testPHPUnitVersionOperatorNotEquals
 This test did not perform any assertions
 
-%stests%e_files%eRequirementsTest.php:319
+%stests%e_files%eRequirementsTest.php:336
 
 WARNINGS!
 Tests: 62, Assertions: 0, Warnings: 2, Skipped: 43, Risky: 17.

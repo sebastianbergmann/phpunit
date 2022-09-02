@@ -421,15 +421,13 @@ final class TestSuiteSorter
             $testClass = get_class($test);
         }
 
-        $names = array_map(
+        return array_map(
             static function ($name) use ($testClass)
             {
                 return strpos($name, '::') === false ? $testClass . '::' . $name : $name;
             },
             $test->getDependencies()
         );
-
-        return $names;
     }
 
     /**

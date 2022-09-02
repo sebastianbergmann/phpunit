@@ -14,12 +14,14 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @testdox Basic ANSI color highlighting support
+ *
  * @small
  */
 final class ColorTest extends TestCase
 {
     /**
      * @testdox Colorize with $_dataName
+     *
      * @dataProvider colorizeProvider
      */
     public function testColorize(string $color, string $buffer, string $expected): void
@@ -29,6 +31,7 @@ final class ColorTest extends TestCase
 
     /**
      * @testdox Colorize path $path after $prevPath
+     *
      * @dataProvider colorizePathProvider
      */
     public function testColorizePath(?string $prevPath, string $path, bool $colorizeFilename, string $expected): void
@@ -47,6 +50,7 @@ final class ColorTest extends TestCase
 
     /**
      * @testdox Visualize all whitespace characters in $actual
+     *
      * @dataProvider whitespacedStringProvider
      */
     public function testVisibleWhitespace(string $actual, string $expected): void
@@ -81,6 +85,7 @@ final class ColorTest extends TestCase
 
     /**
      * @testdox TestDox shows name of data set $_dataName with value $value
+     *
      * @dataProvider namedDataSetProvider
      */
     public function testTestdoxDatanameAsParameter(int $value): void

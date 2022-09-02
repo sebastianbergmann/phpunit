@@ -14,6 +14,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 
 /**
  * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+ *
  * @codeCoverageIgnore
  */
 abstract class Composite extends Constraint

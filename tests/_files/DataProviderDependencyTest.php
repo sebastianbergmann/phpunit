@@ -21,7 +21,9 @@ class DataProviderDependencyTest extends TestCase
 
     /**
      * @see https://github.com/sebastianbergmann/phpunit/issues/1896
+     *
      * @depends testReference
+     *
      * @dataProvider provider
      */
     public function testDependency($param): void

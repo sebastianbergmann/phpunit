@@ -159,6 +159,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeContains')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeContains
@@ -204,6 +205,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeNotContains')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeNotContains
@@ -257,6 +259,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeContainsOnly')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeContainsOnly
@@ -296,6 +299,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeNotContainsOnly')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeNotContainsOnly
@@ -336,6 +340,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeCount')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeCount
@@ -376,6 +381,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeNotCount')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeNotCount
@@ -457,6 +463,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeEquals')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeEquals
@@ -543,6 +550,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeNotEquals')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeNotEquals
@@ -582,6 +590,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeEmpty')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeEmpty
@@ -621,6 +630,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeNotEmpty')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeNotEmpty
@@ -657,6 +667,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeGreaterThan')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeGreaterThan
@@ -693,6 +704,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeGreaterThanOrEqual')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeGreaterThanOrEqual
@@ -729,6 +741,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeLessThan')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeLessThan
@@ -765,6 +778,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeLessThanOrEqual')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeLessThanOrEqual
@@ -1464,7 +1478,9 @@ if (!function_exists('PHPUnit\Framework\assertSame')) {
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType
+     *
      * @psalm-param ExpectedType $expected
+     *
      * @psalm-assert =ExpectedType $actual
      *
      * @see Assert::assertSame
@@ -1487,6 +1503,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeSame')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeSame
@@ -1526,6 +1543,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeNotSame')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeNotSame
@@ -1545,7 +1563,9 @@ if (!function_exists('PHPUnit\Framework\assertInstanceOf')) {
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
+     *
      * @psalm-param class-string<ExpectedType> $expected
+     *
      * @psalm-assert =ExpectedType $actual
      *
      * @see Assert::assertInstanceOf
@@ -1567,6 +1587,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeInstanceOf')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @psalm-param class-string $expected
@@ -1588,7 +1609,9 @@ if (!function_exists('PHPUnit\Framework\assertNotInstanceOf')) {
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
+     *
      * @psalm-param class-string<ExpectedType> $expected
+     *
      * @psalm-assert !ExpectedType $actual
      *
      * @see Assert::assertNotInstanceOf
@@ -1610,6 +1633,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeNotInstanceOf')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @psalm-param class-string $expected
@@ -1630,6 +1654,7 @@ if (!function_exists('PHPUnit\Framework\assertInternalType')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertInternalType
@@ -1651,6 +1676,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeInternalType')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeInternalType
@@ -1856,6 +1882,7 @@ if (!function_exists('PHPUnit\Framework\assertNotInternalType')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertNotInternalType
@@ -2064,6 +2091,7 @@ if (!function_exists('PHPUnit\Framework\assertAttributeNotInternalType')) {
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @see Assert::assertAttributeNotInternalType

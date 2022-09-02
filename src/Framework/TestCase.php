@@ -849,7 +849,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param string|string[] $className
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType>|string[] $className
+     *
      * @psalm-return MockBuilder<RealInstanceType>
      */
     public function getMockBuilder($className): MockBuilder
@@ -1652,7 +1654,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * Makes configurable stub for the specified class.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param    class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return   Stub&RealInstanceType
      */
     protected function createStub(string $originalClassName): Stub
@@ -1666,7 +1670,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param string|string[] $originalClassName
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createMock($originalClassName): MockObject
@@ -1689,7 +1695,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param string|string[] $originalClassName
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createConfiguredMock($originalClassName, array $configuration): MockObject
@@ -1710,7 +1718,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param string[]        $methods
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType>|string[] $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createPartialMock($originalClassName, array $methods): MockObject
@@ -1756,7 +1766,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * Returns a test proxy for the specified class.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
@@ -1779,7 +1791,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $cloneArguments
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
+     *
      * @psalm-return class-string<MockObject&RealInstanceType>
      */
     protected function getMockClass($originalClassName, $methods = [], array $arguments = [], $mockClassName = '', $callOriginalConstructor = false, $callOriginalClone = true, $callAutoload = true, $cloneArguments = false): string
@@ -1814,7 +1828,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param bool   $cloneArguments
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function getMockForAbstractClass($originalClassName, array $arguments = [], $mockClassName = '', $callOriginalConstructor = true, $callOriginalClone = true, $callAutoload = true, $mockedMethods = [], $cloneArguments = false): MockObject
@@ -1847,7 +1863,9 @@ abstract class TestCase extends Assert implements SelfDescribing, Test
      * @param array  $options                 An array of options passed to SOAPClient::_construct
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function getMockFromWsdl($wsdlFile, $originalClassName = '', $mockClassName = '', array $methods = [], $callOriginalConstructor = true, array $options = []): MockObject

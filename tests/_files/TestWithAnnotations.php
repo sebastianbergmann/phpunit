@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @runTestsInSeparateProcesses
+ *
  * @runClassInSeparateProcess
  */
 class TestWithAnnotations extends TestCase
@@ -38,6 +39,7 @@ class TestWithAnnotations extends TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
      */
     public function testInSeparateProcess(): void
@@ -46,6 +48,7 @@ class TestWithAnnotations extends TestCase
 
     /**
      * @backupGlobals enabled
+     *
      * @dataProvider providerMethod
      */
     public function testThatInteractsWithGlobalVariablesWithDataProvider(): void
@@ -54,6 +57,7 @@ class TestWithAnnotations extends TestCase
 
     /**
      * @backupStaticAttributes enabled
+     *
      * @dataProvider providerMethod
      */
     public function testThatInteractsWithStaticAttributesWithDataProvider(): void
@@ -62,7 +66,9 @@ class TestWithAnnotations extends TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @preserveGlobalState disabled
+     *
      * @dataProvider providerMethod
      */
     public function testInSeparateProcessWithDataProvider(): void

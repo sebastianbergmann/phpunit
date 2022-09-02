@@ -18,6 +18,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @small
+ *
  * @covers \PHPUnit\Util\XdebugFilterScriptGenerator
  */
 final class XDebugFilterScriptGeneratorTest extends TestCase

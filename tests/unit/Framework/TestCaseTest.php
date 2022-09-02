@@ -613,7 +613,9 @@ final class TestCaseTest extends TestCase
 
     /**
      * @backupGlobals enabled
+     *
      * @backupStaticAttributes enabled
+     *
      * @depends testGlobalsBackupPost
      *
      * @doesNotPerformAssertions

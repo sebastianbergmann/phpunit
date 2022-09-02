@@ -58,6 +58,7 @@ final class ArraySubsetTest extends ConstraintTestCase
      *
      * @throws \SebastianBergmann\RecursionContext\InvalidArgumentException
      * @throws ExpectationFailedException
+     *
      * @dataProvider evaluateDataProvider
      */
     public function testEvaluate($expected, $subset, $other, $strict): void

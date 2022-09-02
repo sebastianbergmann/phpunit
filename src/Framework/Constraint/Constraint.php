@@ -80,6 +80,7 @@ abstract class Constraint implements Countable, SelfDescribing
      * This method can be overridden to implement the evaluation algorithm.
      *
      * @param mixed $other value or object to evaluate
+     *
      * @codeCoverageIgnore
      */
     protected function matches($other): bool

@@ -45,6 +45,7 @@ final class VariousDocblockDefinedDataProvider
     /**
      * @testWith [1]
      *           [2]
+     *
      * @annotation
      */
     public function testWith12AndAnotherAnnotation(): void

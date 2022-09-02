@@ -273,6 +273,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeContains($needle, string $haystackAttributeName, $haystackClassOrObject, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
@@ -367,6 +368,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeNotContains($needle, string $haystackAttributeName, $haystackClassOrObject, string $message = '', bool $ignoreCase = false, bool $checkForObjectIdentity = true, bool $checkForNonObjectIdentity = false): void
@@ -435,6 +437,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeContainsOnly(string $type, string $haystackAttributeName, $haystackClassOrObject, ?bool $isNativeType = null, string $message = ''): void
@@ -486,6 +489,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeNotContainsOnly(string $type, string $haystackAttributeName, $haystackClassOrObject, ?bool $isNativeType = null, string $message = ''): void
@@ -533,6 +537,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeCount(int $expectedCount, string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
@@ -579,6 +584,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeNotCount(int $expectedCount, string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
@@ -693,6 +699,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeEquals($expected, string $actualAttributeName, $actualClassOrObject, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
@@ -824,6 +831,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeNotEquals($expected, string $actualAttributeName, $actualClassOrObject, string $message = '', float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): void
@@ -865,6 +873,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeEmpty(string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
@@ -901,6 +910,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeNotEmpty(string $haystackAttributeName, $haystackClassOrObject, string $message = ''): void
@@ -934,6 +944,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeGreaterThan($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
@@ -972,6 +983,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeGreaterThanOrEqual($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
@@ -1006,6 +1018,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeLessThan($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
@@ -1040,6 +1053,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeLessThanOrEqual($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
@@ -1825,7 +1839,9 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType
+     *
      * @psalm-param ExpectedType $expected
+     *
      * @psalm-assert =ExpectedType $actual
      */
     public static function assertSame($expected, $actual, string $message = ''): void
@@ -1848,6 +1864,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeSame($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
@@ -1895,6 +1912,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeNotSame($expected, string $actualAttributeName, $actualClassOrObject, string $message = ''): void
@@ -1916,7 +1934,9 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
+     *
      * @psalm-param class-string<ExpectedType> $expected
+     *
      * @psalm-assert =ExpectedType $actual
      */
     public static function assertInstanceOf(string $expected, $actual, string $message = ''): void
@@ -1942,6 +1962,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @psalm-param class-string $expected
@@ -1965,7 +1986,9 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
+     *
      * @psalm-param class-string<ExpectedType> $expected
+     *
      * @psalm-assert !ExpectedType $actual
      */
     public static function assertNotInstanceOf(string $expected, $actual, string $message = ''): void
@@ -1993,6 +2016,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      *
      * @psalm-param class-string $expected
@@ -2015,6 +2039,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
+     *
      * @codeCoverageIgnore
      */
     public static function assertInternalType(string $expected, $actual, string $message = ''): void
@@ -2043,6 +2068,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeInternalType(string $expected, string $attributeName, $classOrObject, string $message = ''): void
@@ -2250,6 +2276,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3369
+     *
      * @codeCoverageIgnore
      */
     public static function assertNotInternalType(string $expected, $actual, string $message = ''): void
@@ -2467,6 +2494,7 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function assertAttributeNotInternalType(string $expected, string $attributeName, $classOrObject, string $message = ''): void
@@ -3158,6 +3186,7 @@ abstract class Assert
 
     /**
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function attribute(Constraint $constraint, string $attributeName): Attribute
@@ -3210,6 +3239,7 @@ abstract class Assert
 
     /**
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function attributeEqualTo(string $attributeName, $value, float $delta = 0.0, int $maxDepth = 10, bool $canonicalize = false, bool $ignoreCase = false): Attribute
@@ -3362,6 +3392,7 @@ abstract class Assert
      * @throws Exception
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function readAttribute($classOrObject, string $attributeName)
@@ -3406,6 +3437,7 @@ abstract class Assert
      * @throws Exception
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function getStaticAttribute(string $className, string $attributeName)
@@ -3459,6 +3491,7 @@ abstract class Assert
      * @throws Exception
      *
      * @deprecated https://github.com/sebastianbergmann/phpunit/issues/3338
+     *
      * @codeCoverageIgnore
      */
     public static function getObjectAttribute($object, string $attributeName)

@@ -13,7 +13,9 @@ class Issue498Test extends TestCase
 {
     /**
      * @test
+     *
      * @dataProvider shouldBeTrueDataProvider
+     *
      * @group falseOnly
      */
     public function shouldBeTrue($testData): void
@@ -23,7 +25,9 @@ class Issue498Test extends TestCase
 
     /**
      * @test
+     *
      * @dataProvider shouldBeFalseDataProvider
+     *
      * @group trueOnly
      */
     public function shouldBeFalse($testData): void
@@ -33,7 +37,6 @@ class Issue498Test extends TestCase
 
     public function shouldBeTrueDataProvider()
     {
-
         //throw new Exception("Can't create the data");
         return [
             [true],

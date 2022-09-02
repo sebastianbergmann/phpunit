@@ -19,6 +19,7 @@ final class JsonTest extends TestCase
 {
     /**
      * @testdox Canonicalize $actual
+     *
      * @dataProvider canonicalizeProvider
      *
      * @throws \PHPUnit\Framework\ExpectationFailedException
@@ -45,6 +46,7 @@ final class JsonTest extends TestCase
 
     /**
      * @testdox Prettify $actual to $expected
+     *
      * @dataProvider prettifyProvider
      *
      * @throws \PHPUnit\Framework\Exception

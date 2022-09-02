@@ -18,6 +18,7 @@ class Issue765Test extends TestCase
 
     /**
      * @depends testDependee
+     *
      * @dataProvider dependentProvider
      */
     public function testDependent($a): void
