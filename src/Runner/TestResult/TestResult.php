@@ -539,13 +539,16 @@ final class TestResult
 
     public function wasSuccessfulAndNoTestHasIssues(): bool
     {
-        return $this->wasSuccessful() &&
-               !$this->hasTestConsideredRiskyEvents() &&
-               !$this->hasTestMarkedIncompleteEvents() &&
-               !$this->hasTestSkippedEvents() &&
-               !$this->hasDeprecationEvents() &&
-               !$this->hasTestTriggeredErrorEvents() &&
-               !$this->hasNoticeEvents() &&
-               !$this->hasWarningEvents();
+        return $this->wasSuccessful() && !$this->hasTestsWithIssues();
+    }
+
+    public function hasTestsWithIssues(): bool
+    {
+        return $this->hasTestConsideredRiskyEvents() ||
+               $this->hasTestMarkedIncompleteEvents() ||
+               $this->hasDeprecationEvents() ||
+               $this->hasTestTriggeredErrorEvents() ||
+               $this->hasNoticeEvents() ||
+               $this->hasWarningEvents();
     }
 }

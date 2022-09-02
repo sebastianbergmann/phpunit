@@ -415,7 +415,8 @@ final class ResultPrinter
             return;
         }
 
-        if ($result->wasSuccessfulAndNoTestHasIssues()) {
+        if ($result->wasSuccessfulAndNoTestHasIssues() &&
+            !$result->hasTestSkippedEvents()) {
             $this->printWithColor(
                 'fg-black, bg-green',
                 sprintf(
@@ -433,10 +434,17 @@ final class ResultPrinter
         $color = 'fg-black, bg-yellow';
 
         if ($result->wasSuccessful()) {
-            $this->printWithColor(
-                $color,
-                'OK, but some tests have issues!'
-            );
+            if (!$result->hasTestsWithIssues()) {
+                $this->printWithColor(
+                    $color,
+                    'OK, but some tests were skipped!'
+                );
+            } else {
+                $this->printWithColor(
+                    $color,
+                    'OK, but some tests have issues!'
+                );
+            }
         } else {
             if ($result->hasTestErroredEvents()) {
                 $color = 'fg-white, bg-red';
