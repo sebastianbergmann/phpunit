@@ -13,6 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @runClassInSeparateProcess
+ *
  * @runTestsInSeparateProcesses
  */
 final class ProcessIsolationTest extends TestCase

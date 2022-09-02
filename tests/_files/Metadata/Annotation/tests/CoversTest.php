@@ -14,7 +14,9 @@ use PHPUnit\Framework\TestCase;
 /**
  * @covers ::\PHPUnit\TestFixture\Metadata\Annotation\f()
  * @covers \PHPUnit\TestFixture\Metadata\Annotation\Example
+ *
  * @coversNothing
+ *
  * @coversDefaultClass \PHPUnit\TestFixture\Metadata\Annotation\Example
  */
 final class CoversTest extends TestCase

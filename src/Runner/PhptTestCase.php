@@ -96,6 +96,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws Exception
+     *
      * @noinspection RepetitiveMethodCallsInspection
      */
     public function run(): void

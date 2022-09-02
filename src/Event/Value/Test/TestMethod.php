@@ -23,6 +23,7 @@ use ReflectionMethod;
 
 /**
  * @psalm-immutable
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class TestMethod extends Test
@@ -174,6 +175,7 @@ final class TestMethod extends Test
 
     /**
      * @psalm-param class-string $className
+     *
      * @psalm-return array{file: string, line: int}
      */
     private static function sourceLocationFor(string $className, string $methodName): array

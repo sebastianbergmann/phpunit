@@ -15,6 +15,7 @@ class CoverageMethodNothingCoversMethod extends TestCase
 {
     /**
      * @covers \PHPUnit\TestFixture\CoveredClass::publicMethod
+     *
      * @coversNothing
      */
     public function testSomething(): void

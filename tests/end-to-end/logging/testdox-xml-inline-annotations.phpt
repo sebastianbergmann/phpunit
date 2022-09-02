@@ -21,7 +21,7 @@ unlink($output);
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
 <tests>
- <test className="PHPUnit\TestFixture\BankAccountTest" methodName="testBalanceIsInitiallyZero" prettifiedClassName="Bank Account (PHPUnit\TestFixture\BankAccount)" prettifiedMethodName="Balance is initially zero" size="unknown" time="%s" status="success" given="a fresh bank account" givenStartLine="31" when="I ask it for its balance" whenStartLine="34" then="I should get 0" thenStartLine="37">
+ <test className="PHPUnit\TestFixture\BankAccountTest" methodName="testBalanceIsInitiallyZero" prettifiedClassName="Bank Account (PHPUnit\TestFixture\BankAccount)" prettifiedMethodName="Balance is initially zero" size="unknown" time="%s" status="success" given="a fresh bank account" givenStartLine="32" when="I ask it for its balance" whenStartLine="35" then="I should get 0" thenStartLine="38">
   <group name="balanceIsInitiallyZero"/>
   <group name="specification"/>
   <group name="1234"/>

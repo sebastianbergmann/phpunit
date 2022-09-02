@@ -124,7 +124,7 @@ final class ErrorHandler
             default:
                 // @codeCoverageIgnoreStart
                 return false;
-            // @codeCoverageIgnoreEnd
+                // @codeCoverageIgnoreEnd
         }
 
         return true;

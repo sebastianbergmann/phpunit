@@ -558,7 +558,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Returns a builder object to create mock objects using a fluent interface.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $className
+     *
      * @psalm-return MockBuilder<RealInstanceType>
      */
     final public function getMockBuilder(string $className): MockBuilder
@@ -1188,7 +1190,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Creates a test stub for the specified interface or class.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param    class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return   Stub&RealInstanceType
      */
     protected function createStub(string $originalClassName): Stub
@@ -1204,7 +1208,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Creates a mock object for the specified interface or class.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createMock(string $originalClassName): MockObject
@@ -1220,7 +1226,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Creates (and configures) a mock object for the specified interface or class.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
@@ -1240,7 +1248,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param list<string> $methods
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createPartialMock(string $originalClassName, array $methods): MockObject
@@ -1265,7 +1275,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Creates a test proxy for the specified class.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
@@ -1289,7 +1301,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * To mock concrete methods, use the 7th parameter ($mockedMethods).
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
@@ -1316,7 +1330,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Creates a mock object based on the given WSDL file.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
@@ -1899,7 +1915,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      */
     private function createMockObject(string $originalClassName, bool $register = true): MockObject
