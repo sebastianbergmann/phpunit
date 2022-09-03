@@ -44,6 +44,8 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
+use PHPUnit\TextUI\Output\TestDox\ProgressPrinter\ProgressPrinter as TestDoxProgressPrinter;
+use PHPUnit\TextUI\Output\TestDox\ResultPrinter as TestDoxResultPrinter;
 use PHPUnit\Util\DefaultPrinter;
 use PHPUnit\Util\NullPrinter;
 use PHPUnit\Util\Printer;
@@ -153,19 +155,18 @@ final class TestRunner
             unset($_suite);
         }
 
-        if ($this->configuration->outputIsTestDox()) {
-            exit('TestDox CLI logging has not been migrated to events yet');
-        }
-
         $this->printer = new NullPrinter;
 
-        if ($this->configuration->outputIsDefault()) {
+        if ($this->configuration->outputIsDefault() ||
+            $this->configuration->outputIsTestDox()) {
             if ($this->configuration->outputToStandardErrorStream()) {
                 $this->printer = DefaultPrinter::standardError();
             } else {
                 $this->printer = DefaultPrinter::standardOutput();
             }
+        }
 
+        if ($this->configuration->outputIsDefault()) {
             new DefaultProgressPrinter(
                 $this->printer,
                 $this->configuration->colors(),
@@ -182,6 +183,16 @@ final class TestRunner
                 $this->configuration->displayDetailsOnTestsThatTriggerWarnings(),
                 $this->configuration->colors(),
                 $this->configuration->reverseDefectList()
+            );
+        }
+
+        if ($this->configuration->outputIsTestDox()) {
+            new TestDoxProgressPrinter(
+                $this->printer,
+            );
+
+            $resultPrinter = new TestDoxResultPrinter(
+                $this->printer,
             );
         }
 

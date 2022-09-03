@@ -1067,7 +1067,7 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="44">
+    <MissingThrowsDocblock occurrences="45">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
