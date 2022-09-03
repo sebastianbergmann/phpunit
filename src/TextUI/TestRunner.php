@@ -42,7 +42,8 @@ use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\TextUI\ProgressPrinter\ProgressPrinter;
+use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
+use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
 use PHPUnit\Util\DefaultPrinter;
 use PHPUnit\Util\NullPrinter;
 use PHPUnit\Util\Printer;
@@ -165,13 +166,13 @@ final class TestRunner
                 $this->printer = DefaultPrinter::standardOutput();
             }
 
-            new ProgressPrinter(
+            new DefaultProgressPrinter(
                 $this->printer,
                 $this->configuration->colors(),
                 $this->configuration->columns()
             );
 
-            $resultPrinter = new ResultPrinter(
+            $resultPrinter = new DefaultResultPrinter(
                 $this->printer,
                 $this->configuration->displayDetailsOnIncompleteTests(),
                 $this->configuration->displayDetailsOnSkippedTests(),
@@ -243,7 +244,7 @@ final class TestRunner
         $this->write(Version::getVersionString() . "\n");
 
         if ($this->configuration->hasLogfileText()) {
-            $textLogger = new ResultPrinter(
+            $textLogger = new DefaultResultPrinter(
                 DefaultPrinter::from($this->configuration->logfileText()),
                 true,
                 true,

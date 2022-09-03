@@ -1047,7 +1047,7 @@
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
-  <file src="src/TextUI/ProgressPrinter/ProgressPrinter.php">
+  <file src="src/TextUI/Output/Default/ProgressPrinter/ProgressPrinter.php">
     <MissingThrowsDocblock occurrences="1">
       <code>registerSubscribers</code>
     </MissingThrowsDocblock>
@@ -1057,7 +1057,7 @@
       <code>$numberOfTestsWidth</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/TextUI/ResultPrinter.php">
+  <file src="src/TextUI/Output/Default/ResultPrinter.php">
     <RedundantCondition occurrences="2">
       <code>assert($test instanceof TestMethod)</code>
       <code>assert($test instanceof TestMethod)</code>

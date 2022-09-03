@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ProgressPrinter;
+namespace PHPUnit\TextUI\Output\Default\ProgressPrinter;
 
-use PHPUnit\Event\Test\ConsideredRisky;
-use PHPUnit\Event\Test\ConsideredRiskySubscriber;
+use PHPUnit\Event\Test\Errored;
+use PHPUnit\Event\Test\ErroredSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestConsideredRiskySubscriber extends Subscriber implements ConsideredRiskySubscriber
+final class TestErroredSubscriber extends Subscriber implements ErroredSubscriber
 {
-    public function notify(ConsideredRisky $event): void
+    public function notify(Errored $event): void
     {
-        $this->printer()->testConsideredRisky();
+        $this->printer()->testErrored($event);
     }
 }

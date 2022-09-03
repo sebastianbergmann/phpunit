@@ -7,18 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ProgressPrinter;
-
-use PHPUnit\Event\Test\MarkedIncomplete;
-use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
+namespace PHPUnit\TextUI\Output\Default\ProgressPrinter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestMarkedIncompleteSubscriber extends Subscriber implements MarkedIncompleteSubscriber
+abstract class Subscriber
 {
-    public function notify(MarkedIncomplete $event): void
+    private ProgressPrinter $printer;
+
+    public function __construct(ProgressPrinter $printer)
     {
-        $this->printer()->testMarkedIncomplete();
+        $this->printer = $printer;
+    }
+
+    protected function printer(): ProgressPrinter
+    {
+        return $this->printer;
     }
 }

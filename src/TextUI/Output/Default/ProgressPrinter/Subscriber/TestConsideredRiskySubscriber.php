@@ -7,22 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ProgressPrinter;
+namespace PHPUnit\TextUI\Output\Default\ProgressPrinter;
+
+use PHPUnit\Event\Test\ConsideredRisky;
+use PHPUnit\Event\Test\ConsideredRiskySubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class Subscriber
+final class TestConsideredRiskySubscriber extends Subscriber implements ConsideredRiskySubscriber
 {
-    private ProgressPrinter $printer;
-
-    public function __construct(ProgressPrinter $printer)
+    public function notify(ConsideredRisky $event): void
     {
-        $this->printer = $printer;
-    }
-
-    protected function printer(): ProgressPrinter
-    {
-        return $this->printer;
+        $this->printer()->testConsideredRisky();
     }
 }

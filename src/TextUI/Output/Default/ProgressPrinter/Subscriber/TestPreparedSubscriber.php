@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ProgressPrinter;
+namespace PHPUnit\TextUI\Output\Default\ProgressPrinter;
 
-use PHPUnit\Event\Test\Failed;
-use PHPUnit\Event\Test\FailedSubscriber;
+use PHPUnit\Event\Test\Prepared;
+use PHPUnit\Event\Test\PreparedSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestFailedSubscriber extends Subscriber implements FailedSubscriber
+final class TestPreparedSubscriber extends Subscriber implements PreparedSubscriber
 {
-    public function notify(Failed $event): void
+    public function notify(Prepared $event): void
     {
-        $this->printer()->testFailed();
+        $this->printer()->testPrepared();
     }
 }

@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ProgressPrinter;
+namespace PHPUnit\TextUI\Output\Default\ProgressPrinter;
 
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErroredSubscriber;

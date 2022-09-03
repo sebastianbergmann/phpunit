@@ -7,18 +7,18 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\ProgressPrinter;
+namespace PHPUnit\TextUI\Output\Default\ProgressPrinter;
 
-use PHPUnit\Event\Test\Errored;
-use PHPUnit\Event\Test\ErroredSubscriber;
+use PHPUnit\Event\Test\MarkedIncomplete;
+use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestErroredSubscriber extends Subscriber implements ErroredSubscriber
+final class TestMarkedIncompleteSubscriber extends Subscriber implements MarkedIncompleteSubscriber
 {
-    public function notify(Errored $event): void
+    public function notify(MarkedIncomplete $event): void
     {
-        $this->printer()->testErrored($event);
+        $this->printer()->testMarkedIncomplete();
     }
 }
