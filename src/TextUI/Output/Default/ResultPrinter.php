@@ -35,15 +35,15 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\TestRunner\TestResult\TestResult;
+use PHPUnit\TextUI\Output\ResultPrinter as AbstractResultPrinter;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ResultPrinter
+final class ResultPrinter extends AbstractResultPrinter
 {
-    private Printer $printer;
     private bool $colorizeOutput;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
@@ -57,7 +57,8 @@ final class ResultPrinter
 
     public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $colorizeOutput, bool $displayDefectsInReverseOrder)
     {
-        $this->printer                                      = $printer;
+        parent::__construct($printer);
+
         $this->displayDetailsOnIncompleteTests              = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests                 = $displayDetailsOnSkippedTests;
         $this->displayDetailsOnTestsThatTriggerDeprecations = $displayDetailsOnTestsThatTriggerDeprecations;
@@ -109,7 +110,7 @@ final class ResultPrinter
 
     public function flush(): void
     {
-        $this->printer->flush();
+        $this->printer()->flush();
     }
 
     private function printPhpunitErrors(TestResult $result): void
@@ -360,12 +361,12 @@ final class ResultPrinter
     private function printList(int $count, array $elements, string $type): void
     {
         if ($this->listPrinted) {
-            $this->printer->print("--\n\n");
+            $this->printer()->print("--\n\n");
         }
 
         $this->listPrinted = true;
 
-        $this->printer->print(
+        $this->printer()->print(
             sprintf(
                 "There %s %d %s%s:\n\n",
                 ($count === 1) ? 'was' : 'were',
@@ -385,14 +386,14 @@ final class ResultPrinter
             $this->printListElement($i++, $element['title'], $element['body']);
         }
 
-        $this->printer->print("\n");
+        $this->printer()->print("\n");
     }
 
     private function printListElement(int $number, string $title, string $body): void
     {
         $body = trim($body);
 
-        $this->printer->print(
+        $this->printer()->print(
             sprintf(
                 "%s%d) %s\n%s%s",
                 $number > 1 ? "\n" : '',
@@ -515,10 +516,10 @@ final class ResultPrinter
             $buffer = Color::colorizeTextBox($color, $buffer);
         }
 
-        $this->printer->print($buffer);
+        $this->printer()->print($buffer);
 
         if ($lf) {
-            $this->printer->print(PHP_EOL);
+            $this->printer()->print(PHP_EOL);
         }
     }
 
