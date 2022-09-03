@@ -82,6 +82,7 @@ jobs:
           - "8.0"
           - "8.1"
           - "8.2"
+          - "8.3"
 
     steps:
       - name: Configure Git to avoid issues with line endings
@@ -131,6 +132,7 @@ jobs:
           - "8.0"
           - "8.1"
           - "8.2"
+          - "8.3"
 
     steps:
       - name: Configure Git to avoid issues with line endings
@@ -304,6 +306,7 @@ jobs:
           - "8.0"
           - "8.1"
           - "8.2"
+          - "8.3"
 
     steps:
       - name: Checkout
