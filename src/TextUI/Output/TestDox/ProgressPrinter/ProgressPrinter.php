@@ -21,18 +21,20 @@ use PHPUnit\Util\Printer;
 final class ProgressPrinter
 {
     private Printer $printer;
+    private bool $colors;
 
     /**
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Printer $printer)
+    public function __construct(Printer $printer, bool $colors)
     {
         $printer->print('TestDox progress printing has not been migrated to events yet' . PHP_EOL);
 
         exit(1);
 
         $this->printer = $printer;
+        $this->colors  = $colors;
 
         $this->registerSubscribers();
     }

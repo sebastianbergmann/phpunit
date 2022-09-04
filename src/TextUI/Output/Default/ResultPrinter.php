@@ -44,7 +44,6 @@ use PHPUnit\Util\Printer;
  */
 final class ResultPrinter extends AbstractResultPrinter
 {
-    private bool $colorizeOutput;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
     private bool $displayDetailsOnTestsThatTriggerDeprecations;
@@ -55,9 +54,9 @@ final class ResultPrinter extends AbstractResultPrinter
     private bool $listPrinted  = false;
     private bool $countPrinted = false;
 
-    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $colorizeOutput, bool $displayDefectsInReverseOrder)
+    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $colors, bool $displayDefectsInReverseOrder)
     {
-        parent::__construct($printer);
+        parent::__construct($printer, $colors);
 
         $this->displayDetailsOnIncompleteTests              = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests                 = $displayDetailsOnSkippedTests;
@@ -65,7 +64,6 @@ final class ResultPrinter extends AbstractResultPrinter
         $this->displayDetailsOnTestsThatTriggerErrors       = $displayDetailsOnTestsThatTriggerErrors;
         $this->displayDetailsOnTestsThatTriggerNotices      = $displayDetailsOnTestsThatTriggerNotices;
         $this->displayDetailsOnTestsThatTriggerWarnings     = $displayDetailsOnTestsThatTriggerWarnings;
-        $this->colorizeOutput                               = $colorizeOutput;
         $this->displayDefectsInReverseOrder                 = $displayDefectsInReverseOrder;
     }
 
@@ -512,7 +510,7 @@ final class ResultPrinter extends AbstractResultPrinter
 
     private function printWithColor(string $color, string $buffer, bool $lf = true): void
     {
-        if ($this->colorizeOutput) {
+        if ($this->colors()) {
             $buffer = Color::colorizeTextBox($color, $buffer);
         }
 

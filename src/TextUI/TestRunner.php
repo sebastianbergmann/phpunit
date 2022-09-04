@@ -189,10 +189,12 @@ final class TestRunner
         if ($this->configuration->outputIsTestDox()) {
             new TestDoxProgressPrinter(
                 $this->printer,
+                $this->configuration->colors(),
             );
 
             $resultPrinter = new TestDoxResultPrinter(
                 $this->printer,
+                $this->configuration->colors(),
             );
         }
 

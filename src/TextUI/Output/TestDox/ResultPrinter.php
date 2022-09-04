@@ -18,9 +18,9 @@ use PHPUnit\Util\Printer;
  */
 final class ResultPrinter extends AbstractResultPrinter
 {
-    public function __construct(Printer $printer)
+    public function __construct(Printer $printer, bool $colors)
     {
-        parent::__construct($printer);
+        parent::__construct($printer, $colors);
     }
 
     public function printResult(TestResult $result): void

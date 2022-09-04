@@ -18,10 +18,12 @@ use PHPUnit\Util\Printer;
 abstract class ResultPrinter
 {
     private Printer $printer;
+    private bool $colors;
 
-    public function __construct(Printer $printer)
+    public function __construct(Printer $printer, bool $colors)
     {
         $this->printer = $printer;
+        $this->colors  = $colors;
     }
 
     public function flush(): void
@@ -34,5 +36,10 @@ abstract class ResultPrinter
     protected function printer(): Printer
     {
         return $this->printer;
+    }
+
+    protected function colors(): bool
+    {
+        return $this->colors;
     }
 }
