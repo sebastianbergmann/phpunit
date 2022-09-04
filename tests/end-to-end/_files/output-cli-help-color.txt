@@ -97,7 +97,6 @@
   [32m--display-warnings              [0m Display details for warnings triggered by
                                    tests
   [32m--reverse-list                  [0m Print defects in reverse order
-  [32m-v|--verbose                    [0m Output more verbose information
 
   [32m--teamcity                      [0m Report test execution progress in TeamCity
                                    format

@@ -115,7 +115,6 @@ final class Help
             ['arg'    => '--display-notices', 'desc' => 'Display details for notices triggered by tests'],
             ['arg'    => '--display-warnings', 'desc' => 'Display details for warnings triggered by tests'],
             ['arg'    => '--reverse-list', 'desc' => 'Print defects in reverse order'],
-            ['arg'    => '-v|--verbose', 'desc' => 'Output more verbose information'],
             ['spacer' => ''],
 
             ['arg' => '--teamcity', 'desc' => 'Report test execution progress in TeamCity format'],

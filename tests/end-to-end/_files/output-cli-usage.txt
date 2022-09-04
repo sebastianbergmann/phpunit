@@ -79,7 +79,6 @@ Reporting:
   --display-notices                Display details for notices triggered by tests
   --display-warnings               Display details for warnings triggered by tests
   --reverse-list                   Print defects in reverse order
-  -v|--verbose                     Output more verbose information
 
   --teamcity                       Report test execution progress in TeamCity format
   --testdox                        Report test execution progress in TestDox format
