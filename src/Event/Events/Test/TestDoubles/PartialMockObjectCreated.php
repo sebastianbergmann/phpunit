@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestDouble;
+namespace PHPUnit\Event\Test;
 
 use function sprintf;
 use PHPUnit\Event\Event;
@@ -16,22 +16,28 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class MockObjectForTraitCreated implements Event
+final class PartialMockObjectCreated implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @psalm-var trait-string
+     * @psalm-var class-string
      */
-    private string $traitName;
+    private string $className;
 
     /**
-     * @psalm-param trait-string $traitName
+     * @psalm-var list<string>
      */
-    public function __construct(Telemetry\Info $telemetryInfo, string $traitName)
+    private array $methodNames;
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public function __construct(Telemetry\Info $telemetryInfo, string $className, string ...$methodNames)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->traitName     = $traitName;
+        $this->className     = $className;
+        $this->methodNames   = $methodNames;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -40,18 +46,26 @@ final class MockObjectForTraitCreated implements Event
     }
 
     /**
-     * @psalm-return trait-string
+     * @psalm-return class-string
      */
-    public function traitName(): string
+    public function className(): string
     {
-        return $this->traitName;
+        return $this->className;
+    }
+
+    /**
+     * @psalm-return list<string>
+     */
+    public function methodNames(): array
+    {
+        return $this->methodNames;
     }
 
     public function asString(): string
     {
         return sprintf(
-            'Mock Object Created (%s)',
-            $this->traitName
+            'Partial Mock Object Created (%s)',
+            $this->className
         );
     }
 }

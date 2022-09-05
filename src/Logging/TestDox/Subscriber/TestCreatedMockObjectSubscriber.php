@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
-use PHPUnit\Event\TestDouble\MockObjectCreated;
-use PHPUnit\Event\TestDouble\MockObjectCreatedSubscriber;
+use PHPUnit\Event\Test\MockObjectCreated;
+use PHPUnit\Event\Test\MockObjectCreatedSubscriber;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

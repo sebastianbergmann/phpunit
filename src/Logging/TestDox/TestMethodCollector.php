@@ -23,10 +23,10 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
+use PHPUnit\Event\Test\MockObjectCreated;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
-use PHPUnit\Event\TestDouble\MockObjectCreated;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 

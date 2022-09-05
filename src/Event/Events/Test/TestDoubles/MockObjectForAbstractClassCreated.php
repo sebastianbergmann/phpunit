@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestDouble;
+namespace PHPUnit\Event\Test;
 
 use function sprintf;
 use PHPUnit\Event\Event;
@@ -16,7 +16,7 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class PartialMockObjectCreated implements Event
+final class MockObjectForAbstractClassCreated implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
@@ -26,18 +26,12 @@ final class PartialMockObjectCreated implements Event
     private string $className;
 
     /**
-     * @psalm-var list<string>
-     */
-    private array $methodNames;
-
-    /**
      * @psalm-param class-string $className
      */
-    public function __construct(Telemetry\Info $telemetryInfo, string $className, string ...$methodNames)
+    public function __construct(Telemetry\Info $telemetryInfo, string $className)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->className     = $className;
-        $this->methodNames   = $methodNames;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -53,18 +47,10 @@ final class PartialMockObjectCreated implements Event
         return $this->className;
     }
 
-    /**
-     * @psalm-return list<string>
-     */
-    public function methodNames(): array
-    {
-        return $this->methodNames;
-    }
-
     public function asString(): string
     {
         return sprintf(
-            'Partial Mock Object Created (%s)',
+            'Mock Object Created (%s)',
             $this->className
         );
     }

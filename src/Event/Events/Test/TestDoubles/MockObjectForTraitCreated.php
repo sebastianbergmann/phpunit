@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestDouble;
+namespace PHPUnit\Event\Test;
 
 use function sprintf;
 use PHPUnit\Event\Event;
@@ -16,22 +16,22 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class MockObjectForAbstractClassCreated implements Event
+final class MockObjectForTraitCreated implements Event
 {
     private Telemetry\Info $telemetryInfo;
 
     /**
-     * @psalm-var class-string
+     * @psalm-var trait-string
      */
-    private string $className;
+    private string $traitName;
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param trait-string $traitName
      */
-    public function __construct(Telemetry\Info $telemetryInfo, string $className)
+    public function __construct(Telemetry\Info $telemetryInfo, string $traitName)
     {
         $this->telemetryInfo = $telemetryInfo;
-        $this->className     = $className;
+        $this->traitName     = $traitName;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -40,18 +40,18 @@ final class MockObjectForAbstractClassCreated implements Event
     }
 
     /**
-     * @psalm-return class-string
+     * @psalm-return trait-string
      */
-    public function className(): string
+    public function traitName(): string
     {
-        return $this->className;
+        return $this->traitName;
     }
 
     public function asString(): string
     {
         return sprintf(
             'Mock Object Created (%s)',
-            $this->className
+            $this->traitName
         );
     }
 }

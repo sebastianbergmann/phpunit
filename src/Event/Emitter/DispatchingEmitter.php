@@ -571,7 +571,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreated(string $className): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectCreated(
+            new Test\MockObjectCreated(
                 $this->telemetryInfo(),
                 $className
             )
@@ -584,7 +584,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreatedForTrait(string $traitName): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectForTraitCreated(
+            new Test\MockObjectForTraitCreated(
                 $this->telemetryInfo(),
                 $traitName
             )
@@ -597,7 +597,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreatedForAbstractClass(string $className): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectForAbstractClassCreated(
+            new Test\MockObjectForAbstractClassCreated(
                 $this->telemetryInfo(),
                 $className
             )
@@ -611,7 +611,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreatedFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectFromWsdlCreated(
+            new Test\MockObjectFromWsdlCreated(
                 $this->telemetryInfo(),
                 $wsdlFile,
                 $originalClassName,
@@ -629,7 +629,7 @@ final class DispatchingEmitter implements Emitter
     public function testPartialMockObjectCreated(string $className, string ...$methodNames): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\PartialMockObjectCreated(
+            new Test\PartialMockObjectCreated(
                 $this->telemetryInfo(),
                 $className,
                 ...$methodNames
@@ -643,7 +643,7 @@ final class DispatchingEmitter implements Emitter
     public function testTestProxyCreated(string $className, array $constructorArguments): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\TestProxyCreated(
+            new Test\TestProxyCreated(
                 $this->telemetryInfo(),
                 $className,
                 $constructorArguments
@@ -657,7 +657,7 @@ final class DispatchingEmitter implements Emitter
     public function testTestStubCreated(string $className): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\TestStubCreated(
+            new Test\TestStubCreated(
                 $this->telemetryInfo(),
                 $className
             )

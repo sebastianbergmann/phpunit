@@ -1108,17 +1108,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $className = self::class;
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectCreatedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectCreatedSubscriber
         {
-            public function notify(TestDouble\MockObjectCreated $event): void
+            public function notify(Test\MockObjectCreated $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestDouble\MockObjectCreatedSubscriber::class,
-            TestDouble\MockObjectCreated::class,
+            Test\MockObjectCreatedSubscriber::class,
+            Test\MockObjectCreated::class,
             $subscriber
         );
 
@@ -1135,7 +1135,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestDouble\MockObjectCreated::class, $event);
+        $this->assertInstanceOf(Test\MockObjectCreated::class, $event);
 
         $this->assertSame($className, $event->className());
     }
@@ -1144,17 +1144,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $traitName = TestFixture\MockObject\ExampleTrait::class;
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectForTraitCreatedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectForTraitCreatedSubscriber
         {
-            public function notify(TestDouble\MockObjectForTraitCreated $event): void
+            public function notify(Test\MockObjectForTraitCreated $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestDouble\MockObjectForTraitCreatedSubscriber::class,
-            TestDouble\MockObjectForTraitCreated::class,
+            Test\MockObjectForTraitCreatedSubscriber::class,
+            Test\MockObjectForTraitCreated::class,
             $subscriber
         );
 
@@ -1170,7 +1170,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertSame(1, $subscriber->recordedEventCount());
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestDouble\MockObjectForTraitCreated::class, $event);
+        $this->assertInstanceOf(Test\MockObjectForTraitCreated::class, $event);
 
         $this->assertSame($traitName, $event->traitName());
     }
@@ -1179,17 +1179,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $className = stdClass::class;
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectForAbstractClassCreatedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectForAbstractClassCreatedSubscriber
         {
-            public function notify(TestDouble\MockObjectForAbstractClassCreated $event): void
+            public function notify(Test\MockObjectForAbstractClassCreated $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestDouble\MockObjectForAbstractClassCreatedSubscriber::class,
-            TestDouble\MockObjectForAbstractClassCreated::class,
+            Test\MockObjectForAbstractClassCreatedSubscriber::class,
+            Test\MockObjectForAbstractClassCreated::class,
             $subscriber
         );
 
@@ -1206,7 +1206,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestDouble\MockObjectForAbstractClassCreated::class, $event);
+        $this->assertInstanceOf(Test\MockObjectForAbstractClassCreated::class, $event);
 
         $this->assertSame($className, $event->className());
     }
@@ -1227,17 +1227,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'baz' => 9000,
         ];
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\MockObjectFromWsdlCreatedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\MockObjectFromWsdlCreatedSubscriber
         {
-            public function notify(TestDouble\MockObjectFromWsdlCreated $event): void
+            public function notify(Test\MockObjectFromWsdlCreated $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestDouble\MockObjectFromWsdlCreatedSubscriber::class,
-            TestDouble\MockObjectFromWsdlCreated::class,
+            Test\MockObjectFromWsdlCreatedSubscriber::class,
+            Test\MockObjectFromWsdlCreated::class,
             $subscriber
         );
 
@@ -1261,7 +1261,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestDouble\MockObjectFromWsdlCreated::class, $event);
+        $this->assertInstanceOf(Test\MockObjectFromWsdlCreated::class, $event);
 
         $this->assertSame($wsdlFile, $event->wsdlFile());
         $this->assertSame($originalClassName, $event->originalClassName());
@@ -1280,17 +1280,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'baz',
         ];
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\PartialMockObjectCreatedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\PartialMockObjectCreatedSubscriber
         {
-            public function notify(TestDouble\PartialMockObjectCreated $event): void
+            public function notify(Test\PartialMockObjectCreated $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestDouble\PartialMockObjectCreatedSubscriber::class,
-            TestDouble\PartialMockObjectCreated::class,
+            Test\PartialMockObjectCreatedSubscriber::class,
+            Test\PartialMockObjectCreated::class,
             $subscriber
         );
 
@@ -1310,7 +1310,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestDouble\PartialMockObjectCreated::class, $event);
+        $this->assertInstanceOf(Test\PartialMockObjectCreated::class, $event);
 
         $this->assertSame($className, $event->className());
         $this->assertSame($methodNames, $event->methodNames());
@@ -1328,17 +1328,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
             ],
         ];
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\TestProxyCreatedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\TestProxyCreatedSubscriber
         {
-            public function notify(TestDouble\TestProxyCreated $event): void
+            public function notify(Test\TestProxyCreated $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestDouble\TestProxyCreatedSubscriber::class,
-            TestDouble\TestProxyCreated::class,
+            Test\TestProxyCreatedSubscriber::class,
+            Test\TestProxyCreated::class,
             $subscriber
         );
 
@@ -1358,7 +1358,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestDouble\TestProxyCreated::class, $event);
+        $this->assertInstanceOf(Test\TestProxyCreated::class, $event);
 
         $this->assertSame($className, $event->className());
         $this->assertSame($constructorArguments, $event->constructorArguments());
@@ -1368,17 +1368,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
     {
         $className = self::class;
 
-        $subscriber = new class extends RecordingSubscriber implements TestDouble\TestStubCreatedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\TestStubCreatedSubscriber
         {
-            public function notify(TestDouble\TestStubCreated $event): void
+            public function notify(Test\TestStubCreated $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestDouble\TestStubCreatedSubscriber::class,
-            TestDouble\TestStubCreated::class,
+            Test\TestStubCreatedSubscriber::class,
+            Test\TestStubCreated::class,
             $subscriber
         );
 
@@ -1395,7 +1395,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(TestDouble\TestStubCreated::class, $event);
+        $this->assertInstanceOf(Test\TestStubCreated::class, $event);
 
         $this->assertSame($className, $event->className());
     }
