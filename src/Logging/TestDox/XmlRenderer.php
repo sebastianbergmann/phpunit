@@ -24,7 +24,7 @@ use XMLWriter;
 final class XmlRenderer
 {
     /**
-     * @psalm-param array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list<class-string>}> $tests
+     * @psalm-param array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list<class-string|trait-string>}> $tests
      */
     public function render(array $tests): string
     {

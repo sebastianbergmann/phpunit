@@ -468,7 +468,7 @@
       <code>$tests</code>
     </InvalidReturnStatement>
     <InvalidReturnType occurrences="1">
-      <code>array&lt;class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list&lt;class-string&gt;}&gt;</code>
+      <code>array&lt;class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list&lt;class-string|trait-string&gt;}&gt;</code>
     </InvalidReturnType>
     <MissingThrowsDocblock occurrences="1">
       <code>duration</code>
@@ -476,7 +476,8 @@
     <PossiblyNullArgument occurrences="1">
       <code>$this-&gt;time</code>
     </PossiblyNullArgument>
-    <PropertyTypeCoercion occurrences="1">
+    <PropertyTypeCoercion occurrences="2">
+      <code>$this-&gt;testDoubles</code>
       <code>$this-&gt;tests</code>
     </PropertyTypeCoercion>
     <RedundantCondition occurrences="1">

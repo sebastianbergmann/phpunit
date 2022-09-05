@@ -24,9 +24,15 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\MockObjectCreated;
+use PHPUnit\Event\Test\MockObjectForAbstractClassCreated;
+use PHPUnit\Event\Test\MockObjectForTraitCreated;
+use PHPUnit\Event\Test\MockObjectFromWsdlCreated;
+use PHPUnit\Event\Test\PartialMockObjectCreated;
 use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
+use PHPUnit\Event\Test\TestProxyCreated;
+use PHPUnit\Event\Test\TestStubCreated;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 
@@ -43,7 +49,7 @@ final class TestMethodCollector
     private ?TestStatus $status = null;
 
     /**
-     * @psalm-var list<class-string>
+     * @psalm-var list<class-string|trait-string>
      */
     private array $testDoubles = [];
 
@@ -57,7 +63,7 @@ final class TestMethodCollector
     }
 
     /**
-     * @psalm-return array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list<class-string>}>
+     * @psalm-return array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list<class-string|trait-string>}>
      */
     public function testMethodsGroupedByClassAndSortedByLine(): array
     {
@@ -124,8 +130,20 @@ final class TestMethodCollector
         $this->status = TestStatus::risky($event->message());
     }
 
-    public function testCreatedTestDouble(MockObjectCreated $event): void
+    public function testCreatedTestDouble(MockObjectCreated|MockObjectForAbstractClassCreated|MockObjectForTraitCreated|MockObjectFromWsdlCreated|PartialMockObjectCreated|TestProxyCreated|TestStubCreated $event): void
     {
+        if ($event instanceof MockObjectForTraitCreated) {
+            $this->testDoubles[] = $event->traitName();
+
+            return;
+        }
+
+        if ($event instanceof MockObjectFromWsdlCreated) {
+            $this->testDoubles[] = 'SoapClient';
+
+            return;
+        }
+
         $this->testDoubles[] = $event->className();
     }
 
@@ -162,7 +180,13 @@ final class TestMethodCollector
     private function registerSubscribers(): void
     {
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
+        Facade::registerSubscriber(new TestCreatedMockObjectForAbstractClassSubscriber($this));
+        Facade::registerSubscriber(new TestCreatedMockObjectForTraitSubscriber($this));
+        Facade::registerSubscriber(new TestCreatedMockObjectFromWsdlSubscriber($this));
         Facade::registerSubscriber(new TestCreatedMockObjectSubscriber($this));
+        Facade::registerSubscriber(new TestCreatedPartialMockObjectSubscriber($this));
+        Facade::registerSubscriber(new TestCreatedTestProxySubscriber($this));
+        Facade::registerSubscriber(new TestCreatedTestStubSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
