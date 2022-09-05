@@ -13,15 +13,15 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\TestFixture;
 
-#[CoversClass(MockObjectCreatedForTrait::class)]
-final class MockObjectCreatedForTraitTest extends AbstractEventTestCase
+#[CoversClass(MockObjectForTraitCreated::class)]
+final class MockObjectForTraitCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
         $traitName     = TestFixture\MockObject\ExampleTrait::class;
 
-        $event = new MockObjectCreatedForTrait(
+        $event = new MockObjectForTraitCreated(
             $telemetryInfo,
             $traitName
         );

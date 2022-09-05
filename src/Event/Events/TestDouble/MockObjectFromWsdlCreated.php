@@ -16,7 +16,7 @@ use PHPUnit\Event\Telemetry;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class MockObjectCreatedFromWsdl implements Event
+final class MockObjectFromWsdlCreated implements Event
 {
     private Telemetry\Info $telemetryInfo;
     private string $wsdlFile;

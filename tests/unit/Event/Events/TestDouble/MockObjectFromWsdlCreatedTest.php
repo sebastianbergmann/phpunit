@@ -13,8 +13,8 @@ use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 use stdClass;
 
-#[CoversClass(MockObjectCreatedFromWsdl::class)]
-final class MockObjectCreatedFromWsdlTest extends AbstractEventTestCase
+#[CoversClass(MockObjectFromWsdlCreated::class)]
+final class MockObjectFromWsdlCreatedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
@@ -33,7 +33,7 @@ final class MockObjectCreatedFromWsdlTest extends AbstractEventTestCase
             'baz' => 9000,
         ];
 
-        $event = new MockObjectCreatedFromWsdl(
+        $event = new MockObjectFromWsdlCreated(
             $telemetryInfo,
             $wsdlFile,
             $originalClassName,

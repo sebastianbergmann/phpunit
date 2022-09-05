@@ -14,7 +14,7 @@ use PHPUnit\Event\Subscriber;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-interface MockObjectCreatedFromWsdlSubscriber extends Subscriber
+interface MockObjectFromWsdlCreatedSubscriber extends Subscriber
 {
-    public function notify(MockObjectCreatedFromWsdl $event): void;
+    public function notify(MockObjectFromWsdlCreated $event): void;
 }

@@ -185,9 +185,9 @@ final class Facade
             Test\Skipped::class,
             Test\WarningTriggered::class,
 
-            TestDouble\MockObjectCreatedForAbstractClass::class,
-            TestDouble\MockObjectCreatedForTrait::class,
-            TestDouble\MockObjectCreatedFromWsdl::class,
+            TestDouble\MockObjectForAbstractClassCreated::class,
+            TestDouble\MockObjectForTraitCreated::class,
+            TestDouble\MockObjectFromWsdlCreated::class,
             TestDouble\MockObjectCreated::class,
             TestDouble\PartialMockObjectCreated::class,
             TestDouble\TestProxyCreated::class,

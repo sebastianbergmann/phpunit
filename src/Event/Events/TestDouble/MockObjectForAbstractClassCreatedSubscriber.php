@@ -14,7 +14,7 @@ use PHPUnit\Event\Subscriber;
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-interface MockObjectCreatedForTraitSubscriber extends Subscriber
+interface MockObjectForAbstractClassCreatedSubscriber extends Subscriber
 {
-    public function notify(MockObjectCreatedForTrait $event): void;
+    public function notify(MockObjectForAbstractClassCreated $event): void;
 }

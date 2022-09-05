@@ -584,7 +584,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreatedForTrait(string $traitName): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectCreatedForTrait(
+            new TestDouble\MockObjectForTraitCreated(
                 $this->telemetryInfo(),
                 $traitName
             )
@@ -597,7 +597,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreatedForAbstractClass(string $className): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectCreatedForAbstractClass(
+            new TestDouble\MockObjectForAbstractClassCreated(
                 $this->telemetryInfo(),
                 $className
             )
@@ -611,7 +611,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreatedFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectCreatedFromWsdl(
+            new TestDouble\MockObjectFromWsdlCreated(
                 $this->telemetryInfo(),
                 $wsdlFile,
                 $originalClassName,
