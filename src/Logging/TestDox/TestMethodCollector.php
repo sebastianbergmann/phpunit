@@ -161,8 +161,8 @@ final class TestMethodCollector
      */
     private function registerSubscribers(): void
     {
-        Facade::registerSubscriber(new TestCreatedMockObjectSubscriber($this));
         Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
+        Facade::registerSubscriber(new TestCreatedMockObjectSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
