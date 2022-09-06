@@ -42,6 +42,5 @@ Issue4632 (PHPUnit\TestFixture\Issue4632)
 
 Time: %s, Memory: %s
 
-
 FAILURES!
 Tests: 3, Assertions: 3, Failures: 3.
