@@ -25,5 +25,6 @@ final class ResultPrinter extends AbstractResultPrinter
 
     public function printResult(TestResult $result): void
     {
+        $this->printFooter($result);
     }
 }
