@@ -25,8 +25,5 @@ final class ResultPrinter extends AbstractResultPrinter
 
     public function printResult(TestResult $result): void
     {
-        $this->printer()->print('TestDox result printing has not been migrated to events yet' . PHP_EOL);
-
-        exit(1);
     }
 }
