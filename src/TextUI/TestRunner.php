@@ -115,6 +115,8 @@ final class TestRunner
             new ResultCacheHandler($cache);
         }
 
+        $originalExecutionOrder = [];
+
         if ($this->configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
             $this->configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
             $this->configuration->resolveDependencies()) {
@@ -191,7 +193,9 @@ final class TestRunner
         if ($this->configuration->outputIsTestDox()) {
             $progressPrinter = new TestDoxProgressPrinter(
                 $this->printer,
+                $originalExecutionOrder,
                 $this->configuration->colors(),
+                !$this->configuration->noInteraction(),
             );
 
             $resultPrinter = new TestDoxResultPrinter(
