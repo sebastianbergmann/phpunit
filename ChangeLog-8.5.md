@@ -4,6 +4,10 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 
 ## [8.5.30] - 2022-MM-DD
 
+### Changed
+
+* The configuration generator now asks for a cache directory
+
 ### Fixed
 
 * [#4913](https://github.com/sebastianbergmann/phpunit/issues/4913): Failed `assert()` should show a backtrace

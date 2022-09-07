@@ -27,6 +27,7 @@ final class ConfigurationGeneratorTest extends TestCase
 <phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
          xsi:noNamespaceSchemaLocation="https://schema.phpunit.de/X.Y.Z/phpunit.xsd"
          bootstrap="vendor/autoload.php"
+         cacheResultFile=".phpunit.cache/test-results"
          executionOrder="depends,defects"
          forceCoversAnnotation="true"
          beStrictAboutCoversAnnotation="true"
@@ -51,7 +52,8 @@ final class ConfigurationGeneratorTest extends TestCase
                 'X.Y.Z',
                 'vendor/autoload.php',
                 'tests',
-                'src'
+                'src',
+                '.phpunit.cache'
             )
         );
     }
