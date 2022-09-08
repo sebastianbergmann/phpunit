@@ -58,13 +58,6 @@ use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
-use PHPUnit\Event\Test\DeprecationTriggered;
-use PHPUnit\Event\Test\ErrorTriggered;
-use PHPUnit\Event\Test\NoticeTriggered;
-use PHPUnit\Event\Test\PhpDeprecationTriggered;
-use PHPUnit\Event\Test\PhpNoticeTriggered;
-use PHPUnit\Event\Test\PhpWarningTriggered;
-use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\MessageIsOrContains;
@@ -183,21 +176,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @psalm-var list<Comparator>
      */
-    private array $customComparators                             = [];
-    private ?Event\Code\TestMethod $testValueObjectForEvents     = null;
-    private bool $wasPrepared                                    = false;
-    private bool $deprecationExpected                            = false;
-    private ?string $expectedDeprecationMessage                  = null;
-    private ?string $expectedDeprecationMessageRegularExpression = null;
-    private bool $errorExpected                                  = false;
-    private ?string $expectedErrorMessage                        = null;
-    private ?string $expectedErrorMessageRegularExpression       = null;
-    private bool $noticeExpected                                 = false;
-    private ?string $expectedNoticeMessage                       = null;
-    private ?string $expectedNoticeMessageRegularExpression      = null;
-    private bool $warningExpected                                = false;
-    private ?string $expectedWarningMessage                      = null;
-    private ?string $expectedWarningMessageRegularExpression     = null;
+    private array $customComparators                         = [];
+    private ?Event\Code\TestMethod $testValueObjectForEvents = null;
+    private bool $wasPrepared                                = false;
 
     /**
      * Returns a matcher that matches when the method is executed
@@ -435,98 +416,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->doesNotPerformAssertions = true;
     }
 
-    final public function expectDeprecation(): void
-    {
-        Facade::ignoreTestTriggeredDeprecationEventForExpectation();
-
-        $this->deprecationExpected = true;
-    }
-
-    final public function expectDeprecationMessage(string $message): void
-    {
-        Facade::ignoreTestTriggeredDeprecationEventForExpectation();
-
-        $this->deprecationExpected        = true;
-        $this->expectedDeprecationMessage = $message;
-    }
-
-    final public function expectDeprecationMessageMatches(string $regularExpression): void
-    {
-        Facade::ignoreTestTriggeredDeprecationEventForExpectation();
-
-        $this->deprecationExpected                         = true;
-        $this->expectedDeprecationMessageRegularExpression = $regularExpression;
-    }
-
-    final public function expectError(): void
-    {
-        Facade::ignoreTestTriggeredErrorEventForExpectation();
-
-        $this->errorExpected = true;
-    }
-
-    final public function expectErrorMessage(string $message): void
-    {
-        Facade::ignoreTestTriggeredErrorEventForExpectation();
-
-        $this->errorExpected        = true;
-        $this->expectedErrorMessage = $message;
-    }
-
-    final public function expectErrorMessageMatches(string $regularExpression): void
-    {
-        Facade::ignoreTestTriggeredErrorEventForExpectation();
-
-        $this->errorExpected                         = true;
-        $this->expectedErrorMessageRegularExpression = $regularExpression;
-    }
-
-    final public function expectNotice(): void
-    {
-        Facade::ignoreTestTriggeredNoticeEventForExpectation();
-
-        $this->noticeExpected = true;
-    }
-
-    final public function expectNoticeMessage(string $message): void
-    {
-        Facade::ignoreTestTriggeredNoticeEventForExpectation();
-
-        $this->noticeExpected        = true;
-        $this->expectedNoticeMessage = $message;
-    }
-
-    final public function expectNoticeMessageMatches(string $regularExpression): void
-    {
-        Facade::ignoreTestTriggeredNoticeEventForExpectation();
-
-        $this->noticeExpected                         = true;
-        $this->expectedNoticeMessageRegularExpression = $regularExpression;
-    }
-
-    final public function expectWarning(): void
-    {
-        Facade::ignoreTestTriggeredWarningEventForExpectation();
-
-        $this->warningExpected = true;
-    }
-
-    final public function expectWarningMessage(string $message): void
-    {
-        Facade::ignoreTestTriggeredWarningEventForExpectation();
-
-        $this->warningExpected        = true;
-        $this->expectedWarningMessage = $message;
-    }
-
-    final public function expectWarningMessageMatches(string $regularExpression): void
-    {
-        Facade::ignoreTestTriggeredWarningEventForExpectation();
-
-        $this->warningExpected                         = true;
-        $this->expectedWarningMessageRegularExpression = $regularExpression;
-    }
-
     final public function status(): TestStatus
     {
         return $this->status;
@@ -745,21 +634,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } catch (TimeoutException $e) {
             $this->status = TestStatus::risky($e->getMessage());
         } catch (Throwable $_e) {
-            if (!$this->errorExpected || $_e::class !== 'Error') {
-                $e            = $_e;
-                $this->status = TestStatus::error($_e->getMessage());
+            $e            = $_e;
+            $this->status = TestStatus::error($_e->getMessage());
 
-                $emitter->testErrored(
-                    $this->valueObjectForEvents(),
-                    Event\Code\Throwable::from($_e)
-                );
-            }
+            $emitter->testErrored(
+                $this->valueObjectForEvents(),
+                Event\Code\Throwable::from($_e)
+            );
         }
-
-        $this->verifyDeprecationExpectations();
-        $this->verifyErrorExpectations();
-        $this->verifyNoticeExpectations();
-        $this->verifyWarningExpectations();
 
         if ($this->stopOutputBuffering() && !isset($e)) {
             $this->performAssertionsOnOutput();
@@ -2133,154 +2015,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 sprintf(
                     'Failed asserting that exception with code "%s" is thrown',
                     $this->expectedExceptionCode
-                )
-            );
-        }
-    }
-
-    private function verifyDeprecationExpectations(): void
-    {
-        if (!$this->deprecationExpected) {
-            return;
-        }
-
-        $this->numberOfAssertionsPerformed++;
-
-        if (!Facade::hasIgnoredEvent()) {
-            throw new AssertionFailedError('Failed asserting that a deprecation is triggered');
-        }
-
-        $event = Facade::ignoredEvent();
-
-        assert($event instanceof DeprecationTriggered || $event instanceof PhpDeprecationTriggered);
-
-        if ($this->expectedDeprecationMessage !== null) {
-            $this->assertThat(
-                $event->message(),
-                new MessageIsOrContains(
-                    'deprecation',
-                    $this->expectedDeprecationMessage
-                )
-            );
-        }
-
-        if ($this->expectedDeprecationMessageRegularExpression !== null) {
-            $this->assertThat(
-                $event->message(),
-                new MessageMatchesRegularExpression(
-                    'deprecation',
-                    $this->expectedDeprecationMessage
-                )
-            );
-        }
-    }
-
-    private function verifyErrorExpectations(): void
-    {
-        if (!$this->errorExpected) {
-            return;
-        }
-
-        $this->numberOfAssertionsPerformed++;
-
-        if (!Facade::hasIgnoredEvent()) {
-            throw new AssertionFailedError('Failed asserting that an error is triggered');
-        }
-
-        $event = Facade::ignoredEvent();
-
-        assert($event instanceof ErrorTriggered);
-
-        if ($this->expectedErrorMessage !== null) {
-            $this->assertThat(
-                $event->message(),
-                new MessageIsOrContains(
-                    'error',
-                    $this->expectedErrorMessage
-                )
-            );
-        }
-
-        if ($this->expectedErrorMessageRegularExpression !== null) {
-            $this->assertThat(
-                $event->message(),
-                new MessageMatchesRegularExpression(
-                    'error',
-                    $this->expectedErrorMessage
-                )
-            );
-        }
-    }
-
-    private function verifyNoticeExpectations(): void
-    {
-        if (!$this->noticeExpected) {
-            return;
-        }
-
-        $this->numberOfAssertionsPerformed++;
-
-        if (!Facade::hasIgnoredEvent()) {
-            throw new AssertionFailedError('Failed asserting that a notice is triggered');
-        }
-
-        $event = Facade::ignoredEvent();
-
-        assert($event instanceof NoticeTriggered || $event instanceof PhpNoticeTriggered);
-
-        if ($this->expectedNoticeMessage !== null) {
-            $this->assertThat(
-                $event->message(),
-                new MessageIsOrContains(
-                    'notice',
-                    $this->expectedNoticeMessage
-                )
-            );
-        }
-
-        if ($this->expectedNoticeMessageRegularExpression !== null) {
-            $this->assertThat(
-                $event->message(),
-                new MessageMatchesRegularExpression(
-                    'notice',
-                    $this->expectedNoticeMessage
-                )
-            );
-        }
-    }
-
-    private function verifyWarningExpectations(): void
-    {
-        if (!$this->warningExpected) {
-            return;
-        }
-
-        $this->numberOfAssertionsPerformed++;
-
-        if (!Facade::hasIgnoredEvent()) {
-            throw new AssertionFailedError('Failed asserting that a warning is triggered');
-        }
-
-        $event = Facade::ignoredEvent();
-
-        assert($event instanceof WarningTriggered || $event instanceof PhpWarningTriggered);
-
-        if ($this->expectedWarningMessage !== null) {
-            $this->assertThat(
-                $event->message(),
-                new MessageIsOrContains(
-                    'warning',
-                    $this->expectedWarningMessage
-                )
-            );
-        }
-
-        if ($this->expectedWarningMessageRegularExpression !== null) {
-            $this->assertThat(
-                $event->message(),
-                new MessageMatchesRegularExpression(
-                    'warning',
-                    $this->expectedWarningMessage
                 )
             );
         }

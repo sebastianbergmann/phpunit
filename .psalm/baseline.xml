@@ -328,19 +328,7 @@
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
-    <MissingThrowsDocblock occurrences="29">
-      <code>Facade::ignoredEvent()</code>
-      <code>Facade::ignoredEvent()</code>
-      <code>Facade::ignoredEvent()</code>
-      <code>Facade::ignoredEvent()</code>
-      <code>assertThat</code>
-      <code>assertThat</code>
-      <code>assertThat</code>
-      <code>assertThat</code>
-      <code>assertThat</code>
-      <code>assertThat</code>
-      <code>assertThat</code>
-      <code>assertThat</code>
+    <MissingThrowsDocblock occurrences="13">
       <code>assertThat</code>
       <code>assertThat</code>
       <code>assertThat</code>
@@ -354,17 +342,7 @@
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
       <code>onlyMethods</code>
-      <code>throw new AssertionFailedError('Failed asserting that a deprecation is triggered');</code>
-      <code>throw new AssertionFailedError('Failed asserting that a notice is triggered');</code>
-      <code>throw new AssertionFailedError('Failed asserting that a warning is triggered');</code>
-      <code>throw new AssertionFailedError('Failed asserting that an error is triggered');</code>
     </MissingThrowsDocblock>
-    <PossiblyNullArgument occurrences="4">
-      <code>$this-&gt;expectedDeprecationMessage</code>
-      <code>$this-&gt;expectedErrorMessage</code>
-      <code>$this-&gt;expectedNoticeMessage</code>
-      <code>$this-&gt;expectedWarningMessage</code>
-    </PossiblyNullArgument>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>

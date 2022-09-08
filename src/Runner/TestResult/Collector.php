@@ -40,7 +40,6 @@ use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
-use PHPUnit\Runner\NoIgnoredEventException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -146,12 +145,7 @@ final class Collector
     /**
      * @psalm-var list<TestRunnerDeprecationTriggered>
      */
-    private array $testRunnerTriggeredDeprecationEvents                                                                                                            = [];
-    private bool $ignoreTestTriggeredDeprecationEventForExpectation                                                                                                = false;
-    private bool $ignoreTestTriggeredErrorEventForExpectation                                                                                                      = false;
-    private bool $ignoreTestTriggeredNoticeEventForExpectation                                                                                                     = false;
-    private bool $ignoreTestTriggeredWarningEventForExpectation                                                                                                    = false;
-    private DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered|null $ignoredEvent = null;
+    private array $testRunnerTriggeredDeprecationEvents = [];
 
     /**
      * @throws EventFacadeIsSealedException
@@ -309,11 +303,7 @@ final class Collector
 
         $this->numberOfTestsRun++;
 
-        $this->prepared                                          = false;
-        $this->ignoreTestTriggeredDeprecationEventForExpectation = false;
-        $this->ignoreTestTriggeredErrorEventForExpectation       = false;
-        $this->ignoreTestTriggeredNoticeEventForExpectation      = false;
-        $this->ignoreTestTriggeredWarningEventForExpectation     = false;
+        $this->prepared = false;
     }
 
     public function beforeTestClassMethodErrored(BeforeFirstTestMethodErrored $event): void
@@ -394,12 +384,6 @@ final class Collector
 
     public function testTriggeredDeprecation(DeprecationTriggered $event): void
     {
-        if ($this->ignoreTestTriggeredDeprecationEventForExpectation) {
-            $this->ignoredEvent = $event;
-
-            return;
-        }
-
         if (!isset($this->testTriggeredDeprecationEvents[$event->test()->id()])) {
             $this->testTriggeredDeprecationEvents[$event->test()->id()] = [];
         }
@@ -409,12 +393,6 @@ final class Collector
 
     public function testTriggeredPhpDeprecation(PhpDeprecationTriggered $event): void
     {
-        if ($this->ignoreTestTriggeredDeprecationEventForExpectation) {
-            $this->ignoredEvent = $event;
-
-            return;
-        }
-
         if (!isset($this->testTriggeredPhpDeprecationEvents[$event->test()->id()])) {
             $this->testTriggeredPhpDeprecationEvents[$event->test()->id()] = [];
         }
@@ -433,12 +411,6 @@ final class Collector
 
     public function testTriggeredError(ErrorTriggered $event): void
     {
-        if ($this->ignoreTestTriggeredErrorEventForExpectation) {
-            $this->ignoredEvent = $event;
-
-            return;
-        }
-
         if (!isset($this->testTriggeredErrorEvents[$event->test()->id()])) {
             $this->testTriggeredErrorEvents[$event->test()->id()] = [];
         }
@@ -448,12 +420,6 @@ final class Collector
 
     public function testTriggeredNotice(NoticeTriggered $event): void
     {
-        if ($this->ignoreTestTriggeredNoticeEventForExpectation) {
-            $this->ignoredEvent = $event;
-
-            return;
-        }
-
         if (!isset($this->testTriggeredNoticeEvents[$event->test()->id()])) {
             $this->testTriggeredNoticeEvents[$event->test()->id()] = [];
         }
@@ -463,12 +429,6 @@ final class Collector
 
     public function testTriggeredPhpNotice(PhpNoticeTriggered $event): void
     {
-        if ($this->ignoreTestTriggeredNoticeEventForExpectation) {
-            $this->ignoredEvent = $event;
-
-            return;
-        }
-
         if (!isset($this->testTriggeredPhpNoticeEvents[$event->test()->id()])) {
             $this->testTriggeredPhpNoticeEvents[$event->test()->id()] = [];
         }
@@ -478,12 +438,6 @@ final class Collector
 
     public function testTriggeredWarning(WarningTriggered $event): void
     {
-        if ($this->ignoreTestTriggeredWarningEventForExpectation) {
-            $this->ignoredEvent = $event;
-
-            return;
-        }
-
         if (!isset($this->testTriggeredWarningEvents[$event->test()->id()])) {
             $this->testTriggeredWarningEvents[$event->test()->id()] = [];
         }
@@ -493,12 +447,6 @@ final class Collector
 
     public function testTriggeredPhpWarning(PhpWarningTriggered $event): void
     {
-        if ($this->ignoreTestTriggeredWarningEventForExpectation) {
-            $this->ignoredEvent = $event;
-
-            return;
-        }
-
         if (!isset($this->testTriggeredPhpWarningEvents[$event->test()->id()])) {
             $this->testTriggeredPhpWarningEvents[$event->test()->id()] = [];
         }
@@ -540,42 +488,5 @@ final class Collector
                !empty($this->testTriggeredPhpWarningEvents) ||
                !empty($this->testTriggeredPhpunitWarningEvents) ||
                !empty($this->testRunnerTriggeredWarningEvents);
-    }
-
-    public function ignoreTestTriggeredDeprecationEventForExpectation(): void
-    {
-        $this->ignoreTestTriggeredDeprecationEventForExpectation = true;
-    }
-
-    public function ignoreTestTriggeredErrorEventForExpectation(): void
-    {
-        $this->ignoreTestTriggeredErrorEventForExpectation = true;
-    }
-
-    public function ignoreTestTriggeredNoticeEventForExpectation(): void
-    {
-        $this->ignoreTestTriggeredNoticeEventForExpectation = true;
-    }
-
-    public function ignoreTestTriggeredWarningEventForExpectation(): void
-    {
-        $this->ignoreTestTriggeredWarningEventForExpectation = true;
-    }
-
-    public function hasIgnoredEvent(): bool
-    {
-        return $this->ignoredEvent !== null;
-    }
-
-    /**
-     * @throws NoIgnoredEventException
-     */
-    public function ignoredEvent(): DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered
-    {
-        if ($this->ignoredEvent === null) {
-            throw new NoIgnoredEventException;
-        }
-
-        return $this->ignoredEvent;
     }
 }

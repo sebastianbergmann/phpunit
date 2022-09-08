@@ -9,11 +9,6 @@
  */
 namespace PHPUnit\Framework;
 
-use const E_USER_DEPRECATED;
-use const E_USER_ERROR;
-use const E_USER_NOTICE;
-use const E_USER_WARNING;
-use function trigger_error;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
@@ -181,41 +176,5 @@ class TestCaseTest extends TestCase
         $testCase = new TestWithDifferentNames($methodName);
 
         $this->assertSame($methodName, $testCase->nameWithDataSet());
-    }
-
-    public function testDeprecationCanBeExpected(): void
-    {
-        $this->expectDeprecation();
-        $this->expectDeprecationMessage('foo');
-        $this->expectDeprecationMessageMatches('/foo/');
-
-        trigger_error('foo', E_USER_DEPRECATED);
-    }
-
-    public function testNoticeCanBeExpected(): void
-    {
-        $this->expectNotice();
-        $this->expectNoticeMessage('foo');
-        $this->expectNoticeMessageMatches('/foo/');
-
-        trigger_error('foo', E_USER_NOTICE);
-    }
-
-    public function testWarningCanBeExpected(): void
-    {
-        $this->expectWarning();
-        $this->expectWarningMessage('foo');
-        $this->expectWarningMessageMatches('/foo/');
-
-        trigger_error('foo', E_USER_WARNING);
-    }
-
-    public function testErrorCanBeExpected(): void
-    {
-        $this->expectError();
-        $this->expectErrorMessage('foo');
-        $this->expectErrorMessageMatches('/foo/');
-
-        trigger_error('foo', E_USER_ERROR);
     }
 }

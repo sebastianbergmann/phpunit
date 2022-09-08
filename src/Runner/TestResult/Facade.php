@@ -9,15 +9,7 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Event\Test\DeprecationTriggered;
-use PHPUnit\Event\Test\ErrorTriggered;
-use PHPUnit\Event\Test\NoticeTriggered;
-use PHPUnit\Event\Test\PhpDeprecationTriggered;
-use PHPUnit\Event\Test\PhpNoticeTriggered;
-use PHPUnit\Event\Test\PhpWarningTriggered;
-use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\Framework\TestSize\TestSize;
-use PHPUnit\Runner\NoIgnoredEventException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -80,39 +72,6 @@ final class Facade
     public static function hasTestMarkedIncompleteEvents(): bool
     {
         return self::collector()->hasTestMarkedIncompleteEvents();
-    }
-
-    public static function ignoreTestTriggeredDeprecationEventForExpectation(): void
-    {
-        self::collector()->ignoreTestTriggeredDeprecationEventForExpectation();
-    }
-
-    public static function ignoreTestTriggeredErrorEventForExpectation(): void
-    {
-        self::collector()->ignoreTestTriggeredErrorEventForExpectation();
-    }
-
-    public static function ignoreTestTriggeredNoticeEventForExpectation(): void
-    {
-        self::collector()->ignoreTestTriggeredNoticeEventForExpectation();
-    }
-
-    public static function ignoreTestTriggeredWarningEventForExpectation(): void
-    {
-        self::collector()->ignoreTestTriggeredWarningEventForExpectation();
-    }
-
-    public static function hasIgnoredEvent(): bool
-    {
-        return self::collector()->hasIgnoredEvent();
-    }
-
-    /**
-     * @throws NoIgnoredEventException
-     */
-    public static function ignoredEvent(): DeprecationTriggered|PhpDeprecationTriggered|ErrorTriggered|NoticeTriggered|PhpNoticeTriggered|WarningTriggered|PhpWarningTriggered
-    {
-        return self::collector()->ignoredEvent();
     }
 
     private static function collector(): Collector
