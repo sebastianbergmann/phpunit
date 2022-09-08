@@ -26,6 +26,17 @@ final class Facade
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
+    public static function registerSubscribers(Subscriber ...$subscribers): void
+    {
+        foreach ($subscribers as $subscriber) {
+            self::registerSubscriber($subscriber);
+        }
+    }
+
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     public static function registerSubscriber(Subscriber $subscriber): void
     {
         if (self::$sealed) {
