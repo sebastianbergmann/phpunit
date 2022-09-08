@@ -1072,9 +1072,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @psalm-template RealInstanceType of object
      *
-     * @psalm-param    class-string<RealInstanceType> $originalClassName
+     * @psalm-param class-string<RealInstanceType> $originalClassName
      *
-     * @psalm-return   Stub&RealInstanceType
+     * @psalm-return Stub&RealInstanceType
      */
     protected function createStub(string $originalClassName): Stub
     {
