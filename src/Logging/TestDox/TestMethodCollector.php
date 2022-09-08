@@ -179,20 +179,22 @@ final class TestMethodCollector
      */
     private function registerSubscribers(): void
     {
-        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
-        Facade::registerSubscriber(new TestCreatedMockObjectForAbstractClassSubscriber($this));
-        Facade::registerSubscriber(new TestCreatedMockObjectForTraitSubscriber($this));
-        Facade::registerSubscriber(new TestCreatedMockObjectFromWsdlSubscriber($this));
-        Facade::registerSubscriber(new TestCreatedMockObjectSubscriber($this));
-        Facade::registerSubscriber(new TestCreatedPartialMockObjectSubscriber($this));
-        Facade::registerSubscriber(new TestCreatedTestProxySubscriber($this));
-        Facade::registerSubscriber(new TestCreatedTestStubSubscriber($this));
-        Facade::registerSubscriber(new TestErroredSubscriber($this));
-        Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
-        Facade::registerSubscriber(new TestPassedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedSubscriber($this));
+        Facade::registerSubscribers(
+            new TestConsideredRiskySubscriber($this),
+            new TestCreatedMockObjectForAbstractClassSubscriber($this),
+            new TestCreatedMockObjectForTraitSubscriber($this),
+            new TestCreatedMockObjectFromWsdlSubscriber($this),
+            new TestCreatedMockObjectSubscriber($this),
+            new TestCreatedPartialMockObjectSubscriber($this),
+            new TestCreatedTestProxySubscriber($this),
+            new TestCreatedTestStubSubscriber($this),
+            new TestErroredSubscriber($this),
+            new TestFailedSubscriber($this),
+            new TestFinishedSubscriber($this),
+            new TestMarkedIncompleteSubscriber($this),
+            new TestPassedSubscriber($this),
+            new TestPreparedSubscriber($this),
+            new TestSkippedSubscriber($this),
+        );
     }
 }

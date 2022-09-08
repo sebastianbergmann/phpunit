@@ -159,30 +159,32 @@ final class Collector
      */
     public function __construct()
     {
-        Facade::registerSubscriber(new ExecutionStartedSubscriber($this));
-        Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));
-        Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new BeforeTestClassMethodErroredSubscriber($this));
-        Facade::registerSubscriber(new TestErroredSubscriber($this));
-        Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestPassedSubscriber($this));
-        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredDeprecationSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredErrorSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredNoticeSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpDeprecationSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpNoticeSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpunitDeprecationSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpunitErrorSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpunitWarningSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredPhpWarningSubscriber($this));
-        Facade::registerSubscriber(new TestTriggeredWarningSubscriber($this));
-        Facade::registerSubscriber(new TestRunnerTriggeredDeprecationSubscriber($this));
-        Facade::registerSubscriber(new TestRunnerTriggeredWarningSubscriber($this));
+        Facade::registerSubscribers(
+            new ExecutionStartedSubscriber($this),
+            new TestSuiteStartedSubscriber($this),
+            new TestSuiteFinishedSubscriber($this),
+            new TestPreparedSubscriber($this),
+            new TestFinishedSubscriber($this),
+            new BeforeTestClassMethodErroredSubscriber($this),
+            new TestErroredSubscriber($this),
+            new TestFailedSubscriber($this),
+            new TestPassedSubscriber($this),
+            new TestMarkedIncompleteSubscriber($this),
+            new TestSkippedSubscriber($this),
+            new TestConsideredRiskySubscriber($this),
+            new TestTriggeredDeprecationSubscriber($this),
+            new TestTriggeredErrorSubscriber($this),
+            new TestTriggeredNoticeSubscriber($this),
+            new TestTriggeredPhpDeprecationSubscriber($this),
+            new TestTriggeredPhpNoticeSubscriber($this),
+            new TestTriggeredPhpunitDeprecationSubscriber($this),
+            new TestTriggeredPhpunitErrorSubscriber($this),
+            new TestTriggeredPhpunitWarningSubscriber($this),
+            new TestTriggeredPhpWarningSubscriber($this),
+            new TestTriggeredWarningSubscriber($this),
+            new TestRunnerTriggeredDeprecationSubscriber($this),
+            new TestRunnerTriggeredWarningSubscriber($this),
+        );
     }
 
     public function result(): TestResult

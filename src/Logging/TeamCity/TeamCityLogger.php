@@ -252,15 +252,17 @@ final class TeamCityLogger
      */
     private function registerSubscribers(): void
     {
-        Facade::registerSubscriber(new TestSuiteStartedSubscriber($this));
-        Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPreparedSubscriber($this));
-        Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestErroredSubscriber($this));
-        Facade::registerSubscriber(new TestFailedSubscriber($this));
-        Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
-        Facade::registerSubscriber(new TestSkippedSubscriber($this));
-        Facade::registerSubscriber(new TestConsideredRiskySubscriber($this));
+        Facade::registerSubscribers(
+            new TestSuiteStartedSubscriber($this),
+            new TestSuiteFinishedSubscriber($this),
+            new TestPreparedSubscriber($this),
+            new TestFinishedSubscriber($this),
+            new TestErroredSubscriber($this),
+            new TestFailedSubscriber($this),
+            new TestMarkedIncompleteSubscriber($this),
+            new TestSkippedSubscriber($this),
+            new TestConsideredRiskySubscriber($this),
+        );
     }
 
     private function setFlowId(): void
