@@ -20,9 +20,9 @@ use function str_contains;
 use function str_starts_with;
 use function strtolower;
 use function substr;
-use Doctrine\Instantiator\Instantiator;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Util\Type;
+use ReflectionClass;
 use SebastianBergmann\Exporter\Exporter;
 use stdClass;
 use Throwable;
@@ -70,17 +70,17 @@ final class Invocation implements SelfDescribing
         }
     }
 
-    public function getClassName(): string
+    public function className(): string
     {
         return $this->className;
     }
 
-    public function getMethodName(): string
+    public function methodName(): string
     {
         return $this->methodName;
     }
 
-    public function getParameters(): array
+    public function parameters(): array
     {
         return $this->parameters;
     }
@@ -117,6 +117,10 @@ final class Invocation implements SelfDescribing
                 return null;
             }
 
+            if (in_array('true', $types, true)) {
+                return true;
+            }
+
             if (in_array('false', $types, true) ||
                 in_array('bool', $types, true)) {
                 return false;
@@ -140,14 +144,16 @@ final class Invocation implements SelfDescribing
 
             if (in_array('static', $types, true)) {
                 try {
-                    return (new Instantiator)->instantiate($this->object::class);
-                } catch (Throwable $t) {
-                    throw new RuntimeException(
-                        $t->getMessage(),
-                        (int) $t->getCode(),
-                        $t
+                    return (new ReflectionClass($this->object::class))->newInstanceWithoutConstructor();
+                    // @codeCoverageIgnoreStart
+                } catch (\ReflectionException $e) {
+                    throw new ReflectionException(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
                     );
                 }
+                // @codeCoverageIgnoreEnd
             }
 
             if (in_array('object', $types, true)) {
@@ -252,7 +258,7 @@ final class Invocation implements SelfDescribing
         );
     }
 
-    public function getObject(): object
+    public function object(): object
     {
         return $this->object;
     }

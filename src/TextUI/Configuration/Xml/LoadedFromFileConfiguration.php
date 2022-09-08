@@ -15,6 +15,7 @@ use PHPUnit\Util\Xml\ValidationResult;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
  * @psalm-immutable
  */
 final class LoadedFromFileConfiguration extends Configuration
@@ -22,7 +23,7 @@ final class LoadedFromFileConfiguration extends Configuration
     private string $filename;
     private ValidationResult $validationResult;
 
-    public function __construct(string $filename, ValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Groups $testdoxGroups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
+    public function __construct(string $filename, ValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {
         $this->filename         = $filename;
         $this->validationResult = $validationResult;
@@ -31,7 +32,6 @@ final class LoadedFromFileConfiguration extends Configuration
             $extensions,
             $codeCoverage,
             $groups,
-            $testdoxGroups,
             $logging,
             $php,
             $phpunit,

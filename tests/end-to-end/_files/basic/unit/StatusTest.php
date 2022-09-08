@@ -11,7 +11,6 @@ namespace PHPUnit\SelfTest\Basic;
 
 use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\Warning;
 use PHPUnit\TestFixture\MockObject\AnInterface;
 use RuntimeException;
 
@@ -55,11 +54,6 @@ class StatusTest extends TestCase
     {
     }
 
-    public function testWarning(): void
-    {
-        throw new Warning;
-    }
-
     public function testSuccessWithMessage(): void
     {
         $this->assertTrue(true, 'success with custom message');
@@ -93,10 +87,5 @@ class StatusTest extends TestCase
     public function testRiskyWithMessage(): void
     {
         // Custom messages not implemented for risky status
-    }
-
-    public function testWarningWithMessage(): void
-    {
-        throw new Warning('warning with custom message');
     }
 }

@@ -13,12 +13,14 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @backupStaticProperties enabled
+ *
  * @excludeStaticPropertyFromBackup className propertyName
  */
 final class BackupStaticPropertiesTest extends TestCase
 {
     /**
      * @backupStaticAttributes disabled
+     *
      * @excludeStaticPropertyFromBackup anotherClassName propertyName
      */
     public function testOne(): void

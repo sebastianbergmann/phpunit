@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for tests that use deprecated PHPUnit features
+The right events are emitted in the right order for a test that uses a deprecated PHPUnit feature
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {

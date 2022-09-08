@@ -23,7 +23,7 @@ There was 1 risky test:
 1) PHPUnit\TestFixture\Issue1570Test::testOne
 This test printed output: *
 
-%s:16
+%s:%d
 
-OK, but incomplete, skipped, or risky tests!
+OK, but some tests have issues!
 Tests: 1, Assertions: 1, Risky: 1.

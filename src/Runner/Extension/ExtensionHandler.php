@@ -10,8 +10,9 @@
 namespace PHPUnit\Runner\Extension;
 
 use function class_exists;
-use function sprintf;
+use PHPUnit\Runner\ClassDoesNotExistException;
 use PHPUnit\Runner\Exception;
+use PHPUnit\Runner\ExtensionLoadingNotImplementedException;
 use PHPUnit\TextUI\TestRunner;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
 use ReflectionClass;
@@ -29,7 +30,7 @@ final class ExtensionHandler
     {
         $extension = $this->createInstance($extensionConfiguration);
 
-        throw new Exception('The loading of extensions is currently not implemented');
+        throw new ExtensionLoadingNotImplementedException;
     }
 
     /**
@@ -48,7 +49,7 @@ final class ExtensionHandler
 
             return $reflector->newInstanceArgs($extensionConfiguration->arguments());
         } catch (ReflectionException $e) {
-            throw new Exception(
+            throw new ReflectionException(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
@@ -73,12 +74,7 @@ final class ExtensionHandler
         }
 
         if (!class_exists($extensionConfiguration->className())) {
-            throw new Exception(
-                sprintf(
-                    'Class "%s" does not exist',
-                    $extensionConfiguration->className()
-                )
-            );
+            throw new ClassDoesNotExistException($extensionConfiguration->className());
         }
     }
 }

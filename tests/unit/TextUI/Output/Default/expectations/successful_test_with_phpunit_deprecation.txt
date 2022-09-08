@@ -1,0 +1,9 @@
+There was 1 PHPUnit deprecation:
+
+1) FooTest::testBar
+message
+
+%s:%i
+
+OK, but some tests have issues!
+Tests: 1, Assertions: 1, Deprecations: 1.

@@ -17,5 +17,5 @@ S                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-OK, but incomplete, skipped, or risky tests!
+OK, but some tests were skipped!
 Tests: 1, Assertions: 0, Skipped: 1.

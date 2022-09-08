@@ -14,11 +14,7 @@ use function is_int;
 use function method_exists;
 use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
-use PHPUnit\Framework\ErrorTestCase;
-use PHPUnit\Framework\IncompleteTestCase;
-use PHPUnit\Framework\SkippedTestCase;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Framework\WarningTestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\VariableExporter;
@@ -27,6 +23,7 @@ use ReflectionMethod;
 
 /**
  * @psalm-immutable
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class TestMethod extends Test
@@ -42,27 +39,15 @@ final class TestMethod extends Test
 
     public static function fromTestCase(TestCase $testCase): self
     {
-        $className  = $testCase::class;
-        $methodName = $testCase->getName(false);
-        $testData   = self::dataFor($testCase);
-
-        if ($testCase instanceof ErrorTestCase ||
-            $testCase instanceof IncompleteTestCase ||
-            $testCase instanceof SkippedTestCase ||
-            $testCase instanceof WarningTestCase) {
-            $className  = $testCase->className();
-            $methodName = $testCase->methodName();
-        }
-
-        $location = self::sourceLocationFor($className, $methodName);
+        $location = self::sourceLocationFor($testCase::class, $testCase->name());
 
         return new self(
-            $className,
-            $methodName,
+            $testCase::class,
+            $testCase->name(),
             $location['file'],
             $location['line'],
-            self::metadataFor($className, $methodName),
-            $testData,
+            self::metadataFor($testCase::class, $testCase->name()),
+            self::dataFor($testCase),
         );
     }
 
@@ -168,7 +153,7 @@ final class TestMethod extends Test
 
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
-                (new VariableExporter)->export($testCase->getProvidedData())
+                (new VariableExporter)->export($testCase->providedData())
             );
         }
 
@@ -179,10 +164,10 @@ final class TestMethod extends Test
     {
         if (class_exists($className)) {
             if (method_exists($className, $methodName)) {
-                return (MetadataRegistry::parser())->forClassAndMethod($className, $methodName);
+                return MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
             }
 
-            return (MetadataRegistry::parser())->forClass($className);
+            return MetadataRegistry::parser()->forClass($className);
         }
 
         return MetadataCollection::fromArray([]);
@@ -190,6 +175,7 @@ final class TestMethod extends Test
 
     /**
      * @psalm-param class-string $className
+     *
      * @psalm-return array{file: string, line: int}
      */
     private static function sourceLocationFor(string $className, string $methodName): array

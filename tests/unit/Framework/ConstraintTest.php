@@ -15,10 +15,10 @@ use Countable;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\SameSize;
-use PHPUnit\TestFixture\ClassWithNonPublicAttributes;
 use PHPUnit\TestFixture\DummyException;
 use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\Util\Filter;
+use PHPUnit\Util\ThrowableToStringMapper;
 use stdClass;
 
 #[Small]
@@ -43,7 +43,7 @@ Failed asserting that an array does not have the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -68,7 +68,7 @@ Failed asserting that an array does not have the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -80,7 +80,7 @@ EOF
     public function testConstraintArrayIsNotList(): void
     {
         $constraint = Assert::logicalNot(
-            Assert::arrayIsList()
+            Assert::isList()
         );
 
         try {
@@ -93,7 +93,7 @@ Failed asserting that an array is not list.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -123,7 +123,7 @@ Failed asserting that file "{$file}" does not exist.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -150,7 +150,7 @@ Failed asserting that file "{$file}" does not exist.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -178,7 +178,7 @@ Failed asserting that 2 is not greater than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -203,7 +203,7 @@ Failed asserting that 2 is not greater than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -230,7 +230,7 @@ Failed asserting that 0 is equal to 1 or is greater than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -253,7 +253,7 @@ Failed asserting that 0 is equal to 1 or is greater than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -281,7 +281,7 @@ Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -306,7 +306,7 @@ Failed asserting that not( 1 is equal to 1 or is greater than 1 ).
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -344,7 +344,7 @@ Failed asserting that null is not anything.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -373,7 +373,7 @@ Failed asserting that 1 is not equal to 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -398,7 +398,7 @@ Failed asserting that 1 is not equal to 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -436,7 +436,7 @@ Failed asserting that two variables don't reference the same object.
 
 EOF
                 ,
-                $this->trimNewlines(TestFailure::exceptionToString($e))
+                $this->trimNewlines(ThrowableToStringMapper::map($e))
             );
 
             return;
@@ -463,7 +463,7 @@ Failed asserting that two variables don't reference the same object.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -488,7 +488,7 @@ Failed asserting that two strings are not identical.
 
 EOF
                 ,
-                $this->trimNewlines(TestFailure::exceptionToString($e))
+                $this->trimNewlines(ThrowableToStringMapper::map($e))
             );
 
             return;
@@ -536,7 +536,7 @@ EOF
                     stdClass::class,
                     \Exception::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -563,7 +563,7 @@ EOF
                     stdClass::class,
                     \Exception::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -602,7 +602,7 @@ EOF
                     stdClass::class,
                     stdClass::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -631,7 +631,7 @@ EOF
                     stdClass::class,
                     stdClass::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -660,7 +660,7 @@ Failed asserting that '' is not of type "string".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -685,7 +685,7 @@ Failed asserting that '' is not of type "string".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -714,7 +714,7 @@ Failed asserting that null is not null.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -739,7 +739,7 @@ Failed asserting that null is not null.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -768,7 +768,7 @@ Failed asserting that 0 is not less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -793,7 +793,7 @@ Failed asserting that 0 is not less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -820,7 +820,7 @@ Failed asserting that 2 is equal to 1 or is less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -843,7 +843,7 @@ Failed asserting that 2 is equal to 1 or is less than 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -872,7 +872,7 @@ Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -897,187 +897,7 @@ Failed asserting that not( 1 is equal to 1 or is less than 1 ).
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintClassNotHasAttribute(): void
-    {
-        $constraint = Assert::logicalNot(
-            Assert::classHasAttribute('privateAttribute')
-        );
-
-        $this->assertTrue($constraint->evaluate(stdClass::class, '', true));
-        $this->assertFalse($constraint->evaluate(ClassWithNonPublicAttributes::class, '', true));
-        $this->assertEquals('does not have attribute "privateAttribute"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate(ClassWithNonPublicAttributes::class);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                sprintf(
-                    <<<'EOF'
-Failed asserting that class "%s" does not have attribute "privateAttribute".
-
-EOF
-                    ,
-                    ClassWithNonPublicAttributes::class
-                ),
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintClassNotHasAttribute2(): void
-    {
-        $constraint = Assert::logicalNot(
-            Assert::classHasAttribute('privateAttribute')
-        );
-
-        try {
-            $constraint->evaluate(ClassWithNonPublicAttributes::class, 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                sprintf(
-                    <<<'EOF'
-custom message
-Failed asserting that class "%s" does not have attribute "privateAttribute".
-
-EOF
-                    ,
-                    ClassWithNonPublicAttributes::class
-                ),
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintClassNotHasStaticAttribute(): void
-    {
-        $constraint = Assert::logicalNot(
-            Assert::classHasStaticAttribute('privateStaticAttribute')
-        );
-
-        $this->assertTrue($constraint->evaluate(stdClass::class, '', true));
-        $this->assertFalse($constraint->evaluate(ClassWithNonPublicAttributes::class, '', true));
-        $this->assertEquals('does not have static attribute "privateStaticAttribute"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate(ClassWithNonPublicAttributes::class);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                sprintf(
-                    <<<'EOF'
-Failed asserting that class "%s" does not have static attribute "privateStaticAttribute".
-
-EOF
-                    ,
-                    ClassWithNonPublicAttributes::class
-                ),
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintClassNotHasStaticAttribute2(): void
-    {
-        $constraint = Assert::logicalNot(
-            Assert::classHasStaticAttribute('privateStaticAttribute')
-        );
-
-        try {
-            $constraint->evaluate(ClassWithNonPublicAttributes::class, 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                sprintf(
-                    <<<'EOF'
-custom message
-Failed asserting that class "%s" does not have static attribute "privateStaticAttribute".
-
-EOF
-                    ,
-                    ClassWithNonPublicAttributes::class
-                ),
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintObjectNotHasAttribute(): void
-    {
-        $constraint = Assert::logicalNot(
-            Assert::objectHasAttribute('privateAttribute')
-        );
-
-        $this->assertTrue($constraint->evaluate(new stdClass, '', true));
-        $this->assertFalse($constraint->evaluate(new ClassWithNonPublicAttributes, '', true));
-        $this->assertEquals('does not have attribute "privateAttribute"', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate(new ClassWithNonPublicAttributes);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                sprintf(
-                    <<<'EOF'
-Failed asserting that object of class "%s" does not have attribute "privateAttribute".
-
-EOF
-                    ,
-                    ClassWithNonPublicAttributes::class
-                ),
-                TestFailure::exceptionToString($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintObjectNotHasAttribute2(): void
-    {
-        $constraint = Assert::logicalNot(
-            Assert::objectHasAttribute('privateAttribute')
-        );
-
-        try {
-            $constraint->evaluate(new ClassWithNonPublicAttributes, 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                sprintf(
-                    <<<'EOF'
-custom message
-Failed asserting that object of class "%s" does not have attribute "privateAttribute".
-
-EOF
-                    ,
-                    ClassWithNonPublicAttributes::class
-                ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1106,7 +926,7 @@ Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1131,7 +951,7 @@ Failed asserting that 'barfoobar' does not match PCRE pattern "/foo/".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1160,7 +980,7 @@ Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1185,7 +1005,7 @@ Failed asserting that 'prefixfoo' starts not with "prefix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1214,7 +1034,7 @@ Failed asserting that 'barfoobar' does not contain "foo".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1273,7 +1093,7 @@ Failed asserting that 'barfoobar' does not contain "foo".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1302,7 +1122,7 @@ Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1327,7 +1147,7 @@ Failed asserting that 'foosuffix' ends not with "suffix".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1373,7 +1193,7 @@ Failed asserting that actual size 2 matches expected size 5.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1397,7 +1217,7 @@ Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1421,7 +1241,7 @@ Failed asserting that actual size 2 does not match expected size 2.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -1449,7 +1269,7 @@ EOF
                     ,
                     DummyException::class
                 ),
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;

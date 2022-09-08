@@ -9,19 +9,13 @@
  */
 namespace PHPUnit\Framework;
 
-use PHPUnit\Event\Facade;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
-use PHPUnit\TestFixture\BeforeAndAfterTest;
 use PHPUnit\TestFixture\DependencyFailureTest;
 use PHPUnit\TestFixture\DependencyOnClassTest;
 use PHPUnit\TestFixture\DependencySuccessTest;
-use PHPUnit\TestFixture\DoubleTestCase;
 use PHPUnit\TestFixture\MultiDependencyTest;
 use PHPUnit\TestFixture\NotPublicTestCase;
-use PHPUnit\TestFixture\NotVoidTestCase;
-use PHPUnit\TestFixture\PreConditionAndPostConditionTest;
-use PHPUnit\TestFixture\Success;
 use ReflectionClass;
 
 #[CoversClass(TestSuite::class)]
@@ -33,41 +27,6 @@ final class TestSuiteTest extends TestCase
         $suite = TestSuite::fromClassName(NotPublicTestCase::class);
 
         $this->assertCount(1, $suite);
-    }
-
-    public function testNotVoidTestCase(): void
-    {
-        $suite = TestSuite::fromClassName(NotVoidTestCase::class);
-
-        $this->assertCount(1, $suite);
-    }
-
-    public function testBeforeAndAfterAnnotations(): void
-    {
-        $test = TestSuite::fromClassName(BeforeAndAfterTest::class);
-
-        BeforeAndAfterTest::resetProperties();
-
-        Facade::suspend();
-        $test->run(new TestResult);
-        Facade::resume();
-
-        $this->assertEquals(2, BeforeAndAfterTest::$beforeWasRun);
-        $this->assertEquals(2, BeforeAndAfterTest::$afterWasRun);
-    }
-
-    public function testPreConditionAndPostConditionAnnotations(): void
-    {
-        $test = TestSuite::fromClassName(PreConditionAndPostConditionTest::class);
-
-        PreConditionAndPostConditionTest::resetProperties();
-
-        Facade::suspend();
-        $test->run(new TestResult);
-        Facade::resume();
-
-        $this->assertSame(1, PreConditionAndPostConditionTest::$preConditionWasVerified);
-        $this->assertSame(1, PreConditionAndPostConditionTest::$postConditionWasVerified);
     }
 
     public function testNormalizeProvidedDependencies(): void
@@ -138,7 +97,6 @@ final class TestSuiteTest extends TestCase
     public function testResolverOnlyUsesSuitesAndCases(): void
     {
         $suite = TestSuite::empty('SomeName');
-        $suite->addTest(new DoubleTestCase(new Success('testOne')));
         $suite->addTestSuite(new ReflectionClass(DependencyOnClassTest::class));
 
         $this->assertEquals([

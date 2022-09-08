@@ -39,8 +39,6 @@ function __phpunit_run_isolated_test()
 
     require_once '{filename}';
 
-    $result = new PHPUnit\Framework\TestResult;
-
     if ({collectCodeCoverageInformation}) {
         CodeCoverage::activate(
             unserialize('{codeCoverageFilter}'),
@@ -58,7 +56,7 @@ function __phpunit_run_isolated_test()
     $test->setInIsolation(TRUE);
 
     ob_end_clean();
-    $test->run($result);
+    $test->run();
     $output = '';
     if (!$test->hasExpectationOnOutput()) {
         $output = $test->output();
@@ -80,7 +78,6 @@ function __phpunit_run_isolated_test()
         'testResult'    => $test->result(),
         'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
         'numAssertions' => $test->numberOfAssertionsPerformed(),
-        'result'        => $result,
         'output'        => $output,
         'events'        => $dispatcher->flush()
       ]

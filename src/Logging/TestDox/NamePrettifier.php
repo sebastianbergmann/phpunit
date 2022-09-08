@@ -40,9 +40,9 @@ use function strtoupper;
 use function substr;
 use function trim;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Logging\Exception;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\Color;
-use PHPUnit\Util\Exception as UtilException;
 use ReflectionException;
 use ReflectionMethod;
 use ReflectionObject;
@@ -116,7 +116,7 @@ final class NamePrettifier
     {
         $annotationWithPlaceholders = false;
 
-        $metadata = MetadataRegistry::parser()->forMethod($test::class, $test->getName(false));
+        $metadata = MetadataRegistry::parser()->forMethod($test::class, $test->name());
 
         if ($metadata->isTestDox()->isNotEmpty()) {
             $result = $metadata->isTestDox()->asArray()[0]->text();
@@ -141,7 +141,7 @@ final class NamePrettifier
                 $annotationWithPlaceholders = true;
             }
         } else {
-            $result = $this->prettifyTestMethod($test->getName(false));
+            $result = $this->prettifyTestMethod($test->name());
         }
 
         if (!$annotationWithPlaceholders && $test->usesDataProvider()) {
@@ -154,7 +154,7 @@ final class NamePrettifier
     public function prettifyDataSet(TestCase $test): string
     {
         if (!$this->useColor) {
-            return $test->getDataSetAsString();
+            return $test->dataSetAsString();
         }
 
         if (is_int($test->dataName())) {
@@ -226,10 +226,10 @@ final class NamePrettifier
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
     {
         try {
-            $reflector = new ReflectionMethod($test::class, $test->getName(false));
+            $reflector = new ReflectionMethod($test::class, $test->name());
             // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
-            throw new UtilException(
+            throw new Exception(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
@@ -238,7 +238,7 @@ final class NamePrettifier
         // @codeCoverageIgnoreEnd
 
         $providedData       = [];
-        $providedDataValues = array_values($test->getProvidedData());
+        $providedDataValues = array_values($test->providedData());
         $i                  = 0;
 
         $providedData['$_dataName'] = $test->dataName();

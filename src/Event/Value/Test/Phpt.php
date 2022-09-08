@@ -11,10 +11,16 @@ namespace PHPUnit\Event\Code;
 
 /**
  * @psalm-immutable
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class Phpt extends Test
 {
+    public function __construct(string $file)
+    {
+        parent::__construct($file);
+    }
+
     /**
      * @psalm-assert-if-true Phpt $this
      */

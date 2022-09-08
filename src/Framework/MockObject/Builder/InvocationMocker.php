@@ -34,7 +34,6 @@ use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap;
 use PHPUnit\Framework\MockObject\Stub\Stub;
-use PHPUnit\Util\Warning as WarningUtil;
 use Throwable;
 
 /**
@@ -180,28 +179,6 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
     }
 
     /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws MethodNameNotConfiguredException
-     * @throws MethodParametersAlreadyConfiguredException
-     *
-     * @return $this
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4564
-     */
-    public function withConsecutive(mixed ...$arguments): self
-    {
-        $this->ensureParametersCanBeConfigured();
-
-        (new WarningUtil)->createForTestCaseObjectOnCallStack(
-            'The withConsecutive() method has been deprecated. It will be removed in PHPUnit 11.'
-        );
-
-        $this->matcher->setParametersRule(new Rule\ConsecutiveParameters($arguments));
-
-        return $this;
-    }
-
-    /**
      * @throws MethodNameNotConfiguredException
      * @throws MethodParametersAlreadyConfiguredException
      *
@@ -233,7 +210,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
             $this->configurableMethodNames ??= array_flip(array_map(
                 static function (ConfigurableMethod $configurable)
                 {
-                    return strtolower($configurable->getName());
+                    return strtolower($configurable->name());
                 },
                 $this->configurableMethods
             ));
@@ -263,12 +240,12 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
         }
     }
 
-    private function getConfiguredMethod(): ?ConfigurableMethod
+    private function configuredMethod(): ?ConfigurableMethod
     {
         $configuredMethod = null;
 
         foreach ($this->configurableMethods as $configurableMethod) {
-            if ($this->matcher->getMethodNameRule()->matchesName($configurableMethod->getName())) {
+            if ($this->matcher->methodNameRule()->matchesName($configurableMethod->name())) {
                 if ($configuredMethod !== null) {
                     return null;
                 }
@@ -285,7 +262,7 @@ final class InvocationMocker implements InvocationStubber, MethodNameMatch
      */
     private function ensureTypeOfReturnValues(array $values): void
     {
-        $configuredMethod = $this->getConfiguredMethod();
+        $configuredMethod = $this->configuredMethod();
 
         if ($configuredMethod === null) {
             return;

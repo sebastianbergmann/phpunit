@@ -21,11 +21,14 @@ use function range;
 use function sprintf;
 use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\TestResult as LegacyTestResult;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
 use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
+use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
+use PHPUnit\Logging\TestDox\TestMethodCollector;
+use PHPUnit\Logging\TestDox\TextRenderer as TestDoxTextRenderer;
+use PHPUnit\Logging\TestDox\XmlRenderer as TestDoxXmlRenderer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
 use PHPUnit\Runner\Filter\Factory;
@@ -39,7 +42,10 @@ use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\TextUI\ProgressPrinter\ProgressPrinter;
+use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
+use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
+use PHPUnit\TextUI\Output\TestDox\ProgressPrinter\ProgressPrinter as TestDoxProgressPrinter;
+use PHPUnit\TextUI\Output\TestDox\ResultPrinter as TestDoxResultPrinter;
 use PHPUnit\Util\DefaultPrinter;
 use PHPUnit\Util\NullPrinter;
 use PHPUnit\Util\Printer;
@@ -56,8 +62,8 @@ use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
 use SebastianBergmann\Comparator\Comparator;
-use SebastianBergmann\Environment\Runtime;
 use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
 
 /**
@@ -66,7 +72,7 @@ use SebastianBergmann\Timer\Timer;
 final class TestRunner
 {
     private Configuration $configuration;
-    private ?Printer $printer    = null;
+    private Printer $printer;
     private bool $messagePrinted = false;
     private ?Timer $timer        = null;
 
@@ -86,8 +92,6 @@ final class TestRunner
         if ($this->configuration->hasConfigurationFile()) {
             $GLOBALS['__PHPUNIT_CONFIGURATION_FILE'] = $this->configuration->configurationFile();
         }
-
-        $warnings = $this->configuration->warnings();
 
         if ($this->configuration->loadPharExtensions() &&
             $this->configuration->hasPharExtensionDirectory() &&
@@ -151,33 +155,46 @@ final class TestRunner
             unset($_suite);
         }
 
-        $legacyResult = new LegacyTestResult;
-
-        if ($this->configuration->outputIsTestDox()) {
-            exit('TestDox CLI logging has not been migrated to events yet');
-        }
-
         $this->printer = new NullPrinter;
 
-        if ($this->configuration->outputIsDefault()) {
+        if ($this->configuration->outputIsDefault() ||
+            $this->configuration->outputIsTestDox()) {
             if ($this->configuration->outputToStandardErrorStream()) {
                 $this->printer = DefaultPrinter::standardError();
             } else {
                 $this->printer = DefaultPrinter::standardOutput();
             }
+        }
 
-            new ProgressPrinter(
+        if ($this->configuration->outputIsDefault()) {
+            new DefaultProgressPrinter(
                 $this->printer,
                 $this->configuration->colors(),
                 $this->configuration->columns()
             );
 
-            $resultPrinter = new ResultPrinter(
+            $resultPrinter = new DefaultResultPrinter(
                 $this->printer,
                 $this->configuration->displayDetailsOnIncompleteTests(),
                 $this->configuration->displayDetailsOnSkippedTests(),
+                $this->configuration->displayDetailsOnTestsThatTriggerDeprecations(),
+                $this->configuration->displayDetailsOnTestsThatTriggerErrors(),
+                $this->configuration->displayDetailsOnTestsThatTriggerNotices(),
+                $this->configuration->displayDetailsOnTestsThatTriggerWarnings(),
                 $this->configuration->colors(),
                 $this->configuration->reverseDefectList()
+            );
+        }
+
+        if ($this->configuration->outputIsTestDox()) {
+            new TestDoxProgressPrinter(
+                $this->printer,
+                $this->configuration->colors(),
+            );
+
+            $resultPrinter = new TestDoxResultPrinter(
+                $this->printer,
+                $this->configuration->colors(),
             );
         }
 
@@ -229,13 +246,23 @@ final class TestRunner
             );
         }
 
+        if ($this->configuration->hasLogfileTestdoxHtml() ||
+            $this->configuration->hasLogfileTestdoxText() ||
+            $this->configuration->hasLogfileTestdoxXml()) {
+            $testDoxCollector = new TestMethodCollector;
+        }
+
         Event\Facade::seal();
 
         $this->write(Version::getVersionString() . "\n");
 
         if ($this->configuration->hasLogfileText()) {
-            $textLogger = new ResultPrinter(
+            $textLogger = new DefaultResultPrinter(
                 DefaultPrinter::from($this->configuration->logfileText()),
+                true,
+                true,
+                true,
+                true,
                 true,
                 true,
                 false,
@@ -243,65 +270,53 @@ final class TestRunner
             );
         }
 
-        if ($this->configuration->hasLogfileTestdoxHtml()) {
-            exit('TestDox HTML logging has not been migrated to events yet');
-        }
-
-        if ($this->configuration->hasLogfileTestdoxText()) {
-            exit('TestDox text logging has not been migrated to events yet');
-        }
-
-        if ($this->configuration->hasLogfileTestdoxXml()) {
-            exit('TestDox XML logging has not been migrated to events yet');
-        }
-
         if ($this->configuration->hasCoverageReport()) {
-            try {
-                if ($this->configuration->pathCoverage()) {
-                    CodeCoverage::activate(CodeCoverageFilterRegistry::get(), true);
+            if ($this->configuration->pathCoverage()) {
+                CodeCoverage::activate(CodeCoverageFilterRegistry::get(), true);
+            } else {
+                CodeCoverage::activate(CodeCoverageFilterRegistry::get(), false);
+            }
+
+            if ($this->configuration->hasCoverageCacheDirectory()) {
+                CodeCoverage::instance()->cacheStaticAnalysis($this->configuration->coverageCacheDirectory());
+            }
+
+            CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
+
+            if ($this->configuration->strictCoverage()) {
+                CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
+            }
+
+            if ($this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
+                CodeCoverage::instance()->ignoreDeprecatedCode();
+            } else {
+                CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
+            }
+
+            if ($this->configuration->disableCodeCoverageIgnore()) {
+                CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
+            } else {
+                CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
+            }
+
+            if ($this->configuration->includeUncoveredFiles()) {
+                CodeCoverage::instance()->includeUncoveredFiles();
+            } else {
+                CodeCoverage::instance()->excludeUncoveredFiles();
+            }
+
+            if (CodeCoverageFilterRegistry::get()->isEmpty()) {
+                if (!CodeCoverageFilterRegistry::configured()) {
+                    Event\Facade::emitter()->testRunnerTriggeredWarning(
+                        'No filter is configured, code coverage will not be processed'
+                    );
                 } else {
-                    CodeCoverage::activate(CodeCoverageFilterRegistry::get(), false);
+                    Event\Facade::emitter()->testRunnerTriggeredWarning(
+                        'Incorrect filter configuration, code coverage will not be processed'
+                    );
                 }
 
-                if ($this->configuration->hasCoverageCacheDirectory()) {
-                    CodeCoverage::instance()->cacheStaticAnalysis($this->configuration->coverageCacheDirectory());
-                }
-
-                CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
-
-                if ($this->configuration->strictCoverage()) {
-                    CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
-                }
-
-                if ($this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
-                    CodeCoverage::instance()->ignoreDeprecatedCode();
-                } else {
-                    CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
-                }
-
-                if ($this->configuration->disableCodeCoverageIgnore()) {
-                    CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
-                } else {
-                    CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
-                }
-
-                if ($this->configuration->includeUncoveredFiles()) {
-                    CodeCoverage::instance()->includeUncoveredFiles();
-                } else {
-                    CodeCoverage::instance()->excludeUncoveredFiles();
-                }
-
-                if (CodeCoverageFilterRegistry::get()->isEmpty()) {
-                    if (!CodeCoverageFilterRegistry::configured()) {
-                        $warnings[] = 'No filter is configured, code coverage will not be processed';
-                    } else {
-                        $warnings[] = 'Incorrect filter configuration, code coverage will not be processed';
-                    }
-
-                    CodeCoverage::deactivate();
-                }
-            } catch (CodeCoverageException $e) {
-                $warnings[] = $e->getMessage();
+                CodeCoverage::deactivate();
             }
         }
 
@@ -348,36 +363,30 @@ final class TestRunner
         }
 
         if ($this->configuration->tooFewColumnsRequested()) {
-            $warnings[] = 'Less than 16 columns requested, number of columns set to 16';
-        }
-
-        if ((new Runtime)->discardsComments()) {
-            $warnings[] = 'opcache.save_comments=0 set; annotations will not work';
-        }
-
-        foreach ($warnings as $warning) {
-            $this->writeMessage('Warning', $warning);
+            Event\Facade::emitter()->testRunnerTriggeredWarning(
+                'Less than 16 columns requested, number of columns set to 16'
+            );
         }
 
         if ($this->configuration->hasXmlValidationErrors()) {
             if ((new SchemaDetector)->detect($this->configuration->configurationFile())->detected()) {
-                $this->writeMessage('Warning', 'Your XML configuration validates against a deprecated schema.');
-                $this->writeMessage('Suggestion', 'Migrate your XML configuration using "--migrate-configuration"!');
-            } else {
-                $this->write(
-                    "\n  Warning - The configuration file did not pass validation!\n  The following problems have been detected:\n"
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    'Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!'
                 );
-
-                $this->write($this->configuration->xmlValidationErrors());
-
-                $this->write("\n  Test results may not be as expected.\n\n");
+            } else {
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    "Test results may not be as expected because the XML configuration file did not pass validation:\n" .
+                    $this->configuration->xmlValidationErrors()
+                );
             }
         }
 
         $this->write("\n");
 
         if ($this->configuration->enforceTimeLimit() && !(new Invoker)->canInvokeWithTimeout()) {
-            $this->writeMessage('Error', 'PHP extension pcntl is required for enforcing time limits');
+            Event\Facade::emitter()->testRunnerTriggeredWarning(
+                'The pcntl extension is required for enforcing time limits'
+            );
         }
 
         $this->processSuiteFilters($suite);
@@ -386,14 +395,18 @@ final class TestRunner
             Event\TestSuite\TestSuite::fromTestSuite($suite)
         );
 
-        $suite->run($legacyResult);
+        $suite->run();
 
         Event\Facade::emitter()->testExecutionFinished();
 
         $result = Facade::result();
 
+        if ($result->numberOfTestsRun() > 0) {
+            $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
+        }
+
         if (isset($resultPrinter)) {
-            $resultPrinter->printResult($result, $legacyResult);
+            $resultPrinter->printResult($result);
         }
 
         if (isset($junitXmlLogger)) {
@@ -413,6 +426,33 @@ final class TestRunner
 
         if (isset($textLogger)) {
             $textLogger->flush();
+        }
+
+        if (isset($testDoxCollector) &&
+            $this->configuration->hasLogfileTestdoxHtml()) {
+            $this->printerFor($this->configuration->logfileTestdoxHtml())->print(
+                (new TestDoxHtmlRenderer)->render(
+                    $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                )
+            );
+        }
+
+        if (isset($testDoxCollector) &&
+            $this->configuration->hasLogfileTestdoxText()) {
+            $this->printerFor($this->configuration->logfileTestdoxText())->print(
+                (new TestDoxTextRenderer)->render(
+                    $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                )
+            );
+        }
+
+        if (isset($testDoxCollector) &&
+            $this->configuration->hasLogfileTestdoxXml()) {
+            $this->printerFor($this->configuration->logfileTestdoxXml())->print(
+                (new TestDoxXmlRenderer)->render(
+                    $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                )
+            );
         }
 
         if (CodeCoverage::isActive()) {
@@ -516,19 +556,13 @@ final class TestRunner
             }
 
             if ($this->configuration->hasCoverageText()) {
-                if ($this->configuration->coverageText() === 'php://stdout') {
-                    $outputStream = $this->printer;
-                } else {
-                    $outputStream = DefaultPrinter::from($this->configuration->coverageText());
-                }
-
                 $processor = new TextReport(
                     Thresholds::default(),
                     $this->configuration->coverageTextShowUncoveredFiles(),
                     $this->configuration->coverageTextShowOnlySummary()
                 );
 
-                $outputStream->print(
+                $this->printerFor($this->configuration->coverageText())->print(
                     $processor->process(CodeCoverage::instance(), $this->configuration->colors())
                 );
             }
@@ -661,7 +695,7 @@ final class TestRunner
         );
     }
 
-    private function codeCoverageGenerationFailed(\Exception $e): void
+    private function codeCoverageGenerationFailed(CodeCoverageException $e): void
     {
         $this->write(
             sprintf(
@@ -679,5 +713,14 @@ final class TestRunner
         }
 
         return $this->timer;
+    }
+
+    private function printerFor(string $target): Printer
+    {
+        if ($target === 'php://stdout') {
+            return $this->printer;
+        }
+
+        return DefaultPrinter::from($target);
     }
 }

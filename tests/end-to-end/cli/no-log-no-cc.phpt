@@ -26,7 +26,7 @@ Time: %s, Memory: %s
 OK (1 test, 1 assertion)
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="PHPUnit\TestFixture\NoLogNoCcTest" file="%sNoLogNoCcTest.php" tests="1" assertions="1" errors="0" warnings="0" failures="0" skipped="0" time="%f">
+  <testsuite name="PHPUnit\TestFixture\NoLogNoCcTest" file="%sNoLogNoCcTest.php" tests="1" assertions="1" errors="0" failures="0" skipped="0" time="%f">
     <testcase name="testSuccess" file="%sNoLogNoCcTest.php" line="19" class="PHPUnit\TestFixture\NoLogNoCcTest" classname="PHPUnit.TestFixture.NoLogNoCcTest" assertions="1" time="%f"/>
   </testsuite>
 </testsuites>

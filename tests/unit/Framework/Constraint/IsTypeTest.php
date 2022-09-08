@@ -18,7 +18,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
+use PHPUnit\Util\ThrowableToStringMapper;
 use stdClass;
 
 #[CoversClass(IsType::class)]
@@ -46,7 +46,7 @@ EOF
                     ,
                     stdClass::class
                 ),
-                $this->trimnl(TestFailure::exceptionToString($e))
+                $this->trimnl(ThrowableToStringMapper::map($e))
             );
 
             return;
@@ -69,10 +69,10 @@ custom message
 Failed asserting that %s Object #%%d () is of type "string".
 
 EOF
-                ,
+                    ,
                     stdClass::class
                 ),
-                $this->trimnl(TestFailure::exceptionToString($e))
+                $this->trimnl(ThrowableToStringMapper::map($e))
             );
 
             return;
@@ -132,7 +132,7 @@ PHPUnit\Framework\Exception: Type specified for PHPUnit\Framework\Constraint\IsT
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
         }
     }

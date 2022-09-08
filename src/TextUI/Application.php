@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI;
 use const PATH_SEPARATOR;
 use const PHP_EOL;
 use function array_keys;
-use function assert;
 use function getcwd;
 use function ini_get;
 use function ini_set;
@@ -94,10 +93,6 @@ final class Application
 
         $suite = $this->handleArguments($argv);
 
-        if ($suite->isEmpty()) {
-            $this->execute(new ShowHelpCommand(false));
-        }
-
         Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
 
         $runner = new TestRunner;
@@ -155,8 +150,6 @@ final class Application
         } catch (ArgumentsException $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
-
-        assert(isset($arguments) && $arguments instanceof CliConfiguration);
 
         if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
             $this->execute(new GenerateConfigurationCommand);
@@ -278,6 +271,10 @@ final class Application
             );
         }
 
+        if ($testSuite->isEmpty() && !$arguments->hasArgument() && !$this->xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
+            $this->execute(new ShowHelpCommand(false));
+        }
+
         return $testSuite;
     }
 
@@ -292,7 +289,7 @@ final class Application
         $this->versionStringPrinted = true;
     }
 
-    private function exitWithErrorMessage(string $message): void
+    private function exitWithErrorMessage(string $message): never
     {
         $this->printVersionString();
 
@@ -301,7 +298,7 @@ final class Application
         exit(self::FAILURE_EXIT);
     }
 
-    private function execute(Command\Command $command): void
+    private function execute(Command\Command $command): never
     {
         $this->printVersionString();
 
@@ -380,12 +377,12 @@ final class Application
             $returnCode = self::FAILURE_EXIT;
         }
 
-        if ($result->wasSuccessfulIgnoringWarnings()) {
+        if ($result->wasSuccessfulIgnoringPhpunitWarnings()) {
             if ($configuration->failOnRisky() && $result->hasTestConsideredRiskyEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnWarning() && $result->hasTestPassedWithWarningEvents()) {
+            if ($configuration->failOnWarning() && $result->hasWarningEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 

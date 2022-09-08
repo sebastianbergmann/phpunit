@@ -1,5 +1,5 @@
 --TEST--
-The right events are emitted in the right order for a test that triggers a notice
+The right events are emitted in the right order for a test that runs code which triggers E_WARNING
 --SKIPIF--
 <?php declare(strict_types=1);
 if (DIRECTORY_SEPARATOR === '\\') {

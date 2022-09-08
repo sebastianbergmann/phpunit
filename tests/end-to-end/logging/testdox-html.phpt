@@ -1,21 +1,24 @@
 --TEST--
 phpunit --testdox-html php://stdout ../../_files/BankAccountTest.php
---XFAIL--
-TestDox logging has not been migrated to events yet.
-See https://github.com/sebastianbergmann/phpunit/issues/4702 for details.
 --FILE--
 <?php declare(strict_types=1);
+$output = tempnam(sys_get_temp_dir(), __FILE__);
+
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--no-output';
 $_SERVER['argv'][] = '--testdox-html';
-$_SERVER['argv'][] = 'php://stdout';
+$_SERVER['argv'][] = $output;
 $_SERVER['argv'][] = \realpath(__DIR__ . '/../../_files/BankAccountTest.php');
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Application::main();
+PHPUnit\TextUI\Application::main(false);
+
+print file_get_contents($output);
+
+unlink($output);
 --EXPECTF--
-PHPUnit %s by Sebastian Bergmann and contributors.
 <!doctype html>
 <html lang="en">
     <head>
@@ -48,18 +51,11 @@ PHPUnit %s by Sebastian Bergmann and contributors.
         </style>
     </head>
     <body>
-Runtime: %s
-
-
         <h2 id="PHPUnit\TestFixture\BankAccountTest">Bank Account (PHPUnit\TestFixture\BankAccount)</h2>
         <ul>
-...                                                                 3 / 3 (100%)            <li style="color: #555753;">✓ Balance is initially zero</li>
+            <li style="color: #555753;">✓ Balance is initially zero</li>
             <li style="color: #555753;">✓ Balance cannot become negative</li>
             <li style="color: #555753;">✓ Balance cannot become negative</li>
         </ul>
     </body>
 </html>
-
-Time: %s, Memory: %s
-
-OK (3 tests, 3 assertions)

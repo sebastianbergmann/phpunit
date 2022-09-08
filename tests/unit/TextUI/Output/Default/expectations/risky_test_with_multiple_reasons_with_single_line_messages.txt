@@ -1,0 +1,11 @@
+There was 1 risky test:
+
+1) FooTest::testBar
+* message
+
+* message
+
+%s:%i
+
+OK, but some tests have issues!
+Tests: 1, Assertions: 1, Risky: 1.

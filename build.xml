@@ -261,13 +261,6 @@
             </fileset>
         </copy>
 
-        <copy file="${basedir}/vendor/doctrine/instantiator/LICENSE" tofile="${basedir}/build/tmp/phar/doctrine-instantiator/LICENSE"/>
-        <copy todir="${basedir}/build/tmp/phar/doctrine-instantiator">
-            <fileset dir="${basedir}/vendor/doctrine/instantiator/src">
-                <include name="**/*.php" />
-            </fileset>
-        </copy>
-
         <copy file="${basedir}/vendor/myclabs/deep-copy/LICENSE" tofile="${basedir}/build/tmp/phar/myclabs-deep-copy/LICENSE"/>
         <copy todir="${basedir}/build/tmp/phar/myclabs-deep-copy">
             <fileset dir="${basedir}/vendor/myclabs/deep-copy/src">

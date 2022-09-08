@@ -41,8 +41,6 @@ use function strpos;
 use function strtolower;
 use function substr;
 use function trait_exists;
-use Doctrine\Instantiator\Exception\ExceptionInterface as InstantiatorException;
-use Doctrine\Instantiator\Instantiator;
 use Exception;
 use Iterator;
 use IteratorAggregate;
@@ -122,7 +120,6 @@ final class Generator
             $mock,
             $type,
             $callOriginalConstructor,
-            $callAutoload,
             $arguments,
             $callOriginalMethods,
             $proxyTarget,
@@ -198,7 +195,9 @@ final class Generator
      * Concrete methods to mock can be specified with the $mockedMethods parameter.
      *
      * @psalm-template RealInstanceType of object
+     *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     *
      * @psalm-return MockObject&RealInstanceType
      *
      * @throws ClassAlreadyExistsException
@@ -342,7 +341,6 @@ final class Generator
             ),
             '',
             $callOriginalConstructor,
-            $callAutoload,
             $arguments
         );
     }
@@ -609,60 +607,13 @@ final class Generator
      * @throws ReflectionException
      * @throws RuntimeException
      */
-    private function getObject(MockType $mockClass, string $type = '', bool $callOriginalConstructor = false, bool $callAutoload = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true): object
+    private function getObject(MockType $mockClass, string $type = '', bool $callOriginalConstructor = false, array $arguments = [], bool $callOriginalMethods = false, object $proxyTarget = null, bool $returnValueGeneration = true): object
     {
         $className = $mockClass->generate();
-
-        if ($callOriginalConstructor) {
-            if (count($arguments) === 0) {
-                $object = new $className;
-            } else {
-                try {
-                    $class = new ReflectionClass($className);
-                    // @codeCoverageIgnoreStart
-                } catch (\ReflectionException $e) {
-                    throw new ReflectionException(
-                        $e->getMessage(),
-                        (int) $e->getCode(),
-                        $e
-                    );
-                }
-                // @codeCoverageIgnoreEnd
-
-                $object = $class->newInstanceArgs($arguments);
-            }
-        } else {
-            try {
-                $object = (new Instantiator)->instantiate($className);
-            } catch (InstantiatorException $e) {
-                throw new RuntimeException($e->getMessage());
-            }
-        }
+        $object    = $this->instantiate($className, $callOriginalConstructor, $arguments);
 
         if ($callOriginalMethods) {
-            if (!is_object($proxyTarget)) {
-                assert(class_exists($type));
-
-                if (count($arguments) === 0) {
-                    $proxyTarget = new $type;
-                } else {
-                    $class = new ReflectionClass($type);
-
-                    try {
-                        $proxyTarget = $class->newInstanceArgs($arguments);
-                        // @codeCoverageIgnoreStart
-                    } catch (\ReflectionException $e) {
-                        throw new ReflectionException(
-                            $e->getMessage(),
-                            (int) $e->getCode(),
-                            $e
-                        );
-                    }
-                    // @codeCoverageIgnoreEnd
-                }
-            }
-
-            $object->__phpunit_setOriginalObject($proxyTarget);
+            $this->instantiateProxyTarget($proxyTarget, $object, $type, $arguments);
         }
 
         if ($object instanceof MockObject) {
@@ -840,7 +791,7 @@ final class Generator
 
         foreach ($mockMethods->asArray() as $mockMethod) {
             $mockedMethods .= $mockMethod->generateCode();
-            $configurable[] = new ConfigurableMethod($mockMethod->getName(), $mockMethod->getReturnType());
+            $configurable[] = new ConfigurableMethod($mockMethod->methodName(), $mockMethod->returnType());
         }
 
         $method = '';
@@ -1036,5 +987,75 @@ final class Generator
                 throw new ClassAlreadyExistsException($mockClassName);
             }
         }
+    }
+
+    /**
+     * @psalm-param class-string $className
+     *
+     * @throws ReflectionException
+     */
+    private function instantiate(string $className, bool $callOriginalConstructor, array $arguments): object
+    {
+        if ($callOriginalConstructor) {
+            if (count($arguments) === 0) {
+                return new $className;
+            }
+
+            try {
+                return (new ReflectionClass($className))->newInstanceArgs($arguments);
+                // @codeCoverageIgnoreStart
+            } catch (\ReflectionException $e) {
+                throw new ReflectionException(
+                    $e->getMessage(),
+                    (int) $e->getCode(),
+                    $e
+                );
+            }
+            // @codeCoverageIgnoreEnd
+        }
+
+        try {
+            return (new ReflectionClass($className))->newInstanceWithoutConstructor();
+            // @codeCoverageIgnoreStart
+        } catch (\ReflectionException $e) {
+            throw new ReflectionException(
+                $e->getMessage(),
+                (int) $e->getCode(),
+                $e
+            );
+        }
+        // @codeCoverageIgnoreEnd
+    }
+
+    /**
+     * @psalm-param class-string $type
+     *
+     * @throws ReflectionException
+     */
+    private function instantiateProxyTarget(?object $proxyTarget, object $object, string $type, array $arguments): void
+    {
+        if (!is_object($proxyTarget)) {
+            assert(class_exists($type));
+
+            if (count($arguments) === 0) {
+                $proxyTarget = new $type;
+            } else {
+                $class = new ReflectionClass($type);
+
+                try {
+                    $proxyTarget = $class->newInstanceArgs($arguments);
+                    // @codeCoverageIgnoreStart
+                } catch (\ReflectionException $e) {
+                    throw new ReflectionException(
+                        $e->getMessage(),
+                        (int) $e->getCode(),
+                        $e
+                    );
+                }
+                // @codeCoverageIgnoreEnd
+            }
+        }
+
+        $object->__phpunit_setOriginalObject($proxyTarget);
     }
 }

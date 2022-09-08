@@ -31,6 +31,8 @@ interface Emitter
 
     public function testRunnerFinished(): void;
 
+    public function testRunnerTriggeredDeprecation(string $message): void;
+
     public function testRunnerTriggeredWarning(string $message): void;
 
     public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void;
@@ -51,8 +53,6 @@ interface Emitter
     public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
 
     public function testPassed(Code\Test $test, mixed $testMethodReturnValue): void;
-
-    public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void;
 
     public function testConsideredRisky(Code\Test $test, string $message): void;
 
@@ -137,8 +137,6 @@ interface Emitter
 
     public function testTriggeredError(Code\Test $test, string $message, string $file, int $line): void;
 
-    public function testTriggeredPhpError(Code\Test $test, string $message, string $file, int $line): void;
-
     public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line): void;
 
     public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line): void;
@@ -146,6 +144,8 @@ interface Emitter
     public function testTriggeredWarning(Code\Test $test, string $message, string $file, int $line): void;
 
     public function testTriggeredPhpWarning(Code\Test $test, string $message, string $file, int $line): void;
+
+    public function testTriggeredPhpunitError(Code\Test $test, string $message): void;
 
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void;
 

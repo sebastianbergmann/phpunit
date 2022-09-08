@@ -23,7 +23,7 @@ $mock = $generator->generate(
     true
 );
 
-print $mock->getClassCode();
+print $mock->classCode();
 --EXPECT--
 declare(strict_types=1);
 

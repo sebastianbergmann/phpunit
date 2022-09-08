@@ -11,6 +11,7 @@ namespace PHPUnit\Framework\TestStatus;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ *
  * @psalm-immutable
  */
 final class Skipped extends Known

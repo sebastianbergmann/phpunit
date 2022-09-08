@@ -20,9 +20,9 @@ Time: %s, Memory: %s
 There was 1 risky test:
 
 1) PHPUnit\TestFixture\DoesNotPerformAssertionsButPerformingAssertionsTest::testFalseAndTrueAreStillFine
-This test is annotated with "@doesNotPerformAssertions" but performed 2 assertions
+This test is not expected to perform assertions but performed 2 assertions
 
 %s:%d
 
-OK, but incomplete, skipped, or risky tests!
+OK, but some tests have issues!
 Tests: 1, Assertions: 2, Risky: 1.

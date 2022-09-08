@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
+use PHPUnit\Util\ThrowableToStringMapper;
 
 #[CoversClass(StringContains::class)]
 #[Small]
@@ -36,7 +36,7 @@ Failed asserting that 'barbazbar' contains "foo".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -89,7 +89,7 @@ Failed asserting that 'barbazbar' contains "foo".
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;

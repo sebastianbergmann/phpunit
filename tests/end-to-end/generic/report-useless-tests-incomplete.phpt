@@ -17,5 +17,5 @@ I                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-OK, but incomplete, skipped, or risky tests!
+OK, but some tests have issues!
 Tests: 1, Assertions: 0, Incomplete: 1.

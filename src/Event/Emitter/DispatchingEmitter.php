@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Event;
 
+use function assert;
+use function debug_backtrace;
+use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
@@ -88,6 +91,16 @@ final class DispatchingEmitter implements Emitter
     {
         $this->dispatcher->dispatch(
             new TestRunner\Finished($this->telemetryInfo())
+        );
+    }
+
+    public function testRunnerTriggeredDeprecation(string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\DeprecationTriggered(
+                $this->telemetryInfo(),
+                $message
+            )
         );
     }
 
@@ -188,17 +201,6 @@ final class DispatchingEmitter implements Emitter
                 $this->telemetryInfo(),
                 $test,
                 $testMethodReturnValue
-            )
-        );
-    }
-
-    public function testPassedWithWarning(Code\Test $test, Throwable $throwable): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\PassedWithWarning(
-                $this->telemetryInfo(),
-                $test,
-                $throwable
             )
         );
     }
@@ -489,19 +491,6 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testTriggeredPhpError(Code\Test $test, string $message, string $file, int $line): void
-    {
-        $this->dispatcher->dispatch(
-            new Test\PhpErrorTriggered(
-                $this->telemetryInfo(),
-                $test,
-                $message,
-                $file,
-                $line
-            )
-        );
-    }
-
     public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
@@ -554,6 +543,17 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    public function testTriggeredPhpunitError(Code\Test $test, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\PhpunitErrorTriggered(
+                $this->telemetryInfo(),
+                $test,
+                $message,
+            )
+        );
+    }
+
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(
@@ -571,7 +571,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreated(string $className): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectCreated(
+            new Test\MockObjectCreated(
                 $this->telemetryInfo(),
                 $className
             )
@@ -584,7 +584,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreatedForTrait(string $traitName): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectCreatedForTrait(
+            new Test\MockObjectForTraitCreated(
                 $this->telemetryInfo(),
                 $traitName
             )
@@ -597,7 +597,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreatedForAbstractClass(string $className): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectCreatedForAbstractClass(
+            new Test\MockObjectForAbstractClassCreated(
                 $this->telemetryInfo(),
                 $className
             )
@@ -611,7 +611,7 @@ final class DispatchingEmitter implements Emitter
     public function testMockObjectCreatedFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\MockObjectCreatedFromWsdl(
+            new Test\MockObjectFromWsdlCreated(
                 $this->telemetryInfo(),
                 $wsdlFile,
                 $originalClassName,
@@ -629,7 +629,7 @@ final class DispatchingEmitter implements Emitter
     public function testPartialMockObjectCreated(string $className, string ...$methodNames): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\PartialMockObjectCreated(
+            new Test\PartialMockObjectCreated(
                 $this->telemetryInfo(),
                 $className,
                 ...$methodNames
@@ -643,7 +643,7 @@ final class DispatchingEmitter implements Emitter
     public function testTestProxyCreated(string $className, array $constructorArguments): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\TestProxyCreated(
+            new Test\TestProxyCreated(
                 $this->telemetryInfo(),
                 $className,
                 $constructorArguments
@@ -657,7 +657,7 @@ final class DispatchingEmitter implements Emitter
     public function testTestStubCreated(string $className): void
     {
         $this->dispatcher->dispatch(
-            new TestDouble\TestStubCreated(
+            new Test\TestStubCreated(
                 $this->telemetryInfo(),
                 $className
             )
@@ -719,13 +719,17 @@ final class DispatchingEmitter implements Emitter
     private function telemetryInfo(): Telemetry\Info
     {
         $current = $this->system->snapshot();
+        $emitter = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2];
+
+        assert(isset($emitter['class'], $emitter['function']));
 
         $info = new Telemetry\Info(
             $current,
             $current->time()->duration($this->startSnapshot->time()),
             $current->memoryUsage()->diff($this->startSnapshot->memoryUsage()),
             $current->time()->duration($this->previousSnapshot->time()),
-            $current->memoryUsage()->diff($this->previousSnapshot->memoryUsage())
+            $current->memoryUsage()->diff($this->previousSnapshot->memoryUsage()),
+            new ClassMethod($emitter['class'], $emitter['function'])
         );
 
         $this->previousSnapshot = $current;

@@ -1,5 +1,5 @@
 --TEST--
-phpunit --testdox --colors=always --verbose -c tests/basic/configuration.basic.xml
+phpunit --testdox --colors=always -c tests/basic/configuration.basic.xml
 --XFAIL--
 TestDox logging has not been migrated to events yet.
 See https://github.com/sebastianbergmann/phpunit/issues/4702 for details.
@@ -10,7 +10,6 @@ $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = __DIR__ . '/../_files/basic/configuration.basic.xml';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--colors=always';
-$_SERVER['argv'][] = '--verbose';
 
 require_once __DIR__ . '/../../bootstrap.php';
 

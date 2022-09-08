@@ -21,7 +21,7 @@ use PHPUnit\Framework\MockObject\Rule\InvokedCount;
 use PHPUnit\Framework\MockObject\Rule\MethodName;
 use PHPUnit\Framework\MockObject\Rule\ParametersRule;
 use PHPUnit\Framework\MockObject\Stub\Stub;
-use PHPUnit\Framework\TestFailure;
+use PHPUnit\Util\ThrowableToStringMapper;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -29,11 +29,10 @@ use PHPUnit\Framework\TestFailure;
 final class Matcher
 {
     private InvocationOrder $invocationRule;
-    private ?string $afterMatchBuilderId     = null;
-    private bool $afterMatchBuilderIsInvoked = false;
-    private ?MethodName $methodNameRule      = null;
-    private ?ParametersRule $parametersRule  = null;
-    private ?Stub $stub                      = null;
+    private ?string $afterMatchBuilderId    = null;
+    private ?MethodName $methodNameRule     = null;
+    private ?ParametersRule $parametersRule = null;
+    private ?Stub $stub                     = null;
 
     public function __construct(InvocationOrder $rule)
     {
@@ -50,7 +49,7 @@ final class Matcher
         return $this->methodNameRule !== null;
     }
 
-    public function getMethodNameRule(): MethodName
+    public function methodNameRule(): MethodName
     {
         return $this->methodNameRule;
     }
@@ -94,18 +93,12 @@ final class Matcher
         }
 
         if ($this->afterMatchBuilderId !== null) {
-            $matcher = $invocation->getObject()
+            $matcher = $invocation->object()
                                   ->__phpunit_getInvocationHandler()
                                   ->lookupMatcher($this->afterMatchBuilderId);
 
             if (!$matcher) {
                 throw new MatchBuilderNotFoundException($this->afterMatchBuilderId);
-            }
-
-            assert($matcher instanceof self);
-
-            if ($matcher->invocationRule->hasBeenInvoked()) {
-                $this->afterMatchBuilderIsInvoked = true;
             }
         }
 
@@ -141,7 +134,7 @@ final class Matcher
     public function matches(Invocation $invocation): bool
     {
         if ($this->afterMatchBuilderId !== null) {
-            $matcher = $invocation->getObject()
+            $matcher = $invocation->object()
                                   ->__phpunit_getInvocationHandler()
                                   ->lookupMatcher($this->afterMatchBuilderId);
 
@@ -213,7 +206,7 @@ final class Matcher
                     "Expectation failed for %s when %s.\n%s",
                     $this->methodNameRule->toString(),
                     $this->invocationRule->toString(),
-                    TestFailure::exceptionToString($e)
+                    ThrowableToStringMapper::map($e)
                 )
             );
         }
@@ -221,11 +214,7 @@ final class Matcher
 
     public function toString(): string
     {
-        $list = [];
-
-        if ($this->invocationRule !== null) {
-            $list[] = $this->invocationRule->toString();
-        }
+        $list = [$this->invocationRule->toString()];
 
         if ($this->methodNameRule !== null) {
             $list[] = 'where ' . $this->methodNameRule->toString();

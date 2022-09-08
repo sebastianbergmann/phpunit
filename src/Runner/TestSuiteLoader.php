@@ -14,7 +14,6 @@ use function array_values;
 use function basename;
 use function class_exists;
 use function get_declared_classes;
-use function sprintf;
 use function stripos;
 use function strlen;
 use function substr;
@@ -67,16 +66,16 @@ final class TestSuiteLoader
             self::$loadedClasses = array_merge($loadedClasses, self::$loadedClasses);
 
             if (empty(self::$loadedClasses)) {
-                throw $this->exceptionFor($suiteClassName, $suiteClassFile);
+                throw new ClassCannotBeFoundException($suiteClassName, $suiteClassFile);
             }
         }
 
         if (!class_exists($suiteClassName, false)) {
-            // this block will handle namespaced classes
             $offset = 0 - strlen($suiteClassName);
 
             foreach (self::$loadedClasses as $loadedClass) {
-                if (stripos(substr($loadedClass, $offset - 1), '\\' . $suiteClassName) === 0) {
+                if (stripos(substr($loadedClass, $offset - 1), '\\' . $suiteClassName) === 0 ||
+                    stripos(substr($loadedClass, $offset - 1), '_' . $suiteClassName) === 0) {
                     $suiteClassName = $loadedClass;
 
                     break;
@@ -85,14 +84,14 @@ final class TestSuiteLoader
         }
 
         if (!class_exists($suiteClassName, false)) {
-            throw $this->exceptionFor($suiteClassName, $suiteClassFile);
+            throw new ClassCannotBeFoundException($suiteClassName, $suiteClassFile);
         }
 
         try {
             $class = new ReflectionClass($suiteClassName);
             // @codeCoverageIgnoreStart
         } catch (ReflectionException $e) {
-            throw new Exception(
+            throw new ReflectionException(
                 $e->getMessage(),
                 (int) $e->getCode(),
                 $e
@@ -104,7 +103,7 @@ final class TestSuiteLoader
             return $class;
         }
 
-        throw $this->exceptionFor($suiteClassName, $suiteClassFile);
+        throw new ClassCannotBeFoundException($suiteClassName, $suiteClassFile);
     }
 
     private function classNameFromFileName(string $suiteClassFile): string
@@ -117,16 +116,5 @@ final class TestSuiteLoader
         }
 
         return $className;
-    }
-
-    private function exceptionFor(string $className, string $filename): Exception
-    {
-        return new Exception(
-            sprintf(
-                "Class '%s' could not be found in '%s'.",
-                $className,
-                $filename
-            )
-        );
     }
 }

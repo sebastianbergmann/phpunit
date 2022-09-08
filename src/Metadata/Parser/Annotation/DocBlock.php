@@ -20,8 +20,9 @@ use function preg_split;
 use function realpath;
 use function substr;
 use function trim;
+use PharIo\Version\Exception as PharIoVersionException;
 use PharIo\Version\VersionConstraintParser;
-use PHPUnit\Framework\Warning;
+use PHPUnit\Metadata\InvalidVersionRequirementException;
 use ReflectionClass;
 use ReflectionFunctionAbstract;
 use ReflectionMethod;
@@ -110,8 +111,6 @@ final class DocBlock
      *   string,
      *   string|array{version: string, operator: string}|array{constraint: string}|array<int|string, string>
      * >
-     *
-     * @throws Warning if the requirements version constraint is not well-formed
      */
     public function requirements(): array
     {
@@ -142,6 +141,7 @@ final class DocBlock
                     'version'  => $matches['version'],
                     'operator' => $matches['operator'],
                 ];
+
                 $recordedOffsets[$matches['name']] = $offset;
             }
 
@@ -158,9 +158,14 @@ final class DocBlock
                     $requires[$matches['name'] . '_constraint'] = [
                         'constraint' => $versionConstraintParser->parse(trim($matches['constraint'])),
                     ];
+
                     $recordedOffsets[$matches['name'] . '_constraint'] = $offset;
-                } catch (\PharIo\Version\Exception $e) {
-                    throw new Warning($e->getMessage(), $e->getCode(), $e);
+                } catch (PharIoVersionException $e) {
+                    throw new InvalidVersionRequirementException(
+                        $e->getMessage(),
+                        $e->getCode(),
+                        $e
+                    );
                 }
             }
 
@@ -193,10 +198,12 @@ final class DocBlock
         return $this->parsedRequirements = array_merge(
             $requires,
             ['__OFFSET' => $recordedOffsets],
-            array_filter([
-                'setting'            => $recordedSettings,
-                'extension_versions' => $extensionVersions,
-            ])
+            array_filter(
+                [
+                    'setting'            => $recordedSettings,
+                    'extension_versions' => $extensionVersions,
+                ]
+            )
         );
     }
 
@@ -218,7 +225,7 @@ final class DocBlock
             $numMatches = count($matches[0]);
 
             for ($i = 0; $i < $numMatches; $i++) {
-                $annotations[$matches['name'][$i]][] = (string) $matches['value'][$i];
+                $annotations[$matches['name'][$i]][] = $matches['value'][$i];
             }
         }
 

@@ -2,6 +2,32 @@
 
 All notable changes of the PHPUnit 9.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.5.24] - 2022-08-30
+
+### Added
+
+* [#4931](https://github.com/sebastianbergmann/phpunit/issues/4931): Support `null` and `false` as stand-alone types
+* [#4955](https://github.com/sebastianbergmann/phpunit/issues/4955): Support `true` as stand-alone type
+
+### Fixed
+
+* [#4913](https://github.com/sebastianbergmann/phpunit/issues/4913): Failed `assert()` should show a backtrace
+* [#5012](https://github.com/sebastianbergmann/phpunit/pull/5012): Memory leak in `ExceptionWrapper`
+
+## [9.5.23] - 2022-08-22
+
+### Changed
+
+* [#5033](https://github.com/sebastianbergmann/phpunit/issues/5033): Do not depend on phpspec/prophecy
+
+## [9.5.22] - 2022-08-20
+
+### Fixed
+
+* [#5015](https://github.com/sebastianbergmann/phpunit/pull/5015): Ukraine banner unreadable on black background
+* [#5020](https://github.com/sebastianbergmann/phpunit/issues/5020): PHPUnit 9 breaks loading of PSR-0/PEAR style classes
+* [#5022](https://github.com/sebastianbergmann/phpunit/issues/5022): `ExcludeList::addDirectory()` does not work correctly
+
 ## [9.5.21] - 2022-06-19
 
 ### Fixed
@@ -164,6 +190,9 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
 
+[9.5.24]: https://github.com/sebastianbergmann/phpunit/compare/9.5.23...9.5.24
+[9.5.23]: https://github.com/sebastianbergmann/phpunit/compare/9.5.22...9.5.23
+[9.5.22]: https://github.com/sebastianbergmann/phpunit/compare/9.5.21...9.5.22
 [9.5.21]: https://github.com/sebastianbergmann/phpunit/compare/9.5.20...9.5.21
 [9.5.20]: https://github.com/sebastianbergmann/phpunit/compare/9.5.19...9.5.20
 [9.5.19]: https://github.com/sebastianbergmann/phpunit/compare/9.5.18...9.5.19

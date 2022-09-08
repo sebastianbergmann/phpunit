@@ -44,7 +44,7 @@ final class MethodName
      */
     public function matches(BaseInvocation $invocation): bool
     {
-        return $this->matchesName($invocation->getMethodName());
+        return $this->matchesName($invocation->methodName());
     }
 
     /**

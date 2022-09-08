@@ -28,7 +28,7 @@ final class ReturnValueMap implements Stub
 
     public function invoke(Invocation $invocation): mixed
     {
-        $parameterCount = count($invocation->getParameters());
+        $parameterCount = count($invocation->parameters());
 
         foreach ($this->valueMap as $map) {
             if (!is_array($map) || $parameterCount !== (count($map) - 1)) {
@@ -37,7 +37,7 @@ final class ReturnValueMap implements Stub
 
             $return = array_pop($map);
 
-            if ($invocation->getParameters() === $map) {
+            if ($invocation->parameters() === $map) {
                 return $return;
             }
         }

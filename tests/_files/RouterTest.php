@@ -16,6 +16,7 @@ final class RouterTest extends TestCase
 {
     /**
      * @dataProvider routesProvider
+     *
      * @testdox      Routes $url to $handler
      */
     public function testRoutesRequest(string $url, string $handler): void

@@ -16,7 +16,7 @@ class Issue2145Test extends TestCase
 {
     public static function setUpBeforeClass(): void
     {
-        throw new Exception;
+        throw new Exception('message');
     }
 
     public function testOne(): void

@@ -37,7 +37,7 @@ final class InvokedAtMostCount extends InvocationOrder
      */
     public function verify(): void
     {
-        $count = $this->getInvocationCount();
+        $count = $this->numberOfInvocations();
 
         if ($count > $this->allowedInvocations) {
             throw new ExpectationFailedException(

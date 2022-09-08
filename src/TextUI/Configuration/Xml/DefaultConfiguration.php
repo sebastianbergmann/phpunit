@@ -16,6 +16,7 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
  * @psalm-immutable
  */
 final class DefaultConfiguration extends Configuration
@@ -41,10 +42,6 @@ final class DefaultConfiguration extends Configuration
                 null,
                 null,
                 null
-            ),
-            new Groups(
-                GroupCollection::fromArray([]),
-                GroupCollection::fromArray([])
             ),
             new Groups(
                 GroupCollection::fromArray([]),
@@ -77,6 +74,10 @@ final class DefaultConfiguration extends Configuration
                 null,
                 80,
                 \PHPUnit\TextUI\Configuration\Configuration::COLOR_DEFAULT,
+                false,
+                false,
+                false,
+                false,
                 false,
                 false,
                 false,

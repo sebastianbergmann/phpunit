@@ -88,16 +88,20 @@
 
   [32m--display-incomplete            [0m Display details for incomplete tests
   [32m--display-skipped               [0m Display details for skipped tests
+  [32m--display-deprecations          [0m Display details for deprecations triggered
+                                   by tests
+  [32m--display-errors                [0m Display details for errors triggered by
+                                   tests
+  [32m--display-notices               [0m Display details for notices triggered by
+                                   tests
+  [32m--display-warnings              [0m Display details for warnings triggered by
+                                   tests
   [32m--reverse-list                  [0m Print defects in reverse order
-  [32m-v|--verbose                    [0m Output more verbose information
 
   [32m--teamcity                      [0m Report test execution progress in TeamCity
                                    format
   [32m--testdox                       [0m Report test execution progress in TestDox
                                    format
-  [32m--testdox-group                 [0m Only include tests from the specified
-                                   group(s)
-  [32m--testdox-exclude-group         [0m Exclude tests from the specified group(s)
   [32m--no-interaction                [0m Disable TestDox progress animation
 
 [33mLogging:[0m

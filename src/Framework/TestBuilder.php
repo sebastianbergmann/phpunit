@@ -10,8 +10,6 @@
 namespace PHPUnit\Framework;
 
 use function assert;
-use function sprintf;
-use function trim;
 use PHPUnit\Metadata\Api\DataProvider;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\BackupGlobals;
@@ -21,47 +19,26 @@ use PHPUnit\Metadata\ExcludeStaticPropertyFromBackup;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Metadata\PreserveGlobalState;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
-use PHPUnit\Util\Filter;
-use PHPUnit\Util\InvalidDataSetException;
 use ReflectionClass;
-use Throwable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestBuilder
 {
+    /**
+     * @throws InvalidDataProviderException
+     */
     public function build(ReflectionClass $theClass, string $methodName): Test
     {
         $className = $theClass->getName();
 
-        if (!$theClass->isInstantiable()) {
-            return new ErrorTestCase(
-                $className,
-                '',
-                sprintf('Cannot instantiate class "%s".', $className)
-            );
-        }
+        $data = (new DataProvider)->providedData(
+            $className,
+            $methodName
+        );
 
-        try {
-            $data = (new DataProvider)->providedData(
-                $className,
-                $methodName
-            );
-        } catch (Throwable $t) {
-            $data = new ErrorTestCase(
-                $className,
-                $methodName,
-                sprintf(
-                    "The data provider specified for %s::%s is invalid\n%s",
-                    $className,
-                    $methodName,
-                    $this->throwableToString($t)
-                )
-            );
-        }
-
-        if (isset($data)) {
+        if ($data !== null) {
             $test = $this->buildDataProviderTestSuite(
                 $methodName,
                 $className,
@@ -92,7 +69,7 @@ final class TestBuilder
      * @psalm-param class-string $className
      * @psalm-param array{backupGlobals: ?bool, backupGlobalsExcludeList: list<string>, backupStaticProperties: ?bool, backupStaticPropertiesExcludeList: array<string,list<string>>} $backupSettings
      */
-    private function buildDataProviderTestSuite(string $methodName, string $className, array|ErrorTestCase|IncompleteTestCase|SkippedTestCase $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
+    private function buildDataProviderTestSuite(string $methodName, string $className, array $data, bool $runTestInSeparateProcess, ?bool $preserveGlobalState, bool $runClassInSeparateProcess, array $backupSettings): DataProviderTestSuite
     {
         $dataProviderTestSuite = DataProviderTestSuite::empty(
             $className . '::' . $methodName
@@ -100,28 +77,22 @@ final class TestBuilder
 
         $groups = (new Groups)->groups($className, $methodName);
 
-        if ($data instanceof ErrorTestCase ||
-            $data instanceof SkippedTestCase ||
-            $data instanceof IncompleteTestCase) {
-            $dataProviderTestSuite->addTest($data, $groups);
-        } else {
-            foreach ($data as $_dataName => $_data) {
-                $_test = new $className($methodName);
+        foreach ($data as $_dataName => $_data) {
+            $_test = new $className($methodName);
 
-                assert($_test instanceof TestCase);
+            assert($_test instanceof TestCase);
 
-                $_test->setData($_dataName, $_data);
+            $_test->setData($_dataName, $_data);
 
-                $this->configureTestCase(
-                    $_test,
-                    $runTestInSeparateProcess,
-                    $preserveGlobalState,
-                    $runClassInSeparateProcess,
-                    $backupSettings
-                );
+            $this->configureTestCase(
+                $_test,
+                $runTestInSeparateProcess,
+                $preserveGlobalState,
+                $runClassInSeparateProcess,
+                $backupSettings
+            );
 
-                $dataProviderTestSuite->addTest($_test, $groups);
-            }
+            $dataProviderTestSuite->addTest($_test, $groups);
         }
 
         return $dataProviderTestSuite;
@@ -159,30 +130,6 @@ final class TestBuilder
         }
 
         $test->setBackupStaticPropertiesExcludeList($backupSettings['backupStaticPropertiesExcludeList']);
-    }
-
-    private function throwableToString(Throwable $t): string
-    {
-        $message = $t->getMessage();
-
-        if (empty(trim($message))) {
-            $message = '<no message>';
-        }
-
-        if ($t instanceof InvalidDataSetException) {
-            return sprintf(
-                "%s\n%s",
-                $message,
-                Filter::getFilteredStacktrace($t)
-            );
-        }
-
-        return sprintf(
-            "%s: %s\n%s",
-            $t::class,
-            $message,
-            Filter::getFilteredStacktrace($t)
-        );
     }
 
     /**

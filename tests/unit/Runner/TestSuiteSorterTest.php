@@ -17,11 +17,7 @@ use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\ResultCache\DefaultResultCache;
-use PHPUnit\TestFixture\EmptyTestCaseTest;
-use PHPUnit\TestFixture\FailureTest;
 use PHPUnit\TestFixture\MultiDependencyTest;
-use PHPUnit\TestFixture\NotReorderableTest;
-use PHPUnit\TestFixture\Success;
 use PHPUnit\TestFixture\TestWithDifferentSizes;
 use ReflectionClass;
 
@@ -50,8 +46,8 @@ final class TestSuiteSorterTest extends TestCase
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('$order must be one of TestSuiteSorter::ORDER_[DEFAULT|REVERSED|RANDOMIZED|DURATION|SIZE]');
+        $this->expectException(InvalidOrderException::class);
+
         $sorter->reorderTestsInSuite($suite, -1, false, TestSuiteSorter::ORDER_DEFAULT);
     }
 
@@ -61,8 +57,8 @@ final class TestSuiteSorterTest extends TestCase
         $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
         $sorter = new TestSuiteSorter;
 
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('$orderDefects must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST');
+        $this->expectException(InvalidOrderException::class);
+
         $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, -1);
     }
 
@@ -577,28 +573,6 @@ final class TestSuiteSorterTest extends TestCase
         ];
     }
 
-    /**
-     * @see https://github.com/lstrojny/phpunit-clever-and-smart/issues/38
-     */
-    public function testCanHandleSuiteWithEmptyTestCase(): void
-    {
-        $suite = TestSuite::empty();
-        $suite->addTestSuite(new ReflectionClass(EmptyTestCaseTest::class));
-
-        $sorter = new TestSuiteSorter;
-
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, TestSuiteSorter::ORDER_DEFAULT);
-
-        $this->assertSame(EmptyTestCaseTest::class, $suite->tests()[0]->getName());
-        $this->assertSame(
-            sprintf(
-                'No tests found in class "%s".',
-                EmptyTestCaseTest::class
-            ),
-            $suite->tests()[0]->tests()[0]->getMessage()
-        );
-    }
-
     public function suiteSorterOptionPermutationsProvider(): array
     {
         $orderValues        = [TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, TestSuiteSorter::ORDER_RANDOMIZED];
@@ -638,17 +612,5 @@ final class TestSuiteSorterTest extends TestCase
         ];
 
         $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
-    }
-
-    public function testSorterQuietlyIgnoresNonReorderable(): void
-    {
-        $suite          = TestSuite::empty();
-        $testCollection = [new Success('testOne'), new NotReorderableTest, new FailureTest('testAssertArrayEqualsArray')];
-        $suite->setTests($testCollection);
-
-        $sorter = new TestSuiteSorter;
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DURATION, true, TestSuiteSorter::ORDER_DEFECTS_FIRST);
-
-        $this->assertEquals($testCollection, $suite->tests());
     }
 }

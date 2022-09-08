@@ -47,6 +47,10 @@ final class Builder
         'disallow-test-output',
         'display-incomplete',
         'display-skipped',
+        'display-deprecations',
+        'display-errors',
+        'display-notices',
+        'display-warnings',
         'default-time-limit=',
         'enforce-time-limit',
         'exclude-group=',
@@ -100,8 +104,6 @@ final class Builder
         'strict-global-state',
         'teamcity',
         'testdox',
-        'testdox-group=',
-        'testdox-exclude-group=',
         'testdox-html=',
         'testdox-text=',
         'testdox-xml=',
@@ -162,6 +164,10 @@ final class Builder
         $disallowTestOutput                = null;
         $displayIncomplete                 = null;
         $displaySkipped                    = null;
+        $displayDeprecations               = null;
+        $displayErrors                     = null;
+        $displayNotices                    = null;
+        $displayWarnings                   = null;
         $enforceTimeLimit                  = null;
         $excludeGroups                     = null;
         $executionOrder                    = null;
@@ -206,8 +212,6 @@ final class Builder
         $stopOnSkipped                     = null;
         $stopOnWarning                     = null;
         $teamcityLogfile                   = null;
-        $testdoxExcludeGroups              = null;
-        $testdoxGroups                     = null;
         $testdoxHtmlFile                   = null;
         $testdoxTextFile                   = null;
         $testdoxXmlFile                    = null;
@@ -570,16 +574,6 @@ final class Builder
 
                     break;
 
-                case '--testdox-group':
-                    $testdoxGroups = explode(',', $option[1]);
-
-                    break;
-
-                case '--testdox-exclude-group':
-                    $testdoxExcludeGroups = explode(',', $option[1]);
-
-                    break;
-
                 case '--testdox-html':
                     $testdoxHtmlFile = $option[1];
 
@@ -677,6 +671,26 @@ final class Builder
 
                 case '--display-skipped':
                     $displaySkipped = true;
+
+                    break;
+
+                case '--display-deprecations':
+                    $displayDeprecations = true;
+
+                    break;
+
+                case '--display-errors':
+                    $displayErrors = true;
+
+                    break;
+
+                case '--display-notices':
+                    $displayNotices = true;
+
+                    break;
+
+                case '--display-warnings':
+                    $displayWarnings = true;
 
                     break;
 
@@ -827,8 +841,6 @@ final class Builder
             $stopOnSkipped,
             $stopOnWarning,
             $teamcityLogfile,
-            $testdoxExcludeGroups,
-            $testdoxGroups,
             $testdoxHtmlFile,
             $testdoxTextFile,
             $testdoxXmlFile,
@@ -839,6 +851,10 @@ final class Builder
             $useDefaultConfiguration,
             $displayIncomplete,
             $displaySkipped,
+            $displayDeprecations,
+            $displayErrors,
+            $displayNotices,
+            $displayWarnings,
             $version,
             $coverageFilter,
             $logEventsText,

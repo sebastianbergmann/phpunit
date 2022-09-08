@@ -32,36 +32,52 @@ final class Groups
 {
     /**
      * @psalm-param class-string $className
+     *
+     * @psalm-return list<string>
      */
-    public function groups(string $className, string $methodName): array
+    public function groups(string $className, string $methodName, bool $includeVirtual = true): array
     {
         $groups = [];
 
+        foreach (Registry::parser()->forClassAndMethod($className, $methodName)->isGroup() as $group) {
+            assert($group instanceof Group);
+
+            $groups[] = $group->groupName();
+        }
+
+        if ($groups === []) {
+            $groups[] = 'default';
+        }
+
+        if (!$includeVirtual) {
+            return array_unique($groups);
+        }
+
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
             assert($metadata instanceof Metadata);
-
-            if ($metadata->isGroup()) {
-                assert($metadata instanceof Group);
-
-                $groups[] = $metadata->groupName();
-            }
 
             if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
                 assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
 
                 $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
+
+                continue;
             }
 
             if ($metadata->isCovers()) {
                 assert($metadata instanceof Covers);
 
                 $groups[] = '__phpunit_covers_' . self::canonicalizeName($metadata->target());
+
+                continue;
             }
 
             if ($metadata->isUsesClass() || $metadata->isUsesFunction()) {
                 assert($metadata instanceof UsesClass || $metadata instanceof UsesFunction);
 
                 $groups[] = '__phpunit_uses_' . self::canonicalizeName($metadata->asStringForCodeUnitMapper());
+
+                continue;
             }
 
             if ($metadata->isUses()) {

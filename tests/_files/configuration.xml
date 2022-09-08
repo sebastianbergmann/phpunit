@@ -28,7 +28,6 @@
          timeoutForSmallTests="1"
          timeoutForMediumTests="10"
          timeoutForLargeTests="60"
-         verbose="false"
          executionOrder="default"
          noInteraction="true">
     <testsuites>

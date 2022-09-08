@@ -11,12 +11,12 @@ namespace PHPUnit\Event\Code;
 
 use const PHP_EOL;
 use PHPUnit\Event\NoPreviousThrowableException;
-use PHPUnit\Framework\ExceptionWrapper;
-use PHPUnit\Framework\TestFailure;
 use PHPUnit\Util\Filter;
+use PHPUnit\Util\ThrowableToStringMapper;
 
 /**
  * @psalm-immutable
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class Throwable
@@ -39,9 +39,9 @@ final class Throwable
         }
 
         return new self(
-            $t instanceof ExceptionWrapper ? $t->getClassName() : $t::class,
+            $t::class,
             $t->getMessage(),
-            TestFailure::exceptionToString($t),
+            ThrowableToStringMapper::map($t),
             Filter::getFilteredStacktrace($t),
             $previous
         );
@@ -61,11 +61,17 @@ final class Throwable
 
     public function asString(): string
     {
-        if (empty($this->stackTrace())) {
-            return $this->description();
+        $buffer = $this->description();
+
+        if (!empty($this->stackTrace())) {
+            $buffer .= PHP_EOL . $this->stackTrace();
         }
 
-        return $this->description() . PHP_EOL . $this->stackTrace();
+        if ($this->hasPrevious()) {
+            $buffer .= PHP_EOL . 'Caused by' . PHP_EOL . $this->previous()->asString();
+        }
+
+        return $buffer;
     }
 
     /**

@@ -32,6 +32,6 @@ final class MockMethodTest extends TestCase
             null,
             false
         );
-        $this->assertEquals('methodName', $method->getName());
+        $this->assertEquals('methodName', $method->methodName());
     }
 }

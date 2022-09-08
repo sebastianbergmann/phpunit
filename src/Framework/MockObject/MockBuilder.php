@@ -62,7 +62,7 @@ final class MockBuilder
      *
      * @psalm-return MockObject&MockedType
      */
-    public function getMock(): MockObject
+    public function getMock(bool $register = true): MockObject
     {
         $object = $this->generator->getMock(
             $this->type,
@@ -79,7 +79,9 @@ final class MockBuilder
             $this->returnValueGeneration
         );
 
-        $this->testCase->registerMockObject($object);
+        if ($register) {
+            $this->testCase->registerMockObject($object);
+        }
 
         return $object;
     }

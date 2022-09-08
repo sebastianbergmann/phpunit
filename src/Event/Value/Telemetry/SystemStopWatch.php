@@ -18,6 +18,6 @@ final class SystemStopWatch implements StopWatch
 {
     public function current(): HRTime
     {
-        return HRTime::fromSecondsAndNanoseconds(...hrtime(false));
+        return HRTime::fromSecondsAndNanoseconds(...hrtime());
     }
 }

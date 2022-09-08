@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
+use PHPUnit\Util\ThrowableToStringMapper;
 use stdClass;
 
 #[CoversClass(IsIdentical::class)]
@@ -46,7 +46,7 @@ Failed asserting that two variables reference the same object.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -72,7 +72,7 @@ Failed asserting that two variables reference the same object.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -100,7 +100,7 @@ Failed asserting that two strings are identical.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -138,7 +138,7 @@ Failed asserting that two arrays are identical.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -197,7 +197,7 @@ Failed asserting that two arrays are identical.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;

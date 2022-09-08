@@ -24,9 +24,7 @@ final class ComparisonMethodDoesNotDeclareBoolReturnTypeException extends Except
                 'Comparison method %s::%s() does not declare bool return type.',
                 $className,
                 $methodName
-            ),
-            0,
-            null
+            )
         );
     }
 

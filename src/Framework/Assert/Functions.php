@@ -15,10 +15,7 @@ use ArrayAccess;
 use Countable;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\ArrayHasKeys;
-use PHPUnit\Framework\Constraint\ArrayIsList;
 use PHPUnit\Framework\Constraint\Callback;
-use PHPUnit\Framework\Constraint\ClassHasAttribute;
-use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
@@ -36,6 +33,7 @@ use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
+use PHPUnit\Framework\Constraint\IsList;
 use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
@@ -48,7 +46,6 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\Constraint\ObjectEquals;
-use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\StringContains;
 use PHPUnit\Framework\Constraint\StringEndsWith;
@@ -140,7 +137,7 @@ if (!function_exists('PHPUnit\Framework\assertArrayNotHasKeys')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertArrayIsList')) {
+if (!function_exists('PHPUnit\Framework\assertIsList')) {
     /**
      * Asserts that an array is list.
      *
@@ -149,11 +146,11 @@ if (!function_exists('PHPUnit\Framework\assertArrayIsList')) {
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @see Assert::assertArrayIsList()
+     * @see Assert::assertIsList()
      */
-    function assertArrayIsList(array $array, string $message = ''): void
+    function assertIsList(array $array, string $message = ''): void
     {
-        Assert::assertArrayIsList(...func_get_args());
+        Assert::assertIsList(...func_get_args());
     }
 }
 
@@ -1145,132 +1142,6 @@ if (!function_exists('PHPUnit\Framework\assertNan')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\assertClassHasAttribute')) {
-    /**
-     * Asserts that a class has a specified attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertClassHasAttribute
-     */
-    function assertClassHasAttribute(string $attributeName, string $className, string $message = ''): void
-    {
-        Assert::assertClassHasAttribute(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\assertClassNotHasAttribute')) {
-    /**
-     * Asserts that a class does not have a specified attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertClassNotHasAttribute
-     */
-    function assertClassNotHasAttribute(string $attributeName, string $className, string $message = ''): void
-    {
-        Assert::assertClassNotHasAttribute(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\assertClassHasStaticAttribute')) {
-    /**
-     * Asserts that a class has a specified static attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertClassHasStaticAttribute
-     */
-    function assertClassHasStaticAttribute(string $attributeName, string $className, string $message = ''): void
-    {
-        Assert::assertClassHasStaticAttribute(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\assertClassNotHasStaticAttribute')) {
-    /**
-     * Asserts that a class does not have a specified static attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertClassNotHasStaticAttribute
-     */
-    function assertClassNotHasStaticAttribute(string $attributeName, string $className, string $message = ''): void
-    {
-        Assert::assertClassNotHasStaticAttribute(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\assertObjectHasAttribute')) {
-    /**
-     * Asserts that an object has a specified attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertObjectHasAttribute
-     */
-    function assertObjectHasAttribute(string $attributeName, object $object, string $message = ''): void
-    {
-        Assert::assertObjectHasAttribute(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\assertObjectNotHasAttribute')) {
-    /**
-     * Asserts that an object does not have a specified attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     *
-     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
-     *
-     * @see Assert::assertObjectNotHasAttribute
-     */
-    function assertObjectNotHasAttribute(string $attributeName, object $object, string $message = ''): void
-    {
-        Assert::assertObjectNotHasAttribute(...func_get_args());
-    }
-}
-
 if (!function_exists('PHPUnit\Framework\assertSame')) {
     /**
      * Asserts that two variables have the same type and value.
@@ -1280,7 +1151,9 @@ if (!function_exists('PHPUnit\Framework\assertSame')) {
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType
+     *
      * @psalm-param ExpectedType $expected
+     *
      * @psalm-assert =ExpectedType $actual
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1319,7 +1192,9 @@ if (!function_exists('PHPUnit\Framework\assertInstanceOf')) {
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
+     *
      * @psalm-param class-string<ExpectedType> $expected
+     *
      * @psalm-assert =ExpectedType $actual
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1340,7 +1215,9 @@ if (!function_exists('PHPUnit\Framework\assertNotInstanceOf')) {
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
+     *
      * @psalm-param class-string<ExpectedType> $expected
+     *
      * @psalm-assert !ExpectedType $actual
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -2442,10 +2319,10 @@ if (!function_exists('PHPUnit\Framework\arrayHasKeys')) {
     }
 }
 
-if (!function_exists('PHPUnit\Framework\arrayIsList')) {
-    function arrayIsList(): ArrayIsList
+if (!function_exists('PHPUnit\Framework\isList')) {
+    function isList(): IsList
     {
-        return Assert::arrayIsList();
+        return Assert::isList();
     }
 }
 
@@ -2523,27 +2400,6 @@ if (!function_exists('PHPUnit\Framework\greaterThanOrEqual')) {
     function greaterThanOrEqual(mixed $value): LogicalOr
     {
         return Assert::greaterThanOrEqual(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\classHasAttribute')) {
-    function classHasAttribute(string $attributeName): ClassHasAttribute
-    {
-        return Assert::classHasAttribute(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\classHasStaticAttribute')) {
-    function classHasStaticAttribute(string $attributeName): ClassHasStaticAttribute
-    {
-        return Assert::classHasStaticAttribute(...func_get_args());
-    }
-}
-
-if (!function_exists('PHPUnit\Framework\objectHasAttribute')) {
-    function objectHasAttribute(string $attributeName): ObjectHasAttribute
-    {
-        return Assert::objectHasAttribute(...func_get_args());
     }
 }
 

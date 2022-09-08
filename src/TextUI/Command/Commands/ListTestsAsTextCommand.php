@@ -37,7 +37,7 @@ final class ListTestsAsTextCommand implements Command
                 $name = sprintf(
                     '%s::%s',
                     $test::class,
-                    str_replace(' with data set ', '', $test->getName())
+                    str_replace(' with data set ', '', $test->nameWithDataSet())
                 );
             } elseif ($test instanceof PhptTestCase) {
                 $name = $test->getName();

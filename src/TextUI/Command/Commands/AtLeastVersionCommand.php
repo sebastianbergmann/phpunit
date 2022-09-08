@@ -27,7 +27,7 @@ final class AtLeastVersionCommand implements Command
     public function execute(): Result
     {
         if (version_compare(Version::id(), $this->version, '>=')) {
-            return Result::from('');
+            return Result::from();
         }
 
         return Result::from('', false);

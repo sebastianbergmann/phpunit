@@ -23,6 +23,7 @@ final class GreeterTest extends TestCase
 
     /**
      * @runInSeparateProcess
+     *
      * @ticket https://github.com/sebastianbergmann/phpunit/issues/4412
      */
     public function testGreetsInIsolation(): void

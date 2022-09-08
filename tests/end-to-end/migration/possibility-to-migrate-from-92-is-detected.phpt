@@ -14,11 +14,14 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       PHP %s
 Configuration: %sphpunit.xml
-Warning:       Your XML configuration validates against a deprecated schema.
-Suggestion:    Migrate your XML configuration using "--migrate-configuration"!
 
 .                                                                   1 / 1 (100%)
 
 Time: %s, Memory: %s
 
-OK (1 test, 1 assertion)
+There was 1 PHPUnit warning:
+
+1) Your XML configuration validates against a deprecated schema. Migrate your XML configuration using "--migrate-configuration"!
+
+WARNINGS!
+Tests: 1, Assertions: 1, Warnings: 1.

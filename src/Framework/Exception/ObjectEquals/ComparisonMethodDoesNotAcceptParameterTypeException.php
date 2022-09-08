@@ -25,9 +25,7 @@ final class ComparisonMethodDoesNotAcceptParameterTypeException extends Exceptio
                 $type,
                 $className,
                 $methodName
-            ),
-            0,
-            null
+            )
         );
     }
 

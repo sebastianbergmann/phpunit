@@ -33,8 +33,6 @@ final class Merger
 {
     public function merge(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
-        $warnings = [];
-
         $bootstrap = null;
 
         $configurationFile = null;
@@ -391,6 +389,30 @@ final class Merger
             $displayDetailsOnSkippedTests = $xmlConfiguration->phpunit()->displayDetailsOnSkippedTests();
         }
 
+        if ($cliConfiguration->hasDisplayDetailsOnTestsThatTriggerDeprecations()) {
+            $displayDetailsOnTestsThatTriggerDeprecations = $cliConfiguration->displayDetailsOnTestsThatTriggerDeprecations();
+        } else {
+            $displayDetailsOnTestsThatTriggerDeprecations = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerDeprecations();
+        }
+
+        if ($cliConfiguration->hasDisplayDetailsOnTestsThatTriggerErrors()) {
+            $displayDetailsOnTestsThatTriggerErrors = $cliConfiguration->displayDetailsOnTestsThatTriggerErrors();
+        } else {
+            $displayDetailsOnTestsThatTriggerErrors = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerErrors();
+        }
+
+        if ($cliConfiguration->hasDisplayDetailsOnTestsThatTriggerNotices()) {
+            $displayDetailsOnTestsThatTriggerNotices = $cliConfiguration->displayDetailsOnTestsThatTriggerNotices();
+        } else {
+            $displayDetailsOnTestsThatTriggerNotices = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerNotices();
+        }
+
+        if ($cliConfiguration->hasDisplayDetailsOnTestsThatTriggerWarnings()) {
+            $displayDetailsOnTestsThatTriggerWarnings = $cliConfiguration->displayDetailsOnTestsThatTriggerWarnings();
+        } else {
+            $displayDetailsOnTestsThatTriggerWarnings = $xmlConfiguration->phpunit()->displayDetailsOnTestsThatTriggerWarnings();
+        }
+
         if ($cliConfiguration->hasReverseList()) {
             $reverseDefectList = $cliConfiguration->reverseList();
         } else {
@@ -551,18 +573,6 @@ final class Merger
 
         $excludeGroups = array_diff($excludeGroups, $groups);
 
-        if ($cliConfiguration->hasTestdoxGroups()) {
-            $testdoxGroups = $cliConfiguration->testdoxGroups();
-        } else {
-            $testdoxGroups = $xmlConfiguration->testdoxGroups()->include()->asArrayOfStrings();
-        }
-
-        if ($cliConfiguration->hasTestdoxExcludeGroups()) {
-            $testdoxExcludeGroups = $cliConfiguration->testdoxExcludeGroups();
-        } else {
-            $testdoxExcludeGroups = $xmlConfiguration->testdoxGroups()->exclude()->asArrayOfStrings();
-        }
-
         $includePath = null;
 
         if ($cliConfiguration->hasIncludePath()) {
@@ -651,6 +661,10 @@ final class Merger
             $disallowTestOutput,
             $displayDetailsOnIncompleteTests,
             $displayDetailsOnSkippedTests,
+            $displayDetailsOnTestsThatTriggerDeprecations,
+            $displayDetailsOnTestsThatTriggerErrors,
+            $displayDetailsOnTestsThatTriggerNotices,
+            $displayDetailsOnTestsThatTriggerWarnings,
             $reverseDefectList,
             $requireCoverageMetadata,
             $registerMockObjectsFromTestArgumentsRecursively,
@@ -675,13 +689,10 @@ final class Merger
             $filter,
             $groups,
             $excludeGroups,
-            $testdoxGroups,
-            $testdoxExcludeGroups,
             $includePath,
             $randomOrderSeed,
             $includeUncoveredFiles,
             $xmlValidationErrors,
-            $warnings
         );
     }
 }

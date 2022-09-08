@@ -25,7 +25,7 @@ final class ConfigurableMethod
         $this->returnType = $returnType;
     }
 
-    public function getName(): string
+    public function name(): string
     {
         return $this->name;
     }
@@ -39,7 +39,7 @@ final class ConfigurableMethod
         return $this->returnType->isAssignable(Type::fromValue($value, false));
     }
 
-    public function getReturnTypeDeclaration(): string
+    public function returnTypeDeclaration(): string
     {
         return $this->returnType->asString();
     }

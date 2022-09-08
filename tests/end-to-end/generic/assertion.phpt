@@ -29,7 +29,10 @@ Time: %s, Memory: %s
 There was 1 failure:
 
 1) PHPUnit\TestFixture\AssertionExampleTest::testOne
-assert(false) in %sAssertionExample.php:%d
+assert(false)
+
+%s:%i
+%s:%i
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.

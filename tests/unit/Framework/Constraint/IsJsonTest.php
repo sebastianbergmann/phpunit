@@ -13,7 +13,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
+use PHPUnit\Util\ThrowableToStringMapper;
 
 #[CoversClass(IsJson::class)]
 #[Small]
@@ -55,7 +55,7 @@ Failed asserting that an empty string is valid JSON.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
         }
     }

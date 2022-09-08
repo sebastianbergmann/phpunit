@@ -13,12 +13,14 @@ use PHPUnit\Framework\TestCase;
 
 /**
  * @group group
+ *
  * @ticket ticket
  */
 final class GroupTest extends TestCase
 {
     /**
      * @group another-group
+     *
      * @ticket another-ticket
      */
     public function testOne(): void

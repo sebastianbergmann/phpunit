@@ -24,9 +24,7 @@ final class ComparisonMethodDoesNotDeclareParameterTypeException extends Excepti
                 'Parameter of comparison method %s::%s() does not have a declared type.',
                 $className,
                 $methodName
-            ),
-            0,
-            null
+            )
         );
     }
 

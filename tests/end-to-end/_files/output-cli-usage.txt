@@ -74,13 +74,14 @@ Reporting:
 
   --display-incomplete             Display details for incomplete tests
   --display-skipped                Display details for skipped tests
+  --display-deprecations           Display details for deprecations triggered by tests
+  --display-errors                 Display details for errors triggered by tests
+  --display-notices                Display details for notices triggered by tests
+  --display-warnings               Display details for warnings triggered by tests
   --reverse-list                   Print defects in reverse order
-  -v|--verbose                     Output more verbose information
 
   --teamcity                       Report test execution progress in TeamCity format
   --testdox                        Report test execution progress in TestDox format
-  --testdox-group                  Only include tests from the specified group(s)
-  --testdox-exclude-group          Exclude tests from the specified group(s)
   --no-interaction                 Disable TestDox progress animation
 
 Logging:

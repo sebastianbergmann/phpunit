@@ -15,7 +15,7 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 <?xml version="1.0" encoding="UTF-8"?>
 <testsuites>
-  <testsuite name="PHPUnit\SelfTest\Basic\StatusTest" file="%sStatusTest.php" tests="14" assertions="4" errors="4" warnings="2" failures="2" skipped="5" time="%f">
+  <testsuite name="PHPUnit\SelfTest\Basic\StatusTest" file="%sStatusTest.php" tests="12" assertions="4" errors="4" failures="2" skipped="5" time="%f">
     <testcase name="testSuccess" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f"/>
     <testcase name="testFailure" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f">
       <failure type="PHPUnit\Framework\ExpectationFailedException">PHPUnit\SelfTest\Basic\StatusTest::testFailure%A
@@ -38,10 +38,6 @@ RuntimeException:%w
     <testcase name="testRisky" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
       <error type="PHPUnit\Framework\RiskyTest">PHPUnit\SelfTest\Basic\StatusTest::testRisky%A
 This test did not perform any assertions</error>
-    </testcase>
-    <testcase name="testWarning" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <warning type="PHPUnit\Framework\Warning">PHPUnit\SelfTest\Basic\StatusTest::testWarning%A
-%sStatusTest.php:%d</warning>
     </testcase>
     <testcase name="testSuccessWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f"/>
     <testcase name="testFailureWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="1" time="%f">
@@ -66,12 +62,6 @@ RuntimeException: error with custom message
     <testcase name="testRiskyWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
       <error type="PHPUnit\Framework\RiskyTest">PHPUnit\SelfTest\Basic\StatusTest::testRiskyWithMessage%A
 This test did not perform any assertions</error>
-    </testcase>
-    <testcase name="testWarningWithMessage" file="%sStatusTest.php" line="%d" class="PHPUnit\SelfTest\Basic\StatusTest" classname="PHPUnit.SelfTest.Basic.StatusTest" assertions="0" time="%f">
-      <warning type="PHPUnit\Framework\Warning">PHPUnit\SelfTest\Basic\StatusTest::testWarningWithMessage%A
-warning with custom message
-%A
-%sStatusTest.php:%d</warning>
     </testcase>
   </testsuite>
 </testsuites>

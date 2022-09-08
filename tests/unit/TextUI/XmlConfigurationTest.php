@@ -228,17 +228,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(['name'], $groups->exclude()->asArrayOfStrings());
     }
 
-    public function testTestdoxGroupConfigurationIsReadCorrectly(): void
-    {
-        $testdox = $this->configuration('configuration.xml')->testdoxGroups();
-
-        $this->assertTrue($testdox->hasInclude());
-        $this->assertSame(['name'], $testdox->include()->asArrayOfStrings());
-
-        $this->assertTrue($testdox->hasExclude());
-        $this->assertSame(['name'], $testdox->exclude()->asArrayOfStrings());
-    }
-
     public function testExtensionConfigurationIsReadCorrectly(): void
     {
         $dir         = __DIR__;

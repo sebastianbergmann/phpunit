@@ -26,12 +26,10 @@ use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
-use PHPUnit\Event\Test\PassedWithWarning;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\TestSuite\Started;
 use PHPUnit\Event\UnknownSubscriberTypeException;
-use PHPUnit\Framework\RiskyTest;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
@@ -64,11 +62,6 @@ final class JunitXmlLogger
      * @psalm-var array<int,int>
      */
     private array $testSuiteErrors = [0];
-
-    /**
-     * @psalm-var array<int,int>
-     */
-    private array $testSuiteWarnings = [0];
 
     /**
      * @psalm-var array<int,int>
@@ -128,7 +121,6 @@ final class JunitXmlLogger
         $this->testSuiteTests[$this->testSuiteLevel]      = 0;
         $this->testSuiteAssertions[$this->testSuiteLevel] = 0;
         $this->testSuiteErrors[$this->testSuiteLevel]     = 0;
-        $this->testSuiteWarnings[$this->testSuiteLevel]   = 0;
         $this->testSuiteFailures[$this->testSuiteLevel]   = 0;
         $this->testSuiteSkipped[$this->testSuiteLevel]    = 0;
         $this->testSuiteTimes[$this->testSuiteLevel]      = 0;
@@ -152,11 +144,6 @@ final class JunitXmlLogger
         );
 
         $this->testSuites[$this->testSuiteLevel]->setAttribute(
-            'warnings',
-            (string) $this->testSuiteWarnings[$this->testSuiteLevel]
-        );
-
-        $this->testSuites[$this->testSuiteLevel]->setAttribute(
             'failures',
             (string) $this->testSuiteFailures[$this->testSuiteLevel]
         );
@@ -175,7 +162,6 @@ final class JunitXmlLogger
             $this->testSuiteTests[$this->testSuiteLevel - 1] += $this->testSuiteTests[$this->testSuiteLevel];
             $this->testSuiteAssertions[$this->testSuiteLevel - 1] += $this->testSuiteAssertions[$this->testSuiteLevel];
             $this->testSuiteErrors[$this->testSuiteLevel - 1] += $this->testSuiteErrors[$this->testSuiteLevel];
-            $this->testSuiteWarnings[$this->testSuiteLevel - 1] += $this->testSuiteWarnings[$this->testSuiteLevel];
             $this->testSuiteFailures[$this->testSuiteLevel - 1] += $this->testSuiteFailures[$this->testSuiteLevel];
             $this->testSuiteSkipped[$this->testSuiteLevel - 1] += $this->testSuiteSkipped[$this->testSuiteLevel];
             $this->testSuiteTimes[$this->testSuiteLevel - 1] += $this->testSuiteTimes[$this->testSuiteLevel];
@@ -243,13 +229,6 @@ final class JunitXmlLogger
         $this->testSuiteFailures[$this->testSuiteLevel]++;
     }
 
-    public function testPassedWithWarning(PassedWithWarning $event): void
-    {
-        $this->handleFault($event->test(), $event->throwable(), 'warning');
-
-        $this->testSuiteWarnings[$this->testSuiteLevel]++;
-    }
-
     public function testConsideredRisky(ConsideredRisky $event): void
     {
         $this->handleRisky($event->test(), $event->message());
@@ -267,7 +246,6 @@ final class JunitXmlLogger
         Facade::registerSubscriber(new TestSuiteFinishedSubscriber($this));
         Facade::registerSubscriber(new TestPreparedSubscriber($this));
         Facade::registerSubscriber(new TestFinishedSubscriber($this));
-        Facade::registerSubscriber(new TestPassedWithWarningSubscriber($this));
         Facade::registerSubscriber(new TestErroredSubscriber($this));
         Facade::registerSubscriber(new TestFailedSubscriber($this));
         Facade::registerSubscriber(new TestMarkedIncompleteSubscriber($this));
@@ -319,7 +297,7 @@ final class JunitXmlLogger
             Xml::prepareString($buffer)
         );
 
-        $risky->setAttribute('type', RiskyTest::class);
+        $risky->setAttribute('type', 'PHPUnit\Framework\RiskyTest');
 
         $this->currentTestCase->appendChild($risky);
     }

@@ -10,7 +10,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4641](https://github.com/sebastianbergmann/phpunit/issues/4641): `assertStringEqualsStringIgnoringLineEndings()` and `assertStringContainsStringIgnoringLineEndings()`
 * [#4650](https://github.com/sebastianbergmann/phpunit/issues/4650): Support dist file name `phpunit.dist.xml`
 * [#4657](https://github.com/sebastianbergmann/phpunit/pull/4657): `--exclude-testsuite` option
-* [#4818](https://github.com/sebastianbergmann/phpunit/pull/4818): `assertArrayIsList()`
+* [#4818](https://github.com/sebastianbergmann/phpunit/pull/4818): `assertIsList()`
 * [#4892](https://github.com/sebastianbergmann/phpunit/issues/4892): Make colors used in HTML code coverage report configurable
 * [#4893](https://github.com/sebastianbergmann/phpunit/issues/4893): Make path to custom.css for HTML code coverage report configurable
 * [#4994](https://github.com/sebastianbergmann/phpunit/issues/4994): Add assertArrayHasKeys and assertArrayNotHasKeys functions
@@ -19,6 +19,12 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * `--log-events-text <file>` option that controls streaming of event information (without event telemetry) in text format to a file
 * `--log-events-verbose-text <file>` option that controls streaming of event information (with event telemetry) in text format to a file
 * `--no-output` option to disable the output
+* `--display-incomplete` option and `displayDetailsOnIncompleteTests` XML configuration attribute to control whether details on incomplete tests should be displayed
+* `--display-skipped` option and `displayDetailsOnSkippedTests` XML configuration attribute to control whether details on skipped tests should be displayed
+* `--display-deprecations` option and `displayDetailsOnTestsThatTriggerDeprecations` XML configuration attribute to control whether details on tests that trigger `E_DEPRECATED` or `E_USER_DEPRECATED` should be displayed
+* `--display-errors` option and `displayDetailsOnTestsThatTriggerErrors` XML configuration attribute to control whether details on tests that trigger `E_ERROR` or `E_USER_ERROR` should be displayed
+* `--display-notices` option and `displayDetailsOnTestsThatTriggerNotices` XML configuration attribute to control whether details on tests that trigger `E_STRING`, `E_NOTICE`, or `E_USER_NOTICE` should be displayed
+* `--display-warnings` option and `displayDetailsOnTestsThatTriggerWarnings` XML configuration attribute to control whether details on tests that trigger `E_WARNING` or `E_USER_WARNING` should be displayed
 
 ### Changed
 
@@ -41,7 +47,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 
 ### Removed
 
-* [#3389](https://github.com/sebastianbergmann/phpunit/issues/3389): Removed `PHPUnit\Framework\TestListener` and `PHPUnit\Framework\TestListenerDefaultImplementation`
+* [#3389](https://github.com/sebastianbergmann/phpunit/issues/3389): Remove `PHPUnit\Framework\TestListener` and `PHPUnit\Framework\TestListenerDefaultImplementation`
 * [#3631](https://github.com/sebastianbergmann/phpunit/issues/3631): Remove support for `"ClassName<*>"` as values for `@covers` and `@uses` annotations
 * [#3769](https://github.com/sebastianbergmann/phpunit/issues/3769): Remove `MockBuilder::setMethods()` and `MockBuilder::setMethodsExcept()`
 * [#3777](https://github.com/sebastianbergmann/phpunit/issues/3777): Remove `PHPUnit\Framework\Error\*` classes
@@ -69,9 +75,9 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4531](https://github.com/sebastianbergmann/phpunit/pull/4531): Remove `--loader` option as well as `testSuiteLoaderClass` and `testSuiteLoaderFile` XML configuration settings
 * [#4536](https://github.com/sebastianbergmann/phpunit/issues/4536): Remove `assertFileNotIsWritable()`
 * [#4596](https://github.com/sebastianbergmann/phpunit/issues/4595): Remove Test Hooks
-* [#4564](https://github.com/sebastianbergmann/phpunit/issues/4564): Deprecate `withConsecutive()`
-* [#4567](https://github.com/sebastianbergmann/phpunit/issues/4567): Deprecate support for generators in `assertCount()` and `Count` constraint
-* [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): Deprecate assertions that operate on class/object properties
+* [#4564](https://github.com/sebastianbergmann/phpunit/issues/4564): Remove `withConsecutive()`
+* [#4567](https://github.com/sebastianbergmann/phpunit/issues/4567): Remove support for generators in `assertCount()` and `Count` constraint
+* [#4601](https://github.com/sebastianbergmann/phpunit/issues/4601): Remove assertions that operate on class/object properties
 * Removed the `PHPUnit\Runner\TestSuiteLoader` interface
 * Removed the `<listeners>` XML configuration element and its children
 * Removed the `groups` attribute on the `<test>` element in the TestDox XML report
@@ -82,6 +88,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `convertNoticesToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
 * Removed the `convertWarningsToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
 * Removed the `processUncoveredFiles` attribute on the `<coverage>` XML configuration element
+* Removed the `testdoxGroups` XML configuration element, the `--testdox-group` option, and the `--testdox-exclude-group` option as well as the feature they used to control
 * Removed the `PHPUnit\Framework\TestCase::getMockClass()` method
 * Removed the `PHPUnit\Framework\TestCase::$backupGlobalsExcludeList` property, use the `#[ExcludeGlobalVariableFromBackup('variable')]` attribute instead for excluding a global variable from the backup/restore of global and super-global variables
 * Removed the `PHPUnit\Framework\TestCase::$backupStaticAttributesExcludeList` property, use the `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute instead for excluding a static property from the backup/restore of static properties in user-defined classes

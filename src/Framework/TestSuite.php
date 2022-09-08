@@ -25,15 +25,18 @@ use function str_starts_with;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
+use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TextUI\Configuration\Registry;
+use PHPUnit\Util\Filter;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
@@ -103,18 +106,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $constructor = $class->getConstructor();
 
         if ($constructor !== null && !$constructor->isPublic()) {
-            $message = sprintf(
-                'Class "%s" has no public constructor.',
-                $class->getName()
-            );
-
-            Event\Facade::emitter()->testRunnerTriggeredWarning($message);
-
-            $testSuite->addTest(
-                new WarningTestCase(
-                    $class->getName(),
-                    '',
-                    $message
+            Event\Facade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'Class "%s" has no public constructor.',
+                    $class->getName()
                 )
             );
 
@@ -138,18 +133,10 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         if (count($testSuite) === 0) {
-            $message = sprintf(
-                'No tests found in class "%s".',
-                $class->getName()
-            );
-
-            Event\Facade::emitter()->testRunnerTriggeredWarning($message);
-
-            $testSuite->addTest(
-                new WarningTestCase(
-                    $class->getName(),
-                    '',
-                    $message
+            Event\Facade::emitter()->testRunnerTriggeredWarning(
+                sprintf(
+                    'No tests found in class "%s".',
+                    $class->getName()
                 )
             );
         }
@@ -324,14 +311,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * Runs the tests and collects their result in a TestResult.
-     *
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
-     * @throws Warning
      */
-    public function run(TestResult $result): void
+    public function run(): void
     {
         if (count($this) === 0) {
             return;
@@ -347,7 +331,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $emitter->testSuiteStarted($testSuiteValueObjectForEvents);
 
         $methodsCalledBeforeFirstTest = [];
-        $test                         = null;
 
         if (class_exists($this->name, false)) {
             try {
@@ -375,11 +358,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     call_user_func([$this->name, $beforeClassMethod]);
                 }
             } catch (SkippedTestSuiteError $error) {
-                foreach ($this->tests() as $test) {
-                    $result->startTest($test);
-                    $result->addFailure($test, $error);
-                }
-
                 return;
             } catch (Throwable $t) {
                 assert(isset($methodCalledBeforeFirstTest));
@@ -395,23 +373,6 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                         $this->name,
                         ...$methodsCalledBeforeFirstTest
                     );
-                }
-
-                $errorAdded = false;
-
-                foreach ($this->tests() as $test) {
-                    $result->startTest($test);
-
-                    if (!$errorAdded) {
-                        $result->addError($test, $t);
-
-                        $errorAdded = true;
-                    } else {
-                        $result->addFailure(
-                            $test,
-                            new SkippedDueToErrorInHookMethodException,
-                        );
-                    }
                 }
 
                 return;
@@ -430,7 +391,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                 break;
             }
 
-            $test->run($result);
+            $test->run();
         }
 
         $methodsCalledAfterLastTest = [];
@@ -456,14 +417,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                     $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
                 } catch (Throwable $t) {
-                    $message = "Exception in {$this->name}::{$afterClassMethod}" . PHP_EOL . $t->getMessage();
-                    $error   = new SyntheticError($message, 0, $t->getFile(), $t->getLine(), $t->getTrace());
-
-                    $placeholderTest = clone $test;
-                    $placeholderTest->setName($afterClassMethod);
-
-                    $result->startTest($placeholderTest);
-                    $result->addFailure($placeholderTest, $error);
+                    // @todo
                 }
             }
         }
@@ -594,9 +548,31 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
     {
+        $className  = $class->getName();
         $methodName = $method->getName();
 
-        $test = (new TestBuilder)->build($class, $methodName);
+        try {
+            $test = (new TestBuilder)->build($class, $methodName);
+        } catch (InvalidDataProviderException $e) {
+            Event\Facade::emitter()->testTriggeredPhpunitError(
+                new TestMethod(
+                    $className,
+                    $methodName,
+                    $class->getFileName(),
+                    $method->getStartLine(),
+                    MetadataCollection::fromArray([]),
+                    Event\TestDataCollection::fromArray([])
+                ),
+                sprintf(
+                    "The data provider specified for %s::%s is invalid\n%s",
+                    $className,
+                    $methodName,
+                    $this->throwableToString($e)
+                )
+            );
+
+            return;
+        }
 
         if ($test instanceof TestCase || $test instanceof DataProviderTestSuite) {
             $test->setDependencies(
@@ -645,7 +621,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
             return true;
         }
 
-        if (($this->stopOnDefect || $this->stopOnWarning) && Facade::hasTestPassedWithWarningEvents()) {
+        if (($this->stopOnDefect || $this->stopOnWarning) && Facade::hasWarningEvents()) {
             return true;
         }
 
@@ -662,5 +638,29 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         }
 
         return false;
+    }
+
+    private function throwableToString(Throwable $t): string
+    {
+        $message = $t->getMessage();
+
+        if (empty(trim($message))) {
+            $message = '<no message>';
+        }
+
+        if ($t instanceof InvalidDataProviderException) {
+            return sprintf(
+                "%s\n%s",
+                $message,
+                Filter::getFilteredStacktrace($t)
+            );
+        }
+
+        return sprintf(
+            "%s: %s\n%s",
+            $t::class,
+            $message,
+            Filter::getFilteredStacktrace($t)
+        );
     }
 }

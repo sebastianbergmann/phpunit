@@ -15,16 +15,12 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
-E                                                                   1 / 1 (100%)
+There was 1 PHPUnit error:
 
-Time: %s, Memory: %s
-
-There was 1 error:
-
-1) Error
+1) PHPUnit\TestFixture\Issue498Test::shouldBeFalse
 The data provider specified for PHPUnit\TestFixture\Issue498Test::shouldBeFalse is invalid
-Exception: Can't create the data
-%sIssue498Test.php:%d
+Can't create the data
 
-ERRORS!
-Tests: 1, Assertions: 0, Errors: 1.
+%s:%d
+
+No tests executed!

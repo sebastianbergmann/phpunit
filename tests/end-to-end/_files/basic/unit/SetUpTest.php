@@ -32,11 +32,11 @@ class SetUpTest extends TestCase
 
     public function testOneWithSetUpException(): void
     {
-        $this->fail();
+        $this->assertTrue(false);
     }
 
     public function testTwoWithSetUpException(): void
     {
-        $this->fail();
+        $this->assertTrue(false);
     }
 }

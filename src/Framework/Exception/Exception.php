@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use function array_keys;
 use function get_object_vars;
 use PHPUnit\Util\Filter;
+use PHPUnit\Util\ThrowableToStringMapper;
 use RuntimeException;
 use Throwable;
 
@@ -54,7 +55,7 @@ class Exception extends RuntimeException implements \PHPUnit\Exception
 
     public function __toString(): string
     {
-        $string = TestFailure::exceptionToString($this);
+        $string = ThrowableToStringMapper::map($this);
 
         if ($trace = Filter::getFilteredStacktrace($this)) {
             $string .= "\n" . $trace;

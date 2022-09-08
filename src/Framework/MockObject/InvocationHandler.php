@@ -128,7 +128,7 @@ final class InvocationHandler
         if (!$this->returnValueGeneration) {
             $exception = new ReturnValueNotConfiguredException($invocation);
 
-            if (strtolower($invocation->getMethodName()) === '__tostring') {
+            if (strtolower($invocation->methodName()) === '__tostring') {
                 $this->deferredError = $exception;
 
                 return '';

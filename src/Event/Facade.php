@@ -60,40 +60,6 @@ final class Facade
     }
 
     /**
-     * @throws NoEmitterToSuspendException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public static function suspend(): void
-    {
-        if (self::$emitter === null) {
-            throw new NoEmitterToSuspendException;
-        }
-
-        self::$suspended = self::$emitter;
-
-        self::$emitter = new DispatchingEmitter(
-            new CollectingDispatcher,
-            self::createTelemetrySystem()
-        );
-    }
-
-    /**
-     * @throws NoEmitterToResumeException
-     *
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
-    public static function resume(): void
-    {
-        if (self::$suspended === null) {
-            throw new NoEmitterToResumeException;
-        }
-
-        self::$emitter   = self::$suspended;
-        self::$suspended = null;
-    }
-
-    /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     public static function initForIsolation(HRTime $offset): CollectingDispatcher
@@ -204,11 +170,10 @@ final class Facade
             Test\Finished::class,
             Test\NoticeTriggered::class,
             Test\Passed::class,
-            Test\PassedWithWarning::class,
             Test\PhpDeprecationTriggered::class,
-            Test\PhpErrorTriggered::class,
             Test\PhpNoticeTriggered::class,
             Test\PhpunitDeprecationTriggered::class,
+            Test\PhpunitErrorTriggered::class,
             Test\PhpunitWarningTriggered::class,
             Test\PhpWarningTriggered::class,
             Test\PostConditionCalled::class,
@@ -220,13 +185,13 @@ final class Facade
             Test\Skipped::class,
             Test\WarningTriggered::class,
 
-            TestDouble\MockObjectCreatedForAbstractClass::class,
-            TestDouble\MockObjectCreatedForTrait::class,
-            TestDouble\MockObjectCreatedFromWsdl::class,
-            TestDouble\MockObjectCreated::class,
-            TestDouble\PartialMockObjectCreated::class,
-            TestDouble\TestProxyCreated::class,
-            TestDouble\TestStubCreated::class,
+            Test\MockObjectForAbstractClassCreated::class,
+            Test\MockObjectForTraitCreated::class,
+            Test\MockObjectFromWsdlCreated::class,
+            Test\MockObjectCreated::class,
+            Test\PartialMockObjectCreated::class,
+            Test\TestProxyCreated::class,
+            Test\TestStubCreated::class,
 
             TestRunner\BootstrapFinished::class,
             TestRunner\Configured::class,
@@ -236,6 +201,7 @@ final class Facade
             TestRunner\ExtensionLoaded::class,
             TestRunner\Finished::class,
             TestRunner\Started::class,
+            TestRunner\DeprecationTriggered::class,
             TestRunner\WarningTriggered::class,
 
             TestSuite\Filtered::class,

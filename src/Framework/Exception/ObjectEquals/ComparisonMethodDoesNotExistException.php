@@ -24,9 +24,7 @@ final class ComparisonMethodDoesNotExistException extends Exception
                 'Comparison method %s::%s() does not exist.',
                 $className,
                 $methodName
-            ),
-            0,
-            null
+            )
         );
     }
 

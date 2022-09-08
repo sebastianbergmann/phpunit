@@ -13,6 +13,8 @@ use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Filter;
+use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
+use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -22,6 +24,7 @@ final class CodeCoverage
     private static ?\SebastianBergmann\CodeCoverage\CodeCoverage $instance = null;
     private static ?Driver $driver                                         = null;
     private static bool $collecting                                        = false;
+    private static ?TestCase $test                                         = null;
 
     /**
      * @throws Exception
@@ -73,9 +76,24 @@ final class CodeCoverage
             return;
         }
 
-        self::$collecting = true;
+        $size = TestSize::unknown();
 
-        self::$instance->start($test);
+        if ($test->size()->isSmall()) {
+            $size = TestSize::small();
+        } elseif ($test->size()->isMedium()) {
+            $size = TestSize::medium();
+        } elseif ($test->size()->isLarge()) {
+            $size = TestSize::large();
+        }
+
+        self::$test = $test;
+
+        self::$instance->start(
+            $test->valueObjectForEvents()->id(),
+            $size
+        );
+
+        self::$collecting = true;
     }
 
     /**
@@ -89,9 +107,20 @@ final class CodeCoverage
             return;
         }
 
-        /* @noinspection UnusedFunctionResultInspection */
-        self::$instance->stop($append, $linesToBeCovered, $linesToBeUsed);
+        $status = TestStatus::unknown();
 
+        if (self::$test !== null) {
+            if (self::$test->status()->isSuccess()) {
+                $status = TestStatus::success();
+            } else {
+                $status = TestStatus::failure();
+            }
+        }
+
+        /* @noinspection UnusedFunctionResultInspection */
+        self::$instance->stop($append, $status, $linesToBeCovered, $linesToBeUsed);
+
+        self::$test       = null;
         self::$collecting = false;
     }
 
@@ -99,6 +128,7 @@ final class CodeCoverage
     {
         self::$driver   = null;
         self::$instance = null;
+        self::$test     = null;
     }
 
     public static function isActive(): bool
@@ -112,9 +142,7 @@ final class CodeCoverage
     private static function ensureIsActive(): void
     {
         if (self::$instance === null) {
-            throw new Exception(
-                'Code Coverage has not been set up'
-            );
+            throw new CodeCoverageIsNotActiveException;
         }
     }
 
@@ -124,9 +152,7 @@ final class CodeCoverage
     private static function ensureIsNotActive(): void
     {
         if (self::$instance !== null) {
-            throw new Exception(
-                'Code Coverage has not been set up'
-            );
+            throw new CodeCoverageIsActiveException;
         }
     }
 }

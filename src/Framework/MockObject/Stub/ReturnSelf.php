@@ -22,7 +22,7 @@ final class ReturnSelf implements Stub
      */
     public function invoke(Invocation $invocation): object
     {
-        return $invocation->getObject();
+        return $invocation->object();
     }
 
     public function toString(): string

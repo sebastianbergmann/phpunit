@@ -26,7 +26,7 @@ final class MockMethodSet
     public function addMethods(MockMethod ...$methods): void
     {
         foreach ($methods as $method) {
-            $this->methods[strtolower($method->getName())] = $method;
+            $this->methods[strtolower($method->methodName())] = $method;
         }
     }
 

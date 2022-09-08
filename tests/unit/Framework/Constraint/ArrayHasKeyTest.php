@@ -12,7 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
+use PHPUnit\Util\ThrowableToStringMapper;
 
 #[CoversClass(ArrayHasKey::class)]
 #[Small]
@@ -35,7 +35,7 @@ Failed asserting that an array has the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -57,7 +57,7 @@ custom message\nFailed asserting that an array has the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
 
             return;
@@ -79,7 +79,7 @@ Failed asserting that an array has the key 0.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
         }
     }

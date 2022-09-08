@@ -78,17 +78,22 @@
       <code>flush</code>
     </PossiblyNullReference>
   </file>
+  <file src="src/Event/Value/Runtime/Extensions.php">
+    <ImpureFunctionCall occurrences="1">
+      <code>get_loaded_extensions</code>
+    </ImpureFunctionCall>
+  </file>
   <file src="src/Event/Value/Telemetry/HRTime.php">
     <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/Event/Value/Telemetry/SystemStopWatch.php">
     <MissingThrowsDocblock occurrences="1">
-      <code>HRTime::fromSecondsAndNanoseconds(...hrtime(false))</code>
+      <code>HRTime::fromSecondsAndNanoseconds(...hrtime())</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Event/Value/Telemetry/SystemStopWatchWithOffset.php">
     <MissingThrowsDocblock occurrences="1">
-      <code>HRTime::fromSecondsAndNanoseconds(...hrtime(false))</code>
+      <code>HRTime::fromSecondsAndNanoseconds(...hrtime())</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Event/Value/Test/TestMethod.php">
@@ -111,7 +116,10 @@
       <code>$testSuite-&gt;getName()</code>
       <code>$testSuite-&gt;getName()</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="2"/>
+    <MissingThrowsDocblock occurrences="1"/>
+    <UndefinedClass occurrences="1">
+      <code>Exception</code>
+    </UndefinedClass>
   </file>
   <file src="src/Event/Value/TestSuite/TestSuiteForTestMethodWithDataProvider.php">
     <PropertyTypeCoercion occurrences="1">
@@ -119,31 +127,15 @@
     </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Value/Throwable.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$t instanceof ExceptionWrapper ? $t-&gt;getClassName() : $t::class</code>
-    </ArgumentTypeCoercion>
     <MissingDocblockType occurrences="1">
       <code>public function className(): string</code>
     </MissingDocblockType>
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="2">
       <code>Filter::getFilteredStacktrace($t)</code>
+      <code>previous</code>
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Assert.php">
-    <DeprecatedClass occurrences="12">
-      <code>ClassHasAttribute</code>
-      <code>ClassHasStaticAttribute</code>
-      <code>ObjectHasAttribute</code>
-      <code>new ClassHasAttribute($attributeName)</code>
-      <code>new ClassHasAttribute($attributeName)</code>
-      <code>new ClassHasAttribute($attributeName)</code>
-      <code>new ClassHasStaticAttribute($attributeName)</code>
-      <code>new ClassHasStaticAttribute($attributeName)</code>
-      <code>new ClassHasStaticAttribute($attributeName)</code>
-      <code>new ObjectHasAttribute($attributeName)</code>
-      <code>new ObjectHasAttribute($attributeName)</code>
-      <code>new ObjectHasAttribute($attributeName)</code>
-    </DeprecatedClass>
     <MissingThrowsDocblock occurrences="37">
       <code>loadFile</code>
       <code>loadFile</code>
@@ -181,22 +173,6 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Assert/Functions.php">
-    <DeprecatedClass occurrences="3">
-      <code>ClassHasAttribute</code>
-      <code>ClassHasStaticAttribute</code>
-      <code>ObjectHasAttribute</code>
-    </DeprecatedClass>
-    <DeprecatedMethod occurrences="9">
-      <code>Assert::assertClassHasAttribute(...func_get_args())</code>
-      <code>Assert::assertClassHasStaticAttribute(...func_get_args())</code>
-      <code>Assert::assertClassNotHasAttribute(...func_get_args())</code>
-      <code>Assert::assertClassNotHasStaticAttribute(...func_get_args())</code>
-      <code>Assert::assertObjectHasAttribute(...func_get_args())</code>
-      <code>Assert::assertObjectNotHasAttribute(...func_get_args())</code>
-      <code>Assert::classHasAttribute(...func_get_args())</code>
-      <code>Assert::classHasStaticAttribute(...func_get_args())</code>
-      <code>Assert::objectHasAttribute(...func_get_args())</code>
-    </DeprecatedMethod>
     <MissingThrowsDocblock occurrences="3">
       <code>Assert::logicalAnd(...func_get_args())</code>
       <code>Assert::stringEndsWith(...func_get_args())</code>
@@ -233,20 +209,6 @@
       <code>Filter::getFilteredStacktrace($other)</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Framework/Constraint/Object/ClassHasAttribute.php">
-    <MissingThrowsDocblock occurrences="1"/>
-  </file>
-  <file src="src/Framework/Constraint/Object/ClassHasStaticAttribute.php">
-    <DeprecatedClass occurrences="1">
-      <code>ClassHasAttribute</code>
-    </DeprecatedClass>
-    <MissingThrowsDocblock occurrences="1"/>
-  </file>
-  <file src="src/Framework/Constraint/Object/ObjectHasAttribute.php">
-    <DeprecatedClass occurrences="1">
-      <code>ClassHasAttribute</code>
-    </DeprecatedClass>
-  </file>
   <file src="src/Framework/Constraint/Operator/LogicalNot.php">
     <MissingThrowsDocblock occurrences="1">
       <code>evaluate</code>
@@ -276,19 +238,12 @@
       <code>Filter::getFilteredStacktrace($this)</code>
     </MissingThrowsDocblock>
   </file>
-  <file src="src/Framework/ExceptionWrapper.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>Filter::getFilteredStacktrace($this)</code>
-    </MissingThrowsDocblock>
-    <PossiblyNullArgument occurrences="1">
-      <code>$t-&gt;getPrevious()</code>
-    </PossiblyNullArgument>
-  </file>
   <file src="src/Framework/MockObject/Generator.php">
-    <ArgumentTypeCoercion occurrences="3">
+    <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
       <code>$className</code>
       <code>$interfaceName</code>
+      <code>$type</code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement occurrences="1"/>
     <InvalidReturnType occurrences="1">
@@ -301,6 +256,9 @@
     <PossiblyNullArgument occurrences="1">
       <code>$client-&gt;__getFunctions()</code>
     </PossiblyNullArgument>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>assert(class_exists($type))</code>
+    </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -314,9 +272,6 @@
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;methodNameRule</code>
     </NullableReturnStatement>
-    <RedundantCondition occurrences="1">
-      <code>$this-&gt;invocationRule !== null</code>
-    </RedundantCondition>
   </file>
   <file src="src/Framework/MockObject/MockBuilder.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -341,9 +296,6 @@
     <PossiblyFalseOperand occurrences="1">
       <code>strpos($parameterAsString, '&lt;optional&gt; ')</code>
     </PossiblyFalseOperand>
-    <RedundantCastGivenDocblockType occurrences="1">
-      <code>(string) var_export($defaultValue, true)</code>
-    </RedundantCastGivenDocblockType>
   </file>
   <file src="src/Framework/MockObject/Rule/Parameters.php">
     <PropertyNotSetInConstructor occurrences="1">
@@ -355,19 +307,10 @@
       <code>$this-&gt;callback</code>
     </PossiblyInvalidOperand>
   </file>
-  <file src="src/Framework/Test.php">
-    <DeprecatedClass occurrences="1">
-      <code>TestResult</code>
-    </DeprecatedClass>
-  </file>
   <file src="src/Framework/TestBuilder.php">
     <LessSpecificReturnStatement occurrences="1">
       <code>$test</code>
     </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="2">
-      <code>Filter::getFilteredStacktrace($t)</code>
-      <code>Filter::getFilteredStacktrace($t)</code>
-    </MissingThrowsDocblock>
     <MoreSpecificReturnType occurrences="1">
       <code>Test</code>
     </MoreSpecificReturnType>
@@ -379,20 +322,29 @@
       <code>$this-&gt;expectedException</code>
       <code>$this-&gt;size()</code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="2">
-      <code>?TestResult</code>
-      <code>TestResult</code>
-    </DeprecatedClass>
     <InvalidReturnStatement occurrences="1">
       <code>$mockObject</code>
     </InvalidReturnStatement>
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
-    <LessSpecificReturnStatement occurrences="1">
-      <code>array_unique($this-&gt;doubledTypes)</code>
-    </LessSpecificReturnStatement>
-    <MissingThrowsDocblock occurrences="10">
+    <MissingThrowsDocblock occurrences="29">
+      <code>Facade::ignoredEvent()</code>
+      <code>Facade::ignoredEvent()</code>
+      <code>Facade::ignoredEvent()</code>
+      <code>Facade::ignoredEvent()</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
+      <code>assertThat</code>
       <code>generateClassFromWsdl</code>
       <code>getMock</code>
       <code>getMock</code>
@@ -402,29 +354,22 @@
       <code>getMockForTrait</code>
       <code>getObjectForTrait</code>
       <code>onlyMethods</code>
-      <code>restoreGlobalState</code>
+      <code>throw new AssertionFailedError('Failed asserting that a deprecation is triggered');</code>
+      <code>throw new AssertionFailedError('Failed asserting that a notice is triggered');</code>
+      <code>throw new AssertionFailedError('Failed asserting that a warning is triggered');</code>
+      <code>throw new AssertionFailedError('Failed asserting that an error is triggered');</code>
     </MissingThrowsDocblock>
-    <MoreSpecificReturnType occurrences="1">
-      <code>list&lt;string&gt;</code>
-    </MoreSpecificReturnType>
-    <PossiblyNullReference occurrences="3">
-      <code>addFailure</code>
-      <code>startTest</code>
-      <code>startTest</code>
-    </PossiblyNullReference>
+    <PossiblyNullArgument occurrences="4">
+      <code>$this-&gt;expectedDeprecationMessage</code>
+      <code>$this-&gt;expectedErrorMessage</code>
+      <code>$this-&gt;expectedNoticeMessage</code>
+      <code>$this-&gt;expectedWarningMessage</code>
+    </PossiblyNullArgument>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>
-    <PropertyTypeCoercion occurrences="1">
-      <code>$this-&gt;doubledTypes</code>
-    </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
-    <DeprecatedClass occurrences="3">
-      <code>TestResult</code>
-      <code>TestResult</code>
-      <code>TestResult</code>
-    </DeprecatedClass>
     <InvalidScalarArgument occurrences="1">
       <code>$var</code>
     </InvalidScalarArgument>
@@ -445,10 +390,11 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="1">
-      <code>TestResult</code>
-    </DeprecatedClass>
-    <MissingThrowsDocblock occurrences="1"/>
+    <MissingThrowsDocblock occurrences="4">
+      <code>Event\TestDataCollection::fromArray([])</code>
+      <code>Filter::getFilteredStacktrace($t)</code>
+      <code>Filter::getFilteredStacktrace($t)</code>
+    </MissingThrowsDocblock>
     <UnsafeInstantiation occurrences="2">
       <code>new static($class-&gt;getName())</code>
       <code>new static($name)</code>
@@ -489,6 +435,21 @@
       <code>assert($testSuite instanceof TestSuiteForTestMethodWithDataProvider)</code>
     </RedundantCondition>
   </file>
+  <file src="src/Logging/TestDox/HtmlRenderer.php">
+    <InvalidArrayOffset occurrences="2">
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+    </InvalidArrayOffset>
+    <PossiblyInvalidMethodCall occurrences="3">
+      <code>isSuccess</code>
+      <code>isSuccess</code>
+      <code>methodName</code>
+    </PossiblyInvalidMethodCall>
+    <UndefinedMethod occurrences="2">
+      <code>$test</code>
+      <code>$test</code>
+    </UndefinedMethod>
+  </file>
   <file src="src/Logging/TestDox/NamePrettifier.php">
     <InvalidCast occurrences="1">
       <code>$value</code>
@@ -497,6 +458,71 @@
     <UndefinedMethod occurrences="2">
       <code>text</code>
       <code>text</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/Logging/TestDox/TestMethodCollector.php">
+    <InvalidPropertyAssignmentValue occurrences="1">
+      <code>$this-&gt;tests</code>
+    </InvalidPropertyAssignmentValue>
+    <InvalidReturnStatement occurrences="1">
+      <code>$tests</code>
+    </InvalidReturnStatement>
+    <InvalidReturnType occurrences="1">
+      <code>array&lt;class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list&lt;class-string|trait-string&gt;}&gt;</code>
+    </InvalidReturnType>
+    <MissingThrowsDocblock occurrences="1">
+      <code>duration</code>
+    </MissingThrowsDocblock>
+    <PossiblyNullArgument occurrences="1">
+      <code>$this-&gt;time</code>
+    </PossiblyNullArgument>
+    <PropertyTypeCoercion occurrences="2">
+      <code>$this-&gt;testDoubles</code>
+      <code>$this-&gt;tests</code>
+    </PropertyTypeCoercion>
+    <RedundantCondition occurrences="1">
+      <code>assert($test instanceof TestMethod)</code>
+    </RedundantCondition>
+  </file>
+  <file src="src/Logging/TestDox/TextRenderer.php">
+    <InvalidArrayOffset occurrences="2">
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+    </InvalidArrayOffset>
+    <PossiblyInvalidMethodCall occurrences="2">
+      <code>isSuccess</code>
+      <code>methodName</code>
+    </PossiblyInvalidMethodCall>
+    <UndefinedMethod occurrences="2">
+      <code>$test</code>
+      <code>$test</code>
+    </UndefinedMethod>
+  </file>
+  <file src="src/Logging/TestDox/XmlRenderer.php">
+    <InvalidArrayOffset occurrences="4">
+      <code>$test['duration']</code>
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+      <code>$test['testDoubles']</code>
+    </InvalidArrayOffset>
+    <PossiblyInvalidIterator occurrences="1">
+      <code>$test['testDoubles']</code>
+    </PossiblyInvalidIterator>
+    <PossiblyInvalidMethodCall occurrences="8">
+      <code>asFloat</code>
+      <code>asString</code>
+      <code>isError</code>
+      <code>isFailure</code>
+      <code>message</code>
+      <code>metadata</code>
+      <code>metadata</code>
+      <code>methodName</code>
+    </PossiblyInvalidMethodCall>
+    <UndefinedMethod occurrences="4">
+      <code>$test</code>
+      <code>$test</code>
+      <code>$test</code>
+      <code>$test</code>
     </UndefinedMethod>
   </file>
   <file src="src/Metadata/Api/CodeCoverage.php">
@@ -511,11 +537,6 @@
       <code>className</code>
     </UndefinedMethod>
   </file>
-  <file src="src/Metadata/Api/DataProvider.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>dataProvidedByTestWithAnnotation</code>
-    </MissingThrowsDocblock>
-  </file>
   <file src="src/Metadata/Api/Dependencies.php">
     <RedundantCondition occurrences="2">
       <code>assert($metadata instanceof DependsOnClass)</code>
@@ -523,11 +544,17 @@
     </RedundantCondition>
   </file>
   <file src="src/Metadata/Api/Groups.php">
-    <RedundantCondition occurrences="6">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>array_unique($groups)</code>
+      <code>array_unique($groups)</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>list&lt;string&gt;</code>
+    </MoreSpecificReturnType>
+    <RedundantCondition occurrences="5">
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
       <code>assert($metadata instanceof Covers)</code>
-      <code>assert($metadata instanceof Group)</code>
       <code>assert($metadata instanceof Metadata)</code>
       <code>assert($metadata instanceof Uses)</code>
     </RedundantCondition>
@@ -550,11 +577,6 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/Metadata/Parser/Annotation/DocBlock.php">
-    <RedundantCast occurrences="1">
-      <code>(string) $matches['value'][$i]</code>
-    </RedundantCast>
-  </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
     <ArgumentTypeCoercion occurrences="7">
       <code>$className</code>
@@ -565,6 +587,12 @@
       <code>explode('::', $value)</code>
       <code>trim($tmp[0])</code>
     </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="4">
+      <code>forClassName</code>
+      <code>forClassName</code>
+      <code>forMethod</code>
+      <code>forMethod</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/CodeCoverage.php">
     <InvalidNullableReturnType occurrences="2">
@@ -584,16 +612,15 @@
       <code>stop</code>
     </PossiblyNullReference>
   </file>
+  <file src="src/Runner/Extension/ExtensionHandler.php">
+    <MissingThrowsDocblock occurrences="1"/>
+  </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PossiblyNullArgument occurrences="1">
       <code>$this-&gt;filter</code>
     </PossiblyNullArgument>
   </file>
   <file src="src/Runner/PhptTestCase.php">
-    <DeprecatedClass occurrences="2">
-      <code>TestResult</code>
-      <code>TestResult</code>
-    </DeprecatedClass>
     <InternalClass occurrences="2">
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
@@ -629,6 +656,7 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/TestSuiteLoader.php">
+    <MissingThrowsDocblock occurrences="1"/>
     <UnresolvableInclude occurrences="1">
       <code>include_once $suiteClassFile</code>
     </UnresolvableInclude>
@@ -661,9 +689,6 @@
     <PossiblyNullReference occurrences="1">
       <code>extensions</code>
     </PossiblyNullReference>
-    <RedundantCondition occurrences="1">
-      <code>assert(isset($arguments) &amp;&amp; $arguments instanceof CliConfiguration)</code>
-    </RedundantCondition>
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>
@@ -717,7 +742,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="86">
+    <MissingThrowsDocblock occurrences="88">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -749,6 +774,10 @@
       <code>disallowTestOutput</code>
       <code>displayDetailsOnIncompleteTests</code>
       <code>displayDetailsOnSkippedTests</code>
+      <code>displayDetailsOnTestsThatTriggerDeprecations</code>
+      <code>displayDetailsOnTestsThatTriggerErrors</code>
+      <code>displayDetailsOnTestsThatTriggerNotices</code>
+      <code>displayDetailsOnTestsThatTriggerWarnings</code>
       <code>enforceTimeLimit</code>
       <code>excludeGroups</code>
       <code>executionOrder</code>
@@ -793,8 +822,6 @@
       <code>stopOnWarning</code>
       <code>strictCoverage</code>
       <code>teamcityLogfile</code>
-      <code>testdoxExcludeGroups</code>
-      <code>testdoxGroups</code>
       <code>testdoxHtmlFile</code>
       <code>testdoxTextFile</code>
       <code>testdoxXmlFile</code>
@@ -872,17 +899,6 @@
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
-    <RedundantCast occurrences="9">
-      <code>(string) $argument-&gt;textContent</code>
-      <code>(string) $directoryNode-&gt;textContent</code>
-      <code>(string) $directoryNode-&gt;textContent</code>
-      <code>(string) $excludeNode-&gt;textContent</code>
-      <code>(string) $file-&gt;textContent</code>
-      <code>(string) $fileNode-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $includePath-&gt;textContent</code>
-    </RedundantCast>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
@@ -1032,7 +1048,7 @@
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
-  <file src="src/TextUI/ProgressPrinter/ProgressPrinter.php">
+  <file src="src/TextUI/Output/Default/ProgressPrinter/ProgressPrinter.php">
     <MissingThrowsDocblock occurrences="1">
       <code>registerSubscribers</code>
     </MissingThrowsDocblock>
@@ -1042,36 +1058,17 @@
       <code>$numberOfTestsWidth</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/TextUI/ResultPrinter.php">
-    <DeprecatedClass occurrences="7">
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-      <code>LegacyTestResult</code>
-    </DeprecatedClass>
-    <MissingThrowsDocblock occurrences="1">
-      <code>resourceUsageSinceStartOfRequest</code>
-    </MissingThrowsDocblock>
+  <file src="src/TextUI/Output/Default/ResultPrinter.php">
+    <RedundantCondition occurrences="2">
+      <code>assert($test instanceof TestMethod)</code>
+      <code>assert($test instanceof TestMethod)</code>
+    </RedundantCondition>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedClass occurrences="1">
-      <code>new LegacyTestResult</code>
-    </DeprecatedClass>
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <InvalidArgument occurrences="6">
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-      <code>$e</code>
-    </InvalidArgument>
-    <MissingThrowsDocblock occurrences="40">
+    <MissingThrowsDocblock occurrences="45">
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
@@ -1083,7 +1080,6 @@
       <code>coverageHtml</code>
       <code>coverageHtmlCustomCssFile</code>
       <code>coveragePhp</code>
-      <code>coverageText</code>
       <code>coverageText</code>
       <code>coverageXml</code>
       <code>detect</code>
@@ -1098,9 +1094,14 @@
       <code>logEventsVerboseText</code>
       <code>logfileJunit</code>
       <code>logfileTeamcity</code>
+      <code>logfileTestdoxHtml</code>
+      <code>logfileTestdoxText</code>
+      <code>logfileTestdoxXml</code>
       <code>logfileText</code>
       <code>new ResultCacheHandler($cache)</code>
+      <code>new TestMethodCollector</code>
       <code>pharExtensionDirectory</code>
+      <code>resourceUsageSinceStartOfRequest</code>
       <code>run</code>
       <code>stop</code>
       <code>stop</code>
@@ -1108,25 +1109,11 @@
       <code>testsUsing</code>
       <code>xmlValidationErrors</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="1">
-      <code>print</code>
-    </PossiblyNullReference>
+    <PropertyNotSetInConstructor occurrences="1">
+      <code>$printer</code>
+    </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/PHP/AbstractPhpProcess.php">
-    <ArgumentTypeCoercion occurrences="5">
-      <code>$riskyException</code>
-      <code>$this-&gt;getException($failures[0])</code>
-      <code>$this-&gt;getException($notImplemented[0])</code>
-      <code>$this-&gt;getException($skipped[0])</code>
-      <code>$this-&gt;getException($warnings[0])</code>
-    </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="2">
-      <code>TestResult</code>
-      <code>TestResult</code>
-    </DeprecatedClass>
-    <LessSpecificReturnStatement occurrences="1">
-      <code>$exception</code>
-    </LessSpecificReturnStatement>
     <MissingClosureParamType occurrences="4">
       <code>$errfile</code>
       <code>$errline</code>
@@ -1136,12 +1123,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>CodeCoverage::instance()</code>
     </MissingThrowsDocblock>
-    <MoreSpecificReturnType occurrences="1">
-      <code>Exception</code>
-    </MoreSpecificReturnType>
-    <PossiblyFalseOperand occurrences="1">
-      <code>strrpos($key, "\0")</code>
-    </PossiblyFalseOperand>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <RedundantCondition occurrences="1">
@@ -1174,11 +1155,6 @@
     <MissingThrowsDocblock occurrences="1">
       <code>ensureOperatorIsValid</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Util/Warning.php">
-    <RedundantCondition occurrences="1">
-      <code>assert($step['object'] instanceof TestCase)</code>
-    </RedundantCondition>
   </file>
   <file src="src/Util/Xml.php">
     <ArgumentTypeCoercion occurrences="1">

@@ -16,12 +16,11 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\TestFailure;
-use PHPUnit\TestFixture\TestGeneratorMaker;
 use PHPUnit\TestFixture\TestIterator;
 use PHPUnit\TestFixture\TestIterator2;
 use PHPUnit\TestFixture\TestIteratorAggregate;
 use PHPUnit\TestFixture\TestIteratorAggregate2;
+use PHPUnit\Util\ThrowableToStringMapper;
 
 #[CoversClass(Count::class)]
 #[Small]
@@ -112,38 +111,6 @@ final class CountTest extends ConstraintTestCase
         $this->assertFalse($it->valid());
     }
 
-    public function testCountGeneratorsDoNotRewind(): void
-    {
-        $generatorMaker = new TestGeneratorMaker;
-
-        $countConstraint = new Count(3);
-
-        $generator = $generatorMaker->create([1, 2, 3]);
-        $this->assertEquals(1, $generator->current());
-        $countConstraint->evaluate($generator, '', true);
-        $this->assertEquals(null, $generator->current());
-
-        $countConstraint = new Count(2);
-
-        $generator = $generatorMaker->create([1, 2, 3]);
-        $this->assertEquals(1, $generator->current());
-        $generator->next();
-        $this->assertEquals(2, $generator->current());
-        $countConstraint->evaluate($generator, '', true);
-        $this->assertEquals(null, $generator->current());
-
-        $countConstraint = new Count(1);
-
-        $generator = $generatorMaker->create([1, 2, 3]);
-        $this->assertEquals(1, $generator->current());
-        $generator->next();
-        $this->assertEquals(2, $generator->current());
-        $generator->next();
-        $this->assertEquals(3, $generator->current());
-        $countConstraint->evaluate($generator, '', true);
-        $this->assertEquals(null, $generator->current());
-    }
-
     public function testCountCanBeExportedToString(): void
     {
         $countConstraint = new Count(1);
@@ -164,7 +131,7 @@ Failed asserting that actual size 0 matches expected size 1.
 
 EOF
                 ,
-                TestFailure::exceptionToString($e)
+                ThrowableToStringMapper::map($e)
             );
         }
     }

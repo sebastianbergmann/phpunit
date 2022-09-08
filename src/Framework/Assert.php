@@ -21,7 +21,6 @@ use function file_get_contents;
 use function implode;
 use function interface_exists;
 use function is_bool;
-use function preg_match;
 use function preg_split;
 use function str_contains;
 use ArrayAccess;
@@ -30,10 +29,7 @@ use Generator;
 use PHPUnit\Event;
 use PHPUnit\Framework\Constraint\ArrayHasKey;
 use PHPUnit\Framework\Constraint\ArrayHasKeys;
-use PHPUnit\Framework\Constraint\ArrayIsList;
 use PHPUnit\Framework\Constraint\Callback;
-use PHPUnit\Framework\Constraint\ClassHasAttribute;
-use PHPUnit\Framework\Constraint\ClassHasStaticAttribute;
 use PHPUnit\Framework\Constraint\Constraint;
 use PHPUnit\Framework\Constraint\Count;
 use PHPUnit\Framework\Constraint\DirectoryExists;
@@ -51,6 +47,7 @@ use PHPUnit\Framework\Constraint\IsIdentical;
 use PHPUnit\Framework\Constraint\IsInfinite;
 use PHPUnit\Framework\Constraint\IsInstanceOf;
 use PHPUnit\Framework\Constraint\IsJson;
+use PHPUnit\Framework\Constraint\IsList;
 use PHPUnit\Framework\Constraint\IsNan;
 use PHPUnit\Framework\Constraint\IsNull;
 use PHPUnit\Framework\Constraint\IsReadable;
@@ -64,7 +61,6 @@ use PHPUnit\Framework\Constraint\LogicalNot;
 use PHPUnit\Framework\Constraint\LogicalOr;
 use PHPUnit\Framework\Constraint\LogicalXor;
 use PHPUnit\Framework\Constraint\ObjectEquals;
-use PHPUnit\Framework\Constraint\ObjectHasAttribute;
 use PHPUnit\Framework\Constraint\RegularExpression;
 use PHPUnit\Framework\Constraint\SameSize;
 use PHPUnit\Framework\Constraint\StringContains;
@@ -76,7 +72,6 @@ use PHPUnit\Framework\Constraint\TraversableContainsEqual;
 use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
-use PHPUnit\Util\Warning as WarningUtil;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 
 /**
@@ -142,11 +137,11 @@ abstract class Assert
         static::assertThat($array, $constraint, $message);
     }
 
-    final public static function assertArrayIsList(array $array, string $message = ''): void
+    final public static function assertIsList(array $array, string $message = ''): void
     {
         static::assertThat(
             $array,
-            new ArrayIsList,
+            new IsList,
             $message
         );
     }
@@ -263,9 +258,7 @@ abstract class Assert
     final public static function assertCount(int $expectedCount, Countable|iterable $haystack, string $message = ''): void
     {
         if ($haystack instanceof Generator) {
-            (new WarningUtil)->createForTestCaseObjectOnCallStack(
-                'Passing an argument of type Generator for the $haystack parameter is deprecated. Support for this will be removed in PHPUnit 11.'
-            );
+            throw new GeneratorNotSupportedException;
         }
 
         static::assertThat(
@@ -951,186 +944,6 @@ abstract class Assert
     }
 
     /**
-     * Asserts that a class has a specified attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     */
-    final public static function assertClassHasAttribute(string $attributeName, string $className, string $message = ''): void
-    {
-        if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
-        }
-
-        if (!class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name');
-        }
-
-        (new WarningUtil)->createForTestCaseObjectOnCallStack(
-            'assertClassHasAttribute() is deprecated and will be removed in PHPUnit 11.'
-        );
-
-        static::assertThat($className, new ClassHasAttribute($attributeName), $message);
-    }
-
-    /**
-     * Asserts that a class does not have a specified attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     */
-    final public static function assertClassNotHasAttribute(string $attributeName, string $className, string $message = ''): void
-    {
-        if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
-        }
-
-        if (!class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name');
-        }
-
-        (new WarningUtil)->createForTestCaseObjectOnCallStack(
-            'assertClassHasAttribute() is deprecated and will be removed in PHPUnit 11.'
-        );
-
-        static::assertThat(
-            $className,
-            new LogicalNot(
-                new ClassHasAttribute($attributeName)
-            ),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that a class has a specified static attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     */
-    final public static function assertClassHasStaticAttribute(string $attributeName, string $className, string $message = ''): void
-    {
-        if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
-        }
-
-        if (!class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name');
-        }
-
-        (new WarningUtil)->createForTestCaseObjectOnCallStack(
-            'assertClassHasAttribute() is deprecated and will be removed in PHPUnit 11.'
-        );
-
-        static::assertThat(
-            $className,
-            new ClassHasStaticAttribute($attributeName),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that a class does not have a specified static attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     */
-    final public static function assertClassNotHasStaticAttribute(string $attributeName, string $className, string $message = ''): void
-    {
-        if (!self::isValidClassAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
-        }
-
-        if (!class_exists($className)) {
-            throw InvalidArgumentException::create(2, 'class name');
-        }
-
-        (new WarningUtil)->createForTestCaseObjectOnCallStack(
-            'assertClassHasAttribute() is deprecated and will be removed in PHPUnit 11.'
-        );
-
-        static::assertThat(
-            $className,
-            new LogicalNot(
-                new ClassHasStaticAttribute($attributeName)
-            ),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that an object has a specified attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     */
-    final public static function assertObjectHasAttribute(string $attributeName, object $object, string $message = ''): void
-    {
-        if (!self::isValidObjectAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
-        }
-
-        (new WarningUtil)->createForTestCaseObjectOnCallStack(
-            'assertClassHasAttribute() is deprecated and will be removed in PHPUnit 11.'
-        );
-
-        static::assertThat(
-            $object,
-            new ObjectHasAttribute($attributeName),
-            $message
-        );
-    }
-
-    /**
-     * Asserts that an object does not have a specified attribute.
-     *
-     * @throws Exception
-     * @throws ExpectationFailedException
-     *
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     */
-    final public static function assertObjectNotHasAttribute(string $attributeName, object $object, string $message = ''): void
-    {
-        if (!self::isValidObjectAttributeName($attributeName)) {
-            throw InvalidArgumentException::create(1, 'valid attribute name');
-        }
-
-        (new WarningUtil)->createForTestCaseObjectOnCallStack(
-            'assertClassHasAttribute() is deprecated and will be removed in PHPUnit 11.'
-        );
-
-        static::assertThat(
-            $object,
-            new LogicalNot(
-                new ObjectHasAttribute($attributeName)
-            ),
-            $message
-        );
-    }
-
-    /**
      * Asserts that two variables have the same type and value.
      * Used on objects, it asserts that two variables reference
      * the same object.
@@ -1138,7 +951,9 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType
+     *
      * @psalm-param ExpectedType $expected
+     *
      * @psalm-assert =ExpectedType $actual
      */
     final public static function assertSame(mixed $expected, mixed $actual, string $message = ''): void
@@ -1179,13 +994,15 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
+     *
      * @psalm-param class-string<ExpectedType> $expected
+     *
      * @psalm-assert =ExpectedType $actual
      */
     final public static function assertInstanceOf(string $expected, mixed $actual, string $message = ''): void
     {
         if (!class_exists($expected) && !interface_exists($expected)) {
-            throw InvalidArgumentException::create(1, 'class or interface name');
+            throw new UnknownClassOrInterfaceException($expected);
         }
 
         static::assertThat(
@@ -1202,13 +1019,15 @@ abstract class Assert
      * @throws ExpectationFailedException
      *
      * @psalm-template ExpectedType of object
+     *
      * @psalm-param class-string<ExpectedType> $expected
+     *
      * @psalm-assert !ExpectedType $actual
      */
     final public static function assertNotInstanceOf(string $expected, mixed $actual, string $message = ''): void
     {
         if (!class_exists($expected) && !interface_exists($expected)) {
-            throw InvalidArgumentException::create(1, 'class or interface name');
+            throw new UnknownClassOrInterfaceException($expected);
         }
 
         static::assertThat(
@@ -2196,9 +2015,9 @@ abstract class Assert
         return new ArrayHasKeys($keys);
     }
 
-    final public static function arrayIsList(): ArrayIsList
+    final public static function isList(): IsList
     {
-        return new ArrayIsList;
+        return new IsList;
     }
 
     final public static function equalTo(mixed $value): IsEqual
@@ -2257,36 +2076,6 @@ abstract class Assert
             new IsEqual($value),
             new GreaterThan($value)
         );
-    }
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     */
-    final public static function classHasAttribute(string $attributeName): ClassHasAttribute
-    {
-        return new ClassHasAttribute($attributeName);
-    }
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     */
-    final public static function classHasStaticAttribute(string $attributeName): ClassHasStaticAttribute
-    {
-        return new ClassHasStaticAttribute($attributeName);
-    }
-
-    /**
-     * @codeCoverageIgnore
-     *
-     * @deprecated https://github.com/sebastianbergmann/phpunit/issues/4601
-     */
-    final public static function objectHasAttribute(string $attributeName): ObjectHasAttribute
-    {
-        return new ObjectHasAttribute($attributeName);
     }
 
     final public static function identicalTo(mixed $value): IsIdentical
@@ -2445,15 +2234,5 @@ abstract class Assert
         }
 
         return $hint;
-    }
-
-    private static function isValidObjectAttributeName(string $attributeName): bool
-    {
-        return (bool) preg_match('/[^\x00-\x1f\x7f-\x9f]+/', $attributeName);
-    }
-
-    private static function isValidClassAttributeName(string $attributeName): bool
-    {
-        return (bool) preg_match('/[a-zA-Z_\x7f-\xff][a-zA-Z0-9_\x7f-\xff]*/', $attributeName);
     }
 }

@@ -61,19 +61,6 @@ final class TestSuiteSorter
      */
     public const ORDER_SIZE = 5;
 
-    /**
-     * List of sorting weights for all test result codes. A higher number gives higher priority.
-     */
-    private const DEFECT_SORT_WEIGHT = [
-        'error'      => 6,
-        'failure'    => 5,
-        'warning'    => 4,
-        'incomplete' => 3,
-        'risky'      => 2,
-        'skipped'    => 1,
-        'unknown'    => 0,
-    ];
-
     private const SIZE_SORT_WEIGHT = [
         'small'   => 1,
         'medium'  => 2,
@@ -116,9 +103,7 @@ final class TestSuiteSorter
         ];
 
         if (!in_array($order, $allowedOrders, true)) {
-            throw new Exception(
-                '$order must be one of TestSuiteSorter::ORDER_[DEFAULT|REVERSED|RANDOMIZED|DURATION|SIZE]'
-            );
+            throw new InvalidOrderException;
         }
 
         $allowedOrderDefects = [
@@ -127,9 +112,7 @@ final class TestSuiteSorter
         ];
 
         if (!in_array($orderDefects, $allowedOrderDefects, true)) {
-            throw new Exception(
-                '$orderDefects must be one of TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_DEFECTS_FIRST'
-            );
+            throw new InvalidOrderException;
         }
 
         if ($isRootTestSuite) {
@@ -200,7 +183,7 @@ final class TestSuiteSorter
             }
 
             if (!isset($this->defectSortOrder[$test->sortId()])) {
-                $this->defectSortOrder[$test->sortId()] = self::DEFECT_SORT_WEIGHT[$this->cache->status($test->sortId())->asString()];
+                $this->defectSortOrder[$test->sortId()] = $this->cache->status($test->sortId())->asInt();
                 $max                                    = max($max, $this->defectSortOrder[$test->sortId()]);
             }
         }

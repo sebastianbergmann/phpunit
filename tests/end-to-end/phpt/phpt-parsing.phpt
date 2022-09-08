@@ -20,7 +20,7 @@ Time: %s, Memory: %s
 There was 1 error:
 
 1) %stests%e_files%ephpt-unsupported-section.phpt
-PHPUnit\Runner\Exception: PHPUnit does not support PHPT GET sections in %s
-%a
+PHPUnit\Runner\UnsupportedPhptSectionException: PHPUnit does not support PHPT GET sections
+
 ERRORS!
 Tests: 1, Assertions: 0, Errors: 1.

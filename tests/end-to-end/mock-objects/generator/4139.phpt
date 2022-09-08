@@ -12,7 +12,7 @@ $generator = new \PHPUnit\Framework\MockObject\Generator;
 
 $mock = $generator->generate(InterfaceWithConstructor::class);
 
-print $mock->getClassCode();
+print $mock->classCode();
 --EXPECTF--
 declare(strict_types=1);
 
