@@ -20,7 +20,7 @@ use function strtolower;
 use function substr;
 use Doctrine\Instantiator\Instantiator;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Util\Type;
+use PHPUnit\Util\Cloner;
 use SebastianBergmann\Exporter\Exporter;
 use stdClass;
 use Throwable;
@@ -90,7 +90,7 @@ final class Invocation implements SelfDescribing
 
         foreach ($this->parameters as $key => $value) {
             if (is_object($value)) {
-                $this->parameters[$key] = $this->cloneObject($value);
+                $this->parameters[$key] = Cloner::clone($value);
             }
         }
     }
@@ -286,14 +286,5 @@ final class Invocation implements SelfDescribing
     public function getObject(): object
     {
         return $this->object;
-    }
-
-    private function cloneObject(object $original): object
-    {
-        if (Type::isCloneable($original)) {
-            return clone $original;
-        }
-
-        return $original;
     }
 }
