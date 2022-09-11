@@ -2,19 +2,27 @@
 \PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true)
 --SKIPIF--
 <?php declare(strict_types=1);
-if (PHP_MAJOR_VERSION < 8) {
-    print 'skip: PHP 8 is required.';
+if (version_compare('8.2.0-dev', PHP_VERSION, '>')) {
+    print 'skip: PHP 8.2 is required.';
 }
 --FILE--
 <?php declare(strict_types=1);
+interface A
+{
+}
+
+interface B
+{
+}
+
 class Foo
 {
-    public function bar(bool|int $baz, self|stdClass $other)
+    public function bar((A&B)|int|null $baz)
     {
     }
 }
 
-require_once __DIR__ . '/../../../bootstrap.php';
+require_once __DIR__ . '/../../../../vendor/autoload.php';
 
 $generator = new \PHPUnit\Framework\MockObject\Generator;
 
@@ -36,15 +44,15 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethodWithVoidReturnType;
 
-    public function bar(bool|int $baz, Foo|stdClass $other)
+    public function bar((A&B)|int|null $baz)
     {
-        $__phpunit_arguments = [$baz, $other];
+        $__phpunit_arguments = [$baz];
         $__phpunit_count     = func_num_args();
 
-        if ($__phpunit_count > 2) {
+        if ($__phpunit_count > 1) {
             $__phpunit_arguments_tmp = func_get_args();
 
-            for ($__phpunit_i = 2; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
+            for ($__phpunit_i = 1; $__phpunit_i < $__phpunit_count; $__phpunit_i++) {
                 $__phpunit_arguments[] = $__phpunit_arguments_tmp[$__phpunit_i];
             }
         }

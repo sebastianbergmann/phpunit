@@ -32,6 +32,7 @@ use PHPUnit\TestFixture\InterfaceWithStaticMethod;
 use PHPUnit\TestFixture\MethodCallback;
 use PHPUnit\TestFixture\MethodCallbackByReference;
 use PHPUnit\TestFixture\MockObject\AbstractMockTestClass;
+use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningDisjunctiveNormalFormType;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningFalse;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningIntersection;
 use PHPUnit\TestFixture\MockObject\InterfaceWithMethodReturningNull;
@@ -1331,6 +1332,18 @@ EOF
         $i->method('returnsTrue')->willReturn(true);
 
         $this->assertTrue($i->returnsTrue());
+    }
+
+    /**
+     * @requires PHP 8.2
+     */
+    public function testMethodThatReturnsDisjunctiveNormalFormTypeCanBeStubbed(): void
+    {
+        $i = $this->createStub(InterfaceWithMethodReturningDisjunctiveNormalFormType::class);
+
+        $i->method('returnsDisjunctiveNormalFormType')->willReturn(true);
+
+        $this->assertTrue($i->returnsDisjunctiveNormalFormType());
     }
 
     private function resetMockObjects(): void

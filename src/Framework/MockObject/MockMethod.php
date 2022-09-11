@@ -23,11 +23,8 @@ use function substr;
 use function substr_count;
 use function trim;
 use function var_export;
-use ReflectionIntersectionType;
 use ReflectionMethod;
-use ReflectionNamedType;
 use ReflectionParameter;
-use ReflectionUnionType;
 use SebastianBergmann\Template\Exception as TemplateException;
 use SebastianBergmann\Template\Template;
 use SebastianBergmann\Type\ReflectionMapper;
@@ -274,6 +271,7 @@ final class MockMethod
     private static function getMethodParametersForDeclaration(ReflectionMethod $method): string
     {
         $parameters = [];
+        $types      = (new ReflectionMapper)->fromParameterTypes($method);
 
         foreach ($method->getParameters() as $i => $parameter) {
             $name = '$' . $parameter->getName();
@@ -285,19 +283,16 @@ final class MockMethod
                 $name = '$arg' . $i;
             }
 
-            $nullable        = '';
             $default         = '';
             $reference       = '';
             $typeDeclaration = '';
-            $type            = null;
-            $typeName        = null;
 
-            if ($parameter->hasType()) {
-                $type = $parameter->getType();
+            if (!$types[$i]->type()->isUnknown()) {
+                $typeDeclaration = $types[$i]->type()->asString() . ' ';
+            }
 
-                if ($type instanceof ReflectionNamedType) {
-                    $typeName = $type->getName();
-                }
+            if ($parameter->isPassedByReference()) {
+                $reference = '&';
             }
 
             if ($parameter->isVariadic()) {
@@ -308,34 +303,7 @@ final class MockMethod
                 $default = ' = null';
             }
 
-            if ($type !== null) {
-                if ($typeName !== 'mixed' &&
-                    $typeName !== 'null' &&
-                    !$type instanceof ReflectionIntersectionType &&
-                    !$type instanceof ReflectionUnionType &&
-                    $parameter->allowsNull()) {
-                    $nullable = '?';
-                }
-
-                if ($typeName === 'self') {
-                    $typeDeclaration = $method->getDeclaringClass()->getName() . ' ';
-                } elseif ($typeName !== null) {
-                    $typeDeclaration = $typeName . ' ';
-                } elseif ($type instanceof ReflectionUnionType) {
-                    $typeDeclaration = self::unionTypeAsString(
-                        $type,
-                        $method->getDeclaringClass()->getName()
-                    );
-                } elseif ($type instanceof ReflectionIntersectionType) {
-                    $typeDeclaration = self::intersectionTypeAsString($type);
-                }
-            }
-
-            if ($parameter->isPassedByReference()) {
-                $reference = '&';
-            }
-
-            $parameters[] = $nullable . $typeDeclaration . $reference . $name . $default;
+            $parameters[] = $typeDeclaration . $reference . $name . $default;
         }
 
         return implode(', ', $parameters);
@@ -408,31 +376,5 @@ final class MockMethod
             );
         }
         // @codeCoverageIgnoreEnd
-    }
-
-    private static function unionTypeAsString(ReflectionUnionType $union, string $self): string
-    {
-        $types = [];
-
-        foreach ($union->getTypes() as $type) {
-            if ((string) $type === 'self') {
-                $types[] = $self;
-            } else {
-                $types[] = $type;
-            }
-        }
-
-        return implode('|', $types) . ' ';
-    }
-
-    private static function intersectionTypeAsString(ReflectionIntersectionType $intersection): string
-    {
-        $types = [];
-
-        foreach ($intersection->getTypes() as $type) {
-            $types[] = $type;
-        }
-
-        return implode('&', $types) . ' ';
     }
 }

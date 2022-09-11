@@ -36,7 +36,7 @@ class MockFoo extends Foo implements PHPUnit\Framework\MockObject\MockObject
     use \PHPUnit\Framework\MockObject\Method;
     use \PHPUnit\Framework\MockObject\MockedCloneMethodWithVoidReturnType;
 
-    public function bar(int|bool $baz, Foo|stdClass|null $other)
+    public function bar(bool|int $baz, Foo|null|stdClass $other)
     {
         $__phpunit_arguments = [$baz, $other];
         $__phpunit_count     = func_num_args();
