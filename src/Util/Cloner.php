@@ -9,16 +9,26 @@
  */
 namespace PHPUnit\Util;
 
+use Throwable;
+
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class Type
+final class Cloner
 {
-    public static function isType(string $type): bool
+    /**
+     * @psalm-template OriginalType
+     *
+     * @psalm-param OriginalType $original
+     *
+     * @psalm-return OriginalType
+     */
+    public static function clone(object $original): object
     {
-        return match ($type) {
-            'numeric', 'integer', 'int', 'iterable', 'float', 'string', 'boolean', 'bool', 'null', 'array', 'object', 'resource', 'scalar' => true,
-            default => false,
-        };
+        try {
+            return clone $original;
+        } catch (Throwable $t) {
+            return $original;
+        }
     }
 }

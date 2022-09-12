@@ -85,8 +85,8 @@ use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
+use PHPUnit\Util\Cloner;
 use PHPUnit\Util\Test as TestUtil;
-use PHPUnit\Util\Type;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionObject;
@@ -1670,9 +1670,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         } else {
             foreach ($testArguments as $testArgument) {
                 if ($testArgument instanceof MockObject) {
-                    if (Type::isCloneable($testArgument)) {
-                        $testArgument = clone $testArgument;
-                    }
+                    $testArgument = Cloner::clone($testArgument);
 
                     $this->registerMockObject($testArgument);
                 } elseif (is_array($testArgument) && !in_array($testArgument, $visited, true)) {

@@ -21,7 +21,7 @@ use function str_starts_with;
 use function strtolower;
 use function substr;
 use PHPUnit\Framework\SelfDescribing;
-use PHPUnit\Util\Type;
+use PHPUnit\Util\Cloner;
 use ReflectionClass;
 use SebastianBergmann\Exporter\Exporter;
 use stdClass;
@@ -65,7 +65,7 @@ final class Invocation implements SelfDescribing
 
         foreach ($this->parameters as $key => $value) {
             if (is_object($value)) {
-                $this->parameters[$key] = $this->cloneObject($value);
+                $this->parameters[$key] = Cloner::clone($value);
             }
         }
     }
@@ -94,12 +94,17 @@ final class Invocation implements SelfDescribing
             return null;
         }
 
-        $intersection = false;
-        $union        = false;
+        $intersection               = false;
+        $union                      = false;
+        $unionContainsIntersections = false;
 
         if (str_contains($this->returnType, '|')) {
             $types = explode('|', $this->returnType);
             $union = true;
+
+            if (str_contains($this->returnType, '(')) {
+                $unionContainsIntersections = true;
+            }
         } elseif (str_contains($this->returnType, '&')) {
             $types        = explode('&', $this->returnType);
             $intersection = true;
@@ -109,7 +114,7 @@ final class Invocation implements SelfDescribing
 
         $types = array_map('strtolower', $types);
 
-        if (!$intersection) {
+        if (!$intersection && !$unionContainsIntersections) {
             if (in_array('', $types, true) ||
                 in_array('null', $types, true) ||
                 in_array('mixed', $types, true) ||
@@ -195,38 +200,28 @@ final class Invocation implements SelfDescribing
             }
         }
 
+        if ($intersection && $this->onlyInterfaces($types)) {
+            try {
+                return (new Generator)->getMockForInterfaces($types);
+            } catch (Throwable $t) {
+                throw new RuntimeException(
+                    sprintf(
+                        'Return value for %s::%s() cannot be generated: %s',
+                        $this->className,
+                        $this->methodName,
+                        $t->getMessage(),
+                    ),
+                    (int) $t->getCode(),
+                );
+            }
+        }
+
         $reason = '';
 
         if ($union) {
             $reason = ' because the declared return type is a union';
         } elseif ($intersection) {
             $reason = ' because the declared return type is an intersection';
-
-            $onlyInterfaces = true;
-
-            foreach ($types as $type) {
-                if (!interface_exists($type)) {
-                    $onlyInterfaces = false;
-
-                    break;
-                }
-            }
-
-            if ($onlyInterfaces) {
-                try {
-                    return (new Generator)->getMockForInterfaces($types);
-                } catch (Throwable $t) {
-                    throw new RuntimeException(
-                        sprintf(
-                            'Return value for %s::%s() cannot be generated: %s',
-                            $this->className,
-                            $this->methodName,
-                            $t->getMessage(),
-                        ),
-                        (int) $t->getCode(),
-                    );
-                }
-            }
         }
 
         throw new RuntimeException(
@@ -263,12 +258,17 @@ final class Invocation implements SelfDescribing
         return $this->object;
     }
 
-    private function cloneObject(object $original): object
+    /**
+     * @psalm-param non-empty-list<string> $types
+     */
+    private function onlyInterfaces(array $types): bool
     {
-        if (Type::isCloneable($original)) {
-            return clone $original;
+        foreach ($types as $type) {
+            if (!interface_exists($type)) {
+                return false;
+            }
         }
 
-        return $original;
+        return true;
     }
 }
