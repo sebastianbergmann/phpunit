@@ -121,12 +121,17 @@ final class Invocation implements SelfDescribing
             return null;
         }
 
-        $intersection = false;
-        $union        = false;
+        $intersection               = false;
+        $union                      = false;
+        $unionContainsIntersections = false;
 
         if (strpos($this->returnType, '|') !== false) {
             $types = explode('|', $this->returnType);
             $union = true;
+
+            if (strpos($this->returnType, '(') !== false) {
+                $unionContainsIntersections = true;
+            }
         } elseif (strpos($this->returnType, '&') !== false) {
             $types        = explode('&', $this->returnType);
             $intersection = true;
@@ -136,7 +141,7 @@ final class Invocation implements SelfDescribing
 
         $types = array_map('strtolower', $types);
 
-        if (!$intersection) {
+        if (!$intersection && !$unionContainsIntersections) {
             if (in_array('', $types, true) ||
                 in_array('null', $types, true) ||
                 in_array('mixed', $types, true) ||
@@ -220,38 +225,28 @@ final class Invocation implements SelfDescribing
             }
         }
 
+        if ($intersection && $this->onlyInterfaces($types)) {
+            try {
+                return (new Generator)->getMockForInterfaces($types);
+            } catch (Throwable $t) {
+                throw new RuntimeException(
+                    sprintf(
+                        'Return value for %s::%s() cannot be generated: %s',
+                        $this->className,
+                        $this->methodName,
+                        $t->getMessage(),
+                    ),
+                    (int) $t->getCode(),
+                );
+            }
+        }
+
         $reason = '';
 
         if ($union) {
             $reason = ' because the declared return type is a union';
         } elseif ($intersection) {
             $reason = ' because the declared return type is an intersection';
-
-            $onlyInterfaces = true;
-
-            foreach ($types as $type) {
-                if (!interface_exists($type)) {
-                    $onlyInterfaces = false;
-
-                    break;
-                }
-            }
-
-            if ($onlyInterfaces) {
-                try {
-                    return (new Generator)->getMockForInterfaces($types);
-                } catch (Throwable $t) {
-                    throw new RuntimeException(
-                        sprintf(
-                            'Return value for %s::%s() cannot be generated: %s',
-                            $this->className,
-                            $this->methodName,
-                            $t->getMessage(),
-                        ),
-                        (int) $t->getCode(),
-                    );
-                }
-            }
         }
 
         throw new RuntimeException(
@@ -286,5 +281,19 @@ final class Invocation implements SelfDescribing
     public function getObject(): object
     {
         return $this->object;
+    }
+
+    /**
+     * @psalm-param non-empty-list<string> $types
+     */
+    private function onlyInterfaces(array $types): bool
+    {
+        foreach ($types as $type) {
+            if (!interface_exists($type)) {
+                return false;
+            }
+        }
+
+        return true;
     }
 }
