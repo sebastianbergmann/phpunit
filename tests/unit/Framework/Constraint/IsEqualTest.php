@@ -183,18 +183,6 @@ Failed asserting that two arrays are equal.
 
 EOF
             ],
-            [[true], ['true'], <<<'EOF'
-Failed asserting that two arrays are equal.
---- Expected
-+++ Actual
-@@ @@
- Array (
--    0 => true
-+    0 => 'true'
- )
-
-EOF
-            ],
             [[0, [1], [2], 3], [0, [4], [2], 3], <<<'EOF'
 Failed asserting that two arrays are equal.
 --- Expected
