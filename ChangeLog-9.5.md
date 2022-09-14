@@ -8,6 +8,10 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#5042](https://github.com/sebastianbergmann/phpunit/issues/5042): Support Disjunctive Normal Form types
 
+### Fixed
+
+* [#4966](https://github.com/sebastianbergmann/phpunit/issues/4966): `TestCase::assertSame()` (and related exact comparisons) must compare `float` exactly
+
 ## [9.5.24] - 2022-08-30
 
 ### Added
