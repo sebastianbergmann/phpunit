@@ -11,6 +11,7 @@ All notable changes of the PHPUnit 8.5 release series are documented in this fil
 ### Fixed
 
 * [#4913](https://github.com/sebastianbergmann/phpunit/issues/4913): Failed `assert()` should show a backtrace
+* [#4966](https://github.com/sebastianbergmann/phpunit/issues/4966): `TestCase::assertSame()` (and related exact comparisons) must compare `float` exactly
 
 ## [8.5.29] - 2022-08-22
 
