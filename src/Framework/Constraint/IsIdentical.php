@@ -9,13 +9,8 @@
  */
 namespace PHPUnit\Framework\Constraint;
 
-use const PHP_FLOAT_EPSILON;
-use function abs;
 use function get_class;
 use function is_array;
-use function is_float;
-use function is_infinite;
-use function is_nan;
 use function is_object;
 use function is_string;
 use function sprintf;
@@ -52,13 +47,7 @@ final class IsIdentical extends Constraint
      */
     public function evaluate($other, string $description = '', bool $returnResult = false): ?bool
     {
-        if (is_float($this->value) && is_float($other) &&
-            !is_infinite($this->value) && !is_infinite($other) &&
-            !is_nan($this->value) && !is_nan($other)) {
-            $success = abs($this->value - $other) < PHP_FLOAT_EPSILON;
-        } else {
-            $success = $this->value === $other;
-        }
+        $success = $this->value === $other;
 
         if ($returnResult) {
             return $success;
