@@ -9,20 +9,11 @@
  */
 namespace PHPUnit\Framework;
 
-use const DEBUG_BACKTRACE_IGNORE_ARGS;
-use const PHP_EOL;
-use function array_shift;
-use function array_unshift;
 use function class_exists;
 use function count;
-use function debug_backtrace;
-use function explode;
 use function file_get_contents;
-use function implode;
 use function interface_exists;
 use function is_bool;
-use function preg_split;
-use function str_contains;
 use ArrayAccess;
 use Countable;
 use Generator;
@@ -2152,13 +2143,6 @@ abstract class Assert
      */
     final public static function markTestSkipped(string $message = ''): never
     {
-        if ($hint = self::detectLocationHint($message)) {
-            $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS);
-            array_unshift($trace, $hint);
-
-            throw new SyntheticSkippedError($hint['message'], 0, $hint['file'], (int) $hint['line'], $trace);
-        }
-
         throw new SkippedWithMessageException($message);
     }
 
@@ -2176,29 +2160,5 @@ abstract class Assert
     final public static function resetCount(): void
     {
         self::$count = 0;
-    }
-
-    private static function detectLocationHint(string $message): ?array
-    {
-        $hint  = null;
-        $lines = preg_split('/\r\n|\r|\n/', $message);
-
-        while (str_contains($lines[0], '__OFFSET')) {
-            $offset = explode('=', array_shift($lines));
-
-            if ($offset[0] === '__OFFSET_FILE') {
-                $hint['file'] = $offset[1];
-            }
-
-            if ($offset[0] === '__OFFSET_LINE') {
-                $hint['line'] = $offset[1];
-            }
-        }
-
-        if ($hint) {
-            $hint['message'] = implode(PHP_EOL, $lines);
-        }
-
-        return $hint;
     }
 }
