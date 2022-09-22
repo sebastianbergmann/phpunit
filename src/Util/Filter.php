@@ -17,7 +17,7 @@ use function realpath;
 use function sprintf;
 use function str_starts_with;
 use PHPUnit\Framework\Exception;
-use PHPUnit\Framework\SyntheticError;
+use PHPUnit\Framework\PhptAssertionFailedError;
 use Throwable;
 
 /**
@@ -32,10 +32,10 @@ final class Filter
     {
         $filteredStacktrace = '';
 
-        if ($t instanceof SyntheticError) {
-            $eTrace = $t->getSyntheticTrace();
-            $eFile  = $t->getSyntheticFile();
-            $eLine  = $t->getSyntheticLine();
+        if ($t instanceof PhptAssertionFailedError) {
+            $eTrace = $t->syntheticTrace();
+            $eFile  = $t->syntheticFile();
+            $eLine  = $t->syntheticLine();
         } elseif ($t instanceof Exception) {
             $eTrace = $t->getSerializableTrace();
             $eFile  = $t->getFile();

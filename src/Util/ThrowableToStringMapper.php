@@ -10,7 +10,7 @@
 namespace PHPUnit\Util;
 
 use PHPUnit\Framework\ExpectationFailedException;
-use PHPUnit\Framework\PHPTAssertionFailedError;
+use PHPUnit\Framework\PhptAssertionFailedError;
 use PHPUnit\Framework\SelfDescribing;
 use Throwable;
 
@@ -28,8 +28,8 @@ final class ThrowableToStringMapper
                 $buffer .= $t->getComparisonFailure()->getDiff();
             }
 
-            if ($t instanceof PHPTAssertionFailedError) {
-                $buffer .= $t->getDiff();
+            if ($t instanceof PhptAssertionFailedError) {
+                $buffer .= $t->diff();
             }
 
             if (!empty($buffer)) {

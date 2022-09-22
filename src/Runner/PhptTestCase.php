@@ -48,7 +48,7 @@ use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\IncompleteTestError;
-use PHPUnit\Framework\PHPTAssertionFailedError;
+use PHPUnit\Framework\PhptAssertionFailedError;
 use PHPUnit\Framework\Reorderable;
 use PHPUnit\Framework\SelfDescribing;
 use PHPUnit\Framework\Test;
@@ -204,7 +204,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
 
                 $hint    = $this->getLocationHintFromDiff($diff, $sections);
                 $trace   = array_merge($hint, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS));
-                $failure = new PHPTAssertionFailedError(
+                $failure = new PhptAssertionFailedError(
                     $e->getMessage(),
                     0,
                     $trace[0]['file'],

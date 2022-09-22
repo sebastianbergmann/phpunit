@@ -10,46 +10,44 @@
 namespace PHPUnit\Framework;
 
 /**
+ * @psalm-immutable
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class SyntheticError extends AssertionFailedError
+final class PhptAssertionFailedError extends AssertionFailedError
 {
-    /**
-     * The synthetic file.
-     */
-    protected string $syntheticFile = '';
+    private readonly string $syntheticFile;
+    private readonly int $syntheticLine;
+    private readonly array $syntheticTrace;
+    private readonly string $diff;
 
-    /**
-     * The synthetic line number.
-     */
-    protected int $syntheticLine = 0;
-
-    /**
-     * The synthetic trace.
-     */
-    protected array $syntheticTrace = [];
-
-    public function __construct(string $message, int $code, string $file, int $line, array $trace)
+    public function __construct(string $message, int $code, string $file, int $line, array $trace, string $diff)
     {
         parent::__construct($message, $code);
 
         $this->syntheticFile  = $file;
         $this->syntheticLine  = $line;
         $this->syntheticTrace = $trace;
+        $this->diff           = $diff;
     }
 
-    public function getSyntheticFile(): string
+    public function syntheticFile(): string
     {
         return $this->syntheticFile;
     }
 
-    public function getSyntheticLine(): int
+    public function syntheticLine(): int
     {
         return $this->syntheticLine;
     }
 
-    public function getSyntheticTrace(): array
+    public function syntheticTrace(): array
     {
         return $this->syntheticTrace;
+    }
+
+    public function diff(): string
+    {
+        return $this->diff;
     }
 }

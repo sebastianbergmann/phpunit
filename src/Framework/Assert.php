@@ -2139,7 +2139,6 @@ abstract class Assert
      * Mark the test as skipped.
      *
      * @throws SkippedWithMessageException
-     * @throws SyntheticSkippedError
      */
     final public static function markTestSkipped(string $message = ''): never
     {
