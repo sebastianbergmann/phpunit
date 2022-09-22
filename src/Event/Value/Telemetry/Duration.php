@@ -20,8 +20,8 @@ use InvalidArgumentException;
  */
 final class Duration
 {
-    private int $seconds;
-    private int $nanoseconds;
+    private readonly int $seconds;
+    private readonly int $nanoseconds;
 
     /**
      * @throws InvalidArgumentException

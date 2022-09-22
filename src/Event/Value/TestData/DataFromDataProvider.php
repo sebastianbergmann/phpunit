@@ -18,7 +18,7 @@ use PHPUnit\Util\ExportedVariable;
  */
 final class DataFromDataProvider extends TestData
 {
-    private int|string $dataSetName;
+    private readonly int|string $dataSetName;
 
     public static function from(int|string $dataSetName, ExportedVariable $data): self
     {

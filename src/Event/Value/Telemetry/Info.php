@@ -18,12 +18,12 @@ use PHPUnit\Event\Code\ClassMethod;
  */
 final class Info
 {
-    private Snapshot $current;
-    private Duration $durationSinceStart;
-    private MemoryUsage $memorySinceStart;
-    private Duration $durationSincePrevious;
-    private MemoryUsage $memorySincePrevious;
-    private ClassMethod $emitter;
+    private readonly Snapshot $current;
+    private readonly Duration $durationSinceStart;
+    private readonly MemoryUsage $memorySinceStart;
+    private readonly Duration $durationSincePrevious;
+    private readonly MemoryUsage $memorySincePrevious;
+    private readonly ClassMethod $emitter;
 
     public function __construct(Snapshot $current, Duration $durationSinceStart, MemoryUsage $memorySinceStart, Duration $durationSincePrevious, MemoryUsage $memorySincePrevious, ClassMethod $emitter)
     {

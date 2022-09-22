@@ -21,7 +21,7 @@ final class ExtensionCollection implements IteratorAggregate
     /**
      * @psalm-var list<Extension>
      */
-    private array $extensions;
+    private readonly array $extensions;
 
     /**
      * @psalm-param list<Extension> $extensions

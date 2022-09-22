@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final class Covers extends Metadata
 {
-    private string $target;
+    private readonly string $target;
 
     protected function __construct(int $level, string $target)
     {

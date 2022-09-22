@@ -23,7 +23,7 @@ final class VariableCollection implements Countable, IteratorAggregate
     /**
      * @psalm-var list<Variable>
      */
-    private array $variables;
+    private readonly array $variables;
 
     /**
      * @psalm-param list<Variable> $variables

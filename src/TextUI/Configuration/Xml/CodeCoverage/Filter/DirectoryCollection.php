@@ -23,7 +23,7 @@ final class DirectoryCollection implements Countable, IteratorAggregate
     /**
      * @psalm-var list<Directory>
      */
-    private array $directories;
+    private readonly array $directories;
 
     /**
      * @psalm-param list<Directory> $directories

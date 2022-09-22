@@ -24,11 +24,11 @@ final class Throwable
     /**
      * @psalm-var class-string
      */
-    private string $className;
-    private string $message;
-    private string $description;
-    private string $stackTrace;
-    private ?Throwable $previous;
+    private readonly string $className;
+    private readonly string $message;
+    private readonly string $description;
+    private readonly string $stackTrace;
+    private readonly ?Throwable $previous;
 
     public static function from(\Throwable $t): self
     {

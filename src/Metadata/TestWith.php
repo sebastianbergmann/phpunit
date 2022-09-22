@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final class TestWith extends Metadata
 {
-    private array $data;
+    private readonly array $data;
 
     protected function __construct(int $level, array $data)
     {

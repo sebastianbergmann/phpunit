@@ -23,7 +23,7 @@ final class TestSuiteCollection implements Countable, IteratorAggregate
     /**
      * @psalm-var list<TestSuite>
      */
-    private array $testSuites;
+    private readonly array $testSuites;
 
     /**
      * @psalm-param list<TestSuite> $testSuites

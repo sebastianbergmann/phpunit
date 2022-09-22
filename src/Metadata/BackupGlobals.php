@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final class BackupGlobals extends Metadata
 {
-    private ?bool $enabled;
+    private readonly ?bool $enabled;
 
     protected function __construct(int $level, ?bool $enabled)
     {

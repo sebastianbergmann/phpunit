@@ -19,7 +19,7 @@ final class UsesClass extends Metadata
     /**
      * @psalm-var class-string
      */
-    private string $className;
+    private readonly string $className;
 
     /**
      * @psalm-param class-string $className

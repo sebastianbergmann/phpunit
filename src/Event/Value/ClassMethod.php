@@ -19,8 +19,8 @@ final class ClassMethod
     /**
      * @psalm-var class-string
      */
-    private string $className;
-    private string $methodName;
+    private readonly string $className;
+    private readonly string $methodName;
 
     /**
      * @psalm-param class-string $className

@@ -16,9 +16,9 @@ namespace PHPUnit\Event\Telemetry;
  */
 final class Snapshot
 {
-    private HRTime $time;
-    private MemoryUsage $memoryUsage;
-    private MemoryUsage $peakMemoryUsage;
+    private readonly HRTime $time;
+    private readonly MemoryUsage $memoryUsage;
+    private readonly MemoryUsage $peakMemoryUsage;
 
     public function __construct(HRTime $time, MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage)
     {

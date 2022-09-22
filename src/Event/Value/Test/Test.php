@@ -16,7 +16,7 @@ namespace PHPUnit\Event\Code;
  */
 abstract class Test
 {
-    private string $file;
+    private readonly string $file;
 
     public function __construct(string $file)
     {

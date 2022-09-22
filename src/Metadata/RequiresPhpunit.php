@@ -18,7 +18,7 @@ use PHPUnit\Metadata\Version\Requirement;
  */
 final class RequiresPhpunit extends Metadata
 {
-    private Requirement $versionRequirement;
+    private readonly Requirement $versionRequirement;
 
     protected function __construct(int $level, Requirement $versionRequirement)
     {

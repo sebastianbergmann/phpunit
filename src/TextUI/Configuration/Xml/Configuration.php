@@ -19,13 +19,13 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
  */
 abstract class Configuration
 {
-    private ExtensionCollection $extensions;
-    private CodeCoverage $codeCoverage;
-    private Groups $groups;
-    private Logging $logging;
-    private Php $php;
-    private PHPUnit $phpunit;
-    private TestSuiteCollection $testSuite;
+    private readonly ExtensionCollection $extensions;
+    private readonly CodeCoverage $codeCoverage;
+    private readonly Groups $groups;
+    private readonly Logging $logging;
+    private readonly Php $php;
+    private readonly PHPUnit $phpunit;
+    private readonly TestSuiteCollection $testSuite;
 
     public function __construct(ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {

@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final class UsesFunction extends Metadata
 {
-    private string $functionName;
+    private readonly string $functionName;
 
     public function __construct(int $level, string $functionName)
     {

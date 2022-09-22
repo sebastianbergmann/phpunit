@@ -18,9 +18,9 @@ use PHPUnit\TextUI\XmlConfiguration\File;
  */
 final class Text
 {
-    private File $target;
-    private bool $showUncoveredFiles;
-    private bool $showOnlySummary;
+    private readonly File $target;
+    private readonly bool $showUncoveredFiles;
+    private readonly bool $showOnlySummary;
 
     public function __construct(File $target, bool $showUncoveredFiles, bool $showOnlySummary)
     {

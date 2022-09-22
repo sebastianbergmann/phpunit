@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final class Group extends Metadata
 {
-    private string $groupName;
+    private readonly string $groupName;
 
     protected function __construct(int $level, string $groupName)
     {

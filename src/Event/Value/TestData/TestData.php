@@ -18,7 +18,7 @@ use PHPUnit\Util\ExportedVariable;
  */
 abstract class TestData
 {
-    private ExportedVariable $data;
+    private readonly ExportedVariable $data;
 
     protected function __construct(ExportedVariable $data)
     {

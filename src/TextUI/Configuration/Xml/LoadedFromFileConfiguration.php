@@ -20,8 +20,8 @@ use PHPUnit\Util\Xml\ValidationResult;
  */
 final class LoadedFromFileConfiguration extends Configuration
 {
-    private string $filename;
-    private ValidationResult $validationResult;
+    private readonly string $filename;
+    private readonly ValidationResult $validationResult;
 
     public function __construct(string $filename, ValidationResult $validationResult, ExtensionCollection $extensions, CodeCoverage $codeCoverage, Groups $groups, Logging $logging, Php $php, PHPUnit $phpunit, TestSuiteCollection $testSuite)
     {

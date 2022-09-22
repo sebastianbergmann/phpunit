@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final class RequiresOperatingSystemFamily extends Metadata
 {
-    private string $operatingSystemFamily;
+    private readonly string $operatingSystemFamily;
 
     protected function __construct(int $level, string $operatingSystemFamily)
     {

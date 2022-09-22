@@ -18,7 +18,7 @@ use PHPUnit\TextUI\XmlConfiguration\File;
  */
 final class Junit
 {
-    private File $target;
+    private readonly File $target;
 
     public function __construct(File $target)
     {

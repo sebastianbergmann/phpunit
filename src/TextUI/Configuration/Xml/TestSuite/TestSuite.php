@@ -16,10 +16,10 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  */
 final class TestSuite
 {
-    private string $name;
-    private TestDirectoryCollection $directories;
-    private TestFileCollection $files;
-    private FileCollection $exclude;
+    private readonly string $name;
+    private readonly TestDirectoryCollection $directories;
+    private readonly TestFileCollection $files;
+    private readonly FileCollection $exclude;
 
     public function __construct(string $name, TestDirectoryCollection $directories, TestFileCollection $files, FileCollection $exclude)
     {

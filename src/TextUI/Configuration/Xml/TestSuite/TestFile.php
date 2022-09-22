@@ -18,9 +18,9 @@ use PHPUnit\Util\VersionComparisonOperator;
  */
 final class TestFile
 {
-    private string $path;
-    private string $phpVersion;
-    private VersionComparisonOperator $phpVersionOperator;
+    private readonly string $path;
+    private readonly string $phpVersion;
+    private readonly VersionComparisonOperator $phpVersionOperator;
 
     public function __construct(string $path, string $phpVersion, VersionComparisonOperator $phpVersionOperator)
     {

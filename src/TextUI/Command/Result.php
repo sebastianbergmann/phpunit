@@ -16,8 +16,8 @@ namespace PHPUnit\TextUI\Command;
  */
 final class Result
 {
-    private string $output;
-    private bool $success;
+    private readonly string $output;
+    private readonly bool $success;
 
     public static function from(string $output = '', bool $success = true): self
     {

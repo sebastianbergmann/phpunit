@@ -21,7 +21,7 @@ final class GroupCollection implements IteratorAggregate
     /**
      * @psalm-var list<Group>
      */
-    private array $groups;
+    private readonly array $groups;
 
     /**
      * @psalm-param list<Group> $groups

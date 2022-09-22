@@ -18,7 +18,7 @@ use PHPUnit\TextUI\XmlConfiguration\Directory;
  */
 final class Xml
 {
-    private Directory $target;
+    private readonly Directory $target;
 
     public function __construct(Directory $target)
     {

@@ -23,7 +23,7 @@ final class IniSettingCollection implements Countable, IteratorAggregate
     /**
      * @psalm-var list<IniSetting>
      */
-    private array $iniSettings;
+    private readonly array $iniSettings;
 
     /**
      * @psalm-param list<IniSetting> $iniSettings

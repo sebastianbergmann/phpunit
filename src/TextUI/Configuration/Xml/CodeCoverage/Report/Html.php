@@ -19,15 +19,15 @@ use PHPUnit\TextUI\XmlConfiguration\Directory;
  */
 final class Html
 {
-    private Directory $target;
-    private int $lowUpperBound;
-    private int $highLowerBound;
-    private string $colorSuccessLow;
-    private string $colorSuccessMedium;
-    private string $colorSuccessHigh;
-    private string $colorWarning;
-    private string $colorDanger;
-    private ?string $customCssFile;
+    private readonly Directory $target;
+    private readonly int $lowUpperBound;
+    private readonly int $highLowerBound;
+    private readonly string $colorSuccessLow;
+    private readonly string $colorSuccessMedium;
+    private readonly string $colorSuccessHigh;
+    private readonly string $colorWarning;
+    private readonly string $colorDanger;
+    private readonly ?string $customCssFile;
 
     public function __construct(Directory $target, int $lowUpperBound, int $highLowerBound, string $colorSuccessLow, string $colorSuccessMedium, string $colorSuccessHigh, string $colorWarning, string $colorDanger, ?string $customCssFile)
     {

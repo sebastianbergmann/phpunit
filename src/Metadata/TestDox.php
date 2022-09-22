@@ -16,7 +16,7 @@ namespace PHPUnit\Metadata;
  */
 final class TestDox extends Metadata
 {
-    private string $text;
+    private readonly string $text;
 
     protected function __construct(int $level, string $text)
     {

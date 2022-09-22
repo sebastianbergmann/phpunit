@@ -19,9 +19,9 @@ final class Extension
     /**
      * @psalm-var class-string
      */
-    private string $className;
-    private string $sourceFile;
-    private array $arguments;
+    private readonly string $className;
+    private readonly string $sourceFile;
+    private readonly array $arguments;
 
     /**
      * @psalm-param class-string $className
