@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
-use function sprintf;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
