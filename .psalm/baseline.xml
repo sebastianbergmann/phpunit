@@ -78,13 +78,16 @@
       <code>flush</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/Event/Value/Runtime/Extensions.php">
-    <ImpureFunctionCall occurrences="1">
-      <code>get_loaded_extensions</code>
-    </ImpureFunctionCall>
-  </file>
   <file src="src/Event/Value/Telemetry/HRTime.php">
+    <ImpureMethodCall occurrences="1">
+      <code>fromSecondsAndNanoseconds</code>
+    </ImpureMethodCall>
     <MissingThrowsDocblock occurrences="1"/>
+  </file>
+  <file src="src/Event/Value/Telemetry/MemoryUsage.php">
+    <ImpureMethodCall occurrences="1">
+      <code>fromBytes</code>
+    </ImpureMethodCall>
   </file>
   <file src="src/Event/Value/Telemetry/SystemStopWatch.php">
     <MissingThrowsDocblock occurrences="1">
