@@ -379,9 +379,6 @@
     </UnsafeInstantiation>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$event-&gt;testSuite()-&gt;name()</code>
-    </ArgumentTypeCoercion>
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
