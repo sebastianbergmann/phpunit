@@ -30,6 +30,9 @@ abstract class TestSuite
     private readonly int $count;
     private readonly TestCollection $tests;
 
+    /**
+     * @throws RuntimeException
+     */
     public static function fromTestSuite(FrameworkTestSuite $testSuite): self
     {
         $groups = [];
@@ -91,7 +94,7 @@ abstract class TestSuite
                 );
                 // @codeCoverageIgnoreStart
             } catch (ReflectionException $e) {
-                throw new Exception(
+                throw new RuntimeException(
                     $e->getMessage(),
                     (int) $e->getCode(),
                     $e

@@ -119,10 +119,6 @@
       <code>$testSuite-&gt;getName()</code>
       <code>$testSuite-&gt;getName()</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="1"/>
-    <UndefinedClass occurrences="1">
-      <code>Exception</code>
-    </UndefinedClass>
   </file>
   <file src="src/Event/Value/TestSuite/TestSuiteForTestMethodWithDataProvider.php">
     <PropertyTypeCoercion occurrences="1">
@@ -371,8 +367,9 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="4">
+    <MissingThrowsDocblock occurrences="5">
       <code>Event\TestDataCollection::fromArray([])</code>
+      <code>Event\TestSuite\TestSuite::fromTestSuite($this)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
@@ -652,7 +649,8 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="11">
+    <MissingThrowsDocblock occurrences="12">
+      <code>Event\TestSuite\TestSuite::fromTestSuite($suite)</code>
       <code>atLeastVersion</code>
       <code>configuration</code>
       <code>configuration</code>
@@ -1047,7 +1045,9 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="45">
+    <MissingThrowsDocblock occurrences="47">
+      <code>Event\TestSuite\TestSuite::fromTestSuite($suite)</code>
+      <code>Event\TestSuite\TestSuite::fromTestSuite($suite)</code>
       <code>bootstrap</code>
       <code>configurationFile</code>
       <code>configurationFile</code>
