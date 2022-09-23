@@ -26,9 +26,9 @@ final class TestSuiteForTestClass extends TestSuite
     /**
      * @psalm-param class-string $name
      */
-    public function __construct(string $name, int $size, array $groups, array $provides, array $requires, string $sortId, TestCollection $tests, string $file, int $line)
+    public function __construct(string $name, int $size, TestCollection $tests, string $file, int $line)
     {
-        parent::__construct($name, $size, $groups, $provides, $requires, $sortId, $tests);
+        parent::__construct($name, $size, $tests);
 
         $this->className = $name;
         $this->file      = $file;

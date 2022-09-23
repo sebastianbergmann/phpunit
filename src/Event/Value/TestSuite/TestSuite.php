@@ -14,7 +14,6 @@ use function explode;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\RuntimeException;
 use PHPUnit\Framework\DataProviderTestSuite;
-use PHPUnit\Framework\ExecutionOrderDependency;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite as FrameworkTestSuite;
 use PHPUnit\Runner\PhptTestCase;
@@ -29,22 +28,6 @@ abstract class TestSuite
 {
     private readonly string $name;
     private readonly int $count;
-
-    /**
-     * @psalm-var array<string, list<class-string>>
-     */
-    private readonly array $groups;
-
-    /**
-     * @psalm-var list<ExecutionOrderDependency>
-     */
-    private readonly array $provides;
-
-    /**
-     * @psalm-var list<ExecutionOrderDependency>
-     */
-    private readonly array $requires;
-    private readonly string $sortId;
     private readonly TestCollection $tests;
 
     public static function fromTestSuite(FrameworkTestSuite $testSuite): self
@@ -78,10 +61,6 @@ abstract class TestSuite
                 return new TestSuiteForTestMethodWithDataProvider(
                     $testSuite->getName(),
                     $testSuite->count(),
-                    $groups,
-                    $testSuite->provides(),
-                    $testSuite->requires(),
-                    $testSuite->sortId(),
                     TestCollection::fromArray($tests),
                     $className,
                     $methodName,
@@ -106,10 +85,6 @@ abstract class TestSuite
                 return new TestSuiteForTestClass(
                     $testSuite->getName(),
                     $testSuite->count(),
-                    $groups,
-                    $testSuite->provides(),
-                    $testSuite->requires(),
-                    $testSuite->sortId(),
                     TestCollection::fromArray($tests),
                     $reflector->getFileName(),
                     $reflector->getStartLine(),
@@ -128,23 +103,15 @@ abstract class TestSuite
         return new TestSuiteWithName(
             $testSuite->getName(),
             $testSuite->count(),
-            $groups,
-            $testSuite->provides(),
-            $testSuite->requires(),
-            $testSuite->sortId(),
             TestCollection::fromArray($tests),
         );
     }
 
-    public function __construct(string $name, int $size, array $groups, array $provides, array $requires, string $sortId, TestCollection $tests)
+    public function __construct(string $name, int $size, TestCollection $tests)
     {
-        $this->name     = $name;
-        $this->count    = $size;
-        $this->groups   = $groups;
-        $this->provides = $provides;
-        $this->requires = $requires;
-        $this->sortId   = $sortId;
-        $this->tests    = $tests;
+        $this->name  = $name;
+        $this->count = $size;
+        $this->tests = $tests;
     }
 
     public function name(): string
@@ -155,35 +122,6 @@ abstract class TestSuite
     public function count(): int
     {
         return $this->count;
-    }
-
-    /**
-     * @psalm-return array<string, list<class-string>>
-     */
-    public function groups(): array
-    {
-        return $this->groups;
-    }
-
-    /**
-     * @psalm-return list<ExecutionOrderDependency>
-     */
-    public function provides(): array
-    {
-        return $this->provides;
-    }
-
-    /**
-     * @psalm-return list<ExecutionOrderDependency>
-     */
-    public function requires(): array
-    {
-        return $this->requires;
-    }
-
-    public function sortId(): string
-    {
-        return $this->sortId;
     }
 
     public function tests(): TestCollection

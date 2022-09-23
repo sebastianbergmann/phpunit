@@ -53,12 +53,7 @@ abstract class AbstractEventTestCase extends TestCase
         return new TestSuiteWithName(
             'foo',
             9001,
-            [],
-            [],
-            [],
-            'bar',
             TestCollection::fromArray([]),
-            [],
         );
     }
 }
