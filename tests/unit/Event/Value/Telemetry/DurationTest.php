@@ -65,30 +65,6 @@ final class DurationTest extends TestCase
         $this->assertSame($nanoseconds, $duration->nanoseconds());
     }
 
-    public function testAsStringFormatsDurationWithDurationFormatterWhenSpecified(): void
-    {
-        $formatter = new class implements DurationFormatter
-        {
-            public function format(Duration $duration): string
-            {
-                return sprintf(
-                    '%d#%d',
-                    $duration->seconds(),
-                    $duration->nanoseconds()
-                );
-            }
-        };
-
-        $duration = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $formatted = $duration->asString($formatter);
-
-        $this->assertSame($formatter->format($duration), $formatted);
-    }
-
     #[DataProvider('provideDurationAndStringRepresentation')]
     public function testAsStringFormatsDurationWhenDurationFormatterIsNotSpecified(int $seconds, int $nanoseconds, string $formatted): void
     {

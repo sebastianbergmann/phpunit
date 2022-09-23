@@ -62,12 +62,8 @@ final class Duration
         return $this->seconds() + ($this->nanoseconds() / 1000000000);
     }
 
-    public function asString(DurationFormatter $formatter = null): string
+    public function asString(): string
     {
-        if ($formatter !== null) {
-            return $formatter->format($this);
-        }
-
         $seconds = $this->seconds();
         $minutes = 00;
         $hours   = 00;
