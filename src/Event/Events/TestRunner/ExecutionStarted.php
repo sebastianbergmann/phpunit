@@ -15,6 +15,8 @@ use PHPUnit\Event\Telemetry;
 use PHPUnit\Event\TestSuite\TestSuite;
 
 /**
+ * @psalm-immutable
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class ExecutionStarted implements Event
