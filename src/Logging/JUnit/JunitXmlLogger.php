@@ -33,7 +33,6 @@ use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Util\Xml;
 use ReflectionClass;
 use ReflectionException;
-use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -327,22 +326,11 @@ final class JunitXmlLogger
 
         assert($test instanceof TestMethod);
 
-        $buffer = sprintf(
-            '%s::%s',
+        return sprintf(
+            '%s::%s%s',
             $test->className(),
             $this->name($test),
-        );
-
-        if (!$test->testData()->hasDataFromDataProvider()) {
-            return $buffer . PHP_EOL;
-        }
-
-        $data = $test->testData()->dataFromDataProvider()->data()->asValue();
-
-        return sprintf(
-            '%s (%s)' . PHP_EOL,
-            $buffer,
-            (new Exporter)->shortenedRecursiveExport($data)
+            PHP_EOL,
         );
     }
 
