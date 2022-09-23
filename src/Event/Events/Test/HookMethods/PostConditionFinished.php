@@ -20,17 +20,17 @@ use PHPUnit\Event\Telemetry;
  */
 final class PostConditionFinished implements Event
 {
-    private Telemetry\Info $telemetryInfo;
+    private readonly Telemetry\Info $telemetryInfo;
 
     /**
      * @psalm-var class-string
      */
-    private string $testClassName;
+    private readonly string $testClassName;
 
     /**
      * @psalm-var list<Code\ClassMethod>
      */
-    private array $calledMethods;
+    private readonly array $calledMethods;
 
     /**
      * @psalm-param class-string $testClassName

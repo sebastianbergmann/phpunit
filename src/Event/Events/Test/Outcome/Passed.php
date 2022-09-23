@@ -19,9 +19,9 @@ use PHPUnit\Event\Telemetry;
  */
 final class Passed implements Event
 {
-    private Telemetry\Info $telemetryInfo;
-    private Code\Test $test;
-    private mixed $testMethodReturnValue;
+    private readonly Telemetry\Info $telemetryInfo;
+    private readonly Code\Test $test;
+    private readonly mixed $testMethodReturnValue;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, mixed $testMethodReturnValue)
     {

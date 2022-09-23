@@ -18,9 +18,9 @@ use PHPUnit\Event\Telemetry;
  */
 final class ExtensionLoaded implements Event
 {
-    private Telemetry\Info $telemetryInfo;
-    private string $name;
-    private string $version;
+    private readonly Telemetry\Info $telemetryInfo;
+    private readonly string $name;
+    private readonly string $version;
 
     public function __construct(Telemetry\Info $telemetryInfo, string $name, string $version)
     {

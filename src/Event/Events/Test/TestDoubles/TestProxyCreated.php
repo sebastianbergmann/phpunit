@@ -18,13 +18,13 @@ use PHPUnit\Event\Telemetry;
  */
 final class TestProxyCreated implements Event
 {
-    private Telemetry\Info $telemetryInfo;
+    private readonly Telemetry\Info $telemetryInfo;
 
     /**
      * @psalm-var class-string
      */
-    private string $className;
-    private array $constructorArguments;
+    private readonly string $className;
+    private readonly array $constructorArguments;
 
     /**
      * @psalm-param class-string $className

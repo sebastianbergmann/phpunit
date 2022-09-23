@@ -18,8 +18,8 @@ use PHPUnit\Event\Telemetry;
  */
 final class WarningTriggered implements Event
 {
-    private Telemetry\Info $telemetryInfo;
-    private string $message;
+    private readonly Telemetry\Info $telemetryInfo;
+    private readonly string $message;
 
     public function __construct(Telemetry\Info $telemetryInfo, string $message)
     {

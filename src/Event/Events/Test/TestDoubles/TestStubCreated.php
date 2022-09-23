@@ -18,12 +18,12 @@ use PHPUnit\Event\Telemetry;
  */
 final class TestStubCreated implements Event
 {
-    private Telemetry\Info $telemetryInfo;
+    private readonly Telemetry\Info $telemetryInfo;
 
     /**
      * @var class-string
      */
-    private string $className;
+    private readonly string $className;
 
     /**
      * @psalm-param class-string $className

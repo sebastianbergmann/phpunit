@@ -19,8 +19,8 @@ use PHPUnit\Event\Telemetry;
  */
 final class PreparationStarted implements Event
 {
-    private Telemetry\Info $telemetryInfo;
-    private Code\Test $test;
+    private readonly Telemetry\Info $telemetryInfo;
+    private readonly Code\Test $test;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
     {

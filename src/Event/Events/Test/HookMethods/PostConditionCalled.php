@@ -19,13 +19,13 @@ use PHPUnit\Event\Telemetry;
  */
 final class PostConditionCalled implements Event
 {
-    private Telemetry\Info $telemetryInfo;
+    private readonly Telemetry\Info $telemetryInfo;
 
     /**
      * @psalm-var class-string
      */
-    private string $testClassName;
-    private Code\ClassMethod $calledMethod;
+    private readonly string $testClassName;
+    private readonly Code\ClassMethod $calledMethod;
 
     /**
      * @psalm-param class-string $testClassName

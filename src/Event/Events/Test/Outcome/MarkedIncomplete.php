@@ -21,9 +21,9 @@ use PHPUnit\Event\Telemetry;
  */
 final class MarkedIncomplete implements Event
 {
-    private Telemetry\Info $telemetryInfo;
-    private Code\Test $test;
-    private Throwable $throwable;
+    private readonly Telemetry\Info $telemetryInfo;
+    private readonly Code\Test $test;
+    private readonly Throwable $throwable;
 
     public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)
     {

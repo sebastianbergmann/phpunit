@@ -17,10 +17,10 @@ use PHPUnit\Event\Telemetry;
  */
 final class Sorted implements Event
 {
-    private Telemetry\Info $telemetryInfo;
-    private int $executionOrder;
-    private int $executionOrderDefects;
-    private bool $resolveDependencies;
+    private readonly Telemetry\Info $telemetryInfo;
+    private readonly int $executionOrder;
+    private readonly int $executionOrderDefects;
+    private readonly bool $resolveDependencies;
 
     public function __construct(Telemetry\Info $telemetryInfo, int $executionOrder, int $executionOrderDefects, bool $resolveDependencies)
     {

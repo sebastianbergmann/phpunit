@@ -18,8 +18,8 @@ use PHPUnit\Event\Telemetry;
  */
 final class Filtered implements Event
 {
-    private Telemetry\Info $telemetryInfo;
-    private TestSuite $testSuite;
+    private readonly Telemetry\Info $telemetryInfo;
+    private readonly TestSuite $testSuite;
 
     public function __construct(Telemetry\Info $telemetryInfo, TestSuite $testSuite)
     {

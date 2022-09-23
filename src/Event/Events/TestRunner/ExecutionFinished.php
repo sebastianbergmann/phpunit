@@ -17,7 +17,7 @@ use PHPUnit\Event\Telemetry;
  */
 final class ExecutionFinished implements Event
 {
-    private Telemetry\Info $telemetryInfo;
+    private readonly Telemetry\Info $telemetryInfo;
 
     public function __construct(Telemetry\Info $telemetryInfo)
     {
