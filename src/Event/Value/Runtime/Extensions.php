@@ -17,8 +17,6 @@ use ArrayIterator;
 use IteratorAggregate;
 
 /**
- * @psalm-immutable
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class Extensions implements IteratorAggregate
