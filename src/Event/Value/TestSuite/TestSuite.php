@@ -27,25 +27,25 @@ use ReflectionMethod;
  */
 abstract class TestSuite
 {
-    private string $name;
-    private int $count;
+    private readonly string $name;
+    private readonly int $count;
 
     /**
      * @psalm-var array<string, list<class-string>>
      */
-    private array $groups;
+    private readonly array $groups;
 
     /**
      * @psalm-var list<ExecutionOrderDependency>
      */
-    private array $provides;
+    private readonly array $provides;
 
     /**
      * @psalm-var list<ExecutionOrderDependency>
      */
-    private array $requires;
-    private string $sortId;
-    private TestCollection $tests;
+    private readonly array $requires;
+    private readonly string $sortId;
+    private readonly TestCollection $tests;
 
     public static function fromTestSuite(FrameworkTestSuite $testSuite): self
     {

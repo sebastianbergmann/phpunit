@@ -19,9 +19,9 @@ final class TestSuiteForTestClass extends TestSuite
     /**
      * @psalm-var class-string
      */
-    private string $className;
-    private string $file;
-    private int $line;
+    private readonly string $className;
+    private readonly string $file;
+    private readonly int $line;
 
     /**
      * @psalm-param class-string $name

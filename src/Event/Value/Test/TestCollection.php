@@ -20,7 +20,7 @@ final class TestCollection implements Countable, IteratorAggregate
     /**
      * @psalm-var list<Test>
      */
-    private array $tests;
+    private readonly array $tests;
 
     /**
      * @psalm-param list<Test> $tests

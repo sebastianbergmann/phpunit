@@ -16,7 +16,7 @@ namespace PHPUnit\Event\Telemetry;
  */
 final class MemoryUsage
 {
-    private int $bytes;
+    private readonly int $bytes;
 
     public static function fromBytes(int $bytes): self
     {
