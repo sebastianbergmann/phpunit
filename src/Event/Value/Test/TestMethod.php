@@ -17,9 +17,9 @@ use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use PHPUnit\Util\VariableExporter;
 use ReflectionException;
 use ReflectionMethod;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @psalm-immutable
@@ -153,7 +153,7 @@ final class TestMethod extends Test
 
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
-                (new VariableExporter)->export($testCase->providedData())
+                (new Exporter)->export($testCase->providedData())
             );
         }
 

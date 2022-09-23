@@ -388,8 +388,7 @@
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
-    <MissingThrowsDocblock occurrences="3">
-      <code>dataFromDataProvider</code>
+    <MissingThrowsDocblock occurrences="2">
       <code>dataFromDataProvider</code>
       <code>duration</code>
     </MissingThrowsDocblock>
@@ -1128,9 +1127,6 @@
     <PossiblyNullArgument occurrences="1">
       <code>$filter</code>
     </PossiblyNullArgument>
-  </file>
-  <file src="src/Util/Variable/VariableExporter.php">
-    <InvalidArgument occurrences="1"/>
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
     <MissingThrowsDocblock occurrences="1">

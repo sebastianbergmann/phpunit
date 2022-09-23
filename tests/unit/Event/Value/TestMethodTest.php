@@ -14,7 +14,6 @@ use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
-use PHPUnit\Util\ExportedVariable;
 
 #[CoversClass(TestMethod::class)]
 final class TestMethodTest extends TestCase
@@ -72,10 +71,7 @@ final class TestMethodTest extends TestCase
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(
                     $dataSetName,
-                    ExportedVariable::from(
-                        'foo',
-                        false
-                    )
+                    'data'
                 ),
             ])
         );
@@ -102,10 +98,7 @@ final class TestMethodTest extends TestCase
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(
                     $dataSetName,
-                    ExportedVariable::from(
-                        'foo',
-                        false
-                    )
+                    'data'
                 ),
             ])
         );

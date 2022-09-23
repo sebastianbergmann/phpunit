@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use PHPUnit\Util\ExportedVariable;
-
 /**
  * @psalm-immutable
  *
@@ -18,7 +16,7 @@ use PHPUnit\Util\ExportedVariable;
  */
 final class DataFromTestDependency extends TestData
 {
-    public static function from(ExportedVariable $data): self
+    public static function from(string $data): self
     {
         return new self($data);
     }

@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use PHPUnit\Util\ExportedVariable;
-
 /**
  * @psalm-immutable
  *
@@ -20,12 +18,12 @@ final class DataFromDataProvider extends TestData
 {
     private readonly int|string $dataSetName;
 
-    public static function from(int|string $dataSetName, ExportedVariable $data): self
+    public static function from(int|string $dataSetName, string $data): self
     {
         return new self($dataSetName, $data);
     }
 
-    protected function __construct(int|string $dataSetName, ExportedVariable $data)
+    protected function __construct(int|string $dataSetName, string $data)
     {
         $this->dataSetName = $dataSetName;
 

@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\Event;
 
-use PHPUnit\Util\ExportedVariable;
-
 /**
  * @psalm-immutable
  *
@@ -18,14 +16,14 @@ use PHPUnit\Util\ExportedVariable;
  */
 abstract class TestData
 {
-    private readonly ExportedVariable $data;
+    private readonly string $data;
 
-    protected function __construct(ExportedVariable $data)
+    protected function __construct(string $data)
     {
         $this->data = $data;
     }
 
-    public function data(): ExportedVariable
+    public function data(): string
     {
         return $this->data;
     }
