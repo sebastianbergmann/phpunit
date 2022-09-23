@@ -420,8 +420,7 @@
       <code>$test['status']</code>
       <code>$test['test']</code>
     </InvalidArrayOffset>
-    <PossiblyInvalidMethodCall occurrences="3">
-      <code>isSuccess</code>
+    <PossiblyInvalidMethodCall occurrences="2">
       <code>isSuccess</code>
       <code>methodName</code>
     </PossiblyInvalidMethodCall>
