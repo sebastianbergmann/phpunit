@@ -1380,7 +1380,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $dependencyTarget = $dependency->getTarget();
 
-            if (!$passedTests->hasTestMethodWithDataProviderPassed($dependencyTarget)) {
+            if (!$passedTests->hasTestMethodPassed($dependencyTarget)) {
                 if (!$this->isCallableTestMethod($dependencyTarget)) {
                     $this->markErrorForInvalidDependency($dependency);
                 } else {
@@ -1390,30 +1390,26 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 return false;
             }
 
-            if ($passedTests->hasTestMethodPassed($dependencyTarget)) {
-                if ($passedTests->isGreaterThan($dependencyTarget, $this->size())) {
-                    Event\Facade::emitter()->testConsideredRisky(
-                        $this->valueObjectForEvents(),
-                        'This test depends on a test that is larger than itself'
-                    );
+            if ($passedTests->isGreaterThan($dependencyTarget, $this->size())) {
+                Event\Facade::emitter()->testConsideredRisky(
+                    $this->valueObjectForEvents(),
+                    'This test depends on a test that is larger than itself'
+                );
 
-                    return false;
-                }
+                return false;
+            }
 
-                $returnValue = $passedTests->returnValue($dependencyTarget);
+            $returnValue = $passedTests->returnValue($dependencyTarget);
 
-                if ($dependency->deepClone()) {
-                    $deepCopy = new DeepCopy;
-                    $deepCopy->skipUncloneable(false);
+            if ($dependency->deepClone()) {
+                $deepCopy = new DeepCopy;
+                $deepCopy->skipUncloneable(false);
 
-                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($returnValue);
-                } elseif ($dependency->shallowClone()) {
-                    $this->dependencyInput[$dependencyTarget] = clone $returnValue;
-                } else {
-                    $this->dependencyInput[$dependencyTarget] = $returnValue;
-                }
+                $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($returnValue);
+            } elseif ($dependency->shallowClone()) {
+                $this->dependencyInput[$dependencyTarget] = clone $returnValue;
             } else {
-                $this->dependencyInput[$dependencyTarget] = null;
+                $this->dependencyInput[$dependencyTarget] = $returnValue;
             }
         }
 

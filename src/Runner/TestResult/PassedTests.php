@@ -9,13 +9,8 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
-use function array_flip;
-use function array_keys;
 use function array_merge;
-use function array_unique;
 use function in_array;
-use function strpos;
-use function substr;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
@@ -63,7 +58,7 @@ final class PassedTests
             $test->methodName()
         );
 
-        $this->passedTestMethods[$test->nameWithClass()] = [
+        $this->passedTestMethods[$test->id()] = [
             'returnValue' => $returnValue,
             'size'        => $size,
         ];
@@ -93,23 +88,6 @@ final class PassedTests
     public function hasTestMethodPassed(string $method): bool
     {
         return isset($this->passedTestMethods[$method]);
-    }
-
-    public function hasTestMethodWithDataProviderPassed(string $method): bool
-    {
-        $passedTestMethodsKeys = array_keys($this->passedTestMethods);
-
-        foreach ($passedTestMethodsKeys as $keyIndex => $keyValue) {
-            $pos = strpos($keyValue, ' with data set');
-
-            if ($pos !== false) {
-                $passedTestMethodsKeys[$keyIndex] = substr($keyValue, 0, $pos);
-            }
-        }
-
-        $passedTestMethodsKeys = array_flip(array_unique($passedTestMethodsKeys));
-
-        return isset($passedTestMethodsKeys[$method]);
     }
 
     public function isGreaterThan(string $method, TestSize $size): bool
