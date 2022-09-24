@@ -10,8 +10,10 @@
 namespace PHPUnit\TestRunner\TestResult;
 
 use function array_merge;
+use function assert;
 use function in_array;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Framework\TestSize\Known;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
 
@@ -90,11 +92,23 @@ final class PassedTests
         return isset($this->passedTestMethods[$method]);
     }
 
-    public function isGreaterThan(string $method, TestSize $size): bool
+    public function isGreaterThan(string $method, TestSize $other): bool
     {
-        return $this->passedTestMethods[$method]['size']->isKnown() &&
-               $size->isKnown() &&
-               $this->passedTestMethods[$method]['size']->isGreaterThan($size);
+        if ($other->isUnknown()) {
+            return false;
+        }
+
+        assert($other instanceof Known);
+
+        $size = $this->passedTestMethods[$method]['size'];
+
+        if ($size->isUnknown()) {
+            return false;
+        }
+
+        assert($size instanceof Known);
+
+        return $size->isGreaterThan($other);
     }
 
     public function returnValue(string $method): mixed
