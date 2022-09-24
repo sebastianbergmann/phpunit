@@ -27,6 +27,7 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestFixture;
 use PHPUnit\TestFixture\RecordingSubscriber;
+use SebastianBergmann\Exporter\Exporter;
 use stdClass;
 
 #[CoversClass(DispatchingEmitter::class)]
@@ -90,24 +91,23 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(TestRunner\Finished::class, $subscriber->lastRecordedEvent());
     }
 
-    public function testAssertionMadeDispatchesAssertionMadeEvent(): void
+    public function testAssertionSucceededDispatchesAssertionSucceededEvent(): void
     {
-        $value      = 'Hmm';
+        $value      = 'value';
         $constraint = new Framework\Constraint\IsEqual('Ok');
-        $message    = 'Well, that did not go as planned!';
-        $hasFailed  = true;
+        $message    = 'message';
 
-        $subscriber = new class extends RecordingSubscriber implements Test\AssertionMadeSubscriber
+        $subscriber = new class extends RecordingSubscriber implements Test\AssertionSucceededSubscriber
         {
-            public function notify(Test\AssertionMade $event): void
+            public function notify(Test\AssertionSucceeded $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            Test\AssertionMadeSubscriber::class,
-            Test\AssertionMade::class,
+            Test\AssertionSucceededSubscriber::class,
+            Test\AssertionSucceeded::class,
             $subscriber
         );
 
@@ -118,23 +118,65 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->assertionMade(
+        $emitter->assertionSucceeded(
             $value,
             $constraint,
             $message,
-            $hasFailed
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
         $event = $subscriber->lastRecordedEvent();
 
-        $this->assertInstanceOf(Test\AssertionMade::class, $event);
+        $this->assertInstanceOf(Test\AssertionSucceeded::class, $event);
 
-        $this->assertSame($value, $event->value());
+        $this->assertSame((new Exporter)->export('value'), $event->value());
         $this->assertSame(1, $event->count());
         $this->assertSame($message, $event->message());
-        $this->assertSame($hasFailed, $event->hasFailed());
+    }
+
+    public function testAssertionFailedDispatchesAssertionSucceededEvent(): void
+    {
+        $value      = 'value';
+        $constraint = new Framework\Constraint\IsEqual('Ok');
+        $message    = 'message';
+
+        $subscriber = new class extends RecordingSubscriber implements Test\AssertionFailedSubscriber
+        {
+            public function notify(Test\AssertionFailed $event): void
+            {
+                $this->record($event);
+            }
+        };
+
+        $dispatcher = $this->dispatcherWithRegisteredSubscriber(
+            Test\AssertionFailedSubscriber::class,
+            Test\AssertionFailed::class,
+            $subscriber
+        );
+
+        $telemetrySystem = $this->telemetrySystem();
+
+        $emitter = new DispatchingEmitter(
+            $dispatcher,
+            $telemetrySystem
+        );
+
+        $emitter->assertionFailed(
+            $value,
+            $constraint,
+            $message,
+        );
+
+        $this->assertSame(1, $subscriber->recordedEventCount());
+
+        $event = $subscriber->lastRecordedEvent();
+
+        $this->assertInstanceOf(Test\AssertionFailed::class, $event);
+
+        $this->assertSame((new Exporter)->export('value'), $event->value());
+        $this->assertSame(1, $event->count());
+        $this->assertSame($message, $event->message());
     }
 
     public function testBootstrapFinishedDispatchesBootstrapFinishedEvent(): void

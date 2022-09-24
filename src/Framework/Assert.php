@@ -1731,12 +1731,19 @@ abstract class Assert
 
             $hasFailed = false;
         } finally {
-            Event\Facade::emitter()->assertionMade(
-                $value,
-                $constraint,
-                $message,
-                $hasFailed
-            );
+            if ($hasFailed) {
+                Event\Facade::emitter()->assertionFailed(
+                    $value,
+                    $constraint,
+                    $message,
+                );
+            } else {
+                Event\Facade::emitter()->assertionSucceeded(
+                    $value,
+                    $constraint,
+                    $message,
+                );
+            }
         }
     }
 

@@ -11,27 +11,25 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
-use PHPUnit\Framework\Constraint;
-use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class AssertionMade implements Event
+final class AssertionFailed implements Event
 {
     private readonly Telemetry\Info $telemetryInfo;
     private readonly mixed $value;
-    private readonly Constraint\Constraint $constraint;
+    private readonly string $constraint;
+    private readonly int $count;
     private readonly string $message;
-    private readonly bool $hasFailed;
 
-    public function __construct(Telemetry\Info $telemetryInfo, mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed)
+    public function __construct(Telemetry\Info $telemetryInfo, mixed $value, string $constraint, int $count, string $message)
     {
         $this->telemetryInfo = $telemetryInfo;
         $this->value         = $value;
         $this->constraint    = $constraint;
+        $this->count         = $count;
         $this->message       = $message;
-        $this->hasFailed     = $hasFailed;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -46,17 +44,12 @@ final class AssertionMade implements Event
 
     public function count(): int
     {
-        return $this->constraint->count();
+        return $this->count;
     }
 
     public function message(): string
     {
         return $this->message;
-    }
-
-    public function hasFailed(): bool
-    {
-        return $this->hasFailed;
     }
 
     public function asString(): string
@@ -70,23 +63,11 @@ final class AssertionMade implements Event
             );
         }
 
-        $status = 'Succeeded';
-
-        if ($this->hasFailed) {
-            $status = 'Failed';
-        }
-
         return sprintf(
-            'Assertion %s (Constraint: %s, Value: %s%s)',
-            $status,
-            $this->constraint->toString(),
-            $this->valueAsString(),
+            'Assertion Failed (Constraint: %s, Value: %s%s)',
+            $this->constraint,
+            $this->value,
             $message
         );
-    }
-
-    private function valueAsString(): string
-    {
-        return (new Exporter)->export($this->value());
     }
 }

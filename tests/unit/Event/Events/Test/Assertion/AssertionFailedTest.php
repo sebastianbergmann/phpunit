@@ -11,31 +11,30 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use PHPUnit\Framework\Constraint;
 
-#[CoversClass(AssertionMade::class)]
-final class AssertionMadeTest extends AbstractEventTestCase
+#[CoversClass(AssertionFailed::class)]
+final class AssertionFailedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
-        $value         = 'Hmm';
-        $constraint    = new Constraint\IsEqual('Ok');
-        $message       = 'Well, that did not go as planned!';
-        $hasFailed     = true;
+        $value         = 'value';
+        $constraint    = 'constraint';
+        $count         = 1;
+        $message       = 'message';
 
-        $event = new AssertionMade(
+        $event = new AssertionFailed(
             $telemetryInfo,
             $value,
             $constraint,
+            $count,
             $message,
-            $hasFailed
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($value, $event->value());
-        $this->assertSame(1, $event->count());
+        $this->assertSame($count, $event->count());
         $this->assertSame($message, $event->message());
-        $this->assertSame($hasFailed, $event->hasFailed());
+        $this->assertSame('Assertion Failed (Constraint: constraint, Value: value, Message: message)', $event->asString());
     }
 }

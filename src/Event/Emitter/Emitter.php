@@ -35,7 +35,9 @@ interface Emitter
 
     public function testRunnerTriggeredWarning(string $message): void;
 
-    public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void;
+    public function assertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void;
+
+    public function assertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void;
 
     public function bootstrapFinished(string $filename): void;
 

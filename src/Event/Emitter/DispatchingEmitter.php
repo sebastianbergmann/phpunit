@@ -21,6 +21,7 @@ use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
 use PHPUnit\TextUI\Configuration\Configuration;
+use SebastianBergmann\Exporter\Exporter;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -114,15 +115,28 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function assertionMade(mixed $value, Constraint\Constraint $constraint, string $message, bool $hasFailed): void
+    public function assertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
         $this->dispatcher->dispatch(
-            new Test\AssertionMade(
+            new Test\AssertionSucceeded(
                 $this->telemetryInfo(),
-                $value,
-                $constraint,
+                (new Exporter)->export($value),
+                $constraint->toString(),
+                $constraint->count(),
                 $message,
-                $hasFailed
+            )
+        );
+    }
+
+    public function assertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\AssertionFailed(
+                $this->telemetryInfo(),
+                (new Exporter)->export($value),
+                $constraint->toString(),
+                $constraint->count(),
+                $message,
             )
         );
     }
