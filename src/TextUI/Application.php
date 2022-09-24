@@ -146,56 +146,56 @@ final class Application
     private function handleArguments(array $argv): TestSuite
     {
         try {
-            $arguments = (new Builder)->fromParameters($argv, array_keys($this->longOptions));
+            $cliConfiguration = (new Builder)->fromParameters($argv, array_keys($this->longOptions));
         } catch (ArgumentsException $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
 
-        if ($arguments->hasGenerateConfiguration() && $arguments->generateConfiguration()) {
+        if ($cliConfiguration->hasGenerateConfiguration() && $cliConfiguration->generateConfiguration()) {
             $this->execute(new GenerateConfigurationCommand);
         }
 
-        if ($arguments->hasAtLeastVersion()) {
-            $this->execute(new AtLeastVersionCommand($arguments->atLeastVersion()));
+        if ($cliConfiguration->hasAtLeastVersion()) {
+            $this->execute(new AtLeastVersionCommand($cliConfiguration->atLeastVersion()));
         }
 
-        if ($arguments->hasVersion() && $arguments->version()) {
+        if ($cliConfiguration->hasVersion() && $cliConfiguration->version()) {
             $this->printVersionString();
 
             exit(self::SUCCESS_EXIT);
         }
 
-        if ($arguments->hasCheckVersion() && $arguments->checkVersion()) {
+        if ($cliConfiguration->hasCheckVersion() && $cliConfiguration->checkVersion()) {
             $this->execute(new VersionCheckCommand);
         }
 
-        if ($arguments->hasHelp()) {
+        if ($cliConfiguration->hasHelp()) {
             $this->execute(new ShowHelpCommand(true));
         }
 
-        if ($arguments->hasUnrecognizedOrderBy()) {
+        if ($cliConfiguration->hasUnrecognizedOrderBy()) {
             $this->exitWithErrorMessage(
                 sprintf(
                     'unrecognized --order-by option: %s',
-                    $arguments->unrecognizedOrderBy()
+                    $cliConfiguration->unrecognizedOrderBy()
                 )
             );
         }
 
-        if ($arguments->hasIniSettings()) {
-            foreach ($arguments->iniSettings() as $name => $value) {
+        if ($cliConfiguration->hasIniSettings()) {
+            foreach ($cliConfiguration->iniSettings() as $name => $value) {
                 ini_set($name, $value);
             }
         }
 
-        if ($arguments->hasIncludePath()) {
+        if ($cliConfiguration->hasIncludePath()) {
             ini_set(
                 'include_path',
-                $arguments->includePath() . PATH_SEPARATOR . ini_get('include_path')
+                $cliConfiguration->includePath() . PATH_SEPARATOR . ini_get('include_path')
             );
         }
 
-        $configurationFile = $this->configurationFilePath($arguments);
+        $configurationFile = $this->configurationFilePath($cliConfiguration);
 
         if ($configurationFile) {
             try {
@@ -207,7 +207,7 @@ final class Application
             }
         }
 
-        if ($arguments->hasMigrateConfiguration() && $arguments->migrateConfiguration()) {
+        if ($cliConfiguration->hasMigrateConfiguration() && $cliConfiguration->migrateConfiguration()) {
             if (!$configurationFile) {
                 print 'No configuration file found to migrate.' . PHP_EOL;
 
@@ -222,7 +222,7 @@ final class Application
         (new PhpHandler)->handle($this->xmlConfiguration->php());
 
         $configuration = Registry::init(
-            $arguments,
+            $cliConfiguration,
             $this->xmlConfiguration
         );
 
@@ -233,7 +233,7 @@ final class Application
                 $this->handleBootstrap($configuration->bootstrap());
             }
 
-            $testSuite = (new TestSuiteBuilder)->build($arguments, $this->xmlConfiguration);
+            $testSuite = (new TestSuiteBuilder)->build($cliConfiguration, $this->xmlConfiguration);
         } catch (Exception $e) {
             $this->printVersionString();
 
@@ -242,36 +242,36 @@ final class Application
             exit(self::EXCEPTION_EXIT);
         }
 
-        if ($configuration->hasCoverageReport() || $arguments->hasWarmCoverageCache()) {
-            CodeCoverageFilterRegistry::init($arguments, $this->xmlConfiguration);
+        if ($configuration->hasCoverageReport() || $cliConfiguration->hasWarmCoverageCache()) {
+            CodeCoverageFilterRegistry::init($cliConfiguration, $this->xmlConfiguration);
         }
 
-        if ($arguments->hasWarmCoverageCache() && $arguments->warmCoverageCache()) {
+        if ($cliConfiguration->hasWarmCoverageCache() && $cliConfiguration->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand);
         }
 
-        if ($arguments->hasListGroups() && $arguments->listGroups()) {
+        if ($cliConfiguration->hasListGroups() && $cliConfiguration->listGroups()) {
             $this->execute(new ListGroupsCommand($testSuite));
         }
 
-        if ($arguments->hasListSuites() && $arguments->listSuites()) {
+        if ($cliConfiguration->hasListSuites() && $cliConfiguration->listSuites()) {
             $this->execute(new ListTestSuitesCommand($this->xmlConfiguration->testSuite()));
         }
 
-        if ($arguments->hasListTests() && $arguments->listTests()) {
+        if ($cliConfiguration->hasListTests() && $cliConfiguration->listTests()) {
             $this->execute(new ListTestsAsTextCommand($testSuite));
         }
 
-        if ($arguments->hasListTestsXml() && $arguments->listTestsXml()) {
+        if ($cliConfiguration->hasListTestsXml() && $cliConfiguration->listTestsXml()) {
             $this->execute(
                 new ListTestsAsXmlCommand(
-                    $arguments->listTestsXml(),
+                    $cliConfiguration->listTestsXml(),
                     $testSuite
                 )
             );
         }
 
-        if ($testSuite->isEmpty() && !$arguments->hasArgument() && !$this->xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
+        if ($testSuite->isEmpty() && !$cliConfiguration->hasArgument() && !$this->xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
             $this->execute(new ShowHelpCommand(false));
         }
 
