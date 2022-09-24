@@ -32,6 +32,7 @@ use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
+use PHPUnit\TestRunner\TestResult\PassedTests;
 use SebastianBergmann\Environment\Runtime;
 
 /**
@@ -297,6 +298,7 @@ abstract class AbstractPhpProcess
             }
 
             Facade::forward($childResult['events']);
+            PassedTests::instance()->import($childResult['passedTests']);
 
             assert($test instanceof TestCase);
 

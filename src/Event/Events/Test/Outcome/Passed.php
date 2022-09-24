@@ -15,19 +15,19 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
+ * @psalm-immutable
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class Passed implements Event
 {
     private readonly Telemetry\Info $telemetryInfo;
     private readonly Code\Test $test;
-    private readonly mixed $testMethodReturnValue;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, mixed $testMethodReturnValue)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test)
     {
-        $this->telemetryInfo         = $telemetryInfo;
-        $this->test                  = $test;
-        $this->testMethodReturnValue = $testMethodReturnValue;
+        $this->telemetryInfo = $telemetryInfo;
+        $this->test          = $test;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -38,11 +38,6 @@ final class Passed implements Event
     public function test(): Code\Test
     {
         return $this->test;
-    }
-
-    public function testMethodReturnValue(): mixed
-    {
-        return $this->testMethodReturnValue;
     }
 
     public function asString(): string

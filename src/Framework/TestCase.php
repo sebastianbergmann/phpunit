@@ -18,10 +18,7 @@ use const LC_TIME;
 use const PATHINFO_FILENAME;
 use const PHP_EOL;
 use const PHP_URL_PATH;
-use function array_flip;
-use function array_keys;
 use function array_merge;
-use function array_unique;
 use function array_values;
 use function basename;
 use function chdir;
@@ -51,8 +48,6 @@ use function preg_replace;
 use function setlocale;
 use function sprintf;
 use function str_contains;
-use function strpos;
-use function substr;
 use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
@@ -83,7 +78,7 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use PHPUnit\TestRunner\TestResult\Facade;
+use PHPUnit\TestRunner\TestResult\PassedTests;
 use PHPUnit\TextUI\Configuration\Registry as ConfigurationRegistry;
 use PHPUnit\Util\Cloner;
 use PHPUnit\Util\Test as TestUtil;
@@ -648,6 +643,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         if ($this->status->isSuccess()) {
             Event\Facade::emitter()->testPassed(
+                $this->valueObjectForEvents(),
+            );
+
+            PassedTests::instance()->testMethodPassed(
                 $this->valueObjectForEvents(),
                 $this->testResult
             );
@@ -1352,19 +1351,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             return true;
         }
 
-        $passedTestClasses     = Facade::passedTestClasses();
-        $passedTestMethods     = Facade::passedTestMethods();
-        $passedTestMethodsKeys = array_keys($passedTestMethods);
-
-        foreach ($passedTestMethodsKeys as $keyIndex => $keyValue) {
-            $pos = strpos($keyValue, ' with data set');
-
-            if ($pos !== false) {
-                $passedTestMethodsKeys[$keyIndex] = substr($keyValue, 0, $pos);
-            }
-        }
-
-        $passedTestMethodsKeys = array_flip(array_unique($passedTestMethodsKeys));
+        $passedTests = PassedTests::instance();
 
         foreach ($this->dependencies as $dependency) {
             if (!$dependency->isValid()) {
@@ -1382,7 +1369,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     return false;
                 }
 
-                if (!in_array($dependencyClassName, $passedTestClasses, true)) {
+                if (!$passedTests->hasTestClassPassed($dependencyClassName)) {
                     $this->markSkippedForMissingDependency($dependency);
 
                     return false;
@@ -1393,7 +1380,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $dependencyTarget = $dependency->getTarget();
 
-            if (!isset($passedTestMethodsKeys[$dependencyTarget])) {
+            if (!$passedTests->hasTestMethodWithDataProviderPassed($dependencyTarget)) {
                 if (!$this->isCallableTestMethod($dependencyTarget)) {
                     $this->markErrorForInvalidDependency($dependency);
                 } else {
@@ -1403,10 +1390,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 return false;
             }
 
-            if (isset($passedTestMethods[$dependencyTarget])) {
-                if ($passedTestMethods[$dependencyTarget]['size']->isKnown() &&
-                    $this->size()->isKnown() &&
-                    $passedTestMethods[$dependencyTarget]['size']->isGreaterThan($this->size())) {
+            if ($passedTests->hasTestMethodPassed($dependencyTarget)) {
+                if ($passedTests->isGreaterThan($dependencyTarget, $this->size())) {
                     Event\Facade::emitter()->testConsideredRisky(
                         $this->valueObjectForEvents(),
                         'This test depends on a test that is larger than itself'
@@ -1415,15 +1400,17 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     return false;
                 }
 
+                $returnValue = $passedTests->returnValue($dependencyTarget);
+
                 if ($dependency->deepClone()) {
                     $deepCopy = new DeepCopy;
                     $deepCopy->skipUncloneable(false);
 
-                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($passedTestMethods[$dependencyTarget]['result']);
+                    $this->dependencyInput[$dependencyTarget] = $deepCopy->copy($returnValue);
                 } elseif ($dependency->shallowClone()) {
-                    $this->dependencyInput[$dependencyTarget] = clone $passedTestMethods[$dependencyTarget]['result'];
+                    $this->dependencyInput[$dependencyTarget] = clone $returnValue;
                 } else {
-                    $this->dependencyInput[$dependencyTarget] = $passedTestMethods[$dependencyTarget]['result'];
+                    $this->dependencyInput[$dependencyTarget] = $returnValue;
                 }
             } else {
                 $this->dependencyInput[$dependencyTarget] = null;

@@ -54,7 +54,7 @@ interface Emitter
 
     public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
 
-    public function testPassed(Code\Test $test, mixed $testMethodReturnValue): void;
+    public function testPassed(Code\Test $test): void;
 
     public function testConsideredRisky(Code\Test $test, string $message): void;
 

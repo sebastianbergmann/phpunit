@@ -17,18 +17,15 @@ final class PassedTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $telemetryInfo         = $this->telemetryInfo();
-        $test                  = $this->testValueObject();
-        $testMethodReturnValue = 'test method return value';
+        $telemetryInfo = $this->telemetryInfo();
+        $test          = $this->testValueObject();
 
         $event = new Passed(
             $telemetryInfo,
             $test,
-            $testMethodReturnValue
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
-        $this->assertSame($testMethodReturnValue, $event->testMethodReturnValue());
     }
 }

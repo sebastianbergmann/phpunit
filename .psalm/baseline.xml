@@ -321,11 +321,10 @@
     </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/TestCase.php">
-    <ArgumentTypeCoercion occurrences="4">
+    <ArgumentTypeCoercion occurrences="3">
       <code>$mockClassName</code>
       <code>$originalClassName</code>
       <code>$this-&gt;expectedException</code>
-      <code>$this-&gt;size()</code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement occurrences="1">
       <code>$mockObject</code>
@@ -624,8 +623,7 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/TestResult/Collector.php">
-    <RedundantCondition occurrences="2">
-      <code>assert($test instanceof TestMethod)</code>
+    <RedundantCondition occurrences="1">
       <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
     </RedundantCondition>
   </file>

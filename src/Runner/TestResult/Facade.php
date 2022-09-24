@@ -9,8 +9,6 @@
  */
 namespace PHPUnit\TestRunner\TestResult;
 
-use PHPUnit\Framework\TestSize\TestSize;
-
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
@@ -26,22 +24,6 @@ final class Facade
     public static function result(): TestResult
     {
         return self::collector()->result();
-    }
-
-    /**
-     * @psalm-return list<class-string>
-     */
-    public static function passedTestClasses(): array
-    {
-        return self::collector()->passedTestClasses();
-    }
-
-    /**
-     * @psalm-return array<string,array{result: mixed, size: TestSize}>
-     */
-    public static function passedTestMethods(): array
-    {
-        return self::collector()->passedTestMethods();
     }
 
     public static function hasTestErroredEvents(): bool

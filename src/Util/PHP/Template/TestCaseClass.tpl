@@ -4,6 +4,7 @@ use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
+use PHPUnit\TestRunner\TestResult\PassedTests;
 
 if (!defined('STDOUT')) {
     // php://stdout does not obey output buffering. Any output would break
@@ -79,7 +80,8 @@ function __phpunit_run_isolated_test()
         'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
         'numAssertions' => $test->numberOfAssertionsPerformed(),
         'output'        => $output,
-        'events'        => $dispatcher->flush()
+        'events'        => $dispatcher->flush(),
+        'passedTests'   => PassedTests::instance()
       ]
     );
 }

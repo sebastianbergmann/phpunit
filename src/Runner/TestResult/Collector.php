@@ -10,7 +10,6 @@
 namespace PHPUnit\TestRunner\TestResult;
 
 use function assert;
-use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
@@ -22,7 +21,6 @@ use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\NoticeTriggered;
-use PHPUnit\Event\Test\Passed;
 use PHPUnit\Event\Test\PhpDeprecationTriggered;
 use PHPUnit\Event\Test\PhpNoticeTriggered;
 use PHPUnit\Event\Test\PhpunitDeprecationTriggered;
@@ -38,8 +36,6 @@ use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
 use PHPUnit\Event\TestSuite\Started as TestSuiteStarted;
 use PHPUnit\Event\TestSuite\TestSuiteForTestClass;
 use PHPUnit\Event\UnknownSubscriberTypeException;
-use PHPUnit\Framework\TestSize\TestSize;
-use PHPUnit\Metadata\Api\Groups;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -51,16 +47,6 @@ final class Collector
     private int $numberOfAssertions                  = 0;
     private bool $prepared                           = false;
     private bool $currentTestSuiteForTestClassFailed = false;
-
-    /**
-     * @psalm-var list<class-string>
-     */
-    private array $passedTestClasses = [];
-
-    /**
-     * @psalm-var array<string,array{result: mixed, size: TestSize}>
-     */
-    private array $passedTestMethods = [];
 
     /**
      * @psalm-var list<BeforeFirstTestMethodErrored|Errored>
@@ -162,7 +148,6 @@ final class Collector
             new BeforeTestClassMethodErroredSubscriber($this),
             new TestErroredSubscriber($this),
             new TestFailedSubscriber($this),
-            new TestPassedSubscriber($this),
             new TestMarkedIncompleteSubscriber($this),
             new TestSkippedSubscriber($this),
             new TestConsideredRiskySubscriber($this),
@@ -245,22 +230,6 @@ final class Collector
         return $this->testRunnerTriggeredWarningEvents;
     }
 
-    /**
-     * @psalm-return list<class-string>
-     */
-    public function passedTestClasses(): array
-    {
-        return $this->passedTestClasses;
-    }
-
-    /**
-     * @psalm-return array<string,array{result: mixed, size: TestSize}>
-     */
-    public function passedTestMethods(): array
-    {
-        return $this->passedTestMethods;
-    }
-
     public function executionStarted(ExecutionStarted $event): void
     {
         $this->numberOfTests = $event->testSuite()->count();
@@ -288,7 +257,7 @@ final class Collector
         assert($testSuite instanceof TestSuiteForTestClass);
 
         if (!$this->currentTestSuiteForTestClassFailed) {
-            $this->passedTestClasses[] = $testSuite->className();
+            PassedTests::instance()->testClassPassed($testSuite->className());
         }
     }
 
@@ -336,27 +305,6 @@ final class Collector
         $this->testFailedEvents[] = $event;
 
         $this->currentTestSuiteForTestClassFailed = true;
-    }
-
-    public function testPassed(Passed $event): void
-    {
-        if (!$event->test()->isTestMethod()) {
-            return;
-        }
-
-        $test = $event->test();
-
-        assert($test instanceof TestMethod);
-
-        $size = (new Groups)->size(
-            $test->className(),
-            $test->methodName()
-        );
-
-        $this->passedTestMethods[$test->nameWithClass()] = [
-            'result' => $event->testMethodReturnValue(),
-            'size'   => $size,
-        ];
     }
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
