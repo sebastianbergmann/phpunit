@@ -95,11 +95,11 @@ final class Application
 
         Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
 
-        $runner = new TestRunner;
-
         foreach ($this->xmlConfiguration->extensions() as $extension) {
-            (new ExtensionHandler)->registerExtension($extension, $runner);
+            (new ExtensionHandler)->registerExtension($extension);
         }
+
+        $runner = new TestRunner;
 
         try {
             $result = $runner->run($suite);

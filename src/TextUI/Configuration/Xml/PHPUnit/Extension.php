@@ -20,17 +20,20 @@ final class Extension
      * @psalm-var class-string
      */
     private readonly string $className;
-    private readonly string $sourceFile;
-    private readonly array $arguments;
+
+    /**
+     * @psalm-var array<string,string>
+     */
+    private readonly array $parameters;
 
     /**
      * @psalm-param class-string $className
+     * @psalm-param array<string,string> $parameters
      */
-    public function __construct(string $className, string $sourceFile, array $arguments)
+    public function __construct(string $className, array $parameters)
     {
         $this->className  = $className;
-        $this->sourceFile = $sourceFile;
-        $this->arguments  = $arguments;
+        $this->parameters = $parameters;
     }
 
     /**
@@ -41,23 +44,11 @@ final class Extension
         return $this->className;
     }
 
-    public function hasSourceFile(): bool
+    /**
+     * @psalm-return array<string,string>
+     */
+    public function parameters(): array
     {
-        return $this->sourceFile !== '';
-    }
-
-    public function sourceFile(): string
-    {
-        return $this->sourceFile;
-    }
-
-    public function hasArguments(): bool
-    {
-        return !empty($this->arguments);
-    }
-
-    public function arguments(): array
-    {
-        return $this->arguments;
+        return $this->parameters;
     }
 }

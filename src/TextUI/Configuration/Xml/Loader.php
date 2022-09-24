@@ -27,7 +27,6 @@ use function substr;
 use function trim;
 use DOMDocument;
 use DOMElement;
-use DOMNodeList;
 use DOMXPath;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
@@ -50,7 +49,6 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Xml as TestDoxXml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Text;
 use PHPUnit\TextUI\XmlConfiguration\TestSuite as TestSuiteConfiguration;
 use PHPUnit\Util\VersionComparisonOperator;
-use PHPUnit\Util\Xml;
 use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
@@ -93,7 +91,7 @@ final class Loader
         return new LoadedFromFileConfiguration(
             $filename,
             (new Validator)->validate($document, $xsdFilename),
-            $this->extensions($filename, $xpath),
+            $this->extensions($xpath),
             $this->codeCoverage($filename, $xpath),
             $this->groups($xpath),
             $this->logging($filename, $xpath),
@@ -199,35 +197,28 @@ final class Loader
         );
     }
 
-    private function extensions(string $filename, DOMXPath $xpath): ExtensionCollection
+    private function extensions(DOMXPath $xpath): ExtensionCollection
     {
         $extensions = [];
 
         foreach ($xpath->query('extensions/extension') as $extension) {
             assert($extension instanceof DOMElement);
 
-            $extensions[] = $this->getElementConfigurationParameters($filename, $extension);
-        }
+            $parameters = [];
 
-        return ExtensionCollection::fromArray($extensions);
-    }
+            foreach ($xpath->query('parameter', $extension) as $parameter) {
+                assert($parameter instanceof DOMElement);
 
-    private function getElementConfigurationParameters(string $filename, DOMElement $element): Extension
-    {
-        /** @psalm-var class-string $class */
-        $class     = $element->getAttribute('class');
-        $file      = '';
-        $arguments = $this->getConfigurationArguments($filename, $element->childNodes);
+                $parameters[$parameter->getAttribute('name')] = $parameter->getAttribute('value');
+            }
 
-        if ($element->getAttribute('file')) {
-            $file = $this->toAbsolutePath(
-                $filename,
-                $element->getAttribute('file'),
-                true
+            $extensions[] = new Extension(
+                $extension->getAttribute('class'),
+                $parameters
             );
         }
 
-        return new Extension($class, $file, $arguments);
+        return ExtensionCollection::fromArray($extensions);
     }
 
     private function toAbsolutePath(string $filename, string $path, bool $useIncludePath = false): string
@@ -266,39 +257,6 @@ final class Loader
         }
 
         return $file;
-    }
-
-    private function getConfigurationArguments(string $filename, DOMNodeList $nodes): array
-    {
-        $arguments = [];
-
-        if ($nodes->length === 0) {
-            return $arguments;
-        }
-
-        foreach ($nodes as $node) {
-            if (!$node instanceof DOMElement) {
-                continue;
-            }
-
-            if ($node->tagName !== 'arguments') {
-                continue;
-            }
-
-            foreach ($node->childNodes as $argument) {
-                if (!$argument instanceof DOMElement) {
-                    continue;
-                }
-
-                if ($argument->tagName === 'file' || $argument->tagName === 'directory') {
-                    $arguments[] = $this->toAbsolutePath($filename, $argument->textContent);
-                } else {
-                    $arguments[] = Xml::xmlToVariable($argument);
-                }
-            }
-        }
-
-        return $arguments;
     }
 
     private function codeCoverage(string $filename, DOMXPath $xpath): CodeCoverage

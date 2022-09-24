@@ -12,11 +12,7 @@ namespace PHPUnit\Runner\Extension;
 use function class_exists;
 use PHPUnit\Runner\ClassDoesNotExistException;
 use PHPUnit\Runner\Exception;
-use PHPUnit\Runner\ExtensionLoadingNotImplementedException;
-use PHPUnit\TextUI\TestRunner;
 use PHPUnit\TextUI\XmlConfiguration\Extension;
-use ReflectionClass;
-use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -26,53 +22,8 @@ final class ExtensionHandler
     /**
      * @throws Exception
      */
-    public function registerExtension(Extension $extensionConfiguration, TestRunner $runner): void
+    public function registerExtension(Extension $extensionConfiguration): void
     {
-        $extension = $this->createInstance($extensionConfiguration);
-
-        throw new ExtensionLoadingNotImplementedException;
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function createInstance(Extension $extensionConfiguration): object
-    {
-        $this->ensureClassExists($extensionConfiguration);
-
-        try {
-            $reflector = new ReflectionClass($extensionConfiguration->className());
-
-            if (!$extensionConfiguration->hasArguments()) {
-                return $reflector->newInstance();
-            }
-
-            return $reflector->newInstanceArgs($extensionConfiguration->arguments());
-        } catch (ReflectionException $e) {
-            throw new ReflectionException(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    private function ensureClassExists(Extension $extensionConfiguration): void
-    {
-        if (class_exists($extensionConfiguration->className(), false)) {
-            return;
-        }
-
-        if ($extensionConfiguration->hasSourceFile()) {
-            /**
-             * @psalm-suppress UnresolvableInclude
-             */
-            require_once $extensionConfiguration->sourceFile();
-        }
-
         if (!class_exists($extensionConfiguration->className())) {
             throw new ClassDoesNotExistException($extensionConfiguration->className());
         }

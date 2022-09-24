@@ -55,27 +55,9 @@
     </testdoxGroups>
 
     <extensions>
-        <extension class="MyExtension" file="/optional/path/to/MyExtension.php">
-            <arguments>
-                <array>
-                    <element key="0">
-                        <string>Sebastian</string>
-                    </element>
-                </array>
-                <integer>22</integer>
-                <string>April</string>
-                <double>19.78</double>
-                <null/>
-                <object class="stdClass"/>
-                <file>MyTestFile.php</file>
-                <directory>MyRelativePath</directory>
-            </arguments>
-        </extension>
-        <extension class="IncludePathExtension" file="ConfigurationTest.php"/>
-        <extension class="CompactArgumentsExtension" file="/CompactArgumentsExtension.php">
-            <arguments>
-                <integer>42</integer>
-            </arguments>
+        <extension class="MyExtension">
+            <parameter name="foo" value="bar"/>
+            <parameter name="bar" value="foo"/>
         </extension>
     </extensions>
 

@@ -591,7 +591,9 @@
     </PossiblyNullReference>
   </file>
   <file src="src/Runner/Extension/ExtensionHandler.php">
-    <MissingThrowsDocblock occurrences="1"/>
+    <DocblockTypeContradiction occurrences="1">
+      <code>class_exists($extensionConfiguration-&gt;className())</code>
+    </DocblockTypeContradiction>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PossiblyNullArgument occurrences="1">
@@ -667,6 +669,9 @@
     <PossiblyNullReference occurrences="1">
       <code>extensions</code>
     </PossiblyNullReference>
+    <TooManyArguments occurrences="1">
+      <code>registerExtension</code>
+    </TooManyArguments>
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>
@@ -876,6 +881,9 @@
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$extension-&gt;getAttribute('class')</code>
+    </ArgumentTypeCoercion>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
@@ -1131,13 +1139,5 @@
     <MissingThrowsDocblock occurrences="1">
       <code>ensureOperatorIsValid</code>
     </MissingThrowsDocblock>
-  </file>
-  <file src="src/Util/Xml.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$item</code>
-    </ArgumentTypeCoercion>
-    <InvalidStringClass occurrences="1">
-      <code>new $className</code>
-    </InvalidStringClass>
   </file>
 </files>

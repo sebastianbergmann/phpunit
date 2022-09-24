@@ -33,7 +33,6 @@ use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
-use stdClass;
 
 #[Medium]
 final class XmlConfigurationTest extends TestCase
@@ -230,61 +229,21 @@ final class XmlConfigurationTest extends TestCase
 
     public function testExtensionConfigurationIsReadCorrectly(): void
     {
-        $dir         = __DIR__;
-        $includePath = ini_get('include_path');
+        $extensions = $this->configuration('configuration.xml')->extensions();
 
-        ini_set('include_path', $dir . PATH_SEPARATOR . $includePath);
+        $this->assertCount(1, $extensions->asArray());
 
-        $i = 1;
+        $extension = $extensions->asArray()[0];
 
-        foreach ($this->configuration('configuration.xml')->extensions() as $extension) {
-            switch ($i) {
-                case 1:
-                    $this->assertSame('MyExtension', $extension->className());
-                    $this->assertTrue($extension->hasSourceFile());
-                    $this->assertSame('/optional/path/to/MyExtension.php', $extension->sourceFile());
-                    $this->assertTrue($extension->hasArguments());
-                    $this->assertEquals(
-                        [
-                            0 => [
-                                0 => 'Sebastian',
-                            ],
-                            1 => 22,
-                            2 => 'April',
-                            3 => 19.78,
-                            4 => null,
-                            5 => new stdClass,
-                            6 => TEST_FILES_PATH . 'MyTestFile.php',
-                            7 => TEST_FILES_PATH . 'MyRelativePath',
-                        ],
-                        $extension->arguments()
-                    );
+        $this->assertSame('MyExtension', $extension->className());
 
-                    break;
-
-                case 2:
-                    $this->assertSame('IncludePathExtension', $extension->className());
-                    $this->assertTrue($extension->hasSourceFile());
-                    $this->assertSame(TEST_FILES_PATH . 'ConfigurationTest.php', $extension->sourceFile());
-                    $this->assertFalse($extension->hasArguments());
-                    $this->assertSame([], $extension->arguments());
-
-                    break;
-
-                case 3:
-                    $this->assertSame('CompactArgumentsExtension', $extension->className());
-                    $this->assertTrue($extension->hasSourceFile());
-                    $this->assertSame('/CompactArgumentsExtension.php', $extension->sourceFile());
-                    $this->assertTrue($extension->hasArguments());
-                    $this->assertSame([0 => 42], $extension->arguments());
-
-                    break;
-            }
-
-            $i++;
-        }
-
-        ini_set('include_path', $includePath);
+        $this->assertSame(
+            [
+                'foo' => 'bar',
+                'bar' => 'foo',
+            ],
+            $extension->parameters()
+        );
     }
 
     public function testLoggingConfigurationIsReadCorrectly(): void
