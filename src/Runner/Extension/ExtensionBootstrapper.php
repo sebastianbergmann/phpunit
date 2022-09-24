@@ -17,6 +17,7 @@ use PHPUnit\Runner\ClassCannotBeInstantiatedException;
 use PHPUnit\Runner\ClassDoesNotExistException;
 use PHPUnit\Runner\ClassDoesNotImplementExtensionInterfaceException;
 use PHPUnit\Runner\Exception;
+use PHPUnit\TextUI\Configuration\Configuration;
 use ReflectionClass;
 use ReflectionException;
 
@@ -25,6 +26,15 @@ use ReflectionException;
  */
 final class ExtensionBootstrapper
 {
+    private readonly Configuration $configuration;
+    private readonly Facade $facade;
+
+    public function __construct(Configuration $configuration, Facade $facade)
+    {
+        $this->configuration = $configuration;
+        $this->facade        = $facade;
+    }
+
     /**
      * @psalm-param class-string $className
      * @psalm-param array<string, string> $parameters
@@ -50,8 +60,9 @@ final class ExtensionBootstrapper
         assert($instance instanceof Extension);
 
         $instance->bootstrap(
+            $this->configuration,
+            $this->facade,
             ParameterCollection::fromArray($parameters),
-            new Facade
         );
     }
 }

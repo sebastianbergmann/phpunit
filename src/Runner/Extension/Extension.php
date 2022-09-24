@@ -9,10 +9,12 @@
  */
 namespace PHPUnit\Runner\Extension;
 
+use PHPUnit\TextUI\Configuration\Configuration;
+
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 interface Extension
 {
-    public function bootstrap(ParameterCollection $parameters, Facade $facade): void;
+    public function bootstrap(Configuration $configuration, Facade $facade, ParameterCollection $parameters): void;
 }

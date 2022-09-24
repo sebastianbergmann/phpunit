@@ -26,6 +26,7 @@ use PHPUnit\Event;
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
+use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\CliArguments\Builder;
@@ -224,7 +225,10 @@ final class Application
 
         Event\Facade::emitter()->testRunnerConfigured($configuration);
 
-        $extensionBootstrapper = new ExtensionBootstrapper;
+        $extensionBootstrapper = new ExtensionBootstrapper(
+            $configuration,
+            new ExtensionFacade
+        );
 
         foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
             $extensionBootstrapper->bootstrap(
