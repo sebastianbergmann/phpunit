@@ -16,6 +16,9 @@ use const PHP_RELEASE_VERSION;
 use const PHP_SAPI;
 use const PHP_VERSION;
 use const PHP_VERSION_ID;
+use function array_merge;
+use function get_loaded_extensions;
+use function sort;
 
 /**
  * @psalm-immutable
@@ -24,43 +27,79 @@ use const PHP_VERSION_ID;
  */
 final class PHP
 {
+    private readonly string $version;
+    private readonly int $versionId;
+    private readonly int $versionMajor;
+    private readonly int $versionMinor;
+    private readonly int $versionPatch;
+    private readonly string $versionExtra;
+    private readonly string $sapi;
+
+    /**
+     * @psalm-var list<string>
+     */
+    private readonly array $extensions;
+
+    public function __construct()
+    {
+        $this->version      = PHP_VERSION;
+        $this->versionId    = PHP_VERSION_ID;
+        $this->versionMajor = PHP_MAJOR_VERSION;
+        $this->versionMinor = PHP_MINOR_VERSION;
+        $this->versionPatch = PHP_RELEASE_VERSION;
+        $this->versionExtra = PHP_EXTRA_VERSION;
+        $this->sapi         = PHP_SAPI;
+
+        $extensions = array_merge(
+            get_loaded_extensions(true),
+            get_loaded_extensions()
+        );
+
+        sort($extensions);
+
+        $this->extensions = $extensions;
+    }
+
     public function asString(): string
     {
-        return PHP_VERSION;
+        return $this->version;
     }
 
     public function sapi(): string
     {
-        return PHP_SAPI;
+        return $this->sapi;
     }
 
     public function major(): int
     {
-        return PHP_MAJOR_VERSION;
+        return $this->versionMajor;
     }
 
     public function minor(): int
     {
-        return PHP_MINOR_VERSION;
+        return $this->versionMinor;
     }
 
     public function patch(): int
     {
-        return PHP_RELEASE_VERSION;
+        return $this->versionPatch;
     }
 
     public function extra(): string
     {
-        return PHP_EXTRA_VERSION;
+        return $this->versionExtra;
     }
 
     public function id(): int
     {
-        return PHP_VERSION_ID;
+        return $this->versionId;
     }
 
-    public function extensions(): Extensions
+    /**
+     * @psalm-return list<string>
+     */
+    public function extensions(): array
     {
-        return new Extensions;
+        return $this->extensions;
     }
 }

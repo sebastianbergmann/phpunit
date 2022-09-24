@@ -19,13 +19,22 @@ use const PHP_OS_FAMILY;
  */
 final class OperatingSystem
 {
+    private readonly string $operatingSystem;
+    private readonly string $operatingSystemFamily;
+
+    public function __construct()
+    {
+        $this->operatingSystem       = PHP_OS;
+        $this->operatingSystemFamily = PHP_OS_FAMILY;
+    }
+
     public function asString(): string
     {
-        return PHP_OS;
+        return $this->operatingSystem;
     }
 
     public function family(): string
     {
-        return PHP_OS_FAMILY;
+        return $this->operatingSystemFamily;
     }
 }

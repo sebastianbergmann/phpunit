@@ -12,10 +12,23 @@ namespace PHPUnit\Event\Runtime;
 use function sprintf;
 
 /**
+ * @psalm-immutable
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class Runtime
 {
+    private readonly OperatingSystem $operatingSystem;
+    private readonly PHP $php;
+    private readonly PHPUnit $phpunit;
+
+    public function __construct()
+    {
+        $this->operatingSystem = new OperatingSystem;
+        $this->php             = new PHP;
+        $this->phpunit         = new PHPUnit;
+    }
+
     public function asString(): string
     {
         $php = $this->php();
@@ -25,22 +38,22 @@ final class Runtime
             $this->phpunit()->version(),
             $php->asString(),
             $php->sapi(),
-            $this->os()->asString()
+            $this->operatingSystem()->asString()
         );
+    }
+
+    public function operatingSystem(): OperatingSystem
+    {
+        return $this->operatingSystem;
     }
 
     public function php(): PHP
     {
-        return new PHP;
+        return $this->php;
     }
 
     public function phpunit(): PHPUnit
     {
-        return new PHPUnit;
-    }
-
-    public function os(): OperatingSystem
-    {
-        return new OperatingSystem;
+        return $this->phpunit;
     }
 }

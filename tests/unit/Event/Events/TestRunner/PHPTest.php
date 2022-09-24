@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Event\TestRunner;
 
-use PHPUnit\Event\Runtime\Extensions;
+use function extension_loaded;
 use PHPUnit\Event\Runtime\PHP;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -28,6 +28,9 @@ final class PHPTest extends TestCase
         $this->assertSame(PHP_RELEASE_VERSION, $php->patch());
         $this->assertSame(PHP_EXTRA_VERSION, $php->extra());
         $this->assertSame(PHP_VERSION_ID, $php->id());
-        $this->assertEquals(new Extensions, $php->extensions());
+
+        foreach ($php->extensions() as $extension) {
+            $this->assertTrue(extension_loaded($extension));
+        }
     }
 }

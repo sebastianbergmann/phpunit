@@ -79,6 +79,11 @@
       <code>flush</code>
     </PossiblyNullReference>
   </file>
+  <file src="src/Event/Value/Runtime/PHP.php">
+    <ImpureFunctionCall occurrences="1">
+      <code>get_loaded_extensions</code>
+    </ImpureFunctionCall>
+  </file>
   <file src="src/Event/Value/Telemetry/HRTime.php">
     <ImpureMethodCall occurrences="1">
       <code>fromSecondsAndNanoseconds</code>
