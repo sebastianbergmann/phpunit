@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Util;
 
+use function trim;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\PhptAssertionFailedError;
 use PHPUnit\Framework\SelfDescribing;

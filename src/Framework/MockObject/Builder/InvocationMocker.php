@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Framework\MockObject\Builder;
 
+use function array_flip;
+use function array_key_exists;
 use function array_map;
 use function array_merge;
 use function count;

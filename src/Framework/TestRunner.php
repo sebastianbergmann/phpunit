@@ -11,13 +11,16 @@ namespace PHPUnit\Framework;
 
 use const PHP_EOL;
 use function assert;
+use function class_exists;
 use function defined;
+use function extension_loaded;
 use function get_include_path;
 use function hrtime;
 use function serialize;
 use function sprintf;
 use function sys_get_temp_dir;
 use function tempnam;
+use function unlink;
 use function var_export;
 use AssertionError;
 use PHPUnit\Event;

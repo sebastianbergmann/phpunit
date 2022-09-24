@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Code;
 
+use function count;
 use Countable;
 use IteratorAggregate;
 

@@ -23,6 +23,7 @@ use function is_scalar;
 use function preg_match;
 use function serialize;
 use function sprintf;
+use function str_ends_with;
 use function str_starts_with;
 use function strtr;
 use function var_export;

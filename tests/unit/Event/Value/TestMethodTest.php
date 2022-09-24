@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Code;
 
+use function sprintf;
 use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;

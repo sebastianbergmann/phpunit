@@ -11,8 +11,11 @@ namespace PHPUnit\Logging\JUnit;
 
 use function assert;
 use function basename;
+use function class_exists;
 use function is_int;
 use function sprintf;
+use function str_replace;
+use function trim;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Event\Code\Test;

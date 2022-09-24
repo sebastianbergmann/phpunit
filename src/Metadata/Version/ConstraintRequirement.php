@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Metadata\Version;
 
+use function preg_replace;
 use PharIo\Version\Version;
 use PharIo\Version\VersionConstraint;
 

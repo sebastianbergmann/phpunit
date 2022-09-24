@@ -11,7 +11,9 @@ namespace PHPUnit\Event\Code;
 
 use function class_exists;
 use function is_int;
+use function is_numeric;
 use function method_exists;
+use function sprintf;
 use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\TestCase;

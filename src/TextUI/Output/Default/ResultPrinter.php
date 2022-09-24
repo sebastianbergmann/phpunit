@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\Output\Default;
 
 use const PHP_EOL;
 use function array_merge;
+use function array_reverse;
 use function assert;
 use function count;
 use function explode;

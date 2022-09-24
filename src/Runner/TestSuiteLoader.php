@@ -10,12 +10,14 @@
 namespace PHPUnit\Runner;
 
 use function array_diff;
+use function array_merge;
 use function array_values;
 use function basename;
 use function class_exists;
 use function get_declared_classes;
 use function stripos;
 use function strlen;
+use function strpos;
 use function substr;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;

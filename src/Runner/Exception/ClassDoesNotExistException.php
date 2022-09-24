@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner;
 
+use function sprintf;
 use RuntimeException;
 
 /**

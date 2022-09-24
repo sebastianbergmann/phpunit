@@ -17,6 +17,8 @@ use function ini_get;
 use function ini_set;
 use function is_dir;
 use function is_file;
+use function is_readable;
+use function printf;
 use function realpath;
 use function sprintf;
 use function trim;

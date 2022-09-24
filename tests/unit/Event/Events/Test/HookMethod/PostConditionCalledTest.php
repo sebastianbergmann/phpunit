@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Event\Test;
 
+use function array_values;
+use function explode;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;

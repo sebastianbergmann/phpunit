@@ -16,6 +16,7 @@ use function array_values;
 use function count;
 use function preg_match;
 use function preg_match_all;
+use function preg_replace;
 use function preg_split;
 use function realpath;
 use function substr;

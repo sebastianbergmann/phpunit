@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Event\Test;
 
+use function array_map;
+use function get_class_methods;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Event\Code;
 use PHPUnit\Framework\Attributes\CoversClass;

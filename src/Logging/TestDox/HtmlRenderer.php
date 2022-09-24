@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
+use function sprintf;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Framework\TestStatus\TestStatus;

@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework;
 
+use function sprintf;
 use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;

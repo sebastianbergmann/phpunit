@@ -10,6 +10,7 @@
 namespace PHPUnit\TestRunner\TestResult;
 
 use function assert;
+use function str_contains;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;

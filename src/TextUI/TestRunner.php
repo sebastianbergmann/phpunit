@@ -18,6 +18,7 @@ use function is_file;
 use function mt_srand;
 use function range;
 use function sprintf;
+use function unlink;
 use PHPUnit\Event;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;

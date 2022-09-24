@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\Output;
 
+use function sprintf;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;

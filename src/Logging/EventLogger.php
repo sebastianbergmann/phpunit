@@ -16,6 +16,7 @@ use function explode;
 use function file_put_contents;
 use function implode;
 use function str_repeat;
+use function strlen;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Tracer\Tracer;
 

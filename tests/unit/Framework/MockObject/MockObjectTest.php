@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use function class_uses;
 use function func_get_args;
 use function get_parent_class;
+use function sprintf;
 use Exception;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\DoesNotPerformAssertions;

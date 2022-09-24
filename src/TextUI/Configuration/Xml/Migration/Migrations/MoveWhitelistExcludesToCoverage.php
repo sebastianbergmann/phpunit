@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function assert;
+use function in_array;
 use DOMDocument;
 use DOMElement;
 use PHPUnit\Util\Xml\SnapshotNodeList;

@@ -9,6 +9,10 @@
  */
 namespace PHPUnit\Event;
 
+use function array_map;
+use function array_values;
+use function explode;
+use function get_class_methods;
 use Exception;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestRunner\ExecutionStarted;

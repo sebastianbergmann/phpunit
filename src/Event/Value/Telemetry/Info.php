@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event\Telemetry;
 
+use function sprintf;
 use PHPUnit\Event\Code\ClassMethod;
 
 /**

@@ -9,7 +9,11 @@
  */
 namespace PHPUnit\TextUI\Output\Default\ProgressPrinter;
 
+use function floor;
+use function sprintf;
 use function str_contains;
+use function str_repeat;
+use function strlen;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Test\Errored;
