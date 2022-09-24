@@ -167,11 +167,13 @@ final class TestRunner
         }
 
         if ($this->configuration->outputIsDefault()) {
-            new DefaultProgressPrinter(
-                $this->printer,
-                $this->configuration->colors(),
-                $this->configuration->columns()
-            );
+            if (!$this->configuration->noProgress()) {
+                $progressPrinter = new DefaultProgressPrinter(
+                    $this->printer,
+                    $this->configuration->colors(),
+                    $this->configuration->columns()
+                );
+            }
 
             $resultPrinter = new DefaultResultPrinter(
                 $this->printer,
@@ -187,7 +189,7 @@ final class TestRunner
         }
 
         if ($this->configuration->outputIsTestDox()) {
-            new TestDoxProgressPrinter(
+            $progressPrinter = new TestDoxProgressPrinter(
                 $this->printer,
                 $this->configuration->colors(),
             );
@@ -402,7 +404,11 @@ final class TestRunner
         $result = Facade::result();
 
         if ($result->numberOfTestsRun() > 0) {
-            $this->printer->print(PHP_EOL . PHP_EOL . (new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
+            if (isset($progressPrinter)) {
+                $this->printer->print(PHP_EOL . PHP_EOL);
+            }
+
+            $this->printer->print((new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
         }
 
         if (isset($resultPrinter)) {

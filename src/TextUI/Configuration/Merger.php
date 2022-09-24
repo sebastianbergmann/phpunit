@@ -535,6 +535,12 @@ final class Merger
             $defaultOutput = false;
         }
 
+        $noProgress = false;
+
+        if ($cliConfiguration->hasNoProgress() && $cliConfiguration->noProgress()) {
+            $noProgress = true;
+        }
+
         $repeat = 0;
 
         if ($cliConfiguration->hasRepeat()) {
@@ -669,6 +675,7 @@ final class Merger
             $requireCoverageMetadata,
             $registerMockObjectsFromTestArgumentsRecursively,
             $noInteraction,
+            $noProgress,
             $executionOrder,
             $executionOrderDefects,
             $resolveDependencies,

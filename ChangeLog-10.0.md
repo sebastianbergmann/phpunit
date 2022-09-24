@@ -17,7 +17,8 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute for excluding a static property from the backup/restore of static properties in user-defined classes
 * `--log-events-text <file>` option that controls streaming of event information (without event telemetry) in text format to a file
 * `--log-events-verbose-text <file>` option that controls streaming of event information (with event telemetry) in text format to a file
-* `--no-output` option to disable the output
+* `--no-progress` option to disable the progress output
+* `--no-output` option to disable all output
 * `--display-incomplete` option and `displayDetailsOnIncompleteTests` XML configuration attribute to control whether details on incomplete tests should be displayed
 * `--display-skipped` option and `displayDetailsOnSkippedTests` XML configuration attribute to control whether details on skipped tests should be displayed
 * `--display-deprecations` option and `displayDetailsOnTestsThatTriggerDeprecations` XML configuration attribute to control whether details on tests that trigger `E_DEPRECATED` or `E_USER_DEPRECATED` should be displayed
