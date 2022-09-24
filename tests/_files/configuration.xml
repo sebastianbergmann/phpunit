@@ -55,10 +55,10 @@
     </testdoxGroups>
 
     <extensions>
-        <extension class="MyExtension">
+        <bootstrap class="MyExtension">
             <parameter name="foo" value="bar"/>
             <parameter name="bar" value="foo"/>
-        </extension>
+        </bootstrap>
     </extensions>
 
     <php>

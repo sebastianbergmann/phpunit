@@ -17,17 +17,17 @@ use Iterator;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExtensionCollectionIterator implements Countable, Iterator
+final class ExtensionBootstrapCollectionIterator implements Countable, Iterator
 {
     /**
-     * @psalm-var list<Extension>
+     * @psalm-var list<ExtensionBootstrap>
      */
-    private array $extensions;
+    private array $extensionBootstraps;
     private ?int $position = null;
 
-    public function __construct(ExtensionCollection $extensions)
+    public function __construct(ExtensionBootstrapCollection $extensionBootstraps)
     {
-        $this->extensions = $extensions->asArray();
+        $this->extensionBootstraps = $extensionBootstraps->asArray();
     }
 
     public function count(): int
@@ -42,7 +42,7 @@ final class ExtensionCollectionIterator implements Countable, Iterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->extensions);
+        return $this->position < count($this->extensionBootstraps);
     }
 
     public function key(): int
@@ -50,9 +50,9 @@ final class ExtensionCollectionIterator implements Countable, Iterator
         return $this->position;
     }
 
-    public function current(): Extension
+    public function current(): ExtensionBootstrap
     {
-        return $this->extensions[$this->position];
+        return $this->extensionBootstraps[$this->position];
     }
 
     public function next(): void

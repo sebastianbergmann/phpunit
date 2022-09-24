@@ -24,7 +24,7 @@ final class DefaultConfiguration extends Configuration
     public static function create(): self
     {
         return new self(
-            ExtensionCollection::fromArray([]),
+            ExtensionBootstrapCollection::fromArray([]),
             new CodeCoverage(
                 null,
                 CodeCoverageFilterDirectoryCollection::fromArray([]),

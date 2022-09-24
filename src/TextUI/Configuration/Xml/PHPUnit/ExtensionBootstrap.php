@@ -14,7 +14,7 @@ namespace PHPUnit\TextUI\XmlConfiguration;
  *
  * @psalm-immutable
  */
-final class Extension
+final class ExtensionBootstrap
 {
     /**
      * @psalm-var class-string

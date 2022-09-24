@@ -56,10 +56,10 @@
     </xs:complexType>
     <xs:complexType name="extensionsType">
         <xs:sequence>
-            <xs:element name="extension" type="extensionType" maxOccurs="unbounded"/>
+            <xs:element name="bootstrap" type="bootstrapType" maxOccurs="unbounded"/>
         </xs:sequence>
     </xs:complexType>
-    <xs:complexType name="extensionType">
+    <xs:complexType name="bootstrapType">
         <xs:sequence>
             <xs:element name="parameter" type="parameterType" maxOccurs="unbounded"/>
         </xs:sequence>

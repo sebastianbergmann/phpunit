@@ -197,28 +197,28 @@ final class Loader
         );
     }
 
-    private function extensions(DOMXPath $xpath): ExtensionCollection
+    private function extensions(DOMXPath $xpath): ExtensionBootstrapCollection
     {
-        $extensions = [];
+        $extensionBootstrappers = [];
 
-        foreach ($xpath->query('extensions/extension') as $extension) {
-            assert($extension instanceof DOMElement);
+        foreach ($xpath->query('extensions/bootstrap') as $bootstrap) {
+            assert($bootstrap instanceof DOMElement);
 
             $parameters = [];
 
-            foreach ($xpath->query('parameter', $extension) as $parameter) {
+            foreach ($xpath->query('parameter', $bootstrap) as $parameter) {
                 assert($parameter instanceof DOMElement);
 
                 $parameters[$parameter->getAttribute('name')] = $parameter->getAttribute('value');
             }
 
-            $extensions[] = new Extension(
-                $extension->getAttribute('class'),
+            $extensionBootstrappers[] = new ExtensionBootstrap(
+                $bootstrap->getAttribute('class'),
                 $parameters
             );
         }
 
-        return ExtensionCollection::fromArray($extensions);
+        return ExtensionBootstrapCollection::fromArray($extensionBootstrappers);
     }
 
     private function toAbsolutePath(string $filename, string $path, bool $useIncludePath = false): string

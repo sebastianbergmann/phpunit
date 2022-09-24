@@ -590,10 +590,12 @@
       <code>stop</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/Runner/Extension/ExtensionHandler.php">
-    <DocblockTypeContradiction occurrences="1">
-      <code>class_exists($extensionConfiguration-&gt;className())</code>
-    </DocblockTypeContradiction>
+  <file src="src/Runner/Extension/Facade.php">
+    <MissingThrowsDocblock occurrences="3">
+      <code>EventFacade::registerSubscriber($subscriber)</code>
+      <code>EventFacade::registerSubscribers(...$subscribers)</code>
+      <code>EventFacade::registerTracer($tracer)</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PossiblyNullArgument occurrences="1">
@@ -666,12 +668,6 @@
       <code>unrecognizedOrderBy</code>
       <code>useDefaultConfiguration</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="1">
-      <code>extensions</code>
-    </PossiblyNullReference>
-    <TooManyArguments occurrences="1">
-      <code>registerExtension</code>
-    </TooManyArguments>
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>
@@ -882,7 +878,7 @@
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
     <ArgumentTypeCoercion occurrences="1">
-      <code>$extension-&gt;getAttribute('class')</code>
+      <code>$bootstrap-&gt;getAttribute('class')</code>
     </ArgumentTypeCoercion>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
@@ -978,7 +974,7 @@
       <code>$this-&gt;variables</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/TextUI/Configuration/Xml/PHPUnit/ExtensionCollectionIterator.php">
+  <file src="src/TextUI/Configuration/Xml/PHPUnit/ExtensionBootstrapCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
@@ -986,7 +982,7 @@
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
     <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;extensions</code>
+      <code>$this-&gt;extensionBootstraps</code>
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/Configuration/Xml/PHPUnit/PHPUnit.php">

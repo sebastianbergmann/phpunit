@@ -25,7 +25,7 @@ use function trim;
 use PHPUnit\Event;
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestSuite;
-use PHPUnit\Runner\Extension\ExtensionHandler;
+use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\CliArguments\Builder;
@@ -96,10 +96,6 @@ final class Application
         $suite = $this->handleArguments($argv);
 
         Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
-
-        foreach ($this->xmlConfiguration->extensions() as $extension) {
-            (new ExtensionHandler)->registerExtension($extension);
-        }
 
         $runner = new TestRunner;
 
@@ -229,6 +225,15 @@ final class Application
         );
 
         Event\Facade::emitter()->testRunnerConfigured($configuration);
+
+        $extensionBootstrapper = new ExtensionBootstrapper;
+
+        foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
+            $extensionBootstrapper->bootstrap(
+                $bootstrapper['className'],
+                $bootstrapper['parameters']
+            );
+        }
 
         try {
             if ($configuration->hasBootstrap()) {

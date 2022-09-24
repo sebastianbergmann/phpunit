@@ -173,6 +173,15 @@ final class Merger
             $pharExtensionDirectory = $xmlConfiguration->phpunit()->extensionsDirectory();
         }
 
+        $extensionBootstrappers = [];
+
+        foreach ($xmlConfiguration->extensions() as $extension) {
+            $extensionBootstrappers[] = [
+                'className'  => $extension->className(),
+                'parameters' => $extension->parameters(),
+            ];
+        }
+
         if ($cliConfiguration->hasPathCoverage() && $cliConfiguration->pathCoverage()) {
             $pathCoverage = $cliConfiguration->pathCoverage();
         } else {
@@ -639,6 +648,7 @@ final class Merger
             $tooFewColumnsRequested,
             $loadPharExtensions,
             $pharExtensionDirectory,
+            $extensionBootstrappers,
             $backupGlobals,
             $backupStaticProperties,
             $beStrictAboutChangesToGlobalState,

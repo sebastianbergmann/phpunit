@@ -9,17 +9,25 @@
  */
 namespace PHPUnit\Runner;
 
+use function sprintf;
+use ReflectionException;
 use RuntimeException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExtensionLoadingNotImplementedException extends RuntimeException implements Exception
+final class ClassCannotBeInstantiatedException extends RuntimeException implements Exception
 {
-    public function __construct()
+    public function __construct(string $className, ReflectionException $previous)
     {
         parent::__construct(
-            'The loading of extensions is currently not implemented'
+            sprintf(
+                'Class "%s" cannot be instantiated: %s',
+                $className,
+                $previous->getMessage()
+            ),
+            $previous->getCode(),
+            $previous
         );
     }
 }
