@@ -8,7 +8,7 @@
  * file that was distributed with this source code.
  */
 if (\extension_loaded('xdebug') && \version_compare(\phpversion('xdebug'), '3', '<')) {
-    \xdebug_disable();
+    xdebug_disable();
 }
 
 throw new Exception(

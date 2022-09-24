@@ -21,6 +21,7 @@ use function is_dir;
 use function is_file;
 use function json_decode;
 use function json_encode;
+use function sprintf;
 use PHPUnit\Util\Filesystem;
 
 /**

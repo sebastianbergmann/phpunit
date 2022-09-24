@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function preg_replace;
+use function sprintf;
 use ArrayObject;
 use Countable;
 use PHPUnit\Framework\Constraint\Count;

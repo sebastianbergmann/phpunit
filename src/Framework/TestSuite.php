@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use const PHP_EOL;
 use function array_keys;
 use function array_merge;
+use function array_slice;
 use function basename;
 use function call_user_func;
 use function class_exists;
