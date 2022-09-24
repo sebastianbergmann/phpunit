@@ -67,6 +67,7 @@ final class Facade
         return self::$emitter;
     }
 
+    /** @noinspection PhpUnused */
     public static function initForIsolation(HRTime $offset): CollectingDispatcher
     {
         $dispatcher = new CollectingDispatcher;
