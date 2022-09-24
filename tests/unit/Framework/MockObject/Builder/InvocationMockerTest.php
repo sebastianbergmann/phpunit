@@ -10,6 +10,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function sprintf;
 use PHPUnit\Framework\Constraint\IsEqual;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf;
