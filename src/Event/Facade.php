@@ -16,11 +16,11 @@ use PHPUnit\Event\Telemetry\HRTime;
  */
 final class Facade
 {
-    private static ?TypeMap $typeMap                       = null;
-    private static ?Emitter $emitter                       = null;
-    private static ?Emitter $suspended                     = null;
-    private static ?DeferredDispatcher $deferredDispatcher = null;
-    private static bool $sealed                            = false;
+    private static ?TypeMap $typeMap                         = null;
+    private static ?Emitter $emitter                         = null;
+    private static ?Emitter $suspended                       = null;
+    private static ?DeferringDispatcher $deferringDispatcher = null;
+    private static bool $sealed                              = false;
 
     /**
      * @throws EventFacadeIsSealedException
@@ -111,7 +111,7 @@ final class Facade
      */
     public static function seal(): void
     {
-        self::$deferredDispatcher->flush();
+        self::$deferringDispatcher->flush();
 
         self::$sealed = true;
 
@@ -134,15 +134,15 @@ final class Facade
         );
     }
 
-    private static function deferredDispatcher(): DeferredDispatcher
+    private static function deferredDispatcher(): DeferringDispatcher
     {
-        if (self::$deferredDispatcher === null) {
-            self::$deferredDispatcher = new DeferredDispatcher(
+        if (self::$deferringDispatcher === null) {
+            self::$deferringDispatcher = new DeferringDispatcher(
                 new DirectDispatcher(self::typeMap())
             );
         }
 
-        return self::$deferredDispatcher;
+        return self::$deferringDispatcher;
     }
 
     private static function typeMap(): TypeMap

@@ -12,7 +12,7 @@ namespace PHPUnit\Event;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class DeferredDispatcher implements SubscribableDispatcher
+final class DeferringDispatcher implements SubscribableDispatcher
 {
     private SubscribableDispatcher $dispatcher;
     private EventCollection $events;
