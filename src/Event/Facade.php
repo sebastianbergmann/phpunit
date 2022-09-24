@@ -12,7 +12,7 @@ namespace PHPUnit\Event;
 use PHPUnit\Event\Telemetry\HRTime;
 
 /**
- * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+ * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class Facade
 {
@@ -58,9 +58,6 @@ final class Facade
         self::deferredDispatcher()->registerTracer($tracer);
     }
 
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public static function emitter(): Emitter
     {
         if (self::$emitter === null) {
@@ -70,9 +67,6 @@ final class Facade
         return self::$emitter;
     }
 
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public static function initForIsolation(HRTime $offset): CollectingDispatcher
     {
         $dispatcher = new CollectingDispatcher;
@@ -90,9 +84,6 @@ final class Facade
         return $dispatcher;
     }
 
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public static function forward(EventCollection $events): void
     {
         if (self::$suspended !== null) {
@@ -106,9 +97,6 @@ final class Facade
         }
     }
 
-    /**
-     * @internal This method is not covered by the backward compatibility promise for PHPUnit
-     */
     public static function seal(): void
     {
         self::$deferringDispatcher->flush();
