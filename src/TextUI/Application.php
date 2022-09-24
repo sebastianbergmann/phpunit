@@ -44,7 +44,6 @@ use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
-use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
@@ -66,9 +65,8 @@ final class Application
     /**
      * @psalm-var array<string,mixed>
      */
-    private array $longOptions                  = [];
-    private bool $versionStringPrinted          = false;
-    private ?XmlConfiguration $xmlConfiguration = null;
+    private array $longOptions         = [];
+    private bool $versionStringPrinted = false;
 
     /**
      * @throws Exception
@@ -197,7 +195,7 @@ final class Application
 
         if ($configurationFile) {
             try {
-                $this->xmlConfiguration = (new Loader)->load($configurationFile);
+                $xmlConfiguration = (new Loader)->load($configurationFile);
             } catch (Throwable $e) {
                 print $e->getMessage() . PHP_EOL;
 
@@ -215,13 +213,13 @@ final class Application
             $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
         }
 
-        $this->xmlConfiguration = $this->xmlConfiguration ?? DefaultConfiguration::create();
+        $xmlConfiguration = $xmlConfiguration ?? DefaultConfiguration::create();
 
-        (new PhpHandler)->handle($this->xmlConfiguration->php());
+        (new PhpHandler)->handle($xmlConfiguration->php());
 
         $configuration = Registry::init(
             $cliConfiguration,
-            $this->xmlConfiguration
+            $xmlConfiguration
         );
 
         Event\Facade::emitter()->testRunnerConfigured($configuration);
@@ -240,7 +238,7 @@ final class Application
                 $this->handleBootstrap($configuration->bootstrap());
             }
 
-            $testSuite = (new TestSuiteBuilder)->build($cliConfiguration, $this->xmlConfiguration);
+            $testSuite = (new TestSuiteBuilder)->build($cliConfiguration, $xmlConfiguration);
         } catch (Exception $e) {
             $this->printVersionString();
 
@@ -250,7 +248,7 @@ final class Application
         }
 
         if ($configuration->hasCoverageReport() || $cliConfiguration->hasWarmCoverageCache()) {
-            CodeCoverageFilterRegistry::init($cliConfiguration, $this->xmlConfiguration);
+            CodeCoverageFilterRegistry::init($cliConfiguration, $xmlConfiguration);
         }
 
         if ($cliConfiguration->hasWarmCoverageCache() && $cliConfiguration->warmCoverageCache()) {
@@ -262,7 +260,7 @@ final class Application
         }
 
         if ($cliConfiguration->hasListSuites() && $cliConfiguration->listSuites()) {
-            $this->execute(new ListTestSuitesCommand($this->xmlConfiguration->testSuite()));
+            $this->execute(new ListTestSuitesCommand($xmlConfiguration->testSuite()));
         }
 
         if ($cliConfiguration->hasListTests() && $cliConfiguration->listTests()) {
@@ -278,7 +276,7 @@ final class Application
             );
         }
 
-        if ($testSuite->isEmpty() && !$cliConfiguration->hasArgument() && !$this->xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
+        if ($testSuite->isEmpty() && !$cliConfiguration->hasArgument() && !$xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
             $this->execute(new ShowHelpCommand(false));
         }
 
