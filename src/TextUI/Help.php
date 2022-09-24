@@ -108,6 +108,9 @@ final class Help
             ['arg'    => '--stderr', 'desc' => 'Write to STDERR instead of STDOUT'],
             ['spacer' => ''],
 
+            ['arg'    => '--no-output', 'desc' => 'Disable all output'],
+            ['spacer' => ''],
+
             ['arg'    => '--display-incomplete', 'desc' => 'Display details for incomplete tests'],
             ['arg'    => '--display-skipped', 'desc' => 'Display details for skipped tests'],
             ['arg'    => '--display-deprecations', 'desc' => 'Display details for deprecations triggered by tests'],

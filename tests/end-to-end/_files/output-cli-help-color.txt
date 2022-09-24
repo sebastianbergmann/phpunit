@@ -86,6 +86,8 @@
                                    output
   [32m--stderr                        [0m Write to STDERR instead of STDOUT
 
+  [32m--no-output                     [0m Disable all output
+
   [32m--display-incomplete            [0m Display details for incomplete tests
   [32m--display-skipped               [0m Display details for skipped tests
   [32m--display-deprecations          [0m Display details for deprecations triggered
