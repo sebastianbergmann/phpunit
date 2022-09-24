@@ -126,7 +126,11 @@ $config->setFinder($finder)
         'multiline_whitespace_before_semicolons' => true,
         'native_constant_invocation' => false,
         'native_function_casing' => false,
-        'native_function_invocation' => false,
+        'native_function_invocation' => [
+            'include' => [
+                '@internal',
+            ],
+        ],
         'native_function_type_declaration_casing' => true,
         'new_with_braces' => [
             'named_class' => false,
