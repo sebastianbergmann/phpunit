@@ -19,6 +19,7 @@ use function get_class;
 use function getcwd;
 use function ini_get;
 use function ini_set;
+use function sprintf;
 use function trigger_error;
 use DependencyInputTest;
 use InvalidArgumentException;

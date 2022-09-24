@@ -13,6 +13,7 @@ use function fclose;
 use function fopen;
 use function is_resource;
 use function preg_replace;
+use function sprintf;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\ExpectationFailedException;
 use PHPUnit\Framework\TestFailure;

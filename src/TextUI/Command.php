@@ -24,6 +24,7 @@ use function get_class;
 use function getcwd;
 use function ini_get;
 use function ini_set;
+use function is_array;
 use function is_callable;
 use function is_dir;
 use function is_file;

@@ -13,6 +13,8 @@ use function array_map;
 use function explode;
 use function get_class;
 use function implode;
+use function in_array;
+use function interface_exists;
 use function is_object;
 use function sprintf;
 use function strpos;

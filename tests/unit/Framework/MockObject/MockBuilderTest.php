@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Framework\MockObject;
 
+use function sprintf;
 use ACustomClassName;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\TestFixture\Mockable;

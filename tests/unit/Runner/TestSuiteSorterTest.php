@@ -10,6 +10,7 @@
 namespace PHPUnit\Runner;
 
 use function mt_srand;
+use function sprintf;
 use MultiDependencyTest;
 use NotReorderableTest;
 use PHPUnit\Framework\TestCase;

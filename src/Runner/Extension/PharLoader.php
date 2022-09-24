@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\Extension;
 
+use function is_file;
 use PharIo\Manifest\ApplicationName;
 use PharIo\Manifest\Exception as ManifestException;
 use PharIo\Manifest\ManifestLoader;

@@ -15,6 +15,6 @@ final class Issue4663Test extends TestCase
     {
         $this->expectError();
 
-        implode('', [new stdClass]);
+        \implode('', [new stdClass]);
     }
 }

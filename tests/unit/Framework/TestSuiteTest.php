@@ -12,6 +12,7 @@ namespace PHPUnit\Framework;
 use const DIRECTORY_SEPARATOR;
 use const PHP_EOL;
 use function array_pop;
+use function sprintf;
 use MultiDependencyTest;
 use PHPUnit\TestFixture\BeforeAndAfterTest;
 use PHPUnit\TestFixture\BeforeClassAndAfterClassTest;

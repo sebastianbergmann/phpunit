@@ -10,6 +10,7 @@
 namespace PHPUnit\Framework;
 
 use function func_get_args;
+use function function_exists;
 use ArrayAccess;
 use Countable;
 use DOMDocument;
