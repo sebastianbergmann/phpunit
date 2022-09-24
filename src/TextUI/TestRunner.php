@@ -195,7 +195,6 @@ final class TestRunner
                 $this->printer,
                 $originalExecutionOrder,
                 $this->configuration->colors(),
-                !$this->configuration->noInteraction(),
             );
 
             $resultPrinter = new TestDoxResultPrinter(

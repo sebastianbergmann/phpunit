@@ -27,7 +27,6 @@ final class ProgressPrinter
      * @psalm-var array<string>
      */
     private array $originalExecutionOrder;
-    private bool $interactive;
 
     /**
      * @psalm-param array<string> $originalExecutionOrder
@@ -35,12 +34,11 @@ final class ProgressPrinter
      * @throws EventFacadeIsSealedException
      * @throws UnknownSubscriberTypeException
      */
-    public function __construct(Printer $printer, array $originalExecutionOrder, bool $colors, bool $interactive)
+    public function __construct(Printer $printer, array $originalExecutionOrder, bool $colors)
     {
         $this->printer                = $printer;
         $this->colors                 = $colors;
         $this->originalExecutionOrder = $originalExecutionOrder;
-        $this->interactive            = $interactive;
 
         $this->registerSubscribers();
     }

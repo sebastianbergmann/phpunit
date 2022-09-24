@@ -194,7 +194,6 @@ final class Builder
         $listTestsXml                      = null;
         $noCoverage                        = null;
         $noExtensions                      = null;
-        $noInteraction                     = null;
         $noOutput                          = null;
         $noProgress                        = null;
         $noLogging                         = null;
@@ -611,11 +610,6 @@ final class Builder
 
                     break;
 
-                case '--no-interaction':
-                    $noInteraction = true;
-
-                    break;
-
                 case '--no-output':
                     $noOutput = true;
 
@@ -829,7 +823,6 @@ final class Builder
             $listTestsXml,
             $noCoverage,
             $noExtensions,
-            $noInteraction,
             $noOutput,
             $noProgress,
             $noLogging,

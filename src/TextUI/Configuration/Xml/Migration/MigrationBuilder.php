@@ -55,6 +55,7 @@ final class MigrationBuilder
             RenameForceCoversAnnotationAttribute::class,
             RenameBeStrictAboutCoversAnnotationAttribute::class,
             RemoveConversionToExceptionsAttributes::class,
+            RemoveNoInteractionAttribute::class,
         ],
     ];
 

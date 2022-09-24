@@ -91,6 +91,8 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * Removed the `convertErrorsToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
 * Removed the `convertNoticesToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
 * Removed the `convertWarningsToExceptions` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
+* Removed the `--no-interaction` option as well as the feature it used to control
+* Removed the `noInteraction` attribute on the `<phpunit>` XML configuration element as well as the feature it used to control
 * Removed the `processUncoveredFiles` attribute on the `<coverage>` XML configuration element
 * Removed the `testdoxGroups` XML configuration element, the `--testdox-group` option, and the `--testdox-exclude-group` option as well as the feature they used to control
 * Removed the `PHPUnit\Framework\TestCase::getMockClass()` method

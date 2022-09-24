@@ -422,12 +422,6 @@ final class Merger
         $requireCoverageMetadata                         = $xmlConfiguration->phpunit()->requireCoverageMetadata();
         $registerMockObjectsFromTestArgumentsRecursively = $xmlConfiguration->phpunit()->registerMockObjectsFromTestArgumentsRecursively();
 
-        if ($cliConfiguration->hasNoInteraction()) {
-            $noInteraction = $cliConfiguration->noInteraction();
-        } else {
-            $noInteraction = $xmlConfiguration->phpunit()->noInteraction();
-        }
-
         if ($cliConfiguration->hasExecutionOrder()) {
             $executionOrder = $cliConfiguration->executionOrder();
         } else {
@@ -674,7 +668,6 @@ final class Merger
             $reverseDefectList,
             $requireCoverageMetadata,
             $registerMockObjectsFromTestArgumentsRecursively,
-            $noInteraction,
             $noProgress,
             $executionOrder,
             $executionOrderDefects,
