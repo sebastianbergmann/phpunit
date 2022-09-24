@@ -27,10 +27,24 @@ final class PharLoader
      */
     public function loadPharExtensionsInDirectory(string $directory): array
     {
+        $pharExtensionLoaded = extension_loaded('phar');
+
+        if (!$pharExtensionLoaded) {
+            Event\Facade::emitter()->testRunnerTriggeredWarning(
+                'Loading PHPUnit extension(s) from PHP archive(s) failed, PHAR extension not loaded'
+            );
+        }
+
         $loadedExtensions    = [];
         $notLoadedExtensions = [];
 
         foreach ((new FileIteratorFacade)->getFilesAsArray($directory, '.phar') as $file) {
+            if (!$pharExtensionLoaded) {
+                $notLoadedExtensions[] = $file . ' cannot be loaded';
+
+                continue;
+            }
+
             if (!is_file('phar://' . $file . '/manifest.xml')) {
                 $notLoadedExtensions[] = $file . ' is not an extension for PHPUnit';
 

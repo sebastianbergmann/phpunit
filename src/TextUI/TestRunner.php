@@ -12,7 +12,6 @@ namespace PHPUnit\TextUI;
 use const PHP_SAPI;
 use const PHP_VERSION;
 use function array_map;
-use function extension_loaded;
 use function file_put_contents;
 use function htmlspecialchars;
 use function is_file;
@@ -93,8 +92,7 @@ final class TestRunner
         }
 
         if ($this->configuration->loadPharExtensions() &&
-            $this->configuration->hasPharExtensionDirectory() &&
-            extension_loaded('phar')) {
+            $this->configuration->hasPharExtensionDirectory()) {
             $pharExtensions = (new PharLoader)->loadPharExtensionsInDirectory(
                 $this->configuration->pharExtensionDirectory()
             );
