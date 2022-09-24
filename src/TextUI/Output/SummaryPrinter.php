@@ -16,7 +16,7 @@ use PHPUnit\Util\Printer;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-abstract class ResultPrinter
+final class SummaryPrinter
 {
     private Printer $printer;
     private bool $colors;
@@ -28,24 +28,7 @@ abstract class ResultPrinter
         $this->colors  = $colors;
     }
 
-    public function flush(): void
-    {
-        $this->printer->flush();
-    }
-
-    abstract public function printResult(TestResult $result): void;
-
-    protected function printer(): Printer
-    {
-        return $this->printer;
-    }
-
-    protected function colors(): bool
-    {
-        return $this->colors;
-    }
-
-    protected function printFooter(TestResult $result): void
+    public function print(TestResult $result): void
     {
         if ($result->numberOfTestsRun() === 0) {
             $this->printWithColor(
@@ -152,14 +135,14 @@ abstract class ResultPrinter
 
     private function printWithColor(string $color, string $buffer, bool $lf = true): void
     {
-        if ($this->colors()) {
+        if ($this->colors) {
             $buffer = Color::colorizeTextBox($color, $buffer);
         }
 
-        $this->printer()->print($buffer);
+        $this->printer->print($buffer);
 
         if ($lf) {
-            $this->printer()->print(PHP_EOL);
+            $this->printer->print(PHP_EOL);
         }
     }
 }

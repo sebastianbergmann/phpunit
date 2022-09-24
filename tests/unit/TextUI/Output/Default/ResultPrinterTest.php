@@ -69,7 +69,7 @@ final class ResultPrinterTest extends TestCase
             false
         );
 
-        $resultPrinter->printResult($result);
+        $resultPrinter->print($result);
         $resultPrinter->flush();
 
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */

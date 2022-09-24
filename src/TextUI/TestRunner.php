@@ -44,7 +44,6 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
-use PHPUnit\TextUI\Output\TestDox\ProgressPrinter\ProgressPrinter as TestDoxProgressPrinter;
 use PHPUnit\TextUI\Output\TestDox\ResultPrinter as TestDoxResultPrinter;
 use PHPUnit\Util\DefaultPrinter;
 use PHPUnit\Util\NullPrinter;
@@ -115,8 +114,6 @@ final class TestRunner
             new ResultCacheHandler($cache);
         }
 
-        $originalExecutionOrder = [];
-
         if ($this->configuration->executionOrder() !== TestSuiteSorter::ORDER_DEFAULT ||
             $this->configuration->executionOrderDefects() !== TestSuiteSorter::ORDER_DEFAULT ||
             $this->configuration->resolveDependencies()) {
@@ -138,8 +135,6 @@ final class TestRunner
                 $this->configuration->executionOrderDefects(),
                 $this->configuration->resolveDependencies()
             );
-
-            $originalExecutionOrder = $sorter->getOriginalExecutionOrder();
 
             unset($sorter);
         }
@@ -187,19 +182,6 @@ final class TestRunner
                 $this->configuration->displayDetailsOnTestsThatTriggerWarnings(),
                 $this->configuration->colors(),
                 $this->configuration->reverseDefectList()
-            );
-        }
-
-        if ($this->configuration->outputIsTestDox()) {
-            $progressPrinter = new TestDoxProgressPrinter(
-                $this->printer,
-                $originalExecutionOrder,
-                $this->configuration->colors(),
-            );
-
-            $resultPrinter = new TestDoxResultPrinter(
-                $this->printer,
-                $this->configuration->colors(),
             );
         }
 
@@ -253,7 +235,8 @@ final class TestRunner
 
         if ($this->configuration->hasLogfileTestdoxHtml() ||
             $this->configuration->hasLogfileTestdoxText() ||
-            $this->configuration->hasLogfileTestdoxXml()) {
+            $this->configuration->hasLogfileTestdoxXml() ||
+            $this->configuration->outputIsTestDox()) {
             $testDoxCollector = new TestMethodCollector;
         }
 
@@ -415,7 +398,7 @@ final class TestRunner
         }
 
         if (isset($resultPrinter)) {
-            $resultPrinter->printResult($result);
+            $resultPrinter->print($result);
         }
 
         if (isset($junitXmlLogger)) {
@@ -435,6 +418,14 @@ final class TestRunner
 
         if (isset($textLogger)) {
             $textLogger->flush();
+        }
+
+        if (isset($testDoxCollector) &&
+            $this->configuration->outputIsTestDox()) {
+            (new TestDoxResultPrinter($this->printer, $this->configuration->colors()))->print(
+                $result,
+                $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+            );
         }
 
         if (isset($testDoxCollector) &&

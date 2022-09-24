@@ -439,6 +439,20 @@
       <code>text</code>
     </UndefinedMethod>
   </file>
+  <file src="src/Logging/TestDox/PlainTextRenderer.php">
+    <InvalidArrayOffset occurrences="2">
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+    </InvalidArrayOffset>
+    <PossiblyInvalidMethodCall occurrences="2">
+      <code>isSuccess</code>
+      <code>methodName</code>
+    </PossiblyInvalidMethodCall>
+    <UndefinedMethod occurrences="2">
+      <code>$test</code>
+      <code>$test</code>
+    </UndefinedMethod>
+  </file>
   <file src="src/Logging/TestDox/TestMethodCollector.php">
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;tests</code>
@@ -462,20 +476,6 @@
     <RedundantCondition occurrences="1">
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
-  </file>
-  <file src="src/Logging/TestDox/TextRenderer.php">
-    <InvalidArrayOffset occurrences="2">
-      <code>$test['status']</code>
-      <code>$test['test']</code>
-    </InvalidArrayOffset>
-    <PossiblyInvalidMethodCall occurrences="2">
-      <code>isSuccess</code>
-      <code>methodName</code>
-    </PossiblyInvalidMethodCall>
-    <UndefinedMethod occurrences="2">
-      <code>$test</code>
-      <code>$test</code>
-    </UndefinedMethod>
   </file>
   <file src="src/Logging/TestDox/XmlRenderer.php">
     <InvalidArrayOffset occurrences="4">
@@ -722,7 +722,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="88">
+    <MissingThrowsDocblock occurrences="87">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -784,7 +784,6 @@
       <code>junitLogfile</code>
       <code>logEventsText</code>
       <code>logEventsVerboseText</code>
-      <code>noInteraction</code>
       <code>pathCoverage</code>
       <code>php</code>
       <code>processIsolation</code>
@@ -1048,7 +1047,7 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="47">
+    <MissingThrowsDocblock occurrences="46">
       <code>Event\TestSuite\TestSuite::fromTestSuite($suite)</code>
       <code>Event\TestSuite\TestSuite::fromTestSuite($suite)</code>
       <code>bootstrap</code>

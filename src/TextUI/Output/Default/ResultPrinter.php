@@ -35,14 +35,16 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\TestRunner\TestResult\TestResult;
-use PHPUnit\TextUI\Output\ResultPrinter as AbstractResultPrinter;
+use PHPUnit\TextUI\Output\SummaryPrinter;
 use PHPUnit\Util\Printer;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ResultPrinter extends AbstractResultPrinter
+final class ResultPrinter
 {
+    private Printer $printer;
+    private bool $colors;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
     private bool $displayDetailsOnTestsThatTriggerDeprecations;
@@ -54,8 +56,8 @@ final class ResultPrinter extends AbstractResultPrinter
 
     public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $colors, bool $displayDefectsInReverseOrder)
     {
-        parent::__construct($printer, $colors);
-
+        $this->printer                                      = $printer;
+        $this->colors                                       = $colors;
         $this->displayDetailsOnIncompleteTests              = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests                 = $displayDetailsOnSkippedTests;
         $this->displayDetailsOnTestsThatTriggerDeprecations = $displayDetailsOnTestsThatTriggerDeprecations;
@@ -65,7 +67,7 @@ final class ResultPrinter extends AbstractResultPrinter
         $this->displayDefectsInReverseOrder                 = $displayDefectsInReverseOrder;
     }
 
-    public function printResult(TestResult $result): void
+    public function print(TestResult $result): void
     {
         $this->printPhpunitErrors($result);
         $this->printPhpunitWarnings($result);
@@ -101,12 +103,12 @@ final class ResultPrinter extends AbstractResultPrinter
             $this->printDetailsOnTestsThatTriggerWarnings($result);
         }
 
-        $this->printFooter($result);
+        (new SummaryPrinter($this->printer, $this->colors))->print($result);
     }
 
     public function flush(): void
     {
-        $this->printer()->flush();
+        $this->printer->flush();
     }
 
     private function printPhpunitErrors(TestResult $result): void
@@ -357,12 +359,12 @@ final class ResultPrinter extends AbstractResultPrinter
     private function printList(int $count, array $elements, string $type): void
     {
         if ($this->listPrinted) {
-            $this->printer()->print("--\n\n");
+            $this->printer->print("--\n\n");
         }
 
         $this->listPrinted = true;
 
-        $this->printer()->print(
+        $this->printer->print(
             sprintf(
                 "There %s %d %s%s:\n\n",
                 ($count === 1) ? 'was' : 'were',
@@ -382,14 +384,14 @@ final class ResultPrinter extends AbstractResultPrinter
             $this->printListElement($i++, $element['title'], $element['body']);
         }
 
-        $this->printer()->print("\n");
+        $this->printer->print("\n");
     }
 
     private function printListElement(int $number, string $title, string $body): void
     {
         $body = trim($body);
 
-        $this->printer()->print(
+        $this->printer->print(
             sprintf(
                 "%s%d) %s\n%s%s",
                 $number > 1 ? "\n" : '',
