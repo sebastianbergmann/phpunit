@@ -16,7 +16,7 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TextRenderer
+final class PlainTextRenderer
 {
     /**
      * @psalm-param array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list<class-string|trait-string>}> $tests
