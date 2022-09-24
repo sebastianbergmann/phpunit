@@ -1361,14 +1361,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestTestProxyCreatedDispatchesTestDoubleTestProxyCreatedEvent(): void
     {
         $className            = self::class;
-        $constructorArguments = [
-            'foo',
-            new stdClass,
-            [
-                'bar',
-                'baz',
-            ],
-        ];
+        $constructorArguments = ['foo'];
 
         $subscriber = new class extends RecordingSubscriber implements Test\TestProxyCreatedSubscriber
         {
@@ -1403,7 +1396,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
         $this->assertInstanceOf(Test\TestProxyCreated::class, $event);
 
         $this->assertSame($className, $event->className());
-        $this->assertSame($constructorArguments, $event->constructorArguments());
+        $this->assertSame("Array &0 (\n    0 => 'foo'\n)", $event->constructorArguments());
     }
 
     public function testTestTestStubCreatedDispatchesTestDoubleTestStubCreatedEvent(): void

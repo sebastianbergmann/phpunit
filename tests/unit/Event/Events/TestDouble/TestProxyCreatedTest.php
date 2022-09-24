@@ -11,7 +11,6 @@ namespace PHPUnit\Event\Test;
 
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
-use stdClass;
 
 #[CoversClass(TestProxyCreated::class)]
 final class TestProxyCreatedTest extends AbstractEventTestCase
@@ -20,14 +19,7 @@ final class TestProxyCreatedTest extends AbstractEventTestCase
     {
         $telemetryInfo        = $this->telemetryInfo();
         $className            = self::class;
-        $constructorArguments = [
-            'foo',
-            new stdClass,
-            [
-                'bar',
-                'baz',
-            ],
-        ];
+        $constructorArguments = 'exported constructor arguments';
 
         $event = new TestProxyCreated(
             $telemetryInfo,

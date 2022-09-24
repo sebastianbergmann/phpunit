@@ -14,6 +14,8 @@ use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
 
 /**
+ * @psalm-immutable
+ *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
 final class TestProxyCreated implements Event
@@ -24,12 +26,12 @@ final class TestProxyCreated implements Event
      * @psalm-var class-string
      */
     private readonly string $className;
-    private readonly array $constructorArguments;
+    private readonly string $constructorArguments;
 
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(Telemetry\Info $telemetryInfo, string $className, array $constructorArguments)
+    public function __construct(Telemetry\Info $telemetryInfo, string $className, string $constructorArguments)
     {
         $this->telemetryInfo        = $telemetryInfo;
         $this->className            = $className;
@@ -49,7 +51,7 @@ final class TestProxyCreated implements Event
         return $this->className;
     }
 
-    public function constructorArguments(): array
+    public function constructorArguments(): string
     {
         return $this->constructorArguments;
     }
