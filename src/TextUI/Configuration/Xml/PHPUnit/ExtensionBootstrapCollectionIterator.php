@@ -22,7 +22,7 @@ final class ExtensionBootstrapCollectionIterator implements Countable, Iterator
     /**
      * @psalm-var list<ExtensionBootstrap>
      */
-    private array $extensionBootstraps;
+    private readonly array $extensionBootstraps;
     private ?int $position = null;
 
     public function __construct(ExtensionBootstrapCollection $extensionBootstraps)

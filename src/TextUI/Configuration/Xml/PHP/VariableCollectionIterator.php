@@ -22,7 +22,7 @@ final class VariableCollectionIterator implements Countable, Iterator
     /**
      * @psalm-var list<Variable>
      */
-    private array $variables;
+    private readonly array $variables;
     private ?int $position = null;
 
     public function __construct(VariableCollection $variables)
