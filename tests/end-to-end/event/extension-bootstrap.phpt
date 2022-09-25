@@ -12,4 +12,4 @@ require __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit\TestFixture\Event\MyExtension\MyExecutionFinishedSubscriber::notify
-message
+the-message

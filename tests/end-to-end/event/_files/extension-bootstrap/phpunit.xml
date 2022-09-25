@@ -4,7 +4,7 @@
          bootstrap="src/autoload.php">
     <extensions>
         <bootstrap class="PHPUnit\TestFixture\Event\MyExtension\MyExtensionBootstrap">
-            <parameter name="message" value="message"/>
+            <parameter name="message" value="the-message"/>
         </bootstrap>
     </extensions>
 
