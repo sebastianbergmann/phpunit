@@ -6,6 +6,7 @@ See https://github.com/sebastianbergmann/phpunit/issues/4702 for details.
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
+$_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = __DIR__ . '/../_files/basic/configuration.basic.xml';
 $_SERVER['argv'][] = '--testdox';

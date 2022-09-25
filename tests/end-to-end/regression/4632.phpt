@@ -8,6 +8,7 @@ See https://github.com/sebastianbergmann/phpunit/issues/4702 for details.
 
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--repeat';
 $_SERVER['argv'][] = '3';
