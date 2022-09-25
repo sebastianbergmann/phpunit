@@ -160,9 +160,7 @@ final class TestRunner
             } else {
                 $this->printer = DefaultPrinter::standardOutput();
             }
-        }
 
-        if ($this->configuration->outputIsDefault()) {
             if (!$this->configuration->noProgress()) {
                 $progressPrinter = new DefaultProgressPrinter(
                     $this->printer,
@@ -170,7 +168,9 @@ final class TestRunner
                     $this->configuration->columns()
                 );
             }
+        }
 
+        if ($this->configuration->outputIsDefault()) {
             $resultPrinter = new DefaultResultPrinter(
                 $this->printer,
                 $this->configuration->displayDetailsOnIncompleteTests(),
