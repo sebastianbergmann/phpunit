@@ -279,17 +279,3 @@ jobs:
 
       - name: Run PHAR-specific tests
         run: ant run-phar-specific-tests
-
-  notify-phar:
-    name: Notify PHAR
-
-    needs:
-      - test-phar
-
-    runs-on: ubuntu-latest
-
-    if: github.ref == 'refs/heads/main'
-
-    steps:
-      - name: Send notification about successfully tested PHAR
-        run: curl --silent -X POST "${{ secrets.PHAR_NOTIFICATION_URL }}/${{ github.run_id }}"
