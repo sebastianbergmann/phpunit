@@ -1,10 +1,5 @@
 --TEST--
 A PHPUnit extension can subscribe to events
---SKIPIF--
-<?php declare(strict_types=1);
-if (DIRECTORY_SEPARATOR === '\\') {
-    print "skip: this test does not work on Windows / GitHub Actions\n";
-}
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
