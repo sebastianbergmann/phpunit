@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 use SebastianBergmann\CodeCoverage\CodeCoverage;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
 use SebastianBergmann\CodeCoverage\Filter;

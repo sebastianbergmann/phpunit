@@ -1,4 +1,4 @@
-<?php
+<?php declare(strict_types=1);
 use PHPUnit\Event\Facade;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\CodeCoverage;
@@ -7,9 +7,9 @@ use PHPUnit\TextUI\XmlConfiguration\Loader;
 use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 
+// php://stdout does not obey output buffering. Any output would break
+// unserialization of child process results in the parent process.
 if (!defined('STDOUT')) {
-    // php://stdout does not obey output buffering. Any output would break
-    // unserialization of child process results in the parent process.
     define('STDOUT', fopen('php://temp', 'w+b'));
     define('STDERR', fopen('php://stderr', 'wb'));
 }
@@ -25,6 +25,7 @@ ob_start();
 
 if ($composerAutoload) {
     require_once $composerAutoload;
+
     define('PHPUNIT_COMPOSER_INSTALL', $composerAutoload);
 } else if ($phar) {
     require $phar;
@@ -53,6 +54,7 @@ function __phpunit_run_isolated_test()
     }
 
     $test = new {className}('{methodName}');
+
     \assert($test instanceof TestCase);
 
     $test->setData('{dataName}', unserialize('{data}'));
@@ -60,17 +62,24 @@ function __phpunit_run_isolated_test()
     $test->setInIsolation(true);
 
     ob_end_clean();
+
     $test->run();
+
     $output = '';
+
     if (!$test->hasExpectationOnOutput()) {
         $output = $test->output();
     }
 
     ini_set('xdebug.scream', '0');
-    @rewind(STDOUT); /* @ as not every STDOUT target stream is rewindable */
+
+    // Not every STDOUT target stream is rewindable
+    @rewind(STDOUT);
+
     if ($stdout = @stream_get_contents(STDOUT)) {
-        $output = $stdout . $output;
+        $output         = $stdout . $output;
         $streamMetaData = stream_get_meta_data(STDOUT);
+
         if (!empty($streamMetaData['stream_type']) && 'STDIO' === $streamMetaData['stream_type']) {
             @ftruncate(STDOUT, 0);
             @rewind(STDOUT);
@@ -78,14 +87,14 @@ function __phpunit_run_isolated_test()
     }
 
     print serialize(
-      [
-        'testResult'    => $test->result(),
-        'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
-        'numAssertions' => $test->numberOfAssertionsPerformed(),
-        'output'        => $output,
-        'events'        => $dispatcher->flush(),
-        'passedTests'   => PassedTests::instance()
-      ]
+        [
+            'testResult'    => $test->result(),
+            'codeCoverage'  => {collectCodeCoverageInformation} ? CodeCoverage::instance() : null,
+            'numAssertions' => $test->numberOfAssertionsPerformed(),
+            'output'        => $output,
+            'events'        => $dispatcher->flush(),
+            'passedTests'   => PassedTests::instance()
+        ]
     );
 }
 
@@ -114,6 +123,7 @@ restore_error_handler();
 
 if (isset($GLOBALS['__PHPUNIT_BOOTSTRAP'])) {
     require_once $GLOBALS['__PHPUNIT_BOOTSTRAP'];
+
     unset($GLOBALS['__PHPUNIT_BOOTSTRAP']);
 }
 
