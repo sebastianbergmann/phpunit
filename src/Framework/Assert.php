@@ -1732,13 +1732,13 @@ abstract class Assert
             $hasFailed = false;
         } finally {
             if ($hasFailed) {
-                Event\Facade::emitter()->assertionFailed(
+                Event\Facade::emitter()->testAssertionFailed(
                     $value,
                     $constraint,
                     $message,
                 );
             } else {
-                Event\Facade::emitter()->assertionSucceeded(
+                Event\Facade::emitter()->testAssertionSucceeded(
                     $value,
                     $constraint,
                     $message,

@@ -378,13 +378,13 @@ final class TestRunner
 
         $this->processSuiteFilters($suite);
 
-        Event\Facade::emitter()->testExecutionStarted(
+        Event\Facade::emitter()->testRunnerExecutionStarted(
             Event\TestSuite\TestSuite::fromTestSuite($suite)
         );
 
         $suite->run();
 
-        Event\Facade::emitter()->testExecutionFinished();
+        Event\Facade::emitter()->testRunnerExecutionFinished();
 
         $result = Facade::result();
 

@@ -122,7 +122,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->assertionSucceeded(
+        $emitter->testAssertionSucceeded(
             $value,
             $constraint,
             $message,
@@ -166,7 +166,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->assertionFailed(
+        $emitter->testAssertionFailed(
             $value,
             $constraint,
             $message,
@@ -208,7 +208,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->bootstrapFinished($filename);
+        $emitter->testRunnerBootstrapFinished($filename);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -244,7 +244,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->comparatorRegistered($className);
+        $emitter->testRegisteredComparator($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -278,7 +278,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->extensionLoaded(
+        $emitter->testRunnerLoadedExtension(
             'example-extension',
             '1.2.3'
         );
@@ -1173,7 +1173,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testMockObjectCreated($className);
+        $emitter->testCreatedMockObject($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1209,7 +1209,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testMockObjectCreatedForTrait($traitName);
+        $emitter->testCreatedMockObjectForTrait($traitName);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
         $event = $subscriber->lastRecordedEvent();
@@ -1244,7 +1244,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testMockObjectCreatedForAbstractClass($className);
+        $emitter->testCreatedMockObjectForAbstractClass($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 
@@ -1292,7 +1292,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testMockObjectCreatedFromWsdl(
+        $emitter->testCreatedMockObjectFromWsdl(
             $wsdlFile,
             $originalClassName,
             $mockClassName,
@@ -1345,7 +1345,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testPartialMockObjectCreated(
+        $emitter->testCreatedPartialMockObject(
             $className,
             ...$methodNames
         );
@@ -1386,7 +1386,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testTestProxyCreated(
+        $emitter->testCreatedTestProxy(
             $className,
             $constructorArguments
         );
@@ -1426,7 +1426,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testTestStubCreated($className);
+        $emitter->testCreatedStub($className);
 
         $this->assertSame(1, $subscriber->recordedEventCount());
 

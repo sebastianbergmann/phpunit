@@ -456,7 +456,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         ComparatorFactory::getInstance()->register($comparator);
 
-        Event\Facade::emitter()->comparatorRegistered($comparator::class);
+        Event\Facade::emitter()->testRegisteredComparator($comparator::class);
 
         $this->customComparators[] = $comparator;
     }
@@ -1080,7 +1080,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $stub = $this->createMockObject($originalClassName, false);
 
-        Event\Facade::emitter()->testTestStubCreated($originalClassName);
+        Event\Facade::emitter()->testCreatedStub($originalClassName);
 
         return $stub;
     }
@@ -1098,7 +1098,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     {
         $mock = $this->createMockObject($originalClassName);
 
-        Event\Facade::emitter()->testMockObjectCreated($originalClassName);
+        Event\Facade::emitter()->testCreatedMockObject($originalClassName);
 
         return $mock;
     }
@@ -1144,7 +1144,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             ->onlyMethods($methods)
             ->getMock();
 
-        Event\Facade::emitter()->testPartialMockObjectCreated(
+        Event\Facade::emitter()->testCreatedPartialMockObject(
             $originalClassName,
             ...$methods
         );
@@ -1168,7 +1168,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             ->enableProxyingToOriginalMethods()
             ->getMock();
 
-        Event\Facade::emitter()->testTestProxyCreated(
+        Event\Facade::emitter()->testCreatedTestProxy(
             $originalClassName,
             $constructorArguments
         );
@@ -1202,7 +1202,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->registerMockObject($mockObject);
 
-        Event\Facade::emitter()->testMockObjectCreatedForAbstractClass($originalClassName);
+        Event\Facade::emitter()->testCreatedMockObjectForAbstractClass($originalClassName);
 
         return $mockObject;
     }
@@ -1244,7 +1244,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
             false
         );
 
-        Event\Facade::emitter()->testMockObjectCreatedFromWsdl(
+        Event\Facade::emitter()->testCreatedMockObjectFromWsdl(
             $wsdlFile,
             $originalClassName,
             $mockClassName,
@@ -1280,7 +1280,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
         $this->registerMockObject($mockObject);
 
-        Event\Facade::emitter()->testMockObjectCreatedForTrait($traitName);
+        Event\Facade::emitter()->testCreatedMockObjectForTrait($traitName);
 
         return $mockObject;
     }

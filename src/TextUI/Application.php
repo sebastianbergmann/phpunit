@@ -423,6 +423,6 @@ final class Application
             throw new BootstrapException($t);
         }
 
-        Facade::emitter()->bootstrapFinished($filename);
+        Facade::emitter()->testRunnerBootstrapFinished($filename);
     }
 }

@@ -104,7 +104,7 @@ final class Facade
 
         self::$sealed = true;
 
-        self::emitter()->eventFacadeSealed();
+        self::emitter()->testRunnerEventFacadeSealed();
     }
 
     private static function createDispatchingEmitter(): DispatchingEmitter

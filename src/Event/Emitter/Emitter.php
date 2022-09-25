@@ -19,62 +19,27 @@ use PHPUnit\TextUI\Configuration\Configuration;
  */
 interface Emitter
 {
-    public function eventFacadeSealed(): void;
-
     public function testRunnerStarted(): void;
 
     public function testRunnerConfigured(Configuration $configuration): void;
 
-    public function testExecutionStarted(TestSuite $testSuite): void;
+    public function testRunnerBootstrapFinished(string $filename): void;
 
-    public function testExecutionFinished(): void;
+    public function testRunnerLoadedExtension(string $name, string $version): void;
 
-    public function testRunnerFinished(): void;
+    public function testSuiteLoaded(TestSuite $testSuite): void;
 
-    public function testRunnerTriggeredDeprecation(string $message): void;
+    public function testSuiteFiltered(TestSuite $testSuite): void;
 
-    public function testRunnerTriggeredWarning(string $message): void;
+    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void;
 
-    public function assertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void;
+    public function testRunnerEventFacadeSealed(): void;
 
-    public function assertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void;
+    public function testRunnerExecutionStarted(TestSuite $testSuite): void;
 
-    public function bootstrapFinished(string $filename): void;
-
-    /**
-     * @psalm-param class-string $className
-     */
-    public function comparatorRegistered(string $className): void;
-
-    public function extensionLoaded(string $name, string $version): void;
-
-    public function testErrored(Code\Test $test, Throwable $throwable): void;
-
-    public function testFailed(Code\Test $test, Throwable $throwable): void;
-
-    public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
-
-    public function testPassed(Code\Test $test): void;
-
-    public function testConsideredRisky(Code\Test $test, string $message): void;
-
-    public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void;
-
-    public function testSkipped(Code\Test $test, string $message): void;
+    public function testSuiteStarted(TestSuite $testSuite): void;
 
     public function testPreparationStarted(Code\Test $test): void;
-
-    public function testPrepared(Code\Test $test): void;
-
-    /**
-     * @psalm-param class-string $testClassName
-     */
-    public function testAfterTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
-
-    /**
-     * @psalm-param class-string $testClassName
-     */
-    public function testAfterLastTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
 
     /**
      * @psalm-param class-string $testClassName
@@ -111,25 +76,64 @@ interface Emitter
      */
     public function testPreConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
 
-    /**
-     * @psalm-param class-string $testClassName
-     */
-    public function testPostConditionCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
+    public function testPrepared(Code\Test $test): void;
 
     /**
-     * @psalm-param class-string $testClassName
+     * @psalm-param class-string $className
      */
-    public function testPostConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
+    public function testRegisteredComparator(string $className): void;
+
+    public function testAssertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void;
+
+    public function testAssertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void;
 
     /**
-     * @psalm-param class-string $testClassName
+     * @psalm-param class-string $className
      */
-    public function testAfterTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
+    public function testCreatedMockObject(string $className): void;
 
     /**
-     * @psalm-param class-string $testClassName
+     * @psalm-param trait-string $traitName
      */
-    public function testAfterLastTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
+    public function testCreatedMockObjectForTrait(string $traitName): void;
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public function testCreatedMockObjectForAbstractClass(string $className): void;
+
+    /**
+     * @psalm-param class-string $originalClassName
+     * @psalm-param class-string $mockClassName
+     */
+    public function testCreatedMockObjectFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void;
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public function testCreatedPartialMockObject(string $className, string ...$methodNames): void;
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public function testCreatedTestProxy(string $className, array $constructorArguments): void;
+
+    /**
+     * @psalm-param class-string $className
+     */
+    public function testCreatedStub(string $className): void;
+
+    public function testErrored(Code\Test $test, Throwable $throwable): void;
+
+    public function testFailed(Code\Test $test, Throwable $throwable): void;
+
+    public function testPassed(Code\Test $test): void;
+
+    public function testConsideredRisky(Code\Test $test, string $message): void;
+
+    public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void;
+
+    public function testSkipped(Code\Test $test, string $message): void;
 
     public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void;
 
@@ -151,49 +155,45 @@ interface Emitter
 
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void;
 
-    /**
-     * @psalm-param class-string $className
-     */
-    public function testMockObjectCreated(string $className): void;
+    public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void;
 
     /**
-     * @psalm-param trait-string $traitName
+     * @psalm-param class-string $testClassName
      */
-    public function testMockObjectCreatedForTrait(string $traitName): void;
+    public function testPostConditionCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string $testClassName
      */
-    public function testMockObjectCreatedForAbstractClass(string $className): void;
+    public function testPostConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
 
     /**
-     * @psalm-param class-string $originalClassName
-     * @psalm-param class-string $mockClassName
+     * @psalm-param class-string $testClassName
      */
-    public function testMockObjectCreatedFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void;
+    public function testAfterTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string $testClassName
      */
-    public function testPartialMockObjectCreated(string $className, string ...$methodNames): void;
+    public function testAfterTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string $testClassName
      */
-    public function testTestProxyCreated(string $className, array $constructorArguments): void;
+    public function testAfterLastTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void;
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param class-string $testClassName
      */
-    public function testTestStubCreated(string $className): void;
-
-    public function testSuiteLoaded(TestSuite $testSuite): void;
-
-    public function testSuiteFiltered(TestSuite $testSuite): void;
-
-    public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void;
-
-    public function testSuiteStarted(TestSuite $testSuite): void;
+    public function testAfterLastTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void;
 
     public function testSuiteFinished(TestSuite $testSuite): void;
+
+    public function testRunnerTriggeredDeprecation(string $message): void;
+
+    public function testRunnerTriggeredWarning(string $message): void;
+
+    public function testRunnerExecutionFinished(): void;
+
+    public function testRunnerFinished(): void;
 }
