@@ -225,18 +225,6 @@ final class Application
 
         Event\Facade::emitter()->testRunnerConfigured($configuration);
 
-        $extensionBootstrapper = new ExtensionBootstrapper(
-            $configuration,
-            new ExtensionFacade
-        );
-
-        foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
-            $extensionBootstrapper->bootstrap(
-                $bootstrapper['className'],
-                $bootstrapper['parameters']
-            );
-        }
-
         try {
             if ($configuration->hasBootstrap()) {
                 $this->handleBootstrap($configuration->bootstrap());
@@ -249,6 +237,18 @@ final class Application
             print $e->getMessage() . PHP_EOL;
 
             exit(self::EXCEPTION_EXIT);
+        }
+
+        $extensionBootstrapper = new ExtensionBootstrapper(
+            $configuration,
+            new ExtensionFacade
+        );
+
+        foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
+            $extensionBootstrapper->bootstrap(
+                $bootstrapper['className'],
+                $bootstrapper['parameters']
+            );
         }
 
         if ($configuration->hasCoverageReport() || $cliConfiguration->hasWarmCoverageCache()) {
