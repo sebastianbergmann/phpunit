@@ -17,7 +17,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Group
 {
-    private string $name;
+    private readonly string $name;
 
     public function __construct(string $name)
     {

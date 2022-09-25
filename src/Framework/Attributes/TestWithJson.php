@@ -17,7 +17,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class TestWithJson
 {
-    private string $json;
+    private readonly string $json;
 
     public function __construct(string $json)
     {

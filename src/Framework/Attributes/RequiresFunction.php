@@ -17,7 +17,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class RequiresFunction
 {
-    private string $functionName;
+    private readonly string $functionName;
 
     public function __construct(string $functionName)
     {

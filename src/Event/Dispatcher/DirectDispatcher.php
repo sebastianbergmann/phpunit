@@ -17,7 +17,7 @@ use function sprintf;
  */
 final class DirectDispatcher implements SubscribableDispatcher
 {
-    private TypeMap $typeMap;
+    private readonly TypeMap $typeMap;
 
     /**
      * @psalm-var array<string, list<Subscriber>>

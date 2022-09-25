@@ -20,8 +20,8 @@ final class ExcludeStaticPropertyFromBackup
     /**
      * @psalm-var class-string
      */
-    private string $className;
-    private string $propertyName;
+    private readonly string $className;
+    private readonly string $propertyName;
 
     /**
      * @psalm-param class-string $className

@@ -17,8 +17,8 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class RequiresPhpExtension
 {
-    private string $extension;
-    private ?string $versionRequirement;
+    private readonly string $extension;
+    private readonly ?string $versionRequirement;
 
     public function __construct(string $extension, ?string $versionRequirement = null)
     {

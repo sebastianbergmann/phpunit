@@ -17,8 +17,8 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class RequiresSetting
 {
-    private string $setting;
-    private string $value;
+    private readonly string $setting;
+    private readonly string $value;
 
     public function __construct(string $setting, string $value)
     {

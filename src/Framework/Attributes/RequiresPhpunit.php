@@ -17,7 +17,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class RequiresPhpunit
 {
-    private string $versionRequirement;
+    private readonly string $versionRequirement;
 
     public function __construct(string $versionRequirement)
     {

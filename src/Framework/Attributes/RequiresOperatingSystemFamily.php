@@ -17,7 +17,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class RequiresOperatingSystemFamily
 {
-    private string $operatingSystemFamily;
+    private readonly string $operatingSystemFamily;
 
     public function __construct(string $operatingSystemFamily)
     {

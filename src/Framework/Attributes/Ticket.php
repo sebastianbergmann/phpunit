@@ -17,7 +17,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class Ticket
 {
-    private string $text;
+    private readonly string $text;
 
     public function __construct(string $text)
     {

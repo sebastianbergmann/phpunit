@@ -17,7 +17,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class DependsUsingDeepClone
 {
-    private string $methodName;
+    private readonly string $methodName;
 
     public function __construct(string $methodName)
     {

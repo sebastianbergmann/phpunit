@@ -17,7 +17,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class ExcludeGlobalVariableFromBackup
 {
-    private string $globalVariableName;
+    private readonly string $globalVariableName;
 
     public function __construct(string $globalVariableName)
     {

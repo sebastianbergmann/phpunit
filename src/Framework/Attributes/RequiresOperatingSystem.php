@@ -17,7 +17,7 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class RequiresOperatingSystem
 {
-    private string $regularExpression;
+    private readonly string $regularExpression;
 
     public function __construct(string $regularExpression)
     {

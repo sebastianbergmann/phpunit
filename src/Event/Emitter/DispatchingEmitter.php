@@ -28,8 +28,8 @@ use SebastianBergmann\Exporter\Exporter;
  */
 final class DispatchingEmitter implements Emitter
 {
-    private Dispatcher $dispatcher;
-    private Telemetry\System $system;
+    private readonly Dispatcher $dispatcher;
+    private readonly Telemetry\System $system;
     private Telemetry\Snapshot $startSnapshot;
     private Telemetry\Snapshot $previousSnapshot;
 
