@@ -27,6 +27,12 @@ interface Emitter
 
     public function testRunnerLoadedExtensionFromPhar(string $filename, string $name, string $version): void;
 
+    /**
+     * @psalm-param class-string $className
+     * @psalm-param array<string, string> $parameters
+     */
+    public function testRunnerBootstrappedExtension(string $className, array $parameters): void;
+
     public function testSuiteLoaded(TestSuite $testSuite): void;
 
     public function testSuiteFiltered(TestSuite $testSuite): void;

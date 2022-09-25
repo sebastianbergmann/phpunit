@@ -13,6 +13,7 @@ use function assert;
 use function class_exists;
 use function class_implements;
 use function in_array;
+use PHPUnit\Event;
 use PHPUnit\Runner\ClassCannotBeInstantiatedException;
 use PHPUnit\Runner\ClassDoesNotExistException;
 use PHPUnit\Runner\ClassDoesNotImplementExtensionInterfaceException;
@@ -63,6 +64,11 @@ final class ExtensionBootstrapper
             $this->configuration,
             $this->facade,
             ParameterCollection::fromArray($parameters),
+        );
+
+        Event\Facade::emitter()->testRunnerBootstrappedExtension(
+            $className,
+            $parameters,
         );
     }
 }

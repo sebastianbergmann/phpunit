@@ -84,6 +84,21 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @psalm-param class-string $className
+     * @psalm-param array<string, string> $parameters
+     */
+    public function testRunnerBootstrappedExtension(string $className, array $parameters): void
+    {
+        $this->dispatcher->dispatch(
+            new TestRunner\ExtensionBootstrapped(
+                $this->telemetryInfo(),
+                $className,
+                $parameters
+            )
+        );
+    }
+
     public function testSuiteLoaded(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
