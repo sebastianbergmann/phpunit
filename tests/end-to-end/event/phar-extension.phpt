@@ -27,7 +27,7 @@ unlink($traceFile);
 Test Runner Started (PHPUnit %s using %s)
 Test Runner Configured
 Test Suite Loaded (1 test)
-Extension Loaded (phpunit/phpunit-test-extension 1.0.0)
+Extension Loaded from PHAR (phpunit/phpunit-test-extension 1.0.0)
 Test Suite Sorted
 Event Facade Sealed
 Test Runner Execution Started (1 test)

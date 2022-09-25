@@ -82,7 +82,8 @@ final class PharLoader
 
             $loadedExtensions[] = $manifest->getName()->asString() . ' ' . $manifest->getVersion()->getVersionString();
 
-            Event\Facade::emitter()->testRunnerLoadedExtension(
+            Event\Facade::emitter()->testRunnerLoadedExtensionFromPhar(
+                $file,
                 $manifest->getName()->asString(),
                 $manifest->getVersion()->getVersionString()
             );

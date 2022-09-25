@@ -72,11 +72,12 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
-    public function testRunnerLoadedExtension(string $name, string $version): void
+    public function testRunnerLoadedExtensionFromPhar(string $filename, string $name, string $version): void
     {
         $this->dispatcher->dispatch(
-            new TestRunner\ExtensionLoaded(
+            new TestRunner\ExtensionLoadedFromPhar(
                 $this->telemetryInfo(),
+                $filename,
                 $name,
                 $version
             )

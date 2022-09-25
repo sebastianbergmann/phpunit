@@ -25,7 +25,7 @@ interface Emitter
 
     public function testRunnerBootstrapFinished(string $filename): void;
 
-    public function testRunnerLoadedExtension(string $name, string $version): void;
+    public function testRunnerLoadedExtensionFromPhar(string $filename, string $name, string $version): void;
 
     public function testSuiteLoaded(TestSuite $testSuite): void;
 

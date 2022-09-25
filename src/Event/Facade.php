@@ -199,7 +199,7 @@ final class Facade
             TestRunner\EventFacadeSealed::class,
             TestRunner\ExecutionFinished::class,
             TestRunner\ExecutionStarted::class,
-            TestRunner\ExtensionLoaded::class,
+            TestRunner\ExtensionLoadedFromPhar::class,
             TestRunner\Finished::class,
             TestRunner\Started::class,
             TestRunner\DeprecationTriggered::class,

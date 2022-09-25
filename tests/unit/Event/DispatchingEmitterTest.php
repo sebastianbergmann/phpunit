@@ -257,17 +257,17 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
     public function testExtensionLoadedDispatchesExtensionLoadedEvent(): void
     {
-        $subscriber = new class extends RecordingSubscriber implements TestRunner\ExtensionLoadedSubscriber
+        $subscriber = new class extends RecordingSubscriber implements TestRunner\ExtensionLoadedFromPharSubscriber
         {
-            public function notify(TestRunner\ExtensionLoaded $event): void
+            public function notify(TestRunner\ExtensionLoadedFromPhar $event): void
             {
                 $this->record($event);
             }
         };
 
         $dispatcher = $this->dispatcherWithRegisteredSubscriber(
-            TestRunner\ExtensionLoadedSubscriber::class,
-            TestRunner\ExtensionLoaded::class,
+            TestRunner\ExtensionLoadedFromPharSubscriber::class,
+            TestRunner\ExtensionLoadedFromPhar::class,
             $subscriber
         );
 
@@ -278,13 +278,14 @@ final class DispatchingEmitterTest extends Framework\TestCase
             $telemetrySystem
         );
 
-        $emitter->testRunnerLoadedExtension(
+        $emitter->testRunnerLoadedExtensionFromPhar(
+            'filename',
             'example-extension',
             '1.2.3'
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
-        $this->assertInstanceOf(TestRunner\ExtensionLoaded::class, $subscriber->lastRecordedEvent());
+        $this->assertInstanceOf(TestRunner\ExtensionLoadedFromPhar::class, $subscriber->lastRecordedEvent());
     }
 
     public function testTestErroredDispatchesTestErroredEvent(): void

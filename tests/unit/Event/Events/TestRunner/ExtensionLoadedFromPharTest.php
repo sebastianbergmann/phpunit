@@ -12,22 +12,25 @@ namespace PHPUnit\Event\TestRunner;
 use PHPUnit\Event\AbstractEventTestCase;
 use PHPUnit\Framework\Attributes\CoversClass;
 
-#[CoversClass(ExtensionLoaded::class)]
-final class ExtensionLoadedTest extends AbstractEventTestCase
+#[CoversClass(ExtensionLoadedFromPhar::class)]
+final class ExtensionLoadedFromPharTest extends AbstractEventTestCase
 {
     public function testConstructorSetsValues(): void
     {
         $telemetryInfo = $this->telemetryInfo();
+        $filename      = 'extension.phar';
         $name          = 'example-extension';
         $version       = '1.2.3';
 
-        $event = new ExtensionLoaded(
+        $event = new ExtensionLoadedFromPhar(
             $telemetryInfo,
+            $filename,
             $name,
             $version
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
+        $this->assertSame($filename, $event->filename());
         $this->assertSame($name, $event->name());
         $this->assertSame($version, $event->version());
     }
