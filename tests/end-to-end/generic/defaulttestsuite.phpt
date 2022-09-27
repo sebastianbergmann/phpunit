@@ -19,9 +19,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
+Time: %s, Memory: %s
+
 Dummy Bar (PHPUnit\TestFixture\DummyBar)
  ✔ Bar equals bar
-
-Time: %s, Memory: %s
 
 OK (1 test, 1 assertion)

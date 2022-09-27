@@ -20,10 +20,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
+Time: %s, Memory: %s
+
 Numeric Group Annotation (PHPUnit\TestFixture\NumericGroupAnnotation)
  ✔ Empty test for @ticket numeric annotation values
  ✔ Empty test for @group numeric annotation values
-
-Time: %s, Memory: %s
 
 OK (2 tests, 2 assertions)

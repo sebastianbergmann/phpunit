@@ -24,6 +24,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
+Time: %s, Memory: %s
+
 Dataprovider Execution Order (PHPUnit\TestFixture\DataproviderExecutionOrder)
  ✔ First test that always works
  ✔ Add numbers with a dataprovider with data set "1+2=3"
@@ -38,25 +40,6 @@ Dataprovider Execution Order (PHPUnit\TestFixture\DataproviderExecutionOrder)
  ✔ Test in the middle that always works
  ✔ Add more numbers with a dataprovider with data set "1+2=3"
  ✔ Add more numbers with a dataprovider with data set "2+1=3"
- ✘ Add more numbers with a dataprovider with data set "1+1=3"
-   │
-   │ Failed asserting that 2 is identical to 3.
-   │%w
-   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:%d
-   │%w
-
-Time: %s, Memory: %s
-
-Summary of non-successful tests:
-
-Dataprovider Execution Order (PHPUnit\TestFixture\DataproviderExecutionOrder)
- ✘ Add numbers with a dataprovider with data set "1+1=3"
-   │
-   │ Failed asserting that 2 is identical to 3.
-   │%w
-   │ %s%etests%e_files%eDataproviderExecutionOrderTest.php:%d
-   │%w
-
  ✘ Add more numbers with a dataprovider with data set "1+1=3"
    │
    │ Failed asserting that 2 is identical to 3.

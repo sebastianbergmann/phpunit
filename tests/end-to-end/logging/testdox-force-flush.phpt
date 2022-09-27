@@ -23,10 +23,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
+Time: %s, Memory: %s
+
 Test result status with and without message
  ✔ Success
  ✔ Success with message
-
-Time: %s, Memory: %s
 
 OK (2 tests, 2 assertions)

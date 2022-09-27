@@ -21,6 +21,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime: %s
 
+Time: %s, Memory: %s
+
 Issue4632 (PHPUnit\TestFixture\Issue4632)
  ✘ One
    │
@@ -42,8 +44,6 @@ Issue4632 (PHPUnit\TestFixture\Issue4632)
    │
    │ %sIssue4632Test.php:%d
    │
-
-Time: %s, Memory: %s
 
 FAILURES!
 Tests: 3, Assertions: 3, Failures: 3.

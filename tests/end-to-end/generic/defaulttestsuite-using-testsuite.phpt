@@ -21,9 +21,9 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
+Time: %s, Memory: %s
+
 Dummy Foo (PHPUnit\TestFixture\DummyFoo)
  ✔ Foo equals foo
-
-Time: %s, Memory: %s
 
 OK (1 test, 1 assertion)

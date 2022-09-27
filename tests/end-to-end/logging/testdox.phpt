@@ -23,6 +23,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 Runtime: %s
 Configuration: %s
 
+Time: %s, Memory: %s
+
 Basic ANSI color highlighting support
  ✔ Colorize with no color
  ✔ Colorize with one color
@@ -46,7 +48,5 @@ Basic ANSI color highlighting support
  ✔ Prettify named dataprovider with data set "two"
  ✔ TestDox shows name of data set one with value 1
  ✔ TestDox shows name of data set two with value 2
-
-Time: %s, Memory: %s
 
 OK (21 tests, 21 assertions)

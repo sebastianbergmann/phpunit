@@ -2,6 +2,8 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
+Time: %s, Memory: %s
+
 [4mBasic ANSI color highlighting support[0m
  [32m✔[0m Colorize with [36mno[2m·[22mcolor[0m [32m %f [2mms[0m
  [32m✔[0m Colorize with [36mone[2m·[22mcolor[0m [32m %f [2mms[0m
@@ -24,7 +26,5 @@ Runtime:       %s
  [32m✔[0m Prettify named dataprovider[2m with [22m[36mtwo[0m [32m %f [2mms[0m
  [32m✔[0m TestDox shows name of data set [36mone[0m with value [36m1[0m [32m %f [2mms[0m
  [32m✔[0m TestDox shows name of data set [36mtwo[0m with value [36m2[0m [32m %f [2mms[0m
-
-Time: %s, Memory: %s
 
 [30;42mOK (21 tests, 21 assertions)[0m
