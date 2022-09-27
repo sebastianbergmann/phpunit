@@ -9,7 +9,11 @@
  */
 namespace PHPUnit\TextUI\Output\TestDox;
 
+use const PHP_EOL;
+use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\Logging\TestDox\NamePrettifier;
 use PHPUnit\Logging\TestDox\TestMethodCollection;
+use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 
 /**
@@ -42,11 +46,13 @@ final class ResultPrinter
     ];
     private Printer $printer;
     private bool $colors;
+    private NamePrettifier $namePrettifier;
 
     public function __construct(Printer $printer, bool $colors)
     {
-        $this->printer = $printer;
-        $this->colors  = $colors;
+        $this->printer        = $printer;
+        $this->colors         = $colors;
+        $this->namePrettifier = new NamePrettifier;
     }
 
     /**
@@ -54,6 +60,12 @@ final class ResultPrinter
      */
     public function print(array $tests): void
     {
+        foreach ($tests as $className => $_tests) {
+            $this->printClassName($className);
+
+            foreach ($_tests as $test) {
+            }
+        }
     }
 
     public function flush(): void
@@ -123,5 +135,19 @@ final class ResultPrinter
             'color'   => 'fg-blue',
             'message' => 'fg-white,bg-blue',
         ];
+    }
+
+    /**
+     * @psalm-param class-string $className
+     */
+    private function printClassName(string $className): void
+    {
+        $buffer = $this->namePrettifier->prettifyTestClass($className);
+
+        if ($this->colors) {
+            $buffer = Color::colorizeTextBox('underlined', $buffer);
+        }
+
+        $this->printer->print($buffer . PHP_EOL);
     }
 }
