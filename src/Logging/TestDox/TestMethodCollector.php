@@ -14,6 +14,7 @@ use function array_values;
 use function assert;
 use function ksort;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
 use PHPUnit\Event\Telemetry\Duration;
@@ -42,11 +43,12 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 final class TestMethodCollector
 {
     /**
-     * @psalm-var array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus}>
+     * @psalm-var array<class-string, array{test: TestMethod, duration: Duration, status: TestStatus, throwable: ?Throwable}>
      */
-    private array $tests        = [];
-    private ?HRTime $time       = null;
-    private ?TestStatus $status = null;
+    private array $tests          = [];
+    private ?HRTime $time         = null;
+    private ?TestStatus $status   = null;
+    private ?Throwable $throwable = null;
 
     /**
      * @psalm-var list<class-string|trait-string>
@@ -63,7 +65,7 @@ final class TestMethodCollector
     }
 
     /**
-     * @psalm-return array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list<class-string|trait-string>}>
+     * @psalm-return array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus, throwable: ?Throwable, testDoubles: list<class-string|trait-string>}>
      */
     public function testMethodsGroupedByClassAndSortedByLine(): array
     {
@@ -84,8 +86,10 @@ final class TestMethodCollector
             return;
         }
 
-        $this->time   = $event->telemetryInfo()->time();
-        $this->status = TestStatus::unknown();
+        $this->time        = $event->telemetryInfo()->time();
+        $this->status      = TestStatus::unknown();
+        $this->throwable   = null;
+        $this->testDoubles = [];
     }
 
     public function testErrored(Errored $event): void
@@ -94,7 +98,8 @@ final class TestMethodCollector
             return;
         }
 
-        $this->status = TestStatus::error($event->throwable()->message());
+        $this->status    = TestStatus::error($event->throwable()->message());
+        $this->throwable = $event->throwable();
     }
 
     public function testFailed(Failed $event): void
@@ -103,7 +108,8 @@ final class TestMethodCollector
             return;
         }
 
-        $this->status = TestStatus::failure($event->throwable()->message());
+        $this->status    = TestStatus::failure($event->throwable()->message());
+        $this->throwable = $event->throwable();
     }
 
     public function testPassed(Passed $event): void
@@ -122,7 +128,8 @@ final class TestMethodCollector
 
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
-        $this->status = TestStatus::incomplete($event->throwable()->message());
+        $this->status    = TestStatus::incomplete($event->throwable()->message());
+        $this->throwable = $event->throwable();
     }
 
     public function testConsideredRisky(ConsideredRisky $event): void
@@ -165,11 +172,13 @@ final class TestMethodCollector
             'test'        => $test,
             'duration'    => $event->telemetryInfo()->time()->duration($this->time),
             'status'      => $this->status,
+            'throwable'   => $this->throwable,
             'testDoubles' => $this->testDoubles,
         ];
 
         $this->time        = null;
         $this->status      = null;
+        $this->throwable   = null;
         $this->testDoubles = [];
     }
 
