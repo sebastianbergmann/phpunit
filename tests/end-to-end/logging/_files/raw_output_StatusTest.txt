@@ -1,4 +1,4 @@
-PHPUnit %s [44;37m#StandWith[0m[43;30mUkraine[0m
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 Configuration: %sconfiguration.basic.xml

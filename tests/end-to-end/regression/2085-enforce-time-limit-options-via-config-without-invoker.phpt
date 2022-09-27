@@ -22,7 +22,7 @@ $_SERVER['argv'][3] = __DIR__ . '/2085/Issue2085Test.php';
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 
 Error:         Package phpunit/php-invoker is required for enforcing time limits

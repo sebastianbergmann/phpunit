@@ -13,7 +13,7 @@ PHPUnit\TextUI\Command::main(false);
 
 @unlink(__DIR__ . '/2448/.phpunit.result.cache');
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 .                                                                   1 / 1 (100%)
 

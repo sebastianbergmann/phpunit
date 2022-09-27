@@ -15,7 +15,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 chdir(sys_get_temp_dir());
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Generating phpunit.xml in %s
 

@@ -19,7 +19,7 @@ PHPUnit\TextUI\Command::main();
 
 \unlink($tmpResultCache);
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Test 'MultiDependencyTest::testFive' started
 Test 'MultiDependencyTest::testFive' ended

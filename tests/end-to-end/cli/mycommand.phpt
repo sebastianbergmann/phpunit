@@ -14,7 +14,7 @@ require_once __DIR__ . '/../_files/MyCommand.php';
 PHPUnit\TestFixture\MyCommand::main();
 --EXPECTF--
 PHPUnit\TestFixture\MyCommand::myHandler 123
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 ...                                                                 3 / 3 (100%)
 

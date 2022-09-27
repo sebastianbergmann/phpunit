@@ -1,4 +1,4 @@
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Usage:
   phpunit [options] UnitTest [UnitTest.php]

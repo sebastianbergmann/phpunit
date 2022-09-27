@@ -57,7 +57,7 @@ final class Version
 
     public static function getVersionString(): string
     {
-        return 'PHPUnit ' . self::id() . ' #StandWithUkraine';
+        return 'PHPUnit ' . self::id() . ' by Sebastian Bergmann and contributors.';
     }
 
     public static function getReleaseChannel(): string

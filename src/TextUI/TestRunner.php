@@ -319,18 +319,7 @@ final class TestRunner extends BaseTestRunner
             $this->printer->setShowProgressAnimation(!$arguments['noInteraction']);
         }
 
-        if ($arguments['colors'] !== ResultPrinter::COLOR_NEVER) {
-            $this->write(
-                'PHPUnit ' .
-                Version::id() .
-                ' ' .
-                Color::colorize('bg-blue,fg-white', '#StandWith') .
-                Color::colorize('bg-yellow,fg-black', 'Ukraine') .
-                "\n"
-            );
-        } else {
-            $this->write(Version::getVersionString() . "\n");
-        }
+        $this->write(Version::getVersionString() . "\n");
 
         if ($arguments['verbose']) {
             $this->writeMessage('Runtime', $this->runtime->getNameWithVersionAndCodeCoverageDriver());
