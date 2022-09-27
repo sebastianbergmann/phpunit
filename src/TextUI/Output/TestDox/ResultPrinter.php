@@ -40,7 +40,6 @@ final class ResultPrinter
         'trace'   => '╵',
         'last'    => '┴',
     ];
-
     private Printer $printer;
     private bool $colors;
 
