@@ -460,10 +460,6 @@
         </exec>
     </target>
 
-    <target name="generate-project-documentation" depends="-phploc,-checkstyle,-phpunit">
-        <exec executable="${basedir}/tools/phpdox" dir="${basedir}/build/config" taskname="phpdox"/>
-    </target>
-
     <target name="update-tools">
         <exec executable="phive">
             <arg value="--no-progress"/>
@@ -477,34 +473,6 @@
         <exec executable="${basedir}/tools/php-cs-fixer" taskname="php-cs-fixer" failonerror="true">
             <arg value="fix"/>
             <arg path="${basedir}/src/Framework/Assert/Functions.php"/>
-        </exec>
-    </target>
-
-    <target name="-phploc" depends="prepare">
-        <exec executable="${basedir}/tools/phploc" output="/dev/null" taskname="phploc">
-            <arg value="--count-tests"/>
-            <arg value="--log-xml"/>
-            <arg path="${basedir}/build/artifacts/logfiles/phploc.xml"/>
-            <arg path="${basedir}/src"/>
-            <arg path="${basedir}/tests"/>
-        </exec>
-    </target>
-
-    <target name="-checkstyle" depends="prepare">
-        <exec executable="${basedir}/tools/php-cs-fixer" output="${basedir}/build/artifacts/logfiles/checkstyle.xml" error="/dev/null" taskname="php-cs-fixer">
-            <arg value="--diff"/>
-            <arg value="--dry-run"/>
-            <arg value="fix"/>
-            <arg value="--format=checkstyle"/>
-        </exec>
-    </target>
-
-    <target name="-phpunit" depends="setup">
-        <exec executable="${basedir}/phpunit" taskname="phpunit">
-            <arg value="--coverage-xml"/>
-            <arg path="${basedir}/build/artifacts/logfiles/coverage"/>
-            <arg value="--log-junit"/>
-            <arg path="${basedir}/build/artifacts/logfiles/junit.xml"/>
         </exec>
     </target>
 </project>
