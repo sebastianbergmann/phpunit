@@ -12,8 +12,6 @@ namespace PHPUnit\TextUI\Output\TestDox;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Framework\TestStatus\TestStatus;
-use PHPUnit\TestRunner\TestResult\TestResult;
-use PHPUnit\TextUI\Output\SummaryPrinter;
 use PHPUnit\Util\Printer;
 
 /**
@@ -33,9 +31,8 @@ final class ResultPrinter
     /**
      * @psalm-param array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list<class-string|trait-string>}> $tests
      */
-    public function print(TestResult $result, array $tests): void
+    public function print(array $tests): void
     {
-        (new SummaryPrinter($this->printer, $this->colors))->print($result);
     }
 
     public function flush(): void

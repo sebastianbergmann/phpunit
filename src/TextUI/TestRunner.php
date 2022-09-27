@@ -44,6 +44,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
+use PHPUnit\TextUI\Output\SummaryPrinter;
 use PHPUnit\TextUI\Output\TestDox\ResultPrinter as TestDoxResultPrinter;
 use PHPUnit\Util\DefaultPrinter;
 use PHPUnit\Util\NullPrinter;
@@ -179,8 +180,12 @@ final class TestRunner
                 $this->configuration->displayDetailsOnTestsThatTriggerErrors(),
                 $this->configuration->displayDetailsOnTestsThatTriggerNotices(),
                 $this->configuration->displayDetailsOnTestsThatTriggerWarnings(),
-                $this->configuration->colors(),
                 $this->configuration->reverseDefectList()
+            );
+
+            $summaryPrinter = new SummaryPrinter(
+                $this->printer,
+                $this->configuration->colors(),
             );
         }
 
@@ -237,6 +242,13 @@ final class TestRunner
             $this->configuration->hasLogfileTestdoxXml() ||
             $this->configuration->outputIsTestDox()) {
             $testDoxCollector = new TestMethodCollector;
+
+            if ($this->configuration->outputIsTestDox()) {
+                $summaryPrinter = new SummaryPrinter(
+                    $this->printer,
+                    $this->configuration->colors(),
+                );
+            }
         }
 
         Event\Facade::seal();
@@ -253,7 +265,6 @@ final class TestRunner
                 true,
                 true,
                 false,
-                false
             );
         }
 
@@ -396,8 +407,9 @@ final class TestRunner
             $this->printer->print((new ResourceUsageFormatter)->resourceUsageSinceStartOfRequest() . PHP_EOL . PHP_EOL);
         }
 
-        if (isset($resultPrinter)) {
+        if (isset($resultPrinter, $summaryPrinter)) {
             $resultPrinter->print($result);
+            $summaryPrinter->print($result);
         }
 
         if (isset($junitXmlLogger)) {
@@ -419,12 +431,13 @@ final class TestRunner
             $textLogger->flush();
         }
 
-        if (isset($testDoxCollector) &&
-            $this->configuration->outputIsTestDox()) {
+        if (isset($testDoxCollector, $summaryPrinter) &&
+             $this->configuration->outputIsTestDox()) {
             (new TestDoxResultPrinter($this->printer, $this->configuration->colors()))->print(
-                $result,
                 $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
             );
+
+            $summaryPrinter->print($result);
         }
 
         if (isset($testDoxCollector) &&

@@ -36,7 +36,6 @@ use PHPUnit\Event\Test\PhpunitWarningTriggered;
 use PHPUnit\Event\Test\PhpWarningTriggered;
 use PHPUnit\Event\Test\WarningTriggered;
 use PHPUnit\TestRunner\TestResult\TestResult;
-use PHPUnit\TextUI\Output\SummaryPrinter;
 use PHPUnit\Util\Printer;
 
 /**
@@ -45,7 +44,6 @@ use PHPUnit\Util\Printer;
 final class ResultPrinter
 {
     private Printer $printer;
-    private bool $colors;
     private bool $displayDetailsOnIncompleteTests;
     private bool $displayDetailsOnSkippedTests;
     private bool $displayDetailsOnTestsThatTriggerDeprecations;
@@ -55,10 +53,9 @@ final class ResultPrinter
     private bool $displayDefectsInReverseOrder;
     private bool $listPrinted = false;
 
-    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $colors, bool $displayDefectsInReverseOrder)
+    public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDefectsInReverseOrder)
     {
         $this->printer                                      = $printer;
-        $this->colors                                       = $colors;
         $this->displayDetailsOnIncompleteTests              = $displayDetailsOnIncompleteTests;
         $this->displayDetailsOnSkippedTests                 = $displayDetailsOnSkippedTests;
         $this->displayDetailsOnTestsThatTriggerDeprecations = $displayDetailsOnTestsThatTriggerDeprecations;
@@ -103,8 +100,6 @@ final class ResultPrinter
             $this->printDetailsOnTestsThatTriggerPhpWarnings($result);
             $this->printDetailsOnTestsThatTriggerWarnings($result);
         }
-
-        (new SummaryPrinter($this->printer, $this->colors))->print($result);
     }
 
     public function flush(): void

@@ -46,9 +46,11 @@ use PHPUnit\Framework\IncompleteTestError;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\TestRunner\TestResult\TestResult;
+use PHPUnit\TextUI\Output\SummaryPrinter;
 use PHPUnit\Util\Printer;
 
 #[CoversClass(ResultPrinter::class)]
+#[CoversClass(SummaryPrinter::class)]
 #[Medium]
 final class ResultPrinterTest extends TestCase
 {
@@ -65,12 +67,18 @@ final class ResultPrinterTest extends TestCase
             true,
             true,
             true,
-            false,
             false
         );
 
         $resultPrinter->print($result);
         $resultPrinter->flush();
+
+        $summaryPrinter = new SummaryPrinter(
+            $printer,
+            false
+        );
+
+        $summaryPrinter->print($result);
 
         /* @noinspection PhpPossiblePolymorphicInvocationInspection */
         $this->assertStringMatchesFormatFile(
