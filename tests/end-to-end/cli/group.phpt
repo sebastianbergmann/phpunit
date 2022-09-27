@@ -12,7 +12,7 @@ $_SERVER['argv'][] = __DIR__ . '/../../_files/NumericGroupAnnotationTest.php';
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Numeric Group Annotation (PHPUnit\TestFixture\NumericGroupAnnotation)
  ✔ Empty test for @ticket numeric annotation values

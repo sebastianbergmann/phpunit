@@ -9,7 +9,7 @@ $_SERVER['argv'][] = __DIR__ . '/2972/';
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 
 Warning:       Test case class not matching filename is deprecated

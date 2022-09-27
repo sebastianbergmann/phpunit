@@ -11,7 +11,7 @@ require_once __DIR__ . '/../../bootstrap.php';
 
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 PHPUnit\TestFixture\Extension::tellAmountOfInjectedArguments: 0
 PHPUnit\TestFixture\Extension::executeBeforeFirstTest

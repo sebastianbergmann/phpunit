@@ -15,7 +15,7 @@ PHPUnit\TextUI\Command::main(false);
 
 print file_get_contents($target);
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Wrote list of tests that would have been run to %s
 <?xml version="1.0" encoding="UTF-8"?>

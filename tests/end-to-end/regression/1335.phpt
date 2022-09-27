@@ -11,7 +11,7 @@ $_SERVER['argv'][] = __DIR__ . '/1335/Issue1335Test.php';
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 ............                                                      12 / 12 (100%)
 

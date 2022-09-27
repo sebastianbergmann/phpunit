@@ -17,7 +17,7 @@ $_SERVER['argv'][] = \dirname(\dirname(\dirname(__DIR__))) . '/_files/Dataprovid
 require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testFirstTestThatAlwaysWorks' started
 Test 'PHPUnit\TestFixture\DataproviderExecutionOrderTest::testFirstTestThatAlwaysWorks' ended

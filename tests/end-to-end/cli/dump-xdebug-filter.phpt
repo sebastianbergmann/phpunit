@@ -16,7 +16,7 @@ $_SERVER['argv'][] = 'php://stderr';
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 Please note that --dump-xdebug-filter and --prepend are deprecated and will be removed in PHPUnit 10.
 <?php declare(strict_types=1);

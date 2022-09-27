@@ -18,7 +18,7 @@ PHPUnit\TextUI\Command::main(false);
 
 print file_get_contents($target);
 --EXPECTF--
-PHPUnit %s #StandWithUkraine
+PHPUnit %s by Sebastian Bergmann and contributors.
 
 .SS..                                                               5 / 5 (100%)
 
