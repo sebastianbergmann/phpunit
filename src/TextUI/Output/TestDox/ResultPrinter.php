@@ -64,7 +64,13 @@ final class ResultPrinter
             $this->printClassName($className);
 
             foreach ($_tests as $test) {
+                $this->printTestResult(
+                    $test['test'],
+                    $test['status'],
+                );
             }
+
+            $this->printer->print(PHP_EOL);
         }
     }
 
@@ -73,12 +79,45 @@ final class ResultPrinter
         $this->printer->flush();
     }
 
+    /**
+     * @psalm-param class-string $className
+     */
+    private function printClassName(string $className): void
+    {
+        $buffer = $this->namePrettifier->prettifyTestClass($className);
+
+        if ($this->colors) {
+            $buffer = Color::colorizeTextBox('underlined', $buffer);
+        }
+
+        $this->printer->print($buffer . PHP_EOL);
+    }
+
+    private function printTestResult(TestMethod $test, TestStatus $status): void
+    {
+        $style = $this->style($status);
+
+        if ($this->colors) {
+            $this->printer->print(
+                Color::colorizeTextBox($style['color'], ' ' . $style['symbol'] . ' ')
+            );
+        } else {
+            $this->printer->print(' ' . $style['symbol'] . ' ');
+        }
+
+        $this->printer->print($this->namePrettifier->prettifyTestMethod($test->name()) . PHP_EOL);
+    }
+
+    /**
+     * @psalm-return array{symbol: string, color: string, message: ?string}
+     */
     private function style(TestStatus $status): array
     {
         if ($status->isSuccess()) {
             return [
-                'symbol' => '✔',
-                'color'  => 'fg-green',
+                'symbol'  => '✔',
+                'color'   => 'fg-green',
+                'message' => null,
             ];
         }
 
@@ -135,19 +174,5 @@ final class ResultPrinter
             'color'   => 'fg-blue',
             'message' => 'fg-white,bg-blue',
         ];
-    }
-
-    /**
-     * @psalm-param class-string $className
-     */
-    private function printClassName(string $className): void
-    {
-        $buffer = $this->namePrettifier->prettifyTestClass($className);
-
-        if ($this->colors) {
-            $buffer = Color::colorizeTextBox('underlined', $buffer);
-        }
-
-        $this->printer->print($buffer . PHP_EOL);
     }
 }
