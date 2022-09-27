@@ -53,7 +53,6 @@ use PHPUnit\Runner\TestListenerAdapter;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\Runner\TestSuiteSorter;
 use PHPUnit\Runner\Version;
-use PHPUnit\Util\Color;
 use PHPUnit\Util\Configuration;
 use PHPUnit\Util\Filesystem;
 use PHPUnit\Util\Log\JUnit;
