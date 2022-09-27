@@ -95,6 +95,15 @@ final class ResultPrinter
 
     private function printTestResult(TestMethod $test, TestStatus $status): void
     {
+        $this->printTestMethodPrefixHeader($test, $status);
+
+        if ($status->isSuccess()) {
+            return;
+        }
+    }
+
+    private function printTestMethodPrefixHeader(TestMethod $test, TestStatus $status): void
+    {
         $style = $this->style($status);
 
         if ($this->colors) {
