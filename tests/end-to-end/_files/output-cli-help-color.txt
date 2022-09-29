@@ -102,9 +102,7 @@
 
   [32m--teamcity                      [0m Report test execution progress in TeamCity
                                    format
-  [32m--testdox                       [0m Report test execution progress in TestDox
-                                   format
-  [32m--no-interaction                [0m Disable TestDox progress animation
+  [32m--testdox                       [0m Report test results in TestDox format
 
 [33mLogging:[0m
 

@@ -121,8 +121,7 @@ final class Help
             ['spacer' => ''],
 
             ['arg' => '--teamcity', 'desc' => 'Report test execution progress in TeamCity format'],
-            ['arg' => '--testdox', 'desc' => 'Report test execution progress in TestDox format'],
-            ['arg' => '--no-interaction', 'desc' => 'Disable TestDox progress animation'],
+            ['arg' => '--testdox', 'desc' => 'Report test results in TestDox format'],
         ],
 
         'Logging' => [

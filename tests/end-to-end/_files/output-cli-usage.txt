@@ -83,8 +83,7 @@ Reporting:
   --reverse-list                   Print defects in reverse order
 
   --teamcity                       Report test execution progress in TeamCity format
-  --testdox                        Report test execution progress in TestDox format
-  --no-interaction                 Disable TestDox progress animation
+  --testdox                        Report test results in TestDox format
 
 Logging:
 

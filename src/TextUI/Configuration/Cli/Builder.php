@@ -74,7 +74,6 @@ final class Builder
         'no-configuration',
         'no-coverage',
         'no-logging',
-        'no-interaction',
         'no-extensions',
         'no-output',
         'no-progress',
