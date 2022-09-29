@@ -1285,6 +1285,9 @@ final class Configuration
         return $this->noExtensions;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->noOutput
+     */
     public function hasNoOutput(): bool
     {
         return $this->noOutput !== null;
@@ -1302,6 +1305,9 @@ final class Configuration
         return $this->noOutput;
     }
 
+    /**
+     * @psalm-assert-if-true !null $this->noProgress
+     */
     public function hasNoProgress(): bool
     {
         return $this->noProgress !== null;
