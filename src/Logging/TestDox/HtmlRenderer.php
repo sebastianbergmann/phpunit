@@ -10,10 +10,6 @@
 namespace PHPUnit\Logging\TestDox;
 
 use function sprintf;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Telemetry\Duration;
-use PHPUnit\Framework\TestStatus\TestStatus;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -107,7 +103,7 @@ EOT;
 EOT;
 
     /**
-     * @psalm-param array<class-string, array{test: TestMethod, duration: Duration, status: TestStatus, throwable: ?Throwable, testDoubles: list<class-string|trait-string>}> $tests
+     * @psalm-param array<class-string, TestMethodCollection> $tests
      */
     public function render(array $tests): string
     {
@@ -124,8 +120,8 @@ EOT;
             foreach ($_tests as $test) {
                 $buffer .= sprintf(
                     "            <li class=\"%s\">%s</li>\n",
-                    $test['status']->isSuccess() ? 'success' : 'defect',
-                    $prettifier->prettifyTestMethod($test['test']->methodName())
+                    $test->status()->isSuccess() ? 'success' : 'defect',
+                    $prettifier->prettifyTestMethod($test->test()->methodName())
                 );
             }
 

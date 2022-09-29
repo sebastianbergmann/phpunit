@@ -10,10 +10,6 @@
 namespace PHPUnit\Logging\TestDox;
 
 use function assert;
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Telemetry\Duration;
-use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\Uses;
@@ -25,7 +21,7 @@ use XMLWriter;
 final class XmlRenderer
 {
     /**
-     * @psalm-param array<class-string, array{test: TestMethod, duration: Duration, status: TestStatus, throwable: ?Throwable, testDoubles: list<class-string|trait-string>}> $tests
+     * @psalm-param array<class-string, TestMethodCollection> $tests
      */
     public function render(array $tests): string
     {
@@ -41,7 +37,7 @@ final class XmlRenderer
 
         foreach ($tests as $className => $_tests) {
             foreach ($_tests as $test) {
-                $methodName = $test['test']->methodName();
+                $methodName = $test->test()->methodName();
 
                 $writer->startElement('test');
 
@@ -50,11 +46,11 @@ final class XmlRenderer
                 $writer->writeAttribute('prettifiedClassName', $prettifier->prettifyTestClass($className));
                 $writer->writeAttribute('prettifiedMethodName', $prettifier->prettifyTestMethod($methodName));
                 $writer->writeAttribute('size', (new Groups)->size($className, $methodName)->asString());
-                $writer->writeAttribute('time', (string) $test['duration']->asFloat());
-                $writer->writeAttribute('status', $test['status']->asString());
+                $writer->writeAttribute('time', (string) $test->duration()->asFloat());
+                $writer->writeAttribute('status', $test->status()->asString());
 
-                if ($test['status']->isError() || $test['status']->isFailure()) {
-                    $writer->writeAttribute('exceptionMessage', $test['status']->message());
+                if ($test->status()->isError() || $test->status()->isFailure()) {
+                    $writer->writeAttribute('exceptionMessage', $test->status()->message());
                 }
 
                 $annotations = $parser->parse($className, $methodName);
@@ -74,7 +70,7 @@ final class XmlRenderer
                     $writer->endElement();
                 }
 
-                foreach ($test['test']->metadata()->isCovers() as $covers) {
+                foreach ($test->test()->metadata()->isCovers() as $covers) {
                     assert($covers instanceof Covers);
 
                     $writer->startElement('covers');
@@ -82,7 +78,7 @@ final class XmlRenderer
                     $writer->endElement();
                 }
 
-                foreach ($test['test']->metadata()->isUses() as $uses) {
+                foreach ($test->test()->metadata()->isUses() as $uses) {
                     assert($uses instanceof Uses);
 
                     $writer->startElement('uses');
@@ -90,7 +86,7 @@ final class XmlRenderer
                     $writer->endElement();
                 }
 
-                foreach ($test['testDoubles'] as $testDouble) {
+                foreach ($test->testDoubles() as $testDouble) {
                     $writer->startElement('testDouble');
                     $writer->writeAttribute('type', $testDouble);
                     $writer->endElement();

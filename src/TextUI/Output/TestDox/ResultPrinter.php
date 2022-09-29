@@ -9,10 +9,7 @@
  */
 namespace PHPUnit\TextUI\Output\TestDox;
 
-use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\Code\Throwable;
-use PHPUnit\Event\Telemetry\Duration;
-use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\Logging\TestDox\TestMethodCollection;
 use PHPUnit\Util\Printer;
 
 /**
@@ -30,7 +27,7 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-param array<class-string, array{test: TestMethod, duration: Duration, status: TestStatus, throwable: ?Throwable, testDoubles: list<class-string|trait-string>}> $tests
+     * @psalm-param array<class-string, TestMethodCollection> $tests
      */
     public function print(array $tests): void
     {

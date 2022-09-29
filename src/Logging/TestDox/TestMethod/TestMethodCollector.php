@@ -9,15 +9,11 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
-use function array_keys;
-use function array_values;
 use function assert;
-use function ksort;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
-use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
@@ -36,6 +32,7 @@ use PHPUnit\Event\Test\TestProxyCreated;
 use PHPUnit\Event\Test\TestStubCreated;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\Logging\TestDox\TestMethod as TestDoxTestMethod;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -43,7 +40,7 @@ use PHPUnit\Framework\TestStatus\TestStatus;
 final class TestMethodCollector
 {
     /**
-     * @psalm-var array<class-string, array{test: TestMethod, duration: Duration, status: TestStatus, throwable: ?Throwable}>
+     * @psalm-var array<class-string, list<TestDoxTestMethod>>
      */
     private array $tests          = [];
     private ?HRTime $time         = null;
@@ -65,19 +62,17 @@ final class TestMethodCollector
     }
 
     /**
-     * @psalm-return array<class-string,array{test: TestMethod, duration: Duration, status: TestStatus, throwable: ?Throwable, testDoubles: list<class-string|trait-string>}>
+     * @psalm-return array<class-string, TestMethodCollection>
      */
-    public function testMethodsGroupedByClassAndSortedByLine(): array
+    public function testMethodsGroupedByClass(): array
     {
-        $tests = $this->tests;
+        $result = [];
 
-        foreach (array_keys($tests) as $key) {
-            ksort($tests[$key]);
-
-            $tests[$key] = array_values($tests[$key]);
+        foreach ($this->tests as $className => $tests) {
+            $result[$className] = TestMethodCollection::fromArray($tests);
         }
 
-        return $tests;
+        return $result;
     }
 
     public function testPrepared(Prepared $event): void
@@ -168,13 +163,13 @@ final class TestMethodCollector
             $this->tests[$test->className()] = [];
         }
 
-        $this->tests[$test->className()][$test->line()] = [
-            'test'        => $test,
-            'duration'    => $event->telemetryInfo()->time()->duration($this->time),
-            'status'      => $this->status,
-            'throwable'   => $this->throwable,
-            'testDoubles' => $this->testDoubles,
-        ];
+        $this->tests[$test->className()][$test->line()] = new TestDoxTestMethod(
+            $test,
+            $event->telemetryInfo()->time()->duration($this->time),
+            $this->status,
+            $this->throwable,
+            $this->testDoubles
+        );
 
         $this->time        = null;
         $this->status      = null;

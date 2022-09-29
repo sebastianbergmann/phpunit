@@ -435,7 +435,7 @@ final class TestRunner
         if (isset($testDoxCollector, $summaryPrinter) &&
              $this->configuration->outputIsTestDox()) {
             (new TestDoxResultPrinter($this->printer, $this->configuration->colors()))->print(
-                $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                $testDoxCollector->testMethodsGroupedByClass()
             );
 
             $summaryPrinter->print($result);
@@ -445,7 +445,7 @@ final class TestRunner
             $this->configuration->hasLogfileTestdoxHtml()) {
             $this->printerFor($this->configuration->logfileTestdoxHtml())->print(
                 (new TestDoxHtmlRenderer)->render(
-                    $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                    $testDoxCollector->testMethodsGroupedByClass()
                 )
             );
         }
@@ -454,7 +454,7 @@ final class TestRunner
             $this->configuration->hasLogfileTestdoxText()) {
             $this->printerFor($this->configuration->logfileTestdoxText())->print(
                 (new TestDoxTextRenderer)->render(
-                    $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                    $testDoxCollector->testMethodsGroupedByClass()
                 )
             );
         }
@@ -463,7 +463,7 @@ final class TestRunner
             $this->configuration->hasLogfileTestdoxXml()) {
             $this->printerFor($this->configuration->logfileTestdoxXml())->print(
                 (new TestDoxXmlRenderer)->render(
-                    $testDoxCollector->testMethodsGroupedByClassAndSortedByLine()
+                    $testDoxCollector->testMethodsGroupedByClass()
                 )
             );
         }
