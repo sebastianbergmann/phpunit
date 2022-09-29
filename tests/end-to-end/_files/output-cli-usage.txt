@@ -72,6 +72,7 @@ Reporting:
   --columns max                    Use maximum number of columns for progress output
   --stderr                         Write to STDERR instead of STDOUT
 
+  --no-progress                    Disable output of test execution progress
   --no-output                      Disable all output
 
   --display-incomplete             Display details for incomplete tests

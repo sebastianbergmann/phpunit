@@ -108,6 +108,7 @@ final class Help
             ['arg'    => '--stderr', 'desc' => 'Write to STDERR instead of STDOUT'],
             ['spacer' => ''],
 
+            ['arg'    => '--no-progress', 'desc' => 'Disable output of test execution progress'],
             ['arg'    => '--no-output', 'desc' => 'Disable all output'],
             ['spacer' => ''],
 
