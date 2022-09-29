@@ -87,6 +87,7 @@
   [32m--stderr                        [0m Write to STDERR instead of STDOUT
 
   [32m--no-progress                   [0m Disable output of test execution progress
+  [32m--no-results                    [0m Disable output of test results
   [32m--no-output                     [0m Disable all output
 
   [32m--display-incomplete            [0m Display details for incomplete tests

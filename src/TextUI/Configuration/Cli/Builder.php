@@ -77,6 +77,7 @@ final class Builder
         'no-extensions',
         'no-output',
         'no-progress',
+        'no-results',
         'order-by=',
         'process-isolation',
         'repeat=',
@@ -195,6 +196,7 @@ final class Builder
         $noExtensions                      = null;
         $noOutput                          = null;
         $noProgress                        = null;
+        $noResults                         = null;
         $noLogging                         = null;
         $processIsolation                  = null;
         $randomOrderSeed                   = null;
@@ -619,6 +621,11 @@ final class Builder
 
                     break;
 
+                case '--no-results':
+                    $noResults = true;
+
+                    break;
+
                 case '--globals-backup':
                     $backupGlobals = true;
 
@@ -824,6 +831,7 @@ final class Builder
             $noExtensions,
             $noOutput,
             $noProgress,
+            $noResults,
             $noLogging,
             $processIsolation,
             $randomOrderSeed,

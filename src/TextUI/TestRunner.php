@@ -154,7 +154,8 @@ final class TestRunner
 
         $this->printer = new NullPrinter;
 
-        if ($this->configuration->outputIsDefault() ||
+        if ($this->useDefaultProgressPrinter() ||
+            $this->useDefaultResultPrinter() ||
             $this->configuration->outputIsTestDox()) {
             if ($this->configuration->outputToStandardErrorStream()) {
                 $this->printer = DefaultPrinter::standardError();
@@ -162,7 +163,7 @@ final class TestRunner
                 $this->printer = DefaultPrinter::standardOutput();
             }
 
-            if (!$this->configuration->noProgress()) {
+            if ($this->useDefaultProgressPrinter()) {
                 $progressPrinter = new DefaultProgressPrinter(
                     $this->printer,
                     $this->configuration->colors(),
@@ -171,7 +172,7 @@ final class TestRunner
             }
         }
 
-        if ($this->configuration->outputIsDefault()) {
+        if ($this->useDefaultResultPrinter()) {
             $resultPrinter = new DefaultResultPrinter(
                 $this->printer,
                 $this->configuration->displayDetailsOnIncompleteTests(),
@@ -734,5 +735,43 @@ final class TestRunner
         }
 
         return DefaultPrinter::from($target);
+    }
+
+    private function useDefaultProgressPrinter(): bool
+    {
+        if ($this->configuration->noOutput()) {
+            return false;
+        }
+
+        if ($this->configuration->noProgress()) {
+            return false;
+        }
+
+        if ($this->configuration->outputIsTeamCity()) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private function useDefaultResultPrinter(): bool
+    {
+        if ($this->configuration->noOutput()) {
+            return false;
+        }
+
+        if ($this->configuration->noResults()) {
+            return false;
+        }
+
+        if ($this->configuration->outputIsTeamCity()) {
+            return false;
+        }
+
+        if ($this->configuration->outputIsTestDox()) {
+            return false;
+        }
+
+        return true;
     }
 }

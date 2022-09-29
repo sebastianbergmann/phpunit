@@ -109,6 +109,7 @@ final class Help
             ['spacer' => ''],
 
             ['arg'    => '--no-progress', 'desc' => 'Disable output of test execution progress'],
+            ['arg'    => '--no-results', 'desc' => 'Disable output of test results'],
             ['arg'    => '--no-output', 'desc' => 'Disable all output'],
             ['spacer' => ''],
 

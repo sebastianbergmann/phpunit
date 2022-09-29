@@ -73,6 +73,7 @@ Reporting:
   --stderr                         Write to STDERR instead of STDOUT
 
   --no-progress                    Disable output of test execution progress
+  --no-results                     Disable output of test results
   --no-output                      Disable all output
 
   --display-incomplete             Display details for incomplete tests

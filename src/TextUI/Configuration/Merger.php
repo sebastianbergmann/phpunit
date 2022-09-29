@@ -524,24 +524,34 @@ final class Merger
             $logEventsVerboseText = $cliConfiguration->logEventsVerboseText();
         }
 
-        $defaultOutput  = true;
         $teamCityOutput = false;
-        $testDoxOutput  = false;
 
         if ($cliConfiguration->hasTeamCityPrinter() && $cliConfiguration->teamCityPrinter()) {
             $teamCityOutput = true;
-            $defaultOutput  = false;
-        } elseif ($cliConfiguration->hasTestDoxPrinter() && $cliConfiguration->testdoxPrinter()) {
+        }
+
+        $testDoxOutput = false;
+
+        if ($cliConfiguration->hasTestDoxPrinter() && $cliConfiguration->testdoxPrinter()) {
             $testDoxOutput = true;
-            $defaultOutput = false;
-        } elseif ($cliConfiguration->hasNoOutput() && $cliConfiguration->noOutput()) {
-            $defaultOutput = false;
         }
 
         $noProgress = false;
 
         if ($cliConfiguration->hasNoProgress() && $cliConfiguration->noProgress()) {
             $noProgress = true;
+        }
+
+        $noResults = false;
+
+        if ($cliConfiguration->hasNoResults() && $cliConfiguration->noResults()) {
+            $noResults = true;
+        }
+
+        $noOutput = false;
+
+        if ($cliConfiguration->hasNoOutput() && $cliConfiguration->noOutput()) {
+            $noOutput = true;
         }
 
         $repeat = 0;
@@ -679,6 +689,8 @@ final class Merger
             $requireCoverageMetadata,
             $registerMockObjectsFromTestArgumentsRecursively,
             $noProgress,
+            $noResults,
+            $noOutput,
             $executionOrder,
             $executionOrderDefects,
             $resolveDependencies,
@@ -690,7 +702,6 @@ final class Merger
             $logfileTestdoxXml,
             $logEventsText,
             $logEventsVerboseText,
-            $defaultOutput,
             $teamCityOutput,
             $testDoxOutput,
             $repeat,
