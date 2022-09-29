@@ -424,6 +424,16 @@
       <code>isSuccess</code>
       <code>methodName</code>
     </PossiblyInvalidMethodCall>
+    <PossiblyNullArrayAccess occurrences="2">
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+    </PossiblyNullArrayAccess>
+    <PossiblyNullReference occurrences="4">
+      <code>$test</code>
+      <code>$test</code>
+      <code>isSuccess</code>
+      <code>methodName</code>
+    </PossiblyNullReference>
     <UndefinedMethod occurrences="2">
       <code>$test</code>
       <code>$test</code>
@@ -448,6 +458,16 @@
       <code>isSuccess</code>
       <code>methodName</code>
     </PossiblyInvalidMethodCall>
+    <PossiblyNullArrayAccess occurrences="2">
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+    </PossiblyNullArrayAccess>
+    <PossiblyNullReference occurrences="4">
+      <code>$test</code>
+      <code>$test</code>
+      <code>isSuccess</code>
+      <code>methodName</code>
+    </PossiblyNullReference>
     <UndefinedMethod occurrences="2">
       <code>$test</code>
       <code>$test</code>
@@ -461,7 +481,7 @@
       <code>$tests</code>
     </InvalidReturnStatement>
     <InvalidReturnType occurrences="1">
-      <code>array&lt;class-string,array{test: TestMethod, duration: Duration, status: TestStatus, testDoubles: list&lt;class-string|trait-string&gt;}&gt;</code>
+      <code>array&lt;class-string,array{test: TestMethod, duration: Duration, status: TestStatus, throwable: ?Throwable, testDoubles: list&lt;class-string|trait-string&gt;}&gt;</code>
     </InvalidReturnType>
     <MissingThrowsDocblock occurrences="1">
       <code>duration</code>
@@ -484,9 +504,6 @@
       <code>$test['test']</code>
       <code>$test['testDoubles']</code>
     </InvalidArrayOffset>
-    <PossiblyInvalidIterator occurrences="1">
-      <code>$test['testDoubles']</code>
-    </PossiblyInvalidIterator>
     <PossiblyInvalidMethodCall occurrences="8">
       <code>asFloat</code>
       <code>asString</code>
@@ -497,6 +514,29 @@
       <code>metadata</code>
       <code>methodName</code>
     </PossiblyInvalidMethodCall>
+    <PossiblyNullArrayAccess occurrences="4">
+      <code>$test['duration']</code>
+      <code>$test['status']</code>
+      <code>$test['test']</code>
+      <code>$test['testDoubles']</code>
+    </PossiblyNullArrayAccess>
+    <PossiblyNullIterator occurrences="1">
+      <code>$test['testDoubles']</code>
+    </PossiblyNullIterator>
+    <PossiblyNullReference occurrences="12">
+      <code>$test</code>
+      <code>$test</code>
+      <code>$test</code>
+      <code>$test</code>
+      <code>asFloat</code>
+      <code>asString</code>
+      <code>isError</code>
+      <code>isFailure</code>
+      <code>message</code>
+      <code>metadata</code>
+      <code>metadata</code>
+      <code>methodName</code>
+    </PossiblyNullReference>
     <UndefinedMethod occurrences="4">
       <code>$test</code>
       <code>$test</code>
