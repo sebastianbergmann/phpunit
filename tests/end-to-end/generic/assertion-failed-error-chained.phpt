@@ -20,11 +20,11 @@ There was 1 failure:
 1) AssertionFailedErrorChainedTest::testOne
 foo
 
-%A
-
-Caused by RuntimeException: foo
 %sAssertionFailedErrorChainedTest.php:%d
 
-%A
+Caused by RuntimeException: foo
+
+%sAssertionFailedErrorChainedTest.php:%d
+
 FAILURES!
 Tests: 1, Assertions: 0, Failures: 1.

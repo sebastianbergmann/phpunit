@@ -29,7 +29,7 @@ class AssertionFailedError extends Exception implements SelfDescribing
     protected $previousThrowableMessage;
 
     /**
-     * @var int|null
+     * @var int|string|null
      */
     protected $previousThrowableCode;
 
@@ -38,11 +38,11 @@ class AssertionFailedError extends Exception implements SelfDescribing
      */
     protected $previousThrowableTrace;
 
-    public function __construct($message = '', $code = 0, Throwable $previous = null)
+    public function __construct($message = '', $code = 0, Throwable $previous = null, bool $inIsolation = false)
     {
         parent::__construct($message, $code, $previous);
 
-        if ($previous) {
+        if ($inIsolation && $previous) {
             $this->previousThrowableClass = get_class($previous);
             $this->previousThrowableMessage = $previous->getMessage();
             $this->previousThrowableCode = $previous->getCode();
@@ -61,7 +61,7 @@ class AssertionFailedError extends Exception implements SelfDescribing
                 $string .= ": " . $this->previousThrowableMessage;
             }
 
-            $string .= "\n" . $this->previousThrowableTrace;
+            $string .= "\n\n" . $this->previousThrowableTrace;
         }
 
         return $string;

@@ -12,11 +12,15 @@ use PHPUnit\Framework\AssertionFailedError;
 
 class AssertionFailedErrorChainedTest extends TestCase
 {
-    protected function onNotSuccessfulTest(\Throwable $t): void {
-      throw new AssertionFailedError($t->getMessage(), $t->getCode(), $t);
-      parent::onNotSuccessfulTest($t);
+    protected function onNotSuccessfulTest(\Throwable $t): void
+    {
+        throw new AssertionFailedError($t->getMessage(), $t->getCode(), $t, true);
+        parent::onNotSuccessfulTest($t);
     }
 
+    /**
+     * @runInSeparateProcess
+     */
     public function testOne(): void
     {
         throw new \RuntimeException('foo');
