@@ -18,12 +18,13 @@ Time: %s, Memory: %s
 There was 1 failure:
 
 1) AssertionFailedErrorChainedTest::testOne
-foo in %AssertionFailedErrorChainedTest.php:%d
+foo
 
-Caused by
-RuntimeException: foo in %AssertionFailedErrorChainedTest.php:%d
-Stack trace:
 %A
 
+Caused by RuntimeException: foo
+%sAssertionFailedErrorChainedTest.php:%d
+
+%A
 FAILURES!
-Tests: 1, Assertions: 1, Failures: 1.
+Tests: 1, Assertions: 0, Failures: 1.
