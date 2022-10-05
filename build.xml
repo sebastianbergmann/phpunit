@@ -464,7 +464,6 @@
         <exec executable="phive">
             <arg value="--no-progress"/>
             <arg value="update"/>
-            <arg value="--force-accept-unsigned"/>
         </exec>
     </target>
 
