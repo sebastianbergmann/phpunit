@@ -19,34 +19,39 @@ use Throwable;
 class AssertionFailedError extends Exception implements SelfDescribing
 {
     /**
-     * @var string|null
+     * @var null|string
      */
     protected $previousThrowableClass;
 
     /**
-     * @var string|null
-     */
-    protected $previousThrowableMessage;
-
-    /**
-     * @var int|string|null
+     * @var null|int|string
      */
     protected $previousThrowableCode;
 
     /**
-     * @var string|null
+     * @var null|string
+     */
+    protected $previousThrowableMessage;
+
+    /**
+     * @var null|string
      */
     protected $previousThrowableTrace;
 
-    public function __construct($message = '', $code = 0, Throwable $previous = null, bool $inIsolation = false)
+    public function __construct(string $message = '', int $code = 0, Throwable $previous = null, bool $inIsolation = false)
     {
         parent::__construct($message, $code, $previous);
 
         if ($inIsolation && $previous) {
-            $this->previousThrowableClass = get_class($previous);
+            $this->previousThrowableClass   = get_class($previous);
             $this->previousThrowableMessage = $previous->getMessage();
-            $this->previousThrowableCode = $previous->getCode();
-            $this->previousThrowableTrace = Filter::getFilteredStacktrace($previous);
+            $this->previousThrowableCode    = $previous->getCode();
+
+            try {
+                $this->previousThrowableTrace = Filter::getFilteredStacktrace($previous);
+            } catch (Exception $e) {
+                $this->previousThrowableTrace = '';
+            }
         }
     }
 
@@ -55,13 +60,13 @@ class AssertionFailedError extends Exception implements SelfDescribing
         $string = parent::__toString();
 
         if ($this->previousThrowableClass) {
-            $string .= "\nCaused by " . $this->previousThrowableClass;
+            $string .= PHP_EOL . 'Caused by ' . $this->previousThrowableClass;
 
             if ($this->previousThrowableMessage !== '') {
-                $string .= ": " . $this->previousThrowableMessage;
+                $string .= ': ' . $this->previousThrowableMessage;
             }
 
-            $string .= "\n\n" . $this->previousThrowableTrace;
+            $string .= PHP_EOL . PHP_EOL . $this->previousThrowableTrace;
         }
 
         return $string;

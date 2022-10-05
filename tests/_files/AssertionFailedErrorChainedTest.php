@@ -7,22 +7,22 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\AssertionFailedError;
+use PHPUnit\Framework\TestCase;
 
 class AssertionFailedErrorChainedTest extends TestCase
 {
-    protected function onNotSuccessfulTest(\Throwable $t): void
-    {
-        throw new AssertionFailedError($t->getMessage(), $t->getCode(), $t, true);
-        parent::onNotSuccessfulTest($t);
-    }
-
     /**
      * @runInSeparateProcess
      */
     public function testOne(): void
     {
         throw new \RuntimeException('foo');
+    }
+
+    protected function onNotSuccessfulTest(Throwable $t): void
+    {
+        throw new AssertionFailedError($t->getMessage(), $t->getCode(), $t, true);
+        parent::onNotSuccessfulTest($t);
     }
 }
