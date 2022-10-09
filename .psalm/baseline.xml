@@ -1189,6 +1189,9 @@
       <code>$suite</code>
       <code>$suite</code>
     </PossiblyNullArgument>
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>$_SERVER['argv']</code>
+    </PossiblyUndefinedArrayOffset>
     <RedundantCondition occurrences="1">
       <code>$testSuite !== null</code>
     </RedundantCondition>
@@ -1258,6 +1261,9 @@
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>$_SERVER['PHP_SELF']</code>
+    </PossiblyUndefinedArrayOffset>
     <PossiblyUndefinedVariable occurrences="2">
       <code>$whitelistFromConfigurationFile</code>
       <code>$whitelistFromOption</code>
@@ -1551,6 +1557,9 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
+    <DocblockTypeContradiction occurrences="1">
+      <code>is_array($envVar)</code>
+    </DocblockTypeContradiction>
     <MissingParamType occurrences="1">
       <code>$pipe</code>
     </MissingParamType>
