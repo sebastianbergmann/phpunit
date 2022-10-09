@@ -1006,6 +1006,9 @@
       <code>$suite</code>
       <code>$suite</code>
     </PossiblyNullArgument>
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>$_SERVER['argv']</code>
+    </PossiblyUndefinedArrayOffset>
     <RedundantCondition occurrences="1">
       <code>assert(isset($arguments) &amp;&amp; $arguments instanceof Configuration)</code>
     </RedundantCondition>
@@ -1081,6 +1084,9 @@
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
+    <PossiblyUndefinedArrayOffset occurrences="1">
+      <code>$_SERVER['PHP_SELF']</code>
+    </PossiblyUndefinedArrayOffset>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$printer</code>
     </PropertyNotSetInConstructor>
@@ -1428,6 +1434,9 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
+    <DocblockTypeContradiction occurrences="1">
+      <code>is_array($envVar)</code>
+    </DocblockTypeContradiction>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$tempFile</code>
     </PropertyNotSetInConstructor>
