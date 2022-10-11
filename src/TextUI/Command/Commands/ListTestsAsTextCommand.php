@@ -32,7 +32,7 @@ final class ListTestsAsTextCommand implements Command
     {
         $buffer = 'Available test(s):' . PHP_EOL;
 
-        foreach (new RecursiveIteratorIterator($this->suite->getIterator()) as $test) {
+        foreach (new RecursiveIteratorIterator($this->suite) as $test) {
             if ($test instanceof TestCase) {
                 $name = sprintf(
                     '%s::%s',

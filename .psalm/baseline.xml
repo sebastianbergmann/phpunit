@@ -613,16 +613,6 @@
       <code>include_once $filename</code>
     </UnresolvableInclude>
   </file>
-  <file src="src/TextUI/Command/Commands/ListTestsAsTextCommand.php">
-    <InvalidArgument occurrences="1">
-      <code>$this-&gt;suite-&gt;getIterator()</code>
-    </InvalidArgument>
-  </file>
-  <file src="src/TextUI/Command/Commands/ListTestsAsXmlCommand.php">
-    <InvalidArgument occurrences="1">
-      <code>$this-&gt;suite-&gt;getIterator()</code>
-    </InvalidArgument>
-  </file>
   <file src="src/TextUI/Command/Commands/WarmCodeCoverageCacheCommand.php">
     <MissingThrowsDocblock occurrences="2">
       <code>coverageCacheDirectory</code>

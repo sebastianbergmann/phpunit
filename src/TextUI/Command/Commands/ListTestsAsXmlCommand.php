@@ -44,7 +44,7 @@ final class ListTestsAsXmlCommand implements Command
 
         $currentTestCase = null;
 
-        foreach (new RecursiveIteratorIterator($this->suite->getIterator()) as $test) {
+        foreach (new RecursiveIteratorIterator($this->suite) as $test) {
             if ($test instanceof TestCase) {
                 if ($test::class !== $currentTestCase) {
                     if ($currentTestCase !== null) {
