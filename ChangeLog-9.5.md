@@ -2,6 +2,12 @@
 
 All notable changes of the PHPUnit 9.5 release series are documented in this file using the [Keep a CHANGELOG](https://keepachangelog.com/) principles.
 
+## [9.5.26] - 2022-MM-DD
+
+### Fixed
+
+* [#5076](https://github.com/sebastianbergmann/phpunit/issues/5076): Test Runner does not warn about conflicting options
+
 ## [9.5.25] - 2022-09-25
 
 ### Added
@@ -200,6 +206,7 @@ All notable changes of the PHPUnit 9.5 release series are documented in this fil
 
 * [#4535](https://github.com/sebastianbergmann/phpunit/issues/4535): `getMockFromWsdl()` does not handle methods that do not have parameters correctly
 
+[9.5.26]: https://github.com/sebastianbergmann/phpunit/compare/9.5.25...9.5
 [9.5.25]: https://github.com/sebastianbergmann/phpunit/compare/9.5.24...9.5.25
 [9.5.24]: https://github.com/sebastianbergmann/phpunit/compare/9.5.23...9.5.24
 [9.5.23]: https://github.com/sebastianbergmann/phpunit/compare/9.5.22...9.5.23
