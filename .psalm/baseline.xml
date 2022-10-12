@@ -652,7 +652,7 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="87">
+    <MissingThrowsDocblock occurrences="88">
       <code>backupGlobals</code>
       <code>backupStaticProperties</code>
       <code>beStrictAboutChangesToGlobalState</code>
@@ -731,6 +731,7 @@
       <code>stopOnWarning</code>
       <code>strictCoverage</code>
       <code>teamcityLogfile</code>
+      <code>testSuite</code>
       <code>testdoxHtmlFile</code>
       <code>testdoxTextFile</code>
       <code>testdoxXmlFile</code>

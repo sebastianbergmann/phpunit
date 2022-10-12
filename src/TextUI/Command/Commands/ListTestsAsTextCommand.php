@@ -14,6 +14,7 @@ use function str_replace;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\PhptTestCase;
+use PHPUnit\TextUI\Configuration\Registry;
 use RecursiveIteratorIterator;
 
 /**
@@ -30,7 +31,9 @@ final class ListTestsAsTextCommand implements Command
 
     public function execute(): Result
     {
-        $buffer = 'Available test(s):' . PHP_EOL;
+        $buffer = $this->warnAboutConflictingOptions();
+
+        $buffer .= 'Available test(s):' . PHP_EOL;
 
         foreach (new RecursiveIteratorIterator($this->suite) as $test) {
             if ($test instanceof TestCase) {
@@ -52,5 +55,34 @@ final class ListTestsAsTextCommand implements Command
         }
 
         return Result::from($buffer);
+    }
+
+    private function warnAboutConflictingOptions(): string
+    {
+        $buffer = '';
+
+        $configuration = Registry::get();
+
+        if ($configuration->hasFilter()) {
+            $buffer .= 'The --filter and --list-tests options cannot be combined, --filter is ignored' . PHP_EOL;
+        }
+
+        if ($configuration->hasGroups()) {
+            $buffer .= 'The --group and --list-tests options cannot be combined, --group is ignored' . PHP_EOL;
+        }
+
+        if ($configuration->hasExcludeGroups()) {
+            $buffer .= 'The --exclude-group and --list-tests options cannot be combined, --exclude-group is ignored' . PHP_EOL;
+        }
+
+        if ($configuration->hasTestSuite()) {
+            $buffer .= 'The --testsuite and --list-tests options cannot be combined, --exclude-group is ignored' . PHP_EOL;
+        }
+
+        if (!empty($buffer)) {
+            $buffer .= PHP_EOL;
+        }
+
+        return $buffer;
     }
 }
