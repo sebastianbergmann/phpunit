@@ -620,6 +620,12 @@ final class Merger
 
         $includeUncoveredFiles = $xmlConfiguration->codeCoverage()->includeUncoveredFiles();
 
+        $testSuite = null;
+
+        if ($cliConfiguration->hasTestSuite()) {
+            $testSuite = $cliConfiguration->testSuite();
+        }
+
         return new Configuration(
             $configurationFile,
             $bootstrap,
@@ -713,6 +719,7 @@ final class Merger
             $includePath,
             $randomOrderSeed,
             $includeUncoveredFiles,
+            $testSuite,
             $xmlValidationErrors,
         );
     }
