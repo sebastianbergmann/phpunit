@@ -193,6 +193,8 @@ final class MockMethod
                 '%s_method_never_or_void.tpl',
                 $this->callOriginalMethod ? 'proxied' : 'mocked'
             );
+        } elseif ($this->callOriginalMethod === true && $this->returnType->isStatic()) {
+            $templateFile = 'proxied_method_static.tpl';
         } else {
             $templateFile = sprintf(
                 '%s_method.tpl',
