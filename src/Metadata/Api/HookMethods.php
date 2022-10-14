@@ -10,6 +10,7 @@
 namespace PHPUnit\Metadata\Api;
 
 use function array_unshift;
+use function assert;
 use function class_exists;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Util\Reflection;
@@ -21,10 +22,15 @@ use ReflectionException;
  */
 final class HookMethods
 {
+    /**
+     * @psalm-var array<class-string, array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>}>
+     */
     private static array $hookMethods = [];
 
     /**
      * @psalm-param class-string $className
+     *
+     * @psalm-return array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>}
      */
     public function hookMethods(string $className): array
     {
@@ -40,41 +46,45 @@ final class HookMethods
 
         try {
             foreach ((new Reflection)->methodsInTestClass(new ReflectionClass($className)) as $method) {
-                $metadata = Registry::parser()->forMethod($className, $method->getName());
+                $methodName = $method->getName();
+
+                assert(!empty($methodName));
+
+                $metadata = Registry::parser()->forMethod($className, $methodName);
 
                 if ($method->isStatic()) {
                     if ($metadata->isBeforeClass()->isNotEmpty()) {
                         array_unshift(
                             self::$hookMethods[$className]['beforeClass'],
-                            $method->getName()
+                            $methodName
                         );
                     }
 
                     if ($metadata->isAfterClass()->isNotEmpty()) {
-                        self::$hookMethods[$className]['afterClass'][] = $method->getName();
+                        self::$hookMethods[$className]['afterClass'][] = $methodName;
                     }
                 }
 
                 if ($metadata->isBefore()->isNotEmpty()) {
                     array_unshift(
                         self::$hookMethods[$className]['before'],
-                        $method->getName()
+                        $methodName
                     );
                 }
 
                 if ($metadata->isPreCondition()->isNotEmpty()) {
                     array_unshift(
                         self::$hookMethods[$className]['preCondition'],
-                        $method->getName()
+                        $methodName
                     );
                 }
 
                 if ($metadata->isPostCondition()->isNotEmpty()) {
-                    self::$hookMethods[$className]['postCondition'][] = $method->getName();
+                    self::$hookMethods[$className]['postCondition'][] = $methodName;
                 }
 
                 if ($metadata->isAfter()->isNotEmpty()) {
-                    self::$hookMethods[$className]['after'][] = $method->getName();
+                    self::$hookMethods[$className]['after'][] = $methodName;
                 }
             }
         } catch (ReflectionException $e) {
@@ -83,6 +93,9 @@ final class HookMethods
         return self::$hookMethods[$className];
     }
 
+    /**
+     * @psalm-return array{beforeClass: list<non-empty-string>, before: list<non-empty-string>, preCondition: list<non-empty-string>, postCondition: list<non-empty-string>, after: list<non-empty-string>, afterClass: list<non-empty-string>}
+     */
     private static function emptyHookMethodsArray(): array
     {
         return [
