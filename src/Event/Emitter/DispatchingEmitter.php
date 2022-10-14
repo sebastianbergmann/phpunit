@@ -751,6 +751,7 @@ final class DispatchingEmitter implements Emitter
         $emitter = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 3)[2];
 
         assert(isset($emitter['class'], $emitter['function']));
+        assert(!empty($emitter['function']));
 
         $info = new Telemetry\Info(
             $current,
