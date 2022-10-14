@@ -19,13 +19,22 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class TestDox
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $text;
 
+    /**
+     * @psalm-param non-empty-string $text
+     */
     public function __construct(string $text)
     {
         $this->text = $text;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function text(): string
     {
         return $this->text;

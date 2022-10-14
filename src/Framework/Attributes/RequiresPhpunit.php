@@ -19,13 +19,22 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class RequiresPhpunit
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $versionRequirement;
 
+    /**
+     * @psalm-param non-empty-string $versionRequirement
+     */
     public function __construct(string $versionRequirement)
     {
         $this->versionRequirement = $versionRequirement;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function versionRequirement(): string
     {
         return $this->versionRequirement;

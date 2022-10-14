@@ -19,13 +19,22 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class TestWithJson
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $json;
 
+    /**
+     * @psalm-param non-empty-string $json
+     */
     public function __construct(string $json)
     {
         $this->json = $json;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function json(): string
     {
         return $this->json;

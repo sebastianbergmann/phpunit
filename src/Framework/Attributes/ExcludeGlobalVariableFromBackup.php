@@ -19,13 +19,22 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class ExcludeGlobalVariableFromBackup
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $globalVariableName;
 
+    /**
+     * @psalm-param non-empty-string $globalVariableName
+     */
     public function __construct(string $globalVariableName)
     {
         $this->globalVariableName = $globalVariableName;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function globalVariableName(): string
     {
         return $this->globalVariableName;

@@ -19,20 +19,37 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class RequiresSetting
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $setting;
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $value;
 
+    /**
+     * @psalm-param non-empty-string $setting
+     * @psalm-param non-empty-string $value
+     */
     public function __construct(string $setting, string $value)
     {
         $this->setting = $setting;
         $this->value   = $value;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function setting(): string
     {
         return $this->setting;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function value(): string
     {
         return $this->value;

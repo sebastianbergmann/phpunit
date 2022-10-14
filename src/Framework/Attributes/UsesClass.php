@@ -19,13 +19,22 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 final class UsesClass
 {
+    /**
+     * @psalm-var class-string
+     */
     private readonly string $className;
 
+    /**
+     * @psalm-param class-string $className
+     */
     public function __construct(string $className)
     {
         $this->className = $className;
     }
 
+    /**
+     * @psalm-return class-string
+     */
     public function className(): string
     {
         return $this->className;

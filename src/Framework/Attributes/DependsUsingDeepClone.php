@@ -19,13 +19,22 @@ use Attribute;
 #[Attribute(Attribute::TARGET_METHOD | Attribute::IS_REPEATABLE)]
 final class DependsUsingDeepClone
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $methodName;
 
+    /**
+     * @psalm-param non-empty-string $methodName
+     */
     public function __construct(string $methodName)
     {
         $this->methodName = $methodName;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function methodName(): string
     {
         return $this->methodName;

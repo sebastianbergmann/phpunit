@@ -19,13 +19,22 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::TARGET_METHOD)]
 final class RequiresOperatingSystemFamily
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $operatingSystemFamily;
 
+    /**
+     * @psalm-param non-empty-string $operatingSystemFamily
+     */
     public function __construct(string $operatingSystemFamily)
     {
         $this->operatingSystemFamily = $operatingSystemFamily;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function operatingSystemFamily(): string
     {
         return $this->operatingSystemFamily;

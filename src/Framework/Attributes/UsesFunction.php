@@ -19,13 +19,22 @@ use Attribute;
 #[Attribute(Attribute::TARGET_CLASS | Attribute::IS_REPEATABLE)]
 final class UsesFunction
 {
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $functionName;
 
+    /**
+     * @psalm-param non-empty-string $functionName
+     */
     public function __construct(string $functionName)
     {
         $this->functionName = $functionName;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function functionName(): string
     {
         return $this->functionName;

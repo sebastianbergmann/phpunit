@@ -23,10 +23,15 @@ final class ExcludeStaticPropertyFromBackup
      * @psalm-var class-string
      */
     private readonly string $className;
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $propertyName;
 
     /**
      * @psalm-param class-string $className
+     * @psalm-param non-empty-string $propertyName
      */
     public function __construct(string $className, string $propertyName)
     {
@@ -42,6 +47,9 @@ final class ExcludeStaticPropertyFromBackup
         return $this->className;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function propertyName(): string
     {
         return $this->propertyName;
