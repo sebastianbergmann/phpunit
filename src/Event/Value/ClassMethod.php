@@ -20,10 +20,15 @@ final class ClassMethod
      * @psalm-var class-string
      */
     private readonly string $className;
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $methodName;
 
     /**
      * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      */
     public function __construct(string $className, string $methodName)
     {
@@ -39,6 +44,9 @@ final class ClassMethod
         return $this->className;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function methodName(): string
     {
         return $this->methodName;
