@@ -217,12 +217,11 @@ final class AttributeParser implements Parser
                 case RequiresPhpExtension::class:
                     assert($attributeInstance instanceof RequiresPhpExtension);
 
-                    $versionConstraint = null;
+                    $versionConstraint  = null;
+                    $versionRequirement = $attributeInstance->versionRequirement();
 
-                    if ($attributeInstance->hasVersionRequirement()) {
-                        $versionConstraint = ConstraintRequirement::from(
-                            $attributeInstance->versionRequirement()
-                        );
+                    if ($versionRequirement !== null) {
+                        $versionConstraint = ConstraintRequirement::from($versionRequirement);
                     }
 
                     $result[] = Metadata::requiresPhpExtensionOnClass(
@@ -530,12 +529,11 @@ final class AttributeParser implements Parser
                 case RequiresPhpExtension::class:
                     assert($attributeInstance instanceof RequiresPhpExtension);
 
-                    $versionConstraint = null;
+                    $versionConstraint  = null;
+                    $versionRequirement = $attributeInstance->versionRequirement();
 
-                    if ($attributeInstance->hasVersionRequirement()) {
-                        $versionConstraint = ConstraintRequirement::from(
-                            $attributeInstance->versionRequirement()
-                        );
+                    if ($versionRequirement !== null) {
+                        $versionConstraint = ConstraintRequirement::from($versionRequirement);
                     }
 
                     $result[] = Metadata::requiresPhpExtensionOnMethod(

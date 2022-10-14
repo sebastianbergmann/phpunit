@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Framework\Attributes;
 
-use function assert;
 use Attribute;
 
 /**
@@ -49,20 +48,10 @@ final class RequiresPhpExtension
     }
 
     /**
-     * @psalm-assert-if-true !null $this->versionRequirement
+     * @psalm-return null|non-empty-string
      */
-    public function hasVersionRequirement(): bool
+    public function versionRequirement(): ?string
     {
-        return $this->versionRequirement !== null;
-    }
-
-    /**
-     * @psalm-return non-empty-string
-     */
-    public function versionRequirement(): string
-    {
-        assert($this->versionRequirement !== null);
-
         return $this->versionRequirement;
     }
 }
