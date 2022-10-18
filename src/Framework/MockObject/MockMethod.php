@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\MockObject;
 use const DIRECTORY_SEPARATOR;
 use function explode;
 use function implode;
+use function in_array;
 use function is_object;
 use function is_string;
 use function preg_match;
