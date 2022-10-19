@@ -1,4 +1,4 @@
-[<h1 align="center">🇺🇦 UKRAINE NEEDS YOUR HELP NOW!</h1>](https://phpunit.de/stand-with-ukraine.html)
+<h1 align="center">🇺🇦 <a href="https://phpunit.de/stand-with-ukraine.html">UKRAINE NEEDS YOUR HELP NOW!</a></h1>
 
 # PHPUnit
 
