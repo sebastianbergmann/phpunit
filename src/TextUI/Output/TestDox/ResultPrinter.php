@@ -10,6 +10,7 @@
 namespace PHPUnit\TextUI\Output\TestDox;
 
 use const PHP_EOL;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\NamePrettifier;
 use PHPUnit\Logging\TestDox\TestMethodCollection;
@@ -65,8 +66,8 @@ final class ResultPrinter
 
             foreach ($_tests as $test) {
                 $this->printTestResult(
-                    $test['test'],
-                    $test['status'],
+                    $test->test(),
+                    $test->status(),
                 );
             }
 
