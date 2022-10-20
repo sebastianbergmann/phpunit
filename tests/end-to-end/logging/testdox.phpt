@@ -8,7 +8,6 @@ $_SERVER['argv'][] = '-c';
 $_SERVER['argv'][] = __DIR__ . '/../_files/basic/configuration.basic.xml';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--colors=never';
-$_SERVER['argv'][] = '--no-interaction';
 $_SERVER['argv'][] = realpath(__DIR__ . '/../../unit/Util/ColorTest.php');
 
 require_once __DIR__ . '/../../bootstrap.php';
