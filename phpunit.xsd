@@ -61,7 +61,7 @@
     </xs:complexType>
     <xs:complexType name="bootstrapType">
         <xs:sequence>
-            <xs:element name="parameter" type="parameterType" maxOccurs="unbounded"/>
+            <xs:element name="parameter" type="parameterType" minOccurs="0" maxOccurs="unbounded"/>
         </xs:sequence>
         <xs:attribute name="class" type="xs:string" use="required"/>
     </xs:complexType>
