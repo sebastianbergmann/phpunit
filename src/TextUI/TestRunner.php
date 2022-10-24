@@ -40,17 +40,34 @@ use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\TestResult\Facade;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
+use PHPUnit\TextUI\Configuration\CodeCoverageReportNotConfiguredException;
 use PHPUnit\TextUI\Configuration\Configuration;
+use PHPUnit\TextUI\Configuration\FilterNotConfiguredException;
+use PHPUnit\TextUI\Configuration\LoggingNotConfiguredException;
+use PHPUnit\TextUI\Configuration\NoBootstrapException;
+use PHPUnit\TextUI\Configuration\NoConfigurationFileException;
+use PHPUnit\TextUI\Configuration\NoCoverageCacheDirectoryException;
+use PHPUnit\TextUI\Configuration\NoCustomCssFileException;
+use PHPUnit\TextUI\Configuration\NoPharExtensionDirectoryException;
+use PHPUnit\TextUI\Configuration\NoValidationErrorsException;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Output\Default\ProgressPrinter\ProgressPrinter as DefaultProgressPrinter;
 use PHPUnit\TextUI\Output\Default\ResultPrinter as DefaultResultPrinter;
 use PHPUnit\TextUI\Output\SummaryPrinter;
 use PHPUnit\TextUI\Output\TestDox\ResultPrinter as TestDoxResultPrinter;
 use PHPUnit\Util\DefaultPrinter;
+use PHPUnit\Util\DirectoryDoesNotExistException;
+use PHPUnit\Util\InvalidSocketException;
 use PHPUnit\Util\NullPrinter;
 use PHPUnit\Util\Printer;
 use PHPUnit\Util\Xml\SchemaDetector;
+use SebastianBergmann\CodeCoverage\Driver\PcovNotAvailableException;
+use SebastianBergmann\CodeCoverage\Driver\XdebugNotAvailableException;
+use SebastianBergmann\CodeCoverage\Driver\XdebugNotEnabledException;
 use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
+use SebastianBergmann\CodeCoverage\InvalidArgumentException;
+use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverAvailableException;
+use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverWithPathCoverageSupportAvailableException;
 use SebastianBergmann\CodeCoverage\Report\Clover as CloverReport;
 use SebastianBergmann\CodeCoverage\Report\Cobertura as CoberturaReport;
 use SebastianBergmann\CodeCoverage\Report\Crap4j as Crap4jReport;
@@ -61,10 +78,13 @@ use SebastianBergmann\CodeCoverage\Report\PHP as PhpReport;
 use SebastianBergmann\CodeCoverage\Report\Text as TextReport;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 use SebastianBergmann\CodeCoverage\Report\Xml\Facade as XmlReport;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Invoker\Invoker;
+use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\ResourceUsageFormatter;
 use SebastianBergmann\Timer\Timer;
+use SebastianBergmann\Timer\TimeSinceStartOfRequestNotAvailableException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -84,7 +104,28 @@ final class TestRunner
     /**
      * @throws \PHPUnit\Runner\Exception
      * @throws \PHPUnit\Util\Exception
+     * @throws CodeCoverageReportNotConfiguredException
+     * @throws Event\EventFacadeIsSealedException
+     * @throws Event\RuntimeException
+     * @throws Event\UnknownSubscriberTypeException
      * @throws Exception
+     * @throws FilterNotConfiguredException
+     * @throws InvalidArgumentException
+     * @throws LoggingNotConfiguredException
+     * @throws NoActiveTimerException
+     * @throws NoBootstrapException
+     * @throws NoCodeCoverageDriverAvailableException
+     * @throws NoCodeCoverageDriverWithPathCoverageSupportAvailableException
+     * @throws NoConfigurationFileException
+     * @throws NoCoverageCacheDirectoryException
+     * @throws NoCustomCssFileException
+     * @throws NoPharExtensionDirectoryException
+     * @throws NoValidationErrorsException
+     * @throws PcovNotAvailableException
+     * @throws TimeSinceStartOfRequestNotAvailableException
+     * @throws UnintentionallyCoveredCodeException
+     * @throws XdebugNotAvailableException
+     * @throws XdebugNotEnabledException
      * @throws XmlConfiguration\Exception
      */
     public function run(TestSuite $suite): TestResult
@@ -608,6 +649,10 @@ final class TestRunner
         $this->printer->print($buffer);
     }
 
+    /**
+     * @throws Event\RuntimeException
+     * @throws FilterNotConfiguredException
+     */
     private function processSuiteFilters(TestSuite $suite): void
     {
         if (!$this->configuration->hasFilter() &&
@@ -698,6 +743,9 @@ final class TestRunner
         $this->timer()->start();
     }
 
+    /**
+     * @throws NoActiveTimerException
+     */
     private function codeCoverageGenerationSucceeded(): void
     {
         $this->write(
@@ -708,6 +756,9 @@ final class TestRunner
         );
     }
 
+    /**
+     * @throws NoActiveTimerException
+     */
     private function codeCoverageGenerationFailed(CodeCoverageException $e): void
     {
         $this->write(
@@ -728,6 +779,10 @@ final class TestRunner
         return $this->timer;
     }
 
+    /**
+     * @throws DirectoryDoesNotExistException
+     * @throws InvalidSocketException
+     */
     private function printerFor(string $target): Printer
     {
         if ($target === 'php://stdout') {

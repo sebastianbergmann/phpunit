@@ -11,8 +11,13 @@ namespace PHPUnit\Runner;
 
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
+use SebastianBergmann\CodeCoverage\Driver\PcovNotAvailableException;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
+use SebastianBergmann\CodeCoverage\Driver\XdebugNotAvailableException;
+use SebastianBergmann\CodeCoverage\Driver\XdebugNotEnabledException;
 use SebastianBergmann\CodeCoverage\Filter;
+use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverAvailableException;
+use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverWithPathCoverageSupportAvailableException;
 use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
 use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
 
@@ -28,6 +33,11 @@ final class CodeCoverage
 
     /**
      * @throws Exception
+     * @throws NoCodeCoverageDriverAvailableException
+     * @throws NoCodeCoverageDriverWithPathCoverageSupportAvailableException
+     * @throws PcovNotAvailableException
+     * @throws XdebugNotAvailableException
+     * @throws XdebugNotEnabledException
      */
     public static function activate(Filter $filter, bool $pathCoverage): void
     {

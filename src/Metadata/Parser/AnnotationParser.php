@@ -22,8 +22,10 @@ use function trim;
 use PHPUnit\Metadata\Annotation\Parser\Registry as AnnotationRegistry;
 use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Metadata\ReflectionException;
 use PHPUnit\Metadata\Version\ComparisonRequirement;
 use PHPUnit\Metadata\Version\ConstraintRequirement;
+use PHPUnit\Util\InvalidVersionOperatorException;
 use PHPUnit\Util\VersionComparisonOperator;
 
 /**
@@ -33,6 +35,9 @@ final class AnnotationParser implements Parser
 {
     /**
      * @psalm-param class-string $className
+     *
+     * @throws InvalidVersionOperatorException
+     * @throws ReflectionException
      */
     public function forClass(string $className): MetadataCollection
     {
@@ -152,6 +157,9 @@ final class AnnotationParser implements Parser
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws InvalidVersionOperatorException
+     * @throws ReflectionException
      */
     public function forMethod(string $className, string $methodName): MetadataCollection
     {
@@ -365,6 +373,9 @@ final class AnnotationParser implements Parser
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws InvalidVersionOperatorException
+     * @throws ReflectionException
      */
     public function forClassAndMethod(string $className, string $methodName): MetadataCollection
     {
@@ -395,6 +406,8 @@ final class AnnotationParser implements Parser
 
     /**
      * @psalm-return list<Metadata>
+     *
+     * @throws InvalidVersionOperatorException
      */
     private function parseRequirements(array $requirements, string $level): array
     {

@@ -1095,7 +1095,7 @@ final class Configuration
     public function includePath(): string
     {
         if (!$this->hasIncludePath()) {
-            throw new FilterNotConfiguredException;
+            throw new IncludePathNotConfiguredException;
         }
 
         return $this->includePath;

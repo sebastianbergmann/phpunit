@@ -151,6 +151,8 @@ abstract class AbstractPhpProcess
 
     /**
      * Runs a single test in a separate PHP process.
+     *
+     * @throws \PHPUnit\Runner\Exception
      */
     public function runTestJob(string $job, Test $test): void
     {
@@ -230,6 +232,9 @@ abstract class AbstractPhpProcess
         return $buffer;
     }
 
+    /**
+     * @throws \PHPUnit\Runner\Exception
+     */
     private function processChildResult(Test $test, string $stdout, string $stderr): void
     {
         if (!empty($stderr)) {

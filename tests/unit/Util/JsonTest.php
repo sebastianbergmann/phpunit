@@ -13,7 +13,6 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\TestDox;
-use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Json::class)]
@@ -61,8 +60,7 @@ final class JsonTest extends TestCase
     #[DataProvider('prettifyExceptionProvider')]
     public function testPrettifyException(string $json): void
     {
-        $this->expectException(Exception::class);
-        $this->expectExceptionMessage('Cannot prettify invalid json');
+        $this->expectException(InvalidJsonException::class);
 
         Json::prettify($json);
     }

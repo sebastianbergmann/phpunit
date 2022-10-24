@@ -14,6 +14,7 @@ use function array_keys;
 use function array_map;
 use function array_pop;
 use function array_values;
+use function assert;
 use function class_exists;
 use function explode;
 use function gettype;
@@ -25,6 +26,7 @@ use function is_int;
 use function is_numeric;
 use function is_object;
 use function is_scalar;
+use function method_exists;
 use function ord;
 use function preg_quote;
 use function preg_replace;
@@ -40,10 +42,8 @@ use function strtoupper;
 use function substr;
 use function trim;
 use PHPUnit\Framework\TestCase;
-use PHPUnit\Logging\Exception;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use PHPUnit\Util\Color;
-use ReflectionException;
 use ReflectionMethod;
 use ReflectionObject;
 use SebastianBergmann\Exporter\Exporter;
@@ -225,17 +225,10 @@ final class NamePrettifier
 
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
     {
-        try {
-            $reflector = new ReflectionMethod($test::class, $test->name());
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        assert(method_exists($test, $test->name()));
+
+        /** @noinspection PhpUnhandledExceptionInspection */
+        $reflector = new ReflectionMethod($test::class, $test->name());
 
         $providedData       = [];
         $providedDataValues = array_values($test->providedData());

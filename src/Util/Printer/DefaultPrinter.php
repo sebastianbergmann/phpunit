@@ -33,23 +33,36 @@ final class DefaultPrinter implements Printer
     private bool $isPhpStream;
     private bool $isOpen;
 
+    /**
+     * @throws DirectoryDoesNotExistException
+     * @throws InvalidSocketException
+     */
     public static function from(string $out): self
     {
         return new self($out);
     }
 
+    /**
+     * @throws DirectoryDoesNotExistException
+     * @throws InvalidSocketException
+     */
     public static function standardOutput(): self
     {
         return new self('php://stdout');
     }
 
+    /**
+     * @throws DirectoryDoesNotExistException
+     * @throws InvalidSocketException
+     */
     public static function standardError(): self
     {
         return new self('php://stderr');
     }
 
     /**
-     * @throws Exception
+     * @throws DirectoryDoesNotExistException
+     * @throws InvalidSocketException
      */
     private function __construct(string $out)
     {
@@ -57,7 +70,7 @@ final class DefaultPrinter implements Printer
             $tmp = explode(':', str_replace('socket://', '', $out));
 
             if (count($tmp) !== 2) {
-                throw new Exception(
+                throw new InvalidSocketException(
                     sprintf(
                         '"%s" does not match "socket://hostname:port" format',
                         $out
@@ -74,12 +87,7 @@ final class DefaultPrinter implements Printer
         $this->isPhpStream = str_starts_with($out, 'php://');
 
         if (!$this->isPhpStream && !Filesystem::createDirectory(dirname($out))) {
-            throw new Exception(
-                sprintf(
-                    'Directory "%s" was not created',
-                    dirname($out)
-                )
-            );
+            throw new DirectoryDoesNotExistException(dirname($out));
         }
 
         $this->stream = fopen($out, 'wb');

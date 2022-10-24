@@ -86,6 +86,11 @@ final class Application
     }
 
     /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Runner\Exception
+     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws Event\RuntimeException
      * @throws Exception
      */
     public function run(array $argv, bool $exit = true): int
@@ -138,6 +143,10 @@ final class Application
     }
 
     /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Runner\Exception
+     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      * @throws Exception
      */
     private function handleArguments(array $argv): TestSuite
@@ -322,6 +331,9 @@ final class Application
         exit(self::EXCEPTION_EXIT);
     }
 
+    /**
+     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     */
     private function configurationFilePath(CliConfiguration $cliConfiguration): string|false
     {
         $useDefaultConfiguration = true;
@@ -411,6 +423,10 @@ final class Application
         return $returnCode;
     }
 
+    /**
+     * @throws BootstrapException
+     * @throws InvalidBootstrapException
+     */
     private function handleBootstrap(string $filename): void
     {
         if (!is_readable($filename)) {

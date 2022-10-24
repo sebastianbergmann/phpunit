@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\ResultCache;
 
+use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\FinishedSubscriber;
 
@@ -17,6 +18,10 @@ use PHPUnit\Event\Test\FinishedSubscriber;
  */
 final class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
+    /**
+     * @throws \PHPUnit\Framework\InvalidArgumentException
+     * @throws InvalidArgumentException
+     */
     public function notify(Finished $event): void
     {
         $this->handler()->testFinished($event);

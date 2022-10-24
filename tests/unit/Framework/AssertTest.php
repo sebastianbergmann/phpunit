@@ -43,8 +43,8 @@ use PHPUnit\TestFixture\ObjectEquals\ValueObject;
 use PHPUnit\TestFixture\SampleArrayAccess;
 use PHPUnit\TestFixture\SampleClass;
 use PHPUnit\TestFixture\Struct;
-use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
+use PHPUnit\Util\Xml\XmlException;
 use SplObjectStorage;
 use stdClass;
 

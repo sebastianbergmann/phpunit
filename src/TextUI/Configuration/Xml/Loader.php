@@ -49,10 +49,10 @@ use PHPUnit\TextUI\XmlConfiguration\Logging\TestDox\Xml as TestDoxXml;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Text;
 use PHPUnit\TextUI\XmlConfiguration\TestSuite as TestSuiteConfiguration;
 use PHPUnit\Util\VersionComparisonOperator;
-use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaFinder;
 use PHPUnit\Util\Xml\Validator;
+use PHPUnit\Util\Xml\XmlException;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 
@@ -63,6 +63,7 @@ final class Loader
 {
     /**
      * @throws Exception
+     * @throws XmlException
      */
     public function load(string $filename): LoadedFromFileConfiguration
     {

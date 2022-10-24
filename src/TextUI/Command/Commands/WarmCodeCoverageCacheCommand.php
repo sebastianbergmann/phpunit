@@ -11,8 +11,10 @@ namespace PHPUnit\TextUI\Command;
 
 use function printf;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
+use PHPUnit\TextUI\Configuration\NoCoverageCacheDirectoryException;
 use PHPUnit\TextUI\Configuration\Registry;
 use SebastianBergmann\CodeCoverage\StaticAnalysis\CacheWarmer;
+use SebastianBergmann\Timer\NoActiveTimerException;
 use SebastianBergmann\Timer\Timer;
 
 /**
@@ -20,6 +22,10 @@ use SebastianBergmann\Timer\Timer;
  */
 final class WarmCodeCoverageCacheCommand implements Command
 {
+    /**
+     * @throws NoActiveTimerException
+     * @throws NoCoverageCacheDirectoryException
+     */
     public function execute(): Result
     {
         $configuration = Registry::get();

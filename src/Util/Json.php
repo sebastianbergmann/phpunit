@@ -19,7 +19,6 @@ use function json_decode;
 use function json_encode;
 use function json_last_error;
 use function ksort;
-use PHPUnit\Framework\Exception;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -27,18 +26,14 @@ use PHPUnit\Framework\Exception;
 final class Json
 {
     /**
-     * Prettify json string.
-     *
-     * @throws Exception
+     * @throws InvalidJsonException
      */
     public static function prettify(string $json): string
     {
         $decodedJson = json_decode($json, false);
 
         if (json_last_error()) {
-            throw new Exception(
-                'Cannot prettify invalid json'
-            );
+            throw new InvalidJsonException;
         }
 
         return json_encode($decodedJson, JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES | JSON_UNESCAPED_UNICODE);

@@ -25,7 +25,7 @@ final class SchemaFinderTest extends TestCase
 
     public function testDoesNotFindNonExistentSchemaForComposerInstallation(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(XmlException::class);
 
         (new SchemaFinder)->find('0.0');
     }

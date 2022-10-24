@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Runner\ResultCache;
 
+use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Test\Skipped;
 use PHPUnit\Event\Test\SkippedSubscriber;
 
@@ -17,6 +18,10 @@ use PHPUnit\Event\Test\SkippedSubscriber;
  */
 final class TestSkippedSubscriber extends Subscriber implements SkippedSubscriber
 {
+    /**
+     * @throws \PHPUnit\Framework\InvalidArgumentException
+     * @throws InvalidArgumentException
+     */
     public function notify(Skipped $event): void
     {
         $this->handler()->testSkipped($event);

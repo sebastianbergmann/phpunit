@@ -14,6 +14,7 @@ use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\EventFacadeIsSealedException;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Telemetry\HRTime;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\Errored;
@@ -149,6 +150,9 @@ final class TestMethodCollector
         $this->testDoubles[] = $event->className();
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testFinished(Finished $event): void
     {
         if (!$event->test()->isTestMethod()) {

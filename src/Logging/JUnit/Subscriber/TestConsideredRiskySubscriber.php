@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Logging\JUnit;
 
+use PHPUnit\Event\InvalidArgumentException;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\ConsideredRiskySubscriber;
 
@@ -17,6 +19,10 @@ use PHPUnit\Event\Test\ConsideredRiskySubscriber;
  */
 final class TestConsideredRiskySubscriber extends Subscriber implements ConsideredRiskySubscriber
 {
+    /**
+     * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
+     */
     public function notify(ConsideredRisky $event): void
     {
         $this->logger()->testConsideredRisky($event);

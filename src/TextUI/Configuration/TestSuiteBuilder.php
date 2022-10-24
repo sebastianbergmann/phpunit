@@ -17,6 +17,8 @@ use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteLoader;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
+use PHPUnit\TextUI\RuntimeException;
+use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
@@ -27,6 +29,15 @@ use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
  */
 final class TestSuiteBuilder
 {
+    /**
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Runner\Exception
+     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws RuntimeException
+     * @throws TestDirectoryNotFoundException
+     * @throws TestFileNotFoundException
+     */
     public function build(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): TestSuite
     {
         if ($cliConfiguration->hasArgument()) {
@@ -57,6 +68,9 @@ final class TestSuiteBuilder
         );
     }
 
+    /**
+     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     */
     private function testSuffixes(CliConfiguration $cliConfiguration): array
     {
         $testSuffixes = ['Test.php', '.phpt'];
@@ -70,6 +84,9 @@ final class TestSuiteBuilder
 
     /**
      * @psalm-param list<string> $suffixes
+     *
+     * @throws \PHPUnit\Framework\Exception
+     * @throws \PHPUnit\Runner\Exception
      */
     private function testSuiteFromPath(string $path, array $suffixes): TestSuite
     {

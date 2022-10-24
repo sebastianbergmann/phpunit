@@ -96,6 +96,10 @@ final class ResultCacheHandler
         );
     }
 
+    /**
+     * @throws \PHPUnit\Event\InvalidArgumentException
+     * @throws InvalidArgumentException
+     */
     public function testSkipped(Skipped $event): void
     {
         $this->cache->setStatus(
@@ -106,6 +110,10 @@ final class ResultCacheHandler
         $this->cache->setTime($event->test()->id(), $this->duration($event));
     }
 
+    /**
+     * @throws \PHPUnit\Event\InvalidArgumentException
+     * @throws InvalidArgumentException
+     */
     public function testFinished(Finished $event): void
     {
         $this->cache->setTime($event->test()->id(), $this->duration($event));
@@ -114,6 +122,7 @@ final class ResultCacheHandler
     }
 
     /**
+     * @throws \PHPUnit\Event\InvalidArgumentException
      * @throws InvalidArgumentException
      */
     private function duration(Event $event): float

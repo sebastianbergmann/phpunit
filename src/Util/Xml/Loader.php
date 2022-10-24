@@ -25,7 +25,7 @@ use DOMDocument;
 final class Loader
 {
     /**
-     * @throws Exception
+     * @throws XmlException
      */
     public function loadFile(string $filename, bool $isHtml = false, bool $xinclude = false, bool $strict = false): DOMDocument
     {
@@ -35,7 +35,7 @@ final class Loader
         error_reporting($reporting);
 
         if ($contents === false) {
-            throw new Exception(
+            throw new XmlException(
                 sprintf(
                     'Could not read "%s".',
                     $filename
@@ -47,12 +47,12 @@ final class Loader
     }
 
     /**
-     * @throws Exception
+     * @throws XmlException
      */
     public function load(string $actual, bool $isHtml = false, string $filename = '', bool $xinclude = false, bool $strict = false): DOMDocument
     {
         if ($actual === '') {
-            throw new Exception('Could not load XML from empty string');
+            throw new XmlException('Could not load XML from empty string');
         }
 
         // Required for XInclude on Windows.
@@ -96,7 +96,7 @@ final class Loader
 
         if ($loaded === false || ($strict && $message !== '')) {
             if ($filename !== '') {
-                throw new Exception(
+                throw new XmlException(
                     sprintf(
                         'Could not load "%s".%s',
                         $filename,
@@ -109,7 +109,7 @@ final class Loader
                 $message = 'Could not load XML for unknown reason';
             }
 
-            throw new Exception($message);
+            throw new XmlException($message);
         }
 
         return $document;

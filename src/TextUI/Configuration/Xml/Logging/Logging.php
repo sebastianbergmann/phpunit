@@ -43,6 +43,9 @@ final class Logging
         return $this->junit !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function junit(): Junit
     {
         if ($this->junit === null) {
@@ -57,6 +60,9 @@ final class Logging
         return $this->text !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function text(): Text
     {
         if ($this->text === null) {
@@ -71,6 +77,9 @@ final class Logging
         return $this->teamCity !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function teamCity(): TeamCity
     {
         if ($this->teamCity === null) {
@@ -85,6 +94,9 @@ final class Logging
         return $this->testDoxHtml !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDoxHtml(): TestDoxHtml
     {
         if ($this->testDoxHtml === null) {
@@ -99,6 +111,9 @@ final class Logging
         return $this->testDoxText !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDoxText(): TestDoxText
     {
         if ($this->testDoxText === null) {
@@ -113,6 +128,9 @@ final class Logging
         return $this->testDoxXml !== null;
     }
 
+    /**
+     * @throws Exception
+     */
     public function testDoxXml(): TestDoxXml
     {
         if ($this->testDoxXml === null) {

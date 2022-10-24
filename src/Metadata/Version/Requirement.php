@@ -13,6 +13,7 @@ use function preg_match;
 use PharIo\Version\UnsupportedVersionConstraintException;
 use PharIo\Version\VersionConstraintParser;
 use PHPUnit\Metadata\InvalidVersionRequirementException;
+use PHPUnit\Util\InvalidVersionOperatorException;
 use PHPUnit\Util\VersionComparisonOperator;
 
 /**
@@ -25,6 +26,7 @@ abstract class Requirement
     private const VERSION_COMPARISON = '/(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+(dev|(RC|alpha|beta)[\d\.])?)[ \t]*\r?$/m';
 
     /**
+     * @throws InvalidVersionOperatorException
      * @throws InvalidVersionRequirementException
      */
     public static function from(string $versionRequirement): self

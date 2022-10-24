@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Logging\JUnit;
 
+use PHPUnit\Event\InvalidArgumentException;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Event\Test\Errored;
 use PHPUnit\Event\Test\ErroredSubscriber;
 
@@ -17,6 +19,10 @@ use PHPUnit\Event\Test\ErroredSubscriber;
  */
 final class TestErroredSubscriber extends Subscriber implements ErroredSubscriber
 {
+    /**
+     * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
+     */
     public function notify(Errored $event): void
     {
         $this->logger()->testErrored($event);

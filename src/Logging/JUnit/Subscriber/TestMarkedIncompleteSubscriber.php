@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Logging\JUnit;
 
+use PHPUnit\Event\InvalidArgumentException;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
 
@@ -17,6 +19,10 @@ use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
  */
 final class TestMarkedIncompleteSubscriber extends Subscriber implements MarkedIncompleteSubscriber
 {
+    /**
+     * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
+     */
     public function notify(MarkedIncomplete $event): void
     {
         $this->logger()->testMarkedIncomplete($event);

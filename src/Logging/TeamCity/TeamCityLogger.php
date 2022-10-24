@@ -146,6 +146,9 @@ final class TeamCityLogger
         $this->time = $event->telemetryInfo()->time();
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testMarkedIncomplete(MarkedIncomplete $event): void
     {
         if ($this->time === null) {
@@ -163,6 +166,9 @@ final class TeamCityLogger
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testSkipped(Skipped $event): void
     {
         if ($this->time === null) {
@@ -179,6 +185,9 @@ final class TeamCityLogger
         $this->writeMessage('testIgnored', $parameters);
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testErrored(Errored $event): void
     {
         if ($this->time === null) {
@@ -196,6 +205,9 @@ final class TeamCityLogger
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testFailed(Failed $event): void
     {
         if ($this->time === null) {
@@ -213,6 +225,9 @@ final class TeamCityLogger
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testConsideredRisky(ConsideredRisky $event): void
     {
         if ($this->time === null) {
@@ -230,6 +245,9 @@ final class TeamCityLogger
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function testFinished(Finished $event): void
     {
         $this->writeMessage(

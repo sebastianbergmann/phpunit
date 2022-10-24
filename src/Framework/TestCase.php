@@ -86,6 +86,8 @@ use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionException;
 use ReflectionObject;
+use SebastianBergmann\CodeCoverage\StaticAnalysisCacheNotConfiguredException;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use SebastianBergmann\Comparator\Comparator;
 use SebastianBergmann\Comparator\Factory as ComparatorFactory;
 use SebastianBergmann\Diff\Differ;
@@ -417,9 +419,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @throws \PHPUnit\Runner\Exception
+     * @throws \PHPUnit\Util\Exception
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
-     * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
+     * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws CodeCoverageException
+     * @throws ProcessIsolationException
+     * @throws StaticAnalysisCacheNotConfiguredException
+     * @throws UnintentionallyCoveredCodeException
      */
     final public function run(): void
     {
@@ -1075,6 +1082,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return Stub&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function createStub(string $originalClassName): Stub
     {
@@ -1093,6 +1103,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function createMock(string $originalClassName): MockObject
     {
@@ -1111,6 +1124,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
     {
@@ -1133,6 +1149,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function createPartialMock(string $originalClassName, array $methods): MockObject
     {
@@ -1160,6 +1179,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function createTestProxy(string $originalClassName, array $constructorArguments = []): MockObject
     {
@@ -1186,6 +1208,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function getMockForAbstractClass(string $originalClassName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
@@ -1215,6 +1240,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType>|string $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     protected function getMockFromWsdl(string $wsdlFile, string $originalClassName = '', string $mockClassName = '', array $methods = [], bool $callOriginalConstructor = true, array $options = []): MockObject
     {
@@ -1264,6 +1291,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * `$mockedMethods` parameter.
      *
      * @psalm-param trait-string $traitName
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     protected function getMockForTrait(string $traitName, array $arguments = [], string $mockClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true, array $mockedMethods = [], bool $cloneArguments = false): MockObject
     {
@@ -1289,6 +1319,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Creates an object that uses the specified trait.
      *
      * @psalm-param trait-string $traitName
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
      */
     protected function getObjectForTrait(string $traitName, array $arguments = [], string $traitClassName = '', bool $callOriginalConstructor = true, bool $callOriginalClone = true, bool $callAutoload = true): object
     {
@@ -1782,6 +1814,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @psalm-param class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     * @throws InvalidArgumentException
      */
     private function createMockObject(string $originalClassName, bool $register = true): MockObject
     {
@@ -1921,6 +1956,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                $reflector->getMethod($methodName)->getDeclaringClass()->getName() === self::class;
     }
 
+    /**
+     * @throws ExpectationFailedException
+     */
     private function verifyExceptionExpectations(Throwable|\Exception $exception): void
     {
         if ($this->expectedException !== null) {

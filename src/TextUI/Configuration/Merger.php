@@ -31,6 +31,11 @@ use SebastianBergmann\Environment\Console;
  */
 final class Merger
 {
+    /**
+     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws NoCustomCssFileException
+     */
     public function merge(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
         $bootstrap = null;

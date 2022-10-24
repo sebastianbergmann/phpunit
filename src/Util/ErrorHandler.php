@@ -165,7 +165,7 @@ final class ErrorHandler
     }
 
     /**
-     * @throws Exception
+     * @throws NoTestCaseObjectOnCallStackException
      */
     private function testValueObjectForEvents(): Event\Code\Test
     {
@@ -176,7 +176,7 @@ final class ErrorHandler
         }
 
         // @codeCoverageIgnoreStart
-        throw new Exception('Cannot find TestCase object on call stack');
+        throw new NoTestCaseObjectOnCallStackException;
         // @codeCoverageIgnoreEnd
     }
 }

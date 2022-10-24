@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
+use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\FinishedSubscriber;
 
@@ -17,6 +18,9 @@ use PHPUnit\Event\Test\FinishedSubscriber;
  */
 final class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public function notify(Finished $event): void
     {
         $this->collector()->testFinished($event);

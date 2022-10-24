@@ -10,9 +10,9 @@
 namespace PHPUnit\TextUI\XmlConfiguration;
 
 use function sprintf;
-use PHPUnit\Util\Xml\Exception as XmlException;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
 use PHPUnit\Util\Xml\SchemaDetector;
+use PHPUnit\Util\Xml\XmlException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

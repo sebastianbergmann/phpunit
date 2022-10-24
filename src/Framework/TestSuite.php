@@ -41,7 +41,6 @@ use PHPUnit\Util\Filter;
 use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
-use ReflectionException;
 use ReflectionMethod;
 use Throwable;
 
@@ -86,16 +85,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      */
     public static function fromClassName(string $className): static
     {
-        try {
-            $class = new ReflectionClass($className);
-        } catch (ReflectionException $e) {
-            throw new Exception(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        assert(class_exists($className));
+
+        $class = new ReflectionClass($className);
 
         return static::fromClassReflector($class);
     }
@@ -315,6 +307,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
+     * @throws Event\RuntimeException
      */
     public function run(): void
     {
@@ -545,6 +538,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
+     * @throws Event\MoreThanOneDataSetFromDataProviderException
      * @throws Exception
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void

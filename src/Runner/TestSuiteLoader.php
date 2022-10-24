@@ -21,7 +21,6 @@ use function strpos;
 use function substr;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
-use ReflectionException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -89,17 +88,7 @@ final class TestSuiteLoader
             throw new ClassCannotBeFoundException($suiteClassName, $suiteClassFile);
         }
 
-        try {
-            $class = new ReflectionClass($suiteClassName);
-            // @codeCoverageIgnoreStart
-        } catch (ReflectionException $e) {
-            throw new ReflectionException(
-                $e->getMessage(),
-                (int) $e->getCode(),
-                $e
-            );
-        }
-        // @codeCoverageIgnoreEnd
+        $class = new ReflectionClass($suiteClassName);
 
         if ($class->isSubclassOf(TestCase::class) && !$class->isAbstract()) {
             return $class;

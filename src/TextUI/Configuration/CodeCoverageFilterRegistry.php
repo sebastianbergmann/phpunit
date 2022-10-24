@@ -33,6 +33,10 @@ final class CodeCoverageFilterRegistry
         return self::$filter;
     }
 
+    /**
+     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     */
     public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
     {
         self::$filter = new Filter;

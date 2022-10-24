@@ -143,11 +143,12 @@
   </file>
   <file src="src/Framework/Assert.php">
     <MissingThrowsDocblock occurrences="37">
+      <code>load</code>
+      <code>load</code>
       <code>loadFile</code>
       <code>loadFile</code>
       <code>loadFile</code>
       <code>loadFile</code>
-      <code>new IsType($type)</code>
       <code>new IsType(IsType::TYPE_ARRAY)</code>
       <code>new IsType(IsType::TYPE_ARRAY)</code>
       <code>new IsType(IsType::TYPE_BOOL)</code>
@@ -172,7 +173,6 @@
       <code>new IsType(IsType::TYPE_SCALAR)</code>
       <code>new IsType(IsType::TYPE_STRING)</code>
       <code>new IsType(IsType::TYPE_STRING)</code>
-      <code>new TraversableContainsOnly($className, false)</code>
       <code>new TraversableContainsOnly($type)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
@@ -333,21 +333,6 @@
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
-    <MissingThrowsDocblock occurrences="13">
-      <code>assertThat</code>
-      <code>assertThat</code>
-      <code>assertThat</code>
-      <code>assertThat</code>
-      <code>generateClassFromWsdl</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMock</code>
-      <code>getMockForAbstractClass</code>
-      <code>getMockForTrait</code>
-      <code>getObjectForTrait</code>
-      <code>onlyMethods</code>
-    </MissingThrowsDocblock>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>
@@ -356,16 +341,6 @@
     <InvalidScalarArgument occurrences="1">
       <code>$var</code>
     </InvalidScalarArgument>
-    <MissingThrowsDocblock occurrences="11">
-      <code>CodeCoverage::instance()</code>
-      <code>CodeCoverage::instance()</code>
-      <code>CodeCoverage::instance()</code>
-      <code>CodeCoverage::instance()</code>
-      <code>CodeCoverage::start($test)</code>
-      <code>GlobalState::getIncludedFilesAsString()</code>
-      <code>cacheDirectory</code>
-      <code>saveConfigurationForChildProcess</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/TestSuite.php">
     <ArgumentTypeCoercion occurrences="3">
@@ -373,12 +348,13 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="5">
-      <code>Event\TestDataCollection::fromArray([])</code>
-      <code>Event\TestSuite\TestSuite::fromTestSuite($this)</code>
+    <MissingThrowsDocblock occurrences="2">
       <code>Filter::getFilteredStacktrace($t)</code>
       <code>Filter::getFilteredStacktrace($t)</code>
     </MissingThrowsDocblock>
+    <RedundantConditionGivenDocblockType occurrences="1">
+      <code>assert(class_exists($className))</code>
+    </RedundantConditionGivenDocblockType>
     <UnsafeInstantiation occurrences="2">
       <code>new static($class-&gt;getName())</code>
       <code>new static($name)</code>
@@ -388,23 +364,11 @@
     <InvalidPropertyAssignmentValue occurrences="1">
       <code>$this-&gt;testSuiteTimes</code>
     </InvalidPropertyAssignmentValue>
-    <MissingThrowsDocblock occurrences="2">
-      <code>dataFromDataProvider</code>
-      <code>duration</code>
-    </MissingThrowsDocblock>
     <RedundantCondition occurrences="1">
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
   </file>
   <file src="src/Logging/TeamCity/TeamCityLogger.php">
-    <MissingThrowsDocblock occurrences="6">
-      <code>duration</code>
-      <code>duration</code>
-      <code>duration</code>
-      <code>duration</code>
-      <code>duration</code>
-      <code>duration</code>
-    </MissingThrowsDocblock>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$flowId</code>
     </PropertyNotSetInConstructor>
@@ -419,16 +383,12 @@
     <InvalidCast occurrences="1">
       <code>$value</code>
     </InvalidCast>
-    <MissingThrowsDocblock occurrences="1"/>
     <UndefinedMethod occurrences="2">
       <code>text</code>
       <code>text</code>
     </UndefinedMethod>
   </file>
   <file src="src/Logging/TestDox/TestMethod/TestMethodCollector.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>duration</code>
-    </MissingThrowsDocblock>
     <PossiblyNullArgument occurrences="2">
       <code>$this-&gt;status</code>
       <code>$this-&gt;time</code>
@@ -503,22 +463,17 @@
       <code>explode('::', $value)</code>
       <code>trim($tmp[0])</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="4">
-      <code>forClassName</code>
-      <code>forClassName</code>
-      <code>forMethod</code>
-      <code>forMethod</code>
-    </MissingThrowsDocblock>
+  </file>
+  <file src="src/Metadata/Version/Requirement.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>!empty($matches['operator']) ? $matches['operator'] : '&gt;='</code>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Runner/CodeCoverage.php">
     <InvalidNullableReturnType occurrences="2">
       <code>Driver</code>
       <code>\SebastianBergmann\CodeCoverage\CodeCoverage</code>
     </InvalidNullableReturnType>
-    <MissingThrowsDocblock occurrences="2">
-      <code>forLineAndPathCoverage</code>
-      <code>forLineCoverage</code>
-    </MissingThrowsDocblock>
     <NullableReturnStatement occurrences="2">
       <code>self::$driver</code>
       <code>self::$instance</code>
@@ -527,13 +482,6 @@
       <code>start</code>
       <code>stop</code>
     </PossiblyNullReference>
-  </file>
-  <file src="src/Runner/Extension/Facade.php">
-    <MissingThrowsDocblock occurrences="3">
-      <code>EventFacade::registerSubscriber($subscriber)</code>
-      <code>EventFacade::registerSubscribers(...$subscribers)</code>
-      <code>EventFacade::registerTracer($tracer)</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <PossiblyNullArgument occurrences="1">
@@ -549,33 +497,16 @@
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
       <code>RawCodeCoverageData::fromXdebugWithoutPathCoverage([])</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="3">
-      <code>append</code>
-      <code>cacheDirectory</code>
-    </MissingThrowsDocblock>
     <PossiblyInvalidArgument occurrences="1">
       <code>$sections['FILEEOF']</code>
     </PossiblyInvalidArgument>
-  </file>
-  <file src="src/Runner/ResultCache/ResultCacheHandler.php">
-    <MissingThrowsDocblock occurrences="3">
-      <code>duration</code>
-      <code>duration</code>
-      <code>duration</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Runner/TestResult/Collector.php">
     <RedundantCondition occurrences="1">
       <code>assert($testSuite instanceof TestSuiteForTestClass)</code>
     </RedundantCondition>
   </file>
-  <file src="src/Runner/TestResult/Facade.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>new Collector</code>
-    </MissingThrowsDocblock>
-  </file>
   <file src="src/Runner/TestSuiteLoader.php">
-    <MissingThrowsDocblock occurrences="1"/>
     <UnresolvableInclude occurrences="1">
       <code>include_once $suiteClassFile</code>
     </UnresolvableInclude>
@@ -592,35 +523,12 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="12">
-      <code>Event\TestSuite\TestSuite::fromTestSuite($suite)</code>
-      <code>atLeastVersion</code>
-      <code>configuration</code>
-      <code>configuration</code>
-      <code>configuration</code>
-      <code>includePath</code>
-      <code>iniSettings</code>
-      <code>listTestsXml</code>
-      <code>throw new BootstrapException($t);</code>
-      <code>throw new InvalidBootstrapException($filename);</code>
-      <code>unrecognizedOrderBy</code>
-      <code>useDefaultConfiguration</code>
-    </MissingThrowsDocblock>
     <PossiblyUndefinedArrayOffset occurrences="1">
       <code>$_SERVER['argv']</code>
     </PossiblyUndefinedArrayOffset>
     <UnresolvableInclude occurrences="1">
       <code>include_once $filename</code>
     </UnresolvableInclude>
-  </file>
-  <file src="src/TextUI/Command/Commands/WarmCodeCoverageCacheCommand.php">
-    <MissingThrowsDocblock occurrences="2">
-      <code>coverageCacheDirectory</code>
-      <code>stop</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/TextUI/Configuration/Cli/Builder.php">
-    <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/TextUI/Configuration/Cli/Configuration.php">
     <InvalidNullableReturnType occurrences="2">
@@ -632,15 +540,7 @@
       <code>$this-&gt;teamCityPrinter</code>
     </NullableReturnStatement>
   </file>
-  <file src="src/TextUI/Configuration/CodeCoverageFilterRegistry.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>coverageFilter</code>
-    </MissingThrowsDocblock>
-  </file>
   <file src="src/TextUI/Configuration/Configuration.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>throw new FilterNotConfiguredException;</code>
-    </MissingThrowsDocblock>
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$columns</code>
     </PossiblyInvalidPropertyAssignmentValue>
@@ -652,115 +552,12 @@
       <code>hasCacheDirectory</code>
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-    <MissingThrowsDocblock occurrences="88">
-      <code>backupGlobals</code>
-      <code>backupStaticProperties</code>
-      <code>beStrictAboutChangesToGlobalState</code>
-      <code>bootstrap</code>
-      <code>bootstrap</code>
-      <code>cacheDirectory</code>
-      <code>cacheDirectory</code>
-      <code>cacheDirectory</code>
-      <code>cacheResult</code>
-      <code>cacheResultFile</code>
-      <code>cacheResultFile</code>
-      <code>clover</code>
-      <code>cobertura</code>
-      <code>colors</code>
-      <code>columns</code>
-      <code>coverageCacheDirectory</code>
-      <code>coverageClover</code>
-      <code>coverageCobertura</code>
-      <code>coverageCrap4J</code>
-      <code>coverageHtml</code>
-      <code>coveragePhp</code>
-      <code>coverageText</code>
-      <code>coverageXml</code>
-      <code>crap4j</code>
-      <code>crap4j</code>
-      <code>customCssFile</code>
-      <code>defaultTimeLimit</code>
-      <code>disableCodeCoverageIgnore</code>
-      <code>disallowTestOutput</code>
-      <code>displayDetailsOnIncompleteTests</code>
-      <code>displayDetailsOnSkippedTests</code>
-      <code>displayDetailsOnTestsThatTriggerDeprecations</code>
-      <code>displayDetailsOnTestsThatTriggerErrors</code>
-      <code>displayDetailsOnTestsThatTriggerNotices</code>
-      <code>displayDetailsOnTestsThatTriggerWarnings</code>
-      <code>enforceTimeLimit</code>
-      <code>excludeGroups</code>
-      <code>executionOrder</code>
-      <code>executionOrderDefects</code>
-      <code>extensionsDirectory</code>
-      <code>failOnEmptyTestSuite</code>
-      <code>failOnIncomplete</code>
-      <code>failOnRisky</code>
-      <code>failOnSkipped</code>
-      <code>failOnWarning</code>
-      <code>filter</code>
-      <code>groups</code>
-      <code>html</code>
-      <code>html</code>
-      <code>html</code>
-      <code>html</code>
-      <code>html</code>
-      <code>html</code>
-      <code>html</code>
-      <code>html</code>
-      <code>html</code>
-      <code>html</code>
-      <code>includePath</code>
-      <code>junitLogfile</code>
-      <code>logEventsText</code>
-      <code>logEventsVerboseText</code>
-      <code>pathCoverage</code>
-      <code>php</code>
-      <code>processIsolation</code>
-      <code>randomOrderSeed</code>
-      <code>repeat</code>
-      <code>reportUselessTests</code>
-      <code>resolveDependencies</code>
-      <code>reverseList</code>
-      <code>stopOnDefect</code>
-      <code>stopOnError</code>
-      <code>stopOnFailure</code>
-      <code>stopOnIncomplete</code>
-      <code>stopOnRisky</code>
-      <code>stopOnSkipped</code>
-      <code>stopOnWarning</code>
-      <code>strictCoverage</code>
-      <code>teamcityLogfile</code>
-      <code>testSuite</code>
-      <code>testdoxHtmlFile</code>
-      <code>testdoxTextFile</code>
-      <code>testdoxXmlFile</code>
-      <code>testsCovering</code>
-      <code>testsUsing</code>
-      <code>text</code>
-      <code>text</code>
-      <code>text</code>
-      <code>xml</code>
-    </MissingThrowsDocblock>
     <PossiblyUndefinedArrayOffset occurrences="1">
       <code>$_SERVER['PHP_SELF']</code>
     </PossiblyUndefinedArrayOffset>
     <RedundantCondition occurrences="1">
       <code>assert($xmlConfiguration instanceof LoadedFromFileConfiguration)</code>
     </RedundantCondition>
-  </file>
-  <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
-    <MissingThrowsDocblock occurrences="9">
-      <code>addTestFile</code>
-      <code>addTestFiles</code>
-      <code>argument</code>
-      <code>argument</code>
-      <code>defaultTestSuite</code>
-      <code>map</code>
-      <code>testSuffixes</code>
-      <code>testSuite</code>
-      <code>throw new TestFileNotFoundException($cliConfiguration-&gt;argument());</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Xml/CodeCoverage/CodeCoverage.php">
     <DeprecatedMethod occurrences="1">
@@ -812,23 +609,15 @@
     </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="3">
       <code>$bootstrap-&gt;getAttribute('class')</code>
+      <code>$directoryNode-&gt;getAttribute('phpVersionOperator')</code>
+      <code>$fileNode-&gt;getAttribute('phpVersionOperator')</code>
     </ArgumentTypeCoercion>
     <RedundantConditionGivenDocblockType occurrences="2">
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
     </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/Logging/Logging.php">
-    <MissingThrowsDocblock occurrences="6">
-      <code>throw new Exception('Logger "JUnit XML" is not configured');</code>
-      <code>throw new Exception('Logger "Team City" is not configured');</code>
-      <code>throw new Exception('Logger "TestDox HTML" is not configured');</code>
-      <code>throw new Exception('Logger "TestDox Text" is not configured');</code>
-      <code>throw new Exception('Logger "TestDox XML" is not configured');</code>
-      <code>throw new Exception('Logger "Text" is not configured');</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Xml/Migration/Migrations/CoverageCloverToReport.php">
     <PossiblyNullReference occurrences="1">
@@ -965,9 +754,6 @@
     </PossiblyUndefinedArrayOffset>
   </file>
   <file src="src/TextUI/Output/Default/ProgressPrinter/ProgressPrinter.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>registerSubscribers</code>
-    </MissingThrowsDocblock>
     <PropertyNotSetInConstructor occurrences="3">
       <code>$maxColumn</code>
       <code>$numberOfTests</code>
@@ -984,49 +770,6 @@
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
     </InternalMethod>
-    <MissingThrowsDocblock occurrences="46">
-      <code>Event\TestSuite\TestSuite::fromTestSuite($suite)</code>
-      <code>Event\TestSuite\TestSuite::fromTestSuite($suite)</code>
-      <code>bootstrap</code>
-      <code>configurationFile</code>
-      <code>configurationFile</code>
-      <code>configurationFile</code>
-      <code>coverageCacheDirectory</code>
-      <code>coverageClover</code>
-      <code>coverageCobertura</code>
-      <code>coverageCrap4j</code>
-      <code>coverageHtml</code>
-      <code>coverageHtmlCustomCssFile</code>
-      <code>coveragePhp</code>
-      <code>coverageText</code>
-      <code>coverageXml</code>
-      <code>detect</code>
-      <code>excludeGroups</code>
-      <code>filter</code>
-      <code>groups</code>
-      <code>logEventsText</code>
-      <code>logEventsText</code>
-      <code>logEventsText</code>
-      <code>logEventsVerboseText</code>
-      <code>logEventsVerboseText</code>
-      <code>logEventsVerboseText</code>
-      <code>logfileJunit</code>
-      <code>logfileTeamcity</code>
-      <code>logfileTestdoxHtml</code>
-      <code>logfileTestdoxText</code>
-      <code>logfileTestdoxXml</code>
-      <code>logfileText</code>
-      <code>new ResultCacheHandler($cache)</code>
-      <code>new TestMethodCollector</code>
-      <code>pharExtensionDirectory</code>
-      <code>resourceUsageSinceStartOfRequest</code>
-      <code>run</code>
-      <code>stop</code>
-      <code>stop</code>
-      <code>testsCovering</code>
-      <code>testsUsing</code>
-      <code>xmlValidationErrors</code>
-    </MissingThrowsDocblock>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$printer</code>
     </PropertyNotSetInConstructor>
@@ -1038,9 +781,6 @@
       <code>$errno</code>
       <code>$errstr</code>
     </MissingClosureParamType>
-    <MissingThrowsDocblock occurrences="1">
-      <code>CodeCoverage::instance()</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <DocblockTypeContradiction occurrences="1">
@@ -1054,11 +794,6 @@
     </TypeDoesNotContainNull>
   </file>
   <file src="src/Util/Printer/DefaultPrinter.php">
-    <MissingThrowsDocblock occurrences="3">
-      <code>new self($out)</code>
-      <code>new self('php://stderr')</code>
-      <code>new self('php://stdout')</code>
-    </MissingThrowsDocblock>
     <PossiblyInvalidArgument occurrences="2">
       <code>$this-&gt;stream</code>
       <code>$this-&gt;stream</code>
@@ -1070,8 +805,8 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>ensureOperatorIsValid</code>
-    </MissingThrowsDocblock>
+    <DocblockTypeContradiction occurrences="1">
+      <code>in_array($operator, ['&lt;', 'lt', '&lt;=', 'le', '&gt;', 'gt', '&gt;=', 'ge', '==', '=', 'eq', '!=', '&lt;&gt;', 'ne'], true)</code>
+    </DocblockTypeContradiction>
   </file>
 </files>

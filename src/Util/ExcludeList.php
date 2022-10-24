@@ -15,7 +15,6 @@ use function defined;
 use function dirname;
 use function is_dir;
 use function realpath;
-use function sprintf;
 use function str_starts_with;
 use function sys_get_temp_dir;
 use Composer\Autoload\ClassLoader;
@@ -141,17 +140,14 @@ final class ExcludeList
     private static bool $initialized  = false;
 
     /**
-     * @throws Exception
+     * @psalm-param non-empty-string $directory
+     *
+     * @throws InvalidDirectoryException
      */
     public static function addDirectory(string $directory): void
     {
         if (!is_dir($directory)) {
-            throw new Exception(
-                sprintf(
-                    '"%s" is not a directory',
-                    $directory
-                )
-            );
+            throw new InvalidDirectoryException($directory);
         }
 
         self::$directories[] = realpath($directory);

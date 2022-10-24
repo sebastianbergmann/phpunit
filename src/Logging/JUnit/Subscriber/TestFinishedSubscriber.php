@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Logging\JUnit;
 
+use PHPUnit\Event\InvalidArgumentException;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Event\Test\Finished;
 use PHPUnit\Event\Test\FinishedSubscriber;
 
@@ -17,6 +19,10 @@ use PHPUnit\Event\Test\FinishedSubscriber;
  */
 final class TestFinishedSubscriber extends Subscriber implements FinishedSubscriber
 {
+    /**
+     * @throws InvalidArgumentException
+     * @throws NoDataSetFromDataProviderException
+     */
     public function notify(Finished $event): void
     {
         $this->logger()->testFinished($event);

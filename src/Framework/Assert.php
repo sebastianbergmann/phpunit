@@ -63,6 +63,7 @@ use PHPUnit\Framework\Constraint\TraversableContainsIdentical;
 use PHPUnit\Framework\Constraint\TraversableContainsOnly;
 use PHPUnit\Util\Type;
 use PHPUnit\Util\Xml\Loader as XmlLoader;
+use PHPUnit\Util\Xml\XmlException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1690,8 +1691,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      */
     final public static function assertXmlStringEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
@@ -1704,8 +1705,8 @@ abstract class Assert
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      */
     final public static function assertXmlStringNotEqualsXmlString(string $expectedXml, string $actualXml, string $message = ''): void
     {
@@ -1969,6 +1970,9 @@ abstract class Assert
         return new TraversableContainsOnly($type);
     }
 
+    /**
+     * @throws Exception
+     */
     final public static function containsOnlyInstancesOf(string $className): TraversableContainsOnly
     {
         return new TraversableContainsOnly($className, false);
@@ -2052,6 +2056,9 @@ abstract class Assert
         return new IsInstanceOf($className);
     }
 
+    /**
+     * @throws Exception
+     */
     final public static function isType(string $type): IsType
     {
         return new IsType($type);

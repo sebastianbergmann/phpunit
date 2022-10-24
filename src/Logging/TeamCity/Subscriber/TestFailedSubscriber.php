@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Logging\TeamCity;
 
+use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Test\Failed;
 use PHPUnit\Event\Test\FailedSubscriber;
 
@@ -17,6 +18,9 @@ use PHPUnit\Event\Test\FailedSubscriber;
  */
 final class TestFailedSubscriber extends Subscriber implements FailedSubscriber
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public function notify(Failed $event): void
     {
         $this->logger()->testFailed($event);

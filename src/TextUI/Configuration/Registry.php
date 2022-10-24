@@ -60,6 +60,11 @@ final class Registry
         return self::$instance;
     }
 
+    /**
+     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws NoCustomCssFileException
+     */
     public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
         self::$instance = (new Merger)->merge($cliConfiguration, $xmlConfiguration);

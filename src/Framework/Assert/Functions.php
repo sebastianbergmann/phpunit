@@ -66,6 +66,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnCallback as ReturnCallbackStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf as ReturnSelfStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
+use PHPUnit\Util\Xml\XmlException;
 use Throwable;
 
 if (!function_exists('PHPUnit\Framework\assertArrayHasKey')) {
@@ -1993,7 +1994,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
     /**
      * Asserts that two XML documents are equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
+     * @throws XmlException
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -2010,7 +2011,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
+     * @throws XmlException
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -2264,6 +2265,9 @@ if (!function_exists('PHPUnit\Framework\containsOnly')) {
 }
 
 if (!function_exists('PHPUnit\Framework\containsOnlyInstancesOf')) {
+    /**
+     * @throws Exception
+     */
     function containsOnlyInstancesOf(string $className): TraversableContainsOnly
     {
         return Assert::containsOnlyInstancesOf(...func_get_args());
@@ -2376,6 +2380,9 @@ if (!function_exists('PHPUnit\Framework\isInstanceOf')) {
 }
 
 if (!function_exists('PHPUnit\Framework\isType')) {
+    /**
+     * @throws Exception
+     */
     function isType(string $type): IsType
     {
         return Assert::isType(...func_get_args());

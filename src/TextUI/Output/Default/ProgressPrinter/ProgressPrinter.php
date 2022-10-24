@@ -39,6 +39,10 @@ final class ProgressPrinter
     private ?TestStatus $status   = null;
     private bool $prepared        = false;
 
+    /**
+     * @throws EventFacadeIsSealedException
+     * @throws UnknownSubscriberTypeException
+     */
     public function __construct(Printer $printer, bool $colors, int $numberOfColumns)
     {
         $this->printer = $printer;

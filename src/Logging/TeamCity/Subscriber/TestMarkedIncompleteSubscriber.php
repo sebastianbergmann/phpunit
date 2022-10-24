@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Logging\TeamCity;
 
+use PHPUnit\Event\InvalidArgumentException;
 use PHPUnit\Event\Test\MarkedIncomplete;
 use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
 
@@ -17,6 +18,9 @@ use PHPUnit\Event\Test\MarkedIncompleteSubscriber;
  */
 final class TestMarkedIncompleteSubscriber extends Subscriber implements MarkedIncompleteSubscriber
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public function notify(MarkedIncomplete $event): void
     {
         $this->logger()->testMarkedIncomplete($event);

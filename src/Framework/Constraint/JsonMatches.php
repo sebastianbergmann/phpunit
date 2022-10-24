@@ -12,6 +12,7 @@ namespace PHPUnit\Framework\Constraint;
 use function json_decode;
 use function sprintf;
 use PHPUnit\Framework\ExpectationFailedException;
+use PHPUnit\Util\InvalidJsonException;
 use PHPUnit\Util\Json;
 use SebastianBergmann\Comparator\ComparisonFailure;
 
@@ -64,8 +65,8 @@ final class JsonMatches extends Constraint
     /**
      * Throws an exception for the given compared value and test description.
      *
-     * @throws \PHPUnit\Framework\Exception
      * @throws ExpectationFailedException
+     * @throws InvalidJsonException
      */
     protected function fail(mixed $other, string $description, ComparisonFailure $comparisonFailure = null): never
     {

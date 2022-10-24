@@ -19,7 +19,7 @@ final class LoaderTest extends TestCase
 {
     public function testCannotLoadXmlFromEmptyString(): void
     {
-        $this->expectException(Exception::class);
+        $this->expectException(XmlException::class);
         $this->expectExceptionMessage('Could not load XML from empty string');
 
         (new Loader)->load('');

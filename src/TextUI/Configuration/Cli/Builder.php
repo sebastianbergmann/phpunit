@@ -118,6 +118,9 @@ final class Builder
 
     private const SHORT_OPTIONS = 'd:c:hv';
 
+    /**
+     * @throws Exception
+     */
     public function fromParameters(array $parameters, array $additionalLongOptions): Configuration
     {
         try {
