@@ -24,6 +24,11 @@ final class VersionComparisonOperator
      */
     private readonly string $operator;
 
+    /**
+     * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator
+     *
+     * @throws Exception
+     */
     public function __construct(string $operator)
     {
         $this->ensureOperatorIsValid($operator);
@@ -40,9 +45,9 @@ final class VersionComparisonOperator
     }
 
     /**
-     * @throws Exception
+     * @psalm-param '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator
      *
-     * @psalm-assert '<'|'lt'|'<='|'le'|'>'|'gt'|'>='|'ge'|'=='|'='|'eq'|'!='|'<>'|'ne' $operator
+     * @throws Exception
      */
     private function ensureOperatorIsValid(string $operator): void
     {
