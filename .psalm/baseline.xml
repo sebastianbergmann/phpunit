@@ -49,11 +49,6 @@
       <code>$className</code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/Event/Value/Throwable.php">
-    <MissingDocblockType occurrences="1">
-      <code>public function className(): string</code>
-    </MissingDocblockType>
-  </file>
   <file src="src/Framework/Assert/Functions.php">
     <TooManyArguments occurrences="14">
       <code>Assert::anything(...func_get_args())</code>

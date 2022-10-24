@@ -83,7 +83,7 @@ final class Throwable
     }
 
     /**
-     * @psalm-return $className
+     * @psalm-return class-string
      */
     public function className(): string
     {
