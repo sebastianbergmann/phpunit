@@ -25,54 +25,54 @@ final class TestSizeTest extends TestCase
 {
     public function testCanBeUnknown(): void
     {
-        $status = TestSize::unknown();
+        $testSize = TestSize::unknown();
 
-        $this->assertFalse($status->isKnown());
-        $this->assertTrue($status->isUnknown());
-        $this->assertFalse($status->isSmall());
-        $this->assertFalse($status->isMedium());
-        $this->assertFalse($status->isLarge());
+        $this->assertFalse($testSize->isKnown());
+        $this->assertTrue($testSize->isUnknown());
+        $this->assertFalse($testSize->isSmall());
+        $this->assertFalse($testSize->isMedium());
+        $this->assertFalse($testSize->isLarge());
 
-        $this->assertSame('unknown', $status->asString());
+        $this->assertSame('unknown', $testSize->asString());
     }
 
     public function testCanBeSmall(): void
     {
-        $status = TestSize::small();
+        $testSize = TestSize::small();
 
-        $this->assertTrue($status->isKnown());
-        $this->assertFalse($status->isUnknown());
-        $this->assertTrue($status->isSmall());
-        $this->assertFalse($status->isMedium());
-        $this->assertFalse($status->isLarge());
+        $this->assertTrue($testSize->isKnown());
+        $this->assertFalse($testSize->isUnknown());
+        $this->assertTrue($testSize->isSmall());
+        $this->assertFalse($testSize->isMedium());
+        $this->assertFalse($testSize->isLarge());
 
-        $this->assertSame('small', $status->asString());
+        $this->assertSame('small', $testSize->asString());
     }
 
     public function testCanBeMedium(): void
     {
-        $status = TestSize::medium();
+        $testSize = TestSize::medium();
 
-        $this->assertTrue($status->isKnown());
-        $this->assertFalse($status->isUnknown());
-        $this->assertFalse($status->isSmall());
-        $this->assertTrue($status->isMedium());
-        $this->assertFalse($status->isLarge());
+        $this->assertTrue($testSize->isKnown());
+        $this->assertFalse($testSize->isUnknown());
+        $this->assertFalse($testSize->isSmall());
+        $this->assertTrue($testSize->isMedium());
+        $this->assertFalse($testSize->isLarge());
 
-        $this->assertSame('medium', $status->asString());
+        $this->assertSame('medium', $testSize->asString());
     }
 
     public function testCanBeLarge(): void
     {
-        $status = TestSize::large();
+        $testSize = TestSize::large();
 
-        $this->assertTrue($status->isKnown());
-        $this->assertFalse($status->isUnknown());
-        $this->assertFalse($status->isSmall());
-        $this->assertFalse($status->isMedium());
-        $this->assertTrue($status->isLarge());
+        $this->assertTrue($testSize->isKnown());
+        $this->assertFalse($testSize->isUnknown());
+        $this->assertFalse($testSize->isSmall());
+        $this->assertFalse($testSize->isMedium());
+        $this->assertTrue($testSize->isLarge());
 
-        $this->assertSame('large', $status->asString());
+        $this->assertSame('large', $testSize->asString());
     }
 
     #[DataProvider('comparisonProvider')]
