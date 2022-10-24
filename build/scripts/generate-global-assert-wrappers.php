@@ -38,6 +38,7 @@ use PHPUnit\Framework\MockObject\Stub\ReturnCallback as ReturnCallbackStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnSelf as ReturnSelfStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnStub;
 use PHPUnit\Framework\MockObject\Stub\ReturnValueMap as ReturnValueMapStub;
+use PHPUnit\Util\Xml\XmlException;
 ';
 
 $usedClasses = [];
@@ -65,7 +66,7 @@ foreach ($class->getMethods() as $method) {
 
     $constraintMethods .= \sprintf(
         "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n%s\n{\n    return Assert::%s(...\\func_get_args());\n}\n}\n\n",
-        \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1])),
+        \str_replace('final public static ', '', \trim($lines[$method->getStartLine() - 1])),
         $method->getName()
     );
 }
@@ -93,7 +94,7 @@ foreach ($class->getMethods() as $method) {
         (string) $method->getDocComment()
     );
 
-    $signature = \str_replace('public static ', '', \trim($lines[$method->getStartLine() - 1]));
+    $signature = \str_replace('final public static ', '', \trim($lines[$method->getStartLine() - 1]));
     $body      = "{\n    Assert::" . $method->getName() . "(...\\func_get_args());\n}";
 
     $buffer .= "if (!function_exists('PHPUnit\Framework\\" . $method->getName() . "')) {\n";
