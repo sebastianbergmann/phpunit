@@ -82,12 +82,6 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/Framework/Exception/Exception.php">
-    <MissingParamType occurrences="2">
-      <code>$code</code>
-      <code>$message</code>
-    </MissingParamType>
-  </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
