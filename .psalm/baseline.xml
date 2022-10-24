@@ -603,14 +603,6 @@
       <code>$printer</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/Util/PHP/AbstractPhpProcess.php">
-    <MissingClosureParamType occurrences="4">
-      <code>$errfile</code>
-      <code>$errline</code>
-      <code>$errno</code>
-      <code>$errstr</code>
-    </MissingClosureParamType>
-  </file>
   <file src="src/Util/PHP/DefaultPhpProcess.php">
     <DocblockTypeContradiction occurrences="1">
       <code>is_array($envVar)</code>

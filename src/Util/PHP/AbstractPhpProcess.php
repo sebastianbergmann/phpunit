@@ -262,7 +262,7 @@ abstract class AbstractPhpProcess
             /**
              * @throws ErrorException
              */
-            static function ($errno, $errstr, $errfile, $errline): void
+            static function (int $errno, string $errstr, string $errfile, int $errline): void
             {
                 throw new ErrorException($errstr, $errno, $errno, $errfile, $errline);
             }
