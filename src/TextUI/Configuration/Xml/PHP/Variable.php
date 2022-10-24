@@ -20,7 +20,7 @@ final class Variable
     private readonly mixed $value;
     private readonly bool $force;
 
-    public function __construct(string $name, $value, bool $force)
+    public function __construct(string $name, mixed $value, bool $force)
     {
         $this->name  = $name;
         $this->value = $value;

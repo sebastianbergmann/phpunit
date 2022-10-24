@@ -516,11 +516,6 @@
       <code>$this-&gt;iniSettings</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/Variable.php">
-    <MissingParamType occurrences="1">
-      <code>$value</code>
-    </MissingParamType>
-  </file>
   <file src="src/TextUI/Configuration/Xml/PHP/VariableCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
