@@ -27,6 +27,8 @@ use ErrorException;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Facade;
+use PHPUnit\Event\MoreThanOneDataSetFromDataProviderException;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\Test;
@@ -153,6 +155,9 @@ abstract class AbstractPhpProcess
      * Runs a single test in a separate PHP process.
      *
      * @throws \PHPUnit\Runner\Exception
+     * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
      */
     public function runTestJob(string $job, Test $test): void
     {
@@ -234,6 +239,9 @@ abstract class AbstractPhpProcess
 
     /**
      * @throws \PHPUnit\Runner\Exception
+     * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
      */
     private function processChildResult(Test $test, string $stdout, string $stderr): void
     {

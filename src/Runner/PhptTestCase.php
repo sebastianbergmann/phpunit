@@ -43,6 +43,7 @@ use function var_export;
 use PHPUnit\Event\Code\Phpt;
 use PHPUnit\Event\Code\Throwable as EventThrowable;
 use PHPUnit\Event\Facade as EventFacade;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Assert;
 use PHPUnit\Framework\AssertionFailedError;
 use PHPUnit\Framework\ExecutionOrderDependency;
@@ -99,10 +100,12 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
     /**
      * Runs a test and collects its result in a TestResult instance.
      *
+     * @throws \PHPUnit\Framework\Exception
      * @throws \SebastianBergmann\CodeCoverage\ReflectionException
      * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws Exception
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
      * @throws StaticAnalysisCacheNotConfiguredException
      * @throws TestIdMissingException
      * @throws UnintentionallyCoveredCodeException

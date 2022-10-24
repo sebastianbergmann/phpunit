@@ -1,76 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="4.x-dev@">
   <file src="src/Event/Dispatcher/DirectDispatcher.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>map</code>
-    </MissingThrowsDocblock>
     <UndefinedInterfaceMethod occurrences="1">
       <code>notify</code>
     </UndefinedInterfaceMethod>
-  </file>
-  <file src="src/Event/Emitter/DispatchingEmitter.php">
-    <MissingThrowsDocblock occurrences="60">
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>dispatch</code>
-      <code>duration</code>
-      <code>duration</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Event/Facade.php">
     <ArgumentTypeCoercion occurrences="1">
@@ -89,22 +22,11 @@
     <ImpureMethodCall occurrences="1">
       <code>fromSecondsAndNanoseconds</code>
     </ImpureMethodCall>
-    <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/Event/Value/Telemetry/MemoryUsage.php">
     <ImpureMethodCall occurrences="1">
       <code>fromBytes</code>
     </ImpureMethodCall>
-  </file>
-  <file src="src/Event/Value/Telemetry/SystemStopWatch.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>HRTime::fromSecondsAndNanoseconds(...hrtime())</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/Event/Value/Telemetry/SystemStopWatchWithOffset.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>HRTime::fromSecondsAndNanoseconds(...hrtime())</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Event/Value/Test/TestMethod.php">
     <ImpureMethodCall occurrences="4">
@@ -113,11 +35,6 @@
       <code>hasDataFromDataProvider</code>
       <code>hasDataFromDataProvider</code>
     </ImpureMethodCall>
-    <MissingThrowsDocblock occurrences="3">
-      <code>TestDataCollection::fromArray($testData)</code>
-      <code>dataFromDataProvider</code>
-      <code>dataFromDataProvider</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Event/Value/TestSuite/TestSuite.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -136,55 +53,9 @@
     <MissingDocblockType occurrences="1">
       <code>public function className(): string</code>
     </MissingDocblockType>
-    <MissingThrowsDocblock occurrences="2">
-      <code>Filter::getFilteredStacktrace($t)</code>
-      <code>previous</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Assert.php">
-    <MissingThrowsDocblock occurrences="37">
-      <code>load</code>
-      <code>load</code>
-      <code>loadFile</code>
-      <code>loadFile</code>
-      <code>loadFile</code>
-      <code>loadFile</code>
-      <code>new IsType(IsType::TYPE_ARRAY)</code>
-      <code>new IsType(IsType::TYPE_ARRAY)</code>
-      <code>new IsType(IsType::TYPE_BOOL)</code>
-      <code>new IsType(IsType::TYPE_BOOL)</code>
-      <code>new IsType(IsType::TYPE_CALLABLE)</code>
-      <code>new IsType(IsType::TYPE_CALLABLE)</code>
-      <code>new IsType(IsType::TYPE_CLOSED_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_CLOSED_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_FLOAT)</code>
-      <code>new IsType(IsType::TYPE_FLOAT)</code>
-      <code>new IsType(IsType::TYPE_INT)</code>
-      <code>new IsType(IsType::TYPE_INT)</code>
-      <code>new IsType(IsType::TYPE_ITERABLE)</code>
-      <code>new IsType(IsType::TYPE_ITERABLE)</code>
-      <code>new IsType(IsType::TYPE_NUMERIC)</code>
-      <code>new IsType(IsType::TYPE_NUMERIC)</code>
-      <code>new IsType(IsType::TYPE_OBJECT)</code>
-      <code>new IsType(IsType::TYPE_OBJECT)</code>
-      <code>new IsType(IsType::TYPE_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_RESOURCE)</code>
-      <code>new IsType(IsType::TYPE_SCALAR)</code>
-      <code>new IsType(IsType::TYPE_SCALAR)</code>
-      <code>new IsType(IsType::TYPE_STRING)</code>
-      <code>new IsType(IsType::TYPE_STRING)</code>
-      <code>new TraversableContainsOnly($type)</code>
-      <code>static::assertThat($haystack, $constraint, $message)</code>
-      <code>static::assertThat($haystack, $constraint, $message)</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Assert/Functions.php">
-    <MissingThrowsDocblock occurrences="3">
-      <code>Assert::logicalAnd(...func_get_args())</code>
-      <code>Assert::stringEndsWith(...func_get_args())</code>
-      <code>Assert::stringStartsWith(...func_get_args())</code>
-    </MissingThrowsDocblock>
-    <TooManyArguments occurrences="13">
+    <TooManyArguments occurrences="14">
       <code>Assert::anything(...func_get_args())</code>
       <code>Assert::directoryExists(...func_get_args())</code>
       <code>Assert::fileExists(...func_get_args())</code>
@@ -193,32 +64,13 @@
       <code>Assert::isFinite(...func_get_args())</code>
       <code>Assert::isInfinite(...func_get_args())</code>
       <code>Assert::isJson(...func_get_args())</code>
+      <code>Assert::isList(...func_get_args())</code>
       <code>Assert::isNan(...func_get_args())</code>
       <code>Assert::isNull(...func_get_args())</code>
       <code>Assert::isReadable(...func_get_args())</code>
       <code>Assert::isTrue(...func_get_args())</code>
       <code>Assert::isWritable(...func_get_args())</code>
     </TooManyArguments>
-  </file>
-  <file src="src/Framework/Constraint/Cardinality/Count.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>getCountOf</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Constraint/Cardinality/SameSize.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>getCountOf</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Constraint/Exception/Exception.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>Filter::getFilteredStacktrace($other)</code>
-    </MissingThrowsDocblock>
-  </file>
-  <file src="src/Framework/Constraint/Operator/LogicalNot.php">
-    <MissingThrowsDocblock occurrences="1">
-      <code>evaluate</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Operator/LogicalXor.php">
     <InvalidArgument occurrences="1">
@@ -240,9 +92,6 @@
       <code>$code</code>
       <code>$message</code>
     </MissingParamType>
-    <MissingThrowsDocblock occurrences="1">
-      <code>Filter::getFilteredStacktrace($this)</code>
-    </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
     <ArgumentTypeCoercion occurrences="4">
@@ -348,10 +197,6 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <MissingThrowsDocblock occurrences="2">
-      <code>Filter::getFilteredStacktrace($t)</code>
-      <code>Filter::getFilteredStacktrace($t)</code>
-    </MissingThrowsDocblock>
     <RedundantConditionGivenDocblockType occurrences="1">
       <code>assert(class_exists($className))</code>
     </RedundantConditionGivenDocblockType>

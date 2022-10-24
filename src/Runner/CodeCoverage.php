@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\Event\MoreThanOneDataSetFromDataProviderException;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Driver\PcovNotAvailableException;
@@ -77,6 +79,8 @@ final class CodeCoverage
 
     /**
      * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoDataSetFromDataProviderException
      */
     public static function start(TestCase $test): void
     {

@@ -40,6 +40,7 @@ final class DirectDispatcher implements SubscribableDispatcher
     }
 
     /**
+     * @throws MapError
      * @throws UnknownSubscriberTypeException
      */
     public function registerSubscriber(Subscriber $subscriber): void

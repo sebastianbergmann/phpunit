@@ -53,6 +53,9 @@ class Exception extends RuntimeException implements \PHPUnit\Exception
         }
     }
 
+    /**
+     * @throws Exception
+     */
     public function __toString(): string
     {
         $string = ThrowableToStringMapper::map($this);

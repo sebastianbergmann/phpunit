@@ -15,6 +15,8 @@ use function is_numeric;
 use function method_exists;
 use function sprintf;
 use PHPUnit\Event\DataFromDataProvider;
+use PHPUnit\Event\MoreThanOneDataSetFromDataProviderException;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
@@ -39,6 +41,9 @@ final class TestMethod extends Test
     private readonly MetadataCollection $metadata;
     private readonly TestDataCollection $testData;
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     public static function fromTestCase(TestCase $testCase): self
     {
         $location = self::sourceLocationFor($testCase::class, $testCase->name());
@@ -103,6 +108,9 @@ final class TestMethod extends Test
         return true;
     }
 
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
     public function id(): string
     {
         $buffer = $this->className . '::' . $this->methodName;
@@ -114,11 +122,17 @@ final class TestMethod extends Test
         return $buffer;
     }
 
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
     public function nameWithClass(): string
     {
         return $this->className . '::' . $this->name();
     }
 
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
     public function name(): string
     {
         if (!$this->testData->hasDataFromDataProvider()) {
@@ -142,6 +156,9 @@ final class TestMethod extends Test
         return $this->methodName . $dataSetName;
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private static function dataFor(TestCase $testCase): TestDataCollection
     {
         $testData = [];

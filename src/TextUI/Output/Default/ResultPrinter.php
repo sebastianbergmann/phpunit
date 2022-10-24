@@ -23,6 +23,7 @@ use function substr;
 use function trim;
 use PHPUnit\Event\Code\Test;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Event\Test\BeforeFirstTestMethodErrored;
 use PHPUnit\Event\Test\ConsideredRisky;
 use PHPUnit\Event\Test\DeprecationTriggered;
@@ -399,6 +400,9 @@ final class ResultPrinter
         );
     }
 
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
     private function name(Test $test): string
     {
         if ($test->isTestMethod()) {

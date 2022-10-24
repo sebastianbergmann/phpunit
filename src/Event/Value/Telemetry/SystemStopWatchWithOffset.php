@@ -10,6 +10,7 @@
 namespace PHPUnit\Event\Telemetry;
 
 use function hrtime;
+use PHPUnit\Event\InvalidArgumentException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -23,6 +24,9 @@ final class SystemStopWatchWithOffset implements StopWatch
         $this->offset = $offset;
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     public function current(): HRTime
     {
         if ($this->offset !== null) {

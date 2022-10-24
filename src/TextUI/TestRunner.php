@@ -20,6 +20,7 @@ use function range;
 use function sprintf;
 use function unlink;
 use PHPUnit\Event;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Logging\EventLogger;
@@ -120,6 +121,7 @@ final class TestRunner
      * @throws NoCoverageCacheDirectoryException
      * @throws NoCustomCssFileException
      * @throws NoPharExtensionDirectoryException
+     * @throws NoPreviousThrowableException
      * @throws NoValidationErrorsException
      * @throws PcovNotAvailableException
      * @throws TimeSinceStartOfRequestNotAvailableException

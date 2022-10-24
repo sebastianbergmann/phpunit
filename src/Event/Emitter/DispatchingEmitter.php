@@ -42,6 +42,10 @@ final class DispatchingEmitter implements Emitter
         $this->previousSnapshot = $system->snapshot();
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerStarted(): void
     {
         $this->dispatcher->dispatch(
@@ -52,6 +56,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerConfigured(Configuration $configuration): void
     {
         $this->dispatcher->dispatch(
@@ -62,6 +70,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerBootstrapFinished(string $filename): void
     {
         $this->dispatcher->dispatch(
@@ -72,6 +84,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerLoadedExtensionFromPhar(string $filename, string $name, string $version): void
     {
         $this->dispatcher->dispatch(
@@ -87,6 +103,9 @@ final class DispatchingEmitter implements Emitter
     /**
      * @psalm-param class-string $className
      * @psalm-param array<string, string> $parameters
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testRunnerBootstrappedExtension(string $className, array $parameters): void
     {
@@ -99,6 +118,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testSuiteLoaded(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
@@ -109,6 +132,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testSuiteFiltered(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
@@ -119,6 +146,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testSuiteSorted(int $executionOrder, int $executionOrderDefects, bool $resolveDependencies): void
     {
         $this->dispatcher->dispatch(
@@ -131,6 +162,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerEventFacadeSealed(): void
     {
         $this->dispatcher->dispatch(
@@ -140,6 +175,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerExecutionStarted(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
@@ -150,6 +189,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testSuiteStarted(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
@@ -160,6 +203,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testPreparationStarted(Code\Test $test): void
     {
         $this->dispatcher->dispatch(
@@ -172,6 +219,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testBeforeFirstTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
@@ -186,6 +236,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testBeforeFirstTestMethodErrored(string $testClassName, Code\ClassMethod $calledMethod, Throwable $throwable): void
     {
@@ -201,6 +254,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testBeforeFirstTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
@@ -215,6 +271,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testBeforeTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
@@ -229,6 +288,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testBeforeTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
@@ -243,6 +305,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testPreConditionCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
@@ -257,6 +322,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testPreConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
@@ -269,6 +337,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testPrepared(Code\Test $test): void
     {
         $this->dispatcher->dispatch(
@@ -281,6 +353,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testRegisteredComparator(string $className): void
     {
@@ -292,6 +367,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testAssertionSucceeded(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
         $this->dispatcher->dispatch(
@@ -305,6 +384,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testAssertionFailed(mixed $value, Constraint\Constraint $constraint, string $message): void
     {
         $this->dispatcher->dispatch(
@@ -320,6 +403,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testCreatedMockObject(string $className): void
     {
@@ -333,6 +419,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param trait-string $traitName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testCreatedMockObjectForTrait(string $traitName): void
     {
@@ -346,6 +435,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testCreatedMockObjectForAbstractClass(string $className): void
     {
@@ -360,6 +452,9 @@ final class DispatchingEmitter implements Emitter
     /**
      * @psalm-param class-string $originalClassName
      * @psalm-param class-string $mockClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testCreatedMockObjectFromWsdl(string $wsdlFile, string $originalClassName, string $mockClassName, array $methods, bool $callOriginalConstructor, array $options): void
     {
@@ -378,6 +473,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testCreatedPartialMockObject(string $className, string ...$methodNames): void
     {
@@ -392,6 +490,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testCreatedTestProxy(string $className, array $constructorArguments): void
     {
@@ -406,6 +507,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $className
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testCreatedStub(string $className): void
     {
@@ -417,6 +521,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testErrored(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
@@ -428,6 +536,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testFailed(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
@@ -439,6 +551,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testPassed(Code\Test $test): void
     {
         $this->dispatcher->dispatch(
@@ -449,6 +565,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testConsideredRisky(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(
@@ -460,6 +580,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testMarkedAsIncomplete(Code\Test $test, Throwable $throwable): void
     {
         $this->dispatcher->dispatch(
@@ -471,6 +595,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testSkipped(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(
@@ -482,6 +610,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredPhpunitDeprecation(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(
@@ -493,6 +625,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredPhpDeprecation(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
@@ -506,6 +642,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredDeprecation(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
@@ -519,6 +659,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredError(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
@@ -532,6 +676,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredNotice(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
@@ -545,6 +693,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredPhpNotice(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
@@ -558,6 +710,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredWarning(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
@@ -571,6 +727,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredPhpWarning(Code\Test $test, string $message, string $file, int $line): void
     {
         $this->dispatcher->dispatch(
@@ -584,6 +744,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredPhpunitError(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(
@@ -595,6 +759,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testTriggeredPhpunitWarning(Code\Test $test, string $message): void
     {
         $this->dispatcher->dispatch(
@@ -606,6 +774,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testFinished(Code\Test $test, int $numberOfAssertionsPerformed): void
     {
         $this->dispatcher->dispatch(
@@ -619,6 +791,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testPostConditionCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
@@ -633,6 +808,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testPostConditionFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
@@ -647,6 +825,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testAfterTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
@@ -661,6 +842,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testAfterTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
@@ -675,6 +859,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testAfterLastTestMethodCalled(string $testClassName, Code\ClassMethod $calledMethod): void
     {
@@ -689,6 +876,9 @@ final class DispatchingEmitter implements Emitter
 
     /**
      * @psalm-param class-string $testClassName
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
      */
     public function testAfterLastTestMethodFinished(string $testClassName, Code\ClassMethod ...$calledMethods): void
     {
@@ -701,6 +891,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testSuiteFinished(TestSuite $testSuite): void
     {
         $this->dispatcher->dispatch(
@@ -711,6 +905,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerTriggeredDeprecation(string $message): void
     {
         $this->dispatcher->dispatch(
@@ -721,6 +919,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerTriggeredWarning(string $message): void
     {
         $this->dispatcher->dispatch(
@@ -731,6 +933,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerExecutionFinished(): void
     {
         $this->dispatcher->dispatch(
@@ -738,6 +944,10 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
     public function testRunnerFinished(): void
     {
         $this->dispatcher->dispatch(
@@ -745,6 +955,9 @@ final class DispatchingEmitter implements Emitter
         );
     }
 
+    /**
+     * @throws InvalidArgumentException
+     */
     private function telemetryInfo(): Telemetry\Info
     {
         $current = $this->system->snapshot();

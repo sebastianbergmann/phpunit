@@ -53,6 +53,9 @@ use function trim;
 use AssertionError;
 use DeepCopy\DeepCopy;
 use PHPUnit\Event;
+use PHPUnit\Event\MoreThanOneDataSetFromDataProviderException;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Framework\Constraint\Exception as ExceptionConstraint;
 use PHPUnit\Framework\Constraint\ExceptionCode;
 use PHPUnit\Framework\Constraint\MessageIsOrContains;
@@ -424,6 +427,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
      * @throws \SebastianBergmann\Template\InvalidArgumentException
      * @throws CodeCoverageException
+     * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
      * @throws ProcessIsolationException
      * @throws StaticAnalysisCacheNotConfiguredException
      * @throws UnintentionallyCoveredCodeException
@@ -963,6 +970,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     *
+     * @throws MoreThanOneDataSetFromDataProviderException
      */
     final public function valueObjectForEvents(): Event\Code\TestMethod
     {
@@ -1085,6 +1094,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
      */
     protected function createStub(string $originalClassName): Stub
     {
@@ -1106,6 +1116,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
      */
     protected function createMock(string $originalClassName): MockObject
     {
@@ -1127,6 +1138,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
      */
     protected function createConfiguredMock(string $originalClassName, array $configuration): MockObject
     {
@@ -1449,6 +1461,11 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return true;
     }
 
+    /**
+     * @throws Exception
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
+     */
     private function markErrorForInvalidDependency(?ExecutionOrderDependency $dependency = null): void
     {
         $message = 'This test has an invalid dependency';
@@ -1470,6 +1487,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->status = TestStatus::error($message);
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function markSkippedForMissingDependency(ExecutionOrderDependency $dependency): void
     {
         $message = sprintf(
@@ -1505,6 +1525,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->outputBufferingLevel  = ob_get_level();
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function stopOutputBuffering(): bool
     {
         if (ob_get_level() !== $this->outputBufferingLevel) {
@@ -1544,6 +1567,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         $this->snapshot = $snapshot;
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function restoreGlobalState(): void
     {
         if (!$this->snapshot instanceof Snapshot) {
@@ -1608,6 +1634,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         );
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function compareGlobalStateSnapshots(Snapshot $before, Snapshot $after): void
     {
         $backupGlobals = $this->backupGlobals === null || $this->backupGlobals;
@@ -1635,6 +1664,9 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
+    /**
+     * @throws MoreThanOneDataSetFromDataProviderException
+     */
     private function compareGlobalStateSnapshotPart(array $before, array $after, string $header): void
     {
         if ($before != $after) {
@@ -1817,6 +1849,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
+     * @throws NoPreviousThrowableException
      */
     private function createMockObject(string $originalClassName, bool $register = true): MockObject
     {
@@ -1829,7 +1862,10 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @throws Exception
      * @throws ExpectationFailedException
+     * @throws MoreThanOneDataSetFromDataProviderException
+     * @throws NoPreviousThrowableException
      */
     private function performAssertionsOnOutput(): void
     {

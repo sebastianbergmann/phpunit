@@ -11,7 +11,7 @@ namespace PHPUnit\Event\Telemetry;
 
 use function floor;
 use function sprintf;
-use InvalidArgumentException;
+use PHPUnit\Event\InvalidArgumentException;
 
 /**
  * @psalm-immutable

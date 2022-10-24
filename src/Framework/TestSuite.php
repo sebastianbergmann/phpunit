@@ -27,6 +27,7 @@ use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
@@ -42,6 +43,7 @@ use PHPUnit\Util\Reflection;
 use PHPUnit\Util\Test as TestUtil;
 use ReflectionClass;
 use ReflectionMethod;
+use SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException;
 use Throwable;
 
 /**
@@ -305,9 +307,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
     /**
      * @throws \SebastianBergmann\CodeCoverage\InvalidArgumentException
-     * @throws \SebastianBergmann\CodeCoverage\UnintentionallyCoveredCodeException
      * @throws CodeCoverageException
      * @throws Event\RuntimeException
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     * @throws UnintentionallyCoveredCodeException
      */
     public function run(): void
     {
@@ -635,6 +639,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return false;
     }
 
+    /**
+     * @throws Exception
+     */
     private function throwableToString(Throwable $t): string
     {
         $message = $t->getMessage();

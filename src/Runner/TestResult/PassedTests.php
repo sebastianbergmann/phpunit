@@ -13,6 +13,7 @@ use function array_merge;
 use function assert;
 use function in_array;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestSize\Known;
 use PHPUnit\Framework\TestSize\TestSize;
 use PHPUnit\Metadata\Api\Groups;
@@ -53,6 +54,9 @@ final class PassedTests
         $this->passedTestClasses[] = $className;
     }
 
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
     public function testMethodPassed(TestMethod $test, mixed $returnValue): void
     {
         $size = (new Groups)->size(

@@ -105,14 +105,11 @@ if (!function_exists('PHPUnit\Framework\assertArrayNotHasKey')) {
 
 if (!function_exists('PHPUnit\Framework\assertIsList')) {
     /**
-     * Asserts that an array is list.
-     *
-     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
-     * @see Assert::assertIsList()
+     * @see Assert::assertIsList
      */
     function assertIsList(array $array, string $message = ''): void
     {
@@ -138,6 +135,13 @@ if (!function_exists('PHPUnit\Framework\assertContains')) {
 }
 
 if (!function_exists('PHPUnit\Framework\assertContainsEquals')) {
+    /**
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertContainsEquals
+     */
     function assertContainsEquals(mixed $needle, iterable $haystack, string $message = ''): void
     {
         Assert::assertContainsEquals(...func_get_args());
@@ -162,6 +166,13 @@ if (!function_exists('PHPUnit\Framework\assertNotContains')) {
 }
 
 if (!function_exists('PHPUnit\Framework\assertNotContainsEquals')) {
+    /**
+     * @throws ExpectationFailedException
+     *
+     * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
+     *
+     * @see Assert::assertNotContainsEquals
+     */
     function assertNotContainsEquals(mixed $needle, iterable $haystack, string $message = ''): void
     {
         Assert::assertNotContainsEquals(...func_get_args());
@@ -172,6 +183,7 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnly')) {
     /**
      * Asserts that a haystack contains only values of a given type.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -188,6 +200,7 @@ if (!function_exists('PHPUnit\Framework\assertContainsOnlyInstancesOf')) {
     /**
      * Asserts that a haystack contains only instances of a given class name.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -204,6 +217,7 @@ if (!function_exists('PHPUnit\Framework\assertNotContainsOnly')) {
     /**
      * Asserts that a haystack does not contain only values of a given type.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
@@ -1200,6 +1214,7 @@ if (!function_exists('PHPUnit\Framework\assertIsArray')) {
     /**
      * Asserts that a variable is of type array.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert array $actual
@@ -1218,6 +1233,7 @@ if (!function_exists('PHPUnit\Framework\assertIsBool')) {
     /**
      * Asserts that a variable is of type bool.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert bool $actual
@@ -1236,6 +1252,7 @@ if (!function_exists('PHPUnit\Framework\assertIsFloat')) {
     /**
      * Asserts that a variable is of type float.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert float $actual
@@ -1254,6 +1271,7 @@ if (!function_exists('PHPUnit\Framework\assertIsInt')) {
     /**
      * Asserts that a variable is of type int.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert int $actual
@@ -1272,6 +1290,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNumeric')) {
     /**
      * Asserts that a variable is of type numeric.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert numeric $actual
@@ -1290,6 +1309,7 @@ if (!function_exists('PHPUnit\Framework\assertIsObject')) {
     /**
      * Asserts that a variable is of type object.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert object $actual
@@ -1308,6 +1328,7 @@ if (!function_exists('PHPUnit\Framework\assertIsResource')) {
     /**
      * Asserts that a variable is of type resource.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert resource $actual
@@ -1326,6 +1347,7 @@ if (!function_exists('PHPUnit\Framework\assertIsClosedResource')) {
     /**
      * Asserts that a variable is of type resource and is closed.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert resource $actual
@@ -1344,6 +1366,7 @@ if (!function_exists('PHPUnit\Framework\assertIsString')) {
     /**
      * Asserts that a variable is of type string.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert string $actual
@@ -1362,6 +1385,7 @@ if (!function_exists('PHPUnit\Framework\assertIsScalar')) {
     /**
      * Asserts that a variable is of type scalar.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert scalar $actual
@@ -1380,6 +1404,7 @@ if (!function_exists('PHPUnit\Framework\assertIsCallable')) {
     /**
      * Asserts that a variable is of type callable.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert callable $actual
@@ -1398,6 +1423,7 @@ if (!function_exists('PHPUnit\Framework\assertIsIterable')) {
     /**
      * Asserts that a variable is of type iterable.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert iterable $actual
@@ -1416,6 +1442,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotArray')) {
     /**
      * Asserts that a variable is not of type array.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !array $actual
@@ -1434,6 +1461,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotBool')) {
     /**
      * Asserts that a variable is not of type bool.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !bool $actual
@@ -1452,6 +1480,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotFloat')) {
     /**
      * Asserts that a variable is not of type float.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !float $actual
@@ -1470,6 +1499,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotInt')) {
     /**
      * Asserts that a variable is not of type int.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !int $actual
@@ -1488,6 +1518,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotNumeric')) {
     /**
      * Asserts that a variable is not of type numeric.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !numeric $actual
@@ -1506,6 +1537,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotObject')) {
     /**
      * Asserts that a variable is not of type object.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !object $actual
@@ -1524,6 +1556,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotResource')) {
     /**
      * Asserts that a variable is not of type resource.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !resource $actual
@@ -1542,6 +1575,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotClosedResource')) {
     /**
      * Asserts that a variable is not of type resource.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !resource $actual
@@ -1560,6 +1594,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotString')) {
     /**
      * Asserts that a variable is not of type string.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !string $actual
@@ -1578,6 +1613,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotScalar')) {
     /**
      * Asserts that a variable is not of type scalar.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !scalar $actual
@@ -1596,6 +1632,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotCallable')) {
     /**
      * Asserts that a variable is not of type callable.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !callable $actual
@@ -1614,6 +1651,7 @@ if (!function_exists('PHPUnit\Framework\assertIsNotIterable')) {
     /**
      * Asserts that a variable is not of type iterable.
      *
+     * @throws Exception
      * @throws ExpectationFailedException
      *
      * @psalm-assert !iterable $actual
@@ -1928,6 +1966,7 @@ if (!function_exists('PHPUnit\Framework\assertXmlFileEqualsXmlFile')) {
      *
      * @throws Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1960,8 +1999,8 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlFile')) {
     /**
      * Asserts that two XML documents are equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1977,8 +2016,8 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlFile')) {
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @throws \PHPUnit\Util\Xml\Exception
      * @throws ExpectationFailedException
+     * @throws XmlException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -1994,8 +2033,8 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringEqualsXmlString')) {
     /**
      * Asserts that two XML documents are equal.
      *
-     * @throws XmlException
      * @throws ExpectationFailedException
+     * @throws XmlException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -2011,8 +2050,8 @@ if (!function_exists('PHPUnit\Framework\assertXmlStringNotEqualsXmlString')) {
     /**
      * Asserts that two XML documents are not equal.
      *
-     * @throws XmlException
      * @throws ExpectationFailedException
+     * @throws XmlException
      *
      * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
      *
@@ -2153,14 +2192,17 @@ if (!function_exists('PHPUnit\Framework\assertJsonFileNotEqualsJsonFile')) {
 }
 
 if (!function_exists('PHPUnit\Framework\logicalAnd')) {
-    function logicalAnd(): LogicalAnd
+    /**
+     * @throws Exception
+     */
+    function logicalAnd(mixed ...$constraints): LogicalAnd
     {
         return Assert::logicalAnd(...func_get_args());
     }
 }
 
 if (!function_exists('PHPUnit\Framework\logicalOr')) {
-    function logicalOr(): LogicalOr
+    function logicalOr(mixed ...$constraints): LogicalOr
     {
         return Assert::logicalOr(...func_get_args());
     }
@@ -2174,7 +2216,7 @@ if (!function_exists('PHPUnit\Framework\logicalNot')) {
 }
 
 if (!function_exists('PHPUnit\Framework\logicalXor')) {
-    function logicalXor(): LogicalXor
+    function logicalXor(mixed ...$constraints): LogicalXor
     {
         return Assert::logicalXor(...func_get_args());
     }
@@ -2258,6 +2300,9 @@ if (!function_exists('PHPUnit\Framework\containsIdentical')) {
 }
 
 if (!function_exists('PHPUnit\Framework\containsOnly')) {
+    /**
+     * @throws Exception
+     */
     function containsOnly(string $type): TraversableContainsOnly
     {
         return Assert::containsOnly(...func_get_args());
@@ -2284,7 +2329,7 @@ if (!function_exists('PHPUnit\Framework\arrayHasKey')) {
 if (!function_exists('PHPUnit\Framework\isList')) {
     function isList(): IsList
     {
-        return Assert::isList();
+        return Assert::isList(...func_get_args());
     }
 }
 
@@ -2418,6 +2463,9 @@ if (!function_exists('PHPUnit\Framework\matches')) {
 }
 
 if (!function_exists('PHPUnit\Framework\stringStartsWith')) {
+    /**
+     * @throws InvalidArgumentException
+     */
     function stringStartsWith(string $prefix): StringStartsWith
     {
         return Assert::stringStartsWith(...func_get_args());
@@ -2425,6 +2473,9 @@ if (!function_exists('PHPUnit\Framework\stringStartsWith')) {
 }
 
 if (!function_exists('PHPUnit\Framework\stringContains')) {
+    /**
+     * @throws InvalidArgumentException
+     */
     function stringContains(string $string, bool $case = true): StringContains
     {
         return Assert::stringContains(...func_get_args());
@@ -2432,6 +2483,9 @@ if (!function_exists('PHPUnit\Framework\stringContains')) {
 }
 
 if (!function_exists('PHPUnit\Framework\stringEndsWith')) {
+    /**
+     * @throws InvalidArgumentException
+     */
     function stringEndsWith(string $suffix): StringEndsWith
     {
         return Assert::stringEndsWith(...func_get_args());

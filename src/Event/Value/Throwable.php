@@ -11,6 +11,7 @@ namespace PHPUnit\Event\Code;
 
 use const PHP_EOL;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Framework\Exception;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\ThrowableToStringMapper;
 
@@ -30,6 +31,10 @@ final class Throwable
     private readonly string $stackTrace;
     private readonly ?Throwable $previous;
 
+    /**
+     * @throws Exception
+     * @throws NoPreviousThrowableException
+     */
     public static function from(\Throwable $t): self
     {
         $previous = $t->getPrevious();
@@ -59,6 +64,9 @@ final class Throwable
         $this->previous    = $previous;
     }
 
+    /**
+     * @throws NoPreviousThrowableException
+     */
     public function asString(): string
     {
         $buffer = $this->description();

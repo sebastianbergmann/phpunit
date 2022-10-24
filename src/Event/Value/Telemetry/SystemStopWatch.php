@@ -10,12 +10,16 @@
 namespace PHPUnit\Event\Telemetry;
 
 use function hrtime;
+use PHPUnit\Event\InvalidArgumentException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class SystemStopWatch implements StopWatch
 {
+    /**
+     * @throws InvalidArgumentException
+     */
     public function current(): HRTime
     {
         return HRTime::fromSecondsAndNanoseconds(...hrtime());
