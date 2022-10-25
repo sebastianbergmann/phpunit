@@ -45,8 +45,7 @@ final class ProgressPrinter
      */
     public function __construct(Printer $printer, bool $colors, int $numberOfColumns)
     {
-        $this->printer = $printer;
-
+        $this->printer         = $printer;
         $this->colors          = $colors;
         $this->numberOfColumns = $numberOfColumns;
 
