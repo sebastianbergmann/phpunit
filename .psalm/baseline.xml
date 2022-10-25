@@ -582,13 +582,6 @@
       <code>$option['desc']</code>
     </PossiblyUndefinedArrayOffset>
   </file>
-  <file src="src/TextUI/Output/Default/ProgressPrinter/ProgressPrinter.php">
-    <PropertyNotSetInConstructor occurrences="3">
-      <code>$maxColumn</code>
-      <code>$numberOfTests</code>
-      <code>$numberOfTestsWidth</code>
-    </PropertyNotSetInConstructor>
-  </file>
   <file src="src/TextUI/Output/Default/ResultPrinter.php">
     <RedundantCondition occurrences="2">
       <code>assert($test instanceof TestMethod)</code>

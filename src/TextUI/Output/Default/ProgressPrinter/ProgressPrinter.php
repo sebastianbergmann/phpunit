@@ -31,13 +31,13 @@ final class ProgressPrinter
     private Printer $printer;
     private bool $colors;
     private int $numberOfColumns;
-    private int $column = 0;
-    private int $numberOfTests;
-    private int $numberOfTestsWidth;
-    private int $maxColumn;
-    private int $numberOfTestsRun = 0;
-    private ?TestStatus $status   = null;
-    private bool $prepared        = false;
+    private int $column             = 0;
+    private int $numberOfTests      = 0;
+    private int $numberOfTestsWidth = 0;
+    private int $maxColumn          = 0;
+    private int $numberOfTestsRun   = 0;
+    private ?TestStatus $status     = null;
+    private bool $prepared          = false;
 
     /**
      * @throws EventFacadeIsSealedException
