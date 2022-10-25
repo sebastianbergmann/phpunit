@@ -1109,10 +1109,13 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      * Creates a mock object for the specified interface or class.
      *
      * @psalm-template RealInstanceType of object
+     * @phan-template  RealInstanceType of object
      *
      * @psalm-param class-string<RealInstanceType> $originalClassName
+     * @phan-param  class-string<RealInstanceType> $originalClassName
      *
      * @psalm-return MockObject&RealInstanceType
+     * @phan-return  MockObject&RealInstanceType
      *
      * @throws \PHPUnit\Framework\MockObject\Exception
      * @throws InvalidArgumentException
