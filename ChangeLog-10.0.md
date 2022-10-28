@@ -109,4 +109,4 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * The CLI test runner can no longer be extended through inheritance, the `PHPUnit\TextUI\Command` class has been removed
 * PHP 7.3, PHP 7.4, and PHP 8.0 are no longer supported
 
-[10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...master
+[10.0.0]: https://github.com/sebastianbergmann/phpunit/compare/9.5...main
