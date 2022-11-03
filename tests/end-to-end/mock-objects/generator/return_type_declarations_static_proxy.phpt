@@ -1,5 +1,10 @@
 --TEST--
 \PHPUnit\Framework\MockObject\Generator::generate('Foo', [], 'MockFoo', true, true, true, true)
+--SKIPIF--
+<?php declare(strict_types=1);
+if (PHP_MAJOR_VERSION < 8) {
+    print 'skip: PHP 8 is required.';
+}
 --FILE--
 <?php declare(strict_types=1);
 class ClassWithStaticReturnTypes
@@ -31,7 +36,7 @@ $mock = $generator->generate(
     true
 );
 
-print $mock->classCode();
+print $mock->getClassCode();
 --EXPECTF--
 declare(strict_types=1);
 
@@ -39,7 +44,7 @@ class MockClassWithStaticReturnTypes extends ClassWithStaticReturnTypes implemen
 {
     use \PHPUnit\Framework\MockObject\Api;
     use \PHPUnit\Framework\MockObject\Method;
-    use \PHPUnit\Framework\MockObject\MockedCloneMethod;
+    use \PHPUnit\Framework\MockObject\MockedCloneMethodWithVoidReturnType;
 
     public function returnsStatic(): static
     {
