@@ -11,6 +11,7 @@ namespace PHPUnit\TextUI\Output\TestDox;
 
 use const PHP_EOL;
 use PHPUnit\Event\Code\TestMethod;
+use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\NamePrettifier;
 use PHPUnit\Logging\TestDox\TestMethodCollection;
@@ -94,6 +95,9 @@ final class ResultPrinter
         $this->printer->print($buffer . PHP_EOL);
     }
 
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
     private function printTestResult(TestMethod $test, TestStatus $status): void
     {
         $this->printTestMethodPrefixHeader($test, $status);
@@ -103,6 +107,9 @@ final class ResultPrinter
         }
     }
 
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
     private function printTestMethodPrefixHeader(TestMethod $test, TestStatus $status): void
     {
         $style = $this->style($status);
