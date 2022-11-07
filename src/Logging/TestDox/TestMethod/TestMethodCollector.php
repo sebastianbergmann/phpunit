@@ -169,7 +169,7 @@ final class TestMethodCollector
             $this->tests[$test->prettifiedClassName()] = [];
         }
 
-        $this->tests[$test->prettifiedClassName()][$test->line()] = new TestDoxTestMethod(
+        $this->tests[$test->prettifiedClassName()][] = new TestDoxTestMethod(
             $test,
             $event->telemetryInfo()->time()->duration($this->time),
             $this->status,
