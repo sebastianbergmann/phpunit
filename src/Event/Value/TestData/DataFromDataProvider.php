@@ -18,16 +18,16 @@ final class DataFromDataProvider extends TestData
 {
     private readonly int|string $dataSetName;
 
-    public static function from(int|string $dataSetName, string $data): self
+    public static function from(int|string $dataSetName, ?string $serializedData, string $dataAsString): self
     {
-        return new self($dataSetName, $data);
+        return new self($dataSetName, $serializedData, $dataAsString);
     }
 
-    protected function __construct(int|string $dataSetName, string $data)
+    protected function __construct(int|string $dataSetName, ?string $serializedData, string $dataAsString)
     {
         $this->dataSetName = $dataSetName;
 
-        parent::__construct($data);
+        parent::__construct($serializedData, $dataAsString);
     }
 
     public function dataSetName(): int|string

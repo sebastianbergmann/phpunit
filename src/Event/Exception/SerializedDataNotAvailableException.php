@@ -9,23 +9,11 @@
  */
 namespace PHPUnit\Event;
 
+use RuntimeException;
+
 /**
- * @psalm-immutable
- *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class DataFromTestDependency extends TestData
+final class SerializedDataNotAvailableException extends RuntimeException implements Exception
 {
-    public static function from(?string $serializedData, string $dataAsString): self
-    {
-        return new self($serializedData, $dataAsString);
-    }
-
-    /**
-     * @psalm-assert-if-true DataFromTestDependency $this
-     */
-    public function isFromTestDependency(): bool
-    {
-        return true;
-    }
 }
