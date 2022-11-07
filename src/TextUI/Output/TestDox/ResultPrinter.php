@@ -11,7 +11,7 @@ namespace PHPUnit\TextUI\Output\TestDox;
 
 use const PHP_EOL;
 use PHPUnit\Event\Code\TestMethod;
-use PHPUnit\Event\NoDataSetFromDataProviderException;
+use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\NamePrettifier;
 use PHPUnit\Logging\TestDox\TestMethodCollection;
