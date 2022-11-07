@@ -16,16 +16,23 @@ namespace PHPUnit\Event\TestData;
  */
 abstract class TestData
 {
-    private readonly string $data;
+    private readonly SerializedValueCollection $serializedValues;
+    private readonly string $stringRepresentation;
 
-    protected function __construct(string $data)
+    protected function __construct(SerializedValueCollection $serializedValues, string $stringRepresentation)
     {
-        $this->data = $data;
+        $this->serializedValues     = $serializedValues;
+        $this->stringRepresentation = $stringRepresentation;
     }
 
-    public function data(): string
+    public function serializedValues(): SerializedValueCollection
     {
-        return $this->data;
+        return $this->serializedValues;
+    }
+
+    public function asString(): string
+    {
+        return $this->stringRepresentation;
     }
 
     /**

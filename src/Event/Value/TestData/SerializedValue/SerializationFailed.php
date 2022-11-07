@@ -14,18 +14,6 @@ namespace PHPUnit\Event\TestData;
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class DataFromTestDependency extends TestData
+final class SerializationFailed extends SerializedValue
 {
-    public static function from(SerializedValueCollection $serializedValues, string $stringRepresentation): self
-    {
-        return new self($serializedValues, $stringRepresentation);
-    }
-
-    /**
-     * @psalm-assert-if-true DataFromTestDependency $this
-     */
-    public function isFromTestDependency(): bool
-    {
-        return true;
-    }
 }

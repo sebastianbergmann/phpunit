@@ -11,6 +11,7 @@ namespace PHPUnit\Event\Code;
 
 use function sprintf;
 use PHPUnit\Event\TestData\DataFromDataProvider;
+use PHPUnit\Event\TestData\SerializedValueCollection;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
@@ -72,6 +73,7 @@ final class TestMethodTest extends TestCase
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(
                     $dataSetName,
+                    SerializedValueCollection::from('data'),
                     'data'
                 ),
             ])
@@ -99,6 +101,7 @@ final class TestMethodTest extends TestCase
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(
                     $dataSetName,
+                    SerializedValueCollection::from('data'),
                     'data'
                 ),
             ])

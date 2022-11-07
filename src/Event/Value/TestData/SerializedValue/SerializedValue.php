@@ -9,23 +9,30 @@
  */
 namespace PHPUnit\Event\TestData;
 
+use function serialize;
+use Exception;
+
 /**
  * @psalm-immutable
  *
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class DataFromTestDependency extends TestData
+abstract class SerializedValue
 {
-    public static function from(SerializedValueCollection $serializedValues, string $stringRepresentation): self
+    public static function from(mixed $value): self
     {
-        return new self($serializedValues, $stringRepresentation);
+        try {
+            return new SerializationSucceeded(serialize($value));
+        } catch (Exception) {
+            return new SerializationFailed;
+        }
     }
 
     /**
-     * @psalm-assert-if-true DataFromTestDependency $this
+     * @psalm-assert-if-true SerializationSucceeded $this
      */
-    public function isFromTestDependency(): bool
+    public function hasValue(): bool
     {
-        return true;
+        return false;
     }
 }
