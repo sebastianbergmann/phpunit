@@ -16,38 +16,16 @@ namespace PHPUnit\Event;
  */
 abstract class TestData
 {
-    private readonly ?string $serializedData;
-    private readonly string $dataAsString;
+    private readonly string $data;
 
-    protected function __construct(?string $serializedData, string $dataAsString)
+    protected function __construct(string $data)
     {
-        $this->serializedData = $serializedData;
-        $this->dataAsString   = $dataAsString;
+        $this->data = $data;
     }
 
-    /**
-     * @psalm-assert-if-true !null $this->serializedData
-     */
-    public function hasSerializedData(): bool
+    public function data(): string
     {
-        return $this->serializedData !== null;
-    }
-
-    /**
-     * @throws SerializedDataNotAvailableException
-     */
-    public function serializedData(): string
-    {
-        if ($this->serializedData === null) {
-            throw new SerializedDataNotAvailableException;
-        }
-
-        return $this->serializedData;
-    }
-
-    public function asString(): string
-    {
-        return $this->dataAsString;
+        return $this->data;
     }
 
     /**

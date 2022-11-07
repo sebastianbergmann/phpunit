@@ -16,9 +16,9 @@ namespace PHPUnit\Event;
  */
 final class DataFromTestDependency extends TestData
 {
-    public static function from(?string $serializedData, string $dataAsString): self
+    public static function from(string $data): self
     {
-        return new self($serializedData, $dataAsString);
+        return new self($data);
     }
 
     /**

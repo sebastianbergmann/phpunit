@@ -72,7 +72,6 @@ final class TestMethodTest extends TestCase
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(
                     $dataSetName,
-                    'data',
                     'data'
                 ),
             ])
@@ -100,7 +99,6 @@ final class TestMethodTest extends TestCase
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(
                     $dataSetName,
-                    'data',
                     'data'
                 ),
             ])

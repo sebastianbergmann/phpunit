@@ -13,9 +13,7 @@ use function class_exists;
 use function is_int;
 use function is_numeric;
 use function method_exists;
-use function serialize;
 use function sprintf;
-use Exception;
 use PHPUnit\Event\DataFromDataProvider;
 use PHPUnit\Event\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\NoDataSetFromDataProviderException;
@@ -174,7 +172,6 @@ final class TestMethod extends Test
 
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
-                self::serialize($testCase->providedData()),
                 (new Exporter)->export($testCase->providedData())
             );
         }
@@ -216,15 +213,5 @@ final class TestMethod extends Test
             'file' => $file,
             'line' => $line,
         ];
-    }
-
-    private static function serialize(mixed $data): ?string
-    {
-        try {
-            return serialize($data);
-        } catch (Exception) {
-        }
-
-        return null;
     }
 }
