@@ -10,8 +10,8 @@
 namespace PHPUnit\Event\Code;
 
 use function sprintf;
-use PHPUnit\Event\DataFromDataProvider;
-use PHPUnit\Event\TestDataCollection;
+use PHPUnit\Event\TestData\DataFromDataProvider;
+use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;

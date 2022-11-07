@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\Runner;
 
-use PHPUnit\Event\MoreThanOneDataSetFromDataProviderException;
-use PHPUnit\Event\NoDataSetFromDataProviderException;
+use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
+use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
 use SebastianBergmann\CodeCoverage\Driver\PcovNotAvailableException;

@@ -14,6 +14,7 @@ use PHPUnit\Event\Code\ClassMethod;
 use PHPUnit\Event\Code\TestCollection;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Event\Telemetry\HRTime;
+use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestSuite\TestSuiteWithName;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;

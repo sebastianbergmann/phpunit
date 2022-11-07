@@ -542,7 +542,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     }
 
     /**
-     * @throws Event\MoreThanOneDataSetFromDataProviderException
+     * @throws \PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException
      * @throws Exception
      */
     protected function addTestMethod(ReflectionClass $class, ReflectionMethod $method): void
@@ -560,7 +560,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $class->getFileName(),
                     $method->getStartLine(),
                     MetadataCollection::fromArray([]),
-                    Event\TestDataCollection::fromArray([])
+                    Event\TestData\TestDataCollection::fromArray([])
                 ),
                 sprintf(
                     "The data provider specified for %s::%s is invalid\n%s",

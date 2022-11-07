@@ -7,13 +7,14 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event;
+namespace PHPUnit\Event\TestData;
 
+use PHPUnit\Event\Exception;
 use RuntimeException;
 
 /**
  * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  */
-final class NoDataSetFromDataProviderException extends RuntimeException implements Exception
+final class MoreThanOneDataSetFromDataProviderException extends RuntimeException implements Exception
 {
 }

@@ -15,6 +15,7 @@ use function explode;
 use function get_class_methods;
 use Exception;
 use PHPUnit\Event\Code\Throwable;
+use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
 use PHPUnit\Event\TestRunner\ExecutionStartedSubscriber;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;

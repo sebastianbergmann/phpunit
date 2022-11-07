@@ -10,9 +10,9 @@
 namespace PHPUnit\Logging\JUnit;
 
 use PHPUnit\Event\InvalidArgumentException;
-use PHPUnit\Event\NoDataSetFromDataProviderException;
 use PHPUnit\Event\Test\Prepared;
 use PHPUnit\Event\Test\PreparedSubscriber;
+use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
