@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\TestFixture\TestDox;
 
-use PHPUnit\Framework\TestCase;
 use const PHP_EOL;
+use PHPUnit\Framework\TestCase;
 
 final class DiffTest extends TestCase
 {
