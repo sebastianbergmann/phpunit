@@ -17,7 +17,6 @@ use function sprintf;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
-use PHPUnit\Event\TestData\SerializedValueCollection;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
@@ -173,7 +172,6 @@ final class TestMethod extends Test
 
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
-                SerializedValueCollection::from($testCase->providedData()),
                 (new Exporter)->export($testCase->providedData())
             );
         }
