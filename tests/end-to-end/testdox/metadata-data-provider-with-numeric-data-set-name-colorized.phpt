@@ -4,6 +4,7 @@ TestDox: Default output; Data Provider with numeric data set name; TestDox metad
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
+$_SERVER['argv'][] = '--no-progress';
 $_SERVER['argv'][] = '--testdox';
 $_SERVER['argv'][] = '--colors=always';
 $_SERVER['argv'][] = __DIR__ . '/_files/DataProviderWithNumericDataSetNameAndMetadataTest.php';
