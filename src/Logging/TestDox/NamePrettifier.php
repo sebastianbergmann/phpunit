@@ -57,7 +57,7 @@ final class NamePrettifier
     /**
      * @psalm-var list<string>
      */
-    private array $strings = [];
+    private static array $strings = [];
     private bool $useColor;
 
     public function __construct(bool $useColor = false)
@@ -185,10 +185,10 @@ final class NamePrettifier
 
         $string = (string) preg_replace('#\d+$#', '', $name, -1, $count);
 
-        if (in_array($string, $this->strings, true)) {
+        if (in_array($string, self::$strings, true)) {
             $name = $string;
         } elseif ($count === 0) {
-            $this->strings[] = $string;
+            self::$strings[] = $string;
         }
 
         if (str_starts_with($name, 'test_')) {
