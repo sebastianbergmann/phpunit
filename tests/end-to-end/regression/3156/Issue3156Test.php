@@ -21,14 +21,6 @@ class Issue3156Test extends TestCase
         return new stdClass;
     }
 
-    public function dataSelectOperatorsProvider(): array
-    {
-        return [
-            ['1'],
-            ['2'],
-        ];
-    }
-
     /**
      * @depends testConstants
      *
@@ -37,5 +29,13 @@ class Issue3156Test extends TestCase
     public function testDependsRequire(string $val, stdClass $obj): void
     {
         $this->assertStringEndsWith('/', '/');
+    }
+
+    private function dataSelectOperatorsProvider(): array
+    {
+        return [
+            ['1'],
+            ['2'],
+        ];
     }
 }

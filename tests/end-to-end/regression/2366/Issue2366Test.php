@@ -29,7 +29,7 @@ class Issue2366Test extends TestCase
         $this->assertEquals(true, $o->foo());
     }
 
-    public function provider()
+    private function provider()
     {
         $o = $this->createMock(Issue2366::class);
 

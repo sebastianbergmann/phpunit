@@ -79,7 +79,7 @@ EOF
         $this->assertSame('is equal to 15 with delta <1.000000>', $constraint->toString());
     }
 
-    public function isEqualProvider(): array
+    private function isEqualProvider(): array
     {
         $a      = new stdClass;
         $a->foo = 'bar';

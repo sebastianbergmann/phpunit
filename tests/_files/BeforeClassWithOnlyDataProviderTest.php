@@ -33,11 +33,6 @@ class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
         self::$setUpBeforeClassWasCalled = true;
     }
 
-    public function dummyProvider()
-    {
-        return [[1]];
-    }
-
     /**
      * @dataProvider dummyProvider
      * delete annotation to fail test case
@@ -45,5 +40,10 @@ class BeforeClassWithOnlyDataProviderTest extends \PHPUnit\Framework\TestCase
     public function testDummy(): void
     {
         $this->assertFalse(false);
+    }
+
+    private function dummyProvider()
+    {
+        return [[1]];
     }
 }

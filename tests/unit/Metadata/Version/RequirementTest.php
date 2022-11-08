@@ -62,7 +62,7 @@ final class RequirementTest extends TestCase
         Requirement::from('invalid');
     }
 
-    public function constraintProvider(): array
+    private function constraintProvider(): array
     {
         return [
             [
@@ -75,7 +75,7 @@ final class RequirementTest extends TestCase
         ];
     }
 
-    public function comparisonProvider(): array
+    private function comparisonProvider(): array
     {
         return [
             [true, '1.0.0', new ComparisonRequirement('1.0.0', new VersionComparisonOperator('='))],

@@ -19,14 +19,6 @@ use PHPUnit\Util\ThrowableToStringMapper;
 #[Small]
 final class IsJsonTest extends ConstraintTestCase
 {
-    public static function evaluateDataprovider(): array
-    {
-        return [
-            'valid JSON'                                     => [true, '{}'],
-            'empty string should be treated as invalid JSON' => [false, ''],
-        ];
-    }
-
     #[DataProvider('evaluateDataprovider')]
     public function testEvaluate(bool $expected, string $jsonOther): void
     {
@@ -58,5 +50,13 @@ EOF
                 ThrowableToStringMapper::map($e)
             );
         }
+    }
+
+    private static function evaluateDataprovider(): array
+    {
+        return [
+            'valid JSON'                                     => [true, '{}'],
+            'empty string should be treated as invalid JSON' => [false, ''],
+        ];
     }
 }

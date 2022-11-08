@@ -13,26 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class DataProviderFilterTest extends TestCase
 {
-    public static function truthProvider()
-    {
-        return [
-            [true],
-            [true],
-            [true],
-            [true],
-        ];
-    }
-
-    public static function falseProvider()
-    {
-        return [
-            'false test'        => [false],
-            'false test 2'      => [false],
-            'other false test'  => [false],
-            'other false test2' => [false],
-        ];
-    }
-
     /**
      * @dataProvider truthProvider
      */
@@ -47,5 +27,25 @@ class DataProviderFilterTest extends TestCase
     public function testFalse($false): void
     {
         $this->assertFalse($false);
+    }
+
+    private static function truthProvider()
+    {
+        return [
+            [true],
+            [true],
+            [true],
+            [true],
+        ];
+    }
+
+    private static function falseProvider()
+    {
+        return [
+            'false test'        => [false],
+            'false test 2'      => [false],
+            'other false test'  => [false],
+            'other false test2' => [false],
+        ];
     }
 }

@@ -87,10 +87,31 @@ final class HRTimeTest extends TestCase
         $end->duration($start);
     }
 
+    #[DataProvider('provideStartEndAndDuration')]
+    public function testDurationReturnsDifferenceBetweenEndAndStart(
+        int $startSeconds,
+        int $startNanoseconds,
+        int $endSeconds,
+        int $endNanoseconds,
+        Duration $duration
+    ): void {
+        $start = HRTime::fromSecondsAndNanoseconds(
+            $startSeconds,
+            $startNanoseconds
+        );
+
+        $end = HRTime::fromSecondsAndNanoseconds(
+            $endSeconds,
+            $endNanoseconds
+        );
+
+        $this->assertEquals($duration, $end->duration($start));
+    }
+
     /**
      * @return array<string, array<{0: int, 1: int, 2: int, 3: int>
      */
-    public function provideStartGreaterThanEnd(): array
+    private function provideStartGreaterThanEnd(): array
     {
         return [
             'seconds-greater' => [
@@ -114,31 +135,10 @@ final class HRTimeTest extends TestCase
         ];
     }
 
-    #[DataProvider('provideStartEndAndDuration')]
-    public function testDurationReturnsDifferenceBetweenEndAndStart(
-        int $startSeconds,
-        int $startNanoseconds,
-        int $endSeconds,
-        int $endNanoseconds,
-        Duration $duration
-    ): void {
-        $start = HRTime::fromSecondsAndNanoseconds(
-            $startSeconds,
-            $startNanoseconds
-        );
-
-        $end = HRTime::fromSecondsAndNanoseconds(
-            $endSeconds,
-            $endNanoseconds
-        );
-
-        $this->assertEquals($duration, $end->duration($start));
-    }
-
     /**
      * @return array<string, array<{0: int, 1: int, 2: int, 3: int, 4: Duration>
      */
-    public function provideStartEndAndDuration(): array
+    private function provideStartEndAndDuration(): array
     {
         return [
             'start-equal-to-end' => [

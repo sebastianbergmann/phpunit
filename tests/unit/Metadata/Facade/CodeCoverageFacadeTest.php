@@ -112,7 +112,33 @@ final class CodeCoverageFacadeTest extends TestCase
         );
     }
 
-    public function getLinesToBeCoveredProvider(): array
+    public function testCoversAnnotationIncludesTraitsUsedByClass(): void
+    {
+        $this->assertSame(
+            [
+                TEST_FILES_PATH . '3194.php' => array_merge(range(14, 20), range(22, 30)),
+            ],
+            (new CodeCoverage)->linesToBeCovered(
+                Test3194::class,
+                'testOne'
+            )
+        );
+    }
+
+    /**
+     * @psalm-param class-string $testCase
+     */
+    #[DataProvider('canSkipCoverageProvider')]
+    public function testCanSkipCoverage(string $testCase, bool $expectedCanSkip): void
+    {
+        $test             = new $testCase('testSomething');
+        $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor($test::class, $test->name());
+        $canSkipCoverage  = !$coverageRequired;
+
+        $this->assertEquals($expectedCanSkip, $canSkipCoverage);
+    }
+
+    private function getLinesToBeCoveredProvider(): array
     {
         return [
             [
@@ -189,33 +215,7 @@ final class CodeCoverageFacadeTest extends TestCase
         ];
     }
 
-    public function testCoversAnnotationIncludesTraitsUsedByClass(): void
-    {
-        $this->assertSame(
-            [
-                TEST_FILES_PATH . '3194.php' => array_merge(range(14, 20), range(22, 30)),
-            ],
-            (new CodeCoverage)->linesToBeCovered(
-                Test3194::class,
-                'testOne'
-            )
-        );
-    }
-
-    /**
-     * @psalm-param class-string $testCase
-     */
-    #[DataProvider('canSkipCoverageProvider')]
-    public function testCanSkipCoverage(string $testCase, bool $expectedCanSkip): void
-    {
-        $test             = new $testCase('testSomething');
-        $coverageRequired = (new CodeCoverage)->shouldCodeCoverageBeCollectedFor($test::class, $test->name());
-        $canSkipCoverage  = !$coverageRequired;
-
-        $this->assertEquals($expectedCanSkip, $canSkipCoverage);
-    }
-
-    public function canSkipCoverageProvider(): array
+    private function canSkipCoverageProvider(): array
     {
         return [
             [CoverageClassTest::class, false],

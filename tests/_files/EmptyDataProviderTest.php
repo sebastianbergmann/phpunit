@@ -13,15 +13,15 @@ use PHPUnit\Framework\TestCase;
 
 class EmptyDataProviderTest extends TestCase
 {
-    public static function providerMethod()
-    {
-        return [];
-    }
-
     /**
      * @dataProvider providerMethod
      */
     public function testCase(): void
     {
+    }
+
+    private static function providerMethod()
+    {
+        return [];
     }
 }

@@ -20,7 +20,7 @@ final class DuplicateKeyDataProviderTest extends TestCase
     {
     }
 
-    public function dataProvider()
+    private function dataProvider()
     {
         yield 'foo' => ['foo'];
 

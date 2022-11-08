@@ -32,29 +32,11 @@ final class JsonTest extends TestCase
         }
     }
 
-    public function canonicalizeProvider(): array
-    {
-        return [
-            ['{"name":"John","age":"35"}', '{"age":"35","name":"John"}', false],
-            ['{"name":"John","age":"35","kids":[{"name":"Petr","age":"5"}]}', '{"age":"35","kids":[{"age":"5","name":"Petr"}],"name":"John"}', false],
-            ['"name":"John","age":"35"}', '{"age":"35","name":"John"}', true],
-        ];
-    }
-
     #[DataProvider('prettifyProvider')]
     #[TestDox('Prettify $actual to $expected')]
     public function testPrettify(string $actual, string $expected): void
     {
         $this->assertEquals($expected, Json::prettify($actual));
-    }
-
-    public function prettifyProvider(): array
-    {
-        return [
-            ['{"name":"John","age": "5"}', "{\n    \"name\": \"John\",\n    \"age\": \"5\"\n}"],
-            ['{"url":"https://www.example.com/"}', "{\n    \"url\": \"https://www.example.com/\"\n}"],
-            ['"Кириллица and 中文"', '"Кириллица and 中文"'],
-        ];
     }
 
     #[DataProvider('prettifyExceptionProvider')]
@@ -65,7 +47,25 @@ final class JsonTest extends TestCase
         Json::prettify($json);
     }
 
-    public function prettifyExceptionProvider(): array
+    private function canonicalizeProvider(): array
+    {
+        return [
+            ['{"name":"John","age":"35"}', '{"age":"35","name":"John"}', false],
+            ['{"name":"John","age":"35","kids":[{"name":"Petr","age":"5"}]}', '{"age":"35","kids":[{"age":"5","name":"Petr"}],"name":"John"}', false],
+            ['"name":"John","age":"35"}', '{"age":"35","name":"John"}', true],
+        ];
+    }
+
+    private function prettifyProvider(): array
+    {
+        return [
+            ['{"name":"John","age": "5"}', "{\n    \"name\": \"John\",\n    \"age\": \"5\"\n}"],
+            ['{"url":"https://www.example.com/"}', "{\n    \"url\": \"https://www.example.com/\"\n}"],
+            ['"Кириллица and 中文"', '"Кириллица and 中文"'],
+        ];
+    }
+
+    private function prettifyExceptionProvider(): array
     {
         return [
             ['"name":"John","age": "5"}'],

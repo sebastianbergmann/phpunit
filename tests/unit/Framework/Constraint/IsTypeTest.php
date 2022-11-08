@@ -94,17 +94,6 @@ EOF
         }
     }
 
-    public function resources(): array
-    {
-        $fh = fopen(__FILE__, 'r');
-        fclose($fh);
-
-        return [
-            'open resource'   => [fopen(__FILE__, 'r')],
-            'closed resource' => [$fh],
-        ];
-    }
-
     public function testIterableTypeIsSupported(): void
     {
         $constraint = Assert::isType('iterable');
@@ -136,6 +125,17 @@ EOF
                 ThrowableToStringMapper::map($e)
             );
         }
+    }
+
+    private function resources(): array
+    {
+        $fh = fopen(__FILE__, 'r');
+        fclose($fh);
+
+        return [
+            'open resource'   => [fopen(__FILE__, 'r')],
+            'closed resource' => [$fh],
+        ];
     }
 
     /**

@@ -90,7 +90,7 @@ final class ResultPrinterTest extends TestCase
     /**
      * @psalm-return array<string,array{0: string, 1: TestResult}>
      */
-    public function provider(): array
+    private function provider(): array
     {
         return [
             'no tests' => [

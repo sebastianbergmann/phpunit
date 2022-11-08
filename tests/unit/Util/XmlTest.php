@@ -49,7 +49,7 @@ final class XmlTest extends TestCase
         );
     }
 
-    public function charProvider(): array
+    private function charProvider(): array
     {
         $data = [];
 

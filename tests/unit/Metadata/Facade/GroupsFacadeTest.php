@@ -27,7 +27,7 @@ final class GroupsFacadeTest extends TestCase
         $this->assertSame($groups, (new Groups)->groups($class, $method));
     }
 
-    public function provider(): array
+    private function provider(): array
     {
         return [
             [

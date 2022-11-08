@@ -26,14 +26,6 @@ class Issue2137Test extends TestCase
         $this->assertSame($provided, $expected);
     }
 
-    public function provideBrandService()
-    {
-        return [
-            //[true, true]
-            new stdClass, // not valid
-        ];
-    }
-
     /**
      * @dataProvider provideBrandService
      *
@@ -44,5 +36,13 @@ class Issue2137Test extends TestCase
     public function testSomethingElseInvalid($provided, $expected): void
     {
         $this->assertSame($provided, $expected);
+    }
+
+    private function provideBrandService()
+    {
+        return [
+            //[true, true]
+            new stdClass, // not valid
+        ];
     }
 }

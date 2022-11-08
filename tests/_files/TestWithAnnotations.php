@@ -18,11 +18,6 @@ use PHPUnit\Framework\TestCase;
  */
 class TestWithAnnotations extends TestCase
 {
-    public static function providerMethod()
-    {
-        return [[0]];
-    }
-
     /**
      * @backupGlobals enabled
      */
@@ -73,5 +68,10 @@ class TestWithAnnotations extends TestCase
      */
     public function testInSeparateProcessWithDataProvider(): void
     {
+    }
+
+    private static function providerMethod()
+    {
+        return [[0]];
     }
 }

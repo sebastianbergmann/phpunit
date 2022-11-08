@@ -11,12 +11,6 @@ namespace PHPUnit\TestFixture;
 
 abstract class AbstractVariousIterableDataProviderTest
 {
-    abstract public function asArrayProvider();
-
-    abstract public function asIteratorProvider();
-
-    abstract public function asTraversableProvider();
-
     public function asArrayProviderInParent()
     {
         return [
@@ -61,4 +55,10 @@ abstract class AbstractVariousIterableDataProviderTest
     public function testInParent(): void
     {
     }
+
+    abstract protected function asArrayProvider();
+
+    abstract protected function asIteratorProvider();
+
+    abstract protected function asTraversableProvider();
 }

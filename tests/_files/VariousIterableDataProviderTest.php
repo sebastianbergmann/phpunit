@@ -11,33 +11,6 @@ namespace PHPUnit\TestFixture;
 
 class VariousIterableDataProviderTest extends AbstractVariousIterableDataProviderTest
 {
-    public static function asArrayStaticProvider()
-    {
-        return [
-            ['A'],
-            ['B'],
-            ['C'],
-        ];
-    }
-
-    public static function asIteratorStaticProvider()
-    {
-        yield ['D'];
-
-        yield ['E'];
-
-        yield ['F'];
-    }
-
-    public static function asTraversableStaticProvider()
-    {
-        return new WrapperIteratorAggregate([
-            ['G'],
-            ['H'],
-            ['I'],
-        ]);
-    }
-
     /**
      * @dataProvider asArrayStaticProvider
      * @dataProvider asIteratorStaticProvider
@@ -90,5 +63,32 @@ class VariousIterableDataProviderTest extends AbstractVariousIterableDataProvide
      */
     public function testFromParent(): void
     {
+    }
+
+    private static function asArrayStaticProvider()
+    {
+        return [
+            ['A'],
+            ['B'],
+            ['C'],
+        ];
+    }
+
+    private static function asIteratorStaticProvider()
+    {
+        yield ['D'];
+
+        yield ['E'];
+
+        yield ['F'];
+    }
+
+    private static function asTraversableStaticProvider()
+    {
+        return new WrapperIteratorAggregate([
+            ['G'],
+            ['H'],
+            ['I'],
+        ]);
     }
 }

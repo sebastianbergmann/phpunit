@@ -13,14 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class DataProviderIncompleteTest extends TestCase
 {
-    public static function providerMethod()
-    {
-        return [
-            [0, 0, 0],
-            [0, 1, 1],
-        ];
-    }
-
     /**
      * @dataProvider incompleteTestProviderMethod
      */
@@ -37,10 +29,18 @@ class DataProviderIncompleteTest extends TestCase
         $this->assertEquals($c, $a + $b);
     }
 
-    public function incompleteTestProviderMethod()
+    private function incompleteTestProviderMethod()
     {
         $this->markTestIncomplete('incomplete');
 
+        return [
+            [0, 0, 0],
+            [0, 1, 1],
+        ];
+    }
+
+    private static function providerMethod()
+    {
         return [
             [0, 0, 0],
             [0, 1, 1],

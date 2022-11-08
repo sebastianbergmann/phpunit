@@ -24,7 +24,28 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class JsonMatchesErrorMessageProviderTest extends TestCase
 {
-    public static function determineJsonErrorDataprovider(): array
+    #[DataProvider('translateTypeToPrefixDataprovider')]
+    public function testTranslateTypeToPrefix(string $expected, string $type): void
+    {
+        $this->assertEquals(
+            $expected,
+            JsonMatchesErrorMessageProvider::translateTypeToPrefix($type)
+        );
+    }
+
+    #[DataProvider('determineJsonErrorDataprovider')]
+    public function testDetermineJsonError(?string $expected, int $error, string $prefix): void
+    {
+        $this->assertEquals(
+            $expected,
+            JsonMatchesErrorMessageProvider::determineJsonError(
+                $error,
+                $prefix
+            )
+        );
+    }
+
+    private static function determineJsonErrorDataprovider(): array
     {
         return [
             'JSON_ERROR_NONE' => [
@@ -56,33 +77,12 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
         ];
     }
 
-    public static function translateTypeToPrefixDataprovider(): array
+    private static function translateTypeToPrefixDataprovider(): array
     {
         return [
             'expected' => ['Expected value JSON decode error - ', 'expected'],
             'actual'   => ['Actual value JSON decode error - ', 'actual'],
             'default'  => ['', ''],
         ];
-    }
-
-    #[DataProvider('translateTypeToPrefixDataprovider')]
-    public function testTranslateTypeToPrefix(string $expected, string $type): void
-    {
-        $this->assertEquals(
-            $expected,
-            JsonMatchesErrorMessageProvider::translateTypeToPrefix($type)
-        );
-    }
-
-    #[DataProvider('determineJsonErrorDataprovider')]
-    public function testDetermineJsonError(?string $expected, int $error, string $prefix): void
-    {
-        $this->assertEquals(
-            $expected,
-            JsonMatchesErrorMessageProvider::determineJsonError(
-                $error,
-                $prefix
-            )
-        );
     }
 }

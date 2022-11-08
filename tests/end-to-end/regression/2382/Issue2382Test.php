@@ -22,7 +22,7 @@ class Issue2382Test extends TestCase
         $this->assertInstanceOf(Exception::class, $test);
     }
 
-    public function dataProvider()
+    private function dataProvider()
     {
         return [
             [

@@ -30,7 +30,7 @@ class DataProviderDependencyTest extends TestCase
     {
     }
 
-    public function provider()
+    private function provider()
     {
         $this->markTestSkipped('Any test with this data provider should be skipped.');
 

@@ -21,7 +21,7 @@ class TestWithDataProviderTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function provide()
+    private function provide()
     {
         return [[true]];
     }

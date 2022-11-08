@@ -1002,14 +1002,6 @@ EOF
         $this->assertSame('foo', (string) $mock);
     }
 
-    public function traversableProvider(): array
-    {
-        return [
-            Traversable::class                  => [Traversable::class],
-            TraversableMockTestInterface::class => [TraversableMockTestInterface::class],
-        ];
-    }
-
     public function testParameterCallbackConstraintOnlyEvaluatedOnce(): void
     {
         $mock                  = $this->getMockBuilder(Foo::class)->addMethods(['bar'])->getMock();
@@ -1205,6 +1197,14 @@ EOF
         $this->expectException(\PHPUnit\Framework\MockObject\RuntimeException::class);
 
         $stub->method();
+    }
+
+    private function traversableProvider(): array
+    {
+        return [
+            Traversable::class                  => [Traversable::class],
+            TraversableMockTestInterface::class => [TraversableMockTestInterface::class],
+        ];
     }
 
     private function resetMockObjects(): void

@@ -24,15 +24,6 @@ final class MemoryUsageTest extends TestCase
         $this->assertSame($bytes, $memoryUsage->bytes());
     }
 
-    public function provideValidBytes(): array
-    {
-        return [
-            'int-less-than-zero'    => [-1],
-            'int-zero'              => [0],
-            'int-greater-than-zero' => [1],
-        ];
-    }
-
     public function testDiffReturnsMemoryUsage(): void
     {
         $one = MemoryUsage::fromBytes(2000);
@@ -43,5 +34,14 @@ final class MemoryUsageTest extends TestCase
         $this->assertNotSame($one, $diff);
         $this->assertNotSame($two, $diff);
         $this->assertSame($one->bytes() - $two->bytes(), $diff->bytes());
+    }
+
+    private function provideValidBytes(): array
+    {
+        return [
+            'int-less-than-zero'    => [-1],
+            'int-zero'              => [0],
+            'int-greater-than-zero' => [1],
+        ];
     }
 }

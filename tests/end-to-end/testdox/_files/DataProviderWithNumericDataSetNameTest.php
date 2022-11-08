@@ -30,7 +30,7 @@ final class DataProviderWithNumericDataSetNameTest extends TestCase
         $this->assertTrue(false);
     }
 
-    public function provider(): array
+    private function provider(): array
     {
         return [
             0 => [

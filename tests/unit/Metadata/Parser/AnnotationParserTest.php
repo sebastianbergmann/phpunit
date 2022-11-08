@@ -588,11 +588,6 @@ final class AnnotationParserTest extends TestCase
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
     }
 
-    public function provideRequiresPhpTestMethods(): array
-    {
-        return [['testOne'], ['testTwo']];
-    }
-
     #[DataProvider('provideRequiresPhpTestMethods')]
     public function test_Parses_requiresPhp_annotation_on_method(string $method): void
     {
@@ -734,5 +729,10 @@ final class AnnotationParserTest extends TestCase
 
         $this->assertTrue($metadata->asArray()[0]->isGroup());
         $this->assertTrue($metadata->asArray()[1]->isDataProvider());
+    }
+
+    private function provideRequiresPhpTestMethods(): array
+    {
+        return [['testOne'], ['testTwo']];
     }
 }

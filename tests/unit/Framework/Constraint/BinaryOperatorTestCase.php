@@ -134,19 +134,6 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $this->assertSame("is equal to 'whatever'", $constraint->toString());
     }
 
-    final public function providerConnectiveTruthTable(): array
-    {
-        $inputs = self::getBooleanTuples(0, 5);
-
-        return array_map(
-            function (array $input)
-            {
-                return [$input, $this->evaluateExpectedResult($input)];
-            },
-            $inputs
-        );
-    }
-
     #[DataProvider('providerConnectiveTruthTable')]
     final public function testEvaluateReturnsCorrectBooleanResult(array $inputs, bool $expected): void
     {
@@ -192,26 +179,6 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             $this->expectExceptionMessage($message);
             $constraint->evaluate('the following expression is true');
         }
-    }
-
-    public function providerToStringWithNamedConstraints(): array
-    {
-        return [
-            [
-            ],
-            [
-                'is healthy',
-            ],
-            [
-                'is healthy',
-                'is rich in amino acids',
-            ],
-            [
-                'is healthy',
-                'is rich in amino acids',
-                'is rich in unsaturated fats',
-            ],
-        ];
     }
 
     #[DataProvider('providerToStringWithNamedConstraints')]
@@ -534,6 +501,39 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         ]);
         $expected = "'whatever' " . $expectedToString;
         $this->assertSame($expected, $method->invokeArgs($constraint, ['whatever']));
+    }
+
+    private function providerConnectiveTruthTable(): array
+    {
+        $inputs = self::getBooleanTuples(0, 5);
+
+        return array_map(
+            function (array $input)
+            {
+                return [$input, $this->evaluateExpectedResult($input)];
+            },
+            $inputs
+        );
+    }
+
+    private function providerToStringWithNamedConstraints(): array
+    {
+        return [
+            [
+            ],
+            [
+                'is healthy',
+            ],
+            [
+                'is healthy',
+                'is rich in amino acids',
+            ],
+            [
+                'is healthy',
+                'is rich in amino acids',
+                'is rich in unsaturated fats',
+            ],
+        ];
     }
 
     /**

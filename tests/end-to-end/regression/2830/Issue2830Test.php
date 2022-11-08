@@ -21,7 +21,7 @@ class Issue2830Test extends TestCase
         $this->assertTrue(true);
     }
 
-    public function simpleDataProvider()
+    private function simpleDataProvider()
     {
         return [
             ['foo'],

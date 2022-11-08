@@ -21,7 +21,7 @@ final class InvalidDataProviderTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function provider(): array
+    private function provider(): array
     {
         return [0];
     }

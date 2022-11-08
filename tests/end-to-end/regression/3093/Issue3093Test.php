@@ -13,11 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class Issue3093Test extends TestCase
 {
-    public function someDataProvider(): array
-    {
-        return [['some values']];
-    }
-
     public function testFirstWithoutDependencies(): void
     {
         $this->assertTrue(true);
@@ -31,5 +26,10 @@ class Issue3093Test extends TestCase
     public function testSecondThatDependsOnFirstAndDataprovider($value): void
     {
         $this->assertTrue(true);
+    }
+
+    private function someDataProvider(): array
+    {
+        return [['some values']];
     }
 }

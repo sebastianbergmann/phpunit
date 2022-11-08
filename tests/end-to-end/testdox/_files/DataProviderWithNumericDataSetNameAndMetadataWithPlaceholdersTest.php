@@ -37,7 +37,7 @@ final class DataProviderWithNumericDataSetNameAndMetadataWithPlaceholdersTest ex
         $this->assertTrue(false);
     }
 
-    public function provider(): array
+    private function provider(): array
     {
         return [
             0 => [

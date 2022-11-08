@@ -29,7 +29,7 @@ class Issue765Test extends TestCase
         $this->assertTrue(true);
     }
 
-    public function dependentProvider(): void
+    private function dependentProvider(): void
     {
         throw new Exception;
     }

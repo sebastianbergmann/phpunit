@@ -13,14 +13,6 @@ use PHPUnit\Framework\TestCase;
 
 class DataProviderSkippedTest extends TestCase
 {
-    public static function providerMethod()
-    {
-        return [
-            [0, 0, 0],
-            [0, 1, 1],
-        ];
-    }
-
     /**
      * @dataProvider skippedTestProviderMethod
      */
@@ -37,10 +29,18 @@ class DataProviderSkippedTest extends TestCase
         $this->assertEquals($c, $a + $b);
     }
 
-    public function skippedTestProviderMethod()
+    private function skippedTestProviderMethod()
     {
         $this->markTestSkipped('skipped');
 
+        return [
+            [0, 0, 0],
+            [0, 1, 1],
+        ];
+    }
+
+    private static function providerMethod()
+    {
         return [
             [0, 0, 0],
             [0, 1, 1],

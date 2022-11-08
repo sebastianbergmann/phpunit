@@ -75,30 +75,6 @@ final class DurationTest extends TestCase
         $this->assertSame($formatted, $duration->asString());
     }
 
-    /**
-     * @return array<string, array<{0: int, 1: int, 2: string>>
-     */
-    public function provideDurationAndStringRepresentation(): array
-    {
-        return [
-            'less-than-a-minute' => [
-                59,
-                123,
-                '00:00:59.000000123',
-            ],
-            'less-than-an-hour' => [
-                3559,
-                123,
-                '00:59:19.000000123',
-            ],
-            'more-than-an-hour' => [
-                3601,
-                123,
-                '01:00:01.000000123',
-            ],
-        ];
-    }
-
     public function testEqualsReturnsFalseWhenValuesAreDifferent(): void
     {
         $one = Duration::fromSecondsAndNanoseconds(
@@ -277,5 +253,29 @@ final class DurationTest extends TestCase
         );
 
         $this->assertTrue($one->isGreaterThan($two));
+    }
+
+    /**
+     * @return array<string, array<{0: int, 1: int, 2: string>>
+     */
+    private function provideDurationAndStringRepresentation(): array
+    {
+        return [
+            'less-than-a-minute' => [
+                59,
+                123,
+                '00:00:59.000000123',
+            ],
+            'less-than-an-hour' => [
+                3559,
+                123,
+                '00:59:19.000000123',
+            ],
+            'more-than-an-hour' => [
+                3601,
+                123,
+                '01:00:01.000000123',
+            ],
+        ];
     }
 }

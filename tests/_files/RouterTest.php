@@ -24,7 +24,7 @@ final class RouterTest extends TestCase
         $this->assertTrue(true);
     }
 
-    public function routesProvider()
+    private function routesProvider()
     {
         return [
             '/foo/bar' => [

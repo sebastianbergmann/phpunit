@@ -28,7 +28,7 @@ final class RequirementsFacadeTest extends TestCase
         );
     }
 
-    public function missingRequirementsProvider(): array
+    private function missingRequirementsProvider(): array
     {
         return [
             ['testOne',            []],

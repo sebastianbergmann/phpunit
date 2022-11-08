@@ -43,7 +43,7 @@ final class FunctionsTest extends TestCase
         );
     }
 
-    public function provideStaticAssertionMethodNames(): array
+    private function provideStaticAssertionMethodNames(): array
     {
         preg_match_all(
             '/public static function (assert[^ (]+)/',

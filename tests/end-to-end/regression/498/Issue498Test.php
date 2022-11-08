@@ -38,7 +38,7 @@ class Issue498Test extends TestCase
         $this->assertFalse(false);
     }
 
-    public function shouldBeTrueDataProvider()
+    private function shouldBeTrueDataProvider()
     {
         //throw new Exception("Can't create the data");
         return [
@@ -47,7 +47,7 @@ class Issue498Test extends TestCase
         ];
     }
 
-    public function shouldBeFalseDataProvider()
+    private function shouldBeFalseDataProvider()
     {
         throw new Exception("Can't create the data");
 

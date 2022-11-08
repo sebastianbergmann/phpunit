@@ -21,7 +21,7 @@ class Issue1337Test extends TestCase
         $this->assertTrue($a);
     }
 
-    public function dataProvider()
+    private function dataProvider()
     {
         return [
             'c:\\' => [true],

@@ -24,7 +24,14 @@ final class TestBuilderTest extends TestCase
         $this->assertInstanceOf(TestWithAnnotations::class, $test);
     }
 
-    public function provideWithAnnotations(): array
+    #[DataProvider('provideWithAnnotationsAndDataProvider')]
+    public function testWithAnnotationsAndDataProvider(string $methodName): void
+    {
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
+        $this->assertInstanceOf(DataProviderTestSuite::class, $test);
+    }
+
+    private function provideWithAnnotations(): array
     {
         return [
             ['testThatInteractsWithGlobalVariables'],
@@ -33,14 +40,7 @@ final class TestBuilderTest extends TestCase
         ];
     }
 
-    #[DataProvider('provideWithAnnotationsAndDataProvider')]
-    public function testWithAnnotationsAndDataProvider(string $methodName): void
-    {
-        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
-        $this->assertInstanceOf(DataProviderTestSuite::class, $test);
-    }
-
-    public function provideWithAnnotationsAndDataProvider(): array
+    private function provideWithAnnotationsAndDataProvider(): array
     {
         return [
             ['testThatInteractsWithGlobalVariablesWithDataProvider'],

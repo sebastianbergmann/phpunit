@@ -81,7 +81,7 @@ final class TestSizeTest extends TestCase
         $this->assertSame($expected, $a->isGreaterThan($b));
     }
 
-    public function comparisonProvider(): array
+    private function comparisonProvider(): array
     {
         return [
             'small test is not greater than small test' => [

@@ -15,31 +15,6 @@ use PHPUnit\Framework\Attributes\DataProvider;
 #[CoversClass(ExecutionOrderDependency::class)]
 class ExecutionOrderDependencyTest extends TestCase
 {
-    public static function createFromParametersProvider(): array
-    {
-        return [
-            // Dependency on specific class::method target
-            ['Class1', 'test1', 'Class1::test1', false],
-            ['Class2', 'test2', 'Class2::test2', false],
-            ['Class3::method3', null, 'Class3::method3', false],
-
-            // Dependency on whole class
-            ['Class4', null, 'Class4::class', true],
-            ['Class5', '', 'Class5::class', true],
-            ['Class6', 'class', 'Class6::class', true],
-            ['Class7::class', null, 'Class7::class', true],
-        ];
-    }
-
-    public static function createWithCloneOptionProvider(): array
-    {
-        return [
-            'no clone'      => [false, false, false, false],
-            'deep clone'    => [true, false, false, true],
-            'shallow clone' => [false, true, true, false],
-        ];
-    }
-
     public function testCreateDependencyOnClassFromClassNameOnly(): void
     {
         $dependency = new ExecutionOrderDependency('ClassDependency');
@@ -111,5 +86,30 @@ class ExecutionOrderDependencyTest extends TestCase
             ),
             'Right side of merge could be empty'
         );
+    }
+
+    private static function createFromParametersProvider(): array
+    {
+        return [
+            // Dependency on specific class::method target
+            ['Class1', 'test1', 'Class1::test1', false],
+            ['Class2', 'test2', 'Class2::test2', false],
+            ['Class3::method3', null, 'Class3::method3', false],
+
+            // Dependency on whole class
+            ['Class4', null, 'Class4::class', true],
+            ['Class5', '', 'Class5::class', true],
+            ['Class6', 'class', 'Class6::class', true],
+            ['Class7::class', null, 'Class7::class', true],
+        ];
+    }
+
+    private static function createWithCloneOptionProvider(): array
+    {
+        return [
+            'no clone'      => [false, false, false, false],
+            'deep clone'    => [true, false, false, true],
+            'shallow clone' => [false, true, true, false],
+        ];
     }
 }

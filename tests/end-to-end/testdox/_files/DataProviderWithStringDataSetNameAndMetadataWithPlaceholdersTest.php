@@ -37,7 +37,7 @@ final class DataProviderWithStringDataSetNameAndMetadataWithPlaceholdersTest ext
         $this->assertTrue(false);
     }
 
-    public function provider(): array
+    private function provider(): array
     {
         return [
             'data set name' => [

@@ -32,11 +32,6 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
     abstract public static function getOperatorPrecedence(): int;
 
     /**
-     * Shall return series of two-element arrays [$input, $expected].
-     */
-    abstract public function providerToStringWithNativeTransformations(): array;
-
-    /**
      * Takes a boolean values and returns the expected evaluation result for
      * the logical operator under test.
      */
@@ -116,17 +111,6 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $withIsEqual = new $className(new IsEqual('test'));
 
         $this->assertSame($withIsEqual->toString(), $constraint->toString());
-    }
-
-    final public function providerUnaryTruthTable(): array
-    {
-        return array_map(
-            function (bool $input): array
-            {
-                return [$input, $this->evaluateExpectedResult($input)];
-            },
-            [false, true]
-        );
     }
 
     #[DataProvider('providerUnaryTruthTable')]
@@ -628,5 +612,21 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $expected = $this->getOperatorName() . "( 'whatever' " . $string . ' )';
 
         $this->assertSame($expected, $method->invokeArgs($operator, ['whatever']));
+    }
+
+    /**
+     * Shall return series of two-element arrays [$input, $expected].
+     */
+    abstract protected function providerToStringWithNativeTransformations(): array;
+
+    private function providerUnaryTruthTable(): array
+    {
+        return array_map(
+            function (bool $input): array
+            {
+                return [$input, $this->evaluateExpectedResult($input)];
+            },
+            [false, true]
+        );
     }
 }

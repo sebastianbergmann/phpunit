@@ -75,7 +75,7 @@ final class ColorTest extends TestCase
         $this->assertSame($value, $value);
     }
 
-    public function colorizeProvider(): array
+    private function colorizeProvider(): array
     {
         return [
             'no color'                 => ['', 'string', 'string'],
@@ -86,7 +86,7 @@ final class ColorTest extends TestCase
         ];
     }
 
-    public function colorizePathProvider(): array
+    private function colorizePathProvider(): array
     {
         $sep    = DIRECTORY_SEPARATOR;
         $sepDim = Color::dim($sep);
@@ -125,7 +125,7 @@ final class ColorTest extends TestCase
         ];
     }
 
-    public function whitespacedStringProvider(): array
+    private function whitespacedStringProvider(): array
     {
         return [
             ['no-spaces',
@@ -142,7 +142,7 @@ final class ColorTest extends TestCase
         ];
     }
 
-    public function unnamedDataSetProvider(): array
+    private function unnamedDataSetProvider(): array
     {
         return [
             [1],
@@ -150,7 +150,7 @@ final class ColorTest extends TestCase
         ];
     }
 
-    public function namedDataSetProvider(): array
+    private function namedDataSetProvider(): array
     {
         return [
             'one' => [1],

@@ -37,7 +37,13 @@ final class LogicalNotTest extends UnaryOperatorTestCase
         return !$input;
     }
 
-    public function providerNegate(): array
+    #[DataProvider('providerNegate')]
+    public function testNegate(string $input, string $expected): void
+    {
+        $this->assertSame($expected, LogicalNot::negate($input));
+    }
+
+    private function providerNegate(): array
     {
         return [
             ['ocean contains water', 'ocean does not contain water'],
@@ -65,11 +71,5 @@ final class LogicalNotTest extends UnaryOperatorTestCase
             ['you reference me', 'you don\'t reference me'],
             ['it\'s not not false', 'it\'s not false'],
         ];
-    }
-
-    #[DataProvider('providerNegate')]
-    public function testNegate(string $input, string $expected): void
-    {
-        $this->assertSame($expected, LogicalNot::negate($input));
     }
 }

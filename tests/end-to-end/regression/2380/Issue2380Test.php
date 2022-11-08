@@ -25,7 +25,7 @@ class Issue2380Test extends TestCase
     /**
      * @return Generator
      */
-    public function generatorData()
+    private function generatorData()
     {
         yield ['testing'];
     }

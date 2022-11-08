@@ -39,7 +39,7 @@ class DataproviderExecutionOrderTest extends TestCase
         $this->assertSame($sum, $a + $b);
     }
 
-    public function dataproviderAdditions()
+    private function dataproviderAdditions()
     {
         return [
             '1+2=3' => [1, 2, 3],
