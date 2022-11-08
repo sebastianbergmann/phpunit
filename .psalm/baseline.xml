@@ -217,10 +217,6 @@
     <InvalidCast occurrences="1">
       <code>$value</code>
     </InvalidCast>
-    <UndefinedMethod occurrences="2">
-      <code>text</code>
-      <code>text</code>
-    </UndefinedMethod>
   </file>
   <file src="src/Logging/TestDox/TestMethod/TestMethodCollector.php">
     <PossiblyNullArgument occurrences="2">
