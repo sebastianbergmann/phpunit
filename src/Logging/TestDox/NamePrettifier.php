@@ -43,6 +43,7 @@ use function substr;
 use function trim;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
+use PHPUnit\Metadata\TestDox;
 use PHPUnit\Util\Color;
 use ReflectionMethod;
 use ReflectionObject;
@@ -72,10 +73,14 @@ final class NamePrettifier
     public function prettifyTestClass(string $className): string
     {
         if (class_exists($className)) {
-            $metadata = MetadataRegistry::parser()->forClass($className);
+            $classLevelTestDox = MetadataRegistry::parser()->forClass($className)->isTestDox();
 
-            if ($metadata->isTestDox()->isNotEmpty()) {
-                return $metadata->isTestDox()->asArray()[0]->text();
+            if ($classLevelTestDox->isNotEmpty()) {
+                $classLevelTestDox = $classLevelTestDox->asArray()[0];
+
+                assert($classLevelTestDox instanceof TestDox);
+
+                return $classLevelTestDox->text();
             }
         }
 
