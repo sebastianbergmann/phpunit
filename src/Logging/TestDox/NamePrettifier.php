@@ -120,11 +120,14 @@ final class NamePrettifier
     public function prettifyTestCase(TestCase $test): string
     {
         $annotationWithPlaceholders = false;
+        $methodLevelTestDox         = MetadataRegistry::parser()->forMethod($test::class, $test->name())->isTestDox()->isMethodLevel();
 
-        $metadata = MetadataRegistry::parser()->forMethod($test::class, $test->name());
+        if ($methodLevelTestDox->isNotEmpty()) {
+            $methodLevelTestDox = $methodLevelTestDox->asArray()[0];
 
-        if ($metadata->isTestDox()->isNotEmpty()) {
-            $result = $metadata->isTestDox()->asArray()[0]->text();
+            assert($methodLevelTestDox instanceof TestDox);
+
+            $result = $methodLevelTestDox->text();
 
             if (str_contains($result, '$')) {
                 $annotation   = $result;
