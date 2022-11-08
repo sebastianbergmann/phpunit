@@ -18,6 +18,10 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime:       %s
+
+Time: %s, Memory: %s
+
 Diff (PHPUnit\TestFixture\TestDox\Diff)
  ✘ Something that does not work
    │
@@ -33,8 +37,6 @@ Diff (PHPUnit\TestFixture\TestDox\Diff)
    │
    │ %sDiffTest.php:%d
    │
-
-Time: %s, Memory: %s
 
 FAILURES!
 Tests: 1, Assertions: 1, Failures: 1.
