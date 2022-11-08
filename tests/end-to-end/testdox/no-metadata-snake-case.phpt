@@ -1,5 +1,8 @@
 --TEST--
 TestDox: Default output; Test name in snake-case notation; No TestDox metadata
+--XFAIL--
+TestDox logging has not been migrated to events yet.
+See https://github.com/sebastianbergmann/phpunit/issues/5040 for details.
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
@@ -10,7 +13,7 @@ $_SERVER['argv'][] = __DIR__ . '/_files/SnakeCaseTest.php';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-PHPUnit\TextUI\Command::main();
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
