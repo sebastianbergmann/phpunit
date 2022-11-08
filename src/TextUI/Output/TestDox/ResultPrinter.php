@@ -120,6 +120,60 @@ final class ResultPrinter
         $this->printer->print(PHP_EOL);
     }
 
+    private function formatThrowable(Throwable $t): string
+    {
+        $message = trim($t->description());
+
+        if ($message) {
+            $message .= PHP_EOL . PHP_EOL;
+        }
+
+        return $message . $this->formatStackTrace($t->stackTrace());
+    }
+
+    private function formatStackTrace(string $stackTrace): string
+    {
+        if (!$this->colors) {
+            return $stackTrace;
+        }
+    }
+
+    private function prefixLines(string $prefix, string $message): string
+    {
+        return implode(
+            PHP_EOL,
+            array_map(
+                static function (string $line) use ($prefix)
+                {
+                    return '   ' . $prefix . ($line ? ' ' . $line : '');
+                },
+                preg_split('/\r\n|\r|\n/', $message)
+            )
+        );
+    }
+
+    /**
+     * @psalm-param 'default'|'start'|'message'|'diff'|'trace'|'last' $type
+     */
+    private function prefixFor(string $type, TestStatus $status): string
+    {
+        if (!$this->colors) {
+            return '│';
+        }
+
+        return Color::colorize(
+            $this->colorFor($status),
+            match ($type) {
+                'default' => '│',
+                'start'   => '┐',
+                'message' => '├',
+                'diff'    => '┊',
+                'trace'   => '╵',
+                'last'    => '┴'
+            }
+        );
+    }
+
     private function colorFor(TestStatus $status): string
     {
         if ($status->isSuccess()) {
@@ -197,59 +251,5 @@ final class ResultPrinter
         }
 
         return '?';
-    }
-
-    /**
-     * @psalm-param 'default'|'start'|'message'|'diff'|'trace'|'last' $type
-     */
-    private function prefixFor(string $type, TestStatus $status): string
-    {
-        if (!$this->colors) {
-            return '│';
-        }
-
-        return Color::colorize(
-            $this->colorFor($status),
-            match ($type) {
-                'default' => '│',
-                'start'   => '┐',
-                'message' => '├',
-                'diff'    => '┊',
-                'trace'   => '╵',
-                'last'    => '┴'
-            }
-        );
-    }
-
-    private function formatThrowable(Throwable $t): string
-    {
-        $message = trim($t->description());
-
-        if ($message) {
-            $message .= PHP_EOL . PHP_EOL;
-        }
-
-        return $message . $this->formatStackTrace($t->stackTrace());
-    }
-
-    private function formatStackTrace(string $stackTrace): string
-    {
-        if (!$this->colors) {
-            return $stackTrace;
-        }
-    }
-
-    private function prefixLines(string $prefix, string $message): string
-    {
-        return implode(
-            PHP_EOL,
-            array_map(
-                static function (string $line) use ($prefix)
-                {
-                    return '   ' . $prefix . ($line ? ' ' . $line : '');
-                },
-                preg_split('/\r\n|\r|\n/', $message)
-            )
-        );
     }
 }
