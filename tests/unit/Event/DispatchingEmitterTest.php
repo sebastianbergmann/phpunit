@@ -1658,6 +1658,8 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'testBar',
             'FooTest.php',
             1,
+            'Foo',
+            'Bar',
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );

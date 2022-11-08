@@ -19,6 +19,7 @@ use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\Logging\TestDox\NamePrettifier;
 use PHPUnit\Metadata\MetadataCollection;
 use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 use ReflectionException;
@@ -38,6 +39,8 @@ final class TestMethod extends Test
     private readonly string $className;
     private readonly string $methodName;
     private readonly int $line;
+    private readonly string $prettifiedClassName;
+    private readonly string $prettifiedMethodName;
     private readonly MetadataCollection $metadata;
     private readonly TestDataCollection $testData;
 
@@ -48,11 +51,15 @@ final class TestMethod extends Test
     {
         $location = self::sourceLocationFor($testCase::class, $testCase->name());
 
+        $prettifier = new NamePrettifier;
+
         return new self(
             $testCase::class,
             $testCase->name(),
             $location['file'],
             $location['line'],
+            $prettifier->prettifyTestClass($testCase::class),
+            $prettifier->prettifyTestCase($testCase),
             self::metadataFor($testCase::class, $testCase->name()),
             self::dataFor($testCase),
         );
@@ -61,15 +68,17 @@ final class TestMethod extends Test
     /**
      * @psalm-param class-string $className
      */
-    public function __construct(string $className, string $methodName, string $file, int $line, MetadataCollection $metadata, TestDataCollection $testData)
+    public function __construct(string $className, string $methodName, string $file, int $line, string $prettifiedClassName, string $prettifiedMethodName, MetadataCollection $metadata, TestDataCollection $testData)
     {
         parent::__construct($file);
 
-        $this->className  = $className;
-        $this->methodName = $methodName;
-        $this->line       = $line;
-        $this->metadata   = $metadata;
-        $this->testData   = $testData;
+        $this->className            = $className;
+        $this->methodName           = $methodName;
+        $this->line                 = $line;
+        $this->prettifiedClassName  = $prettifiedClassName;
+        $this->prettifiedMethodName = $prettifiedMethodName;
+        $this->metadata             = $metadata;
+        $this->testData             = $testData;
     }
 
     /**
@@ -88,6 +97,16 @@ final class TestMethod extends Test
     public function line(): int
     {
         return $this->line;
+    }
+
+    public function prettifiedClassName(): string
+    {
+        return $this->prettifiedClassName;
+    }
+
+    public function prettifiedMethodName(): string
+    {
+        return $this->prettifiedMethodName;
     }
 
     public function metadata(): MetadataCollection

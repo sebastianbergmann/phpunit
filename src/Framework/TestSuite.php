@@ -28,6 +28,7 @@ use IteratorAggregate;
 use PHPUnit\Event;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\NoPreviousThrowableException;
+use PHPUnit\Logging\TestDox\NamePrettifier;
 use PHPUnit\Metadata\Api\Dependencies;
 use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
@@ -553,12 +554,16 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         try {
             $test = (new TestBuilder)->build($class, $methodName);
         } catch (InvalidDataProviderException $e) {
+            $prettifier = new NamePrettifier;
+
             Event\Facade::emitter()->testTriggeredPhpunitError(
                 new TestMethod(
                     $className,
                     $methodName,
                     $class->getFileName(),
                     $method->getStartLine(),
+                    $prettifier->prettifyTestClass($className),
+                    $prettifier->prettifyTestMethod($methodName),
                     MetadataCollection::fromArray([]),
                     Event\TestData\TestDataCollection::fromArray([])
                 ),

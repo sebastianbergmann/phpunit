@@ -21,18 +21,22 @@ final class TestMethodTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $className  = 'FooTest';
-        $methodName = 'testBar';
-        $file       = 'FooTest.php';
-        $line       = 1;
-        $testData   = TestDataCollection::fromArray([]);
-        $metadata   = MetadataCollection::fromArray([]);
+        $className            = 'FooTest';
+        $methodName           = 'testBar';
+        $file                 = 'FooTest.php';
+        $line                 = 1;
+        $prettifiedClassName  = 'Foo';
+        $prettifiedMethodName = 'Bar';
+        $testData             = TestDataCollection::fromArray([]);
+        $metadata             = MetadataCollection::fromArray([]);
 
         $test = new TestMethod(
             $className,
             $methodName,
             $file,
             $line,
+            $prettifiedClassName,
+            $prettifiedMethodName,
             $metadata,
             $testData
         );
@@ -52,6 +56,8 @@ final class TestMethodTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
+            'Foo',
+            'Bar',
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );
@@ -68,6 +74,8 @@ final class TestMethodTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
+            'Foo',
+            'Bar',
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(
@@ -95,6 +103,8 @@ final class TestMethodTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
+            'Foo',
+            'Bar',
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(

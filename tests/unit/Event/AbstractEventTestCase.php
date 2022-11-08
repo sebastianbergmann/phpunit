@@ -44,6 +44,8 @@ abstract class AbstractEventTestCase extends TestCase
             'testBar',
             'FooTest.php',
             1,
+            'Foo',
+            'Bar',
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );
