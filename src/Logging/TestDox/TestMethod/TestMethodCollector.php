@@ -34,6 +34,7 @@ use PHPUnit\Event\Test\TestStubCreated;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
 use PHPUnit\Logging\TestDox\TestMethod as TestDoxTestMethod;
+use SoapClient;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -142,7 +143,7 @@ final class TestMethodCollector
         }
 
         if ($event instanceof MockObjectFromWsdlCreated) {
-            $this->testDoubles[] = 'SoapClient';
+            $this->testDoubles[] = SoapClient::class;
 
             return;
         }
