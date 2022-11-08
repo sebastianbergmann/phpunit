@@ -86,7 +86,7 @@ final class ResultPrinter
      */
     private function printClassName(string $className): void
     {
-        $buffer = $this->namePrettifier->prettifyTestClass($className);
+        $buffer = $className;
 
         if ($this->colors) {
             $buffer = Color::colorizeTextBox('underlined', $buffer);
