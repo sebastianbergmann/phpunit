@@ -1,7 +1,7 @@
 --TEST--
 TestDox: Diff; Colorized
 --XFAIL--
-TestDox logging has not been migrated to events yet.
+Colorized TestDox result printing has not been migrated to events yet.
 See https://github.com/sebastianbergmann/phpunit/issues/5040 for details.
 --FILE--
 <?php declare(strict_types=1);
