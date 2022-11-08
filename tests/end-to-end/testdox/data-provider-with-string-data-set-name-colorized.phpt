@@ -15,6 +15,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime:       %s
+
 [4mData Provider With String Data Set Name (PHPUnit\TestFixture\TestDox\DataProviderWithStringDataSetName)[0m
  [32m✔[0m Something that works[2m with [22m[36mdata[2m·[22mset[2m·[22mname[0m
  [31m✘[0m Something that does not work[2m with [22m[36mdata[2m·[22mset[2m·[22mname[0m

@@ -15,6 +15,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime:       %s
+
 [4mText from class-level TestDox metadata[0m
  [32m✔[0m Text from method-level TestDox metadata for successful test
  [31m✘[0m Text from method-level TestDox metadata for failing test

@@ -15,6 +15,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime:       %s
+
 [4mData Provider With Numeric Data Set Name (PHPUnit\TestFixture\TestDox\DataProviderWithNumericDataSetName)[0m
  [32m✔[0m Something that works[2m with data set [22m[36m0[0m
  [31m✘[0m Something that does not work[2m with data set [22m[36m0[0m

@@ -15,6 +15,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime:       %s
+
 Camel Case (PHPUnit\TestFixture\TestDox\CamelCase)
  ✔ Something that works
  ✘ Something that does not work

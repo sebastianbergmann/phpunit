@@ -15,6 +15,8 @@ PHPUnit\TextUI\Application::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
 
+Runtime:       %s
+
 Snake Case (PHPUnit\TestFixture\TestDox\SnakeCase)
  ✔ Something that works
  ✘ Something that does not work
