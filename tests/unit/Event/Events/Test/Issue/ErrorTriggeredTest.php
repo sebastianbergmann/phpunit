@@ -37,6 +37,6 @@ final class ErrorTriggeredTest extends AbstractEventTestCase
         $this->assertSame($message, $event->message());
         $this->assertSame($file, $event->file());
         $this->assertSame($line, $event->line());
-        $this->assertSame('Test Triggered Error (PHPUnit\Event\AbstractEventTestCase::foo)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Triggered Error (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
     }
 }

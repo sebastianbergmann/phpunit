@@ -21,9 +21,9 @@ final class TestMethodTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $className  = 'ExampleTest';
-        $methodName = 'testExample';
-        $file       = 'ExampleTest.php';
+        $className  = 'FooTest';
+        $methodName = 'testBar';
+        $file       = 'FooTest.php';
         $line       = 1;
         $testData   = TestDataCollection::fromArray([]);
         $metadata   = MetadataCollection::fromArray([]);
@@ -48,9 +48,9 @@ final class TestMethodTest extends TestCase
     public function testNameReturnsNameWhenTestDoesNotHaveDataFromDataProvider(): void
     {
         $test = new TestMethod(
-            'ExampleTest',
-            'testExample',
-            'ExampleTest.php',
+            'FooTest',
+            'testBar',
+            'FooTest.php',
             1,
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
@@ -64,9 +64,9 @@ final class TestMethodTest extends TestCase
         $dataSetName = 9000;
 
         $test = new TestMethod(
-            'ExampleTest',
-            'testExample',
-            'ExampleTest.php',
+            'FooTest',
+            'testBar',
+            'FooTest.php',
             1,
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([
@@ -91,9 +91,9 @@ final class TestMethodTest extends TestCase
         $dataSetName = 'bar-9000';
 
         $test = new TestMethod(
-            'ExampleTest',
-            'testExample',
-            'ExampleTest.php',
+            'FooTest',
+            'testBar',
+            'FooTest.php',
             1,
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([

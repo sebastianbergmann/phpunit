@@ -31,6 +31,6 @@ final class PhpunitDeprecationTriggeredTest extends AbstractEventTestCase
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
         $this->assertSame($message, $event->message());
-        $this->assertSame('Test Triggered PHPUnit Deprecation (PHPUnit\Event\AbstractEventTestCase::foo)' . PHP_EOL . 'message', $event->asString());
+        $this->assertSame('Test Triggered PHPUnit Deprecation (FooTest::testBar)' . PHP_EOL . 'message', $event->asString());
     }
 }

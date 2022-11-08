@@ -1654,10 +1654,10 @@ final class DispatchingEmitterTest extends Framework\TestCase
     private function testValueObject(): Code\TestMethod
     {
         return new Code\TestMethod(
-            self::class,
-            'foo',
-            '',
-            0,
+            'FooTest',
+            'testBar',
+            'FooTest.php',
+            1,
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );
