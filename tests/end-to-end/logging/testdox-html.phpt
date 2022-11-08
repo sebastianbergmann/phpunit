@@ -73,7 +73,7 @@ unlink($output);
         </style>
     </head>
     <body>
-        <h2 id="PHPUnit\TestFixture\BankAccountTest">Bank Account (PHPUnit\TestFixture\BankAccount)</h2>
+        <h2>Bank Account (PHPUnit\TestFixture\BankAccount)</h2>
         <ul>
             <li class="success">Balance is initially zero</li>
             <li class="success">Balance cannot become negative</li>

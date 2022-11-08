@@ -81,7 +81,7 @@ EOT;
      */
     private const CLASS_HEADER = <<<'EOT'
 
-        <h2 id="%s">%s</h2>
+        <h2>%s</h2>
         <ul>
 
 EOT;
@@ -113,7 +113,6 @@ EOT;
         foreach ($tests as $className => $_tests) {
             $buffer .= sprintf(
                 self::CLASS_HEADER,
-                $className,
                 $prettifier->prettifyTestClass($className)
             );
 
