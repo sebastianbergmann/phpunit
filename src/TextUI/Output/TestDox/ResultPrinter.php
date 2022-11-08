@@ -223,7 +223,7 @@ final class ResultPrinter
 
     private function formatThrowable(Throwable $t): string
     {
-        $message = trim($t->message());
+        $message = trim($t->description());
 
         if ($message) {
             $message .= PHP_EOL . PHP_EOL;
