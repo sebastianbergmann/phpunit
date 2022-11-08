@@ -23,11 +23,13 @@
             <directory suffix=".phpt">tests/end-to-end/phpt</directory>
             <directory suffix=".phpt">tests/end-to-end/regression</directory>
             <directory suffix=".phpt">tests/end-to-end/risky-tests</directory>
+            <directory suffix=".phpt">tests/end-to-end/testdox</directory>
 
             <exclude>tests/end-to-end/execution-order/_files</exclude>
             <exclude>tests/end-to-end/logging/_files</exclude>
             <exclude>tests/end-to-end/migration/_files</exclude>
             <exclude>tests/end-to-end/risky-tests/_files</exclude>
+            <exclude>tests/end-to-end/testdox/_files</exclude>
         </testsuite>
     </testsuites>
 
