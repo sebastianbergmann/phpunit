@@ -22,29 +22,6 @@ use PHPUnit\Util\Printer;
  */
 final class ResultPrinter
 {
-    /**
-     * The default TestDox left margin for messages is a vertical line.
-     */
-    private const PREFIX_SIMPLE = [
-        'default' => '│',
-        'start'   => '│',
-        'message' => '│',
-        'diff'    => '│',
-        'trace'   => '│',
-        'last'    => '│',
-    ];
-
-    /**
-     * Colored TestDox use box-drawing for a more textured map of the message.
-     */
-    private const PREFIX_DECORATED = [
-        'default' => '│',
-        'start'   => '┐',
-        'message' => '├',
-        'diff'    => '┊',
-        'trace'   => '╵',
-        'last'    => '┴',
-    ];
     private Printer $printer;
     private bool $colors;
 
@@ -109,84 +86,118 @@ final class ResultPrinter
      */
     private function printTestMethodPrefixHeader(TestMethod $test, TestStatus $status): void
     {
-        $style = $this->style($status);
-
         if ($this->colors) {
             $this->printer->print(
-                Color::colorizeTextBox($style['color'], ' ' . $style['symbol'] . ' ')
+                Color::colorizeTextBox(
+                    $this->colorFor($status),
+                    ' ' . $this->symbolFor($status) . ' '
+                )
             );
         } else {
-            $this->printer->print(' ' . $style['symbol'] . ' ');
+            $this->printer->print(' ' . $this->symbolFor($status) . ' ');
         }
 
         $this->printer->print($test->prettifiedMethodName() . PHP_EOL);
     }
 
-    /**
-     * @psalm-return array{symbol: string, color: string, message: ?string}
-     */
-    private function style(TestStatus $status): array
+    private function colorFor(TestStatus $status): string
     {
         if ($status->isSuccess()) {
-            return [
-                'symbol'  => '✔',
-                'color'   => 'fg-green',
-                'message' => null,
-            ];
+            return 'fg-green';
         }
 
         if ($status->isError()) {
-            return [
-                'symbol'  => '✘',
-                'color'   => 'fg-yellow',
-                'message' => 'bg-yellow,fg-black',
-            ];
+            return 'fg-yellow';
         }
 
         if ($status->isFailure()) {
-            return [
-                'symbol'  => '✘',
-                'color'   => 'fg-red',
-                'message' => 'bg-red,fg-white',
-            ];
+            return 'fg-red';
         }
 
         if ($status->isSkipped()) {
-            return [
-                'symbol'  => '↩',
-                'color'   => 'fg-cyan',
-                'message' => 'fg-cyan',
-            ];
+            return 'fg-cyan';
+        }
+
+        if ($status->isRisky() || $status->isIncomplete() || $status->isWarning()) {
+            return 'fg-yellow';
+        }
+
+        return 'fg-blue';
+    }
+
+    private function messageColorFor(TestStatus $status): ?string
+    {
+        if ($status->isSuccess()) {
+            return null;
+        }
+
+        if ($status->isError()) {
+            return 'bg-yellow,fg-black';
+        }
+
+        if ($status->isFailure()) {
+            return 'bg-red,fg-white';
+        }
+
+        if ($status->isSkipped()) {
+            return 'fg-cyan';
+        }
+
+        if ($status->isRisky() || $status->isIncomplete() || $status->isWarning()) {
+            return 'fg-yellow';
+        }
+
+        return 'fg-white,bg-blue';
+    }
+
+    private function symbolFor(TestStatus $status): string
+    {
+        if ($status->isSuccess()) {
+            return '✔';
+        }
+
+        if ($status->isError() || $status->isFailure()) {
+            return '✘';
+        }
+
+        if ($status->isSkipped()) {
+            return '↩';
         }
 
         if ($status->isRisky()) {
-            return [
-                'symbol'  => '☢',
-                'color'   => 'fg-yellow',
-                'message' => 'fg-yellow',
-            ];
+            return '☢';
         }
 
         if ($status->isIncomplete()) {
-            return [
-                'symbol'  => '∅',
-                'color'   => 'fg-yellow',
-                'message' => 'fg-yellow',
-            ];
+            return '∅';
         }
 
         if ($status->isWarning()) {
-            return [
-                'symbol'  => '⚠',
-                'color'   => 'fg-yellow',
-                'message' => 'fg-yellow',
-            ];
+            return '⚠';
         }
 
-        return [
-            'symbol'  => '?',
-            'color'   => 'fg-blue',
-            'message' => 'fg-white,bg-blue',
-        ];
+        return '?';
+    }
+
+    /**
+     * @psalm-param 'default'|'start'|'message'|'diff'|'trace'|'last' $type
+     */
+    private function prefixFor(string $type, TestStatus $status): string
+    {
+        if (!$this->colors) {
+            return '│';
+        }
+
+        return Color::colorize(
+            $this->colorFor($status),
+            match ($type) {
+                'default' => '│',
+                'start'   => '┐',
+                'message' => '├',
+                'diff'    => '┊',
+                'trace'   => '╵',
+                'last'    => '┴'
+            }
+        );
     }
 }
