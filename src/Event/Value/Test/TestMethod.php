@@ -58,7 +58,7 @@ final class TestMethod extends Test
             $testCase->name(),
             $location['file'],
             $location['line'],
-            $prettifier->prettifyTestClass($testCase::class),
+            $prettifier->prettifyTestClassName($testCase::class),
             $prettifier->prettifyTestCase($testCase),
             self::metadataFor($testCase::class, $testCase->name()),
             self::dataFor($testCase),

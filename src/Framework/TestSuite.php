@@ -562,8 +562,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $methodName,
                     $class->getFileName(),
                     $method->getStartLine(),
-                    $prettifier->prettifyTestClass($className),
-                    $prettifier->prettifyTestMethod($methodName),
+                    $prettifier->prettifyTestClassName($className),
+                    $prettifier->prettifyTestMethodName($methodName),
                     MetadataCollection::fromArray([]),
                     Event\TestData\TestDataCollection::fromArray([])
                 ),

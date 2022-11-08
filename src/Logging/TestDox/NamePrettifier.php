@@ -66,11 +66,9 @@ final class NamePrettifier
     }
 
     /**
-     * Prettifies the name of a test class.
-     *
      * @psalm-param class-string $className
      */
-    public function prettifyTestClass(string $className): string
+    public function prettifyTestClassName(string $className): string
     {
         if (class_exists($className)) {
             $classLevelTestDox = MetadataRegistry::parser()->forClass($className)->isTestDox();
@@ -117,65 +115,7 @@ final class NamePrettifier
         return $result;
     }
 
-    public function prettifyTestCase(TestCase $test): string
-    {
-        $annotationWithPlaceholders = false;
-        $methodLevelTestDox         = MetadataRegistry::parser()->forMethod($test::class, $test->name())->isTestDox()->isMethodLevel();
-
-        if ($methodLevelTestDox->isNotEmpty()) {
-            $methodLevelTestDox = $methodLevelTestDox->asArray()[0];
-
-            assert($methodLevelTestDox instanceof TestDox);
-
-            $result = $methodLevelTestDox->text();
-
-            if (str_contains($result, '$')) {
-                $annotation   = $result;
-                $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
-
-                $variables = array_map(
-                    static function (string $variable): string
-                    {
-                        return sprintf(
-                            '/%s(?=\b)/',
-                            preg_quote($variable, '/')
-                        );
-                    },
-                    array_keys($providedData)
-                );
-
-                $result = trim(preg_replace($variables, $providedData, $annotation));
-
-                $annotationWithPlaceholders = true;
-            }
-        } else {
-            $result = $this->prettifyTestMethod($test->name());
-        }
-
-        if (!$annotationWithPlaceholders && $test->usesDataProvider()) {
-            $result .= $this->prettifyDataSet($test);
-        }
-
-        return $result;
-    }
-
-    public function prettifyDataSet(TestCase $test): string
-    {
-        if (!$this->useColor) {
-            return $test->dataSetAsString();
-        }
-
-        if (is_int($test->dataName())) {
-            return Color::dim(' with data set ') . Color::colorize('fg-cyan', (string) $test->dataName());
-        }
-
-        return Color::dim(' with ') . Color::colorize('fg-cyan', Color::visualizeWhitespace($test->dataName()));
-    }
-
-    /**
-     * Prettifies the name of a test method.
-     */
-    public function prettifyTestMethod(string $name): string
+    public function prettifyTestMethodName(string $name): string
     {
         $buffer = '';
 
@@ -229,6 +169,61 @@ final class NamePrettifier
         }
 
         return $buffer;
+    }
+
+    public function prettifyTestCase(TestCase $test): string
+    {
+        $annotationWithPlaceholders = false;
+        $methodLevelTestDox         = MetadataRegistry::parser()->forMethod($test::class, $test->name())->isTestDox()->isMethodLevel();
+
+        if ($methodLevelTestDox->isNotEmpty()) {
+            $methodLevelTestDox = $methodLevelTestDox->asArray()[0];
+
+            assert($methodLevelTestDox instanceof TestDox);
+
+            $result = $methodLevelTestDox->text();
+
+            if (str_contains($result, '$')) {
+                $annotation   = $result;
+                $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
+
+                $variables = array_map(
+                    static function (string $variable): string
+                    {
+                        return sprintf(
+                            '/%s(?=\b)/',
+                            preg_quote($variable, '/')
+                        );
+                    },
+                    array_keys($providedData)
+                );
+
+                $result = trim(preg_replace($variables, $providedData, $annotation));
+
+                $annotationWithPlaceholders = true;
+            }
+        } else {
+            $result = $this->prettifyTestMethodName($test->name());
+        }
+
+        if (!$annotationWithPlaceholders && $test->usesDataProvider()) {
+            $result .= $this->prettifyDataSet($test);
+        }
+
+        return $result;
+    }
+
+    public function prettifyDataSet(TestCase $test): string
+    {
+        if (!$this->useColor) {
+            return $test->dataSetAsString();
+        }
+
+        if (is_int($test->dataName())) {
+            return Color::dim(' with data set ') . Color::colorize('fg-cyan', (string) $test->dataName());
+        }
+
+        return Color::dim(' with ') . Color::colorize('fg-cyan', Color::visualizeWhitespace($test->dataName()));
     }
 
     private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
