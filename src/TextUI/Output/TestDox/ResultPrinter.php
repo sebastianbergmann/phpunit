@@ -62,8 +62,8 @@ final class ResultPrinter
      */
     public function print(array $tests): void
     {
-        foreach ($tests as $className => $_tests) {
-            $this->printClassName($className);
+        foreach ($tests as $prettifiedClassName => $_tests) {
+            $this->printPrettifiedClassName($prettifiedClassName);
 
             foreach ($_tests as $test) {
                 $this->printTestResult(
@@ -82,11 +82,11 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-param class-string $className
+     * @psalm-param string $prettifiedClassName
      */
-    private function printClassName(string $className): void
+    private function printPrettifiedClassName(string $prettifiedClassName): void
     {
-        $buffer = $className;
+        $buffer = $prettifiedClassName;
 
         if ($this->colors) {
             $buffer = Color::colorizeTextBox('underlined', $buffer);
