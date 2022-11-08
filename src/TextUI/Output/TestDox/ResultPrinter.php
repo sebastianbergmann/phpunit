@@ -10,9 +10,15 @@
 namespace PHPUnit\TextUI\Output\TestDox;
 
 use const PHP_EOL;
-use PHPUnit\Event\Code\TestMethod;
+use function array_map;
+use function assert;
+use function implode;
+use function preg_split;
+use function trim;
+use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestStatus\TestStatus;
+use PHPUnit\Logging\TestDox\TestMethod;
 use PHPUnit\Logging\TestDox\TestMethodCollection;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
@@ -40,10 +46,7 @@ final class ResultPrinter
             $this->printPrettifiedClassName($prettifiedClassName);
 
             foreach ($_tests as $test) {
-                $this->printTestResult(
-                    $test->test(),
-                    $test->status(),
-                );
+                $this->printTestResult($test);
             }
 
             $this->printer->print(PHP_EOL);
@@ -72,32 +75,45 @@ final class ResultPrinter
     /**
      * @throws NoDataSetFromDataProviderException
      */
-    private function printTestResult(TestMethod $test, TestStatus $status): void
+    private function printTestResult(TestMethod $test): void
     {
-        $this->printTestMethodPrefixHeader($test, $status);
+        $this->printTestMethodPrefixHeader($test);
 
-        if ($status->isSuccess()) {
+        if ($test->status()->isSuccess()) {
             return;
         }
+
+        $throwable = $test->throwable();
+
+        assert($throwable instanceof Throwable);
+
+        $this->printer->print(
+            $this->prefixLines(
+                $this->prefixFor('default', $test->status()),
+                PHP_EOL . $this->formatThrowable($throwable)
+            )
+        );
+
+        $this->printer->print(PHP_EOL);
     }
 
     /**
      * @throws NoDataSetFromDataProviderException
      */
-    private function printTestMethodPrefixHeader(TestMethod $test, TestStatus $status): void
+    private function printTestMethodPrefixHeader(TestMethod $test): void
     {
         if ($this->colors) {
             $this->printer->print(
                 Color::colorizeTextBox(
-                    $this->colorFor($status),
-                    ' ' . $this->symbolFor($status) . ' '
+                    $this->colorFor($test->status()),
+                    ' ' . $this->symbolFor($test->status()) . ' '
                 )
             );
         } else {
-            $this->printer->print(' ' . $this->symbolFor($status) . ' ');
+            $this->printer->print(' ' . $this->symbolFor($test->status()) . ' ');
         }
 
-        $this->printer->print($test->prettifiedMethodName() . PHP_EOL);
+        $this->printer->print($test->test()->prettifiedMethodName() . PHP_EOL);
     }
 
     private function colorFor(TestStatus $status): string
@@ -198,6 +214,38 @@ final class ResultPrinter
                 'trace'   => '╵',
                 'last'    => '┴'
             }
+        );
+    }
+
+    private function formatThrowable(Throwable $t): string
+    {
+        $message = trim($t->message());
+
+        if ($message) {
+            $message .= PHP_EOL . PHP_EOL;
+        }
+
+        return $message . $this->formatStackTrace($t->stackTrace());
+    }
+
+    private function formatStackTrace(string $stackTrace): string
+    {
+        if (!$this->colors) {
+            return $stackTrace;
+        }
+    }
+
+    private function prefixLines(string $prefix, string $message): string
+    {
+        return implode(
+            PHP_EOL,
+            array_map(
+                static function (string $line) use ($prefix)
+                {
+                    return '   ' . $prefix . ($line ? ' ' . $line : '');
+                },
+                preg_split('/\r\n|\r|\n/', $message)
+            )
         );
     }
 }
