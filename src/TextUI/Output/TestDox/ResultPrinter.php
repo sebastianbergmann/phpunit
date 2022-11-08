@@ -77,8 +77,31 @@ final class ResultPrinter
      */
     private function printTestResult(TestMethod $test): void
     {
-        $this->printTestMethodPrefixHeader($test);
+        $this->printTestResultHeader($test);
+        $this->printTestResultBody($test);
+    }
 
+    /**
+     * @throws NoDataSetFromDataProviderException
+     */
+    private function printTestResultHeader(TestMethod $test): void
+    {
+        if ($this->colors) {
+            $this->printer->print(
+                Color::colorizeTextBox(
+                    $this->colorFor($test->status()),
+                    ' ' . $this->symbolFor($test->status()) . ' '
+                )
+            );
+        } else {
+            $this->printer->print(' ' . $this->symbolFor($test->status()) . ' ');
+        }
+
+        $this->printer->print($test->test()->prettifiedMethodName() . PHP_EOL);
+    }
+
+    private function printTestResultBody(TestMethod $test): void
+    {
         if ($test->status()->isSuccess()) {
             return;
         }
@@ -95,25 +118,6 @@ final class ResultPrinter
         );
 
         $this->printer->print(PHP_EOL);
-    }
-
-    /**
-     * @throws NoDataSetFromDataProviderException
-     */
-    private function printTestMethodPrefixHeader(TestMethod $test): void
-    {
-        if ($this->colors) {
-            $this->printer->print(
-                Color::colorizeTextBox(
-                    $this->colorFor($test->status()),
-                    ' ' . $this->symbolFor($test->status()) . ' '
-                )
-            );
-        } else {
-            $this->printer->print(' ' . $this->symbolFor($test->status()) . ' ');
-        }
-
-        $this->printer->print($test->test()->prettifiedMethodName() . PHP_EOL);
     }
 
     private function colorFor(TestStatus $status): string
