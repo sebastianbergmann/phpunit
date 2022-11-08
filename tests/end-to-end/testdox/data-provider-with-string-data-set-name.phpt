@@ -17,20 +17,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-Data Provider With String Data Set Name (PHPUnit\TestFixture\TestDox\DataProviderWithStringDataSetName)
- ✔ Something that works with data set "data set name"
- ✘ Something that does not work with data set "data set name"
-   │
-   │ Failed asserting that false is true.
-   │
-   │ %s:%d
-   │
-
 Time: %s, Memory: %s
 
-Summary of non-successful tests:
-
 Data Provider With String Data Set Name (PHPUnit\TestFixture\TestDox\DataProviderWithStringDataSetName)
+ ✔ Something that works with data set "data set name"
  ✘ Something that does not work with data set "data set name"
    │
    │ Failed asserting that false is true.

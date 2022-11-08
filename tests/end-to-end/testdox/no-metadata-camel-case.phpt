@@ -17,20 +17,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-Camel Case (PHPUnit\TestFixture\TestDox\CamelCase)
- ✔ Something that works
- ✘ Something that does not work
-   │
-   │ Failed asserting that false is true.
-   │
-   │ %sCamelCaseTest.php:%d
-   │
-
 Time: %s, Memory: %s
 
-Summary of non-successful tests:
-
 Camel Case (PHPUnit\TestFixture\TestDox\CamelCase)
+ ✔ Something that works
  ✘ Something that does not work
    │
    │ Failed asserting that false is true.

@@ -17,20 +17,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-Snake Case (PHPUnit\TestFixture\TestDox\SnakeCase)
- ✔ Something that works
- ✘ Something that does not work
-   │
-   │ Failed asserting that false is true.
-   │
-   │ %sSnakeCaseTest.php:%d
-   │
-
 Time: %s, Memory: %s
 
-Summary of non-successful tests:
-
 Snake Case (PHPUnit\TestFixture\TestDox\SnakeCase)
+ ✔ Something that works
  ✘ Something that does not work
    │
    │ Failed asserting that false is true.

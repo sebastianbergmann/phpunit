@@ -17,20 +17,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-Text from class-level TestDox metadata
- ✔ Text from method-level TestDox metadata for successful test with data set #0
- ✘ Text from method-level TestDox metadata for failing test with data set #0
-   │
-   │ Failed asserting that false is true.
-   │
-   │ %s:%d
-   │
-
 Time: %s, Memory: %s
 
-Summary of non-successful tests:
-
 Text from class-level TestDox metadata
+ ✔ Text from method-level TestDox metadata for successful test with data set #0
  ✘ Text from method-level TestDox metadata for failing test with data set #0
    │
    │ Failed asserting that false is true.

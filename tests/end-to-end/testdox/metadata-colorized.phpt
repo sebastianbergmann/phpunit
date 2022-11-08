@@ -17,20 +17,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-[4mText from class-level TestDox metadata[0m
- [32m✔[0m Text from method-level TestDox metadata for successful test
- [31m✘[0m Text from method-level TestDox metadata for failing test
-   [31m┐[0m
-   [31m├[0m [41;37mFailed asserting that false is true.[0m
-   [31m│[0m
-   [31m╵[0m %stests[2m/[22mend-to-end[2m/[22mtestdox[2m/[22m_files[2m/[22mMetadataTest.php[2m:[22m[34m%d[0m
-   [31m┴[0m
-
 Time: %s, Memory: %s
 
-Summary of non-successful tests:
-
 [4mText from class-level TestDox metadata[0m
+ [32m✔[0m Text from method-level TestDox metadata for successful test
  [31m✘[0m Text from method-level TestDox metadata for failing test
    [31m┐[0m
    [31m├[0m [41;37mFailed asserting that false is true.[0m

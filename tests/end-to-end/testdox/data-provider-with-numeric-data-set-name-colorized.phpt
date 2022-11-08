@@ -17,20 +17,10 @@ PHPUnit %s by Sebastian Bergmann and contributors.
 
 Runtime:       %s
 
-[4mData Provider With Numeric Data Set Name (PHPUnit\TestFixture\TestDox\DataProviderWithNumericDataSetName)[0m
- [32m✔[0m Something that works[2m with data set [22m[36m0[0m
- [31m✘[0m Something that does not work[2m with data set [22m[36m0[0m
-   [31m┐[0m
-   [31m├[0m [41;37mFailed asserting that false is true.[0m
-   [31m│[0m
-   [31m╵[0m %stests[2m/[22mend-to-end[2m/[22mtestdox[2m/[22m_files[2m/[22mDataProviderWithNumericDataSetNameTest.php[2m:[22m[34m%d[0m
-   [31m┴[0m
-
 Time: %s, Memory: %s
 
-Summary of non-successful tests:
-
 [4mData Provider With Numeric Data Set Name (PHPUnit\TestFixture\TestDox\DataProviderWithNumericDataSetName)[0m
+ [32m✔[0m Something that works[2m with data set [22m[36m0[0m
  [31m✘[0m Something that does not work[2m with data set [22m[36m0[0m
    [31m┐[0m
    [31m├[0m [41;37mFailed asserting that false is true.[0m
