@@ -9,7 +9,6 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
-use SoapClient;
 use function assert;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;

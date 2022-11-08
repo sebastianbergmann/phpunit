@@ -122,7 +122,7 @@ final class ResultPrinter
             $this->printer->print(' ' . $style['symbol'] . ' ');
         }
 
-        $this->printer->print($this->namePrettifier->prettifyTestMethod($test->name()) . PHP_EOL);
+        $this->printer->print($test->prettifiedMethodName() . PHP_EOL);
     }
 
     /**
