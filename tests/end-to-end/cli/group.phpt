@@ -20,7 +20,7 @@ Runtime: %s
 Time: %s, Memory: %s
 
 Numeric Group Annotation (PHPUnit\TestFixture\NumericGroupAnnotation)
- ✔ Ticket annotation supports numeric value
- ✔ Group annotation supports numeric value
+ ✔ Empty test for @ticket numeric annotation values
+ ✔ Empty test for @group numeric annotation values
 
 OK (2 tests, 2 assertions)
