@@ -103,24 +103,23 @@ EOT;
 EOT;
 
     /**
-     * @psalm-param array<class-string, TestMethodCollection> $tests
+     * @psalm-param array<string, TestMethodCollection> $tests
      */
     public function render(array $tests): string
     {
-        $buffer     = self::PAGE_HEADER;
-        $prettifier = new NamePrettifier;
+        $buffer = self::PAGE_HEADER;
 
-        foreach ($tests as $className => $_tests) {
+        foreach ($tests as $prettifiedClassName => $_tests) {
             $buffer .= sprintf(
                 self::CLASS_HEADER,
-                $prettifier->prettifyTestClass($className)
+                $prettifiedClassName
             );
 
             foreach ($_tests as $test) {
                 $buffer .= sprintf(
                     "            <li class=\"%s\">%s</li>\n",
                     $test->status()->isSuccess() ? 'success' : 'defect',
-                    $prettifier->prettifyTestMethod($test->test()->methodName())
+                    $test->test()->prettifiedMethodName()
                 );
             }
 

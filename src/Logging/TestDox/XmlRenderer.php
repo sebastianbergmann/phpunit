@@ -21,7 +21,7 @@ use XMLWriter;
 final class XmlRenderer
 {
     /**
-     * @psalm-param array<class-string, TestMethodCollection> $tests
+     * @psalm-param array<string, TestMethodCollection> $tests
      */
     public function render(array $tests): string
     {
@@ -32,19 +32,19 @@ final class XmlRenderer
         $writer->startDocument('1.0', 'UTF-8');
         $writer->startElement('tests');
 
-        $prettifier = new NamePrettifier;
-        $parser     = new InlineAnnotationParser;
+        $parser = new InlineAnnotationParser;
 
-        foreach ($tests as $className => $_tests) {
+        foreach ($tests as $prettifiedClassName => $_tests) {
             foreach ($_tests as $test) {
+                $className  = $test->test()->className();
                 $methodName = $test->test()->methodName();
 
                 $writer->startElement('test');
 
                 $writer->writeAttribute('className', $className);
                 $writer->writeAttribute('methodName', $methodName);
-                $writer->writeAttribute('prettifiedClassName', $prettifier->prettifyTestClass($className));
-                $writer->writeAttribute('prettifiedMethodName', $prettifier->prettifyTestMethod($methodName));
+                $writer->writeAttribute('prettifiedClassName', $prettifiedClassName);
+                $writer->writeAttribute('prettifiedMethodName', $test->test()->prettifiedMethodName());
                 $writer->writeAttribute('size', (new Groups)->size($className, $methodName)->asString());
                 $writer->writeAttribute('time', (string) $test->duration()->asFloat());
                 $writer->writeAttribute('status', $test->status()->asString());

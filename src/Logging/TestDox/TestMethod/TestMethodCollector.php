@@ -41,7 +41,7 @@ use PHPUnit\Logging\TestDox\TestMethod as TestDoxTestMethod;
 final class TestMethodCollector
 {
     /**
-     * @psalm-var array<class-string, list<TestDoxTestMethod>>
+     * @psalm-var array<string, list<TestDoxTestMethod>>
      */
     private array $tests          = [];
     private ?HRTime $time         = null;
@@ -63,14 +63,14 @@ final class TestMethodCollector
     }
 
     /**
-     * @psalm-return array<class-string, TestMethodCollection>
+     * @psalm-return array<string, TestMethodCollection>
      */
     public function testMethodsGroupedByClass(): array
     {
         $result = [];
 
-        foreach ($this->tests as $className => $tests) {
-            $result[$className] = TestMethodCollection::fromArray($tests);
+        foreach ($this->tests as $prettifiedClassName => $tests) {
+            $result[$prettifiedClassName] = TestMethodCollection::fromArray($tests);
         }
 
         return $result;
@@ -163,11 +163,11 @@ final class TestMethodCollector
 
         assert($test instanceof TestMethod);
 
-        if (!isset($this->tests[$test->className()])) {
-            $this->tests[$test->className()] = [];
+        if (!isset($this->tests[$test->prettifiedClassName()])) {
+            $this->tests[$test->prettifiedClassName()] = [];
         }
 
-        $this->tests[$test->className()][$test->line()] = new TestDoxTestMethod(
+        $this->tests[$test->prettifiedClassName()][$test->line()] = new TestDoxTestMethod(
             $test,
             $event->telemetryInfo()->time()->duration($this->time),
             $this->status,

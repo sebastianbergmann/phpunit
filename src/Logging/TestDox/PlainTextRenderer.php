@@ -17,21 +17,20 @@ use function sprintf;
 final class PlainTextRenderer
 {
     /**
-     * @psalm-param array<class-string, TestMethodCollection> $tests
+     * @psalm-param array<string, TestMethodCollection> $tests
      */
     public function render(array $tests): string
     {
-        $buffer     = '';
-        $prettifier = new NamePrettifier;
+        $buffer = '';
 
-        foreach ($tests as $className => $_tests) {
-            $buffer .= $prettifier->prettifyTestClass($className) . "\n";
+        foreach ($tests as $prettifiedClassName => $_tests) {
+            $buffer .= $prettifiedClassName . "\n";
 
             foreach ($_tests as $test) {
                 $buffer .= sprintf(
                     ' [%s] %s' . "\n",
                     $test->status()->isSuccess() ? 'x' : ' ',
-                    $prettifier->prettifyTestMethod($test->test()->methodName())
+                    $test->test()->prettifiedMethodName()
                 );
             }
 

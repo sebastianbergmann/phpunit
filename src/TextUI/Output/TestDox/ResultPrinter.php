@@ -27,7 +27,7 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-param array<class-string, TestMethodCollection> $tests
+     * @psalm-param array<string, TestMethodCollection> $tests
      */
     public function print(array $tests): void
     {
