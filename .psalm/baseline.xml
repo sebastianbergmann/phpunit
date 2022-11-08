@@ -223,9 +223,6 @@
       <code>$this-&gt;status</code>
       <code>$this-&gt;time</code>
     </PossiblyNullArgument>
-    <PropertyTypeCoercion occurrences="1">
-      <code>$this-&gt;tests</code>
-    </PropertyTypeCoercion>
     <RedundantCondition occurrences="1">
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
