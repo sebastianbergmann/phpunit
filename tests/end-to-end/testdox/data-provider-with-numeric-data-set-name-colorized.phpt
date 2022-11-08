@@ -1,8 +1,5 @@
 --TEST--
 TestDox: Default output; Data Provider with numeric data set name; No TestDox metadata; Colorized
---XFAIL--
-TestDox logging has not been migrated to events yet.
-See https://github.com/sebastianbergmann/phpunit/issues/5040 for details.
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
