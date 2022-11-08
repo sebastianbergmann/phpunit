@@ -13,7 +13,6 @@ use const PHP_EOL;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestStatus\TestStatus;
-use PHPUnit\Logging\TestDox\NamePrettifier;
 use PHPUnit\Logging\TestDox\TestMethodCollection;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
@@ -48,13 +47,11 @@ final class ResultPrinter
     ];
     private Printer $printer;
     private bool $colors;
-    private NamePrettifier $namePrettifier;
 
     public function __construct(Printer $printer, bool $colors)
     {
-        $this->printer        = $printer;
-        $this->colors         = $colors;
-        $this->namePrettifier = new NamePrettifier;
+        $this->printer = $printer;
+        $this->colors  = $colors;
     }
 
     /**
