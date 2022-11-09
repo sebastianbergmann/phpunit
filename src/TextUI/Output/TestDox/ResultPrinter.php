@@ -220,10 +220,10 @@ final class ResultPrinter
         return 'fg-blue';
     }
 
-    private function messageColorFor(TestStatus $status): ?string
+    private function messageColorFor(TestStatus $status): string
     {
         if ($status->isSuccess()) {
-            return null;
+            return '';
         }
 
         if ($status->isError()) {
