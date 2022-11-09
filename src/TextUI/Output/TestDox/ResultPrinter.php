@@ -16,6 +16,7 @@ use function explode;
 use function implode;
 use function preg_match;
 use function preg_split;
+use function rtrim;
 use function trim;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
@@ -114,10 +115,38 @@ final class ResultPrinter
 
         assert($throwable instanceof Throwable);
 
+        $this->printTestResultBodyStart($test);
+
         $this->printer->print(
             $this->prefixLines(
                 $this->prefixFor('default', $test->status()),
-                PHP_EOL . $this->formatThrowable($throwable)
+                $this->formatThrowable($throwable)
+            )
+        );
+
+        $this->printTestResultBodyEnd($test);
+    }
+
+    private function printTestResultBodyStart(TestResult $test): void
+    {
+        $this->printer->print(
+            $this->prefixLines(
+                $this->prefixFor('start', $test->status()),
+                ''
+            )
+        );
+
+        $this->printer->print(PHP_EOL);
+    }
+
+    private function printTestResultBodyEnd(TestResult $test): void
+    {
+        $this->printer->print(PHP_EOL);
+
+        $this->printer->print(
+            $this->prefixLines(
+                $this->prefixFor('last', $test->status()),
+                ''
             )
         );
 
@@ -138,7 +167,7 @@ final class ResultPrinter
     private function formatStackTrace(string $stackTrace): string
     {
         if (!$this->colors) {
-            return $stackTrace;
+            return rtrim($stackTrace);
         }
 
         $lines        = [];
@@ -156,7 +185,7 @@ final class ResultPrinter
             $previousPath = '';
         }
 
-        return implode('', $lines);
+        return rtrim(implode('', $lines));
     }
 
     private function prefixLines(string $prefix, string $message): string
