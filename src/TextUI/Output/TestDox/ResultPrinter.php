@@ -86,15 +86,17 @@ final class ResultPrinter
      */
     private function printTestResultHeader(TestResult $test): void
     {
+        $buffer = ' ' . $this->symbolFor($test->status()) . ' ';
+
         if ($this->colors) {
             $this->printer->print(
                 Color::colorizeTextBox(
                     $this->colorFor($test->status()),
-                    ' ' . $this->symbolFor($test->status()) . ' '
+                    $buffer
                 )
             );
         } else {
-            $this->printer->print(' ' . $this->symbolFor($test->status()) . ' ');
+            $this->printer->print($buffer);
         }
 
         $this->printer->print($test->test()->prettifiedMethodName() . PHP_EOL);
