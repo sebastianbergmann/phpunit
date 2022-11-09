@@ -12,7 +12,9 @@ namespace PHPUnit\TextUI\Output\TestDox;
 use const PHP_EOL;
 use function array_map;
 use function assert;
+use function explode;
 use function implode;
+use function preg_match;
 use function preg_split;
 use function trim;
 use PHPUnit\Event\Code\Throwable;
@@ -138,6 +140,23 @@ final class ResultPrinter
         if (!$this->colors) {
             return $stackTrace;
         }
+
+        $lines        = [];
+        $previousPath = '';
+
+        foreach (explode(PHP_EOL, $stackTrace) as $line) {
+            if (preg_match('/^(.*):(\d+)$/', $line, $matches)) {
+                $lines[]      = Color::colorizePath($matches[1], $previousPath) . Color::dim(':') . Color::colorize('fg-blue', $matches[2]) . "\n";
+                $previousPath = $matches[1];
+
+                continue;
+            }
+
+            $lines[]      = $line;
+            $previousPath = '';
+        }
+
+        return implode('', $lines);
     }
 
     private function prefixLines(string $prefix, string $message): string

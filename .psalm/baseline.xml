@@ -580,11 +580,6 @@
       <code>assert($test instanceof TestMethod)</code>
     </RedundantCondition>
   </file>
-  <file src="src/TextUI/Output/TestDox/ResultPrinter.php">
-    <InvalidReturnType occurrences="1">
-      <code>string</code>
-    </InvalidReturnType>
-  </file>
   <file src="src/TextUI/TestRunner.php">
     <InternalMethod occurrences="1">
       <code>nameAndVersion</code>
