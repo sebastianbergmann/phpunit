@@ -18,8 +18,8 @@ use function trim;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestStatus\TestStatus;
-use PHPUnit\Logging\TestDox\TestMethod;
-use PHPUnit\Logging\TestDox\TestMethodCollection;
+use PHPUnit\Logging\TestDox\TestResult;
+use PHPUnit\Logging\TestDox\TestResultCollection;
 use PHPUnit\Util\Color;
 use PHPUnit\Util\Printer;
 
@@ -38,7 +38,7 @@ final class ResultPrinter
     }
 
     /**
-     * @psalm-param array<string, TestMethodCollection> $tests
+     * @psalm-param array<string, TestResultCollection> $tests
      */
     public function print(array $tests): void
     {
@@ -75,7 +75,7 @@ final class ResultPrinter
     /**
      * @throws NoDataSetFromDataProviderException
      */
-    private function printTestResult(TestMethod $test): void
+    private function printTestResult(TestResult $test): void
     {
         $this->printTestResultHeader($test);
         $this->printTestResultBody($test);
@@ -84,7 +84,7 @@ final class ResultPrinter
     /**
      * @throws NoDataSetFromDataProviderException
      */
-    private function printTestResultHeader(TestMethod $test): void
+    private function printTestResultHeader(TestResult $test): void
     {
         if ($this->colors) {
             $this->printer->print(
@@ -100,7 +100,7 @@ final class ResultPrinter
         $this->printer->print($test->test()->prettifiedMethodName() . PHP_EOL);
     }
 
-    private function printTestResultBody(TestMethod $test): void
+    private function printTestResultBody(TestResult $test): void
     {
         if ($test->status()->isSuccess()) {
             return;

@@ -15,17 +15,17 @@ use Iterator;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestMethodCollectionIterator implements Iterator
+final class TestResultCollectionIterator implements Iterator
 {
     /**
-     * @psalm-var list<TestMethod>
+     * @psalm-var list<TestResult>
      */
-    private readonly array $testMethods;
+    private readonly array $testResults;
     private int $position = 0;
 
-    public function __construct(TestMethodCollection $testMethods)
+    public function __construct(TestResultCollection $testResults)
     {
-        $this->testMethods = $testMethods->asArray();
+        $this->testResults = $testResults->asArray();
     }
 
     public function rewind(): void
@@ -35,7 +35,7 @@ final class TestMethodCollectionIterator implements Iterator
 
     public function valid(): bool
     {
-        return $this->position < count($this->testMethods);
+        return $this->position < count($this->testResults);
     }
 
     public function key(): int
@@ -43,9 +43,9 @@ final class TestMethodCollectionIterator implements Iterator
         return $this->position;
     }
 
-    public function current(): TestMethod
+    public function current(): TestResult
     {
-        return $this->testMethods[$this->position];
+        return $this->testResults[$this->position];
     }
 
     public function next(): void

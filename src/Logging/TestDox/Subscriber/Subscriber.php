@@ -14,14 +14,14 @@ namespace PHPUnit\Logging\TestDox;
  */
 abstract class Subscriber
 {
-    private TestMethodCollector $collector;
+    private TestResultCollector $collector;
 
-    public function __construct(TestMethodCollector $collector)
+    public function __construct(TestResultCollector $collector)
     {
         $this->collector = $collector;
     }
 
-    protected function collector(): TestMethodCollector
+    protected function collector(): TestResultCollector
     {
         return $this->collector;
     }

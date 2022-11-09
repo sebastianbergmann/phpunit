@@ -33,13 +33,13 @@ use PHPUnit\Event\Test\TestProxyCreated;
 use PHPUnit\Event\Test\TestStubCreated;
 use PHPUnit\Event\UnknownSubscriberTypeException;
 use PHPUnit\Framework\TestStatus\TestStatus;
-use PHPUnit\Logging\TestDox\TestMethod as TestDoxTestMethod;
+use PHPUnit\Logging\TestDox\TestResult as TestDoxTestMethod;
 use SoapClient;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestMethodCollector
+final class TestResultCollector
 {
     /**
      * @psalm-var array<string, list<TestDoxTestMethod>>
@@ -64,14 +64,14 @@ final class TestMethodCollector
     }
 
     /**
-     * @psalm-return array<string, TestMethodCollection>
+     * @psalm-return array<string, TestResultCollection>
      */
     public function testMethodsGroupedByClass(): array
     {
         $result = [];
 
         foreach ($this->tests as $prettifiedClassName => $tests) {
-            $result[$prettifiedClassName] = TestMethodCollection::fromArray($tests);
+            $result[$prettifiedClassName] = TestResultCollection::fromArray($tests);
         }
 
         return $result;

@@ -17,7 +17,7 @@ use function sprintf;
 final class PlainTextRenderer
 {
     /**
-     * @psalm-param array<string, TestMethodCollection> $tests
+     * @psalm-param array<string, TestResultCollection> $tests
      */
     public function render(array $tests): string
     {

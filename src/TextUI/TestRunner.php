@@ -28,7 +28,7 @@ use PHPUnit\Logging\JUnit\JunitXmlLogger;
 use PHPUnit\Logging\TeamCity\TeamCityLogger;
 use PHPUnit\Logging\TestDox\HtmlRenderer as TestDoxHtmlRenderer;
 use PHPUnit\Logging\TestDox\PlainTextRenderer as TestDoxTextRenderer;
-use PHPUnit\Logging\TestDox\TestMethodCollector;
+use PHPUnit\Logging\TestDox\TestResultCollector;
 use PHPUnit\Logging\TestDox\XmlRenderer as TestDoxXmlRenderer;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\Runner\Extension\PharLoader;
@@ -285,7 +285,7 @@ final class TestRunner
             $this->configuration->hasLogfileTestdoxText() ||
             $this->configuration->hasLogfileTestdoxXml() ||
             $this->configuration->outputIsTestDox()) {
-            $testDoxCollector = new TestMethodCollector;
+            $testDoxCollector = new TestResultCollector;
 
             if ($this->configuration->outputIsTestDox()) {
                 $summaryPrinter = new SummaryPrinter(

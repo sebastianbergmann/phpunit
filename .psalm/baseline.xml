@@ -218,7 +218,7 @@
       <code>$value</code>
     </InvalidCast>
   </file>
-  <file src="src/Logging/TestDox/TestMethod/TestMethodCollector.php">
+  <file src="src/Logging/TestDox/TestMethod/TestResultCollector.php">
     <PossiblyNullArgument occurrences="2">
       <code>$this-&gt;status</code>
       <code>$this-&gt;time</code>

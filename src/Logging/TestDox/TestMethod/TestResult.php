@@ -9,7 +9,7 @@
  */
 namespace PHPUnit\Logging\TestDox;
 
-use PHPUnit\Event\Code\TestMethod as TestMethodValueObject;
+use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Duration;
 use PHPUnit\Framework\TestStatus\TestStatus;
@@ -19,9 +19,9 @@ use PHPUnit\Framework\TestStatus\TestStatus;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestMethod
+final class TestResult
 {
-    private readonly TestMethodValueObject $test;
+    private readonly TestMethod $test;
     private readonly Duration $duration;
     private readonly TestStatus $status;
     private readonly ?Throwable $throwable;
@@ -34,7 +34,7 @@ final class TestMethod
     /**
      * @psalm-param  list<class-string|trait-string> $testDoubles
      */
-    public function __construct(TestMethodValueObject $test, Duration $duration, TestStatus $status, ?Throwable $throwable, array $testDoubles)
+    public function __construct(TestMethod $test, Duration $duration, TestStatus $status, ?Throwable $throwable, array $testDoubles)
     {
         $this->test        = $test;
         $this->duration    = $duration;
@@ -43,7 +43,7 @@ final class TestMethod
         $this->testDoubles = $testDoubles;
     }
 
-    public function test(): TestMethodValueObject
+    public function test(): TestMethod
     {
         return $this->test;
     }
