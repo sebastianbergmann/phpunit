@@ -111,16 +111,12 @@ final class ResultPrinter
             return;
         }
 
-        $throwable = $test->throwable();
-
-        assert($throwable instanceof Throwable);
-
         $this->printTestResultBodyStart($test);
 
         $this->printer->print(
             $this->prefixLines(
                 $this->prefixFor('default', $test->status()),
-                $this->formatThrowable($throwable)
+                $this->formatThrowable($test)
             )
         );
 
@@ -153,15 +149,19 @@ final class ResultPrinter
         $this->printer->print(PHP_EOL);
     }
 
-    private function formatThrowable(Throwable $t): string
+    private function formatThrowable(TestResult $test): string
     {
-        $message = trim($t->description());
+        $throwable = $test->throwable();
+
+        assert($throwable instanceof Throwable);
+
+        $message = trim($throwable->description());
 
         if ($message) {
             $message .= PHP_EOL . PHP_EOL;
         }
 
-        return $message . $this->formatStackTrace($t->stackTrace());
+        return $message . $this->formatStackTrace($throwable->stackTrace());
     }
 
     private function formatStackTrace(string $stackTrace): string
