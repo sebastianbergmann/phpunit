@@ -1350,7 +1350,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
      *
      * @throws Throwable
      */
-    protected function onNotSuccessfulTest(Throwable $t): void
+    protected function onNotSuccessfulTest(Throwable $t): never
     {
         throw $t;
     }
