@@ -14,6 +14,7 @@ use function get_object_vars;
 use PHPUnit\Util\Filter;
 use PHPUnit\Util\ThrowableToStringMapper;
 use RuntimeException;
+use Stringable;
 use Throwable;
 
 /**
@@ -38,7 +39,7 @@ use Throwable;
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-class Exception extends RuntimeException implements \PHPUnit\Exception
+class Exception extends RuntimeException implements \PHPUnit\Exception, Stringable
 {
     protected array $serializableTrace;
 

@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\TestFixture;
 
-class ClassWithToString
+use Stringable;
+
+class ClassWithToString implements Stringable
 {
-    public function __toString()
+    public function __toString(): string
     {
         return 'string representation';
     }

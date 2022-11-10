@@ -17,11 +17,12 @@ use function in_array;
 use function str_contains;
 use PHPUnit\Metadata\DependsOnClass;
 use PHPUnit\Metadata\DependsOnMethod;
+use Stringable;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class ExecutionOrderDependency
+final class ExecutionOrderDependency implements Stringable
 {
     private string $className  = '';
     private string $methodName = '';

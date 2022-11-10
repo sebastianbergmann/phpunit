@@ -9,9 +9,11 @@
  */
 namespace PHPUnit\TestFixture\MockObject;
 
-class StringableClass
+use Stringable;
+
+class StringableClass implements Stringable
 {
-    public function __toString()
+    public function __toString(): string
     {
         return '12345';
     }
