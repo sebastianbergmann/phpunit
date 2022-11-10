@@ -70,7 +70,7 @@ final class IsInstanceOf extends Constraint
             if ($reflection->isInterface()) {
                 return 'interface';
             }
-        } catch (ReflectionException $e) {
+        } catch (ReflectionException) {
         }
 
         return 'class';

@@ -37,7 +37,7 @@ abstract class Requirement
                     $versionRequirement
                 )
             );
-        } catch (UnsupportedVersionConstraintException $e) {
+        } catch (UnsupportedVersionConstraintException) {
             if (preg_match(self::VERSION_COMPARISON, $versionRequirement, $matches)) {
                 return new ComparisonRequirement(
                     $matches['version'],

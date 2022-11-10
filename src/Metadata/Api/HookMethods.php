@@ -87,7 +87,7 @@ final class HookMethods
                     self::$hookMethods[$className]['after'][] = $methodName;
                 }
             }
-        } catch (ReflectionException $e) {
+        } catch (ReflectionException) {
         }
 
         return self::$hookMethods[$className];

@@ -64,7 +64,7 @@ final class AssertTest extends TestCase
     {
         try {
             $this->fail();
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -507,7 +507,7 @@ XML;
 
         try {
             $this->assertDirectoryIsNotReadable($dirName);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
         }
 
         rmdir($dirName);
@@ -537,7 +537,7 @@ XML;
 
         try {
             $this->assertDirectoryIsNotWritable($dirName);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
         }
 
         rmdir($dirName);
@@ -589,7 +589,7 @@ XML;
 
         try {
             $this->assertFileIsNotReadable($tempFile);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
         }
 
         unlink($tempFile);
@@ -607,7 +607,7 @@ XML;
 
         try {
             $this->assertFileIsNotWritable($tempFile);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
         }
 
         unlink($tempFile);
@@ -814,7 +814,7 @@ XML;
 
         try {
             $this->assertLessThan(1, 2);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1515,7 +1515,7 @@ XML;
 
         try {
             $this->assertIsArray(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1528,7 +1528,7 @@ XML;
 
         try {
             $this->assertIsBool(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1541,7 +1541,7 @@ XML;
 
         try {
             $this->assertIsFloat(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1554,7 +1554,7 @@ XML;
 
         try {
             $this->assertIsInt(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1567,7 +1567,7 @@ XML;
 
         try {
             $this->assertIsNumeric('abc');
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1580,7 +1580,7 @@ XML;
 
         try {
             $this->assertIsObject(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1593,7 +1593,7 @@ XML;
 
         try {
             $this->assertIsResource(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1610,7 +1610,7 @@ XML;
 
         try {
             $this->assertIsClosedResource(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1623,7 +1623,7 @@ XML;
 
         try {
             $this->assertIsString(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1636,7 +1636,7 @@ XML;
 
         try {
             $this->assertIsScalar(new stdClass);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1651,7 +1651,7 @@ XML;
 
         try {
             $this->assertIsCallable(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1664,7 +1664,7 @@ XML;
 
         try {
             $this->assertIsIterable(null);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1677,7 +1677,7 @@ XML;
 
         try {
             $this->assertIsNotArray([]);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1690,7 +1690,7 @@ XML;
 
         try {
             $this->assertIsNotBool(true);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1703,7 +1703,7 @@ XML;
 
         try {
             $this->assertIsNotFloat(0.0);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1716,7 +1716,7 @@ XML;
 
         try {
             $this->assertIsNotInt(1);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1729,7 +1729,7 @@ XML;
 
         try {
             $this->assertIsNotNumeric('1.0');
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1742,7 +1742,7 @@ XML;
 
         try {
             $this->assertIsNotObject(new stdClass);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1755,7 +1755,7 @@ XML;
 
         try {
             $this->assertIsNotResource(fopen(__FILE__, 'r'));
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1771,13 +1771,13 @@ XML;
 
         try {
             $this->assertIsNotClosedResource($resource);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
         try {
             $this->assertIsNotResource($resource);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1790,7 +1790,7 @@ XML;
 
         try {
             $this->assertIsNotScalar(true);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1803,7 +1803,7 @@ XML;
 
         try {
             $this->assertIsNotString('');
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1818,7 +1818,7 @@ XML;
             $this->assertIsNotCallable(static function (): void
             {
             });
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1831,7 +1831,7 @@ XML;
 
         try {
             $this->assertIsNotIterable([]);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1907,7 +1907,7 @@ XML;
 
         try {
             $this->assertStringContainsString('barbara', 'foobarbaz');
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1920,7 +1920,7 @@ XML;
 
         try {
             $this->assertStringNotContainsString('bar', 'foobarbaz');
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1933,7 +1933,7 @@ XML;
 
         try {
             $this->assertStringContainsStringIgnoringCase('BARBARA', 'foobarbaz');
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1946,7 +1946,7 @@ XML;
 
         try {
             $this->assertStringNotContainsStringIgnoringCase('BAR', 'foobarbaz');
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1962,7 +1962,7 @@ XML;
 
         try {
             $this->assertContains(new stdClass, $iterable);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1978,7 +1978,7 @@ XML;
 
         try {
             $this->assertNotContains($object, $iterable);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -1997,7 +1997,7 @@ XML;
 
         try {
             $this->assertContainsEquals($b, [$a]);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -2016,7 +2016,7 @@ XML;
 
         try {
             $this->assertNotContainsEquals($a, [$a]);
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 
@@ -2029,7 +2029,7 @@ XML;
 
         try {
             $this->assertObjectEquals(new ValueObject(1), new ValueObject(2));
-        } catch (AssertionFailedError $e) {
+        } catch (AssertionFailedError) {
             return;
         }
 

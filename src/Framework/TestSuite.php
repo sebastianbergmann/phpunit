@@ -357,7 +357,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
 
                     call_user_func([$this->name, $beforeClassMethod]);
                 }
-            } catch (SkippedTestSuiteError $error) {
+            } catch (SkippedTestSuiteError) {
                 return;
             } catch (Throwable $t) {
                 assert(isset($methodCalledBeforeFirstTest));
@@ -416,7 +416,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     );
 
                     $methodsCalledAfterLastTest[] = $methodCalledAfterLastTest;
-                } catch (Throwable $t) {
+                } catch (Throwable) {
                     // @todo
                 }
             }

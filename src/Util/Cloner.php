@@ -27,7 +27,7 @@ final class Cloner
     {
         try {
             return clone $original;
-        } catch (Throwable $t) {
+        } catch (Throwable) {
             return $original;
         }
     }

@@ -93,7 +93,7 @@ class MatcherTest extends TestCase
 
         try {
             $matcher->invoked($invocation);
-        } catch (ExpectationFailedException $e) {
+        } catch (ExpectationFailedException) {
         }
     }
 
