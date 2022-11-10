@@ -44,9 +44,7 @@ final class TestUsingCallbacks extends TestCase
         $mock
             ->expects(self::once())
             ->method('hey')
-            ->with(self::callback(static function (): bool {
-                return true;
-            }))
+            ->with(self::callback(static fn(): bool => true))
             ->willReturn('Hey Joe!');
 
         self::assertSame('Hey Joe!', $mock->hey('Joe'));

@@ -22,13 +22,13 @@ final class PostConditionFinishedTest extends AbstractEventTestCase
     {
         $telemetryInfo = $this->telemetryInfo();
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
-        {
-            return new Code\ClassMethod(
+        $calledMethods = array_map(
+            static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
                 $methodName
-            );
-        }, get_class_methods($this));
+            ),
+            get_class_methods($this)
+        );
 
         $event = new PostConditionFinished(
             $telemetryInfo,

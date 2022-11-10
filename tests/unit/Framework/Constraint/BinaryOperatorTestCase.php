@@ -79,10 +79,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             8,
         ];
 
-        $constraints = array_map(static function ($count)
-        {
-            return CountConstraint::fromCount($count);
-        }, $counts);
+        $constraints = array_map(static fn ($count) => CountConstraint::fromCount($count), $counts);
 
         $className  = $this->className();
         $constraint = $className::fromConstraints(...$constraints);
@@ -139,10 +136,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $inputs = self::getBooleanTuples(0, 5);
 
         return array_map(
-            function (array $input)
-            {
-                return [$input, $this->evaluateExpectedResult($input)];
-            },
+            fn (array $input) => [$input, $this->evaluateExpectedResult($input)],
             $inputs
         );
     }
@@ -150,10 +144,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     #[DataProvider('providerConnectiveTruthTable')]
     final public function testEvaluateReturnsCorrectBooleanResult(array $inputs, bool $expected): void
     {
-        $constraints = array_map(static function (bool $input)
-        {
-            return BooleanConstraint::fromBool($input);
-        }, $inputs);
+        $constraints = array_map(static fn (bool $input) => BooleanConstraint::fromBool($input), $inputs);
 
         $className = $this->className();
 
@@ -166,10 +157,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     #[DataProvider('providerConnectiveTruthTable')]
     final public function testEvaluateReturnsNullOnSuccessAndThrowsExceptionOnFailure(array $inputs, bool $expected): void
     {
-        $constraints = array_map(static function (bool $input)
-        {
-            return BooleanConstraint::fromBool($input);
-        }, $inputs);
+        $constraints = array_map(static fn (bool $input) => BooleanConstraint::fromBool($input), $inputs);
 
         $className = $this->className();
 
@@ -180,10 +168,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         } else {
             $expectedString = self::operatorJoinStrings(
                 array_map(
-                    static function (Constraint $operand)
-                    {
-                        return $operand->toString();
-                    },
+                    static fn (Constraint $operand) => $operand->toString(),
                     $constraints
                 )
             );
@@ -217,10 +202,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     #[DataProvider('providerToStringWithNamedConstraints')]
     public function testToStringWithNamedConstraints(string ...$names): void
     {
-        $constraints = array_map(static function (string $name)
-        {
-            return NamedConstraint::fromName($name);
-        }, $names);
+        $constraints = array_map(static fn (string $name) => NamedConstraint::fromName($name), $names);
 
         $className = $this->className();
 
@@ -567,10 +549,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
     {
         $tuples = self::getBinaryTuples($minSize, $maxSize);
 
-        return array_map(static function ($tuple)
-        {
-            return array_map('boolval', $tuple);
-        }, $tuples);
+        return array_map(static fn ($tuple) => array_map('boolval', $tuple), $tuples);
     }
 
     protected static function operatorJoinStrings(array $strings): string

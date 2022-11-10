@@ -253,10 +253,7 @@ final class Help
                     $arg = Color::colorize('fg-green', str_pad($option['arg'], $this->lengthOfLongestOptionName));
                     $arg = preg_replace_callback(
                         '/(<[^>]+>)/',
-                        static function ($matches)
-                        {
-                            return Color::colorize('fg-cyan', $matches[0]);
-                        },
+                        static fn ($matches) => Color::colorize('fg-cyan', $matches[0]),
                         $arg
                     );
 

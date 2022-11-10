@@ -608,13 +608,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestAfterTestMethodFinishedDispatchesTestAfterTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
-        {
-            return new Code\ClassMethod(
+        $calledMethods = array_map(
+            static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
                 $methodName
-            );
-        }, get_class_methods($this));
+            ),
+            get_class_methods($this)
+        );
 
         $subscriber = new class extends RecordingSubscriber implements Test\AfterTestMethodFinishedSubscriber
         {
@@ -699,13 +699,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestAfterLastTestMethodFinishedDispatchesTestAfterLastTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
-        {
-            return new Code\ClassMethod(
+        $calledMethods = array_map(
+            static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
                 $methodName
-            );
-        }, get_class_methods($this));
+            ),
+            get_class_methods($this)
+        );
 
         $subscriber = new class extends RecordingSubscriber implements Test\AfterLastTestMethodFinishedSubscriber
         {
@@ -790,13 +790,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestBeforeFirstTestMethodFinishedDispatchesTestBeforeFirstTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
-        {
-            return new Code\ClassMethod(
+        $calledMethods = array_map(
+            static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
                 $methodName
-            );
-        }, get_class_methods($this));
+            ),
+            get_class_methods($this)
+        );
 
         $subscriber = new class extends RecordingSubscriber implements Test\BeforeFirstTestMethodFinishedSubscriber
         {
@@ -969,13 +969,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestPostConditionFinishedDispatchesTestPostConditionFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
-        {
-            return new Code\ClassMethod(
+        $calledMethods = array_map(
+            static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
                 $methodName
-            );
-        }, get_class_methods($this));
+            ),
+            get_class_methods($this)
+        );
 
         $subscriber = new class extends RecordingSubscriber implements Test\PostConditionFinishedSubscriber
         {
@@ -1016,13 +1016,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestBeforeTestMethodFinishedDispatchesTestBeforeTestMethodFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
-        {
-            return new Code\ClassMethod(
+        $calledMethods = array_map(
+            static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
                 $methodName
-            );
-        }, get_class_methods($this));
+            ),
+            get_class_methods($this)
+        );
 
         $subscriber = new class extends RecordingSubscriber implements Test\BeforeTestMethodFinishedSubscriber
         {
@@ -1063,13 +1063,13 @@ final class DispatchingEmitterTest extends Framework\TestCase
     public function testTestPreConditionFinishedDispatchesTestPreConditionFinishedEvent(): void
     {
         $testClassName = self::class;
-        $calledMethods = array_map(static function (string $methodName): Code\ClassMethod
-        {
-            return new Code\ClassMethod(
+        $calledMethods = array_map(
+            static fn (string $methodName): Code\ClassMethod => new Code\ClassMethod(
                 self::class,
                 $methodName
-            );
-        }, get_class_methods($this));
+            ),
+            get_class_methods($this)
+        );
 
         $subscriber = new class extends RecordingSubscriber implements Test\PreConditionFinishedSubscriber
         {

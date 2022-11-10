@@ -682,10 +682,7 @@ final class TestRunner
         if ($this->configuration->hasTestsCovering()) {
             $filterFactory->addIncludeGroupFilter(
                 array_map(
-                    static function (string $name): string
-                    {
-                        return '__phpunit_covers_' . $name;
-                    },
+                    static fn (string $name): string => '__phpunit_covers_' . $name,
                     $this->configuration->testsCovering()
                 )
             );
@@ -694,10 +691,7 @@ final class TestRunner
         if ($this->configuration->hasTestsUsing()) {
             $filterFactory->addIncludeGroupFilter(
                 array_map(
-                    static function (string $name): string
-                    {
-                        return '__phpunit_uses_' . $name;
-                    },
+                    static fn (string $name): string => '__phpunit_uses_' . $name,
                     $this->configuration->testsUsing()
                 )
             );

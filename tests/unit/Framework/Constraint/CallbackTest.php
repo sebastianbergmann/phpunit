@@ -29,15 +29,9 @@ final class CallbackTest extends ConstraintTestCase
 
     public function testConstraintCallback(): void
     {
-        $closureReflect = static function (mixed $parameter): mixed
-        {
-            return $parameter;
-        };
+        $closureReflect = static fn (mixed $parameter): mixed => $parameter;
 
-        $closureWithoutParameter = static function (): bool
-        {
-            return true;
-        };
+        $closureWithoutParameter = static fn (): bool => true;
 
         $constraint = new Callback($closureWithoutParameter);
         $this->assertTrue($constraint->evaluate('', '', true));
@@ -60,10 +54,7 @@ final class CallbackTest extends ConstraintTestCase
     public function testConstraintCallbackFailure(): void
     {
         $constraint = new Callback(
-            static function (): bool
-            {
-                return false;
-            }
+            static fn (): bool => false
         );
 
         $this->expectException(ExpectationFailedException::class);

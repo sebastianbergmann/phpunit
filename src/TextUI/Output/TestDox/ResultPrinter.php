@@ -267,10 +267,7 @@ final class ResultPrinter
         return implode(
             PHP_EOL,
             array_map(
-                static function (string $line) use ($prefix)
-                {
-                    return '   ' . $prefix . ($line ? ' ' . $line : '');
-                },
+                static fn (string $line) => '   ' . $prefix . ($line ? ' ' . $line : ''),
                 preg_split('/\r\n|\r|\n/', $message)
             )
         );

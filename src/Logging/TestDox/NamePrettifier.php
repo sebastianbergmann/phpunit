@@ -182,13 +182,10 @@ final class NamePrettifier
                 $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test, $colorize);
 
                 $variables = array_map(
-                    static function (string $variable): string
-                    {
-                        return sprintf(
-                            '/%s(?=\b)/',
-                            preg_quote($variable, '/')
-                        );
-                    },
+                    static fn (string $variable): string => sprintf(
+                        '/%s(?=\b)/',
+                        preg_quote($variable, '/')
+                    ),
                     array_keys($providedData)
                 );
 
@@ -270,10 +267,7 @@ final class NamePrettifier
         }
 
         if ($colorize) {
-            $providedData = array_map(static function ($value)
-            {
-                return Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true));
-            }, $providedData);
+            $providedData = array_map(static fn ($value) => Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true)), $providedData);
         }
 
         return $providedData;

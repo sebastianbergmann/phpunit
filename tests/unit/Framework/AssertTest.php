@@ -979,10 +979,7 @@ XML;
     {
         $this->assertThat(
             null,
-            $this->callback(static function ($other)
-            {
-                return true;
-            })
+            $this->callback(static fn ($other) => true)
         );
     }
 
