@@ -70,8 +70,8 @@ use Throwable;
  */
 final class PhptTestCase implements Reorderable, SelfDescribing, Test
 {
-    private string $filename;
-    private AbstractPhpProcess $phpUtil;
+    private readonly string $filename;
+    private readonly AbstractPhpProcess $phpUtil;
     private string $output = '';
 
     /**

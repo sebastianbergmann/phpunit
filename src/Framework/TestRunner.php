@@ -50,7 +50,7 @@ use Throwable;
 final class TestRunner
 {
     private ?bool $timeLimitCanBeEnforced = null;
-    private Configuration $configuration;
+    private readonly Configuration $configuration;
 
     public function __construct()
     {

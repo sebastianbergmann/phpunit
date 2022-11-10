@@ -21,7 +21,7 @@ use SebastianBergmann\Comparator\ComparisonFailure;
  */
 final class JsonMatches extends Constraint
 {
-    private string $value;
+    private readonly string $value;
 
     public function __construct(string $value)
     {

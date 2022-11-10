@@ -67,13 +67,13 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
     private array $tests             = [];
     private ?array $providedTests    = null;
     private ?Factory $iteratorFilter = null;
-    private bool $stopOnError;
-    private bool $stopOnFailure;
-    private bool $stopOnWarning;
-    private bool $stopOnRisky;
-    private bool $stopOnIncomplete;
-    private bool $stopOnSkipped;
-    private bool $stopOnDefect;
+    private readonly bool $stopOnError;
+    private readonly bool $stopOnFailure;
+    private readonly bool $stopOnWarning;
+    private readonly bool $stopOnRisky;
+    private readonly bool $stopOnIncomplete;
+    private readonly bool $stopOnSkipped;
+    private readonly bool $stopOnDefect;
 
     public static function empty(string $name = null): static
     {

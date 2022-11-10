@@ -17,7 +17,7 @@ use PHPUnit\Framework\ExpectationFailedException;
 final class TraversableContainsOnly extends Constraint
 {
     private Constraint $constraint;
-    private string $type;
+    private readonly string $type;
 
     /**
      * @throws \PHPUnit\Framework\Exception

@@ -14,7 +14,7 @@ namespace PHPUnit\Runner\ResultCache;
  */
 abstract class Subscriber
 {
-    private ResultCacheHandler $handler;
+    private readonly ResultCacheHandler $handler;
 
     public function __construct(ResultCacheHandler $handler)
     {

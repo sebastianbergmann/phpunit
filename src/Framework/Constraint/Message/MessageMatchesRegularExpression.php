@@ -18,8 +18,8 @@ use Exception;
  */
 final class MessageMatchesRegularExpression extends Constraint
 {
-    private string $messageType;
-    private string $regularExpression;
+    private readonly string $messageType;
+    private readonly string $regularExpression;
 
     public function __construct(string $messageType, string $regularExpression)
     {

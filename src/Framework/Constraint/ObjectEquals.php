@@ -24,8 +24,8 @@ use ReflectionObject;
  */
 final class ObjectEquals extends Constraint
 {
-    private object $expected;
-    private string $method;
+    private readonly object $expected;
+    private readonly string $method;
 
     public function __construct(object $object, string $method = 'equals')
     {

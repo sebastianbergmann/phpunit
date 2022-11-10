@@ -20,8 +20,8 @@ use ReflectionClass;
  */
 final class MockBuilder
 {
-    private TestCase $testCase;
-    private string $type;
+    private readonly TestCase $testCase;
+    private readonly string $type;
     private ?array $methods                = [];
     private bool $emptyMethodsArray        = false;
     private string $mockClassName          = '';
@@ -34,7 +34,7 @@ final class MockBuilder
     private ?object $proxyTarget           = null;
     private bool $allowMockingUnknownTypes = true;
     private bool $returnValueGeneration    = true;
-    private Generator $generator;
+    private readonly Generator $generator;
 
     /**
      * @psalm-param class-string $type

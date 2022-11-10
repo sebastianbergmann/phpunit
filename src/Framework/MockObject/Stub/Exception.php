@@ -19,7 +19,7 @@ use Throwable;
  */
 final class Exception implements Stub
 {
-    private Throwable $exception;
+    private readonly Throwable $exception;
 
     public function __construct(Throwable $exception)
     {

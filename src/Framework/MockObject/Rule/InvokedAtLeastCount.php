@@ -17,7 +17,7 @@ use PHPUnit\Framework\MockObject\Invocation as BaseInvocation;
  */
 final class InvokedAtLeastCount extends InvocationOrder
 {
-    private int $requiredInvocations;
+    private readonly int $requiredInvocations;
 
     public function __construct(int $requiredInvocations)
     {

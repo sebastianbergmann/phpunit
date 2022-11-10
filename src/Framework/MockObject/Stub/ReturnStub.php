@@ -18,7 +18,7 @@ use SebastianBergmann\Exporter\Exporter;
  */
 final class ReturnStub implements Stub
 {
-    private mixed $value;
+    private readonly mixed $value;
 
     public function __construct(mixed $value)
     {

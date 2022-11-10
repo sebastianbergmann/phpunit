@@ -22,7 +22,7 @@ final class SystemTest extends TestCase
 
         $clock = new class($time) implements StopWatch
         {
-            private \PHPUnit\Event\Telemetry\HRTime $time;
+            private readonly \PHPUnit\Event\Telemetry\HRTime $time;
 
             public function __construct(HRTime $time)
             {
@@ -40,8 +40,8 @@ final class SystemTest extends TestCase
 
         $memoryMeter = new class($memoryUsage, $peakMemoryUsage) implements MemoryMeter
         {
-            private MemoryUsage $memoryUsage;
-            private MemoryUsage $peakMemoryUsage;
+            private readonly MemoryUsage $memoryUsage;
+            private readonly MemoryUsage $peakMemoryUsage;
 
             public function __construct(MemoryUsage $memoryUsage, MemoryUsage $peakMemoryUsage)
             {

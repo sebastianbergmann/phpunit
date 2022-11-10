@@ -43,13 +43,13 @@ use Throwable;
  */
 final class InvocationMocker implements InvocationStubber, MethodNameMatch
 {
-    private InvocationHandler $invocationHandler;
-    private Matcher $matcher;
+    private readonly InvocationHandler $invocationHandler;
+    private readonly Matcher $matcher;
 
     /**
      * @psalm-var list<ConfigurableMethod>
      */
-    private array $configurableMethods;
+    private readonly array $configurableMethods;
 
     /**
      * @psalm-var ?array<string, int>

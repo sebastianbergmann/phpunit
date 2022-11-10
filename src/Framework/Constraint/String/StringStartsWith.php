@@ -17,7 +17,7 @@ use PHPUnit\Framework\EmptyStringException;
  */
 final class StringStartsWith extends Constraint
 {
-    private string $prefix;
+    private readonly string $prefix;
 
     /**
      * @throws EmptyStringException

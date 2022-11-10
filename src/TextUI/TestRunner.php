@@ -92,7 +92,7 @@ use SebastianBergmann\Timer\TimeSinceStartOfRequestNotAvailableException;
  */
 final class TestRunner
 {
-    private Configuration $configuration;
+    private readonly Configuration $configuration;
     private Printer $printer;
     private bool $messagePrinted = false;
     private ?Timer $timer        = null;

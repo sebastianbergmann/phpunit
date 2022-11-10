@@ -25,8 +25,8 @@ use PHPUnit\Event\Tracer\Tracer;
  */
 final class EventLogger implements Tracer
 {
-    private string $path;
-    private bool $includeTelemetryInfo;
+    private readonly string $path;
+    private readonly bool $includeTelemetryInfo;
 
     public function __construct(string $path, bool $includeTelemetryInfo)
     {

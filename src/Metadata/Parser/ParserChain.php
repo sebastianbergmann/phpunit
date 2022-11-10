@@ -16,8 +16,8 @@ use PHPUnit\Metadata\MetadataCollection;
  */
 final class ParserChain implements Parser
 {
-    private Parser $attributeReader;
-    private Parser $annotationReader;
+    private readonly Parser $attributeReader;
+    private readonly Parser $annotationReader;
 
     public function __construct(Parser $attributeReader, Parser $annotationReader)
     {

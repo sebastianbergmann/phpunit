@@ -22,7 +22,7 @@ use RecursiveIteratorIterator;
  */
 final class ListTestsAsTextCommand implements Command
 {
-    private TestSuite $suite;
+    private readonly TestSuite $suite;
 
     public function __construct(TestSuite $suite)
     {

@@ -22,7 +22,7 @@ use SebastianBergmann\Comparator\Factory as ComparatorFactory;
  */
 final class IsEqualIgnoringCase extends Constraint
 {
-    private mixed $value;
+    private readonly mixed $value;
 
     public function __construct(mixed $value)
     {

@@ -28,7 +28,7 @@ use PHPUnit\Util\ThrowableToStringMapper;
  */
 final class Matcher
 {
-    private InvocationOrder $invocationRule;
+    private readonly InvocationOrder $invocationRule;
     private ?string $afterMatchBuilderId    = null;
     private ?MethodName $methodNameRule     = null;
     private ?ParametersRule $parametersRule = null;

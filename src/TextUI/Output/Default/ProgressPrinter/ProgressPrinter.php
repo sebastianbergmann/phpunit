@@ -28,9 +28,9 @@ use PHPUnit\Util\Printer;
  */
 final class ProgressPrinter
 {
-    private Printer $printer;
-    private bool $colors;
-    private int $numberOfColumns;
+    private readonly Printer $printer;
+    private readonly bool $colors;
+    private readonly int $numberOfColumns;
     private int $column             = 0;
     private int $numberOfTests      = 0;
     private int $numberOfTestsWidth = 0;

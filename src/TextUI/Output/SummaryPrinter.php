@@ -19,8 +19,8 @@ use PHPUnit\Util\Printer;
  */
 final class SummaryPrinter
 {
-    private Printer $printer;
-    private bool $colors;
+    private readonly Printer $printer;
+    private readonly bool $colors;
     private bool $countPrinted = false;
 
     public function __construct(Printer $printer, bool $colors)

@@ -18,7 +18,7 @@ use PHPUnit\TextUI\XmlConfiguration\TestSuiteCollection;
  */
 final class ListTestSuitesCommand implements Command
 {
-    private TestSuiteCollection $suites;
+    private readonly TestSuiteCollection $suites;
 
     public function __construct(TestSuiteCollection $suites)
     {

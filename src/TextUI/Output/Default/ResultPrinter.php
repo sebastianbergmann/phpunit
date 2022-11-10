@@ -44,14 +44,14 @@ use PHPUnit\Util\Printer;
  */
 final class ResultPrinter
 {
-    private Printer $printer;
-    private bool $displayDetailsOnIncompleteTests;
-    private bool $displayDetailsOnSkippedTests;
-    private bool $displayDetailsOnTestsThatTriggerDeprecations;
-    private bool $displayDetailsOnTestsThatTriggerErrors;
-    private bool $displayDetailsOnTestsThatTriggerNotices;
-    private bool $displayDetailsOnTestsThatTriggerWarnings;
-    private bool $displayDefectsInReverseOrder;
+    private readonly Printer $printer;
+    private readonly bool $displayDetailsOnIncompleteTests;
+    private readonly bool $displayDetailsOnSkippedTests;
+    private readonly bool $displayDetailsOnTestsThatTriggerDeprecations;
+    private readonly bool $displayDetailsOnTestsThatTriggerErrors;
+    private readonly bool $displayDetailsOnTestsThatTriggerNotices;
+    private readonly bool $displayDetailsOnTestsThatTriggerWarnings;
+    private readonly bool $displayDefectsInReverseOrder;
     private bool $listPrinted = false;
 
     public function __construct(Printer $printer, bool $displayDetailsOnIncompleteTests, bool $displayDetailsOnSkippedTests, bool $displayDetailsOnTestsThatTriggerDeprecations, bool $displayDetailsOnTestsThatTriggerErrors, bool $displayDetailsOnTestsThatTriggerNotices, bool $displayDetailsOnTestsThatTriggerWarnings, bool $displayDefectsInReverseOrder)

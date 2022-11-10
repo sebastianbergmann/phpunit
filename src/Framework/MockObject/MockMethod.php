@@ -34,17 +34,17 @@ use SebastianBergmann\Type\UnknownType;
 final class MockMethod
 {
     use TemplateLoader;
-    private string $className;
-    private string $methodName;
-    private bool $cloneArguments;
-    private string $modifier;
-    private string $argumentsForDeclaration;
-    private string $argumentsForCall;
-    private Type $returnType;
-    private string $reference;
-    private bool $callOriginalMethod;
-    private bool $static;
-    private ?string $deprecation;
+    private readonly string $className;
+    private readonly string $methodName;
+    private readonly bool $cloneArguments;
+    private readonly string $modifier;
+    private readonly string $argumentsForDeclaration;
+    private readonly string $argumentsForCall;
+    private readonly Type $returnType;
+    private readonly string $reference;
+    private readonly bool $callOriginalMethod;
+    private readonly bool $static;
+    private readonly ?string $deprecation;
 
     /**
      * @throws ReflectionException

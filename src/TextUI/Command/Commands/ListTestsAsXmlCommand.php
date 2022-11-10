@@ -25,8 +25,8 @@ use XMLWriter;
  */
 final class ListTestsAsXmlCommand implements Command
 {
-    private string $filename;
-    private TestSuite $suite;
+    private readonly string $filename;
+    private readonly TestSuite $suite;
 
     public function __construct(string $filename, TestSuite $suite)
     {

@@ -30,7 +30,7 @@ final class DispatchingEmitter implements Emitter
 {
     private readonly Dispatcher $dispatcher;
     private readonly Telemetry\System $system;
-    private Telemetry\Snapshot $startSnapshot;
+    private readonly Telemetry\Snapshot $startSnapshot;
     private Telemetry\Snapshot $previousSnapshot;
 
     public function __construct(Dispatcher $dispatcher, Telemetry\System $system)

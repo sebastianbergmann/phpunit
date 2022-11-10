@@ -32,13 +32,13 @@ use Throwable;
  */
 final class Invocation implements SelfDescribing
 {
-    private string $className;
-    private string $methodName;
+    private readonly string $className;
+    private readonly string $methodName;
     private array $parameters;
-    private string $returnType;
+    private readonly string $returnType;
     private bool $isReturnTypeNullable = false;
-    private bool $proxiedCall;
-    private object $object;
+    private readonly bool $proxiedCall;
+    private readonly object $object;
 
     public function __construct(string $className, string $methodName, array $parameters, string $returnType, object $object, bool $cloneObjects = false, bool $proxiedCall = false)
     {

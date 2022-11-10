@@ -26,7 +26,7 @@ use SebastianBergmann\Diff\Output\UnifiedDiffOutputBuilder;
 final class StringMatchesFormatDescription extends Constraint
 {
     private string $formatDescription;
-    private string $regularExpression;
+    private readonly string $regularExpression;
 
     public function __construct(string $formatDescription)
     {

@@ -30,7 +30,7 @@ final class DefaultPrinter implements Printer
      * @psalm-var closed-resource|resource
      */
     private $stream;
-    private bool $isPhpStream;
+    private readonly bool $isPhpStream;
     private bool $isOpen;
 
     /**

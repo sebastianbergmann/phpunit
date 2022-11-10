@@ -16,7 +16,7 @@ use PHPUnit\TextUI\Help;
  */
 final class ShowHelpCommand implements Command
 {
-    private bool $success;
+    private readonly bool $success;
 
     public function __construct(bool $success)
     {

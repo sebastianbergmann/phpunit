@@ -44,7 +44,7 @@ use PHPUnit\Util\Printer;
  */
 final class TeamCityLogger
 {
-    private Printer $printer;
+    private readonly Printer $printer;
     private bool $isSummaryTestCountPrinted = false;
     private ?HRTime $time                   = null;
     private ?int $flowId;

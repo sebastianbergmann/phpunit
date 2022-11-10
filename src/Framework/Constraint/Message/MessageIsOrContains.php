@@ -17,8 +17,8 @@ use function str_contains;
  */
 final class MessageIsOrContains extends Constraint
 {
-    private string $messageType;
-    private string $expectedMessage;
+    private readonly string $messageType;
+    private readonly string $expectedMessage;
 
     public function __construct(string $messageType, string $expectedMessage)
     {

@@ -25,8 +25,8 @@ final class ExecutionOrderDependency
 {
     private string $className  = '';
     private string $methodName = '';
-    private bool $shallowClone;
-    private bool $deepClone;
+    private readonly bool $shallowClone;
+    private readonly bool $deepClone;
 
     public static function invalid(): self
     {

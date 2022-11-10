@@ -46,12 +46,12 @@ final class DocBlock
     private const REGEX_REQUIRES_SETTING = '/@requires\s+(?P<name>setting)\s+(?P<setting>([^ ]+?))\s*(?P<value>[\w\.-]+[\w\.]?)?[ \t]*\r?$/m';
 
     private const REGEX_REQUIRES = '/@requires\s+(?P<name>function|extension)\s+(?P<value>([^\s<>=!]+))\s*(?P<operator>[<>=!]{0,2})\s*(?P<version>[\d\.-]+[\d\.]?)?[ \t]*\r?$/m';
-    private string $docComment;
+    private readonly string $docComment;
 
     /**
      * @psalm-var array<string, array<int, string>> pre-parsed annotations indexed by name and occurrence index
      */
-    private array $symbolAnnotations;
+    private readonly array $symbolAnnotations;
 
     /**
      * @psalm-var null|(array{
@@ -64,8 +64,8 @@ final class DocBlock
      * >)
      */
     private ?array $parsedRequirements = null;
-    private int $startLine;
-    private string $fileName;
+    private readonly int $startLine;
+    private readonly string $fileName;
 
     public static function ofClass(ReflectionClass $class): self
     {
