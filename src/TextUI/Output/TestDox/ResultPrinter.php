@@ -103,7 +103,7 @@ final class ResultPrinter
             $this->printer->print($buffer);
         }
 
-        $this->printer->print($test->test()->testDox()->prettifiedMethodName() . PHP_EOL);
+        $this->printer->print($test->test()->testDox()->prettifiedMethodName($this->colors) . PHP_EOL);
     }
 
     private function printTestResultBody(TestResult $test): void
