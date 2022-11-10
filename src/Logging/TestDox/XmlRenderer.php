@@ -44,7 +44,7 @@ final class XmlRenderer
                 $writer->writeAttribute('className', $className);
                 $writer->writeAttribute('methodName', $methodName);
                 $writer->writeAttribute('prettifiedClassName', $prettifiedClassName);
-                $writer->writeAttribute('prettifiedMethodName', $test->test()->prettifiedMethodName());
+                $writer->writeAttribute('prettifiedMethodName', $test->test()->testDox()->prettifiedMethodName());
                 $writer->writeAttribute('size', (new Groups)->size($className, $methodName)->asString());
                 $writer->writeAttribute('time', (string) $test->duration()->asFloat());
                 $writer->writeAttribute('status', $test->status()->asString());

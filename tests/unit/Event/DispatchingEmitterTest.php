@@ -14,6 +14,7 @@ use function array_values;
 use function explode;
 use function get_class_methods;
 use Exception;
+use PHPUnit\Event\Code\TestDox;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Event\TestRunner\ExecutionStarted;
@@ -1658,8 +1659,11 @@ final class DispatchingEmitterTest extends Framework\TestCase
             'testBar',
             'FooTest.php',
             1,
-            'Foo',
-            'Bar',
+            new TestDox(
+                'Foo',
+                'Bar',
+                'Bar',
+            ),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );

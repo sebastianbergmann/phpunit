@@ -12,6 +12,7 @@ namespace PHPUnit\TextUI\Output\Default;
 use function hrtime;
 use Exception;
 use PHPUnit\Event\Code\ClassMethod;
+use PHPUnit\Event\Code\TestDox;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Telemetry\Duration;
@@ -465,8 +466,11 @@ final class ResultPrinterTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            'Foo',
-            'Bar',
+            new TestDox(
+                'Foo',
+                'Bar',
+                'Bar',
+            ),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );

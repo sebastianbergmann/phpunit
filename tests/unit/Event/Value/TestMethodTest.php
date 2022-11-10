@@ -21,22 +21,20 @@ final class TestMethodTest extends TestCase
 {
     public function testConstructorSetsValues(): void
     {
-        $className            = 'FooTest';
-        $methodName           = 'testBar';
-        $file                 = 'FooTest.php';
-        $line                 = 1;
-        $prettifiedClassName  = 'Foo';
-        $prettifiedMethodName = 'Bar';
-        $testData             = TestDataCollection::fromArray([]);
-        $metadata             = MetadataCollection::fromArray([]);
+        $className  = 'FooTest';
+        $methodName = 'testBar';
+        $file       = 'FooTest.php';
+        $line       = 1;
+        $testDox    = new TestDox('Foo', 'Bar', 'Bar');
+        $testData   = TestDataCollection::fromArray([]);
+        $metadata   = MetadataCollection::fromArray([]);
 
         $test = new TestMethod(
             $className,
             $methodName,
             $file,
             $line,
-            $prettifiedClassName,
-            $prettifiedMethodName,
+            $testDox,
             $metadata,
             $testData
         );
@@ -45,6 +43,7 @@ final class TestMethodTest extends TestCase
         $this->assertSame($methodName, $test->methodName());
         $this->assertSame($file, $test->file());
         $this->assertSame($line, $test->line());
+        $this->assertSame($testDox, $test->testDox());
         $this->assertSame($metadata, $test->metadata());
         $this->assertSame($testData, $test->testData());
     }
@@ -56,8 +55,11 @@ final class TestMethodTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            'Foo',
-            'Bar',
+            new TestDox(
+                'Foo',
+                'Bar',
+                'Bar',
+            ),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );
@@ -74,8 +76,11 @@ final class TestMethodTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            'Foo',
-            'Bar',
+            new TestDox(
+                'Foo',
+                'Bar',
+                'Bar',
+            ),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(
@@ -103,8 +108,11 @@ final class TestMethodTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            'Foo',
-            'Bar',
+            new TestDox(
+                'Foo',
+                'Bar',
+                'Bar',
+            ),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([
                 DataFromDataProvider::from(

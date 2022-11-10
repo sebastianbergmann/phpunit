@@ -58,12 +58,6 @@ final class NamePrettifier
      * @psalm-var list<string>
      */
     private static array $strings = [];
-    private bool $useColor;
-
-    public function __construct(bool $useColor = false)
-    {
-        $this->useColor = $useColor;
-    }
 
     /**
      * @psalm-param class-string $className
@@ -171,7 +165,7 @@ final class NamePrettifier
         return $buffer;
     }
 
-    public function prettifyTestCase(TestCase $test): string
+    public function prettifyTestCase(TestCase $test, bool $colorize): string
     {
         $annotationWithPlaceholders = false;
         $methodLevelTestDox         = MetadataRegistry::parser()->forMethod($test::class, $test->name())->isTestDox()->isMethodLevel();
@@ -185,7 +179,7 @@ final class NamePrettifier
 
             if (str_contains($result, '$')) {
                 $annotation   = $result;
-                $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test);
+                $providedData = $this->mapTestMethodParameterNamesToProvidedDataValues($test, $colorize);
 
                 $variables = array_map(
                     static function (string $variable): string
@@ -207,15 +201,15 @@ final class NamePrettifier
         }
 
         if (!$annotationWithPlaceholders && $test->usesDataProvider()) {
-            $result .= $this->prettifyDataSet($test);
+            $result .= $this->prettifyDataSet($test, $colorize);
         }
 
         return $result;
     }
 
-    public function prettifyDataSet(TestCase $test): string
+    public function prettifyDataSet(TestCase $test, bool $colorize): string
     {
-        if (!$this->useColor) {
+        if (!$colorize) {
             return $test->dataSetAsString();
         }
 
@@ -226,7 +220,7 @@ final class NamePrettifier
         return Color::dim(' with ') . Color::colorize('fg-cyan', Color::visualizeWhitespace($test->dataName()));
     }
 
-    private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test): array
+    private function mapTestMethodParameterNamesToProvidedDataValues(TestCase $test, bool $colorize): array
     {
         assert(method_exists($test, $test->name()));
 
@@ -265,7 +259,7 @@ final class NamePrettifier
             }
 
             if ($value === '') {
-                if ($this->useColor) {
+                if ($colorize) {
                     $value = Color::colorize('dim,underlined', 'empty');
                 } else {
                     $value = "''";
@@ -275,7 +269,7 @@ final class NamePrettifier
             $providedData['$' . $parameter->getName()] = $value;
         }
 
-        if ($this->useColor) {
+        if ($colorize) {
             $providedData = array_map(static function ($value)
             {
                 return Color::colorize('fg-cyan', Color::visualizeWhitespace((string) $value, true));

@@ -164,11 +164,11 @@ final class TestResultCollector
 
         assert($test instanceof TestMethod);
 
-        if (!isset($this->tests[$test->prettifiedClassName()])) {
-            $this->tests[$test->prettifiedClassName()] = [];
+        if (!isset($this->tests[$test->testDox()->prettifiedClassName()])) {
+            $this->tests[$test->testDox()->prettifiedClassName()] = [];
         }
 
-        $this->tests[$test->prettifiedClassName()][] = new TestDoxTestMethod(
+        $this->tests[$test->testDox()->prettifiedClassName()][] = new TestDoxTestMethod(
             $test,
             $event->telemetryInfo()->time()->duration($this->time),
             $this->status,

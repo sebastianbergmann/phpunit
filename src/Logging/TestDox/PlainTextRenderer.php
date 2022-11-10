@@ -30,7 +30,7 @@ final class PlainTextRenderer
                 $buffer .= sprintf(
                     ' [%s] %s' . "\n",
                     $test->status()->isSuccess() ? 'x' : ' ',
-                    $test->test()->prettifiedMethodName()
+                    $test->test()->testDox()->prettifiedMethodName()
                 );
             }
 

@@ -119,7 +119,7 @@ EOT;
                 $buffer .= sprintf(
                     "            <li class=\"%s\">%s</li>\n",
                     $test->status()->isSuccess() ? 'success' : 'defect',
-                    $test->test()->prettifiedMethodName()
+                    $test->test()->testDox()->prettifiedMethodName()
                 );
             }
 

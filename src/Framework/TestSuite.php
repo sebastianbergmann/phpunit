@@ -26,6 +26,7 @@ use function trim;
 use Iterator;
 use IteratorAggregate;
 use PHPUnit\Event;
+use PHPUnit\Event\Code\TestDox;
 use PHPUnit\Event\Code\TestMethod;
 use PHPUnit\Event\NoPreviousThrowableException;
 use PHPUnit\Logging\TestDox\NamePrettifier;
@@ -562,8 +563,11 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $methodName,
                     $class->getFileName(),
                     $method->getStartLine(),
-                    $prettifier->prettifyTestClassName($className),
-                    $prettifier->prettifyTestMethodName($methodName),
+                    new TestDox(
+                        $prettifier->prettifyTestClassName($className),
+                        $prettifier->prettifyTestMethodName($methodName),
+                        $prettifier->prettifyTestMethodName($methodName),
+                    ),
                     MetadataCollection::fromArray([]),
                     Event\TestData\TestDataCollection::fromArray([])
                 ),
