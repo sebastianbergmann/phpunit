@@ -17,6 +17,7 @@ use function implode;
 use function preg_match;
 use function preg_split;
 use function rtrim;
+use function str_starts_with;
 use function trim;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
@@ -112,14 +113,7 @@ final class ResultPrinter
         }
 
         $this->printTestResultBodyStart($test);
-
-        $this->printer->print(
-            $this->prefixLines(
-                $this->prefixFor('default', $test->status()),
-                $this->formatThrowable($test)
-            )
-        );
-
+        $this->printThrowable($test);
         $this->printTestResultBodyEnd($test);
     }
 
@@ -149,19 +143,99 @@ final class ResultPrinter
         $this->printer->print(PHP_EOL);
     }
 
-    private function formatThrowable(TestResult $test): string
+    private function printThrowable(TestResult $test): void
     {
         $throwable = $test->throwable();
 
         assert($throwable instanceof Throwable);
 
-        $message = trim($throwable->description());
+        $message    = trim($throwable->description());
+        $stackTrace = $this->formatStackTrace($throwable->stackTrace());
+        $diff       = '';
 
-        if ($message) {
-            $message .= PHP_EOL . PHP_EOL;
+        if (!empty($message) && $this->colors) {
+            ['message' => $message, 'diff' => $diff] = $this->colorizeMessageAndDiff(
+                $message,
+                $this->messageColorFor($test->status())
+            );
         }
 
-        return $message . $this->formatStackTrace($throwable->stackTrace());
+        if (!empty($message)) {
+            $this->printer->print(
+                $this->prefixLines(
+                    $this->prefixFor('message', $test->status()),
+                    $message
+                )
+            );
+
+            $this->printer->print(PHP_EOL);
+        }
+
+        if (!empty($diff)) {
+            $this->printer->print(
+                $this->prefixLines(
+                    $this->prefixFor('diff', $test->status()),
+                    $diff
+                )
+            );
+
+            $this->printer->print(PHP_EOL);
+        }
+
+        if (!empty($stackTrace)) {
+            if (!empty($message) || !empty($diff)) {
+                $prefix = $this->prefixFor('default', $test->status());
+            } else {
+                $prefix = $this->prefixFor('trace', $test->status());
+            }
+
+            $this->printer->print(
+                $this->prefixLines($prefix, PHP_EOL . $stackTrace)
+            );
+        }
+    }
+
+    /**
+     * @psalm-return array{message: string, diff: string}
+     */
+    private function colorizeMessageAndDiff(string $buffer, string $style): array
+    {
+        $lines      = $buffer ? array_map('\rtrim', explode(PHP_EOL, $buffer)) : [];
+        $message    = [];
+        $diff       = [];
+        $insideDiff = false;
+
+        foreach ($lines as $line) {
+            if ($line === '--- Expected') {
+                $insideDiff = true;
+            }
+
+            if (!$insideDiff) {
+                $message[] = $line;
+            } else {
+                if (str_starts_with($line, '-')) {
+                    $line = Color::colorize('fg-red', Color::visualizeWhitespace($line, true));
+                } elseif (str_starts_with($line, '+')) {
+                    $line = Color::colorize('fg-green', Color::visualizeWhitespace($line, true));
+                } elseif ($line === '@@ @@') {
+                    $line = Color::colorize('fg-cyan', $line);
+                }
+
+                $diff[] = $line;
+            }
+        }
+
+        $message = implode(PHP_EOL, $message);
+        $diff    = implode(PHP_EOL, $diff);
+
+        if (!empty($message)) {
+            $message = Color::colorizeTextBox($style, $message);
+        }
+
+        return [
+            'message' => $message,
+            'diff'    => $diff,
+        ];
     }
 
     private function formatStackTrace(string $stackTrace): string
