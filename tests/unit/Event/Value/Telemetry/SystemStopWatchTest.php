@@ -11,9 +11,11 @@ namespace PHPUnit\Event\Telemetry;
 
 use function hrtime;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(SystemStopWatch::class)]
+#[Small]
 final class SystemStopWatchTest extends TestCase
 {
     public function testNowReturnsDateTimeImmutable(): void

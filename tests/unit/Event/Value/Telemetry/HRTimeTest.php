@@ -12,9 +12,11 @@ namespace PHPUnit\Event\Telemetry;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(HRTime::class)]
+#[Small]
 final class HRTimeTest extends TestCase
 {
     public function testFromSecondsAndNanosecondsRejectsNegativeSeconds(): void

@@ -12,91 +12,88 @@ namespace PHPUnit\Event\Telemetry;
 use InvalidArgumentException;
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
+use PHPUnit\Framework\Attributes\TestDox;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Duration::class)]
+#[Small]
 final class DurationTest extends TestCase
 {
-    public function testFromSecondsAndNanosecondsRejectsNegativeSeconds(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for seconds must not be negative');
-
-        Duration::fromSecondsAndNanoseconds(
-            -1,
-            0
-        );
-    }
-
-    public function testFromSecondsAndNanosecondsRejectsNegativeNanoseconds(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for nanoseconds must not be negative');
-
-        Duration::fromSecondsAndNanoseconds(
-            0,
-            -1
-        );
-    }
-
-    public function testFromSecondsAndNanosecondsRejectsNanosecondsGreaterThan999999999(): void
-    {
-        $this->expectException(InvalidArgumentException::class);
-        $this->expectExceptionMessage('Value for nanoseconds must not be greater than 999999999');
-
-        Duration::fromSecondsAndNanoseconds(
-            0,
-            1000000000
-        );
-    }
-
-    public function testFromSecondsAndNanosecondsReturnsDuration(): void
+    public function testCanBeCreatedFromSecondsAndNanoseconds(): void
     {
         $seconds     = 123;
         $nanoseconds = 999999999;
 
-        $duration = Duration::fromSecondsAndNanoseconds(
-            $seconds,
-            $nanoseconds
-        );
+        $duration = Duration::fromSecondsAndNanoseconds($seconds, $nanoseconds);
 
         $this->assertSame($seconds, $duration->seconds());
         $this->assertSame($nanoseconds, $duration->nanoseconds());
     }
 
-    #[DataProvider('provideDurationAndStringRepresentation')]
-    public function testAsStringFormatsDurationWhenDurationFormatterIsNotSpecified(int $seconds, int $nanoseconds, string $formatted): void
+    public function testSecondsMustNotBeNegative(): void
     {
-        $duration = Duration::fromSecondsAndNanoseconds(
-            $seconds,
-            $nanoseconds
-        );
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value for seconds must not be negative');
 
-        $this->assertSame($formatted, $duration->asString());
+        Duration::fromSecondsAndNanoseconds(-1, 0);
+    }
+
+    public function testNanosecondsMustNotBeNegative(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value for nanoseconds must not be negative');
+
+        Duration::fromSecondsAndNanoseconds(0, -1);
+    }
+
+    public function testNanosecondsMustNotBeGreaterThan999999999(): void
+    {
+        $this->expectException(InvalidArgumentException::class);
+        $this->expectExceptionMessage('Value for nanoseconds must not be greater than 999999999');
+
+        Duration::fromSecondsAndNanoseconds(0, 1000000000);
+    }
+
+    #[DataProvider('provideDurationAndStringRepresentation')]
+    #[TestDox('$seconds seconds and $nanoseconds nanoseconds is represented as "$expected"')]
+    public function testCanBeRepresentedAsString(string $expected, int $seconds, int $nanoseconds): void
+    {
+        $this->assertSame(
+            $expected,
+            (Duration::fromSecondsAndNanoseconds($seconds, $nanoseconds))->asString()
+        );
     }
 
     /**
-     * @return array<string, array<{0: int, 1: int, 2: string>>
+     * @psalm-return array<string, array<{0: int, 1: int, 2: string>>
      */
     public function provideDurationAndStringRepresentation(): array
     {
         return [
-            'less-than-a-minute' => [
+            'less than a minute' => [
+                '00:00:59.000000123',
                 59,
                 123,
-                '00:00:59.000000123',
             ],
-            'less-than-an-hour' => [
+
+            'less than an hour' => [
+                '00:59:19.000000123',
                 3559,
                 123,
-                '00:59:19.000000123',
             ],
-            'more-than-an-hour' => [
+
+            'more than an hour' => [
+                '01:00:01.000000123',
                 3601,
                 123,
-                '01:00:01.000000123',
             ],
         ];
+    }
+
+    public function testCanBeRepresentedAsFloat(): void
+    {
+        $this->assertSame(0.0, Duration::fromSecondsAndNanoseconds(0, 0)->asFloat());
     }
 
     public function testEqualsReturnsFalseWhenValuesAreDifferent(): void
@@ -116,165 +113,88 @@ final class DurationTest extends TestCase
 
     public function testEqualsReturnsTrueWhenValuesAreSame(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(123, 456);
 
         $this->assertTrue($one->equals($two));
     }
 
     public function testIsLessThanReturnsFalseWhenSecondsAreGreater(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            122,
-            456
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(122, 456);
 
         $this->assertFalse($one->isLessThan($two));
     }
 
     public function testIsLessThanReturnsFalseWhenSecondsAreEqualAndNanosecondsAreGreater(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            123,
-            455
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(123, 455);
 
         $this->assertFalse($one->isLessThan($two));
     }
 
     public function testIsLessThanReturnsFalseWhenValuesAreSame(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(123, 456);
 
         $this->assertFalse($one->isLessThan($two));
     }
 
     public function testIsLessThanReturnsTrueWhenSecondsAreLess(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            124,
-            456
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(124, 456);
 
         $this->assertTrue($one->isLessThan($two));
     }
 
     public function testIsLessThanReturnsTrueWhenSecondsAreEqualAndNanosecondsAreLess(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            123,
-            457
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(123, 457);
 
         $this->assertTrue($one->isLessThan($two));
     }
 
     public function testIsGreaterThanReturnsFalseWhenSecondsAreLess(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            124,
-            456
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(124, 456);
 
         $this->assertFalse($one->isGreaterThan($two));
     }
 
     public function testIsGreaterThanReturnsFalseWhenSecondsAreEqualAndNanosecondsAreLess(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            123,
-            457
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(123, 457);
 
         $this->assertFalse($one->isGreaterThan($two));
     }
 
     public function testIsGreaterThanReturnsFalseWhenValuesAreSame(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(123, 456);
 
         $this->assertFalse($one->isGreaterThan($two));
     }
 
     public function testIsGreaterThanReturnsTrueWhenSecondsAreGreater(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            122,
-            456
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(122, 456);
 
         $this->assertTrue($one->isGreaterThan($two));
     }
 
     public function testIsGreaterThanReturnsTrueWhenSecondsAreEqualAndNanosecondsAreGreater(): void
     {
-        $one = Duration::fromSecondsAndNanoseconds(
-            123,
-            456
-        );
-
-        $two = Duration::fromSecondsAndNanoseconds(
-            123,
-            455
-        );
+        $one = Duration::fromSecondsAndNanoseconds(123, 456);
+        $two = Duration::fromSecondsAndNanoseconds(123, 455);
 
         $this->assertTrue($one->isGreaterThan($two));
     }

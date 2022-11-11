@@ -11,9 +11,11 @@ namespace PHPUnit\Event\Telemetry;
 
 use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(MemoryUsage::class)]
+#[Small]
 final class MemoryUsageTest extends TestCase
 {
     #[DataProvider('provideValidBytes')]
