@@ -18,22 +18,22 @@ use PHPUnit\Runner\Version;
  */
 final class PHPUnit
 {
-    private readonly string $version;
-    private readonly string $series;
+    private readonly string $versionId;
+    private readonly string $releaseSeries;
 
     public function __construct()
     {
-        $this->version = Version::id();
-        $this->series  = Version::series();
+        $this->versionId     = Version::id();
+        $this->releaseSeries = Version::series();
     }
 
-    public function version(): string
+    public function versionId(): string
     {
-        return $this->version;
+        return $this->versionId;
     }
 
-    public function series(): string
+    public function releaseSeries(): string
     {
-        return $this->series;
+        return $this->releaseSeries;
     }
 }

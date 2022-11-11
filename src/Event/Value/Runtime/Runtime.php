@@ -35,10 +35,10 @@ final class Runtime
 
         return sprintf(
             'PHPUnit %s using PHP %s (%s) on %s',
-            $this->phpunit()->version(),
-            $php->asString(),
+            $this->phpunit()->versionId(),
+            $php->version(),
             $php->sapi(),
-            $this->operatingSystem()->asString()
+            $this->operatingSystem()->operatingSystem()
         );
     }
 

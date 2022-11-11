@@ -7,21 +7,24 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestRunner;
+namespace PHPUnit\Event\Runtime;
 
-use PHPUnit\Event\Runtime\PHPUnit;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\Version;
 
 #[CoversClass(PHPUnit::class)]
+#[Small]
 final class PHPUnitTest extends TestCase
 {
-    public function testDefaults(): void
+    public function testHasVersionId(): void
     {
-        $phpUnit = new PHPUnit;
+        $this->assertSame(Version::id(), (new PHPUnit)->versionId());
+    }
 
-        $this->assertSame(Version::id(), $phpUnit->version());
-        $this->assertSame(Version::series(), $phpUnit->series());
+    public function testHasReleaseSeries(): void
+    {
+        $this->assertSame(Version::series(), (new PHPUnit)->releaseSeries());
     }
 }

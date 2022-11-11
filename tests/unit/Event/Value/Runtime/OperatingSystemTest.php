@@ -7,20 +7,25 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\Event\TestRunner;
+namespace PHPUnit\Event\Runtime;
 
-use PHPUnit\Event\Runtime\OperatingSystem;
+use const PHP_OS;
+use const PHP_OS_FAMILY;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 
 #[CoversClass(OperatingSystem::class)]
+#[Small]
 final class OperatingSystemTest extends TestCase
 {
-    public function testDefaults(): void
+    public function testCanBeRepresentedAsString(): void
     {
-        $os = new OperatingSystem;
+        $this->assertSame(PHP_OS, (new OperatingSystem)->operatingSystem());
+    }
 
-        $this->assertSame(PHP_OS, $os->asString());
-        $this->assertSame(PHP_OS_FAMILY, $os->family());
+    public function testHasOperatingSystemFamily(): void
+    {
+        $this->assertSame(PHP_OS_FAMILY, (new OperatingSystem)->operatingSystemFamily());
     }
 }

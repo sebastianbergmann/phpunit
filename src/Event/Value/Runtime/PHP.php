@@ -29,10 +29,10 @@ final class PHP
 {
     private readonly string $version;
     private readonly int $versionId;
-    private readonly int $versionMajor;
-    private readonly int $versionMinor;
-    private readonly int $versionPatch;
-    private readonly string $versionExtra;
+    private readonly int $majorVersion;
+    private readonly int $minorVersion;
+    private readonly int $releaseVersion;
+    private readonly string $extraVersion;
     private readonly string $sapi;
 
     /**
@@ -42,13 +42,13 @@ final class PHP
 
     public function __construct()
     {
-        $this->version      = PHP_VERSION;
-        $this->versionId    = PHP_VERSION_ID;
-        $this->versionMajor = PHP_MAJOR_VERSION;
-        $this->versionMinor = PHP_MINOR_VERSION;
-        $this->versionPatch = PHP_RELEASE_VERSION;
-        $this->versionExtra = PHP_EXTRA_VERSION;
-        $this->sapi         = PHP_SAPI;
+        $this->version        = PHP_VERSION;
+        $this->versionId      = PHP_VERSION_ID;
+        $this->majorVersion   = PHP_MAJOR_VERSION;
+        $this->minorVersion   = PHP_MINOR_VERSION;
+        $this->releaseVersion = PHP_RELEASE_VERSION;
+        $this->extraVersion   = PHP_EXTRA_VERSION;
+        $this->sapi           = PHP_SAPI;
 
         $extensions = array_merge(
             get_loaded_extensions(true),
@@ -60,7 +60,7 @@ final class PHP
         $this->extensions = $extensions;
     }
 
-    public function asString(): string
+    public function version(): string
     {
         return $this->version;
     }
@@ -70,27 +70,27 @@ final class PHP
         return $this->sapi;
     }
 
-    public function major(): int
+    public function majorVersion(): int
     {
-        return $this->versionMajor;
+        return $this->majorVersion;
     }
 
-    public function minor(): int
+    public function minorVersion(): int
     {
-        return $this->versionMinor;
+        return $this->minorVersion;
     }
 
-    public function patch(): int
+    public function releaseVersion(): int
     {
-        return $this->versionPatch;
+        return $this->releaseVersion;
     }
 
-    public function extra(): string
+    public function extraVersion(): string
     {
-        return $this->versionExtra;
+        return $this->extraVersion;
     }
 
-    public function id(): int
+    public function versionId(): int
     {
         return $this->versionId;
     }

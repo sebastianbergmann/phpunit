@@ -28,12 +28,12 @@ final class OperatingSystem
         $this->operatingSystemFamily = PHP_OS_FAMILY;
     }
 
-    public function asString(): string
+    public function operatingSystem(): string
     {
         return $this->operatingSystem;
     }
 
-    public function family(): string
+    public function operatingSystemFamily(): string
     {
         return $this->operatingSystemFamily;
     }
