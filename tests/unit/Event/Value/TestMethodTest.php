@@ -84,12 +84,14 @@ final class TestMethodTest extends TestCase
                 'Bar',
             ),
             MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([
-                DataFromDataProvider::from(
-                    $dataSetName,
-                    'data'
-                ),
-            ])
+            TestDataCollection::fromArray(
+                [
+                    DataFromDataProvider::from(
+                        $dataSetName,
+                        'data'
+                    ),
+                ]
+            )
         );
 
         $expected = sprintf(
@@ -116,12 +118,14 @@ final class TestMethodTest extends TestCase
                 'Bar',
             ),
             MetadataCollection::fromArray([]),
-            TestDataCollection::fromArray([
-                DataFromDataProvider::from(
-                    $dataSetName,
-                    'data'
-                ),
-            ])
+            TestDataCollection::fromArray(
+                [
+                    DataFromDataProvider::from(
+                        $dataSetName,
+                        'data'
+                    ),
+                ]
+            )
         );
 
         $expected = sprintf(
