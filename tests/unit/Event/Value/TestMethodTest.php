@@ -13,10 +13,12 @@ use function sprintf;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
 
 #[CoversClass(TestMethod::class)]
+#[Small]
 final class TestMethodTest extends TestCase
 {
     public function testConstructorSetsValues(): void
