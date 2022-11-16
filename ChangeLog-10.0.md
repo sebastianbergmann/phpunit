@@ -13,6 +13,7 @@ All notable changes of the PHPUnit 10.0 release series are documented in this fi
 * [#4818](https://github.com/sebastianbergmann/phpunit/pull/4818): `assertIsList()`
 * [#4892](https://github.com/sebastianbergmann/phpunit/issues/4892): Make colors used in HTML code coverage report configurable
 * [#4893](https://github.com/sebastianbergmann/phpunit/issues/4893): Make path to custom.css for HTML code coverage report configurable
+* [#5097](https://github.com/sebastianbergmann/phpunit/issues/5097): Support for `enum` values in TestDox placeholder replacements
 * `#[ExcludeGlobalVariableFromBackup('variable')]` attribute for excluding a global variable from the backup/restore of global and super-global variables
 * `#[ExcludeStaticPropertyFromBackup('className', 'propertyName')]` attribute for excluding a static property from the backup/restore of static properties in user-defined classes
 * `--log-events-text <file>` option that controls streaming of event information (without event telemetry) in text format to a file

@@ -19,9 +19,9 @@ final class DataProviderWithNumericDataSetNameAndMetadataWithPlaceholdersTest ex
     /**
      * @dataProvider provider
      *
-     * @testdox Text from method-level TestDox metadata for successful test with placeholders ($a, $b, $c $d, $e)
+     * @testdox Text from method-level TestDox metadata for successful test with placeholders ($a, $b, $c $d, $e, $f)
      */
-    public function testSomethingThatWorks(string $a, int $b, float $c, array $d, bool $e): void
+    public function testSomethingThatWorks(string $a, int $b, float $c, array $d, bool $e, Foo $f): void
     {
         $this->assertTrue(true);
     }
@@ -29,9 +29,9 @@ final class DataProviderWithNumericDataSetNameAndMetadataWithPlaceholdersTest ex
     /**
      * @dataProvider provider
      *
-     * @testdox Text from method-level TestDox metadata for failing test with placeholders ($a, $b, $c $d, $e)
+     * @testdox Text from method-level TestDox metadata for failing test with placeholders ($a, $b, $c $d, $e, $f)
      */
-    public function testSomethingThatDoesNotWork(string $a, int $b, float $c, array $d, bool $e): void
+    public function testSomethingThatDoesNotWork(string $a, int $b, float $c, array $d, bool $e, Foo $f): void
     {
         /* @noinspection PhpUnitAssertTrueWithIncompatibleTypeArgumentInspection */
         $this->assertTrue(false);
@@ -46,6 +46,7 @@ final class DataProviderWithNumericDataSetNameAndMetadataWithPlaceholdersTest ex
                 0.0,
                 ['key' => 'value'],
                 true,
+                Foo::BAR,
             ],
         ];
     }
