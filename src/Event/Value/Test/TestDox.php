@@ -38,7 +38,22 @@ final class TestDox
         );
     }
 
-    public function __construct(string $prettifiedClassName, string $prettifiedMethodName, string $prettifiedAndColorizedMethodName)
+    /**
+     * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
+     */
+    public static function fromClassNameAndMethodName(string $className, string $methodName): self
+    {
+        $prettifier = new NamePrettifier;
+
+        return new self(
+            $prettifier->prettifyTestClassName($className),
+            $prettifier->prettifyTestMethodName($methodName),
+            $prettifier->prettifyTestMethodName($methodName),
+        );
+    }
+
+    private function __construct(string $prettifiedClassName, string $prettifiedMethodName, string $prettifiedAndColorizedMethodName)
     {
         $this->prettifiedClassName              = $prettifiedClassName;
         $this->prettifiedMethodName             = $prettifiedMethodName;

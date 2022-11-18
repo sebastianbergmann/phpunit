@@ -13,7 +13,7 @@ use PHPUnit\Framework\TestCase;
 
 class Issue3093Test extends TestCase
 {
-    public function someDataProvider(): array
+    public static function someDataProvider(): array
     {
         return [['some values']];
     }

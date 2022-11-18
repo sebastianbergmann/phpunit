@@ -40,79 +40,7 @@ use PHPUnit\TestFixture\Test3194;
 #[Small]
 final class CodeCoverageFacadeTest extends TestCase
 {
-    /**
-     * @psalm-param class-string $test
-     */
-    #[DataProvider('getLinesToBeCoveredProvider')]
-    public function testGetLinesToBeCovered(string $test, array|false $expected): void
-    {
-        $this->assertEqualsCanonicalizing(
-            $expected,
-            (new CodeCoverage)->linesToBeCovered(
-                $test,
-                'testSomething'
-            )
-        );
-    }
-
-    public function testFunctionParenthesesAreAllowed(): void
-    {
-        $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
-            (new CodeCoverage)->linesToBeCovered(
-                CoverageFunctionParenthesesTest::class,
-                'testSomething'
-            )
-        );
-    }
-
-    public function testFunctionParenthesesAreAllowedWithWhitespace(): void
-    {
-        $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
-            (new CodeCoverage)->linesToBeCovered(
-                CoverageFunctionParenthesesWhitespaceTest::class,
-                'testSomething'
-            )
-        );
-    }
-
-    public function testMethodParenthesesAreAllowed(): void
-    {
-        $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
-            (new CodeCoverage)->linesToBeCovered(
-                CoverageMethodParenthesesTest::class,
-                'testSomething'
-            )
-        );
-    }
-
-    public function testMethodParenthesesAreAllowedWithWhitespace(): void
-    {
-        $this->assertSame(
-            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
-            (new CodeCoverage)->linesToBeCovered(
-                CoverageMethodParenthesesWhitespaceTest::class,
-                'testSomething'
-            )
-        );
-    }
-
-    public function testNamespacedFunctionCanBeCoveredOrUsed(): void
-    {
-        $this->assertEquals(
-            [
-                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(12, 15),
-            ],
-            (new CodeCoverage)->linesToBeCovered(
-                CoverageNamespacedFunctionTest::class,
-                'testFunc'
-            )
-        );
-    }
-
-    public function getLinesToBeCoveredProvider(): array
+    public static function getLinesToBeCoveredProvider(): array
     {
         return [
             [
@@ -189,6 +117,89 @@ final class CodeCoverageFacadeTest extends TestCase
         ];
     }
 
+    public static function canSkipCoverageProvider(): array
+    {
+        return [
+            [CoverageClassTest::class, false],
+            [CoverageClassWithoutAnnotationsTest::class, false],
+            [CoverageCoversOverridesCoversNothingTest::class, false],
+            [CoverageClassNothingTest::class, true],
+            [CoverageMethodNothingTest::class, true],
+        ];
+    }
+
+    /**
+     * @psalm-param class-string $test
+     */
+    #[DataProvider('getLinesToBeCoveredProvider')]
+    public function testGetLinesToBeCovered(string $test, array|false $expected): void
+    {
+        $this->assertEqualsCanonicalizing(
+            $expected,
+            (new CodeCoverage)->linesToBeCovered(
+                $test,
+                'testSomething'
+            )
+        );
+    }
+
+    public function testFunctionParenthesesAreAllowed(): void
+    {
+        $this->assertSame(
+            [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
+            (new CodeCoverage)->linesToBeCovered(
+                CoverageFunctionParenthesesTest::class,
+                'testSomething'
+            )
+        );
+    }
+
+    public function testFunctionParenthesesAreAllowedWithWhitespace(): void
+    {
+        $this->assertSame(
+            [TEST_FILES_PATH . 'CoveredFunction.php' => range(10, 12)],
+            (new CodeCoverage)->linesToBeCovered(
+                CoverageFunctionParenthesesWhitespaceTest::class,
+                'testSomething'
+            )
+        );
+    }
+
+    public function testMethodParenthesesAreAllowed(): void
+    {
+        $this->assertSame(
+            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
+            (new CodeCoverage)->linesToBeCovered(
+                CoverageMethodParenthesesTest::class,
+                'testSomething'
+            )
+        );
+    }
+
+    public function testMethodParenthesesAreAllowedWithWhitespace(): void
+    {
+        $this->assertSame(
+            [TEST_FILES_PATH . 'CoveredClass.php' => range(31, 35)],
+            (new CodeCoverage)->linesToBeCovered(
+                CoverageMethodParenthesesWhitespaceTest::class,
+                'testSomething'
+            )
+        );
+    }
+
+    public function testNamespacedFunctionCanBeCoveredOrUsed(): void
+    {
+        $this->assertEquals(
+            [
+                TEST_FILES_PATH . 'NamespaceCoveredFunction.php' => range(12, 15),
+            ],
+            (new CodeCoverage)->linesToBeCovered(
+                CoverageNamespacedFunctionTest::class,
+                'testFunc'
+            )
+        );
+    }
+
     public function testCoversAnnotationIncludesTraitsUsedByClass(): void
     {
         $this->assertSame(
@@ -213,16 +224,5 @@ final class CodeCoverageFacadeTest extends TestCase
         $canSkipCoverage  = !$coverageRequired;
 
         $this->assertEquals($expectedCanSkip, $canSkipCoverage);
-    }
-
-    public function canSkipCoverageProvider(): array
-    {
-        return [
-            [CoverageClassTest::class, false],
-            [CoverageClassWithoutAnnotationsTest::class, false],
-            [CoverageCoversOverridesCoversNothingTest::class, false],
-            [CoverageClassNothingTest::class, true],
-            [CoverageMethodNothingTest::class, true],
-        ];
     }
 }

@@ -27,6 +27,26 @@ use PHPUnit\Util\VersionComparisonOperator;
 #[Small]
 final class RequirementTest extends TestCase
 {
+    public static function constraintProvider(): array
+    {
+        return [
+            [
+                true,
+                '1.0.0',
+                new ConstraintRequirement(
+                    (new VersionConstraintParser)->parse('1.0.0')
+                ),
+            ],
+        ];
+    }
+
+    public static function comparisonProvider(): array
+    {
+        return [
+            [true, '1.0.0', new ComparisonRequirement('1.0.0', new VersionComparisonOperator('='))],
+        ];
+    }
+
     public function testCanBeCreatedFromStringWithVersionConstraint(): void
     {
         $requirement = Requirement::from('^1.0');
@@ -60,25 +80,5 @@ final class RequirementTest extends TestCase
         $this->expectException(InvalidVersionRequirementException::class);
 
         Requirement::from('invalid');
-    }
-
-    public function constraintProvider(): array
-    {
-        return [
-            [
-                true,
-                '1.0.0',
-                new ConstraintRequirement(
-                    (new VersionConstraintParser)->parse('1.0.0')
-                ),
-            ],
-        ];
-    }
-
-    public function comparisonProvider(): array
-    {
-        return [
-            [true, '1.0.0', new ComparisonRequirement('1.0.0', new VersionComparisonOperator('='))],
-        ];
     }
 }

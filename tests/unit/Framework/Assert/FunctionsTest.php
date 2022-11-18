@@ -20,6 +20,28 @@ final class FunctionsTest extends TestCase
 {
     private static array $globalAssertionFunctions = [];
 
+    public static function provideStaticAssertionMethodNames(): array
+    {
+        preg_match_all(
+            '/public static function (assert[^ (]+)/',
+            file_get_contents(
+                __DIR__ . '/../../../../src/Framework/Assert.php'
+            ),
+            $matches
+        );
+
+        return array_reduce(
+            $matches[1],
+            static function (array $functionNames, string $functionName)
+            {
+                $functionNames[$functionName] = [$functionName];
+
+                return $functionNames;
+            },
+            []
+        );
+    }
+
     public static function setUpBeforeClass(): void
     {
         preg_match_all(
@@ -40,28 +62,6 @@ final class FunctionsTest extends TestCase
             $methodName,
             self::$globalAssertionFunctions,
             "Mapping for Assert::{$methodName} is missing in Functions.php"
-        );
-    }
-
-    public function provideStaticAssertionMethodNames(): array
-    {
-        preg_match_all(
-            '/public static function (assert[^ (]+)/',
-            file_get_contents(
-                __DIR__ . '/../../../../src/Framework/Assert.php'
-            ),
-            $matches
-        );
-
-        return array_reduce(
-            $matches[1],
-            static function (array $functionNames, string $functionName)
-            {
-                $functionNames[$functionName] = [$functionName];
-
-                return $functionNames;
-            },
-            []
         );
     }
 }

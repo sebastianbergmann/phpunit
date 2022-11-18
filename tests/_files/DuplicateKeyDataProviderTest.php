@@ -13,17 +13,17 @@ use PHPUnit\Framework\TestCase;
 
 final class DuplicateKeyDataProviderTest extends TestCase
 {
+    public static function dataProvider()
+    {
+        yield 'foo' => ['foo'];
+
+        yield 'foo' => ['bar'];
+    }
+
     /**
      * @dataProvider dataProvider
      */
     public function test($arg): void
     {
-    }
-
-    public function dataProvider()
-    {
-        yield 'foo' => ['foo'];
-
-        yield 'foo' => ['bar'];
     }
 }

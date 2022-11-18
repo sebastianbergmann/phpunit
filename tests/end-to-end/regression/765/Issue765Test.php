@@ -14,6 +14,11 @@ use PHPUnit\Framework\TestCase;
 
 class Issue765Test extends TestCase
 {
+    public static function dependentProvider(): void
+    {
+        throw new Exception;
+    }
+
     public function testDependee(): void
     {
         $this->assertTrue(true);
@@ -27,10 +32,5 @@ class Issue765Test extends TestCase
     public function testDependent($a): void
     {
         $this->assertTrue(true);
-    }
-
-    public function dependentProvider(): void
-    {
-        throw new Exception;
     }
 }

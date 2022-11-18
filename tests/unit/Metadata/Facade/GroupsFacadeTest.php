@@ -21,13 +21,7 @@ use PHPUnit\TestFixture\NumericGroupAnnotationTest;
 #[Small]
 final class GroupsFacadeTest extends TestCase
 {
-    #[DataProvider('provider')]
-    public function testGroupsAreAssigned(string $class, string $method, array $groups): void
-    {
-        $this->assertSame($groups, (new Groups)->groups($class, $method));
-    }
-
-    public function provider(): array
+    public static function provider(): array
     {
         return [
             [
@@ -64,5 +58,11 @@ final class GroupsFacadeTest extends TestCase
                 ],
             ],
         ];
+    }
+
+    #[DataProvider('provider')]
+    public function testGroupsAreAssigned(string $class, string $method, array $groups): void
+    {
+        $this->assertSame($groups, (new Groups)->groups($class, $method));
     }
 }

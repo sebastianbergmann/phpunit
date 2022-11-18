@@ -19,16 +19,7 @@ use PHPUnit\TestFixture\RequirementsTest;
 #[Small]
 final class RequirementsFacadeTest extends TestCase
 {
-    #[DataProvider('missingRequirementsProvider')]
-    public function testGetMissingRequirements(string $test, array $result): void
-    {
-        $this->assertEquals(
-            $result,
-            (new Requirements)->requirementsNotSatisfiedFor(RequirementsTest::class, $test)
-        );
-    }
-
-    public function missingRequirementsProvider(): array
+    public static function missingRequirementsProvider(): array
     {
         return [
             ['testOne',            []],
@@ -130,5 +121,14 @@ final class RequirementsFacadeTest extends TestCase
                 'PHPUnit ^2.0 is required.',
             ]],
         ];
+    }
+
+    #[DataProvider('missingRequirementsProvider')]
+    public function testGetMissingRequirements(string $test, array $result): void
+    {
+        $this->assertEquals(
+            $result,
+            (new Requirements)->requirementsNotSatisfiedFor(RequirementsTest::class, $test)
+        );
     }
 }

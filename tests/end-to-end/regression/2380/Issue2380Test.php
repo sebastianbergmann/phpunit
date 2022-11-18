@@ -15,18 +15,18 @@ use PHPUnit\Framework\TestCase;
 class Issue2380Test extends TestCase
 {
     /**
+     * @return Generator
+     */
+    public static function generatorData()
+    {
+        yield ['testing'];
+    }
+
+    /**
      * @dataProvider generatorData
      */
     public function testGeneratorProvider($data): void
     {
         $this->assertNotEmpty($data);
-    }
-
-    /**
-     * @return Generator
-     */
-    public function generatorData()
-    {
-        yield ['testing'];
     }
 }

@@ -11,13 +11,7 @@ namespace PHPUnit\TestFixture;
 
 abstract class AbstractVariousIterableDataProviderTest
 {
-    abstract public function asArrayProvider();
-
-    abstract public function asIteratorProvider();
-
-    abstract public function asTraversableProvider();
-
-    public function asArrayProviderInParent()
+    public static function asArrayProviderInParent()
     {
         return [
             ['J'],
@@ -26,7 +20,7 @@ abstract class AbstractVariousIterableDataProviderTest
         ];
     }
 
-    public function asIteratorProviderInParent()
+    public static function asIteratorProviderInParent()
     {
         yield ['M'];
 
@@ -35,7 +29,7 @@ abstract class AbstractVariousIterableDataProviderTest
         yield ['O'];
     }
 
-    public function asTraversableProviderInParent()
+    public static function asTraversableProviderInParent()
     {
         return new WrapperIteratorAggregate([
             ['P'],
@@ -43,6 +37,12 @@ abstract class AbstractVariousIterableDataProviderTest
             ['R'],
         ]);
     }
+
+    abstract public static function asArrayProvider();
+
+    abstract public static function asIteratorProvider();
+
+    abstract public static function asTraversableProvider();
 
     /**
      * @dataProvider asArrayProvider

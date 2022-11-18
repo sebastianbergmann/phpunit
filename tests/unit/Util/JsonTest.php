@@ -19,6 +19,32 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class JsonTest extends TestCase
 {
+    public static function canonicalizeProvider(): array
+    {
+        return [
+            ['{"name":"John","age":"35"}', '{"age":"35","name":"John"}', false],
+            ['{"name":"John","age":"35","kids":[{"name":"Petr","age":"5"}]}', '{"age":"35","kids":[{"age":"5","name":"Petr"}],"name":"John"}', false],
+            ['"name":"John","age":"35"}', '{"age":"35","name":"John"}', true],
+        ];
+    }
+
+    public static function prettifyProvider(): array
+    {
+        return [
+            ['{"name":"John","age": "5"}', "{\n    \"name\": \"John\",\n    \"age\": \"5\"\n}"],
+            ['{"url":"https://www.example.com/"}', "{\n    \"url\": \"https://www.example.com/\"\n}"],
+            ['"Кириллица and 中文"', '"Кириллица and 中文"'],
+        ];
+    }
+
+    public static function prettifyExceptionProvider(): array
+    {
+        return [
+            ['"name":"John","age": "5"}'],
+            [''],
+        ];
+    }
+
     #[DataProvider('canonicalizeProvider')]
     #[TestDox('Canonicalize $actual')]
     public function testCanonicalize(string $actual, string $expected, bool $expectError): void
@@ -32,29 +58,11 @@ final class JsonTest extends TestCase
         }
     }
 
-    public function canonicalizeProvider(): array
-    {
-        return [
-            ['{"name":"John","age":"35"}', '{"age":"35","name":"John"}', false],
-            ['{"name":"John","age":"35","kids":[{"name":"Petr","age":"5"}]}', '{"age":"35","kids":[{"age":"5","name":"Petr"}],"name":"John"}', false],
-            ['"name":"John","age":"35"}', '{"age":"35","name":"John"}', true],
-        ];
-    }
-
     #[DataProvider('prettifyProvider')]
     #[TestDox('Prettify $actual to $expected')]
     public function testPrettify(string $actual, string $expected): void
     {
         $this->assertEquals($expected, Json::prettify($actual));
-    }
-
-    public function prettifyProvider(): array
-    {
-        return [
-            ['{"name":"John","age": "5"}', "{\n    \"name\": \"John\",\n    \"age\": \"5\"\n}"],
-            ['{"url":"https://www.example.com/"}', "{\n    \"url\": \"https://www.example.com/\"\n}"],
-            ['"Кириллица and 中文"', '"Кириллица and 中文"'],
-        ];
     }
 
     #[DataProvider('prettifyExceptionProvider')]
@@ -63,13 +71,5 @@ final class JsonTest extends TestCase
         $this->expectException(InvalidJsonException::class);
 
         Json::prettify($json);
-    }
-
-    public function prettifyExceptionProvider(): array
-    {
-        return [
-            ['"name":"John","age": "5"}'],
-            [''],
-        ];
     }
 }

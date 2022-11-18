@@ -27,7 +27,7 @@ final class TestMethodTest extends TestCase
         $methodName = 'testBar';
         $file       = 'FooTest.php';
         $line       = 1;
-        $testDox    = new TestDox('Foo', 'Bar', 'Bar');
+        $testDox    = TestDox::fromClassNameAndMethodName('Foo', 'bar');
         $testData   = TestDataCollection::fromArray([]);
         $metadata   = MetadataCollection::fromArray([]);
 
@@ -57,11 +57,7 @@ final class TestMethodTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            new TestDox(
-                'Foo',
-                'Bar',
-                'Bar',
-            ),
+            TestDox::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );
@@ -78,11 +74,7 @@ final class TestMethodTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            new TestDox(
-                'Foo',
-                'Bar',
-                'Bar',
-            ),
+            TestDox::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray(
                 [
@@ -112,11 +104,7 @@ final class TestMethodTest extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            new TestDox(
-                'Foo',
-                'Bar',
-                'Bar',
-            ),
+            TestDox::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray(
                 [

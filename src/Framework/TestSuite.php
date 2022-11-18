@@ -552,6 +552,8 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         $className  = $class->getName();
         $methodName = $method->getName();
 
+        assert(!empty($methodName));
+
         try {
             $test = (new TestBuilder)->build($class, $methodName);
         } catch (InvalidDataProviderException $e) {
@@ -563,10 +565,9 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
                     $methodName,
                     $class->getFileName(),
                     $method->getStartLine(),
-                    new TestDox(
-                        $prettifier->prettifyTestClassName($className),
-                        $prettifier->prettifyTestMethodName($methodName),
-                        $prettifier->prettifyTestMethodName($methodName),
+                    TestDox::fromClassNameAndMethodName(
+                        $className,
+                        $methodName
                     ),
                     MetadataCollection::fromArray([]),
                     Event\TestData\TestDataCollection::fromArray([])

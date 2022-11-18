@@ -37,6 +37,31 @@ use SebastianBergmann\CodeCoverage\Report\Thresholds;
 #[Medium]
 final class XmlConfigurationTest extends TestCase
 {
+    public static function configurationRootOptionsProvider(): array
+    {
+        return [
+            'executionOrder default'                          => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
+            'executionOrder random'                           => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
+            'executionOrder reverse'                          => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
+            'executionOrder size'                             => ['executionOrder', 'size', TestSuiteSorter::ORDER_SIZE],
+            'cacheDirectory absolute path'                    => ['cacheDirectory', '/path/to/cache', '/path/to/cache'],
+            'cacheResult=false'                               => ['cacheResult', 'false', false],
+            'cacheResult=true'                                => ['cacheResult', 'true', true],
+            'columns'                                         => ['columns', 'max', 'max'],
+            'stopOnFailure'                                   => ['stopOnFailure', 'true', true],
+            'stopOnWarning'                                   => ['stopOnWarning', 'true', true],
+            'stopOnIncomplete'                                => ['stopOnIncomplete', 'true', true],
+            'stopOnRisky'                                     => ['stopOnRisky', 'true', true],
+            'stopOnSkipped'                                   => ['stopOnSkipped', 'true', true],
+            'failOnEmptyTestSuite'                            => ['failOnEmptyTestSuite', 'true', true],
+            'failOnWarning'                                   => ['failOnWarning', 'true', true],
+            'failOnRisky'                                     => ['failOnRisky', 'true', true],
+            'processIsolation'                                => ['processIsolation', 'true', true],
+            'reverseDefectList'                               => ['reverseDefectList', 'true', true],
+            'registerMockObjectsFromTestArgumentsRecursively' => ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
+        ];
+    }
+
     public function testExceptionIsThrownForNotExistingConfigurationFile(): void
     {
         $this->expectException(Exception::class);
@@ -101,31 +126,6 @@ final class XmlConfigurationTest extends TestCase
         $this->assertEquals($expected, $configuration->phpunit()->{$optionName}());
 
         @unlink($tmpFilename);
-    }
-
-    public function configurationRootOptionsProvider(): array
-    {
-        return [
-            'executionOrder default'                          => ['executionOrder', 'default', TestSuiteSorter::ORDER_DEFAULT],
-            'executionOrder random'                           => ['executionOrder', 'random', TestSuiteSorter::ORDER_RANDOMIZED],
-            'executionOrder reverse'                          => ['executionOrder', 'reverse', TestSuiteSorter::ORDER_REVERSED],
-            'executionOrder size'                             => ['executionOrder', 'size', TestSuiteSorter::ORDER_SIZE],
-            'cacheDirectory absolute path'                    => ['cacheDirectory', '/path/to/cache', '/path/to/cache'],
-            'cacheResult=false'                               => ['cacheResult', 'false', false],
-            'cacheResult=true'                                => ['cacheResult', 'true', true],
-            'columns'                                         => ['columns', 'max', 'max'],
-            'stopOnFailure'                                   => ['stopOnFailure', 'true', true],
-            'stopOnWarning'                                   => ['stopOnWarning', 'true', true],
-            'stopOnIncomplete'                                => ['stopOnIncomplete', 'true', true],
-            'stopOnRisky'                                     => ['stopOnRisky', 'true', true],
-            'stopOnSkipped'                                   => ['stopOnSkipped', 'true', true],
-            'failOnEmptyTestSuite'                            => ['failOnEmptyTestSuite', 'true', true],
-            'failOnWarning'                                   => ['failOnWarning', 'true', true],
-            'failOnRisky'                                     => ['failOnRisky', 'true', true],
-            'processIsolation'                                => ['processIsolation', 'true', true],
-            'reverseDefectList'                               => ['reverseDefectList', 'true', true],
-            'registerMockObjectsFromTestArgumentsRecursively' => ['registerMockObjectsFromTestArgumentsRecursively', 'true', true],
-        ];
     }
 
     public function testShouldParseXmlConfigurationExecutionOrderCombined(): void

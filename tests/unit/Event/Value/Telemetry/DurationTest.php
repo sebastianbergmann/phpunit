@@ -20,6 +20,32 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class DurationTest extends TestCase
 {
+    /**
+     * @psalm-return array<string, array<{0: int, 1: int, 2: string>>
+     */
+    public static function provideDurationAndStringRepresentation(): array
+    {
+        return [
+            'less than a minute' => [
+                '00:00:59.000000123',
+                59,
+                123,
+            ],
+
+            'less than an hour' => [
+                '00:59:19.000000123',
+                3559,
+                123,
+            ],
+
+            'more than an hour' => [
+                '01:00:01.000000123',
+                3601,
+                123,
+            ],
+        ];
+    }
+
     public function testCanBeCreatedFromSecondsAndNanoseconds(): void
     {
         $seconds     = 123;
@@ -63,32 +89,6 @@ final class DurationTest extends TestCase
             $expected,
             (Duration::fromSecondsAndNanoseconds($seconds, $nanoseconds))->asString()
         );
-    }
-
-    /**
-     * @psalm-return array<string, array<{0: int, 1: int, 2: string>>
-     */
-    public function provideDurationAndStringRepresentation(): array
-    {
-        return [
-            'less than a minute' => [
-                '00:00:59.000000123',
-                59,
-                123,
-            ],
-
-            'less than an hour' => [
-                '00:59:19.000000123',
-                3559,
-                123,
-            ],
-
-            'more than an hour' => [
-                '01:00:01.000000123',
-                3601,
-                123,
-            ],
-        ];
     }
 
     public function testCanBeRepresentedAsFloat(): void

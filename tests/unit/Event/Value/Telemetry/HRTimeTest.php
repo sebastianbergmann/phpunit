@@ -19,6 +19,63 @@ use PHPUnit\Framework\TestCase;
 #[Small]
 final class HRTimeTest extends TestCase
 {
+    /**
+     * @return array<string, array<{0: int, 1: int, 2: int, 3: int>
+     */
+    public static function provideStartGreaterThanEnd(): array
+    {
+        return [
+            'seconds-greater' => [
+                11,
+                1,
+                10,
+                1,
+            ],
+            'seconds-and-nanoseconds-greater' => [
+                11,
+                1,
+                10,
+                0,
+            ],
+            'nanoseconds-greater' => [
+                10,
+                1,
+                10,
+                0,
+            ],
+        ];
+    }
+
+    /**
+     * @return array<string, array<{0: int, 1: int, 2: int, 3: int, 4: Duration>
+     */
+    public static function provideStartEndAndDuration(): array
+    {
+        return [
+            'start-equal-to-end' => [
+                10,
+                50,
+                10,
+                50,
+                Duration::fromSecondsAndNanoseconds(0, 0),
+            ],
+            'start-smaller-than-end' => [
+                10,
+                50,
+                12,
+                70,
+                Duration::fromSecondsAndNanoseconds(2, 20),
+            ],
+            'start-nanoseconds-greater-than-end-nanoseconds' => [
+                10,
+                50,
+                12,
+                30,
+                Duration::fromSecondsAndNanoseconds(1, 999999980),
+            ],
+        ];
+    }
+
     public function testFromSecondsAndNanosecondsRejectsNegativeSeconds(): void
     {
         $this->expectException(InvalidArgumentException::class);
@@ -89,33 +146,6 @@ final class HRTimeTest extends TestCase
         $end->duration($start);
     }
 
-    /**
-     * @return array<string, array<{0: int, 1: int, 2: int, 3: int>
-     */
-    public function provideStartGreaterThanEnd(): array
-    {
-        return [
-            'seconds-greater' => [
-                11,
-                1,
-                10,
-                1,
-            ],
-            'seconds-and-nanoseconds-greater' => [
-                11,
-                1,
-                10,
-                0,
-            ],
-            'nanoseconds-greater' => [
-                10,
-                1,
-                10,
-                0,
-            ],
-        ];
-    }
-
     #[DataProvider('provideStartEndAndDuration')]
     public function testDurationReturnsDifferenceBetweenEndAndStart(
         int $startSeconds,
@@ -135,35 +165,5 @@ final class HRTimeTest extends TestCase
         );
 
         $this->assertEquals($duration, $end->duration($start));
-    }
-
-    /**
-     * @return array<string, array<{0: int, 1: int, 2: int, 3: int, 4: Duration>
-     */
-    public function provideStartEndAndDuration(): array
-    {
-        return [
-            'start-equal-to-end' => [
-                10,
-                50,
-                10,
-                50,
-                Duration::fromSecondsAndNanoseconds(0, 0),
-            ],
-            'start-smaller-than-end' => [
-                10,
-                50,
-                12,
-                70,
-                Duration::fromSecondsAndNanoseconds(2, 20),
-            ],
-            'start-nanoseconds-greater-than-end-nanoseconds' => [
-                10,
-                50,
-                12,
-                30,
-                Duration::fromSecondsAndNanoseconds(1, 999999980),
-            ],
-        ];
     }
 }

@@ -13,20 +13,20 @@ use PHPUnit\Framework\TestCase;
 
 class Issue1337Test extends TestCase
 {
-    /**
-     * @dataProvider dataProvider
-     */
-    public function testProvider($a): void
-    {
-        $this->assertTrue($a);
-    }
-
-    public function dataProvider()
+    public static function dataProvider()
     {
         return [
             'c:\\' => [true],
             // The following is commented out because it no longer works in PHP >= 8.1
             //0.9    => [true],
         ];
+    }
+
+    /**
+     * @dataProvider dataProvider
+     */
+    public function testProvider($a): void
+    {
+        $this->assertTrue($a);
     }
 }

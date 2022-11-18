@@ -16,6 +16,19 @@ use PHPUnit\Framework\TestCase;
  */
 final class DataProviderWithNumericDataSetNameAndMetadataTest extends TestCase
 {
+    public static function provider(): array
+    {
+        return [
+            0 => [
+                'string',
+                0,
+                0.0,
+                ['key' => 'value'],
+                true,
+            ],
+        ];
+    }
+
     /**
      * @dataProvider provider
      *
@@ -35,18 +48,5 @@ final class DataProviderWithNumericDataSetNameAndMetadataTest extends TestCase
     {
         /* @noinspection PhpUnitAssertTrueWithIncompatibleTypeArgumentInspection */
         $this->assertTrue(false);
-    }
-
-    public function provider(): array
-    {
-        return [
-            0 => [
-                'string',
-                0,
-                0.0,
-                ['key' => 'value'],
-                true,
-            ],
-        ];
     }
 }

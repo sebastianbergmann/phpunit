@@ -26,60 +26,7 @@ use stdClass;
 #[Small]
 final class IsEqualTest extends ConstraintTestCase
 {
-    public function testConstraintIsEqual(): void
-    {
-        $constraint = new IsEqual(1);
-
-        $this->assertTrue($constraint->evaluate(1, '', true));
-        $this->assertFalse($constraint->evaluate(0, '', true));
-        $this->assertEquals('is equal to 1', $constraint->toString());
-        $this->assertCount(1, $constraint);
-
-        try {
-            $constraint->evaluate(0);
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                <<<'EOF'
-Failed asserting that 0 matches expected 1.
-
-EOF
-                ,
-                ThrowableToStringMapper::map($e)
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    #[DataProvider('isEqualProvider')]
-    public function testConstraintIsEqual2(mixed $expected, mixed $actual, string $message): void
-    {
-        $constraint = new IsEqual($expected);
-
-        try {
-            $constraint->evaluate($actual, 'custom message');
-        } catch (ExpectationFailedException $e) {
-            $this->assertEquals(
-                "custom message\n{$message}",
-                $this->removeSpacesInFrontOfNewlines(ThrowableToStringMapper::map($e))
-            );
-
-            return;
-        }
-
-        $this->fail();
-    }
-
-    public function testConstraintDeltaIsNotZero(): void
-    {
-        $constraint = new IsEqual(15, 1);
-
-        $this->assertSame('is equal to 15 with delta <1.000000>', $constraint->toString());
-    }
-
-    public function isEqualProvider(): array
+    public static function isEqualProvider(): array
     {
         $a      = new stdClass;
         $a->foo = 'bar';
@@ -310,6 +257,59 @@ Failed asserting that two objects are equal.
 EOF
             ],
         ];
+    }
+
+    public function testConstraintIsEqual(): void
+    {
+        $constraint = new IsEqual(1);
+
+        $this->assertTrue($constraint->evaluate(1, '', true));
+        $this->assertFalse($constraint->evaluate(0, '', true));
+        $this->assertEquals('is equal to 1', $constraint->toString());
+        $this->assertCount(1, $constraint);
+
+        try {
+            $constraint->evaluate(0);
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                <<<'EOF'
+Failed asserting that 0 matches expected 1.
+
+EOF
+                ,
+                ThrowableToStringMapper::map($e)
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    #[DataProvider('isEqualProvider')]
+    public function testConstraintIsEqual2(mixed $expected, mixed $actual, string $message): void
+    {
+        $constraint = new IsEqual($expected);
+
+        try {
+            $constraint->evaluate($actual, 'custom message');
+        } catch (ExpectationFailedException $e) {
+            $this->assertEquals(
+                "custom message\n{$message}",
+                $this->removeSpacesInFrontOfNewlines(ThrowableToStringMapper::map($e))
+            );
+
+            return;
+        }
+
+        $this->fail();
+    }
+
+    public function testConstraintDeltaIsNotZero(): void
+    {
+        $constraint = new IsEqual(15, 1);
+
+        $this->assertSame('is equal to 15 with delta <1.000000>', $constraint->toString());
     }
 
     private function removeSpacesInFrontOfNewlines(string $string): string

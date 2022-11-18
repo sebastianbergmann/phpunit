@@ -45,11 +45,7 @@ abstract class AbstractEventTestCase extends TestCase
             'testBar',
             'FooTest.php',
             1,
-            new TestDox(
-                'Foo',
-                'Bar',
-                'Bar',
-            ),
+            TestDox::fromClassNameAndMethodName('Foo', 'bar'),
             MetadataCollection::fromArray([]),
             TestDataCollection::fromArray([])
         );

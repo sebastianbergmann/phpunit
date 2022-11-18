@@ -60,6 +60,61 @@ final class AssertTest extends TestCase
         ];
     }
 
+    public static function equalProvider(): array
+    {
+        // same |= equal
+        return array_merge(self::equalValues(), self::sameValues());
+    }
+
+    public static function notEqualProvider(): array
+    {
+        return self::notEqualValues();
+    }
+
+    public static function sameProvider(): array
+    {
+        return self::sameValues();
+    }
+
+    public static function notSameProvider(): array
+    {
+        // not equal |= not same
+        // equal, ¬same |= not same
+        return array_merge(self::notEqualValues(), self::equalValues());
+    }
+
+    public static function assertStringContainsStringIgnoringLineEndingsProvider(): array
+    {
+        return [
+            ["b\nc", "b\r\nc"],
+            ["b\nc", "a\r\nb\r\nc\r\nd"],
+        ];
+    }
+
+    public static function assertStringEqualsStringIgnoringLineEndingsProvider(): array
+    {
+        return [
+            'lf-crlf'   => ["a\nb", "a\r\nb"],
+            'cr-crlf'   => ["a\rb", "a\r\nb"],
+            'crlf-crlf' => ["a\r\nb", "a\r\nb"],
+            'lf-cr'     => ["a\nb", "a\rb"],
+            'cr-cr'     => ["a\rb", "a\rb"],
+            'crlf-cr'   => ["a\r\nb", "a\rb"],
+            'lf-lf'     => ["a\nb", "a\nb"],
+            'cr-lf'     => ["a\rb", "a\nb"],
+            'crlf-lf'   => ["a\r\nb", "a\nb"],
+        ];
+    }
+
+    public static function assertStringEqualsStringIgnoringLineEndingsProviderNegative(): array
+    {
+        return [
+            ["a\nb", 'ab'],
+            ["a\rb", 'ab'],
+            ["a\r\nb", 'ab'],
+        ];
+    }
+
     public function testFail(): void
     {
         try {
@@ -230,29 +285,6 @@ final class AssertTest extends TestCase
         $this->expectException(AssertionFailedError::class);
 
         $this->assertNotContainsOnly(stdClass::class, [new stdClass]);
-    }
-
-    public function equalProvider(): array
-    {
-        // same |= equal
-        return array_merge($this->equalValues(), $this->sameValues());
-    }
-
-    public function notEqualProvider(): array
-    {
-        return $this->notEqualValues();
-    }
-
-    public function sameProvider(): array
-    {
-        return $this->sameValues();
-    }
-
-    public function notSameProvider(): array
-    {
-        // not equal |= not same
-        // equal, ¬same |= not same
-        return array_merge($this->notEqualValues(), $this->equalValues());
     }
 
     #[DataProvider('equalProvider')]
@@ -1150,14 +1182,6 @@ XML;
         $this->assertStringContainsStringIgnoringLineEndings($needle, $haystack);
     }
 
-    public function assertStringContainsStringIgnoringLineEndingsProvider(): array
-    {
-        return [
-            ["b\nc", "b\r\nc"],
-            ["b\nc", "a\r\nb\r\nc\r\nd"],
-        ];
-    }
-
     public function testNotAssertStringContainsStringIgnoringLineEndings(): void
     {
         $this->expectException(ExpectationFailedException::class);
@@ -1171,36 +1195,12 @@ XML;
         $this->assertStringEqualsStringIgnoringLineEndings($expected, $actual);
     }
 
-    public function assertStringEqualsStringIgnoringLineEndingsProvider(): array
-    {
-        return [
-            'lf-crlf'   => ["a\nb", "a\r\nb"],
-            'cr-crlf'   => ["a\rb", "a\r\nb"],
-            'crlf-crlf' => ["a\r\nb", "a\r\nb"],
-            'lf-cr'     => ["a\nb", "a\rb"],
-            'cr-cr'     => ["a\rb", "a\rb"],
-            'crlf-cr'   => ["a\r\nb", "a\rb"],
-            'lf-lf'     => ["a\nb", "a\nb"],
-            'cr-lf'     => ["a\rb", "a\nb"],
-            'crlf-lf'   => ["a\r\nb", "a\nb"],
-        ];
-    }
-
     #[DataProvider('assertStringEqualsStringIgnoringLineEndingsProviderNegative')]
     public function testAssertStringEqualsStringIgnoringLineEndingsNegative(string $expected, string $actual): void
     {
         $this->expectException(ExpectationFailedException::class);
 
         $this->assertStringEqualsStringIgnoringLineEndings($expected, $actual);
-    }
-
-    public function assertStringEqualsStringIgnoringLineEndingsProviderNegative(): array
-    {
-        return [
-            ["a\nb", 'ab'],
-            ["a\rb", 'ab'],
-            ["a\r\nb", 'ab'],
-        ];
     }
 
     public function testAssertStringMatchesFormat(): void
@@ -2033,7 +2033,7 @@ XML;
         $this->fail();
     }
 
-    protected function sameValues(): array
+    protected static function sameValues(): array
     {
         $object   = new SampleClass(4, 8, 15);
         $file     = TEST_FILES_PATH . 'foo.xml';
@@ -2068,7 +2068,7 @@ XML;
         ];
     }
 
-    protected function notEqualValues(): array
+    protected static function notEqualValues(): array
     {
         // cyclic dependencies
         $book1                  = new Book;
@@ -2215,7 +2215,7 @@ XML;
         ];
     }
 
-    protected function equalValues(): array
+    protected static function equalValues(): array
     {
         // cyclic dependencies
         $book1                  = new Book;

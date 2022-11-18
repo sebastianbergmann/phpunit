@@ -28,7 +28,7 @@ final class LogicalXorTest extends BinaryOperatorTestCase
         return 23;
     }
 
-    public function evaluateExpectedResult(array $input): bool
+    public static function evaluateExpectedResult(array $input): bool
     {
         $initial = (bool) array_shift($input);
 

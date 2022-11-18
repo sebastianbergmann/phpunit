@@ -42,6 +42,11 @@ use PHPUnit\TestFixture\Metadata\Annotation\UsesTest;
 #[Small]
 final class AnnotationParserTest extends TestCase
 {
+    public static function provideRequiresPhpTestMethods(): array
+    {
+        return [['testOne'], ['testTwo']];
+    }
+
     public function test_Parses_backupGlobals_annotation_on_class(): void
     {
         $metadata = (new AnnotationParser)->forClass(BackupGlobalsTest::class)->isBackupGlobals();
@@ -586,11 +591,6 @@ final class AnnotationParserTest extends TestCase
         $this->assertCount(1, $metadata);
         $this->assertTrue($metadata->asArray()[0]->isRequiresOperatingSystemFamily());
         $this->assertSame('Linux', $metadata->asArray()[0]->operatingSystemFamily());
-    }
-
-    public function provideRequiresPhpTestMethods(): array
-    {
-        return [['testOne'], ['testTwo']];
     }
 
     #[DataProvider('provideRequiresPhpTestMethods')]

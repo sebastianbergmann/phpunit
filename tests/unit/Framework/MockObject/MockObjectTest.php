@@ -51,6 +51,14 @@ use Traversable;
 #[Small]
 final class MockObjectTest extends TestCase
 {
+    public static function traversableProvider(): array
+    {
+        return [
+            Traversable::class                  => [Traversable::class],
+            TraversableMockTestInterface::class => [TraversableMockTestInterface::class],
+        ];
+    }
+
     public function testMockedMethodIsNeverCalled(): void
     {
         $mock = $this->getMockBuilder(AnInterface::class)
@@ -1000,14 +1008,6 @@ EOF
         $mock->method('__toString')->willReturn('foo');
 
         $this->assertSame('foo', (string) $mock);
-    }
-
-    public function traversableProvider(): array
-    {
-        return [
-            Traversable::class                  => [Traversable::class],
-            TraversableMockTestInterface::class => [TraversableMockTestInterface::class],
-        ];
     }
 
     public function testParameterCallbackConstraintOnlyEvaluatedOnce(): void

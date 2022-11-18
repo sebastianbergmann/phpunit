@@ -26,6 +26,17 @@ use stdClass;
 #[Small]
 final class IsTypeTest extends ConstraintTestCase
 {
+    public static function resources(): array
+    {
+        $fh = fopen(__FILE__, 'r');
+        fclose($fh);
+
+        return [
+            'open resource'   => [fopen(__FILE__, 'r')],
+            'closed resource' => [$fh],
+        ];
+    }
+
     public function testConstraintIsType(): void
     {
         $constraint = Assert::isType('string');
@@ -92,17 +103,6 @@ EOF
         if (is_resource($resource)) {
             @fclose($resource);
         }
-    }
-
-    public function resources(): array
-    {
-        $fh = fopen(__FILE__, 'r');
-        fclose($fh);
-
-        return [
-            'open resource'   => [fopen(__FILE__, 'r')],
-            'closed resource' => [$fh],
-        ];
     }
 
     public function testIterableTypeIsSupported(): void

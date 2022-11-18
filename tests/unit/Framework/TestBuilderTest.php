@@ -17,14 +17,7 @@ use ReflectionClass;
 #[CoversClass(TestBuilder::class)]
 final class TestBuilderTest extends TestCase
 {
-    #[DataProvider('provideWithAnnotations')]
-    public function testWithAnnotations(string $methodName): void
-    {
-        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
-        $this->assertInstanceOf(TestWithAnnotations::class, $test);
-    }
-
-    public function provideWithAnnotations(): array
+    public static function provideWithAnnotations(): array
     {
         return [
             ['testThatInteractsWithGlobalVariables'],
@@ -33,19 +26,26 @@ final class TestBuilderTest extends TestCase
         ];
     }
 
-    #[DataProvider('provideWithAnnotationsAndDataProvider')]
-    public function testWithAnnotationsAndDataProvider(string $methodName): void
-    {
-        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
-        $this->assertInstanceOf(DataProviderTestSuite::class, $test);
-    }
-
-    public function provideWithAnnotationsAndDataProvider(): array
+    public static function provideWithAnnotationsAndDataProvider(): array
     {
         return [
             ['testThatInteractsWithGlobalVariablesWithDataProvider'],
             ['testThatInteractsWithStaticAttributesWithDataProvider'],
             ['testInSeparateProcessWithDataProvider'],
         ];
+    }
+
+    #[DataProvider('provideWithAnnotations')]
+    public function testWithAnnotations(string $methodName): void
+    {
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
+        $this->assertInstanceOf(TestWithAnnotations::class, $test);
+    }
+
+    #[DataProvider('provideWithAnnotationsAndDataProvider')]
+    public function testWithAnnotationsAndDataProvider(string $methodName): void
+    {
+        $test = (new TestBuilder)->build(new ReflectionClass(TestWithAnnotations::class), $methodName);
+        $this->assertInstanceOf(DataProviderTestSuite::class, $test);
     }
 }

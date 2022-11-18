@@ -9,10 +9,9 @@
  */
 namespace PHPUnit\Event\Code;
 
-use function class_exists;
+use function assert;
 use function is_int;
 use function is_numeric;
-use function method_exists;
 use function sprintf;
 use PHPUnit\Event\TestData\DataFromDataProvider;
 use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
@@ -20,9 +19,7 @@ use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\TestDataCollection;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Metadata\MetadataCollection;
-use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
-use ReflectionException;
-use ReflectionMethod;
+use PHPUnit\Util\Reflection;
 use SebastianBergmann\Exporter\Exporter;
 
 /**
@@ -36,6 +33,10 @@ final class TestMethod extends Test
      * @psalm-var class-string
      */
     private readonly string $className;
+
+    /**
+     * @psalm-var non-empty-string
+     */
     private readonly string $methodName;
     private readonly int $line;
     private readonly TestDox $testDox;
@@ -47,21 +48,26 @@ final class TestMethod extends Test
      */
     public static function fromTestCase(TestCase $testCase): self
     {
-        $location = self::sourceLocationFor($testCase::class, $testCase->name());
+        $methodName = $testCase->name();
+
+        assert(!empty($methodName));
+
+        $location = Reflection::sourceLocationFor($testCase::class, $methodName);
 
         return new self(
             $testCase::class,
-            $testCase->name(),
+            $methodName,
             $location['file'],
             $location['line'],
             TestDox::fromTestCase($testCase),
-            self::metadataFor($testCase::class, $testCase->name()),
+            MetadataCollection::for($testCase::class, $methodName),
             self::dataFor($testCase),
         );
     }
 
     /**
      * @psalm-param class-string $className
+     * @psalm-param non-empty-string $methodName
      */
     public function __construct(string $className, string $methodName, string $file, int $line, TestDox $testDox, MetadataCollection $metadata, TestDataCollection $testData)
     {
@@ -83,6 +89,9 @@ final class TestMethod extends Test
         return $this->className;
     }
 
+    /**
+     * @psalm-return non-empty-string
+     */
     public function methodName(): string
     {
         return $this->methodName;
@@ -185,41 +194,5 @@ final class TestMethod extends Test
         }
 
         return TestDataCollection::fromArray($testData);
-    }
-
-    private static function metadataFor(string $className, string $methodName): MetadataCollection
-    {
-        if (class_exists($className)) {
-            if (method_exists($className, $methodName)) {
-                return MetadataRegistry::parser()->forClassAndMethod($className, $methodName);
-            }
-
-            return MetadataRegistry::parser()->forClass($className);
-        }
-
-        return MetadataCollection::fromArray([]);
-    }
-
-    /**
-     * @psalm-param class-string $className
-     *
-     * @psalm-return array{file: string, line: int}
-     */
-    private static function sourceLocationFor(string $className, string $methodName): array
-    {
-        try {
-            $reflector = new ReflectionMethod($className, $methodName);
-
-            $file = $reflector->getFileName();
-            $line = $reflector->getStartLine();
-        } catch (ReflectionException) {
-            $file = 'unknown';
-            $line = 0;
-        }
-
-        return [
-            'file' => $file,
-            'line' => $line,
-        ];
     }
 }

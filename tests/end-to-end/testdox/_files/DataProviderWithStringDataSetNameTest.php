@@ -13,6 +13,19 @@ use PHPUnit\Framework\TestCase;
 
 final class DataProviderWithStringDataSetNameTest extends TestCase
 {
+    public static function provider(): array
+    {
+        return [
+            'data set name' => [
+                'string',
+                0,
+                0.0,
+                ['key' => 'value'],
+                true,
+            ],
+        ];
+    }
+
     /**
      * @dataProvider provider
      */
@@ -28,18 +41,5 @@ final class DataProviderWithStringDataSetNameTest extends TestCase
     {
         /* @noinspection PhpUnitAssertTrueWithIncompatibleTypeArgumentInspection */
         $this->assertTrue(false);
-    }
-
-    public function provider(): array
-    {
-        return [
-            'data set name' => [
-                'string',
-                0,
-                0.0,
-                ['key' => 'value'],
-                true,
-            ],
-        ];
     }
 }

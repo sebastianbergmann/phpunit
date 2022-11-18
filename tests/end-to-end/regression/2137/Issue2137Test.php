@@ -14,6 +14,14 @@ use stdClass;
 
 class Issue2137Test extends TestCase
 {
+    public static function provideBrandService()
+    {
+        return [
+            //[true, true]
+            new stdClass, // not valid
+        ];
+    }
+
     /**
      * @dataProvider provideBrandService
      *
@@ -24,14 +32,6 @@ class Issue2137Test extends TestCase
     public function testBrandService($provided, $expected): void
     {
         $this->assertSame($provided, $expected);
-    }
-
-    public function provideBrandService()
-    {
-        return [
-            //[true, true]
-            new stdClass, // not valid
-        ];
     }
 
     /**

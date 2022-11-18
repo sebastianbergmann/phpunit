@@ -40,114 +40,7 @@ final class TestSuiteSorterTest extends TestCase
         MultiDependencyTest::class . '::testFive',
     ];
 
-    public function testThrowsExceptionWhenUsingInvalidOrderOption(): void
-    {
-        $suite = TestSuite::empty();
-        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
-        $sorter = new TestSuiteSorter;
-
-        $this->expectException(InvalidOrderException::class);
-
-        $sorter->reorderTestsInSuite($suite, -1, false, TestSuiteSorter::ORDER_DEFAULT);
-    }
-
-    public function testThrowsExceptionWhenUsingInvalidOrderDefectsOption(): void
-    {
-        $suite = TestSuite::empty();
-        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
-        $sorter = new TestSuiteSorter;
-
-        $this->expectException(InvalidOrderException::class);
-
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, -1);
-    }
-
-    #[DataProvider('suiteSorterOptionPermutationsProvider')]
-    public function testShouldNotAffectEmptyTestSuite(int $order, bool $resolveDependencies, int $orderDefects): void
-    {
-        $sorter = new TestSuiteSorter;
-        $suite  = TestSuite::empty();
-
-        $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, $orderDefects);
-
-        $this->assertEmpty($suite->tests());
-        $this->assertEmpty($sorter->getOriginalExecutionOrder());
-        $this->assertEmpty($sorter->getExecutionOrder());
-    }
-
-    #[DataProvider('commonSorterOptionsProvider')]
-    public function testBasicExecutionOrderOptions(int $order, bool $resolveDependencies, array $expectedOrder): void
-    {
-        $suite = TestSuite::empty();
-        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
-        $sorter = new TestSuiteSorter;
-
-        $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFAULT);
-
-        $this->assertSame(self::MULTIDEPENDENCYTEST_EXECUTION_ORDER, $sorter->getOriginalExecutionOrder());
-        $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
-    }
-
-    public function testCanSetRandomizationWithASeed(): void
-    {
-        $suite = TestSuite::empty();
-        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
-        $sorter = new TestSuiteSorter;
-
-        mt_srand(54321);
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, false, TestSuiteSorter::ORDER_DEFAULT);
-
-        $expectedOrder = [
-            MultiDependencyTest::class . '::testTwo',
-            MultiDependencyTest::class . '::testFour',
-            MultiDependencyTest::class . '::testFive',
-            MultiDependencyTest::class . '::testThree',
-            MultiDependencyTest::class . '::testOne',
-        ];
-
-        $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
-    }
-
-    public function testCanSetRandomizationWithASeedAndResolveDependencies(): void
-    {
-        $suite = TestSuite::empty();
-        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
-        $sorter = new TestSuiteSorter;
-
-        mt_srand(54321);
-        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, true, TestSuiteSorter::ORDER_DEFAULT);
-
-        $expectedOrder = [
-            MultiDependencyTest::class . '::testTwo',
-            MultiDependencyTest::class . '::testFive',
-            MultiDependencyTest::class . '::testOne',
-            MultiDependencyTest::class . '::testThree',
-            MultiDependencyTest::class . '::testFour',
-        ];
-
-        $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
-    }
-
-    #[DataProvider('orderDurationWithoutCacheProvider')]
-    public function testOrderDurationWithoutCache(bool $resolveDependencies, array $expected): void
-    {
-        $suite = TestSuite::empty();
-
-        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
-
-        $sorter = new TestSuiteSorter;
-
-        $sorter->reorderTestsInSuite(
-            $suite,
-            TestSuiteSorter::ORDER_DURATION,
-            $resolveDependencies,
-            TestSuiteSorter::ORDER_DEFAULT
-        );
-
-        $this->assertSame($expected, $sorter->getExecutionOrder());
-    }
-
-    public function orderDurationWithoutCacheProvider(): array
+    public static function orderDurationWithoutCacheProvider(): array
     {
         return [
             'dependency-ignore' => [
@@ -173,32 +66,7 @@ final class TestSuiteSorterTest extends TestCase
         ];
     }
 
-    #[DataProvider('orderDurationWithCacheProvider')]
-    public function testOrderDurationWithCache(bool $resolveDependencies, array $testTimes, array $expected): void
-    {
-        $suite = TestSuite::empty();
-
-        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
-
-        $cache = new DefaultResultCache;
-
-        foreach ($testTimes as $testName => $time) {
-            $cache->setTime(MultiDependencyTest::class . '::' . $testName, $time);
-        }
-
-        $sorter = new TestSuiteSorter($cache);
-
-        $sorter->reorderTestsInSuite(
-            $suite,
-            TestSuiteSorter::ORDER_DURATION,
-            $resolveDependencies,
-            TestSuiteSorter::ORDER_DEFAULT
-        );
-
-        $this->assertSame($expected, $sorter->getExecutionOrder());
-    }
-
-    public function orderDurationWithCacheProvider(): array
+    public static function orderDurationWithCacheProvider(): array
     {
         return [
             'duration-same-dependency-ignore' => [
@@ -272,25 +140,6 @@ final class TestSuiteSorterTest extends TestCase
         ];
     }
 
-    #[DataProvider('defectsSorterOptionsProvider')]
-    public function testSuiteSorterDefectsOptions(int $order, bool $resolveDependencies, array $runState, array $expected): void
-    {
-        $suite = TestSuite::empty();
-        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
-
-        $cache = new DefaultResultCache;
-
-        foreach ($runState as $testName => $data) {
-            $cache->setStatus(MultiDependencyTest::class . '::' . $testName, $data['state']);
-            $cache->setTime(MultiDependencyTest::class . '::' . $testName, $data['time']);
-        }
-
-        $sorter = new TestSuiteSorter($cache);
-        $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFECTS_FIRST);
-
-        $this->assertSame($expected, $sorter->getExecutionOrder());
-    }
-
     /**
      * A @dataprovider for basic execution reordering options based on MultiDependencyTest.
      *
@@ -301,7 +150,7 @@ final class TestSuiteSorterTest extends TestCase
      * - 'testFour' @depends on 'MultiDependencyTest::testThree' to test FQN @depends
      * - 'testFive' has no dependencies
      */
-    public function commonSorterOptionsProvider(): array
+    public static function commonSorterOptionsProvider(): array
     {
         return [
             'default' => [
@@ -367,7 +216,7 @@ final class TestSuiteSorterTest extends TestCase
      * - 'testFour' @depends on 'MultiDependencyTest::testThree' to test FQN @depends
      * - 'testFive' has no dependencies
      */
-    public function defectsSorterOptionsProvider(): array
+    public static function defectsSorterOptionsProvider(): array
     {
         return [
             // The most simple situation should work as normal
@@ -573,7 +422,7 @@ final class TestSuiteSorterTest extends TestCase
         ];
     }
 
-    public function suiteSorterOptionPermutationsProvider(): array
+    public static function suiteSorterOptionPermutationsProvider(): array
     {
         $orderValues        = [TestSuiteSorter::ORDER_DEFAULT, TestSuiteSorter::ORDER_REVERSED, TestSuiteSorter::ORDER_RANDOMIZED];
         $resolveValues      = [false, true];
@@ -590,6 +439,157 @@ final class TestSuiteSorterTest extends TestCase
         }
 
         return $data;
+    }
+
+    public function testThrowsExceptionWhenUsingInvalidOrderOption(): void
+    {
+        $suite = TestSuite::empty();
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+        $sorter = new TestSuiteSorter;
+
+        $this->expectException(InvalidOrderException::class);
+
+        $sorter->reorderTestsInSuite($suite, -1, false, TestSuiteSorter::ORDER_DEFAULT);
+    }
+
+    public function testThrowsExceptionWhenUsingInvalidOrderDefectsOption(): void
+    {
+        $suite = TestSuite::empty();
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+        $sorter = new TestSuiteSorter;
+
+        $this->expectException(InvalidOrderException::class);
+
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_DEFAULT, false, -1);
+    }
+
+    #[DataProvider('suiteSorterOptionPermutationsProvider')]
+    public function testShouldNotAffectEmptyTestSuite(int $order, bool $resolveDependencies, int $orderDefects): void
+    {
+        $sorter = new TestSuiteSorter;
+        $suite  = TestSuite::empty();
+
+        $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, $orderDefects);
+
+        $this->assertEmpty($suite->tests());
+        $this->assertEmpty($sorter->getOriginalExecutionOrder());
+        $this->assertEmpty($sorter->getExecutionOrder());
+    }
+
+    #[DataProvider('commonSorterOptionsProvider')]
+    public function testBasicExecutionOrderOptions(int $order, bool $resolveDependencies, array $expectedOrder): void
+    {
+        $suite = TestSuite::empty();
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+        $sorter = new TestSuiteSorter;
+
+        $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFAULT);
+
+        $this->assertSame(self::MULTIDEPENDENCYTEST_EXECUTION_ORDER, $sorter->getOriginalExecutionOrder());
+        $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
+    }
+
+    public function testCanSetRandomizationWithASeed(): void
+    {
+        $suite = TestSuite::empty();
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+        $sorter = new TestSuiteSorter;
+
+        mt_srand(54321);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, false, TestSuiteSorter::ORDER_DEFAULT);
+
+        $expectedOrder = [
+            MultiDependencyTest::class . '::testTwo',
+            MultiDependencyTest::class . '::testFour',
+            MultiDependencyTest::class . '::testFive',
+            MultiDependencyTest::class . '::testThree',
+            MultiDependencyTest::class . '::testOne',
+        ];
+
+        $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
+    }
+
+    public function testCanSetRandomizationWithASeedAndResolveDependencies(): void
+    {
+        $suite = TestSuite::empty();
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+        $sorter = new TestSuiteSorter;
+
+        mt_srand(54321);
+        $sorter->reorderTestsInSuite($suite, TestSuiteSorter::ORDER_RANDOMIZED, true, TestSuiteSorter::ORDER_DEFAULT);
+
+        $expectedOrder = [
+            MultiDependencyTest::class . '::testTwo',
+            MultiDependencyTest::class . '::testFive',
+            MultiDependencyTest::class . '::testOne',
+            MultiDependencyTest::class . '::testThree',
+            MultiDependencyTest::class . '::testFour',
+        ];
+
+        $this->assertSame($expectedOrder, $sorter->getExecutionOrder());
+    }
+
+    #[DataProvider('orderDurationWithoutCacheProvider')]
+    public function testOrderDurationWithoutCache(bool $resolveDependencies, array $expected): void
+    {
+        $suite = TestSuite::empty();
+
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+
+        $sorter = new TestSuiteSorter;
+
+        $sorter->reorderTestsInSuite(
+            $suite,
+            TestSuiteSorter::ORDER_DURATION,
+            $resolveDependencies,
+            TestSuiteSorter::ORDER_DEFAULT
+        );
+
+        $this->assertSame($expected, $sorter->getExecutionOrder());
+    }
+
+    #[DataProvider('orderDurationWithCacheProvider')]
+    public function testOrderDurationWithCache(bool $resolveDependencies, array $testTimes, array $expected): void
+    {
+        $suite = TestSuite::empty();
+
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+
+        $cache = new DefaultResultCache;
+
+        foreach ($testTimes as $testName => $time) {
+            $cache->setTime(MultiDependencyTest::class . '::' . $testName, $time);
+        }
+
+        $sorter = new TestSuiteSorter($cache);
+
+        $sorter->reorderTestsInSuite(
+            $suite,
+            TestSuiteSorter::ORDER_DURATION,
+            $resolveDependencies,
+            TestSuiteSorter::ORDER_DEFAULT
+        );
+
+        $this->assertSame($expected, $sorter->getExecutionOrder());
+    }
+
+    #[DataProvider('defectsSorterOptionsProvider')]
+    public function testSuiteSorterDefectsOptions(int $order, bool $resolveDependencies, array $runState, array $expected): void
+    {
+        $suite = TestSuite::empty();
+        $suite->addTestSuite(new ReflectionClass(MultiDependencyTest::class));
+
+        $cache = new DefaultResultCache;
+
+        foreach ($runState as $testName => $data) {
+            $cache->setStatus(MultiDependencyTest::class . '::' . $testName, $data['state']);
+            $cache->setTime(MultiDependencyTest::class . '::' . $testName, $data['time']);
+        }
+
+        $sorter = new TestSuiteSorter($cache);
+        $sorter->reorderTestsInSuite($suite, $order, $resolveDependencies, TestSuiteSorter::ORDER_DEFECTS_FIRST);
+
+        $this->assertSame($expected, $sorter->getExecutionOrder());
     }
 
     public function testOrderBySize(): void

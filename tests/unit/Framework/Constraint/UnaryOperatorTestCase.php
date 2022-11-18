@@ -21,6 +21,14 @@ use ReflectionMethod;
 
 abstract class UnaryOperatorTestCase extends OperatorTestCase
 {
+    final public static function providerUnaryTruthTable(): array
+    {
+        return array_map(
+            static fn (bool $input): array => [$input, static::evaluateExpectedResult($input)],
+            [false, true]
+        );
+    }
+
     /**
      * Shall return the name of the operator under test.
      */
@@ -34,13 +42,13 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
     /**
      * Shall return series of two-element arrays [$input, $expected].
      */
-    abstract public function providerToStringWithNativeTransformations(): array;
+    abstract public static function providerToStringWithNativeTransformations(): array;
 
     /**
      * Takes a boolean values and returns the expected evaluation result for
      * the logical operator under test.
      */
-    abstract public function evaluateExpectedResult(bool $input): bool;
+    abstract public static function evaluateExpectedResult(bool $input): bool;
 
     final public function testIsSubclassOfOperator(): void
     {
@@ -116,14 +124,6 @@ abstract class UnaryOperatorTestCase extends OperatorTestCase
         $withIsEqual = new $className(new IsEqual('test'));
 
         $this->assertSame($withIsEqual->toString(), $constraint->toString());
-    }
-
-    final public function providerUnaryTruthTable(): array
-    {
-        return array_map(
-            fn (bool $input): array => [$input, $this->evaluateExpectedResult($input)],
-            [false, true]
-        );
     }
 
     #[DataProvider('providerUnaryTruthTable')]

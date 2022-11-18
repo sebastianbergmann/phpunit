@@ -27,6 +27,8 @@ use ReflectionClass;
 final class TestBuilder
 {
     /**
+     * @psalm-param non-empty-string $methodName
+     *
      * @throws InvalidDataProviderException
      */
     public function build(ReflectionClass $theClass, string $methodName): Test

@@ -13,6 +13,14 @@ use PHPUnit\Framework\TestCase;
 
 final class TestWithDifferentSizes extends TestCase
 {
+    public static function provider(): array
+    {
+        return [
+            [false],
+            [true],
+        ];
+    }
+
     public function testWithSizeUnknown(): void
     {
         $this->assertTrue(true);
@@ -64,13 +72,5 @@ final class TestWithDifferentSizes extends TestCase
     public function testDataProviderWithSizeMedium(bool $value): void
     {
         $this->assertTrue(true);
-    }
-
-    public function provider(): array
-    {
-        return [
-            [false],
-            [true],
-        ];
     }
 }

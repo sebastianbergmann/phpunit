@@ -13,16 +13,16 @@ use PHPUnit\Framework\TestCase;
 
 final class InvalidDataProviderTest extends TestCase
 {
+    public static function provider(): array
+    {
+        return [0];
+    }
+
     /**
      * @dataProvider provider
      */
     public function testOne(): void
     {
         $this->assertTrue(true);
-    }
-
-    public function provider(): array
-    {
-        return [0];
     }
 }

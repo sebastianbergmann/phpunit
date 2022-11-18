@@ -28,6 +28,36 @@ use ReflectionMethod;
 
 abstract class BinaryOperatorTestCase extends OperatorTestCase
 {
+    final public static function providerConnectiveTruthTable(): array
+    {
+        $inputs = self::getBooleanTuples(0, 5);
+
+        return array_map(
+            static fn (array $input) => [$input, static::evaluateExpectedResult($input)],
+            $inputs
+        );
+    }
+
+    public static function providerToStringWithNamedConstraints(): array
+    {
+        return [
+            [
+            ],
+            [
+                'is healthy',
+            ],
+            [
+                'is healthy',
+                'is rich in amino acids',
+            ],
+            [
+                'is healthy',
+                'is rich in amino acids',
+                'is rich in unsaturated fats',
+            ],
+        ];
+    }
+
     /**
      * Shall return the name of the operator under test.
      */
@@ -42,7 +72,7 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
      * Takes an array or boolean values and returns the expected evaluation
      * result for the logical operator under test.
      */
-    abstract public function evaluateExpectedResult(array $input): bool;
+    abstract public static function evaluateExpectedResult(array $input): bool;
 
     final public function testIsSubclassOfOperator(): void
     {
@@ -131,16 +161,6 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
         $this->assertSame("is equal to 'whatever'", $constraint->toString());
     }
 
-    final public function providerConnectiveTruthTable(): array
-    {
-        $inputs = self::getBooleanTuples(0, 5);
-
-        return array_map(
-            fn (array $input) => [$input, $this->evaluateExpectedResult($input)],
-            $inputs
-        );
-    }
-
     #[DataProvider('providerConnectiveTruthTable')]
     final public function testEvaluateReturnsCorrectBooleanResult(array $inputs, bool $expected): void
     {
@@ -177,26 +197,6 @@ abstract class BinaryOperatorTestCase extends OperatorTestCase
             $this->expectExceptionMessage($message);
             $constraint->evaluate('the following expression is true');
         }
-    }
-
-    public function providerToStringWithNamedConstraints(): array
-    {
-        return [
-            [
-            ],
-            [
-                'is healthy',
-            ],
-            [
-                'is healthy',
-                'is rich in amino acids',
-            ],
-            [
-                'is healthy',
-                'is rich in amino acids',
-                'is rich in unsaturated fats',
-            ],
-        ];
     }
 
     #[DataProvider('providerToStringWithNamedConstraints')]

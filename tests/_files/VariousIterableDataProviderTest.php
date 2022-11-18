@@ -38,16 +38,7 @@ class VariousIterableDataProviderTest extends AbstractVariousIterableDataProvide
         ]);
     }
 
-    /**
-     * @dataProvider asArrayStaticProvider
-     * @dataProvider asIteratorStaticProvider
-     * @dataProvider asTraversableStaticProvider
-     */
-    public function testStatic(): void
-    {
-    }
-
-    public function asArrayProvider()
+    public static function asArrayProvider()
     {
         return [
             ['S'],
@@ -56,7 +47,7 @@ class VariousIterableDataProviderTest extends AbstractVariousIterableDataProvide
         ];
     }
 
-    public function asIteratorProvider()
+    public static function asIteratorProvider()
     {
         yield ['V'];
 
@@ -65,13 +56,22 @@ class VariousIterableDataProviderTest extends AbstractVariousIterableDataProvide
         yield ['X'];
     }
 
-    public function asTraversableProvider()
+    public static function asTraversableProvider()
     {
         return new WrapperIteratorAggregate([
             ['Y'],
             ['Z'],
             ['P'],
         ]);
+    }
+
+    /**
+     * @dataProvider asArrayStaticProvider
+     * @dataProvider asIteratorStaticProvider
+     * @dataProvider asTraversableStaticProvider
+     */
+    public function testStatic(): void
+    {
     }
 
     /**

@@ -24,6 +24,17 @@ use PHPUnit\Util\Xml\ValidationResult;
 #[Small]
 final class XmlTest extends TestCase
 {
+    public static function charProvider(): array
+    {
+        $data = [];
+
+        for ($i = 0; $i < 256; $i++) {
+            $data[] = [chr($i)];
+        }
+
+        return $data;
+    }
+
     #[DataProvider('charProvider')]
     public function testPrepareString(string $char): void
     {
@@ -47,16 +58,5 @@ final class XmlTest extends TestCase
                 DOMDocument::class
             )
         );
-    }
-
-    public function charProvider(): array
-    {
-        $data = [];
-
-        for ($i = 0; $i < 256; $i++) {
-            $data[] = [chr($i)];
-        }
-
-        return $data;
     }
 }
