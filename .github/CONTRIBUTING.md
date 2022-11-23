@@ -75,7 +75,7 @@ This project comes with a configuration file (located at `/.psalm/config.xml` in
 $ ./tools/psalm --config=.psalm/config.xml
 ```
 
-This project comes with a configuration file (located at `/.php_cs.dist` in the repository) and an executable for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (located at `/tools/php-cs-fixer` in the repository) that you can use to (re)format your source code for compliance with this project's coding guidelines:
+This project comes with a configuration file (located at `/.php-cs-fixer.dist.php` in the repository) and an executable for [php-cs-fixer](https://github.com/FriendsOfPHP/PHP-CS-Fixer) (located at `/tools/php-cs-fixer` in the repository) that you can use to (re)format your source code for compliance with this project's coding guidelines:
 
 ```bash
 $ ./tools/php-cs-fixer fix
