@@ -749,6 +749,14 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
+    final public function hasDependencyInput(): bool
+    {
+        return !empty($this->dependencyInput);
+    }
+
+    /**
+     * @internal This method is not covered by the backward compatibility promise for PHPUnit
+     */
     final public function setBackupGlobals(bool $backupGlobals): void
     {
         $this->backupGlobals = $backupGlobals;
@@ -1453,6 +1461,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                 $this->dependencyInput[$dependencyTarget] = $returnValue;
             }
         }
+
+        $this->testValueObjectForEvents = null;
 
         return true;
     }

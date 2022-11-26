@@ -14,6 +14,7 @@ use function is_int;
 use function is_numeric;
 use function sprintf;
 use PHPUnit\Event\TestData\DataFromDataProvider;
+use PHPUnit\Event\TestData\DataFromTestDependency;
 use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\TestDataCollection;
@@ -190,6 +191,12 @@ final class TestMethod extends Test
             $testData[] = DataFromDataProvider::from(
                 $dataSetName,
                 (new Exporter)->export($testCase->providedData())
+            );
+        }
+
+        if ($testCase->hasDependencyInput()) {
+            $testData[] = DataFromTestDependency::from(
+                (new Exporter)->export($testCase->dependencyInput())
             );
         }
 
