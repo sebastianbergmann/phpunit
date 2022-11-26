@@ -910,8 +910,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Gets the data set of a TestCase.
-     *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
      */
     final public function providedData(): array
@@ -938,8 +936,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns the normalized test name as class::method.
-     *
      * @psalm-return list<ExecutionOrderDependency>
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
@@ -950,12 +946,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Returns a list of normalized dependency names, class::method.
-     *
-     * This list can differ from the raw dependencies as the resolver has
-     * no need for the [!][shallow]clone prefix that is filtered out
-     * during normalization.
-     *
      * @psalm-return list<ExecutionOrderDependency>
      *
      * @internal This method is not covered by the backward compatibility promise for PHPUnit
@@ -999,8 +989,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * Override to run the test and assert its state.
-     *
      * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
      * @throws AssertionFailedError
      * @throws Exception
