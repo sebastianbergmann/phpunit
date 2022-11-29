@@ -1916,6 +1916,23 @@ abstract class Assert
         static::assertThat($expectedJson, new LogicalNot($constraintActual), $message);
         static::assertThat($actualJson, new LogicalNot($constraintExpected), $message);
     }
+    
+    /**
+     * @param \Closure(): void $function
+     */
+    public static function assertThrows(\Closure $function): \Throwable
+    {
+        $e = null;
+        try {
+            $function();
+        } catch (\Throwable $e) {
+            // Handled bellow
+        }
+
+        self::assertNotNull($e);
+
+        return $e;
+    }
 
     /**
      * @throws Exception
