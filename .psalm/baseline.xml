@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<files psalm-version="4.x-dev@">
+<files psalm-version="dev-master@">
   <file src="src/Framework/Assert.php">
     <ArgumentTypeCoercion occurrences="2">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
@@ -150,7 +150,7 @@
       <code>getStaticAttribute</code>
       <code>readAttribute</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="34">
+    <MissingThrowsDocblock occurrences="36">
       <code>new IsType($expected)</code>
       <code>new IsType($expected)</code>
       <code>new IsType($type)</code>
@@ -180,6 +180,8 @@
       <code>new TraversableContainsOnly($type)</code>
       <code>self::assertInternalTypeReplacement($expected, false)</code>
       <code>self::assertInternalTypeReplacement($expected, true)</code>
+      <code>static::assertThat($haystack, $constraint, $message)</code>
+      <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
       <code>static::assertThat($haystack, $constraint, $message)</code>
     </MissingThrowsDocblock>
@@ -685,8 +687,7 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$deferredError</code>
     </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="2">
-      <code>$this-&gt;deferredError</code>
+    <RedundantConditionGivenDocblockType occurrences="1">
       <code>$this-&gt;deferredError</code>
     </RedundantConditionGivenDocblockType>
   </file>
@@ -705,14 +706,13 @@
       <code>$parametersRule</code>
       <code>$stub</code>
     </PropertyNotSetInConstructor>
-    <RedundantConditionGivenDocblockType occurrences="9">
+    <RedundantConditionGivenDocblockType occurrences="8">
       <code>$this-&gt;invocationRule !== null</code>
       <code>$this-&gt;methodNameRule !== null</code>
       <code>$this-&gt;methodNameRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
       <code>$this-&gt;parametersRule !== null</code>
-      <code>$this-&gt;stub</code>
       <code>$this-&gt;stub</code>
       <code>$this-&gt;stub !== null</code>
     </RedundantConditionGivenDocblockType>
@@ -769,7 +769,8 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/MockObject/Rule/MethodName.php">
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="2">
+      <code>evaluate</code>
       <code>evaluate</code>
     </MissingThrowsDocblock>
   </file>
@@ -885,12 +886,14 @@
     <InvalidArgument occurrences="1">
       <code>$header</code>
     </InvalidArgument>
-    <InvalidCatch occurrences="1"/>
-    <InvalidReturnStatement occurrences="2">
+    <InvalidCatch occurrences="2"/>
+    <InvalidReturnStatement occurrences="4">
       <code>$mockObject</code>
       <code>get_class($mock)</code>
     </InvalidReturnStatement>
-    <InvalidReturnType occurrences="2">
+    <InvalidReturnType occurrences="4">
+      <code>MockObject&amp;RealInstanceType</code>
+      <code>MockObject&amp;RealInstanceType</code>
       <code>MockObject&amp;RealInstanceType</code>
       <code>class-string&lt;MockObject&amp;RealInstanceType&gt;</code>
     </InvalidReturnType>
@@ -980,12 +983,12 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$test</code>
     </ArgumentTypeCoercion>
-    <DeprecatedClass occurrences="4">
+    <DeprecatedInterface occurrences="4">
       <code>TestListener</code>
       <code>TestListener</code>
       <code>TestListener[]</code>
       <code>private $listeners = [];</code>
-    </DeprecatedClass>
+    </DeprecatedInterface>
     <DeprecatedProperty occurrences="11">
       <code>$this-&gt;listeners</code>
       <code>$this-&gt;listeners</code>
@@ -1002,6 +1005,9 @@
     <DocblockTypeContradiction occurrences="1">
       <code>$this-&gt;topTestSuite === null</code>
     </DocblockTypeContradiction>
+    <InvalidArgument occurrences="1">
+      <code>[$test, 'runBare']</code>
+    </InvalidArgument>
     <InvalidCatch occurrences="1"/>
     <MissingConstructor occurrences="2">
       <code>$codeCoverage</code>
@@ -1024,11 +1030,6 @@
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
     </RedundantConditionGivenDocblockType>
-    <UndefinedClass occurrences="3">
-      <code>$e</code>
-      <code>Invoker</code>
-      <code>TimeoutException</code>
-    </UndefinedClass>
     <UndefinedInterfaceMethod occurrences="12">
       <code>addToAssertionCount</code>
       <code>addToAssertionCount</code>
@@ -1056,6 +1057,9 @@
       <code>null === $this-&gt;backupStaticAttributes</code>
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState</code>
     </DocblockTypeContradiction>
+    <MissingTemplateParam occurrences="1">
+      <code>IteratorAggregate</code>
+    </MissingTemplateParam>
     <MissingThrowsDocblock occurrences="2">
       <code>new PhptTestCase($filename)</code>
     </MissingThrowsDocblock>
@@ -1080,6 +1084,11 @@
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
   </file>
+  <file src="src/Framework/TestSuiteIterator.php">
+    <MissingTemplateParam occurrences="1">
+      <code>RecursiveIterator</code>
+    </MissingTemplateParam>
+  </file>
   <file src="src/Framework/WarningTestCase.php">
     <NonInvariantDocblockPropertyType occurrences="1">
       <code>$backupGlobals</code>
@@ -1094,8 +1103,14 @@
     <MissingReturnType occurrences="1">
       <code>doAccept</code>
     </MissingReturnType>
+    <MissingTemplateParam occurrences="1">
+      <code>GroupFilterIterator</code>
+    </MissingTemplateParam>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
+    <MissingTemplateParam occurrences="1">
+      <code>NameFilterIterator</code>
+    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="2">
       <code>$filterMax</code>
       <code>$filterMin</code>
@@ -1222,9 +1237,9 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/TextUI/TestRunner.php">
-    <DeprecatedClass occurrences="1">
+    <DeprecatedInterface occurrences="1">
       <code>Printer&amp;TestListener</code>
-    </DeprecatedClass>
+    </DeprecatedInterface>
     <DeprecatedMethod occurrences="9">
       <code>addListener</code>
       <code>addListener</code>
@@ -1248,11 +1263,12 @@
       <code>$e</code>
     </InvalidArgument>
     <InvalidCatch occurrences="6"/>
-    <MissingThrowsDocblock occurrences="8">
+    <MissingThrowsDocblock occurrences="9">
       <code>addFilter</code>
       <code>addFilter</code>
       <code>addFilter</code>
       <code>printResult</code>
+      <code>process</code>
       <code>process</code>
       <code>process</code>
       <code>process</code>
@@ -1295,27 +1311,35 @@
     <DocblockTypeContradiction occurrences="1">
       <code>self::$directories === null</code>
     </DocblockTypeContradiction>
-    <UndefinedClass occurrences="6">
+    <UndefinedClass occurrences="5">
       <code>Assert</code>
       <code>DocBlock</code>
-      <code>Invoker</code>
       <code>Project</code>
       <code>Prophet</code>
       <code>Type</code>
     </UndefinedClass>
   </file>
   <file src="src/Util/Configuration.php">
-    <ArgumentTypeCoercion occurrences="4">
-      <code>$extension</code>
-      <code>$listener</code>
-      <code>$testSuiteNode</code>
-      <code>$testSuiteNodes-&gt;item(0)</code>
-    </ArgumentTypeCoercion>
     <PossiblyNullReference occurrences="2">
       <code>getAttribute</code>
       <code>getAttribute</code>
     </PossiblyNullReference>
-    <RedundantCast occurrences="80">
+    <RawObjectIteration occurrences="13">
+      <code>$testSuiteNodes</code>
+      <code>$this-&gt;xpath-&gt;query($query)</code>
+      <code>$this-&gt;xpath-&gt;query($query)</code>
+      <code>$this-&gt;xpath-&gt;query($root . '/exclude/group')</code>
+      <code>$this-&gt;xpath-&gt;query($root . '/include/group')</code>
+      <code>$this-&gt;xpath-&gt;query('*/testsuite')</code>
+      <code>$this-&gt;xpath-&gt;query('extensions/extension')</code>
+      <code>$this-&gt;xpath-&gt;query('listeners/listener')</code>
+      <code>$this-&gt;xpath-&gt;query('logging/log')</code>
+      <code>$this-&gt;xpath-&gt;query('php/' . $array)</code>
+      <code>$this-&gt;xpath-&gt;query('php/const')</code>
+      <code>$this-&gt;xpath-&gt;query('php/includePath')</code>
+      <code>$this-&gt;xpath-&gt;query('php/ini')</code>
+    </RawObjectIteration>
+    <RedundantCast occurrences="76">
       <code>(string) $argument-&gt;textContent</code>
       <code>(string) $const-&gt;getAttribute('name')</code>
       <code>(string) $const-&gt;getAttribute('value')</code>
@@ -1329,11 +1353,7 @@
       <code>(string) $element-&gt;getAttribute('class')</code>
       <code>(string) $element-&gt;getAttribute('file')</code>
       <code>(string) $excludeNode-&gt;textContent</code>
-      <code>(string) $file-&gt;textContent</code>
       <code>(string) $fileNode-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $group-&gt;textContent</code>
-      <code>(string) $includePath-&gt;textContent</code>
       <code>(string) $ini-&gt;getAttribute('name')</code>
       <code>(string) $ini-&gt;getAttribute('value')</code>
       <code>(string) $log-&gt;getAttribute('highLowerBound')</code>
@@ -1397,15 +1417,37 @@
       <code>assert($directoryNode instanceof DOMElement)</code>
       <code>assert($fileNode instanceof DOMElement)</code>
     </RedundantConditionGivenDocblockType>
-    <UndefinedMethod occurrences="7">
+    <ReservedWord occurrences="18">
+      <code>$testSuiteNodes</code>
+      <code>$testSuiteNodes</code>
+      <code>$this-&gt;xpath-&gt;query($query)</code>
+      <code>$this-&gt;xpath-&gt;query($query)</code>
+      <code>$this-&gt;xpath-&gt;query($root . '/exclude/group')</code>
+      <code>$this-&gt;xpath-&gt;query($root . '/include/group')</code>
+      <code>$this-&gt;xpath-&gt;query('*/testsuite')</code>
+      <code>$this-&gt;xpath-&gt;query('extensions/extension')</code>
+      <code>$this-&gt;xpath-&gt;query('listeners/listener')</code>
+      <code>$this-&gt;xpath-&gt;query('logging/log')</code>
+      <code>$this-&gt;xpath-&gt;query('php/' . $array)</code>
+      <code>$this-&gt;xpath-&gt;query('php/const')</code>
+      <code>$this-&gt;xpath-&gt;query('php/includePath')</code>
+      <code>$this-&gt;xpath-&gt;query('php/ini')</code>
+      <code>$tmp</code>
+      <code>$tmp</code>
+      <code>$tmp</code>
+      <code>$tmp</code>
+    </ReservedWord>
+    <UndefinedClass occurrences="2">
+      <code>$testSuiteNodes-&gt;length</code>
+      <code>$tmp-&gt;length</code>
+    </UndefinedClass>
+    <UndefinedMethod occurrences="2">
       <code>getAttribute</code>
       <code>getAttribute</code>
-      <code>getAttribute</code>
-      <code>getAttribute</code>
-      <code>getAttribute</code>
-      <code>hasAttribute</code>
-      <code>hasAttribute</code>
     </UndefinedMethod>
+    <UnsupportedReferenceUsage occurrences="1">
+      <code>$target = &amp;$GLOBALS['_' . strtoupper($array)]</code>
+    </UnsupportedReferenceUsage>
   </file>
   <file src="src/Util/ErrorHandler.php">
     <InvalidArgument occurrences="1"/>
@@ -1513,9 +1555,6 @@
       <code>TeamCity</code>
       <code>TeamCity</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="1">
-      <code>$previous-&gt;getPrevious()</code>
-    </RedundantCondition>
     <UndefinedInterfaceMethod occurrences="6">
       <code>getName</code>
       <code>getName</code>
@@ -1723,9 +1762,9 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/TextTestListRenderer.php">
-    <InvalidArgument occurrences="1">
+    <ArgumentTypeCoercion occurrences="1">
       <code>$suite-&gt;getIterator()</code>
-    </InvalidArgument>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
     <MissingThrowsDocblock occurrences="1">
@@ -1757,8 +1796,8 @@
     </RedundantCast>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
-    <InvalidArgument occurrences="1">
+    <ArgumentTypeCoercion occurrences="1">
       <code>$suite-&gt;getIterator()</code>
-    </InvalidArgument>
+    </ArgumentTypeCoercion>
   </file>
 </files>
