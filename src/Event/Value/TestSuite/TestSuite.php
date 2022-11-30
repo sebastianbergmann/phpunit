@@ -76,7 +76,7 @@ abstract class TestSuite
             } catch (ReflectionException $e) {
                 throw new RuntimeException(
                     $e->getMessage(),
-                    (int) $e->getCode(),
+                    $e->getCode(),
                     $e
                 );
             }
@@ -98,7 +98,7 @@ abstract class TestSuite
             } catch (ReflectionException $e) {
                 throw new RuntimeException(
                     $e->getMessage(),
-                    (int) $e->getCode(),
+                    $e->getCode(),
                     $e
                 );
             }

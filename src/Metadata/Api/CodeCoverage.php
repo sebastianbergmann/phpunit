@@ -83,7 +83,7 @@ final class CodeCoverage
                             $type,
                             $metadata->asStringForCodeUnitMapper()
                         ),
-                        (int) $e->getCode(),
+                        $e->getCode(),
                         $e
                     );
                 }
@@ -113,7 +113,7 @@ final class CodeCoverage
                             '"@covers %s" is invalid',
                             $target
                         ),
-                        (int) $e->getCode(),
+                        $e->getCode(),
                         $e
                     );
                 }
@@ -170,7 +170,7 @@ final class CodeCoverage
                             $type,
                             $metadata->asStringForCodeUnitMapper()
                         ),
-                        (int) $e->getCode(),
+                        $e->getCode(),
                         $e
                     );
                 }
@@ -191,7 +191,7 @@ final class CodeCoverage
                             '"@uses %s" is invalid',
                             $target
                         ),
-                        (int) $e->getCode(),
+                        $e->getCode(),
                         $e
                     );
                 }

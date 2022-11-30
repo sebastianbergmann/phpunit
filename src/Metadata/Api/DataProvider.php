@@ -141,7 +141,7 @@ final class DataProvider
             } catch (Throwable $e) {
                 throw new InvalidDataProviderException(
                     $e->getMessage(),
-                    (int) $e->getCode(),
+                    $e->getCode(),
                     $e
                 );
             }

@@ -72,7 +72,7 @@ class Count extends Constraint
                 } catch (\Exception $e) {
                     throw new Exception(
                         $e->getMessage(),
-                        (int) $e->getCode(),
+                        $e->getCode(),
                         $e
                     );
                 }
