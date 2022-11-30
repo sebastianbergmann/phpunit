@@ -135,7 +135,7 @@ final class Builder
         } catch (CliParserException $e) {
             throw new Exception(
                 $e->getMessage(),
-                (int) $e->getCode(),
+                $e->getCode(),
                 $e
             );
         }

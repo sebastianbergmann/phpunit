@@ -56,7 +56,7 @@ class ClassHasAttribute extends Constraint
         } catch (ReflectionException $e) {
             throw new Exception(
                 $e->getMessage(),
-                (int) $e->getCode(),
+                $e->getCode(),
                 $e
             );
         }
