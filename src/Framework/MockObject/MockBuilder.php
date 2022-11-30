@@ -230,7 +230,7 @@ final class MockBuilder
         } catch (ReflectionException $e) {
             throw new RuntimeException(
                 $e->getMessage(),
-                (int) $e->getCode(),
+                $e->getCode(),
                 $e
             );
         }
@@ -276,7 +276,7 @@ final class MockBuilder
         } catch (ReflectionException $e) {
             throw new RuntimeException(
                 $e->getMessage(),
-                (int) $e->getCode(),
+                $e->getCode(),
                 $e
             );
         }

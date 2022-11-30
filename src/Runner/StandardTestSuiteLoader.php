@@ -64,7 +64,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                 } catch (ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
-                        (int) $e->getCode(),
+                        $e->getCode(),
                         $e
                     );
                 }
@@ -89,7 +89,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                 } catch (ReflectionException $e) {
                     throw new Exception(
                         $e->getMessage(),
-                        (int) $e->getCode(),
+                        $e->getCode(),
                         $e
                     );
                 }
@@ -113,7 +113,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
                     } catch (ReflectionException $e) {
                         throw new Exception(
                             $e->getMessage(),
-                            (int) $e->getCode(),
+                            $e->getCode(),
                             $e
                         );
                     }
@@ -137,7 +137,7 @@ final class StandardTestSuiteLoader implements TestSuiteLoader
             } catch (ReflectionException $e) {
                 throw new Exception(
                     $e->getMessage(),
-                    (int) $e->getCode(),
+                    $e->getCode(),
                     $e
                 );
             }
