@@ -1005,9 +1005,6 @@
     <DocblockTypeContradiction occurrences="1">
       <code>$this-&gt;topTestSuite === null</code>
     </DocblockTypeContradiction>
-    <InvalidArgument occurrences="1">
-      <code>[$test, 'runBare']</code>
-    </InvalidArgument>
     <InvalidCatch occurrences="1"/>
     <MissingConstructor occurrences="2">
       <code>$codeCoverage</code>
@@ -1030,6 +1027,11 @@
       <code>$this-&gt;codeCoverage !== null</code>
       <code>$this-&gt;codeCoverage !== null</code>
     </RedundantConditionGivenDocblockType>
+    <UndefinedClass occurrences="3">
+      <code>$e</code>
+      <code>Invoker</code>
+      <code>TimeoutException</code>
+    </UndefinedClass>
     <UndefinedInterfaceMethod occurrences="12">
       <code>addToAssertionCount</code>
       <code>addToAssertionCount</code>
@@ -1311,9 +1313,10 @@
     <DocblockTypeContradiction occurrences="1">
       <code>self::$directories === null</code>
     </DocblockTypeContradiction>
-    <UndefinedClass occurrences="5">
+    <UndefinedClass occurrences="6">
       <code>Assert</code>
       <code>DocBlock</code>
+      <code>Invoker</code>
       <code>Project</code>
       <code>Prophet</code>
       <code>Type</code>
