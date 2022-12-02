@@ -287,11 +287,10 @@
     <MoreSpecificReturnType occurrences="1">
       <code>list&lt;string&gt;</code>
     </MoreSpecificReturnType>
-    <RedundantCondition occurrences="5">
+    <RedundantCondition occurrences="4">
       <code>$metadata instanceof CoversFunction</code>
       <code>$metadata instanceof UsesFunction</code>
       <code>assert($metadata instanceof Covers)</code>
-      <code>assert($metadata instanceof Metadata)</code>
       <code>assert($metadata instanceof Uses)</code>
     </RedundantCondition>
   </file>

@@ -54,8 +54,6 @@ final class Groups
         }
 
         foreach (Registry::parser()->forClassAndMethod($className, $methodName) as $metadata) {
-            assert($metadata instanceof Metadata);
-
             if ($metadata->isCoversClass() || $metadata->isCoversFunction()) {
                 assert($metadata instanceof CoversClass || $metadata instanceof CoversFunction);
 
