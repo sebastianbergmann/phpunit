@@ -978,11 +978,11 @@ final class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->testsCovering
+     * @psalm-assert-if-true !empty $this->testsCovering
      */
     public function hasTestsCovering(): bool
     {
-        return $this->testsCovering !== null && !empty($this->testsCovering);
+        return !empty($this->testsCovering);
     }
 
     /**
@@ -1000,11 +1000,11 @@ final class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->testsUsing
+     * @psalm-assert-if-true !empty $this->testsUsing
      */
     public function hasTestsUsing(): bool
     {
-        return $this->testsUsing !== null && !empty($this->testsUsing);
+        return !empty($this->testsUsing);
     }
 
     /**
@@ -1042,11 +1042,11 @@ final class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->groups
+     * @psalm-assert-if-true !empty $this->groups
      */
     public function hasGroups(): bool
     {
-        return $this->groups !== null && !empty($this->groups);
+        return !empty($this->groups);
     }
 
     /**
@@ -1062,11 +1062,11 @@ final class Configuration
     }
 
     /**
-     * @psalm-assert-if-true !null $this->excludeGroups
+     * @psalm-assert-if-true !empty $this->excludeGroups
      */
     public function hasExcludeGroups(): bool
     {
-        return $this->excludeGroups !== null && !empty($this->excludeGroups);
+        return !empty($this->excludeGroups);
     }
 
     /**
