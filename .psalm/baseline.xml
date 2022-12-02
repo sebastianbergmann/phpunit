@@ -909,9 +909,6 @@
       <code>null === $this-&gt;backupStaticAttributes</code>
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState</code>
     </DocblockTypeContradiction>
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
     <MissingThrowsDocblock occurrences="3">
       <code>FileLoader::checkAndLoad($filename)</code>
       <code>new PhptTestCase($filename)</code>
@@ -934,11 +931,6 @@
       <code>null === $this-&gt;backupStaticAttributes &amp;&amp; is_bool($backupStaticAttributes)</code>
       <code>null === $this-&gt;beStrictAboutChangesToGlobalState &amp;&amp; is_bool($beStrictAboutChangesToGlobalState)</code>
     </RedundantConditionGivenDocblockType>
-  </file>
-  <file src="src/Framework/TestSuiteIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>RecursiveIterator</code>
-    </MissingTemplateParam>
   </file>
   <file src="src/Framework/WarningTestCase.php">
     <NonInvariantDocblockPropertyType occurrences="1">

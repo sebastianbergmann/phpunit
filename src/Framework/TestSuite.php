@@ -47,6 +47,8 @@ use ReflectionMethod;
 use Throwable;
 
 /**
+ * @template-implements IteratorAggregate<int, Test>
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
