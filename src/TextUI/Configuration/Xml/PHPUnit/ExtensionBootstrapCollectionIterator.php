@@ -17,7 +17,7 @@ use Iterator;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
- * @template-implements Iterator<int, Extension>
+ * @template-implements Iterator<int, ExtensionBootstrap>
  */
 final class ExtensionBootstrapCollectionIterator implements Countable, Iterator
 {
