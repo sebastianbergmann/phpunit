@@ -28,26 +28,6 @@
       <code>fromBytes</code>
     </ImpureMethodCall>
   </file>
-  <file src="src/Event/Value/Test/TestCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
-  <file src="src/Event/Value/Test/TestCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
-  </file>
-  <file src="src/Event/Value/Test/TestData/TestDataCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
-  <file src="src/Event/Value/Test/TestData/TestDataCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/Event/Value/Test/TestMethod.php">
     <ImpureMethodCall occurrences="4">
       <code>dataFromDataProvider</code>
@@ -237,16 +217,6 @@
       <code>$value</code>
     </InvalidCast>
   </file>
-  <file src="src/Logging/TestDox/TestMethod/TestResultCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
-  <file src="src/Logging/TestDox/TestMethod/TestResultCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/Logging/TestDox/TestMethod/TestResultCollector.php">
     <PossiblyNullArgument occurrences="2">
       <code>$this-&gt;status</code>
@@ -311,16 +281,6 @@
       <code>$className</code>
       <code>$className</code>
     </ArgumentTypeCoercion>
-  </file>
-  <file src="src/Metadata/MetadataCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
-  <file src="src/Metadata/MetadataCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
   </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
     <ArgumentTypeCoercion occurrences="7">
@@ -569,11 +529,6 @@
     <PossiblyNullArrayOffset occurrences="1">
       <code>$this-&gt;variables</code>
     </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHPUnit/ExtensionBootstrapCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
   </file>
   <file src="src/TextUI/Configuration/Xml/PHPUnit/ExtensionBootstrapCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
