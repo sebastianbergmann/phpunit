@@ -19,7 +19,6 @@ use PHPUnit\Metadata\Covers;
 use PHPUnit\Metadata\CoversClass;
 use PHPUnit\Metadata\CoversFunction;
 use PHPUnit\Metadata\Group;
-use PHPUnit\Metadata\Metadata;
 use PHPUnit\Metadata\Parser\Registry;
 use PHPUnit\Metadata\Uses;
 use PHPUnit\Metadata\UsesClass;
