@@ -1179,54 +1179,22 @@
       <code>$this-&gt;printer !== null</code>
     </RedundantConditionGivenDocblockType>
   </file>
-  <file src="src/TextUI/XmlConfiguration/CodeCoverage/Filter/DirectoryCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/XmlConfiguration/CodeCoverage/Filter/DirectoryCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Filesystem/DirectoryCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/Filesystem/DirectoryCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/Filesystem/FileCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/Filesystem/FileCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/TextUI/XmlConfiguration/Group/GroupCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/XmlConfiguration/Group/GroupCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
@@ -1373,28 +1341,12 @@
       <code>value</code>
     </MissingReturnType>
   </file>
-  <file src="src/TextUI/XmlConfiguration/PHP/ConstantCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/XmlConfiguration/PHP/ConstantCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/TextUI/XmlConfiguration/PHP/IniSettingCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/XmlConfiguration/PHP/IniSettingCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
@@ -1407,28 +1359,12 @@
       <code>value</code>
     </MissingReturnType>
   </file>
-  <file src="src/TextUI/XmlConfiguration/PHP/VariableCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/XmlConfiguration/PHP/VariableCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/TextUI/XmlConfiguration/PHPUnit/ExtensionCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/XmlConfiguration/PHPUnit/ExtensionCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
@@ -1463,41 +1399,17 @@
       <code>(string) $this-&gt;testSuiteLoaderFile</code>
     </RedundantCastGivenDocblockType>
   </file>
-  <file src="src/TextUI/XmlConfiguration/TestSuite/TestDirectoryCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestDirectoryCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
-  </file>
-  <file src="src/TextUI/XmlConfiguration/TestSuite/TestFileCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
   </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestFileCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
   </file>
-  <file src="src/TextUI/XmlConfiguration/TestSuite/TestSuiteCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/XmlConfiguration/TestSuite/TestSuiteCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$position</code>
     </PropertyNotSetInConstructor>
@@ -1791,11 +1703,6 @@
     <RedundantCast occurrences="1">
       <code>(string) $entry-&gt;getAttribute('key')</code>
     </RedundantCast>
-  </file>
-  <file src="src/Util/Xml/SnapshotNodeList.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
   </file>
   <file src="src/Util/XmlTestListRenderer.php">
     <ArgumentTypeCoercion occurrences="1">

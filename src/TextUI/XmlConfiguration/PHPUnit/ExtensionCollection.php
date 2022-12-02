@@ -15,6 +15,8 @@ use IteratorAggregate;
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
  * @psalm-immutable
+ *
+ * @template-implements IteratorAggregate<int, Extension>
  */
 final class ExtensionCollection implements IteratorAggregate
 {
