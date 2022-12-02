@@ -5,16 +5,6 @@
       <code>notify</code>
     </UndefinedInterfaceMethod>
   </file>
-  <file src="src/Event/Events/EventCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
-  <file src="src/Event/Events/EventCollectionIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/Event/Facade.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$eventClass . 'Subscriber'</code>

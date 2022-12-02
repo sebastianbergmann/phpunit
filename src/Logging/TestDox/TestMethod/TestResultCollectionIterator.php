@@ -13,6 +13,8 @@ use function count;
 use Iterator;
 
 /**
+ * @template-implements Iterator<int, TestResult>
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
 final class TestResultCollectionIterator implements Iterator

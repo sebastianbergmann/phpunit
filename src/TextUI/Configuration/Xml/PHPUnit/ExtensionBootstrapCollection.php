@@ -12,6 +12,8 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 use IteratorAggregate;
 
 /**
+ * @template-implements IteratorAggregate<int, ExtensionBootstrap>
+ *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
  * @psalm-immutable

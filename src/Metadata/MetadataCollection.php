@@ -21,6 +21,8 @@ use PHPUnit\Metadata\Parser\Registry as MetadataRegistry;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  *
+ * @template-implements IteratorAggregate<int, Metadata>
+ *
  * @psalm-immutable
  */
 final class MetadataCollection implements Countable, IteratorAggregate

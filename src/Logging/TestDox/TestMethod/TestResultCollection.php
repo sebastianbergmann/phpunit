@@ -12,6 +12,8 @@ namespace PHPUnit\Logging\TestDox;
 use IteratorAggregate;
 
 /**
+ * @template-implements IteratorAggregate<int, TestResult>
+ *
  * @psalm-immutable
  *
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
