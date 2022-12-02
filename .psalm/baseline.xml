@@ -913,6 +913,9 @@
       <code>FileLoader::checkAndLoad($filename)</code>
       <code>new PhptTestCase($filename)</code>
     </MissingThrowsDocblock>
+    <PossiblyInvalidClone occurrences="1">
+      <code>clone $test</code>
+    </PossiblyInvalidClone>
     <PropertyNotSetInConstructor occurrences="4">
       <code>$backupGlobals</code>
       <code>$backupStaticAttributes</code>
