@@ -16,6 +16,8 @@ use Iterator;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ *
+ * @template-implements Iterator<int, Variable>
  */
 final class VariableCollectionIterator implements Countable, Iterator
 {

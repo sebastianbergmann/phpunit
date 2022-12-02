@@ -218,18 +218,10 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
     <UnsafeInstantiation occurrences="2">
       <code>new static($class-&gt;getName())</code>
       <code>new static($name)</code>
     </UnsafeInstantiation>
-  </file>
-  <file src="src/Framework/TestSuiteIterator.php">
-    <MissingTemplateParam occurrences="1">
-      <code>RecursiveIterator</code>
-    </MissingTemplateParam>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <InvalidPropertyAssignmentValue occurrences="1">
@@ -460,37 +452,21 @@
       <code>hasCacheDirectory</code>
     </DeprecatedMethod>
   </file>
-  <file src="src/TextUI/Configuration/Xml/CodeCoverage/Filter/DirectoryCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/Configuration/Xml/CodeCoverage/Filter/DirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
     <PossiblyNullArrayOffset occurrences="1">
       <code>$this-&gt;directories</code>
     </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/Filesystem/DirectoryCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
   </file>
   <file src="src/TextUI/Configuration/Xml/Filesystem/DirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -498,18 +474,10 @@
       <code>$this-&gt;directories</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/TextUI/Configuration/Xml/Filesystem/FileCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/Configuration/Xml/Filesystem/FileCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -517,18 +485,10 @@
       <code>$this-&gt;files</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/TextUI/Configuration/Xml/Group/GroupCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/Configuration/Xml/Group/GroupCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -588,18 +548,10 @@
       <code>removeChild</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/ConstantCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/Configuration/Xml/PHP/ConstantCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -607,18 +559,10 @@
       <code>$this-&gt;constants</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/IniSettingCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/Configuration/Xml/PHP/IniSettingCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -626,18 +570,10 @@
       <code>$this-&gt;iniSettings</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/VariableCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/Configuration/Xml/PHP/VariableCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -654,9 +590,6 @@
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -669,18 +602,10 @@
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
   </file>
-  <file src="src/TextUI/Configuration/Xml/TestSuite/TestDirectoryCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/Configuration/Xml/TestSuite/TestDirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -688,18 +613,10 @@
       <code>$this-&gt;directories</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/TextUI/Configuration/Xml/TestSuite/TestFileCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/Configuration/Xml/TestSuite/TestFileCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -707,18 +624,10 @@
       <code>$this-&gt;files</code>
     </PossiblyNullArrayOffset>
   </file>
-  <file src="src/TextUI/Configuration/Xml/TestSuite/TestSuiteCollection.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
-  </file>
   <file src="src/TextUI/Configuration/Xml/TestSuite/TestSuiteCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
     </InvalidNullableReturnType>
-    <MissingTemplateParam occurrences="1">
-      <code>Iterator</code>
-    </MissingTemplateParam>
     <NullableReturnStatement occurrences="1">
       <code>$this-&gt;position</code>
     </NullableReturnStatement>
@@ -775,10 +684,5 @@
     <NoValue occurrences="1">
       <code>$operator</code>
     </NoValue>
-  </file>
-  <file src="src/Util/Xml/SnapshotNodeList.php">
-    <MissingTemplateParam occurrences="1">
-      <code>IteratorAggregate</code>
-    </MissingTemplateParam>
   </file>
 </files>
