@@ -32,6 +32,7 @@ use PHPUnit\TestFixture\MockObject\AnInterfaceWithReturnType;
 use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\MockObject\ClassWithVariadicArgumentMethod;
 use PHPUnit\TestFixture\MockObject\FinalClass;
+use PHPUnit\TestFixture\MockObject\ReadonlyClass;
 use PHPUnit\TestFixture\MockObject\InterfaceWithSemiReservedMethodName;
 use PHPUnit\TestFixture\SingletonClass;
 use RuntimeException;
@@ -322,6 +323,14 @@ final class GeneratorTest extends TestCase
 
         /* @noinspection ClassMockingCorrectnessInspection */
         $this->createMock(FinalClass::class);
+    }
+
+    public function testCannotMockReadonlyClass(): void
+    {
+        $this->expectException(ClassIsReadonlyException::class);
+
+        /* @noinspection ClassMockingCorrectnessInspection */
+        $this->createMock(ReadonlyClass::class);
     }
 
     public function testCanDoubleIntersectionOfMultipleInterfaces(): void
