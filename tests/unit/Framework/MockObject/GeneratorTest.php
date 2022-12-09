@@ -326,6 +326,9 @@ final class GeneratorTest extends TestCase
         $this->createMock(FinalClass::class);
     }
 
+    /**
+     * @requires PHP 8.2
+     */
     public function testCannotMockReadonlyClass(): void
     {
         $this->expectException(ClassIsReadonlyException::class);
