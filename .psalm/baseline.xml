@@ -716,7 +716,7 @@
       <code>getResult</code>
       <code>runTest</code>
     </MissingReturnType>
-    <MissingThrowsDocblock occurrences="82">
+    <MissingThrowsDocblock occurrences="89">
       <code>cacheDirectory</code>
       <code>endTest</code>
       <code>endTest</code>
@@ -768,6 +768,11 @@
       <code>getMock</code>
       <code>getMock</code>
       <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
+      <code>getMock</code>
       <code>getMockForAbstractClass</code>
       <code>getMockForAbstractClass</code>
       <code>getMockForAbstractClass</code>
@@ -778,6 +783,8 @@
       <code>getMockForAbstractClass</code>
       <code>getMockForAbstractClass</code>
       <code>getMockForAbstractClass</code>
+      <code>getMockForAbstractClass</code>
+      <code>getMockForTrait</code>
       <code>getMockForTrait</code>
       <code>getMockForTrait</code>
       <code>getMockForTrait</code>
