@@ -16,6 +16,7 @@ use function microtime;
 use Countable;
 use Exception;
 use PHPUnit\Framework\Attributes\CoversClass;
+use PHPUnit\Framework\Attributes\RequiresPhp;
 use PHPUnit\Framework\Attributes\Small;
 use PHPUnit\Framework\Attributes\UsesClass;
 use PHPUnit\Framework\MockObject\Builder\InvocationMocker;
@@ -325,9 +326,7 @@ final class GeneratorTest extends TestCase
         $this->createMock(FinalClass::class);
     }
 
-    /**
-     * @requires PHP 8.2
-     */
+    #[RequiresPhp('8.2')]
     public function testCannotMockReadonlyClass(): void
     {
         $this->expectException(ClassIsReadonlyException::class);
