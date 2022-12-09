@@ -53,6 +53,7 @@ final class MockBuilder
      * @throws ClassAlreadyExistsException
      * @throws ClassIsEnumerationException
      * @throws ClassIsFinalException
+     * @throws ClassIsReadonlyException
      * @throws DuplicateMethodException
      * @throws InvalidMethodNameException
      * @throws OriginalConstructorInvocationRequiredException
