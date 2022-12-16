@@ -143,7 +143,7 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
         return $testSuite;
     }
 
-    private function __construct(string $name)
+    final private function __construct(string $name)
     {
         $this->name = $name;
 
