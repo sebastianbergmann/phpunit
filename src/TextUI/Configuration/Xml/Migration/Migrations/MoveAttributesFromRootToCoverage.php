@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use function assert;
 use DOMDocument;
 use DOMElement;
 
@@ -28,6 +29,8 @@ final class MoveAttributesFromRootToCoverage implements Migration
         ];
 
         $root = $document->documentElement;
+
+        assert($root instanceof DOMElement);
 
         $coverage = $document->getElementsByTagName('coverage')->item(0);
 
