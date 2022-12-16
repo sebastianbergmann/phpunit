@@ -24,6 +24,7 @@ final class CoverageCloverToReport extends LogToReportMigration
     protected function toReportFormat(DOMElement $logNode): DOMElement
     {
         $clover = $logNode->ownerDocument->createElement('clover');
+
         $clover->setAttribute('outputFile', $logNode->getAttribute('target'));
 
         return $clover;
