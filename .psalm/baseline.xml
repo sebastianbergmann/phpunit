@@ -188,10 +188,6 @@
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
-    <UnsafeInstantiation occurrences="2">
-      <code>new static($class-&gt;getName())</code>
-      <code>new static($name)</code>
-    </UnsafeInstantiation>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <InvalidPropertyAssignmentValue occurrences="1">
