@@ -105,6 +105,20 @@ final class DataProvider
                 $method = $class->getMethod($_dataProvider->methodName());
                 $object = null;
 
+                if (!$method->isPublic()) {
+                    Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
+                        $this->valueObjectForTestMethodWithoutTestData(
+                            $className,
+                            $methodName,
+                        ),
+                        sprintf(
+                            'Data Provider method %s::%s() is not public',
+                            $_dataProvider->className(),
+                            $_dataProvider->methodName()
+                        )
+                    );
+                }
+
                 if (!$method->isStatic()) {
                     Event\Facade::emitter()->testTriggeredPhpunitDeprecation(
                         $this->valueObjectForTestMethodWithoutTestData(
