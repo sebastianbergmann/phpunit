@@ -38,7 +38,6 @@ use function str_contains;
 use function str_replace;
 use function strlen;
 use function strpos;
-use function strtolower;
 use function substr;
 use function trait_exists;
 use Exception;
@@ -912,7 +911,7 @@ final class Generator
 
     private function canMethodBeDoubled(ReflectionMethod $method): bool
     {
-        if ($this->isConstructor($method)) {
+        if ($method->isConstructor()) {
             return false;
         }
 
@@ -929,14 +928,6 @@ final class Generator
         }
 
         return !$this->isMethodNameExcluded($method->getName());
-    }
-
-    /**
-     * @see https://github.com/sebastianbergmann/phpunit/issues/4139#issuecomment-605409765
-     */
-    private function isConstructor(ReflectionMethod $method): bool
-    {
-        return strtolower($method->getName()) === '__construct';
     }
 
     private function isMethodNameExcluded(string $name): bool
