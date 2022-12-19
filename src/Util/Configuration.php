@@ -226,7 +226,7 @@ final class Configuration
                     'directory' => $includeDirectory,
                     'file'      => $includeFile,
                 ],
-                'exclude' => [
+                'exclude'                            => [
                     'directory' => $excludeDirectory,
                     'file'      => $excludeFile,
                 ],

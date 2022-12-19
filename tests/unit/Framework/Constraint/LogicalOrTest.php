@@ -193,7 +193,7 @@ EOF;
     public function providerFailingConstraints(): Generator
     {
         $values = [
-            'single' => [
+            'single'   => [
                 new FalsyConstraint,
                 new FalsyConstraint,
                 new FalsyConstraint,
@@ -215,7 +215,7 @@ EOF;
     public function providerSucceedingConstraints(): Generator
     {
         $values = [
-            'single' => [
+            'single'   => [
                 new TruthyConstraint,
             ],
             'multiple' => [

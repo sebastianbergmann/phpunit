@@ -29,11 +29,11 @@ final class Help
     private const LEFT_MARGIN = '  ';
 
     private const HELP_TEXT = [
-        'Usage' => [
+        'Usage'                  => [
             ['text' => 'phpunit [options] UnitTest [UnitTest.php]'],
             ['text' => 'phpunit [options] <directory>'],
         ],
-        'Code Coverage Options' => [
+        'Code Coverage Options'  => [
             ['arg' => '--coverage-clover <file>', 'desc' => 'Generate code coverage report in Clover XML format'],
             ['arg' => '--coverage-crap4j <file>', 'desc' => 'Generate code coverage report in Crap4J XML format'],
             ['arg' => '--coverage-html <dir>', 'desc' => 'Generate code coverage report in HTML format'],
@@ -46,7 +46,7 @@ final class Help
             ['arg' => '--dump-xdebug-filter <file>', 'desc' => 'Generate script to set Xdebug code coverage filter'],
         ],
 
-        'Logging Options' => [
+        'Logging Options'        => [
             ['arg' => '--log-junit <file>', 'desc' => 'Log test execution in JUnit XML format to file'],
             ['arg' => '--log-teamcity <file>', 'desc' => 'Log test execution in TeamCity format to file'],
             ['arg' => '--testdox-html <file>', 'desc' => 'Write agile documentation in HTML format to file'],
@@ -111,13 +111,13 @@ final class Help
             ['arg'    => '--printer <printer>', 'desc' => 'TestListener implementation to use'],
             ['spacer' => ''],
 
-            ['arg' => '--order-by=<order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
-            ['arg' => '--random-order-seed=<N>', 'desc' => 'Use a specific random seed <N> for random order'],
-            ['arg' => '--cache-result', 'desc' => 'Write test results to cache file'],
-            ['arg' => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
+            ['arg'    => '--order-by=<order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
+            ['arg'    => '--random-order-seed=<N>', 'desc' => 'Use a specific random seed <N> for random order'],
+            ['arg'    => '--cache-result', 'desc' => 'Write test results to cache file'],
+            ['arg'    => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
         ],
 
-        'Configuration Options' => [
+        'Configuration Options'  => [
             ['arg' => '--prepend <file>', 'desc' => 'A PHP script that is included as early as possible'],
             ['arg' => '--bootstrap <file>', 'desc' => 'A PHP script that is included before the tests run'],
             ['arg' => '-c|--configuration <file>', 'desc' => 'Read configuration from XML file'],
@@ -129,7 +129,7 @@ final class Help
             ['arg' => '--cache-result-file=<file>', 'desc' => 'Specify result cache path and filename'],
         ],
 
-        'Miscellaneous Options' => [
+        'Miscellaneous Options'  => [
             ['arg' => '-h|--help', 'desc' => 'Prints this usage information'],
             ['arg' => '--version', 'desc' => 'Prints the version and exits'],
             ['arg' => '--atleast-version <min>', 'desc' => 'Checks that version is greater than min and exits'],

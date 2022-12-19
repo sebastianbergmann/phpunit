@@ -23,19 +23,19 @@ final class ArraySubsetTest extends ConstraintTestCase
     public static function evaluateDataProvider(): array
     {
         return [
-            'loose array subset and array other' => [
+            'loose array subset and array other'        => [
                 'expected' => true,
                 'subset'   => ['bar' => 0],
                 'other'    => ['foo' => '', 'bar' => '0'],
                 'strict'   => false,
             ],
-            'strict array subset and array other' => [
+            'strict array subset and array other'       => [
                 'expected' => false,
                 'subset'   => ['bar' => 0],
                 'other'    => ['foo' => '', 'bar' => '0'],
                 'strict'   => true,
             ],
-            'loose array subset and ArrayObject other' => [
+            'loose array subset and ArrayObject other'  => [
                 'expected' => true,
                 'subset'   => ['bar' => 0],
                 'other'    => new ArrayObject(['foo' => '', 'bar' => '0']),

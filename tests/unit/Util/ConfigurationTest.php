@@ -189,12 +189,12 @@ final class ConfigurationTest extends TestCase
                                 'group'  => 'DEFAULT',
                             ],
                         ],
-                        'file' => [
+                        'file'      => [
                             0 => '/path/to/file',
                             1 => '/path/to/file',
                         ],
                     ],
-                    'exclude' => [
+                    'exclude'                            => [
                         'directory' => [
                             0 => [
                                 'path'   => '/path/to/files',
@@ -203,7 +203,7 @@ final class ConfigurationTest extends TestCase
                                 'group'  => 'DEFAULT',
                             ],
                         ],
-                        'file' => [
+                        'file'      => [
                             0 => '/path/to/file',
                         ],
                     ],
@@ -369,16 +369,16 @@ final class ConfigurationTest extends TestCase
                     TEST_FILES_PATH . '.',
                     '/path/to/lib',
                 ],
-                'ini'     => ['foo' => ['value' => 'bar'], 'highlight.keyword' => ['value' => '#123456'], 'highlight.string' => ['value' => 'TEST_FILES_PATH']],
-                'const'   => ['FOO' => ['value' => false], 'BAR' => ['value' => true]],
-                'var'     => ['foo' => ['value' => false]],
-                'env'     => ['foo' => ['value' => true], 'bar' => ['value' => 'true', 'verbatim' => true], 'foo_force' => ['value' => 'forced', 'force' => true]],
-                'post'    => ['foo' => ['value' => 'bar']],
-                'get'     => ['foo' => ['value' => 'bar']],
-                'cookie'  => ['foo' => ['value' => 'bar']],
-                'server'  => ['foo' => ['value' => 'bar']],
-                'files'   => ['foo' => ['value' => 'bar']],
-                'request' => ['foo' => ['value' => 'bar']],
+                'ini'          => ['foo' => ['value' => 'bar'], 'highlight.keyword' => ['value' => '#123456'], 'highlight.string' => ['value' => 'TEST_FILES_PATH']],
+                'const'        => ['FOO' => ['value' => false], 'BAR' => ['value' => true]],
+                'var'          => ['foo' => ['value' => false]],
+                'env'          => ['foo' => ['value' => true], 'bar' => ['value' => 'true', 'verbatim' => true], 'foo_force' => ['value' => 'forced', 'force' => true]],
+                'post'         => ['foo' => ['value' => 'bar']],
+                'get'          => ['foo' => ['value' => 'bar']],
+                'cookie'       => ['foo' => ['value' => 'bar']],
+                'server'       => ['foo' => ['value' => 'bar']],
+                'files'        => ['foo' => ['value' => 'bar']],
+                'request'      => ['foo' => ['value' => 'bar']],
             ],
             $this->configuration->getPHPConfiguration()
         );

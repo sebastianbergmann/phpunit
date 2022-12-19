@@ -73,7 +73,7 @@ EOF;
                         'prefix' => '',
                     ],
                 ],
-                'file' => [
+                'file'      => [
                     'src/foo.php',
                     'src/bar.php',
                 ],
