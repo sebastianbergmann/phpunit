@@ -5,6 +5,46 @@
       <code>notify</code>
     </UndefinedInterfaceMethod>
   </file>
+  <file src="src/Event/Events/Test/HookMethod/AfterLastTestMethodFinished.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$calledMethods</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Event/Events/Test/HookMethod/AfterTestMethodFinished.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$calledMethods</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Event/Events/Test/HookMethod/BeforeFirstTestMethodFinished.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$calledMethods</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Event/Events/Test/HookMethod/BeforeTestMethodFinished.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$calledMethods</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Event/Events/Test/HookMethod/PostConditionFinished.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$calledMethods</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Event/Events/Test/HookMethod/PreConditionFinished.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$calledMethods</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Event/Events/Test/TestDouble/MockObjectFromWsdlCreated.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$methods</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Event/Events/Test/TestDouble/PartialMockObjectCreated.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$methodNames</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/Event/Facade.php">
     <ArgumentTypeCoercion occurrences="1">
       <code>$eventClass . 'Subscriber'</code>
@@ -27,6 +67,19 @@
     <ImpureMethodCall occurrences="1">
       <code>fromBytes</code>
     </ImpureMethodCall>
+  </file>
+  <file src="src/Event/Value/Test/TestCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$tests</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/Event/Value/Test/TestData/TestDataCollection.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$data</code>
+    </ArgumentTypeCoercion>
+    <PropertyTypeCoercion occurrences="1">
+      <code>$data</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/Event/Value/Test/TestMethod.php">
     <ImpureMethodCall occurrences="4">
@@ -72,6 +125,17 @@
       <code>$e-&gt;getCode()</code>
     </PossiblyInvalidArgument>
   </file>
+  <file src="src/Framework/Constraint/ObjectEquals.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;method</code>
+    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="1">
+      <code>getMethod</code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
+    <PropertyTypeCoercion occurrences="1"/>
+  </file>
   <file src="src/Framework/Constraint/Operator/LogicalXor.php">
     <InvalidArgument occurrences="1">
       <code>bool</code>
@@ -86,12 +150,25 @@
     <ArgumentTypeCoercion occurrences="1">
       <code>$className</code>
     </ArgumentTypeCoercion>
+    <LessSpecificReturnStatement occurrences="1">
+      <code>$this-&gt;providedTests</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="1">
+      <code>list&lt;ExecutionOrderDependency&gt;</code>
+    </MoreSpecificReturnType>
+  </file>
+  <file src="src/Framework/MockObject/Builder/InvocationMocker.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$configurableMethods</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
-    <ArgumentTypeCoercion occurrences="4">
+    <ArgumentTypeCoercion occurrences="6">
       <code>$className</code>
       <code>$className</code>
       <code>$interfaceName</code>
+      <code>$methodName</code>
+      <code>$methods</code>
       <code>$type</code>
     </ArgumentTypeCoercion>
     <InvalidReturnStatement occurrences="1"/>
@@ -99,6 +176,9 @@
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
     <LessSpecificReturnStatement occurrences="1"/>
+    <MissingThrowsDocblock occurrences="1">
+      <code>getMethod</code>
+    </MissingThrowsDocblock>
     <MoreSpecificReturnType occurrences="1">
       <code>MockObject</code>
     </MoreSpecificReturnType>
@@ -107,9 +187,9 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <InvalidArgument occurrences="1">
       <code>$types</code>
-    </ArgumentTypeCoercion>
+    </InvalidArgument>
   </file>
   <file src="src/Framework/MockObject/Matcher.php">
     <InvalidNullableReturnType occurrences="1">
@@ -162,7 +242,9 @@
     </MoreSpecificReturnType>
   </file>
   <file src="src/Framework/TestCase.php">
-    <ArgumentTypeCoercion occurrences="3">
+    <ArgumentTypeCoercion occurrences="5">
+      <code>$methodName</code>
+      <code>$methodName</code>
       <code>$mockClassName</code>
       <code>$originalClassName</code>
       <code>$this-&gt;expectedException</code>
@@ -173,9 +255,16 @@
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
+    <MissingThrowsDocblock occurrences="1">
+      <code>getMethod</code>
+    </MissingThrowsDocblock>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$outputBufferingLevel</code>
     </PropertyNotSetInConstructor>
+    <PropertyTypeCoercion occurrences="2">
+      <code>$backupGlobalsExcludeList</code>
+      <code>$groups</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/Framework/TestRunner.php">
     <InvalidArgument occurrences="1">
@@ -183,11 +272,20 @@
     </InvalidArgument>
   </file>
   <file src="src/Framework/TestSuite.php">
-    <ArgumentTypeCoercion occurrences="3">
+    <ArgumentTypeCoercion occurrences="4">
+      <code>$methodName</code>
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
       <code>$this-&gt;name</code>
     </ArgumentTypeCoercion>
+    <LessSpecificReturnStatement occurrences="2">
+      <code>$this-&gt;providedTests</code>
+      <code>$this-&gt;requiredTests</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="2">
+      <code>list&lt;ExecutionOrderDependency&gt;</code>
+      <code>list&lt;ExecutionOrderDependency&gt;</code>
+    </MoreSpecificReturnType>
   </file>
   <file src="src/Logging/JUnit/JunitXmlLogger.php">
     <InvalidPropertyAssignmentValue occurrences="1">
@@ -213,6 +311,11 @@
       <code>$value</code>
     </InvalidCast>
   </file>
+  <file src="src/Logging/TestDox/TestMethod/TestResultCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$testResults</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/Logging/TestDox/TestMethod/TestResultCollector.php">
     <PossiblyNullArgument occurrences="2">
       <code>$this-&gt;status</code>
@@ -235,6 +338,9 @@
     </UndefinedMethod>
   </file>
   <file src="src/Metadata/Api/DataProvider.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$_dataProvider-&gt;methodName()</code>
+    </ArgumentTypeCoercion>
     <PossiblyInvalidArgument occurrences="1">
       <code>$e-&gt;getCode()</code>
     </PossiblyInvalidArgument>
@@ -278,6 +384,11 @@
       <code>$className</code>
     </ArgumentTypeCoercion>
   </file>
+  <file src="src/Metadata/MetadataCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$metadata</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
     <ArgumentTypeCoercion occurrences="7">
       <code>$className</code>
@@ -312,6 +423,9 @@
     <MissingTemplateParam occurrences="1">
       <code>GroupFilterIterator</code>
     </MissingTemplateParam>
+    <PropertyTypeCoercion occurrences="1">
+      <code>$this-&gt;groupTests</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/Runner/Filter/NameFilterIterator.php">
     <MissingTemplateParam occurrences="1">
@@ -345,8 +459,14 @@
     </UnresolvableInclude>
   </file>
   <file src="src/Runner/TestSuiteSorter.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="7">
       <code>$tests</code>
+      <code>$this-&gt;randomize($suite-&gt;tests())</code>
+      <code>$this-&gt;resolveDependencies($tests)</code>
+      <code>$this-&gt;reverse($suite-&gt;tests())</code>
+      <code>$this-&gt;sortByDuration($suite-&gt;tests())</code>
+      <code>$this-&gt;sortBySize($suite-&gt;tests())</code>
+      <code>$this-&gt;sortDefectsFirst($suite-&gt;tests())</code>
     </ArgumentTypeCoercion>
     <RedundantCondition occurrences="4">
       <code>$order === self::ORDER_DURATION &amp;&amp; $this-&gt;cache !== null</code>
@@ -363,6 +483,12 @@
       <code>include_once $filename</code>
     </UnresolvableInclude>
   </file>
+  <file src="src/TextUI/Configuration/Cli/Builder.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$parameters</code>
+      <code>array_merge(self::LONG_OPTIONS, $additionalLongOptions)</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/TextUI/Configuration/Cli/Configuration.php">
     <InvalidNullableReturnType occurrences="2">
       <code>bool</code>
@@ -374,6 +500,14 @@
     </NullableReturnStatement>
   </file>
   <file src="src/TextUI/Configuration/Configuration.php">
+    <LessSpecificReturnStatement occurrences="2">
+      <code>$this-&gt;testsCovering</code>
+      <code>$this-&gt;testsUsing</code>
+    </LessSpecificReturnStatement>
+    <MoreSpecificReturnType occurrences="2">
+      <code>list&lt;string&gt;</code>
+      <code>list&lt;string&gt;</code>
+    </MoreSpecificReturnType>
     <PossiblyInvalidPropertyAssignmentValue occurrences="1">
       <code>$columns</code>
     </PossiblyInvalidPropertyAssignmentValue>
@@ -392,10 +526,20 @@
       <code>assert($xmlConfiguration instanceof LoadedFromFileConfiguration)</code>
     </RedundantCondition>
   </file>
+  <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;testSuffixes($cliConfiguration)</code>
+    </ArgumentTypeCoercion>
+  </file>
   <file src="src/TextUI/Configuration/Xml/CodeCoverage/CodeCoverage.php">
     <DeprecatedMethod occurrences="1">
       <code>hasCacheDirectory</code>
     </DeprecatedMethod>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/CodeCoverage/Filter/DirectoryCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$directories</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Xml/CodeCoverage/Filter/DirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
@@ -408,6 +552,11 @@
       <code>$this-&gt;directories</code>
     </PossiblyNullArrayOffset>
   </file>
+  <file src="src/TextUI/Configuration/Xml/Filesystem/DirectoryCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$directories</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/TextUI/Configuration/Xml/Filesystem/DirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
@@ -419,6 +568,11 @@
       <code>$this-&gt;directories</code>
     </PossiblyNullArrayOffset>
   </file>
+  <file src="src/TextUI/Configuration/Xml/Filesystem/FileCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$files</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/TextUI/Configuration/Xml/Filesystem/FileCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
@@ -429,6 +583,11 @@
     <PossiblyNullArrayOffset occurrences="1">
       <code>$this-&gt;files</code>
     </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/Group/GroupCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$groups</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Xml/Group/GroupCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
@@ -493,6 +652,11 @@
       <code>removeChild</code>
     </PossiblyNullReference>
   </file>
+  <file src="src/TextUI/Configuration/Xml/PHP/ConstantCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$constants</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/TextUI/Configuration/Xml/PHP/ConstantCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
@@ -503,6 +667,11 @@
     <PossiblyNullArrayOffset occurrences="1">
       <code>$this-&gt;constants</code>
     </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/PHP/IniSettingCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$iniSettings</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Xml/PHP/IniSettingCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
@@ -515,6 +684,11 @@
       <code>$this-&gt;iniSettings</code>
     </PossiblyNullArrayOffset>
   </file>
+  <file src="src/TextUI/Configuration/Xml/PHP/VariableCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$variables</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/TextUI/Configuration/Xml/PHP/VariableCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
@@ -525,6 +699,11 @@
     <PossiblyNullArrayOffset occurrences="1">
       <code>$this-&gt;variables</code>
     </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/PHPUnit/ExtensionBootstrapCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$extensionBootstraps</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Xml/PHPUnit/ExtensionBootstrapCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
@@ -542,6 +721,11 @@
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
   </file>
+  <file src="src/TextUI/Configuration/Xml/TestSuite/TestDirectoryCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$directories</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/TextUI/Configuration/Xml/TestSuite/TestDirectoryCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
@@ -553,6 +737,11 @@
       <code>$this-&gt;directories</code>
     </PossiblyNullArrayOffset>
   </file>
+  <file src="src/TextUI/Configuration/Xml/TestSuite/TestFileCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$files</code>
+    </PropertyTypeCoercion>
+  </file>
   <file src="src/TextUI/Configuration/Xml/TestSuite/TestFileCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
       <code>int</code>
@@ -563,6 +752,11 @@
     <PossiblyNullArrayOffset occurrences="1">
       <code>$this-&gt;files</code>
     </PossiblyNullArrayOffset>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/TestSuite/TestSuiteCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$testSuites</code>
+    </PropertyTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Xml/TestSuite/TestSuiteCollectionIterator.php">
     <InvalidNullableReturnType occurrences="1">
@@ -613,9 +807,9 @@
     </PossiblyInvalidArgument>
   </file>
   <file src="src/Util/Reflection.php">
-    <PossiblyNullArgument occurrences="1">
+    <ArgumentTypeCoercion occurrences="1">
       <code>$filter</code>
-    </PossiblyNullArgument>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Util/VersionComparisonOperator.php">
     <DocblockTypeContradiction occurrences="1">
