@@ -355,10 +355,33 @@
     </MissingParamType>
   </file>
   <file src="src/Framework/Constraint/Object/ClassHasAttribute.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;attributeName</code>
+    </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/Framework/Constraint/Object/ClassHasStaticAttribute.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$this-&gt;attributeName()</code>
+      <code>$this-&gt;attributeName()</code>
+    </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="1"/>
+  </file>
+  <file src="src/Framework/Constraint/Object/ObjectEquals.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;method</code>
+    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="1">
+      <code>getMethod</code>
+    </MissingThrowsDocblock>
+  </file>
+  <file src="src/Framework/Constraint/Object/ObjectHasAttribute.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;attributeName()</code>
+    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="1">
+      <code>hasProperty</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/Constraint/Operator/BinaryOperator.php">
     <UnsafeInstantiation occurrences="1">
@@ -468,10 +491,12 @@
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
-    <ArgumentTypeCoercion occurrences="3">
+    <ArgumentTypeCoercion occurrences="5">
       <code>$className</code>
       <code>$className</code>
       <code>$interfaceName</code>
+      <code>$methodName</code>
+      <code>$methods</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="1">
       <code>!is_array($methods) &amp;&amp; null !== $methods</code>
@@ -491,9 +516,9 @@
     </PossiblyNullArgument>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <InvalidArgument occurrences="1">
       <code>$types</code>
-    </ArgumentTypeCoercion>
+    </InvalidArgument>
     <MissingThrowsDocblock occurrences="1">
       <code>throw $t;</code>
     </MissingThrowsDocblock>
@@ -671,7 +696,8 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/TestCase.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$methodName</code>
       <code>$this-&gt;expectedException</code>
     </ArgumentTypeCoercion>
     <DeprecatedClass occurrences="2">
@@ -843,7 +869,8 @@
     </UndefinedDocblockClass>
   </file>
   <file src="src/Framework/TestResult.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$name</code>
       <code>$test</code>
     </ArgumentTypeCoercion>
     <DeprecatedInterface occurrences="4">
@@ -905,9 +932,11 @@
     </UndefinedInterfaceMethod>
   </file>
   <file src="src/Framework/TestSuite.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="4">
       <code>$className</code>
       <code>$className</code>
+      <code>TestUtil::getDependencies($class-&gt;getName(), $methodName)</code>
+      <code>TestUtil::getDependencies($class-&gt;getName(), $methodName)</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="5">
       <code>!is_string($theClass) &amp;&amp; !$theClass instanceof ReflectionClass</code>
@@ -1030,6 +1059,10 @@
     </RedundantConditionGivenDocblockType>
   </file>
   <file src="src/TextUI/CliArguments/Builder.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$parameters</code>
+      <code>array_merge(self::LONG_OPTIONS, $additionalLongOptions)</code>
+    </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/TextUI/CliArguments/Configuration.php">
@@ -1171,13 +1204,15 @@
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyUndefinedArrayOffset occurrences="1">
+    <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$_SERVER['PHP_SELF']</code>
+      <code>$arguments['enforceTimeLimit']</code>
     </PossiblyUndefinedArrayOffset>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$printer</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="3">
+    <RedundantCondition occurrences="4">
+      <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
       <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
       <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
@@ -1422,6 +1457,9 @@
     </PropertyNotSetInConstructor>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$dataProviderMethodName</code>
+    </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="1">
       <code>throw new SkippedTestError;</code>
     </MissingThrowsDocblock>
@@ -1462,7 +1500,8 @@
     </MissingParamType>
   </file>
   <file src="src/Util/Log/JUnit.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$methodName</code>
       <code>$suite-&gt;getName()</code>
     </ArgumentTypeCoercion>
     <DeprecatedInterface occurrences="1">
@@ -1576,6 +1615,11 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$stream</code>
     </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Util/Reflection.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$filter</code>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Util/Test.php">
     <MissingReturnType occurrences="1">
