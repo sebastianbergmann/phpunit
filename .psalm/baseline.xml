@@ -1,8 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <files psalm-version="dev-master@">
   <file src="src/Framework/Assert.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="4">
       <code>$actualElement-&gt;childNodes-&gt;item($i)</code>
+      <code>$attributeName</code>
+      <code>$attributeName</code>
       <code>$expectedElement-&gt;childNodes-&gt;item($i)</code>
     </ArgumentTypeCoercion>
     <DeprecatedClass occurrences="8">
@@ -390,9 +392,16 @@
     </MissingReturnType>
   </file>
   <file src="src/Framework/Constraint/ClassHasAttribute.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;attributeName</code>
+    </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/Framework/Constraint/ClassHasStaticAttribute.php">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$this-&gt;attributeName()</code>
+      <code>$this-&gt;attributeName()</code>
+    </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="1"/>
   </file>
   <file src="src/Framework/Constraint/Composite.php">
@@ -521,6 +530,14 @@
       <code>evaluate</code>
     </MissingReturnType>
   </file>
+  <file src="src/Framework/Constraint/ObjectHasAttribute.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$this-&gt;attributeName()</code>
+    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="1">
+      <code>hasProperty</code>
+    </MissingThrowsDocblock>
+  </file>
   <file src="src/Framework/Constraint/SameSize.php">
     <PossiblyNullArgument occurrences="1">
       <code>$this-&gt;getCountOf($expected)</code>
@@ -638,12 +655,14 @@
     </MissingParamType>
   </file>
   <file src="src/Framework/MockObject/Generator.php">
-    <ArgumentTypeCoercion occurrences="5">
+    <ArgumentTypeCoercion occurrences="7">
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$className</code>
       <code>$interfaceName</code>
+      <code>$method</code>
+      <code>$methodName</code>
     </ArgumentTypeCoercion>
     <DocblockTypeContradiction occurrences="2">
       <code>!is_array($methods) &amp;&amp; null !== $methods</code>
@@ -748,6 +767,12 @@
       <code>new Text_Template($filename)</code>
       <code>self::getMethodParametersForCall($method)</code>
     </MissingThrowsDocblock>
+    <PossiblyNullReference occurrences="1">
+      <code>getName</code>
+    </PossiblyNullReference>
+    <TypeDoesNotContainType occurrences="1">
+      <code>$parentClass === false</code>
+    </TypeDoesNotContainType>
     <UndefinedMethod occurrences="1">
       <code>getName</code>
     </UndefinedMethod>
@@ -866,8 +891,9 @@
     </MissingThrowsDocblock>
   </file>
   <file src="src/Framework/TestCase.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="3">
       <code>$class_name</code>
+      <code>$methodName</code>
       <code>$this-&gt;expectedException</code>
     </ArgumentTypeCoercion>
     <DeprecatedMethod occurrences="2">
@@ -980,7 +1006,8 @@
     </UndefinedDocblockClass>
   </file>
   <file src="src/Framework/TestResult.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$name</code>
       <code>$test</code>
     </ArgumentTypeCoercion>
     <DeprecatedInterface occurrences="4">
@@ -1271,8 +1298,9 @@
     <PossiblyNullPropertyAssignmentValue occurrences="1">
       <code>$loader</code>
     </PossiblyNullPropertyAssignmentValue>
-    <PossiblyUndefinedArrayOffset occurrences="1">
+    <PossiblyUndefinedArrayOffset occurrences="2">
       <code>$_SERVER['PHP_SELF']</code>
+      <code>$arguments['enforceTimeLimit']</code>
     </PossiblyUndefinedArrayOffset>
     <PossiblyUndefinedVariable occurrences="2">
       <code>$whitelistFromConfigurationFile</code>
@@ -1294,6 +1322,9 @@
     <UnsafeInstantiation occurrences="1"/>
   </file>
   <file src="src/Util/Annotation/DocBlock.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$dataProviderMethodName</code>
+    </ArgumentTypeCoercion>
     <MissingThrowsDocblock occurrences="1">
       <code>throw new SkippedTestError;</code>
     </MissingThrowsDocblock>
@@ -1489,7 +1520,8 @@
     </MissingParamType>
   </file>
   <file src="src/Util/Log/JUnit.php">
-    <ArgumentTypeCoercion occurrences="1">
+    <ArgumentTypeCoercion occurrences="2">
+      <code>$methodName</code>
       <code>$suite-&gt;getName()</code>
     </ArgumentTypeCoercion>
     <DeprecatedInterface occurrences="1">
@@ -1626,6 +1658,11 @@
       <code>$out</code>
       <code>$outTarget</code>
     </PropertyNotSetInConstructor>
+  </file>
+  <file src="src/Util/Reflection.php">
+    <ArgumentTypeCoercion occurrences="1">
+      <code>$filter</code>
+    </ArgumentTypeCoercion>
   </file>
   <file src="src/Util/Test.php">
     <InvalidScalarArgument occurrences="1">
