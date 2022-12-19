@@ -25,7 +25,7 @@ final class HRTimeTest extends TestCase
     public static function provideStartGreaterThanEnd(): array
     {
         return [
-            'seconds-greater' => [
+            'seconds-greater'                 => [
                 11,
                 1,
                 10,
@@ -37,7 +37,7 @@ final class HRTimeTest extends TestCase
                 10,
                 0,
             ],
-            'nanoseconds-greater' => [
+            'nanoseconds-greater'             => [
                 10,
                 1,
                 10,
@@ -52,14 +52,14 @@ final class HRTimeTest extends TestCase
     public static function provideStartEndAndDuration(): array
     {
         return [
-            'start-equal-to-end' => [
+            'start-equal-to-end'                             => [
                 10,
                 50,
                 10,
                 50,
                 Duration::fromSecondsAndNanoseconds(0, 0),
             ],
-            'start-smaller-than-end' => [
+            'start-smaller-than-end'                         => [
                 10,
                 50,
                 12,

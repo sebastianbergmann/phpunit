@@ -27,10 +27,10 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
     public static function determineJsonErrorDataprovider(): array
     {
         return [
-            'JSON_ERROR_NONE' => [
+            'JSON_ERROR_NONE'           => [
                 null, JSON_ERROR_NONE, '',
             ],
-            'JSON_ERROR_DEPTH' => [
+            'JSON_ERROR_DEPTH'          => [
                 'Maximum stack depth exceeded', JSON_ERROR_DEPTH, '',
             ],
             'prefixed JSON_ERROR_DEPTH' => [
@@ -39,18 +39,18 @@ final class JsonMatchesErrorMessageProviderTest extends TestCase
             'JSON_ERROR_STATE_MISMatch' => [
                 'Underflow or the modes mismatch', JSON_ERROR_STATE_MISMATCH, '',
             ],
-            'JSON_ERROR_CTRL_CHAR' => [
+            'JSON_ERROR_CTRL_CHAR'      => [
                 'Unexpected control character found', JSON_ERROR_CTRL_CHAR, '',
             ],
-            'JSON_ERROR_SYNTAX' => [
+            'JSON_ERROR_SYNTAX'         => [
                 'Syntax error, malformed JSON', JSON_ERROR_SYNTAX, '',
             ],
-            'JSON_ERROR_UTF8`' => [
+            'JSON_ERROR_UTF8`'          => [
                 'Malformed UTF-8 characters, possibly incorrectly encoded',
                 JSON_ERROR_UTF8,
                 '',
             ],
-            'Invalid error indicator' => [
+            'Invalid error indicator'   => [
                 'Unknown error', 55, '',
             ],
         ];

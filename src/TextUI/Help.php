@@ -29,7 +29,7 @@ final class Help
     private const LEFT_MARGIN = '  ';
 
     private const HELP_TEXT = [
-        'Usage' => [
+        'Usage'         => [
             ['text' => 'phpunit [options] UnitTest.php'],
             ['text' => 'phpunit [options] <directory>'],
         ],
@@ -46,7 +46,7 @@ final class Help
             ['arg' => '--migrate-configuration', 'desc' => 'Migrate configuration file to current format'],
         ],
 
-        'Selection' => [
+        'Selection'     => [
             ['arg' => '--list-suites', 'desc' => 'List available test suites'],
             ['arg' => '--testsuite <name>', 'desc' => 'Only run tests from the specified test suite(s)'],
             ['arg' => '--exclude-testsuite <name>', 'desc' => 'Exclude tests from the specified test suite(s)'],
@@ -61,7 +61,7 @@ final class Help
             ['arg' => '--test-suffix <suffixes>', 'desc' => 'Only search for test in files with specified suffix(es). Default: Test.php,.phpt'],
         ],
 
-        'Execution' => [
+        'Execution'     => [
             ['arg' => '--process-isolation', 'desc' => 'Run each test in a separate PHP process'],
             ['arg'    => '--globals-backup', 'desc' => 'Backup and restore $GLOBALS for each test'],
             ['arg'    => '--static-backup', 'desc' => 'Backup and restore static properties for each test'],
@@ -97,11 +97,11 @@ final class Help
             ['arg'    => '--do-not-cache-result', 'desc' => 'Do not write test results to cache file'],
             ['spacer' => ''],
 
-            ['arg' => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
-            ['arg' => '--random-order-seed <N>', 'desc' => 'Use a specific random seed <N> for random order'],
+            ['arg'    => '--order-by <order>', 'desc' => 'Run tests in order: default|defects|duration|no-depends|random|reverse|size'],
+            ['arg'    => '--random-order-seed <N>', 'desc' => 'Use a specific random seed <N> for random order'],
         ],
 
-        'Reporting' => [
+        'Reporting'     => [
             ['arg' => '--colors <flag>', 'desc' => 'Use colors in output ("never", "auto" or "always")'],
             ['arg'    => '--columns <n>', 'desc' => 'Number of columns to use for progress output'],
             ['arg'    => '--columns max', 'desc' => 'Use maximum number of columns for progress output'],
@@ -122,11 +122,11 @@ final class Help
             ['arg'    => '--reverse-list', 'desc' => 'Print defects in reverse order'],
             ['spacer' => ''],
 
-            ['arg' => '--teamcity', 'desc' => 'Report test execution progress in TeamCity format'],
-            ['arg' => '--testdox', 'desc' => 'Report test results in TestDox format'],
+            ['arg'    => '--teamcity', 'desc' => 'Report test execution progress in TeamCity format'],
+            ['arg'    => '--testdox', 'desc' => 'Report test results in TestDox format'],
         ],
 
-        'Logging' => [
+        'Logging'       => [
             ['arg' => '--log-junit <file>', 'desc' => 'Log test execution in JUnit XML format to file'],
             ['arg' => '--log-teamcity <file>', 'desc' => 'Log test execution in TeamCity format to file'],
             ['arg' => '--testdox-html <file>', 'desc' => 'Write agile documentation in HTML format to file'],

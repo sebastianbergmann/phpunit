@@ -61,19 +61,19 @@ final class ResultPrinterTest extends TestCase
     public static function provider(): array
     {
         return [
-            'no tests' => [
+            'no tests'                                                   => [
                 __DIR__ . '/expectations/no_tests.txt',
                 self::createTestResult(
                     numberOfTestsRun: 0
                 ),
             ],
 
-            'successful test without issues' => [
+            'successful test without issues'                             => [
                 __DIR__ . '/expectations/successful_test_without_issues.txt',
                 self::createTestResult(),
             ],
 
-            'errored test' => [
+            'errored test'                                               => [
                 __DIR__ . '/expectations/errored_test.txt',
                 self::createTestResult(
                     testErroredEvents: [
@@ -82,7 +82,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'failed test' => [
+            'failed test'                                                => [
                 __DIR__ . '/expectations/failed_test.txt',
                 self::createTestResult(
                     testFailedEvents: [
@@ -91,7 +91,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'incomplete test' => [
+            'incomplete test'                                            => [
                 __DIR__ . '/expectations/incomplete_test.txt',
                 self::createTestResult(
                     testMarkedIncompleteEvents: [
@@ -104,7 +104,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'skipped test' => [
+            'skipped test'                                               => [
                 __DIR__ . '/expectations/skipped_test.txt',
                 self::createTestResult(
                     testSkippedEvents: [
@@ -117,7 +117,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'risky test with single-line message' => [
+            'risky test with single-line message'                        => [
                 __DIR__ . '/expectations/risky_test_single_line_message.txt',
                 self::createTestResult(
                     testConsideredRiskyEvents: [
@@ -140,7 +140,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'risky test with multiple reasons with multi-line messages' => [
+            'risky test with multiple reasons with multi-line messages'  => [
                 __DIR__ . '/expectations/risky_test_with_multiple_reasons_with_multi_line_messages.txt',
                 self::createTestResult(
                     testConsideredRiskyEvents: [
@@ -152,7 +152,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'errored test that is risky' => [
+            'errored test that is risky'                                 => [
                 __DIR__ . '/expectations/errored_test_that_is_risky.txt',
                 self::createTestResult(
                     testErroredEvents: [
@@ -166,7 +166,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'failed test that is risky' => [
+            'failed test that is risky'                                  => [
                 __DIR__ . '/expectations/failed_test_that_is_risky.txt',
                 self::createTestResult(
                     testFailedEvents: [
@@ -180,7 +180,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers deprecation' => [
+            'successful test that triggers deprecation'                  => [
                 __DIR__ . '/expectations/successful_test_with_deprecation.txt',
                 self::createTestResult(
                     testTriggeredDeprecationEvents: [
@@ -197,7 +197,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers PHP deprecation' => [
+            'successful test that triggers PHP deprecation'              => [
                 __DIR__ . '/expectations/successful_test_with_php_deprecation.txt',
                 self::createTestResult(
                     testTriggeredPhpDeprecationEvents: [
@@ -214,7 +214,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers PHPUnit deprecation' => [
+            'successful test that triggers PHPUnit deprecation'          => [
                 __DIR__ . '/expectations/successful_test_with_phpunit_deprecation.txt',
                 self::createTestResult(
                     testTriggeredPhpunitDeprecationEvents: [
@@ -229,7 +229,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers error' => [
+            'successful test that triggers error'                        => [
                 __DIR__ . '/expectations/successful_test_with_error.txt',
                 self::createTestResult(
                     testTriggeredErrorEvents: [
@@ -246,7 +246,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers notice' => [
+            'successful test that triggers notice'                       => [
                 __DIR__ . '/expectations/successful_test_with_notice.txt',
                 self::createTestResult(
                     testTriggeredNoticeEvents: [
@@ -263,7 +263,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers PHP notice' => [
+            'successful test that triggers PHP notice'                   => [
                 __DIR__ . '/expectations/successful_test_with_php_notice.txt',
                 self::createTestResult(
                     testTriggeredPhpNoticeEvents: [
@@ -280,7 +280,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers warning' => [
+            'successful test that triggers warning'                      => [
                 __DIR__ . '/expectations/successful_test_with_warning.txt',
                 self::createTestResult(
                     testTriggeredWarningEvents: [
@@ -297,7 +297,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers PHP warning' => [
+            'successful test that triggers PHP warning'                  => [
                 __DIR__ . '/expectations/successful_test_with_php_warning.txt',
                 self::createTestResult(
                     testTriggeredPhpWarningEvents: [
@@ -314,7 +314,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'test that triggers PHPUnit error' => [
+            'test that triggers PHPUnit error'                           => [
                 __DIR__ . '/expectations/test_with_phpunit_error.txt',
                 self::createTestResult(
                     numberOfTests: 0,
@@ -332,7 +332,7 @@ final class ResultPrinterTest extends TestCase
                 ),
             ],
 
-            'successful test that triggers PHPUnit warning' => [
+            'successful test that triggers PHPUnit warning'              => [
                 __DIR__ . '/expectations/successful_test_with_phpunit_warning.txt',
                 self::createTestResult(
                     testTriggeredPhpunitWarningEvents: [
