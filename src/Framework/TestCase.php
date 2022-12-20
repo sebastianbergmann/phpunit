@@ -101,6 +101,7 @@ use SebastianBergmann\GlobalState\Restorer;
 use SebastianBergmann\GlobalState\Snapshot;
 use SebastianBergmann\Invoker\TimeoutException;
 use SebastianBergmann\ObjectEnumerator\Enumerator;
+use SebastianBergmann\RecursionContext\Context;
 use Throwable;
 
 /**
@@ -1713,7 +1714,7 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     /**
      * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
      */
-    private function registerMockObjectsFromTestArguments(array $testArguments, array &$visited = []): void
+    private function registerMockObjectsFromTestArguments(array $testArguments, Context $context = new Context): void
     {
         if ($this->registerMockObjectsFromTestArgumentsRecursively) {
             foreach ((new Enumerator)->enumerate($testArguments) as $object) {
@@ -1727,12 +1728,12 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
                     $testArgument = Cloner::clone($testArgument);
 
                     $this->registerMockObject($testArgument);
-                } elseif (is_array($testArgument) && !in_array($testArgument, $visited, true)) {
-                    $visited[] = $testArgument;
+                } elseif (is_array($testArgument) && !$context->contains($testArgument)) {
+                    $context->add($testArgument);
 
                     $this->registerMockObjectsFromTestArguments(
                         $testArgument,
-                        $visited
+                        $context
                     );
                 }
             }
