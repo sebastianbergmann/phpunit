@@ -389,6 +389,9 @@
       <code>$metadata</code>
     </PropertyTypeCoercion>
   </file>
+  <file src="src/Metadata/Parser/Annotation/DocBlock.php">
+    <MoreSpecificReturnType occurrences="1"/>
+  </file>
   <file src="src/Metadata/Parser/AnnotationParser.php">
     <ArgumentTypeCoercion occurrences="7">
       <code>$className</code>
