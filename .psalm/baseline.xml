@@ -1211,10 +1211,7 @@
     <PropertyNotSetInConstructor occurrences="1">
       <code>$printer</code>
     </PropertyNotSetInConstructor>
-    <RedundantCondition occurrences="4">
-      <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
-      <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
-      <code>assert($arguments['configurationObject'] instanceof Configuration)</code>
+    <RedundantCondition occurrences="1">
       <code>assert($this-&gt;printer instanceof CliTestDoxPrinter)</code>
     </RedundantCondition>
     <RedundantConditionGivenDocblockType occurrences="1">
@@ -1463,6 +1460,7 @@
     <MissingThrowsDocblock occurrences="1">
       <code>throw new SkippedTestError;</code>
     </MissingThrowsDocblock>
+    <MoreSpecificReturnType occurrences="1"/>
     <RedundantCast occurrences="1">
       <code>(string) $matches['value'][$i]</code>
     </RedundantCast>
