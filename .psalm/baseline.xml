@@ -693,6 +693,9 @@
     <PossiblyNullArgument occurrences="1">
       <code>$client-&gt;__getFunctions()</code>
     </PossiblyNullArgument>
+    <RedundantCondition occurrences="1">
+      <code>$isInterface &amp;&amp; $class-&gt;implementsInterface(Throwable::class)</code>
+    </RedundantCondition>
   </file>
   <file src="src/Framework/MockObject/Invocation.php">
     <MissingClosureReturnType occurrences="1">
@@ -767,12 +770,6 @@
       <code>new Text_Template($filename)</code>
       <code>self::getMethodParametersForCall($method)</code>
     </MissingThrowsDocblock>
-    <PossiblyNullReference occurrences="1">
-      <code>getName</code>
-    </PossiblyNullReference>
-    <TypeDoesNotContainType occurrences="1">
-      <code>$parentClass === false</code>
-    </TypeDoesNotContainType>
     <UndefinedMethod occurrences="1">
       <code>getName</code>
     </UndefinedMethod>
@@ -1328,6 +1325,7 @@
     <MissingThrowsDocblock occurrences="1">
       <code>throw new SkippedTestError;</code>
     </MissingThrowsDocblock>
+    <MoreSpecificReturnType occurrences="1"/>
     <RedundantCast occurrences="1">
       <code>(string) $matches['value'][$i]</code>
     </RedundantCast>
