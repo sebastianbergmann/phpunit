@@ -175,13 +175,9 @@
     <InvalidReturnType occurrences="1">
       <code>MockObject&amp;RealInstanceType</code>
     </InvalidReturnType>
-    <LessSpecificReturnStatement occurrences="1"/>
     <MissingThrowsDocblock occurrences="1">
       <code>getMethod</code>
     </MissingThrowsDocblock>
-    <MoreSpecificReturnType occurrences="1">
-      <code>MockObject</code>
-    </MoreSpecificReturnType>
     <PossiblyNullArgument occurrences="1">
       <code>$client-&gt;__getFunctions()</code>
     </PossiblyNullArgument>

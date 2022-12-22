@@ -116,7 +116,7 @@ final class Generator
             $callOriginalMethods
         );
 
-        return $this->getObject(
+        $object = $this->getObject(
             $mock,
             $type,
             $callOriginalConstructor,
@@ -125,6 +125,10 @@ final class Generator
             $proxyTarget,
             $returnValueGeneration
         );
+
+        assert($object instanceof MockObject);
+
+        return $object;
     }
 
     /**
