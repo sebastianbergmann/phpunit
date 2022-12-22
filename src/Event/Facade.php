@@ -186,13 +186,15 @@ final class Facade
             Test\Skipped::class,
             Test\WarningTriggered::class,
 
+            Test\MockObjectCreated::class,
             Test\MockObjectForAbstractClassCreated::class,
+            Test\MockObjectForIntersectionOfInterfacesCreated::class,
             Test\MockObjectForTraitCreated::class,
             Test\MockObjectFromWsdlCreated::class,
-            Test\MockObjectCreated::class,
             Test\PartialMockObjectCreated::class,
             Test\TestProxyCreated::class,
             Test\TestStubCreated::class,
+            Test\TestStubForIntersectionOfInterfacesCreated::class,
 
             TestRunner\BootstrapFinished::class,
             TestRunner\Configured::class,

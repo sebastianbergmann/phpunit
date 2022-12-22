@@ -14,6 +14,8 @@ use PHPUnit\Framework\Attributes\ExcludeGlobalVariableFromBackup;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\MockObject\Stub;
 use PHPUnit\TestFixture\Mockable;
+use PHPUnit\TestFixture\MockObject\AnInterface;
+use PHPUnit\TestFixture\MockObject\AnotherInterface;
 use PHPUnit\TestFixture\TestWithDifferentNames;
 
 #[ExcludeGlobalVariableFromBackup('i')]
@@ -177,5 +179,23 @@ class TestCaseTest extends TestCase
         $testCase = new TestWithDifferentNames($methodName);
 
         $this->assertSame($methodName, $testCase->nameWithDataSet());
+    }
+
+    public function testStubCanBeCreatedForIntersectionOfInterfaces(): void
+    {
+        $intersection = $this->createStubForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
+
+        $this->assertInstanceOf(AnInterface::class, $intersection);
+        $this->assertInstanceOf(AnotherInterface::class, $intersection);
+        $this->assertInstanceOf(Stub::class, $intersection);
+    }
+
+    public function testMockObjectCanBeCreatedForIntersectionOfInterfaces(): void
+    {
+        $intersection = $this->createMockForIntersectionOfInterfaces([AnInterface::class, AnotherInterface::class]);
+
+        $this->assertInstanceOf(AnInterface::class, $intersection);
+        $this->assertInstanceOf(AnotherInterface::class, $intersection);
+        $this->assertInstanceOf(MockObject::class, $intersection);
     }
 }

@@ -1111,6 +1111,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
+     * @psalm-param list<class-string> $interfaces
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
+    protected function createStubForIntersectionOfInterfaces(array $interfaces): Stub
+    {
+        $stub = $this->getMockObjectGenerator()->getMockForInterfaces($interfaces);
+
+        Event\Facade::emitter()->testCreatedStubForIntersectionOfInterfaces($interfaces);
+
+        return $stub;
+    }
+
+    /**
      * Creates a mock object for the specified interface or class.
      *
      * @psalm-template RealInstanceType of object
@@ -1130,6 +1144,20 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         Event\Facade::emitter()->testCreatedMockObject($originalClassName);
 
         return $mock;
+    }
+
+    /**
+     * @psalm-param list<class-string> $interfaces
+     *
+     * @throws \PHPUnit\Framework\MockObject\Exception
+     */
+    protected function createMockForIntersectionOfInterfaces(array $interfaces): MockObject
+    {
+        $stub = $this->getMockObjectGenerator()->getMockForInterfaces($interfaces);
+
+        Event\Facade::emitter()->testCreatedMockObjectForIntersectionOfInterfaces($interfaces);
+
+        return $stub;
     }
 
     /**

@@ -418,6 +418,22 @@ final class DispatchingEmitter implements Emitter
     }
 
     /**
+     * @psalm-param list<class-string> $interfaces
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testCreatedMockObjectForIntersectionOfInterfaces(array $interfaces): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\MockObjectForIntersectionOfInterfacesCreated(
+                $this->telemetryInfo(),
+                $interfaces
+            )
+        );
+    }
+
+    /**
      * @psalm-param trait-string $traitName
      *
      * @throws InvalidArgumentException
@@ -517,6 +533,22 @@ final class DispatchingEmitter implements Emitter
             new Test\TestStubCreated(
                 $this->telemetryInfo(),
                 $className
+            )
+        );
+    }
+
+    /**
+     * @psalm-param list<class-string> $interfaces
+     *
+     * @throws InvalidArgumentException
+     * @throws UnknownEventTypeException
+     */
+    public function testCreatedStubForIntersectionOfInterfaces(array $interfaces): void
+    {
+        $this->dispatcher->dispatch(
+            new Test\TestStubForIntersectionOfInterfacesCreated(
+                $this->telemetryInfo(),
+                $interfaces
             )
         );
     }

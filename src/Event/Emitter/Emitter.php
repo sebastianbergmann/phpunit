@@ -99,6 +99,11 @@ interface Emitter
     public function testCreatedMockObject(string $className): void;
 
     /**
+     * @psalm-param list<class-string> $interfaces
+     */
+    public function testCreatedMockObjectForIntersectionOfInterfaces(array $interfaces): void;
+
+    /**
      * @psalm-param trait-string $traitName
      */
     public function testCreatedMockObjectForTrait(string $traitName): void;
@@ -128,6 +133,11 @@ interface Emitter
      * @psalm-param class-string $className
      */
     public function testCreatedStub(string $className): void;
+
+    /**
+     * @psalm-param list<class-string> $interfaces
+     */
+    public function testCreatedStubForIntersectionOfInterfaces(array $interfaces): void;
 
     public function testErrored(Code\Test $test, Throwable $throwable): void;
 
