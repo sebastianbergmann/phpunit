@@ -76,7 +76,7 @@ final class ListTestsAsTextCommand implements Command
         }
 
         if ($configuration->hasTestSuite()) {
-            $buffer .= 'The --testsuite and --list-tests options cannot be combined, --exclude-group is ignored' . PHP_EOL;
+            $buffer .= 'The --testsuite and --list-tests options cannot be combined, --testsuite is ignored' . PHP_EOL;
         }
 
         if (!empty($buffer)) {
