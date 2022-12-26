@@ -319,46 +319,48 @@ final class TestRunner
                 CodeCoverage::activate(CodeCoverageFilterRegistry::get(), false);
             }
 
-            if ($this->configuration->hasCoverageCacheDirectory()) {
-                CodeCoverage::instance()->cacheStaticAnalysis($this->configuration->coverageCacheDirectory());
-            }
-
-            CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
-
-            if ($this->configuration->strictCoverage()) {
-                CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
-            }
-
-            if ($this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
-                CodeCoverage::instance()->ignoreDeprecatedCode();
-            } else {
-                CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
-            }
-
-            if ($this->configuration->disableCodeCoverageIgnore()) {
-                CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
-            } else {
-                CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
-            }
-
-            if ($this->configuration->includeUncoveredFiles()) {
-                CodeCoverage::instance()->includeUncoveredFiles();
-            } else {
-                CodeCoverage::instance()->excludeUncoveredFiles();
-            }
-
-            if (CodeCoverageFilterRegistry::get()->isEmpty()) {
-                if (!CodeCoverageFilterRegistry::configured()) {
-                    Event\Facade::emitter()->testRunnerTriggeredWarning(
-                        'No filter is configured, code coverage will not be processed'
-                    );
-                } else {
-                    Event\Facade::emitter()->testRunnerTriggeredWarning(
-                        'Incorrect filter configuration, code coverage will not be processed'
-                    );
+            if (CodeCoverage::isActive()) {
+                if ($this->configuration->hasCoverageCacheDirectory()) {
+                    CodeCoverage::instance()->cacheStaticAnalysis($this->configuration->coverageCacheDirectory());
                 }
 
-                CodeCoverage::deactivate();
+                CodeCoverage::instance()->excludeSubclassesOfThisClassFromUnintentionallyCoveredCodeCheck(Comparator::class);
+
+                if ($this->configuration->strictCoverage()) {
+                    CodeCoverage::instance()->enableCheckForUnintentionallyCoveredCode();
+                }
+
+                if ($this->configuration->ignoreDeprecatedCodeUnitsFromCodeCoverage()) {
+                    CodeCoverage::instance()->ignoreDeprecatedCode();
+                } else {
+                    CodeCoverage::instance()->doNotIgnoreDeprecatedCode();
+                }
+
+                if ($this->configuration->disableCodeCoverageIgnore()) {
+                    CodeCoverage::instance()->disableAnnotationsForIgnoringCode();
+                } else {
+                    CodeCoverage::instance()->enableAnnotationsForIgnoringCode();
+                }
+
+                if ($this->configuration->includeUncoveredFiles()) {
+                    CodeCoverage::instance()->includeUncoveredFiles();
+                } else {
+                    CodeCoverage::instance()->excludeUncoveredFiles();
+                }
+
+                if (CodeCoverageFilterRegistry::get()->isEmpty()) {
+                    if (!CodeCoverageFilterRegistry::configured()) {
+                        Event\Facade::emitter()->testRunnerTriggeredWarning(
+                            'No filter is configured, code coverage will not be processed'
+                        );
+                    } else {
+                        Event\Facade::emitter()->testRunnerTriggeredWarning(
+                            'Incorrect filter configuration, code coverage will not be processed'
+                        );
+                    }
+
+                    CodeCoverage::deactivate();
+                }
             }
         }
 

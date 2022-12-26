@@ -9,17 +9,14 @@
  */
 namespace PHPUnit\Runner;
 
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\Event\TestData\MoreThanOneDataSetFromDataProviderException;
 use PHPUnit\Event\TestData\NoDataSetFromDataProviderException;
 use PHPUnit\Framework\TestCase;
 use SebastianBergmann\CodeCoverage\Driver\Driver;
-use SebastianBergmann\CodeCoverage\Driver\PcovNotAvailableException;
 use SebastianBergmann\CodeCoverage\Driver\Selector;
-use SebastianBergmann\CodeCoverage\Driver\XdebugNotAvailableException;
-use SebastianBergmann\CodeCoverage\Driver\XdebugNotEnabledException;
+use SebastianBergmann\CodeCoverage\Exception as CodeCoverageException;
 use SebastianBergmann\CodeCoverage\Filter;
-use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverAvailableException;
-use SebastianBergmann\CodeCoverage\NoCodeCoverageDriverWithPathCoverageSupportAvailableException;
 use SebastianBergmann\CodeCoverage\Test\TestSize\TestSize;
 use SebastianBergmann\CodeCoverage\Test\TestStatus\TestStatus;
 
@@ -33,59 +30,50 @@ final class CodeCoverage
     private static bool $collecting                                        = false;
     private static ?TestCase $test                                         = null;
 
-    /**
-     * @throws Exception
-     * @throws NoCodeCoverageDriverAvailableException
-     * @throws NoCodeCoverageDriverWithPathCoverageSupportAvailableException
-     * @throws PcovNotAvailableException
-     * @throws XdebugNotAvailableException
-     * @throws XdebugNotEnabledException
-     */
     public static function activate(Filter $filter, bool $pathCoverage): void
     {
-        self::ensureIsNotActive();
+        try {
+            if ($pathCoverage) {
+                self::$driver = (new Selector)->forLineAndPathCoverage($filter);
+            } else {
+                self::$driver = (new Selector)->forLineCoverage($filter);
+            }
 
-        if ($pathCoverage) {
-            self::$driver = (new Selector)->forLineAndPathCoverage($filter);
-        } else {
-            self::$driver = (new Selector)->forLineCoverage($filter);
+            self::$instance = new \SebastianBergmann\CodeCoverage\CodeCoverage(
+                self::$driver,
+                $filter
+            );
+        } catch (CodeCoverageException $e) {
+            EventFacade::emitter()->testRunnerTriggeredWarning(
+                $e->getMessage()
+            );
         }
-
-        self::$instance = new \SebastianBergmann\CodeCoverage\CodeCoverage(
-            self::$driver,
-            $filter
-        );
     }
 
     /**
-     * @throws Exception
+     * @psalm-assert-if-true !null self::$instance
      */
+    public static function isActive(): bool
+    {
+        return self::$instance !== null;
+    }
+
     public static function instance(): \SebastianBergmann\CodeCoverage\CodeCoverage
     {
-        self::ensureIsActive();
-
         return self::$instance;
     }
 
-    /**
-     * @throws Exception
-     */
     public static function driver(): Driver
     {
-        self::ensureIsActive();
-
         return self::$driver;
     }
 
     /**
-     * @throws Exception
      * @throws MoreThanOneDataSetFromDataProviderException
      * @throws NoDataSetFromDataProviderException
      */
     public static function start(TestCase $test): void
     {
-        self::ensureIsActive();
-
         if (self::$collecting) {
             return;
         }
@@ -110,13 +98,8 @@ final class CodeCoverage
         self::$collecting = true;
     }
 
-    /**
-     * @throws Exception
-     */
     public static function stop(bool $append = true, array|false $linesToBeCovered = [], array $linesToBeUsed = []): void
     {
-        self::ensureIsActive();
-
         if (!self::$collecting) {
             return;
         }
@@ -143,30 +126,5 @@ final class CodeCoverage
         self::$driver   = null;
         self::$instance = null;
         self::$test     = null;
-    }
-
-    public static function isActive(): bool
-    {
-        return self::$instance !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
-    private static function ensureIsActive(): void
-    {
-        if (self::$instance === null) {
-            throw new CodeCoverageIsNotActiveException;
-        }
-    }
-
-    /**
-     * @throws Exception
-     */
-    private static function ensureIsNotActive(): void
-    {
-        if (self::$instance !== null) {
-            throw new CodeCoverageIsActiveException;
-        }
     }
 }
