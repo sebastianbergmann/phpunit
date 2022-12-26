@@ -129,9 +129,9 @@ final class Help
         'Logging'       => [
             ['arg' => '--log-junit <file>', 'desc' => 'Log test execution in JUnit XML format to file'],
             ['arg' => '--log-teamcity <file>', 'desc' => 'Log test execution in TeamCity format to file'],
-            ['arg' => '--testdox-html <file>', 'desc' => 'Write agile documentation in HTML format to file'],
-            ['arg' => '--testdox-text <file>', 'desc' => 'Write agile documentation in Text format to file'],
-            ['arg' => '--testdox-xml <file>', 'desc' => 'Write agile documentation in XML format to file'],
+            ['arg' => '--testdox-html <file>', 'desc' => 'Write documentation in HTML format to file'],
+            ['arg' => '--testdox-text <file>', 'desc' => 'Write documentation in Text format to file'],
+            ['arg' => '--testdox-xml <file>', 'desc' => 'Write documentation in XML format to file'],
             ['arg' => '--log-events-text <file>', 'desc' => 'Stream events as plain text to file'],
             ['arg' => '--log-events-verbose-text <file>', 'desc' => 'Stream events as plain text to file (with telemetry information)'],
             ['arg' => '--no-logging', 'desc' => 'Ignore logging configuration'],
