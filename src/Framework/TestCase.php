@@ -998,7 +998,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
     }
 
     /**
-     * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
      * @throws AssertionFailedError
      * @throws Exception
      * @throws ExpectationFailedException
@@ -1721,9 +1720,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         }
     }
 
-    /**
-     * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
-     */
     private function shouldInvocationMockerBeReset(MockObject $mock): bool
     {
         $enumerator = new Enumerator;
@@ -1739,9 +1735,6 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
         return !in_array($mock, $enumerator->enumerate($this->testResult), true);
     }
 
-    /**
-     * @throws \SebastianBergmann\ObjectEnumerator\InvalidArgumentException
-     */
     private function registerMockObjectsFromTestArguments(array $testArguments, Context $context = new Context): void
     {
         if ($this->registerMockObjectsFromTestArgumentsRecursively) {
