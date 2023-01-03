@@ -7,7 +7,7 @@
  * For the full copyright and license information, please view the LICENSE
  * file that was distributed with this source code.
  */
-namespace PHPUnit\TextUI\XmlConfiguration;
+namespace PHPUnit\TextUI\Configuration;
 
 use const BAR;
 use const FOO;
@@ -21,6 +21,8 @@ use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
+use PHPUnit\TextUI\XmlConfiguration\LoadedFromFileConfiguration;
+use PHPUnit\TextUI\XmlConfiguration\Loader;
 
 #[CoversClass(PhpHandler::class)]
 #[Medium]
