@@ -17,6 +17,7 @@ use function iterator_to_array;
 use function sys_get_temp_dir;
 use function uniqid;
 use function unlink;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
@@ -25,8 +26,9 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 
+#[CoversClass(Loader::class)]
 #[Medium]
-final class XmlConfigurationTest extends TestCase
+final class LoaderTest extends TestCase
 {
     public static function configurationRootOptionsProvider(): array
     {

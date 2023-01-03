@@ -15,7 +15,7 @@ use PHPUnit\Framework\TestCase;
 
 #[CoversClass(Generator::class)]
 #[Small]
-final class XmlConfigurationGeneratorTest extends TestCase
+final class GeneratorTest extends TestCase
 {
     public function testGeneratesConfigurationCorrectly(): void
     {
