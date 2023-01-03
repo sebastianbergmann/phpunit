@@ -402,7 +402,7 @@ final class XmlConfigurationTest extends TestCase
         $this->assertSame(TEST_FILES_PATH . 'tests/second/_files', $second->exclude()->asArray()[0]->path());
     }
 
-    private function configuration(string $filename): Configuration
+    private function configuration(string $filename): LoadedFromFileConfiguration
     {
         return (new Loader)->load(TEST_FILES_PATH . $filename);
     }

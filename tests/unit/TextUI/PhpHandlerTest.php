@@ -105,7 +105,7 @@ final class PhpHandlerTest extends TestCase
         $this->assertEquals('forced', getenv('foo_force'));
     }
 
-    private function configuration(string $filename): Configuration
+    private function configuration(string $filename): LoadedFromFileConfiguration
     {
         return (new Loader)->load(TEST_FILES_PATH . $filename);
     }
