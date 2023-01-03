@@ -17,10 +17,12 @@ use function ini_get;
 use function ini_set;
 use function putenv;
 use PHPUnit\Framework\Attributes\BackupGlobals;
+use PHPUnit\Framework\Attributes\CoversClass;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\Attributes\Ticket;
 use PHPUnit\Framework\TestCase;
 
+#[CoversClass(PhpHandler::class)]
 #[Medium]
 final class PhpHandlerTest extends TestCase
 {
