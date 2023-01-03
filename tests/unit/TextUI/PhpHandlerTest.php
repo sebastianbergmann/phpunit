@@ -29,7 +29,7 @@ final class PhpHandlerTest extends TestCase
     {
         $savedIniHighlightKeyword = ini_get('highlight.keyword');
 
-        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
+        (new PhpHandler)->handle($this->configuration()->php());
 
         $path = TEST_FILES_PATH . '.' . PATH_SEPARATOR . '/path/to/lib';
         $this->assertStringStartsWith($path, ini_get('include_path'));
@@ -55,7 +55,7 @@ final class PhpHandlerTest extends TestCase
     {
         $_ENV['foo'] = false;
 
-        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
+        (new PhpHandler)->handle($this->configuration()->php());
 
         $this->assertFalse($_ENV['foo']);
         $this->assertEquals('forced', getenv('foo_force'));
@@ -69,7 +69,7 @@ final class PhpHandlerTest extends TestCase
 
         putenv('foo=putenv');
 
-        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
+        (new PhpHandler)->handle($this->configuration()->php());
 
         $this->assertEquals('putenv', $_ENV['foo']);
         $this->assertEquals('putenv', getenv('foo'));
@@ -87,7 +87,7 @@ final class PhpHandlerTest extends TestCase
     {
         putenv('foo_force=putenv');
 
-        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
+        (new PhpHandler)->handle($this->configuration()->php());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', getenv('foo_force'));
@@ -99,14 +99,14 @@ final class PhpHandlerTest extends TestCase
     {
         $_ENV['foo_force'] = false;
 
-        (new PhpHandler)->handle($this->configuration('configuration.xml')->php());
+        (new PhpHandler)->handle($this->configuration()->php());
 
         $this->assertEquals('forced', $_ENV['foo_force']);
         $this->assertEquals('forced', getenv('foo_force'));
     }
 
-    private function configuration(string $filename): LoadedFromFileConfiguration
+    private function configuration(): LoadedFromFileConfiguration
     {
-        return (new Loader)->load(TEST_FILES_PATH . $filename);
+        return (new Loader)->load(TEST_FILES_PATH . 'configuration.xml');
     }
 }
