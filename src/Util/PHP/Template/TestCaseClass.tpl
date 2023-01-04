@@ -3,7 +3,7 @@ use PHPUnit\Event\Facade;
 use PHPUnit\Runner\CodeCoverage;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
-use PHPUnit\TextUI\XmlConfiguration\PhpHandler;
+use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TestRunner\TestResult\PassedTests;
 
 // php://stdout does not obey output buffering. Any output would break
