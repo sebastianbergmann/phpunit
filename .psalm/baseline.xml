@@ -292,6 +292,10 @@
     </RedundantCondition>
   </file>
   <file src="src/Logging/TeamCity/TeamCityLogger.php">
+    <MissingThrowsDocblock occurrences="2">
+      <code>comparisonFailure</code>
+      <code>comparisonFailure</code>
+    </MissingThrowsDocblock>
     <PropertyNotSetInConstructor occurrences="1">
       <code>$flowId</code>
     </PropertyNotSetInConstructor>
