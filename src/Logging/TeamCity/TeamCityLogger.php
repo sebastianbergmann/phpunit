@@ -214,15 +214,20 @@ final class TeamCityLogger
             $this->time = $event->telemetryInfo()->time();
         }
 
-        $this->writeMessage(
-            'testFailed',
-            [
-                'name'     => $event->test()->name(),
-                'message'  => $this->message($event->throwable()),
-                'details'  => $this->details($event->throwable()),
-                'duration' => $this->duration($event),
-            ]
-        );
+        $parameters = [
+            'name'     => $event->test()->name(),
+            'message'  => $this->message($event->throwable()),
+            'details'  => $this->details($event->throwable()),
+            'duration' => $this->duration($event),
+        ];
+
+        if ($event->hasComparisonFailure()) {
+            $parameters['type']     = 'comparisonFailure';
+            $parameters['actual']   = $event->comparisonFailure()->comparison()->actual();
+            $parameters['expected'] = $event->comparisonFailure()->comparison()->expected();
+        }
+
+        $this->writeMessage('testFailed', $parameters);
     }
 
     /**
