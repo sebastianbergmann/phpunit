@@ -19,7 +19,7 @@ PHPUnit\TextUI\Application::main();
 
 ##teamcity[testStarted name='testOne' locationHint='php_qn:%sComparisonFailureTest.php::\PHPUnit\TestFixture\ComparisonFailureTest::testOne' flowId='%d']
 
-##teamcity[testFailed name='testOne' message='Failed asserting that false matches expected true.' details=' %sComparisonFailureTest.php:%d|n ' duration='%s' type='comparisonFailure' actual='false' expected='true' flowId='%d']
+##teamcity[testFailed name='testOne' message='Failed asserting that false matches expected true.' details='%sComparisonFailureTest.php:%d|n' duration='%s' type='comparisonFailure' actual='false' expected='true' flowId='%d']
 
 ##teamcity[testFinished name='testOne' duration='%s' flowId='%d']
 
