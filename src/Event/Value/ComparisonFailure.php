@@ -9,6 +9,9 @@
  */
 namespace PHPUnit\Event\Code;
 
+use function is_bool;
+use function is_scalar;
+use function print_r;
 use PHPUnit\Framework\ExpectationFailedException;
 use Throwable;
 
@@ -32,10 +35,22 @@ final class ComparisonFailure
             return null;
         }
 
+        $expectedAsString = $t->getComparisonFailure()->getExpectedAsString();
+
+        if (empty($expectedAsString)) {
+            $expectedAsString = self::mapScalarValueToString($t->getComparisonFailure()->getExpected());
+        }
+
+        $actualAsString = $t->getComparisonFailure()->getActualAsString();
+
+        if (empty($actualAsString)) {
+            $actualAsString = self::mapScalarValueToString($t->getComparisonFailure()->getActual());
+        }
+
         return new self(
             new Comparison(
-                $t->getComparisonFailure()->getExpectedAsString(),
-                $t->getComparisonFailure()->getActualAsString(),
+                $expectedAsString,
+                $actualAsString,
             ),
             $t->getComparisonFailure()->getDiff()
         );
@@ -55,5 +70,22 @@ final class ComparisonFailure
     public function diff(): string
     {
         return $this->diff;
+    }
+
+    private static function mapScalarValueToString(mixed $value): ?string
+    {
+        if ($value === null) {
+            return 'null';
+        }
+
+        if (is_bool($value)) {
+            return $value ? 'true' : 'false';
+        }
+
+        if (is_scalar($value)) {
+            return print_r($value, true);
+        }
+
+        return null;
     }
 }
