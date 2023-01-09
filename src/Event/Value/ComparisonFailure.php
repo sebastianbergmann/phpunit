@@ -72,7 +72,7 @@ final class ComparisonFailure
         return $this->diff;
     }
 
-    private static function mapScalarValueToString(mixed $value): ?string
+    private static function mapScalarValueToString(mixed $value): string
     {
         if ($value === null) {
             return 'null';
@@ -86,6 +86,6 @@ final class ComparisonFailure
             return print_r($value, true);
         }
 
-        return null;
+        return '';
     }
 }
