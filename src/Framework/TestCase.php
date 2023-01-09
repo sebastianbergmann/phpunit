@@ -641,7 +641,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             $emitter->testFailed(
                 $this->valueObjectForEvents(),
-                Event\Code\Throwable::from($e)
+                Event\Code\Throwable::from($e),
+                Event\Code\ComparisonFailure::from($e)
             );
         } catch (TimeoutException $e) {
             $this->status = TestStatus::risky($e->getMessage());
@@ -1908,7 +1909,8 @@ abstract class TestCase extends Assert implements Reorderable, SelfDescribing, T
 
             Event\Facade::emitter()->testFailed(
                 $this->valueObjectForEvents(),
-                Event\Code\Throwable::from($e)
+                Event\Code\Throwable::from($e),
+                Event\Code\ComparisonFailure::from($e)
             );
 
             throw $e;

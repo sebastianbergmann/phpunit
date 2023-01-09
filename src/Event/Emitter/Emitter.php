@@ -9,6 +9,7 @@
  */
 namespace PHPUnit\Event;
 
+use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\TestSuite;
 use PHPUnit\Framework\Constraint;
@@ -141,7 +142,7 @@ interface Emitter
 
     public function testErrored(Code\Test $test, Throwable $throwable): void;
 
-    public function testFailed(Code\Test $test, Throwable $throwable): void;
+    public function testFailed(Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure): void;
 
     public function testPassed(Code\Test $test): void;
 

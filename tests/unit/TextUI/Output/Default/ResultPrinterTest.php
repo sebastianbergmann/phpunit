@@ -468,7 +468,8 @@ final class ResultPrinterTest extends TestCase
                 new ExpectationFailedException(
                     'Failed asserting that false is true.'
                 )
-            )
+            ),
+            null
         );
     }
 

@@ -12,6 +12,7 @@ namespace PHPUnit\Event\Test;
 use const PHP_EOL;
 use function sprintf;
 use PHPUnit\Event\Code;
+use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\Event;
 use PHPUnit\Event\Telemetry;
@@ -26,12 +27,14 @@ final class Failed implements Event
     private readonly Telemetry\Info $telemetryInfo;
     private readonly Code\Test $test;
     private readonly Throwable $throwable;
+    private readonly ?ComparisonFailure $comparisonFailure;
 
-    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable)
+    public function __construct(Telemetry\Info $telemetryInfo, Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure)
     {
-        $this->telemetryInfo = $telemetryInfo;
-        $this->test          = $test;
-        $this->throwable     = $throwable;
+        $this->telemetryInfo     = $telemetryInfo;
+        $this->test              = $test;
+        $this->throwable         = $throwable;
+        $this->comparisonFailure = $comparisonFailure;
     }
 
     public function telemetryInfo(): Telemetry\Info
@@ -47,6 +50,26 @@ final class Failed implements Event
     public function throwable(): Throwable
     {
         return $this->throwable;
+    }
+
+    /**
+     * @psalm-assert-if-true !null $this->comparisonFailure
+     */
+    public function hasComparisonFailure(): bool
+    {
+        return $this->comparisonFailure !== null;
+    }
+
+    /**
+     * @throws NoComparisonFailureException
+     */
+    public function comparisonFailure(): ComparisonFailure
+    {
+        if ($this->comparisonFailure === null) {
+            throw new NoComparisonFailureException;
+        }
+
+        return $this->comparisonFailure;
     }
 
     public function asString(): string

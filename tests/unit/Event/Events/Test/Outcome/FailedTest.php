@@ -27,11 +27,13 @@ final class FailedTest extends AbstractEventTestCase
         $event = new Failed(
             $telemetryInfo,
             $test,
-            $throwable
+            $throwable,
+            null
         );
 
         $this->assertSame($telemetryInfo, $event->telemetryInfo());
         $this->assertSame($test, $event->test());
         $this->assertSame($throwable, $event->throwable());
+        $this->assertFalse($event->hasComparisonFailure());
     }
 }

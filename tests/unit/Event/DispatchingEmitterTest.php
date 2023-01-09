@@ -358,10 +358,12 @@ final class DispatchingEmitterTest extends Framework\TestCase
         );
 
         $throwable = Throwable::from(new Exception('failure'));
+        $failure   = null;
 
         $emitter->testFailed(
             $test,
-            $throwable
+            $throwable,
+            $failure
         );
 
         $this->assertSame(1, $subscriber->recordedEventCount());
@@ -372,6 +374,7 @@ final class DispatchingEmitterTest extends Framework\TestCase
 
         $this->assertSame($test, $event->test());
         $this->assertSame($throwable, $event->throwable());
+        $this->assertFalse($event->hasComparisonFailure());
     }
 
     public function testTestFinishedDispatchesTestFinishedEvent(): void

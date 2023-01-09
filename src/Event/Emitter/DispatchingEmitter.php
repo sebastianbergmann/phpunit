@@ -12,6 +12,7 @@ namespace PHPUnit\Event;
 use function assert;
 use function debug_backtrace;
 use PHPUnit\Event\Code\ClassMethod;
+use PHPUnit\Event\Code\ComparisonFailure;
 use PHPUnit\Event\Code\Throwable;
 use PHPUnit\Event\TestSuite\Filtered as TestSuiteFiltered;
 use PHPUnit\Event\TestSuite\Finished as TestSuiteFinished;
@@ -572,13 +573,14 @@ final class DispatchingEmitter implements Emitter
      * @throws InvalidArgumentException
      * @throws UnknownEventTypeException
      */
-    public function testFailed(Code\Test $test, Throwable $throwable): void
+    public function testFailed(Code\Test $test, Throwable $throwable, ?ComparisonFailure $comparisonFailure): void
     {
         $this->dispatcher->dispatch(
             new Test\Failed(
                 $this->telemetryInfo(),
                 $test,
-                $throwable
+                $throwable,
+                $comparisonFailure
             )
         );
     }

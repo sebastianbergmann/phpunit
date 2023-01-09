@@ -228,7 +228,7 @@ final class PhptTestCase implements Reorderable, SelfDescribing, Test
             if ($failure instanceof IncompleteTestError) {
                 $emitter->testMarkedAsIncomplete($this->valueObjectForEvents(), EventThrowable::from($failure));
             } else {
-                $emitter->testFailed($this->valueObjectForEvents(), EventThrowable::from($failure));
+                $emitter->testFailed($this->valueObjectForEvents(), EventThrowable::from($failure), null);
             }
         } catch (Throwable $t) {
             $emitter->testErrored($this->valueObjectForEvents(), EventThrowable::from($t));
