@@ -9,4 +9,4 @@ $_SERVER['argv'][] = __DIR__ . '/../../_files/AbstractTestCase.php';
 require_once __DIR__ . '/../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
-Class 'PHPUnit\TestFixture\AbstractTestCase' could not be found in '%sAbstractTestCase.php'.
+Class PHPUnit\TestFixture\AbstractTestCase declared in %sAbstractTestCase.php is abstract
