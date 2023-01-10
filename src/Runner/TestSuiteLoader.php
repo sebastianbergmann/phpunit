@@ -90,7 +90,11 @@ final class TestSuiteLoader
 
         $class = new ReflectionClass($suiteClassName);
 
-        if ($class->isSubclassOf(TestCase::class) && !$class->isAbstract()) {
+        if ($class->isSubclassOf(TestCase::class)) {
+            if ($class->isAbstract()) {
+                throw new ClassIsAbstractException($suiteClassName, $suiteClassFile);
+            }
+
             return $class;
         }
 

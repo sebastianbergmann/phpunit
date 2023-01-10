@@ -15,4 +15,4 @@ try {
 }
 ?>
 --EXPECTF--
-Class "WrongClassNameTest" cannot be found in %sWrongClassNameTest.php
+Class WrongClassNameTest cannot be found in %sWrongClassNameTest.php
