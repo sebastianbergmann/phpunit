@@ -17,9 +17,9 @@ namespace PHPUnit\TextUI\XmlConfiguration;
 final class Constant
 {
     private readonly string $name;
-    private readonly mixed $value;
+    private readonly bool|string $value;
 
-    public function __construct(string $name, mixed $value)
+    public function __construct(string $name, bool|string $value)
     {
         $this->name  = $name;
         $this->value = $value;
