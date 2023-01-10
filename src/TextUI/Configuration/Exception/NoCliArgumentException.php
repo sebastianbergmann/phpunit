@@ -14,6 +14,6 @@ use RuntimeException;
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
  */
-final class TestSuiteNotSelectedException extends RuntimeException implements Exception
+final class NoCliArgumentException extends RuntimeException implements Exception
 {
 }

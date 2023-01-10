@@ -16,11 +16,9 @@ use function str_ends_with;
 use PHPUnit\Exception;
 use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\TestSuiteLoader;
-use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;
-use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\TestSuiteMapper;
 use SebastianBergmann\FileIterator\Facade as FileIteratorFacade;
 
@@ -31,62 +29,36 @@ final class TestSuiteBuilder
 {
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\Runner\Exception
-     * @throws \PHPUnit\TextUI\CliArguments\Exception
-     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      * @throws RuntimeException
      * @throws TestDirectoryNotFoundException
      * @throws TestFileNotFoundException
      */
-    public function build(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): TestSuite
+    public function build(Configuration $configuration): TestSuite
     {
-        if ($cliConfiguration->hasArgument()) {
-            $argument = realpath($cliConfiguration->argument());
+        if ($configuration->hasCliArgument()) {
+            $argument = realpath($configuration->cliArgument());
 
             if (!$argument) {
-                throw new TestFileNotFoundException($cliConfiguration->argument());
+                throw new TestFileNotFoundException($configuration->cliArgument());
             }
 
             return $this->testSuiteFromPath(
                 $argument,
-                $this->testSuffixes($cliConfiguration)
+                $configuration->testSuffixes()
             );
         }
 
-        $includeTestSuite = '';
-
-        if ($cliConfiguration->hasTestSuite()) {
-            $includeTestSuite = $cliConfiguration->testSuite();
-        } elseif ($xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
-            $includeTestSuite = $xmlConfiguration->phpunit()->defaultTestSuite();
-        }
-
         return (new TestSuiteMapper)->map(
-            $xmlConfiguration->testSuite(),
-            $includeTestSuite,
-            $cliConfiguration->hasExcludedTestSuite() ? $cliConfiguration->excludedTestSuite() : ''
+            $configuration->testSuite(),
+            $configuration->includeTestSuite(),
+            $configuration->excludeTestSuite()
         );
-    }
-
-    /**
-     * @throws \PHPUnit\TextUI\CliArguments\Exception
-     */
-    private function testSuffixes(CliConfiguration $cliConfiguration): array
-    {
-        $testSuffixes = ['Test.php', '.phpt'];
-
-        if ($cliConfiguration->hasTestSuffixes()) {
-            $testSuffixes = $cliConfiguration->testSuffixes();
-        }
-
-        return $testSuffixes;
     }
 
     /**
      * @psalm-param list<string> $suffixes
      *
      * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\Runner\Exception
      */
     private function testSuiteFromPath(string $path, array $suffixes): TestSuite
     {

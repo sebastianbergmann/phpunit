@@ -66,7 +66,7 @@ final class ListGroupsCommand implements Command
             $buffer .= 'The --exclude-group and --list-groups options cannot be combined, --exclude-group is ignored' . PHP_EOL;
         }
 
-        if ($configuration->hasTestSuite()) {
+        if ($configuration->includeTestSuite() !== '') {
             $buffer .= 'The --testsuite and --list-groups options cannot be combined, --exclude-group is ignored' . PHP_EOL;
         }
 

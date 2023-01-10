@@ -44,7 +44,6 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
-use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use Throwable;
@@ -236,7 +235,7 @@ final class Application
             $this->handleBootstrap($configuration->bootstrap());
         }
 
-        $testSuite = $this->buildTestSuite($cliConfiguration, $xmlConfiguration);
+        $testSuite = $this->buildTestSuite($configuration);
 
         $this->bootstrapExtensions($configuration);
 
@@ -447,10 +446,10 @@ final class Application
         }
     }
 
-    private function buildTestSuite(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): TestSuite
+    private function buildTestSuite(Configuration $configuration): TestSuite
     {
         try {
-            return (new TestSuiteBuilder)->build($cliConfiguration, $xmlConfiguration);
+            return (new TestSuiteBuilder)->build($configuration);
         } catch (Exception $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }

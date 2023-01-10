@@ -536,9 +536,10 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Configuration/TestSuiteBuilder.php">
-    <ArgumentTypeCoercion occurrences="1">
-      <code>$this-&gt;testSuffixes($cliConfiguration)</code>
-    </ArgumentTypeCoercion>
+    <MissingThrowsDocblock occurrences="2">
+      <code>cliArgument</code>
+      <code>cliArgument</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Value/ConstantCollection.php">
     <PropertyTypeCoercion occurrences="1">

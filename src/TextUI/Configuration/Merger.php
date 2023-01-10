@@ -38,7 +38,11 @@ final class Merger
      */
     public function merge(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
-        $bootstrap = null;
+        $cliArgument = null;
+
+        if ($cliConfiguration->hasArgument()) {
+            $cliArgument = $cliConfiguration->argument();
+        }
 
         $configurationFile = null;
 
@@ -47,6 +51,8 @@ final class Merger
 
             $configurationFile = $xmlConfiguration->filename();
         }
+
+        $bootstrap = null;
 
         if ($cliConfiguration->hasBootstrap()) {
             $bootstrap = $cliConfiguration->bootstrap();
@@ -611,12 +617,6 @@ final class Merger
 
         $includeUncoveredFiles = $xmlConfiguration->codeCoverage()->includeUncoveredFiles();
 
-        $testSuite = null;
-
-        if ($cliConfiguration->hasTestSuite()) {
-            $testSuite = $cliConfiguration->testSuite();
-        }
-
         $includePaths = [];
 
         if ($cliConfiguration->hasIncludePath()) {
@@ -641,7 +641,28 @@ final class Merger
             $iniSettings[] = $iniSetting;
         }
 
+        $includeTestSuite = '';
+
+        if ($cliConfiguration->hasTestSuite()) {
+            $includeTestSuite = $cliConfiguration->testSuite();
+        } elseif ($xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
+            $includeTestSuite = $xmlConfiguration->phpunit()->defaultTestSuite();
+        }
+
+        $excludeTestSuite = '';
+
+        if ($cliConfiguration->hasExcludedTestSuite()) {
+            $excludeTestSuite = $cliConfiguration->excludedTestSuite();
+        }
+
+        $testSuffixes = ['Test.php', '.phpt'];
+
+        if ($cliConfiguration->hasTestSuffixes()) {
+            $testSuffixes = $cliConfiguration->testSuffixes();
+        }
+
         return new Configuration(
+            $cliArgument,
             $configurationFile,
             $bootstrap,
             $cacheResult,
@@ -733,7 +754,10 @@ final class Merger
             $excludeGroups,
             $randomOrderSeed,
             $includeUncoveredFiles,
-            $testSuite,
+            $xmlConfiguration->testSuite(),
+            $includeTestSuite,
+            $excludeTestSuite,
+            $testSuffixes,
             DirectoryCollection::fromArray($includePaths),
             IniSettingCollection::fromArray($iniSettings),
             $xmlConfiguration->php()->constants(),

@@ -56,6 +56,8 @@ final class Registry
                     Constant::class,
                     VariableCollection::class,
                     Variable::class,
+                    TestSuiteCollection::class,
+                    TestSuite::class,
                 ],
             ]
         );
