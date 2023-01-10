@@ -725,6 +725,17 @@ final class Merger
             $randomOrderSeed,
             $includeUncoveredFiles,
             $testSuite,
+            $xmlConfiguration->php()->includePaths(),
+            $xmlConfiguration->php()->iniSettings(),
+            $xmlConfiguration->php()->constants(),
+            $xmlConfiguration->php()->globalVariables(),
+            $xmlConfiguration->php()->envVariables(),
+            $xmlConfiguration->php()->postVariables(),
+            $xmlConfiguration->php()->getVariables(),
+            $xmlConfiguration->php()->cookieVariables(),
+            $xmlConfiguration->php()->serverVariables(),
+            $xmlConfiguration->php()->filesVariables(),
+            $xmlConfiguration->php()->requestVariables(),
             $xmlValidationErrors,
         );
     }

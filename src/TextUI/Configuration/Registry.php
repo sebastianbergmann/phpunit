@@ -48,6 +48,14 @@ final class Registry
             [
                 'allowed_classes' => [
                     Configuration::class,
+                    DirectoryCollection::class,
+                    Directory::class,
+                    IniSettingCollection::class,
+                    IniSetting::class,
+                    ConstantCollection::class,
+                    Constant::class,
+                    VariableCollection::class,
+                    Variable::class,
                 ],
             ]
         );
