@@ -231,11 +231,11 @@ final class Application
 
         Event\Facade::emitter()->testRunnerConfigured($configuration);
 
-        try {
-            if ($configuration->hasBootstrap()) {
-                $this->handleBootstrap($configuration->bootstrap());
-            }
+        if ($configuration->hasBootstrap()) {
+            $this->handleBootstrap($configuration->bootstrap());
+        }
 
+        try {
             $testSuite = (new TestSuiteBuilder)->build($cliConfiguration, $xmlConfiguration);
         } catch (Exception $e) {
             $this->printVersionString();
@@ -410,20 +410,30 @@ final class Application
         return $returnCode;
     }
 
-    /**
-     * @throws BootstrapException
-     * @throws InvalidBootstrapException
-     */
     private function handleBootstrap(string $filename): void
     {
         if (!is_readable($filename)) {
-            throw new InvalidBootstrapException($filename);
+            $this->exitWithErrorMessage(
+                sprintf(
+                    'Cannot open bootstrap script "%s"',
+                    $filename
+                )
+            );
         }
 
         try {
             include_once $filename;
         } catch (Throwable $t) {
-            throw new BootstrapException($t);
+            $this->exitWithErrorMessage(
+                sprintf(
+                    'Error in bootstrap script: %s:%s%s%s%s',
+                    $t::class,
+                    PHP_EOL,
+                    $t->getMessage(),
+                    PHP_EOL,
+                    $t->getTraceAsString()
+                )
+            );
         }
 
         Facade::emitter()->testRunnerBootstrapFinished($filename);
