@@ -1,13 +1,13 @@
 --TEST--
-phpunit ../../_files/AbstractTest.php
+phpunit ../../../_files/abstract/with-test-suffix/AbstractTest.php
 --FILE--
 <?php declare(strict_types=1);
 $_SERVER['argv'][] = '--do-not-cache-result';
 $_SERVER['argv'][] = '--no-configuration';
 $_SERVER['argv'][] = 'AbstractTest';
-$_SERVER['argv'][] = __DIR__ . '/../../_files/AbstractTest.php';
+$_SERVER['argv'][] = __DIR__ . '/../../../_files/abstract/with-test-suffix/AbstractTest.php';
 
-require_once __DIR__ . '/../../bootstrap.php';
+require_once __DIR__ . '/../../../bootstrap.php';
 PHPUnit\TextUI\Command::main();
 --EXPECTF--
 PHPUnit %s by Sebastian Bergmann and contributors.
