@@ -40,6 +40,7 @@ use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
+use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
@@ -244,17 +245,7 @@ final class Application
             exit(self::EXCEPTION_EXIT);
         }
 
-        $extensionBootstrapper = new ExtensionBootstrapper(
-            $configuration,
-            new ExtensionFacade
-        );
-
-        foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
-            $extensionBootstrapper->bootstrap(
-                $bootstrapper['className'],
-                $bootstrapper['parameters']
-            );
-        }
+        $this->bootstrapExtensions($configuration);
 
         if ($configuration->hasCoverageReport() || $cliConfiguration->hasWarmCoverageCache()) {
             CodeCoverageFilterRegistry::init($cliConfiguration, $xmlConfiguration);
@@ -436,5 +427,20 @@ final class Application
         }
 
         Facade::emitter()->testRunnerBootstrapFinished($filename);
+    }
+
+    private function bootstrapExtensions(Configuration $configuration): void
+    {
+        $extensionBootstrapper = new ExtensionBootstrapper(
+            $configuration,
+            new ExtensionFacade
+        );
+
+        foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
+            $extensionBootstrapper->bootstrap(
+                $bootstrapper['className'],
+                $bootstrapper['parameters']
+            );
+        }
     }
 }
