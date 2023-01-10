@@ -13,7 +13,6 @@ use const DIRECTORY_SEPARATOR;
 use function array_diff;
 use function assert;
 use function dirname;
-use function implode;
 use function is_int;
 use function realpath;
 use function time;
@@ -597,20 +596,6 @@ final class Merger
 
         $excludeGroups = array_diff($excludeGroups, $groups);
 
-        $includePath = null;
-
-        if ($cliConfiguration->hasIncludePath()) {
-            $includePath = $cliConfiguration->includePath();
-        } elseif (!$xmlConfiguration->php()->includePaths()->isEmpty()) {
-            $includePathsAsStrings = [];
-
-            foreach ($xmlConfiguration->php()->includePaths() as $includePath) {
-                $includePathsAsStrings[] = $includePath->path();
-            }
-
-            $includePath = implode(PATH_SEPARATOR, $includePathsAsStrings);
-        }
-
         if ($cliConfiguration->hasRandomOrderSeed()) {
             $randomOrderSeed = $cliConfiguration->randomOrderSeed();
         } else {
@@ -721,7 +706,6 @@ final class Merger
             $filter,
             $groups,
             $excludeGroups,
-            $includePath,
             $randomOrderSeed,
             $includeUncoveredFiles,
             $testSuite,
