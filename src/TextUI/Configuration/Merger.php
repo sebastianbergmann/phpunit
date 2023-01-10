@@ -13,6 +13,7 @@ use const DIRECTORY_SEPARATOR;
 use function array_diff;
 use function assert;
 use function dirname;
+use function explode;
 use function is_int;
 use function realpath;
 use function time;
@@ -616,6 +617,30 @@ final class Merger
             $testSuite = $cliConfiguration->testSuite();
         }
 
+        $includePaths = [];
+
+        if ($cliConfiguration->hasIncludePath()) {
+            foreach (explode(PATH_SEPARATOR, $cliConfiguration->includePath()) as $includePath) {
+                $includePaths[] = new Directory($includePath);
+            }
+        }
+
+        foreach ($xmlConfiguration->php()->includePaths() as $includePath) {
+            $includePaths[] = $includePath;
+        }
+
+        $iniSettings = [];
+
+        if ($cliConfiguration->hasIniSettings()) {
+            foreach ($cliConfiguration->iniSettings() as $name => $value) {
+                $iniSettings[] = new IniSetting($name, $value);
+            }
+        }
+
+        foreach ($xmlConfiguration->php()->iniSettings() as $iniSetting) {
+            $iniSettings[] = $iniSetting;
+        }
+
         return new Configuration(
             $configurationFile,
             $bootstrap,
@@ -709,8 +734,8 @@ final class Merger
             $randomOrderSeed,
             $includeUncoveredFiles,
             $testSuite,
-            $xmlConfiguration->php()->includePaths(),
-            $xmlConfiguration->php()->iniSettings(),
+            DirectoryCollection::fromArray($includePaths),
+            IniSettingCollection::fromArray($iniSettings),
             $xmlConfiguration->php()->constants(),
             $xmlConfiguration->php()->globalVariables(),
             $xmlConfiguration->php()->envVariables(),

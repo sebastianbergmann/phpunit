@@ -9,12 +9,9 @@
  */
 namespace PHPUnit\TextUI;
 
-use const PATH_SEPARATOR;
 use const PHP_EOL;
 use function array_keys;
 use function getcwd;
-use function ini_get;
-use function ini_set;
 use function is_dir;
 use function is_file;
 use function is_readable;
@@ -188,19 +185,6 @@ final class Application
             );
         }
 
-        if ($cliConfiguration->hasIniSettings()) {
-            foreach ($cliConfiguration->iniSettings() as $name => $value) {
-                ini_set($name, $value);
-            }
-        }
-
-        if ($cliConfiguration->hasIncludePath()) {
-            ini_set(
-                'include_path',
-                $cliConfiguration->includePath() . PATH_SEPARATOR . ini_get('include_path')
-            );
-        }
-
         $configurationFile = $this->configurationFilePath($cliConfiguration);
 
         if ($configurationFile) {
@@ -225,11 +209,23 @@ final class Application
 
         $xmlConfiguration = $xmlConfiguration ?? DefaultConfiguration::create();
 
-        (new PhpHandler)->handle($xmlConfiguration->php());
-
         $configuration = Registry::init(
             $cliConfiguration,
             $xmlConfiguration
+        );
+
+        (new PhpHandler)->handle(
+            $configuration->includePaths(),
+            $configuration->iniSettings(),
+            $configuration->constants(),
+            $configuration->globalVariables(),
+            $configuration->envVariables(),
+            $configuration->postVariables(),
+            $configuration->getVariables(),
+            $configuration->cookieVariables(),
+            $configuration->serverVariables(),
+            $configuration->filesVariables(),
+            $configuration->requestVariables(),
         );
 
         Event\Facade::emitter()->testRunnerConfigured($configuration);
