@@ -35,6 +35,7 @@ use PHPUnit\Metadata\Api\Groups;
 use PHPUnit\Metadata\Api\HookMethods;
 use PHPUnit\Metadata\Api\Requirements;
 use PHPUnit\Metadata\MetadataCollection;
+use PHPUnit\Runner\Exception as RunnerException;
 use PHPUnit\Runner\Filter\Factory;
 use PHPUnit\Runner\PhptTestCase;
 use PHPUnit\Runner\TestSuiteLoader;
@@ -236,20 +237,31 @@ class TestSuite implements IteratorAggregate, Reorderable, SelfDescribing, Test
      * added, a <code>PHPUnit\Framework\WarningTestCase</code> will be created instead,
      * leaving the current test run untouched.
      *
-     * @throws \PHPUnit\Runner\Exception
      * @throws Exception
      */
     public function addTestFile(string $filename): void
     {
         if (is_file($filename) && str_ends_with($filename, '.phpt')) {
-            $this->addTest(new PhptTestCase($filename));
+            try {
+                $this->addTest(new PhptTestCase($filename));
+            } catch (RunnerException $e) {
+                Event\Facade::emitter()->testRunnerTriggeredWarning(
+                    $e->getMessage()
+                );
+            }
 
             return;
         }
 
-        $this->addTestSuite(
-            (new TestSuiteLoader)->load($filename)
-        );
+        try {
+            $this->addTestSuite(
+                (new TestSuiteLoader)->load($filename)
+            );
+        } catch (RunnerException $e) {
+            Event\Facade::emitter()->testRunnerTriggeredWarning(
+                $e->getMessage()
+            );
+        }
     }
 
     /**

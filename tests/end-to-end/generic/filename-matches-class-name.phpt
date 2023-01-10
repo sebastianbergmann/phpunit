@@ -8,11 +8,14 @@ $_SERVER['argv'][] = __DIR__ . '/../../_files/OneClassPerFile/wrongClassName/';
 
 require_once __DIR__ . '/../../bootstrap.php';
 
-try {
-    PHPUnit\TextUI\Application::main();
-} catch (\Exception $e) {
-    echo $e->getMessage();
-}
-?>
+PHPUnit\TextUI\Application::main();
 --EXPECTF--
-Class WrongClassNameTest cannot be found in %sWrongClassNameTest.php
+PHPUnit %s by Sebastian Bergmann and contributors.
+
+Runtime: %s
+
+There was 1 PHPUnit warning:
+
+1) Class WrongClassNameTest cannot be found in %sWrongClassNameTest.php
+
+No tests executed!
