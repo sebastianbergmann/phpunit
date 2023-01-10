@@ -9,8 +9,8 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report;
 
+use PHPUnit\TextUI\Configuration\Directory;
 use PHPUnit\TextUI\Configuration\NoCustomCssFileException;
-use PHPUnit\TextUI\XmlConfiguration\Directory;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

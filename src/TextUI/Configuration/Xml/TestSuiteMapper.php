@@ -18,6 +18,7 @@ use function str_contains;
 use function version_compare;
 use PHPUnit\Framework\Exception as FrameworkException;
 use PHPUnit\Framework\TestSuite as TestSuiteObject;
+use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\RuntimeException;
 use PHPUnit\TextUI\TestDirectoryNotFoundException;
 use PHPUnit\TextUI\TestFileNotFoundException;

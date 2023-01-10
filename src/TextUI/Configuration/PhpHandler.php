@@ -18,11 +18,7 @@ use function implode;
 use function ini_get;
 use function ini_set;
 use function putenv;
-use PHPUnit\TextUI\XmlConfiguration\ConstantCollection;
-use PHPUnit\TextUI\XmlConfiguration\DirectoryCollection;
-use PHPUnit\TextUI\XmlConfiguration\IniSettingCollection;
 use PHPUnit\TextUI\XmlConfiguration\Php;
-use PHPUnit\TextUI\XmlConfiguration\VariableCollection;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit

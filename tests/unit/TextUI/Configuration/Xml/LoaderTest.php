@@ -22,7 +22,7 @@ use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\Attributes\Medium;
 use PHPUnit\Framework\TestCase;
 use PHPUnit\Runner\TestSuiteSorter;
-use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\Directory;
+use PHPUnit\TextUI\Configuration\File;
 use SebastianBergmann\CodeCoverage\Report\Html\Colors;
 use SebastianBergmann\CodeCoverage\Report\Thresholds;
 
@@ -148,7 +148,7 @@ final class LoaderTest extends TestCase
         $this->assertTrue($codeCoverage->ignoreDeprecatedCodeUnits());
         $this->assertTrue($codeCoverage->disableCodeCoverageIgnore());
 
-        /** @var Directory $directory */
+        /** @var \PHPUnit\TextUI\Configuration\Directory $directory */
         $directory = iterator_to_array($codeCoverage->directories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
@@ -163,7 +163,7 @@ final class LoaderTest extends TestCase
         $file = iterator_to_array($codeCoverage->files(), false)[1];
         $this->assertSame('/path/to/file', $file->path());
 
-        /** @var Directory $directory */
+        /** @var \PHPUnit\TextUI\Configuration\Directory $directory */
         $directory = iterator_to_array($codeCoverage->excludeDirectories(), false)[0];
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());

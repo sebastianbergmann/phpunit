@@ -10,7 +10,9 @@
 namespace PHPUnit\TextUI\XmlConfiguration\CodeCoverage;
 
 use function count;
-use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Filter\DirectoryCollection;
+use PHPUnit\TextUI\Configuration\Directory;
+use PHPUnit\TextUI\Configuration\FileCollection;
+use PHPUnit\TextUI\Configuration\FilterDirectoryCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Clover;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Cobertura;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Crap4j;
@@ -18,9 +20,7 @@ use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Html;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Php;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Text;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\Report\Xml;
-use PHPUnit\TextUI\XmlConfiguration\Directory;
 use PHPUnit\TextUI\XmlConfiguration\Exception;
-use PHPUnit\TextUI\XmlConfiguration\FileCollection;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -30,9 +30,9 @@ use PHPUnit\TextUI\XmlConfiguration\FileCollection;
 final class CodeCoverage
 {
     private readonly ?Directory $cacheDirectory;
-    private readonly DirectoryCollection $directories;
+    private readonly FilterDirectoryCollection $directories;
     private readonly FileCollection $files;
-    private readonly DirectoryCollection $excludeDirectories;
+    private readonly FilterDirectoryCollection $excludeDirectories;
     private readonly FileCollection $excludeFiles;
     private readonly bool $pathCoverage;
     private readonly bool $includeUncoveredFiles;
@@ -46,7 +46,7 @@ final class CodeCoverage
     private readonly ?Text $text;
     private readonly ?Xml $xml;
 
-    public function __construct(?Directory $cacheDirectory, DirectoryCollection $directories, FileCollection $files, DirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
+    public function __construct(?Directory $cacheDirectory, FilterDirectoryCollection $directories, FileCollection $files, FilterDirectoryCollection $excludeDirectories, FileCollection $excludeFiles, bool $pathCoverage, bool $includeUncoveredFiles, bool $ignoreDeprecatedCodeUnits, bool $disableCodeCoverageIgnore, ?Clover $clover, ?Cobertura $cobertura, ?Crap4j $crap4j, ?Html $html, ?Php $php, ?Text $text, ?Xml $xml)
     {
         $this->cacheDirectory            = $cacheDirectory;
         $this->directories               = $directories;
@@ -97,7 +97,7 @@ final class CodeCoverage
         return count($this->directories) > 0 || count($this->files) > 0;
     }
 
-    public function directories(): DirectoryCollection
+    public function directories(): FilterDirectoryCollection
     {
         return $this->directories;
     }
@@ -107,7 +107,7 @@ final class CodeCoverage
         return $this->files;
     }
 
-    public function excludeDirectories(): DirectoryCollection
+    public function excludeDirectories(): FilterDirectoryCollection
     {
         return $this->excludeDirectories;
     }

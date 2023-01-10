@@ -88,8 +88,8 @@ final class Application
     /**
      * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Runner\Exception
-     * @throws ArgumentsException
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws ArgumentsException
      * @throws Event\RuntimeException
      * @throws Exception
      */
@@ -145,8 +145,8 @@ final class Application
     /**
      * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Runner\Exception
-     * @throws ArgumentsException
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
+     * @throws ArgumentsException
      * @throws Exception
      */
     private function handleArguments(array $argv): TestSuite

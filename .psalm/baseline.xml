@@ -534,74 +534,65 @@
       <code>$this-&gt;testSuffixes($cliConfiguration)</code>
     </ArgumentTypeCoercion>
   </file>
-  <file src="src/TextUI/Configuration/Xml/CodeCoverage/CodeCoverage.php">
-    <DeprecatedMethod occurrences="1">
-      <code>hasCacheDirectory</code>
-    </DeprecatedMethod>
+  <file src="src/TextUI/Configuration/Value/ConstantCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$constants</code>
+    </PropertyTypeCoercion>
   </file>
-  <file src="src/TextUI/Configuration/Xml/CodeCoverage/Filter/DirectoryCollection.php">
+  <file src="src/TextUI/Configuration/Value/DirectoryCollection.php">
     <PropertyTypeCoercion occurrences="1">
       <code>$directories</code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/TextUI/Configuration/Xml/CodeCoverage/Filter/DirectoryCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;directories</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/Filesystem/DirectoryCollection.php">
+  <file src="src/TextUI/Configuration/Value/ExtensionBootstrapCollection.php">
     <PropertyTypeCoercion occurrences="1">
-      <code>$directories</code>
+      <code>$extensionBootstraps</code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/TextUI/Configuration/Xml/Filesystem/DirectoryCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;directories</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/Filesystem/FileCollection.php">
+  <file src="src/TextUI/Configuration/Value/FileCollection.php">
     <PropertyTypeCoercion occurrences="1">
       <code>$files</code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/TextUI/Configuration/Xml/Filesystem/FileCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;files</code>
-    </PossiblyNullArrayOffset>
+  <file src="src/TextUI/Configuration/Value/FilterDirectoryCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$directories</code>
+    </PropertyTypeCoercion>
   </file>
-  <file src="src/TextUI/Configuration/Xml/Group/GroupCollection.php">
+  <file src="src/TextUI/Configuration/Value/GroupCollection.php">
     <PropertyTypeCoercion occurrences="1">
       <code>$groups</code>
     </PropertyTypeCoercion>
   </file>
-  <file src="src/TextUI/Configuration/Xml/Group/GroupCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;groups</code>
-    </PossiblyNullArrayOffset>
+  <file src="src/TextUI/Configuration/Value/IniSettingCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$iniSettings</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/TextUI/Configuration/Value/TestDirectoryCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$directories</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/TextUI/Configuration/Value/TestFileCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$files</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/TextUI/Configuration/Value/TestSuiteCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$testSuites</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/TextUI/Configuration/Value/VariableCollection.php">
+    <PropertyTypeCoercion occurrences="1">
+      <code>$variables</code>
+    </PropertyTypeCoercion>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/CodeCoverage/CodeCoverage.php">
+    <DeprecatedMethod occurrences="1">
+      <code>hasCacheDirectory</code>
+    </DeprecatedMethod>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
     <ArgumentTypeCoercion occurrences="3">
@@ -655,122 +646,10 @@
       <code>removeChild</code>
     </PossiblyNullReference>
   </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/ConstantCollection.php">
-    <PropertyTypeCoercion occurrences="1">
-      <code>$constants</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/ConstantCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;constants</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/IniSettingCollection.php">
-    <PropertyTypeCoercion occurrences="1">
-      <code>$iniSettings</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/IniSettingCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;iniSettings</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/VariableCollection.php">
-    <PropertyTypeCoercion occurrences="1">
-      <code>$variables</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHP/VariableCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;variables</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHPUnit/ExtensionBootstrapCollection.php">
-    <PropertyTypeCoercion occurrences="1">
-      <code>$extensionBootstraps</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHPUnit/ExtensionBootstrapCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;extensionBootstraps</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/PHPUnit/PHPUnit.php">
+  <file src="src/TextUI/Configuration/Xml/PHPUnit.php">
     <DeprecatedMethod occurrences="1">
       <code>hasCacheResultFile</code>
     </DeprecatedMethod>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/TestSuite/TestDirectoryCollection.php">
-    <PropertyTypeCoercion occurrences="1">
-      <code>$directories</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/TestSuite/TestDirectoryCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;directories</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/TestSuite/TestFileCollection.php">
-    <PropertyTypeCoercion occurrences="1">
-      <code>$files</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/TestSuite/TestFileCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;files</code>
-    </PossiblyNullArrayOffset>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/TestSuite/TestSuiteCollection.php">
-    <PropertyTypeCoercion occurrences="1">
-      <code>$testSuites</code>
-    </PropertyTypeCoercion>
-  </file>
-  <file src="src/TextUI/Configuration/Xml/TestSuite/TestSuiteCollectionIterator.php">
-    <InvalidNullableReturnType occurrences="1">
-      <code>int</code>
-    </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="1">
-      <code>$this-&gt;position</code>
-    </NullableReturnStatement>
-    <PossiblyNullArrayOffset occurrences="1">
-      <code>$this-&gt;testSuites</code>
-    </PossiblyNullArrayOffset>
   </file>
   <file src="src/TextUI/Help.php">
     <PossiblyUndefinedArrayOffset occurrences="2">

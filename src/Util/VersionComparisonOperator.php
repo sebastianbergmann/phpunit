@@ -12,7 +12,7 @@ namespace PHPUnit\Util;
 use function in_array;
 
 /**
- * @internal This class is not covered by the backward compatibility promise for PHPUnit
+ * @no-named-arguments Parameter names are not covered by the backward compatibility promise for PHPUnit
  *
  * @psalm-immutable
  */

@@ -9,6 +9,8 @@
  */
 namespace PHPUnit\TextUI\XmlConfiguration;
 
+use PHPUnit\TextUI\Configuration\ExtensionBootstrapCollection;
+use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
 use PHPUnit\TextUI\XmlConfiguration\Logging\Logging;
 

@@ -11,7 +11,7 @@ namespace PHPUnit\TextUI\Command;
 
 use function sprintf;
 use PHPUnit\TextUI\Configuration\Registry;
-use PHPUnit\TextUI\XmlConfiguration\TestSuiteCollection;
+use PHPUnit\TextUI\Configuration\TestSuiteCollection;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
