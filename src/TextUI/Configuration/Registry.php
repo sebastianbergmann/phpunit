@@ -16,6 +16,7 @@ use function serialize;
 use function unserialize;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
+use PHPUnit\Util\VersionComparisonOperator;
 
 /**
  * CLI options and XML configuration are static within a single PHPUnit process.
@@ -58,6 +59,13 @@ final class Registry
                     Variable::class,
                     TestSuiteCollection::class,
                     TestSuite::class,
+                    TestDirectoryCollection::class,
+                    TestDirectory::class,
+                    TestFileCollection::class,
+                    TestFile::class,
+                    FileCollection::class,
+                    File::class,
+                    VersionComparisonOperator::class,
                 ],
             ]
         );
