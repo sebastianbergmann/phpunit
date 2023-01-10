@@ -88,7 +88,7 @@ final class Application
     /**
      * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Runner\Exception
-     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws ArgumentsException
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      * @throws Event\RuntimeException
      * @throws Exception
@@ -145,7 +145,7 @@ final class Application
     /**
      * @throws \PHPUnit\Framework\Exception
      * @throws \PHPUnit\Runner\Exception
-     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws ArgumentsException
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      * @throws Exception
      */
@@ -332,7 +332,7 @@ final class Application
     }
 
     /**
-     * @throws \PHPUnit\TextUI\CliArguments\Exception
+     * @throws ArgumentsException
      */
     private function configurationFilePath(CliConfiguration $cliConfiguration): string|false
     {
