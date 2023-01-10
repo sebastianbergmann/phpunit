@@ -22,7 +22,8 @@ use Throwable;
  */
 final class ComparisonFailure
 {
-    private readonly Comparison $comparison;
+    private readonly string $expected;
+    private readonly string $actual;
     private readonly string $diff;
 
     public static function from(Throwable $t): ?self
@@ -48,23 +49,27 @@ final class ComparisonFailure
         }
 
         return new self(
-            new Comparison(
-                $expectedAsString,
-                $actualAsString,
-            ),
+            $expectedAsString,
+            $actualAsString,
             $t->getComparisonFailure()->getDiff()
         );
     }
 
-    private function __construct(Comparison $comparison, string $diff)
+    private function __construct(string $expected, string $actual, string $diff)
     {
-        $this->comparison = $comparison;
-        $this->diff       = $diff;
+        $this->expected = $expected;
+        $this->actual   = $actual;
+        $this->diff     = $diff;
     }
 
-    public function comparison(): Comparison
+    public function expected(): string
     {
-        return $this->comparison;
+        return $this->expected;
+    }
+
+    public function actual(): string
+    {
+        return $this->actual;
     }
 
     public function diff(): string

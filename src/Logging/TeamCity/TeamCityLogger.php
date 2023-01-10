@@ -223,8 +223,8 @@ final class TeamCityLogger
 
         if ($event->hasComparisonFailure()) {
             $parameters['type']     = 'comparisonFailure';
-            $parameters['actual']   = $event->comparisonFailure()->comparison()->actual();
-            $parameters['expected'] = $event->comparisonFailure()->comparison()->expected();
+            $parameters['actual']   = $event->comparisonFailure()->actual();
+            $parameters['expected'] = $event->comparisonFailure()->expected();
         }
 
         $this->writeMessage('testFailed', $parameters);
