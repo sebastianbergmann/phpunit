@@ -252,7 +252,7 @@ final class Application
             );
         }
 
-        if ($testSuite->isEmpty() && !$cliConfiguration->hasArgument() && !$xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
+        if ($testSuite->isEmpty() && !$configuration->hasCliArgument() && !$xmlConfiguration->phpunit()->hasDefaultTestSuite()) {
             $this->execute(new ShowHelpCommand(false));
         }
 
