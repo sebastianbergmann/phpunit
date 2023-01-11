@@ -87,13 +87,7 @@ final class Application
 
         $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
 
-        if ($cliConfiguration->hasMigrateConfiguration() && $cliConfiguration->migrateConfiguration()) {
-            if (!$configurationFile) {
-                $this->exitWithErrorMessage('No configuration file found to migrate');
-            }
-
-            $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
-        }
+        $this->executeMigrateConfigurationCommand($cliConfiguration, $configurationFile);
 
         $xmlConfiguration = $this->loadXmlConfiguration($configurationFile);
 
@@ -358,6 +352,17 @@ final class Application
 
         if ($cliConfiguration->hasHelp()) {
             $this->execute(new ShowHelpCommand(Result::SUCCESS));
+        }
+    }
+
+    private function executeMigrateConfigurationCommand(CliConfiguration $cliConfiguration, bool|string $configurationFile): void
+    {
+        if ($cliConfiguration->hasMigrateConfiguration() && $cliConfiguration->migrateConfiguration()) {
+            if (!$configurationFile) {
+                $this->exitWithErrorMessage('No configuration file found to migrate');
+            }
+
+            $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
         }
     }
 }
