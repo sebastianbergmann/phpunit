@@ -39,6 +39,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
+use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\ConfigurationFileFinder;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
@@ -184,13 +185,7 @@ final class Application
         $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
 
         if ($configurationFile) {
-            try {
-                $xmlConfiguration = (new Loader)->load($configurationFile);
-            } catch (Throwable $e) {
-                print $e->getMessage() . PHP_EOL;
-
-                exit(self::FAILURE_EXIT);
-            }
+            $xmlConfiguration = $this->loadXmlConfiguration($configurationFile);
         }
 
         if ($cliConfiguration->hasMigrateConfiguration() && $cliConfiguration->migrateConfiguration()) {
@@ -363,6 +358,15 @@ final class Application
         try {
             return (new TestSuiteBuilder)->build($configuration);
         } catch (Exception $e) {
+            $this->exitWithErrorMessage($e->getMessage());
+        }
+    }
+
+    private function loadXmlConfiguration(string $configurationFile): XmlConfiguration
+    {
+        try {
+            return (new Loader)->load($configurationFile);
+        } catch (Throwable $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
     }
