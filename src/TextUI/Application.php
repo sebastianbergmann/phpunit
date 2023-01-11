@@ -88,8 +88,6 @@ final class Application
 
         $suite = $this->handleArguments($argv);
 
-        Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
-
         $configuration = Registry::get();
         $runner        = new TestRunner;
 
@@ -350,7 +348,11 @@ final class Application
     private function buildTestSuite(Configuration $configuration): TestSuite
     {
         try {
-            return (new TestSuiteBuilder)->build($configuration);
+            $testSuite = (new TestSuiteBuilder)->build($configuration);
+
+            Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($testSuite));
+
+            return $testSuite;
         } catch (Exception $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }
