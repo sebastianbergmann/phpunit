@@ -219,10 +219,6 @@ final class Application
             $this->handleBootstrap($configuration->bootstrap());
         }
 
-        $testSuite = $this->buildTestSuite($configuration);
-
-        $this->bootstrapExtensions($configuration);
-
         if ($configuration->hasCoverageReport() || $cliConfiguration->hasWarmCoverageCache()) {
             CodeCoverageFilterRegistry::init($configuration);
         }
@@ -230,6 +226,8 @@ final class Application
         if ($cliConfiguration->hasWarmCoverageCache() && $cliConfiguration->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand);
         }
+
+        $testSuite = $this->buildTestSuite($configuration);
 
         if ($cliConfiguration->hasListGroups() && $cliConfiguration->listGroups()) {
             $this->execute(new ListGroupsCommand($testSuite));
@@ -255,6 +253,8 @@ final class Application
         if ($testSuite->isEmpty() && !$configuration->hasCliArgument() && !$configuration->hasDefaultTestSuite()) {
             $this->execute(new ShowHelpCommand(false));
         }
+
+        $this->bootstrapExtensions($configuration);
 
         return $testSuite;
     }
