@@ -22,6 +22,7 @@ use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Version;
 use PHPUnit\TextUI\CliArguments\Builder;
+use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\Command\AtLeastVersionCommand;
 use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
@@ -145,11 +146,7 @@ final class Application
      */
     private function handleArguments(array $argv): TestSuite
     {
-        try {
-            $cliConfiguration = (new Builder)->fromParameters($argv);
-        } catch (ArgumentsException $e) {
-            $this->exitWithErrorMessage($e->getMessage());
-        }
+        $cliConfiguration = $this->buildCliConfiguration($argv);
 
         if ($cliConfiguration->hasGenerateConfiguration() && $cliConfiguration->generateConfiguration()) {
             $this->execute(new GenerateConfigurationCommand);
@@ -169,15 +166,6 @@ final class Application
 
         if ($cliConfiguration->hasHelp()) {
             $this->execute(new ShowHelpCommand(true));
-        }
-
-        if ($cliConfiguration->hasUnrecognizedOrderBy()) {
-            $this->exitWithErrorMessage(
-                sprintf(
-                    'unrecognized --order-by option: %s',
-                    $cliConfiguration->unrecognizedOrderBy()
-                )
-            );
         }
 
         $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
@@ -321,6 +309,52 @@ final class Application
         Facade::emitter()->testRunnerBootstrapFinished($filename);
     }
 
+    private function buildCliConfiguration(array $argv): CliConfiguration
+    {
+        try {
+            $cliConfiguration = (new Builder)->fromParameters($argv);
+        } catch (ArgumentsException $e) {
+            $this->exitWithErrorMessage($e->getMessage());
+        }
+
+        if ($cliConfiguration->hasUnrecognizedOrderBy()) {
+            $this->exitWithErrorMessage(
+                sprintf(
+                    'unrecognized --order-by option: %s',
+                    $cliConfiguration->unrecognizedOrderBy()
+                )
+            );
+        }
+
+        return $cliConfiguration;
+    }
+
+    private function loadXmlConfiguration(string|false $configurationFile): XmlConfiguration
+    {
+        if (!$configurationFile) {
+            return DefaultConfiguration::create();
+        }
+
+        try {
+            return (new Loader)->load($configurationFile);
+        } catch (Throwable $e) {
+            $this->exitWithErrorMessage($e->getMessage());
+        }
+    }
+
+    private function buildTestSuite(Configuration $configuration): TestSuite
+    {
+        try {
+            $testSuite = (new TestSuiteBuilder)->build($configuration);
+
+            Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($testSuite));
+
+            return $testSuite;
+        } catch (Exception $e) {
+            $this->exitWithErrorMessage($e->getMessage());
+        }
+    }
+
     private function bootstrapExtensions(Configuration $configuration): void
     {
         $extensionBootstrapper = new ExtensionBootstrapper(
@@ -342,32 +376,6 @@ final class Application
                     )
                 );
             }
-        }
-    }
-
-    private function buildTestSuite(Configuration $configuration): TestSuite
-    {
-        try {
-            $testSuite = (new TestSuiteBuilder)->build($configuration);
-
-            Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($testSuite));
-
-            return $testSuite;
-        } catch (Exception $e) {
-            $this->exitWithErrorMessage($e->getMessage());
-        }
-    }
-
-    private function loadXmlConfiguration(string|false $configurationFile): XmlConfiguration
-    {
-        if (!$configurationFile) {
-            return DefaultConfiguration::create();
-        }
-
-        try {
-            return (new Loader)->load($configurationFile);
-        } catch (Throwable $e) {
-            $this->exitWithErrorMessage($e->getMessage());
         }
     }
 }

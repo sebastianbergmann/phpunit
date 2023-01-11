@@ -479,8 +479,10 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="1">
+    <MissingThrowsDocblock occurrences="3">
+      <code>Event\TestSuite\TestSuite::fromTestSuite($testSuite)</code>
       <code>build</code>
+      <code>unrecognizedOrderBy</code>
     </MissingThrowsDocblock>
     <PossiblyUndefinedArrayOffset occurrences="1">
       <code>$_SERVER['argv']</code>
