@@ -19,14 +19,12 @@ final class FilterDirectory
     private readonly string $path;
     private readonly string $prefix;
     private readonly string $suffix;
-    private readonly string $group;
 
-    public function __construct(string $path, string $prefix, string $suffix, string $group)
+    public function __construct(string $path, string $prefix, string $suffix)
     {
         $this->path   = $path;
         $this->prefix = $prefix;
         $this->suffix = $suffix;
-        $this->group  = $group;
     }
 
     public function path(): string
@@ -42,10 +40,5 @@ final class FilterDirectory
     public function suffix(): string
     {
         return $this->suffix;
-    }
-
-    public function group(): string
-    {
-        return $this->group;
     }
 }

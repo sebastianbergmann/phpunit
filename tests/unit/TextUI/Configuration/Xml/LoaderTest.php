@@ -153,7 +153,6 @@ final class LoaderTest extends TestCase
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
-        $this->assertSame('DEFAULT', $directory->group());
 
         /** @var File $file */
         $file = iterator_to_array($codeCoverage->files(), false)[0];
@@ -168,7 +167,6 @@ final class LoaderTest extends TestCase
         $this->assertSame('/path/to/files', $directory->path());
         $this->assertSame('', $directory->prefix());
         $this->assertSame('.php', $directory->suffix());
-        $this->assertSame('DEFAULT', $directory->group());
 
         /** @var File $file */
         $file = iterator_to_array($codeCoverage->excludeFiles(), false)[0];

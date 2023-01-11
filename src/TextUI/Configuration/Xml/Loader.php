@@ -485,7 +485,6 @@ final class Loader
                 $this->toAbsolutePath($filename, $directoryPath),
                 $directoryNode->hasAttribute('prefix') ? $directoryNode->getAttribute('prefix') : '',
                 $directoryNode->hasAttribute('suffix') ? $directoryNode->getAttribute('suffix') : '.php',
-                $directoryNode->hasAttribute('group') ? $directoryNode->getAttribute('group') : 'DEFAULT'
             );
         }
 
