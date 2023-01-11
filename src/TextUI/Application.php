@@ -82,7 +82,6 @@ final class Application
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\Runner\Exception
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      * @throws ArgumentsException
      * @throws Event\RuntimeException
@@ -139,7 +138,6 @@ final class Application
 
     /**
      * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\Runner\Exception
      * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
      * @throws ArgumentsException
      * @throws Exception
