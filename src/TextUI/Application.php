@@ -184,10 +184,6 @@ final class Application
 
         $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
 
-        if ($configurationFile) {
-            $xmlConfiguration = $this->loadXmlConfiguration($configurationFile);
-        }
-
         if ($cliConfiguration->hasMigrateConfiguration() && $cliConfiguration->migrateConfiguration()) {
             if (!$configurationFile) {
                 $this->exitWithErrorMessage('No configuration file found to migrate');
@@ -196,7 +192,7 @@ final class Application
             $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
         }
 
-        $xmlConfiguration = $xmlConfiguration ?? DefaultConfiguration::create();
+        $xmlConfiguration = $this->loadXmlConfiguration($configurationFile);
 
         $configuration = Registry::init(
             $cliConfiguration,
@@ -360,8 +356,12 @@ final class Application
         }
     }
 
-    private function loadXmlConfiguration(string $configurationFile): XmlConfiguration
+    private function loadXmlConfiguration(string|false $configurationFile): XmlConfiguration
     {
+        if (!$configurationFile) {
+            return DefaultConfiguration::create();
+        }
+
         try {
             return (new Loader)->load($configurationFile);
         } catch (Throwable $e) {
