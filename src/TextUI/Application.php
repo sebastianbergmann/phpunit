@@ -126,30 +126,9 @@ final class Application
 
         $testSuite = $this->buildTestSuite($configuration);
 
-        if ($cliConfiguration->hasListGroups() && $cliConfiguration->listGroups()) {
-            $this->execute(new ListGroupsCommand($testSuite));
-        }
-
-        if ($cliConfiguration->hasListSuites() && $cliConfiguration->listSuites()) {
-            $this->execute(new ListTestSuitesCommand($xmlConfiguration->testSuite()));
-        }
-
-        if ($cliConfiguration->hasListTests() && $cliConfiguration->listTests()) {
-            $this->execute(new ListTestsAsTextCommand($testSuite));
-        }
-
-        if ($cliConfiguration->hasListTestsXml() && $cliConfiguration->listTestsXml()) {
-            $this->execute(
-                new ListTestsAsXmlCommand(
-                    $cliConfiguration->listTestsXml(),
-                    $testSuite
-                )
-            );
-        }
-
-        if ($testSuite->isEmpty() && !$configuration->hasCliArgument() && !$configuration->hasDefaultTestSuite()) {
-            $this->execute(new ShowHelpCommand(Result::FAILURE));
-        }
+        $this->executeCommandsThatRequireCliConfigurationTestSuite($cliConfiguration, $testSuite);
+        $this->executeCommandsThatRequireCliAndXmlConfiguration($cliConfiguration, $xmlConfiguration);
+        $this->executeHelpCommandWhenThereIsNothingElseToDo($configuration, $testSuite);
 
         $this->bootstrapExtensions($configuration);
 
@@ -363,6 +342,40 @@ final class Application
             }
 
             $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
+        }
+    }
+
+    private function executeCommandsThatRequireCliConfigurationTestSuite(CliConfiguration $cliConfiguration, TestSuite $testSuite): void
+    {
+        if ($cliConfiguration->hasListGroups() && $cliConfiguration->listGroups()) {
+            $this->execute(new ListGroupsCommand($testSuite));
+        }
+
+        if ($cliConfiguration->hasListTests() && $cliConfiguration->listTests()) {
+            $this->execute(new ListTestsAsTextCommand($testSuite));
+        }
+
+        if ($cliConfiguration->hasListTestsXml() && $cliConfiguration->listTestsXml()) {
+            $this->execute(
+                new ListTestsAsXmlCommand(
+                    $cliConfiguration->listTestsXml(),
+                    $testSuite
+                )
+            );
+        }
+    }
+
+    private function executeCommandsThatRequireCliAndXmlConfiguration(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
+    {
+        if ($cliConfiguration->hasListSuites() && $cliConfiguration->listSuites()) {
+            $this->execute(new ListTestSuitesCommand($xmlConfiguration->testSuite()));
+        }
+    }
+
+    private function executeHelpCommandWhenThereIsNothingElseToDo(Configuration $configuration, TestSuite $testSuite): void
+    {
+        if ($testSuite->isEmpty() && !$configuration->hasCliArgument() && !$configuration->hasDefaultTestSuite()) {
+            $this->execute(new ShowHelpCommand(Result::FAILURE));
         }
     }
 }
