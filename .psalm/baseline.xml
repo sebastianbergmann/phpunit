@@ -479,10 +479,7 @@
     </RedundantCondition>
   </file>
   <file src="src/TextUI/Application.php">
-    <MissingThrowsDocblock occurrences="4">
-      <code>build</code>
-      <code>build</code>
-      <code>build</code>
+    <MissingThrowsDocblock occurrences="1">
       <code>build</code>
     </MissingThrowsDocblock>
     <PossiblyUndefinedArrayOffset occurrences="1">
