@@ -202,7 +202,7 @@ final class Application
         Event\Facade::emitter()->testRunnerConfigured($configuration);
 
         if ($configuration->hasBootstrap()) {
-            $this->handleBootstrap($configuration->bootstrap());
+            $this->loadBootstrapScript($configuration->bootstrap());
         }
 
         if ($configuration->hasCoverageReport() || $cliConfiguration->hasWarmCoverageCache()) {
@@ -280,7 +280,7 @@ final class Application
         exit(self::EXCEPTION_EXIT);
     }
 
-    private function handleBootstrap(string $filename): void
+    private function loadBootstrapScript(string $filename): void
     {
         if (!is_readable($filename)) {
             $this->exitWithErrorMessage(
