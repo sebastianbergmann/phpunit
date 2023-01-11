@@ -83,25 +83,7 @@ final class Application
 
         $cliConfiguration = $this->buildCliConfiguration($argv);
 
-        if ($cliConfiguration->hasGenerateConfiguration() && $cliConfiguration->generateConfiguration()) {
-            $this->execute(new GenerateConfigurationCommand);
-        }
-
-        if ($cliConfiguration->hasAtLeastVersion()) {
-            $this->execute(new AtLeastVersionCommand($cliConfiguration->atLeastVersion()));
-        }
-
-        if ($cliConfiguration->hasVersion() && $cliConfiguration->version()) {
-            $this->execute(new ShowVersionCommand);
-        }
-
-        if ($cliConfiguration->hasCheckVersion() && $cliConfiguration->checkVersion()) {
-            $this->execute(new VersionCheckCommand);
-        }
-
-        if ($cliConfiguration->hasHelp()) {
-            $this->execute(new ShowHelpCommand(Result::SUCCESS));
-        }
+        $this->executeCommandsThatOnlyRequireCliConfiguration($cliConfiguration);
 
         $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
 
@@ -353,6 +335,29 @@ final class Application
                     )
                 );
             }
+        }
+    }
+
+    private function executeCommandsThatOnlyRequireCliConfiguration(CliConfiguration $cliConfiguration): void
+    {
+        if ($cliConfiguration->hasGenerateConfiguration() && $cliConfiguration->generateConfiguration()) {
+            $this->execute(new GenerateConfigurationCommand);
+        }
+
+        if ($cliConfiguration->hasAtLeastVersion()) {
+            $this->execute(new AtLeastVersionCommand($cliConfiguration->atLeastVersion()));
+        }
+
+        if ($cliConfiguration->hasVersion() && $cliConfiguration->version()) {
+            $this->execute(new ShowVersionCommand);
+        }
+
+        if ($cliConfiguration->hasCheckVersion() && $cliConfiguration->checkVersion()) {
+            $this->execute(new VersionCheckCommand);
+        }
+
+        if ($cliConfiguration->hasHelp()) {
+            $this->execute(new ShowHelpCommand(Result::SUCCESS));
         }
     }
 }
