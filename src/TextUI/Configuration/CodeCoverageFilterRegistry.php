@@ -10,9 +10,6 @@
 namespace PHPUnit\TextUI\Configuration;
 
 use function assert;
-use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
-use PHPUnit\TextUI\XmlConfiguration\CodeCoverage\CodeCoverage;
-use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use SebastianBergmann\CodeCoverage\Filter;
 
 /**
@@ -33,24 +30,34 @@ final class CodeCoverageFilterRegistry
         return self::$filter;
     }
 
-    /**
-     * @throws \PHPUnit\TextUI\CliArguments\Exception
-     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
-     */
-    public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
+    public static function init(Configuration $configuration): void
     {
         self::$filter = new Filter;
 
-        if ($cliConfiguration->hasCoverageFilter()) {
-            foreach ($cliConfiguration->coverageFilter() as $directory) {
-                self::$filter->includeDirectory($directory);
+        if ($configuration->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
+            foreach ($configuration->coverageIncludeDirectories() as $directory) {
+                self::$filter->includeDirectory(
+                    $directory->path(),
+                    $directory->suffix(),
+                    $directory->prefix()
+                );
             }
 
-            self::$configured = true;
-        }
+            foreach ($configuration->coverageIncludeFiles() as $file) {
+                self::$filter->includeFile($file->path());
+            }
 
-        if ($xmlConfiguration->codeCoverage()->hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport()) {
-            self::map($xmlConfiguration->codeCoverage());
+            foreach ($configuration->coverageExcludeDirectories() as $directory) {
+                self::$filter->excludeDirectory(
+                    $directory->path(),
+                    $directory->suffix(),
+                    $directory->prefix()
+                );
+            }
+
+            foreach ($configuration->coverageExcludeFiles() as $file) {
+                self::$filter->excludeFile($file->path());
+            }
 
             self::$configured = true;
         }
@@ -59,34 +66,5 @@ final class CodeCoverageFilterRegistry
     public static function configured(): bool
     {
         return self::$configured;
-    }
-
-    private static function map(CodeCoverage $configuration): void
-    {
-        assert(self::$filter !== null);
-
-        foreach ($configuration->directories() as $directory) {
-            self::$filter->includeDirectory(
-                $directory->path(),
-                $directory->suffix(),
-                $directory->prefix()
-            );
-        }
-
-        foreach ($configuration->files() as $file) {
-            self::$filter->includeFile($file->path());
-        }
-
-        foreach ($configuration->excludeDirectories() as $directory) {
-            self::$filter->excludeDirectory(
-                $directory->path(),
-                $directory->suffix(),
-                $directory->prefix()
-            );
-        }
-
-        foreach ($configuration->excludeFiles() as $file) {
-            self::$filter->excludeFile($file->path());
-        }
     }
 }

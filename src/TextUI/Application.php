@@ -240,7 +240,7 @@ final class Application
         $this->bootstrapExtensions($configuration);
 
         if ($configuration->hasCoverageReport() || $cliConfiguration->hasWarmCoverageCache()) {
-            CodeCoverageFilterRegistry::init($cliConfiguration, $xmlConfiguration);
+            CodeCoverageFilterRegistry::init($configuration);
         }
 
         if ($cliConfiguration->hasWarmCoverageCache() && $cliConfiguration->warmCoverageCache()) {
