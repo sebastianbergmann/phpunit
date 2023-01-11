@@ -382,10 +382,19 @@ final class Application
         );
 
         foreach ($configuration->extensionBootstrappers() as $bootstrapper) {
-            $extensionBootstrapper->bootstrap(
-                $bootstrapper['className'],
-                $bootstrapper['parameters']
-            );
+            try {
+                $extensionBootstrapper->bootstrap(
+                    $bootstrapper['className'],
+                    $bootstrapper['parameters']
+                );
+            } catch (\PHPUnit\Runner\Exception $e) {
+                $this->exitWithErrorMessage(
+                    sprintf(
+                        'Error while bootstrapping extension: %s',
+                        $e->getMessage()
+                    )
+                );
+            }
         }
     }
 
