@@ -116,11 +116,11 @@ final class Application
             $this->loadBootstrapScript($configuration->bootstrap());
         }
 
-        if ($configuration->hasCoverageReport() || $cliConfiguration->hasWarmCoverageCache()) {
+        if ($configuration->hasCoverageReport() || $cliConfiguration->warmCoverageCache()) {
             CodeCoverageFilterRegistry::init($configuration);
         }
 
-        if ($cliConfiguration->hasWarmCoverageCache() && $cliConfiguration->warmCoverageCache()) {
+        if ($cliConfiguration->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand);
         }
 
@@ -313,7 +313,7 @@ final class Application
 
     private function executeCommandsThatOnlyRequireCliConfiguration(CliConfiguration $cliConfiguration): void
     {
-        if ($cliConfiguration->hasGenerateConfiguration() && $cliConfiguration->generateConfiguration()) {
+        if ($cliConfiguration->generateConfiguration()) {
             $this->execute(new GenerateConfigurationCommand);
         }
 
@@ -321,22 +321,22 @@ final class Application
             $this->execute(new AtLeastVersionCommand($cliConfiguration->atLeastVersion()));
         }
 
-        if ($cliConfiguration->hasVersion() && $cliConfiguration->version()) {
+        if ($cliConfiguration->version()) {
             $this->execute(new ShowVersionCommand);
         }
 
-        if ($cliConfiguration->hasCheckVersion() && $cliConfiguration->checkVersion()) {
+        if ($cliConfiguration->checkVersion()) {
             $this->execute(new VersionCheckCommand);
         }
 
-        if ($cliConfiguration->hasHelp()) {
+        if ($cliConfiguration->help()) {
             $this->execute(new ShowHelpCommand(Result::SUCCESS));
         }
     }
 
     private function executeMigrateConfigurationCommand(CliConfiguration $cliConfiguration, bool|string $configurationFile): void
     {
-        if ($cliConfiguration->hasMigrateConfiguration() && $cliConfiguration->migrateConfiguration()) {
+        if ($cliConfiguration->migrateConfiguration()) {
             if (!$configurationFile) {
                 $this->exitWithErrorMessage('No configuration file found to migrate');
             }
@@ -347,11 +347,11 @@ final class Application
 
     private function executeCommandsThatRequireCliConfigurationTestSuite(CliConfiguration $cliConfiguration, TestSuite $testSuite): void
     {
-        if ($cliConfiguration->hasListGroups() && $cliConfiguration->listGroups()) {
+        if ($cliConfiguration->listGroups()) {
             $this->execute(new ListGroupsCommand($testSuite));
         }
 
-        if ($cliConfiguration->hasListTests() && $cliConfiguration->listTests()) {
+        if ($cliConfiguration->listTests()) {
             $this->execute(new ListTestsAsTextCommand($testSuite));
         }
 
@@ -367,7 +367,7 @@ final class Application
 
     private function executeCommandsThatRequireCliAndXmlConfiguration(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): void
     {
-        if ($cliConfiguration->hasListSuites() && $cliConfiguration->listSuites()) {
+        if ($cliConfiguration->listSuites()) {
             $this->execute(new ListTestSuitesCommand($xmlConfiguration->testSuite()));
         }
     }
