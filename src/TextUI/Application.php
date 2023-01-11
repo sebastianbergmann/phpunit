@@ -22,7 +22,6 @@ use PHPUnit\Framework\TestSuite;
 use PHPUnit\Runner\Extension\ExtensionBootstrapper;
 use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Version;
-use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\CliArguments\Builder;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\Command\AtLeastVersionCommand;
@@ -102,7 +101,7 @@ final class Application
         try {
             $result = $runner->run($suite);
 
-            $returnCode = $this->returnCode($result);
+            $shellExitCode = (new ShellExitCodeCalculator)->calculate(Registry::get(), $result);
         } catch (Throwable $t) {
             $message = $t->getMessage();
 
@@ -132,10 +131,10 @@ final class Application
         Event\Facade::emitter()->testRunnerFinished();
 
         if ($exit) {
-            exit($returnCode);
+            exit($shellExitCode);
         }
 
-        return $returnCode;
+        return $shellExitCode;
     }
 
     /**
@@ -304,45 +303,6 @@ final class Application
         }
 
         exit(self::EXCEPTION_EXIT);
-    }
-
-    private function returnCode(TestResult $result): int
-    {
-        $returnCode = self::FAILURE_EXIT;
-
-        if ($result->wasSuccessful()) {
-            $returnCode = self::SUCCESS_EXIT;
-        }
-
-        $configuration = Registry::get();
-
-        if ($configuration->failOnEmptyTestSuite() && $result->numberOfTests() === 0) {
-            $returnCode = self::FAILURE_EXIT;
-        }
-
-        if ($result->wasSuccessfulIgnoringPhpunitWarnings()) {
-            if ($configuration->failOnRisky() && $result->hasTestConsideredRiskyEvents()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
-
-            if ($configuration->failOnWarning() && $result->hasWarningEvents()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
-
-            if ($configuration->failOnIncomplete() && $result->hasTestMarkedIncompleteEvents()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
-
-            if ($configuration->failOnSkipped() && $result->hasTestSkippedEvents()) {
-                $returnCode = self::FAILURE_EXIT;
-            }
-        }
-
-        if ($result->hasTestErroredEvents()) {
-            $returnCode = self::EXCEPTION_EXIT;
-        }
-
-        return $returnCode;
     }
 
     private function handleBootstrap(string $filename): void
