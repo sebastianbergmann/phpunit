@@ -38,7 +38,7 @@ final class MergerTest extends TestCase
             '--no-logging',
             '--log-junit',
             $junitLog,
-        ], []);
+        ]);
 
         $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
 
@@ -71,7 +71,7 @@ final class MergerTest extends TestCase
             '--no-coverage',
             '--coverage-php',
             $phpCoverage,
-        ], []);
+        ]);
 
         $mergedConfig = (new Merger)->merge($fromCli, $fromFile);
 

@@ -490,9 +490,8 @@
     </UnresolvableInclude>
   </file>
   <file src="src/TextUI/Configuration/Cli/Builder.php">
-    <ArgumentTypeCoercion occurrences="2">
+    <ArgumentTypeCoercion occurrences="1">
       <code>$parameters</code>
-      <code>array_merge(self::LONG_OPTIONS, $additionalLongOptions)</code>
     </ArgumentTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Cli/Configuration.php">

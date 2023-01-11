@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
-use function array_keys;
 use function is_readable;
 use function printf;
 use function realpath;
@@ -56,12 +55,7 @@ final class Application
 
     private const EXCEPTION_EXIT = 2;
 
-    private const CRASH_EXIT = 255;
-
-    /**
-     * @psalm-var array<string,mixed>
-     */
-    private array $longOptions         = [];
+    private const CRASH_EXIT           = 255;
     private bool $versionStringPrinted = false;
 
     /**
@@ -153,7 +147,7 @@ final class Application
     private function handleArguments(array $argv): TestSuite
     {
         try {
-            $cliConfiguration = (new Builder)->fromParameters($argv, array_keys($this->longOptions));
+            $cliConfiguration = (new Builder)->fromParameters($argv);
         } catch (ArgumentsException $e) {
             $this->exitWithErrorMessage($e->getMessage());
         }

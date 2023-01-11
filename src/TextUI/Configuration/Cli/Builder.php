@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI\CliArguments;
 
 use function array_map;
-use function array_merge;
 use function explode;
 use function is_numeric;
 use PHPUnit\Runner\TestSuiteSorter;
@@ -121,13 +120,13 @@ final class Builder
     /**
      * @throws Exception
      */
-    public function fromParameters(array $parameters, array $additionalLongOptions): Configuration
+    public function fromParameters(array $parameters): Configuration
     {
         try {
             $options = (new CliParser)->parse(
                 $parameters,
                 self::SHORT_OPTIONS,
-                array_merge(self::LONG_OPTIONS, $additionalLongOptions)
+                self::LONG_OPTIONS
             );
         } catch (CliParserException $e) {
             throw new Exception(
