@@ -190,9 +190,7 @@ final class Application
 
         if ($cliConfiguration->hasMigrateConfiguration() && $cliConfiguration->migrateConfiguration()) {
             if (!$configurationFile) {
-                print 'No configuration file found to migrate.' . PHP_EOL;
-
-                exit(self::EXCEPTION_EXIT);
+                $this->exitWithErrorMessage('No configuration file found to migrate');
             }
 
             $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
