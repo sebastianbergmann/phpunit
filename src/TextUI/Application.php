@@ -81,65 +81,6 @@ final class Application
     {
         Event\Facade::emitter()->testRunnerStarted();
 
-        $suite = $this->handleArguments($argv);
-
-        $configuration = Registry::get();
-        $runner        = new TestRunner;
-
-        try {
-            $result = $runner->run($suite);
-
-            $shellExitCode = (new ShellExitCodeCalculator)->calculate(
-                $configuration->failOnEmptyTestSuite(),
-                $configuration->failOnRisky(),
-                $configuration->failOnWarning(),
-                $configuration->failOnIncomplete(),
-                $configuration->failOnSkipped(),
-                $result
-            );
-        } catch (Throwable $t) {
-            $message = $t->getMessage();
-
-            if (empty(trim($message))) {
-                $message = '(no message)';
-            }
-
-            printf(
-                '%s%sAn error occurred inside PHPUnit.%s%sMessage:  %s%sLocation: %s:%d%s%s%s%s',
-                PHP_EOL,
-                PHP_EOL,
-                PHP_EOL,
-                PHP_EOL,
-                $message,
-                PHP_EOL,
-                $t->getFile(),
-                $t->getLine(),
-                PHP_EOL,
-                PHP_EOL,
-                $t->getTraceAsString(),
-                PHP_EOL
-            );
-
-            exit(Result::CRASH);
-        }
-
-        Event\Facade::emitter()->testRunnerFinished();
-
-        if ($exit) {
-            exit($shellExitCode);
-        }
-
-        return $shellExitCode;
-    }
-
-    /**
-     * @throws \PHPUnit\Framework\Exception
-     * @throws \PHPUnit\TextUI\XmlConfiguration\Exception
-     * @throws ArgumentsException
-     * @throws Exception
-     */
-    private function handleArguments(array $argv): TestSuite
-    {
         $cliConfiguration = $this->buildCliConfiguration($argv);
 
         if ($cliConfiguration->hasGenerateConfiguration() && $cliConfiguration->generateConfiguration()) {
@@ -236,7 +177,53 @@ final class Application
 
         $this->bootstrapExtensions($configuration);
 
-        return $testSuite;
+        $configuration = Registry::get();
+        $runner        = new TestRunner;
+
+        try {
+            $result = $runner->run($testSuite);
+
+            $shellExitCode = (new ShellExitCodeCalculator)->calculate(
+                $configuration->failOnEmptyTestSuite(),
+                $configuration->failOnRisky(),
+                $configuration->failOnWarning(),
+                $configuration->failOnIncomplete(),
+                $configuration->failOnSkipped(),
+                $result
+            );
+        } catch (Throwable $t) {
+            $message = $t->getMessage();
+
+            if (empty(trim($message))) {
+                $message = '(no message)';
+            }
+
+            printf(
+                '%s%sAn error occurred inside PHPUnit.%s%sMessage:  %s%sLocation: %s:%d%s%s%s%s',
+                PHP_EOL,
+                PHP_EOL,
+                PHP_EOL,
+                PHP_EOL,
+                $message,
+                PHP_EOL,
+                $t->getFile(),
+                $t->getLine(),
+                PHP_EOL,
+                PHP_EOL,
+                $t->getTraceAsString(),
+                PHP_EOL
+            );
+
+            exit(Result::CRASH);
+        }
+
+        Event\Facade::emitter()->testRunnerFinished();
+
+        if ($exit) {
+            exit($shellExitCode);
+        }
+
+        return $shellExitCode;
     }
 
     private function printVersionString(): void
