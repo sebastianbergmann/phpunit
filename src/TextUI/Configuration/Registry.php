@@ -66,6 +66,8 @@ final class Registry
                     FileCollection::class,
                     File::class,
                     VersionComparisonOperator::class,
+                    FilterDirectoryCollection::class,
+                    FilterDirectory::class,
                 ],
             ]
         );

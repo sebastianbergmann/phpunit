@@ -661,6 +661,18 @@ final class Merger
             $testSuffixes = $cliConfiguration->testSuffixes();
         }
 
+        $coverageFilterDirectories = [];
+
+        if ($cliConfiguration->hasCoverageFilter()) {
+            foreach ($cliConfiguration->coverageFilter() as $directory) {
+                $coverageFilterDirectories[] = new FilterDirectory($directory, '', '.php');
+            }
+        }
+
+        foreach ($xmlConfiguration->codeCoverage()->directories() as $directory) {
+            $coverageFilterDirectories[] = $directory;
+        }
+
         return new Configuration(
             $cliArgument,
             $configurationFile,
@@ -668,6 +680,8 @@ final class Merger
             $cacheResult,
             $cacheDirectory,
             $coverageCacheDirectory,
+            FilterDirectoryCollection::fromArray($coverageFilterDirectories),
+            $xmlConfiguration->codeCoverage()->files(),
             $testResultCacheFile,
             $coverageClover,
             $coverageCobertura,
