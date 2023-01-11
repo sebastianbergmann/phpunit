@@ -773,6 +773,7 @@ final class Merger
             $xmlConfiguration->testSuite(),
             $includeTestSuite,
             $excludeTestSuite,
+            $xmlConfiguration->phpunit()->hasDefaultTestSuite() ? $xmlConfiguration->phpunit()->defaultTestSuite() : null,
             $testSuffixes,
             DirectoryCollection::fromArray($includePaths),
             IniSettingCollection::fromArray($iniSettings),
