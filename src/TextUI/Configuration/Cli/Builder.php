@@ -224,7 +224,7 @@ final class Builder
         $testSuite                         = null;
         $excludeTestSuite                  = null;
         $unrecognizedOrderBy               = null;
-        $useDefaultConfiguration           = null;
+        $useDefaultConfiguration           = true;
         $version                           = null;
         $logEventsText                     = null;
         $logEventsVerboseText              = null;

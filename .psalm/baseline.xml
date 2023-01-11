@@ -496,11 +496,13 @@
     </ArgumentTypeCoercion>
   </file>
   <file src="src/TextUI/Configuration/Cli/Configuration.php">
-    <InvalidNullableReturnType occurrences="2">
+    <InvalidNullableReturnType occurrences="3">
       <code>bool</code>
       <code>string</code>
+      <code>string</code>
     </InvalidNullableReturnType>
-    <NullableReturnStatement occurrences="2">
+    <NullableReturnStatement occurrences="3">
+      <code>$this-&gt;configurationFile</code>
       <code>$this-&gt;excludeTestSuite</code>
       <code>$this-&gt;teamCityPrinter</code>
     </NullableReturnStatement>
@@ -597,6 +599,13 @@
     <DeprecatedMethod occurrences="1">
       <code>hasCacheDirectory</code>
     </DeprecatedMethod>
+  </file>
+  <file src="src/TextUI/Configuration/Xml/ConfigurationFileFinder.php">
+    <MissingThrowsDocblock occurrences="3">
+      <code>configurationFile</code>
+      <code>configurationFile</code>
+      <code>configurationFile</code>
+    </MissingThrowsDocblock>
   </file>
   <file src="src/TextUI/Configuration/Xml/Loader.php">
     <ArgumentTypeCoercion occurrences="3">

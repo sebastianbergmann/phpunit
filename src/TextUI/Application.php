@@ -11,9 +11,6 @@ namespace PHPUnit\TextUI;
 
 use const PHP_EOL;
 use function array_keys;
-use function getcwd;
-use function is_dir;
-use function is_file;
 use function is_readable;
 use function printf;
 use function realpath;
@@ -27,7 +24,6 @@ use PHPUnit\Runner\Extension\Facade as ExtensionFacade;
 use PHPUnit\Runner\Version;
 use PHPUnit\TestRunner\TestResult\TestResult;
 use PHPUnit\TextUI\CliArguments\Builder;
-use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\CliArguments\Exception as ArgumentsException;
 use PHPUnit\TextUI\Command\AtLeastVersionCommand;
 use PHPUnit\TextUI\Command\GenerateConfigurationCommand;
@@ -45,6 +41,7 @@ use PHPUnit\TextUI\Configuration\Configuration;
 use PHPUnit\TextUI\Configuration\PhpHandler;
 use PHPUnit\TextUI\Configuration\Registry;
 use PHPUnit\TextUI\Configuration\TestSuiteBuilder;
+use PHPUnit\TextUI\XmlConfiguration\ConfigurationFileFinder;
 use PHPUnit\TextUI\XmlConfiguration\DefaultConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Loader;
 use Throwable;
@@ -185,7 +182,7 @@ final class Application
             );
         }
 
-        $configurationFile = $this->configurationFilePath($cliConfiguration);
+        $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
 
         if ($configurationFile) {
             try {
@@ -307,59 +304,6 @@ final class Application
         }
 
         exit(self::EXCEPTION_EXIT);
-    }
-
-    /**
-     * @throws ArgumentsException
-     */
-    private function configurationFilePath(CliConfiguration $cliConfiguration): string|false
-    {
-        $useDefaultConfiguration = true;
-
-        if ($cliConfiguration->hasUseDefaultConfiguration()) {
-            $useDefaultConfiguration = $cliConfiguration->useDefaultConfiguration();
-        }
-
-        if ($cliConfiguration->hasConfiguration()) {
-            if (is_dir($cliConfiguration->configuration())) {
-                $candidate = $this->configurationFileInDirectory($cliConfiguration->configuration());
-
-                if ($candidate) {
-                    return $candidate;
-                }
-
-                return false;
-            }
-
-            return $cliConfiguration->configuration();
-        }
-
-        if ($useDefaultConfiguration) {
-            $candidate = $this->configurationFileInDirectory(getcwd());
-
-            if ($candidate) {
-                return $candidate;
-            }
-        }
-
-        return false;
-    }
-
-    private function configurationFileInDirectory(string $directory): string|false
-    {
-        $candidates = [
-            $directory . '/phpunit.xml',
-            $directory . '/phpunit.dist.xml',
-            $directory . '/phpunit.xml.dist',
-        ];
-
-        foreach ($candidates as $candidate) {
-            if (is_file($candidate)) {
-                return realpath($candidate);
-            }
-        }
-
-        return false;
     }
 
     private function returnCode(TestResult $result): int

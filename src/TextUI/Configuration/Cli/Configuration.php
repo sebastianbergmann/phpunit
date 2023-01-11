@@ -28,7 +28,7 @@ final class Configuration
     private readonly ?bool $checkVersion;
     private readonly ?string $colors;
     private readonly null|int|string $columns;
-    private readonly ?string $configuration;
+    private readonly ?string $configurationFile;
     private readonly ?array $coverageFilter;
     private readonly ?string $coverageClover;
     private readonly ?string $coverageCobertura;
@@ -103,7 +103,7 @@ final class Configuration
     private readonly ?string $testSuite;
     private readonly ?string $excludeTestSuite;
     private readonly ?string $unrecognizedOrderBy;
-    private readonly ?bool $useDefaultConfiguration;
+    private readonly bool $useDefaultConfiguration;
     private readonly ?bool $displayDetailsOnIncompleteTests;
     private readonly ?bool $displayDetailsOnSkippedTests;
     private readonly ?bool $displayDetailsOnTestsThatTriggerDeprecations;
@@ -117,7 +117,7 @@ final class Configuration
     /**
      * @psalm-param ?non-empty-list<string> $testSuffixes
      */
-    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configuration, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noOutput, ?bool $noProgress, ?bool $noResults, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, ?string $unrecognizedOrderBy, ?bool $useDefaultConfiguration, ?bool $displayDetailsOnIncompleteTests, ?bool $displayDetailsOnSkippedTests, ?bool $displayDetailsOnTestsThatTriggerDeprecations, ?bool $displayDetailsOnTestsThatTriggerErrors, ?bool $displayDetailsOnTestsThatTriggerNotices, ?bool $displayDetailsOnTestsThatTriggerWarnings, ?bool $version, ?array $coverageFilter, ?string $logEventsText, ?string $logEventsVerboseText, ?bool $printerTeamCity, ?bool $printerTestDox)
+    public function __construct(?string $argument, ?string $atLeastVersion, ?bool $backupGlobals, ?bool $backupStaticProperties, ?bool $beStrictAboutChangesToGlobalState, ?string $bootstrap, ?string $cacheDirectory, ?bool $cacheResult, ?string $cacheResultFile, ?bool $checkVersion, ?string $colors, null|int|string $columns, ?string $configurationFile, ?string $coverageClover, ?string $coverageCobertura, ?string $coverageCrap4J, ?string $coverageHtml, ?string $coveragePhp, ?string $coverageText, ?bool $coverageTextShowUncoveredFiles, ?bool $coverageTextShowOnlySummary, ?string $coverageXml, ?bool $pathCoverage, ?string $coverageCacheDirectory, ?bool $warmCoverageCache, ?int $defaultTimeLimit, ?bool $disableCodeCoverageIgnore, ?bool $disallowTestOutput, ?bool $enforceTimeLimit, ?array $excludeGroups, ?int $executionOrder, ?int $executionOrderDefects, ?bool $failOnEmptyTestSuite, ?bool $failOnIncomplete, ?bool $failOnRisky, ?bool $failOnSkipped, ?bool $failOnWarning, ?string $filter, ?bool $generateConfiguration, ?bool $migrateConfiguration, ?array $groups, ?array $testsCovering, ?array $testsUsing, ?bool $help, ?string $includePath, ?array $iniSettings, ?string $junitLogfile, ?bool $listGroups, ?bool $listSuites, ?bool $listTests, ?string $listTestsXml, ?bool $noCoverage, ?bool $noExtensions, ?bool $noOutput, ?bool $noProgress, ?bool $noResults, ?bool $noLogging, ?bool $processIsolation, ?int $randomOrderSeed, ?int $repeat, ?bool $reportUselessTests, ?bool $resolveDependencies, ?bool $reverseList, ?bool $stderr, ?bool $strictCoverage, ?bool $stopOnDefect, ?bool $stopOnError, ?bool $stopOnFailure, ?bool $stopOnIncomplete, ?bool $stopOnRisky, ?bool $stopOnSkipped, ?bool $stopOnWarning, ?string $teamcityLogfile, ?string $testdoxHtmlFile, ?string $testdoxTextFile, ?string $testdoxXmlFile, ?array $testSuffixes, ?string $testSuite, ?string $excludeTestSuite, ?string $unrecognizedOrderBy, bool $useDefaultConfiguration, ?bool $displayDetailsOnIncompleteTests, ?bool $displayDetailsOnSkippedTests, ?bool $displayDetailsOnTestsThatTriggerDeprecations, ?bool $displayDetailsOnTestsThatTriggerErrors, ?bool $displayDetailsOnTestsThatTriggerNotices, ?bool $displayDetailsOnTestsThatTriggerWarnings, ?bool $version, ?array $coverageFilter, ?string $logEventsText, ?string $logEventsVerboseText, ?bool $printerTeamCity, ?bool $printerTestDox)
     {
         $this->argument                                     = $argument;
         $this->atLeastVersion                               = $atLeastVersion;
@@ -131,7 +131,7 @@ final class Configuration
         $this->checkVersion                                 = $checkVersion;
         $this->colors                                       = $colors;
         $this->columns                                      = $columns;
-        $this->configuration                                = $configuration;
+        $this->configurationFile                            = $configurationFile;
         $this->coverageFilter                               = $coverageFilter;
         $this->coverageClover                               = $coverageClover;
         $this->coverageCobertura                            = $coverageCobertura;
@@ -457,21 +457,21 @@ final class Configuration
     /**
      * @psalm-assert-if-true !null $this->configuration
      */
-    public function hasConfiguration(): bool
+    public function hasConfigurationFile(): bool
     {
-        return $this->configuration !== null;
+        return $this->configurationFile !== null;
     }
 
     /**
      * @throws Exception
      */
-    public function configuration(): string
+    public function configurationFile(): string
     {
-        if (!$this->hasConfiguration()) {
+        if (!$this->hasConfigurationFile()) {
             throw new Exception;
         }
 
-        return $this->configuration;
+        return $this->configurationFile;
     }
 
     /**
@@ -1876,23 +1876,8 @@ final class Configuration
         return $this->unrecognizedOrderBy;
     }
 
-    /**
-     * @psalm-assert-if-true !null $this->useDefaultConfiguration
-     */
-    public function hasUseDefaultConfiguration(): bool
-    {
-        return $this->useDefaultConfiguration !== null;
-    }
-
-    /**
-     * @throws Exception
-     */
     public function useDefaultConfiguration(): bool
     {
-        if (!$this->hasUseDefaultConfiguration()) {
-            throw new Exception;
-        }
-
         return $this->useDefaultConfiguration;
     }
 
