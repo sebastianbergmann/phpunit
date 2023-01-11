@@ -53,13 +53,13 @@ final class FileCollection implements Countable, IteratorAggregate
         return count($this->files);
     }
 
+    public function notEmpty(): bool
+    {
+        return !empty($this->files);
+    }
+
     public function getIterator(): FileCollectionIterator
     {
         return new FileCollectionIterator($this);
-    }
-
-    public function isEmpty(): bool
-    {
-        return $this->count() === 0;
     }
 }

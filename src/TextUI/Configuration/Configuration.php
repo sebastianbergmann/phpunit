@@ -365,6 +365,11 @@ final class Configuration
         return $this->coverageCacheDirectory;
     }
 
+    public function hasNonEmptyListOfFilesToBeIncludedInCodeCoverageReport(): bool
+    {
+        return $this->coverageFilterDirectories->notEmpty() || $this->coverageFilterFiles->notEmpty();
+    }
+
     public function coverageFilterDirectories(): FilterDirectoryCollection
     {
         return $this->coverageFilterDirectories;

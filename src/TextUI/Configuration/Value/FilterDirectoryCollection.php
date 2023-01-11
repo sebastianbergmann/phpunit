@@ -53,6 +53,11 @@ final class FilterDirectoryCollection implements Countable, IteratorAggregate
         return count($this->directories);
     }
 
+    public function notEmpty(): bool
+    {
+        return !empty($this->directories);
+    }
+
     public function getIterator(): FilterDirectoryCollectionIterator
     {
         return new FilterDirectoryCollectionIterator($this);
