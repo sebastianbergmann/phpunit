@@ -37,6 +37,7 @@ use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
 use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
 use PHPUnit\TextUI\Command\ShowHelpCommand;
+use PHPUnit\TextUI\Command\ShowVersionCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
 use PHPUnit\TextUI\Command\WarmCodeCoverageCacheCommand;
 use PHPUnit\TextUI\Configuration\CodeCoverageFilterRegistry;
@@ -164,9 +165,7 @@ final class Application
         }
 
         if ($cliConfiguration->hasVersion() && $cliConfiguration->version()) {
-            $this->printVersionString();
-
-            exit(self::SUCCESS_EXIT);
+            $this->execute(new ShowVersionCommand);
         }
 
         if ($cliConfiguration->hasCheckVersion() && $cliConfiguration->checkVersion()) {
