@@ -10,7 +10,6 @@
 namespace PHPUnit\TextUI;
 
 use PHPUnit\TestRunner\TestResult\TestResult;
-use PHPUnit\TextUI\Configuration\Configuration;
 
 /**
  * @internal This class is not covered by the backward compatibility promise for PHPUnit
@@ -23,7 +22,7 @@ final class ShellExitCodeCalculator
 
     private const EXCEPTION_EXIT = 2;
 
-    public function calculate(Configuration $configuration, TestResult $result): int
+    public function calculate(bool $failOnEmptyTestSuite, bool $failOnRisky, bool $failOnWarning, bool $failOnIncomplete, bool $failOnSkipped, TestResult $result): int
     {
         $returnCode = self::FAILURE_EXIT;
 
@@ -31,24 +30,24 @@ final class ShellExitCodeCalculator
             $returnCode = self::SUCCESS_EXIT;
         }
 
-        if ($configuration->failOnEmptyTestSuite() && $result->numberOfTests() === 0) {
+        if ($failOnEmptyTestSuite && $result->numberOfTests() === 0) {
             $returnCode = self::FAILURE_EXIT;
         }
 
         if ($result->wasSuccessfulIgnoringPhpunitWarnings()) {
-            if ($configuration->failOnRisky() && $result->hasTestConsideredRiskyEvents()) {
+            if ($failOnRisky && $result->hasTestConsideredRiskyEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnWarning() && $result->hasWarningEvents()) {
+            if ($failOnWarning && $result->hasWarningEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnIncomplete() && $result->hasTestMarkedIncompleteEvents()) {
+            if ($failOnIncomplete && $result->hasTestMarkedIncompleteEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
 
-            if ($configuration->failOnSkipped() && $result->hasTestSkippedEvents()) {
+            if ($failOnSkipped && $result->hasTestSkippedEvents()) {
                 $returnCode = self::FAILURE_EXIT;
             }
         }

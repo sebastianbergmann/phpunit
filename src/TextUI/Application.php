@@ -95,12 +95,20 @@ final class Application
 
         Event\Facade::emitter()->testSuiteLoaded(Event\TestSuite\TestSuite::fromTestSuite($suite));
 
-        $runner = new TestRunner;
+        $configuration = Registry::get();
+        $runner        = new TestRunner;
 
         try {
             $result = $runner->run($suite);
 
-            $shellExitCode = (new ShellExitCodeCalculator)->calculate(Registry::get(), $result);
+            $shellExitCode = (new ShellExitCodeCalculator)->calculate(
+                $configuration->failOnEmptyTestSuite(),
+                $configuration->failOnRisky(),
+                $configuration->failOnWarning(),
+                $configuration->failOnIncomplete(),
+                $configuration->failOnSkipped(),
+                $result
+            );
         } catch (Throwable $t) {
             $message = $t->getMessage();
 
