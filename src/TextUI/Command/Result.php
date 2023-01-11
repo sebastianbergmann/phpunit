@@ -16,18 +16,25 @@ namespace PHPUnit\TextUI\Command;
  */
 final class Result
 {
-    private readonly string $output;
-    private readonly bool $success;
+    public const SUCCESS = 0;
 
-    public static function from(string $output = '', bool $success = true): self
+    public const FAILURE = 1;
+
+    public const EXCEPTION = 2;
+
+    public const CRASH = 255;
+    private readonly string $output;
+    private readonly int $shellExitCode;
+
+    public static function from(string $output = '', int $shellExitCode = self::SUCCESS): self
     {
-        return new self($output, $success);
+        return new self($output, $shellExitCode);
     }
 
-    private function __construct(string $output, bool $success)
+    private function __construct(string $output, int $shellExitCode)
     {
-        $this->output  = $output;
-        $this->success = $success;
+        $this->output        = $output;
+        $this->shellExitCode = $shellExitCode;
     }
 
     public function output(): string
@@ -35,8 +42,8 @@ final class Result
         return $this->output;
     }
 
-    public function wasSuccessful(): bool
+    public function shellExitCode(): int
     {
-        return $this->success;
+        return $this->shellExitCode;
     }
 }

@@ -30,6 +30,6 @@ final class AtLeastVersionCommand implements Command
             return Result::from();
         }
 
-        return Result::from('', false);
+        return Result::from('', Result::FAILURE);
     }
 }

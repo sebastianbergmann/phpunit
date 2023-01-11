@@ -16,18 +16,18 @@ use PHPUnit\TextUI\Help;
  */
 final class ShowHelpCommand implements Command
 {
-    private readonly bool $success;
+    private readonly int $shellExitCode;
 
-    public function __construct(bool $success)
+    public function __construct(int $shellExitCode)
     {
-        $this->success = $success;
+        $this->shellExitCode = $shellExitCode;
     }
 
     public function execute(): Result
     {
         return Result::from(
             (new Help)->generate(),
-            $this->success
+            $this->shellExitCode
         );
     }
 }

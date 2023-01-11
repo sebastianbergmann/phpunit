@@ -31,6 +31,7 @@ use PHPUnit\TextUI\Command\ListTestsAsTextCommand;
 use PHPUnit\TextUI\Command\ListTestsAsXmlCommand;
 use PHPUnit\TextUI\Command\ListTestSuitesCommand;
 use PHPUnit\TextUI\Command\MigrateConfigurationCommand;
+use PHPUnit\TextUI\Command\Result;
 use PHPUnit\TextUI\Command\ShowHelpCommand;
 use PHPUnit\TextUI\Command\ShowVersionCommand;
 use PHPUnit\TextUI\Command\VersionCheckCommand;
@@ -51,13 +52,6 @@ use Throwable;
  */
 final class Application
 {
-    private const SUCCESS_EXIT = 0;
-
-    private const FAILURE_EXIT = 1;
-
-    private const EXCEPTION_EXIT = 2;
-
-    private const CRASH_EXIT           = 255;
     private bool $versionStringPrinted = false;
 
     /**
@@ -126,7 +120,7 @@ final class Application
                 PHP_EOL
             );
 
-            exit(self::CRASH_EXIT);
+            exit(Result::CRASH);
         }
 
         Event\Facade::emitter()->testRunnerFinished();
@@ -165,7 +159,7 @@ final class Application
         }
 
         if ($cliConfiguration->hasHelp()) {
-            $this->execute(new ShowHelpCommand(true));
+            $this->execute(new ShowHelpCommand(Result::SUCCESS));
         }
 
         $configurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
@@ -237,7 +231,7 @@ final class Application
         }
 
         if ($testSuite->isEmpty() && !$configuration->hasCliArgument() && !$configuration->hasDefaultTestSuite()) {
-            $this->execute(new ShowHelpCommand(false));
+            $this->execute(new ShowHelpCommand(Result::FAILURE));
         }
 
         $this->bootstrapExtensions($configuration);
@@ -262,7 +256,7 @@ final class Application
 
         print $message . PHP_EOL;
 
-        exit(self::FAILURE_EXIT);
+        exit(Result::EXCEPTION);
     }
 
     private function execute(Command\Command $command): never
@@ -273,11 +267,7 @@ final class Application
 
         print $result->output();
 
-        if ($result->wasSuccessful()) {
-            exit(self::SUCCESS_EXIT);
-        }
-
-        exit(self::EXCEPTION_EXIT);
+        exit($result->shellExitCode());
     }
 
     private function loadBootstrapScript(string $filename): void

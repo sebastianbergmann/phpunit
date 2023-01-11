@@ -30,8 +30,8 @@ final class MigrateConfigurationCommand implements Command
     {
         copy($this->filename, $this->filename . '.bak');
 
-        $buffer  = 'Created backup:         ' . $this->filename . '.bak' . PHP_EOL;
-        $success = true;
+        $buffer        = 'Created backup:         ' . $this->filename . '.bak' . PHP_EOL;
+        $shellExitCode = Result::SUCCESS;
 
         try {
             file_put_contents(
@@ -43,9 +43,9 @@ final class MigrateConfigurationCommand implements Command
         } catch (Throwable $t) {
             $buffer .= 'Migration failed: ' . $t->getMessage() . PHP_EOL;
 
-            $success = false;
+            $shellExitCode = Result::FAILURE;
         }
 
-        return Result::from($buffer, $success);
+        return Result::from($buffer, $shellExitCode);
     }
 }

@@ -33,14 +33,14 @@ final class WarmCodeCoverageCacheCommand implements Command
         if (!$configuration->hasCoverageCacheDirectory()) {
             return Result::from(
                 'Cache for static analysis has not been configured' . PHP_EOL,
-                false
+                Result::FAILURE
             );
         }
 
         if (!CodeCoverageFilterRegistry::configured()) {
             return Result::from(
                 'Filter for code coverage has not been configured' . PHP_EOL,
-                false
+                Result::FAILURE
             );
         }
 
