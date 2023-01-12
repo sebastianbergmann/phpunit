@@ -14,6 +14,7 @@ use function file_get_contents;
 use function file_put_contents;
 use function serialize;
 use function unserialize;
+use PHPUnit\Event\Facade as EventFacade;
 use PHPUnit\TextUI\CliArguments\Configuration as CliConfiguration;
 use PHPUnit\TextUI\XmlConfiguration\Configuration as XmlConfiguration;
 use PHPUnit\Util\VersionComparisonOperator;
@@ -88,6 +89,8 @@ final class Registry
     public static function init(CliConfiguration $cliConfiguration, XmlConfiguration $xmlConfiguration): Configuration
     {
         self::$instance = (new Merger)->merge($cliConfiguration, $xmlConfiguration);
+
+        EventFacade::emitter()->testRunnerConfigured(self::$instance);
 
         return self::$instance;
     }

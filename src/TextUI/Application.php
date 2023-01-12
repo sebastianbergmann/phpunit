@@ -110,8 +110,6 @@ final class Application
             $configuration->requestVariables(),
         );
 
-        Event\Facade::emitter()->testRunnerConfigured($configuration);
-
         if ($configuration->hasBootstrap()) {
             $this->loadBootstrapScript($configuration->bootstrap());
         }
