@@ -59,15 +59,7 @@ final class Application
      */
     public static function main(bool $exit = true): int
     {
-        try {
-            return (new self)->run($_SERVER['argv'], $exit);
-        } catch (Throwable $t) {
-            throw new RuntimeException(
-                $t->getMessage(),
-                (int) $t->getCode(),
-                $t
-            );
-        }
+        return (new self)->run($_SERVER['argv'], $exit);
     }
 
     /**
