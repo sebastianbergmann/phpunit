@@ -110,16 +110,16 @@ final class Application
             $configuration->requestVariables(),
         );
 
-        if ($configuration->hasBootstrap()) {
-            $this->loadBootstrapScript($configuration->bootstrap());
-        }
-
         if ($configuration->hasCoverageReport() || $cliConfiguration->warmCoverageCache()) {
             CodeCoverageFilterRegistry::init($configuration);
         }
 
         if ($cliConfiguration->warmCoverageCache()) {
             $this->execute(new WarmCodeCoverageCacheCommand);
+        }
+
+        if ($configuration->hasBootstrap()) {
+            $this->loadBootstrapScript($configuration->bootstrap());
         }
 
         $testSuite = $this->buildTestSuite($configuration);
