@@ -323,7 +323,7 @@ final class Application
             $this->execute(new ListTestsAsTextCommand($testSuite));
         }
 
-        if ($cliConfiguration->hasListTestsXml() && $cliConfiguration->listTestsXml()) {
+        if ($cliConfiguration->hasListTestsXml()) {
             $this->execute(
                 new ListTestsAsXmlCommand(
                     $cliConfiguration->listTestsXml(),
