@@ -60,13 +60,10 @@ final class Application
         try {
             Event\Facade::emitter()->testRunnerStarted();
 
-            $cliConfiguration = $this->buildCliConfiguration($argv);
-
-            $this->executeCommandsThatOnlyRequireCliConfiguration($cliConfiguration);
-
+            $cliConfiguration           = $this->buildCliConfiguration($argv);
             $pathToXmlConfigurationFile = (new ConfigurationFileFinder)->find($cliConfiguration);
 
-            $this->executeMigrateConfigurationCommand($cliConfiguration, $pathToXmlConfigurationFile);
+            $this->executeCommandsThatOnlyRequireCliConfiguration($cliConfiguration, $pathToXmlConfigurationFile);
 
             $xmlConfiguration = $this->loadXmlConfiguration($pathToXmlConfigurationFile);
 
@@ -279,10 +276,18 @@ final class Application
         }
     }
 
-    private function executeCommandsThatOnlyRequireCliConfiguration(CliConfiguration $cliConfiguration): void
+    private function executeCommandsThatOnlyRequireCliConfiguration(CliConfiguration $cliConfiguration, string|false $configurationFile): void
     {
         if ($cliConfiguration->generateConfiguration()) {
             $this->execute(new GenerateConfigurationCommand);
+        }
+
+        if ($cliConfiguration->migrateConfiguration()) {
+            if (!$configurationFile) {
+                $this->exitWithErrorMessage('No configuration file found to migrate');
+            }
+
+            $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
         }
 
         if ($cliConfiguration->hasAtLeastVersion()) {
@@ -299,17 +304,6 @@ final class Application
 
         if ($cliConfiguration->help()) {
             $this->execute(new ShowHelpCommand(Result::SUCCESS));
-        }
-    }
-
-    private function executeMigrateConfigurationCommand(CliConfiguration $cliConfiguration, string|false $configurationFile): void
-    {
-        if ($cliConfiguration->migrateConfiguration()) {
-            if (!$configurationFile) {
-                $this->exitWithErrorMessage('No configuration file found to migrate');
-            }
-
-            $this->execute(new MigrateConfigurationCommand(realpath($configurationFile)));
         }
     }
 
